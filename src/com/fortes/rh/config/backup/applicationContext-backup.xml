@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="notificadorDeBackup" class="com.fortes.rh.config.backup.notificador.NotificadorDeBackupViaEmailImpl">
+		<property name="mail">
+			<ref bean="mail" />
+		</property>
+		<property name="parametrosDoSistemaManager">
+			<ref bean="parametrosDoSistemaManager" />
+		</property>
+	</bean>
+	<bean id="backupService" class="com.fortes.rh.config.backup.BackupServiceImpl">
+		<property name="notificadorDeBackup">
+			<ref bean="notificadorDeBackup" />
+		</property>
+	</bean>
+</beans>
+

@@ -1,0 +1,9 @@
+  <bean id="#NOME_CLASSE_MINUSCULO#Dao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.#NOME_PACOTE#.#NOME_CLASSE#Dao</value>
+    </property>
+    <property name="target">
+      <ref bean="#NOME_CLASSE_MINUSCULO#DaoTarget" />
+    </property>
+  </bean>
+</beans>

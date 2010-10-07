@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="agenda" extends="default" namespace="/sesmt/agenda">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.AgendaEditAction" method="list">
+			<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">dataMesAnoIni,dataMesAnoFim,estabelecimento.id</param>
+	    	</interceptor-ref>	
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/agendaList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.AgendaEditAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack">
+				<param name="scope.session">dataMesAnoIni,dataMesAnoFim,estabelecimento.id</param>
+			</interceptor-ref>
+			<result name="success" type="redirect">list.action</result>
+			<result name="error" type="redirect">list.action</result>
+		</action>
+		
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.AgendaEditAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.AgendaEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/agendaEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.AgendaEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/agendaEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.AgendaEditAction" method="insert">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="tokenWebStack" />
+			<result name="invalid.token" type="redirect">list.action</result>
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/agendaEdit.ftl</result>
+			<result name="error" type="redirect">list.action</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.AgendaEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="invalid.token" type="redirect">list.action</result>
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/agendaEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

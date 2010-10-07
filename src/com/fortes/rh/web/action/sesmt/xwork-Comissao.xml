@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="comissao" extends="default" namespace="/sesmt/comissao">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="delete">
+			<result name="success" type="redirect">list.action</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="prepare">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="prepare">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect"><![CDATA[../comissaoPeriodo/list.action?comissao.id=${comissao.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoEdit.ftl</result>
+		</action>
+		
+		<action name="prepareDocumentos" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="prepareDocumentos">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comunicadosDaComissao.ftl</result>
+		</action>
+		
+		<action name="imprimirAtaPosse" class="com.fortes.rh.web.action.sesmt.ComissaoEditAction" method="imprimirAtaPosse">
+			<result name="success" type="jasper">
+				<param name="dataSource">dataSource</param>
+				<param name="location">WEB-INF/report/ata_instalacao_posse.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ata_instalacao_posse.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comunicadosDaComissao.ftl</result>
+		</action>
+	</package>
+</xwork>

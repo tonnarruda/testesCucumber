@@ -1,0 +1,32 @@
+package com.fortes.rh.business.captacao;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.fortes.business.GenericManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.geral.Empresa;
+
+public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSolicitacao>
+{
+	CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand);
+	public void insertCandidatos(String[] candidatosId, Solicitacao solicitacao);
+	public void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacao) throws ColecaoVaziaException;
+	public Collection<CandidatoSolicitacao> getCandidatosBySolicitacaoAberta(String[] etapaCheck, Long empresaId);
+	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos);
+	public Collection<CandidatoSolicitacao> findNaoAptos(Long solicitacaoId);
+	public void enviarEmailNaoApto(Long id, Empresa empresa) throws Exception;
+	public Collection<CandidatoSolicitacao> verificaExisteColaborador(Collection<CandidatoSolicitacao> candidatoSolicitacaos,Long empresaId);
+	CandidatoSolicitacao findCandidatoSolicitacaoById(Long candidatoSolicitacaoId);
+	Collection<CandidatoSolicitacao> findCandidatoSolicitacaoById(Long[] candidatoSolicitacaoIds);
+	Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca);
+	Collection<CandidatoSolicitacao> findBySolicitacaoTriagem(Long solicitacaoId);
+	Collection<CandidatoSolicitacao> findByFiltroSolicitacaoTriagem(Boolean triagem);
+	void updateTriagem(Long candidatoSolicitacaoid, boolean triagem);
+	public Boolean isCandidatoSolicitacaoByCandidato(Long candidatoId);
+
+	Collection<Long> getCandidatosBySolicitacao(Long solicitacaoId);
+	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca);
+}

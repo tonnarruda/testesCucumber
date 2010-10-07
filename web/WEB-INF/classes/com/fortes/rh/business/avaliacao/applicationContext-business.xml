@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="periodoExperienciaManagerTarget" class="com.fortes.rh.business.avaliacao.PeriodoExperienciaManagerImpl">
+    <property name="dao">
+      <ref bean="periodoExperienciaDao" />
+    </property>
+  </bean>
+  <bean id="periodoExperienciaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.avaliacao.PeriodoExperienciaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="periodoExperienciaManagerTarget" />
+    </property>
+  </bean>
+  <bean id="avaliacaoManagerTarget" class="com.fortes.rh.business.avaliacao.AvaliacaoManagerImpl">
+    <property name="dao">
+      <ref bean="avaliacaoDao" />
+    </property>
+    <property name="perguntaManager">
+      <ref bean="perguntaManager" />
+    </property>
+    <property name="periodoExperienciaManager">
+      <ref bean="periodoExperienciaManager" />
+    </property>
+    <property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
+    </property>
+    <property name="colaboradorManager">
+      <ref bean="colaboradorManager" />
+    </property>
+    <property name="usuarioEmpresaManager">
+      <ref bean="usuarioEmpresaManager" />
+    </property>
+    <property name="usuarioMensagemManager">
+      <ref bean="usuarioMensagemManager" />
+    </property>
+    <property name="colaboradorRespostaManager">
+      <ref bean="colaboradorRespostaManager" />
+    </property>
+    <property name="respostaManager">
+      <ref bean="respostaManager" />
+    </property>
+    <property name="questionarioManager">
+      <ref bean="questionarioManager" />
+    </property>
+  </bean>
+  <bean id="avaliacaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.avaliacao.AvaliacaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="avaliacaoManagerTarget" />
+    </property>
+  </bean>
+  <bean id="avaliacaoDesempenhoManagerTarget" class="com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManagerImpl">
+    <property name="dao">
+      <ref bean="avaliacaoDesempenhoDao" />
+    </property>
+    <property name="colaboradorQuestionarioManager">
+      <ref bean="colaboradorQuestionarioManager" />
+    </property>
+    <property name="perguntaManager">
+      <ref bean="perguntaManager" />
+    </property>
+    <property name="respostaManager">
+      <ref bean="respostaManager" />
+    </property>
+    <property name="colaboradorRespostaManager">
+      <ref bean="colaboradorRespostaManager" />
+    </property>
+    <property name="questionarioManager">
+      <ref bean="questionarioManager" />
+    </property>
+    <property name="colaboradorManager">
+      <ref bean="colaboradorManager" />
+    </property>
+    <property name="mail">
+      <ref bean="mail" />
+    </property>
+    <property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
+    </property>
+  </bean>
+  <bean id="avaliacaoDesempenhoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="avaliacaoDesempenhoManagerTarget" />
+    </property>
+  </bean>
+</beans>
+
+
+
+
+

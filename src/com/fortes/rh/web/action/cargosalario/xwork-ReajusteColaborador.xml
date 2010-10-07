@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="reajusteColaborador" extends="default" namespace="/cargosalario/reajusteColaborador">
+		<action name="list" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/reajusteColaboradorList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorListAction" method="delete">
+			<result name="success" type="redirect"><![CDATA[/cargosalario/tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&grupoOcupacional.id=${grupoOcupacional.id}&areaOrganizacional.id=${areaOrganizacional.id}]]></result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/reajusteColaboradorEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/reajusteColaboradorEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction" method="insert">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/reajusteColaboradorEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction" method="update">
+			<result name="success" type="redirect"><![CDATA[/cargosalario/tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&grupoOcupacional.id=${grupoOcupacionalFiltro.id}&areaOrganizacional.id=${areaOrganizacionalFiltro.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/reajusteColaboradorEdit.ftl</result>
+		</action>
+		<action name="prepareSolicitacaoReajuste" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction" method="prepareSolicitacaoReajuste">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/solicitacaoReajusteGestor.ftl</result>
+		</action>
+		<action name="insertSolicitacaoReajuste" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction" method="insertSolicitacaoReajuste">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/solicitacaoReajusteGestor.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/solicitacaoReajusteGestor.ftl</result>
+		</action>
+		<action name="atualizaFaixaTabelaAtualProposta" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorListAction" method="atualizaFaixaTabelaAtualProposta">
+			<result name="success" type="redirect">list.action</result>
+		</action>
+		<action name="prepareDissidio" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction" method="prepareDissidio">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidio.ftl</result>
+		</action>
+		<action name="prepareColaboradorDissidio" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction" method="prepareColaboradorDissidio">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/colaboradorDissidioList.ftl</result>
+		</action>
+		<action name="aplicarDissidio" class="com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction" method="aplicarDissidio">
+			<result name="success" type="redirect">/cargosalario/tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}</result>
+		</action>
+	</package>
+</xwork>

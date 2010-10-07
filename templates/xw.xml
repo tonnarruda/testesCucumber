@@ -1,0 +1,2 @@
+  <include file="/com/fortes/rh/web/action/#NOME_PACOTE#/xwork-#NOME_CLASSE#.xml" />
+</xwork>

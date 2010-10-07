@@ -1,0 +1,438 @@
+/* Autor: Igo Coelho
+ * Data: 26/05/2006
+ * Requisito: RFA0026 */
+package com.fortes.rh.model.cargosalario;
+
+import java.io.Serializable;
+import java.util.Collection;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
+import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.model.dicionario.Escolaridade;
+import com.fortes.rh.model.geral.AreaFormacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.sesmt.Funcao;
+
+@SuppressWarnings("serial")
+@Entity
+@SequenceGenerator(name="sequence", sequenceName="cargo_sequence", allocationSize=1)
+public class Cargo extends AbstractModel implements Serializable
+{
+	@Transient
+	public static Boolean TODOS = null;
+	@Transient
+	public static Boolean ATIVO = true;
+	@Transient
+	public static Boolean INATIVO = false;
+
+	@Column(length=30)
+	private String nome;
+	@Column(length=100)
+	private String nomeMercado;
+	@Lob
+	private String missao;
+	@Lob
+	private String competencias;
+	@Lob
+	private String responsabilidades;
+	@Column(length=5)
+	private String escolaridade;
+	@Lob
+	private String experiencia;
+	@Lob
+	private String recrutamento;
+	@Lob
+	private String selecao;
+	@Lob
+	private String atitude;
+	@Lob
+	private String observacao;
+	@ManyToOne
+	private GrupoOcupacional grupoOcupacional;
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<AreaFormacao> areaFormacaos;
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<AreaOrganizacional> areasOrganizacionais;
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<Conhecimento> conhecimentos;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="cargo")
+	private Collection<FaixaSalarial> faixaSalarials;
+	@ManyToOne
+	private Empresa empresa;
+    @OneToMany(fetch=FetchType.LAZY)
+    private Collection<EtapaSeletiva> etapaSeletivas;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="cargo")
+	private Collection<Funcao> funcaos;
+	
+	@Column(length=6)
+	private String cboCodigo;
+	private boolean ativo = ATIVO;
+	private Boolean exibirModuloExterno = false;
+	public Cargo()
+	{
+	}
+
+	public Cargo(Long id, String nome)
+	{
+		this.setId(id);
+		this.setNome(nome);
+	}
+
+	public Empresa getEmpresa()
+	{
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa)
+	{
+		this.empresa = empresa;
+	}
+
+	public void setGrupoNome(String grupoNome)
+	{
+		if (grupoOcupacional == null)
+			grupoOcupacional = new GrupoOcupacional();
+		grupoOcupacional.setNome(grupoNome);
+	}
+
+	public void setGrupoOcupacionalIdProjection(Long grupoOcupacionalIdProjection)
+	{
+		if (this.grupoOcupacional == null)
+			this.grupoOcupacional = new GrupoOcupacional();
+		this.grupoOcupacional.setId(grupoOcupacionalIdProjection);
+	}
+
+	public void setEmpresaIdProjection(Long empresaIdProjection)
+	{
+		if (this.empresa == null)
+			this.empresa = new Empresa();
+		this.empresa.setId(empresaIdProjection);
+	}
+
+	public void setEmpresaNomeProjection(String empresaNomeProjection)
+	{
+		if (this.empresa == null)
+			this.empresa = new Empresa();
+		this.empresa.setNome(empresaNomeProjection);
+	}
+
+	public Collection<Conhecimento> getConhecimentos()
+	{
+		return conhecimentos;
+	}
+
+	public void setConhecimentos(Collection<Conhecimento> conhecimentos)
+	{
+		this.conhecimentos = conhecimentos;
+	}
+
+	public Collection<AreaOrganizacional> getAreasOrganizacionais()
+	{
+		return areasOrganizacionais;
+	}
+
+	public void setAreasOrganizacionais(Collection<AreaOrganizacional> areasOrganizacionais)
+	{
+		this.areasOrganizacionais = areasOrganizacionais;
+	}
+
+	public String getCompetencias()
+	{
+		return competencias;
+	}
+
+	public void setCompetencias(String competencias)
+	{
+		this.competencias = competencias;
+	}
+
+	public String getEscolaridade()
+	{
+		return escolaridade;
+	}
+
+	public void setEscolaridade(String escolaridade)
+	{
+		this.escolaridade = escolaridade;
+	}
+
+	public String getExperiencia()
+	{
+		return experiencia;
+	}
+
+	public void setExperiencia(String experiencia)
+	{
+		this.experiencia = experiencia;
+	}
+
+	public String getMissao()
+	{
+		return missao;
+	}
+
+	public void setMissao(String missao)
+	{
+		this.missao = missao;
+	}
+
+	public String getNome()
+	{
+		return nome;
+	}
+
+	public void setNome(String nome)
+	{
+		this.nome = nome;
+	}
+
+	public String getObservacao()
+	{
+		return observacao;
+	}
+
+	public void setObservacao(String observacao)
+	{
+		this.observacao = observacao;
+	}
+
+	public String getRecrutamento()
+	{
+		return recrutamento;
+	}
+
+	public void setRecrutamento(String recrutamento)
+	{
+		this.recrutamento = recrutamento;
+	}
+
+	public String getResponsabilidades()
+	{
+		return responsabilidades;
+	}
+
+	public void setResponsabilidades(String responsabilidades)
+	{
+		this.responsabilidades = responsabilidades;
+	}
+
+	public String getSelecao()
+	{
+		return selecao;
+	}
+
+	public void setSelecao(String selecao)
+	{
+		this.selecao = selecao;
+	}
+
+	public Collection<FaixaSalarial> getFaixaSalarials()
+	{
+		return faixaSalarials;
+	}
+
+	public void setFaixaSalarials(Collection<FaixaSalarial> faixaSalarials)
+	{
+		this.faixaSalarials = faixaSalarials;
+	}
+
+	public GrupoOcupacional getGrupoOcupacional()
+	{
+		return grupoOcupacional;
+	}
+
+	public void setGrupoOcupacional(GrupoOcupacional grupoOcupacional)
+	{
+		this.grupoOcupacional = grupoOcupacional;
+	}
+
+	public Collection<AreaFormacao> getAreaFormacaos()
+	{
+		return areaFormacaos;
+	}
+
+	public void setAreaFormacaos(Collection<AreaFormacao> areaFormacaos)
+	{
+		this.areaFormacaos = areaFormacaos;
+	}
+	public void setNomeMercado(String nomeMercado)
+	{
+		this.nomeMercado = nomeMercado;
+	}
+
+	public String getNomeMercado()
+	{
+		return nomeMercado;
+	}
+
+	public String getDescEscolaridade()
+	{
+		Escolaridade esc = new Escolaridade();
+
+		return (String) esc.get(this.getEscolaridade());
+	}
+
+	public String toString()
+	{
+		ToStringBuilder string = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+		string.append("id",	this.getId());
+		string.append("nome", this.nome);
+		string.append("nomeMercado", this.getNomeMercado());
+		string.append("grupoOcupacional", this.grupoOcupacional);
+		string.append("escolaridade", this.escolaridade);
+		string.append("missao", this.missao);
+		string.append("responsabilidades", this.responsabilidades);
+		string.append("competencias", this.competencias);
+		string.append("experiencia", this.experiencia);
+		string.append("selecao", this.selecao);
+		string.append("recrutamento", this.recrutamento);
+		string.append("observacao",	this.observacao);
+		string.append("empresa", this.empresa);
+
+		return string.toString();
+	}
+
+	public String getCboCodigo()
+	{
+		return cboCodigo;
+	}
+
+	public void setCboCodigo(String cboCodigo)
+	{
+		this.cboCodigo = cboCodigo;
+	}
+
+	public String getDescAreaFormacao()
+	{
+		StringBuilder descricao = new StringBuilder();
+
+		if(this.areaFormacaos != null)
+			for (AreaFormacao areaFormacao : this.areaFormacaos)
+			{
+				descricao.append(areaFormacao.getNome() + "\n");
+			}
+
+		return descricao.toString();
+	}
+
+	public String getDescEtapaSeletiva()
+	{
+		StringBuilder etapas = new StringBuilder();
+		
+		if(this.etapaSeletivas != null)
+			for (EtapaSeletiva etapaSeletiva : this.etapaSeletivas)
+			{
+				etapas.append(etapaSeletiva.getNome() + "\n");
+			}
+		
+		return etapas.toString();
+	}
+	
+	public String getNomeMercadoComEmpresa()
+	{
+		if(this.empresa != null && this.empresa.getNome() != null)
+			return this.empresa.getNome() + " - " + this.nomeMercado;
+		else
+			return this.nomeMercado;
+	}
+
+	public String getDescAreaOrganizacioal()
+	{
+		StringBuilder descricao = new StringBuilder();
+
+		if(this.areasOrganizacionais != null)
+			for (AreaOrganizacional areasOrganizacional : this.areasOrganizacionais)
+			{
+				descricao.append(areasOrganizacional.getDescricao() + "\n");
+			}
+
+		return descricao.toString();
+	}
+
+	public String getDescConhecimento()
+	{
+		StringBuilder descricao = new StringBuilder();
+
+		if(this.conhecimentos != null)
+			for (Conhecimento conhecimento : this.conhecimentos)
+			{
+				descricao.append(conhecimento.getNome() + "\n");
+			}
+
+		return descricao.toString();
+	}
+
+	public String getDescFaixaSalarial()
+	{
+		StringBuilder descricao = new StringBuilder();
+
+		if(this.faixaSalarials != null)
+			for (FaixaSalarial faixaSalarial : this.faixaSalarials)
+			{
+				descricao.append(faixaSalarial.getNome() + "\n");
+			}
+
+		return descricao.toString();
+	}
+
+	public boolean isAtivo()
+	{
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo)
+	{
+		this.ativo = ativo;
+	}
+
+	public Collection<Funcao> getFuncaos() {
+		return funcaos;
+	}
+
+	public void setFuncaos(Collection<Funcao> funcaos) {
+		this.funcaos = funcaos;
+	}
+
+	public String getAtitude() {
+		return atitude;
+	}
+
+	public void setAtitude(String atitude) {
+		this.atitude = atitude;
+	}
+
+	public Boolean isExibirModuloExterno() {
+		return exibirModuloExterno;
+	}
+
+	public void setExibirModuloExterno(Boolean exibirModuloExterno) {
+		
+		if (exibirModuloExterno != null)
+			this.exibirModuloExterno = exibirModuloExterno;
+	}
+
+	public Collection<EtapaSeletiva> getEtapaSeletivas() {
+		return etapaSeletivas;
+	}
+
+	public void setEtapaSeletivas(Collection<EtapaSeletiva> etapaSeletivas) {
+		this.etapaSeletivas = etapaSeletivas;
+	}
+	
+}

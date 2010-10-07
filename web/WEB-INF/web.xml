@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app>
+	<icon>
+		<small-icon>/imgs/inf.ico</small-icon>
+		<large-icon>/imgs/inf.ico</large-icon>
+	</icon>
+
+	<display-name>FortesRH - Sistema de Gestão de Pessoal</display-name>
+
+	<description>
+        FortesRH, Sistema de Gestão de Pessoal.
+        (c) 2009 Fortes Informática.
+        Para maiores detalhes acesse http://www.fortesinformatica.com.br
+	</description>
+
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+	<listener>
+		<listener-class>com.fortes.rh.config.Log4jInitListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>com.fortes.rh.config.SetupListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>com.atlassian.xwork.ext.ResolverSetupServletContextListener</listener-class>
+	</listener>
+
+	<!-- Servlet de arquivos do layout do modulo Externo -->
+	<servlet>
+		<servlet-name>externoServlet</servlet-name>
+		<servlet-class>com.fortes.rh.web.action.externo.ExternoServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>externoServlet</servlet-name>
+		<url-pattern>/externo/layout/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+	    <servlet-name>dwr</servlet-name>
+    	<servlet-class>uk.ltd.getahead.dwr.DWRServlet</servlet-class>
+	  <init-param>
+	     <param-name>debug</param-name>
+	     <param-value>true</param-value>
+	  </init-param>
+	</servlet>
+
+	<servlet-mapping>
+	    <servlet-name>dwr</servlet-name>
+	    <url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Acegi Security Configuration -->
+	<listener>
+		<listener-class>org.acegisecurity.ui.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>hibernateFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>charsetFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	    <init-param>
+	        <param-name>encoding</param-name>
+	        <param-value>UTF-8</param-value>
+	    </init-param>
+	</filter>
+	<filter-mapping>
+	    <filter-name>charsetFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>Acegi Authentication Processing Filter</filter-name>
+		<filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+		<init-param>
+			<param-name>targetClass</param-name>
+			<param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>ResponseOverrideFilter</filter-name>
+		<filter-class>org.displaytag.filter.ResponseOverrideFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ResponseOverrideFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>ResponseOverrideFilter</filter-name>
+		<url-pattern>*.ftl</url-pattern>
+	</filter-mapping>
+
+    <filter>
+        <filter-name>webwork-cleanup</filter-name>
+        <filter-class>com.opensymphony.webwork.dispatcher.ActionContextCleanUp</filter-class>
+    </filter>
+    <filter>
+        <filter-name>sitemesh</filter-name>
+        <filter-class>com.opensymphony.webwork.sitemesh.FreeMarkerPageFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>webwork</filter-name>
+        <filter-class>com.opensymphony.webwork.dispatcher.FilterDispatcher</filter-class>
+    </filter>
+
+	<filter-mapping>
+		<filter-name>Acegi Authentication Processing Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+    <filter-mapping>
+        <filter-name>webwork-cleanup</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>sitemesh</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>webwork</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>JspSupportServlet</servlet-name>
+        <servlet-class>com.opensymphony.webwork.views.JspSupportServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>sitemesh-freemarker</servlet-name>
+        <servlet-class>com.opensymphony.module.sitemesh.freemarker.FreemarkerDecoratorServlet</servlet-class>
+        <init-param>
+            <param-name>TemplatePath</param-name>
+            <param-value>/</param-value>
+        </init-param>
+        <init-param>
+            <param-name>default_encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+		<init-param>
+            <param-name>number_format</param-name>
+            <param-value>0.####</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>sitemesh-freemarker</servlet-name>
+        <url-pattern>*.ftl</url-pattern>
+    </servlet-mapping>
+
+	<!-- Servlet XFire -->
+	<servlet>
+		<servlet-name>xfire</servlet-name>
+		<servlet-class>org.codehaus.xfire.spring.XFireSpringServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>xfire</servlet-name>
+		<url-pattern>/webservice/*</url-pattern>
+	</servlet-mapping>
+	<!-- FIM XFire -->
+
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/classes/applicationContext.xml,
+			/WEB-INF/classes/applicationContext-security.xml,
+			/WEB-INF/classes/applicationContext-datasource.xml,
+
+			/WEB-INF/classes/com/fortes/rh/dao/acesso/applicationContext-dao.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/cargosalario/applicationContext-dao.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/captacao/applicationContext-dao.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/desenvolvimento/applicationContext-dao.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/geral/applicationContext-dao.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/pesquisa/applicationContext-dao.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/security/applicationContext-dao.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/sesmt/applicationContext-dao.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/avaliacao/applicationContext-dao.xml,
+
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/acesso/applicationContext-dao-hibernate.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/cargosalario/applicationContext-dao-hibernate.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/captacao/applicationContext-dao-hibernate.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/desenvolvimento/applicationContext-dao-hibernate.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/geral/applicationContext-dao-hibernate.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/pesquisa/applicationContext-dao-hibernate.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/security/applicationContext-dao-hibernate.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/sesmt/applicationContext-dao-hibernate.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/avaliacao/applicationContext-dao-hibernate.xml,
+
+			/WEB-INF/classes/com/fortes/rh/business/acesso/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/cargosalario/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/captacao/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/desenvolvimento/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/geral/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/pesquisa/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/security/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/sesmt/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/avaliacao/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/importacao/applicationContext-business.xml,
+
+			/WEB-INF/classes/applicationContext-xfire.xml,
+			/WEB-INF/classes/applicationContext-dwr.xml,
+			/WEB-INF/classes/com/fortes/rh/config/backup/applicationContext-backup.xml,
+			/WEB-INF/classes/com/fortes/rh/business/thumb/applicationContext-business.xml
+
+		</param-value>
+	</context-param>
+
+	<taglib>
+		<taglib-uri>webwork</taglib-uri>
+		<taglib-location>/WEB-INF/lib/webwork-2.2.7.jar</taglib-location>
+	</taglib>
+
+	<taglib>
+		<taglib-uri>http://acegisecurity.org/authz</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/authz.tld</taglib-location>
+	</taglib>
+
+    <taglib>
+        <taglib-uri>http://displaytag.sourceforge.net/</taglib-uri>
+        <taglib-location>/WEB-INF/tlds/displaytag.tld</taglib-location>
+    </taglib>
+
+	<taglib>
+		<taglib-uri>fortes</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/fortes.tld</taglib-location>
+	</taglib>
+
+
+	<!-- Página de erro personalizada  -->
+	<error-page>
+		<error-code>500</error-code>
+		<location>/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>400</error-code>
+		<location>/400.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/403.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.jsp</location>
+	</error-page>
+</web-app>

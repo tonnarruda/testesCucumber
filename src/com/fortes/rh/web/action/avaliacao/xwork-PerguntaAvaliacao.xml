@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="perguntaAvaliacao" extends="default" namespace="/avaliacao/perguntaAvaliacao">
+		<action name="list" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect">list.action?avaliacao.id=${avaliacao.id}</result>
+			<result name="error" type="redirect">list.action?avaliacao.id=${avaliacao.id}</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="insert">
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="update">
+			<result name="success" type="redirect">list.action?avaliacao.id=${avaliacao.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

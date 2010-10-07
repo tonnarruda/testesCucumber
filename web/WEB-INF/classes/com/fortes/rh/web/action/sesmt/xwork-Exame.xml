@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="exame" extends="default" namespace="/sesmt/exame">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/exameList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/exameList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.ExameEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/exameEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.ExameEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/exameEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.ExameEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/exameEdit.ftl</result>
+			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/exameEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.ExameEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/exameEdit.ftl</result>
+			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/exameEdit.ftl</result>
+		</action>
+		<action name="prepareImprimirAso" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="prepareImprimirAso">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioAso.ftl</result>
+		</action>
+		<action name="filtroImprimirAso" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="filtroImprimirAso">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioAso.ftl</result>
+		</action>
+		<action name="imprimirAso" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="imprimirAso">
+			<result name="success" type="jasper">
+				<param name="dataSource">asoRelatorio</param>
+				<param name="location">WEB-INF/report/aso.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">aso.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioAso.ftl</result>
+		</action>
+
+		<action name="prepareRelatorioExamesPrevistos" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="prepareRelatorioExamesPrevistos">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesPrevistos.ftl</result>
+		</action>
+		<action name="relatorioExamesPrevistos" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="relatorioExamesPrevistos">
+			<result name="success" type="jasper">
+				<param name="dataSource">colecaoExamesPrevistos</param>
+				<param name="location">WEB-INF/report/exames_previstos.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">examesPrevistos.pdf</param>
+			</result>
+			<result name="successAguparPorArea" type="jasper">
+				<param name="dataSource">colecaoExamesPrevistos</param>
+				<param name="location">WEB-INF/report/exames_previstos_agrupaArea.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">examesPrevistos.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesPrevistos.ftl</result>
+		</action>
+		
+		<action name="prepareRelatorioExamesRealizados" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="prepareRelatorioExamesRealizados">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesRealizados.ftl</result>
+		</action>
+		<action name="relatorioExamesRealizados" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="relatorioExamesRealizados">
+			<result name="success" type="jasper">
+				<param name="dataSource">examesRealizados</param>
+				<param name="location">WEB-INF/report/exames_realizados.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">examesRealizados.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesRealizados.ftl</result>
+		</action>
+	</package>
+</xwork>

@@ -1,0 +1,432 @@
+package com.fortes.rh.test.dao.hibernate.cargosalario;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+
+import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
+import com.fortes.rh.dao.cargosalario.GrupoOcupacionalDao;
+import com.fortes.rh.dao.cargosalario.IndiceDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.GrupoOcupacional;
+import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
+import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
+import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
+import com.fortes.rh.util.DateUtil;
+
+public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateTest<FaixaSalarialHistorico>
+{
+	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
+	private FaixaSalarialDao faixaSalarialDao;
+	private IndiceDao indiceDao;
+	private GrupoOcupacionalDao grupoOcupacionalDao;
+	private CargoDao cargoDao;
+	private EmpresaDao empresaDao;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
+
+	public FaixaSalarialHistorico getEntity()
+	{
+		return FaixaSalarialHistoricoFactory.getEntity();
+	}
+
+	public void setFaixaSalarialHistoricoDao(FaixaSalarialHistoricoDao faixaSalarialHistoricoDao)
+	{
+		this.faixaSalarialHistoricoDao = faixaSalarialHistoricoDao;
+	}
+
+	public void testFindAllSelect()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoDao.findAllSelect(faixaSalarial.getId());
+
+		assertEquals(1, faixaSalarialHistoricos.size());
+	}
+	
+	public void testFindIdByDataFaixa()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setData(new Date());
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		
+		assertEquals(faixaSalarialHistorico.getId(), faixaSalarialHistoricoDao.findIdByDataFaixa(faixaSalarialHistorico));
+	}
+
+	public void testFindByIdProjection()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+
+		FaixaSalarialHistorico faixaSalarialHistoricoRetorno = faixaSalarialHistoricoDao.findByIdProjection(faixaSalarialHistorico.getId());
+		assertEquals(faixaSalarialHistorico, faixaSalarialHistoricoRetorno);
+		assertEquals(faixaSalarial, faixaSalarialHistoricoRetorno.getFaixaSalarial());
+	}
+
+	public void testVerifyData()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		Date data = new Date();
+
+		assertEquals(false, faixaSalarialHistoricoDao.verifyData(null, data, faixaSalarial.getId()));
+	}
+
+	public void testVerifyDataUpdate()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		Date data = new Date();
+
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setData(data);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+
+		assertEquals(false, faixaSalarialHistoricoDao.verifyData(faixaSalarialHistorico.getId(), data, faixaSalarial.getId()));
+	}
+
+	public void testVerifyDataInsert()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		Date data = new Date();
+
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setData(data);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+
+		assertEquals(true, faixaSalarialHistoricoDao.verifyData(null, data, faixaSalarial.getId()));
+	}
+
+	public void testSetStatus()
+	{
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setStatus(StatusRetornoAC.AGUARDANDO);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+
+		assertEquals(true, faixaSalarialHistoricoDao.setStatus(faixaSalarialHistorico.getId(), true));
+
+		FaixaSalarialHistorico faixaSalarialHistoricoRetorno = faixaSalarialHistoricoDao.findByIdProjection(faixaSalarialHistorico.getId());
+		assertEquals(StatusRetornoAC.CONFIRMADO, faixaSalarialHistoricoRetorno.getStatus().intValue());
+	}
+
+	public void testFindByFaixaSalarialId()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setIndice(indice);
+		faixaSalarialHistorico.setData(new Date());
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+
+		FaixaSalarialHistorico retorno = faixaSalarialHistoricoDao.findByFaixaSalarialId(faixaSalarial.getId());
+
+		assertEquals(faixaSalarialHistorico.getId(), retorno.getId());
+	}
+	
+	public void testFindHistoricosByFaixaSalarialId()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setIndice(indice);
+		faixaSalarialHistorico.setData(new Date());
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findHistoricosByFaixaSalarialId(faixaSalarial.getId());
+		
+		assertEquals(1, retorno.size());
+	}
+
+	public void testFindByPeriodo()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico1.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico1.setData(new Date());
+		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
+
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico2.setData(new Date());
+		faixaSalarialHistorico2 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+
+		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico3.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico3.setData(DateUtil.criarDataMesAno(01, 02, 2100));
+		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
+
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), new Date());
+
+		assertEquals(2, retorno.size());
+	}
+
+	public void testRemoveByFaixas()
+	{
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1 = faixaSalarialDao.save(faixaSalarial1);
+
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		faixaSalarial2 = faixaSalarialDao.save(faixaSalarial2);
+
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico1.setFaixaSalarial(faixaSalarial1);
+		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
+
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial2);
+		faixaSalarialHistorico2 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+
+		Long[] faixaSalarialIds = new Long[]{faixaSalarial1.getId(), faixaSalarial2.getId()};
+
+		faixaSalarialHistoricoDao.removeByFaixas(faixaSalarialIds);
+
+		assertNull(faixaSalarialHistoricoDao.findById(faixaSalarialHistorico1.getId(), null));
+		assertNull(faixaSalarialHistoricoDao.findById(faixaSalarialHistorico2.getId(), null));
+	}
+
+	public void testFindByGrupoCargoAreaDataApenasGrupo()
+	{
+		Date data1 = DateUtil.criarDataMesAno(01, 11, 2008);
+		Date data2 = DateUtil.criarDataMesAno(01, 12, 2008);
+
+		GrupoOcupacional grupoOcupacional1 = GrupoOcupacionalFactory.getGrupoOcupacional();
+		grupoOcupacional1 = grupoOcupacionalDao.save(grupoOcupacional1);
+
+		GrupoOcupacional grupoOcupacional2 = GrupoOcupacionalFactory.getGrupoOcupacional();
+		grupoOcupacional2 = grupoOcupacionalDao.save(grupoOcupacional2);
+
+		Collection<Long> grupoIds = new ArrayList<Long>();
+		grupoIds.add(grupoOcupacional1.getId());
+
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setGrupoOcupacional(grupoOcupacional1);
+		cargo1 = cargoDao.save(cargo1);
+
+		Cargo cargo2Fora = CargoFactory.getEntity();
+		cargo2Fora.setGrupoOcupacional(grupoOcupacional2);
+		cargo2Fora = cargoDao.save(cargo2Fora);
+
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1.setCargo(cargo1);
+		faixaSalarial1 = faixaSalarialDao.save(faixaSalarial1);
+
+		FaixaSalarial faixaSalarial2Fora = FaixaSalarialFactory.getEntity();
+		faixaSalarial2Fora.setCargo(cargo2Fora);
+		faixaSalarial2Fora = faixaSalarialDao.save(faixaSalarial2Fora);
+
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico1.setFaixaSalarial(faixaSalarial1);
+		faixaSalarialHistorico1.setData(data1);
+		faixaSalarialHistorico1.setTipo(TipoAplicacaoIndice.VALOR);
+		faixaSalarialHistorico1.setValor(200.0);
+		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
+
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial1);
+		faixaSalarialHistorico2.setData(data2);
+		faixaSalarialHistorico2.setTipo(TipoAplicacaoIndice.INDICE);
+		faixaSalarialHistorico2.setIndice(indice);
+		faixaSalarialHistorico2 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+
+		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico3.setFaixaSalarial(faixaSalarial2Fora);
+		faixaSalarialHistorico3.setData(data1);
+		faixaSalarialHistorico3.setTipo(TipoAplicacaoIndice.INDICE);
+		faixaSalarialHistorico3.setIndice(indice);
+		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
+
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), null, data1);
+
+		assertEquals(1, retorno.size());
+	}
+	
+	public void testFindByGrupoCargoAreaData()
+	{
+		Date data1 = DateUtil.criarDataMesAno(01, 11, 2008);
+		Date data2 = DateUtil.criarDataMesAno(01, 12, 2008);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional1.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		AreaOrganizacional areaOrganizacional3 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional3.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional3);
+
+		GrupoOcupacional grupoOcupacional1 = GrupoOcupacionalFactory.getGrupoOcupacional();
+		grupoOcupacional1 = grupoOcupacionalDao.save(grupoOcupacional1);
+
+		GrupoOcupacional grupoOcupacional2 = GrupoOcupacionalFactory.getGrupoOcupacional();
+		grupoOcupacional2 = grupoOcupacionalDao.save(grupoOcupacional2);
+
+		Collection<Long> grupoIds = new ArrayList<Long>();
+		grupoIds.add(grupoOcupacional1.getId());
+
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setAreasOrganizacionais(new ArrayList<AreaOrganizacional>());
+		cargo1.getAreasOrganizacionais().add(areaOrganizacional1);
+		cargo1.getAreasOrganizacionais().add(areaOrganizacional2);
+		
+		cargo1.setGrupoOcupacional(grupoOcupacional1);
+		cargo1 = cargoDao.save(cargo1);
+
+		Cargo cargo2Fora = CargoFactory.getEntity();
+		cargo2Fora.setGrupoOcupacional(grupoOcupacional2);
+		cargo2Fora = cargoDao.save(cargo2Fora);
+
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1.setCargo(cargo1);
+		faixaSalarial1 = faixaSalarialDao.save(faixaSalarial1);
+
+		FaixaSalarial faixaSalarial2Fora = FaixaSalarialFactory.getEntity();
+		faixaSalarial2Fora.setCargo(cargo2Fora);
+		faixaSalarial2Fora = faixaSalarialDao.save(faixaSalarial2Fora);
+
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico1.setFaixaSalarial(faixaSalarial1);
+		faixaSalarialHistorico1.setData(data1);
+		faixaSalarialHistorico1.setTipo(TipoAplicacaoIndice.VALOR);
+		faixaSalarialHistorico1.setValor(200.0);
+		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
+
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial1);
+		faixaSalarialHistorico2.setData(data2);
+		faixaSalarialHistorico2.setTipo(TipoAplicacaoIndice.INDICE);
+		faixaSalarialHistorico2.setIndice(indice);
+		faixaSalarialHistorico2 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+
+		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico3.setFaixaSalarial(faixaSalarial2Fora);
+		faixaSalarialHistorico3.setData(data1);
+		faixaSalarialHistorico3.setTipo(TipoAplicacaoIndice.INDICE);
+		faixaSalarialHistorico3.setIndice(indice);
+		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
+		
+		Collection<Long> areaIds = new ArrayList<Long>();
+		areaIds.add(areaOrganizacional1.getId());
+		areaIds.add(areaOrganizacional2.getId());
+		
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), areaIds, data1);
+
+		assertEquals(1, retorno.size());
+	}
+
+	public void testFindPendenciasByFaixaSalarialHistorico()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setEmpresa(empresa);
+		cargo = cargoDao.save(cargo);
+
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setStatus(StatusRetornoAC.AGUARDANDO);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findPendenciasByFaixaSalarialHistorico(empresa.getId());
+
+		assertTrue(retorno.size() >= 1);
+	}
+
+	public GenericDao<FaixaSalarialHistorico> getGenericDao()
+	{
+		return faixaSalarialHistoricoDao;
+	}
+
+	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao)
+	{
+		this.faixaSalarialDao = faixaSalarialDao;
+	}
+
+	public void setIndiceDao(IndiceDao indiceDao)
+	{
+		this.indiceDao = indiceDao;
+	}
+
+	public void setGrupoOcupacionalDao(GrupoOcupacionalDao grupoOcupacionalDao)
+	{
+		this.grupoOcupacionalDao = grupoOcupacionalDao;
+	}
+
+	public void setCargoDao(CargoDao cargoDao)
+	{
+		this.cargoDao = cargoDao;
+	}
+
+	public void setEmpresaDao(EmpresaDao empresaDao)
+	{
+		this.empresaDao = empresaDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+}

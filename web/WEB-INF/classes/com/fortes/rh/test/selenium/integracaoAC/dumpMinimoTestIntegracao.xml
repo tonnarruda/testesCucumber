@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<parametrosdosistema id="1" appurl="http://localhost:8080/fortesrh" appcontext="/fortesrh" appversao="1.1.21.7" emailport="25" servidorremprot="" enviaremail="false" acversaowebservicecompativel="1.0.0.36" uppercase="false"/>
+
+	<usuario id="1" nome="Fortes" login="fortes" senha="MTIzNA==" acessosistema="true"/>
+	<empresa id="1" nome="Empresa Padrão" cnpj="00000000" razaosocial="Empresa Padrão" emailremetente="rh@empresapadrao.com.br" emailrespsetorpessoal="sp@empresapadrao.com.br" acintegra="true" acurlsoap="http://localhost:1024/soap/IAcPessoal" acurlwsdl="http://localhost:1024/wsdl/IAcPessoal" acusuario="ADMIN" acsenha="" codigoac="0006" maxcandidatacargo="5" logourl="fortes.gif" exibirsalario="true"/>
+	<papel id="1" codigo="ROLE_CAD_AREA" nome="Area" url="#" ordem="1" menu="true"/>	
+	<papel id="2" codigo="ROLE_CAD_COLABORADOR" nome="Colaborador" url="#" ordem="2" menu="true"/>
+	<papel id="3" codigo="ROLE_CAD_OCORRENCIA" nome="Ocorrência" url="#" ordem="3" menu="true"/>
+	<papel id="4" codigo="ROLE_CAD_INDICE" nome="Índices" url="#" ordem="4" menu="true"/>
+
+	<indice id="1" nome="Teste" codigoac="1" />
+</dataset>

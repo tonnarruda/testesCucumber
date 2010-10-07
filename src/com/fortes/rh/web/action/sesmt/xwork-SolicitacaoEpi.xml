@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="solicitacaoEpi" extends="default" namespace="/sesmt/solicitacaoEpi">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="list">
+	    	<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim</param>
+	    	</interceptor-ref>	
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack">
+				<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim</param>
+			</interceptor-ref>
+			<result name="success" type="redirect">list.action</result>
+			<result name="error" type="redirect">list.action</result>
+		</action>
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
+				
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEdit.ftl</result>
+		</action>
+		<action name="prepareEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareEntrega">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntrega.ftl</result>
+		</action>
+		<action name="entrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="entrega">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntrega.ftl</result>
+		</action>
+		<action name="filtroColaboradores" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="filtroColaboradores">
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEdit.ftl</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEdit.ftl</result>
+		</action>
+
+		<action name="prepareRelatorioVencimentoEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="prepareRelatorioVencimentoEpi">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioVencimentoEpi.ftl</result>
+		</action>
+		<action name="relatorioVencimentoEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="relatorioVencimentoEpi">
+			<result name="success" type="jasper">
+				<param name="dataSource">dataSource</param>
+				<param name="location">WEB-INF/report/vencimentoEpi_agrupaEpi.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">vencimentoEpi.pdf</param>
+			</result>
+			<result name="success_agrupar_colaborador" type="jasper">
+				<param name="dataSource">dataSource</param>
+				<param name="location">WEB-INF/report/vencimentoEpi_agrupaColab.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">vencimentoEpi.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioVencimentoEpi.ftl</result>
+		</action>
+		<action name="prepareRelatorioEntregaEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="prepareRelatorioEntregaEpi">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioEntregaEpi.ftl</result>
+		</action>
+		<action name="relatorioEntregaEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="relatorioEntregaEpi">
+			<result name="success" type="jasper">
+				<param name="dataSource">dataSource</param>
+				<param name="location">WEB-INF/report/Epi_Entregues.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">epiEntregues.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioEntregaEpi.ftl</result>
+		</action>
+	</package>
+</xwork>

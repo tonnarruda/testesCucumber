@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="mensagem" extends="default" namespace="/geral/mensagem">
+		<action name="list" class="com.fortes.rh.web.action.geral.MensagemListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/mensagemList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.geral.MensagemListAction" method="delete">
+			<result name="success" type="redirect">list.action</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.MensagemEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/mensagemEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.MensagemEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/mensagemEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.geral.MensagemEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/mensagemEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.geral.MensagemEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/mensagemEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="questionario" extends="default" namespace="/pesquisa/questionario">
+		<action name="prepareAplicar" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="prepareAplicar">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/questionarioAplicar.ftl</result>
+		</action>
+		<action name="prepareAplicarByAspecto" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="prepareAplicarByAspecto">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/questionarioAplicarByAspecto.ftl</result>
+		</action>
+		<action name="aplicarByOrdem" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="aplicarByOrdem">
+			<result name="success" type="redirect">/pesquisa/pesquisa/list.action</result>
+			<result name="success_entrevista" type="redirect">/pesquisa/entrevista/list.action</result>
+			<result name="success_avaliacaoturma" type="redirect">/pesquisa/avaliacaoTurma/list.action</result>
+			<result name="success_fichamedica" type="redirect">/sesmt/fichaMedica/list.action</result>
+		</action>
+		<action name="aplicarByAspecto" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="aplicarByAspecto">
+			<result name="success" type="redirect">/pesquisa/pesquisa/list.action</result>
+			<result name="success_entrevista" type="redirect">/pesquisa/entrevista/list.action</result>
+			<result name="success_avaliacaoturma" type="redirect">/pesquisa/avaliacaoTurma/list.action</result>
+			<result name="success_fichamedica" type="redirect">/sesmt/fichaMedica/list.action</result>
+		</action>
+		<action name="imprimir" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="imprimir">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/questionario.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+		</action>
+		<action name="liberar" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="liberar">
+			<result name="success" type="redirect">/pesquisa/pesquisa/list.action</result>
+		</action>
+		<action name="prepareResultado" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="prepareResultado">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/questionarioFiltroResultado.ftl</result>
+		</action>
+		<action name="prepareResultadoEntrevista" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="prepareResultadoEntrevista">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/questionarioFiltroResultado.ftl</result>
+		</action>
+		<action name="imprimeResultado" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="imprimeResultado">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/resultado_questionario.jasper</param>
+				<param name="dataSource">resultadoQuestionarios</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">resultadoQuestionario.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/questionarioFiltroResultado.ftl</result>
+		</action>
+		<action name="graficoObjetiva" class="com.fortes.rh.web.chart.ResultadoPesquisa" method="graficoObjetiva">
+			<result name="success" type="chart">
+			<param name="width">300</param>
+			<param name="height">200</param>
+			</result>
+		</action>
+	</package>
+</xwork>

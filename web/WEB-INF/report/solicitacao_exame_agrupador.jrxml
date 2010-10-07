@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="solicitacao_exame_agrupador"
+		 columnCount="2"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="784"
+		 columnWidth="297"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="AllSectionsNoDetail"
+		 isFloatColumnFooter="true"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["D:\\workspace\\FortesRH\\web\\WEB-INF\\report\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
+	<parameter name="CIDADE" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ASSINATURA_DIGITAL" isForPrompting="false" class="java.io.File"/>
+	<parameter name="COLECAO_MATRIZ" isForPrompting="false" class="java.util.Collection"/>
+	<queryString><![CDATA[select * from usuario]]></queryString>
+
+	<field name="clinicaNome" class="java.lang.String"/>
+	<field name="exameNome" class="java.lang.String"/>
+	<field name="pessoaNome" class="java.lang.String"/>
+	<field name="pessoaIdade" class="java.lang.Integer"/>
+	<field name="motivoDic" class="java.lang.String"/>
+	<field name="exames" class="java.lang.String"/>
+	<field name="medicoNome" class="java.lang.String"/>
+	<field name="medicoCrm" class="java.lang.String"/>
+	<field name="medicoAssinaturaArquivo" class="java.io.File"/>
+	<field name="clinicaEndereco" class="java.lang.String"/>
+	<field name="clinicaTelefone" class="java.lang.String"/>
+	<field name="clinicaHorario" class="java.lang.String"/>
+
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="385"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="3"
+						y="0"
+						width="290"
+						height="377"
+						key="subreport-1"/>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[new JRBeanCollectionDataSource($P{COLECAO_MATRIZ})]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CIDADE">
+						<subreportParameterExpression><![CDATA[$P{CIDADE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "solicitacao_exames.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[new Boolean(! $V{COLUMN_COUNT}.equals(new Integer(0)))]]></printWhenExpression>
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

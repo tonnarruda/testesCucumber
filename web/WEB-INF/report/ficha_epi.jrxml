@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ficha_epi"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Landscape"
+		 pageWidth="842"
+		 pageHeight="595"
+		 columnWidth="782"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoDataSection"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false"
+		 isIgnorePagination="true">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="LOGOTIPO" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="FICHA" isForPrompting="false" class="com.fortes.rh.model.sesmt.relatorio.FichaEpiRelatorio"/>
+
+	<field name="empresaRazaoSocialOuNome" class="java.lang.String"/>
+	<field name="colaborador.nome" class="java.lang.String"/>
+	<field name="colaborador.matricula" class="java.lang.String"/>
+	<field name="colaboradorDataAdmissaoFormatada" class="java.lang.String"/>
+	<field name="colaborador.areaOrganizacional.descricao" class="java.lang.String"/>
+	<field name="colaborador.faixaSalarial.cargo.nome" class="java.lang.String"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+		<noData>
+			<band height="9"  isSplitAllowed="true" >
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="0"
+						width="782"
+						height="2"
+						key="ficha_frente"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="FICHA">
+						<subreportParameterExpression><![CDATA[$P{FICHA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ficha_epi_sub_frente.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="7"
+						width="782"
+						height="2"
+						key="ficha_verso"
+						positionType="Float"
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[new Boolean ($P{FICHA}.isImprimirVerso() == true)]]></printWhenExpression>
+						</reportElement>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ficha_epi_sub_verso.jasper"]]></subreportExpression>
+				</subreport>
+				<break>
+					<reportElement
+						x="0"
+						y="5"
+						width="782"
+						height="0"
+						key="element-1">
+							<printWhenExpression><![CDATA[new Boolean ($P{FICHA}.isImprimirVerso() == true)]]></printWhenExpression>
+						</reportElement>
+				</break>
+			</band>
+		</noData>
+</jasperReport>

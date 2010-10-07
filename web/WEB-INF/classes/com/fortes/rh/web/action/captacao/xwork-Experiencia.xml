@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * autor: Moésio Medeiros
+ * Data: 16/06/2006
+ * Requisito: RFA029 - Cadastro de curriculum
+-->
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="Experiencia" extends="default" namespace="/captacao/experiencia">
+		<action name="list" class="com.fortes.rh.web.action.captacao.ExperienciaListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/experienciaList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.captacao.ExperienciaListAction" method="delete">
+			<result name="success" type="redirect">list.action?empresaId=${empresaId}</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.ExperienciaEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/experienciaEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.captacao.ExperienciaEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/experienciaEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.captacao.ExperienciaEditAction" method="insert">
+			<result name="success" type="redirect">list.action?empresaId=${empresaId}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/experienciaEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.captacao.ExperienciaEditAction" method="update">
+			<result name="success" type="redirect">list.action?empresaId=${empresaId}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/experienciaEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

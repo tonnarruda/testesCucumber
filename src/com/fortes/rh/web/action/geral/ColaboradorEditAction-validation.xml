@@ -1,0 +1,50 @@
+<!DOCTYPE validators PUBLIC
+        "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+	<field name="colaborador.endereco.uf.id">
+		<field-validator type="required">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<field name="colaborador.endereco.cidade.id">
+		<field-validator type="required">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<!--field name="colaborador.nomeComercial">
+		<field-validator type="requiredstring">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<field name="colaborador.pessoal.dataNascimento">
+		<field-validator type="required">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<field name="colaborador.endereco.logradouro">
+		<field-validator type="requiredstring">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<field name="colaborador.endereco.bairro">
+		<field-validator type="requiredstring">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<field name="colaborador.endereco.cidade">
+		<field-validator type="requiredstring">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<field name="colaborador.endereco.cep">
+		<field-validator type="requiredstring">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<field name="colaborador.dataAdmissao">
+		<field-validator type="required">
+			<message key="error.required" />
+		</field-validator>
+	</field-->
+</validators>

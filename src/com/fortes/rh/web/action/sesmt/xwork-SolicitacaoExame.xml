@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="solicitacaoExame" extends="default" namespace="/sesmt/solicitacaoExame">
+		
+		<action name="list" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameListAction" method="list">
+			<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">dataIni,dataFim,vinculo,matriculaBusca,nomeBusca,motivo,examesCheck,resultado</param>
+	    	</interceptor-ref>	
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoExameList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameListAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack">
+				<param name="scope.session">dataIni,dataFim,vinculo,matriculaBusca,nomeBusca,motivo,examesCheck,resultado</param>
+			</interceptor-ref>
+			<result name="success" type="redirect">list.action</result>
+			<result name="error" type="redirect">list.action</result>
+		</action>
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
+				
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoExameEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoExameEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoExameEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="successImprime" type="redirect">imprimirSolicitacaoExames.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoExameEdit.ftl</result>
+		</action>
+		<action name="filtroSolicitacaoExames" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="filtroSolicitacaoExames">
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoExameEdit.ftl</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoExameEdit.ftl</result>
+		</action>
+		<action name="imprimirSolicitacaoExames" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="imprimirSolicitacaoExames">
+			<result name="success" type="jasper">
+				<param name="dataSource">dataSource</param>
+				<param name="location">WEB-INF/report/solicitacao_exame_agrupador.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">solicitacaoExame.pdf</param>
+			</result>
+			<interceptor-ref name="defaultUpdateStack"/>
+			<result name="input" type="redirect">list.action</result>
+		</action>
+		<action name="prepareResultados" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="prepareResultados">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/resultadoExameEdit.ftl</result>
+		</action>
+		<action name="saveResultados" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="saveResultados">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/resultadoExameEdit.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/resultadoExameEdit.ftl</result>
+		</action>
+		
+		<action name="prepareRelatorioAtendimentosMedicos" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="prepareRelatorioAtendimentosMedicos">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioAtendimentosMedicos.ftl</result>
+		</action>
+		<action name="relatorioAtendimentosMedicos" class="com.fortes.rh.web.action.sesmt.SolicitacaoExameEditAction" method="relatorioAtendimentosMedicos">
+			<result name="success" type="jasper">
+				<param name="dataSource">solicitacaoExames</param>
+				<param name="location">WEB-INF/report/atendimentos_medicos.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">atendimentosMedicos.pdf</param>
+			</result>
+			<result name="SUCCESS_agrupaMotivo" type="jasper">
+				<param name="dataSource">solicitacaoExames</param>
+				<param name="location">WEB-INF/report/atendimentos_medicos_agrupaMotivo.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">atendimentosMedicos.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioAtendimentosMedicos.ftl</result>
+		</action>
+	</package>
+</xwork>

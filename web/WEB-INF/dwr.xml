@@ -1,0 +1,112 @@
+<!DOCTYPE dwr PUBLIC
+	"-//GetAhead Limited//DTD Direct Web Remoting 1.0//EN"
+	"http://www.getahead.ltd.uk/dwr/dwr10.dtd">
+
+<dwr>
+    <allow>
+        <create creator="new" javascript="validator">
+            <param name="class" value="com.opensymphony.webwork.validators.DWRValidator"/>
+        </create>
+        <create creator="new" javascript="JDate">
+			<param name="class" value="java.util.Date"/>
+    	</create>
+   		<create creator="spring" javascript="ReajusteDWR">
+			<param name="beanName" value="reajusteDWR"/>
+		</create>
+		<create creator="spring" javascript="CargoDWR">
+			<param name="beanName" value="cargoDWR"/>
+		</create>
+		<create creator="spring" javascript="HistoricoCandidatoDWR">
+			<param name="beanName" value="historicoCandidatoDWR"/>
+		</create>
+		<create creator="spring" javascript="FuncaoDWR">
+			<param name="beanName" value="funcaoDWR"/>
+		</create>
+		<create creator="spring" javascript="AmbienteDWR">
+			<param name="beanName" value="ambienteDWR"/>
+		</create>
+		<create creator="spring" javascript="AreaOrganizacionalDWR">
+			<param name="beanName" value="areaOrganizacionalDWR"/>
+		</create>
+		<create creator="spring" javascript="OcorrenciaDWR">
+			<param name="beanName" value="ocorrenciaDWR"/>
+		</create>
+		<create creator="spring" javascript="ListaPresencaDWR">
+			<param name="beanName" value="listaPresencaDWR"/>
+		</create>
+		<create creator="spring" javascript="DiaTurmaDWR">
+			<param name="beanName" value="diaTurmaDWR"/>
+		</create>
+		<create creator="spring" javascript="TurmaDWR">
+			<param name="beanName" value="turmaDWR"/>
+		</create>
+		<create creator="spring" javascript="ColaboradorDWR">
+			<param name="beanName" value="colaboradorDWR"/>
+		</create>
+		<create creator="spring" javascript="CandidatoDWR">
+			<param name="beanName" value="candidatoDWR"/>
+		</create>
+		<create creator="spring" javascript="ConhecimentoDWR">
+			<param name="beanName" value="conhecimentoDWR"/>
+		</create>
+		<create creator="spring" javascript="CidadeDWR">
+			<param name="beanName" value="cidadeDWR"/>
+		</create>
+		<create creator="spring" javascript="DntDWR">
+			<param name="beanName" value="dntDWR"/>
+		</create>
+		<create creator="spring" javascript="RiscosDWR">
+			<param name="beanName" value="riscosDWR"/>
+		</create>
+		<create creator="spring" javascript="BairroDWR">
+			<param name="beanName" value="bairroDWR"/>
+		</create>
+		<create creator="spring" javascript="EstabelecimentoDWR">
+			<param name="beanName" value="estabelecimentoDWR"/>
+		</create>
+		<create creator="spring" javascript="AspectoDWR">
+			<param name="beanName" value="aspectoDWR"/>
+		</create>
+		<create creator="spring" javascript="PerguntaDWR">
+			<param name="beanName" value="perguntaDWR"/>
+		</create>
+		<create creator="spring" javascript="FaixaSalarialDWR">
+			<param name="beanName" value="faixaSalarialDWR"/>
+		</create>
+		<create creator="spring" javascript="UtilDWR">
+			<param name="beanName" value="utilDWR"/>
+		</create>
+		<create creator="spring" javascript="UsuarioMensagemDWR">
+			<param name="beanName" value="usuarioMensagemDWR"/>
+		</create>
+		<create creator="spring" javascript="EtapaProcessoEleitoralDWR">
+			<param name="beanName" value="etapaProcessoEleitoralDWR"/>
+		</create>
+		<create creator="spring" javascript="ComissaoReuniaoDWR">
+			<param name="beanName" value="comissaoReuniaoDWR"/>
+		</create>
+		<create creator="spring" javascript="ComissaoPlanoTrabalhoDWR">
+			<param name="beanName" value="comissaoPlanoTrabalhoDWR"/>
+		</create>
+		<create creator="spring" javascript="ComissaoPeriodoDWR">
+			<param name="beanName" value="comissaoPeriodoDWR"/>
+		</create>
+		<create creator="spring" javascript="AfastamentoDWR">
+			<param name="beanName" value="afastamentoDWR"/>
+		</create>
+		<create creator="spring" javascript="ExtintorDWR">
+			<param name="beanName" value="extintorDWR"/>
+		</create>
+		<create creator="spring" javascript="RiscoAmbienteDWR">
+			<param name="beanName" value="riscoAmbienteDWR"/>
+		</create>
+		<create creator="spring" javascript="SolicitacaoExameDWR">
+			<param name="beanName" value="solicitacaoExameDWR"/>
+		</create>
+		<create creator="spring" javascript="GrupoOcupacionalDWR">
+			<param name="beanName" value="grupoOcupacionalDWR"/>
+		</create>
+		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
+    </allow>
+
+</dwr>

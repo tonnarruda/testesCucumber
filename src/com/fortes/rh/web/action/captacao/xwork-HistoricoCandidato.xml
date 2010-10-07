@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="HistoricoCandidato" extends="default" namespace="/captacao/historicoCandidato">
+		<action name="list" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/historicoCandidatoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoListAction" method="delete">
+			<result name="success" type="redirect"><![CDATA[list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}]]></result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/historicoCandidatoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/historicoCandidatoEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoEditAction" method="insert">
+			<result name="success" type="redirect"><![CDATA[list.action?candidatoSolicitacao.id=${candidatoSol.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/historicoCandidatoEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoEditAction" method="update">
+			<result name="success" type="redirect"><![CDATA[list.action?candidatoSolicitacao.id=${candidatoSol.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/historicoCandidatoEdit.ftl</result>
+		</action>
+		<action name="insertGrupoCandidatos" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoEditAction" method="insertGrupoCandidatos">
+			<result name="success" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}&actionMsg=${actionMsg}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/historicoCandidatoEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

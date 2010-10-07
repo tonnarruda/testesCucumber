@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="colaboradorOcorrencia" extends="default" namespace="/geral/colaboradorOcorrencia">
+		<action name="delete" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaList.ftl</result>
+		</action>
+		<action name="list" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="list">
+			<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">colaborador.id</param>
+	    	</interceptor-ref>
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaEdit.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaList.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="insertOrUpdate">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaEdit.ftl</result>
+			<result name="invalid.token" type="redirect">list.action</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="insertOrUpdate">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaEdit.ftl</result>
+			<result name="invalid.token" type="redirect">list.action</result>
+		</action>
+	</package>
+</xwork>

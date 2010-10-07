@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="hibernateAuthenticationDao" class="com.fortes.rh.security.UserDetailsServiceImpl">
+		<property name="usuarioManager">
+			<ref bean="usuarioManager" />
+		</property>
+		<property name="colaboradorManager">
+			<ref bean="colaboradorManager" />
+		</property>
+	</bean>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>acegiMessages</value>
+		</property>
+	</bean>
+
+	<bean id="authenticationProvider" class="com.fortes.rh.security.MyDaoAuthenticationProvider">
+		<property name="userDetailsService">
+			<ref local="hibernateAuthenticationDao" />
+		</property>
+		<property name="messageSource">
+			<ref bean="messageSource" />
+		</property>
+		<property name="empresaManager">
+			<ref bean="empresaManager" />
+		</property>
+		<property name="usuarioEmpresaManager">
+			<ref bean="usuarioEmpresaManager" />
+		</property>
+		<property name="parametrosDoSistemaManager">
+			<ref bean="parametrosDoSistemaManager" />
+		</property>
+		<property name="papelManager">
+			<ref bean="papelManager" />
+		</property>
+	</bean>
+
+	<bean id="authenticationManager" class="com.fortes.rh.security.MyProviderManager">
+		<property name="providers">
+			<list>
+				<ref bean="authenticationProvider" />
+				<ref local="anonymousAuthenticationProvider" />
+			</list>
+		</property>
+		<property name="sessionController">
+			<ref bean="concurrentSessionController" />
+		</property>
+	</bean>
+
+	<bean id="objectDefinitionSource" class="org.acegisecurity.intercept.method.MethodDefinitionAttributes">
+		<property name="attributes">
+			<bean class="org.acegisecurity.annotation.SecurityAnnotationAttributes" />
+		</property>
+	</bean>
+
+	<bean id="securityInterceptor" class="org.acegisecurity.intercept.method.aopalliance.MethodSecurityInterceptor">
+		<property name="validateConfigAttributes">
+			<value>true</value>
+		</property>
+		<property name="authenticationManager">
+			<ref bean="authenticationManager" />
+		</property>
+		<property name="accessDecisionManager">
+			<ref bean="accessDecisionManager" />
+		</property>
+		<property name="objectDefinitionSource">
+			<ref bean="objectDefinitionSource" />
+		</property>
+	</bean>
+
+	<bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter" />
+
+	<bean id="accessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions">
+			<value>false</value>
+		</property>
+		<property name="decisionVoters">
+			<list>
+				<ref local="roleVoter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+		<property name="filterInvocationDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON PATTERN_TYPE_APACHE_ANT
+				/**=httpSessionContextIntegrationFilter,concurrentSessionFilter,authenticationProcessingFilter,anonymousProcessingFilter,securityEnforcementFilter
+			</value>
+		</property>
+	</bean>
+
+	<bean id="concurrentSessionController" class="org.acegisecurity.concurrent.ConcurrentSessionControllerImpl">
+		<property name="maximumSessions">
+			<value>1</value>
+		</property>
+		<property name="sessionRegistry">
+			<ref local="sessionRegistry" />
+		</property>
+	</bean>
+
+	<bean id="sessionRegistry" class="org.acegisecurity.concurrent.SessionRegistryImpl" />
+
+	<bean id="concurrentSessionFilter" class="org.acegisecurity.concurrent.ConcurrentSessionFilter">
+		<property name="sessionRegistry">
+			<ref local="sessionRegistry" />
+		</property>
+		<property name="expiredUrl">
+			<value>/concurrentSessionError.action</value>
+		</property>
+	</bean>
+
+	<bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"></bean>
+
+	<bean id="authenticationProcessingFilter" class="com.fortes.rh.security.MyAuthenticationProcessingFilter">
+		<property name="authenticationManager">
+			<ref bean="authenticationManager" />
+		</property>
+		<property name="authenticationFailureUrl">
+			<value>/login.action?login_error=1</value>
+		</property>
+		<property name="defaultTargetUrl">
+			<value>/index.jsp</value>
+		</property>
+		<property name="filterProcessesUrl">
+			<value>/j_acegi_security_check</value>
+		</property>
+	</bean>
+
+	<bean id="anonymousAuthenticationProvider" class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+		<property name="key">
+			<value>foobar</value>
+		</property>
+	</bean>
+
+	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+		<property name="key">
+			<value>foobar</value>
+		</property>
+		<property name="userAttribute">
+			<value>anonymousUser,ROLE_ANONYMOUS</value>
+		</property>
+	</bean>
+
+	<bean id="securityEnforcementFilter" class="org.acegisecurity.intercept.web.SecurityEnforcementFilter">
+		<property name="filterSecurityInterceptor">
+			<ref local="filterInvocationInterceptor" />
+		</property>
+		<property name="authenticationEntryPoint">
+			<ref local="authenticationProcessingFilterEntryPoint" />
+		</property>
+	</bean>
+
+	<bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		<property name="loginFormUrl">
+			<value>/login.action</value>
+		</property>
+		<property name="forceHttps">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+		<property name="authenticationManager">
+			<ref bean="authenticationManager" />
+		</property>
+		<property name="accessDecisionManager">
+			<ref local="httpRequestAccessDecisionManager" />
+		</property>
+		<property name="objectDefinitionSource">
+			<value>
+				PATTERN_TYPE_APACHE_ANT
+
+				/webservice/**=ROLE_ANONYMOUS,ROLE_USER
+				/updateConf.action*=ROLE_ANONYMOUS,ROLE_USER
+				/gerarBD.action*=ROLE_ANONYMOUS,ROLE_USER
+
+				/imgs/**=ROLE_ANONYMOUS,ROLE_USER
+				/css/**=ROLE_ANONYMOUS,ROLE_USER
+				/js/**=ROLE_ANONYMOUS,ROLE_USER
+				/webwork/**=ROLE_ANONYMOUS,ROLE_USER
+				/backup/**=ROLE_USER
+				/login.action*=ROLE_ANONYMOUS
+				/logout.action*=ROLE_ANONYMOUS,ROLE_USER
+				/concurrentSessionError.jsp*=ROLE_ANONYMOUS
+				/codigoOperacional.action*=ROLE_ANONYMOUS,ROLE_USER
+				/validaCodigoResposta.action*=ROLE_ANONYMOUS,ROLE_USER
+				/*=ROLE_USER
+
+				/dwr/exec/CargoDWR.getCargoByGrupo*/**=ROLE_CAD_CARGO
+				/dwr/exec/CargoDWR.getCargoByArea*/**=ROLE_CAD_CARGO
+				/dwr/exec/CargoDWR.getCargo*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO,ROLE_MOV_QUESTIONARIO,ROLE_OCORRENCIA
+				/dwr/exec/ColaboradorDWR.getSalarioFaixa*/**=ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_CAD_COLABORADOR
+				/dwr/exec/ListaPresencaDWR.insereDias*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO
+				/dwr/exec/ReajusteDWR.getColaboradorSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE
+
+				/security/auditoria/*/**=ROLE_UTI_AUDITORIA
+
+				/indicador/duracaoPreenchimentoVaga/prepare*/**=ROLE_IND
+				/indicador/indicadorTurnOver*/**=ROLE_REL_TURNOVER
+
+				/logging/*/**=ROLE_LOGGING
+
+				/externo/**=ROLE_ANONYMOUS,ROLE_USER
+
+				/acesso/usuario/prepareUpdateSenhaUsuario.action*/**=ROLE_USER
+				/acesso/usuario/updateSenhaUsuario.action*/**=ROLE_USER
+				<!-- /acesso/usuario/prepareCriarUsuario.action*/**=ROLE_ANONYMOUS -->
+				<!-- /acesso/usuario/criarUsuario.action*/**=ROLE_ANONYMOUS -->
+				/acesso/usuario/prepareRecuperaSenha*/**=ROLE_ANONYMOUS
+				/acesso/usuario/recuperaSenha*/**=ROLE_ANONYMOUS
+				/acesso/usuario/*/**=ROLE_CAD_USUARIO
+				/acesso/perfil/*/**=ROLE_CAD_PERFIL
+				/geral/colaborador/prepareRelatorioAdmitidos.action* = ROLE_REL_ADMITIDOS
+				/geral/colaborador/relatorioAdmitidos.action* = ROLE_REL_ADMITIDOS
+				/geral/ocorrencia/prepareRelatorioOcorrencia*/**=ROLE_REL_OCORRENCIA
+				/geral/ocorrencia/buscaOcorrencia*/**=ROLE_REL_OCORRENCIA
+				/geral/gasto/*/**=ROLE_CAD_GASTO
+				/geral/conhecimento/*/**=ROLE_CAD_CONHECIMENTO
+				/geral/documentoVersao/**=ROLE_UTI_HISTORICO_VERSAO
+				/geral/gastoEmpresa/prepareImprimir*/**=ROLE_REL_GASTOEMPRESA
+				/geral/gastoEmpresa/list*/**=ROLE_MOV_GASTO_GASTOEMPRESA
+				/geral/parametrosDoSistema/*/**=ROLE_UTI_CONFIGURACAO
+				/geral/empresa/prepareImportarCadastros*/**=ROLE_IMPORTA_CADASTROS
+				/geral/empresa/importarCadastros*/**=ROLE_IMPORTA_CADASTROS
+				/geral/empresa/*/**=ROLE_UTI_EMPRESA
+				/geral/historicoBeneficio/*/**=ROLE_CAD_BENEFICIO
+				/geral/beneficio/*/**=ROLE_CAD_BENEFICIO
+				/geral/grupoGasto/*/**=ROLE_CAD_GRUPOGASTO
+				/geral/ocorrencia/*/**=ROLE_CAD_OCORRENCIA
+				/geral/colaborador/prepareUpdateInfoPessoais.action* = ROLE_CAD_INFO_PESSOAL
+				/geral/colaborador/updateInfoPessoais.action* = ROLE_CAD_INFO_PESSOAL
+				/geral/colaborador/*/**=ROLE_CAD_COLABORADOR
+				/geral/historicoColaboradorBeneficio/*/**=ROLE_CAD_COLABORADOR
+				/geral/colaboradorOcorrencia/*/**=ROLE_CAD_COLABORADOR, ROLE_CAD_OCORRENCIA
+				/geral/gastoEmpresa/*/**=ROLE_MOV_GASTO_GASTOEMPRESA
+				/geral/areaInteresse/*/**=ROLE_CAD_AREA
+				/geral/motivoDemissao/*elatorioMotivoDemissao*/**=ROLE_REL_MOTIVO_DEMISSAO
+				/geral/motivoDemissao/*/**=ROLE_CAD_MOTIVO_DEMISSAO
+				/geral/areaOrganizacional/*/**=ROLE_CAD_AREA
+				/geral/estabelecimento/*/**=ROLE_CAD_ESTABELECIMENTO
+				/geral/bairro/*/**=ROLE_CAD_BAIRRO
+				/geral/documentoAnexo/list*/**=ROLE_CAD_COLABORADOR
+				/geral/documentoAnexo/prepareInsertColaborador*/**=ROLE_CAD_COLABORADOR
+				/geral/documentoAnexo/prepareUpdateColaborador*/**=ROLE_CAD_COLABORADOR
+				/geral/documentoAnexo/deleteColaborador*/**=ROLE_CAD_COLABORADOR
+				/geral/documentoAnexo/insertColaborador*/**=ROLE_CAD_COLABORADOR
+				/geral/documentoAnexo/updateColaborador*/**=ROLE_CAD_COLABORADOR
+				/geral/documentoAnexo/prepareInsertCandidato*/**=ROLE_CAD_CANDIDATO
+				/geral/documentoAnexo/prepareUpdateCandidato*/**=ROLE_CAD_CANDIDATO
+				/geral/documentoAnexo/deleteCandidato*/**=ROLE_CAD_CANDIDATO
+				/geral/documentoAnexo/insertCandidato*/**=ROLE_CAD_CANDIDATO
+				/geral/documentoAnexo/updateCandidato*/**=ROLE_CAD_CANDIDATO
+				/geral/areaFormacao/*/**=ROLE_AREAFORMACAO
+				/geral/configuracaoCampoExtra/*/**=ROLE_CAMPO_EXTRA
+
+				/captacao/motivoSolicitacao/*/**=ROLE_MOTIVO_SOLICITACAO
+				/captacao/areaInteresse/*/**=ROLE_CAD_AREA
+				/captacao/historicoCandidato/*/**=ROLE_MOV_SOLICITACAO
+				/captacao/solicitacao/prepareRelatorio*/**=ROLE_REL_SOLICITACAO
+				/captacao/solicitacao/list*/**=ROLE_MOV_SOLICITACAO
+				/captacao/produtividade/*/**=ROLE_REL_PRODUTIVIDADE
+				/captacao/candidato/showFoto*/**=ROLE_ANONYMOUS,ROLE_CAD_CANDIDATO
+				/captacao/formacao/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
+				/captacao/idioma/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
+				/captacao/experiencia/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
+				/captacao/candidatoSolicitacao/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO
+				/captacao/candidato/*/**=ROLE_CAD_CANDIDATO
+				/captacao/empresaBds/*/**=ROLE_CAD_BDS_EMPRESA
+				/captacao/solicitacao/*/**=ROLE_MOV_SOLICITACAO
+				/captacao/conhecimento/*/**=ROLE_CAD_CONHECIMENTO
+				/captacao/etapaSeletiva/*/**=ROLE_CAD_ETAPA
+
+				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE
+				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO
+				/cargosalario/reajusteColaborador/aplicarDissidio*/**=ROLE_DISSIDIO
+				/cargosalario/tabelaReajusteColaborador/*/**=ROLE_MOV_SIMULACAOREAJUSTE
+				/cargosalario/cargo/prepareRelatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
+				/cargosalario/cargo/relatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
+				/cargosalario/cargo/*/**=ROLE_CAD_CARGO
+				/cargosalario/faixaSalarial/*/**=ROLE_CAD_CARGO
+				/cargosalario/faixaSalarialHistorico/*/**=ROLE_CAD_CARGO
+				/cargosalario/grupoOcupacional/*/**=ROLE_CAD_GRUPO
+				/cargosalario/reajusteRelatorio/*/**=ROLE_REL_SIMULACAOREAJUSTE
+				/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action*=ROLE_CAD_AMBIENTE
+				/cargosalario/historicoColaborador/updateAmbientesEFuncoes.action*=ROLE_CAD_AMBIENTE
+				/cargosalario/historicoColaborador/prepareRelatorioSituacoes.action*=ROLE_REL_SITUACOES
+				/cargosalario/historicoColaborador/relatorioSituacoes.action*=ROLE_REL_SITUACOES
+				/cargosalario/historicoColaborador/*/**=ROLE_CAD_COLABORADOR
+				/cargosalario/indice/*/**=ROLE_CAD_INDICE
+				/cargosalario/indiceHistorico/*/**=ROLE_CAD_INDICE
+
+				/desenvolvimento/turma/prepareImprimirTurmaSemPlano*/**=ROLE_REL_SEM_INDICACAO
+				/desenvolvimento/turma/prepareImprimirTurma*/**=ROLE_REL_PLANO
+				/desenvolvimento/turma/prepareImprimirMatriz*/**=ROLE_REL_MATRIZ
+				/desenvolvimento/turma/filtroCronogramaTreinamento.action*=ROLE_CRONOGRAMA_TREINAMENTO
+				/desenvolvimento/colaboradorTurma/*/**=ROLE_MOV_CURSO
+				/desenvolvimento/colaboradorTurma/relatorioColaboradorSemTreinamento.action*=ROLE_REL_COLABORADOR_SEM_TREINAMENTO,ROLE_REL_COLABORADOR_COM_TREINAMENTO
+				/desenvolvimento/colaboradorTurma/prepareFiltroHistoricoTreinamentos.action*=ROLE_REL_HISTORICO_TREINAMENTOS
+				/desenvolvimento/curso/*/**=ROLE_MOV_CURSO
+				/desenvolvimento/avaliacaoCurso/*/**=ROLE_MOV_AVALIACAO_CURSO
+				/desenvolvimento/dnt/*/**=ROLE_MOV_CURSO_DNT,ROLE_MOV_CURSO_DNT_GESTOR
+				/desenvolvimento/turma/*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO
+				/desenvolvimento/turma/filtroPlanoTreinamento.action*=ROLE_MOV_PLANO_TREINAMENTO
+				/desenvolvimento/relatorioPresenca/*/**=ROLE_REL_DESENVOLVIMENTO_LISTA_PRESENCA
+				/desenvolvimento/prioridadeTreinamento/*/**=ROLE_CAD_PRIORIDADETREINAMENTO
+				/desenvolvimento/certificacao/matrizTreinamento.action*=ROLE_REL_MATRIZ_TREINAMENTO
+				/desenvolvimento/certificacao/imprimirMatrizTreinamento.action*=ROLE_REL_MATRIZ_TREINAMENTO
+				/desenvolvimento/certificacao/*/**=ROLE_CAD_CERTIFICACAO
+				/desenvolvimento/indicadores/*/**=ROLE_MOV_CURSO
+
+				/pesquisa/pesquisa/preview.action*= ROLE_USER
+				/pesquisa/pesquisa/*/**= ROLE_MOV_QUESTIONARIO
+				/pesquisa/entrevista/*/**= ROLE_MOV_QUESTIONARIO
+				/pesquisa/pergunta/*/**= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
+				
+				/pesquisa/questionario/aplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
+				/pesquisa/questionario/prepareAplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
+				/pesquisa/questionario/*/**= ROLE_MOV_QUESTIONARIO
+				
+				/pesquisa/resposta/*/**= ROLE_MOV_QUESTIONARIO
+				
+				/pesquisa/aspecto/*/**=ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_CAD_AVALIACAO,ROLE_CAD_PERIODOEXPERIENCIA
+				
+				/pesquisa/colaboradorQuestionario/*/**= ROLE_MOV_QUESTIONARIO
+				
+				/pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario*/**=ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO
+				/pesquisa/colaboradorResposta/prepareResponderQuestionario.action*=ROLE_USER
+				/pesquisa/colaboradorResposta/salvaQuestionarioRespondido.action*=ROLE_USER
+				/pesquisa/colaboradorResposta/*/**=ROLE_MOV_QUESTIONARIO
+
+				/sesmt/fichaMedica/*/**= ROLE_CAD_FICHAMEDICA
+				/sesmt/funcao/*/**=ROLE_FUNCAO
+				/sesmt/LTCAT/*/**=ROLE_LTCAT
+				/sesmt/ppra/*/**=ROLE_PPRA
+				/sesmt/ppp/*/**=ROLE_PPP
+				/sesmt/pcmso/*/**=ROLE_CAD_PCMSO
+				/sesmt/epi/*/**=ROLE_CAD_EPI
+				/sesmt/epiHistorico/*/**=ROLE_CAD_EPI
+				/sesmt/ambiente/*/**=ROLE_CAD_AMBIENTE
+				/sesmt/historicoAmbiente/*/**=ROLE_CAD_AMBIENTE
+				/sesmt/risco/*/**=ROLE_CAD_RISCO
+				/sesmt/tipoEPI/*/**=ROLE_CAD_TIPO_EPI
+				/sesmt/risco/*/**=ROLE_CAD_RISCO
+				/sesmt/epc/*/**=ROLE_CAD_EPC
+				/sesmt/exame/*/**=ROLE_CAD_EXAME
+				/sesmt/engenheiroResponsavel/*/**=ROLE_CAD_ENGENHEIRO_TRABALHO
+				/sesmt/medicoCoordenador/*/**=ROLE_CAD_MEDICO_COORDENADOR
+				/sesmt/clinicaAutorizada/*/**=ROLE_CAD_CLINICA_AUTORIZADA
+				/sesmt/prontuario/*/**=ROLE_CAD_PRONTUARIO
+				/sesmt/solicitacaoExame/*/**=ROLE_CAD_SOLICITACAOEXAME
+				/sesmt/solicitacaoEpi/list.action*=ROLE_CAD_ENTREGAEPI
+				/sesmt/solicitacaoEpi/prepareEntrega.action*=ROLE_CAD_ENTREGAEPI
+				/sesmt/solicitacaoEpi/entrega.action*=ROLE_CAD_ENTREGAEPI
+				/sesmt/solicitacaoEpi/*/**=ROLE_CAD_SOLICITACAOEPI
+				/sesmt/epi/prepareImprimirVencimentoCa.action*=ROLE_REL_EPICAVENCER
+				/sesmt/etapaProcessoEleitoral/*/**=ROLE_CAD_ETAPAPROCESSOELEITORAL
+				/sesmt/eleicao/*/**=ROLE_CAD_ELEICAO
+				/sesmt/candidatoEleicao/*/**=ROLE_CAD_ELEICAO
+				/sesmt/comissaoEleicao/*/**=ROLE_CAD_ELEICAO
+				/sesmt/comissao/*/**=ROLE_CAD_ELEICAO
+				/sesmt/comissaoPeriodo/*/**=ROLE_CAD_ELEICAO
+				/sesmt/comissaoReuniao/*/**=ROLE_CAD_ELEICAO
+				/sesmt/comissaoPlanoTrabalho/*/**=ROLE_CAD_ELEICAO
+				/sesmt/afastamento/*/**=ROLE_CAD_AFASTAMENTO
+				/sesmt/colaboradorAfastamento/*/**=ROLE_CAD_AFASTAMENTO
+				/sesmt/cat/*/**=ROLE_CAT
+				/sesmt/extintor/*/**=ROLE_CAD_EXTINTOR
+				/sesmt/extintorInspecao/*/**=ROLE_CAD_EXTINTOR
+				/sesmt/extintorManutencao/*/**=ROLE_CAD_EXTINTOR
+				/sesmt/medicaoRisco/*/**=ROLE_CAD_MEDICAORISCO
+				/sesmt/evento/*/**=ROLE_CAD_EVENTO
+				/sesmt/agenda/*/**=ROLE_CAD_AGENDA
+				
+				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
+				/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action*=ROLE_MOV_PERIODOEXPERIENCIA
+				/avaliacao/avaliacaoExperiencia/*AvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA
+				/avaliacao/avaliacaoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
+				/avaliacao/perguntaAvaliacao/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
+				
+				/avaliacao/desempenho/prepareResponderAvaliacaoDesempenho*=ROLE_RESPONDE_AVALIACAO,ROLE_MOV_AVALIACAO
+				/avaliacao/desempenho/responderAvaliacaoDesempenho*=ROLE_RESPONDE_AVALIACAO,ROLE_MOV_AVALIACAO
+				/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList*=ROLE_RESPONDE_AVALIACAO,ROLE_MOV_AVALIACAO
+				/avaliacao/desempenho/*/**=ROLE_MOV_AVALIACAO
+				
+				/avaliacao/modelo/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
+				
+				/geral/cliente/*/**=ROLE_CAD_CLIENTE
+				
+				/thumb/**=ROLE_ANONYMOUS,ROLE_USER
+			</value>
+		</property>
+	</bean>
+
+	<bean id="httpRequestAccessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions">
+			<value>false</value>
+		</property>
+		<property name="decisionVoters">
+			<list>
+				<ref bean="roleVoter" />
+			</list>
+		</property>
+	</bean>
+</beans>

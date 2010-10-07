@@ -1,0 +1,79 @@
+package com.fortes.rh.web.ws;
+
+import java.util.Date;
+
+import javax.xml.namespace.QName;
+import javax.xml.rpc.ParameterMode;
+
+import org.apache.axis.client.Call;
+import org.apache.axis.encoding.ser.ArrayDeserializerFactory;
+import org.apache.axis.encoding.ser.ArraySerializerFactory;
+
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.Mail;
+import com.fortes.rh.util.SpringUtil;
+
+public class AcPessoalImportadorGastos
+{
+	private AcPessoalClient acPessoalClient;
+
+	@SuppressWarnings("deprecation")
+	public String[] importarGastos(Date data, Empresa empresa)
+	{
+		String[] result = null;
+		try
+		{
+			String token = acPessoalClient.getToken(empresa);
+
+			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "GetCustosEmpregadoEventoMesAno2");
+
+            QName qnameAr = new QName("urn:AcPessoal","TCustosEmpregadoEventoMesAno");
+            call.registerTypeMapping(String[].class, qnameAr, new ArraySerializerFactory(qnameAr), new ArrayDeserializerFactory(qnameAr));
+
+			QName xmlstring = new QName("xs:string");
+			QName xmlint = new QName("xs:int");
+
+			call.addParameter("Token",xmlstring,ParameterMode.IN);
+			call.addParameter("Empresa",xmlstring,ParameterMode.IN);
+			call.addParameter("Empregado",xmlstring,ParameterMode.IN);
+			call.addParameter("Ano",xmlint,ParameterMode.IN);
+			call.addParameter("Mes",xmlint,ParameterMode.IN);
+
+			call.setReturnType(qnameAr);
+
+			Object[] params = new Object[]{token, empresa.getCodigoAC(), "", data.getYear() + 1900, data.getMonth() + 1};
+
+			result = (String[]) call.invoke(params);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			enviaEmailParaRespSetorPessoal(e.getMessage(), empresa);
+		}
+
+		return result;
+	}
+
+	private static void enviaEmailParaRespSetorPessoal(String erro, Empresa empresa)
+	{
+		StringBuilder corpo = new StringBuilder();
+		corpo.append("Houve erro na sincronização com o sistema Ac Pessoal.<br><br>");
+		corpo.append("Mensagem de erro:<br>" + erro);
+
+		Mail mail = (Mail) SpringUtil.getBean("mail");
+		try
+		{
+			mail.send(empresa, "[Fortes RH] Erro na sincronização de Gastos", corpo.toString(), null, empresa.getEmailRespSetorPessoal());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+
+	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
+	{
+		this.acPessoalClient = acPessoalClient;
+	}
+}

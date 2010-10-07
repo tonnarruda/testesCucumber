@@ -1,0 +1,82 @@
+package com.fortes.rh.model.geral;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fortes.model.AbstractModel;
+
+@SuppressWarnings("serial")
+@Entity
+@SequenceGenerator(name="sequence", sequenceName="mensagem_sequence", allocationSize=1)
+public class Mensagem extends AbstractModel implements Serializable
+{
+	@Column(length=100)
+    private String remetente;
+	@Column(length=200)
+	private String link;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date data;
+
+	@Lob
+	private String texto;
+
+	public String getRemetente()
+	{
+		return remetente;
+	}
+
+	public void setRemetente(String remetente)
+	{
+		this.remetente = remetente;
+	}
+
+	public Date getData()
+	{
+		return data;
+	}
+
+	public void setData(Date data)
+	{
+		this.data = data;
+	}
+
+	public String getTexto()
+	{
+		return texto;
+	}
+
+	public void setTexto(String texto)
+	{
+		this.texto = texto;
+	}
+
+	public String getTextoAbreviado()
+	{
+		
+		if (this.texto == null)
+			return "";
+		
+		if(this.texto.length() > 90)
+			return this.texto.substring(0, 90) + "...";
+		else
+			return this.texto;
+	}
+
+	public String getLink()
+	{
+		return link;
+	}
+
+	public void setLink(String link)
+	{
+		this.link = link;
+	}
+}

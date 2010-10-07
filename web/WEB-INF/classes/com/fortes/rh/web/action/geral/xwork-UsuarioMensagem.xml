@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="usuarioMensagem" extends="default" namespace="/geral/usuarioMensagem">
+		<action name="list" class="com.fortes.rh.web.action.geral.UsuarioMensagemListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/usuarioMensagemList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.geral.UsuarioMensagemListAction" method="delete">
+			<result name="success" type="redirect">../../index.action</result>
+			<result name="success_popup" type="redirect"><![CDATA[leituraUsuarioMensagemPopup.action?usuarioMensagem.id=${usuarioMensagem.id}&usuarioMensagemAnteriorId=${usuarioMensagemAnteriorId}&usuarioMensagemProximoId=${usuarioMensagemProximoId}&navegacao=delete]]></result>
+			<result name="error" type="redirect">../../index.action</result>
+			<result name="input" type="redirect">../../index.action</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.UsuarioMensagemEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/usuarioMensagemEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.UsuarioMensagemEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/usuarioMensagemEdit.ftl</result>
+		</action>
+		<action name="leituraUsuarioMensagemPopup" class="com.fortes.rh.web.action.geral.UsuarioMensagemEditAction" method="leituraUsuarioMensagemPopup">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/leituraUsuarioMensagemPopup.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.geral.UsuarioMensagemEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="invalid.token" type="redirect">prepareUpdate.action</result>
+			<result name="success" type="redirect">prepareUpdate.action?mensagemStatus=ok</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/usuarioMensagemEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.geral.UsuarioMensagemEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="invalid.token" type="redirect"><![CDATA[leituraUsuarioMensagemPopup.action?usuarioMensagem.id=${usuarioMensagem.id}&usuarioMensagem.empresa.id=${usuarioMensagem.empresa.id}]]></result>
+			<result name="success" type="redirect"><![CDATA[leituraUsuarioMensagemPopup.action?usuarioMensagem.id=${usuarioMensagem.id}&usuarioMensagem.empresa.id=${usuarioMensagem.empresa.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/leituraUsuarioMensagemPopup.ftl</result>
+		</action>
+	</package>
+</xwork>

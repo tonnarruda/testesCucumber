@@ -1,0 +1,142 @@
+package com.fortes.rh.test.web.action.sesmt;
+
+import java.util.ArrayList;
+
+import org.hibernate.ObjectNotFoundException;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+
+import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.sesmt.ExtintorManager;
+import com.fortes.rh.model.dicionario.TipoExtintor;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Extintor;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
+import com.fortes.rh.web.action.sesmt.ExtintorEditAction;
+
+public class ExtintorEditActionTest extends MockObjectTestCase
+{
+	private ExtintorEditAction action;
+	private Mock manager;
+	private Mock estabelecimentoManager;
+
+	protected void setUp() throws Exception
+	{
+		super.setUp();
+		manager = new Mock(ExtintorManager.class);
+		action = new ExtintorEditAction();
+		action.setExtintorManager((ExtintorManager) manager.proxy());
+
+		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
+		action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		action.setExtintor(new Extintor());
+	}
+
+	protected void tearDown() throws Exception
+	{
+		manager = null;
+		action = null;
+		super.tearDown();
+	}
+
+	public void testList() throws Exception
+	{
+		manager.expects(once()).method("getCount").will(returnValue(0));
+		manager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Extintor>()));
+		assertEquals(action.list(), "success");
+		assertNotNull(action.getExtintors());
+	}
+
+	public void testDelete() throws Exception
+	{
+		Extintor extintor = ExtintorFactory.getEntity(1L);
+		action.setExtintor(extintor);
+
+		manager.expects(once()).method("remove");
+		assertEquals(action.delete(), "success");
+	}
+
+	public void testPrepare() throws Exception
+	{
+		Extintor extintor = ExtintorFactory.getEntity(1L);
+		action.setExtintor(extintor);
+
+		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
+		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
+		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
+		manager.expects(once()).method("findById").with(eq(extintor.getId())).will(returnValue(extintor));
+
+		assertEquals("success", action.prepare());
+		assertNotNull(action.getEstabelecimentos());
+	}
+
+	public void testInsert() throws Exception
+	{
+		Extintor extintor = ExtintorFactory.getEntity(1L);
+		action.setExtintor(extintor);
+		action.setAtivo('S');
+
+		manager.expects(once()).method("save").with(eq(extintor)).will(returnValue(extintor));
+		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
+		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
+		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
+
+		assertEquals("success", action.insert());
+	}
+
+	public void testInsertException() throws Exception
+	{
+		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
+		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
+		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
+		assertEquals("input", action.insert());
+	}
+
+	public void testUpdate() throws Exception
+	{
+		Extintor extintor = ExtintorFactory.getEntity(1L);
+		action.setExtintor(extintor);
+
+		manager.expects(once()).method("update").with(eq(extintor)).isVoid();
+
+		assertEquals("success", action.update());
+	}
+
+	public void testUpdateException() throws Exception
+	{
+		Extintor extintor = ExtintorFactory.getEntity(1L);
+		action.setExtintor(extintor);
+
+		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
+		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
+		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
+		manager.expects(once()).method("findById").with(eq(extintor.getId())).will(returnValue(extintor));
+
+		assertEquals("input", action.update());
+	}
+
+
+	public void testGetSet() throws Exception
+	{
+		action.setExtintor(null);
+
+		assertNotNull(action.getExtintor());
+		assertTrue(action.getExtintor() instanceof Extintor);
+
+		action.setTipos(new TipoExtintor());
+		assertNotNull(action.getTipos());
+		action.setAtivo('N');
+		action.getAtivo();
+		action.setNumeroBusca(123);
+		action.getNumeroBusca();
+		action.setTipoBusca(TipoExtintor.AGUA_GAS);
+		assertEquals(action.getTipoBusca(), TipoExtintor.AGUA_GAS);
+
+	}
+}

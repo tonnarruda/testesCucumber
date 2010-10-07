@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="ocorrencia" extends="default" namespace="/geral/ocorrencia">
+		<action name="list" class="com.fortes.rh.web.action.geral.OcorrenciaListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.geral.OcorrenciaListAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect">list.action</result>
+			<result name="error" type="redirect">list.action</result>
+		</action>
+		
+		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaEdit.ftl</result>
+		</action>
+		<action name="prepareRelatorioOcorrencia" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="prepareRelatorioOcorrencia">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaRelatorioFiltro.ftl</result>
+		</action>
+		<action name="buscaOcorrencia" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="buscaOcorrencia">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/ocorrencia.jasper</param>
+				<param name="dataSource">emptyDataSource</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+			<result name="relatorio_sem_detalhe" type="jasper">
+				<param name="location">WEB-INF/report/ocorrencia_sem_detalhe.jasper</param>
+				<param name="dataSource">emptyDataSource</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaRelatorioFiltro.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="insertOrUpdate">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="insertOrUpdate">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

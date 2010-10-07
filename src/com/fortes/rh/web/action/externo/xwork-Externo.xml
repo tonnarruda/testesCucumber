@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+	<package name="externo" extends="default" namespace="/externo">
+		<action name="prepareLogin" class="com.fortes.rh.web.action.externo.ExternoAction" method="prepareLogin">
+			<result name="success" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+			<result name="erro">/error.jsp</result>
+		</action>
+		<action name="logoutExterno" class="com.fortes.rh.web.action.externo.ExternoAction" method="logoutExterno">
+			<result name="success" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+		</action>
+		<action name="prepareRecuperaSenha" class="com.fortes.rh.web.action.externo.ExternoAction" method="prepareRecuperaSenha">
+			<result name="success" type="freemarker">/WEB-INF/forms/acesso/recuperaSenhaLogin.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+		</action>
+		<action name="recuperaSenha" class="com.fortes.rh.web.action.externo.ExternoAction" method="recuperaSenha">
+			<result name="success" type="freemarker">/WEB-INF/forms/acesso/recuperaSenhaLogin.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+		    <result name="invalid.token" type="redirect"><![CDATA[prepareLogin.action?moduloExterno=${moduloExterno}&empresaId=${empresaId}&msg=${msgAlert}]]></result>
+			<result name="success" type="redirect"><![CDATA[prepareLogin.action?msg=0&empresaId=${empresaId}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+		    <result name="invalid.token" type="redirect"><![CDATA[prepareLogin.action?moduloExterno=${moduloExterno}&empresaId=${empresaId}&msg=${msgAlert}]]></result>
+			<result name="success" type="redirect">prepareListAnuncio.action?msg=1</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+		</action>
+		<action name="prepareListAnuncio" class="com.fortes.rh.web.action.externo.ExternoAction" method="prepareListAnuncio">
+			<result name="success" type="freemarker">/WEB-INF/forms/externo/anuncioList.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+		</action>
+		<action name="verAnuncio" class="com.fortes.rh.web.action.externo.ExternoAction" method="verAnuncio">
+			<result name="success" type="freemarker">/WEB-INF/forms/externo/anuncioView.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+ 		</action>
+		<action name="prepareUpdateSenha" class="com.fortes.rh.web.action.externo.ExternoAction" method="prepareUpdateSenha">
+			<result name="success" type="freemarker">/WEB-INF/forms/externo/externoUpdateSenha.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+		</action>
+		<action name="updateExternoSenha" class="com.fortes.rh.web.action.externo.ExternoAction" method="updateExternoSenha">
+			<result name="success" type="redirect">prepareListAnuncio.action?msg=2</result>
+			<result name="input"   type="freemarker">/WEB-INF/forms/externo/externoUpdateSenha.ftl</result>
+		</action>
+ 		<action name="checaLogin" class="com.fortes.rh.web.action.externo.ExternoAction" method="checaLogin">
+			<result name="success" type="redirect">prepareListAnuncio.action</result>
+			<result name="input"   type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+		</action>
+		<action name="enviarCurriculo" class="com.fortes.rh.web.action.externo.ExternoAction" method="enviarCurriculo">
+			<result name="success" type="redirect">prepareListAnuncio.action?sucessoEnvioCurriculo=true</result>
+			<result name="input"   type="freemarker">/WEB-INF/forms/externo/anuncioView.ftl</result>
+ 		</action>
+	</package>
+</xwork>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="produtividade" extends="default" namespace="/captacao/produtividade">
+		<action name="imprimirRelatorioProdutividade" class="com.fortes.rh.web.action.captacao.ProdutividadeReportAction" method="imprimirRelatorioProdutividade">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/relatorioProdutividade.ftl</result>
+			<result name="success" type="jasper">
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="location">WEB-INF/report/produtividade.jasper</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/relatorioProdutividade.ftl</result>
+		</action>
+		<action name="prepareProdutividade" class="com.fortes.rh.web.action.captacao.ProdutividadeReportAction" method="prepareProdutividade">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/relatorioProdutividade.ftl</result>
+		</action>
+	</package>
+</xwork>

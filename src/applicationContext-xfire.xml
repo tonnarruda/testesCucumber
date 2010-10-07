@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+  <import resource="classpath:org/codehaus/xfire/spring/xfire.xml"/>
+
+  <bean id="rhService" class="com.fortes.rh.business.ws.RHServiceImpl">
+    <property name="colaboradorManager" ref="colaboradorManager" />
+    <property name="estabelecimentoManager" ref="estabelecimentoManager" />
+    <property name="empresaManager" ref="empresaManager" />
+    <property name="indiceManager" ref="indiceManager" />
+    <property name="cidadeManager" ref="cidadeManager" />
+    <property name="indiceHistoricoManager" ref="indiceHistoricoManager" />
+    <property name="faixaSalarialHistoricoManager" ref="faixaSalarialHistoricoManager" />
+    <property name="historicoColaboradorManager" ref="historicoColaboradorManager" />
+    <property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
+    <property name="usuarioEmpresaManager" ref="usuarioEmpresaManager" />
+    <property name="transactionManager" ref="transactionManager" />
+    <property name="mensagemManager" ref="mensagemManager" />
+    <property name="cargoManager" ref="cargoManager" />
+    <property name="candidatoManager" ref="candidatoManager" />
+    <property name="ocorrenciaManager" ref="ocorrenciaManager" />
+    <property name="colaboradorOcorrenciaManager" ref="colaboradorOcorrenciaManager" />
+    <property name="areaOrganizacionalManager" ref="areaOrganizacionalManager" />
+    <property name="faixaSalarialManager" ref="faixaSalarialManager" />
+  </bean>
+
+  <bean id="rhWebService" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+    <property name="serviceFactory">
+      <ref bean="xfire.serviceFactory"/>
+    </property>
+    <property name="xfire">
+      <ref bean="xfire"/>
+    </property>
+    <property name="serviceBean">
+      <ref bean="rhService"/>
+    </property>
+    <property name="serviceClass">
+      <value>com.fortes.rh.business.ws.RHService</value>
+    </property>
+  </bean>
+</beans>

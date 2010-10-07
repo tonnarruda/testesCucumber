@@ -1,0 +1,297 @@
+package com.fortes.rh.dao.hibernate.cargosalario;
+
+import java.util.Collection;
+import java.util.Date;
+
+import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+
+import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
+
+@SuppressWarnings("unchecked")
+public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<FaixaSalarialHistorico> implements FaixaSalarialHistoricoDao
+{
+	public Collection<FaixaSalarialHistorico> findAllSelect(Long faixaSalarialId)
+	{
+		StringBuilder hql = new StringBuilder();
+
+		hql.append("select new FaixaSalarialHistorico(fsh.id, fsh.data, fsh.status, fsh.tipo, fsh.valor, fsh.quantidade, i.id, i.nome, ih.valor, ih.data, ihatual.valor) ");
+		hql.append("from FaixaSalarialHistorico fsh ");
+		hql.append("left join fsh.faixaSalarial fs ");
+		hql.append("left join fsh.indice i ");
+		hql.append("left join i.indiceHistoricos ih with ih.data = (select max(ih2.data) ");
+		hql.append("                                                from IndiceHistorico ih2 ");
+		hql.append("                                                where ih2.indice.id = i.id ");
+		hql.append("                                                      and ih2.data <= fsh.data) ");
+		hql.append("left join i.indiceHistoricos ihatual with ihatual.data = (select max(ih3.data) ");
+		hql.append("                                                          from IndiceHistorico ih3 ");
+		hql.append("                                                          where ih3.indice.id = i.id ");
+		hql.append("                                                                and ih3.data <= :data) ");
+
+		hql.append("where fs.id = :faixaId ");
+		hql.append("order by fsh.data asc");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("faixaId", faixaSalarialId);
+		query.setDate("data", new Date());
+
+		return query.list();
+	}
+
+	public FaixaSalarialHistorico findByIdProjection(Long faixaSalarialHistoricoId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "fsh");
+		criteria.createCriteria("fsh.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fs.cargo", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fsh.indice", "i", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("fsh.id"), "id");
+		p.add(Projections.property("fsh.data"), "data");
+		p.add(Projections.property("fsh.tipo"), "tipo");
+		p.add(Projections.property("fsh.valor"), "valor");
+		p.add(Projections.property("fsh.quantidade"), "quantidade");
+		p.add(Projections.property("fsh.status"), "status");
+		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		p.add(Projections.property("i.id"), "projectionIndiceId");
+		p.add(Projections.property("i.nome"), "projectionIndiceNome");
+		p.add(Projections.property("c.id"), "projectionCargoId");
+		p.add(Projections.property("c.nome"), "projectionCargoNome");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("fsh.id", faixaSalarialHistoricoId));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (FaixaSalarialHistorico) criteria.uniqueResult();
+	}
+
+	public boolean verifyData(Long faixaSalarialHistoricoId, Date data, Long faixaSalarialId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
+		criteria.createCriteria("f.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "id");
+
+		criteria.setProjection(p);
+
+		if(faixaSalarialHistoricoId != null)
+			criteria.add(Expression.not(Expression.eq("f.id", faixaSalarialHistoricoId)));
+
+		criteria.add(Expression.eq("f.data", data));
+		criteria.add(Expression.eq("fs.id", faixaSalarialId));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		Collection<FaixaSalarialHistorico> lista = criteria.list();
+
+		return lista.size() > 0;
+	}
+
+	public FaixaSalarialHistorico findByFaixaSalarialId(Long faixaSalarialId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
+		criteria.createCriteria("f.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fs.cargo", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("f.indice", "i", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "id");
+		p.add(Projections.property("f.data"), "data");
+		p.add(Projections.property("f.tipo"), "tipo");
+		p.add(Projections.property("f.valor"), "valor");
+		p.add(Projections.property("f.quantidade"), "quantidade");
+		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("i.id"), "projectionIndiceId");
+		p.add(Projections.property("c.id"), "projectionCargoId");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("fs.id", faixaSalarialId));
+		criteria.add(Expression.le("f.data", new Date()));
+
+		criteria.addOrder(Order.desc("f.data"));
+
+		criteria.setMaxResults(1);
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (FaixaSalarialHistorico) criteria.uniqueResult();
+	}
+	
+	public Collection<FaixaSalarialHistorico> findHistoricosByFaixaSalarialId(Long faixaSalarialId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
+		criteria.createCriteria("f.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fs.cargo", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("f.indice", "i", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "id");
+		p.add(Projections.property("f.data"), "data");
+		p.add(Projections.property("f.tipo"), "tipo");
+		p.add(Projections.property("f.valor"), "valor");
+		p.add(Projections.property("f.quantidade"), "quantidade");
+		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("i.id"), "projectionIndiceId");
+		p.add(Projections.property("c.id"), "projectionCargoId");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("fs.id", faixaSalarialId));
+		criteria.add(Expression.le("f.data", new Date()));
+
+		criteria.addOrder(Order.desc("f.data"));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+
+	public Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date dataProxima)
+	{
+		StringBuilder hql = new StringBuilder();
+
+		hql.append("select new FaixaSalarialHistorico(fsh.id, fsh.data, fsh.status, fsh.tipo, fsh.valor, fsh.quantidade, i.id, i.nome, ih.valor, ih.data) ");
+		hql.append("from FaixaSalarialHistorico fsh ");
+		hql.append("left join fsh.faixaSalarial fs ");
+		hql.append("left join fsh.indice i ");
+		hql.append("left join i.indiceHistoricos ih with ih.data = (select max(ih2.data) ");
+		hql.append("                                                from IndiceHistorico ih2 ");
+		hql.append("                                                where ih2.indice.id = i.id ");
+		hql.append("                                                      and ih2.data <= fsh.data) ");
+
+		hql.append("where fs.id = :faixaId ");
+		hql.append("and fsh.data <= :proxima ");
+		hql.append("order by fsh.data ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("faixaId", faixaSalarialId);
+		query.setDate("proxima", dataProxima);
+
+		return query.list();
+	}
+	
+	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select distinct new FaixaSalarialHistorico(hf.id, hf.data, hf.tipo, hf.valor, hf.quantidade, i.id, i.nome, hi.valor, hi.data, c.id, c.nome, f.id, f.nome) ");
+		hql.append("from FaixaSalarialHistorico hf ");
+		hql.append("left join hf.faixaSalarial f ");
+		hql.append("left join f.cargo c ");
+		hql.append("left join c.areasOrganizacionais a ");
+		hql.append("left join c.grupoOcupacional go ");
+		hql.append("left join hf.indice i ");
+		hql.append("left join i.indiceHistoricos hi with hi.data = (select max(hi2.data) ");
+		hql.append("                                             from IndiceHistorico hi2 ");
+		hql.append("                                             where hi2.indice.id = i.id ");
+		hql.append("                                              and hi2.data <= hf.data) ");
+		hql.append("where hf.data = (select max(fsh2.data)");
+		hql.append("                  from FaixaSalarialHistorico fsh2 ");
+		hql.append("                  where fsh2.faixaSalarial.id = f.id ");
+		hql.append("                  and fsh2.data <= :data) ");
+
+		if(grupoOcupacionals != null && !grupoOcupacionals.isEmpty())
+			hql.append("and go.id in (:grupoOcupacionals) ");
+		
+		if(cargoIds != null && !cargoIds.isEmpty())
+			hql.append("and c.id in (:cargoIds) ");
+		
+		if(areaIds != null && !areaIds.isEmpty())
+			hql.append("and a.id in (:areaIds) ");
+
+		hql.append("order by c.nome, f.nome, hf.data desc");
+
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setParameter("data", data);
+
+		if(grupoOcupacionals != null && !grupoOcupacionals.isEmpty())
+			query.setParameterList("grupoOcupacionals", grupoOcupacionals, Hibernate.LONG);
+		
+		if(cargoIds != null && !cargoIds.isEmpty())
+			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+		
+		if(areaIds != null && !areaIds.isEmpty())
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+
+		return query.list();
+	}
+
+	public boolean setStatus(Long faixaSalarialHistoricoId, boolean aprovado)
+	{
+		String hql = "update FaixaSalarialHistorico set status = :aprovado where id = :faixaSalarialHistoricoId";
+
+		int status = StatusRetornoAC.CANCELADO;
+		if(aprovado)
+			status = StatusRetornoAC.CONFIRMADO;
+
+		Query query = getSession().createQuery(hql);
+		query.setInteger("aprovado", status);
+		query.setLong("faixaSalarialHistoricoId", faixaSalarialHistoricoId);
+
+		int result = query.executeUpdate();
+
+		return result == 1;
+	}
+
+	public void removeByFaixas(Long[] faixaSalarialIds)
+	{
+		String hql = "delete FaixaSalarialHistorico where faixaSalarial.id in(:faixaSalarialIds)";
+
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("faixaSalarialIds", faixaSalarialIds, Hibernate.LONG);
+
+		query.executeUpdate();
+	}
+
+	public Collection<FaixaSalarialHistorico> findPendenciasByFaixaSalarialHistorico(Long empresaId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
+		criteria.createCriteria("f.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fs.cargo", "c", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "id");
+		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		p.add(Projections.property("c.id"), "projectionCargoId");
+		p.add(Projections.property("c.nome"), "projectionCargoNome");
+		p.add(Projections.property("f.status"), "status");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.not(Expression.eq("f.status", 1)));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+
+	public Long findIdByDataFaixa(FaixaSalarialHistorico faixaSalarialHistorico)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "id");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("f.faixaSalarial.id", faixaSalarialHistorico.getFaixaSalarial().getId()));
+		criteria.add(Expression.eq("f.data", faixaSalarialHistorico.getData()));
+
+		return (Long) criteria.uniqueResult();
+	}
+}

@@ -1,0 +1,507 @@
+package com.fortes.rh.test.dao.hibernate.desenvolvimento;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
+import com.fortes.rh.dao.desenvolvimento.CursoDao;
+import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
+import com.fortes.rh.dao.desenvolvimento.TurmaDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.DiaTurma;
+import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.util.DateUtil;
+
+public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
+{
+	private TurmaDao turmaDao;
+	private DiaTurmaDao diaTurmaDao;
+	private CursoDao cursoDao;
+	private EmpresaDao empresaDao;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
+	private ColaboradorDao colaboradorDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
+	private ColaboradorTurmaDao colaboradorTurmaDao;
+
+	public Turma getEntity()
+	{
+		return TurmaFactory.getEntity();
+	}
+	public GenericDao<Turma> getGenericDao()
+	{
+		return turmaDao;
+	}
+
+	public void setTurmaDao(TurmaDao TurmaDao)
+	{
+		this.turmaDao = TurmaDao;
+	}
+
+	@SuppressWarnings("deprecation")
+	public void testGetTurmasFinalizadas()
+	{
+		Curso c1 = CursoFactory.getEntity();
+		Curso c2 = CursoFactory.getEntity();
+
+		c1 = cursoDao.save(c1);
+		c2 = cursoDao.save(c2);
+
+		Turma t1 = TurmaFactory.getEntity();
+		t1.setRealizada(true);
+		t1.setCurso(c1);
+
+		Turma t2 = TurmaFactory.getEntity();
+		t2.setRealizada(false);
+		t2.setCurso(c1);
+
+		Turma t3 = TurmaFactory.getEntity();
+		t3.setRealizada(true);
+		t3.setCurso(c2);
+
+		t1 = turmaDao.save(t1);
+		t2 = turmaDao.save(t2);
+		t3 = turmaDao.save(t3);
+
+		Collection<Turma> turmas = turmaDao.getTurmaFinalizadas(c1.getId());
+		assertEquals(1, turmas.size());
+	}
+
+	@SuppressWarnings("deprecation")
+	public void testFindByIdProjection()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+
+		Date dataPrevIni = new Date();
+		Date dataPrevFim = dataPrevIni;
+		dataPrevFim.setDate(dataPrevIni.getDate() + 1);
+
+		Turma turma = TurmaFactory.getEntity();
+		turma.setEmpresa(empresa);
+		turma.setCurso(curso);
+		turma.setDataPrevIni(dataPrevIni);
+		turma.setDataPrevFim(dataPrevFim);
+		turmaDao.save(turma);
+
+		Turma turmaRetorno = turmaDao.findByIdProjection(turma.getId());
+
+		assertEquals(turmaRetorno, turma);
+	}
+
+	public void testFindByIdProjectionArray()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setEmpresa(empresa);
+		turma1.setCurso(curso);
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa);
+		turma2.setCurso(curso);
+		turmaDao.save(turma2);
+		
+		Long[] ids = new Long[]{turma1.getId(), turma2.getId()};
+		
+		Collection<Turma> turmas = turmaDao.findByIdProjection(ids);
+		
+		assertEquals(2, turmas.size());
+	}
+
+	public void testFindAllSelect()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setEmpresa(empresa);
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		Collection<Turma> turmas = turmaDao.findAllSelect(curso.getId());
+		
+		assertEquals(1, turmas.size());
+	}
+	
+	public void testFindPlanosDeTreinamentoTemVazio()
+	{
+		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
+		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
+		
+		Curso curso = CursoFactory.getEntity();
+		curso = cursoDao.save(curso);
+		
+		Collection<Turma> turmas = turmaDao.findPlanosDeTreinamento(1, 10, curso.getId(), dataPrevIni, dataPrevFim, true);
+		
+		assertEquals(0, turmas.size());
+	}
+	
+	public void testQuantidadeParticipantesPrevistos()
+	{
+		Calendar dataDoisMesesAtras = Calendar.getInstance();
+    	dataDoisMesesAtras.add(Calendar.MONTH, -2);
+    	Calendar dataTresMesesAtras = Calendar.getInstance();
+    	dataTresMesesAtras.add(Calendar.MONTH, -3);
+		
+		Empresa empresa = new Empresa();
+		empresaDao.save(empresa);		
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setQtdParticipantesPrevistos(2);
+		turma1.setDataPrevIni(dataTresMesesAtras.getTime());
+		turma1.setDataPrevFim(dataDoisMesesAtras.getTime());
+		turmaDao.save(turma1);
+		turma1.setEmpresa(empresa);
+
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setQtdParticipantesPrevistos(3);
+		turma2.setDataPrevIni(dataTresMesesAtras.getTime());
+		turma2.setDataPrevFim(dataDoisMesesAtras.getTime());
+		turmaDao.save(turma2);
+		turma2.setEmpresa(empresa);
+		
+		assertEquals(new Integer(5), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa.getId()));
+		assertEquals(new Integer(0), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), 1021L));
+	}
+	
+	public void testFindPlanosDeTreinamento()
+	{
+		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
+		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setEmpresa(empresa);
+		turma.setCurso(curso);
+		turma.setDataPrevIni(dataPrevIni);
+		turma.setDataPrevFim(dataPrevFim);
+		turma.setRealizada(true);
+		turmaDao.save(turma);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa);
+		turma2.setCurso(curso);
+		turma2.setDataPrevIni(dataPrevIni);
+		turma2.setDataPrevFim(dataPrevFim);
+		turma2.setRealizada(false);
+		turmaDao.save(turma2);
+		
+		Collection<Turma> turmas = turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), dataPrevIni, dataPrevFim, true);
+		
+		assertEquals(1, turmas.size());
+	}
+	
+	public void testCountPlanosDeTreinamento()
+	{
+		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
+		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setEmpresa(empresa);
+		turma.setCurso(curso);
+		turma.setDataPrevIni(dataPrevIni);
+		turma.setDataPrevFim(dataPrevFim);
+		turma.setRealizada(true);
+		turmaDao.save(turma);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa);
+		turma2.setCurso(curso);
+		turma2.setDataPrevIni(dataPrevIni);
+		turma2.setDataPrevFim(dataPrevFim);
+		turma2.setRealizada(false);
+		turmaDao.save(turma2);
+		
+		assertEquals(new Integer(1), turmaDao.countPlanosDeTreinamento( curso.getId(), dataPrevIni, dataPrevFim, true));
+	}
+
+	public void testUpdateRealizada() throws Exception
+	{
+		Turma turma = TurmaFactory.getEntity();
+		turma.setRealizada(true);
+		turma = turmaDao.save(turma);
+		
+		turmaDao.updateRealizada(turma.getId(), false);
+		
+		Turma retorno = turmaDao.findByIdProjection(turma.getId());
+		assertEquals(false, retorno.getRealizada());
+	}
+	
+	public void testfindByFiltro() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
+		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
+		
+		Turma turmaRealizada = TurmaFactory.getEntity();
+		turmaRealizada.setRealizada(true);
+		turmaRealizada.setDataPrevIni(dataPrevIni);
+		turmaRealizada.setDataPrevFim(dataPrevFim);
+		turmaRealizada.setEmpresa(empresa);
+		turmaRealizada.setCurso(curso);
+		turmaDao.save(turmaRealizada);
+		
+		Turma turmaNaoRealizada = TurmaFactory.getEntity();
+		turmaNaoRealizada.setRealizada(false);
+		turmaNaoRealizada.setDataPrevIni(dataPrevIni);
+		turmaNaoRealizada.setDataPrevFim(dataPrevFim);
+		turmaNaoRealizada.setEmpresa(empresa);
+		turmaNaoRealizada.setCurso(curso);
+		turmaDao.save(turmaNaoRealizada);
+		
+		Date hoje = new Date();
+		Turma turmaForaPeriodo = TurmaFactory.getEntity();
+		turmaForaPeriodo.setRealizada(false);
+		turmaForaPeriodo.setDataPrevIni(hoje);
+		turmaForaPeriodo.setDataPrevFim(hoje);
+		turmaForaPeriodo.setEmpresa(empresa);
+		turmaForaPeriodo.setCurso(curso);
+		turmaDao.save(turmaForaPeriodo);
+		
+		Collection<Turma> turmas = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, true, empresa.getId());
+		assertEquals(1, turmas.size());
+	}
+
+	public void setCursoDao(CursoDao cursoDao)
+	{
+		this.cursoDao = cursoDao;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void testFiltroRelatorio()
+	{
+		Empresa empresa = new Empresa();
+		empresa.setNome("fortes");
+		empresa.setCnpj("65465");
+		empresa.setRazaoSocial("fortes");
+
+		empresa = empresaDao.save(empresa);
+
+		AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
+		areaOrganizacional.setId(null);
+		areaOrganizacional.setNome("area");
+		areaOrganizacional.setEmpresa(empresa);
+
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+
+		AreaOrganizacional areaOrganizacional2 = new AreaOrganizacional();
+		areaOrganizacional2.setId(null);
+		areaOrganizacional2.setNome("area2");
+		areaOrganizacional2.setEmpresa(empresa);
+
+		areaOrganizacional2 = areaOrganizacionalDao.save(areaOrganizacional2);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+
+		colaborador = colaboradorDao.save(colaborador);
+
+		HistoricoColaborador hc0 = HistoricoColaboradorFactory.getEntity();
+		hc0.setData(DateUtil.criarDataMesAno(1, 3, 2006));
+		hc0.setMotivo("p");
+		hc0.setSalario(1D);
+		hc0.setColaborador(colaborador);
+		hc0.setAreaOrganizacional(areaOrganizacional);
+
+		historicoColaboradorDao.save(hc0);
+
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2 = colaboradorDao.save(colaborador2);
+
+		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
+		hc1.setData(DateUtil.criarDataMesAno(1, 4, 2006));
+		hc1.setMotivo("p");
+		hc1.setSalario(1D);
+		hc1.setColaborador(colaborador2);
+		hc1.setAreaOrganizacional(areaOrganizacional2);
+
+		historicoColaboradorDao.save(hc1);
+
+		Curso c1 = CursoFactory.getEntity();
+		c1.setNome("curso1");
+
+		Curso c2 = CursoFactory.getEntity();
+		c2.setNome("curso2");
+
+		c1 = cursoDao.save(c1);
+		c2 = cursoDao.save(c2);
+
+		Turma t1 = TurmaFactory.getEntity();
+		t1.setCurso(c1);
+		t1.setCusto(1000D);
+		t1.setDataPrevFim(DateUtil.criarDataMesAno(5, 4, 2007));
+
+		Turma t2 = TurmaFactory.getEntity();
+		t2.setCurso(c1);
+		t2.setCusto(500D);
+		t2.setDataPrevFim(DateUtil.criarDataMesAno(8, 5, 2007));
+
+		t1 = turmaDao.save(t1);
+		t2 = turmaDao.save(t2);
+
+		ColaboradorTurma ct1 = new ColaboradorTurma();
+		ct1.setColaborador(colaborador);
+		ct1.setTurma(t1);
+		ct1 = colaboradorTurmaDao.save(ct1);
+
+		ColaboradorTurma ct2 = new ColaboradorTurma();
+		ct2.setColaborador(colaborador2);
+		ct2.setTurma(t1);
+		ct2 = colaboradorTurmaDao.save(ct2);
+
+		ColaboradorTurma ct3 = new ColaboradorTurma();
+		ct3.setColaborador(colaborador);
+		ct3.setTurma(t2);
+		ct3 = colaboradorTurmaDao.save(ct3);
+
+		Collection<Long> areasId = new ArrayList<Long>();
+		areasId.add(areaOrganizacional.getId());
+
+		LinkedHashMap filtro = new LinkedHashMap();
+		filtro.put("dataIni", DateUtil.criarDataMesAno(01, 01, 2007));
+		filtro.put("dataFim", DateUtil.criarDataMesAno(01, 06, 2007));
+		filtro.put("areas", areasId);
+		filtro.put("colaborador", null);
+
+		List retorno = turmaDao.filtroRelatorioByAreas(filtro);
+
+		assertEquals(2, retorno.size());
+
+		filtro.put("colaborador", colaborador2);
+
+		retorno = turmaDao.filtroRelatorioByColaborador(filtro);
+
+		assertEquals(1, retorno.size());
+	}
+
+	public void testQuantidadeParticipantesPrevistoso()
+	{
+		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
+		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setEmpresa(empresa);
+		turma.setDataPrevIni(dataPrevIni);
+		turma.setDataPrevFim(dataPrevFim);
+		turma.setQtdParticipantesPrevistos(new Integer(2));
+		turmaDao.save(turma);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa);
+		turma2.setDataPrevIni(dataPrevIni);
+		turma2.setDataPrevFim(dataPrevFim);
+		turma2.setQtdParticipantesPrevistos(new Integer(2));
+		turmaDao.save(turma2);
+
+		assertEquals(new Integer (4), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, empresa.getId()));
+	}
+
+	public void testFindTurmaPresencaMinima() {
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setPercentualMinimoFrequencia(50.0);
+		cursoDao.save(curso);
+
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		Collection<Long> turmaIds = new ArrayList<Long>();
+		turmaIds.add(turma.getId());
+		
+		DiaTurma diaTurma1 = DiaTurmaFactory.getEntity();
+		diaTurma1.setTurma(turma);
+		diaTurmaDao.save(diaTurma1);
+
+		DiaTurma diaTurma2 = DiaTurmaFactory.getEntity();
+		diaTurma2.setTurma(turma);
+		diaTurmaDao.save(diaTurma2);
+		
+		DiaTurma diaTurma3 = DiaTurmaFactory.getEntity();
+		diaTurma3.setTurma(turma);
+		diaTurmaDao.save(diaTurma3);
+		
+		Collection<Turma> turmas = turmaDao.findTurmaPresencaMinima(turmaIds);
+		assertEquals(1, turmas.size());
+		Turma turmaResultado = (Turma) turmas.toArray()[0];
+		assertEquals(1.5, turmaResultado.getDiasEstimadosParaAprovacao());
+		
+	}
+	
+	
+	
+	public void setColaboradorDao(ColaboradorDao colaboradorDao)
+	{
+		this.colaboradorDao = colaboradorDao;
+	}
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
+	{
+		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+	public void setEmpresaDao(EmpresaDao empresaDao)
+	{
+		this.empresaDao = empresaDao;
+	}
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
+	{
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao)
+	{
+		this.colaboradorTurmaDao = colaboradorTurmaDao;
+	}
+	public void setDiaTurmaDao(DiaTurmaDao diaTurmaDao) {
+		this.diaTurmaDao = diaTurmaDao;
+	}
+
+}

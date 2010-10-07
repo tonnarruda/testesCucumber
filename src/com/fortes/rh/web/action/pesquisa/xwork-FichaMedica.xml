@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="fichaMedica" extends="default" namespace="/sesmt/fichaMedica">
+		<action name="list" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.pesquisa.FichaMedicaEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.pesquisa.FichaMedicaEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaEdit.ftl</result>
+			<result name="error.empresa" type="redirect">list.action?msg=${msg}</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.pesquisa.FichaMedicaEditAction" method="insert">
+			<result name="success" type="redirect">/pesquisa/pergunta/list.action?questionario.id=${questionario.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.pesquisa.FichaMedicaEditAction" method="update">
+			<result name="success" type="redirect">/pesquisa/pergunta/list.action?questionario.id=${questionario.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaEdit.ftl</result>
+		</action>
+		<action name="gravar" class="com.fortes.rh.web.action.pesquisa.FichaMedicaEditAction" method="gravar">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/fichaMedicaEdit.ftl</result>
+		</action>
+		<action name="clonarFichaMedica" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="clonarFichaMedica">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/entrevistaList.ftl</result>
+		</action>
+
+		<action name="listPreenchida" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="listPreenchida">
+	    	<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">dataIni,dataFim,vinculo,nomeBusca,cpfBusca,matriculaBusca</param>
+	    	</interceptor-ref>	
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fichaMedicaPreenchidaList.ftl</result>
+		</action>
+		<action name="deletePreenchida" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="deletePreenchida">
+			<interceptor-ref name="defaultDeleteStack">
+				<param name="scope.session">dataIni,dataFim,vinculo,nomeBusca,cpfBusca,matriculaBusca</param>
+			</interceptor-ref>
+			<result name="success" type="redirect">listPreenchida.action</result>
+			<result name="error" type="redirect">listPreenchida.action</result>
+		</action>
+		
+		<action name="updateFilter" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
+		<action name="prepareInsertFicha" class="com.fortes.rh.web.action.pesquisa.FichaMedicaListAction" method="prepareInsertFicha">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fichaMedicaPreenchidaEdit.ftl</result>
+		</action>
+		
+		<!-- 
+			 Apontam para Action de ColaboradorResposta.
+			 Evita confusão do usuário e problemas de permissão, 
+			 pois aparecem no namespace /pesquisa/fichaMedica
+			 (i.e., perfil que responde ficha médica, não precisa ter permissão para acessar pesquisas). 
+		-->
+		<action name="prepareResponderFichaMedica" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="prepareResponderFichaMedica">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/responderFichaMedica.ftl</result>
+		</action>
+		<action name="prepareEditFichaMedica" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="prepareEditFichaMedica">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/responderFichaMedica.ftl</result>
+		</action>
+		
+		<!-- Apontando para action de Questionario. -->
+		
+		<action name="prepareResultadoFichaMedica" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="prepareResultadoFichaMedica">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fichaMedicaFiltroResultado.ftl</result>
+		</action>
+		<action name="imprimeResultadoFichaMedica" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="imprimeResultado">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/resultado_questionario.jasper</param>
+				<param name="dataSource">resultadoQuestionarios</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">resultadoQuestionario.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/fichaMedicaFiltroResultado.ftl</result>
+		</action>
+		<action name="imprimirFichaMedica" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="imprimirFichaMedica">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/ficha_medica.jasper</param>
+				<param name="dataSource">perguntaFichaMedicas</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">fichaMedica.pdf</param>
+			</result>
+			<result name="input" type="redirect">listPreenchida.action?actionMsg=${actionMsg}</result>
+		</action>
+		<action name="imprimirFichaMedicaList" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="imprimirFichaMedica">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/ficha_medica.jasper</param>
+				<param name="dataSource">perguntaFichaMedicas</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">fichaMedica.pdf</param>
+			</result>
+			<result name="input" type="redirect">list.action?actionMsg=${actionMsg}</result>
+		</action>
+		
+	</package>
+</xwork>

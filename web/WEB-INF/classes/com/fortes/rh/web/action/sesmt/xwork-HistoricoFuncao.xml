@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="historicoFuncao" extends="default" namespace="/sesmt/historicoFuncao">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoListAction" method="delete">
+			<result name="success" type="redirect"><![CDATA[../funcao/prepareUpdate.action?funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}]]></result>
+			<result name="SUCESSO_VEIO_SESMT" type="redirect"><![CDATA[../funcao/prepareUpdateFiltro.action?funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}]]></result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoEditAction" method="insert">
+			<result name="success" type="redirect"><![CDATA[../funcao/prepareUpdate.action?funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}]]></result>
+			<result name="SUCESSO_VEIO_SESMT" type="redirect"><![CDATA[../funcao/prepareUpdateFiltro.action?funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoEditAction" method="update">
+			<result name="success" type="redirect"><![CDATA[../funcao/prepareUpdate.action?funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}]]></result>
+			<result name="SUCESSO_VEIO_SESMT" type="redirect"><![CDATA[../funcao/prepareUpdateFiltro.action?funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

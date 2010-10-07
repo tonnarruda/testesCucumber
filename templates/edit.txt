@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<@ww.head/>
+		<#if #NOME_CLASSE_MINUSCULO#.id?exists>
+			<title>Editar #NOME_CLASSE#</title>
+			<#assign formAction="update.action"/>
+		<#else>
+			<title>Inserir #NOME_CLASSE#</title>
+			<#assign formAction="insert.action"/>
+		</#if>
+	
+	<#assign validarCampos="return validaFormulario('form', new Array())"/>
+	</head>
+	<body>
+		<@ww.actionerror />
+		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
+			<@ww.hidden name="#NOME_CLASSE_MINUSCULO#.id" />
+			<@ww.token/>
+		</@ww.form>
+	
+		<div class="buttonGroup">
+			<button onclick="${validarCampos};" class="btnGravar"></button>
+			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+		</div>
+	</body>
+</html>

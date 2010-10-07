@@ -1,0 +1,668 @@
+.btnRelatorioPorCriterio{
+	background-image:url(../imgs/btnRelatorioPorcriterio.gif);
+	width: 171px !important;
+}
+.btnRelatorioPorAvaliador{
+	background-image:url(../imgs/btnRelatorioPorAvaliador.gif);
+	width: 185px !important;
+}
+.btnIncluirColaboradoresNota{
+	background-image:url(../imgs/btnIncluirColaboradoresNota.gif);
+	width: 224px !important;
+}
+.btnSugerirEtapas{
+	background-image:url(../imgs/btnSugerirEtapas.gif);
+	width: 131px !important;
+}
+
+.btnGerarEtapasModelo{
+	background-image:url(../imgs/btnInserir.gif);
+	width: 78px !important;
+}
+
+.btnInserirEtapasEmGrupo{
+	background-image:url(../imgs/btnInserirEtapasEmGrupo.gif);
+	width: 193px !important;
+}
+
+.btnTransferirCandidatos{
+	background-image:url(../imgs/btnTransferirCandidatos.gif);
+	width: 176px !important;
+}
+
+.btnUnirBairros{
+	background-image:url(../imgs/btnUnirBairros.gif);
+	width: 112px !important;
+}
+.btnCarregarTurmas{
+	background-image:url(../imgs/btnCarregarTurmas.gif);
+	width: 150px !important;
+}
+.btnImprimirVerso{
+	background-image:url(../imgs/btnImprimirVerso.gif);
+	width: 129px !important;
+}
+.btnListaFrequenciaVotacao{
+	background-image:url(../imgs/btnListaFrequenciaVotacao.gif);
+	width: 250px !important;
+}
+
+.btnImprimirVersoPdf{
+	background-image:url(../imgs/btnImprimirVersoPdf.gif);
+	width: 129px !important;
+}
+
+.btnInserirTurma{
+	background-image:url(../imgs/btnInserirTurma.gif);
+	width: 123px !important;
+}
+.btnCriarUsuariosAuto{
+	background-image:url(../imgs/btnCriarUsuariosAuto.gif);
+	width: 214px !important;
+}
+.btnEnviar{
+	background-image:url(../imgs/btnEnviar.gif);
+	width: 81px !important;
+}
+.btnLimparFiltro{
+	background-image:url(../imgs/btnLimparFiltro.gif);
+	width: 117px !important;
+}
+.btnEnviarBlue
+{
+	background-image:url(../imgs/btnEnviarBlue.gif);
+	width: 81px !important;
+}
+.btnEditarHistoricos
+{
+	background-image:url(../imgs/btnEditarSituacoes.gif);
+	width: 140px !important;
+}
+.btnEditar
+{
+	background-image:url(../imgs/btnEditar.gif);
+	width: 71px !important;
+}
+.btnInserir
+{
+	background-image:url(../imgs/btnInserir.gif);
+	width: 78px !important;
+}
+.btnInserirDesabilitado
+{
+	background-image:url(../imgs/btnInserirDesabilitado.gif);
+	width: 78px !important;
+}
+.btnInserirCurriculoEscaneado
+{
+	background-image:url(../imgs/btnInserirCurriculoEscaneado.gif);
+	width: 214px !important;
+}
+.btnInserirCurriculoDigitado
+{
+	background-image:url(../imgs/btnInserirCurriculoDigitado.gif);
+	width: 202px !important;
+}
+.btnSalvarArquivos
+{
+	background-image:url(../imgs/btnSalvarArquivos.gif);
+	width: 139px !important;
+}
+.btnAplicar
+{
+	background-image:url(../imgs/btnAplicar.gif);
+	width: 83px !important;
+}
+
+.btnGravar
+{
+	background-image:url(../imgs/btnGravar.gif);
+	width: 79px !important;
+}
+.btnGravarDesabilitado
+{
+	background-image:url(../imgs/btnGravarDesabilitado.gif);
+	width: 79px !important;
+}
+
+.btnCancelar
+{
+	background-image:url(../imgs/btnCancelar.gif);
+	width: 89px !important;
+}
+.btnFechar
+{
+	background-image:url(../imgs/btnFechar.gif);
+	width: 77px !important;
+}
+.btnVoltar
+{
+	background-image:url(../imgs/btnVoltar.gif);
+	width: 69px !important;
+}
+.btnVoltarListaFrequencia
+{
+	background-image:url(../imgs/btnVoltar.gif);
+	width: 69px !important;
+}
+.btnVoltarDesabilitado
+{
+	background-image:url(../imgs/btnVoltarDesabilitado.gif);
+	width: 69px !important;
+}
+
+.btnAvancar
+{
+	background-image:url(../imgs/btnAvancar.gif);
+	width: 85px !important;
+}
+.btnAvancarDesabilitado
+{
+	background-image:url(../imgs/btnAvancarDesabilitado.gif);
+	width: 85px !important;
+}
+.btnVisualizar
+{
+	background-image:url(../imgs/btnVisualizar.gif);
+}
+.btnImprimir
+{
+	background-image:url(../imgs/btnImprimir.gif);
+	width: 89px !important;
+}
+.btnImprimirPdf
+{
+	background-image:url(../imgs/btnImprimirPdf.gif);
+	width: 89px !important;
+}
+.btnImprimirPdfB
+{
+	background-image:url(../imgs/btnImprimirPdf.gif);
+	width: 89px !important;
+}
+.btnPesquisar
+{
+	background-image:url(../imgs/btnPesquisar.gif);
+	width: 98px !important;
+}
+.btnUpLoad
+{
+	background-image:url(../imgs/btnUpload.gif);
+}
+.btnGravarVisualizar
+{
+	background-image:url(../imgs/btnGravarEVisualizarImpressao.gif);
+	width: 234px !important;
+}
+.btnInserirPerguntaFinal
+{
+	background-image:url(../imgs/btnInserirPerguntaNoFinal.gif);
+	width: 195px !important;
+}
+.btnNovaOpcaoResposta
+{
+	background-image:url(../imgs/btnNovaOpcaoDeResposta.gif);
+	width: 190px !important;
+}
+.btnTriagem
+{
+	background-image:url(../imgs/btnTriagem.gif);
+	width: 87px !important;
+}
+.btnTriagemModuloExterno
+{
+	background-image:url(../imgs/btnTriagemModuloExterno.gif);
+	width: 195px !important;
+}
+.btnEnviarPorEmail
+{
+	background-image:url(../imgs/btnEnviarPorEmail.gif);
+	width: 151px !important;
+}
+.btnMoverCandidatos
+{
+	background-image:url(../imgs/btnMoverCandidatos.gif);
+	width: 152px !important;
+}
+.btnRelatorio
+{
+	background-image:url(../imgs/btnRelatorio.gif);
+	width: 90px !important;
+}
+.btnInserirInvestimento
+{
+	background-image:url(../imgs/btnInserirInvestimento.gif);
+	width: 117px !important;
+}
+.btnImportarbds
+{
+	background-image:url(../imgs/btnImportarbds.gif);
+	width: 137px !important;
+}
+.btnImportar
+{
+	background-image:url(../imgs/btnImportar.gif);
+	width: 96px !important;
+}
+.btnClonar
+{
+	background-image:url(../imgs/btnClonar.gif);
+	width: 77px !important;
+}
+.btnClonarInvestimentos
+{
+	background-image:url(../imgs/btnClonarInvestimentos.gif);
+	width: 173px !important;
+}
+.btnVoltarParaAListaDePesquisas
+{
+	background-image:url(../imgs/btnVoltarParaAListaDePesquisas.gif);
+	width: 240px !important;
+}
+.btnbtnVoltarParaAListaDeAvaliacoes
+{
+	background-image:url(../imgs/btnVoltarParaAListaDeAvaliacoes.gif);
+	width: 245px !important;
+}
+.btnAtualizarSistema
+{
+	background-image:url(../imgs/btnAtualizarSistema.gif);
+	width: 152px !important;
+}
+.btnUpload
+{
+	background-image:url(../imgs/btnUpload.gif);
+	width: 78px !important;
+}
+.btnRealizarBackup
+{
+	background-image:url(../imgs/btnRealizarBackup.gif);
+	width: 142px !important;
+}
+.btnInserirSelecionados
+{
+	background-image:url(../imgs/btnInserirSelecionados.gif);
+	width: 171px !important;
+}
+.btnSolicitacoes
+{
+	background-image:url(../imgs/btnSolicitacoes.gif);
+	width: 171px !important;
+}
+.btnListarItens
+{
+	background-image:url(../imgs/btnListarItens.gif);
+	width: 107px !important;
+}
+.btnSolicitarBDS
+{
+	background-image:url(../imgs/btnSolicitarBDS.gif);
+	width: 116px !important;
+}
+.btnEncerrarSolicitacao
+{
+	background-image:url(../imgs/btnEncerrarSolicitacao.gif);
+	width: 170px !important;
+}
+.btnIncluirColaboradores
+{
+	background-image:url(../imgs/btnIncluirColaboradores.gif);
+	width: 176px !important;
+}
+.btnDadosComplementares
+{
+	background-image:url(../imgs/btnDadosComplementares.gif);
+	width: 185px !important;
+}
+.btnDesligarColaborador
+{
+	background-image:url(../imgs/btnDesligarColaborador.gif);
+	width: 178px !important;
+}
+.btnEditarOpcoesDeResposta
+{
+	background-image:url(../imgs/btnEditarOpcoesDeResposta.gif);
+	width: 207px !important;
+}
+.btnInserirHistorico
+{
+	background-image:url(../imgs/btnInserirHistoricos.gif);
+	width: 146px !important;
+}
+.btnInserir_Historico
+{
+	background-image:url(../imgs/btnInserirHistorico.gif);
+	width: 146px !important;
+}
+.btnInserirNovoCurriculoEscaneado
+{
+	background-image:url(../imgs/btnInserirNovoCurriculoEscaneado.gif);
+	width: 251px !important;
+}
+.btnEditarOCadastroDesseCandidato
+{
+	background-image:url(../imgs/btnEditarOCadastroDesseCandidato.gif);
+	width: 255px !important;
+}
+.btnInserirNovoCandidato
+{
+	background-image:url(../imgs/btnInserirNovoCandidato.gif);
+	width: 182px !important;
+}
+.btnSubstituirEsseCurriculoEscaneado
+{
+	background-image:url(../imgs/btnSubstituirEsseCurriculoEscaneado.gif);
+	width: 266px !important;
+}
+.btnConcluir
+{
+	background-image:url(../imgs/btnConcluir.gif);
+	width: 86px !important;
+}
+.btnSuspenderSolicitacao
+{
+	background-image:url(../imgs/btnSuspenderSolicitacao.gif);
+	width: 176px !important;
+}
+.btnInserirPergunta
+{
+	background-image:url(../imgs/btnInserirPergunta.gif);
+	width: 139px !important;
+}
+.btnEmbaralhar
+{
+	background-image:url(../imgs/btnEmbaralhar.gif);
+	width: 112px !important;
+}
+.btnAplicarNaOrdemAtual
+{
+	background-image:url(../imgs/btnAplicarNaOrdemAtual.gif);
+	width: 184px !important;
+}
+.btnAplicarOrdenadoPorAspectos
+{
+	background-image:url(../imgs/btnAplicarOrdenadoPorAspectos.gif);
+	width: 237px !important;
+}
+.btnAspectos
+{
+	background-image:url(../imgs/btnAspectos.gif);
+	width: 237px !important;
+}
+
+.btnCriarUsuarios
+{
+	background-image:url(../imgs/btnCriarUsuarios.gif);
+	width: 119px !important;
+}
+
+.btnExcluir{
+	background-image:url(../imgs/btnExcluir.gif);
+	width: 82px !important;
+}
+.btnExcluirDesabilitado{
+	background-image:url(../imgs/btnExcluirDesabilitado.gif);
+	width: 82px !important;
+}
+.btnProxima{
+	background-image:url(../imgs/btnProxima.gif);
+	width: 90px !important;
+}
+.btnProximaDesabilitado{
+	background-image:url(../imgs/btnProximaDesabilitado.gif);
+	width: 90px !important;
+}
+.btnAnterior{
+	background-image:url(../imgs/btnAnterior.gif);
+	width: 90px !important;
+}
+.btnAnteriorDesabilitado{
+	background-image:url(../imgs/btnAnteriorDesabilitado.gif);
+	width: 90px !important;
+}
+.btnInserirMembro{
+	background-image:url(../imgs/btnInserirMembro.gif);
+	width: 138px !important;
+}
+.btnGerarCedulas{
+	background-image:url(../imgs/btnGerarCedulas.gif);
+	width: 128px !important;
+}
+.btnInserirCandidato{
+	background-image:url(../imgs/btnInserirCandidato.gif);
+	width: 145px !important;
+}
+.btnImprimirEdital{
+	background-image:url(../imgs/btnImprimirEdital.gif);
+	width: 212px !important;
+}
+.btnImprimirChamadoEleicao{
+	background-image:url(../imgs/btnImprimirChamadoEleicao.gif);
+	width: 239px !important;
+}
+.btnImprimirSindicato{
+	background-image:url(../imgs/btnImprimirSindicato.gif);
+	width: 280px !important;
+}
+.btnImprimirAtaDRT{
+	background-image:url(../imgs/btnImprimirAtaDRT.gif);
+	width: 190px !important;
+}
+.btnImprimirAtaEleicao{
+	background-image:url(../imgs/btnImprimirAtaEleicao.gif);
+	width: 180px !important;
+}
+.btnImprimirAtaInstalacao{
+	background-image:url(../imgs/btnImprimirAtaInstalacao.gif);
+	width: 253px !important;
+}
+.btnImprimirResultado{
+	background-image:url(../imgs/btnImprimirResultado.gif);
+	width: 155px !important;
+}
+.btnImprimirCalendario{
+	background-image:url(../imgs/btnImprimirCalendario.gif);
+	width: 164px !important;
+}
+.btnImprimirRelatorioFrequencia{
+	background-image:url(../imgs/btnImprimirRelatorioFrequencia.gif);
+	width: 200px !important;
+}
+.btnCarregarRiscos{
+	background-image:url(../imgs/btnCarregarRiscos.gif);
+	width: 139px !important;
+}
+.btnQueroMeCandidatar{
+	background-image:url(../imgs/btnQueroMeCandidatar.gif);
+	width: 180px !important;
+}
+.btnCancelarDesligamento{
+	background-image:url(../imgs/btnCancelarDesligamento.gif);
+	width: 190px !important;
+}
+
+.btnSugerirReunioesOrdinarias{
+	background-image:url(../imgs/btnSugerirReunioesOrdinarias.gif);
+	width: 214px !important;
+}
+
+.btnExcluir,
+.btnExcluirDesabilitado,
+.btnProxima,
+.btnProximaDesabilitado,
+.btnAnterior,
+.btnAnteriorDesabilitado,
+.btnInserirCurriculoEscaneado,
+.btnInserirCurriculoDigitado,
+.btnEnviar,
+.btnEnviarBlue,
+.btnEditar,
+.btnSolicitarBDS,
+.btnDadosComplementares,
+.btnIncluirColaboradores,
+.btnEncerrarSolicitacao,
+.btnUpload,
+.btnDesligarColaborador,
+.btnSolicitacoes,
+.btnListarItens,
+.btnRealizarBackup,
+.btnInserirSelecionados,
+.btnAplicar,
+.btnInserir,
+.btnInserirDesabilitado,
+.btnGravar,
+.btnGravarDesabilitado,
+.btnCancelar,
+.btnVoltar,
+.btnVoltarDesabilitado,
+.btnUpload,
+.btnVisualizar,
+.btnImprimir,
+.btnImprimirPdf,
+.btnImprimirVersoPdf,
+.btnPesquisar,
+.btnFechar,
+.btnGravarVisualizar,
+.btnInserirPerguntaFinal,
+.btnInserirInvestimento,
+.btnNovaOpcaoResposta,
+.btnAvancar,
+.btnEnviarPorEmail,
+.btnMoverCandidatos,
+.btnTriagem,
+.btnTriagemModuloExterno,
+.btnImportarbds,
+.btnImportar,
+.btnAvancarDesabilitado,
+.btnRelatorio,
+.btnVoltarParaAListaDePesquisas,
+.btnVoltarParaAListaDeAvaliacoes,
+.btnAtualizarSistema,
+.btnEditarOpcoesDeResposta,
+.btnClonarInvestimentos,
+.btnClonar,
+.btnInserirHistorico,
+.btnSalvarArquivos,
+.btnEditarOCadastroDesseCandidato,
+.btnInserirNovoCandidato,
+.btnSubstituirEsseCurriculoEscaneado,
+.btnConcluir,
+.btnInserirNovoCurriculoEscaneado,
+.btnSuspenderSolicitacao,
+.btnInserirPergunta,
+.btnEmbaralhar,
+.btnAplicarNaOrdemAtual,
+.btnAplicarOrdenadoPorAspectos,
+.btnAspectos,
+.btnEditarHistoricos,
+.btnCriarUsuariosAuto,
+.btnInserirTurma,
+.btnCriarUsuarios,
+.btnCarregarTurmas,
+.btnUnirBairros,
+.btnInserirMembro,
+.btnGerarCedulas,
+.btnInserirCandidato,
+.btnImprimirEdital,
+.btnImprimirChamadoEleicao,
+.btnImprimirSindicato,
+.btnImprimirAtaDRT,
+.btnImprimirAtaEleicao,
+.btnImprimirAtaInstalacao,
+.btnImprimirResultado,
+.btnImprimirCalendario,
+.btnImprimirRelatorioFrequencia,
+.btnCarregarRiscos,
+.btnIncluirColaboradoresNota,
+.btnSugerirEtapas,
+.btnGerarEtapasModelo,
+.btnInserir_Historico,
+.btnCancelarDesligamento,
+.btnQueroMeCandidatar,
+.btnSugerirReunioesOrdinarias,
+.btnRelatorioPorCriterio,
+.btnRelatorioPorAvaliador,
+.btnListaFrequenciaVotacao
+{
+	border: 0;
+	background-repeat: no-repeat;
+	background-color: #FFF;
+	width: 78px;
+	height: 24px;
+	margin: 10px 10px 0 0;
+	cursor: pointer;
+}
+
+.btnImprimirPdfB
+{
+	border: 0;
+	background-repeat: no-repeat;
+	width: 78px;
+	height: 24px;
+	margin: 10px 10px 0 0;
+	cursor: pointer;
+}
+
+.btnVoltarListaFrequencia
+{
+	background-color:#EBECF1;
+	color:#000000;
+	border: 0;
+	background-repeat: no-repeat;
+	width: 78px;
+	height: 24px;
+	margin: 10px 10px 0 0;
+	cursor: pointer;
+}
+
+
+.btnLeft
+{
+	background-image:url(../imgs/btnLeft.gif);
+}
+.btnAllLeft
+{
+	background-image:url(../imgs/btnAllLeft.gif);
+}
+.btnRight
+{
+	background-image:url(../imgs/btnRight.gif);
+}
+.btnAllRight
+{
+	background-image:url(../imgs/btnAllRight.gif);
+}
+.btnAllRight,
+.btnRight,
+.btnAllLeft,
+.btnLeft,
+.btnLimparFiltro,
+.btnImprimirVerso,
+.btnTransferirCandidatos,
+.btnInserirEtapasEmGrupo
+{
+	border: 0;
+	background-repeat: no-repeat;
+	background-color: #FFF;
+	width: 23px;
+	height: 23px;
+	margin: 10px 10px 0 0;
+	cursor: pointer;
+}
+
+.whiteBG
+{
+	background-color: #FFF !important;
+}
+.grayBG
+{
+	background-color: #F6F6F6 !important;
+}
+.grayBGE
+{
+	background-color: #EEEEEE !important;
+}
+.grayBGDivInfo
+{
+	background-color: #E9E9E9 !important;
+}

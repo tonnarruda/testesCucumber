@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Versoes>
+	<Versao id="1.1.31.20" data="23/09/2010">
+		- Faixa Salarial: criado campo Descrição no AC Pessoal.
+		- Integração de cargo do AC Pessoal.
+	</Versao>
+	<Versao id="1.1.31.19" data="30/08/2010">
+		- Relatório de Avaliação de Turma: opção para ocultar nomes dos colaboradores nas respostas e comentários.
+		- Pesquisa: retirada obrigatoriedade dos campos abertos e de multipla escolha.
+		- TeD: relatórios agora consideram frequência mínima do curso ao informar se aluno foi aprovado.
+		- Cadastro de Candidatos: possibilidade de alterar a senha informada no módulo externo.
+		- Relatório de Colaboradores por Cargo: opção para imprimir colaboradores com x meses de experiência.
+		- Menus de Avaliação do Período de Experiência movidos para o módulo de Avaliações.
+		- Relatório de Colaboradores por Cargo: nova coluna Data de Admissão.
+		- Opção para clonar Modelos de Avaliações.
+		- Avaliação de Desempenho: opção para excluir todos os colaboradores (avaliados ou avaliadores).
+		- Avaliação de Desempenho: opção para enviar e-mail de lembrete aos avaliadores.
+		- Adicionado filtro por Empresa no Relatório de Aniversariantes.
+		- Relatório de Resultado da CIPA: indicação dos eleitos.
+		- Cadastro de Cargos reformulado.
+		- SESMT: novo relatório de CATs (Comunicados de Acidentes de Trabalho).
+		- Cadastro de Cargos: novo campo Etapas (etapas seletivas sugeridas para o cargo).
+		- Listagens de Escolaridade: nova nomenclatura.
+		- Módulo Externo: só serão exibidos no campo "Cargo Pretendido" os cargos com a opção "Exibir no módulo externo" selecionada.
+		- Modelos de Avaliação de Turma: possibilidade de adicionar um cabeçalho ao questionário.
+		- Cadastro de Solicitação de Pessoal: novo campo Data.
+		- Modelos de Entrevista de Desligamento: possibilidade de adicionar um cabeçalho ao questionário.
+	</Versao>
+	<Versao id="1.1.30.18" data="03/08/2010">
+		- Novo módulo de Avaliação de Desempenho.
+		- Cadastro de Candidatos: se já existir candidato com o mesmo CPF, é exibido um alerta após preencher o campo.
+		- Melhorias no layout da visualização do currículo de candidato.
+		- Solicitações de pessoal ainda não liberadas são exibidas na página inicial.
+		- Currículos não analisados na triagem do módulo externo são exibidos na página inicial.
+		- Adicionado filtro por nome nas Áreas de Formação.
+		- Adicionado extintor tipo PQS (A, B e C).
+		- Menu Tipos de EPIs renomeado para Categorias de EPIs.
+		- Relatório de Exames Previstos: adicionado totalizador.
+		- Relatório de Exames Previstos: opção para não imprimir colaboradores afastados.
+		- Relatório de Atendimentos Médicos: opção para ordenar por nome.
+		- Prontuário: novas informações do colaborador: nome comercial, cargo e data de admissão.
+		- Relatório de Afastamentos: opção para ordenar por data ou nome.
+		- Relatórios de Colaboradores por Área e por Cargo: adicionado totalizador.
+		- Relatório de Admitidos: listagem exibe Nome e Nome Comercial (se diferentes).
+		- Listagem de Colaboradores: se colaborador estiver desligado, a data de desligamento é exibida ao lado do nome.
+		- Painel de Indicadores: novos gráficos de Frequência e de Vagas x Inscrições.
+		- Criação de aba com campos extras no cadastro de colaboradores. Configuração no menu Utilitários, Campos Extras.
+	</Versao>
+	<Versao id="1.1.29.17" data="01/07/2010">
+		- Solicitação de Pessoal: funcionalidade "Anunciar Vagas" (para divulgação no módulo externo) reformulada.
+		- Exibição do último login do usuário (acima do menu).
+		- "Modelos de Avaliação do Per. Experiência" renomeado para "Modelos de Avaliação" e movido para o módulo Avaliação.
+		- Modelos de Avaliação: opção de comentário das respostas e novos tipos de resposta "Subjetiva" e "Múltipla Escolha". 
+	</Versao>
+	<Versao id="1.1.28.16" data="10/06/2010">
+		- Registro de Ocorrências movido da listagem de Colaboradores para o novo menu Info.Funcionais > Movimentações > Ocorrências.
+		- Performance Profissional: novas informações (participações na CIPA, ocorrências, acidentes de trabalho, participação em etapas seletivas etc.).
+		- Relatório de Colaboradores por Cargo: nova coluna "Contratado há".
+		- Relatório de Realinhamentos: exibição do total da folha.
+		- Exibição do currículo do candidato: novos campos "Observações do RH" e "Motivo da Saída" e "Salário" das experiências anteriores.
+		- Extintores: campo Descrição removido.
+	</Versao>
+	<Versao id="1.1.27.15" data="21/05/2010">
+		- Preenchimento de fichas médicas: novo campo "Data".
+		- Retirada a obrigatoriedade do campo Exposição a agentes nocivos na edição de situação de colaborador.
+		- Relatório de Atendimentos Médicos: opção de agrupar por motivo e mudanças no layout.
+		- Relatório de Rotatividade (turnover) reformulado.
+		- Relatório de Exames Previstos: nome comercial exibido entre parênteses (se houver).
+		- Cadastro de Cargos: alterada a ordem dos campos.
+	</Versao>
+	<Versao id="1.1.27.14" data="05/05/2010">
+		- Indicador de Duração para Preenchimento de Vagas reformulado.
+		- Solicitações de Pessoal: Opção "Promover" candidato já contratado (permite promover o colaborador associado ao candidato).
+		- Planejamentos de Realinhamento: Nova informação de impacto total na folha. 
+		- Novo relatório "Estatísticas da Avaliação do Per. Experiência".
+		- Avaliação do Período de Experiência: Ajustes para Exibir o Cargo e Área Organizacional do colaborador. 
+		- Relatório de Prontuário: inclusão das Consultas médicas e dos Atestados externos do colaborador. 
+		- Ajustes no módulo externo.
+	</Versao>
+	<Versao id="1.1.26.13" data="22/04/2010">
+		- Situação do Colaborador: campo "Exposição a Agentes Nocivos" agora é obrigatório.
+		- Integração com o AC Pessoal: campo "Nome Comercial" do colaborador foi integrado (aberto para edição no FortesRH e AC Pessoal).
+		- Integração com o AC Pessoal: campo "Exposição a Agentes Nocivos" da situação foi integrado (aberto para edição no FortesRH e AC Pessoal).
+		- Integração com o AC Pessoal: cadastro de Área Organizacional agora é permitido também no AC Pessoal.
+		- Ajustes na edição de Cargo.
+	</Versao>
+	<Versao id="1.1.26.12" data="14/04/2010">
+		- Nova Funcionalidade: SESMT > "Ambientes e Funções do Colaborador" (permite ao SESMT editar Ambiente e Função em todas as situações de um colaborador).
+		- Nova Funcionalidade: SESMT > "Funções" (possibilita o cadastro de Funções para um determinado cargo dentro do módulo SESMT).
+		- Relatório "Áreas Organizacionais" renomeado para "Colaboradores por Área Organizacional".
+		- SESMT > Ficha de EPI: Nova opção para imprimir frente e verso em um único documento.
+		- SESMT CIPA > Eleicao: Nova Impressão de "Ata da Eleição".
+		- SESMT CIPA > Comissão: Nova Impressão de "Ata de Instalação e Posse".
+		- Relatório "Atendimentos Médicos": Conteúdo do relatório reformulado.
+		- Relatório "Colaboradores x Certificações": Incluída a nota de cada colaborador.
+		- Pesquisas: Nova Impressão de "Colaboradores da Pesquisa".
+		- Relatório de Admitidos: Ajuste para não exibir salário.
+	</Versao>
+	<Versao id="1.1.25.11" data="29/03/2010">
+		- Reformulação da tela de Solicitação de Pessoal.
+		- Novo relatório: "Admitidos".
+		- Novo relatório: "Situações".
+		- Performance Profissional:  Adicionados resultados das "Avaliação do Período de Experiência".
+		- Nova funcionalidade: Excluir múltiplas mensagens na Caixa de Mensagens da tela principal.
+		- Nova configuração: "Exibir aba documentos no módulo externo".
+	</Versao>
+	<Versao id="1.1.24.10" data="12/03/2010">
+		- Relatório de Desligamento: opção para exibir também as Observações.
+		- Cadastro de Cargos: após o cadastro já será solicitada a criação da primeira faixa salarial.
+		- Relatório de Exames Previstos: opção para exibir Nome Comercial.
+		- Relatório de Duração para preenchimento de vagas foi reformulado.
+		- Cadastro de EPIs: nova opção "Considerar os EPIs acima como entregues".
+		- "Tabela de Realinhamento" renomeada para "Planejamento de Realinhamento".
+		- "Histórico de Colaborador" renomeado para "Situação de Colaborador".
+		- Cabeçalho padrão dos relatórios foi reformulado.
+		- "Avaliação de Curso" renomeada para "Avaliação do Aluno".
+		- "Avaliação de Turma" renomeada para "Avaliação de Curso".
+		- Novo relatório: "Colaboradores por Cargo".
+		- Ajustes no Relatório de Exames Realizados (para trazer também exames sem resultado).
+		- Ajustes no Currículo Escaneado (para aceitar caracteres especiais do Windows).
+		- Ajustes no Histórico de Treinamentos (para conectar bordas da matriz de treinamentos).
+	</Versao>
+	<Versao id="1.1.23.9" data="25/02/2010">
+		- Listagem de Candidatos: exibição das colunas "data de cadastro" e "data da última atualização".
+		- Correção de erro na edição de usuários (estava sendo exibido perfil diferente do que o usuário possui).
+		- Histórico de Treinamento: se o curso só possui uma avaliação, a nota é exibida no histórico.
+		- Responder Pesquisa: retirada obrigatoriedade dos campos do tipo Nota ao preencher as respostas da pesquisa "pelo colaborador", isto é, quando o colaborador não tem acesso ao sistema. A obrigatoriedade continua se o próprio colaborador está respondendo.
+		- Relatório de Desligamento: ordenado por quantidade de colaboradores desligados (no relatório resumido).
+		- Edição de Currículo Escaneado: possibilidade de substituir apenas a imagem ou apenas o arquivo OCR.
+		- Relatório de Cargos renomeado para "Descrição de Cargos".
+		- CIPA > Etapas do Processo Eleitoral: nova funcionalidade "Sugerir Etapas" (se não houver nenhuma cadastrada ainda).
+		- Novas informações na lista de pendências com o AC Pessoal (página inicial): data de admissão e cargo nas Contratações; data do histórico nas mudanças de Histórico de Colaborador.
+		- Nova funcionalidade: Inserir Histórico de Colaborador (possibilidade de criar histórico de colaborador sem a necessidade de criar uma tabela de realinhamentos).
+		- SESMT > Relatório de Exames Previstos: nova opção para agrupar por Área Organizacional e adicionada nova coluna Cargo.
+		- Acompanhamento do Período de Experiência: nova seção Cadastro de Período de Acompanhamento, novo campo "Alertar para avaliação" nas configurações do sistema, nova seção Cadastro de Avaliação do Período de Experiência.
+		- Impressão de Solicitação de Exames: só são exibidas solicitações para exames que possuem clínica selecionada. O layout foi reduzido para evitar a geração de páginas em branco.
+	</Versao>
+	<Versao id="1.1.22.8" data="02/02/2010">
+		- As opções do menu Indicadores foram movidas para os módulos, de acordo com seu contexto.
+		- Novo menu Utilitários | Importar Cadastros: replica Áreas Organizacionais, Áreas de Interesse, Conhecimentos e Cargos entre empresas.
+		- Relatório de Pesquisas: campo "Estabelecimento" modificado para "Empresa - Estabelecimento".
+		- Novo relatório: Colaborador x Certificações.
+		- Listagem de Certificações: adicionado um filtro por nome.
+		- Listagem de Certificações: adicionado ícone "Imprimir".
+		- Relatório de Colaboradores que fizeram um treinamento agora exibe um "-" nos casos em que a nota não foi informada.
+		- Colaboradores inscritos na turma: possibilidade de inserir Colaboradores junto com a nota.
+		- Listagem de Cargos: adicionado ícone "Imprimir".
+		- Relatório de Áreas Organizacionais: adicionado totalizador de colaboradores ao final de cada área.
+		- O Relatório de Motivos de Desligamentos foi reformulado e renomeado para Relatório de Desligamentos.
+		- No relatório de Entrevistas de Desligamento foi adicionada a opção "Exibir nomes dos colaboradores nas respostas e comentários".
+		- No aviso de desligamento vindo do AC Pessoal foi configurado um link para a Entrevista de Desligamento.
+		- Listagem de Candidatos: adicionado filtro "Exibir contratados".
+		- Triagem de Candidatos: adicionado filtro para trazer "apenas candidatos que nunca participaram de processos seletivos".
+		- Cadastro de Candidatos: novo campo "Contato".
+		- Pesquisas: foi retirada a obrigatoriedade de preenchimento em perguntas subjetivas.
+		- Integração com o AC Pessoal: o campo CBO foi aberto para edição no cadastro de cargos do AC Pessoal.
+		- Nova funcionalidade: Cadastro de Currículo Digitado.
+	</Versao>
+	<Versao id="1.1.21.7" data="12/01/2010">
+		- Ícone para Impressão de ASO na listagem de atendimentos médicos.
+		- Pesquisa: possibilidade de adicionar colaboradores de outras empresas.
+		- CIPA: impressão de comprovante de inscrição duplicado (vias para colaborador e para empresa).
+		- CIPA: candidatos numerados no Chamado para Eleição.
+		- Atendimentos Médicos: novo motivo de atendimento "Apresentação de Atestado Externo".
+	</Versao>
+	<Versao id="1.1.20.6" data="06/01/2010">
+		- Novo relatório: EPIs por Função.
+		- Novo relatório: Quantidade de Colaboradores por Função.
+		- Novo relatório: Atendimentos Médicos.
+		- Relatório de Exames Realizados foi reformulado.
+		- Personalização da impressão do Currículo de Candidato.
+		- CIPA: Impressão de comprovante de inscrição.
+		- CIPA: Lista de candidatos numerada para facilitar votação.
+		- Solicitação de Exames foi reformulado e renomeado para Atendimento Médico.
+	</Versao>
+	<Versao id="1.1.19.5" data="16/12/2009">
+		- Multipla escolha no cadastro de perguntas (Pesquisas, Avaliações de Cursos, Avaliações de Turmas, Entrevistas de Desligamento e Fichas Médicas).
+		- Solicitação de Exames: tamanho reduzido para 4 solicitações por página.
+		- Candidatos da Seleção: novo filtro Nome.
+		- Novos cadastros de Riscos, Ambientes e Medições dos Riscos nos Ambientes.
+		- Novos relatórios: PPRA, LTCAT e PPP.
+		- Relatório de Exames Previstos: ordenação por Nome.
+		- Novo utilitário: exibição de logs de erros.
+	</Versao>
+	<Versao id="1.1.18.4" data="10/11/2009">
+		- Novo menu, com opções reagrupadas.
+		- Cadastro de candidatos: novos campos na aba Experiência: Salário e Motivo da Saída.
+		- Solicitação de Realinhamento: novo campo Observação.
+		- Cadastro de Clínicas: novos campos Telefone e Horário de Atendimento.
+		- Nova funcionalidade: relatório de fichas médicas.
+	</Versao>
+	<Versao id="1.1.17.3" data="04/11/2009">
+		- Solicitação de pessoal: novo campo Descrição.
+		- Triagem de candidatos: filtro dividido em básico e avançado.
+		- Triagem de candidatos: possibilidade de filtrar candidatos de outras empresas.
+		- Nova seção: Cadastro de Extintores.
+		- Nova seção: Inspeção de Extintores.
+		- Nova seção: Manutenção de Extintores.
+		- Triagem de candidatos: novo filtro por Deficiência.
+		- Listagem de Candidatos: novo filtro por Observações do RH.
+		- Integração com o AC: se a matrícula não estiver preenchida, o código do empregado será considerado como matrícula.
+		- Novo relatório: Manutenção e Inspeção de Extintores.
+		- Cadastro de EPI: retirada obrigatoriedade do campo Percentual de Atenuação.
+		- Cadastro de EPI: eliminado o campo Data de Emissão.
+		- Cadastro de EPI: campo Período Máximo alterado de meses para dias.
+		- Ajustes no relatório de EPIs: agrupamento por EPI ou por Colaborador.
+	</Versao>
+	<Versao id="1.1.16.2" data="17/10/2009">
+		- Comissões da CIPA: exibição por extenso da data das atas de reuniões.
+		- Ajustes no módulo externo para compatibilidade com o Internet Explorer 8.
+		- SESMT: nova seção Cadastro de CIDs.
+		- Seção Comunicados de Acidentes de Trabalho foi movida da listagem de Colaboradores para o menu SESMT.
+		- SESMT: nova seção Cadastro de Afastamentos.
+		- SESMT: novo relatório: Afastamentos.
+		- Registro de Ocorrências: integração com o Fortes AC.
+	</Versao>
+	<Versao id="1.1.15.1" data="01/10/2009">
+		- Atualização do servidor do PostgreSQL da versão 8.2 para a 8.4.
+		- Nova opção na listagem de candidatos: incluir candidato em solicitação.
+		- Eleições da CIPA: novo relatório Calendário do Processo Eleitoral.
+		- Eleições da CIPA: novo campo Estabelecimento.
+		- Eleições da CIPA: ajustes na Ata para DRT.
+		- Comissões da CIPA: novas funções Membro Suplente e Membro Titular.
+		- Comissões da CIPA: novo campo no cadastro de reunião: Pontos pendentes da reunião anterior.
+		- Adicionado filtro na listagem de cursos.
+		- Relatório de Motivos de Desligamento: mudanças no layout.
+		- Ajustes no layout para resolução de tela 800x600.
+	</Versao>
+	<Versao id="1.0.14.0" data="31/08/2009">
+		- SESMT CIPA: Etapas do Processo Eleitoral
+		- SESMT CIPA: Eleições
+		- SESMT CIPA: Comissões
+		- Transferir bairros
+		- Layout personalizado do módulo externo
+	</Versao>
+	<Versao id="1.0.13.0" data="13/08/2009">
+		- SESMT: Solicitação de Exames - novo campo: Data.
+		- SESMT: Solicitação de EPIs - novo campo: Data.
+		- Relatório de Motivos de Desligamento: novo agrupador "Motivo não Informado".
+	</Versao>
+	<Versao id="1.0.12.0" data="10/08/2009">
+		- SESMT: Relatório de Exames Previstos.
+		- SESMT: novos campos no cadastro de Médico Coordenador.
+		- SESMT: possibilidade de registrar Fardamento como EPI.
+		- SESMT: Impressão da Ficha de Controle de EPIs do colaborador.
+		- SESMT: Solicitação de EPI.
+		- SESMT: Entrega de EPI (pelo almoxarifado).
+		- SESMT: Relatório de EPIs com CA a vencer.
+		- SESMT: Relatório de EPIs com prazo a vencer.
+	</Versao>
+	<Versao id="1.0.11.0" data="22/07/2009">
+		- Pesquisas: impressão do resultado em PDF.
+		- Novo relatório: Aniversariantes do Mês.
+		- Novo relatório: Avaliações de Candidatos.
+		- Listagem de colaboradores: mudança de Nome Comercial para Nome Oficial.
+		- SESMT: Clínicas e Médicos Autorizados - novo campo Exames.
+		- SESMT: Nova funcionalidade: Solicitação de Exames.
+		- SESMT: Modelos de Fichas Médicas.
+		- SESMT: Preenchimento de Fichas Médicas.
+		- SESMT: Registro de Prontuário.
+		- SESMT: Relatório de Prontuário.
+		- SESMT: Impressão de ASOs.
+		- SESMT: Realização de Exames.
+	</Versao>
+	<Versao id="1.0.10.1" data="07/07/2009">
+		- Ajuste na criação de usuários quando o Perfil padrão não foi informado nas configurações do sistema.
+	</Versao>
+	<Versao id="1.0.10.0" data="29/06/2009">
+		- TeD: Painel de Indicadores.
+		- TeD: Relatório - Histórico de Treinamentos por Colaborador.
+		- TeD: Geração de Certificados e Verso.
+		- TeD: Relatório - Matriz de Treinamentos.
+		- Adicionada foto no cadastro de Colaborador.
+		- Novo layout do módulo externo.
+		- Novo layout da caixa de mensagens.
+		- Currículo do candidato: novo campo Deficiência.
+		- Opção Analfabeto retirada dos campos Escolaridade.
+	</Versao>
+	<Versao id="1.0.9.0" data="19/06/2009">
+		- Nova opção de configuração: forçar caixa alta nos cadastros do módulo externo.
+		- TeD: Avaliações de Turmas.
+		- TeD: Certificações.
+		- Integração com Office.
+	</Versao>
+	<Versao id="1.0.8.1" data="08/06/2009">
+		- Candidatos: filtro por indicado.
+		- Opção para transferir faixas entre cargos.
+		- Candidatos da seleção: candidatos não aptos não aparecem mais na criação de etapa em lote.
+		- Novo relatório: Cronograma de Treinamento.
+		- Novo relatório: Plano de Treinamento.
+	</Versao>
+	<Versao id="1.0.8.0" data="02/06/2009">
+		- Registro de nota do colaborador participante do curso.
+		- Plano de treinamentos.
+		- Lista de frequência.
+	</Versao>
+	<Versao id="1.0.7.1" data="21/05/2009">
+		- Inclusão de busca por data de cadastro ou atualização no filtro da listagem de candidatos.
+	</Versao>
+	<Versao id="1.0.7.0" data="20/05/2009">
+		- Ampliação da integração com o AC Pessoal.
+		- Criação automática de usuários.
+		- Edição de login.
+		- Atualização de dados pessoais.
+	</Versao>
+	<Versao id="1.0.6.1" data="29/04/2009">
+		- Melhoria no filtro de candidatos para solicitação de pessoal.
+		- Nova paginação no histórico dos candidatos da solicitação conservando filtro ao voltar nas páginas.
+	</Versao>
+	<Versao id="1.0.6.0" data="20/02/2009">
+		- Integração com o AC Pessoal completamente reformulada.
+		- Solicitação de Reajuste foi reformulada e chama-se agora Solicitação de Realinhamento de Cargos e Salários.
+		- Possibilidade de trabalhar com salários propostos por índice ou por cargo, totalmente integrado com o AC Pessoal.
+		- Solicitação de confirmação do setor pessoal para operações financeiras (promoções, reajustes de salários de cargos etc.).
+		- Possibilidade de cancelar solicitações do RH no AC Pessoal.
+		- Caixa de Mensagens para notificações importantes (cancelamentos, rescisões etc.).
+		- Possibilidade de editar/excluir históricos de colaborador.
+		- Relatório de Projeção Salarial, onde é possível exibir o relatório completo de salários em qualquer data.
+		- Listagem de Pendências com o AC Pessoal na página principal do RH.
+		- Criação dos históricos de faixa salarial (para acompanhar a evolução do salário do cargo).
+		- Progressão do Colaborador reformulada (ajustes no gráfico e novos detalhes nos históricos).
+		- Ajustes na Entrevista de Desligamento (possibilidade de edição, obrigatoriedade dos campos retirada etc.).
+	</Versao>
+	<Versao id="1.0.5.1" data="05/02/2009">
+		- Ajuste na paginação do filtro de candidatos para solicitação de pesssoal.
+	</Versao>
+	<Versao id="1.0.5.0" data="26/11/2008">
+		- CPF zerado não é mais aceito no cadastro de Colaboradores.
+		- Contratar candidato: campo Data de Nascimento consertado.
+		- Relatório de Área Organizacional reformulado.
+		- Filtro do relatório Motivos de Desligamento consertado.
+		- Integração com AC: cadastro de sub-área consertado.
+		- Pesquisas: ajustes na impressão do questinoário.
+		- Relatório de Salários: Diretores retirados da listagem.
+		- Relatório de Treinamentos: Colaboradores demitidos retirados da listagem.
+		- Configurações: opção para não sugerir valor do salário ao solicitar reajuste e solicitar pessoal.
+		- Progressão do Colaborador: adicionadas informações sobre o desligamento.
+		- Solicitação de Reajuste: máscara no salário atual consertada.
+		- Solicitação de Reajuste: sugestão de estabelecimento, ambiente e função.
+		- Adicionar colaboradores à pesquisa teve a ordenação consertada.
+		- Pesquisas: permitir excluir colaborador se ainda não respondeu a pesquisa.
+		- Ajustes na geração de PPP.
+	</Versao>
+	<Versao id="1.0.4.0" data="24/11/2008">
+		- Criação do cadastro de índice.
+		- Exclusão e edição da Entrevista de Desligamento apenas se ninguém respondeu.
+		- Motivos de Demissão alterado para Motivos de Desligamento.
+		- Exibição de todas as áreas no campo Área Proposta na Solicitação de Reajuste.
+	</Versao>
+	<Versao id="1.0.3.0" data="13/11/2008">
+		- Novo módulo de pesquisas.
+		- Criação da aba documentos nos cadastros de Candidato e Colaborador.
+		- Filtros reformulados.
+		- Novos campos de seleção múltipla.
+		- Entrevistas de Desligamento.
+		- Plano de Treinamento: valor do curso rateado entre os participantes.
+		- Configurações: Teste de envio de e-mail.
+		- Empresas: Testar conexão com o Fortes AC (integração).
+		- Cadastro de Candidatos: CPF é obrigatório apenas no módulo externo.
+		- Currículo escaneado: consertado bug com caracteres UTF-8.
+	</Versao>
+	<Versao id="1.0.2.0" data="21/10/2008">
+		- Inclusão do campo deficiência no cadastro de candidato.
+		- Inclusão do campo deficiência no cadastro de colaborador.
+	</Versao>
+	<Versao id="1.0.1.5" data="15/10/2008">
+		- Remoção da obrigatoriedade de CPF para o cadastro de candidato
+		- Correção no cadastro de currículo escaneado para aceitar documentos com codificação UTF8
+		- Correção da exclusão de candidato
+	</Versao>
+	<Versao id="1.0.1.4" data="07/10/2008">
+		- Correção na inclusão dos colaboradores na turma.
+	</Versao>
+	<Versao id="1.0.1.3" data="30/09/2008">
+		- Inclusão da verificação de compatibilidade entre o sistema FortesRH e o navegador.
+	</Versao>
+	<Versao id="1.0.1.2" data="18/09/2008">
+		- Ajuste na consulta das solicitações de pessoal.
+		- Ajuste na atualização das solicitações de pessoal.
+	</Versao>
+	<Versao id="1.0.1.1" data="16/09/2008">
+		- Ajuste na integração do Colaborador com o AC Pessoal.
+	</Versao>
+	<Versao id="1.0.1.0" data="04/09/2008">
+		- Colaboradores - Liberada edição de campos se só houver um histórico.
+		- Colaboradores - Adicionado filtro por matrícula.
+		- Solicitação de pessoal - Ao entrar, já exibir solicitações abertas em andamento.
+		- Candidatos - novo campo: Observações do RH, não disponível no módulo externo.
+		- Exames - novo campo: Periodicidade.
+		- Lista de freqüência - Melhorias no layout e adição de informações.
+		- Cursos - listagem de colaboradores sai da Edição da Turma e vai para o ícone 'Colaboradores Inscritos'.
+		- Melhorias na paginação de listagens.
+		- Adicionado cadastro de Áreas de Formação.
+		- Relatórios: possibilidade de adicionar logomarca da empresa.
+		- Cursos > Turmas - criação do Relatório de Realização de Curso.
+		- Indicadores - criação do relatório de Turnover.
+		- Info.Funcionais - criação do relatório de Maiores Motivos de Desligamento.
+		- Candidatos - ícone Visualizar Currículo - Imprimir - novos campos Data e Assinatura do responsável pela contratação.
+		- Cursos > Turmas > Colaboradores Inscritos - substituídas imagens por checkboxes na coluna Aprovado.
+		- Cursos > Turmas > Lista Freqüência - opção para selecionar todos na coluna.
+		- Áreas Organizacionais - adicionado filtro por Nome.
+		- Cargos - adicionado filtro por Nome e Área Organizacional.
+		- Candidatos - adicionado filtro: Disponíveis/Indisponíveis.
+		- Relatório de Cargos reformulado.
+	</Versao>
+	<Versao id="1.0.0.0" data="22/08/2008">
+		- Liberação da versão comercial.
+	</Versao>
+</Versoes>

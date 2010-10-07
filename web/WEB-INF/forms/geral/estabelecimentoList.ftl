@@ -1,0 +1,35 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<html>
+<head>
+<@ww.head/>
+<style type="text/css">
+	@import url('<@ww.url value="/css/displaytag.css"/>');
+</style>
+<title>Cadastro de Estabelecimentos</title>
+</head>
+<body>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+
+	<@ww.actionerror />
+	<@ww.actionmessage />
+	<@display.table name="estabelecimentos" id="estabelecimento" pagesize=10 class="dados" defaultsort=2 sort="list">
+		<@display.column title="Ações" class="acao" style="text-align:center; width: 80px">
+			<a href="prepareUpdate.action?estabelecimento.id=${estabelecimento.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<#if !integradoAC>
+			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?estabelecimento.id=${estabelecimento.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			</#if>
+		</@display.column>
+		<@display.column property="nome" title="Nome" style="width: 500px"/>
+		<@display.column property="cnpjFormatado" title="CNPJ" style="width: 120px"/>
+	</@display.table>
+	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}' />
+
+	<#if !integradoAC>
+	<div class="buttonGroup">
+		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
+		</button>
+	</div>
+	</#if>
+</body>
+</html>

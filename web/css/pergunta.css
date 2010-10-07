@@ -1,0 +1,89 @@
+.pergunta *
+{
+	margin: 0;
+	padding: 0;
+}
+.selectInfo
+{
+	padding: 0.5em 0;
+}
+.imgApagada
+{
+	opacity:0.2;
+	filter:alpha(opacity=20);
+}
+a
+{
+	text-decoration: none;
+}
+a:hover
+{
+	text-decoration: none;
+}
+.periodo
+{
+	margin: 1em 0;
+	background-color: #EEE;
+	padding: 0.5em;
+}
+.posicao
+{
+	visibility: hidden;
+}
+.posicao input
+{
+	width: 2em;
+}
+.acaoPerguntas img
+{
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+}
+.negrito
+{
+	font-weight: bold;
+}
+.novaPergunta
+{
+	margin: 1em 0;
+}
+.novaPergunta img
+{
+	vertical-align: middle;
+	border: 0;
+	width: 16px;
+	height: 16px;
+}
+.pergunta
+{
+	background-color: #EEE;
+	padding: 0.5em;
+	margin: 0.5em 0;
+}
+.objetiva input
+{
+	border: 0;
+}
+.objetiva
+{
+	margin: 0.3em 0 0 0;
+}
+textarea
+{
+	width: 100%;
+	height: 80px;
+}
+.perguntaTitulo
+{
+	padding: 0.3em 0;
+}
+.aspecto
+{
+	float: right;
+	font-weight: bold;
+}
+.comentarioTexto
+{
+	margin: 0.5em 0;
+}

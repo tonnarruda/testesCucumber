@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="anuncio" extends="default" namespace="/captacao/anuncio">
+		<action name="list" class="com.fortes.rh.web.action.captacao.AnuncioListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/anuncioList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.captacao.AnuncioListAction" method="delete">
+			<result name="success" type="redirect">list.action</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.AnuncioEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/anuncioEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.captacao.AnuncioEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/anuncioEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.captacao.AnuncioEditAction" method="insert">
+			<result name="successimprime" type="redirect">../solicitacao/list.action</result>
+			<result name="successemail" type="redirect">email.action?anuncio.id=${anuncio.id}</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.captacao.AnuncioEditAction" method="update">
+			<result name="successimprime" type="redirect">../solicitacao/list.action</result>
+			<result name="successemail" type="redirect">email.action?anuncio.id=${anuncio.id}</result>
+		</action>
+		<action name="anunciar" class="com.fortes.rh.web.action.captacao.AnuncioEditAction" method="anunciar">
+			<result name="success" type="redirect">prepareInsert.action?solicitacao.id=${solicitacao.id}</result>
+			<result name="success2" type="redirect">prepareUpdate.action?solicitacao.id=${solicitacao.id}</result>
+		</action>
+		<action name="imprimir" class="com.fortes.rh.web.action.captacao.AnuncioEditAction" method="imprimir">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/anuncioImprimi.ftl</result>
+		</action>
+		<action name="email" class="com.fortes.rh.web.action.captacao.AnuncioEditAction" method="email">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/anuncioEmail.ftl</result>
+		</action>
+		<action name="enviaEmail" class="com.fortes.rh.web.action.captacao.AnuncioEditAction" method="enviaEmail">
+			<interceptor-ref name="defaultUpdateStack"/>
+			<result name="success" type="redirect">../solicitacao/list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/anuncioEmail.ftl</result>
+		</action>
+
+	</package>
+</xwork>

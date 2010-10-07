@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="diaTurma" extends="default" namespace="/desenvolvimento/diaTurma">
+		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.DiaTurmaListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/diaTurmaList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.desenvolvimento.DiaTurmaListAction" method="delete">
+			<result name="success" type="redirect">list.action</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.DiaTurmaEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/diaTurmaEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.desenvolvimento.DiaTurmaEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/diaTurmaEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.DiaTurmaEditAction" method="insert">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/diaTurmaEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.DiaTurmaEditAction" method="update">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/diaTurmaEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

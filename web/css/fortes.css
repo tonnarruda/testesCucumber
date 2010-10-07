@@ -1,0 +1,169 @@
+.fieldsetPadrao
+{
+	width: 430px;
+}
+.inputNome
+{
+	width: 445px;
+}
+.inputLogin
+{
+	width: 180px;
+}
+.listCheckBoxBarra {
+	width:100%;
+	height:20px;
+	background-color: #B9C9E0;
+	text-align: left;
+}
+
+.mascaraData
+{
+	width:71px;
+}
+.mascaraDataMesAno
+{
+	width:50px;
+}
+.mascaraCpf
+{
+	width:100px;
+}
+.mascaraCnpj
+{
+	width:127px;
+}
+.mascaraCep
+{
+	width:64px;
+}
+
+.mascaraEmail
+{
+	width:300px;
+}
+
+.listCheckBox {
+	font:13.3px sans-serif;
+	width:100%;
+	height:150px;
+	overflow:auto;
+}
+.listCheckBoxContainer {
+	font:13.3px sans-serif;
+	border:1px solid #7E9DB9;
+	background:#fff;
+	width:500px;
+	height:170px;
+}
+
+.listCheckBoxContainer input{
+	border:0px solid #FFF;
+}
+
+.linkCheck {
+	color: black;
+	cursor: pointer;
+}
+a.botaoNovo *
+{
+	border: 0;
+}
+a.botaoNovo
+{
+	text-decoration: none;
+	font-family: sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFF;
+}
+a.botaoNovo:hover
+{
+	text-decoration: none;
+	color: #FFF;
+}
+span.botao
+{
+	background-image:url(../imgs/btnBarra.gif);
+	background-position: bottom;
+	background-repeat: repeat-x;
+	padding:0 0 3px 0;
+}
+.errorMessage
+{
+	border: 1px solid #B35B5B;
+	background-color: #FFFCE9;
+	padding: 1em;
+	text-align: center;
+	margin: 1em 0;
+	color: #900000;
+	font-weight: bold;
+}
+#iframeZone
+{
+	position : absolute;
+	z-index: 999;
+    top : 50%;
+	left : 50%;
+	margin-left : -139px;
+	margin-top : -148px;
+	width : 275px;
+	_width : 283px;/* IE */
+	height : 205px;
+	_height : 110px;/* IE */
+	background-color: transparent;
+}
+
+#messageZone
+{
+      position : absolute;
+	  z-index : 1000;
+      top : 50%;
+      left : 50%;
+      margin-left : -139px;
+      margin-top : -148px;
+      width : 281px;
+	  height : 207px;
+	  _height : 206px;
+      background-color : #FFF;
+	  border : 1px solid #DEDEDE;
+	  background-image : url(../imgs/carregando.gif);
+	  background-position: center;
+	  background-repeat: no-repeat;
+}
+.divInfo
+{
+	padding: 5px;
+	width: 725px;
+	background-color: #E9E9E9;
+	border: 1px solid #7E9DB9;
+}
+
+.divInfoSemBackground
+{
+	padding: 5px;
+	width: 725px;
+	border: 1px solid #7E9DB9;
+}
+
+#msgAutenticacao
+{
+	color: #F7EE39;
+	font-size:30px;
+}
+
+#conteudoExibeEsconde h4 {
+		margin: 0;
+		margin-top: 10px;
+		padding: 6px 20px;
+		background: #cad2dd url(../imgs/menosModelo2.gif) 3px center no-repeat;
+		cursor: pointer
+		}
+	
+#conteudoExibeEsconde h4.fechado { 
+		background:#cad2dd url(../imgs/maisModelo2.gif) 3px center no-repeat;
+	}
+#conteudoExibeEsconde table {
+	background: #cad2dd;
+	border-collapse: collapse;
+}

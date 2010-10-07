@@ -1,0 +1,80 @@
+#filter
+{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 800px !important;
+	height: 800px !important;
+	background-color: #CECECE;
+	z-index:1000;
+	opacity:0.5;
+	filter: alpha(opacity=50);
+}
+
+#box
+{
+	display: none;
+	position: absolute;
+	top: 20%;
+	left: 20%;
+	width: 510px;
+	height: 480px;
+	padding: 48px;
+	margin:0;
+	border: 2px solid #7E9DB9;
+	background-color: white;
+	overflow: none;
+}
+
+#boxtitle
+{
+	position:absolute;
+	float:center;
+	top:0;
+	left:0;
+	width:606px;
+	height:24px;
+	padding:0;
+	padding-top:4px;
+	left-padding:8px;
+	margin:0;
+
+	background-color: #23516B;
+	color: #FFCB03;
+	font-weight: bold;
+	text-align:center;
+}
+#boxFrequencia
+{
+	display: none;
+	position: absolute;
+	top: 20%;
+	left: 30%;
+	width: 300px;
+	height: 280px;
+	padding: 48px;
+	margin:0;
+	border: 2px solid #7E9DB9;
+	background-color: white;
+	overflow: none;
+}
+
+#boxtitleFrequencia
+{
+	position:absolute;
+	float:center;
+	top:0;
+	left:0;
+	width:400px;
+	height:24px;
+	padding:0;
+	padding-top:4px;
+	left-padding:8px;
+	margin:0;
+
+	background-color: #23516B;
+	color: #FFCB03;
+	font-weight: bold;
+	text-align:center;
+}

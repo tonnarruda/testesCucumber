@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="colaboradorPresenca" extends="default" namespace="/desenvolvimento/colaboradorPresenca">
+		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorPresencaListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorPresencaList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorPresencaListAction" method="delete">
+			<result name="success" type="redirect">list.action</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorPresencaEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorPresencaEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorPresencaEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorPresencaEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorPresencaEditAction" method="insert">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorPresencaEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorPresencaEditAction" method="update">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorPresencaEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

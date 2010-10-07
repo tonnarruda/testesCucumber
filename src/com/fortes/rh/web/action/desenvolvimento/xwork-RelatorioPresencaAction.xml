@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="relatorioPresenca" extends="default" namespace="/desenvolvimento/relatorioPresenca">
+		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.RelatorioPresencaAction">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/relatorioPresenca.jasper</param>
+				<param name="dataSource">listaDePresencas</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+			<result name="acessonegado" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioPresenca.ftl</result>
+			<result name="error" type="redirect">prepareRelatorio.action</result>
+		</action>
+		<action name="prepareRelatorio" class="com.fortes.rh.web.action.desenvolvimento.RelatorioPresencaAction" method="prepareRelatorio">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioPresenca.ftl</result>
+		</action>
+	</package>
+</xwork>

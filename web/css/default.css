@@ -1,0 +1,386 @@
+body {
+	background-color: #EBECF1;
+	color: #000;
+	margin: 0px;
+}
+
+form {
+	margin: 0;
+	border: 0;
+	padding: 0;
+}
+
+img
+{
+	border: 0;
+}
+input,select,textarea,option {
+	font-family: monospace !important;
+	font-size: 12px;
+}
+
+.linksPaginacao {
+	text-align: center;
+}
+
+.linksPaginacao a{
+	text-decoration: none
+}
+.linksPaginacao a:hover{
+	text-decoration: none !important;
+}
+.qtip-content a{
+	color: #5C5C5A;
+	text-decoration: none;
+}
+.qtip-content a:hover{
+	color: #17649A;
+	text-decoration: none;
+}
+
+.inputPage
+{
+	text-align:right;
+	width: 30px;
+}
+.actionMessage *
+{
+	border: 0 !important;
+}
+.actionMessage
+{
+	border: 1px solid #5B86B3;
+	background-color: #E9F4FF;
+	padding: 1em;
+	margin: 1em 0;
+	color: #000090;
+	font-weight: bold;
+}
+.actionMessage div
+{
+	text-align: left;
+}
+
+#topDiv {
+	width: 100%;
+	height: 43px;
+	background-image: url(../imgs/topo_bg.jpg);
+}
+
+#logoDiv {
+	width: 170px;
+	height: 43px;
+	display: inline;
+}
+
+#userDiv1 {
+	display: inline;
+	float: right;
+	background-image: url(../imgs/topo_bg_right.jpg);
+	background-repeat: repeat-x;
+}
+
+#userDiv {
+	height: 43px;
+	display: inline;
+	float: right;
+	background-image: url(../imgs/topo_bg_right.jpg);
+	background-repeat: repeat-x;
+}
+
+.saudacao {
+	float:left;
+	display: block;
+	margin-top:5px;
+	color: #FFFF33;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.nomeUsuario {
+	float:left;
+	display: block;
+	margin-top:5px;
+	color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.nomeEmpresa {
+	float:left;
+	display: block;
+	margin-top:5px;
+	color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+#waDiv {
+	position: relative;
+	width: 1000px;
+	margin-left: -500px;
+	margin-left:expression(document.body.clientWidth < 810? "-400px": "-500px");
+	left: 50%;
+}
+
+#waDivLista {
+	width: 100%;
+}
+
+#waDivTitulo,.waDivTitulo {
+	background-color: #23516B;
+	padding: 8px 15px;
+	color: #FFCB03;
+	font-weight: bold;
+}
+
+.waDivTituloX {
+	background-color: #5B86B3;
+	padding: 8px 15px;
+	color: #FFF;
+	font-weight: bold;
+}
+
+.waDivFormulario {
+	background-color: #FFF;
+	padding: 15px 15px;
+	color: #5C5C5A;
+	border: 1px solid #7E9DB9;
+}
+
+.waDivFormulario a{
+	color: #5C5C5A;
+}
+.waDivFormulario input,select,textarea,option{
+	color: #5C5C5A;
+	font-family: monospace !important;
+	font-size: 12px;
+}
+
+.waDivFormularioX {
+	background-color: #FFF;
+	padding: 15px 15px;
+	color: #454C54;
+	border: 1px solid #7E9DB9;
+}
+
+#menuDiv {
+	position: relative;
+	z-index: 3;
+	height: 40px;
+	background-image: url(../imgs/bgMenu2.gif);
+	background-color: #000;
+	color: #fff;
+}
+
+/*
+button, .button, input[type="button"] {
+	color: #000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+
+	border-width: 1px;
+	border-top-color: #AAA;
+	border-bottom-color: #000;
+	border-left-color: #AAA;
+	border-right-color: #000;
+	border-style: solid;
+
+	height: 27px;
+	background-color: #F0F0F0;
+}
+
+button[disabled="disabled"] {
+	color: #C0C0C0;
+}
+*/
+.wwgrp {
+	padding: 0px 5px 5px 0px;
+}
+
+ul {
+	list-style: none;
+}
+
+.fieldsetopt {
+	width: 580px;
+}
+
+textarea,select,input {
+	font-size: 12px;
+	font-family: sans-serif;
+}
+
+textarea {
+	width: 441px;
+	height: 150px;
+}
+
+td.label {
+	text-align: right !important;
+	font-weight: bold;
+}
+
+span.active {
+	border-top: 1px solid #666;
+	border-right: 1px solid #666;
+	border-left: 1px solid #666;
+	background-color: #92b2c8;
+	padding-bottom: 3px;
+	margin-left: 6px;
+}
+
+span.inactive {
+	border-top: 1px solid #666;
+	border-right: 1px solid #666;
+	border-left: 1px solid #666;
+	background-color: #c3d3df;
+	color: #999 !important;
+	margin-left: 6px;
+}
+
+a.header,span.header {
+	margin: 5px;
+	font-size: 11px;
+}
+
+div {
+	font-family: verdana, sans-serif;
+	font-size: 13px;
+}
+
+a {
+	font-family: verdana, sans-serif !important;
+	font-size: 11px !important;
+}
+
+a:hover {
+	color: #600;
+	text-decoration: none;
+}
+
+ul {
+	padding: 0px;
+	margin: 0px;
+}
+
+#dhtmlgoodies_tooltip {
+	background-color: #EEE;
+	border: 1px solid #000;
+	position: absolute;
+	display: none;
+	z-index: 20000;
+	padding: 2px;
+	font-size: 0.9em;
+	-moz-border-radius: 6px; /* Rounded edges in Firefox */
+	font-family: "Trebuchet MS", "Lucida Sans Unicode", Arial, sans-serif;
+	color: #000000;
+}
+
+#dhtmlgoodies_tooltipShadow {
+	position: absolute;
+	background-color: #555;
+	display: none;
+	z-index: 10000;
+	opacity: 0.7;
+	filter: alpha(opacity = 70);
+	-khtml-opacity: 0.7;
+	-moz-opacity: 0.7;
+	-moz-border-radius: 6px; /* Rounded edges in Firefox */
+}
+
+input,textarea,select,fieldset {
+	border: 1px solid #7E9DB9;
+}
+
+.listaOpcoes input {
+	border: none;
+}
+.errorMessage
+{
+	border: 1px solid #B35B5B;
+	background-color: #FFFCE9;
+	padding: 1em;
+	text-align: center;
+	margin: 1em 0;
+	color: #900000;
+	font-weight: bold;
+}
+.desabilitaImg
+{
+	opacity:0.3;
+	filter:alpha(opacity=30);
+	border: 0;
+}
+#quadro {
+	display: block;
+}
+
+#quadroInformacao {
+	display: table;
+	width: 100%;
+}
+
+#quadro h2 {
+	margin: -5px;
+	margin-bottom: 5px;
+	padding: 2px 5px;
+	font-size: 13px;
+	color: #FFFFFF;
+	background: #999999;
+}
+.divInfo h2 {
+	margin: -5px;
+	margin-bottom: 5px;
+	padding: 2px 5px;
+	font-size: 13px;
+	color: #FFFFFF;
+	background: #999999;
+}
+#quadro li {
+	height: 45px;
+}
+#gogEsq {
+	float: left;
+	padding: 5px;
+	width: 370px;
+	height: 505px;
+	background-color: #E9E9E9;
+	border: 1px solid #7E9DB9;
+}
+#gogDir {
+	float: right;
+	padding: 5px;
+	width: 560px;
+	height: 505px;
+	border: 1px solid #7E9DB9;
+}
+input[disabled]
+{
+	color: #808080;
+}
+
+#bairroContainer{
+	position: relative;
+	display: inline;
+	float: right;
+	_float: ;
+	margin: 0 auto;
+	width: 630px;
+}
+.padding li
+{
+	padding-left: 20px;
+}
+.listaOpcoes
+{
+	width:440px;
+	height:400px;
+	overflow: auto;
+
+	border-left:2px solid #808080;
+	border-top:2px solid #808080;
+	border-bottom:2px solid #fff;
+	border-right:2px solid #fff;
+	background:#fff;
+}

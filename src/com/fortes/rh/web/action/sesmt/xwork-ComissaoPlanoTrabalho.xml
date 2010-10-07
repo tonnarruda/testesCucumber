@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="comissaoPlanoTrabalho" extends="default" namespace="/sesmt/comissaoPlanoTrabalho">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="delete">
+			<result name="success" type="redirect"><![CDATA[list.action?comissao.id=${comissao.id}]]></result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="prepare">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="prepare">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="insert">
+			<result name="success" type="redirect"><![CDATA[list.action?comissao.id=${comissao.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="update">
+			<result name="success" type="redirect"><![CDATA[list.action?comissao.id=${comissao.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoEdit.ftl</result>
+		</action>
+		<action name="imprimirPlanoTrabalho" class="com.fortes.rh.web.action.sesmt.ComissaoPlanoTrabalhoEditAction" method="imprimirPlanoTrabalho">
+			<result name="success" type="jasper">
+				<param name="dataSource">comissaoPlanoTrabalhos</param>
+				<param name="location">WEB-INF/report/plano_trabalho.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">planoTrabalho.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoPlanoTrabalhoList.ftl</result>
+		</action>
+	</package>
+</xwork>

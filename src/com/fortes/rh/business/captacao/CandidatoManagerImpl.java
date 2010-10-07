@@ -1,0 +1,1103 @@
+/* autor: Moesio Medeiros
+ * Data: 07/06/2006
+ * Requisito: RFA013 - Cadastro de candidato
+ */
+
+package com.fortes.rh.business.captacao;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipOutputStream;
+
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.NonUniqueResultException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import com.fortes.business.GenericManagerImpl;
+import com.fortes.model.type.File;
+import com.fortes.rh.business.geral.BairroManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.dao.captacao.CandidatoDao;
+import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FormatoArquivoInvalidoException;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoCurriculo;
+import com.fortes.rh.model.captacao.CandidatoIdioma;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.model.captacao.Experiencia;
+import com.fortes.rh.model.captacao.Formacao;
+import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.Vinculo;
+import com.fortes.rh.model.geral.AreaInteresse;
+import com.fortes.rh.model.geral.Bairro;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Contato;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.SocioEconomica;
+import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.Mail;
+import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.util.Zip;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
+
+@SuppressWarnings("unchecked")
+public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, CandidatoDao> implements CandidatoManager
+{
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private AnuncioManager anuncioManager;
+	private Mail mail;
+	private FormacaoManager formacaoManager;
+	private ExperienciaManager experienciaManager;
+	private CandidatoIdiomaManager candidatoIdiomaManager;
+	private SolicitacaoManager solicitacaoManager;
+	private PlatformTransactionManager transactionManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private BairroManager bairroManager;
+	private CandidatoCurriculoManager candidatoCurriculoManager;
+	private EtapaSeletivaManager etapaSeletivaManager;
+	private int totalSize;
+
+	public int getTotalSize()
+	{
+		return totalSize;
+	}
+
+	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresaId, Long solicitacaoId, boolean somenteSemSolicitacao) throws Exception
+	{
+		Collection<Candidato> candidatos = null;
+		// Experiencia
+		if( parametros.get("experiencias") != null && !parametros.get("tempoExperiencia").equals("") && !parametros.get("tempoExperiencia").equals("0"))
+		{
+			Collection<Candidato> candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, empresaId);
+			candidatos = new ArrayList<Candidato>();
+
+			for (Candidato candidato : candidatosExperiencia)
+			{
+				if(temExperiencia(candidato.getExperiencias(), (String)parametros.get("tempoExperiencia"), (Long[])parametros.get("experiencias")))
+				{
+					candidatos.add(candidato);
+				}
+			}
+
+			CollectionUtil<Candidato> cluCandidatos = new CollectionUtil<Candidato>();
+
+			parametros.put("candidatosComExperiencia", cluCandidatos.convertCollectionToArrayIds(candidatos));
+		}
+
+		if(parametros.get("bairrosIds") != null && ((Long[])parametros.get("bairrosIds")).length > 0)
+		{
+			Collection<Bairro> colBairros = bairroManager.getBairrosByIds((Long[])parametros.get("bairrosIds"));
+			CollectionUtil<Bairro> cluBairro = new CollectionUtil<Bairro>();
+			parametros.put("bairros", cluBairro.convertCollectionToArrayString(colBairros, "getNome"));
+		}
+
+		Collection<Candidato> retorno = null;
+
+		Collection<Long> idsCandidatos = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
+
+		if(candidatos != null && candidatos.size() == 0)
+			retorno = null;
+		else
+			retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao);
+
+		return retorno;
+	}
+
+	private boolean temExperiencia(Collection<Experiencia> experiencias, String tempoDeExperiencia, Long[] cargos)
+	{
+		//experiencia exigida
+		int expParametro = Integer.parseInt(tempoDeExperiencia);
+		//experiencia acumulada
+		int totalExperiencia = 0;
+
+		for(Experiencia experienciaTmp : experiencias)
+		{
+			if(estaContido(experienciaTmp, cargos))
+			{
+				totalExperiencia += getMesesExperiencia(experienciaTmp);
+			}
+		}
+
+		if(totalExperiencia >= expParametro)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	private int getMesesExperiencia(Experiencia experienciaTmp)
+	{
+		Long meses = 0L;
+
+		if(experienciaTmp.getDataDesligamento() == null)
+			experienciaTmp.setDataDesligamento(new Date());
+
+		if(experienciaTmp.getDataDesligamento().after(experienciaTmp.getDataAdmissao()))
+		{
+			Long dif = experienciaTmp.getDataDesligamento().getTime() - experienciaTmp.getDataAdmissao().getTime() ;
+			meses = dif/(1000L*60*60*24*30);
+		}
+
+		return meses.intValue();
+	}
+
+	private boolean estaContido(Experiencia experienciaTmp, Long[] cargos)
+	{
+		Long idExperiencia = experienciaTmp.getCargo().getId();
+
+		for (Long cargo : cargos)
+		{
+			if(cargo.equals(idExperiencia))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
+	{
+		return getDao().find(page, pagingSize, nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno);
+	}
+
+	public Integer getCount(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
+	{
+		return getDao().getCount(nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno);
+	}
+
+	public File getFoto(Long id) throws Exception
+	{
+		return getDao().getFile("foto", id);
+	}
+
+	public void removeCandidato(Candidato candidato) throws Exception
+	{
+		if (candidatoSolicitacaoManager.isCandidatoSolicitacaoByCandidato(candidato.getId()))
+			throw new Exception("Não é possível excluir este candidato, pois ele está participando de uma solicitação.");
+
+		formacaoManager.removeCandidato(candidato);
+		experienciaManager.removeCandidato(candidato);
+		candidatoIdiomaManager.removeCandidato(candidato);
+		candidatoCurriculoManager.removeCandidato(candidato);
+		getDao().remove(candidato.getId());
+	}
+
+	public void updateSenha(Candidato candidato)
+	{
+		if(candidato.getNovaSenha().equals(candidato.getConfNovaSenha()))
+		{
+			getDao().updateSenha(candidato.getId(), StringUtil.encodeString(candidato.getSenha()), StringUtil.encodeString(candidato.getNovaSenha()));
+		}
+	}
+
+	public boolean exportaCandidatosBDS(Empresa empresa, Collection<Candidato> candidatos, String[] empresasCheck, String emailAvulso, String assunto) throws Throwable
+	{
+		java.io.File xmlFile = null;
+		java.io.File zipFile = null;
+
+		try
+		{
+			// Cria o arquivo xml
+			String fileName = "candidato" + Calendar.getInstance().getTimeInMillis() + ".xml";
+			xmlFile = new java.io.File(fileName);
+			FileOutputStream outputStream = new FileOutputStream(xmlFile);
+			String encoding = "UTF-8";
+			XStream stream = new XStream(new DomDriver(encoding));
+
+			outputStream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n".getBytes());
+			stream.toXML(candidatos, outputStream);
+			outputStream.flush();
+			outputStream.close();
+
+			// Compacta o arquivo
+			ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh");// cria o arquivo candidatos.zip
+			zipOutputStream.close();
+
+			// Envia o arquivo por email
+			zipFile = new java.io.File(fileName + ".fortesrh");
+
+			String body = "Passos para a Importação dos Candidatos:<br>"+
+						  "1. Acesse Movimentações > Solicitação de Pessoal; <br>" +
+						  "2. Clique em \"Candidatos da Seleção\", \"Triagem\", \"Importar BDS\" e selecione o arquivo em anexo.Em seguida clique em \"Importar\"" ;
+			mail.send(empresa, assunto, body, new java.io.File[] { zipFile }, anuncioManager.montaEmails(emailAvulso, empresasCheck));
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+		finally
+		{
+			if(zipFile != null && zipFile.exists())
+			{
+				zipFile.delete();
+			}
+
+			if(xmlFile != null && xmlFile.exists())
+			{
+				xmlFile.delete();
+			}
+		}
+		return true;
+	}
+
+	public Collection<Candidato> findCandidatosById(Long[] ids)
+	{
+		return getDao().findCandidatosById(ids);
+	}
+
+	public Collection<Candidato> populaCandidatos(Collection<Candidato> candidatos)
+	{
+		if(candidatos.isEmpty())
+			return candidatos;
+
+		CollectionUtil<Candidato> cu = new CollectionUtil<Candidato>();
+		Long[] candidatoIds = cu.convertCollectionToArrayIds(candidatos);
+
+		Collection<Experiencia> experiencias = experienciaManager.findInCandidatos(candidatoIds);
+		Collection<Formacao> formacaos = formacaoManager.findInCandidatos(candidatoIds);
+		Collection<CandidatoIdioma> candidatoIdiomas = candidatoIdiomaManager.findInCandidatos(candidatoIds);
+
+		for(Candidato candidato : candidatos)
+		{
+			Collection<Experiencia> experienciaAux = new ArrayList<Experiencia>();
+			Collection<Formacao> formacaoAux = new ArrayList<Formacao>();
+			Collection<CandidatoIdioma> candidatoIdiomaAux = new ArrayList<CandidatoIdioma>();
+
+			for(Experiencia experiencia : experiencias)
+			{
+				if(experiencia.getCandidato() != null && candidato.getId().equals(experiencia.getCandidato().getId()))
+				{
+					experiencia.setCandidato(null);
+
+					if(experiencia.getCargo() != null && experiencia.getCargo().getNomeMercado() != null)
+						experiencia.setNomeMercado(experiencia.getCargo().getNomeMercado());
+
+					experiencia.setCargo(null);
+					experienciaAux.add(experiencia);
+				}
+			}
+
+			for(Formacao formacao : formacaos)
+			{
+				if(formacao.getCandidato() != null && candidato.getId().equals(formacao.getCandidato().getId()))
+				{
+					formacao.setCandidato(null);
+					formacao.setAreaFormacao(null);
+					formacaoAux.add(formacao);
+				}
+			}
+
+			for(CandidatoIdioma candidatoIdioma : candidatoIdiomas)
+			{
+				if(candidatoIdioma.getCandidato() != null && candidato.getId().equals(candidatoIdioma.getCandidato().getId()))
+				{
+					candidatoIdioma.setCandidato(null);
+					candidatoIdiomaAux.add(candidatoIdioma);
+				}
+			}
+
+			candidato.setExperiencias(experienciaAux);
+			candidato.setFormacao(formacaoAux);
+			candidato.setCandidatoIdiomas(candidatoIdiomaAux);
+
+			candidato.setId(null);
+			candidato.setFoto(null);
+			candidato.setCargos(null);
+			candidato.setAreasInteresse(null);
+			candidato.setSenha(null);
+			if (candidato.getEndereco().getUf() != null)
+				candidato.getEndereco().getUf().setNome(null);
+			if (candidato.getEndereco().getUf() != null)
+				candidato.getEndereco().getUf().setSigla(null);
+			if (candidato.getEndereco().getCidade() != null)
+				candidato.getEndereco().getCidade().setUf(null);
+			if (candidato.getEndereco().getCidade() != null)
+				candidato.getEndereco().getCidade().setNome(null);
+			candidato.setConhecimentos(null);
+
+			//Passa conhecimento para dentro da observação
+			List<String> conhecimentoNomes = getDao().getConhecimentosByCandidatoId(candidato.getId());
+			if(conhecimentoNomes != null && !conhecimentoNomes.isEmpty())
+			{
+				String conhecimentoAux = "\n---- Conhecimento: \n";
+				for (String conhecimentoNome : conhecimentoNomes)
+				{
+					conhecimentoAux += conhecimentoNome+ "\n";
+				}
+
+				conhecimentoAux += "----";
+				candidato.setObservacao(candidato.getObservacao() + conhecimentoAux);
+			}
+		}
+
+		return candidatos;
+	}
+
+	public void importaBDS(java.io.File arquivoBDS, Solicitacao solicitacao) throws Exception
+	{
+		if(arquivoBDS == null || (!arquivoBDS.exists()))
+			throw new FileNotFoundException();
+
+		String nomeXml = StringUtil.mudaExtensaoFile(arquivoBDS.getAbsolutePath(), "");
+
+		//Descompacta arquivo .fortesrh
+		Zip unZip = new Zip();
+		unZip.unzip(arquivoBDS.getAbsolutePath(), "");
+
+		//Pega xml descompactado
+		java.io.File xmlFile = new java.io.File(nomeXml);
+
+		//Lendo um xml
+        try
+		{
+        	Collection<Candidato> candidatoImportados;
+
+        	String encoding = "UTF-8";
+        	XStream stream = new XStream(new DomDriver(encoding));
+        	BufferedReader inputXml = new BufferedReader(new FileReader(xmlFile));
+
+        	candidatoImportados = (Collection<Candidato>) stream.fromXML(inputXml);
+			inputXml.close();
+
+			candidatoImportados = retiraCandidatoSolicitacao(candidatoImportados, solicitacao);
+
+			salvaCandidatosImportados(candidatoImportados, solicitacao);
+		}
+		finally
+		{
+			arquivoBDS.delete();
+			if(xmlFile != null && xmlFile.exists())
+			{
+				xmlFile.delete();
+			}
+		}
+	}
+
+	//TODO: BACALHAU findById dentro do for
+	private Collection<Candidato> retiraCandidatoSolicitacao(Collection<Candidato> candidatoImportados, Solicitacao solicitacao)
+	{
+		//Busca candidatos ja cadastrados na base (procura ppor cpf)
+		Collection<Candidato> candidatosJaCadastrados = getCandidatosByCpf(candidatoImportados, solicitacao.getEmpresa().getId());
+		//Pega candidatos ja cadastrados na solicitacao
+		Collection<CandidatoSolicitacao> candidatosSolicitacaos = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacao, null);
+
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+		Collection<Candidato> candidatosRemovidos = new ArrayList<Candidato>();
+
+		for(Candidato candidato : candidatoImportados)
+		{
+			for(Candidato candidatoJaCadastrado : candidatosJaCadastrados)
+			{
+				if(candidato.getPessoal() != null && candidato.getPessoal().getCpf() != null && candidato.getPessoal().getCpf().equals(candidatoJaCadastrado.getPessoal().getCpf()))
+				{
+					candidatoJaCadastrado = findById(candidatoJaCadastrado.getId());
+
+					//VERIFICA SE OS DADOS DO CANDIDATO VINDO DO ARQUIVO XML É MAIS RECENTE DO QUE OS DADOS DO BANCO.
+					if(candidato.getDataAtualizacao().after(candidatoJaCadastrado.getDataAtualizacao()))
+					{
+						candidato.setId(candidatoJaCadastrado.getId());
+						candidato.setFoto(candidatoJaCadastrado.getFoto());
+						candidato.setBlackList(candidatoJaCadastrado.isBlackList());
+						candidato.setContratado(candidatoJaCadastrado.isContratado());
+						candidato.setDisponivel(candidatoJaCadastrado.isDisponivel());
+						candidato.setOrigem(candidatoJaCadastrado.getOrigem());
+					}
+					else
+					{
+						candidato = candidatoJaCadastrado;
+					}
+
+					break;
+				}
+			}
+			candidatos.add(candidato);
+		}
+
+		for(Candidato candidato : candidatos)
+		{
+			for(CandidatoSolicitacao candidatoSolicitacao : candidatosSolicitacaos)
+			{
+				if(candidato.getPessoal() != null && candidato.getPessoal().getCpf() != null && candidato.getPessoal().getCpf().equals(candidatoSolicitacao.getCandidato().getPessoal().getCpf()))
+				{
+					candidatosRemovidos.add(candidato);
+					break;
+				}
+			}
+		}
+
+		candidatos.removeAll(candidatosRemovidos);
+
+		return candidatos;
+	}
+
+	private Collection<Candidato> getCandidatosByCpf(Collection<Candidato> candidatoImportados, Long empresaId)
+	{
+		return getDao().getCandidatosByCpf(getCpfByCandidato(candidatoImportados), empresaId);
+	}
+
+	private String[] getCpfByCandidato(Collection<Candidato> candidatoImportados)
+	{
+		String[] strCpf = new String[candidatoImportados.size()];
+		int cont = 0;
+		for (Candidato candidato : candidatoImportados)
+		{
+			if(candidato.getPessoal() != null && candidato.getPessoal().getCpf() != null && !candidato.getPessoal().getCpf().equals(""))
+			{
+				strCpf[cont] = candidato.getPessoal().getCpf();
+				cont++;
+			}
+		}
+
+		return strCpf;
+	}
+
+	//TODO: BACALHAU findById para 4 campos
+	private void salvaCandidatosImportados(Collection<Candidato> candidatoImportados, Solicitacao solicitacao) throws Exception
+	{
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+
+		try{
+			solicitacao = solicitacaoManager.findById(solicitacao.getId());
+
+			Collection<Cargo> cargos = new ArrayList<Cargo>();
+			if(solicitacao.getFaixaSalarial().getCargo() != null)
+				cargos.add(solicitacao.getFaixaSalarial().getCargo());
+
+			Collection<AreaInteresse> areas = new ArrayList<AreaInteresse>();
+			if(solicitacao.getAreaOrganizacional().getAreasInteresse() != null && !solicitacao.getAreaOrganizacional().getAreasInteresse().isEmpty())
+				areas.addAll(solicitacao.getAreaOrganizacional().getAreasInteresse());
+
+			Date data = new Date();
+			for (Candidato candidato : candidatoImportados)
+			{
+				candidato.setDataAtualizacao(data);
+				candidato.setAreasInteresse(areas);
+				candidato.setCargos(cargos);
+				candidato.setEmpresa(solicitacao.getEmpresa());
+
+				if(candidato.getId() == null)
+				{
+					candidato.setBlackList(false);
+					candidato.setContratado(false);
+					candidato.setDisponivel(true);
+					candidato.setOrigem(OrigemCandidato.BDS);
+					candidato.getPessoal().setRgUf(null);
+					candidato.getPessoal().getCtps().setCtpsUf(null);
+
+					save(candidato);
+				}
+				else
+					update(candidato);
+
+				Collection<CandidatoIdioma> candidatoIdiomas = candidato.getCandidatoIdiomas();
+				Collection<Formacao> formacaos = candidato.getFormacao();
+				Collection<Experiencia> experiencias = candidato.getExperiencias();
+
+				candidatoIdiomaManager.montaIdiomasBDS(candidatoIdiomas, candidato);
+				formacaoManager.montaFormacaosBDS(formacaos, candidato);
+				experienciaManager.montaExperienciasBDS(experiencias, candidato);
+
+				CandidatoSolicitacao candidatoSolicitacao = new CandidatoSolicitacao();
+				candidatoSolicitacao.setCandidato(candidato);
+				candidatoSolicitacao.setTriagem(true);
+				candidatoSolicitacao.setSolicitacao(solicitacao);
+
+				candidatoSolicitacaoManager.save(candidatoSolicitacao);
+			}
+
+			transactionManager.commit(status);
+
+		}catch(Exception e){
+			transactionManager.rollback(status);
+			throw e;
+		}
+
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
+		this.transactionManager = transactionManager;
+	}
+
+	public Candidato criarCandidatoByColaborador(Colaborador colaborador)
+	{
+		Candidato candidato = new Candidato();
+
+		candidato.setPessoal(colaborador.getPessoal());
+		candidato.setDataAtualizacao(new Date());
+		candidato.setCursos(colaborador.getCursos());
+		candidato.setEndereco(colaborador.getEndereco());
+		candidato.setNome(colaborador.getNome());
+		candidato.setColocacao(Vinculo.EMPREGO);
+		candidato.setPretencaoSalarial(null);
+		candidato.setDisponivel(true);
+		candidato.setBlackList(false);
+		candidato.setContratado(false);
+		candidato.setObservacao(colaborador.getObservacao());
+		candidato.setOrigem(OrigemCandidato.CADASTRADO);
+
+		Contato contato = new Contato();
+	   	contato.setDdd(colaborador.getContato().getDdd());
+	   	contato.setEmail(colaborador.getContato().getEmail());
+	   	contato.setFoneFixo(colaborador.getContato().getFoneFixo());
+	   	candidato.setContato(contato);
+
+	   	SocioEconomica socioEconomica = new SocioEconomica();
+	   	candidato.setSocioEconomica(socioEconomica);
+
+		candidato = save(candidato);
+
+    	Collection<Formacao> formacaos = colaborador.getFormacao();
+    	for (Formacao formacao : formacaos)
+		{
+    		formacao.setCandidato(candidato);
+		}
+		candidato.setFormacao(formacaos);
+
+    	Collection<Experiencia> experiencias = colaborador.getExperiencias();
+    	for (Experiencia experiencia : experiencias)
+		{
+    		if(experiencia.getCargo() == null || experiencia.getCargo().getId() == null)
+    			experiencia.setCargo(null);
+
+    		experiencia.setCandidato(candidato);
+		}
+
+    	candidato.setExperiencias(experiencias);
+
+	   	candidato.setCandidatoIdiomas(candidatoIdiomaManager.montaCandidatoIdiomaByColaboradorIdioma(colaborador.getColaboradorIdiomas(), candidato));
+
+	   	update(candidato);
+
+		return candidato;
+	}
+
+	public String recuperaSenha(String cpf, Empresa empresa) 
+	{
+		try
+		{
+			String mensagem = "Candidato não localizado!";
+			Candidato candidato = findCandidatoCpf(cpf, empresa.getId());
+	
+			if(candidato != null)
+			{
+				if (candidato.getContato().getEmail() == null || candidato.getContato().getEmail().equals(""))
+					mensagem = "Candidato não possui email cadastrado!\n Por favor entre em contato com a empresa.";
+				else
+				{
+					enviaNovaSenha(candidato, empresa);
+					mensagem = "Nova Senha enviada por e-mail (" + candidato.getContato().getEmail() +"). <br>(Caso não tenha recebido, favor entrar em contato com a empresa)";					
+				}
+			}
+	
+			return mensagem;
+		}
+		catch (NonUniqueResultException notUniqueResultException) 
+		{
+			return "Caro Sr(a) não identificamos uma senha associada ao seu cpf!<br> Por favor entre em contato com a empresa.";
+		}
+		
+	}
+
+	private void enviaSenha(Candidato candidato, Empresa empresa, String senha)
+	{
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+		String link = parametrosDoSistema.getAppUrl();
+		String subject = "Reenvio de senha.";
+
+		String nomeUsuario = candidato.getNome();
+
+		StringBuilder body = new StringBuilder();
+		body.append("Sr(a) " + nomeUsuario + ", <br>");
+		body.append("sua senha do sistema Fortesrh é : " + senha + "<br>");
+		body.append("Acesse o Fortes RH em:<br>");
+		body.append("<a href='" + link + "'>Fortes RH</a>");
+
+		try
+		{
+			mail.send(empresa, subject,body.toString(), null, candidato.getContato().getEmail());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void enviaNovaSenha(Candidato candidato, Empresa empresa)
+	{
+		//Gera uma nova senha e envia
+		String senha = StringUtil.getSenhaRandom(6);
+		getDao().atualizaSenha(candidato.getId(), StringUtil.encodeString(senha));
+
+		enviaSenha(candidato, empresa, senha);
+
+	}
+
+	private void enviaEmailEsqueciMinhaSenha(Candidato candidato, Empresa empresa)
+	{
+		//Recupera a senha do candidato e envia
+		String senha = StringUtil.decodeString(candidato.getSenha());
+
+		enviaSenha(candidato, empresa, senha);
+	}
+
+	private Candidato findCandidatoCpf(String cpf, Long empresaId)
+	{
+		return getDao().findCandidatoCpf(cpf, empresaId);
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
+	{
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void updateSetContratado(Long candidatoId)
+	{
+		getDao().updateSetContratado(candidatoId);
+	}
+
+	public void updateBlackList(String observacao, boolean blackList, Long... candidatoIds)
+	{
+		getDao().updateBlackList(observacao, blackList, candidatoIds);
+	}
+
+	public void setBlackList(HistoricoCandidato historicoCandidato, Long candidatoSolicitacaoId, boolean blacklist)
+	{
+		if(!historicoCandidato.isApto())
+		{
+			CandidatoSolicitacao candidatoSol = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoId);
+
+			if(blacklist)
+				updateBlackList(historicoCandidato.getObservacao(), blacklist, candidatoSol.getCandidato().getId());
+		}
+	}
+
+	public void setBlackList(HistoricoCandidato historicoCandidato, String[] candidatosCheck, boolean blacklist) throws Exception
+	{
+		if (!historicoCandidato.isApto())
+		{
+			if (blacklist)
+			{
+				Long[] candidatoSolicitacaoIds = StringUtil.stringToLong(candidatosCheck);
+				Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoIds);
+
+				Long[] candidatoIds = new Long[candidatoSolicitacaos.size()];
+				int cont = 0;
+
+				for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacaos)
+				{
+					candidatoIds[cont++] = candidatoSolicitacao.getCandidato().getId();
+				}
+
+				updateBlackList(historicoCandidato.getObservacao(), blacklist, candidatoIds);
+			}
+		}
+	}
+
+	public Candidato findByIdProjection(Long candidatoId)
+	{
+		return getDao().findByIdProjection(candidatoId);
+	}
+
+	public Candidato findByCandidatoId(Long id)
+	{
+	    return getDao().findByCandidatoId(id);
+	}
+
+	public Collection<Conhecimento> findConhecimentosByCandidatoId(Long candidatoId)
+	{
+		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>();
+
+		List arrayConhecimentos = getDao().findConhecimentosByCandidatoId(candidatoId);
+
+		Conhecimento conhecimento;
+		Object[] retorno;
+
+		for (Object object : arrayConhecimentos)
+		{
+			conhecimento = new Conhecimento();
+			retorno = (Object[])object;
+
+			conhecimento.setId((Long) retorno[0]);
+			conhecimento.setNome((String) retorno[1]);
+
+			conhecimentos.add(conhecimento);
+		}
+
+		return conhecimentos;
+	}
+
+	public Collection<Cargo> findCargosByCandidatoId(Long candidatoId)
+	{
+		Collection<Cargo> cargos = new ArrayList<Cargo>();
+
+		List arrayCargos = getDao().findCargosByCandidatoId(candidatoId);
+
+		Cargo cargo;
+		Object[] retorno;
+
+		for (Object object : arrayCargos)
+		{
+			cargo = new Cargo();
+			retorno = (Object[])object;
+
+			cargo.setId((Long) retorno[0]);
+			cargo.setNomeMercado((String) retorno[1]);
+
+			cargos.add(cargo);
+		}
+
+		return cargos;
+	}
+
+	public Collection<AreaInteresse> findAreaInteressesByCandidatoId(Long candidatoId)
+	{
+		Collection<AreaInteresse> areaInteresses = new ArrayList<AreaInteresse>();
+
+		List arrayAreaInteresses = getDao().findAreaInteressesByCandidatoId(candidatoId);
+
+		AreaInteresse areaInteresse;
+		Object[] retorno;
+
+		for (Object object : arrayAreaInteresses)
+		{
+			areaInteresse = new AreaInteresse();
+			retorno = (Object[])object;
+
+			areaInteresse.setId((Long) retorno[0]);
+			areaInteresse.setNome((String) retorno[1]);
+
+			areaInteresses.add(areaInteresse);
+		}
+
+		return areaInteresses;
+	}
+	
+	private String getTextoCurriculo(File ocrTexto) throws FormatoArquivoInvalidoException, Exception
+	{
+		if(ocrTexto != null)
+		{
+			
+			if (ocrTexto.getContentType() == null || 
+					(ocrTexto.getContentType() != null && !ocrTexto.getContentType().equals("text/plain")))
+			{
+				boolean extensaoValida=false;
+				String extensao = "";
+				int pos = ocrTexto.getName().indexOf(".");
+				
+				if(pos > 0)
+				{
+					extensao = ocrTexto.getName().substring(pos); 
+					
+					if (extensao.equalsIgnoreCase(".txt") || (extensao.equalsIgnoreCase(".ocr")))
+						extensaoValida=true;
+				}
+
+				if (!extensaoValida)
+					throw new FormatoArquivoInvalidoException("Utilize um arquivo de texto (ex.: arquivo.txt).");
+			}
+			
+			return ArquivoUtil.convertToLatin1Compatible(ocrTexto.getBytes());
+		}
+		
+		return "";
+	}
+
+	public Candidato saveCandidatoCurriculo(Candidato candidato, File[] imagemEscaneada, File ocrTexto) throws Exception
+	{
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+
+		try
+		{
+			String resultado = getTextoCurriculo(ocrTexto);
+			
+			if (candidato.getId() == null)
+			{
+				getDao().save(candidato);
+			}
+
+			if (StringUtils.isNotBlank(resultado))
+			{
+				candidato.setOcrTexto(resultado);
+				getDao().atualizaTextoOcr(candidato);
+			}
+
+			java.io.File fileTmp[] = null;
+
+			if (imagemEscaneada != null)
+			{
+				
+				Collection<CandidatoCurriculo> candidatoCurriculos;
+				candidatoCurriculos = candidatoCurriculoManager.findToList(new String[]{"id","curriculo"}, new String[]{"id","curriculo"}, new String[]{"candidato.id"}, new Object[]{candidato.getId()});
+
+				if(candidatoCurriculos != null && candidatoCurriculos.size() > 0)
+				{
+					CollectionUtil<CandidatoCurriculo> clu = new CollectionUtil<CandidatoCurriculo>();
+					ArquivoUtil.deletaArquivos("curriculos", clu.convertCollectionToArrayString(candidatoCurriculos, "getCurriculo"));
+					candidatoCurriculoManager.remove(clu.convertCollectionToArrayIds(candidatoCurriculos));
+				}
+				
+				fileTmp = new java.io.File[imagemEscaneada.length];
+
+				for(int i=0; i<imagemEscaneada.length; i++)
+				{
+					fileTmp[i] = ArquivoUtil.salvaArquivo("curriculos", imagemEscaneada[i], true);
+
+					CandidatoCurriculo candidatoCurriculo = new CandidatoCurriculo();
+					candidatoCurriculo.setCandidato(candidato);
+					candidatoCurriculo.setCurriculo(fileTmp[i].getName());
+					candidatoCurriculo = candidatoCurriculoManager.save(candidatoCurriculo);
+					candidatoCurriculos.add(candidatoCurriculo);
+				}
+
+				candidato.setCandidatoCurriculos(candidatoCurriculos);
+			}
+
+			transactionManager.commit(status);
+
+		}
+		catch(Exception e)
+		{
+			transactionManager.rollback(status);
+			throw e;
+		}
+
+		return candidato;
+	}
+
+	public String getOcrTextoById(Long candidatoId)
+	{
+		Candidato candidato = new Candidato();
+		Collection<Candidato> candidatos = getDao().findToList(new String[]{"ocrTexto"}, new String[]{"ocrTexto"}, new String[]{"id"}, new Object[]{candidatoId});
+
+		if(candidatos.size() > 0 )
+			candidato = (Candidato) candidatos.toArray()[0];
+
+		return candidato.getOcrTexto();
+	}
+
+	public void atualizaTextoOcr(Candidato candidato)
+	{
+		getDao().atualizaTextoOcr(candidato);
+	}
+
+	public void setBairroManager(BairroManager bairroManager)
+	{
+		this.bairroManager = bairroManager;
+	}
+
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
+	{
+		this.solicitacaoManager = solicitacaoManager;
+	}
+
+	public void setCandidatoIdiomaManager(CandidatoIdiomaManager candidatoIdiomaManager)
+	{
+		this.candidatoIdiomaManager = candidatoIdiomaManager;
+	}
+
+	public void setExperienciaManager(ExperienciaManager experienciaManager)
+	{
+		this.experienciaManager = experienciaManager;
+	}
+
+	public void setFormacaoManager(FormacaoManager formacaoManager)
+	{
+		this.formacaoManager = formacaoManager;
+	}
+
+	public void setAnuncioManager(AnuncioManager anuncioManager)
+	{
+		this.anuncioManager = anuncioManager;
+	}
+
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
+	{
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+
+	public void setMail(Mail mail)
+	{
+		this.mail = mail;
+	}
+
+	public void setCandidatoCurriculoManager(CandidatoCurriculoManager candidatoCurriculoManager)
+	{
+		this.candidatoCurriculoManager = candidatoCurriculoManager;
+	}
+
+	public Collection<Candidato> getCandidatosByNome(String candidatoNome)
+	{
+		return getDao().getCandidatosByNome(candidatoNome);
+	}
+
+	public Collection<Candidato> getCandidatosByExperiencia(Map<String, Object> parametros, long empresaId)
+	{
+		return getDao().getCandidatosByExperiencia(parametros, empresaId);
+	}
+
+	public void update(Candidato candidato)
+	{
+		if(candidato.getPessoal().getRgUf() != null && candidato.getPessoal().getRgUf().getId() == null)
+			candidato.getPessoal().setRgUf(null);
+
+		if(candidato.getPessoal().getCtps() != null && candidato.getPessoal().getCtps().getCtpsUf() != null  && candidato.getPessoal().getCtps().getCtpsUf().getId() == null)
+			candidato.getPessoal().getCtps().setCtpsUf(null);
+
+		super.update(candidato);
+	}
+
+	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds) throws ColecaoVaziaException
+	{
+		Collection<AvaliacaoCandidatosRelatorio> avaliacaoCandidatos = getDao().findRelatorioAvaliacaoCandidatos(dataIni, dataFim, empresaId, estabelecimentoIds, areaIds, cargoIds);
+
+		if (avaliacaoCandidatos == null || avaliacaoCandidatos.isEmpty())
+			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
+
+		Collection<EtapaSeletiva> etapaSeletivas = etapaSeletivaManager.findAllSelect(empresaId);
+
+		CollectionUtil<AvaliacaoCandidatosRelatorio> collectionUtil = new CollectionUtil<AvaliacaoCandidatosRelatorio>();
+		// criando uma coleção com etapas distintas
+		Collection<AvaliacaoCandidatosRelatorio> resultado = collectionUtil.distinctCollection(avaliacaoCandidatos);
+
+		// somando quantidades pertencentes as etapas repetidas
+		for (AvaliacaoCandidatosRelatorio avaliacao : resultado)
+		{
+			for (AvaliacaoCandidatosRelatorio avaliacao2 : avaliacaoCandidatos)
+			{
+				if (avaliacao.getEtapaSeletiva() != null && avaliacao2.getEtapaSeletiva() != null &&
+						avaliacao.getEtapaSeletiva().getNome().equalsIgnoreCase(avaliacao2.getEtapaSeletiva().getNome()))
+				{
+					avaliacao.setOnceQtdAptos(avaliacao2.getQtdAptos());
+					avaliacao.setOnceQtdNaoAptos(avaliacao2.getQtdNaoAptos());
+				}
+			}
+
+			// setando a ordem
+			for (EtapaSeletiva etapaSeletiva : etapaSeletivas)
+			{
+				if (avaliacao.getEtapaSeletiva() != null && avaliacao.getEtapaSeletiva().getNome().equals(etapaSeletiva.getNome()))
+				{
+					avaliacao.getEtapaSeletiva().setOrdem(etapaSeletiva.getOrdem());
+				}
+			}
+		}
+
+		resultado = collectionUtil.sortCollection(resultado, "etapaSeletiva.ordem");
+
+		return resultado;
+	}
+
+	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId)
+	{
+		EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManager");
+		String subject = "Novo candidato (" + nomeCandidato +")";
+
+		Empresa empresa = empresaManager.findById(empresaId);
+		StringBuilder body = new StringBuilder();
+		body.append("O candidato " + nomeCandidato + ", <br>");
+		body.append("se cadastrou na empresa " + empresa.getNome() );
+
+		try
+		{
+			mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
+	{
+		this.etapaSeletivaManager = etapaSeletivaManager;
+	}
+
+	public Collection<Candidato> findByNomeCpf(Candidato candidato, Long empresaId)
+	{
+		return getDao().findByNomeCpf(candidato, empresaId);
+	}
+	
+	public Collection<Candidato> findByNomeCpfAllEmpresas(Candidato candidato)
+	{
+		return getDao().findByNomeCpf(candidato, null);
+	}
+
+	public void migrarBairro(String bairro, String bairroDestino)
+	{
+		getDao().migrarBairro(bairro, bairroDestino);
+	}
+
+	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao)
+	{
+		Collection<Long> candidatosJaSelecionados = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
+		if(empresaId == -1L)
+			return getDao().findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao);
+		else
+			return getDao().findCandidatosForSolicitacaoByEmpresa(empresaId, indicadoPor, nomeBusca, cpfBusca, uf, cidade, StringUtil.stringToLong(cargosCheck), StringUtil.stringToLong(conhecimentosCheck), candidatosJaSelecionados, somenteSemSolicitacao);
+	}
+
+	public void validaQtdCadastros() throws Exception
+	{
+		//TODO remprot
+//		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+//		RPClient remprot = Autenticador.getRemprot(parametrosDoSistema.getServidorRemprot());
+//		int qtdCandidatoNoBanco = getDao().getCount();
+//		
+//		if(!(Boolean) ActionContext.getContext().getSession().get("REG_LOGS") || !remprot.getRegistered())
+//			if(qtdCandidatoNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
+//				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Candidatos");		
+	}
+
+	public Candidato verifyCPF(String cpf, Long empresaId, Long candidatoId) throws Exception 
+	{
+		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
+		if(cpfSemMascara.equals(""))
+			return null;
+		else
+			return getDao().findByCPF(cpfSemMascara, empresaId, candidatoId);
+	}
+	
+	public Candidato findByCPF(String cpf, Long empresaId)
+    {
+			return getDao().findByCPF(cpf, empresaId, null);
+    }
+
+	public void ajustaSenha(Candidato candidato) 
+	{
+		if(StringUtils.isBlank(candidato.getSenha()))
+			candidato.setSenha(getDao().getSenha(candidato.getId()));
+		else
+			candidato.setSenha(StringUtil.encodeString(candidato.getSenha()));
+
+	}
+}

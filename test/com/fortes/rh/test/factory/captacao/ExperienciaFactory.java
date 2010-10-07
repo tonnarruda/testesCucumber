@@ -1,0 +1,18 @@
+package com.fortes.rh.test.factory.captacao;
+
+import java.util.Date;
+
+import com.fortes.rh.model.captacao.Experiencia;
+
+public class ExperienciaFactory
+{
+	public static Experiencia getEntity()
+	{
+		Experiencia experiencia = new Experiencia();
+		experiencia.setEmpresa("empresa");
+		experiencia.setDataAdmissao(new Date());
+		experiencia.setNomeMercado("nomeMercado");
+
+		return experiencia;
+	}
+}

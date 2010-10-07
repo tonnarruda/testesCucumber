@@ -1,0 +1,31 @@
+package com.fortes.rh.business.sesmt;
+
+import java.util.Collection;
+import java.util.Date;
+
+import com.fortes.business.GenericManager;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.sesmt.relatorio.PppRelatorio;
+import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
+public interface FuncaoManager extends GenericManager<Funcao>
+{
+	Integer getCount(Long cargoId);
+	Collection<Funcao> findByCargo(Long cargoId);
+	Collection<Funcao> findByCargo(int page, int pagingSize, Long cargoId);
+	Collection<Funcao> findByEmpresa(Long empresaId);
+	public Collection<Long> getIdsFuncoes(Collection<HistoricoColaborador> historicosColaborador);
+	public void removeFuncaoAndHistoricosByCargo(Long cargoId);
+	Collection<Funcao> findFuncaoByFaixa(Long faixaId);
+	Funcao findByIdProjection(Long funcaoId);
+	Collection<Funcao> findFuncoesDoAmbiente(Long ambienteId, Date data);
+	Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Date data, String nit, String responsavel, String observacoes, String[] respostas) throws Exception;
+	Collection<Long> findFuncaoAtualDosColaboradores(Date data, Long estabelecimentoId);
+	Collection<String> findColaboradoresSemFuncao(Date data, Long estabelecimentoId);
+	int getQtdColaboradorByFuncao(Long funcaoId, Long estabelecimentoId, Date data, String sexo);
+	Collection<QtdPorFuncaoRelatorio> montaRelatorioQtdPorFuncao(Empresa empresa, Estabelecimento estabelecimento, Date data);
+	void removeFuncao(Funcao funcao) throws Exception;
+}

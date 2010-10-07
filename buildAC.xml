@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="FortesRH" basedir=".." default="testIntegracaoAC">
+	
+	<property file="${ant.project.name}/build.properties" />
+	<property name="bancoRH" value="fortesrhtest" />
+	<property name="bancoAC" value="C:\Fortes\acAntigo\AC.FDB" />
+	<property name="webServiceAC" value="C:\Fortes\acAntigo\AcPessoalWebService.exe" />
+	<property name="importadorAC_RH" value="C:\Documents and Settings\franciscobarroso\workspace\ImportadorAC\dist" />
+	<property environment="env"/>
+
+	<target name="recreateBDVazio">
+		<sql driver="org.postgresql.Driver"
+			url="jdbc:postgresql://localhost:5432/template1"
+			userid="postgres"
+			password="123456"
+			classpath="${lib.dir}/postgresql-8.1-405.jdbc3.jar"
+			autocommit="true">
+			<transaction>
+				drop database if exists ${bancoRH};
+				create database ${bancoRH} with encoding = 'UTF-8';
+			</transaction>
+		</sql>
+	</target>
+
+	<target name="recreateBD" depends="recreateBDVazio">
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/create.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="${bancoRH}" />
+		</exec>
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/create_data.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="${bancoRH}" />
+		</exec>
+		<echo message="Banco criado com sucesso" />
+		
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/update_dev.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="${bancoRH}" />
+		</exec>
+		<echo message="Banco atualizado com sucesso" />
+	</target>
+
+	<target name="dumpRHSincronizado">
+		<exec executable="pg_dump"
+			output="${env.FORTES_HOME}/testRH/dumpRHSincronizado.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="${bancoRH}" />
+		</exec>
+	</target>
+	
+	<target name="restoreRHSincronizado" depends="recreateBDVazio">
+		<exec failonerror="true" executable="psql"
+			input="${env.FORTES_HOME}/testRH/dumpRHSincronizado.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="${bancoRH}" />
+		</exec>
+	</target>
+
+	<target name="copiaBancoDoAC">
+		<delete file="${env.FORTES_HOME}/testRH/AC.FDB" />
+		<copy file="${bancoAC}" todir="${env.FORTES_HOME}/testRH" />
+		<echo message="banco do AC copiado com sucesso" />
+	</target>
+
+	<target name="copiaWebServiceDoAC">
+		<copy file="${webServiceAC}" todir="${env.FORTES_HOME}/testRH" />
+		<echo message="WebService do AC copiado com sucesso" />
+		
+		<!--exec executable="${env.FORTES_HOME}/testRH/AcPessoalWebService.exe" spawn="true"/-->
+	</target>
+
+	<target name="importaDadosACParaRH">
+		<copy todir="${env.FORTES_HOME}/testRH">
+			<fileset dir="${importadorAC_RH}">
+				<include name="*" />
+				<include name="*/*" />
+			</fileset>
+		</copy>
+
+		<echo message="Importador copiado com sucesso" />
+		
+		<java jar="${importadorAC_RH}/ImportadorAC.jar" fork="true"/>
+		<echo message="Importador AC -> RH finalizado" />
+	</target>
+
+	<target name="sincronizaBancoRH_AC" depends="recreateBD, copiaBancoDoAC, importaDadosACParaRH, dumpRHSincronizado, copiaWebServiceDoAC">
+		<echo message="banco RH criado e sincronizado com sucesso" />
+	</target>
+	
+	<target name="testIntegracaoAC" depends="restoreRHSincronizado">
+		<echo message="Estrutura do bancoRH criada com sucesso" />
+	</target>
+
+</project>

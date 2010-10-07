@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="grupoEmpresarialListAction" class="com.fortes.rh.web.action.geral.GrupoEmpresarialListAction"/>
+  <bean id="grupoEmpresarialEditAction" class="com.fortes.rh.web.action.geral.GrupoEmpresarialEditAction"/>
+</beans>

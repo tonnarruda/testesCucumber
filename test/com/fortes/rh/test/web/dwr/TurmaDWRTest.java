@@ -1,0 +1,208 @@
+package com.fortes.rh.test.web.dwr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+
+import org.hibernate.ObjectNotFoundException;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+
+import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.web.dwr.TurmaDWR;
+
+public class TurmaDWRTest extends MockObjectTestCase
+{
+	private TurmaDWR turmaDWR;
+	private Mock turmaManager;
+
+	protected void setUp() throws Exception
+	{
+		super.setUp();
+		turmaDWR =  new TurmaDWR();
+
+		turmaManager = new Mock(TurmaManager.class);
+		turmaDWR.setTurmaManager((TurmaManager) turmaManager.proxy());
+	}
+
+	public void testGetTurmas()
+	{
+		Curso curso = CursoFactory.getEntity();
+		curso.setId(1L);
+
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setId(1L);
+		turma1.setCurso(curso);
+
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setId(2L);
+		turma2.setCurso(curso);
+
+		Collection<Turma> turmas = new ArrayList<Turma>();
+		turmas.add(turma1);
+		turmas.add(turma2);
+
+		turmaManager.expects(once()).method("findToList").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(turmas));
+
+		Map retorno = turmaDWR.getTurmas(curso.getId().toString());
+
+		assertEquals(turmas.size(), retorno.size());
+	}
+
+	public void testGetTurmasSemCurso()
+	{
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setId(1L);
+
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setId(2L);
+
+		Collection<Turma> turmas = new ArrayList<Turma>();
+		turmas.add(turma1);
+		turmas.add(turma2);
+
+		Map retorno = turmaDWR.getTurmas(null);
+
+		assertNull(retorno);
+	}
+
+	public void testGetTurmasFinalizadas()
+	{
+		Curso curso = CursoFactory.getEntity();
+		curso.setId(1L);
+
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setId(1L);
+		turma1.setCurso(curso);
+
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setId(2L);
+		turma2.setCurso(curso);
+
+		Collection<Turma> turmas = new ArrayList<Turma>();
+		turmas.add(turma1);
+		turmas.add(turma2);
+
+		turmaManager.expects(once()).method("getTurmaFinalizadas").with(ANYTHING).will(returnValue(turmas));
+
+		Map retorno = turmaDWR.getTurmasFinalizadas(curso.getId().toString());
+
+		assertEquals(turmas.size(), retorno.size());
+	}
+	
+	public void testGetTurmasByFiltro() throws Exception
+	{
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setId(1L);
+		
+		Collection<Turma> turmas = new ArrayList<Turma>();
+		turmas.add(turma1);
+		
+		turmaManager.expects(once()).method("findByFiltro").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(turmas));
+		
+		Map retorno = turmaDWR.getTurmasByFiltro("01/01/2000", "02/02/2002", 'T', 1L);
+		
+		assertEquals(turmas.size(), retorno.size());
+	}
+	
+	public void testGetTurmasByFiltroDataInvalida() throws Exception
+	{
+		Exception exc = null;
+		try
+		{
+			turmaDWR.getTurmasByFiltro("  /01/2000", "02/02/2002", 'T', 1L);			
+		}
+		catch (Exception e)
+		{
+			exc = e;
+		}
+
+		assertNotNull(exc);
+	}
+	
+	public void testGetTurmasByFiltroVazio() throws Exception
+	{
+		Collection<Turma> turmas = new ArrayList<Turma>();
+		turmaManager.expects(once()).method("findByFiltro").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(turmas));
+
+		Exception exc = null;
+		try
+		{
+			turmaDWR.getTurmasByFiltro("01/01/2000", "02/02/2002", 'T', 1L);			
+		}
+		catch (Exception e)
+		{
+			exc = e;
+		}
+		
+		assertNotNull(exc);
+	}
+
+	public void testGetTurmasFinalizadasSemCurso()
+	{
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setId(1L);
+
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setId(2L);
+
+		Collection<Turma> turmas = new ArrayList<Turma>();
+		turmas.add(turma1);
+		turmas.add(turma2);
+
+		Map retorno = turmaDWR.getTurmasFinalizadas(null);
+
+		assertNull(retorno);
+	}
+
+	public void testGetTurmasFinalizadasSemTurmaFinalizada()
+	{
+		Curso curso = CursoFactory.getEntity();
+		curso.setId(1L);
+
+		Collection<Turma> turmas = new ArrayList<Turma>();
+
+		turmaManager.expects(once()).method("getTurmaFinalizadas").with(ANYTHING).will(returnValue(turmas));
+
+		Map retorno = turmaDWR.getTurmasFinalizadas(curso.getId().toString());
+
+		assertEquals(1, retorno.size());
+	}
+	
+	public void testUpdateRealizada() throws Exception
+	{
+		Turma turma = TurmaFactory.getEntity(1L);
+		boolean realizada = false;
+	
+		turmaManager.expects(once()).method("updateRealizada").with(eq(turma.getId()), eq(realizada)).isVoid();
+		
+		assertEquals(false, turmaDWR.updateRealizada(turma.getId(), realizada));
+	}
+	
+	public void testUpdateRealizadaException() throws Exception
+	{
+		Turma turma = TurmaFactory.getEntity(1L);
+		boolean realizada = false;
+
+		turmaManager.expects(once()).method("updateRealizada").with(eq(turma.getId()), eq(realizada)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(turma.getId(),""))));;
+		
+		Exception ex = null;
+		try
+		{			
+			turmaDWR.updateRealizada(turma.getId(), realizada);
+		}
+		catch (Exception e)
+		{
+			ex = e;
+		}
+		
+		assertNotNull(ex);
+	}
+
+}

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.cglib.use_reflection_optimizer">true</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.jdbc.batch_size">20</property> <!-- flush inserts&updates em batch (lote) -->
+    <!-- SEGURANcA -->
+    <mapping class="com.fortes.rh.model.security.Auditoria" />
+    <!-- ACESSO -->
+    <mapping class="com.fortes.rh.model.acesso.Papel" />
+    <mapping class="com.fortes.rh.model.acesso.Perfil" />
+    <mapping class="com.fortes.rh.model.acesso.Usuario" />
+    <mapping class="com.fortes.rh.model.acesso.UsuarioEmpresa" />
+    <!-- GERAL -->
+    <mapping class="com.fortes.rh.model.geral.AreaInteresse" />
+    <mapping class="com.fortes.rh.model.geral.Empresa" />
+    <mapping class="com.fortes.rh.model.geral.AreaOrganizacional" />
+    <mapping class="com.fortes.rh.model.geral.Beneficio" />
+    <mapping class="com.fortes.rh.model.geral.Colaborador" />
+    <mapping class="com.fortes.rh.model.geral.Dependente" />
+    <mapping class="com.fortes.rh.model.geral.Estado" />
+    <mapping class="com.fortes.rh.model.geral.Cidade" />
+    <mapping class="com.fortes.rh.model.geral.GrupoGasto" />
+    <mapping class="com.fortes.rh.model.geral.Gasto" />
+    <mapping class="com.fortes.rh.model.geral.ColaboradorIdioma" />
+    <mapping class="com.fortes.rh.model.geral.GastoEmpresaItem" />
+    <mapping class="com.fortes.rh.model.geral.GastoEmpresa" />
+    <mapping class="com.fortes.rh.model.geral.ParametrosDoSistema" />
+    <mapping class="com.fortes.rh.model.geral.AreaFormacao" />
+    <mapping class="com.fortes.rh.model.geral.MotivoDemissao" />
+    <mapping class="com.fortes.rh.model.geral.Ocorrencia" />
+    <mapping class="com.fortes.rh.model.geral.ColaboradorOcorrencia" />
+    <mapping class="com.fortes.rh.model.geral.HistoricoColaboradorBeneficio" />
+    <mapping class="com.fortes.rh.model.geral.Estabelecimento" />
+    <mapping class="com.fortes.rh.model.geral.HistoricoBeneficio" />
+    <mapping class="com.fortes.rh.model.geral.Bairro" />
+    <mapping class="com.fortes.rh.model.geral.DocumentoAnexo" />
+    <!-- CAPTACAO DE TALENTOS -->
+    <mapping class="com.fortes.rh.model.captacao.Candidato" />
+    <mapping class="com.fortes.rh.model.captacao.HistoricoCandidato" />
+    <mapping class="com.fortes.rh.model.captacao.Idioma" />
+    <mapping class="com.fortes.rh.model.captacao.CandidatoIdioma" />
+    <mapping class="com.fortes.rh.model.captacao.Formacao" />
+    <mapping class="com.fortes.rh.model.captacao.Experiencia" />
+    <mapping class="com.fortes.rh.model.captacao.Conhecimento" />
+    <mapping class="com.fortes.rh.model.captacao.EtapaSeletiva" />
+    <mapping class="com.fortes.rh.model.captacao.Solicitacao" />
+    <mapping class="com.fortes.rh.model.captacao.SolicitacaoBairro" />
+    <mapping class="com.fortes.rh.model.captacao.EmpresaBds" />
+    <mapping class="com.fortes.rh.model.captacao.SolicitacaoBDS" />
+    <mapping class="com.fortes.rh.model.captacao.CandidatoSolicitacao" />
+    <mapping class="com.fortes.rh.model.captacao.Anuncio" />
+    <mapping class="com.fortes.rh.model.captacao.MotivoSolicitacao" />
+    <mapping class="com.fortes.rh.model.captacao.CandidatoCurriculo" />
+    <!-- CARGOS E SALARIOS -->
+    <mapping class="com.fortes.rh.model.cargosalario.Cargo" />
+    <mapping class="com.fortes.rh.model.cargosalario.HistoricoColaborador" />
+    <mapping class="com.fortes.rh.model.cargosalario.FaixaSalarial" />
+    <mapping class="com.fortes.rh.model.cargosalario.GrupoOcupacional" />
+    <mapping class="com.fortes.rh.model.cargosalario.ReajusteColaborador" />
+    <mapping class="com.fortes.rh.model.cargosalario.TabelaReajusteColaborador" />
+    <!-- DESENVOLVIMENTO HUMANO -->
+    <mapping class="com.fortes.rh.model.desenvolvimento.ColaboradorTurma" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.Turma" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.DNT" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.Curso" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.DiaTurma" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.ColaboradorPresenca" />
+    <!-- PESQUISAS -->
+    <mapping class="com.fortes.rh.model.pesquisa.Resposta" />
+    <mapping class="com.fortes.rh.model.pesquisa.Pergunta" />
+    <mapping class="com.fortes.rh.model.pesquisa.Pesquisa" />
+    <mapping class="com.fortes.rh.model.pesquisa.ColaboradorResposta" />
+    <mapping class="com.fortes.rh.model.pesquisa.Questionario" />
+    <mapping class="com.fortes.rh.model.pesquisa.ColaboradorQuestionario" />
+    <mapping class="com.fortes.rh.model.pesquisa.Aspecto" />
+    <!-- SESMT -->
+    <mapping class="com.fortes.rh.model.sesmt.Funcao" />
+    <mapping class="com.fortes.rh.model.sesmt.HistoricoFuncao" />
+    <mapping class="com.fortes.rh.model.sesmt.Epi" />
+    <mapping class="com.fortes.rh.model.sesmt.Ambiente" />
+    <mapping class="com.fortes.rh.model.sesmt.Cat" />
+    <mapping class="com.fortes.rh.model.sesmt.TipoEPI" />
+    <mapping class="com.fortes.rh.model.sesmt.HistoricoAmbiente" />
+    <mapping class="com.fortes.rh.model.sesmt.Risco" />
+    <mapping class="com.fortes.rh.model.sesmt.Anexo" />
+    <mapping class="com.fortes.rh.model.sesmt.Epc" />
+    <mapping class="com.fortes.rh.model.sesmt.Exame" />
+    <mapping class="com.fortes.rh.model.sesmt.RealizacaoExame" />
+    <mapping class="com.fortes.rh.model.sesmt.EpiHistorico" />
+    <mapping class="com.fortes.rh.model.sesmt.EngenheiroResponsavel" />
+    <mapping class="com.fortes.rh.model.sesmt.MedicoCoordenador" />
+    <mapping class="com.fortes.rh.model.sesmt.ClinicaAutorizada" />
+    <mapping class="com.fortes.rh.model.pesquisa.Entrevista" />
+    <mapping class="com.fortes.rh.model.pesquisa.AvaliacaoTurma" />
+    <mapping class="com.fortes.rh.model.cargosalario.Indice" />
+    <mapping class="com.fortes.rh.model.cargosalario.IndiceHistorico" />
+    <mapping class="com.fortes.rh.model.cargosalario.FaixaSalarialHistorico" />
+    <mapping class="com.fortes.rh.model.geral.Mensagem" />
+    <mapping class="com.fortes.rh.model.geral.UsuarioMensagem" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.AvaliacaoCurso" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.Certificacao" />
+    <mapping class="com.fortes.rh.model.sesmt.SolicitacaoExame" />
+    <mapping class="com.fortes.rh.model.sesmt.Prontuario" />
+    <mapping class="com.fortes.rh.model.pesquisa.FichaMedica" />
+    <mapping class="com.fortes.rh.model.sesmt.ExameSolicitacaoExame" />
+    <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpi" />
+    <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItem" />
+    <mapping class="com.fortes.rh.model.sesmt.EtapaProcessoEleitoral" />
+    <mapping class="com.fortes.rh.model.sesmt.Eleicao" />
+    <mapping class="com.fortes.rh.model.sesmt.CandidatoEleicao" />
+    <mapping class="com.fortes.rh.model.sesmt.ComissaoEleicao" />
+    <mapping class="com.fortes.rh.model.sesmt.Comissao" />
+    <mapping class="com.fortes.rh.model.sesmt.ComissaoPeriodo" />
+    <mapping class="com.fortes.rh.model.sesmt.ComissaoMembro" />
+    <mapping class="com.fortes.rh.model.sesmt.ComissaoReuniao" />
+    <mapping class="com.fortes.rh.model.sesmt.ComissaoPlanoTrabalho" />
+    <mapping class="com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca" />
+    <mapping class="com.fortes.rh.model.sesmt.Afastamento" />
+    <mapping class="com.fortes.rh.model.sesmt.ColaboradorAfastamento" />
+    <mapping class="com.fortes.rh.model.sesmt.Extintor" />
+    <mapping class="com.fortes.rh.model.sesmt.ExtintorInspecao" />
+    <mapping class="com.fortes.rh.model.sesmt.ExtintorInspecaoItem" />
+    <mapping class="com.fortes.rh.model.sesmt.ExtintorManutencao" />
+    <mapping class="com.fortes.rh.model.sesmt.ExtintorManutencaoServico" />
+    <mapping class="com.fortes.rh.model.sesmt.RiscoAmbiente" />
+    <mapping class="com.fortes.rh.model.sesmt.MedicaoRisco" />
+    <mapping class="com.fortes.rh.model.sesmt.RiscoMedicaoRisco" />
+    <mapping class="com.fortes.rh.model.sesmt.Evento" />
+    <mapping class="com.fortes.rh.model.sesmt.Agenda" />
+    <mapping class="com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo" />
+    <mapping class="com.fortes.rh.model.avaliacao.PeriodoExperiencia" />
+    <mapping class="com.fortes.rh.model.avaliacao.Avaliacao" />
+    <mapping class="com.fortes.rh.model.geral.Cliente" />
+      <mapping class="com.fortes.rh.model.avaliacao.AvaliacaoDesempenho" />
+      <mapping class="com.fortes.rh.model.geral.ConfiguracaoCampoExtra" />
+      <mapping class="com.fortes.rh.model.geral.CamposExtras" />
+  </session-factory>
+
+
+
+
+
+
+
+
+
+
+
+</hibernate-configuration>
+

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="candidatoEleicao" extends="default" namespace="/sesmt/candidatoEleicao">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.CandidatoEleicaoListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/candidatoEleicaoList.ftl</result>
+		</action>
+		<action name="listVotos" class="com.fortes.rh.web.action.sesmt.CandidatoEleicaoListAction" method="listVotos">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/candidatoEleicaoVotoList.ftl</result>
+		</action>
+		<action name="saveVotos" class="com.fortes.rh.web.action.sesmt.CandidatoEleicaoListAction" method="saveVotos">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/candidatoEleicaoVotoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.CandidatoEleicaoListAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/candidatoEleicaoList.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.CandidatoEleicaoListAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/candidatoEleicaoList.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/candidatoEleicaoList.ftl</result>
+		</action>
+		<action name="imprimirCedulas" class="com.fortes.rh.web.action.sesmt.CandidatoEleicaoListAction"  method="imprimirCedulas">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/cedulas_eleitorais.jasper</param>
+				<param name="dataSource">cedulas</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">cedulasEleitorais.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/candidatoEleicaoList.ftl</result>
+		</action>
+		<action name="imprimirComprovanteInscricao" class="com.fortes.rh.web.action.sesmt.CandidatoEleicaoListAction" method="imprimirComprovanteInscricao">
+			<result name="success" type="jasper">
+				<param name="dataSource">candidatoEleicaos</param>
+				<param name="location">WEB-INF/report/inscricao_eleicao.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">comprovante_inscricao_CIPA.pdf</param>
+			</result>
+		</action>
+		
+		<action name="imprimirListaFrequencia" class="com.fortes.rh.web.action.sesmt.CandidatoEleicaoListAction" method="imprimirListaFrequencia">
+			<result name="success" type="jasper">
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="location">WEB-INF/report/lista_frequencia_colaborador.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">lista_frequencia_colaborador.pdf</param>
+			</result>
+		</action>
+		
+	</package>
+</xwork>

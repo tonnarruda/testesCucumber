@@ -1,0 +1,550 @@
+package com.fortes.rh.business.pesquisa;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
+import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.rh.model.dicionario.TipoQuestionario;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.ColaboradorResposta;
+import com.fortes.rh.model.pesquisa.Pergunta;
+import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.model.pesquisa.Resposta;
+import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
+import com.fortes.rh.util.ConverterUtil;
+
+public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<ColaboradorResposta, ColaboradorRespostaDao> implements ColaboradorRespostaManager
+{
+    private PlatformTransactionManager transactionManager;
+    private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+    private HistoricoColaboradorManager historicoColaboradorManager;
+    private QuestionarioManager questionarioManager;
+    private ColaboradorManager colaboradorManager;
+    private AvaliacaoManager avaliacaoManager;
+
+	public List<Object[]> countRespostas(Long perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId)
+    {
+        Long[] perguntasIds = new Long[]{perguntaId};
+
+        return getDao().countRespostas(perguntasIds, estabelecimentosIds, areasIds, periodoIni, periodoFim, turmaId);
+    }
+
+    public Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario)
+    {
+        return getDao().findInPerguntaIds(perguntasIds, estabelecimentosIds, areasIds, periodoIni, periodoFim, turmaId, questionario);
+    }
+
+    public void salvaQuestionarioRespondido(String respostas,Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm) throws Exception
+    {
+    	Long candidatoId = null;
+    	AreaOrganizacional areaOrganizacional = null;
+    	Estabelecimento estabelecimento = null;
+
+    	if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'A')
+    		candidatoId = colaboradorId;
+    	else
+    	{
+    		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorId);
+    		areaOrganizacional = historicoColaborador.getAreaOrganizacional();
+    		estabelecimento = historicoColaborador.getEstabelecimento();
+    	}
+    	
+        String[] perguntasRespostas = respostas.split("_");
+        questionario = questionarioManager.findByIdProjection(questionario.getId());
+        ColaboradorResposta colaboradorResposta = null;
+
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = transactionManager.getTransaction(def);
+
+        try
+        {
+        	if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA))
+        		colaboradorManager.respondeuEntrevista(colaboradorId);
+
+        	ColaboradorQuestionario colaboradorQuestionario = null;
+        	if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'A')
+        		colaboradorQuestionario = colaboradorQuestionarioManager.findByQuestionarioCandidato(questionario.getId(), candidatoId);
+        	else
+        		colaboradorQuestionario = colaboradorQuestionarioManager.findByQuestionario(questionario.getId(), colaboradorId, turmaId);
+
+        	if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA) || questionario.verificaTipo(TipoQuestionario.FICHAMEDICA))
+        	{
+        		if(colaboradorQuestionario != null && colaboradorQuestionario.getId() != null)
+        		{
+        			getDao().removeByColaboradorQuestionario(colaboradorQuestionario.getId());
+        			colaboradorQuestionarioManager.remove(colaboradorQuestionario.getId());
+        		}
+
+        		if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'A')
+        			colaboradorQuestionario = montaColaboradorQuestionarioCandidato(questionario, candidatoId);        			
+        		else
+        			colaboradorQuestionario = montaColaboradorQuestionario(questionario, colaboradorId);
+        		
+        		if(questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA) && turmaId != null)
+        		{
+        			Turma turmaTmp = new Turma();
+        			turmaTmp.setId(turmaId);
+        			colaboradorQuestionario.setTurma(turmaTmp);
+        		}
+        	}
+
+        	// Na resposta de Fichas Médicas é permitido mudar a data da resposta
+        	if (questionario.verificaTipo(TipoQuestionario.FICHAMEDICA))
+        	{
+        		colaboradorQuestionario.setRespondidaEm(respondidaEm);
+        	}
+        	else  //Nos outros casos, seta a data de hoje
+	    		if(!colaboradorQuestionario.getRespondida()) //Caso ainda não tenha sido respondida, seta a data da resposta
+	    			colaboradorQuestionario.setRespondidaEm(new Date());
+        	
+    		colaboradorQuestionario.setRespondida(true);
+
+       		if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA) || questionario.verificaTipo(TipoQuestionario.FICHAMEDICA))
+        		colaboradorQuestionario = colaboradorQuestionarioManager.save(colaboradorQuestionario);
+        	else if(questionario.verificaTipo(TipoQuestionario.PESQUISA))
+        		colaboradorQuestionarioManager.update(colaboradorQuestionario);
+
+            salvaRespostas(questionario, perguntasRespostas, estabelecimento, areaOrganizacional, colaboradorResposta, colaboradorQuestionario);
+
+            transactionManager.commit(status);
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+            transactionManager.rollback(status);
+            throw new IntegraACException(e.getMessage());
+        }
+    }
+
+	private void salvaRespostas(Questionario questionario, String[] perguntasRespostas, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, ColaboradorResposta colaboradorResposta, ColaboradorQuestionario colaboradorQuestionario)
+	{
+		Collection<Long> respostaMultiplaEscolhaIds = new ArrayList<Long>();
+		boolean multiplaEscolha = false;
+
+		for(int i=0;i<perguntasRespostas.length;i++)
+		{	
+		    if(perguntasRespostas[i].substring(0,2).equals("PG"))//É uma pergunta
+		    {
+		        colaboradorResposta = new ColaboradorResposta();
+		        Pergunta pergunta = new Pergunta();
+		        pergunta.setId(Long.parseLong(perguntasRespostas[i].substring(2)));
+
+		        colaboradorResposta.setPergunta(pergunta);
+		    }
+		    else if(perguntasRespostas[i].substring(0,1).equals("R"))//É uma resposta
+		    {
+		        if(perguntasRespostas[i].substring(1,2).equals("O"))//Objetiva
+		        {
+		            Resposta resposta = new Resposta();
+		            resposta.setId(Long.parseLong(perguntasRespostas[i].substring(2)));
+		            colaboradorResposta.setResposta(resposta);
+		        }
+		        else if(perguntasRespostas[i].substring(1,2).equals("M"))//Multipla escolha
+		        {
+		        	respostaMultiplaEscolhaIds.add(Long.parseLong(perguntasRespostas[i].substring(2)));
+		        	multiplaEscolha = true;
+		        }
+		        else if(perguntasRespostas[i].substring(1,2).equals("N"))//Nota
+		        {
+		        	String nota = perguntasRespostas[i].substring(2);
+		        	if(StringUtils.isNotBlank(nota))
+		        		colaboradorResposta.setValor(Integer.parseInt(nota));
+		        	else	
+		        		colaboradorResposta.setValor(null);
+		        }
+		        else if(perguntasRespostas[i].substring(1,2).equals("S"))//Subjetiva
+		        {
+		            colaboradorResposta.setComentario(perguntasRespostas[i].substring(2));
+		        }
+		        else if(perguntasRespostas[i].substring(1,2).equals("C"))//Comentário da Objetiva
+		        {
+		            colaboradorResposta.setComentario(perguntasRespostas[i].substring(2));
+		        }
+		    }
+
+		    //primeiro if: A próxima é uma pergunta, então salva o atual
+		    if(((i+1) < perguntasRespostas.length && perguntasRespostas[i+1].substring(0,2).equals("PG")) || (i+1) >= perguntasRespostas.length)
+		    {
+		    	if(multiplaEscolha)
+		    	{
+		    		for (Long multiplaEscolhaId : respostaMultiplaEscolhaIds)
+					{
+			            salvaColaboradorRespostaMultiplaEscolha(questionario, estabelecimento, areaOrganizacional, colaboradorResposta, colaboradorQuestionario, multiplaEscolhaId);		    		
+					}
+		    		
+		    		respostaMultiplaEscolhaIds = new ArrayList<Long>();
+		    		multiplaEscolha = false;
+		    	}
+		    	else
+		    	{
+		    		saveColaboradorResposta(questionario, estabelecimento, areaOrganizacional, colaboradorResposta, colaboradorQuestionario);		    		
+		    	}
+		    	
+		    }
+		}
+	}
+
+	private void salvaColaboradorRespostaMultiplaEscolha(Questionario questionario, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, ColaboradorResposta colaboradorResposta,
+			ColaboradorQuestionario colaboradorQuestionario, Long multiplaEscolhaId)
+	{
+		Resposta resposta = new Resposta();
+		resposta.setId(multiplaEscolhaId);
+       
+		ColaboradorResposta colaboradorRespostaMultipla = new ColaboradorResposta();
+		colaboradorRespostaMultipla.setComentario(colaboradorResposta.getComentario());
+		colaboradorRespostaMultipla.setPergunta(colaboradorResposta.getPergunta());
+		colaboradorRespostaMultipla.setResposta(resposta);
+		
+		saveColaboradorResposta(questionario, estabelecimento, areaOrganizacional, colaboradorRespostaMultipla, colaboradorQuestionario);
+	}
+
+	private void saveColaboradorResposta(Questionario questionario, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, ColaboradorResposta colaboradorResposta, ColaboradorQuestionario colaboradorQuestionario)
+	{
+		colaboradorResposta.setAreaOrganizacional(areaOrganizacional);
+		colaboradorResposta.setEstabelecimento(estabelecimento);
+
+		if( !questionario.isAnonimo())
+		    colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
+		
+		save(colaboradorResposta);
+	}
+
+	private ColaboradorQuestionario montaColaboradorQuestionario(Questionario questionario, Long colaboradorId)
+	{
+		ColaboradorQuestionario colaboradorQuestionario;
+		Colaborador colaborador = new Colaborador();
+		colaborador.setId(colaboradorId);
+
+		colaboradorQuestionario = new ColaboradorQuestionario();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+
+		return colaboradorQuestionario;
+	}
+	
+	private ColaboradorQuestionario montaColaboradorQuestionarioCandidato(Questionario questionario, Long candidatoId)
+	{
+		ColaboradorQuestionario colaboradorQuestionario;
+		Candidato candidato = new Candidato();
+		candidato.setId(candidatoId);
+		
+		colaboradorQuestionario = new ColaboradorQuestionario();
+		colaboradorQuestionario.setCandidato(candidato);
+		colaboradorQuestionario.setQuestionario(questionario);
+		
+		return colaboradorQuestionario;
+	}
+
+    public Collection<ColaboradorResposta> findRespostasColaborador(Long colaboradorQuestionarioId, Boolean aplicarPorAspecto)
+    {
+        Collection<ColaboradorResposta> colaboradorRespostas = getDao().findRespostasColaborador(colaboradorQuestionarioId, aplicarPorAspecto);
+        int contador = 1;
+        Collection<ColaboradorResposta> colaboradorRespostaOrdenadas = new ArrayList<ColaboradorResposta>();
+
+        if (aplicarPorAspecto)
+        {
+            for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
+            {
+                if (colaboradorResposta.getPergunta().getAspecto() == null || colaboradorResposta.getPergunta().getAspecto().getNome() == null)
+                {
+                    colaboradorResposta.getPergunta().setOrdem(contador);
+                    colaboradorRespostaOrdenadas.add(colaboradorResposta);
+                    contador++;
+                }
+            }
+
+            for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
+            {
+                if (colaboradorResposta.getPergunta().getAspecto() != null && colaboradorResposta.getPergunta().getAspecto().getNome() != null)
+                {
+                    colaboradorResposta.getPergunta().setOrdem(contador);
+                    colaboradorRespostaOrdenadas.add(colaboradorResposta);
+                    contador++;
+                }
+            }
+
+            return colaboradorRespostaOrdenadas;
+        }
+        else
+        {
+            return colaboradorRespostas;
+        }
+    }
+
+    public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
+    {
+        this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+    }
+
+    public void setTransactionManager(PlatformTransactionManager transactionManager)
+    {
+        this.transactionManager = transactionManager;
+    }
+
+    public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId)
+    {
+        List<Object[]> countRespostas = getDao().countRespostas(perguntasIds, estabelecimentosIds, areasIds, periodoIni, periodoFim, turmaId);
+
+        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+
+        for (int i = 0; i < countRespostas.size(); i++)
+        {
+            Object[] qtdResposta = (Object[])countRespostas.get(i);
+            
+            if(qtdResposta[1] != null && qtdResposta[3] != null && qtdResposta[4] != null)
+            {
+	            QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
+	            resultado.setQtdRespostas((Integer)qtdResposta[1]);
+	            resultado.setRespostaId((Long)qtdResposta[3]);
+	            resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double((Integer)qtdResposta[4])) * 100.0));
+	            resultadosObjetivas.add(resultado);
+            }
+        }
+
+        return resultadosObjetivas;
+    }
+
+	public Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId)
+	{
+		return getDao().findByQuestionarioColaborador(questionarioId, colaboradorId, turmaId);
+	}
+
+	public Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId)
+	{
+		return getDao().findByQuestionarioCandidato(questionarioId, candidatoId);
+	}
+
+	public void removeFicha(Long colaboradorQuestionarioId) throws Exception
+	{
+    	getDao().removeByColaboradorQuestionario(colaboradorQuestionarioId);
+    	colaboradorQuestionarioManager.remove(colaboradorQuestionarioId);
+	}
+
+	public Collection<ColaboradorResposta> findByColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario, Long questionarioId)
+	{
+		Collection<ColaboradorResposta> colaboradorRespostas = null; 
+		
+		if(colaboradorQuestionario.getCandidato() != null && colaboradorQuestionario.getCandidato().getId() != null)
+			colaboradorRespostas = findByQuestionarioCandidato(questionarioId, colaboradorQuestionario.getCandidato().getId());
+		else if(colaboradorQuestionario.getColaborador() != null && colaboradorQuestionario.getColaborador().getId() != null)
+			colaboradorRespostas = findByQuestionarioColaborador(questionarioId, colaboradorQuestionario.getColaborador().getId(), null);
+
+		return colaboradorRespostas;
+	}
+	
+	public Collection<ColaboradorResposta> findByColaboradorQuestionario(Long id)
+	{
+		Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(id);
+		
+		return colaboradorRespostas;
+	}
+	
+	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Integer totalColaboradores)
+	{
+	   List<Object[]> countRespostas = getDao().countRespostasMultiplas(perguntasIds, estabelecimentosIds, areasIds, periodoIni, periodoFim, turmaId);
+
+        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+
+        for (int i = 0; i < countRespostas.size(); i++)
+        {
+            Object[] qtdResposta = (Object[])countRespostas.get(i);
+            
+            if(qtdResposta[1] != null && qtdResposta[3] != null)
+            {
+	            QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
+	            resultado.setQtdRespostas((Integer)qtdResposta[1]);
+	            resultado.setRespostaId((Long)qtdResposta[3]);
+	            resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalColaboradores)) * 100.0));
+	            resultadosObjetivas.add(resultado);
+            }
+        }
+
+        return resultadosObjetivas;
+	}
+	
+	public void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
+	{
+		colaboradorQuestionario = colaboradorQuestionarioManager.save(colaboradorQuestionario);
+		
+		// TODO tratamento avaliação anônima
+		
+		saveRespostas(colaboradorRespostas, colaboradorQuestionario);
+			
+		if (colaboradorQuestionario.getAvaliacao() != null)
+			savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
+	}
+
+	private void saveRespostas(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
+	{
+		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorQuestionario.getColaborador().getId());
+		
+		AreaOrganizacional areaOrganizacional = null;
+		Estabelecimento estabelecimento = null;
+		
+		if(historicoColaborador != null)
+		{
+			if(historicoColaborador.getAreaOrganizacional() != null && historicoColaborador.getAreaOrganizacional().getId() != null)
+				areaOrganizacional = historicoColaborador.getAreaOrganizacional();
+			if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
+				estabelecimento = historicoColaborador.getEstabelecimento();
+		}
+		
+		for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
+		{
+			if (colaboradorResposta.temResposta() || (colaboradorResposta.temPergunta() && colaboradorResposta.getPergunta().getTipo() == TipoPergunta.SUBJETIVA))
+			{
+				colaboradorResposta.setAreaOrganizacional(areaOrganizacional);
+				colaboradorResposta.setEstabelecimento(estabelecimento);
+				colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
+				
+				getDao().save(colaboradorResposta);
+			}
+		}
+	}
+	
+	// TODO esse método não deveria estar aqui, assim como o save e update 
+	public void savePerformanceDaAvaliacaoExperiencia(ColaboradorQuestionario colaboradorQuestionario)
+	{
+		int pontuacaoMaxima = avaliacaoManager.getPontuacaoMaximaDaPerformance(colaboradorQuestionario.getAvaliacao().getId());
+		double performance = 0;
+		
+		if(pontuacaoMaxima != 0)//caso contrario não posso dividir por zero, ai a performance vai ter que ficar zero
+		{
+			int pontuacaoObtida = 0;
+			
+			Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(colaboradorQuestionario.getId());
+			
+			for (ColaboradorResposta colaboradorResposta : colaboradorRespostas) 
+			{
+				Pergunta pergunta = colaboradorResposta.getPergunta();
+				Resposta resposta = colaboradorResposta.getResposta();
+				
+				int peso = pergunta.getPeso() == null ? 0 : pergunta.getPeso();
+				int pesoResposta = 0;
+				
+				if (pergunta.getTipo() == TipoPergunta.SUBJETIVA)
+					continue;
+				
+				else if (pergunta.getTipo() == TipoPergunta.OBJETIVA || pergunta.getTipo() == TipoPergunta.MULTIPLA_ESCOLHA)
+					pesoResposta = resposta.getPeso() == null ? 0 : resposta.getPeso();
+				
+				else if (pergunta.getTipo() == TipoPergunta.NOTA)
+					pesoResposta = colaboradorResposta.getValor() == null ? 0 : colaboradorResposta.getValor();
+				
+				pontuacaoObtida += (peso * pesoResposta);
+			}
+			
+			performance = (double)pontuacaoObtida / (double)pontuacaoMaxima;
+		}
+		
+		colaboradorQuestionario.setPerformance(performance);
+		colaboradorQuestionarioManager.update(colaboradorQuestionario);
+	}
+
+	public void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
+	{
+		getDao().removeByColaboradorQuestionario(colaboradorQuestionario.getId());
+		colaboradorQuestionario.setRespondida(true);
+		colaboradorQuestionarioManager.update(colaboradorQuestionario);
+		
+		saveRespostas(colaboradorRespostas, colaboradorQuestionario);
+		
+		if (colaboradorQuestionario.getAvaliacao() != null)
+			savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
+	}
+	
+	public Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId)
+	{
+		return getDao().findByAvaliadoAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId);
+	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
+	}
+	
+	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
+	{
+		this.historicoColaboradorManager = historicoColaboradorManager;
+	}
+
+	public void setQuestionarioManager(QuestionarioManager questionarioManager)
+	{
+		this.questionarioManager = questionarioManager;
+	}
+	
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
+		this.colaboradorManager = colaboradorManager;
+	}
+
+	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId)
+    {
+        List<Object[]> countRespostas = getDao().countRespostas(avaliadoId, avaliacaoDesempenhoId);
+
+        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+
+        for (int i = 0; i < countRespostas.size(); i++)
+        {
+            Object[] qtdResposta = (Object[])countRespostas.get(i);
+            
+            if(qtdResposta[1] != null && qtdResposta[3] != null && qtdResposta[4] != null)
+            {
+	            QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
+	            resultado.setQtdRespostas((Integer)qtdResposta[1]);
+	            resultado.setRespostaId((Long)qtdResposta[3]);
+	            resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double((Integer)qtdResposta[4])) * 100.0));
+	            resultadosObjetivas.add(resultado);
+            }
+        }
+
+        return resultadosObjetivas;
+    }
+
+	 public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId)
+	 {
+		 List<Object[]> countRespostas = getDao().countRespostasMultiplas(avaliadoId, avaliacaoDesempenhoId);
+		 
+		 Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+		 
+		 Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByColaboradorAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId, true);
+		 int totalColaboradores = colaboradorQuestionarios.size();
+		 
+		 
+		 for (int i = 0; i < countRespostas.size(); i++)
+		 {
+			 Object[] qtdResposta = (Object[])countRespostas.get(i);
+		    
+			 if(qtdResposta[1] != null && qtdResposta[3] != null)
+			 {
+				 QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
+				 resultado.setQtdRespostas((Integer)qtdResposta[1]);
+				 resultado.setRespostaId((Long)qtdResposta[3]);
+				resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalColaboradores)) * 100.0));
+				 resultadosObjetivas.add(resultado);
+			 }
+		 }
+		
+		 return resultadosObjetivas;
+	 }
+}

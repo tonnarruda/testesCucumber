@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<usuario id="1" nome="Fortes" login="fortes" senha="MTIzNA==" acessosistema="true"/>
+	<perfil id="1" nome="Administrador"/>
+	<empresa id="1" nome="Empresa Padrão" cnpj="00000000" razaosocial="Empresa Padrão" emailremetente="rh@empresapadrao.com.br" emailrespsetorpessoal="sp@empresapadrao.com.br" acintegra="true" acurlsoap="http://localhost:1024/soap/IAcPessoal" acurlwsdl="http://localhost:1024/wsdl/IAcPessoal" acusuario="ADMIN" acsenha="" codigoac="0006" maxcandidatacargo="5" logourl="fortes.gif" exibirsalario="true"/>
+	<papel id="1" codigo="ROLE_CAD_CARGO" nome="Cargos e Faixas" url="/cargosalario/cargo/list.action" ordem="2" menu="true"/>
+	<perfil_papel perfil_id="1" papeis_id="1"/>
+	<usuarioempresa id="1" usuario_id="1" perfil_id="1" empresa_id="1"/>
+	<areaorganizacional id="1" nome="Área" empresa_id="1"/>
+</dataset>

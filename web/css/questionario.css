@@ -1,0 +1,70 @@
+body {
+	font-family: verdana,sans-serif;
+	font-size: 13px;
+}
+.cor
+{
+	padding: 5px 3px 5px 3px;
+	background-color: #ECEFF1;
+}
+.semCor
+{
+	padding: 5px 3px 5px 3px;
+}
+.conteiner
+{
+	padding: 10px;
+}
+.respostaPerguntas
+{
+	background-color: #FFF;
+	width: 90%;
+	height: 150px;
+	overflow: auto;
+	border: 1px solid;
+	padding: 5px;
+}
+.contador
+{
+	font-size: small;
+	color: red;
+}
+.divInformacao
+{
+	padding: 5px;
+	width: 725px;
+	background-color: #E9E9E9;
+	border: 1px solid #7E9DB9;
+}
+.divAspecto
+{
+	padding: 5px;
+	width: 725px;
+	font-weight: bold;
+	background-color: #E9E9E9;
+	border: 1px solid #7E9DB9;
+}
+.divRespSubjetiva
+{
+	padding: 5px;
+	padding-left:15px;
+	border: 0px solid #DDDDDD;
+	background-color: #EEEEEE;
+}
+.divBordaResposta
+{
+	border: 1px solid #DDDDDD;
+	padding: 0 20px;
+	background: #F6F6F6;
+}
+.divInformacao span
+{
+	display: block;
+}
+
+.divTipoResposta
+{
+	 
+	background-color: #EEEEEE; 
+	padding:5px;
+}

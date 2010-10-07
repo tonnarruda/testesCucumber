@@ -1,0 +1,1424 @@
+package com.fortes.rh.web.action.captacao;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.fortes.model.type.FileUtil;
+import com.fortes.rh.business.captacao.AnuncioManager;
+import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
+import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
+import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoImpressaoCurriculoManager;
+import com.fortes.rh.business.captacao.ConhecimentoManager;
+import com.fortes.rh.business.captacao.ExperienciaManager;
+import com.fortes.rh.business.captacao.FormacaoManager;
+import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
+import com.fortes.rh.business.captacao.IdiomaManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
+import com.fortes.rh.business.geral.AreaInteresseManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.BairroManager;
+import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
+import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.model.captacao.Idioma;
+import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.Deficiencia;
+import com.fortes.rh.model.dicionario.Escolaridade;
+import com.fortes.rh.model.dicionario.Estado;
+import com.fortes.rh.model.dicionario.NivelIdioma;
+import com.fortes.rh.model.dicionario.Sexo;
+import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
+import com.fortes.rh.model.geral.AreaInteresse;
+import com.fortes.rh.model.geral.Bairro;
+import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.relatorio.CurriculoCandidatoRelatorio;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
+import com.opensymphony.webwork.ServletActionContext;
+import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
+
+@SuppressWarnings("unchecked")
+public class CandidatoListAction extends MyActionSupportList
+{
+	private static final long serialVersionUID = 1L;
+
+	private CandidatoManager candidatoManager;
+	private CargoManager cargoManager;
+	private AnuncioManager anuncioManager;
+	private AreaInteresseManager areaInteresseManager;
+	private ConhecimentoManager conhecimentoManager;
+	private IdiomaManager idiomaManager;
+	private EstadoManager estadoManager;
+	private CidadeManager cidadeManager;
+    private BairroManager bairroManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private FormacaoManager formacaoManager;
+	private ExperienciaManager experienciaManager;
+	private CandidatoIdiomaManager candidatoIdiomaManager;
+	private HistoricoCandidatoManager historicoCandidatoManager;
+	private SolicitacaoManager solicitacaoManager;
+	private EmpresaManager empresaManager;
+	private CandidatoCurriculoManager candidatoCurriculoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private GrupoOcupacionalManager grupoOcupacionalManager;
+	private ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager;
+
+	private Collection<HistoricoCandidato> historicoCandidatos;
+	private Collection<SolicitacaoHistoricoColaborador> historicos;
+	private Collection<Candidato> candidatos;
+	private Collection<Solicitacao> solicitacaos;
+	private Collection<Idioma> idiomas = new ArrayList<Idioma>();
+
+	private Candidato candidato = new Candidato();
+	private Solicitacao solicitacao = new Solicitacao();
+	
+	private ConfiguracaoImpressaoCurriculo configuracaoImpressaoCurriculo;
+
+	private Map deficiencias;
+	private Map<String, String> escolaridades;
+	private Map nivels;
+	private Map<String, String> sexos;
+	private Map ufs;
+	private Map cidades;
+	private Map session;
+
+	//Variaveis do listCheckBox
+	private String[] cargosCheck;
+	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
+	private String[] areasCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private String[] conhecimentosCheck;
+	private Collection<CheckBox> conhecimentosCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	private String[] empresasCheck;
+	private String[] estabelecimentosCheck;
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private String[] gruposCheck;
+	private Collection<CheckBox> gruposCheckList = new ArrayList<CheckBox>();
+	private String emailAvulso;
+	private String anuncioBDS;
+
+	//variavel para busca no candidatoList
+	private String nomeBusca = "";
+	private String indicadoPorBusca = "";
+	private String cpfBusca = "";
+	private char visualizar; //T = todos, D = disponiveis, I = indisponiveis
+	private Long etapaSeletivaId;
+	private String observacaoRH;
+
+	private String indicadoPor; // para manter filtro de candidatoList
+
+	private Long idioma;
+	private Long uf;
+	private Long cidade;
+	private Long empresaId;
+	private char veiculo;
+	private String idadeMin;
+	private String idadeMax;
+	private String escolaridade;
+	private String nivel;
+	private String sexo;
+	private Date dataCadIni;
+	private Date dataCadFim;
+	private String palavrasChave;
+	private String formas;
+	private String tempoExperiencia;
+	private String deficiencia;
+
+	private String[] candidatosId;
+
+	// Uso para exibir mensagen ao deletar candidato
+	// N - Não tem mensagem, E = Erro e O = Deu certo
+	private char msgDelete = 'N';
+	private String msgAlert = "";
+	private boolean BDS;
+
+	private Map<String, Object> parametros = new HashMap<String, Object>();
+	private ParametrosDoSistema parametrosDoSistema;
+	private Collection<CurriculoCandidatoRelatorio> dataSource;
+
+	private Collection<AvaliacaoCandidatosRelatorio> avaliacaoCandidatos;
+
+	//Utilizado para não recarregar as informações da solicitação no filtro quando não necessárias
+	private boolean filtro = false;
+
+    private Collection<Empresa> empresas;
+
+    private String[] bairrosCheck;
+    private Collection<CheckBox> bairrosCheckList = new ArrayList<CheckBox>();
+    private String[] experienciasCheck;
+    private Collection<CheckBox> experienciasCheckList = new ArrayList<CheckBox>();
+
+    private String palavras;
+    private String forma;
+	private String nomeImg;
+
+	// Utilizado para escapar nomes de candidatos contendo apóstrofos
+	private StringUtil stringUtil = new StringUtil();
+	private boolean montaFiltroBySolicitacao = true;
+	
+	private boolean exibeContratados; //exibir contratados na listagem
+	private boolean exibeExterno; //exibir somente os do módulo externo
+	
+	private boolean somenteCandidatosSemSolicitacao;
+
+	public String list() throws Exception
+	{
+		cpfBusca = StringUtil.removeMascara(cpfBusca);
+		setTotalSize(candidatoManager.getCount(nomeBusca, cpfBusca, getEmpresaSistema().getId(), indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno));
+		candidatos = candidatoManager.list(getPage(), getPagingSize(), nomeBusca, cpfBusca, getEmpresaSistema().getId(), indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno);
+
+		if(candidatos == null || candidatos.isEmpty())
+			addActionMessage("Não existem candidatos a serem listados!");
+
+		if (!msgAlert.equals(""))
+			addActionMessage(msgAlert);
+
+		return Action.SUCCESS;
+	}
+
+	public String delete() throws Exception
+	{
+		candidatoManager.removeCandidato(candidato);
+		addActionMessage("Candidato excluído com sucesso!");
+
+		return Action.SUCCESS;
+	}
+	
+	public String listCbo() throws Exception
+	{
+		setTotalSize(0);
+		return Action.SUCCESS;
+	}
+
+	private void prepareBuscaCandidato() throws Exception
+	{
+		deficiencias = new Deficiencia();
+		escolaridades = new Escolaridade();
+		nivels = new NivelIdioma();
+		sexos = new Sexo();
+		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
+
+		idiomas = idiomaManager.findAll(new String[]{"nome"});
+
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado"), "getId", "getNomeMercado");
+
+		Collection<AreaInteresse> areaInteressesAux = areaInteresseManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"empresa.id"},new Object[]{getEmpresaSistema().getId()},new String[]{"nome"});
+		areasCheckList = CheckListBoxUtil.populaCheckListBox(areaInteressesAux, "getId", "getNome");
+		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(getEmpresaSistema().getId());
+
+		experienciasCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado"), "getId", "getNomeMercado");
+
+		if(solicitacao != null && solicitacao.getId() != null)
+		{
+			solicitacao = solicitacaoManager.findByIdProjection(solicitacao.getId());
+
+			if(solicitacao.getCidade() != null && solicitacao.getCidade().getUf() != null)
+			{
+				uf = solicitacao.getCidade().getUf().getId();
+				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+				cidade = solicitacao.getCidade().getId();
+            	Collection<Bairro> bairroList = bairroManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"cidade.id"}, new Object[]{solicitacao.getCidade().getId()}, new String[]{"nome"});
+            	bairrosCheckList = CheckListBoxUtil.populaCheckListBox(bairroList, "getId", "getNome");
+            	Collection<Bairro> marcados = bairroManager.getBairrosBySolicitacao(solicitacao.getId());
+				bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, marcados, "getId");
+            }
+
+			if (!filtro)
+			{
+				escolaridade = solicitacao.getEscolaridade();
+				sexo = solicitacao.getSexo();
+				idadeMin = StringUtil.valueOf(solicitacao.getIdadeMinima());
+				idadeMax = StringUtil.valueOf(solicitacao.getIdadeMaxima());
+
+				for (CheckBox cb : cargosCheckList)
+				{
+					if (cb.getId().equals(solicitacao.getFaixaSalarial().getCargo().getId()))
+					{
+						cb.setSelecionado(true);
+						break;
+					}
+				}
+
+				Collection<AreaInteresse> areasInteresse = areaInteresseManager.findAreasInteresseByAreaOrganizacional(solicitacao.getAreaOrganizacional());
+
+				for (CheckBox cb : areasCheckList)
+				{
+					AreaInteresse areaAux = new AreaInteresse();
+					areaAux.setId(cb.getId());
+					areaAux.setNome(cb.getNome());
+
+					if(!areasInteresse.isEmpty() && areasInteresse.contains(areaAux))
+						cb.setSelecionado(true);
+				}
+			}
+		}
+
+        empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+	}
+
+	public String prepareBusca() throws Exception
+	{
+		prepareBuscaCandidato();
+		
+		if(empresaId == null)		
+			empresaId = getEmpresaSistema().getId();
+	
+		if (!msgAlert.equals(""))
+			addActionMessage(msgAlert);
+		
+		setShowFilter(true);
+
+		return Action.SUCCESS;
+	}
+
+	public String prepareBuscaSimples() throws Exception
+	{
+		empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+
+		if(montaFiltroBySolicitacao)
+		{
+			empresaId = getEmpresaSistema().getId();
+			solicitacao = solicitacaoManager.findByIdProjection(solicitacao.getId());
+
+			if(solicitacao.getCidade() != null)
+			{
+				uf = solicitacao.getCidade().getUf().getId();
+				cidade = solicitacao.getCidade().getId();
+				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+			}
+
+			Collection<Cargo> cargosDaSolicitacao = cargoManager.findBySolicitacao(solicitacao.getId());
+			cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosDaSolicitacao, "getId");
+		}
+		else
+		{
+			if(uf != null)
+				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+
+			cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
+			conhecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(conhecimentosCheckList, conhecimentosCheck);
+		}
+
+		cargosCheckList = cargoManager.populaCheckBox(empresaId);
+		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(empresaId);
+		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
+
+		setShowFilter(true);
+		
+		return Action.SUCCESS;
+	}
+
+	public String busca() throws Exception
+	{
+		cpfBusca = StringUtil.removeMascara(cpfBusca);
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("indicadoPor", indicadoPorBusca);
+		parametros.put("nomeBusca", nomeBusca);
+		parametros.put("idioma", idioma);
+		parametros.put("cpfBusca", cpfBusca);
+		parametros.put("dataCadIni",dataCadIni);
+		parametros.put("dataCadFim",dataCadFim);
+		parametros.put("sexo", sexo);
+		parametros.put("idadeMin", idadeMin);
+		parametros.put("idadeMax", idadeMax);
+		parametros.put("cidade", cidade);
+		parametros.put("uf", uf);
+		parametros.put("escolaridade", escolaridade);
+		parametros.put("veiculo", veiculo);
+		parametros.put("nivel", nivel);
+		parametros.put("palavrasChave", palavrasChave);
+		parametros.put("formas", formas);
+		parametros.put("tempoExperiencia", tempoExperiencia);
+		parametros.put("deficiencia", deficiencia);
+
+		Long[] areasCheckLong = StringUtil.stringToLong(areasCheck);
+		Long[] cargosCheckLong = StringUtil.stringToLong(cargosCheck);
+		Long[] conhecimentosCheckLong = StringUtil.stringToLong(conhecimentosCheck);
+		Long[] bairrosCheckLong = StringUtil.stringToLong(bairrosCheck);
+		Long[] experienciasCheckLong = StringUtil.stringToLong(experienciasCheck);
+		parametros.put("areasIds", areasCheckLong);
+		parametros.put("cargosIds", cargosCheckLong);
+		parametros.put("conhecimentosIds", conhecimentosCheckLong);
+		parametros.put("bairrosIds", bairrosCheckLong);
+		
+		if (!tempoExperiencia.equals("") || !tempoExperiencia.equals("0")){
+			if (experienciasCheckLong.length > 0)
+				parametros.put("experiencias", experienciasCheckLong);
+		}else
+			parametros.put("experiencias", experienciasCheckLong);
+		
+
+		if (BDS)
+			empresaId = getEmpresaSistema().getId();
+		
+		candidatos = candidatoManager.busca(parametros, empresaId, solicitacao.getId(), somenteCandidatosSemSolicitacao);
+
+		if(candidatos == null || candidatos.size() == 0)
+			addActionMessage("Não existem candidatos a serem listados!");
+		else if(candidatos.size() > 150)
+		{
+			addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar a busca.");
+			candidatos = null;
+		}
+
+		prepareBuscaCandidato();
+
+		cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+
+		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, bairrosCheck);
+		experienciasCheckList = CheckListBoxUtil.marcaCheckListBox(experienciasCheckList, experienciasCheck);
+
+		CollectionUtil<CheckBox> cu = new CollectionUtil<CheckBox>();
+
+		areasCheckList = cu.sortCollectionStringIgnoreCase(areasCheckList, "nome");
+
+		Collection<Conhecimento> conhecimentos;
+
+		if (areasCheck == null || areasCheck.length == 0)
+			conhecimentos =  conhecimentoManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"nome"});
+		else
+			conhecimentos =  conhecimentoManager.findByAreaInteresse(StringUtil.stringToLong(areasCheck),getEmpresaSistema().getId());
+
+		conhecimentosCheckList = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome");
+		conhecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(conhecimentosCheckList, conhecimentosCheck);
+
+		return Action.SUCCESS;
+	}
+
+	public String buscaSimples() throws Exception
+	{
+		cpfBusca = StringUtil.removeMascara(cpfBusca);
+		montaFiltroBySolicitacao = false;
+		prepareBuscaSimples();
+
+		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao);
+
+		if(candidatos == null || candidatos.size() == 0)
+			addActionMessage("Não existem candidatos a serem listados!");
+		else if(candidatos.size() > 150)
+		{
+			addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar sua busca.");
+			candidatos = null;
+		}
+		else{
+			setShowFilter(false);
+		}
+
+		return Action.SUCCESS;
+	}
+
+	public String insertCandidatos() throws Exception
+	{
+		if(candidatosId != null && candidatosId.length > 0)
+			candidatoSolicitacaoManager.insertCandidatos(candidatosId, solicitacao);
+
+		return Action.SUCCESS;
+	}
+
+	public String selecionaDestinatariosBDS() throws Exception
+	{
+		prepareBuscaCandidato();
+		empresasCheckList = anuncioManager.getEmpresasCheck(getEmpresaSistema().getId());
+
+		return Action.SUCCESS;
+	}
+
+	public String exportaBDS() throws Exception
+	{
+		BDS = true;
+		if(candidatosId != null && candidatosId.length > 0)
+		{
+			Collection<Candidato> candidatos = candidatoManager.findCandidatosById(LongUtil.arrayStringToArrayLong(candidatosId[0].split(",")));
+			candidatos = candidatoManager.populaCandidatos(candidatos);
+
+			try
+			{
+				if(candidatoManager.exportaCandidatosBDS(getEmpresaSistema(), candidatos, empresasCheck, emailAvulso, anuncioBDS))
+					addActionMessage("Candidatos exportados com sucesso.");
+
+			}
+			catch (Throwable e)
+			{
+				addActionError("Não foi possível exportar Candidatos.");
+				e.printStackTrace();
+			}
+		}
+
+		prepareBusca();
+
+		return Action.SUCCESS;
+	}
+
+	public String verCurriculoEscaneado() throws Exception
+	{
+		candidato.setCandidatoCurriculos(candidatoCurriculoManager.findToList(new String[]{"curriculo"}, new String[]{"curriculo"}, new String[]{"candidato.id"}, new Object[]{candidato.getId()}));
+
+		return Action.SUCCESS;
+	}
+
+	public String showImagensCurriculo() throws Exception
+	{
+		java.io.File file = ArquivoUtil.getArquivo(nomeImg,"curriculos");
+		com.fortes.model.type.File arquivo = new com.fortes.model.type.File();
+		arquivo.setBytes(FileUtil.getFileBytes(file));
+		arquivo.setName(file.getName());
+		arquivo.setSize(file.length());
+		int pos = arquivo.getName().indexOf(".");
+
+		if(pos > 0)
+			arquivo.setContentType(arquivo.getName().substring(pos));
+
+		if (arquivo != null && arquivo.getBytes() != null)
+		{
+			HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.addHeader("Content-type", arquivo.getContentType());
+			response.addHeader("Content-Transfer-Encoding", "binary");
+
+			response.getOutputStream().write(arquivo.getBytes());
+		}
+
+		return Action.SUCCESS;
+	}
+
+	public String verCurriculoTextoOcr() throws Exception
+	{
+		candidato.setOcrTexto(candidatoManager.getOcrTextoById(candidato.getId()));
+
+		if(StringUtils.isNotBlank(palavras))
+		{
+			String[] palavrasArray = palavras.split(" ");
+			if(forma.equals("3"))
+				palavrasArray = new String[]{palavras};
+
+			candidato.setOcrTexto( StringUtil.destacarExpressoesApresentacao(candidato.getOcrTexto(), palavrasArray) );
+		}
+
+		return Action.SUCCESS;
+	}
+
+	public String verCurriculo() throws Exception
+	{
+		findAndSetCandidato();
+
+		return Action.SUCCESS;
+	}
+
+	public String imprimirCurriculo() throws Exception
+	{
+		configuracaoImpressaoCurriculo.setUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+		configuracaoImpressaoCurriculo.setEmpresa(getEmpresaSistema());
+		configuracaoImpressaoCurriculoManager.saveOrUpdate(configuracaoImpressaoCurriculo);
+		
+		findAndSetCandidato();
+
+		//ver historico do candidato
+		historicoCandidatos = historicoCandidatoManager.findByCandidato(candidato);
+		historicos = historicoCandidatoManager.montaMapaHistorico(historicoCandidatos);
+
+		CurriculoCandidatoRelatorio curriculo = new CurriculoCandidatoRelatorio();
+		curriculo.setCandidatos(candidato);
+		curriculo.setHistoricos(historicos);
+
+		dataSource = new ArrayList<CurriculoCandidatoRelatorio>();
+		dataSource.add(curriculo);
+
+		parametros = RelatorioUtil.getParametrosRelatorio("", getEmpresaSistema(), "");
+		configuracaoImpressaoCurriculo.populaParametros(parametros);
+
+		return Action.SUCCESS;
+	}
+
+	private void findAndSetCandidato()
+	{
+		candidato = candidatoManager.findByIdProjection(candidato.getId());
+
+		try
+		{
+			candidato.setFoto(candidatoManager.getFoto(candidato.getId()));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		candidato.setCargos(candidatoManager.findCargosByCandidatoId(candidato.getId()));
+		candidato.setFormacao(formacaoManager.findByCandidato(candidato.getId()));
+		candidato.setCandidatoIdiomas(candidatoIdiomaManager.findByCandidato(candidato.getId()));
+		candidato.setExperiencias(experienciaManager.findByCandidato(candidato.getId()));
+		candidato.setConhecimentos(conhecimentoManager.findByCandidato(candidato.getId()));
+	}
+
+	public String prepareRelatorioAvaliacaoCandidatos() throws Exception
+	{
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+
+		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+
+		gruposCheckList = grupoOcupacionalManager.populaCheckOrderNome(getEmpresaSistema().getId());
+		gruposCheckList = CheckListBoxUtil.marcaCheckListBox(gruposCheckList, gruposCheck);
+
+		cargosCheckList = cargoManager.populaCheckBox(gruposCheck, cargosCheck, getEmpresaSistema().getId());
+		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
+
+		return Action.SUCCESS;
+	}
+
+	public String relatorioAvaliacaoCandidatos() throws Exception
+	{
+		avaliacaoCandidatos = new ArrayList<AvaliacaoCandidatosRelatorio>();
+		try
+		{
+			avaliacaoCandidatos = candidatoManager.findRelatorioAvaliacaoCandidatos(dataCadIni, dataCadFim, getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck));
+			parametros = RelatorioUtil.getParametrosRelatorio("Avaliações dos Candidatos", getEmpresaSistema(), getPeriodoFormatado());
+			return SUCCESS;
+
+		}
+		catch (ColecaoVaziaException e)
+		{
+			addActionMessage(e.getMessage());
+			prepareRelatorioAvaliacaoCandidatos();
+			return INPUT;
+		}
+	}
+
+	private String getPeriodoFormatado()
+	{
+		String periodoFormatado = "-";
+		if (dataCadIni != null && dataCadFim != null)
+			periodoFormatado = "Período: " + DateUtil.formataDiaMesAno(dataCadIni) + " - " + DateUtil.formataDiaMesAno(dataCadFim);
+
+		return periodoFormatado;
+	}
+
+	public String sucessoInclusao() throws Exception
+	{
+		addActionMessage("Operação Efetuada com Sucesso!");
+		return Action.SUCCESS;
+	}
+
+	public String infoCandidato() throws Exception
+	{
+		configuracaoImpressaoCurriculo = configuracaoImpressaoCurriculoManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId(), getEmpresaSistema().getId()); 
+		return Action.SUCCESS;
+	}
+
+	public Collection<Candidato> getCandidatos()
+	{
+		return candidatos;
+	}
+	public Candidato getCandidato()
+	{
+		return candidato;
+	}
+	public void setCandidato(Candidato candidato)
+	{
+		this.candidato = candidato;
+	}
+	public void setCandidatoManager(CandidatoManager candidatoManager)
+	{
+		this.candidatoManager = candidatoManager;
+	}
+
+	public String[] getCargosCheck()
+	{
+		return cargosCheck;
+	}
+
+	public void setCargosCheck(String[] cargosCheck)
+	{
+		this.cargosCheck = cargosCheck;
+	}
+
+	public Collection<CheckBox> getCargosCheckList()
+	{
+		return cargosCheckList;
+	}
+
+	public void setCargosCheckList(Collection<CheckBox> cargosCheckList)
+	{
+		this.cargosCheckList = cargosCheckList;
+	}
+
+	public String[] getAreasCheck()
+	{
+		return areasCheck;
+	}
+
+	public void setAreasCheck(String[] areasCheck)
+	{
+		this.areasCheck = areasCheck;
+	}
+
+	public Collection<CheckBox> getAreasCheckList()
+	{
+		return areasCheckList;
+	}
+
+	public void setAreasCheckList(Collection<CheckBox> areasCheckList)
+	{
+		this.areasCheckList = areasCheckList;
+	}
+
+	public void setAreaInteresseManager(AreaInteresseManager areaInteresseManager)
+	{
+		this.areaInteresseManager = areaInteresseManager;
+	}
+
+	public String[] getConhecimentosCheck()
+	{
+		return conhecimentosCheck;
+	}
+
+	public void setConhecimentosCheck(String[] conhecimentosCheck)
+	{
+		this.conhecimentosCheck = conhecimentosCheck;
+	}
+
+	public Collection<CheckBox> getConhecimentosCheckList()
+	{
+		return conhecimentosCheckList;
+	}
+
+	public void setConhecimentosCheckList(Collection<CheckBox> conhecimentosCheckList)
+	{
+		this.conhecimentosCheckList = conhecimentosCheckList;
+	}
+
+	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager)
+	{
+		this.conhecimentoManager = conhecimentoManager;
+	}
+
+	public Map<String, String> getEscolaridades()
+	{
+		return escolaridades;
+	}
+
+	public void setEscolaridades(Map<String, String> escolaridades)
+	{
+		this.escolaridades = escolaridades;
+	}
+
+	public Collection<Idioma> getIdiomas()
+	{
+		return idiomas;
+	}
+
+	public void setIdiomas(Collection<Idioma> idiomas)
+	{
+		this.idiomas = idiomas;
+	}
+
+	public void setIdiomaManager(IdiomaManager idiomaManager)
+	{
+		this.idiomaManager = idiomaManager;
+	}
+
+	public Map getNivels()
+	{
+		return nivels;
+	}
+
+	public void setNivels(Map nivels)
+	{
+		this.nivels = nivels;
+	}
+
+	public Map<String, String> getSexos()
+	{
+		return sexos;
+	}
+
+	public void setSexos(Map<String, String> sexos)
+	{
+		this.sexos = sexos;
+	}
+
+	public void setCargoManager(CargoManager cargoManager)
+	{
+		this.cargoManager = cargoManager;
+	}
+
+	public Map getUfs()
+	{
+		return ufs;
+	}
+
+	public void setUfs(Map ufs)
+	{
+		this.ufs = ufs;
+	}
+
+	public void setEstadoManager(EstadoManager estadoManager)
+	{
+		this.estadoManager = estadoManager;
+	}
+
+	public Solicitacao getSolicitacao()
+	{
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao)
+	{
+		this.solicitacao = solicitacao;
+	}
+
+	public Long getCidade()
+	{
+		return cidade;
+	}
+
+	public void setCidade(Long cidade)
+	{
+		this.cidade = cidade;
+	}
+
+	public String getEscolaridade()
+	{
+		return escolaridade;
+	}
+
+	public void setEscolaridade(String escolaridade)
+	{
+		this.escolaridade = escolaridade;
+	}
+
+	public String getIdadeMax()
+	{
+		return idadeMax;
+	}
+
+	public void setIdadeMax(String idadeMax)
+	{
+		this.idadeMax = idadeMax;
+	}
+
+	public String getIdadeMin()
+	{
+		return idadeMin;
+	}
+
+	public void setIdadeMin(String idadeMin)
+	{
+		this.idadeMin = idadeMin;
+	}
+
+	public Long getIdioma()
+	{
+		return idioma;
+	}
+
+	public void setIdioma(Long idioma)
+	{
+		this.idioma = idioma;
+	}
+
+	public String getNivel()
+	{
+		return nivel;
+	}
+
+	public void setNivel(String nivel)
+	{
+		this.nivel = nivel;
+	}
+
+	public char getVeiculo()
+	{
+		return veiculo;
+	}
+
+	public void setVeiculo(char veiculo)
+	{
+		this.veiculo = veiculo;
+	}
+
+	public String getSexo()
+	{
+		return sexo;
+	}
+
+	public void setSexo(String sexo)
+	{
+		this.sexo = sexo;
+	}
+
+	public Long getUf()
+	{
+		return uf;
+	}
+
+	public void setUf(Long uf)
+	{
+		this.uf = uf;
+	}
+
+	public Map getCidades()
+	{
+		return cidades;
+	}
+
+	public void setCidades(Map cidades)
+	{
+		this.cidades = cidades;
+	}
+
+	public void setCidadeManager(CidadeManager cidadeManager)
+	{
+		this.cidadeManager = cidadeManager;
+	}
+
+	public String[] getCandidatosId()
+	{
+		return candidatosId;
+	}
+
+	public void setCandidatosId(String[] candidatosId)
+	{
+		this.candidatosId = candidatosId;
+	}
+
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
+	{
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+
+	public void setCandidatoIdiomaManager(CandidatoIdiomaManager candidatoIdiomaManager)
+	{
+		this.candidatoIdiomaManager = candidatoIdiomaManager;
+	}
+
+	public void setExperienciaManager(ExperienciaManager experienciaManager)
+	{
+		this.experienciaManager = experienciaManager;
+	}
+
+	public void setFormacaoManager(FormacaoManager formacaoManager)
+	{
+		this.formacaoManager = formacaoManager;
+	}
+
+	public String getCpfBusca()
+	{
+		return cpfBusca;
+	}
+
+	public void setCpfBusca(String cpfBusca)
+	{
+		this.cpfBusca = cpfBusca;
+	}
+
+	public String getNomeBusca()
+	{
+		return nomeBusca;
+	}
+
+	public void setNomeBusca(String nomeBusca)
+	{
+		this.nomeBusca = StringUtil.retiraAcento(nomeBusca);
+	}
+
+	public Date getDataCadFim() {
+		return dataCadFim;
+	}
+
+	public void setDataCadFim(Date dataCadFim) {
+		this.dataCadFim = dataCadFim;
+	}
+
+	public Date getDataCadIni() {
+		return dataCadIni;
+	}
+
+	public void setDataCadIni(Date dataCadIni) {
+		this.dataCadIni = dataCadIni;
+	}
+
+	public char getMsgDelete() {
+		return msgDelete;
+	}
+
+	public void setMsgDelete(char msgDelete) {
+		this.msgDelete = msgDelete;
+	}
+
+	public Map getParametros()
+	{
+		return parametros;
+	}
+
+	public void setParametros(Map<String, Object> parametros)
+	{
+		this.parametros = parametros;
+	}
+
+	public ParametrosDoSistema getParametrosDoSistema()
+	{
+		return parametrosDoSistema;
+	}
+
+	public void setParametrosDoSistema(ParametrosDoSistema parametrosDoSistema)
+	{
+		this.parametrosDoSistema = parametrosDoSistema;
+	}
+
+	public Collection<HistoricoCandidato> getHistoricoCandidatos()
+	{
+		return historicoCandidatos;
+	}
+
+	public void setHistoricoCandidatos(Collection<HistoricoCandidato> historicoCandidatos)
+	{
+		this.historicoCandidatos = historicoCandidatos;
+	}
+
+	public Collection<SolicitacaoHistoricoColaborador> getHistoricos()
+	{
+		return historicos;
+	}
+
+	public void setHistoricos(Collection<SolicitacaoHistoricoColaborador> historicos)
+	{
+		this.historicos = historicos;
+	}
+
+	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
+	{
+		this.historicoCandidatoManager = historicoCandidatoManager;
+	}
+
+	public Collection<CurriculoCandidatoRelatorio> getDataSource()
+	{
+		return dataSource;
+	}
+
+	public void setDataSource(Collection<CurriculoCandidatoRelatorio> dataSource)
+	{
+		this.dataSource = dataSource;
+	}
+
+	public String getMsgAlert()
+	{
+		return msgAlert;
+	}
+
+	public void setMsgAlert(String msgAlert)
+	{
+		this.msgAlert = msgAlert;
+	}
+
+	public boolean isBDS()
+	{
+		return BDS;
+	}
+
+	public void setBDS(boolean BDS)
+	{
+		this.BDS = BDS;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList()
+	{
+		return empresasCheckList;
+	}
+
+	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList)
+	{
+		this.empresasCheckList = empresasCheckList;
+	}
+
+	public void setAnuncioManager(AnuncioManager anuncioManager)
+	{
+		this.anuncioManager = anuncioManager;
+	}
+
+	public String getEmailAvulso()
+	{
+		return emailAvulso;
+	}
+
+	public void setEmailAvulso(String emailAvulso)
+	{
+		this.emailAvulso = emailAvulso;
+	}
+
+	public String[] getEmpresasCheck()
+	{
+		return empresasCheck;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck)
+	{
+		this.empresasCheck = empresasCheck;
+	}
+
+	public String getAnuncioBDS()
+	{
+		return anuncioBDS;
+	}
+
+	public void setAnuncioBDS(String anuncioBDS)
+	{
+		this.anuncioBDS = anuncioBDS;
+	}
+
+	public Map getSession()
+	{
+		return session;
+	}
+
+	public void setSession(Map session)
+	{
+		this.session = session;
+	}
+
+	public Collection<Solicitacao> getSolicitacaos()
+	{
+		return solicitacaos;
+	}
+
+	public void setSolicitacaos(Collection<Solicitacao> solicitacaos)
+	{
+		this.solicitacaos = solicitacaos;
+	}
+
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
+	{
+		this.solicitacaoManager = solicitacaoManager;
+	}
+	public boolean isFiltro()
+	{
+		return filtro;
+	}
+
+	public void setFiltro(boolean filtro)
+	{
+		this.filtro = filtro;
+	}
+
+	public Collection<Empresa> getEmpresas()
+	{
+		return empresas;
+	}
+
+	public void setEmpresas(Collection<Empresa> empresas)
+	{
+		this.empresas = empresas;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager)
+	{
+		this.empresaManager = empresaManager;
+	}
+
+	public String[] getBairrosCheck()
+	{
+		return bairrosCheck;
+	}
+
+	public void setBairrosCheck(String[] bairrosCheck)
+	{
+		this.bairrosCheck = bairrosCheck;
+	}
+
+	public Collection<CheckBox> getBairrosCheckList()
+	{
+		return bairrosCheckList;
+	}
+
+	public void setBairrosCheckList(Collection<CheckBox> bairrosCheckList)
+	{
+		this.bairrosCheckList = bairrosCheckList;
+	}
+
+	public void setBairroManager(BairroManager bairroManager)
+	{
+		this.bairroManager = bairroManager;
+	}
+
+	public void setCandidatoCurriculoManager(CandidatoCurriculoManager candidatoCurriculoManager)
+	{
+		this.candidatoCurriculoManager = candidatoCurriculoManager;
+	}
+
+	public String getPalavrasChave()
+	{
+		return palavrasChave;
+	}
+
+	public void setPalavrasChave(String palavrasChave)
+	{
+		this.palavrasChave = palavrasChave;
+	}
+
+	public String getFormas()
+	{
+		return formas;
+	}
+
+	public void setFormas(String formas)
+	{
+		this.formas = formas;
+	}
+
+	public String getForma()
+	{
+		return forma;
+	}
+
+	public void setForma(String forma)
+	{
+		this.forma = forma;
+	}
+
+	public String getPalavras()
+	{
+		return palavras;
+	}
+
+	public void setPalavras(String palavras)
+	{
+		this.palavras = palavras;
+	}
+
+	public String[] getExperienciasCheck()
+	{
+		return experienciasCheck;
+	}
+
+	public void setExperienciasCheck(String[] experienciasCheck)
+	{
+		this.experienciasCheck = experienciasCheck;
+	}
+
+	public Collection<CheckBox> getExperienciasCheckList()
+	{
+		return experienciasCheckList;
+	}
+
+	public void setExperienciasCheckList(Collection<CheckBox> experienciasCheckList)
+	{
+		this.experienciasCheckList = experienciasCheckList;
+	}
+
+	public String getTempoExperiencia()
+	{
+		return tempoExperiencia;
+	}
+
+	public void setTempoExperiencia(String tempoExperiencia)
+	{
+		this.tempoExperiencia = tempoExperiencia;
+	}
+
+	public char getVisualizar()
+	{
+		return visualizar;
+	}
+
+	public void setVisualizar(char visualizar)
+	{
+		this.visualizar = visualizar;
+	}
+
+	public String getIndicadoPorBusca()
+	{
+		return indicadoPorBusca;
+	}
+
+	public void setIndicadoPorBusca(String indicadoPorBusca)
+	{
+		this.indicadoPorBusca = StringUtil.retiraAcento(indicadoPorBusca);
+	}
+
+	public Long getEtapaSeletivaId()
+	{
+		return etapaSeletivaId;
+	}
+
+	public void setEtapaSeletivaId(Long etapaSeletivaId)
+	{
+		this.etapaSeletivaId = etapaSeletivaId;
+	}
+
+	public void setNomeImg(String nomeImg)
+	{
+		this.nomeImg = nomeImg;
+	}
+
+	public StringUtil getStringUtil()
+	{
+		return stringUtil;
+	}
+
+	public String getIndicadoPor()
+	{
+		return indicadoPor;
+	}
+
+	public void setIndicadoPor(String indicadoPor)
+	{
+		this.indicadoPor = indicadoPor;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
+	{
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
+	{
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
+	{
+		this.grupoOcupacionalManager = grupoOcupacionalManager;
+	}
+
+	public Collection<CheckBox> getEstabelecimentosCheckList()
+	{
+		return estabelecimentosCheckList;
+	}
+
+	public Collection<CheckBox> getGruposCheckList()
+	{
+		return gruposCheckList;
+	}
+
+	public void setGruposCheck(String[] gruposCheck)
+	{
+		this.gruposCheck = gruposCheck;
+	}
+
+	public void setEstabelecimentosCheck(String[] estabelecimentosCheck)
+	{
+		this.estabelecimentosCheck = estabelecimentosCheck;
+	}
+
+	public Collection<AvaliacaoCandidatosRelatorio> getAvaliacaoCandidatos()
+	{
+		return avaliacaoCandidatos;
+	}
+
+	public Long getEmpresaId()
+	{
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId)
+	{
+		this.empresaId = empresaId;
+	}
+
+	public Map getDeficiencias()
+	{
+		return deficiencias;
+	}
+
+	public void setDeficiencias(Map deficiencias)
+	{
+		this.deficiencias = deficiencias;
+	}
+
+	public String getDeficiencia()
+	{
+		return deficiencia;
+	}
+
+	public void setDeficiencia(String deficiencia)
+	{
+		this.deficiencia = deficiencia;
+	}
+
+	public String getObservacaoRH()
+	{
+		return observacaoRH;
+	}
+
+	public void setObservacaoRH(String observacaoRH)
+	{
+		this.observacaoRH = observacaoRH;
+	}
+
+	public ConfiguracaoImpressaoCurriculo getConfiguracaoImpressaoCurriculo()
+	{
+		return configuracaoImpressaoCurriculo;
+	}
+
+	public void setConfiguracaoImpressaoCurriculo(ConfiguracaoImpressaoCurriculo configuracaoImpressaoCurriculo)
+	{
+		this.configuracaoImpressaoCurriculo = configuracaoImpressaoCurriculo;
+	}
+
+	public void setConfiguracaoImpressaoCurriculoManager(ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager)
+	{
+		this.configuracaoImpressaoCurriculoManager = configuracaoImpressaoCurriculoManager;
+	}
+
+	public boolean isExibeContratados() {
+		return exibeContratados;
+	}
+
+	public void setExibeContratados(boolean exibeContratados) {
+		this.exibeContratados = exibeContratados;
+	}
+
+	public boolean isSomenteCandidatosSemSolicitacao() {
+		return somenteCandidatosSemSolicitacao;
+	}
+
+	public void setSomenteCandidatosSemSolicitacao(boolean somenteCandidatosSemSolicitacao) {
+		this.somenteCandidatosSemSolicitacao = somenteCandidatosSemSolicitacao;
+	}
+
+	public boolean isExibeExterno() {
+		return exibeExterno;
+	}
+
+	public void setExibeExterno(boolean exibeExterno) {
+		this.exibeExterno = exibeExterno;
+	}
+}

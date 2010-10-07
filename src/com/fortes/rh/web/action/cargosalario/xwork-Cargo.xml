@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+
+	<package name="cargo" extends="default" namespace="/cargosalario/cargo">
+    <!-- ###### LIST/DELETE ###### -->    
+    
+		<action name="list" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="list">
+	    	<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">cargo,areaOrganizacional</param>
+	    	</interceptor-ref>	
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/cargoList.ftl</result>
+		</action>
+		
+		<action name="delete" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack">
+				<param name="scope.session">cargo,areaOrganizacional</param>
+			</interceptor-ref>
+			<result name="success" type="redirect">list.action</result>
+			<result name="error" type="redirect">list.action</result>
+		</action>
+		
+		<!-- Used to keep the state (open/closed) of the filter box -->
+		<action name="updateFilter" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>		
+    
+		<!-- ##### INSERT/UPDATE ##### -->
+
+		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+		    <result name="invalid.token" type="redirect">list.action</result>
+			<result name="success" type="redirect">../faixaSalarial/prepareInsert.action?cargoAux.id=${cargo.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+		    <result name="invalid.token" type="redirect">list.action</result>
+			<result name="success" type="redirect">list.action?page=${page}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
+		</action>
+
+		<!-- ######################### -->
+		
+		<action name="criarFaixasDeMiguel" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="criarFaixasDeMiguel">
+			<result name="success" type="redirect">list.action</result>
+		</action>
+		<action name="prepareRelatorioCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareRelatorioCargo">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioCargo.ftl</result>
+		</action>
+	
+		<action name="imprimir" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="imprimir">
+			<result name="input" type="redirect">list.action</result>
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/cargo.jasper</param>
+				<param name="dataSource">cargos</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+		</action>
+		
+		<action name="relatorioCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioCargo">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/cargo.jasper</param>
+				<param name="dataSource">cargos</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioCargo.ftl</result>
+		</action>
+
+		<action name="prepareRelatorioColaboradorCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareRelatorioColaboradorCargo">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioColaboradorCargo.ftl</result>
+		</action>
+		<action name="relatorioColaboradorCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioColaboradorCargo">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/colaboradorCargo.jasper</param>
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresPorCargos.pdf</param>
+			</result>
+			<result name="successResumido" type="jasper">
+				<param name="location">WEB-INF/report/colaboradorCargoResumido.jasper</param>
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresPorCargosResumido.pdf</param>
+			</result>
+			<result name="input" type="redirect">prepareRelatorioColaboradorCargo.action</result>
+			<result name="error" type="redirect">prepareRelatorioColaboradorCargo.action</result>
+		</action>
+		
+		<action name="prepareTransferirFaixasCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareTransferirFaixasCargo">
+			<result name="input" type="redirect">list.action</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
+		</action>
+		<action name="transferirFaixasCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="transferirFaixasCargo">
+			<interceptor-ref name="tokenWebStack" />
+		    <result name="invalid.token" type="redirect">list.action</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
+		</action>
+	</package>
+</xwork>

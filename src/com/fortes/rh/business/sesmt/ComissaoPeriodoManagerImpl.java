@@ -1,0 +1,190 @@
+package com.fortes.rh.business.sesmt;
+
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+
+import javax.persistence.PersistenceException;
+
+import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.dao.sesmt.ComissaoPeriodoDao;
+import com.fortes.rh.model.sesmt.CandidatoEleicao;
+import com.fortes.rh.model.sesmt.Comissao;
+import com.fortes.rh.model.sesmt.ComissaoMembro;
+import com.fortes.rh.model.sesmt.ComissaoPeriodo;
+import com.fortes.rh.model.sesmt.ComissaoReuniao;
+
+import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
+
+public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPeriodo, ComissaoPeriodoDao> implements ComissaoPeriodoManager
+{
+	private CandidatoEleicaoManager candidatoEleicaoManager;
+	private ComissaoMembroManager comissaoMembroManager;
+
+	public void save(Long comissaoId, Long eleicaoId, Date aPartirDe)
+	{
+		ComissaoPeriodo comissaoPeriodo = new ComissaoPeriodo(aPartirDe);
+		Comissao comissao = new Comissao();
+		comissao.setId(comissaoId);
+		comissaoPeriodo.setComissao(comissao);
+
+		super.save(comissaoPeriodo);
+		Collection<CandidatoEleicao> candidatoEleicaos = candidatoEleicaoManager.findByEleicao(eleicaoId);
+
+		for (CandidatoEleicao candidatoEleicao : candidatoEleicaos)
+		{
+			if (candidatoEleicao.isEleito())
+			{
+				ComissaoMembro comissaoMembro = new ComissaoMembro(candidatoEleicao.getCandidato(),comissaoPeriodo);
+				comissaoMembroManager.save(comissaoMembro);
+			}
+		}
+	}
+
+	public void clonar(Long comissaoPeriodoId) throws Exception
+	{
+		ComissaoPeriodo comissaoPeriodo = getDao().findByIdProjection(comissaoPeriodoId);
+		Collection<ComissaoMembro> comissaoMembros = comissaoMembroManager.findByComissaoPeriodo(comissaoPeriodoId);
+
+		comissaoPeriodo.setId(null);
+		super.save(comissaoPeriodo);
+
+		for (ComissaoMembro comissaoMembro : comissaoMembros)
+		{
+
+			comissaoMembro.setId(null);
+			// referencia de comissaoPeriodo com o novo id
+			comissaoMembro.setComissaoPeriodo(comissaoPeriodo);
+
+			comissaoMembroManager.save(comissaoMembro);
+		}
+	}
+
+	public Collection<ComissaoPeriodo> findByComissao(Long comissaoId)
+	{
+		Collection<ComissaoPeriodo> comissaoPeriodos = getDao().findByComissao(comissaoId);
+		
+		for (ComissaoPeriodo comissaoPeriodo : comissaoPeriodos) {
+			comissaoPeriodo.setFim(this.getDataFim(comissaoPeriodo));
+		}
+
+		CollectionUtil<ComissaoPeriodo> collectionUtil = new CollectionUtil<ComissaoPeriodo>();
+		Long[] comissaoPeriodoIds =  collectionUtil.convertCollectionToArrayIds(comissaoPeriodos);
+
+		// buscando os membros de cada periodo
+		Collection<ComissaoMembro> comissaoMembros = comissaoMembroManager.findByComissaoPeriodo(comissaoPeriodoIds);
+
+		for (ComissaoPeriodo comissaoPeriodo : comissaoPeriodos)
+		{
+			for (ComissaoMembro comissaoMembro : comissaoMembros)
+			{
+				if (comissaoMembro.getComissaoPeriodo().getId().equals(comissaoPeriodo.getId()))
+					comissaoPeriodo.addMembro(comissaoMembro);
+			}
+		}
+
+		return comissaoPeriodos;
+	}
+
+	public ComissaoPeriodo findByIdProjection(Long id)
+	{
+		return getDao().findByIdProjection(id);
+	}
+
+	public void update(ComissaoPeriodo comissaoPeriodo, String[] comissaoMembroIds, String[] funcaoComissaos, String [] tipoComissaos) throws Exception
+	{
+		super.update(comissaoPeriodo);
+		comissaoMembroManager.updateFuncaoETipo(comissaoMembroIds, funcaoComissaos, tipoComissaos);
+	}
+
+	@Override
+	public void remove(ComissaoPeriodo comissaoPeriodo)
+	{
+		if (getCount(new String[] {"comissao.id"}, new Object[]{comissaoPeriodo.getComissao().getId()}) <= 1 )
+			throw new PersistenceException("Não é permitido remover o último período da comissão.");
+
+		this.remove(new Long[]{comissaoPeriodo.getId()});
+	}
+
+	@Override
+	public void remove(Long[] ids) throws PersistenceException
+	{
+		comissaoMembroManager.removeByComissaoPeriodo(ids);
+		getDao().remove(ids);
+	}
+
+	public void removeByComissao(Long comissaoId)
+	{
+		Collection<ComissaoPeriodo> comissaoPeriodos = getDao().findByComissao(comissaoId);
+		CollectionUtil<ComissaoPeriodo> util = new CollectionUtil<ComissaoPeriodo>();
+		Long[] ids = util.convertCollectionToArrayIds(comissaoPeriodos);
+
+		this.remove(ids);
+	}
+
+	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager)
+	{
+		this.comissaoMembroManager = comissaoMembroManager;
+	}
+	public void setCandidatoEleicaoManager(CandidatoEleicaoManager candidatoEleicaoManager)
+	{
+		this.candidatoEleicaoManager = candidatoEleicaoManager;
+	}
+	
+	public Date getDataFim(ComissaoPeriodo comissaoPeriodo) {
+		
+		if (comissaoPeriodo == null || comissaoPeriodo.getId() == null)
+			return null;
+
+		comissaoPeriodo = getDao().findByIdProjection(comissaoPeriodo.getId());
+		
+		ComissaoPeriodo proximoComissaoPeriodo = getDao().findProximo(comissaoPeriodo);
+		
+		Calendar dataFim = Calendar.getInstance();
+		
+		// se não há próximo período, o atual termina ao fim da comissão 
+		if (proximoComissaoPeriodo == null)
+		{
+			dataFim.setTime(comissaoPeriodo.getComissao().getDataFim());
+		}
+		// se há próximo período, o atual termina 
+		else
+		{
+			dataFim.setTime(proximoComissaoPeriodo.getaPartirDe());
+			dataFim.add(Calendar.DAY_OF_YEAR, -1);
+		}
+		
+		return dataFim.getTime();
+	}
+
+	public boolean validaDataComissaoPeriodo(Date data, Long comissaoPeriodoId) {
+		
+		ComissaoPeriodo comissaoPeriodo = getDao().findByIdProjection(comissaoPeriodoId);
+		
+		//data fora do período da CIPA
+		if (!DateUtil.between(data, comissaoPeriodo.getComissao().getDataIni(), 
+									comissaoPeriodo.getComissao().getDataFim()))
+			return false;
+		
+		// outra comissão na mesma data
+		if (verificaComissaoNaMesmaData(comissaoPeriodo))
+			return false;
+		
+		return true;
+	}
+	
+	private boolean verificaComissaoNaMesmaData(ComissaoPeriodo comissaoPeriodo) {
+		
+		Collection<ComissaoPeriodo> periodos = getDao().findByComissao(comissaoPeriodo.getComissao().getId());
+		
+		for (ComissaoPeriodo comissaoPeriodo2 : periodos) {
+			
+			if (!comissaoPeriodo.getId().equals(comissaoPeriodo2.getId())
+					&& DateUtil.equals(comissaoPeriodo.getaPartirDe(), comissaoPeriodo2.getaPartirDe()))
+				return true;
+		}
+		
+		return false;
+	}
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="dnt" extends="default" namespace="/desenvolvimento/dnt">
+		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.DNTListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/DNTList.ftl</result>
+			<result name="gestor" type="freemarker">/WEB-INF/forms/desenvolvimento/DNTListDetalhes.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.desenvolvimento.DNTListAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/DNTList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.DNTEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/DNTEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.desenvolvimento.DNTEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/DNTEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.DNTEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/DNTEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.DNTEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/DNTEdit.ftl</result>
+		</action>
+
+		<action name="listDetalhes" class="com.fortes.rh.web.action.desenvolvimento.DNTListAction" method="listDetalhes">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/DNTListDetalhes.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/DNTListDetalhes.ftl</result>
+		</action>
+	</package>
+</xwork>

@@ -1,0 +1,264 @@
+package com.fortes.rh.web.action.sesmt;
+
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+
+import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.sesmt.ExtintorManager;
+import com.fortes.rh.model.dicionario.TipoExtintor;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Extintor;
+import com.fortes.rh.model.sesmt.relatorio.ManutencaoAndInspecaoRelatorio;
+import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.web.action.MyActionSupportList;
+
+public class ExtintorEditAction extends MyActionSupportList
+{
+	private static final long serialVersionUID = 1L;
+
+	private ExtintorManager extintorManager;
+	private EstabelecimentoManager estabelecimentoManager;
+
+	private Extintor extintor;
+	private Collection<Extintor> extintors;
+	private Collection<Estabelecimento> estabelecimentos;
+
+	private Map<String,String> tipos = new TipoExtintor();
+
+	private char ativo = 'T';
+	private String tipoBusca;
+	private Integer numeroBusca;
+	private String fabribantes;
+	private String localizacoes;
+	
+	//filtro do relatorio
+	private Date dataVencimento;
+	private boolean inspecaoVencida;
+	private boolean cargaVencida;
+	private boolean testeHidrostaticoVencido;
+	
+	private Collection<ManutencaoAndInspecaoRelatorio> dataSource;
+	private Map<String, Object> parametros;
+	
+	public String prepare() throws Exception
+	{
+		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		fabribantes = extintorManager.getFabricantes(getEmpresaSistema().getId());
+		localizacoes = extintorManager.getLocalizacoes(getEmpresaSistema().getId());
+
+		if(extintor != null && extintor.getId() != null)
+			extintor = (Extintor) extintorManager.findById(extintor.getId());
+
+		return SUCCESS;
+	}
+
+	public String insert() throws Exception
+	{
+		try
+		{
+			extintor.setEmpresa(getEmpresaSistema());
+			extintorManager.save(extintor);
+
+			extintor = new Extintor(extintor.getEstabelecimento());//mantem o estabelecimento selecionado na tela para o proximo cadastro.
+			prepare();
+
+			addActionMessage("Extintor gravado com sucesso.");
+			
+			return SUCCESS;
+		}
+		catch (Exception e)
+		{
+			addActionError("Não foi possível gravar o extintor.");
+			prepare();
+			return INPUT;
+		}
+	}
+
+	public String update() throws Exception
+	{
+		try
+		{
+			extintor.setEmpresa(getEmpresaSistema());
+			extintorManager.update(extintor);
+			return SUCCESS;
+		}
+		catch (Exception e)
+		{
+			addActionMessage("Não foi possível gravar o extintor.");
+			prepare();
+			return INPUT;
+		}
+	}
+
+	public String list() throws Exception
+	{
+		setTotalSize(extintorManager.getCount(getEmpresaSistema().getId(), tipoBusca, numeroBusca, ativo));
+		extintors = extintorManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), tipoBusca, numeroBusca, ativo);
+
+		return SUCCESS;
+	}
+
+	public String delete() throws Exception
+	{
+		extintorManager.remove(new Long[]{extintor.getId()});
+
+		return SUCCESS;
+	}
+
+	public String prepareRelatorio() throws Exception
+	{
+		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		return SUCCESS;
+	}
+	
+	public String relatorioManutencaoAndInspecao() throws Exception
+	{		
+		try
+		{
+			dataSource = extintorManager.relatorioManutencaoAndInspecao(extintor.getEstabelecimento().getId(), dataVencimento, inspecaoVencida, cargaVencida, testeHidrostaticoVencido);
+			parametros = RelatorioUtil.getParametrosRelatorio("Extintores - Manutenção e Inspeção", getEmpresaSistema(), extintorManager.montaLabelFiltro(extintor.getEstabelecimento().getId(), dataVencimento));
+		}
+		catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			prepareRelatorio();
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	public Extintor getExtintor()
+	{
+		if(extintor == null)
+			extintor = new Extintor();
+		return extintor;
+	}
+
+	public void setExtintor(Extintor extintor)
+	{
+		this.extintor = extintor;
+	}
+
+	public void setExtintorManager(ExtintorManager extintorManager)
+	{
+		this.extintorManager = extintorManager;
+	}
+
+	public Collection<Extintor> getExtintors()
+	{
+		return extintors;
+	}
+
+	public Map<String,String> getTipos()
+	{
+		return tipos;
+	}
+
+	public void setTipos(Map<String,String> tipos)
+	{
+		this.tipos = tipos;
+	}
+
+	public char getAtivo()
+	{
+		return ativo;
+	}
+
+	public void setAtivo(char ativo)
+	{
+		this.ativo = ativo;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
+	{
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public Collection<Estabelecimento> getEstabelecimentos()
+	{
+		return estabelecimentos;
+	}
+
+	public Integer getNumeroBusca()
+	{
+		return numeroBusca;
+	}
+
+	public void setNumeroBusca(Integer numeroBusca)
+	{
+		this.numeroBusca = numeroBusca;
+	}
+
+	public String getTipoBusca()
+	{
+		return tipoBusca;
+	}
+
+	public void setTipoBusca(String tipoBusca)
+	{
+		this.tipoBusca = tipoBusca;
+	}
+
+	public String getFabribantes()
+	{
+		return fabribantes;
+	}
+
+	public String getLocalizacoes()
+	{
+		return localizacoes;
+	}
+
+	public Date getDataVencimento()
+	{
+		return dataVencimento;
+	}
+
+	public void setDataVencimento(Date dataVencimento)
+	{
+		this.dataVencimento = dataVencimento;
+	}
+
+	public boolean isCargaVencida()
+	{
+		return cargaVencida;
+	}
+
+	public void setCargaVencida(boolean cargaVencida)
+	{
+		this.cargaVencida = cargaVencida;
+	}
+
+	public boolean isInspecaoVencida()
+	{
+		return inspecaoVencida;
+	}
+
+	public void setInspecaoVencida(boolean inspecaoVencida)
+	{
+		this.inspecaoVencida = inspecaoVencida;
+	}
+
+	public boolean isTesteHidrostaticoVencido()
+	{
+		return testeHidrostaticoVencido;
+	}
+
+	public void setTesteHidrostaticoVencido(boolean testeHidrostaticoVencido)
+	{
+		this.testeHidrostaticoVencido = testeHidrostaticoVencido;
+	}
+
+	public Collection<ManutencaoAndInspecaoRelatorio> getDataSource()
+	{
+		return dataSource;
+	}
+
+	public Map<String, Object> getParametros()
+	{
+		return parametros;
+	}
+}

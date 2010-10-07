@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="faixaSalarialHistorico" extends="default" namespace="/cargosalario/faixaSalarialHistorico">
+		<action name="delete" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoListAction" method="delete">
+			<result name="success" type="redirect">../faixaSalarial/prepareUpdate.action?faixaSalarialAux.id=${faixaSalarialAux.id}</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialHistoricoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialHistoricoEdit.ftl</result>
+		</action>
+		<action name="analiseTabelaSalarialFiltro" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="analiseTabelaSalarialFiltro">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/analiseTabelaSalarialFiltro.ftl</result>
+		</action>
+		<action name="analiseTabelaSalarialList" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="analiseTabelaSalarialList">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/analiseTabelaSalarialList.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/analiseTabelaSalarialFiltro.ftl</result>
+		</action>
+		
+		<action name="relatorioAnaliseTabelaSalarial" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="relatorioAnaliseTabelaSalarial">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/analise_tabela_salarial.jasper</param>
+				<param name="dataSource">faixaSalarialHistoricos</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/analiseTabelaSalarialFiltro.ftl</result>
+		</action>
+		
+		<action name="insert" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">../faixaSalarial/prepareUpdate.action?faixaSalarialAux.id=${faixaSalarialAux.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialHistoricoEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">../faixaSalarial/prepareUpdate.action?faixaSalarialAux.id=${faixaSalarialAux.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/faixaSalarialHistoricoEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

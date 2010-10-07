@@ -1,0 +1,238 @@
+package com.fortes.rh.business.geral;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Map;
+
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
+import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorOcorrencia;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
+
+public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<ColaboradorOcorrencia, ColaboradorOcorrenciaDao> implements ColaboradorOcorrenciaManager
+{
+	private PlatformTransactionManager transactionManager;
+	private ColaboradorManager colaboradorManager;
+	private OcorrenciaManager ocorrenciaManager;
+	private AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia;
+
+	public Collection<ColaboradorOcorrencia> findByColaborador(Long id)
+	{
+		return getDao().findByColaborador(id);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<ColaboradorOcorrencia> filtrar(Long[] ocorrenciaCheckLong, Long[] colaboradorCheckLong, Long[] estabelecimentoCheckLong, Map parametros)
+	{
+		Collection<ColaboradorOcorrencia> colaboradorOcorrenciasDefinitivo = new ArrayList<ColaboradorOcorrencia>();
+
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = getDao().filtrar(ocorrenciaCheckLong, colaboradorCheckLong, estabelecimentoCheckLong, parametros);
+
+		HashSet<Long> ids = new HashSet<Long>();
+
+		for(ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias){
+			if(!ids.contains(colaboradorOcorrencia.getId()))
+				colaboradorOcorrenciasDefinitivo.add(colaboradorOcorrencia);
+
+			ids.add(colaboradorOcorrencia.getId());
+		}
+
+		return colaboradorOcorrenciasDefinitivo;
+	}
+
+	public Collection<ColaboradorOcorrencia> findProjection(int page, int pagingSize, Long colaboradorId)
+	{
+		return getDao().findProjection(page, pagingSize, colaboradorId);
+	}
+
+	public ColaboradorOcorrencia findByIdProjection(Long colaboradorOcorrenciaId)
+	{
+		return getDao().findByIdProjection(colaboradorOcorrenciaId);
+	}
+
+	/**
+	 * Recebe uma ou mais Ocorrências em lote do AC Pessoal.
+	 */
+	public void saveOcorrenciasFromAC(Collection<ColaboradorOcorrencia> colaboradorOcorrencias) throws Exception
+	{
+		ColaboradorOcorrencia colaboradorOcorrenciaTmp = verificaUpdate(colaboradorOcorrencias);
+
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+
+		try
+		{
+			for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias)
+			{
+				String empresaCodigoAC = colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC();
+
+				Ocorrencia ocorrencia = ocorrenciaManager.findByCodigoAC(colaboradorOcorrencia.getOcorrencia().getCodigoAC(), empresaCodigoAC);
+				colaboradorOcorrencia.setOcorrencia(ocorrencia);
+
+				Colaborador colaborador = colaboradorManager.findByCodigoAC(colaboradorOcorrencia.getColaborador().getCodigoAC(), empresaCodigoAC);
+				colaboradorOcorrencia.setColaborador(colaborador);
+
+				if (colaboradorOcorrenciaTmp != null)
+				{
+					colaboradorOcorrencia.setId(colaboradorOcorrenciaTmp.getId());
+					colaboradorOcorrencia.setDataFim(colaboradorOcorrenciaTmp.getDataFim());
+
+					getDao().update(colaboradorOcorrencia);
+				}
+				else
+					getDao().save(colaboradorOcorrencia);
+			}
+
+			transactionManager.commit(status);
+		}
+		catch (Exception e)
+		{
+			transactionManager.rollback(status);
+			e.printStackTrace();
+			throw new Exception("Erro ao cadastrar ocorrência(s).");
+		}
+	}
+
+	private ColaboradorOcorrencia verificaUpdate(Collection<ColaboradorOcorrencia> colaboradorOcorrencias)
+	{
+		if (colaboradorOcorrencias.size() == 1)
+		{
+			ColaboradorOcorrencia colaboradorOcorrencia = (ColaboradorOcorrencia) colaboradorOcorrencias.toArray()[0];
+			colaboradorOcorrencia = getDao().findByDadosAC(colaboradorOcorrencia.getDataIni(), colaboradorOcorrencia.getOcorrencia().getCodigoAC(), colaboradorOcorrencia.getColaborador().getCodigoAC(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC());
+
+			return colaboradorOcorrencia != null ? colaboradorOcorrencia : null;
+		}
+		return null;
+	}
+
+	/**
+	 * Remove Ocorrências recebidas do AC Pessoal.
+	 */
+	public void removeFromAC(Collection<ColaboradorOcorrencia> colaboradorOcorrencias) throws Exception
+	{
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+
+		try
+		{
+			for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias)
+			{
+				ColaboradorOcorrencia tmp =
+					getDao().findByDadosAC(
+						colaboradorOcorrencia.getDataIni(),
+						colaboradorOcorrencia.getOcorrencia().getCodigoAC(),
+						colaboradorOcorrencia.getColaborador().getCodigoAC(),
+						colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC());
+
+				getDao().remove(tmp.getId());
+			}
+
+			transactionManager.commit(status);
+		}
+		catch (Exception e)
+		{
+			transactionManager.rollback(status);
+			e.printStackTrace();
+			throw new Exception("Erro ao remover ocorrência(s).");
+		}
+	}
+
+	/**
+	 * Grava localmente/Envia para o AC se integrado
+	 */
+	public void saveColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception
+	{
+		if (empresa.isAcIntegra() && colaboradorOcorrencia.getOcorrencia().getIntegraAC())
+		{
+			try
+			{
+				boolean sucesso = acPessoalClientColaboradorOcorrencia.criarColaboradorOcorrencia(bindColaboradorOcorrencia(colaboradorOcorrencia,empresa), empresa);
+
+				if (!sucesso)
+					throw new IntegraACException("Método: AcPessoalClientColaboradorOcorrencia.criarColaboradorOcorrencia retornou false");
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				throw new IntegraACException(e.getMessage());
+			}
+		}
+
+		if (colaboradorOcorrencia.getId() == null)
+			getDao().save(colaboradorOcorrencia);
+		else
+			getDao().update(colaboradorOcorrencia);
+
+	}
+
+	public void remove(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception
+	{
+		try
+		{
+			colaboradorOcorrencia = findByIdProjection(colaboradorOcorrencia.getId());
+
+			if (empresa.isAcIntegra() && colaboradorOcorrencia.getOcorrencia().getIntegraAC())
+			{
+				boolean sucesso = acPessoalClientColaboradorOcorrencia.removerColaboradorOcorrencia(bindColaboradorOcorrencia(colaboradorOcorrencia, empresa), empresa);
+				if (!sucesso)
+					throw new IntegraACException("Método: AcPessoalClientColaboradorOcorrencia.removerColaboradorOcorrencia retornou false");
+			}
+
+			remove(colaboradorOcorrencia.getId());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new IntegraACException(e.getMessage());
+		}
+	}
+
+	private TOcorrenciaEmpregado bindColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa)
+	{
+		TOcorrenciaEmpregado tColaboradorOcorrencia = new TOcorrenciaEmpregado();
+		tColaboradorOcorrencia.setCodigoEmpregado(colaboradorOcorrencia.getColaborador().getCodigoAC());
+		tColaboradorOcorrencia.setEmpresa(empresa.getCodigoAC());
+		tColaboradorOcorrencia.setCodigo(colaboradorOcorrencia.getOcorrencia().getCodigoAC());
+		tColaboradorOcorrencia.setData(DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
+		tColaboradorOcorrencia.setObs(colaboradorOcorrencia.getObservacao());
+		return tColaboradorOcorrencia;
+	}
+
+	public boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni)
+	{
+		return getDao().verifyExistsMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni);
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
+		this.transactionManager = transactionManager;
+	}
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
+		this.colaboradorManager = colaboradorManager;
+	}
+	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager)
+	{
+		this.ocorrenciaManager = ocorrenciaManager;
+	}
+
+	public void setAcPessoalClientColaboradorOcorrencia(AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia)
+	{
+		this.acPessoalClientColaboradorOcorrencia = acPessoalClientColaboradorOcorrencia;
+	}
+}

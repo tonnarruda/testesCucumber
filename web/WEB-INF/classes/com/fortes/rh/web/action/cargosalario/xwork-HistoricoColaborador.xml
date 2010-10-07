@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="historicoColaborador" extends="default" namespace="/cargosalario/historicoColaborador">
+		<action name="list" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaborador.ftl</result>
+			<result name="input" type="freemarker">error</result>
+		</action>
+		<action name="historicoColaboradorList" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="historicoColaboradorList">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorList.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="update">
+			<result name="success" type="redirect">historicoColaboradorList.action?colaborador.id=${colaborador.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorList.ftl</result>
+		</action>
+		<action name="prepareRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioPromocoes">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioPromocoes.ftl</result>
+		</action>
+		<action name="imprimirRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="imprimirRelatorioPromocoes">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/promocoes.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioPromocoes.ftl</result>
+		</action>
+		
+		<!--action name="atualizaHistoricosAreaAnterior" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="atualizaHistoricosAreaAnterior">
+			<result name="success" type="redirect">list.action</result>
+		</action-->
+		
+		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="invalid.token" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
+			<result name="success" type="redirect">historicoColaboradorList.action?colaborador.id=${colaborador.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
+		</action>
+		
+		<action name="prepareRelatorioSituacoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioSituacoes">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
+		</action>
+		<action name="relatorioSituacoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="relatorioSituacoes">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/situacoes.jasper</param>
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">situacoes.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
+		</action>
+		
+		<action name="prepareUpdateAmbientesEFuncoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="prepareUpdateAmbientesEFuncoes">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ambientesEFuncoesEdit.ftl</result>
+		</action>
+		<action name="updateAmbientesEFuncoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="updateAmbientesEFuncoes">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ambientesEFuncoesEdit.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/ambientesEFuncoesEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

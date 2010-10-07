@@ -1,0 +1,268 @@
+#espaco{
+	width: 964px;
+	overflow:scroll;
+}
+.divFiltro
+{
+	background-color: #EEE;
+}
+.divFiltroLink
+{
+	background-color: #E0E0E0;
+}
+.divFiltroLink a
+{
+	display: block;
+	padding: 5px;
+	text-decoration: none;
+	color: #555 !important;
+}
+.divFiltroLink a:hover, .divFiltroLink a:click
+{
+	background-color: #E0E0E0 !important;
+	text-decoration: none !important;
+	color: #555 !important;
+}
+.divFiltroForm
+{
+	padding: 5px;
+}
+.hidden
+{
+	display: none;
+}
+
+.encerrada
+{
+	color: #F00 !important;
+}
+.encerradaBkg
+{
+	background-color: #F00;!important;
+}
+.solicitacaoEncerrada
+{
+	color: #009900 !important;
+}
+.solicitacaoSuspensa
+{
+	color: #002EB8 !important;
+}
+
+.wwFormTable
+{
+	text-align: left;
+}
+
+.label {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	vertical-align: middle;
+}
+
+a {
+	text-decoration:none;
+	color: black;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:13px;
+}
+a:hover {
+	text-decoration:underline;
+}
+
+.dados {
+	background-color: #FFF;
+	border: 1px solid #666;
+	width: 100%;
+	margin: 0px 0 10px 0 !important;
+	border:1px solid #7E9DB9;
+}
+#conteudoExibeEsconde .dados {
+	margin: 0 !important;
+}	
+
+.dadosMetade {
+	border: 1px solid #666;
+	width: 400px;
+	margin: 0px 0 10px 0 !important;
+}
+
+
+/*
+table {
+	border: 0px solid #666;
+	width: 80%;
+	margin: 20px 0 20px 0 !important;
+}
+
+
+th,td {
+	padding: 2px 4px 2px 4px !important;
+	text-align: left;
+	vertical-align: top;
+}
+*/
+
+.dados td
+{
+	padding: 5px 5px;
+}
+
+.dados th
+{
+	padding: 5px 0;
+}
+
+.dados td input,th input{
+	border: 0;
+}
+
+.dados td{
+	color: #454C54;
+	font-size: 12px;
+}
+
+.dados thead tr {
+	background-color: #5B86B3;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #FFF;
+}
+
+.dados tfoot tr {
+	background-color: #5B86B3;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #FFF;
+}
+.dados tfoot td {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #FFF;
+	font-weight: bold;
+}
+
+th.sorted {
+	background-color: #5B86B3;
+}
+
+th a,th a:visited {
+	color: black;
+}
+
+th a:hover {
+	text-decoration: underline;
+	color: black;
+}
+
+th.sorted a,th.sortable a {
+	background-position: right;
+	display: block;
+	width: 100%;
+}
+
+th.sortable a {
+	background-image: url(../imgs/arrow_off.gif);
+	background-repeat: no-repeat;
+}
+
+th.order1 a {
+	background-image: url(../imgs/arrow_down.gif);
+}
+
+th.order2 a {
+	background-image: url(../imgs/arrow_up.gif);
+}
+
+tr.tableRowEven,tr.even {
+	background-color: #E4F0FE;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:13px;
+}
+
+tr.odd {
+	background-color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:13px;
+}
+table.its thead tr {
+	background-color: #69c;
+}
+
+table.its tr.even {
+	background-color: #def;
+}
+
+div.exportlinks {
+	background-color: #eee;
+	border: 1px solid #666;
+	padding: 2px 4px 2px 4px;
+	margin: 2px 0 10px 0;
+	width: 97%;
+}
+
+span.export {
+	padding: 0 4px 1px 20px;
+	display: inline;
+	display: inline-block;
+	cursor: pointer;
+}
+
+span.excel {
+	background-image: url(../imgs/ico_file_excel.gif);
+	background-repeat: no-repeat;
+}
+
+span.csv {
+	background-image: url(../imgs/ico_file_csv.gif);
+	background-repeat: no-repeat;
+}
+
+span.xml {
+	background-image: url(../imgs/ico_file_xml.gif);
+	background-repeat: no-repeat;
+}
+
+span.pdf {
+	background-image: url(../imgs/ico_file_pdf.gif);
+	background-repeat: no-repeat;
+}
+
+span.pagebanner {
+	background-color: #F7F8F9;
+	/* border: 1px dotted #999; */
+	padding: 2px 4px 2px 4px;
+	width: 96%;
+	margin-top: 0px;
+	display: block;
+	/*border-bottom: none;*/
+	text-align: center;
+}
+
+span.pagelinks {
+	background-color: #F7F8F9;
+	/* border: 1px dotted #999; */
+	/*padding: 2px 4px 2px 4px;*/
+	width: 100%;
+	display: block;
+	/*border-top: none;*/
+	margin-bottom: 10px;
+	text-align: right;
+}
+
+span.pagelinks a {
+	color: #600;
+}
+
+span.labelLink {
+	margin-left: 0px;
+}
+
+.total td{
+	font-weight: bold;
+}
+.acao
+{
+	text-align:center;
+	width:80px;
+}

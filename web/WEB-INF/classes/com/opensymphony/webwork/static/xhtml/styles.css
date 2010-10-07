@@ -1,0 +1,23 @@
+.wwFormTable {
+
+}
+.label {
+
+}
+.errorLabel {
+	color:red;
+}
+.errorMessage {
+	font-weight:bold;
+	text-align: center;
+	color:red;
+}
+.checkboxLabel {
+	font-weight:normal;
+}
+.checkboxErrorLabel {
+	color:red;
+}
+.required {
+	color:red;
+}

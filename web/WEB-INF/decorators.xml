@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/decorators">
+	<excludes>
+		<pattern>/geral/colaborador/formPrint.action</pattern>
+		<pattern>/webwork/richtexteditor/editor/*</pattern>
+		<pattern>/webwork/**</pattern>
+		<pattern>/pesquisa/pesquisa/preview.action*</pattern>
+		<pattern>/pesquisa/pesquisa/editPesquisaRespondida.action*</pattern>
+		<pattern>/pesquisa/pesquisa/prepareEditRespostaPesquisa.action*</pattern>
+		<pattern>/pesquisa/pesquisa/resultadoObjetiva.action*</pattern>
+		<pattern>/pesquisa/pesquisa/resultadoDefinida.action*</pattern>
+		<pattern>/pesquisa/pesquisa/graficoObjetiva.action*</pattern>
+		<pattern>/pesquisa/colaboradorResposta/viewComentarios.action*</pattern>
+		<pattern>/captacao/formacao/**</pattern>
+		<pattern>/captacao/idioma/**</pattern>
+		<pattern>/captacao/experiencia/**</pattern>
+		<pattern>/captacao/candidato/verCurriculo.action*</pattern>
+		<pattern>/captacao/candidato/infoCandidato.action*</pattern>
+		<pattern>/captacao/candidatoSolicitacao/verHistoricoCandidato.action*</pattern>
+		<pattern>/geral/gastoEmpresaItem/**</pattern>
+		<pattern>/security/auditoria/viewAuditoria.action*</pattern>
+		<pattern>*prepareInsertFaixaPopup*</pattern>
+		<pattern>*prepareUpdateFaixaPopup*</pattern>
+		<pattern>*leituraUsuarioMensagemPopup*</pattern>
+		<pattern>*incluirFaixaNaTabela*</pattern>
+		<pattern>*verCurriculoEscaneado*</pattern>
+		<pattern>*verCurriculoTextoOcr*</pattern>
+		<pattern>/concurrentSessionError.action</pattern>
+		<pattern>/security/auditoria/listaOperacoes.action</pattern>
+		<pattern>/updateConf.action</pattern>
+		<pattern>/gerarBD.action</pattern>
+	</excludes>
+
+	<decorator name="login" page="login.ftl">
+		<pattern>/login.action</pattern>
+		<pattern>/codigoOperacional.action</pattern>
+		<pattern>/validaCodigoResposta.action</pattern>
+		<pattern>/acesso/usuario/prepareCriarUsuario.action*</pattern>
+		<pattern>/acesso/usuario/criarUsuario.action</pattern>
+	</decorator>
+
+	<decorator name="externo" page="externo.ftl">
+		<pattern>/externo/**</pattern>
+	</decorator>
+
+	<decorator name="recuperaSenha" page="recuperaSenha.ftl">
+		<pattern>/acesso/usuario/prepareRecuperaSenha.action**</pattern>
+		<pattern>/acesso/usuario/recuperaSenha.action**</pattern>
+	</decorator>
+
+	<decorator name="app" page="app.ftl">
+		<pattern>**index.action**</pattern>
+		<pattern>/**</pattern>
+	</decorator>
+</decorators>

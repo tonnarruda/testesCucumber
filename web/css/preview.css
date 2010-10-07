@@ -1,0 +1,128 @@
+*{
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	padding: 0px;
+	font-size: 14px;
+}
+body{
+	background-color: #FFF;
+	color: #000;
+}
+h3{
+	font-size: 22px;
+	text-align: center;
+}
+h5{
+	font-size: 16px;
+	text-align: center;
+}
+p{
+	padding: 3px;
+}
+fieldset{
+	margin: 8px;
+	border-style: solid;
+	border-color: #AAA;
+	border-width: 1px;
+}
+fieldset legend{
+	color: #000;
+	margin: 5px;
+	padding: 2px 5px;
+	background-color: #F3F3F3;
+	font-weight: bold;
+	border-style: solid;
+	border-color: #AAA;
+	border-width: 1px;
+}
+fieldset p{
+	font-size: 13px;
+	margin-left: 25px;
+}
+
+.tblSoma {
+	border-style: solid;
+	border-color: #AAA;
+	border-width: 1px;
+}
+
+textarea{
+	width: 96%;
+	height: 80px;
+}
+.comentario{
+	width: 100%;
+	background-color: #F0F0F0;
+	padding-bottom: 5px;
+}
+
+.nota {
+	width: 50px;
+}
+
+.resposta li{
+	padding: 3px;
+	margin-left: 30px;
+	font-size: 13px;
+}
+.perguntas{
+	padding-top: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.perguntas p{
+	padding-top: 10px;
+	margin-top: 10px;
+	font-size: 14px;
+	border-top-color: #AAA;
+	border-top-style: solid;
+	border-top-width: 1px;
+}
+.fechar{
+	padding: 10px;
+	margin-top: 10px;
+	text-align: center;
+	border-top-color: #AAA;
+	border-top-style: solid;
+	border-top-width: 1px;
+}
+
+.definida{
+	width: 98%;
+	border-color: #949494;
+	border-style: solid;
+	border-width: 1px;
+}
+
+.definida .pergunta{
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+.definida .opcoes,.cabecalhoOpcoes,.pergunta {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #949494;
+}
+
+.definida .opcoes{
+	text-align: center;
+}
+
+.definida .cabecalhoOpcoes{
+	background-color: #ECEFF1;
+	text-align: center;
+	width: 40px;
+}
+
+.linhaPintada{
+	background-color: #ECEFF1;
+}
+
+.semCor{
+	background-color: #E9ECEF
+}
+
+.cor{
+	background-color: #F7F8F9;
+}

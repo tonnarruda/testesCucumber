@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FortesRH Backup" basedir="." default="all">
+	
+	<!-- Importa antcontrib lib -->
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="WEB-INF/lib/backup/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+	
+	<!-- Propriedades do Ambiente -->
+	<property environment="env" />
+	
+	<!-- Propriedades do FortesRH -->
+	<property name="fortesrh.dir" location="${env.FORTES_HOME}" />
+	<property name="fortesrh.system.conf.file" location="${fortesrh.dir}/RH/system.conf" />
+	<property name="fortesrh.dir.backup" location="${fortesrh.dir}/RH/backup_db" />
+	
+	<!-- Gera time stamp -->
+	<tstamp>
+		<format property="today" pattern="yyyyMMdd" />
+	</tstamp>
+	<!-- Gera nome (e path completo) do arquivo de backup -->
+	<property name="backup.db.file.path"
+		value="${fortesrh.dir.backup}/bkpDBFortesRh_${today}.backup"/>
+	
+	<target name="create-bd">
+		<runtarget target="carrega-dados-de-configuracao-do-fortesrh"/>
+		<exec failifexecutionfails="true" failonerror="true"
+			executable="${postgres.dir}/bin/createdb">
+			<env key="PGPASSWORD" value="${postgres.password}" />
+			<arg value="-U" />
+			<arg value="${postgres.user}" />
+			<arg value="-E" />
+			<arg value="UTF-8" />
+			<arg value="-h" />
+			<arg value="${postgres.host}" />
+			<arg value="fortesrh" />
+		</exec>
+
+		<echo message="Banco de dados fortesrh criado com sucesso.." />
+				
+		<exec failifexecutionfails="true" failonerror="true" 
+			executable="${postgres.dir}/bin/psql"
+			input="${sys.path}/WEB-INF/metadata/create.sql" >
+			<env key="PGPASSWORD" value="${postgres.password}" />
+			<arg value="-U" />
+			<arg value="${postgres.user}" />
+			<arg value="-h" />
+			<arg value="${postgres.host}" />
+			<arg value="--dbname" />
+			<arg value="fortesrh" />
+		</exec>
+		
+		<echo message="Tabelas do banco de dados fortesrh criada com sucesso.." />
+				
+		<exec failifexecutionfails="true" failonerror="true" 
+			executable="${postgres.dir}/bin/psql"
+			input="${sys.path}/WEB-INF/metadata/create_data.sql" >
+			<env key="PGPASSWORD" value="${postgres.password}" />
+			<arg value="-U" />
+			<arg value="${postgres.user}" />
+			<arg value="-h" />
+			<arg value="${postgres.host}" />
+			<arg value="--dbname" />
+			<arg value="fortesrh" />
+		</exec>
+		
+		<echo message="Banco de dados fortesrh populado com sucesso.." />
+	</target>
+	
+	<target name="all">
+		<runtarget target="carrega-dados-de-configuracao-do-fortesrh"/>
+		<antcall target="backup-do-banco"></antcall>
+	</target>
+	
+	<target name="backup-do-banco">
+		<stopwatch name="backup-banco-time" />
+		
+		<echo message="Efetuando backup do banco de dados.." />
+		
+		<!-- Cria diretorio de backup -->
+		<mkdir dir="${fortesrh.dir.backup}" />
+		
+		<echo>${backup.db.file.path}</echo>
+		<exec failifexecutionfails="true" failonerror="true"
+			executable="${postgres.dir}/bin/pg_dump"
+			output="${fortesrh.dir}/RH/output_backup_agendado.txt">
+			<env key="PGPASSWORD" value="${postgres.password}" />
+			<arg value="-U" />
+			<arg value="${postgres.user}" />
+			<arg value="-h" />
+			<arg value="${postgres.host}" />
+			<arg value="-Fc" />
+			<arg value="--blobs" />
+			<arg value="-f" />
+			<arg value="${backup.db.file.path}" />
+			<arg value="fortesrh" />
+		</exec>
+		
+		<echo message="Verificando se o arquivo foi gerado corretamente.." />
+		
+		<available property="backup.file.present" file="${backup.db.file.path}"
+			type="file" description="Verificando se arquivo de backup do banco de dados foi criado corretamente." />
+		
+		<fail unless="backup.file.present" 
+			message="Erro ao tentar efetuar backup do banco de dados." />
+		
+		<echo message="Arquivo de backup do banco salvo em: ${backup.db.file.path}" />
+		
+		<stopwatch name="backup-banco-time" action="total" />
+	</target>
+	
+	<target name="carrega-dados-de-configuracao-do-fortesrh">
+		<echo message="Carregando dados de configuracao do FortesRh.." />
+		
+		<!-- Carrega arquivo de configuracao -->
+		<loadproperties srcfile="${fortesrh.system.conf.file}" />
+		
+		<!-- Valida se as propriedades do arquivo existem -->
+		<fail unless="hibernate.connection.url" 		message="Propriedade 'hibernate.connection.url' nao encontrada no arquivo ${fortesrh.system.conf.file}." />
+		<fail unless="hibernate.connection.username"	message="Propriedade 'hibernate.connection.username' nao encontrada no arquivo ${fortesrh.system.conf.file}." />
+		<fail unless="hibernate.connection.password"	message="Propriedade 'hibernate.connection.password' nao encontrada no arquivo ${fortesrh.system.conf.file}." />
+		<fail unless="postgres.base.dir"				message="Propriedade 'postgres.base.dir' nao encontrada no arquivo ${fortesrh.system.conf.file}." />
+		<fail unless="sys.path"							message="Propriedade 'sys.path' nao encontrada no arquivo ${fortesrh.system.conf.file}." />
+		
+		<!-- Extrai host da jdbcUrl -->
+		<propertyregex property="postgres.ip.temp" 
+			input="${hibernate.connection.url}" 
+			regexp="jdbc:postgresql://([^\:]*)"
+          	select="\1"
+          	casesensitive="false" 
+			defaultvalue="127.0.0.1" />
+		<!-- Extrai porta da jdbcUrl -->
+		<propertyregex property="postgres.port.temp" 
+			input="${hibernate.connection.url}" 
+			regexp="jdbc:postgresql://([^\:]*):([^\/]*)" 
+          	select="\2"
+          	casesensitive="false" 
+			defaultvalue="5432" />
+		
+		<!-- Define dados de acesso ao banco e tomcat -->
+		<propertycopy name="postgres.jdbc.url" 		from="hibernate.connection.url" override="true" />
+		<propertycopy name="postgres.host" 			from="postgres.ip.temp" override="true" />
+		<propertycopy name="postgres.port" 			from="postgres.port.temp" override="true" />
+		<propertycopy name="postgres.user" 			from="hibernate.connection.username" override="true" />
+		<propertycopy name="postgres.password"		from="hibernate.connection.password" override="true" />
+		<propertycopy name="postgres.dir"			from="postgres.base.dir" override="true" />
+		
+		<propertycopy name="sys.path"				from="sys.path" override="true" />
+		
+		<!-- Valida se as propriedades geradas existem -->
+		<fail unless="postgres.jdbc.url" message="Propriedade 'postgres.jdbc.url' nao encontrada." />
+		<fail unless="postgres.host" message="Propriedade 'postgres.host' nao encontrada." /> <!-- Precisa ser um IP -->
+		<fail unless="postgres.user" message="Propriedade 'postgres.user' nao encontrada." />
+		<fail unless="postgres.password" message="Propriedade 'postgres.password' nao encontrada." />
+		<fail unless="postgres.dir" message="Propriedade 'postgres.dir' nao encontrada." />
+		
+		<echo>Informacoes obtidas com sucesso: </echo>
+		<echo>	Acesso ao banco de dados: [${postgres.host}|${postgres.port}|${postgres.user}|${postgres.password}]</echo>
+		<echo>	Postgres Dir: ${postgres.dir}</echo>
+		
+	</target>
+	
+</project>

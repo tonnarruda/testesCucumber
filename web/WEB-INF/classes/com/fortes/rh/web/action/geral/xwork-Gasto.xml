@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="gasto" extends="default" namespace="/geral/gasto">
+		<action name="list" class="com.fortes.rh.web.action.geral.GastoListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/gastoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.geral.GastoListAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/gastoList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.GastoEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/gastoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.GastoEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/gastoEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.geral.GastoEditAction" method="insert">
+		    <interceptor-ref name="tokenWebStack" />
+		    <result name="invalid.token" type="redirect">list.action</result>
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/gastoEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.geral.GastoEditAction" method="update">
+		    <interceptor-ref name="tokenWebStack" />
+		    <result name="invalid.token" type="redirect">list.action</result>
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/gastoEdit.ftl</result>
+		</action>
+		<action name="prepareAgrupar" class="com.fortes.rh.web.action.geral.GastoEditAction" method="prepareAgrupar">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/gastoAgrupar.ftl</result>
+		</action>
+		<action name="agrupar" class="com.fortes.rh.web.action.geral.GastoEditAction" method="agrupar">
+			<result name="success" type="redirect">../grupoGasto/list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/gastoAgrupar.ftl</result>
+		</action>
+	</package>
+</xwork>

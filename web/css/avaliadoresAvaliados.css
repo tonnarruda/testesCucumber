@@ -1,0 +1,46 @@
+li
+{
+	list-style-type: none;
+}
+
+#abas div
+{
+	display: inline;
+	padding: 5px 5px;
+	background-color: #D5D5D5;
+	border: 1px solid #000;
+	margin-left: 3px;
+}
+#abas div a
+{
+	font-family:verdana, sans-serif;
+	font-size:11px;
+	color: #000;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+#abas div a:hover
+{
+	text-decoration: underline;
+	color: #600;
+}
+div#aba1
+{
+	background-color: #E9E9E9;
+	border-bottom-color: #E9E9E9;
+}
+#abas
+{
+	margin-bottom: 5px;
+}
+#content1, #content2
+{
+	background-color: #E9E9E9;
+	padding: 10px;
+	border: 1px solid #000;
+}
+form
+{
+	margin: 0;
+	padding: 0;
+}

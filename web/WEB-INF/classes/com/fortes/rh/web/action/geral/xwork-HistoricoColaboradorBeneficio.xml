@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="historicoColaboradorBeneficio" extends="default" namespace="/geral/historicoColaboradorBeneficio">
+		<action name="list" class="com.fortes.rh.web.action.geral.HistoricoColaboradorBeneficioListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/historicoColaboradorBeneficioList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.geral.HistoricoColaboradorBeneficioListAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/historicoColaboradorBeneficioList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.HistoricoColaboradorBeneficioEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/historicoColaboradorBeneficioEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.HistoricoColaboradorBeneficioEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/historicoColaboradorBeneficioEdit.ftl</result>
+			<result name="error"  type="redirect"><![CDATA[list.action?msgAlert=${msgAlert}&colaborador.id=${colaborador.id}]]></result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.geral.HistoricoColaboradorBeneficioEditAction" method="insert">
+			<result name="success" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/historicoColaboradorBeneficioEdit.ftl</result>
+			<result name="error" type="freemarker">/WEB-INF/forms/geral/historicoColaboradorBeneficioEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.geral.HistoricoColaboradorBeneficioEditAction" method="update">
+			<result name="success" type="redirect">list.action?colaborador.id=${colaborador.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/historicoColaboradorBeneficioEdit.ftl</result>
+			<result name="error" type="freemarker">/WEB-INF/forms/geral/historicoColaboradorBeneficioEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

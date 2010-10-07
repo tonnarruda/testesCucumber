@@ -1,0 +1,140 @@
+a:hover {
+	text-decoration:underline;
+}
+
+.dados {
+	background-color: #FFF;
+	width: 100%;
+	margin: 0px 0 10px 0 !important;
+	border:1px solid #CFCFCF;
+}
+
+.dados td
+{
+	padding: 5px 5px;
+}
+
+.dados th
+{
+	padding: 5px 5px;
+}
+
+.dados td input,th input{
+	border: 0;
+}
+
+.dados td{
+	color: #454C54;
+	font-size: 12px;
+}
+
+.dados thead tr {
+	background-color: #BFB6B3;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #FFF;
+}
+
+.dados tfoot tr {
+	background-color: #BFB6B3;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #FFF;
+}
+.dados tfoot td {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #FFF;
+	font-weight: bold;
+}
+
+tr.tableRowEven,tr.even {
+	background-color: #DFDFDF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:13px;
+}
+
+tr.odd {
+	background-color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:13px;
+}
+table.its thead tr {
+	background-color: #69c;
+}
+
+table.its tr.even {
+	background-color: #def;
+}
+.acao
+{
+	text-align:center;
+	width:80px;
+}
+
+
+.listCheckBoxBarra {
+	background-color: #BFB6B3 !important;
+}
+
+input,textarea,select,fieldset {
+	border: 1px solid #BFB6B3 !important;
+}
+
+.btnGravar{
+	border: 0 !important;
+}
+
+.listCheckBoxContainer {
+	border:1px solid #BFB6B3 !important;
+}
+
+<#-- sobrescrevendo os botões para o externo -->
+.btnInserir
+{
+	background-image:url(../imgs/btnInserirExterno.gif) !important;
+	width: 78px !important;
+}
+
+.btnVoltar
+{
+	background-image:url(../imgs/btnVoltarExterno.gif) !important;
+	width: 69px !important;
+}
+.btnVoltarDesabilitado
+{
+	background-image:url(../imgs/btnVoltarDesabilitadoExterno.gif) !important;
+	width: 69px !important;
+}
+
+.btnAvancar
+{
+	background-image:url(../imgs/btnAvancarExterno.gif) !important;
+	width: 85px !important;
+}
+.btnAvancarDesabilitado
+{
+	background-image:url(../imgs/btnAvancarDesabilitadoExterno.gif) !important;
+	width: 85px !important;
+}
+
+.btnGravar
+{
+	background-image:url(../imgs/btnGravarExterno.gif) !important;
+	width: 79px !important;
+}
+.btnGravarDesabilitado
+{
+	background-image:url(../imgs/btnGravarDesabilitadoExterno.gif) !important;
+	width: 79px !important;
+}
+.btnCancelar
+{
+	background-image:url(../imgs/btnCancelarExterno.gif) !important;
+	width: 89px !important;
+}
+.btnInserir
+{
+	background-image:url(../imgs/btnInserirExterno.gif) !important;
+	width: 78px !important;
+}

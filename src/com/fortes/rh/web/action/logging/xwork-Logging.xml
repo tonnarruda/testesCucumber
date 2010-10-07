@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="logging" extends="default" namespace="/logging">
+		<action name="list" class="com.fortes.rh.web.action.logging.LoggingAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/logging/loggingList.ftl</result>
+		</action>
+		<action name="loadLogFile" class="com.fortes.rh.web.action.logging.LoggingAction" method="loadLogFile">
+			<result name="success" type="freemarker">/WEB-INF/forms/logging/loggingDetails.ftl</result>
+		</action>
+	</package>
+</xwork>

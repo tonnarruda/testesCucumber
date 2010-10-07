@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="epc" extends="default" namespace="/sesmt/epc">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.EpcListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epcList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.EpcListAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epcList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.EpcEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epcEdit.ftl</result>
+			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/epcEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.EpcEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/epcEdit.ftl</result>
+			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/epcEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.EpcEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/epcEdit.ftl</result>
+			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/epcEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.EpcEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/epcEdit.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/epcEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

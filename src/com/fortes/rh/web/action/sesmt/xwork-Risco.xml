@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="risco" extends="default" namespace="/sesmt/risco">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoEdit.ftl</result>
+			<result name="error" type="redirect">list.action?msgAlert=${msgAlert}</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/riscoEdit.ftl</result>
+			<result name="invalid.token" type="redirect">list.action?msgAlert=${msgAlert}</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/riscoEdit.ftl</result>
+			<result name="error" type="redirect">list.action?msgAlert=${msgAlert}</result>
+			<result name="invalid.token" type="redirect">list.action?msgAlert=${msgAlert}</result>
+		</action>
+	</package>
+</xwork>

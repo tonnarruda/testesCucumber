@@ -1,0 +1,96 @@
+*
+{
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+}
+table.list
+{
+	width: 100%;
+	border: 1px solid #909090;
+}
+.tabelaTH
+{
+	width: 100%;
+	border: 1px solid #909090;
+}
+.tabelaTH .data
+{
+	width: 105px;
+}
+.tabelaTH th
+{
+	background-color: #EBEADB;
+	border-right: 1px solid #ACA899;
+	border-left: 1px solid #FFF;
+	border-bottom: 3px solid #D6D2C2;
+	border-top: 1px solid #DCDAC5;
+}
+tbody.listOverFlow
+{
+	background-color: #FFF;
+}
+
+#wrap
+{
+	overflow: scroll;
+	overflow-x: hidden;
+	height: 250px;
+}
+
+#divlista
+{
+	overflow: scroll;
+	overflow-x: hidden;
+	height: 150px;
+	width: 400px;
+	background-color: #FFFFFF;
+	border-right: 2px solid #FFF;
+	border-left: 2px solid #808080;
+	border-bottom: 2px solid #FFF;
+	border-top: 2px solid #808080;
+}
+
+tbody.listOverFlow td.numeracao
+{
+	text-align: center;
+	border-right: 1px solid #DFDFDF;
+	background-color: #f3f2e9;
+	width: 100px;
+	padding: 0 3px;
+	font-size: 11px;
+}
+tbody.listOverFlow img
+{
+	border: none;
+}
+tbody.listOverFlow a
+{
+	display: block;
+	border: 0;
+	text-decoration: none;
+	color: #333;
+	padding: 3px;
+	padding-left: 5px;
+}
+tbody.listOverFlow a:hover
+{
+	background-color: #f3f2e9;
+	color: #00F;
+}
+tbody.listOverFlow td
+{
+	border-bottom: 1px solid #DFDFDF;
+
+}
+table.list tfoot td
+{
+	padding-right: 5px;
+	background-color: #EBEADB;
+	font-family: monospace;
+	text-align: right;
+	text-transform: uppercase;
+	border-right: 1px solid #ACA899;
+	border-left: 1px solid #FFF;
+	border-bottom: 1px solid #D6D2C2;
+	border-top: 1px solid #A0A0A0;
+}

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="pcmso"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
+
+	<field name="agendas" class="java.lang.Object"/>
+	<field name="qtdTotalColaboradores" class="java.lang.Integer"/>
+	<field name="setores" class="java.lang.Object"/>
+	<field name="exames" class="java.lang.Object"/>
+	<field name="cats" class="java.lang.Object"/>
+	<field name="historicoFuncaos" class="java.lang.Object"/>
+	<field name="exibirAgenda" class="java.lang.Boolean"/>
+	<field name="exibirDistColaboradorSetor" class="java.lang.Boolean"/>
+	<field name="exibirRiscos" class="java.lang.Boolean"/>
+	<field name="exibirEpis" class="java.lang.Boolean"/>
+	<field name="exibirExames" class="java.lang.Boolean"/>
+	<field name="exibirAcidentes" class="java.lang.Boolean"/>
+
+	<variable name="NUM_PAGINA" class="java.lang.Integer" resetType="None" incrementType="Page" calculation="Count">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="304"  isSplitAllowed="true" >
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="5"
+						width="535"
+						height="53"
+						key="agenda"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{agendas}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "pcmso_agenda.jasper"]]></subreportExpression>
+				</subreport>
+				<break>
+					<reportElement
+						x="0"
+						y="59"
+						width="535"
+						height="0"
+						key="element-1"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{setores} != null)]]></printWhenExpression>
+						</reportElement>
+				</break>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="62"
+						width="535"
+						height="53"
+						key="colabPorSetor"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{setores}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="QTD_TOTAL">
+						<subreportParameterExpression><![CDATA[$F{qtdTotalColaboradores}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "pcmso_qtd_por_setor.jasper"]]></subreportExpression>
+				</subreport>
+				<break>
+					<reportElement
+						x="0"
+						y="117"
+						width="535"
+						height="0"
+						key="element-3"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{historicoFuncaos} != null)]]></printWhenExpression>
+						</reportElement>
+				</break>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="179"
+						width="535"
+						height="53"
+						key="exames"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{exames}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "pcmso_exames_anual.jasper"]]></subreportExpression>
+				</subreport>
+				<break>
+					<reportElement
+						x="-5"
+						y="234"
+						width="535"
+						height="0"
+						key="element-4"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{cats} != null)]]></printWhenExpression>
+						</reportElement>
+				</break>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="237"
+						width="535"
+						height="53"
+						key="exames-1"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{cats}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "pcmso_cats_anual.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="false">
+					<reportElement
+						mode="Transparent"
+						x="0"
+						y="121"
+						width="535"
+						height="53"
+						key="colabPorSetor-1"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{historicoFuncaos}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "pcmso_epis_por_funcao.jasper"]]></subreportExpression>
+				</subreport>
+				<break>
+					<reportElement
+						x="0"
+						y="176"
+						width="535"
+						height="0"
+						key="element-6"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{exames} != null)]]></printWhenExpression>
+						</reportElement>
+				</break>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

@@ -1,0 +1,212 @@
+package com.fortes.rh.test.dao.hibernate.sesmt;
+
+import java.util.Collection;
+
+import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.dao.sesmt.AfastamentoDao;
+import com.fortes.rh.dao.sesmt.ColaboradorAfastamentoDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Afastamento;
+import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.sesmt.AfastamentoFactory;
+import com.fortes.rh.test.factory.sesmt.ColaboradorAfastamentoFactory;
+import com.fortes.rh.util.DateUtil;
+
+public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorAfastamento>
+{
+	private ColaboradorAfastamentoDao colaboradorAfastamentoDao;
+	private ColaboradorDao colaboradorDao;
+	private AfastamentoDao afastamentoDao;
+	private EmpresaDao empresaDao;
+	private EstabelecimentoDao estabelecimentoDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
+
+	@Override
+	public ColaboradorAfastamento getEntity()
+	{
+		ColaboradorAfastamento colaboradorAfastamento = new ColaboradorAfastamento();
+		return colaboradorAfastamento;
+	}
+
+	@Override
+	public GenericDao<ColaboradorAfastamento> getGenericDao()
+	{
+		return colaboradorAfastamentoDao;
+	}
+
+	public void testFindAllSelect()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Ana");
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+
+		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity();
+		estabelecimentoAtual.setEmpresa(empresa);
+		estabelecimentoAtual.setNome("Filial A");
+		estabelecimentoAtual = estabelecimentoDao.save(estabelecimentoAtual);
+
+		Estabelecimento estabelecimentoAntigo = EstabelecimentoFactory.getEntity();
+		estabelecimentoAntigo.setEmpresa(empresa);
+		estabelecimentoAntigo.setNome("B");
+		estabelecimentoAntigo = estabelecimentoDao.save(estabelecimentoAntigo);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+
+		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2009));
+		historicoColaboradorAtual.setColaborador(colaborador);
+		historicoColaboradorAtual.setEstabelecimento(estabelecimentoAtual);
+		historicoColaboradorAtual.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
+
+		HistoricoColaborador historicoColaboradorAntigo = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAntigo.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaboradorAntigo.setColaborador(colaborador);
+		historicoColaboradorAntigo.setEstabelecimento(estabelecimentoAntigo);
+		historicoColaboradorAntigo.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorAntigo = historicoColaboradorDao.save(historicoColaboradorAntigo);
+
+		Afastamento afastamento = AfastamentoFactory.getEntity();
+		afastamentoDao.save(afastamento);
+
+		ColaboradorAfastamento colaboradorAfastamento = ColaboradorAfastamentoFactory.getEntity();
+		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(5, 3, 2009));
+		colaboradorAfastamento.setColaborador(colaborador);
+		colaboradorAfastamento.setAfastamento(afastamento);
+		colaboradorAfastamentoDao.save(colaboradorAfastamento);
+
+		Long[] estabelecimentoIds = new Long[]{estabelecimentoAntigo.getId(),estabelecimentoAtual.getId(), -1325L};
+
+		Collection<ColaboradorAfastamento> teste = colaboradorAfastamentoDao.findAllSelect(0, 0, empresa.getId(), afastamento.getId(), "a", estabelecimentoIds, DateUtil.criarDataMesAno(1, 3, 2009), DateUtil.criarDataMesAno(1, 6, 2009), "DESC", false);
+		assertEquals(1, teste.size());
+
+		Collection<ColaboradorAfastamento> teste2 = colaboradorAfastamentoDao.findAllSelect(1, 15, empresa.getId(), null, "", estabelecimentoIds, null, null, "DESC", false);
+		assertEquals(1, teste2.size());
+	}
+
+	public void testGetCount()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Ana");
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+
+		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity();
+		estabelecimentoAtual.setEmpresa(empresa);
+		estabelecimentoAtual.setNome("Filial A");
+		estabelecimentoAtual = estabelecimentoDao.save(estabelecimentoAtual);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+
+		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2009));
+		historicoColaboradorAtual.setColaborador(colaborador);
+		historicoColaboradorAtual.setEstabelecimento(estabelecimentoAtual);
+		historicoColaboradorAtual.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
+
+		Afastamento afastamento = AfastamentoFactory.getEntity();
+		afastamentoDao.save(afastamento);
+
+		ColaboradorAfastamento colaboradorAfastamento = ColaboradorAfastamentoFactory.getEntity();
+		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(5, 3, 2009));
+		colaboradorAfastamento.setColaborador(colaborador);
+		colaboradorAfastamento.setAfastamento(afastamento);
+		colaboradorAfastamentoDao.save(colaboradorAfastamento);
+
+		assertEquals((Integer)1,
+				colaboradorAfastamentoDao.getCount(empresa.getId(), afastamento.getId(), "", new Long[0], null, null));
+	}
+	
+	public void testFindByColaborador()
+	{
+		Colaborador colaboradorFora = ColaboradorFactory.getEntity();
+		colaboradorFora.setNome("Ana");
+		colaboradorDao.save(colaboradorFora);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setNome("Josefa");
+		colaboradorDao.save(colaborador2);
+
+		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2009));
+		historicoColaboradorAtual.setColaborador(colaborador2);
+		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
+
+		Afastamento afastamento = AfastamentoFactory.getEntity();
+		afastamento.setDescricao("Problemas pessoais");
+		afastamentoDao.save(afastamento);
+
+		ColaboradorAfastamento colaboradorAfastamento = ColaboradorAfastamentoFactory.getEntity();
+		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(5, 3, 2009));
+		colaboradorAfastamento.setColaborador(colaborador2);
+		colaboradorAfastamento.setAfastamento(afastamento);
+		colaboradorAfastamentoDao.save(colaboradorAfastamento);
+		
+		ColaboradorAfastamento colaboradorAfastamentoFora = ColaboradorAfastamentoFactory.getEntity();
+		colaboradorAfastamentoFora.setInicio(DateUtil.criarDataMesAno(5, 3, 2009));
+		colaboradorAfastamentoFora.setColaborador(colaboradorFora);
+		colaboradorAfastamentoFora.setAfastamento(afastamento);
+		colaboradorAfastamentoDao.save(colaboradorAfastamentoFora);
+		
+		Collection<ColaboradorAfastamento> resultado = colaboradorAfastamentoDao.findByColaborador(colaborador2.getId());
+		assertEquals(1, resultado.size());
+	}
+
+	public void setAfastamentoDao(AfastamentoDao afastamentoDao)
+	{
+		this.afastamentoDao = afastamentoDao;
+	}
+	public void setColaboradorAfastamentoDao(ColaboradorAfastamentoDao colaboradorAfastamentoDao)
+	{
+		this.colaboradorAfastamentoDao = colaboradorAfastamentoDao;
+	}
+	public void setColaboradorDao(ColaboradorDao colaboradorDao)
+	{
+		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setEmpresaDao(EmpresaDao empresaDao)
+	{
+		this.empresaDao = empresaDao;
+	}
+
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
+	{
+		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
+	{
+		this.estabelecimentoDao = estabelecimentoDao;
+	}
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
+	{
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+}

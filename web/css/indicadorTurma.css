@@ -1,0 +1,59 @@
+.tabelaVendas{
+
+
+}
+
+.tabelaVendas tr td{
+	border: 1px solid #999;
+}
+
+.tituloVendedor{
+	border-bottom:none;
+	background-color:#E9ECEF;
+	font-weight:bold;
+
+}
+
+.tituloVendedorBorda{
+	background-color:#E9ECEF;
+	font-weight:bold;
+
+}
+
+.semBorda{
+	border : none !important;
+}
+
+.semBordaAzul{
+	border : none !important;
+	background-color:#E9ECEF;
+}
+
+.semBordaCor{
+	border-bottom:none;
+	border-top:none;
+	background-color:#E9ECEF;
+	font-weight:bold;
+}
+
+.totalizador{
+	border : none !important;
+	background-color:#E9ECEF;
+}
+
+.totalizadorTitulo{
+	border : none !important;
+	background-color:#E9ECEF;
+	font-weight:bold;
+}
+
+.comBordaCor{
+	border-top:none;
+	background-color:#E9ECEF;
+	font-weight:bold;
+}
+
+th{
+	background-color:#C3D3DF;
+	border: 1px solid #999;
+}

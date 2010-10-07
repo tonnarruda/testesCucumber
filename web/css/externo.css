@@ -1,0 +1,110 @@
+body
+{
+	background-color: #FFF!important;
+	color: #000;
+	margin: 25px;
+	font-family:verdana, sans-serif;
+	font-size:13px;
+}
+
+#mainDiv
+{
+	margin: 0 auto;
+	width: 735px;
+}
+
+input, select, textarea, option
+{
+	font-family: monospace !important;
+	font-size: 12px;
+}
+
+button, .button, input[type="button"]
+{
+	color: #000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+
+	border-width: 1px;
+	border-top-color: #AAA;
+	border-bottom-color: #000;
+	border-left-color: #AAA;
+	border-right-color: #000;
+	border-style: solid;
+
+	height: 27px;
+	background-color: #F0F0F0;
+}
+
+button[disabled="disabled"]
+{
+	color: #C0C0C0;
+}
+
+.wwgrp
+{
+	padding: 0px 5px 5px 0px;
+}
+
+ul
+{
+	list-style: none;
+}
+
+.fieldsetopt
+{
+	width: 425px;
+}
+
+textarea, select, input
+{
+	font-size:12px;
+	font-family:sans-serif;
+}
+
+textarea
+{
+	width:441px;
+	height:150px;
+}
+
+td.label
+{
+	text-align: right !important;
+	font-weight: bold;
+}
+
+a.header, span.header
+{
+	margin: 5px;
+	font-size: 11px;
+}
+
+a
+{
+	font-family:verdana, sans-serif;
+	font-size:11px;
+}
+
+a:hover
+{
+	color:#600;
+	text-decoration:none;
+}
+
+ul
+{
+	padding:0px;
+	margin:0px;
+}
+.btnEnviar
+{
+	background-image:url(../imgs/btnEnviar.gif);
+	width: 81px !important;
+	border: 0;
+	background-repeat: no-repeat;
+	background-color: #FFF;
+	height: 24px;
+	margin: 10px 10px 0 0;
+	cursor: pointer;
+}

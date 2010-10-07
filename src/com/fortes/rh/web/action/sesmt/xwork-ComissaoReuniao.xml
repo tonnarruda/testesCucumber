@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="comissaoReuniao" extends="default" namespace="/sesmt/comissaoReuniao">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="delete">
+			<result name="success" type="redirect">list.action?comissao.id=${comissao.id}</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="prepare">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="prepare">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="insert">
+			<result name="success" type="redirect">list.action?comissao.id=${comissao.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoEdit.ftl</result>
+		</action>
+		<action name="sugerirReuniao" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="sugerirReuniao">
+			<result name="success" type="redirect">list.action?comissao.id=${comissao.id}</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="update">
+			<result name="success" type="redirect">list.action?comissao.id=${comissao.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoEdit.ftl</result>
+		</action>
+		<action name="imprimirCalendario" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="imprimirCalendario">
+			<result name="success" type="jasper">
+				<param name="dataSource">comissaoReuniaos</param>
+				<param name="location">WEB-INF/report/calendario_reunioes.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">calendarioReunioes.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoList.ftl</result>
+		</action>
+		<action name="imprimirAta" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="imprimirAta">
+			<result name="success" type="jasper">
+				<param name="dataSource">comissaoMembros</param>
+				<param name="location">WEB-INF/report/ata_reuniao.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ataReuniao.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/comissaoReuniaoList.ftl</result>
+		</action>
+		<action name="relatorioPresenca" class="com.fortes.rh.web.action.sesmt.ComissaoReuniaoEditAction" method="relatorioPresenca">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioPresencaReuniao.ftl</result>
+		</action>
+	</package>
+</xwork>

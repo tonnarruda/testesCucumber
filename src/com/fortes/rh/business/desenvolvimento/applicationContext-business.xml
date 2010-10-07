@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="prioridadeTreinamentoManagerTarget" class="com.fortes.rh.business.desenvolvimento.PrioridadeTreinamentoManagerImpl">
+    <property name="dao">
+      <ref bean="prioridadeTreinamentoDao" />
+    </property>
+  </bean>
+  <bean id="prioridadeTreinamentoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.PrioridadeTreinamentoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="prioridadeTreinamentoManagerTarget" />
+    </property>
+  </bean>
+  <bean id="colaboradorTurmaManagerTarget" class="com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManagerImpl">
+    <property name="dao">
+      <ref bean="colaboradorTurmaDao" />
+    </property>
+    <property name="colaboradorManager">
+      <ref bean="colaboradorManager" />
+    </property>
+    <property name="historicoColaboradorManager">
+      <ref bean="historicoColaboradorManager" />
+    </property>
+    <property name="areaOrganizacionalManager">
+      <ref bean="areaOrganizacionalManager" />
+    </property>
+    <property name="cursoManager">
+      <ref bean="cursoManager" />
+    </property>
+    <property name="colaboradorQuestionarioManager">
+      <ref bean="colaboradorQuestionarioManager" />
+    </property>
+    <property name="aproveitamentoAvaliacaoCursoManager">
+      <ref bean="aproveitamentoAvaliacaoCursoManager" />
+    </property>
+    <property name="avaliacaoCursoManager">
+      <ref bean="avaliacaoCursoManager" />
+    </property>
+    <property name="certificacaoManager">
+      <ref bean="certificacaoManager" />
+    </property>
+  </bean>
+  <bean id="colaboradorTurmaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="colaboradorTurmaManagerTarget" />
+    </property>
+  </bean>
+  <bean id="turmaManagerTarget" class="com.fortes.rh.business.desenvolvimento.TurmaManagerImpl">
+    <property name="dao">
+      <ref bean="turmaDao" />
+    </property>
+    <property name="colaboradorTurmaManager">
+      <ref bean="colaboradorTurmaManager" />
+    </property>
+    <property name="diaTurmaManager">
+      <ref bean="diaTurmaManager" />
+    </property>
+    <property name="colaboradorPresencaManager">
+      <ref bean="colaboradorPresencaManager" />
+    </property>
+    <property name="transactionManager">
+      <ref bean="transactionManager" />
+    </property>
+    <property name="colaboradorQuestionarioManager">
+      <ref bean="colaboradorQuestionarioManager" />
+    </property>
+    <property name="aproveitamentoAvaliacaoCursoManager">
+      <ref bean="aproveitamentoAvaliacaoCursoManager" />
+    </property>
+  </bean>
+  <bean id="turmaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.TurmaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="turmaManagerTarget" />
+    </property>
+  </bean>
+  <bean id="cursoManagerTarget" class="com.fortes.rh.business.desenvolvimento.CursoManagerImpl">
+    <property name="dao">
+      <ref bean="cursoDao" />
+    </property>
+    <property name="colaboradorManager">
+      <ref bean="colaboradorManager" />
+    </property>
+    <property name="aproveitamentoAvaliacaoCursoManager">
+      <ref bean="aproveitamentoAvaliacaoCursoManager" />
+    </property>
+    <property name="transactionManager">
+      <ref bean="transactionManager" />
+    </property>
+  </bean>
+  <bean id="cursoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.CursoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="cursoManagerTarget" />
+    </property>
+  </bean>
+  <bean id="diaTurmaManagerTarget" class="com.fortes.rh.business.desenvolvimento.DiaTurmaManagerImpl">
+    <property name="dao">
+      <ref bean="diaTurmaDao" />
+    </property>
+    <property name="transactionManager">
+      <ref bean="transactionManager" />
+    </property>
+  </bean>
+  <bean id="diaTurmaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.DiaTurmaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="diaTurmaManagerTarget" />
+    </property>
+  </bean>
+  <bean id="colaboradorPresencaManagerTarget" class="com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManagerImpl">
+    <property name="dao">
+      <ref bean="colaboradorPresencaDao" />
+    </property>
+    <property name="colaboradorTurmaManager">
+      <ref bean="colaboradorTurmaManager" />
+    </property>
+  </bean>
+  <bean id="colaboradorPresencaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="colaboradorPresencaManagerTarget" />
+    </property>
+  </bean>
+  <bean id="DNTManagerTarget" class="com.fortes.rh.business.desenvolvimento.DNTManagerImpl">
+    <property name="dao">
+      <ref bean="DNTDao" />
+    </property>
+  </bean>
+  <bean id="DNTManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.DNTManager</value>
+    </property>
+    <property name="target">
+      <ref bean="DNTManagerTarget" />
+    </property>
+  </bean>
+  <bean id="avaliacaoCursoManagerTarget" class="com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManagerImpl">
+    <property name="dao">
+      <ref bean="avaliacaoCursoDao" />
+    </property>
+  </bean>
+  <bean id="avaliacaoCursoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="avaliacaoCursoManagerTarget" />
+    </property>
+  </bean>
+  <bean id="aproveitamentoAvaliacaoCursoManagerTarget" class="com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerImpl">
+    <property name="dao">
+      <ref bean="aproveitamentoAvaliacaoCursoDao" />
+    </property>
+    <property name="transactionManager">
+      <ref bean="transactionManager" />
+    </property>
+  </bean>
+  <bean id="aproveitamentoAvaliacaoCursoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="aproveitamentoAvaliacaoCursoManagerTarget" />
+    </property>
+  </bean>
+  <bean id="certificacaoManagerTarget" class="com.fortes.rh.business.desenvolvimento.CertificacaoManagerImpl">
+    <property name="dao">
+      <ref bean="certificacaoDao" />
+    </property>
+    <property name="faixaSalarialManager">
+      <ref bean="faixaSalarialManager" />
+    </property>
+  </bean>
+  <bean id="certificacaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.CertificacaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="certificacaoManagerTarget" />
+    </property>
+  </bean>
+</beans>
+

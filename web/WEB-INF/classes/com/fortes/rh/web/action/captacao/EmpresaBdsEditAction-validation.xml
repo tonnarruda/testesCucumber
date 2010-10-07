@@ -1,0 +1,20 @@
+<!DOCTYPE validators PUBLIC
+        "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+	<field name="empresaBds.nome">
+		<field-validator type="requiredstring">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<field name="empresaBds.email">
+		<field-validator type="requiredstring">
+			<message key="error.required" />
+		</field-validator>
+	</field>
+	<field name="empresaBds.email">
+		<field-validator type="email">
+			<message>E-mail inválido</message>
+		</field-validator>
+	</field>
+</validators>

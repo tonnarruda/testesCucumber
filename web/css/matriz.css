@@ -1,0 +1,46 @@
+.nomedoCurso
+{
+	text-align: center;
+	font-weight: bold;
+	width: 30px;
+	background-color: #b8c7d2;
+	vertical-align: bottom;
+}
+.colaborador,.prioridade,.nomedoCurso,.pontuacao
+{
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+}
+.colaborador
+{
+	background-color: #dee6ec;
+}
+.matriz
+{
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+
+}
+.matrizQualificacao
+{
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	background-color: #dee6ec;
+	padding-left: 50px !important;
+}
+.matriz td
+{
+	padding: 2px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+tr.pontuacaoGeral
+{
+	background-color: #b8c7d2;
+	font-weight:bold;
+}
+td.pontuacao
+{
+	text-align: right;
+	padding-right: 5px;
+}

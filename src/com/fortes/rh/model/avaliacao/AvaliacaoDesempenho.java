@@ -1,0 +1,131 @@
+package com.fortes.rh.model.avaliacao;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.security.auditoria.NaoAudita;
+
+@SuppressWarnings("serial")
+@Entity
+@SequenceGenerator(name="sequence", sequenceName="avaliacaoDesempenho_sequence", allocationSize=1)
+public class AvaliacaoDesempenho extends AbstractModel implements Serializable
+{
+	@ManyToOne
+	private Avaliacao avaliacao;
+	
+	@Temporal(TemporalType.DATE)
+    private Date inicio;
+    @Temporal(TemporalType.DATE)
+    private Date fim;
+    
+    @Column(length=100)
+    private String titulo;
+    
+    private boolean anonima;
+    private boolean permiteAutoAvaliacao;
+    private boolean liberada;
+    
+    
+    @NaoAudita
+    public String getPeriodoFormatado()
+    {
+    	String periodo = "";
+    	if (inicio != null)
+    		periodo = DateUtil.formataDiaMesAno(inicio);
+    	if (fim != null)
+			periodo += " - " + DateUtil.formataDiaMesAno(fim);
+    	
+    	return periodo;
+    }
+    
+    //Projection
+    public void setProjectionAvaliacaoId(Long avaliacaoId)
+    {
+    	if (avaliacao == null)
+    		avaliacao = new Avaliacao();
+    	
+    	avaliacao.setId(avaliacaoId);
+    }
+    public void setProjectionAvaliacaoTitulo(String avaliacaoTitulo)
+    {
+    	if (avaliacao == null)
+    		avaliacao = new Avaliacao();
+    	
+    	avaliacao.setTitulo(avaliacaoTitulo);
+    }
+    public void setProjectionAvaliacaoEmpresaId(Long empresaId)
+    {
+    	if (avaliacao == null)
+    		avaliacao = new Avaliacao();
+    	
+    	if (avaliacao.getEmpresa() == null)
+    		avaliacao.setEmpresa(new Empresa());
+    	
+    	avaliacao.getEmpresa().setId(empresaId);
+    }
+
+	public Avaliacao getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Avaliacao avaliacao) {
+		this.avaliacao = avaliacao;
+	}
+
+	public Date getInicio() {
+		return inicio;
+	}
+
+	public void setInicio(Date inicio) {
+		this.inicio = inicio;
+	}
+
+	public Date getFim() {
+		return fim;
+	}
+
+	public void setFim(Date fim) {
+		this.fim = fim;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public boolean isAnonima() {
+		return anonima;
+	}
+	public void setAnonima(boolean anonima) {
+		this.anonima = anonima;
+	}
+
+	public boolean isPermiteAutoAvaliacao() {
+		return permiteAutoAvaliacao;
+	}
+
+	public void setPermiteAutoAvaliacao(boolean permiteAutoAvaliacao) {
+		this.permiteAutoAvaliacao = permiteAutoAvaliacao;
+	}
+
+	public boolean isLiberada() {
+		return liberada;
+	}
+
+	public void setLiberada(boolean liberada) {
+		this.liberada = liberada;
+	}
+}

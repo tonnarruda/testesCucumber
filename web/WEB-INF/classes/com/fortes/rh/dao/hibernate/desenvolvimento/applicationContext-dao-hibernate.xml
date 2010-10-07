@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="prioridadeTreinamentoDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.PrioridadeTreinamentoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="colaboradorTurmaDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.ColaboradorTurmaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="turmaDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.TurmaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="cursoDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.CursoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="diaTurmaDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.DiaTurmaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="colaboradorPresencaDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.ColaboradorPresencaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="DNTDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.DNTDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="avaliacaoCursoDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.AvaliacaoCursoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="aproveitamentoAvaliacaoCursoDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.AproveitamentoAvaliacaoCursoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="certificacaoDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.CertificacaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+</beans>
+

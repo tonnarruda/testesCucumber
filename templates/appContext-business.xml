@@ -1,0 +1,14 @@
+  <bean id="#NOME_CLASSE_MINUSCULO#ManagerTarget" class="com.fortes.rh.business.#NOME_PACOTE#.#NOME_CLASSE#ManagerImpl">
+    <property name="dao">
+      <ref bean="#NOME_CLASSE_MINUSCULO#Dao" />
+    </property>
+  </bean>
+  <bean id="#NOME_CLASSE_MINUSCULO#Manager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.#NOME_PACOTE#.#NOME_CLASSE#Manager</value>
+    </property>
+    <property name="target">
+      <ref bean="#NOME_CLASSE_MINUSCULO#ManagerTarget" />
+    </property>
+  </bean>
+</beans>
