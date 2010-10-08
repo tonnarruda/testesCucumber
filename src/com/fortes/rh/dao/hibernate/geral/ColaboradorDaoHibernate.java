@@ -720,6 +720,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.contato.email"), "emailColaborador");
 		p.add(Projections.property("c.codigoAC"), "codigoAC");
+		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
+		p.add(Projections.property("c.desligado"), "desligado");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("e.codigoAC"), "empresaCodigoAC");
@@ -1303,7 +1305,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public boolean updateDataDesligamentoByCodigo(String codigoac, Empresa empresa, Date data)
 	{
-		String hql = "update Colaborador set dataDesligamento = :data, desligado = :valor where codigoac = :codigo and empresa = :emp";
+		String hql = "update Colaborador set dataDesligamento = :data, " +
+					"desligado = :valor where codigoac = :codigo and empresa = :emp";
 
 		Query query = getSession().createQuery(hql);
 		query.setDate("data", data);
@@ -1507,21 +1510,24 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		int result = query.executeUpdate();
 		return result == 1;
 	}
-
-	public Colaborador findByIdComHistorico(Long colaboradorId)
+	
+	public Colaborador findByIdComHistorico(Long colaboradorId, Integer statusRetornoAC)
 	{
 		StringBuilder hql = new StringBuilder();
 
 		montaSelectFindById(hql);
 
 		hql.append("	where co.id = :id ");
-		hql.append("	and hc.status = :statusHistColab ");
 		hql.append("	and (hc.data = ");
 		hql.append("		  (select max(hc2.data) ");
 		hql.append("		   from HistoricoColaborador as hc2 ");
 		hql.append("		   where hc2.colaborador.id = co.id ");
-		hql.append("			     and hc2.data <= :hoje and hc2.status = :statusHistColab )");
-		hql.append("        or ");
+		hql.append("			     and hc2.data <= :hoje " );
+		
+		if (statusRetornoAC !=null)
+			hql.append("  				 and hc2.status = :statusHistColab ");
+		
+		hql.append("       ) or ");
 		hql.append("          (select count(*) from HistoricoColaborador as hc3 where hc3.colaborador.id=co.id) = 1 ");
 		hql.append("	   ) ");
 
@@ -1529,7 +1535,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("hoje", new Date());
 		query.setLong("id", colaboradorId);
 		query.setInteger("status", StatusRetornoAC.CANCELADO);
-		query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
+		
+		if (statusRetornoAC !=null)
+			query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
 
 		return (Colaborador) query.uniqueResult();
 	}

@@ -83,6 +83,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean setMatriculaColaborador(Long colaboradorId, String matricula);
 	public Collection<Colaborador> findListComHistoricoFuturo(int page, int pagingSize, Map parametros);
 	public Integer getCountComHistoricoFuturo(Map parametros);
+	public Colaborador findByIdComHistoricoConfirmados(Long colaboradorId);
 	public Colaborador findByIdComHistorico(Long colaboradorId);
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor);
 	public Collection<Colaborador> findAllSelect(Long... empresaIds);

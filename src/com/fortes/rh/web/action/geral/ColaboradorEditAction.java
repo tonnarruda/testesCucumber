@@ -223,7 +223,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 		if(colaborador != null && colaborador.getId() != null)
 		{
-			colaborador = (Colaborador) colaboradorManager.findByIdComHistorico(colaborador.getId());
+			colaborador = (Colaborador) colaboradorManager.findByIdComHistoricoConfirmados(colaborador.getId());
 
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
 
@@ -653,7 +653,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	//TODO BACALHAU consulta gigante
 	public String prepareColaboradorSolicitacao() throws Exception
 	{
-		colaborador = (Colaborador) colaboradorManager.findByIdComHistorico(colaborador.getId());
+		colaborador = (Colaborador) colaboradorManager.findByIdComHistoricoConfirmados(colaborador.getId());
 		if(colaborador.isDesligado())
 			return Action.INPUT;
 

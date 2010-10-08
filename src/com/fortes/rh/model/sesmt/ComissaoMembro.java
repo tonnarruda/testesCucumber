@@ -32,14 +32,13 @@ public class ComissaoMembro extends AbstractModel implements Serializable
 	@ManyToOne
 	private ComissaoPeriodo comissaoPeriodo;
 
-	@Temporal(TemporalType.DATE)
-	private Date dataEnt;
-
 	@Transient
 	private final FuncaoComissao funcaoMap = FuncaoComissao.getInstance();
 	@Transient
 	private final TipoMembroComissao tipoMap = TipoMembroComissao.getInstance();
-	
+	@Temporal(TemporalType.DATE)
+	private Date dataEnt;
+
 	public ComissaoMembro()
 	{
 	}
