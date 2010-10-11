@@ -12,5 +12,5 @@ public interface PeriodoExperienciaDao extends GenericDao<PeriodoExperiencia>
 	Integer findPeriodoAnterior(Long empresaId, Integer dias);
 
 	Integer findPeriodoSugerido(Long empresaId, Integer dias);
-	
+
 }

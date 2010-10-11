@@ -250,4 +250,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 		return exibirComentarios;
 	}
 
+	public void setExibirComentarios(boolean exibirComentarios) {
+		this.exibirComentarios = exibirComentarios;
+	}
 }

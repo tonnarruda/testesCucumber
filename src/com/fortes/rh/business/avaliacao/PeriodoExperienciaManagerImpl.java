@@ -41,4 +41,5 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		
 		return rodapeRelatorioPeriodoExperiencia;
 	}
+	
 }
