@@ -54,7 +54,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	void setRespondeuEntrevista(Long colaboradorId);
 	public boolean setMatriculaColaborador(Long empresaId, String codigoAC, String matricula);
 	public boolean setMatriculaColaborador(Long colaboradorId, String matricula);
-	public Colaborador findByIdComHistorico(Long colaboradorId);
+	public Colaborador findByIdComHistorico(Long colaboradorId, Integer statusRetornoAC);
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor);
 	public Collection<Colaborador> findAllSelect(Long... empresaIds);
 	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds);
@@ -86,7 +86,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page);
 	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId);
 	public Collection<Colaborador> findColaboradoresEleicao(Long empresaId, Long estabelecimentosIds, Date data);
+
 	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck);
 
 }
-

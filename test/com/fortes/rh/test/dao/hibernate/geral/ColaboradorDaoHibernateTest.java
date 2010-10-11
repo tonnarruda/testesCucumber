@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
@@ -30,7 +29,6 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.MotivoDemissaoDao;
-import com.fortes.rh.dao.hibernate.geral.ColaboradorDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
@@ -246,7 +244,17 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.save(colaborador);
 
 		assertTrue(colaboradorDao.updateDataDesligamentoByCodigo("010203", empresa, new Date()));
+		
+		Colaborador colDesligado = colaboradorDao.findByCodigoAC("010203", empresa);
+		assertNotNull(colDesligado.getDataDesligamento());
+		assertTrue(colDesligado.isDesligado());
+		
 		assertTrue(colaboradorDao.updateDataDesligamentoByCodigo("010203", empresa, null));
+		
+		Colaborador colReligado = colaboradorDao.findByCodigoAC("010203", empresa);
+		assertNull(colReligado.getDataDesligamento());
+		assertFalse(colReligado.isDesligado());
+		
 	}
 
 	public void testUpdateUsuarioColaborador() throws Exception
@@ -2427,7 +2435,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador.setMotivo("m");
 		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
 
-		Colaborador colaboradorRetorno = colaboradorDao.findByIdComHistorico(colaborador.getId());
+		Colaborador colaboradorRetorno = colaboradorDao.findByIdComHistorico(colaborador.getId(), null);
 
 		assertEquals(colaboradorRetorno.getId(), colaborador.getId());
 	}
@@ -2796,66 +2804,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.updateInfoPessoaisByCpf(colaborador, empresa.getId());
 	}
 	
-	public void testFindAdmitidosNoPeriodo()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		 
-		Date dataReferencia = DateUtil.criarDataMesAno(1, 2, 1999);
-		
-		Colaborador avaliador = ColaboradorFactory.getEntity();
-		avaliador.setNome("Avaliador Carrasco");
-		colaboradorDao.save(avaliador);
-		
-		Colaborador jose = ColaboradorFactory.getEntity();
-		jose.setNome("Jose");
-		jose.setDataAdmissao(dataReferencia);
-		jose.setEmpresa(empresa);
-		colaboradorDao.save(jose);
-		
-		HistoricoColaborador historicoColaboradorJose = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorJose.setData(dataReferencia);
-		historicoColaboradorJose.setColaborador(jose);
-		historicoColaboradorDao.save(historicoColaboradorJose);
-		
-		Colaborador maria = ColaboradorFactory.getEntity();
-		maria.setNome("Maria");
-		maria.setDataAdmissao(dataReferencia);
-		maria.setEmpresa(empresa);
-		colaboradorDao.save(maria);
-		
-		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorMaria.setData(dataReferencia);
-		historicoColaboradorMaria.setColaborador(maria);
-		historicoColaboradorDao.save(historicoColaboradorMaria);
-		
-		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
-		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
-		
-		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionario1.setAvaliador(avaliador);
-		colaboradorQuestionario1.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		colaboradorQuestionario1.setColaborador(jose);
-		colaboradorQuestionario1.setRespondidaEm(DateUtil.criarDataMesAno(01, 02, 2002));
-		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
-		
-		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionario2.setAvaliador(avaliador);
-		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		colaboradorQuestionario2.setColaborador(maria);
-		colaboradorQuestionario2.setRespondidaEm(DateUtil.criarDataMesAno(10, 5, 2003));
-		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
-		
-		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionario3.setAvaliador(avaliador);
-		colaboradorQuestionario3.setColaborador(maria);
-		colaboradorQuestionario3.setRespondidaEm(DateUtil.criarDataMesAno(10, 6, 2003));
-		colaboradorQuestionario3.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
-		
-		assertEquals(3, colaboradorDao.findAdmitidosNoPeriodo(dataReferencia, empresa, null, null).size());
-	}
-	
 	public void testFindParticipantesByAvaliacaoDesempenho()
     {
     	Colaborador avaliador = ColaboradorFactory.getEntity();
@@ -2956,7 +2904,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		assertEquals(new Integer(2), colaboradorDao.qtdColaboradoresByTurmas(turmaIds));
 	}	
-	
 // TEM UM BABAU
 //	@SuppressWarnings("unchecked")
 //	public void testFindComHistoricoFuturoSQL()
@@ -3136,6 +3083,5 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao) {
 		this.colaboradorTurmaDao = colaboradorTurmaDao;
 	}
+
 }
-
-

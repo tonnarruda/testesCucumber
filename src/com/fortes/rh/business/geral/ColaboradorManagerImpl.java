@@ -73,7 +73,6 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.ActionContext;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, ColaboradorDao> implements ColaboradorManager
@@ -1086,9 +1085,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().getCount(parametros, TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO);
 	}
 
+	public Colaborador findByIdComHistoricoConfirmados(Long colaboradorId)
+	{
+		return getDao().findByIdComHistorico(colaboradorId, StatusRetornoAC.CONFIRMADO);
+	}
+	
 	public Colaborador findByIdComHistorico(Long colaboradorId)
 	{
-		return getDao().findByIdComHistorico(colaboradorId);
+		return getDao().findByIdComHistorico(colaboradorId, null);
 	}
 
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor)
@@ -1149,7 +1153,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		Colaborador colaborador = null;
 		if(empregado.getId() != null && empregado.getId() != 0)
-			colaborador = getDao().findByIdComHistorico(empregado.getId().longValue());
+			colaborador = findByIdComHistorico(empregado.getId().longValue());
 		else
 			colaborador = getDao().findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC());
 
@@ -1613,4 +1617,3 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 	
 }
-
