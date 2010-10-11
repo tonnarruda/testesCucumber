@@ -70,6 +70,25 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Collection<CheckBox> gruposCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private String[] areaOrganizacionalsCheck;
+	public String[] getAreaOrganizacionalsCheck() {
+		return areaOrganizacionalsCheck;
+	}
+
+	public Collection<CheckBox> getAreaOrganizacionalsCheckList() {
+		return areaOrganizacionalsCheckList;
+	}
+
+	public void setAreaOrganizacionalsCheck(String[] areaOrganizacionalsCheck) {
+		this.areaOrganizacionalsCheck = areaOrganizacionalsCheck;
+	}
+
+	public void setAreaOrganizacionalsCheckList(
+			Collection<CheckBox> areaOrganizacionalsCheckList) {
+		this.areaOrganizacionalsCheckList = areaOrganizacionalsCheckList;
+	}
+
+	private Collection<CheckBox> areaOrganizacionalsCheckList = new ArrayList<CheckBox>();
 	private int page;
 	private Integer qtdMeses; 
 	private char opcaoFiltro = '0';

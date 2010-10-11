@@ -5,6 +5,7 @@
 	<title>Colaboradores por Cargo</title>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript'>
@@ -37,10 +38,22 @@
 			addChecks('cargosCheck',data);
 		}
 		
+		function populaArea(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
+		}
+
+		function createListArea(data)
+		{
+			addChecks('areaOrganizacionalsCheck',data);
+		}
+		
 		jQuery(document).ready(function($)
 		{
 			var empresa = jQuery('#empresa').val();
 			
+			populaArea(empresa);
 			populaCargo(empresa);
 			populaEstabelecimento(empresa);
 		});
@@ -66,6 +79,7 @@
 		Exibir apenas colaboradores admitidos a mais de <@ww.textfield theme="simple" name="qtdMeses" id="qtdMeses" cssStyle="width:30px; text-align:right;" /> meses considerando a data 
 		<@ww.select theme="simple" name="opcaoFiltro" list=r"#{'0':'Atual','1':'de Referência'}"/><br><br>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
+		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="500" />
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
 		
 		<@ww.checkbox label="Exibir relatório resumido" name="relatorioResumido" labelPosition="left"/>
