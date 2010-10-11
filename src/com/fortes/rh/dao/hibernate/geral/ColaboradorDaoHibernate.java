@@ -38,6 +38,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> implements ColaboradorDao
@@ -2579,5 +2580,46 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 		return null;
 	}
+
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck) 
+	 {
+	  StringBuilder hql = new StringBuilder();
+	  hql.append("select new Colaborador(co.id, co.nome, co.dataAdmissao, respArea.nome, cq.respondidaEm, av.id) ");
+	  hql.append("from HistoricoColaborador as hc ");
+	  hql.append("left join hc.colaborador as co ");
+	  hql.append("left join co.colaboradorQuestionarios as cq ");
+	  hql.append("left join cq.avaliacaoDesempenho as av ");
+	  hql.append("left join hc.areaOrganizacional as ao ");
+	  hql.append("left join ao.responsavel as respArea ");
+	  hql.append("where ");
+	  hql.append("  hc.data = (");
+	  hql.append("   select max(hc2.data) ");
+	  hql.append("   from HistoricoColaborador as hc2 ");
+	  hql.append("   where hc2.colaborador.id = co.id ");
+	  hql.append("   and hc2.data <= :dataReferencia and hc2.status = :status ");
+	  hql.append("  ) ");
+	  hql.append("and co.desligado = false ");
+	  hql.append("and co.empresa.id = :empresaId ");
+	  hql.append("and co.dataAdmissao <= :dataReferencia ");
+
+	  if(areasCheck != null && areasCheck.length > 0) 
+	   hql.append("and ao.id in (:areasCheck) ");
+
+	  if(estabelecimentoCheck != null && estabelecimentoCheck.length > 0) 
+	   hql.append("and hc.estabelecimento.id in (:estabelecimentoCheck) ");
+
+	  Query query = getSession().createQuery(hql.toString());
+	  query.setLong("empresaId", empresa.getId());
+	  query.setDate("dataReferencia", dataReferencia);
+	  query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+	  if(areasCheck != null && areasCheck.length > 0)
+	   query.setParameterList("areasCheck", StringUtil.stringToLong(areasCheck));
+
+	  if(estabelecimentoCheck != null && estabelecimentoCheck.length > 0)
+	   query.setParameterList("estabelecimentoCheck", StringUtil.stringToLong(estabelecimentoCheck));   
+
+	  return query.list();
+	 }
 
 }
