@@ -7,3 +7,4 @@ insert into papel values (nextval('papel_sequence'), 'ROLE_REL_ACOMPANHAMENTO_EX
 
 insert into papel values (nextval('papel_sequence'), 'ROLE_REL_ACOMP_RANKING_PERIODO_EXPERIENCIA', 'Ranking Performace Periodo de Experiência',
  '/avaliacao/periodoExperiencia/prepareRelatorioRankingPerformancePeriodoDeExperiencia.action', 3, 't', null, 486);--.go
+ 

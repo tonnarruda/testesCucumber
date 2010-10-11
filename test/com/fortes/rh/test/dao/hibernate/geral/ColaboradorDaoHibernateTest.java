@@ -3137,3 +3137,5 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		this.colaboradorTurmaDao = colaboradorTurmaDao;
 	}
 }
+
+

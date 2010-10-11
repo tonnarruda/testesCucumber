@@ -1613,3 +1613,4 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 	
 }
+

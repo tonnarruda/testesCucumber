@@ -2616,3 +2616,5 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return null;
 	}
 }
+
+

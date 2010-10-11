@@ -129,3 +129,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId);
 	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresaSistema, String[] areasCheck, String[] estabelecimentoCheck)throws Exception;
 }
+
+

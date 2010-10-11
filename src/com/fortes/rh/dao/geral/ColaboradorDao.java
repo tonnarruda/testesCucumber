@@ -89,3 +89,4 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck);
 
 }
+
