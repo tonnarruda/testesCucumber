@@ -1,4 +1,4 @@
-package com.fortes.rh.dao.avaliacao;
+﻿package com.fortes.rh.dao.avaliacao;
 
 import java.util.Collection;
 
