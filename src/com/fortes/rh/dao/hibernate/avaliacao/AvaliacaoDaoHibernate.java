@@ -20,6 +20,7 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		Criteria criteria = getSession().createCriteria(Avaliacao.class, "a");
 		
 		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		
 		if(ativo != null)
 			criteria.add(Expression.eq("a.ativo", ativo));	
 		

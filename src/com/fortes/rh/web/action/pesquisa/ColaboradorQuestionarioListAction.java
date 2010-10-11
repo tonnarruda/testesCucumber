@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.pesquisa;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +19,10 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.PerguntaFichaMedica;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 public class ColaboradorQuestionarioListAction extends MyActionSupportList
@@ -51,6 +54,9 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private TipoPergunta tipoPergunta = new TipoPergunta();
 	private TipoQuestionario tipoQuestionario = new TipoQuestionario();
 	private String colaboradorNome;
+	
+	private String[] colaboradorCheck;
+	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
 	
 	private Map<String, Object> parametros;
 	
@@ -104,13 +110,13 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	}
-	
+
 	public String delete() throws Exception
 	{
 		//TODO: Este metodo tambem remove o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" removesse as respostas e nao o contrario. 
 		colaboradorRespostaManager.removeFicha(colaboradorQuestionario.getId());
-
+		
 		return Action.SUCCESS;
 	}
 
@@ -153,6 +159,34 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		return colaboradorQuestionario;
 	}
 
+	//feito pelo Samuel
+//	public String prepareRelatorioRankingPerformancePeriodoDeExperiencia(){
+//		
+//		colaboradorsCheckList = colaboradorManager.populaCheckColaborador(getEmpresaSistema().getId(), colaboradorManager.verificaColaboradorLogadoVerAreas());
+//		return Action.SUCCESS;
+//	}  
+
+	//feito pelo Samuel
+//	public String imprimeRelatorioRankingPerformancePeriodoDeExperiencia() throws Exception 
+//	{
+//		try 
+//		{
+//			colaboradors = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(colaborador, getEmpresaSistema().getId(),  colaboradorManager.verificaColaboradorLogadoVerAreas());
+//			
+//			
+//		}
+//		catch (Exception e)
+//		{
+//			addActionMessage(e.getMessage());
+//			e.printStackTrace();
+//			prepareRelatorioRankingPerformancePeriodoDeExperiencia();
+//			return Action.INPUT;
+//		}
+//		
+//		return Action.SUCCESS;
+//	}
+	
+	
 	public void setColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario)
 	{
 		this.colaboradorQuestionario = colaboradorQuestionario;
@@ -307,4 +341,19 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		return perguntasRespondidas;
 	}
 
+	public String getDataDoDia() {
+		return DateUtil.formataDiaMesAno(new Date());
+	}
+
+	public Collection<CheckBox> getColaboradorsCheckList() {
+		return colaboradorsCheckList;
+	}
+
+	public String[] getColaboradorCheck() {
+		return colaboradorCheck;
+	}
+
+	public void setColaboradorCheck(String[] colaboradorCheck) {
+		this.colaboradorCheck = colaboradorCheck;
+	}
 }

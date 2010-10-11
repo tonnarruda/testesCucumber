@@ -38,6 +38,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> implements ColaboradorDao
@@ -720,8 +721,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.contato.email"), "emailColaborador");
 		p.add(Projections.property("c.codigoAC"), "codigoAC");
-		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
-		p.add(Projections.property("c.desligado"), "desligado");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("e.codigoAC"), "empresaCodigoAC");
@@ -1305,8 +1304,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public boolean updateDataDesligamentoByCodigo(String codigoac, Empresa empresa, Date data)
 	{
-		String hql = "update Colaborador set dataDesligamento = :data, " +
-					"desligado = :valor where codigoac = :codigo and empresa = :emp";
+		String hql = "update Colaborador set dataDesligamento = :data, desligado = :valor where codigoac = :codigo and empresa = :emp";
 
 		Query query = getSession().createQuery(hql);
 		query.setDate("data", data);
@@ -1510,24 +1508,21 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		int result = query.executeUpdate();
 		return result == 1;
 	}
-	
-	public Colaborador findByIdComHistorico(Long colaboradorId, Integer statusRetornoAC)
+
+	public Colaborador findByIdComHistorico(Long colaboradorId)
 	{
 		StringBuilder hql = new StringBuilder();
 
 		montaSelectFindById(hql);
 
 		hql.append("	where co.id = :id ");
+		hql.append("	and hc.status = :statusHistColab ");
 		hql.append("	and (hc.data = ");
 		hql.append("		  (select max(hc2.data) ");
 		hql.append("		   from HistoricoColaborador as hc2 ");
 		hql.append("		   where hc2.colaborador.id = co.id ");
-		hql.append("			     and hc2.data <= :hoje " );
-		
-		if (statusRetornoAC !=null)
-			hql.append("  				 and hc2.status = :statusHistColab ");
-		
-		hql.append("       ) or ");
+		hql.append("			     and hc2.data <= :hoje and hc2.status = :statusHistColab )");
+		hql.append("        or ");
 		hql.append("          (select count(*) from HistoricoColaborador as hc3 where hc3.colaborador.id=co.id) = 1 ");
 		hql.append("	   ) ");
 
@@ -1535,9 +1530,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("hoje", new Date());
 		query.setLong("id", colaboradorId);
 		query.setInteger("status", StatusRetornoAC.CANCELADO);
-		
-		if (statusRetornoAC !=null)
-			query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
+		query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
 
 		return (Colaborador) query.uniqueResult();
 	}
@@ -2127,6 +2120,47 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return query.list();
 	}
+	
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(co.id, co.nome, co.dataAdmissao, respArea.nome, cq.respondidaEm, av.id) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as co ");
+		hql.append("left join co.colaboradorQuestionarios as cq ");
+		hql.append("left join cq.avaliacaoDesempenho as av ");
+		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("left join ao.responsavel as respArea ");
+		hql.append("where ");
+		hql.append("		hc.data = (");
+		hql.append("			select max(hc2.data) ");
+		hql.append("			from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = co.id ");
+		hql.append("			and hc2.data <= :dataReferencia and hc2.status = :status ");
+		hql.append("		) ");
+		hql.append("and co.desligado = false ");
+		hql.append("and co.empresa.id = :empresaId ");
+		hql.append("and co.dataAdmissao <= :dataReferencia ");
+		
+		if(areasCheck != null && areasCheck.length > 0) 
+			hql.append("and ao.id in (:areasCheck) ");
+		
+		if(estabelecimentoCheck != null && estabelecimentoCheck.length > 0) 
+			hql.append("and hc.estabelecimento.id in (:estabelecimentoCheck) ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresa.getId());
+		query.setDate("dataReferencia", dataReferencia);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(areasCheck != null && areasCheck.length > 0)
+			query.setParameterList("areasCheck", StringUtil.stringToLong(areasCheck));
+		
+		if(estabelecimentoCheck != null && estabelecimentoCheck.length > 0)
+			query.setParameterList("estabelecimentoCheck", StringUtil.stringToLong(estabelecimentoCheck));			
+
+		return query.list();
+	}
 
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa)
 	{
@@ -2157,13 +2191,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		return query.list();
+		
 	}
 
 	public Collection<Colaborador> findAdmitidos(Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql
-				.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.desligado, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome, am.id, am.nome, hc1.tipoSalario, hc1.salario, "
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.desligado, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome, am.id, am.nome, hc1.tipoSalario, hc1.salario, "
 						+ "hc1.quantidadeIndice, hcih.valor, fsh.tipo, fsh.valor, fsh.quantidade, fshih.valor) ");
 
 		hql.append("from HistoricoColaborador as hc1 ");

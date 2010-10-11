@@ -280,6 +280,8 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		criteria.createCriteria("ao.empresa", "e");
 		criteria.createCriteria("ao.areaMae", "am", Criteria.LEFT_JOIN);
 		criteria.createCriteria("am.empresa", "eMae", Criteria.LEFT_JOIN);
+		
+		criteria.createCriteria("ao.responsavel", "res", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ao.id"), "id");
@@ -290,6 +292,8 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("eMae.id"), "empresaAreaMaeId");
 		p.add(Projections.property("eMae.nome"), "empresaAreaMaeNome");
+		
+		p.add(Projections.property("res.nome"), "responsavelNome");
 
 		criteria.setProjection(p);
 

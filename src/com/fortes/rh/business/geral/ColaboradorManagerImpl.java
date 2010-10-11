@@ -73,6 +73,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.ActionContext;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, ColaboradorDao> implements ColaboradorManager
@@ -1085,14 +1086,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().getCount(parametros, TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO);
 	}
 
-	public Colaborador findByIdComHistoricoConfirmados(Long colaboradorId)
-	{
-		return getDao().findByIdComHistorico(colaboradorId, StatusRetornoAC.CONFIRMADO);
-	}
-	
 	public Colaborador findByIdComHistorico(Long colaboradorId)
 	{
-		return getDao().findByIdComHistorico(colaboradorId, null);
+		return getDao().findByIdComHistorico(colaboradorId);
 	}
 
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor)
@@ -1153,7 +1149,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		Colaborador colaborador = null;
 		if(empregado.getId() != null && empregado.getId() != 0)
-			colaborador = findByIdComHistorico(empregado.getId().longValue());
+			colaborador = getDao().findByIdComHistorico(empregado.getId().longValue());
 		else
 			colaborador = getDao().findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC());
 
@@ -1568,4 +1564,52 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	}
 
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
+	{
+		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck);
+		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
+		
+		HashMap<Long, String> datasColab = new HashMap<Long, String>();
+		
+		for (Colaborador colaborador : colaboradores) 
+		{
+			String datas = new String();
+			Integer diasDeEmpresa = DateUtil.diferencaEntreDatas(colaborador.getDataAdmissao(), dataReferencia);
+			colaborador.setDiasDeEmpresa(diasDeEmpresa);
+			
+			if(colaborador.getAvaliacaoRespondidaEm() == null)
+				datas = "não respondida ";
+			else
+				datas = DateUtil.diferencaEntreDatas(colaborador.getDataAdmissao(), colaborador.getAvaliacaoRespondidaEm()) + " dia(s)";
+
+			if (colaborador.getAvaliacaoDesempenhoId() != null)
+				datas += "*";
+
+			datas += "\n";
+			
+			if(datasColab.get(colaborador.getId()) == null)
+				datasColab.put(colaborador.getId(), datas);
+			else
+				datasColab.put(colaborador.getId(), datasColab.get(colaborador.getId()) + datas);
+		}
+		
+		Long idColab = 0L;
+		for (Colaborador colaborador : colaboradores) 
+		{
+			if(colaborador.getId().equals(0L) || !colaborador.getId().equals(idColab))
+			{
+				String datasFormat = datasColab.get(colaborador.getId());
+				colaborador.setDatasDeAvaliacao(datasFormat.substring(0, (datasFormat.length() - 1)));
+				retorno.add(colaborador);
+			}
+			
+			idColab = colaborador.getId();
+		}
+		
+		if(retorno.isEmpty())
+			throw new Exception ("Não existe Colabarodores com os filtros selecionados" ); 
+		
+		return retorno;
+	}
+	
 }

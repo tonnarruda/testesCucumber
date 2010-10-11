@@ -8,14 +8,13 @@ import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
-import com.fortes.rh.dao.hibernate.cargosalario.HistoricoColaboradorDaoHibernate;
 import com.fortes.rh.dao.sesmt.EleicaoDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Eleicao;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.BaseDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -23,7 +22,7 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.EleicaoFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class RelatorioListaFrequenciaTest extends GenericDaoHibernateTest<HistoricoColaborador>
+public class RelatorioListaFrequenciaTest extends BaseDaoHibernateTest
 {
 	Estabelecimento matriz;
 
@@ -47,7 +46,7 @@ public class RelatorioListaFrequenciaTest extends GenericDaoHibernateTest<Histor
 
 	private Colaborador ultimoColaboradorCriado;
 
-	@Override
+//	@Override
 	public GenericDao<HistoricoColaborador> getGenericDao()
 	{
 		return historicoColaboradorDao;
@@ -329,7 +328,7 @@ public class RelatorioListaFrequenciaTest extends GenericDaoHibernateTest<Histor
 		this.estabelecimentoDao = estabelecimentoDao;
 	}
 
-	@Override
+//	@Override
 	public HistoricoColaborador getEntity()
 	{
 		return HistoricoColaboradorFactory.getEntity();

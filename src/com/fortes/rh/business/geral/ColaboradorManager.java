@@ -83,7 +83,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean setMatriculaColaborador(Long colaboradorId, String matricula);
 	public Collection<Colaborador> findListComHistoricoFuturo(int page, int pagingSize, Map parametros);
 	public Integer getCountComHistoricoFuturo(Map parametros);
-	public Colaborador findByIdComHistoricoConfirmados(Long colaboradorId);
 	public Colaborador findByIdComHistorico(Long colaboradorId);
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor);
 	public Collection<Colaborador> findAllSelect(Long... empresaIds);
@@ -126,5 +125,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Integer qtdColaboradoresByTurmas(Collection<Long> turmaIds);
 	public Integer getCountComHistoricoFuturoSQL(Map parametros);
 	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros);
-	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId);	
+	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId);
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresaSistema, String[] areasCheck, String[] estabelecimentoCheck)throws Exception;
 }

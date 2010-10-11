@@ -27,6 +27,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.model.type.File;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
@@ -44,6 +45,7 @@ import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.Vinculo;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -81,6 +83,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Double salario;
 	@Transient
 	private Funcao funcao;
+	
+	@Transient
+	private Integer admitidoHa;//usado no ireport
+	
+	@Transient
+	private Integer diasDeEmpresa;
+	
+	@Transient
+	private String sugestaoPeriodoAcompanhamentoExperiencia;
 
 	@ManyToOne
 	private Empresa empresa;
@@ -111,6 +122,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorOcorrencia> colaboradorOcorrencia;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="colaborador")
+	private Collection<ColaboradorQuestionario> colaboradorQuestionarios;
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<HistoricoColaborador> historicoColaboradors;
@@ -145,18 +158,25 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	@Transient
 	private Boolean ehProjecao;
+	
+	@Transient
+	private Date avaliacaoRespondidaEm;
 
 	private boolean respondeuEntrevista = false;
 	private File foto;
 
 	@OneToOne(fetch=FetchType.LAZY)
 	private CamposExtras camposExtras;
-	
+		
+	@Transient
+	private String datasDeAvaliacao = "";
+	@Transient
+	private Long avaliacaoDesempenhoId;
+
 	public Colaborador()
 	{
 	}
 
-	//Esse Aqui
 	public Colaborador(Long id, String nomeComercial, String nomeEmpresa)
 	{
 		this.setId(id);
@@ -164,6 +184,19 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.empresa = new Empresa();
 		this.empresa.setNome(nomeEmpresa);
 	
+	}
+
+	public Colaborador(Long id, String nome, Date dataAdmissao, String responsavelDaArea, Date avaliacaoRespondidaEm, Long avaliacaoDesempenhoId)
+	{
+		this.setId(id);
+		this.setNome(nome);
+		this.setDataAdmissao(dataAdmissao);
+		this.setAvaliacaoRespondidaEm(avaliacaoRespondidaEm);
+		
+		if(this.areaOrganizacional == null)
+			this.areaOrganizacional = new AreaOrganizacional();
+		this.areaOrganizacional.setResponsavelNome(responsavelDaArea);
+		this.avaliacaoDesempenhoId = avaliacaoDesempenhoId;
 	}
 	
 	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Boolean desligado, Boolean naoIntegraAc, Double historicoSalario,
@@ -510,6 +543,25 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		this.setId(id);
 		this.nome = nome;
+		this.nomeComercial = nomeComercial;
+		this.empresa = new Empresa();
+		this.empresa.setId(empresaId);
+		this.faixaSalarial = new FaixaSalarial();
+		this.faixaSalarial.setNome(faixaNome);
+		this.faixaSalarial.setNomeCargo(cargoNome);
+		this.areaOrganizacional = new AreaOrganizacional();
+		this.areaOrganizacional.setNome(areaNome);
+		this.areaOrganizacional.setId(areaId);
+		this.areaOrganizacional.setAreaMaeId(areaMaeId);
+		this.areaOrganizacional.setAreaMaeNome(areaMaeNome);
+	}
+	
+	//Construtor usado por findAdmitidosNoPeriodo
+	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId, Date admissao)
+	{
+		this.setId(id);
+		this.nome = nome;
+		this.dataAdmissao = admissao;
 		this.nomeComercial = nomeComercial;
 		this.empresa = new Empresa();
 		this.empresa.setId(empresaId);
@@ -1735,5 +1787,58 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setCamposExtras(CamposExtras camposExtras)
 	{
 		this.camposExtras = camposExtras;
+	}
+
+	public String getAdmitidoHa() 
+	{
+		return diasDeEmpresa + " dias";
+	}
+
+	public String getSugestaoPeriodoAcompanhamentoExperiencia() {
+		return sugestaoPeriodoAcompanhamentoExperiencia;
+	}
+
+	public void setSugestaoPeriodoAcompanhamentoExperiencia(String sugestaoPeriodoAcompanhamentoExperiencia) {
+		this.sugestaoPeriodoAcompanhamentoExperiencia = sugestaoPeriodoAcompanhamentoExperiencia;
+	}
+
+	public Integer getDiasDeEmpresa() {
+		return diasDeEmpresa;
+	}
+
+	public void setDiasDeEmpresa(Integer diasDeEmpresa) {
+		this.diasDeEmpresa = diasDeEmpresa;
+	}
+
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
+		return colaboradorQuestionarios;
+	}
+
+	public void setColaboradorQuestionarios(Collection<ColaboradorQuestionario> colaboradorQuestionarios) {
+		this.colaboradorQuestionarios = colaboradorQuestionarios;
+	}
+
+	public Date getAvaliacaoRespondidaEm() {
+		return avaliacaoRespondidaEm;
+	}
+
+	public void setAvaliacaoRespondidaEm(Date avaliacaoRespondidaEm) {
+		this.avaliacaoRespondidaEm = avaliacaoRespondidaEm;
+	}
+
+	public String getDatasDeAvaliacao() {
+		return datasDeAvaliacao;
+	}
+
+	public void setDatasDeAvaliacao(String datasDeAvaliacao)
+	{
+		if(this.datasDeAvaliacao == null)
+			this.datasDeAvaliacao = new String();
+		
+		this.datasDeAvaliacao += datasDeAvaliacao;
+	}
+
+	public Long getAvaliacaoDesempenhoId() {
+		return avaliacaoDesempenhoId;
 	}
 }

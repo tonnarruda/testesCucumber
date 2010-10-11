@@ -206,6 +206,16 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 		responsavel.setId(idResponsavel);
 	}
+	
+	public void setResponsavelNome(String nome) {
+		if(responsavel == null) responsavel = new Colaborador();
+		responsavel.setNome(nome);
+	}
+	
+	public String getResponsavelNome() {
+		if(responsavel == null) responsavel = new Colaborador();
+		return responsavel.getNome();
+	}
 
 	public void setAreaMaeId(Long areaMaeId)
 	{

@@ -16,6 +16,7 @@ import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -249,7 +250,4 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 		return exibirComentarios;
 	}
 
-	public void setExibirComentarios(boolean exibirComentarios) {
-		this.exibirComentarios = exibirComentarios;
-	}
 }
