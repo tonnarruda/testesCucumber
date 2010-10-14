@@ -949,7 +949,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		empresaDao.save(empresa);
 		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		estabelecimentoDao.save(estabelecimento);
 		
 		Cargo cargo = CargoFactory.getEntity();
 		cargo.setNome("Desenvolvedor");
@@ -960,10 +960,14 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome("Maria");
 		colaborador.setEmpresa(empresa);
 		colaborador.setDesligado(false);
+		
 		colaboradorDao.save(colaborador);
 		
 		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
@@ -971,6 +975,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador1.setColaborador(colaborador);
 		historicoColaborador1.setFaixaSalarial(faixaSalarial);
 		historicoColaborador1.setEstabelecimento(estabelecimento);
+		historicoColaborador1.setAreaOrganizacional(areaOrganizacional);
 		historicoColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador1);
 		
@@ -982,15 +987,16 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		
 		Long[] cargoIds = new Long[]{cargo.getId()};
 		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+		Long[] areaOrganizacionalIds = new Long[]{areaOrganizacional.getId()};
 		Date dataConsulta = new Date();
 		
-		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta);		
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds);		
 		assertEquals(1, historicoColaboradors.size());
 		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
 		assertEquals("Desenvolvedor Junior", resultado1.getFaixaSalarial().getDescricao());
 		assertEquals("Maria", resultado1.getColaborador().getNome());
 
-		assertTrue(historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 1900), null, null, dataConsulta).isEmpty());
+		assertTrue(historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 1900), null, null, dataConsulta, null).isEmpty());
 	}
 
 	public void testFindHistoricoAprovado()

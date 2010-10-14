@@ -26,11 +26,13 @@
 
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
+	<parameter name="EXIBIRSALARIO" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="faixaSalarial.descricao" class="java.lang.String"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="colaborador.tempoDeServico" class="java.lang.String"/>
 	<field name="colaborador.dataAdmissaoFormatada" class="java.lang.String"/>
+	<field name="salario" class="java.lang.Double"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpCargo" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -133,10 +135,12 @@
 				<staticText>
 					<reportElement
 						x="334"
-						y="12"
+						y="13"
 						width="95"
 						height="12"
-						key="staticText-5"/>
+						key="staticText-5">
+							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
@@ -146,15 +150,62 @@
 				<staticText>
 					<reportElement
 						x="440"
-						y="12"
+						y="13"
 						width="95"
 						height="12"
-						key="staticText-8"/>
+						key="staticText-8">
+							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Data de Admissão]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="324"
+						y="13"
+						width="82"
+						height="12"
+						key="staticText-9">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Contratado há]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="410"
+						y="13"
+						width="79"
+						height="12"
+						key="staticText-10">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Data de Admissão]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="492"
+						y="13"
+						width="42"
+						height="12"
+						key="staticText-11">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Salário]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -194,7 +245,9 @@
 						y="1"
 						width="96"
 						height="11"
-						key="textField-9"/>
+						key="textField-9">
+							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
@@ -204,10 +257,57 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="440"
-						y="-1"
+						y="1"
 						width="96"
 						height="11"
-						key="textField-10"/>
+						key="textField-10">
+							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="493"
+						y="1"
+						width="41"
+						height="11"
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salario}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="324"
+						y="1"
+						width="81"
+						height="11"
+						key="textField-11">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.tempoDeServico}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="409"
+						y="1"
+						width="80"
+						height="11"
+						key="textField-12">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>

@@ -785,13 +785,14 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return criteria.list();
 	}
 
-	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta)
+	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta, Long[] areaOrganizacionalIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new HistoricoColaborador(hc.id, co.id, co.nome, co.dataAdmissao, c.id, c.nome, fs.id, fs.nome, e.id, e.nome, emp.id, emp.nome) ");
+		hql.append("select new HistoricoColaborador(hc.id, co.id, co.nome, co.dataAdmissao, c.id, c.nome, fs.id, fs.nome, e.id, e.nome, emp.id, emp.nome, hc.salario) ");
 
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
+		hql.append("right join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.estabelecimento as e ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as c ");
@@ -808,6 +809,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			hql.append("and e.id in ( :estabelecimentoIds ) ");
+		
+		if(areaOrganizacionalIds != null && areaOrganizacionalIds.length>0)
+			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
 
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("			from HistoricoColaborador as hc2 ");
@@ -829,6 +833,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		
+		if(areaOrganizacionalIds != null && areaOrganizacionalIds.length>0)
+			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
 
 		return query.list();
 	}

@@ -199,16 +199,16 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Date data = new Date();
 
 		//opcao 0
-		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
-		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, 2, '0').size());
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, 2, '0', null).size());
 		
 		// opcao 1
-		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
-		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, 2, '1').size());
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, 2, '1', null).size());
 
 		// quantidade de meses null
-		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
-		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, null, '1').size());
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(data, null, null, null, '1', null).size());
 	}
 	
 	public void testRelatorioColaboradorCargo_ComHistoricoColaboradorNulo() throws Exception
@@ -216,8 +216,8 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exp = null;
 		
 		try{
-			historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(new Date()), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<HistoricoColaborador>()));
-			historicoColaboradorManager.relatorioColaboradorCargo(new Date(), null, null, 2, '1');
+			historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(new Date()), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<HistoricoColaborador>()));
+			historicoColaboradorManager.relatorioColaboradorCargo(new Date(), null, null, 2, '1', null);
 		}catch (Exception e) {
 			exp = e;
 		}
