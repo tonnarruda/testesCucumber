@@ -29,7 +29,7 @@
 		Data:*
 		<@ww.datepicker name="data" id="data" value="${dateIni}" required="true" cssClass="mascaraData"/>
 
-		<@frt.checkListBox name="examesCheck" label="Cargos" list="examesCheckList" />
+		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" />
 		<@frt.checkListBox name="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" />
 		<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
 		<@frt.checkListBox name="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" />

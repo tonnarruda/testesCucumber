@@ -36,8 +36,6 @@ public class ComissaoMembro extends AbstractModel implements Serializable
 	private final FuncaoComissao funcaoMap = FuncaoComissao.getInstance();
 	@Transient
 	private final TipoMembroComissao tipoMap = TipoMembroComissao.getInstance();
-	@Temporal(TemporalType.DATE)
-	private Date dataEnt;
 
 	public ComissaoMembro()
 	{
@@ -150,11 +148,4 @@ public class ComissaoMembro extends AbstractModel implements Serializable
 		return false;
 	}
 
-	public Date getDataEnt() {
-		return dataEnt;
-	}
-
-	public void setDataEnt(Date dataEnt) {
-		this.dataEnt = dataEnt;
-	}
 }
