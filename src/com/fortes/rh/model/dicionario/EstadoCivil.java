@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 
 public class EstadoCivil extends LinkedHashMap
 {
+
 	public static final String SOLTEIRO = "01";
 	public static final String CASADO_COMUNHAO_UNIVERSAL = "02";
 	public static final String CASADO_COMUNHAO_PARCIAL = "03";
