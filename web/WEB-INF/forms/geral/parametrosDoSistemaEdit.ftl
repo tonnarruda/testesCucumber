@@ -61,7 +61,12 @@
 	
 	<@ww.select label="Exame ASO" name="parametrosDoSistema.exame.id" id="exame" list="exames" cssStyle="width: 300px;" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." />
 	
-	<@ww.textfield label="E-mail do Suporte Técnico" name="parametrosDoSistema.emailDoSuporteTecnico" id="emailDoSuporteTecnico" size="40" maxLength="39" required="true"/>
+	<@ww.textfield label="E-mail do Suporte Técnico" name="parametrosDoSistema.emailDoSuportTecnico" id="emailDoSuporteTecnico" size="40" maxLength="39" required="true"/>
+
+	<br/>Configuração para Suporte:<br/>
+	<@ww.textfield label="Codigo da Empresa" name="parametrosDoSistema.codClienteSuporte" id="codClienteSuporte" size="18" maxLength="39" required="false" liClass="liLeft"/>
+	<@ww.textfield label="Codigo do Cliente" name="parametrosDoSistema.codEmpresaSuporte" id="codEmpresaSuporte" size="18" maxLength="39" required="false"/>
+	<br/>
 
 	<@ww.hidden name="parametrosDoSistema.id" />
 	<@ww.hidden name="parametrosDoSistema.appVersao" />

@@ -6,7 +6,9 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.Menu;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 
 
 public class MenuTest extends TestCase
@@ -30,10 +32,15 @@ public class MenuTest extends TestCase
 		menu.append("</ul>\n");
 		menu.append("</li>\n");
 		menu.append("<li><a href='localhost/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
+		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=0002&codCliente=000006&token=sistema' /><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;' /> Suporte</a></li>\n");
 		menu.append("</ul>\n");
 		menu.append("\n");
-						
-		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost"));
+			
+		ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity();
+		parametros.setCodClienteSuporte("000006");
+		parametros.setCodEmpresaSuporte("0002");
+		
+		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros));
 	}
 
 	public void testGetMenuFormatadoComFilho()
@@ -80,9 +87,14 @@ public class MenuTest extends TestCase
 		menu.append("</ul>\n");
 		menu.append("</li>\n");
 		menu.append("<li><a href='localhost/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
+		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=0002&codCliente=000006&token=sistema' /><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;' /> Suporte</a></li>\n");
 		menu.append("</ul>\n");
 		menu.append("\n");
 		
-		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost"));
+		ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity();
+		parametros.setCodClienteSuporte("000006");
+		parametros.setCodEmpresaSuporte("0002");
+		
+		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros));
 	}
 }

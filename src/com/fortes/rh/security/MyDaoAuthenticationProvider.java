@@ -84,7 +84,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 					arrayAuths[++index] = new GrantedAuthorityImpl(role.getCodigo());
 			}
 
-			String menu = Menu.getMenuFormatado(roles, contexto);
+			String menu = Menu.getMenuFormatado(roles, contexto, parametrosDoSistema);
 
 			((UserDetailsImpl)userDetails).setEmpresa(empresaManager.findById(empresaId));
 			((UserDetailsImpl)userDetails).setAuthorities(arrayAuths);
