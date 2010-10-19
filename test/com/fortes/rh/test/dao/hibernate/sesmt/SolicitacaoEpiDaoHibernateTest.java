@@ -112,7 +112,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
 
-		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findVencimentoEpi(empresa.getId(), hoje, false);
+		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findVencimentoEpi(empresa.getId(), hoje, false, null);
 
 		assertEquals(1,colecao.size());
 	}

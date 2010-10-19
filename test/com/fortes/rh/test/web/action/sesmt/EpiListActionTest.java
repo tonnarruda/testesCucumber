@@ -1,5 +1,6 @@
 package com.fortes.rh.test.web.action.sesmt;
 
+import java.awt.Checkbox;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -11,6 +12,7 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.security.SecurityUtil;
@@ -20,11 +22,13 @@ import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.EpiListAction;
+import com.fortes.web.tags.CheckBox;
 
 public class EpiListActionTest extends MockObjectTestCase
 {
 	private EpiListAction action;
 	private Mock manager;
+	private Mock tipoEPIManager;
 
     protected void setUp() throws Exception
     {
@@ -34,6 +38,9 @@ public class EpiListActionTest extends MockObjectTestCase
         action.setEpiManager((EpiManager) manager.proxy());
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
+        
+        tipoEPIManager = new Mock(TipoEPIManager.class);
+        action.setTipoEPIManager((TipoEPIManager) tipoEPIManager.proxy());
     }
 
     protected void tearDown() throws Exception
@@ -89,8 +96,11 @@ public class EpiListActionTest extends MockObjectTestCase
     	assertEquals(epis, action.getEpis());
     }
 
-    public void testPrepareImprimirVencimentoCa()
+    public void testPrepareImprimirVencimentoCa() throws Exception
     {
+    	Collection<CheckBox> tipoEPICheckList = new ArrayList<CheckBox>();
+    	tipoEPIManager.expects(once()).method("getByEmpresa").with(ANYTHING).will(returnValue(tipoEPICheckList));
+
     	assertEquals("success",action.prepareImprimirVencimentoCa());
     }
 
@@ -103,7 +113,7 @@ public class EpiListActionTest extends MockObjectTestCase
 		Collection<Epi> dataSource = new ArrayList<Epi>();
 		dataSource.add(EpiFactory.getEntity(1L));
 
-		manager.expects(once()).method("findByVencimentoCa").with(eq(venc),eq(1L)).will(returnValue(dataSource));
+		manager.expects(once()).method("findByVencimentoCa").with(eq(venc),eq(1L), ANYTHING).will(returnValue(dataSource));
     	String ret = "";
     	try {
     		ret = action.imprimirVencimentoCa();
@@ -114,7 +124,7 @@ public class EpiListActionTest extends MockObjectTestCase
 
     	//Colecao vazia
     	dataSource.clear();
-    	manager.expects(once()).method("findByVencimentoCa").with(eq(venc),eq(1L)).will(returnValue(dataSource));
+    	manager.expects(once()).method("findByVencimentoCa").with(eq(venc),eq(1L), ANYTHING).will(returnValue(dataSource));
 
     	try {
     		ret = action.imprimirVencimentoCa();

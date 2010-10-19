@@ -112,7 +112,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return (SolicitacaoEpi) criteria.uniqueResult();
 	}
 
-	public Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA)
+	public Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new SolicitacaoEpi(e.id,co.id,e.nome,co.nome,ca.nome,se.data,eh.validadeUso,item.qtdEntregue, eh.vencimentoCA) ");
@@ -133,11 +133,18 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		hql.append(" ) and se.entregue = true ");
 		hql.append("and co.desligado = false and e.empresa.id = :empresaId ");
+		
+		if(tipoEPIIds != null && tipoEPIIds.length > 0)
+			hql.append("   and e.tipoEPI.id in (:tipoEPIIds) ");
+		
 		hql.append("order by co.id,e.id, se.data ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", data);
 		query.setLong("empresaId", empresaId);
+		
+		if(tipoEPIIds != null && tipoEPIIds.length > 0)
+			query.setParameterList("tipoEPIIds", tipoEPIIds, Hibernate.LONG);
 
 		return query.list();
 	}

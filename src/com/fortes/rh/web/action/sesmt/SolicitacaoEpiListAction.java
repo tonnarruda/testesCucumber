@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
+import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -41,6 +42,10 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private String situacao = "TODAS";
 	private Colaborador colaborador = new Colaborador();
 
+	private String[] tipoEPICheck;
+	private Collection<CheckBox> tipoEPICheckList = new ArrayList<CheckBox>();
+	private TipoEPIManager tipoEPIManager;
+	
 	private SolicitacaoEpi solicitacaoEpi;
 
 	//Relatório EPIs a vencer
@@ -85,6 +90,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public String prepareRelatorioVencimentoEpi()
 	{
+		tipoEPICheckList = tipoEPIManager.getByEmpresa(getEmpresaSistema().getId());
 		return SUCCESS;
 	}
 
@@ -92,7 +98,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	{
 		try
 		{
-			dataSource = solicitacaoEpiManager.findRelatorioVencimentoEpi(getEmpresaSistema().getId(), vencimento, agruparPor, exibirVencimentoCA);
+			dataSource = solicitacaoEpiManager.findRelatorioVencimentoEpi(getEmpresaSistema().getId(), vencimento, agruparPor, exibirVencimentoCA, tipoEPICheck);
 			parametros = RelatorioUtil.getParametrosRelatorio("EPIs com Prazo a Vencer em " + DateUtil.formataDiaMesAno(vencimento), getEmpresaSistema(), null);
 			parametros.put("DATA", vencimento);
 			parametros.put("EXIBIRVENCIMENTOCA", exibirVencimentoCA); // atente p/ as condicionais dentro do Relatorio vencimentoEpi_agrupaEpi.jrxml
@@ -272,5 +278,25 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public void setExibirVencimentoCA(boolean exibirVencimentoCA) {
 		this.exibirVencimentoCA = exibirVencimentoCA;
+	}
+
+	public String[] getTipoEPICheck() {
+		return tipoEPICheck;
+	}
+
+	public void setTipoEPICheck(String[] tipoEPICheck) {
+		this.tipoEPICheck = tipoEPICheck;
+	}
+
+	public Collection<CheckBox> getTipoEPICheckList() {
+		return tipoEPICheckList;
+	}
+
+	public void setTipoEPICheckList(Collection<CheckBox> tipoEPICheckList) {
+		this.tipoEPICheckList = tipoEPICheckList;
+	}
+
+	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) {
+		this.tipoEPIManager = tipoEPIManager;
 	}
 }

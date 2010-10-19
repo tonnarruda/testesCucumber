@@ -194,9 +194,9 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		Collection<SolicitacaoEpi> resultado = null;
 
-		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(eq(empresaId),eq(hoje), eq(false)).will(returnValue(colecao));
+		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(eq(empresaId),eq(hoje), eq(false), ANYTHING).will(returnValue(colecao));
 
-		resultado = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false );
+		resultado = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false, null );
 
 		assertEquals(1, resultado.size());
 
@@ -276,12 +276,12 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
 
-		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(eq(empresaId),eq(hoje), eq(false)).will(returnValue(colecao));
+		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(eq(empresaId),eq(hoje), eq(false), ANYTHING).will(returnValue(colecao));
 		Exception exception = null;
 
 		try
 		{
-			colecao = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false);
+			colecao = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false, null);
 		}
 		catch (ColecaoVaziaException e)
 		{

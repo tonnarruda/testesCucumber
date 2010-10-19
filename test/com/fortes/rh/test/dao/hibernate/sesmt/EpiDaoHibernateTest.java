@@ -15,6 +15,7 @@ import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
+import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epi;
@@ -23,6 +24,7 @@ import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
+import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
@@ -41,7 +43,8 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 	private HistoricoAmbienteDao historicoAmbienteDao;
 	private RiscoDao riscoDao;
 	private RiscoAmbienteDao riscoAmbienteDao;
-	private HistoricoFuncaoDao historicoFuncaoDao; 
+	private HistoricoFuncaoDao historicoFuncaoDao;
+	private TipoEPIDao tipoEPIDao;
 
 	private Empresa empresa;
 
@@ -77,18 +80,24 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 	{
 		Date data = new Date();
 
+		TipoEPI tipoEPI = new TipoEPI();
+		tipoEPIDao.save(tipoEPI);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
 		Epi epi = EpiFactory.getEntity();
+		epi.setTipoEPI(tipoEPI);
 		epi.setEmpresa(empresa);
 		epiDao.save(epi);
+		
 		EpiHistorico epiHistorico = new EpiHistorico();
 		epiHistorico.setData(data);
 		epiHistorico.setVencimentoCA(data);
 		epiHistorico.setEpi(epi);
 		epiHistoricoDao.save(epiHistorico);
 
-		Collection<Epi> colecao = epiDao.findByVencimentoCa(data, empresa.getId());
+		Collection<Epi> colecao = epiDao.findByVencimentoCa(data, empresa.getId(), new Long[]{tipoEPI.getId()});
 		assertEquals(1, colecao.size());
 	}
 	
@@ -284,5 +293,9 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
 	{
 		this.historicoFuncaoDao = historicoFuncaoDao;
+	}
+
+	public void setTipoEPIDao(TipoEPIDao tipoEPIDao) {
+		this.tipoEPIDao = tipoEPIDao;
 	}
 }

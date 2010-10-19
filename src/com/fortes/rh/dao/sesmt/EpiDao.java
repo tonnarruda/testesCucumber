@@ -9,7 +9,7 @@ import com.fortes.rh.model.sesmt.Epi;
 public interface EpiDao extends GenericDao<Epi>
 {
 	Epi findByIdProjection(Long epiId);
-	Collection<Epi> findByVencimentoCa(Date data, Long empresaId);
+	Collection<Epi> findByVencimentoCa(Date data, Long empresaId, Long[] tipoEPIIds);
 	Collection<Epi> findEpisDoAmbiente(Long ambienteId, Date data);
 	Collection<Epi> findByRiscoAmbiente(Long riscoId, Long ambienteId, Date data);
 	Collection<Epi> findByRisco(Long riscoId);

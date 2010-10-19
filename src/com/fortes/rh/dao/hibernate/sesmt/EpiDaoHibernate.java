@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
@@ -36,7 +37,7 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		return (Epi) criteria.uniqueResult();
 	}
 
-	public Collection<Epi> findByVencimentoCa(Date data, Long empresaId)
+	public Collection<Epi> findByVencimentoCa(Date data, Long empresaId, Long[] tipoEPIIds)
 	{
 		StringBuilder hql = new StringBuilder();
 
@@ -49,11 +50,18 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		hql.append("                     and eh2.data <= :data)");
 		hql.append("   and eh.vencimentoCA <= :data");
 		hql.append("   and e.empresa.id = :empresaId");
+		
+		if(tipoEPIIds != null && tipoEPIIds.length > 0)
+			hql.append("   and e.tipoEPI.id in (:tipoEPIIds) ");
+		
 		hql.append(" order by eh.vencimentoCA");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", data);
 		query.setLong("empresaId", empresaId);
+		
+		if(tipoEPIIds != null && tipoEPIIds.length > 0)
+			query.setParameterList("tipoEPIIds", tipoEPIIds, Hibernate.LONG);
 
 		return query.list();
 	}

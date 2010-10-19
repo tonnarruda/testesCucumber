@@ -17,7 +17,7 @@
 			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?epi.id=${epi.id}&page=${page}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
-		<@display.column property="tipoEPI.nome" title="Tipo"/>
+		<@display.column property="tipoEPI.nome" title="Categoria de EPI"/>
 		<@display.column property="fabricante" title="Fabricante"/>
 	</@display.table>
 
@@ -25,8 +25,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}'/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
-		</button>
+		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
 	</div>
 </body>
 </html>

@@ -211,9 +211,9 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		return epiHistoricos;
 	}
 	
-	public Collection<Epi> findByVencimentoCa(Date data, Long empresaId)
+	public Collection<Epi> findByVencimentoCa(Date data, Long empresaId, String[] tipoEPICheck)
 	{
-		return getDao().findByVencimentoCa(data, empresaId);
+		return getDao().findByVencimentoCa(data, empresaId,  LongUtil.arrayStringToArrayLong(tipoEPICheck));
 	}
 
 	public Collection<Epi> findEpisDoAmbiente(Long ambienteId, Date data)

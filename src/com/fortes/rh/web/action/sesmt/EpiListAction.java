@@ -1,16 +1,22 @@
 package com.fortes.rh.web.action.sesmt;
 
+import java.awt.Checkbox;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.RemoveCascadeException;
 import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.TipoEPI;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 @SuppressWarnings("serial")
@@ -21,7 +27,11 @@ public class EpiListAction extends MyActionSupportList
 	private Collection<Epi> epis;
 	private Epi epi;
 	private String msgAlert = "";
-
+	
+	private String[] tipoEPICheck;
+	private Collection<CheckBox> tipoEPICheckList = new ArrayList<CheckBox>();
+	private TipoEPIManager tipoEPIManager;
+	
 	private Date venc;
 	private Collection<Epi> dataSource;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
@@ -73,8 +83,9 @@ public class EpiListAction extends MyActionSupportList
 		return list();
 	}
 
-	public String prepareImprimirVencimentoCa()
+	public String prepareImprimirVencimentoCa() throws Exception
 	{
+		tipoEPICheckList = tipoEPIManager.getByEmpresa(getEmpresaSistema().getId());
 		return SUCCESS;
 	}
 
@@ -83,7 +94,7 @@ public class EpiListAction extends MyActionSupportList
 		String titulo = "EPIs com CA a vencer até " + DateUtil.formataDate(venc, "dd/MM/yyyy");
 
 		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), "");
-		dataSource = epiManager.findByVencimentoCa(venc, getEmpresaSistema().getId());
+		dataSource = epiManager.findByVencimentoCa(venc, getEmpresaSistema().getId(), tipoEPICheck);
 
 		if (dataSource.isEmpty())
 		{
@@ -144,5 +155,25 @@ public class EpiListAction extends MyActionSupportList
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
+	}
+
+	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) {
+		this.tipoEPIManager = tipoEPIManager;
+	}
+
+	public String[] getTipoEPICheck() {
+		return tipoEPICheck;
+	}
+
+	public void setTipoEPICheck(String[] tipoEPICheck) {
+		this.tipoEPICheck = tipoEPICheck;
+	}
+
+	public Collection<CheckBox> getTipoEPICheckList() {
+		return tipoEPICheckList;
+	}
+
+	public void setTipoEPICheckList(Collection<CheckBox> tipoEPICheckList) {
+		this.tipoEPICheckList = tipoEPICheckList;
 	}
 }
