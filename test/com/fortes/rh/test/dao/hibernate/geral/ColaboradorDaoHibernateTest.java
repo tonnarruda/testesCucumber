@@ -11,6 +11,7 @@ import java.util.Map;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
+import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
@@ -34,6 +35,7 @@ import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Habilitacao;
@@ -103,6 +105,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private UsuarioDao usuarioDao;
 	private CandidatoDao candidatoDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
+	private AvaliacaoDao avaliacaoDao;
 	private EstabelecimentoDao estabelecimentoDao;
 	private FaixaSalarialDao faixaSalarialDao;
 	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
@@ -2904,6 +2907,53 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		assertEquals(new Integer(2), colaboradorDao.qtdColaboradoresByTurmas(turmaIds));
 	}	
+
+	public void testFindColabPeriodoExperiencia()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Xica ");
+		colaborador.setDesligado(false);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		Estabelecimento estabelecimento = new Estabelecimento();
+		estabelecimentoDao.save(estabelecimento);
+		
+		AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
+		areaOrganizacionalDao.save(areaOrganizacional);
+				
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(DateUtil.montaDataByString("14/10/2010"));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		Avaliacao avaliacao = new Avaliacao();
+		avaliacao.setEmpresa(empresa);
+		avaliacao.setTitulo("avaliacao");
+		avaliacaoDao.save(avaliacao);
+				
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setPerformance(0.35);
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+		colaboradorQuestionario.setRespondida(true);
+		colaboradorQuestionario.setRespondidaEm(DateUtil.montaDataByString("15/10/2010"));
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		Date periodoIni = DateUtil.montaDataByString("14/10/2010");
+		Date periodoFim = DateUtil.montaDataByString("16/10/2010");
+		
+		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+		colaboradors = colaboradorDao.findColabPeriodoExperiencia(colaborador.getId(), periodoIni, periodoFim, avaliacao.getId(), null, null);
+
+		assertEquals(0, colaboradors.size());
+	}
+	
 // TEM UM BABAU
 //	@SuppressWarnings("unchecked")
 //	public void testFindComHistoricoFuturoSQL()
@@ -3082,6 +3132,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao) {
 		this.colaboradorTurmaDao = colaboradorTurmaDao;
+	}
+
+	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao) {
+		this.avaliacaoDao = avaliacaoDao;
 	}
 
 }

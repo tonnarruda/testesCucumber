@@ -30,6 +30,19 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		return criteria.list();
 	}
 	
+	public Collection<Avaliacao> findAllId(Long empresaId, Boolean ativo)
+	{
+		Criteria criteria = getSession().createCriteria(Avaliacao.class, "a");
+		
+		criteria.add(Expression.eq("a.empresa.id", empresaId));
+	
+		criteria.add(Expression.eq("a.ativo", ativo));	
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
+		return criteria.list();
+	}
+	
 	public Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId)
 	{
 		StringBuilder consulta = new StringBuilder();

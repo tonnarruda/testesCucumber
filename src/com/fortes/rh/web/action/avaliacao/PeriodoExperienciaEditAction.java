@@ -46,9 +46,9 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
-	private Avaliacao avaliacao;
+	private Avaliacao modeloAvaliacao;
 	private AvaliacaoManager avaliacaoManager;
-	private Collection<Avaliacao> avaliacaoExperiencias;
+	private Collection<Avaliacao> modeloAvaliacaos;
 	private Pergunta pergunta;
 	private Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
 	private PerguntaManager perguntaManager;
@@ -128,7 +128,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 				
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-    	avaliacaoExperiencias = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null);
+    	modeloAvaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null);
     	
 		return Action.SUCCESS;
 		
@@ -161,10 +161,11 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			colaboradores = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(null, getEmpresaSistema().getId(), colaboradorManager.verificaColaboradorLogadoVerAreas());
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, modeloAvaliacao.getId(), areasCheck, estabelecimentoCheck);
+			Avaliacao modelo = avaliacaoManager.findById(modeloAvaliacao.getId());
+			String filtroCabecalho = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + "Modelo de Avaliação: " + modelo.getTitulo(); 
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ranking de Performace do Período de Experiência", getEmpresaSistema(), filtroCabecalho);
 			
-			String filtroCabecalho = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n"; 
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiencia", getEmpresaSistema(), filtroCabecalho);
 		}
 		catch (Exception e)
 		{
@@ -247,14 +248,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
-		public Avaliacao getAvaliacao() {
-			return avaliacao;
-		}
-
-		public void setAvaliacao(Avaliacao avaliacao) {
-			this.avaliacao = avaliacao;
-		}
-
 		public Pergunta getPergunta() {
 			return pergunta;
 		}
@@ -336,15 +329,19 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			return colaboradorManager;
 		}
 
-		public Collection<Avaliacao> getAvaliacaoExperiencias() {
-			return avaliacaoExperiencias;
-		}
-
-		public void setAvaliacaoExperiencias(Collection<Avaliacao> avaliacaoExperiencias) {
-			this.avaliacaoExperiencias = avaliacaoExperiencias;
-		}
-
 		public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
 			this.avaliacaoManager = avaliacaoManager;
+		}
+
+		public Collection<Avaliacao> getModeloAvaliacaos() {
+			return modeloAvaliacaos;
+		}
+
+		public void setModeloAvaliacaos(Collection<Avaliacao> modeloAvaliacaos) {
+			this.modeloAvaliacaos = modeloAvaliacaos;
+		}
+
+		public void setModeloAvaliacao(Avaliacao modeloAvaliacao) {
+			this.modeloAvaliacao = modeloAvaliacao;
 		}
 }

@@ -2622,4 +2622,49 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	  return query.list();
 	 }
 
+	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long modeloAvaliacaoId, Long[] areasCheck, Long[] estabelecimentosCheck) 
+	{
+		StringBuilder hql = new StringBuilder();
+		  hql.append("select new Colaborador(co.nome, co.nomeComercial, av.titulo, cq.respondidaEm, cq.performance, ad.titulo) ");
+		  hql.append("from HistoricoColaborador as hc ");
+		  hql.append("left join hc.colaborador as co ");
+		  hql.append("left join co.colaboradorQuestionarios as cq ");
+		  hql.append("left join cq.avaliacaoDesempenho as ad ");
+		  hql.append("left join cq.avaliacao as av ");
+		  hql.append("where ");
+		  hql.append("  hc.data = (");
+		  hql.append("   select max(hc2.data) ");
+		  hql.append("   from HistoricoColaborador as hc2 ");
+		  hql.append("   where hc2.colaborador.id = co.id ");
+		  hql.append("   and hc2.data <= :dataAtual and hc2.status = :status ");
+		  hql.append("  ) ");
+		  hql.append("and co.desligado = false ");
+		  hql.append("and co.empresa.id = :empresaId ");
+		  hql.append("and cq.respondidaEm between :periodoIni and :periodoFim ");
+		  hql.append("and cq.avaliacao.id = :modeloAvaliacaoId ");
+		  hql.append("and cq.respondida = true ");
+		  
+		  if(areasCheck != null && areasCheck.length > 0) 
+			  hql.append("and hc.areaOrganizacional.id in (:areasCheck) ");
+
+		  if(estabelecimentosCheck != null && estabelecimentosCheck.length > 0) 
+			  hql.append("and hc.estabelecimento.id in (:estabelecimentoCheck) ");
+
+		  Query query = getSession().createQuery(hql.toString());
+		  query.setLong("empresaId", empresaId);
+		  query.setLong("modeloAvaliacaoId", modeloAvaliacaoId);
+		  query.setDate("periodoIni", periodoIni);
+		  query.setDate("periodoFim", periodoFim);
+		  query.setDate("dataAtual", new Date());
+		  query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		  if(areasCheck != null && areasCheck.length > 0)
+			  query.setParameterList("areasCheck", areasCheck);
+
+		  if(estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
+			  query.setParameterList("estabelecimentoCheck", estabelecimentosCheck);   
+
+		  return query.list();
+	}
+
 }

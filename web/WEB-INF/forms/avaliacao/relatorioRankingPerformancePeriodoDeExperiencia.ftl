@@ -6,7 +6,7 @@
 
 	<title>Relatório de Ranking de Performace do Período de Experiência</title>
 
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('avaliacaoExperiencia'), new Array('periodoIni','periodoFim'))"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('modeloAvaliacao','periodoIni','periodoFim'), new Array('periodoIni','periodoFim'))"/>
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<#if periodoIni?exists>
@@ -29,14 +29,14 @@
 			
 			<@ww.datepicker label="Período" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 			<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
-			<@ww.select label="Modelo de Avaliação" required="true" name="avaliacaoExperiencia.id" id="avaliacaoExperiencia" list="avaliacaoExperiencias" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);"/>
+			<@ww.select label="Modelo de Avaliação" required="true" name="modeloAvaliacao.id" id="modeloAvaliacao" list="modeloAvaliacaos" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);"/>
 			<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
 			
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button class="btnRelatorio" onclick='jQuery("#imprimeRelatorioRankingPerformancePeriodoDeExperiencia").submit();'></button>
+			<button class="btnRelatorio" onclick="${validarCampos};"></button>
 		</div>
 </body>
 </html>

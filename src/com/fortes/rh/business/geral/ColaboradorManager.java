@@ -127,5 +127,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Integer getCountComHistoricoFuturoSQL(Map parametros);
 	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros);
 	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId);
-	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresaSistema, String[] areasCheck, String[] estabelecimentoCheck)throws Exception;
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresaSistema, String[] areasCheck, String[] estabelecimentoCheck) throws Exception;
+	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long id2, String[] areasCheck, String[] estabelecimentoCheck) throws Exception;
 }

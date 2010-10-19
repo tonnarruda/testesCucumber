@@ -47,7 +47,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	{
 		return getDao().findAllSelect(empresaId, ativo);
 	}
-
+	
 	public Collection<QuestionarioRelatorio> getQuestionarioRelatorio(Avaliacao avaliacao) {
 		
 		Collection<Pergunta> perguntas = perguntaManager.getPerguntasRespostaByQuestionario(avaliacao.getId());

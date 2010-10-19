@@ -83,6 +83,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Double salario;
 	@Transient
 	private Funcao funcao;
+	@Transient
+	private String avaliacaoTitulo;
+	@Transient
+	private Date respondidaEm;
+	@Transient
+	private Double performance;
+	@Transient
+	private String titulo;
 	
 	@Transient
 	private Integer admitidoHa;//usado no ireport
@@ -529,6 +537,20 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setEmpresaId(empresaId);
 		setEmpresaNome(empresaNome);
 	}
+
+	
+	// aqui co.nome, co.nomeComercial, av.titulo, cq.respondidaem, cq.performance
+				   //co.nome, co.nomeComercial, av.titulo, cq.respondidaEm, cq.performance, ad.titulo
+	public Colaborador(String nome, String nomeComercial, String avaliacaoTitulo, Date respondidaEm, Double performance, String titulo)
+	{
+		this.nome = nome;
+		this.nomeComercial = nomeComercial;
+		this.avaliacaoTitulo = avaliacaoTitulo;
+		this.respondidaEm = respondidaEm;
+		this.performance = performance;
+		this.titulo = titulo;
+	}
+	
 	
 	public Colaborador(Long id, String nome, boolean desligado)
 	{
@@ -1840,5 +1862,22 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public Long getAvaliacaoDesempenhoId() {
 		return avaliacaoDesempenhoId;
+	}
+
+	public String getAvaliacaoTitulo() {
+		return avaliacaoTitulo;
+	}
+
+	public Date getRespondidaEm() {
+		return respondidaEm;
+	}
+
+	public String getPerformance() {
+		Double result = (performance * 100);
+		return result.toString() + " %";
+	}
+
+	public String getTitulo() {
+		return titulo;
 	}
 }
