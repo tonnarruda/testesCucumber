@@ -5,3 +5,4 @@ web/WEB-INF/classes/
 dist/
 .classpath
 file.fortesrh
+.settings/
