@@ -2918,18 +2918,20 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setDesligado(false);
 		colaborador.setEmpresa(empresa);
 		colaboradorDao.save(colaborador);
+    	
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+    	estabelecimentoDao.save(estabelecimento);
 		
-		Estabelecimento estabelecimento = new Estabelecimento();
-		estabelecimentoDao.save(estabelecimento);
-		
-		AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
-		areaOrganizacionalDao.save(areaOrganizacional);
+    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+    	areaOrganizacional.setNome("Area 1");
+    	areaOrganizacionalDao.save(areaOrganizacional);
 				
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setData(DateUtil.montaDataByString("14/10/2010"));
+		historicoColaborador.setData(DateUtil.montaDataByString("14/01/2010"));
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador);
 		
 		Avaliacao avaliacao = new Avaliacao();
@@ -2945,13 +2947,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionario.setRespondidaEm(DateUtil.montaDataByString("15/10/2010"));
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 		
-		Date periodoIni = DateUtil.montaDataByString("14/10/2010");
-		Date periodoFim = DateUtil.montaDataByString("16/10/2010");
+	   	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+    	Long[] areaIds = new Long[]{areaOrganizacional.getId()};
+		
+		Date periodoIni = DateUtil.montaDataByString("14/08/2010");
+		Date periodoFim = DateUtil.montaDataByString("16/12/2010");
 		
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
-		colaboradors = colaboradorDao.findColabPeriodoExperiencia(colaborador.getId(), periodoIni, periodoFim, avaliacao.getId(), null, null);
+		colaboradors = colaboradorDao.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacao.getId(), areaIds, estabelecimentoIds);
 
-		assertEquals(0, colaboradors.size());
+		assertEquals(1, colaboradors.size());
 	}
 	
 // TEM UM BABAU

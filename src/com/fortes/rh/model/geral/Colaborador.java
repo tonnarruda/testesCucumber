@@ -4,6 +4,8 @@
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -1874,7 +1876,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public String getPerformance() {
 		Double result = (performance * 100);
-		return result.toString() + " %";
+		
+		NumberFormat formata = new DecimalFormat("#0.00");
+		return formata.format(result * 100).toString() + " %"; 
 	}
 
 	public String getTitulo() {
