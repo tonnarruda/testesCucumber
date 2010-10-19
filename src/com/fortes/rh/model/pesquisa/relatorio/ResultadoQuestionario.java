@@ -33,7 +33,6 @@ public class ResultadoQuestionario implements Serializable
 		return colabRespostasDistinct;
 	}
 
-	//BACALHAU, quebra com pesquisa anonima, esta comparando colaboradorResposta.getColaboradorQuestionario().getId().equals ..NULL
 	public void montaColabRespostasDistinct()
 	{
 		this.colabRespostasDistinct = new ArrayList<ColaboradorResposta>();
@@ -42,7 +41,7 @@ public class ResultadoQuestionario implements Serializable
 		
 		for (ColaboradorResposta colaboradorResposta : this.colabRespostas)
 		{
-			if(!colaboradorResposta.getPergunta().getId().equals(perguntaId) || !colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioId))
+			if(!colaboradorResposta.getPergunta().getId().equals(perguntaId) || (colaboradorResposta.getColaboradorQuestionario() != null && colaboradorResposta.getColaboradorQuestionario().getId() != null && !colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioId)))
 			{
 				if (colaboradorResposta.getColaboradorQuestionario().getId() == null)
 					colaboradorResposta.getColaboradorQuestionario().setId(0L);
@@ -70,7 +69,7 @@ public class ResultadoQuestionario implements Serializable
 		
 		for (ColaboradorResposta colaboradorResposta : colabRespostas) 
 		{
-			if(StringUtils.isNotBlank(colaboradorResposta.getComentario()) && (!colaboradorResposta.getPergunta().getId().equals(perguntaId) || !colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioId)))
+			if(StringUtils.isNotBlank(colaboradorResposta.getComentario()) && (!colaboradorResposta.getPergunta().getId().equals(perguntaId) || (colaboradorResposta.getColaboradorQuestionario() != null && colaboradorResposta.getColaboradorQuestionario().getId() != null && !colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioId))))
 				colabComentariosDistinct.add(colaboradorResposta);
 			
 			perguntaId = colaboradorResposta.getPergunta().getId();

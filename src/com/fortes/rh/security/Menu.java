@@ -3,13 +3,16 @@ package com.fortes.rh.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fortes.rh.model.acesso.Papel;
+import org.apache.axis.utils.StringUtils;
 
-public abstract class Menu
+import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
+
+public abstract class Menu 
 {
 	private static Collection<Papel> roles;
-
-	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto)
+	
+	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros)
 	{
 		roles = new ArrayList<Papel>();
         for (Papel papel : rolesPapel)
@@ -41,6 +44,14 @@ public abstract class Menu
 
 		menu.append("<li><a href='" + contexto + "/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
 
+		
+		if ( parametros != null && StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && StringUtils.isEmpty(parametros.getCodClienteSuporte()))
+					menu.append("<li style='float: right; line-height: 0.8em'>" +
+					"<a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=" + parametros.getCodEmpresaSuporte()
+					+ "&codCliente=" + parametros.getCodClienteSuporte()
+					+ "&token=sistema' /><img src='"
+					+ contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;' /> Suporte</a></li>\n");
+
 		menu.append("</ul>\n\n");
 
 		return menu.toString();
@@ -71,4 +82,5 @@ public abstract class Menu
 
 		return menuFilho.toString();
 	}
+
 }

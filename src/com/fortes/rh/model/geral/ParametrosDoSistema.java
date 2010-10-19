@@ -38,6 +38,10 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String emailUser;
     @Column(length=50)
     private String emailPass;
+    @Column(length=10)
+    private String codEmpresaSuporte;
+    @Column(length=10)
+    private String codClienteSuporte;
     @Column(length=150)
     private String atualizadorPath;
     @Column(length=50)
@@ -284,5 +288,17 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setCampoExtraColaborador(boolean campoExtraColaborador) {
 		this.campoExtraColaborador = campoExtraColaborador;
+	}
+	public String getCodEmpresaSuporte() {
+		return codEmpresaSuporte;
+	}
+	public void setCodEmpresaSuporte(String codEmpresaSuporte) {
+		this.codEmpresaSuporte = codEmpresaSuporte;
+	}
+	public String getCodClienteSuporte() {
+		return codClienteSuporte;
+	}
+	public void setCodClienteSuporte(String codClienteSuporte) {
+		this.codClienteSuporte = codClienteSuporte;
 	}
 }
