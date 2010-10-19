@@ -49,13 +49,12 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 
 	public void updateFuncaoETipo(Long id, String funcao, String tipo)
 	{
-		String hql = "update ComissaoMembro set funcao = :funcao, tipo = :tipo, dataEnt = :dataEnt where id = :id";
+		String hql = "update ComissaoMembro set funcao = :funcao, tipo = :tipo where id = :id";
 
 		Query query = getSession().createQuery(hql);
 		query.setLong("id", id);
 		query.setString("funcao", funcao);
 		query.setString("tipo", tipo);
-		query.setDate("dataEnt", new Date());
 
 		query.executeUpdate();
 	}
@@ -162,6 +161,27 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 
 		criteria.addOrder(Order.asc("cp.aPartirDe"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+
+	public Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId, Collection<Long> colaboradorIds) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cm");
+		criteria = criteria.createCriteria("cm.colaborador", "colab");
+		criteria = criteria.createCriteria("cm.comissaoPeriodo", "cp");
+		criteria = criteria.createCriteria("cp.comissao", "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("colab.id"), "id");
+		p.add(Projections.property("colab.nome"), "nome");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("c.id", comissaoId));
+		criteria.add(Expression.in("cm.colaborador.id", colaboradorIds));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
 		return criteria.list();
 	}

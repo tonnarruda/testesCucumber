@@ -1,5 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -231,6 +232,30 @@ public class ComissaoMembroDaoHibernateTest extends GenericDaoHibernateTest<Comi
 		
 		Collection<ComissaoMembro> comissaoMembros = comissaoMembroDao.findByColaborador(colaborador.getId());
 		assertEquals(2, comissaoMembros.size());
+	}
+
+	public void testFindColaboradoresNaComissao()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+
+		Comissao comissao = ComissaoFactory.getEntity();
+		comissaoDao.save(comissao);
+		
+		ComissaoPeriodo comissaoPeriodo = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo.setComissao(comissao);
+		comissaoPeriodoDao.save(comissaoPeriodo);
+		
+		ComissaoMembro comissaoMembro = ComissaoMembroFactory.getEntity();
+		comissaoMembro.setColaborador(colaborador);
+		comissaoMembro.setComissaoPeriodo(comissaoPeriodo);
+		comissaoMembroDao.save(comissaoMembro);
+		
+		Collection<Long> colaboradorIds = new ArrayList<Long>();
+		colaboradorIds.add(colaborador.getId());
+		
+		Collection<Colaborador> colabCollection = comissaoMembroDao.findColaboradoresNaComissao(comissao.getId(), colaboradorIds);
+		assertEquals(1, colabCollection.size());
 	}
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)

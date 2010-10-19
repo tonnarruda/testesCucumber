@@ -65,7 +65,7 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('data','@estabelecimentosCheck'), new Array('data'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('data'), new Array('data'))"/>
 	<#if data?exists>
 		<#assign dataTemp = data?date/>
 	<#else>
@@ -83,6 +83,7 @@
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
 		
 		<@ww.checkbox label="Exibir relatório resumido" name="relatorioResumido" labelPosition="left"/>
+		<@ww.checkbox label="Exibir Salario" name="exibirSalario" labelPosition="left"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

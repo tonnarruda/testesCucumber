@@ -176,7 +176,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setDataAdmissao(dataAdmissao);
 	}
 	
-	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome)
+	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario)
 	{
 		this.setId(historicoId);
 		
@@ -196,6 +196,8 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.estabelecimento = new Estabelecimento();
 		this.estabelecimento.setId(estabelecimentoId);
 		this.estabelecimento.setNome(estabelecimentoNome);
+		
+		this.salario = salario;
 		
 	}
 	

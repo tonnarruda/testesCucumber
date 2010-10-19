@@ -82,9 +82,12 @@
 		<#if REG_MSG?exists && REG_MSG != "">
 			<span id="msgAutenticacao">&nbsp &nbsp &nbsp ${REG_MSG}</span>
 		</#if>
+		
 	</div>
 
+	
 	<@authz.authentication operation="menuFormatado"/>
+	
 	<div style="clear: both"></div>
 	<div id="waDiv">
 		<br>
@@ -98,8 +101,10 @@
 		<#if !pgInicial?exists>
 			</div>
 		</#if>
+		
 		<br><br>
 	</div>
+
 
 	<!-- Create a MenuMatic Instance -->
 	<script type="text/javascript" >

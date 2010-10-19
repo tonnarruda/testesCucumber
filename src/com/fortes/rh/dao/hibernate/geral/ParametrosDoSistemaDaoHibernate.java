@@ -31,6 +31,8 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.exibirAbaDocumentos"), "exibirAbaDocumentos");
 		p.add(Projections.property("ps.atualizaPapeisIdsAPartirDe"), "atualizaPapeisIdsAPartirDe");
 		p.add(Projections.property("ps.campoExtraColaborador"), "campoExtraColaborador");
+		p.add(Projections.property("ps.codClienteSuporte"), "codClienteSuporte");
+		p.add(Projections.property("ps.codEmpresaSuporte"), "codEmpresaSuporte");
 		p.add(Projections.property("p.id"), "projectionPerfilPadraoId");
 		p.add(Projections.property("p.nome"), "projectionPerfilPadraoNome");
 		criteria.setProjection(p);

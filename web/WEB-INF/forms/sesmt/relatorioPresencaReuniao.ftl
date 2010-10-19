@@ -34,7 +34,11 @@
 	<#list comissaoReuniaoPresencaMatrizes as comissaoReuniaoPresencaMatriz>
 		<tr>
 			<td class="colaborador">
-				${comissaoReuniaoPresencaMatriz.colaborador.nome}
+				<#if comissaoReuniaoPresencaMatriz.membroDaComissao>
+					${comissaoReuniaoPresencaMatriz.colaborador.nome}
+				<#else>
+					<span style='color: red;'>${comissaoReuniaoPresencaMatriz.colaborador.nome} </span>
+				</#if>
 			</td>
 			<#list comissaoReuniaos as comissaoReuniao>
 				<td class="pontuacao">
@@ -47,7 +51,7 @@
 									<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${presenca.justificativaFalta?j_string}');return false"><img border="0" src="<@ww.url value="/imgs/check_ok_Justificado.gif"/>"></span>
 								<#else>
 									<#if comissaoReuniao.frequeniciaReuniao>
-										<span href=# style="cursor: default;"><img border="0" title="Presente" src="<@ww.url value="/imgs/check_falta.gif"/>"></span>
+										<span href=# style="cursor: default;"><img border="0" title="Faltou" src="<@ww.url value="/imgs/check_falta.gif"/>"></span>
 									<#else>
 										<span href=# style="cursor: default;">&nbsp;</span>
 									</#if>	
@@ -60,12 +64,13 @@
 		</tr>
 	</#list>
 </table>
+
+<span style='color: red;'>Colaborador(es) que não faz(em) mais parte da comissao.</span>
 </div>
 
 <br>
 <div class="buttonGroup">
-	<button class="btnVoltar" onclick="window.location='list.action?comissao.id=${comissao.id}'" accesskey="V">
-	</button>
+	<button class="btnVoltar" onclick="window.location='list.action?comissao.id=${comissao.id}'" ></button>
 </div>
 </body>
 </html>

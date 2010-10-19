@@ -17,6 +17,7 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.model.sesmt.relatorio.ComissaoReuniaoPresencaMatriz;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 
 public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuniao, ComissaoReuniaoDao> implements ComissaoReuniaoManager
 {
@@ -127,11 +128,18 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 	{
 		Collection<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findByComissao(comissaoId);
 		Collection<Colaborador> colaboradores = getColaboradores(presencas);
-		Collection<ComissaoReuniaoPresencaMatriz> matriz = montaMatriz(colaboradores, presencas);
+		Collection<Long> colaboradorIds = new ArrayList<Long>();
+				
+		for (Colaborador colaborador : colaboradores) 
+			colaboradorIds.add(colaborador.getId());
+		
+		Collection<Colaborador> colaboradoresNaComissao = comissaoMembroManager.findColaboradoresNaComissao(comissaoId, colaboradorIds);
+		
+		Collection<ComissaoReuniaoPresencaMatriz> matriz = montaMatriz(colaboradores, colaboradoresNaComissao, presencas);
 		return matriz;
 	}
 
-	private Collection<ComissaoReuniaoPresencaMatriz> montaMatriz(Collection<Colaborador> colaboradores, Collection<ComissaoReuniaoPresenca> presencas)
+	private Collection<ComissaoReuniaoPresencaMatriz> montaMatriz(Collection<Colaborador> colaboradores, Collection<Colaborador> colaboradoresNaComissao, Collection<ComissaoReuniaoPresenca> presencas)
 	{
 		Collection<ComissaoReuniaoPresencaMatriz> colecaoMatriz = new ArrayList<ComissaoReuniaoPresencaMatriz>();
 
@@ -141,6 +149,13 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 		{
 			matriz = new ComissaoReuniaoPresencaMatriz();
 			matriz.setColaborador(colaborador);
+			
+			for (Colaborador colaboradorNaComissao : colaboradoresNaComissao) 
+			{
+				if(colaborador.equals(colaboradorNaComissao))
+					matriz.setMembroDaComissao(true);
+			}
+			
 			colecaoMatriz.add(matriz);
 
 			for (ComissaoReuniaoPresenca presenca : presencas)
@@ -150,6 +165,7 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 					matriz.addComissaoReuniaoPresencas(presenca);
 				}
 			}
+			
 		}
 		return colecaoMatriz;
 	}

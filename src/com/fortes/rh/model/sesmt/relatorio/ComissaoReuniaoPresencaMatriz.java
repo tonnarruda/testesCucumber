@@ -9,12 +9,21 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 public class ComissaoReuniaoPresencaMatriz
 {
 	private Colaborador colaborador;
+	private boolean membroDaComissao = false;
 	private Collection<ComissaoReuniaoPresenca> comissaoReuniaoPresencas = new ArrayList<ComissaoReuniaoPresenca>();
 
+	public boolean isMembroDaComissao() {
+		return membroDaComissao;
+	}
+	public void setMembroDaComissao(boolean membroDaComissao) {
+		this.membroDaComissao = membroDaComissao;
+	}
+	
 	public Colaborador getColaborador()
 	{
 		return colaborador;
 	}
+	
 	public void setColaborador(Colaborador colaborador)
 	{
 		this.colaborador = colaborador;
@@ -31,5 +40,4 @@ public class ComissaoReuniaoPresencaMatriz
 	{
 		comissaoReuniaoPresencas.add(presenca);
 	}
-
 }

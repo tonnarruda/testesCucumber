@@ -194,7 +194,12 @@ public class ComissaoReuniaoManagerTest extends MockObjectTestCase
 		presencas.add(presencaDoColaborador2);
 		presencas.add(outraPresencaDoColaborador1);
 
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		colaboradores.add(colaborador1);
+		colaboradores.add(colaborador2);
+		
 		comissaoReuniaoPresencaManager.expects(once()).method("findByComissao").with(eq(1L)).will(returnValue(presencas));
+		comissaoMembroManager.expects(once()).method("findColaboradoresNaComissao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
 
 		Collection<ComissaoReuniaoPresencaMatriz> resultado = comissaoReuniaoManager.findRelatorioPresenca(1L);
 		assertEquals(2,resultado.size());

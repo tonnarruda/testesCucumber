@@ -49,6 +49,15 @@ public class CargoEditAction extends MyActionSupportEdit
 	private HistoricoColaboradorManager historicoColaboradorManager;
     private EtapaSeletivaManager etapaSeletivaManager;
     private EmpresaManager empresaManager;
+    private boolean exibirSalario;
+    
+	public boolean isExibirSalario() {
+		return exibirSalario;
+	}
+
+	public void setExibirSalario(boolean exibirSalario) {
+		this.exibirSalario = exibirSalario;
+	}
 
 	private Collection<Cargo> cargos = new ArrayList<Cargo>();
 	private Collection<HistoricoColaborador> historicoColaboradors;
@@ -94,6 +103,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	private char opcaoFiltro = '0';
     private Collection<CheckBox> etapaSeletivaCheckList = new ArrayList<CheckBox>();
     private String[] etapaCheck;
+    
 
 	//Transferir faixas entre cargos
 	private Collection<FaixaSalarial> faixasDoCargo = new ArrayList<FaixaSalarial>();
@@ -161,9 +171,10 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String relatorioColaboradorCargo() throws Exception
 	{
-		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro);
+		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck);
 		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Cargos", getEmpresaSistema(), "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico));
-			
+		parametros.put("EXIBIRSALARIO", exibirSalario);
+		
 		if(relatorioResumido)
 			return "successResumido";
 		else
