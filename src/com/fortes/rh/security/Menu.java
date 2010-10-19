@@ -45,7 +45,7 @@ public abstract class Menu
 		menu.append("<li><a href='" + contexto + "/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
 
 		
-		if ( parametros != null && StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && StringUtils.isEmpty(parametros.getCodClienteSuporte()))
+		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
 					menu.append("<li style='float: right; line-height: 0.8em'>" +
 					"<a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=" + parametros.getCodEmpresaSuporte()
 					+ "&codCliente=" + parametros.getCodClienteSuporte()
