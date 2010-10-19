@@ -2,6 +2,9 @@ package com.fortes.rh.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.apache.axis.utils.StringUtils;
+
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 
@@ -41,9 +44,7 @@ public abstract class Menu
 
 		menu.append("<li><a href='" + contexto + "/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
 
-		if ( parametros !=null && 
-				parametros.getCodEmpresaSuporte() != null && !parametros.getCodEmpresaSuporte().isEmpty() 
-				&& parametros.getCodClienteSuporte() != null && !parametros.getCodClienteSuporte().isEmpty())
+		if ( parametros != null && StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && StringUtils.isEmpty(parametros.getCodClienteSuporte()))
 					menu.append("<li style='float: right; line-height: 0.8em'>" +
 					"<a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=" + parametros.getCodEmpresaSuporte()
 					+ "&codCliente=" + parametros.getCodClienteSuporte()
