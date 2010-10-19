@@ -176,7 +176,7 @@
 		<td><strong>Formação</strong>
 			<@display.table name="formacaos" id="formacao" class="dados" defaultsort=1 style="width:100%" >
 				<@display.column property="curso" title="Curso" style="width:300px"/>
-				<@display.column property="local" title="Local" style="width:200px"/>
+				<@display.column property="local" title="Instituição de ensino" style="width:200px"/>
 				<@display.column property="tipoDescricao" title="Tipo" style="width:120px"/>
 				<@display.column property="situacaoDescricao" title="Situação" style="width:80px"/>
 				<@display.column property="conclusao" title="Conclusão" style="width:80px"/>

@@ -24,7 +24,7 @@
 	
 			<@ww.select label="Área de Formação" name="formacao.areaFormacao.id" id="formacaoArea" list="areaFormacaos" listKey="id" listValue="nome" theme="css_xhtml" cssStyle="width: 380px"/>
 			<@ww.textfield label="Curso" name="formacao.curso" theme="css_xhtml" id="formacaoCurso" cssStyle="width: 300px" maxLength="100" required="true" />
-			<@ww.textfield label="Local" name="formacao.local" theme="css_xhtml" id="formacaoLocal" cssStyle="width: 282px" maxLength="100" liClass="liLeft" required="true" />
+			<@ww.textfield label="Instituição de ensino" name="formacao.local" theme="css_xhtml" id="formacaoLocal" cssStyle="width: 282px" maxLength="100" liClass="liLeft" required="true" />
 			<@ww.select label="Tipo" name="formacao.tipo" id="formacaoTipo" list="tiposFormacao" required="true"  theme="css_xhtml" liClass="liLeft" />
 			<@ww.select label="Situação" name="formacao.situacao" id="formacaoSituacao" list="situacoesFormacao" required="true" theme="css_xhtml" liClass="liLeft" />
 			<@ww.textfield label="Conclusão" name="formacao.conclusao" id="formacaoConclusao" maxLength="20" theme="css_xhtml"/>

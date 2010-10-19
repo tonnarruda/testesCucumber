@@ -68,7 +68,7 @@
 		<@display.column title="Formação">
 			${tipoLabel}
 		</@display.column>
-		<@display.column property="local" title="Local"/>
+		<@display.column property="local" title="Instituição de ensino"/>
 		<#switch formacao.situacao>
 			<#case 'C'>
 				<#assign situacaoLabel="Concluído"/>

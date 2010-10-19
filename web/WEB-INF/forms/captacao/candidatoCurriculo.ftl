@@ -205,7 +205,7 @@
 	    	<li class="liLeft" style="width: 400px;"><span>Área de formação:</span> <#if formac.areaFormacao?exists && formac.areaFormacao.nome?exists> ${formac.areaFormacao.nome}</#if></li>
 	       	<li><span>Curso:</span> <#if formac.curso?exists> ${formac.curso}</#if></li>
 
-	       	<li class="liLeft" style="width:400px;"><span>Local:</span><#if formac.local?exists> ${formac.local}</#if></li>
+	       	<li class="liLeft" style="width:400px;"><span>Instituição de ensino:</span><#if formac.local?exists> ${formac.local}</#if></li>
 	       	<li style="width:200px;"><span>Tipo:</span>
 	       		<#if formac.tipo?exists>
 		        	<#if formac.tipo == 'T'>
