@@ -3,5 +3,5 @@ web/WEB-INF/classes/
 *.bak
 *.log
 dist/
-file.fortesrh
 .classpath
+file.fortesrh
