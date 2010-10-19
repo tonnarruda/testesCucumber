@@ -4,3 +4,4 @@ web/WEB-INF/classes/
 *.log
 dist/
 file.fortesrh
+.classpath
