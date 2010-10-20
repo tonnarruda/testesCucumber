@@ -83,6 +83,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private FaixaSalarial faixaSalarial;
 	@Transient
 	private Double salario;
+	@Temporal(TemporalType.DATE)
+	private Date dataAtualizacao = new Date();
 	@Transient
 	private Funcao funcao;
 	@Transient
@@ -1609,6 +1611,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		string.append("dataAdmissao", this.dataAdmissao);
 		string.append("dataDesligamento", this.dataDesligamento);
 		string.append("codigoAC", this.codigoAC);
+		string.append("dataAtualizacao", this.dataAtualizacao);
 
 		return string.toString();
 	}
@@ -1878,10 +1881,18 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		Double result = (performance * 100);
 		
 		NumberFormat formata = new DecimalFormat("#0.00");
-		return formata.format(result * 100).toString() + " %"; 
+		return formata.format(result).toString() + " %"; 
 	}
 
 	public String getTitulo() {
 		return titulo;
+	}
+
+	public Date getDataAtualizacao() {
+		return dataAtualizacao;
+	}
+
+	public void setDataAtualizacao(Date dataAtualizacao) {
+		this.dataAtualizacao = dataAtualizacao;
 	}
 }

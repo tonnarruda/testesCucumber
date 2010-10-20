@@ -1118,24 +1118,29 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	//testes samuel
 	@SuppressWarnings("static-access")
-	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck) throws Exception
+	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao) throws Exception
 	{
 		Collection<HistoricoColaborador> historicoColaboradors;
 		Date dataConsulta = null;
+		Date dataAtualizacao = null;
+		Date dataAtual = new Date();
+		DateUtil dateUtil = new DateUtil();
 		
-		if(qtdMeses != null && qtdMeses > 0)
-		{
-			//consulta por quantidade de Meses 
-			DateUtil dateUtil = new DateUtil();
-			Date dataAtual = new Date();
+		if (exibColabAdmitido)
+			if(qtdMeses != null && qtdMeses > 0)
+			{
+				//consulta por quantidade de Meses 
+				
+				if (opcaoFiltro == '0')//data atual 
+					dataConsulta = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMeses, false);			
+				else if (opcaoFiltro == '1')//data de referencia 
+					dataConsulta = dateUtil.retornaDataAnteriorQtdMeses(dataHistorico, qtdMeses, false);
+			}
 
-			if (opcaoFiltro == '0')//data atual 
-				dataConsulta = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMeses, false);			
-			else if (opcaoFiltro == '1')//data de referencia 
-				dataConsulta = dateUtil.retornaDataAnteriorQtdMeses(dataHistorico, qtdMeses, false);
-		}
-
-		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck));
+		if (qtdMesesDesatualizacao != null)
+			dataAtualizacao = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMesesDesatualizacao, false);
+		
+		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao);
 			
 		if(historicoColaboradors.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
