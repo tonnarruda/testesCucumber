@@ -348,6 +348,15 @@ input,textarea,select,fieldset {
 	background-color: #E9E9E9;
 	border: 1px solid #7E9DB9;
 }
+
+#suporte{
+	padding: 5px;
+	width: 725px;
+	height: 80px;
+	background-color: #E9E9E9;
+	border: 1px solid #7E9DB9;
+}
+
 #gogDir {
 	float: right;
 	padding: 5px;

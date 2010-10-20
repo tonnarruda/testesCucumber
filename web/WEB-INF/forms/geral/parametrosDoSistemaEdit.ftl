@@ -63,9 +63,17 @@
 	
 	<@ww.textfield label="E-mail do Suporte Técnico" name="parametrosDoSistema.emailDoSuportTecnico" id="emailDoSuporteTecnico" size="40" maxLength="39" required="true"/>
 
-	<br/>Configuração para Suporte:<br/>
-	<@ww.textfield label="Codigo da Empresa" name="parametrosDoSistema.codClienteSuporte" id="codClienteSuporte" size="18" maxLength="10" required="false" liClass="liLeft"/>
-	<@ww.textfield label="Codigo do Cliente" name="parametrosDoSistema.codEmpresaSuporte" id="codEmpresaSuporte" size="18" maxLength="10" required="false"/>
+	<br>
+	<div id="suporte">
+		<div id="quadro">
+			<h2>
+				<img src="<@ww.url includeParams="none" value="/imgs/ChatFortes.gif" theme="simple"/>">	
+				Configuração para Suporte:
+			</h2>
+			<@ww.textfield label="Codigo da Empresa" name="parametrosDoSistema.codClienteSuporte" id="codClienteSuporte" size="18" maxLength="10" required="false" liClass="liLeft"/>
+			<@ww.textfield label="Codigo do Cliente" name="parametrosDoSistema.codEmpresaSuporte" id="codEmpresaSuporte" size="18" maxLength="10" required="false"/>
+		</div>
+	</div>
 	<br/>
 
 	<@ww.hidden name="parametrosDoSistema.id" />
@@ -85,6 +93,9 @@
 			</ul>
 		</@ww.div>
 	</li>
+	
+
+	
 </@ww.form>
 
 	<div class="buttonGroup">

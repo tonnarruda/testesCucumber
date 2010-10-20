@@ -50,21 +50,21 @@
 			addChecks('areaOrganizacionalsCheck',data);
 		}
 		
-			function compl()
-	{
-		var compl = document.getElementById("complementares");
-		var img = document.getElementById("imgCompl");
-		if(compl.style.display == "none")
+		function compl()
 		{
-			compl.style.display = "";
-			img.src = "<@ww.url includeParams="none" value="/imgs/arrow_up.gif"/>"
+			var compl = document.getElementById("complementares");
+			var img = document.getElementById("imgCompl");
+			if(compl.style.display == "none")
+			{
+				compl.style.display = "";
+				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_up.gif"/>"
+			}
+			else
+			{
+				compl.style.display = "none";
+				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"
+			}
 		}
-		else
-		{
-			compl.style.display = "none";
-			img.src = "<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"
-		}
-	}
 		
 		jQuery(document).ready(function($)
 		{
@@ -98,7 +98,7 @@
 			<a href="javascript:compl();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"> Filtro complementar</a>
 		</li>
 		<li>
-			<@ww.div id="complementares" cssStyle="display:none;" cssClass="divInfo">
+			<@ww.div id="complementares" cssStyle="display: ;" cssClass="divInfo">
 				<ul>
 					<@ww.checkbox label="" name="exibColabAdmitido" theme="simple"/> 
 					Exibir apenas colaboradores admitidos a mais de
