@@ -50,14 +50,6 @@ public class CargoEditAction extends MyActionSupportEdit
     private EtapaSeletivaManager etapaSeletivaManager;
     private EmpresaManager empresaManager;
     private boolean exibirSalario;
-    
-	public boolean isExibirSalario() {
-		return exibirSalario;
-	}
-
-	public void setExibirSalario(boolean exibirSalario) {
-		this.exibirSalario = exibirSalario;
-	}
 
 	private Collection<Cargo> cargos = new ArrayList<Cargo>();
 	private Collection<HistoricoColaborador> historicoColaboradors;
@@ -80,31 +72,13 @@ public class CargoEditAction extends MyActionSupportEdit
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private String[] areaOrganizacionalsCheck;
-	public String[] getAreaOrganizacionalsCheck() {
-		return areaOrganizacionalsCheck;
-	}
-
-	public Collection<CheckBox> getAreaOrganizacionalsCheckList() {
-		return areaOrganizacionalsCheckList;
-	}
-
-	public void setAreaOrganizacionalsCheck(String[] areaOrganizacionalsCheck) {
-		this.areaOrganizacionalsCheck = areaOrganizacionalsCheck;
-	}
-
-	public void setAreaOrganizacionalsCheckList(
-			Collection<CheckBox> areaOrganizacionalsCheckList) {
-		this.areaOrganizacionalsCheckList = areaOrganizacionalsCheckList;
-	}
-
 	private Collection<CheckBox> areaOrganizacionalsCheckList = new ArrayList<CheckBox>();
 	private int page;
 	private Integer qtdMeses; 
+	private Integer qtdMesesAtualizacao; 
 	private char opcaoFiltro = '0';
     private Collection<CheckBox> etapaSeletivaCheckList = new ArrayList<CheckBox>();
     private String[] etapaCheck;
-    
-
 	//Transferir faixas entre cargos
 	private Collection<FaixaSalarial> faixasDoCargo = new ArrayList<FaixaSalarial>();
 	private FaixaSalarial faixa;
@@ -661,5 +635,43 @@ public class CargoEditAction extends MyActionSupportEdit
 	{
 		this.empresa = empresa;
 	}
-
+	
+	public String[] getAreaOrganizacionalsCheck() 
+	{
+		return areaOrganizacionalsCheck;
 	}
+
+	public Collection<CheckBox> getAreaOrganizacionalsCheckList() 
+	{
+		return areaOrganizacionalsCheckList;
+	}
+
+	public void setAreaOrganizacionalsCheck(String[] areaOrganizacionalsCheck) 
+	{
+		this.areaOrganizacionalsCheck = areaOrganizacionalsCheck;
+	}
+
+	public void setAreaOrganizacionalsCheckList(Collection<CheckBox> areaOrganizacionalsCheckList) 
+	{
+		this.areaOrganizacionalsCheckList = areaOrganizacionalsCheckList;
+	}
+	
+	public boolean isExibirSalario() 
+	{
+		return exibirSalario;
+	}
+
+	public void setExibirSalario(boolean exibirSalario) 
+	{
+		this.exibirSalario = exibirSalario;
+	}
+
+	public Integer getQtdMesesAtualizacao() {
+		return qtdMesesAtualizacao;
+	}
+
+	public void setQtdMesesAtualizacao(Integer qtdMesesAtualizacao) {
+		this.qtdMesesAtualizacao = qtdMesesAtualizacao;
+	}
+
+}

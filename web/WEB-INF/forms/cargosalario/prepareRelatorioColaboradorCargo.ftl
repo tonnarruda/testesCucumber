@@ -78,6 +78,7 @@
 		<@ww.datepicker label="Data de Referência" id="data" name="data" required="true" cssClass="mascaraData" value="${dataTemp}"/><br>
 		Exibir apenas colaboradores admitidos a mais de <@ww.textfield theme="simple" name="qtdMeses" id="qtdMeses" cssStyle="width:30px; text-align:right;" /> meses considerando a data 
 		<@ww.select theme="simple" name="opcaoFiltro" list=r"#{'0':'Atual','1':'de Referência'}"/><br><br>
+		Exibir apenas colaboradores com dados desatualizados a mais de <@ww.textfield theme="simple" name="qtdMesesAtualizacao" id="qtdMesesAtualizacao" cssStyle="width:30px; text-align:right;" /> meses  
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
 		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="500" />
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
