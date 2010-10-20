@@ -785,7 +785,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return criteria.list();
 	}
 
-	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta, Long[] areaOrganizacionalIds)
+	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta, Long[] areaOrganizacionalIds, Date dataAtualizacao)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new HistoricoColaborador(hc.id, co.id, co.nome, co.dataAdmissao, c.id, c.nome, fs.id, fs.nome, e.id, e.nome, emp.id, emp.nome, hc.salario) ");
@@ -797,7 +797,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as c ");
 		hql.append("left join c.empresa as emp ");
-
+		
 		hql.append("where co.desligado = :desligado ");
 		hql.append("and hc.status = :status ");
 		
@@ -812,6 +812,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		
 		if(areaOrganizacionalIds != null && areaOrganizacionalIds.length>0)
 			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
+
+		if(dataAtualizacao != null )
+			hql.append("and co.dataAtualizacao <= :dataAtualizacao ");
 
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("			from HistoricoColaborador as hc2 ");
@@ -836,6 +839,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		
 		if(areaOrganizacionalIds != null && areaOrganizacionalIds.length>0)
 			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+		
+		if(dataAtualizacao != null)
+			query.setDate("dataAtualizacao", dataAtualizacao);
 
 		return query.list();
 	}

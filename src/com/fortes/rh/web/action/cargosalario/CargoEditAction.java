@@ -75,8 +75,9 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Collection<CheckBox> areaOrganizacionalsCheckList = new ArrayList<CheckBox>();
 	private int page;
 	private Integer qtdMeses; 
-	private Integer qtdMesesAtualizacao; 
+	private Integer qtdMesesDesatualizacao = null; 
 	private char opcaoFiltro = '0';
+	private char opcaoFiltroAdmitidosOuDEsatualizados = '0';
     private Collection<CheckBox> etapaSeletivaCheckList = new ArrayList<CheckBox>();
     private String[] etapaCheck;
 	//Transferir faixas entre cargos
@@ -85,6 +86,8 @@ public class CargoEditAction extends MyActionSupportEdit
 	private String novaFaixaNome;
 	
 	private boolean integraAC;
+	private boolean exibColabAdmitido;
+	private Boolean exibColabDesatualizado;
 	private boolean relatorioResumido;
 	private Date dataHistorico;
 	private Collection<Empresa> empresas;
@@ -145,7 +148,10 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String relatorioColaboradorCargo() throws Exception
 	{
-		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck);
+		if (!exibColabDesatualizado)
+			qtdMesesDesatualizacao = null;
+		
+		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck, exibColabAdmitido, qtdMesesDesatualizacao);
 		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Cargos", getEmpresaSistema(), "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico));
 		parametros.put("EXIBIRSALARIO", exibirSalario);
 		
@@ -666,12 +672,36 @@ public class CargoEditAction extends MyActionSupportEdit
 		this.exibirSalario = exibirSalario;
 	}
 
-	public Integer getQtdMesesAtualizacao() {
-		return qtdMesesAtualizacao;
+	public char getOpcaoFiltroAdmitidosOuDEsatualizados() {
+		return opcaoFiltroAdmitidosOuDEsatualizados;
 	}
 
-	public void setQtdMesesAtualizacao(Integer qtdMesesAtualizacao) {
-		this.qtdMesesAtualizacao = qtdMesesAtualizacao;
+	public void setOpcaoFiltroAdmitidosOuDEsatualizados(char opcaoFiltroAdmitidosOuDEsatualizados) {
+		this.opcaoFiltroAdmitidosOuDEsatualizados = opcaoFiltroAdmitidosOuDEsatualizados;
+	}
+
+	public boolean isExibColabAdmitido() {
+		return exibColabAdmitido;
+	}
+
+	public Boolean isExibColabDesatualizado() {
+		return exibColabDesatualizado;
+	}
+
+	public void setExibColabAdmitido(boolean exibColabAdmitido) {
+		this.exibColabAdmitido = exibColabAdmitido;
+	}
+
+	public void setExibColabDesatualizado(Boolean exibColabDesatualizado) {
+		this.exibColabDesatualizado = exibColabDesatualizado;
+	}
+
+	public Integer getQtdMesesDesatualizacao() {
+		return qtdMesesDesatualizacao;
+	}
+
+	public void setQtdMesesDesatualizacao(Integer qtdMesesDesatualizacao) {
+		this.qtdMesesDesatualizacao = qtdMesesDesatualizacao;
 	}
 
 }
