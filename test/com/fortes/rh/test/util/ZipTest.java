@@ -47,11 +47,15 @@ public class ZipTest extends TestCase
 	}
 
 	public void testIdentificaDiretorioDoArquivoOriginal(){
-		String path = "c:\\java\\eclipse\\arquivo.xml.fortesrh";
+		String path = ajustaBarrasDeAcordoComOS("c:\\java\\eclipse\\arquivo.xml.fortesrh");
 		String diretorioDoArquivo = zip.identificaDiretorioDoArquivoOriginal(path);
-		assertEquals("c:\\java\\eclipse", diretorioDoArquivo);
+		assertEquals(ajustaBarrasDeAcordoComOS("c:\\java\\eclipse"), diretorioDoArquivo);
 	}
 	
+	private String ajustaBarrasDeAcordoComOS(String path) {
+		return path.replace("\\", File.separator);
+	}
+
 	public void testIdentificaDiretorioDoArquivoOriginalNull()
 	{
 		String path = null;

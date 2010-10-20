@@ -3,11 +3,13 @@ package com.fortes.rh.web.dwr;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -154,8 +156,11 @@ public class ReajusteDWR
 
 	public String calculaSalarioHistorico(String tipoSalario, String faixaSalarialId, String indiceId, String quantidade, String salario, String data) throws Exception
 	{
-		DecimalFormat formatador = new DecimalFormat("#,##0.00");
-		DateFormat dateFormat = DateFormat.getDateInstance();
+//		DecimalFormat formatador = new DecimalFormat("#,##0.00");
+		DecimalFormat formatador = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt", "BR"));
+		formatador.applyPattern("#,##0.00");
+//		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		Date dataHistorico = dateFormat.parse(data);
 
 		if(faixaSalarialId.equals(""))

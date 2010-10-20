@@ -3,6 +3,7 @@ package com.fortes.rh.model.pesquisa;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -515,7 +516,8 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		if (performance == null)
 			return "0%";
 		
-	    DecimalFormat df = new DecimalFormat("0.##");
+	    DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt","BR"));//new DecimalFormat("0.##");
+	    df.applyPattern("0.##");
          
 		String performanceFmt = df.format((performance * 100)) + "%";
 		
