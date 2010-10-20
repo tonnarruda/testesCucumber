@@ -384,3 +384,8 @@ input[disabled]
 	border-right:2px solid #fff;
 	background:#fff;
 }
+
+#totalDeRegistrosEncontrados {
+	text-align: center;
+	padding-bottom: 12px;
+}

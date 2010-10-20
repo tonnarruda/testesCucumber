@@ -9,3 +9,6 @@ insert into papel values (nextval('papel_sequence'), 'ROLE_REL_ACOMP_RANKING_PER
  
 alter table parametrosdosistema add column codEmpresaSuporte character varying(10);--go
 alter table parametrosdosistema add column codClienteSuporte character varying(10);--go
+
+alter table colaborador add column dataatualizacao date;--go
+update colaborador set dataAtualizacao = '1900-01-01'; --.go
