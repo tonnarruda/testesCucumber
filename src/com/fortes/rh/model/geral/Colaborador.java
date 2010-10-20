@@ -1878,7 +1878,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		Double result = (performance * 100);
 		
 		NumberFormat formata = new DecimalFormat("#0.00");
-		return formata.format(result * 100).toString() + " %"; 
+		return formata.format(result).toString() + " %"; 
 	}
 
 	public String getTitulo() {

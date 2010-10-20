@@ -27,7 +27,7 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		boolean decisao = false;
 		
 		if(periodoExperiencias.size() > 0  )
-			rodapeRelatorioPeriodoExperiencia = "Periodos de Experiências "; 
+			rodapeRelatorioPeriodoExperiencia = "Períodos de Acompanhamento de Experiência "; 
 		
 		for (PeriodoExperiencia periodoExperiencia : periodoExperiencias) {
 		
