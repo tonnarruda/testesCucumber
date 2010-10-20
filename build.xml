@@ -118,10 +118,12 @@
 			<fileset dir="${build.dir}" includes="**/*/**" />
 		</delete>
 
-		<javac debug="on" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" failonerror="true">
+		<javac debug="on" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" failonerror="true"
+			source="1.5" target="1.5">
 			<classpath refid="project.classpath" />
 		</javac>
-		<javac debug="on" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${build.dir}" failonerror="true">
+		<javac debug="on" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${build.dir}" failonerror="true"
+			source="1.5" target="1.5">
 			<classpath refid="project.classpath" />
 		</javac>
 
