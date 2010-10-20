@@ -18,6 +18,12 @@ public class ZipTest extends TestCase
 	{
 		 zip = new Zip();
 	}
+	
+	@Override
+	protected void tearDown() throws Exception {
+		new File("file.txt").delete();
+		new File("file.fortesrh").delete();
+	}
 
 	public void testCompress() throws IOException
 	{
