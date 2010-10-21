@@ -2470,21 +2470,19 @@ UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=489 WHERE atualizaPape
 update parametrosdosistema set appversao = '1.1.31.20';--.go
 
 -- versao 1.1.32.21
-insert into papel values (490, 'ROLE_REL_ACOMPANHAMENTO_EXPERIENCIA', 'Periodo de Acompanhamento de Experiência',
- '/avaliacao/periodoExperiencia/prepareRelatorioAcopanhamentoExperiencia.action', 2, 't', 486);--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (490, 'ROLE_REL_ACOMPANHAMENTO_EXPERIENCIA', 'Periodo de Acompanhamento de Experiência', '/avaliacao/periodoExperiencia/prepareRelatorioAcopanhamentoExperiencia.action', 2, true, 486);--.go
 
-insert into papel values (491, 'ROLE_REL_ACOMP_RANKING_PERIODO_EXPERIENCIA', 'Ranking Performace Periodo de Experiência',
- '/avaliacao/periodoExperiencia/prepareRelatorioRankingPerformancePeriodoDeExperiencia.action', 3, 't',486);--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (491, 'ROLE_REL_ACOMP_RANKING_PERIODO_EXPERIENCIA', 'Ranking Performace Periodo de Experiência', '/avaliacao/periodoExperiencia/prepareRelatorioRankingPerformancePeriodoDeExperiencia.action', 3, true,486);--.go
 
 alter sequence papel_sequence restart with 492;--.go
 
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=490 WHERE atualizaPapeisIdsAPartirDe is null;--.go
 
-alter table parametrosdosistema add column codEmpresaSuporte character varying(10);--go
-alter table parametrosdosistema add column codClienteSuporte character varying(10);--go
+alter table parametrosdosistema add column codEmpresaSuporte character varying(10);--.go
+alter table parametrosdosistema add column codClienteSuporte character varying(10);--.go
 
-alter table colaborador add column dataatualizacao date;--go
-update colaborador set dataAtualizacao = '1900-01-01'; --.go
+alter table colaborador add column dataatualizacao date;--.go
+update colaborador set dataAtualizacao = '1900-01-01';--.go
 
 update parametrosdosistema set acversaowebservicecompativel = '1.0.1.40';--.go
 
