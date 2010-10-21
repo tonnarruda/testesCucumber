@@ -4,15 +4,20 @@ import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("deprecation")
 public class DateUtil
 {
+	private static final String DATA_VAZIA = "  /  /    ";
+
 	/**
 	 * Formata mês e ano baseado numa Date()
 	 *
@@ -374,17 +379,49 @@ public class DateUtil
 
 	public static Date montaDataByString(String dataStr)
 	{
-		if(dataStr == null || (dataStr != null && dataStr.trim().equals("")) || (dataStr != null && dataStr.equals("  /  /    ")))
-			return null;
-
-		String[] dataArray = dataStr.split("/");
-		Date data = new Date();
-
-		data.setDate(Integer.parseInt(dataArray[0]));
-		data.setMonth(Integer.parseInt(dataArray[1]) - 1);
-		data.setYear(Integer.parseInt(dataArray[2]) - 1900);
 		
-		return data;
+		boolean invalida = isDataInvalida(dataStr);
+		if (invalida)
+			return null;
+		
+		boolean erroDeDigitacao = possuiPossivelErroDeDigitacao(dataStr);
+		if (erroDeDigitacao)
+			throw new IllegalArgumentException("Data inválida.");
+		
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date result = sdf.parse(dataStr);
+			return result;
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("Data inválida.");
+		}
+		
+//		if(dataStr == null || (dataStr != null && dataStr.trim().equals("")) || (dataStr != null && dataStr.equals("  /  /    ")))
+//			return null;
+//
+//		String[] dataArray = dataStr.split("/");
+//		Date data = new Date();
+//
+//		data.setDate(Integer.parseInt(dataArray[0]));
+//		data.setMonth(Integer.parseInt(dataArray[1]) - 1);
+//		data.setYear(Integer.parseInt(dataArray[2]) - 1900);
+//		
+//		return data;
+	}
+
+	private static boolean possuiPossivelErroDeDigitacao(String dataStr) {
+		Pattern pattern = Pattern.compile("(\\d{2})/(\\d{2})/(\\d{4})");
+		Matcher matcher = pattern.matcher(dataStr);
+		return !matcher.matches();
+	}
+
+	private static boolean isDataInvalida(String dataStr) {
+		if(dataStr == null 
+				|| "".trim().equals(dataStr)
+					|| DATA_VAZIA.equals(dataStr)) {
+			return true;
+		}
+		return false;
 	}
 
 	public static Date setaUltimaHoraDoDia(Date data){
