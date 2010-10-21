@@ -679,23 +679,24 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
 		MockSpringUtil.mocks.put("turmaManager", turmaManager);
 		
-		turmaManager.expects(once()).method("findByFiltro").with(eq(new Date()), eq(new Date()), eq('T'), eq(empresaId)).will(returnValue(turmas));
+		Date hoje = new Date();
+		turmaManager.expects(once()).method("findByFiltro").with(eq(hoje), eq(hoje), eq('T'), eq(empresaId)).will(returnValue(turmas));
 		
 		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(true)).will(returnValue(colaboradorPresencas));
 		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(eq(turmaIds)).will(returnValue(turmas));
 		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds)).will(returnValue(colaboradores));
 	
 		// aprovado
-		assertEquals(1, colaboradorTurmaManager.countAprovados(new Date(), new Date(), empresaId, true).intValue());
+		assertEquals(1, colaboradorTurmaManager.countAprovados(hoje, hoje, empresaId, true).intValue());
 
 		// reprovado
-		turmaManager.expects(once()).method("findByFiltro").with(eq(new Date()), eq(new Date()), eq('T'), eq(empresaId)).will(returnValue(turmas));
+		turmaManager.expects(once()).method("findByFiltro").with(eq(hoje), eq(hoje), eq('T'), eq(empresaId)).will(returnValue(turmas));
 		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(true)).will(returnValue(colaboradorPresencas));
 		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(eq(turmaIds)).will(returnValue(turmas));
 		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds)).will(returnValue(colaboradores));
 		colaboradorManager.expects(once()).method("qtdColaboradoresByTurmas").with(eq(turmaIds)).will(returnValue(colaboradores.size()));
 		
-		assertEquals(0, colaboradorTurmaManager.countAprovados(new Date(), new Date(), empresaId, false).intValue());
+		assertEquals(0, colaboradorTurmaManager.countAprovados(hoje, hoje, empresaId, false).intValue());
 		
 	}
 	
