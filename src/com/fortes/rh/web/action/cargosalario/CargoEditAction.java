@@ -87,7 +87,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	private boolean integraAC;
 	private boolean exibColabAdmitido;
-	private Boolean exibColabDesatualizado;
+	private boolean exibColabDesatualizado ;
 	private boolean relatorioResumido;
 	private Date dataHistorico;
 	private Collection<Empresa> empresas;
@@ -684,7 +684,7 @@ public class CargoEditAction extends MyActionSupportEdit
 		return exibColabAdmitido;
 	}
 
-	public Boolean isExibColabDesatualizado() {
+	public boolean isExibColabDesatualizado() {
 		return exibColabDesatualizado;
 	}
 

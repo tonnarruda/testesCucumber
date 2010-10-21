@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.32.21" data="20/10/2010">
+		- Página Inicial: Opção para acessar o suporte da Fortes Informática via Chat.
+		- Relatório Colaborador por Cargo: Opção para exibir por cargo.
+		- Relatório Colaborador por Cargo: Filtro para exibir colaboradores com dados desatualizados.
+		- Avaliação de Desempenho: Novo Relatório de Ranking Performace Periodo de Experiência.
+		- Avaliação de Desempenho: Novo Relatório de Periodo de Acompanhamento de Experiência.
+		- Paginação: Totalizador com quantidade de registros.
+		- Relatorio de EPI com prazo a vencer: opção para filtrar por categoria de EPI.
+		- Relatorio de EPI com CA a vencer: opção para filtrar por categoria de EPI.
+	</Versao>
 	<Versao id="1.1.31.20" data="23/09/2010">
 		- Faixa Salarial: criado campo Descrição no AC Pessoal.
 		- Integração de cargo do AC Pessoal.

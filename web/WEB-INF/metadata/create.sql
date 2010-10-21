@@ -341,7 +341,8 @@ CREATE TABLE colaborador (
 	size bigint,
 	nomecontato character varying(30),
 	camposextras_id bigint,
-	solicitacao_id bigint
+	solicitacao_id bigint,
+	dataatualizacao date
 );
 ALTER TABLE colaborador ADD CONSTRAINT colaborador_pkey PRIMARY KEY (id);
 ALTER TABLE colaborador ADD CONSTRAINT colaborador_candidato_uk UNIQUE (candidato_id);
@@ -2072,7 +2073,9 @@ CREATE TABLE parametrosdosistema (
     diasLembretePeriodoExperiencia character varying(20),
     emaildosuportetecnico character varying(40),
     campoExtraColaborador boolean,
-    exibirAbaDocumentos boolean DEFAULT true
+    exibirAbaDocumentos boolean DEFAULT true,
+    codEmpresaSuporte character varying(10),
+    codClienteSuporte character varying(10)
 );
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_pkey PRIMARY KEY (id);
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_perfil_fk FOREIGN KEY (perfilpadrao_id) REFERENCES perfil(id);

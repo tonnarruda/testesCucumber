@@ -1,4 +1,4 @@
-﻿package com.fortes.rh.business.avaliacao;
+package com.fortes.rh.business.avaliacao;
 
 import java.util.Collection;
 

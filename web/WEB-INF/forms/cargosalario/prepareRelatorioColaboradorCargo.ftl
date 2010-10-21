@@ -102,14 +102,14 @@
 				<ul>
 					<@ww.checkbox label="" name="exibColabAdmitido" theme="simple"/> 
 					Exibir apenas colaboradores admitidos a mais de
-					<@ww.textfield theme="simple" name="qtdMeses" id="qtdMeses" cssStyle="width:30px; text-align:right;" maxLength="4"/> 
+					<@ww.textfield theme="simple" name="qtdMeses" id="qtdMeses" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/> 
 					meses considerando a data 
 					<@ww.select theme="simple" name="opcaoFiltro" list=r"#{'0':'Atual','1':'de Referência'}"/>
 					<br><br>
 					
 					<@ww.checkbox label="" name="exibColabDesatualizado" labelPosition="left" theme="simple"/>
 					Exibir apenas colaboradores com dados desatualizados a mais de
-					<@ww.textfield theme="simple" name="qtdMesesDesatualizacao" id="qtdMesesAtualizacao" cssStyle="width:30px; text-align:right;" maxLength="4" /> 
+					<@ww.textfield theme="simple" name="qtdMesesDesatualizacao" id="qtdMesesAtualizacao" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/> 
 					meses.  
 					
 				</ul>

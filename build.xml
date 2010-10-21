@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="FortesRH" basedir="." default="integrate">
+<project name="FortesRH" basedir=".." default="integrate">
 	
-	<property file="build.properties" />
+	<property file="${ant.project.name}/build.properties" />
 	
 	<property environment="env"/>
    	
@@ -19,6 +19,7 @@
 		</fileset>
 	</path>
     
+    <taskdef resource="svntask.properties" classpathref="project.classpath"/>
 	
 	<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
 		<classpath refid="project.classpath" />
