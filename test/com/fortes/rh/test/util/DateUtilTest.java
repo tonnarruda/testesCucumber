@@ -222,13 +222,13 @@ public class DateUtilTest extends TestCase
 		try
 		{
 			DateUtil.montaDataByString(" 2/ 2/   2");
+			fail("Deveria ter lançado uma exceção quando data inválida.");
 		}
 		catch (Exception e)
 		{
 			excep = e;
 		}
 
-		assertNotNull(excep);
 	}
 
 	public void testSetaUltimaHora(){
