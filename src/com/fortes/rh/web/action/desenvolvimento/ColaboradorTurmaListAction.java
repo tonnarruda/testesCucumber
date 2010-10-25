@@ -59,7 +59,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Curso curso;
 	private Colaborador colaborador;
 
-	private int qtdMesesSemCurso;
+	private int qtdMesesSemCurso = 0;
 
 	private Long dntId;
 	private Long areaFiltroId;

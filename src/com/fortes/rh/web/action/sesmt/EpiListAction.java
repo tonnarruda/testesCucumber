@@ -1,6 +1,5 @@
 package com.fortes.rh.web.action.sesmt;
 
-import java.awt.Checkbox;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -11,8 +10,6 @@ import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.RemoveCascadeException;
 import com.fortes.rh.model.sesmt.Epi;
-import com.fortes.rh.model.sesmt.TipoEPI;
-import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -92,7 +89,6 @@ public class EpiListAction extends MyActionSupportList
 	public String imprimirVencimentoCa() throws Exception
 	{
 		String titulo = "EPIs com CA a vencer até " + DateUtil.formataDate(venc, "dd/MM/yyyy");
-
 		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), "");
 		dataSource = epiManager.findByVencimentoCa(venc, getEmpresaSistema().getId(), tipoEPICheck);
 
@@ -176,4 +172,5 @@ public class EpiListAction extends MyActionSupportList
 	public void setTipoEPICheckList(Collection<CheckBox> tipoEPICheckList) {
 		this.tipoEPICheckList = tipoEPICheckList;
 	}
+
 }

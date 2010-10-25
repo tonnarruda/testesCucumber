@@ -49,8 +49,8 @@ public abstract class Menu
 					menu.append("<li style='float: right; line-height: 0.8em'>" +
 					"<a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=" + parametros.getCodEmpresaSuporte()
 					+ "&codCliente=" + parametros.getCodClienteSuporte()
-					+ "&token=sistema' /><img src='"
-					+ contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;' /> Suporte</a></li>\n");
+					+ "&token=sistema' target='_blank' /><img src='"
+					+ contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;' > Suporte</a></li>\n");
 
 		menu.append("</ul>\n\n");
 

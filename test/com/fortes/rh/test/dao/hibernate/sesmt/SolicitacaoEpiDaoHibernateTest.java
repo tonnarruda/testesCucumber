@@ -7,23 +7,34 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.dao.sesmt.EpiHistoricoDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
+import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.util.DateUtil;
@@ -35,8 +46,12 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 	EpiDao epiDao;
 	EpiHistoricoDao epiHistoricoDao;
 	ColaboradorDao colaboradorDao;
+	AreaOrganizacionalDao areaOrganizacionalDao;
 	CargoDao cargoDao;
 	EmpresaDao empresaDao;
+	TipoEPIDao tipoEPIDao;
+	EstabelecimentoDao estabelecimentoDao;
+	HistoricoColaboradorDao historicoColaboradorDao;
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
@@ -85,8 +100,15 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
 
+		TipoEPI tipoEPI = new TipoEPI();
+		tipoEPI.setId(1L);
+		tipoEPI.setEmpresa(empresa);
+		tipoEPI.setNome("teste");
+		tipoEPIDao.save(tipoEPI);
+    	
     	Epi epi = EpiFactory.getEntity();
     	epi.setEmpresa(empresa);
+    	epi.setTipoEPI(tipoEPI);
     	epiDao.save(epi);
 
 		EpiHistorico epiHistorico = new EpiHistorico();
@@ -99,6 +121,18 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		colaboradorDao.save(colaborador);
 		Cargo cargo = CargoFactory.getEntity();
 		cargoDao.save(cargo);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaboradorDao.save(historicoColaborador);
 
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
 		solicitacaoEpi.setData(dataSeisMesesAtras.getTime());
@@ -112,7 +146,11 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
 
-		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findVencimentoEpi(empresa.getId(), hoje, false, null);
+		Long[] tipoEPIIds = {tipoEPI.getId()};
+		Long[] areasIds = {areaOrganizacional.getId()};
+		Long[] estabelecimentoIds = {estabelecimento.getId()};
+		
+		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findVencimentoEpi(empresa.getId(), hoje, false, tipoEPIIds, areasIds, estabelecimentoIds);
 
 		assertEquals(1,colecao.size());
 	}
@@ -257,6 +295,22 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 	public void setSolicitacaoEpiItemDao(SolicitacaoEpiItemDao solicitacaoEpiItemDao)
 	{
 		this.solicitacaoEpiItemDao = solicitacaoEpiItemDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+
+	public void setTipoEPIDao(TipoEPIDao tipoEPIDao) {
+		this.tipoEPIDao = tipoEPIDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
+	}
+
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
+		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 
 }

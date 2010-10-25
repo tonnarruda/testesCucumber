@@ -19,6 +19,7 @@ import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
@@ -194,9 +195,9 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		Collection<SolicitacaoEpi> resultado = null;
 
-		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(eq(empresaId),eq(hoje), eq(false), ANYTHING).will(returnValue(colecao));
+		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[]{eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
 
-		resultado = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false, null );
+		resultado = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false, null, null, null );
 
 		assertEquals(1, resultado.size());
 
@@ -276,12 +277,12 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
 
-		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(eq(empresaId),eq(hoje), eq(false), ANYTHING).will(returnValue(colecao));
+		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[] {eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
 		Exception exception = null;
 
 		try
 		{
-			colecao = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false, null);
+			colecao = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false, null, null, null);
 		}
 		catch (ColecaoVaziaException e)
 		{

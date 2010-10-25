@@ -70,8 +70,8 @@
 				<img src="<@ww.url includeParams="none" value="/imgs/ChatFortes.gif" theme="simple"/>">	
 				Configuração para Suporte:
 			</h2>
-			<@ww.textfield label="Codigo da Empresa" name="parametrosDoSistema.codClienteSuporte" id="codClienteSuporte" size="18" maxLength="10" required="false" liClass="liLeft"/>
-			<@ww.textfield label="Codigo do Cliente" name="parametrosDoSistema.codEmpresaSuporte" id="codEmpresaSuporte" size="18" maxLength="10" required="false"/>
+			<@ww.textfield label="Codigo da Empresa" name="parametrosDoSistema.codEmpresaSuporte" id="codEmpresaSuporte" size="18" maxLength="10" required="false" liClass="liLeft"/>
+			<@ww.textfield label="Codigo do Cliente" name="parametrosDoSistema.codClienteSuporte" id="codClienteSuporte" size="18" maxLength="10" required="false"/>
 		</div>
 	</div>
 	<br/>

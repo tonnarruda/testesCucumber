@@ -16,6 +16,6 @@ public interface SolicitacaoEpiManager extends GenericManager<SolicitacaoEpi>
 	void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado) throws Exception;
 	void update(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado);
 	void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado) throws Exception;
-	Collection<SolicitacaoEpi> findRelatorioVencimentoEpi(Long empresaId, Date vencimento, char agruparPor, boolean exibirVencimentoCA, String[] tipoEPICheck) throws ColecaoVaziaException;
+	Collection<SolicitacaoEpi> findRelatorioVencimentoEpi(Long empresaId, Date vencimento, char agruparPor, boolean exibirVencimentoCA, String[] tipoEPICheck, String[] areasCheck, String[] estabelecimentoCheckList) throws ColecaoVaziaException;
 	public Collection<SolicitacaoEpi> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck) throws ColecaoVaziaException;
 }
