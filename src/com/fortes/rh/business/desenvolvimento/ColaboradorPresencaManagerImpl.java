@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
@@ -84,7 +85,9 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		
 		Double resultado = qtdPresenca.doubleValue() / qtdDias.doubleValue();
 		
-		NumberFormat formata = new DecimalFormat("#0.00");
+//		NumberFormat formata = new DecimalFormat("#0.00");
+		DecimalFormat formata = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt", "BR"));
+		formata.applyPattern("#0.00");
 		return formata.format(resultado * 100);
 	}
 

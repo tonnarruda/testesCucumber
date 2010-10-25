@@ -2,6 +2,20 @@ package com.fortes.rh.test;
 
 import junit.framework.TestSuite;
 
+import com.fortes.rh.config.backup.BackupCleanerJobTest;
+import com.fortes.rh.config.backup.BackupJobTest;
+import com.fortes.rh.config.backup.BackupServiceImplTest;
+import com.fortes.rh.config.backup.NotificadoDeBackupViaEmailImplTest;
+import com.fortes.rh.config.backup.RunAntScriptTest;
+import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
+import com.fortes.rh.security.spring.aop.AuditoriaGeralAdviceTest;
+import com.fortes.rh.security.spring.aop.AuditoriaPointcutTest;
+import com.fortes.rh.security.spring.aop.GeraDadosAuditadosTest;
+import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidadeTest;
+import com.fortes.rh.security.spring.aop.callback.crud.CrudAuditorCallbackImplTest;
+import com.fortes.rh.security.spring.aop.callback.crud.InsertAuditorCallbackImplTest;
+import com.fortes.rh.security.spring.aop.callback.crud.RemoveAuditorCallbackImplTest;
+import com.fortes.rh.security.spring.aop.callback.crud.UpdateAuditorCallbackImplTest;
 import com.fortes.rh.test.business.acesso.PapelManagerTest;
 import com.fortes.rh.test.business.acesso.PerfilManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
@@ -1086,6 +1100,24 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ClienteDaoHibernateTest.class);
         suite.addTestSuite(ClienteManagerTest.class);
         suite.addTestSuite(ClienteEditActionTest.class);
+        
+        // BACKUP e Ant Script 
+        suite.addTestSuite(BackupCleanerJobTest.class);
+        suite.addTestSuite(BackupJobTest.class);
+        suite.addTestSuite(BackupServiceImplTest.class);
+        suite.addTestSuite(NotificadoDeBackupViaEmailImplTest.class);
+        suite.addTestSuite(RunAntScriptTest.class);
+        
+        // AUDITORIA
+        suite.addTestSuite(AtributosDaAuditoriaTest.class);
+        suite.addTestSuite(AuditoriaGeralAdviceTest.class);
+        suite.addTestSuite(AuditoriaPointcutTest.class);
+        suite.addTestSuite(GeraDadosAuditadosTest.class);
+        suite.addTestSuite(ProcuraChaveNaEntidadeTest.class);
+        suite.addTestSuite(CrudAuditorCallbackImplTest.class);
+        suite.addTestSuite(InsertAuditorCallbackImplTest.class);
+        suite.addTestSuite(RemoveAuditorCallbackImplTest.class);
+        suite.addTestSuite(UpdateAuditorCallbackImplTest.class);
 
         return suite;
     }

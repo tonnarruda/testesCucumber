@@ -18,6 +18,12 @@ public class ZipTest extends TestCase
 	{
 		 zip = new Zip();
 	}
+	
+	@Override
+	protected void tearDown() throws Exception {
+		new File("file.txt").delete();
+		new File("file.fortesrh").delete();
+	}
 
 	public void testCompress() throws IOException
 	{
@@ -47,11 +53,15 @@ public class ZipTest extends TestCase
 	}
 
 	public void testIdentificaDiretorioDoArquivoOriginal(){
-		String path = "c:\\java\\eclipse\\arquivo.xml.fortesrh";
+		String path = ajustaBarrasDeAcordoComOS("c:\\java\\eclipse\\arquivo.xml.fortesrh");
 		String diretorioDoArquivo = zip.identificaDiretorioDoArquivoOriginal(path);
-		assertEquals("c:\\java\\eclipse", diretorioDoArquivo);
+		assertEquals(ajustaBarrasDeAcordoComOS("c:\\java\\eclipse"), diretorioDoArquivo);
 	}
 	
+	private String ajustaBarrasDeAcordoComOS(String path) {
+		return path.replace("\\", File.separator);
+	}
+
 	public void testIdentificaDiretorioDoArquivoOriginalNull()
 	{
 		String path = null;

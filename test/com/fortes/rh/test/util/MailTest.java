@@ -6,6 +6,7 @@ import javax.mail.Transport;
 
 import mockit.Mockit;
 
+import org.apache.commons.lang.SystemUtils;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.mail.SimpleMailMessage;
@@ -46,6 +47,9 @@ public class MailTest extends MockObjectTestCase
 
 	public void testSend() throws Exception
 	{
+		
+		if (!SystemUtils.IS_OS_WINDOWS)
+			return;
 
 		ParametrosDoSistema param = new ParametrosDoSistema();
 		param.setEmailPass("x@x.com");
@@ -88,6 +92,9 @@ public class MailTest extends MockObjectTestCase
 
 	public void testSendComAnexo() throws Exception
 	{
+		
+		if (!SystemUtils.IS_OS_WINDOWS)
+			return;
 
 		ParametrosDoSistema param = new ParametrosDoSistema();
 		param.setEmailPass("x@x.com");
