@@ -14,14 +14,14 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras;
-	private int[] ordens = {1,2,3,4,5,6,7,8,9};
+	private int[] ordens = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,16};
 	private boolean habilitaCampoExtra;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 		
 	public String prepareUpdate() throws Exception
 	{
 		habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
-		configuracaoCampoExtras = configuracaoCampoExtraManager.findAll(new String[]{"id"});
+		configuracaoCampoExtras = configuracaoCampoExtraManager.findAll(new String[]{"posicao"});
 		return Action.SUCCESS;
 	}
 

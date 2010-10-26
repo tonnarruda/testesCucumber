@@ -124,6 +124,41 @@
 			<br>
 			</#if>
 			
+			<#if colaborador.camposExtras.texto4?exists && configuracaoCampoExtras[i].nome == "texto4">
+			${colaborador.camposExtras.texto4}
+			<br>
+			</#if>
+			
+			<#if colaborador.camposExtras.texto5?exists && configuracaoCampoExtras[i].nome == "texto5">
+			${colaborador.camposExtras.texto5}
+			<br>
+			</#if>
+			
+			<#if colaborador.camposExtras.texto6?exists && configuracaoCampoExtras[i].nome == "texto6">
+			${colaborador.camposExtras.texto6}
+			<br>
+			</#if>
+			
+			<#if colaborador.camposExtras.texto7?exists && configuracaoCampoExtras[i].nome == "texto7">
+			${colaborador.camposExtras.texto7}
+			<br>
+			</#if>
+			
+			<#if colaborador.camposExtras.texto8?exists && configuracaoCampoExtras[i].nome == "texto8">
+			${colaborador.camposExtras.texto8}
+			<br>
+			</#if>
+			
+			<#if colaborador.camposExtras.texto9?exists && configuracaoCampoExtras[i].nome == "texto9">
+			${colaborador.camposExtras.texto9}
+			<br>
+			</#if>
+			
+			<#if colaborador.camposExtras.texto10?exists && configuracaoCampoExtras[i].nome == "texto10">
+			${colaborador.camposExtras.texto10}
+			<br>
+			</#if>
+			
 			<#if colaborador.camposExtras.data1?exists && configuracaoCampoExtras[i].nome == "data1">
 			${colaborador.camposExtras.data1}
 			<br>

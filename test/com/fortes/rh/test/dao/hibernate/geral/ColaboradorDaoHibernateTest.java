@@ -1698,6 +1698,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		camposExtras.setTexto1("texto1");
 		camposExtras.setTexto2("texto2");
 		camposExtras.setTexto3("texto3");
+		camposExtras.setTexto4("texto4");
+		camposExtras.setTexto5("texto5");
+		camposExtras.setTexto6("texto6");
+		camposExtras.setTexto7("texto7");
+		camposExtras.setTexto8("texto8");
+		camposExtras.setTexto9("texto9");
+		camposExtras.setTexto10("texto10");
 		
 		Date date1 = DateUtil.criarDataMesAno(1, 1, 1000);
 		Date date2 = DateUtil.criarDataMesAno(2, 2, 2000);

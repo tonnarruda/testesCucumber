@@ -115,6 +115,7 @@
 					<@ww.hidden name="configuracaoCampoExtras[${i}].descricao" />				
 					<@ww.hidden name="configuracaoCampoExtras[${i}].nome" />				
 					<@ww.hidden name="configuracaoCampoExtras[${i}].tipo" />				
+					<@ww.hidden name="configuracaoCampoExtras[${i}].posicao" />				
 					<#assign i = i+1 />
 				</@display.column>
 				
