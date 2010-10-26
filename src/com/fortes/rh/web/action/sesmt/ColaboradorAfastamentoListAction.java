@@ -26,6 +26,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private Collection<ColaboradorAfastamento> colaboradorAfastamentos = null;
 	private ColaboradorAfastamento colaboradorAfastamento;
 	private AfastamentoManager afastamentoManager;
+	private char afastadoPeloINSS = 'T';
 
 	private Collection<Afastamento> afastamentos;
 	private String nomeBusca;
@@ -41,7 +42,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			return SUCCESS;
 
 		setTotalSize(colaboradorAfastamentoManager.getCount(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento));
-		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento, "DESC", false);
+		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento, "DESC", false, 'T');
 	
 		afastamentos = afastamentoManager.findAll();
 
@@ -88,7 +89,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			if (!validaPeriodo())
 				return INPUT;
 			
-			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento, ordenaColaboradorPorNome);
+			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento, ordenaColaboradorPorNome, afastadoPeloINSS);
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
 		}
 		catch (ColecaoVaziaException e)
@@ -188,5 +189,14 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	public void setOrdenaColaboradorPorNome(boolean ordenaColaboradorPorNome) {
 		this.ordenaColaboradorPorNome = ordenaColaboradorPorNome;
 	}
+
+	public char getAfastadoPeloINSS() {
+		return afastadoPeloINSS;
+	}
+
+	public void setAfastadoPeloINSS(char afastadoPeloINSS) {
+		this.afastadoPeloINSS = afastadoPeloINSS;
+	}
+
 
 }

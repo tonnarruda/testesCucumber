@@ -29,13 +29,13 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 {
 	public Integer getCount(Long empresaId, Long afastamentoId, String nomeBusca, Long[] estabelecimentoIds, Date inicio, Date fim)
 	{
-		Query query = montaConsultaFind(true, "", empresaId, inicio, fim, nomeBusca, estabelecimentoIds, afastamentoId, false);
+		Query query = montaConsultaFind(true, "", empresaId, inicio, fim, nomeBusca, estabelecimentoIds, afastamentoId, false, 'T');
 		return (Integer)query.uniqueResult();
 	}
 
-	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, Long afastamentoId, String nomeBusca, Long[] estabelecimentoIds, Date inicio, Date fim, String ascOuDesc, boolean ordenaColaboradorPorNome)
+	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, Long afastamentoId, String nomeBusca, Long[] estabelecimentoIds, Date inicio, Date fim, String ascOuDesc, boolean ordenaColaboradorPorNome, char afastadoPeloINSS)
 	{
-		Query query = montaConsultaFind(false, ascOuDesc, empresaId, inicio, fim, nomeBusca, estabelecimentoIds, afastamentoId, ordenaColaboradorPorNome);
+		Query query = montaConsultaFind(false, ascOuDesc, empresaId, inicio, fim, nomeBusca, estabelecimentoIds, afastamentoId, ordenaColaboradorPorNome, afastadoPeloINSS);
 
 		if(pagingSize != 0)
         {
@@ -46,7 +46,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		return query.list();
 	}
 
-	private Query montaConsultaFind(boolean isCount, String ascOuDesc, Long empresaId, Date inicio, Date fim, String nomeBusca, Long[] estabelecimentoIds, Long afastamentoId, boolean ordenaColaboradorPorNome)
+	private Query montaConsultaFind(boolean isCount, String ascOuDesc, Long empresaId, Date inicio, Date fim, String nomeBusca, Long[] estabelecimentoIds, Long afastamentoId, boolean ordenaColaboradorPorNome, char afastadoPeloINSS)
 	{
 		StringBuilder hql = null;
 
@@ -73,6 +73,12 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 
 		if (estabelecimentoIds.length > 0)
 			hql.append("and es.id in (:estabelecimentoIds) ");
+		
+		if (afastadoPeloINSS == 'A')
+			hql.append("and a.inss = true ");
+
+		if (afastadoPeloINSS == 'N')
+			hql.append("and a.inss = false ");
 
 		hql.append("and hc.data = ( ");
 		hql.append("select max(hc2.data) " );
