@@ -19,5 +19,8 @@ public interface ExameSolicitacaoExameManager extends GenericManager<ExameSolici
 	public Collection<ExameSolicitacaoExame> findBySolicitacaoExame(Long solicitacaoExameId);
 
 	public boolean verificaExisteResultado(Collection<ExameSolicitacaoExame> exameSolicitacaoExames);
-
+	
+	public ExameSolicitacaoExame findDataSolicitacaoExame(Long colaboradorId, Long candidatoId, Long exameId);
+	
+	public ExameSolicitacaoExame findIdColaboradorOUCandidato(Long solicitacaoExameId, Long exameId);
 }
