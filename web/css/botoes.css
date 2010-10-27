@@ -582,6 +582,7 @@
 .btnSugerirReunioesOrdinarias,
 .btnRelatorioPorCriterio,
 .btnRelatorioPorAvaliador,
+.btnListaDeInspecaoExtintores,
 .btnListaFrequenciaVotacao
 {
 	border: 0;
@@ -666,3 +667,11 @@
 {
 	background-color: #E9E9E9 !important;
 }
+
+.btnListaDeInspecaoExtintores
+{
+	background-image:url(../imgs/btnListaDeInspecaoDeExtintores.gif);
+	width: 280px !important;
+}
+
+

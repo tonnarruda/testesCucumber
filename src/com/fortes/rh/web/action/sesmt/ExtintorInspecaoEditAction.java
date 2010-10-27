@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoItemManager;
@@ -11,7 +12,10 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
 import com.fortes.rh.model.sesmt.ExtintorInspecaoItem;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.opensymphony.xwork.Action;
 
 public class ExtintorInspecaoEditAction extends MyActionSupportList
 {
@@ -20,6 +24,7 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 	private ExtintorInspecaoManager extintorInspecaoManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private ExtintorManager extintorManager;
+	private Extintor extintor;
 
 	private ExtintorInspecao extintorInspecao;
 	private Estabelecimento estabelecimento;
@@ -28,9 +33,11 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 	private Collection<Extintor> extintors;
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<ExtintorInspecaoItem> extintorInspecaoItems;
-
+	private Map<String, Object> parametros;
+	
 	private String[] itemChecks;
-
+	private char regularidade; 
+	
 	private String empresasResponsaveis;
 
 	private ExtintorInspecaoItemManager extintorInspecaoItemManager;
@@ -111,15 +118,15 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 		}
 	}
 
-	public String list() throws Exception
+	public String list() 
 	{
 		if (extintorId != null && extintorId == -1L)
 			extintorId = null;
-
-		setTotalSize(extintorInspecaoManager.getCount(getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim));
-		extintorInspecaos = extintorInspecaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim);
+		
+		setTotalSize(extintorInspecaoManager.getCount(getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, regularidade));
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-
+		extintorInspecaos = extintorInspecaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, regularidade);
+	
 		return SUCCESS;
 	}
 
@@ -129,6 +136,64 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 
 		return SUCCESS;
 	}
+	
+	public String imprimirListaInspecaoDeExtintores() {
+
+		try {
+		
+			list();
+
+			if(extintorInspecaos.isEmpty()){
+				throw new Exception ("Não existe informações com os filtros selecionados para geração do relatório");
+			}
+						
+			String nomeEstabelecimento = "Todos";
+			String nomeExtintor = "Todos";
+			String nomeRegularidade = "Todos";
+			String periodo = "";
+			
+			if(estabelecimentoId != null){
+				estabelecimento = estabelecimentoManager.findById(estabelecimentoId);
+				nomeEstabelecimento = estabelecimento.getNome();
+			}
+				
+			if(extintorId != null){
+				extintor = extintorManager.findById(extintorId);
+				nomeExtintor = extintor.getDescricao();
+			}
+			
+			if(regularidade == '1'){
+				nomeRegularidade = "Regular";
+			}
+			if(regularidade == '2'){
+				nomeRegularidade = "Irregular";
+			}
+		
+			if (inicio != null && fim != null){
+				periodo = "Período: " + DateUtil.formataDiaMesAno(inicio) + " á " + DateUtil.formataDiaMesAno(fim);
+			}
+						
+			String filtro = "Estabelecimento: " + nomeEstabelecimento +
+			"\n" + "Extintor: " + nomeExtintor +
+			"\n" + "Regularidade: " + nomeRegularidade + 
+			"\n" + periodo;
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Inspeção de Extintores", getEmpresaSistema(), filtro);
+			
+		}
+		
+		catch (Exception e)
+			{
+				addActionMessage(e.getMessage());
+				e.printStackTrace();
+				list();
+				return Action.INPUT;
+			}
+		
+		return Action.SUCCESS;
+
+	}
+
 
 	public ExtintorInspecao getExtintorInspecao()
 	{
@@ -245,4 +310,25 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 	{
 		return empresasResponsaveis;
 	}
+
+	public char getRegularidade() {
+		return regularidade;
+	}
+
+	public void setRegularidade(char regularidade) {
+		this.regularidade = regularidade;
+	}
+
+	public Extintor getExtintor() {
+		return extintor;
+	}
+
+	public void setExtintor(Extintor extintor) {
+		this.extintor = extintor;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
+	}
+
 }

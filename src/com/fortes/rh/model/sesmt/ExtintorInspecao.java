@@ -23,6 +23,28 @@ import com.fortes.model.AbstractModel;
 @SequenceGenerator(name="sequence", sequenceName="extintorinspecao_sequence", allocationSize=1)
 public class ExtintorInspecao extends AbstractModel implements Serializable
 {
+	@Temporal(DATE)
+	private Date data;
+	@Transient
+	private Date vencimento;
+
+	@Column(length=50)
+	private String empresaResponsavel;
+
+	@Lob
+	private String observacao;
+
+	@OneToOne(fetch=LAZY)
+	private Extintor extintor;
+
+	@Transient
+	private String tipoDeRegularidade = "Regular";
+	
+
+	@ManyToMany(fetch=LAZY, targetEntity=ExtintorInspecaoItem.class)
+	private Collection<ExtintorInspecaoItem> itens;
+
+	
 	public ExtintorInspecao(Long id, Date data, Date vencimento, String localizacao, Integer numeroCilindro, String tipo)
 	{
 		super();
@@ -42,24 +64,6 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 	{
 		super();
 	}
-
-	@Temporal(DATE)
-	private Date data;
-	@Transient
-	private Date vencimento;
-
-	@Column(length=50)
-	private String empresaResponsavel;
-
-	@Lob
-	private String observacao;
-
-	@OneToOne(fetch=LAZY)
-	private Extintor extintor;
-
-	@ManyToMany(fetch=LAZY, targetEntity=ExtintorInspecaoItem.class)
-	private Collection<ExtintorInspecaoItem> itens;
-
 	
 	public void setProjectionExtintorLocalizacao(String extintorLocalizacao)
 	{
@@ -126,5 +130,13 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 	public void setVencimento(Date vencimento)
 	{
 		this.vencimento = vencimento;
+	}
+
+	public String getTipoDeRegularidade() {
+		return tipoDeRegularidade;
+	}
+
+	public void setTipoDeRegularidade(String tipoDeRegularidade) {
+		this.tipoDeRegularidade = tipoDeRegularidade;
 	}
 }

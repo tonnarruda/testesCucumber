@@ -18,9 +18,9 @@ import com.fortes.rh.model.sesmt.ExtintorInspecao;
 @SuppressWarnings("unchecked")
 public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorInspecao> implements ExtintorInspecaoDao
 {
-	public Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim)
+	public Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade)
 	{
-		Criteria criteria = montaConsultaFind(false, empresaId, estabelecimentoId, extintorId, inicio, fim);
+		Criteria criteria = montaConsultaFind(false, empresaId, estabelecimentoId, extintorId, inicio, fim, regularidade);
 
 		if(pagingSize != 0)
         {
@@ -31,14 +31,14 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 		return criteria.list();
 	}
 
-	public Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim)
+	public Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade)
 	{
-		Criteria criteria = montaConsultaFind(true, empresaId, estabelecimentoId, extintorId, inicio, fim);
+		Criteria criteria = montaConsultaFind(true, empresaId, estabelecimentoId, extintorId, inicio, fim, regularidade);
 
 		return (Integer)criteria.uniqueResult();
 	}
 
-	private Criteria montaConsultaFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim)
+	private Criteria montaConsultaFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "inspecao");
 		criteria.createCriteria("inspecao.extintor", "extintor");
@@ -67,6 +67,16 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 				criteria.add(Expression.eq("data", inicio));
 		}
 
+		if(regularidade == '1') {
+			criteria.add(Expression.isEmpty("itens"));
+		}
+		
+		if(regularidade == '2') {
+			criteria.add(Expression.isNotEmpty("itens"));
+		}
+		
+		//criteria.add(Expression.eq("inspecao.", extintorId));
+						
 		return criteria;
 	}
 

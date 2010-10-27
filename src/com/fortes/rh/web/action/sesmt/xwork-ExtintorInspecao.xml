@@ -4,9 +4,7 @@
 <xwork>
 	<package name="extintorInspecao" extends="default" namespace="/sesmt/extintorInspecao">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction" method="list">
-	    	<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">estabelecimentoId,extintorId,inicio,fim</param>
-	    	</interceptor-ref>	
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorInspecaoList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction" method="delete">
@@ -32,11 +30,23 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorInspecaoEdit.ftl</result>
 		    <result name="invalid.token" type="redirect">list.action</result>
 		</action>
+		
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorInspecaoEdit.ftl</result>
 		    <result name="invalid.token" type="redirect">list.action</result>
 		</action>
+		
+		<action name="imprimirListaInspecaoDeExtintores" class="com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction" method="imprimirListaInspecaoDeExtintores">
+			<result name="success" type="jasper">
+				<param name="dataSource">extintorInspecaos</param>
+				<param name="location">WEB-INF/report/lista_inspecao_extintores.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">lista_inspecao_extintores.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorInspecaoList.ftl</result>
+		</action>
+		
 	</package>
 </xwork>
