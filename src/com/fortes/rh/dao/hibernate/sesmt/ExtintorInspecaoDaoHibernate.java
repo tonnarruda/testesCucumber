@@ -42,7 +42,8 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "inspecao");
 		criteria.createCriteria("inspecao.extintor", "extintor");
-
+		criteria.createCriteria("inspecao.itens", "itens");
+		
 		if (isCount)
 			criteria.setProjection(Projections.rowCount());
 		else
@@ -75,7 +76,7 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 			criteria.add(Expression.isNotEmpty("itens"));
 		}
 		
-		//criteria.add(Expression.eq("inspecao.", extintorId));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 						
 		return criteria;
 	}

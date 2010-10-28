@@ -38,7 +38,7 @@ public class ExtintorInspecaoManagerTest extends MockObjectTestCase
 	{
 		extintorInspecaoDao.expects(once()).method("getCount").will(returnValue(1));
 		assertEquals(Integer.valueOf(1),
-				extintorInspecaoManager.getCount(empresaId, estabelecimentoId, extintorId, inicio, fim));
+				extintorInspecaoManager.getCount(empresaId, estabelecimentoId, extintorId, inicio, fim, '0'));
 	}
 
 	public void testFindAllSelect()
@@ -46,8 +46,8 @@ public class ExtintorInspecaoManagerTest extends MockObjectTestCase
 		Collection<ExtintorInspecao> colecao = new ArrayList<ExtintorInspecao>();
 		colecao.add(ExtintorInspecaoFactory.getEntity(1L));
 
-		extintorInspecaoDao.expects(once()).method("findAllSelect").will(returnValue(colecao ));
-		assertEquals(colecao, extintorInspecaoManager.findAllSelect(0, 0, empresaId, estabelecimentoId, extintorId, inicio, fim));
+		extintorInspecaoDao.expects(once()).method("findAllSelect").will(returnValue(colecao));
+		assertEquals(colecao, extintorInspecaoManager.findAllSelect(0, 0, empresaId, estabelecimentoId, extintorId, inicio, fim, '0'));
 	}
 
 	public void testSaveOrUpdate() throws Exception

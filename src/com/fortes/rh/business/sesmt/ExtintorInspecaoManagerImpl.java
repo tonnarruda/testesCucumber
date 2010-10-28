@@ -3,6 +3,7 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
@@ -21,7 +22,22 @@ public class ExtintorInspecaoManagerImpl extends GenericManagerImpl<ExtintorInsp
 			if(consultaExtintorInpecao != null && consultaExtintorInspecao.getItens() != null && !consultaExtintorInspecao.getItens().isEmpty())
 				consultaExtintorInspecao.setTipoDeRegularidade("Irregular");
 		}
+		
+		for (ExtintorInspecao extintorInspecao : consultaExtintorInpecao) 
+		{
+			String extintorInspecaoItemsString = "";
 
+			if (extintorInspecao.getItens()!=null)
+			{
+			Collection<ExtintorInspecaoItem> extintorInspecaoItems = extintorInspecao.getItens();
+			
+				for (ExtintorInspecaoItem extintorInspecaoItem : extintorInspecaoItems) 
+					extintorInspecaoItemsString += extintorInspecaoItem.getDescricao() + " \n";
+
+			}
+			extintorInspecao.setItensRelatorio(extintorInspecaoItemsString);
+		}
+		
 		return consultaExtintorInpecao;
 	}
 

@@ -1,10 +1,16 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+
 <html>
 <head>
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
+		
+		.Irregular {
+		color: red !important;
+		}
+		
 	</style>
 	<title>Extintores - Inspeção</title>
 
@@ -20,6 +26,24 @@
 
 	<script type="text/javascript">
 
+
+		<#if extintorId?exists>
+		  var extintor = "${extintorId}"
+		</#if>
+
+		var marcarExtintor = function() {
+			jQuery("#extintor option").each(function(i, item){
+				 if(typeof extintor != "undefined" && item.value == extintor){
+				   jQuery(item).attr("selected",true);
+				 }
+			})
+		}
+		
+		var verificarEstabelecimento = function() {
+			var estabelecimento = jQuery("#estabelecimento").val();
+			if(estabelecimento != "") populaExtintores();
+		};
+
 		function populaExtintores()
 	    {
 	      var estabelecimentoId = document.getElementById("estabelecimento").value;
@@ -32,9 +56,13 @@
 	    {
 	      DWRUtil.removeAllOptions("extintor");
 	      DWRUtil.addOptions("extintor", data);
+	      marcarExtintor();
 	    }
 	    
 		jQuery(document).ready(function(){
+		
+			verificarEstabelecimento();
+		
 		    jQuery("#btnListaDeInspecaoExtintores").click(function(){
 			    var estabelecimento = jQuery("#estabelecimento").val();
 			    var extintor = jQuery("#extintor").val();
@@ -75,10 +103,10 @@
 	
 </head>
 <body>
-
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	<#include "../util/topFiltro.ftl" />
+	
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
 
 		<@ww.select label="Estabelecimento" id="estabelecimento" name="estabelecimentoId" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Todos" headerKey="" onchange="javascript:populaExtintores();" cssStyle="width:240px;"/>
@@ -90,26 +118,30 @@
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="fim" id="fim" value="${dateFim}" cssClass="mascaraData" />
 
-
 		<@ww.hidden id="pagina" name="page"/>
 		<input type="submit" value="" onclick="document.getElementById('pagina').value = 1;" class="btnPesquisar grayBGE" />
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br/>
+	
+	<div id="legendas" align="right">
+		&nbsp;&nbsp;<span style='background-color: red;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Irregular
+	</div>
+	<br/>
 
 	<@display.table name="extintorInspecaos" id="extintorInspecao" class="dados">
+		
 		<@display.column title="Ações" class="acao">
 			<a href="prepareUpdate.action?extintorInspecao.id=${extintorInspecao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?extintorInspecao.id=${extintorInspecao.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		
-		<@display.column property="data" title="Data da Inspeção" format="{0,date,dd/MM/yyyy}" style="width:100px;"/>
-		<@display.column property="extintor.descricao" title="Extintor" style="width:280px;"/>
-		<@display.column property="extintor.localizacao" title="Localização" style="width:280px;"/>
-		<@display.column property="extintor.numeroCilindro" title="Cilindro" style="width:100px;"/>
-		<@display.column property="extintor.tipoDicAbreviado" title="Tipo" style="width:60px;"/>
-		<@display.column property="tipoDeRegularidade" title="Regularidade" style="width:100px;"/>
-		
+		<@display.column property="data" title="Data da Inspeção" format="{0,date,dd/MM/yyyy}" style="width:100px;" class="${extintorInspecao.tipoDeRegularidade}"/>
+		<@display.column property="extintor.descricao" title="Extintor" style="width:280px;" class="${extintorInspecao.tipoDeRegularidade}"/>
+		<@display.column property="extintor.localizacao" title="Localização" style="width:280px;" class="${extintorInspecao.tipoDeRegularidade}"/>
+		<@display.column property="extintor.numeroCilindro" title="Cilindro" style="width:100px;" class="${extintorInspecao.tipoDeRegularidade}"/>
+		<@display.column property="extintor.tipoDicAbreviado" title="Tipo" style="width:60px;" class="${extintorInspecao.tipoDeRegularidade}"/>
+				
 	</@display.table>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
@@ -119,10 +151,6 @@
 		
 		<button class="btnListaDeInspecaoExtintores" id="btnListaDeInspecaoExtintores" ></button>
 	</div>
-	
-	
-		
-	
 	
 </body>
 </html>

@@ -39,6 +39,8 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 
 	@Transient
 	private String tipoDeRegularidade = "Regular";
+	@Transient
+	private String itensRelatorio = "";
 	
 
 	@ManyToMany(fetch=LAZY, targetEntity=ExtintorInspecaoItem.class)
@@ -138,5 +140,13 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 
 	public void setTipoDeRegularidade(String tipoDeRegularidade) {
 		this.tipoDeRegularidade = tipoDeRegularidade;
+	}
+
+	public String getItensRelatorio() {
+		return itensRelatorio;
+	}
+
+	public void setItensRelatorio(String itensRelatorio) {
+		this.itensRelatorio = itensRelatorio;
 	}
 }

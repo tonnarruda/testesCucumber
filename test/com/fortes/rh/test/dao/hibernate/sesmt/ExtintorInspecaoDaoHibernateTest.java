@@ -1,18 +1,23 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+
+import org.hibernate.mapping.Array;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.sesmt.ExtintorDao;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
+import com.fortes.rh.dao.sesmt.ExtintorInspecaoItemDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
+import com.fortes.rh.model.sesmt.ExtintorInspecaoItem;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
@@ -23,6 +28,7 @@ import com.fortes.rh.util.DateUtil;
 public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<ExtintorInspecao>
 {
 	private ExtintorInspecaoDao extintorInspecaoDao;
+	private ExtintorInspecaoItemDao extintorInspecaoItemDao;
 	private ExtintorDao extintorDao;
 	private EmpresaDao empresaDao;
 	private EstabelecimentoDao estabelecimentoDao;
@@ -67,18 +73,27 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintor2.setEstabelecimento(estabelecimento);
 		extintorDao.save(extintor2);
 
+		ExtintorInspecaoItem extintorInspecaoItem = new ExtintorInspecaoItem();
+		extintorInspecaoItem.setDescricao("teste");
+		extintorInspecaoItemDao.save(extintorInspecaoItem);
+
+		Collection<ExtintorInspecaoItem> extintorInspecaoItems = new ArrayList<ExtintorInspecaoItem>();
+		extintorInspecaoItems.add(extintorInspecaoItem);
+		
 		ExtintorInspecao extintorInspecao = ExtintorInspecaoFactory.getEntity();
 		extintorInspecao.setExtintor(extintor);
 		extintorInspecao.setData(hoje);
+		extintorInspecao.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecao);
 
 		ExtintorInspecao extintorInspecaoFora = ExtintorInspecaoFactory.getEntity();
 		extintorInspecaoFora.setExtintor(extintor);
 		extintorInspecaoFora.setData(ontem.getTime());
+		extintorInspecaoFora.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecaoFora);
 
 		assertEquals(Integer.valueOf(1),
-					extintorInspecaoDao.getCount(empresa.getId(), estabelecimento.getId(), extintor.getId(), new Date(), null));
+					extintorInspecaoDao.getCount(empresa.getId(), estabelecimento.getId(), extintor.getId(), new Date(), null, '0'));
 	}
 
 	public void testFindAllSelect()
@@ -105,23 +120,33 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintor2.setEstabelecimento(estabelecimento);
 		extintorDao.save(extintor2);
 
+		ExtintorInspecaoItem extintorInspecaoItem = new ExtintorInspecaoItem();
+		extintorInspecaoItem.setDescricao("teste");
+		extintorInspecaoItemDao.save(extintorInspecaoItem);
+
+		Collection<ExtintorInspecaoItem> extintorInspecaoItems = new ArrayList<ExtintorInspecaoItem>();
+		extintorInspecaoItems.add(extintorInspecaoItem);
+
 		ExtintorInspecao extintorInspecao = ExtintorInspecaoFactory.getEntity();
 		extintorInspecao.setExtintor(extintor);
 		extintorInspecao.setData(hoje);
+		extintorInspecao.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecao);
 
 		ExtintorInspecao extintorInspecao2 = ExtintorInspecaoFactory.getEntity();
 		extintorInspecao2.setExtintor(extintor);
 		extintorInspecao2.setData(ontem.getTime());
+		extintorInspecao2.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecao2);
 
 		ExtintorInspecao extintorInspecaoFora = ExtintorInspecaoFactory.getEntity();
 		extintorInspecaoFora.setExtintor(extintor2);
 		extintorInspecaoFora.setData(ontem.getTime());
+		extintorInspecaoFora.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecaoFora);
 
 		assertEquals(2, extintorInspecaoDao.
-				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime()).size());
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '0').size());
 	}
 
 	public void testFindEmpresasResponsaveisDistinct()
@@ -248,5 +273,9 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 	public void setExtintorDao(ExtintorDao extintorDao)
 	{
 		this.extintorDao = extintorDao;
+	}
+
+	public void setExtintorInspecaoItemDao(ExtintorInspecaoItemDao extintorInspecaoItemDao) {
+		this.extintorInspecaoItemDao = extintorInspecaoItemDao;
 	}
 }
