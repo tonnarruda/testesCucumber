@@ -347,6 +347,7 @@
 	<tr>
 		<td>
 			<@display.table name="historicosCandidatoByColaborador" id="historicoCandidato" class="dados" >
+				<@display.column property="candidatoSolicitacao.solicitacao.descricao" title="Descrição" style="width:100px;"/>
 				<@display.column title="Etapa">
 					<#if historicoCandidato?exists && historicoCandidato.etapaSeletiva?exists>
 						${historicoCandidato.etapaSeletiva.nome}
