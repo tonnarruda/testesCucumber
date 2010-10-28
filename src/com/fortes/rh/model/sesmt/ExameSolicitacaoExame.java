@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -30,6 +31,15 @@ public class ExameSolicitacaoExame extends AbstractModel implements Serializable
 	private RealizacaoExame realizacaoExame;
 	
 	private int periodicidade; //periodicidade para o exame na solicitação/atendimento
+	
+	@Transient
+	private String colaboradorNome;
+	@Transient
+	private Long colaboradorId;
+	@Transient
+	private String candidatoNome;
+	@Transient
+	private Long candidatoId;
 
 	public ExameSolicitacaoExame()
 	{
@@ -96,6 +106,12 @@ public class ExameSolicitacaoExame extends AbstractModel implements Serializable
 		this.realizacaoExame.setId(realizacaoExameId);
 	}
 
+	public void setProjectionRealizacaoExameData(Date realizacaoExameData)
+	{
+		newRealizacaoExame();
+		this.realizacaoExame.setData(realizacaoExameData);
+	}
+
 	public void setProjectionRealizacaoExameResultado(String realizacaoExameResultado)
 	{
 		newRealizacaoExame();
@@ -159,11 +175,53 @@ public class ExameSolicitacaoExame extends AbstractModel implements Serializable
 	/**
 	 * Periodicidade do exame especificada na Solicitação / Atendimento 
 	 */
-	public int getPeriodicidade() {
+	public int getPeriodicidade() 
+	{
 		return periodicidade;
 	}
 
-	public void setPeriodicidade(int periodicidade) {
+	public void setPeriodicidade(int periodicidade) 
+	{
 		this.periodicidade = periodicidade;
 	}
+
+	public void setProjectionColaboradorNome(String colaboradorNome) 
+	{
+		this.colaboradorNome = colaboradorNome;
+	}
+
+	public void setProjectionColaboradorId(Long colaboradorId) 
+	{
+		this.colaboradorId = colaboradorId;
+	}
+
+	public void setProjectionCandidatoNome(String candidatoNome) 
+	{
+		this.candidatoNome = candidatoNome;
+	}
+
+	public void setProjectionCandidatoId(Long candidatoId) 
+	{
+		this.candidatoId = candidatoId;
+	}
+
+	public String getColaboradorNome() 
+	{
+		return colaboradorNome;
+	}
+
+	public String getCandidatoNome() 
+	{
+		return candidatoNome;
+	}
+
+	public Long getColaboradorId() {
+		return colaboradorId;
+	}
+
+	public Long getCandidatoId() {
+		return candidatoId;
+	}
+	
+	
 }

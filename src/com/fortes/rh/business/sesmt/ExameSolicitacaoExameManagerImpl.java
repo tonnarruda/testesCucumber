@@ -80,5 +80,15 @@ public class ExameSolicitacaoExameManagerImpl extends GenericManagerImpl<ExameSo
 		}
 		return retorno;
 	}
+	
+	public ExameSolicitacaoExame findDataSolicitacaoExame(Long colaboradorId, Long candidatoId, Long exameId)
+	{
+		return getDao().findDataSolicitacaoExame(colaboradorId, candidatoId, exameId);
+	}
+
+	public ExameSolicitacaoExame findIdColaboradorOUCandidato(Long solicitacaoExameId, Long exameId)
+	{
+		return getDao().findIdColaboradorOUCandidato(solicitacaoExameId, exameId);
+	}
 
 }

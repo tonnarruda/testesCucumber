@@ -13,6 +13,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExameSolicitacaoExameDao;
+import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 
 /**
@@ -82,5 +83,63 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
+	}
+
+	public ExameSolicitacaoExame findDataSolicitacaoExame(Long colaboradorId, Long candidatoId, Long exameId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"ese");
+		criteria.createCriteria("ese.solicitacaoExame", "se");
+		criteria.createCriteria("ese.exame", "e");
+		criteria.createCriteria("ese.realizacaoExame", "re", CriteriaSpecification.LEFT_JOIN);
+		
+		if (colaboradorId != null)
+			criteria.createCriteria("se.colaborador", "col", CriteriaSpecification.LEFT_JOIN);
+		if (candidatoId != null)
+			criteria.createCriteria("se.candidato", "cand", CriteriaSpecification.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("e.nome"), "projectionExameNome");
+		p.add(Projections.property("re.data"), "projectionRealizacaoExameData");
+		p.add(Projections.property("ese.id"), "id");
+		p.add(Projections.property("ese.periodicidade"), "periodicidade");
+		
+		if (colaboradorId != null)
+			p.add(Projections.property("col.nome"), "projectionColaboradorNome");
+		if (candidatoId != null)
+			p.add(Projections.property("cand.nome"), "projectionCandidatoNome");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("e.id", exameId));
+		
+		if (colaboradorId != null)
+			criteria.add(Expression.eq("col.id", colaboradorId));
+		if (candidatoId != null)
+			criteria.add(Expression.eq("cand.id", candidatoId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return (ExameSolicitacaoExame) criteria.uniqueResult();
+	}
+	
+	public ExameSolicitacaoExame findIdColaboradorOUCandidato(Long solicitacaoExameId, Long exameId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"ese");
+		criteria.createCriteria("ese.solicitacaoExame", "se");
+		criteria.createCriteria("ese.exame", "e");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("se.colaborador.id"), "projectionColaboradorId");
+		p.add(Projections.property("se.candidato.id"), "projectionCandidatoId");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("se.id", solicitacaoExameId));
+		criteria.add(Expression.eq("e.id", exameId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return (ExameSolicitacaoExame) criteria.uniqueResult();
 	}
 }
