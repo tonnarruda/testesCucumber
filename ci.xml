@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="FortesRH" basedir="." default="integrate">
+
+	<property file="ci.properties" />
+
+	<property environment="env"/>
+
+   	<path id="project.classpath">
+		<pathelement location="${build.dir}" />
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+   	</path>
+
+	<path id="project.classpath.ireport">
+		<pathelement location="${build.dir}" />
+		<fileset dir="${jasperreports.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+		<classpath refid="project.classpath" />
+	</taskdef>
+
+   	<target name="update" depends="backup">
+		<svn>
+			<update dir="${ant.project.name}" recurse="true" revision="HEAD" />
+		</svn>
+	</target>
+
+   	<target name="updateAndTest" depends="test">
+		<svn>
+			<update dir="${ant.project.name}" recurse="true" revision="HEAD" />
+		</svn>
+	</target>
+
+	<target name="status">
+		<svn>
+			<status path="${ant.project.name}" />
+		</svn>
+	</target>
+
+	<target name="commit" depends="test">
+		<input addproperty="comentario" message="Comentários para o commit" defaultvalue="*** Não comentado ***" />
+
+		<property name="naocomitar" value="false" />
+		<condition property="naocomitar" value="true">
+			<isset property="testes.erro" />
+		</condition>
+
+		<svn>
+			<commit dir="${ant.project.name}" message="${comentario}" />
+		</svn>
+	</target>
+
+	<target name="integrate" depends="test, update, test, commit">
+		<echo message="Integração concluída com sucesso." />
+
+		<waitfor maxwait="3" maxwaitunit="second">
+			<http url="http://10.1.2.92:8080/hudson/job/RH/build"/>
+		</waitfor>
+	</target>
+
+	<target name="commitar">
+		<antcall target="updateAndTest"></antcall>
+		<antcall target="commit"></antcall>
+		<echo message="Integração concluída com sucesso." />
+
+		<waitfor maxwait="3" maxwaitunit="second">
+			<http url="http://10.1.2.92:8080/hudson/job/RH/build"/>
+		</waitfor>
+	</target>
+
+	<target name="clean-reports">
+		<delete>
+			<fileset dir="${project.dir}/web/WEB-INF/report" includes="*.jasper" />
+		</delete>
+	</target>
+
+	<target name="jasper" depends="clean-reports">
+		<taskdef name="jaspercompile" classname="net.sf.jasperreports.ant.JRAntCompileTask">
+			<classpath refid="project.classpath.ireport"/>
+		</taskdef>
+		<jaspercompile destdir="${project.dir}/web/WEB-INF/report">
+			<src>
+				<fileset dir="${project.dir}/web/WEB-INF/report">
+					<include name="*.jrxml" />
+				</fileset>
+			</src>
+		</jaspercompile>
+	</target>
+
+	<target name="backup">
+		<delete file="./BkpFortesRH.zip" />
+		<zip destfile="./BkpFortesRH.zip" basedir="${project.dir}" update="true" />
+	</target>
+
+	<target name="resources">
+		<copy todir="${build.dir}" includeEmptyDirs="no">
+			<fileset dir="${src.dir}">
+				<patternset>
+					<include name="**/*.properties"/>
+					<include name="**/*.xml"/>
+					<include name="**/*.css"/>
+					<include name="**/*.js"/>
+					<include name="**/*.gif"/>
+				</patternset>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build">
+		<mkdir dir="${build.dir}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${build.dir}" includes="**/*/**" />
+		</delete>
+
+		<javac debug="on" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" failonerror="true">
+			<classpath refid="project.classpath" />
+		</javac>
+		<javac debug="on" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${build.dir}" failonerror="true">
+			<classpath refid="project.classpath" />
+		</javac>
+
+		<antcall target="resources"></antcall>
+	</target>
+
+	<target name="recreate-bd-vazio">
+        <!--
+		<exec executable="pg_dump"
+			output="./bkpDBFortesRh.sql">
+			<arg value="fortesrh" />
+			<arg value="-U" />
+			<arg value="postgres" />
+		</exec>
+        -->
+
+		<sql driver="org.postgresql.Driver"
+			url="jdbc:postgresql://localhost:5432/template1"
+			userid="postgres"
+			password="postgres"
+			classpath="${lib.dir}/postgresql-8.1-405.jdbc3.jar"
+			autocommit="true">
+			<transaction>
+				drop database fortesrh;
+				create database fortesrh with encoding = 'UTF-8';
+			</transaction>
+		</sql>
+	</target>
+
+	<target name="recreate-bd-estrutura">
+		<sql driver="org.postgresql.Driver"
+			url="jdbc:postgresql://localhost:5432/template1"
+			userid="postgres"
+			password="postgres"
+			classpath="${lib.dir}/postgresql-8.1-405.jdbc3.jar"
+			autocommit="true">
+			<transaction>
+				drop database fortesrh;
+				create database fortesrh with encoding = 'UTF-8';
+			</transaction>
+		</sql>
+
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/create.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="fortesrh" />
+		</exec>
+		<echo message="Banco criado com sucesso" />
+
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/update_dev.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="fortesrh" />
+		</exec>
+		<echo message="Banco atualizado com sucesso" />
+	</target>
+
+	<target name="recreate-bd" depends="recreate-bd-vazio">
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/create.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="fortesrh" />
+		</exec>
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/create_data.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="fortesrh" />
+		</exec>
+	</target>
+
+	<target name="recreate-bd-populate" depends="recreate-bd-vazio">
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/populate.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="fortesrh" />
+		</exec>
+	</target>
+
+	<target name="recreate-and-update-bd" depends="recreate-bd">
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/update_dev.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="fortesrh" />
+		</exec>
+	</target>
+
+	<target name="prepare-test-integracao-ac" depends="recreate-bd-estrutura">
+		<echo message="Estrutura do banco criada com sucesso" />
+	</target>
+
+    <target name="start-selenium-server">
+        <java jar="${lib.dir}/selenium-server.jar" fork="true" spawn="true">
+            <arg line="-proxyInjectionMode"/>
+        </java>
+
+        <waitfor maxwait="30" maxwaitunit="second">
+            <and>
+                 <socket server="localhost" port="4444"/>
+                 <http url="http://localhost:4444/selenium-server/core/index.html" errorsBeginAt="404"/>
+            </and>
+        </waitfor>
+    </target>
+
+    <target name="stop-selenium-server">
+        <get taskname="selenium-shutdown" src="http://localhost:4444/selenium-server/driver/?cmd=shutDown" dest="result.txt" ignoreerrors="true" />
+        <echo taskname="selenium-shutdown" message="DGF Errors during shutdown are expected" />
+    </target>
+
+	<target name="jetty-start">
+		<java jar="${env.JETTY_HOME}/start.jar" fork="true" dir="${env.JETTY_HOME}">
+			<jvmarg value="-Dfile.encoding=UTF-8"/>
+			<jvmarg value="-DSTOP.PORT=8079"/>
+			<jvmarg value="-DSTOP.KEY=secret"/>
+			<arg line="${selenium.app.dir}/jetty-rh.xml"/>
+		</java>
+	</target>
+
+	<target name="jetty-stop">
+		<java jar="${env.JETTY_HOME}/start.jar" fork="true" dir="${env.JETTY_HOME}">
+			<jvmarg value="-DSTOP.PORT=8079"/>
+			<jvmarg value="-DSTOP.KEY=secret"/>
+			<arg line="--stop"/>
+		</java>
+		<sleep seconds="2"/>
+	</target>
+
+	<target name="emma-compile" depends="build">
+		<delete dir="${project.dir}/emma" />
+		<mkdir dir="${project.dir}/emma"/>
+		<mkdir dir="${project.dir}/emma/classes"/>
+		<mkdir dir="${project.dir}/emma/reports"/>
+		<taskdef resource="emma_ant.properties" classpathref="project.classpath" />
+		<emma verbosity="info">
+			<instr instrpath="${build.dir}" destdir="${project.dir}/emma/classes" metadatafile="${project.dir}/emma/metadado.emma" merge="false" mode="copy">
+				<filter excludes="*Test*" />
+				<filter excludes="*Mock*" />
+				<filter excludes="*Factory*" />
+				<filter excludes="*Suite*" />
+				<filter excludes="*BeanBasico*" />
+			</instr>
+		</emma>
+	</target>
+
+	<target name="emma-test" depends="emma-compile">
+		<property name="allTests.class" value="com.fortes.rh.test.AllUnitTests" />
+
+		<dirname file="build.xml" property="current.dir" />
+		<junit haltonfailure="false" haltonerror="false" fork="true" dir="${current.dir}" maxmemory="512m">
+			<classpath>
+				<pathelement location="${project.dir}/emma/classes"/>
+				<pathelement location="${project.dir}/emma/lib"/>
+				<path refid="project.classpath" />
+			</classpath>
+			<formatter type="plain" usefile="false" />
+			<test name="${allTests.class}" />
+
+			<jvmarg value="-javaagent:${jmockit.dir}" />
+			<jvmarg value="-Demma.coverage.out.file=${project.dir}/emma/cobertura.emma" />
+			<jvmarg value="-Demma.coverage.out.merge=false" />
+		</junit>
+
+		<emma>
+			<report sourcepath="${src.dir}" >
+				<fileset dir="${project.dir}/emma">
+					<include name="*.emma" />
+				</fileset>
+				<!--html outfile="emma/reports/index.html" depth="method"/-->
+				<xml outfile="emma/reports/cobertura.xml" />
+			</report>
+		</emma>
+	</target>
+
+	<target name="comparar-cobertura" depends="emma-test">
+		<taskdef name="comparador" classname="com.fortes.ant.task.emma.EmmaComparador">
+			<classpath refid="project.classpath"/>
+		</taskdef>
+
+		<comparador arquivo="emma/reports/cobertura.xml" diretorio="C:\workspace\comparador-indices" />
+	</target>
+
+	<target name="test" depends="build">
+		<property name="allTests.class" value="com.fortes.rh.test.AllUnitTests" />
+
+		<dirname file="build.xml" property="current.dir" />
+		<junit haltonfailure="true" haltonerror="true" fork="true" dir="${current.dir}" maxmemory="512m">
+			<jvmarg value="-javaagent:${jmockit.dir}" />
+			<classpath>
+				<path refid="project.classpath" />
+			</classpath>
+			<formatter type="plain" usefile="false" />
+			<test name="${allTests.class}" />
+		</junit>
+	</target>
+
+	<target name="test-acept" depends="start-selenium-server">
+		<property name="allAceptTests.class" value="com.fortes.rh.test.AllAceptTests" />
+
+		<dirname file="build.xml" property="current.dir" />
+		<junit haltonfailure="true" haltonerror="true" fork="true" dir="${current.dir}" maxmemory="512m">
+			<classpath>
+				<path refid="project.classpath" />
+			</classpath>
+			<formatter type="plain" usefile="false" />
+			<test name="${allAceptTests.class}" />
+		</junit>
+
+		<antcall target="stop-selenium-server"></antcall>
+	</target>
+
+	<target name="test-smoke" depends="recreate-bd-populate, jetty-start, start-selenium-server">
+		<property name="allSmokeTests.class" value="com.fortes.rh.test.AllSmokeTests" />
+
+		<dirname file="build.xml" property="current.dir" />
+		<junit haltonfailure="true" haltonerror="true" fork="true" dir="${current.dir}" maxmemory="512m">
+			<classpath>
+				<path refid="project.classpath" />
+			</classpath>
+			<formatter type="plain" usefile="false" />
+			<test name="${allSmokeTests.class}" />
+		</junit>
+
+		<antcall target="stop-selenium-server"></antcall>
+		<antcall target="jetty-stop"></antcall>
+	</target>
+
+	<!-- Retirei findbugs, Francisco Barroso - 25/08/2010 -->
+	<target name="integrate-server" depends="recreate-and-update-bd, test, emma-test">
+		<echo message="Integração concluída com sucesso." />
+	</target>
+
+	<target name="fumacinha" depends="test-smoke">
+		<echo message="Teste de fumaça concluído" />
+	</target>
+
+	<target name="war" depends="build">
+
+		<mkdir dir="${project.dir}/dist" />
+		<property name="tmpweb" value="${project.dir}/dist/tmpweb" />
+		<property name="base" value="${project.dir}/web" />
+		<property name="lib" value="WEB-INF/lib" />
+		<property name="test-ignore" value="WEB-INF/classes/com/fortes/rh/test" />
+
+		<!-- Copia todos os arquivos, com execao das libs, para diretorio temporario -->
+		<copy todir="${tmpweb}">
+			<fileset dir="${base}">
+				<exclude name="WEB-INF/lib/**" />
+				<exclude name="WEB-INF/report/*.jrxml" />
+				<exclude name="WEB-INF/report/*.java" />
+				<exclude name="WEB-INF/report/*.bak" />
+				<exclude name="WEB-INF/anexosLtcat/*.*" />
+				<exclude name="WEB-INF/atualizador/*.*" />
+				<exclude name="WEB-INF/temp/*.*" />
+				<exclude name="anexos/*.*" />
+				<exclude name="backup/*.*" />
+				<exclude name="${metadados.dir}/clean.sql"/>
+				<exclude name="${metadados.dir}/create_data.sql"/>
+				<exclude name="${metadados.dir}/create.sql"/>
+				<exclude name="${metadados.dir}/populate.sql"/>
+				<exclude name="${metadados.dir}/update_dev.sql"/>
+			</fileset>
+		</copy>
+		<!-- Copia as libs para diretorio temporario -->
+		<copy todir="${tmpweb}/${lib}" flatten="true" >
+			<fileset dir="${base}/${lib}">
+				<exclude name="fortes-ant.jar" />
+				<exclude name="pmd-4.2.2.jar" />
+				<exclude name="hsqldb.jar" />
+				<exclude name="checkstyle-4.4.jar" />
+				<exclude name="findbugs/**" />
+				<exclude name="findbugs*.jar" />
+				<exclude name="emma*.jar" />
+				<exclude name="ant-junit.jar" />
+				<exclude name="jmock*.jar" />
+				<exclude name="classmock_1.0.jar" />
+				<exclude name="junit.jar" />
+				<exclude name="selenium*.jar" />
+				<exclude name="spring-mock.jar" />
+				<exclude name="retroweaver-all-2.0.2.jar" />
+				<exclude name="args4j-2.0.1.jar" />
+				<exclude name="org.crap4j.jar" />
+				<exclude name="backup"/>
+			</fileset>
+		</copy>
+		<!-- Gera War file de acordo com o diretorio temporario -->
+		<war webxml="${tmpweb}/WEB-INF/web.xml"
+			destfile="${project.dir}/dist/fortesrh.war" basedir="${tmpweb}"
+			excludes="${test-ignore}/**">
+		</war>
+
+		<delete dir="${tmpweb}" /> <!-- Deleta diretorio temporario -->
+		<delete file="${project.dir}/dist/create.tmp" />
+		<delete file="${project.dir}/dist/create.sql" />
+		<delete file="${project.dir}/dist/create_data.sql" />
+
+		<copy file="${metadados.dir}/create.sql" todir="${project.dir}/dist" />
+		<copy file="${metadados.dir}/create_data.sql" todir="${project.dir}/dist" />
+
+		<concat encoding="UTF-8" outputencoding="UTF-8" destfile="${project.dir}/dist/create.tmp">
+			<fileset file="${project.dir}/dist/create.sql" />
+			<fileset file="${project.dir}/dist/create_data.sql" />
+		</concat>
+
+		<delete file="${project.dir}/dist/create.sql" />
+		<delete file="${project.dir}/dist/create_data.sql" />
+
+		<move file="${project.dir}/dist/create.tmp" tofile="${project.dir}/dist/create.sql"/>
+	</target>
+
+	<target name="build-update-file" depends="jasper, war">
+		<mkdir dir="${project.dir}/dist" />
+		<copy file="${metadados.dir}/update.sql" todir="${project.dir}/dist" />
+		<delete file="${project.dir}/dist/update.sql" />
+		<antcall target="build_atualizador"></antcall>
+	</target>
+
+	<!-- Gera Atualizador -->
+	<target name="build_atualizador">
+		<ant dir="FortesRH_Atualizador" antfile="gera_atualizador_build.xml">
+			<property name="fortesrh.war.file" location="${ant.project.name}/dist/fortesrh.war" /> <!-- Origem -->
+			<property name="fortesrh.pack.dir" location="${ant.project.name}/dist" /> <!-- Destino -->
+		</ant>
+	</target>
+
+	<target name="jar">
+		<mkdir dir="${project.dir}/dist" />
+ 		<jar basedir="${build.dir}" jarfile="${project.dir}/dist/fortesrh.jar" />
+	</target>
+
+	<target name="findbugs" depends="jar">
+		<delete dir="${project.dir}/report/findbugs" />
+		<mkdir dir="${project.dir}/report/findbugs" />
+		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="project.classpath" />
+		<findbugs home="${project.dir}/web/WEB-INF/lib/findbugs" output="xml:withMessages" outputfile="${project.dir}/report/findbugs/findbugs.xml" jvmargs="-Xms128m -Xmx192m">
+			<sourcepath path="${src.dir}" />
+			<class location="${project.dir}/dist/fortesrh.jar" />
+		</findbugs>
+	</target>
+</project>
+
