@@ -44,6 +44,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		p.add(Projections.property("es.nome"), "etapaSeletivaNome");
 		p.add(Projections.property("s.id"), "solicitacaoId");
 		p.add(Projections.property("s.quantidade"), "solicitacaoQuantidade");
+		p.add(Projections.property("s.descricao"), "solicitacaoDescricao");
 		p.add(Projections.property("sol.nome"), "solicitacaoSolicitanteNome");
 		p.add(Projections.property("c.nome"), "projectionCargoNomeMercado");
 		p.add(Projections.property("a.id"), "solicitacaoAreaId");

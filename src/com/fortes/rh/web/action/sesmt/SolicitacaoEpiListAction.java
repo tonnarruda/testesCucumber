@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
@@ -41,6 +43,14 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private String matriculaBusca;
 	private String situacao = "TODAS";
 	private Colaborador colaborador = new Colaborador();
+	
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private String[] areasCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private String[] estabelecimentoCheck;
+	private Collection<CheckBox> estabelecimentoCheckList = new ArrayList<CheckBox>();
+	
 
 	private String[] tipoEPICheck;
 	private Collection<CheckBox> tipoEPICheckList = new ArrayList<CheckBox>();
@@ -90,6 +100,8 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public String prepareRelatorioVencimentoEpi()
 	{
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+    	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		tipoEPICheckList = tipoEPIManager.getByEmpresa(getEmpresaSistema().getId());
 		return SUCCESS;
 	}
@@ -98,7 +110,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	{
 		try
 		{
-			dataSource = solicitacaoEpiManager.findRelatorioVencimentoEpi(getEmpresaSistema().getId(), vencimento, agruparPor, exibirVencimentoCA, tipoEPICheck);
+			dataSource = solicitacaoEpiManager.findRelatorioVencimentoEpi(getEmpresaSistema().getId(), vencimento, agruparPor, exibirVencimentoCA, tipoEPICheck, areasCheck, estabelecimentoCheck);
 			parametros = RelatorioUtil.getParametrosRelatorio("EPIs com Prazo a Vencer em " + DateUtil.formataDiaMesAno(vencimento), getEmpresaSistema(), null);
 			parametros.put("DATA", vencimento);
 			parametros.put("EXIBIRVENCIMENTOCA", exibirVencimentoCA); // atente p/ as condicionais dentro do Relatorio vencimentoEpi_agrupaEpi.jrxml
@@ -298,5 +310,45 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) {
 		this.tipoEPIManager = tipoEPIManager;
+	}
+
+	public String[] getAreasCheck() {
+		return areasCheck;
+	}
+
+	public void setAreasCheck(String[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public Collection<CheckBox> getAreasCheckList() {
+		return areasCheckList;
+	}
+
+	public void setAreasCheckList(Collection<CheckBox> areasCheckList) {
+		this.areasCheckList = areasCheckList;
+	}
+
+	public String[] getEstabelecimentoCheck() {
+		return estabelecimentoCheck;
+	}
+
+	public void setEstabelecimentoCheck(String[] estabelecimentoCheck) {
+		this.estabelecimentoCheck = estabelecimentoCheck;
+	}
+
+	public Collection<CheckBox> getEstabelecimentoCheckList() {
+		return estabelecimentoCheckList;
+	}
+
+	public void setEstabelecimentoCheckList(Collection<CheckBox> estabelecimentoCheckList) {
+		this.estabelecimentoCheckList = estabelecimentoCheckList;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
 	}
 }

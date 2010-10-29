@@ -8,8 +8,8 @@ import com.fortes.rh.model.sesmt.ExtintorInspecao;
 
 public interface ExtintorInspecaoManager extends GenericManager<ExtintorInspecao>
 {
-	Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim);
-	Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long id, Long estabelecimentoId, Long extintorId, Date inicio, Date fim);
+	Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade);
+	Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long id, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade);
 	ExtintorInspecao saveOrUpdate(ExtintorInspecao extintorInspecao, String[] itemChecks) throws Exception;
 	String getEmpresasResponsaveis(Long empresaId);
 	Collection<ExtintorInspecao> findInspecoesVencidas(Long estabelecimentoId, Date dataVencimento);

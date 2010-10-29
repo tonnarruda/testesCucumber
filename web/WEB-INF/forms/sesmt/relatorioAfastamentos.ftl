@@ -37,6 +37,8 @@
 		
 		<@ww.select label="Ordenar por" name="ordenaColaboradorPorNome" id="ordenaColaboradorPorNome" list=r"#{true:'Nome',false:'Data'}" required="true"/>
 
+		<@ww.select label="INSS" name="afastadoPeloINSS" id="afastadoPeloINSS" list=r"#{'T':'Todos','A':'Afastados','N':'Não afastados'}" required="true"/>
+
 		<div class="buttonGroup">
 			<button class="btnRelatorio" onclick="${validarCampos}">
 			</button>

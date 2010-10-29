@@ -2,18 +2,22 @@ package com.fortes.rh.web.dwr;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.ctc.wstx.util.DataUtil;
 import com.fortes.rh.business.sesmt.ExameSolicitacaoExameManager;
 import com.fortes.rh.business.sesmt.RealizacaoExameManager;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class SolicitacaoExameDWR 
 {
@@ -65,6 +69,65 @@ public class SolicitacaoExameDWR
 		}
 	}
 
+	public String verificaColaboradorExameDentroDoPrazo(Long colaboradorId,Long candidatoId,Long solicitacaoExameId,Long exameId) 
+	{
+		String textoResult = "";
+		ExameSolicitacaoExame exameSolicitacaoExame = new ExameSolicitacaoExame();
+		ExameSolicitacaoExame exameSolicitacaoExameTemp = new ExameSolicitacaoExame();
+		Date dataDeVencimentoExame = DateUtil.criarAnoMesDia(1900,01,01);
+		
+		if(colaboradorId==null && candidatoId==null)
+		{
+			exameSolicitacaoExameTemp = exameSolicitacaoExameManager.findIdColaboradorOUCandidato(solicitacaoExameId,exameId);
+			
+			if (exameSolicitacaoExameTemp != null && exameSolicitacaoExameTemp.getColaboradorId() != null)
+				colaboradorId = exameSolicitacaoExameTemp.getColaboradorId();
+
+			if (exameSolicitacaoExameTemp != null && exameSolicitacaoExameTemp.getCandidatoId() != null)
+				candidatoId = exameSolicitacaoExameTemp.getCandidatoId();
+		}
+		
+		if(colaboradorId!=null || candidatoId!=null)
+			exameSolicitacaoExame = exameSolicitacaoExameManager.findDataSolicitacaoExame(colaboradorId, candidatoId, exameId);
+		
+		if (exameSolicitacaoExame!=null && exameSolicitacaoExame.getExame()!=null)
+		{
+			if (exameSolicitacaoExame.getRealizacaoExame() != null && exameSolicitacaoExame.getRealizacaoExame().getData() != null)
+				dataDeVencimentoExame = DateUtil.incrementaMes(exameSolicitacaoExame.getRealizacaoExame().getData(), exameSolicitacaoExame.getPeriodicidade());
+
+			if(dataDeVencimentoExame.after(new Date()))
+			{	
+				if (exameSolicitacaoExame.getRealizacaoExame() != null && exameSolicitacaoExame.getRealizacaoExame().getData() != null)
+				{
+					textoResult += "O prazo de validade do ";
+					
+					if (exameSolicitacaoExame.getCandidatoNome() != null)
+						textoResult +=	"candidato " +  exameSolicitacaoExame.getCandidatoNome();
+					if (exameSolicitacaoExame.getColaboradorNome() != null)
+						textoResult +=	"colaborador " +  exameSolicitacaoExame.getColaboradorNome();
+						
+					textoResult += " para \no exame " + exameSolicitacaoExame.getExame().getNome() + " é até "
+						+ DateUtil.formataDiaMesAno(dataDeVencimentoExame);
+				}
+			}
+			
+			else
+			{
+				textoResult += "O exame "
+					+ exameSolicitacaoExame.getExame().getNome() + " para o ";
+				
+				if (exameSolicitacaoExame.getCandidatoNome() != null)
+					textoResult +=	"candidato " +  exameSolicitacaoExame.getCandidatoNome();
+				if (exameSolicitacaoExame.getColaboradorNome() != null)
+					textoResult +=	"colaborador " +  exameSolicitacaoExame.getColaboradorNome();
+				
+				textoResult += " se encontra pendente. ";
+			}
+		}
+		
+		return textoResult;
+	}
+	
 	public void setExameSolicitacaoExameManager(ExameSolicitacaoExameManager exameSolicitacaoExameManager) {
 		this.exameSolicitacaoExameManager = exameSolicitacaoExameManager;
 	}

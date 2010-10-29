@@ -19,6 +19,12 @@ public class ZipTest extends TestCase
 		 zip = new Zip();
 	}
 
+	@Override
+	protected void tearDown() throws Exception {
+		new File("file.txt").delete();
+		new File("file.fortesrh").delete();
+	}
+
 	public void testCompress() throws IOException
 	{
 		File file = new File("file.txt");
@@ -52,6 +58,10 @@ public class ZipTest extends TestCase
 		dir = dir.substring(0, dir.lastIndexOf("/"));
 		String diretorioDoArquivo = zip.identificaDiretorioDoArquivoOriginal(path);
 		assertEquals(dir, diretorioDoArquivo);
+	}
+
+	private String ajustaBarrasDeAcordoComOS(String path) {
+		return path.replace("\\", File.separator);
 	}
 
 	public void testIdentificaDiretorioDoArquivoOriginalNull()

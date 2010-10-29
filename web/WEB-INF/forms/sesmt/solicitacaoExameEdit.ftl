@@ -8,7 +8,7 @@
 	</style>
 	<#include "../ftl/mascarasImports.ftl" />
 	<#include "../ftl/showFilterImports.ftl" />
-
+	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<#if solicitacaoExame.id?exists>
 		<title>Editar Solicitação/Atendimento Médico</title>
@@ -19,6 +19,9 @@
 		<#assign formAction="insert.action"/>
 	</#if>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoExameDWR.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 <#if exameAso?exists>
 	<script>
@@ -129,8 +132,17 @@
 				mudarClinica(elementCheck);
 				desabilitaPeriodicidade(elementCheck);
 			}
+			
+			if (elementCheck.checked == true)
+				SolicitacaoExameDWR.verificaColaboradorExameDentroDoPrazo(alertaExameDentroDoPrazo, jQuery("#colaborador").val(), jQuery("#Candidato").val(), jQuery("#solicitacaoId").val(), elementCheck.value);		
 		}
 		
+		function alertaExameDentroDoPrazo(data)
+		{
+			if (data != "")
+				alert(data);
+		}
+				
 		function getMotivoExameEhAso()
 		{
 			var motivo = document.getElementById("motivoExame");
@@ -229,7 +241,7 @@
 	<#if (candidatos?exists && candidatos?size > 0) || (colaboradors?exists && colaboradors?size > 0) || (edicao?exists)>
 	
 		<@ww.form name="form" action="${formAction}" method="post">
-			<@ww.hidden name="solicitacaoExame.id" />
+			<@ww.hidden id = "solicitacaoId" name="solicitacaoExame.id" />
 	
 			<#if solicitacaoExame.candidato?exists && solicitacaoExame.candidato.id?exists>
 				<h4> Candidato: ${solicitacaoExame.candidato.nome} </h4>

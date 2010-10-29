@@ -128,31 +128,34 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	}
 	public void setSolicitacaoId(Long solicitacaoId)
 	{
-		if (candidatoSolicitacao == null)
-			candidatoSolicitacao = new CandidatoSolicitacao();
-
-		if(candidatoSolicitacao.getSolicitacao() == null)
-			candidatoSolicitacao.setSolicitacao(new Solicitacao());
+		inicializaSolicitacao();
 
 		candidatoSolicitacao.getSolicitacao().setId(solicitacaoId);
 	}
-	public void setSolicitacaoQuantidade(int solicitacaoQuantidade)
-	{
+
+	private void inicializaSolicitacao() {
 		if (candidatoSolicitacao == null)
 			candidatoSolicitacao = new CandidatoSolicitacao();
-		
+
 		if(candidatoSolicitacao.getSolicitacao() == null)
 			candidatoSolicitacao.setSolicitacao(new Solicitacao());
+	}
+	 
+	public void setSolicitacaoQuantidade(int solicitacaoQuantidade)
+	{
+		inicializaSolicitacao();
 		
 		candidatoSolicitacao.getSolicitacao().setQuantidade(solicitacaoQuantidade);
 	}
+	public void setSolicitacaoDescricao(String solicitacaoDescricao)
+	{
+		inicializaSolicitacao();
+		
+		candidatoSolicitacao.getSolicitacao().setDescricao(solicitacaoDescricao);
+	}
 	public void setSolicitacaoSolicitanteNome(String solicitacaoSolicitanteNome)
 	{
-		if (candidatoSolicitacao == null)
-			candidatoSolicitacao = new CandidatoSolicitacao();
-		
-		if(candidatoSolicitacao.getSolicitacao() == null)
-			candidatoSolicitacao.setSolicitacao(new Solicitacao());
+		inicializaSolicitacao();
 	
 		if(candidatoSolicitacao.getSolicitacao().getSolicitante() == null)
 			candidatoSolicitacao.getSolicitacao().setSolicitante(new Usuario());
@@ -161,11 +164,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	}
 	public void setSolicitacaoAreaId(Long solicitacaoAreaId)
 	{
-		if (candidatoSolicitacao == null)
-			candidatoSolicitacao = new CandidatoSolicitacao();
-		
-		if(candidatoSolicitacao.getSolicitacao() == null)
-			candidatoSolicitacao.setSolicitacao(new Solicitacao());
+		inicializaSolicitacao();
 		
 		if(candidatoSolicitacao.getSolicitacao().getAreaOrganizacional() == null)
 			candidatoSolicitacao.getSolicitacao().setAreaOrganizacional(new AreaOrganizacional());
@@ -174,11 +173,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	}
 	public void setSolicitacaoAreaNome(String solicitacaoAreaNome)
 	{
-		if (candidatoSolicitacao == null)
-			candidatoSolicitacao = new CandidatoSolicitacao();
-		
-		if(candidatoSolicitacao.getSolicitacao() == null)
-			candidatoSolicitacao.setSolicitacao(new Solicitacao());
+		inicializaSolicitacao();
 		
 		if(candidatoSolicitacao.getSolicitacao().getAreaOrganizacional() == null)
 			candidatoSolicitacao.getSolicitacao().setAreaOrganizacional(new AreaOrganizacional());
@@ -229,10 +224,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 
 	public void setProjectionCargoNome(String projectionCargoNome)
 	{
-		if(candidatoSolicitacao == null)
-			candidatoSolicitacao = new CandidatoSolicitacao();
-		if(candidatoSolicitacao.getSolicitacao() == null)
-			candidatoSolicitacao.setSolicitacao(new Solicitacao());
+		inicializaSolicitacao();
 		if(candidatoSolicitacao.getSolicitacao().getFaixaSalarial() == null)
 			candidatoSolicitacao.getSolicitacao().setFaixaSalarial(new FaixaSalarial());
 		if(candidatoSolicitacao.getSolicitacao().getFaixaSalarial().getCargo() == null)
@@ -243,10 +235,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	
 	public void setProjectionCargoNomeMercado(String projectionCargoNomeMercado)
 	{
-		if(candidatoSolicitacao == null)
-			candidatoSolicitacao = new CandidatoSolicitacao();
-		if(candidatoSolicitacao.getSolicitacao() == null)
-			candidatoSolicitacao.setSolicitacao(new Solicitacao());
+		inicializaSolicitacao();
 		if(candidatoSolicitacao.getSolicitacao().getFaixaSalarial() == null)
 			candidatoSolicitacao.getSolicitacao().setFaixaSalarial(new FaixaSalarial());
 		if(candidatoSolicitacao.getSolicitacao().getFaixaSalarial().getCargo() == null)

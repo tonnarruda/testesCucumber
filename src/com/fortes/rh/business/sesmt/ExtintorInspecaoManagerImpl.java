@@ -3,6 +3,7 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
@@ -12,14 +13,37 @@ import com.fortes.rh.util.StringUtil;
 
 public class ExtintorInspecaoManagerImpl extends GenericManagerImpl<ExtintorInspecao, ExtintorInspecaoDao> implements ExtintorInspecaoManager
 {
-	public Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim)
+	public Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade)
 	{
-		return getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId,  extintorId, inicio, fim);
+		Collection<ExtintorInspecao> consultaExtintorInpecao = getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId,  extintorId, inicio, fim, regularidade); 
+		
+		for (ExtintorInspecao consultaExtintorInspecao : consultaExtintorInpecao)
+		{
+			if(consultaExtintorInpecao != null && consultaExtintorInspecao.getItens() != null && !consultaExtintorInspecao.getItens().isEmpty())
+				consultaExtintorInspecao.setTipoDeRegularidade("Irregular");
+		}
+		
+		for (ExtintorInspecao extintorInspecao : consultaExtintorInpecao) 
+		{
+			String extintorInspecaoItemsString = "";
+
+			if (extintorInspecao.getItens()!=null)
+			{
+			Collection<ExtintorInspecaoItem> extintorInspecaoItems = extintorInspecao.getItens();
+			
+				for (ExtintorInspecaoItem extintorInspecaoItem : extintorInspecaoItems) 
+					extintorInspecaoItemsString += extintorInspecaoItem.getDescricao() + " \n";
+
+			}
+			extintorInspecao.setItensRelatorio(extintorInspecaoItemsString);
+		}
+		
+		return consultaExtintorInpecao;
 	}
 
-	public Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim)
+	public Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade)
 	{
-		return getDao().getCount(empresaId, estabelecimentoId,  extintorId, inicio, fim);
+		return getDao().getCount(empresaId, estabelecimentoId,  extintorId, inicio, fim, regularidade);
 	}
 
 	public ExtintorInspecao saveOrUpdate(ExtintorInspecao extintorInspecao, String[] itemChecks) throws Exception

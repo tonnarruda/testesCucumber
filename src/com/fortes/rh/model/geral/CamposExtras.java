@@ -25,6 +25,20 @@ public class CamposExtras extends AbstractModel implements Serializable
 	private String texto2;	
 	@Column(length=250)
 	private String texto3;
+	@Column(length=250)
+	private String texto4;
+	@Column(length=250)
+	private String texto5;
+	@Column(length=250)
+	private String texto6;
+	@Column(length=250)
+	private String texto7;
+	@Column(length=250)
+	private String texto8;
+	@Column(length=250)
+	private String texto9;
+	@Column(length=250)
+	private String texto10;
 	@Temporal(TemporalType.DATE)
     private Date data1;
 	@Temporal(TemporalType.DATE)
@@ -171,5 +185,47 @@ public class CamposExtras extends AbstractModel implements Serializable
 	public void setNumero1Fim(Integer numero1Fim)
 	{
 		this.numero1Fim = numero1Fim;
+	}
+	public String getTexto4() {
+		return texto4;
+	}
+	public void setTexto4(String texto4) {
+		this.texto4 = texto4;
+	}
+	public String getTexto5() {
+		return texto5;
+	}
+	public void setTexto5(String texto5) {
+		this.texto5 = texto5;
+	}
+	public String getTexto6() {
+		return texto6;
+	}
+	public void setTexto6(String texto6) {
+		this.texto6 = texto6;
+	}
+	public String getTexto7() {
+		return texto7;
+	}
+	public void setTexto7(String texto7) {
+		this.texto7 = texto7;
+	}
+	public String getTexto8() {
+		return texto8;
+	}
+	public void setTexto8(String texto8) {
+		this.texto8 = texto8;
+	}
+	public String getTexto9() {
+		return texto9;
+	}
+	public void setTexto9(String texto9) {
+		this.texto9 = texto9;
+	}
+	public String getTexto10() {
+		return texto10;
+	}
+	public void setTexto10(String texto10) {
+		this.texto10 = texto10;
 	}
 }

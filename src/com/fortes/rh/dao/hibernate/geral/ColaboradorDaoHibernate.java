@@ -503,6 +503,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("ce.texto1"), "projectionTexto1");
 		p.add(Projections.property("ce.texto2"), "projectionTexto2");
 		p.add(Projections.property("ce.texto3"), "projectionTexto3");
+		p.add(Projections.property("ce.texto4"), "projectionTexto4");
+		p.add(Projections.property("ce.texto5"), "projectionTexto5");
+		p.add(Projections.property("ce.texto6"), "projectionTexto6");
+		p.add(Projections.property("ce.texto7"), "projectionTexto7");
+		p.add(Projections.property("ce.texto8"), "projectionTexto8");
+		p.add(Projections.property("ce.texto9"), "projectionTexto9");
+		p.add(Projections.property("ce.texto10"), "projectionTexto10");
 		p.add(Projections.property("ce.data1"), "projectionData1");
 		p.add(Projections.property("ce.data2"), "projectionData2");
 		p.add(Projections.property("ce.data3"), "projectionData3");
@@ -977,6 +984,20 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				hql.append(" and normalizar(upper(ce.texto2)) like normalizar(:texto2) ");
 			if(StringUtils.isNotBlank(camposExtras.getTexto3()))
 				hql.append(" and normalizar(upper(ce.texto3)) like normalizar(:texto3) ");
+			if(StringUtils.isNotBlank(camposExtras.getTexto4()))
+				hql.append(" and normalizar(upper(ce.texto4)) like normalizar(:texto4) ");
+			if(StringUtils.isNotBlank(camposExtras.getTexto5()))
+				hql.append(" and normalizar(upper(ce.texto5)) like normalizar(:texto5) ");
+			if(StringUtils.isNotBlank(camposExtras.getTexto6()))
+				hql.append(" and normalizar(upper(ce.texto6)) like normalizar(:texto6) ");
+			if(StringUtils.isNotBlank(camposExtras.getTexto7()))
+				hql.append(" and normalizar(upper(ce.texto7)) like normalizar(:texto7) ");
+			if(StringUtils.isNotBlank(camposExtras.getTexto8()))
+				hql.append(" and normalizar(upper(ce.texto8)) like normalizar(:texto8) ");
+			if(StringUtils.isNotBlank(camposExtras.getTexto9()))
+				hql.append(" and normalizar(upper(ce.texto9)) like normalizar(:texto9) ");
+			if(StringUtils.isNotBlank(camposExtras.getTexto10()))
+				hql.append(" and normalizar(upper(ce.texto10)) like normalizar(:texto10) ");
 
 			montaQueryIntervalo(camposExtras.getData1(), camposExtras.getData1Fim(), "data1", hql);
 			montaQueryIntervalo(camposExtras.getData2(), camposExtras.getData2Fim(), "data2", hql);
@@ -1012,6 +1033,20 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				query.setString("texto2", "%" + camposExtras.getTexto2().toUpperCase() + "%");
 			if(StringUtils.isNotBlank(camposExtras.getTexto3()))
 				query.setString("texto3", "%" + camposExtras.getTexto3().toUpperCase() + "%");
+			if(StringUtils.isNotBlank(camposExtras.getTexto4()))
+				query.setString("texto4", "%" + camposExtras.getTexto4().toUpperCase() + "%");
+			if(StringUtils.isNotBlank(camposExtras.getTexto5()))
+				query.setString("texto5", "%" + camposExtras.getTexto5().toUpperCase() + "%");
+			if(StringUtils.isNotBlank(camposExtras.getTexto6()))
+				query.setString("texto6", "%" + camposExtras.getTexto6().toUpperCase() + "%");
+			if(StringUtils.isNotBlank(camposExtras.getTexto7()))
+				query.setString("texto7", "%" + camposExtras.getTexto7().toUpperCase() + "%");
+			if(StringUtils.isNotBlank(camposExtras.getTexto8()))
+				query.setString("texto8", "%" + camposExtras.getTexto8().toUpperCase() + "%");
+			if(StringUtils.isNotBlank(camposExtras.getTexto9()))
+				query.setString("texto9", "%" + camposExtras.getTexto9().toUpperCase() + "%");
+			if(StringUtils.isNotBlank(camposExtras.getTexto10()))
+				query.setString("texto10", "%" + camposExtras.getTexto10().toUpperCase() + "%");
 
 			setIntervaloData(camposExtras.getData1(), camposExtras.getData1Fim(), "data1", query);
 			setIntervaloData(camposExtras.getData2(), camposExtras.getData2Fim(), "data2", query);

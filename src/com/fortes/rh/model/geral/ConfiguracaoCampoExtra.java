@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 
@@ -19,6 +20,7 @@ public class ConfiguracaoCampoExtra extends AbstractModel implements Serializabl
 	@Column(length=60)
 	private String titulo;
 	private int ordem;
+	private int posicao;
 	private String tipo;
 	@Column(length=30)
 	private String descricao;
@@ -58,6 +60,12 @@ public class ConfiguracaoCampoExtra extends AbstractModel implements Serializabl
 	}
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	public int getPosicao() {
+		return posicao;
+	}
+	public void setPosicao(int posicao) {
+		this.posicao = posicao;
 	}
 
 }

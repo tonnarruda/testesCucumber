@@ -16,5 +16,9 @@ public interface ExameSolicitacaoExameDao extends GenericDao<ExameSolicitacaoExa
 	Collection<ExameSolicitacaoExame> findBySolicitacaoExame(Long[] solicitacaoExameIds);
 
 	Collection<ExameSolicitacaoExame> findBySolicitacaoExame(Long solicitacaoExameId);
+	
+	public ExameSolicitacaoExame findDataSolicitacaoExame(Long colaboradorId, Long candidatoId, Long exameId);
+	
+	public ExameSolicitacaoExame findIdColaboradorOUCandidato(Long solicitacaoExameId, Long exameId);
 
 }

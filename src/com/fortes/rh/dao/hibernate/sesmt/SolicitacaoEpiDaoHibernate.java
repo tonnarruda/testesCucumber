@@ -112,7 +112,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return (SolicitacaoEpi) criteria.uniqueResult();
 	}
 
-	public Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds)
+	public Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds, Long[] areasIds, Long[] estabelecimentoIds)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new SolicitacaoEpi(e.id,co.id,e.nome,co.nome,ca.nome,se.data,eh.validadeUso,item.qtdEntregue, eh.vencimentoCA) ");
@@ -121,6 +121,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		hql.append("join item.solicitacaoEpi se ");
 		hql.append("join se.colaborador co ");
 		hql.append("join se.cargo ca ");
+		hql.append("join co.historicoColaboradors hc ");
 		hql.append("left join e.epiHistoricos eh ");
 		hql.append("where eh.data = (select max(eh2.data)");
 		hql.append("                    from EpiHistorico eh2");
@@ -136,6 +137,12 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		if(tipoEPIIds != null && tipoEPIIds.length > 0)
 			hql.append("   and e.tipoEPI.id in (:tipoEPIIds) ");
+
+		if(areasIds != null && areasIds.length > 0)
+			hql.append("   and hc.areaOrganizacional.id in (:areasIds) ");
+
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			hql.append("   and hc.estabelecimento.id in (:estabelecimentoIds) ");
 		
 		hql.append("order by co.id,e.id, se.data ");
 
@@ -145,6 +152,12 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		if(tipoEPIIds != null && tipoEPIIds.length > 0)
 			query.setParameterList("tipoEPIIds", tipoEPIIds, Hibernate.LONG);
+		
+		if(areasIds != null && areasIds.length > 0)
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 
 		return query.list();
 	}

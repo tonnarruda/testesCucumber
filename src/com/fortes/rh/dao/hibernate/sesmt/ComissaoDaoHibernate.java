@@ -78,8 +78,8 @@ public class ComissaoDaoHibernate extends GenericDaoHibernate<Comissao> implemen
 		return criteria.list();
 	}
 
-	public boolean updateTextosComunicados(Comissao comissao) {
-		
+	public boolean updateTextosComunicados(Comissao comissao) 
+	{
 		String hql = "update Comissao set ataPosseTexto1 = :ataPosseTexto1, ataPosseTexto2 = :ataPosseTexto2 where id = :id";
 
 		Query query = getSession().createQuery(hql);

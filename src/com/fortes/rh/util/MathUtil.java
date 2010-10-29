@@ -1,6 +1,6 @@
 package com.fortes.rh.util;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.util.Locale;
 
 public class MathUtil {
 
@@ -37,7 +37,9 @@ public class MathUtil {
 	
 	public static String formataValor(Double valor)
 	{
-		NumberFormat nf = new DecimalFormat("###,##0.00");
+//		NumberFormat nf = new DecimalFormat("###,##0.00");
+		DecimalFormat nf = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt", "BR"));
+		nf.applyPattern("###,##0.00");
 		return nf.format(valor);
 	}
 
