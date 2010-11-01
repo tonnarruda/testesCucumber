@@ -1,6 +1,6 @@
 package com.fortes.rh.test.selenium.integracaoAC;	
 
-import com.fortes.rh.test.db.geral.DbUnitManager;
+import dbunit.DbUnitManager;
 
 public class GeraBancoTeste
 {

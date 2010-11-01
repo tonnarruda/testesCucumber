@@ -1,4 +1,4 @@
-package com.fortes.rh.test.db.geral;
+package dbunit;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -6,6 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
+import javax.sql.DataSource;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
@@ -23,6 +27,7 @@ public class DbUnitManager {
 	 * Define se é necessário carregar os dados básicos do banco juntamente com os dados especificos do teste
 	 */
 	private boolean loadDefaultDataSet = true;
+	private DataSource dataSource;
 	
 	
 	public DbUnitManager() {
@@ -35,22 +40,21 @@ public class DbUnitManager {
 		this.loadDefaultDataSet = loadDefaultDataSet;
 	}
 	
+	public DbUnitManager(DataSource dataSource) {
+		this.dataSource = dataSource;
+		this.loadDefaultDataSet = false;
+	}
+	
 	/**
 	 * Retorna uma conexão com o banco de dados.
 	 */
 	private Connection getConnection() {
-		// TODO: Poderia pegar a configuração do banco de um arquivo .properties
-		Connection conn;
 		try {
-//			Class.forName("org.firebirdsql.jdbc.FBDriver");
-//			conn = DriverManager.getConnection("jdbc:firebirdsql:localhost/3051:C:\\Fortes\\AC\\AC.GDB?user=SYSDBA&password=masterkey");
-			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/fortesrh", "postgres", "123");
-		} catch (Exception e) {
+			return dataSource.getConnection();
+		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new RuntimeException("Erro ao tentar obter uma conexão com o banco: " + e.getMessage());
+			throw new RuntimeException("Erro ao obter uma conexão com o banco de dados: " + e.getMessage(), e);
 		}
-		return conn;
 	}
 	/**
 	 * Atualiza o banco com os dados do arquivo xml, porém não altera os
