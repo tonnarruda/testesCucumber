@@ -45,6 +45,12 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 	}
 
 	@Override
+	protected void onSetUpInTransaction() throws Exception {
+		super.onSetUpInTransaction();
+		dbUnitManager.deleteAll(dataSet);
+	}
+	
+	@Override
 	public GenericDao<ExtintorInspecao> getGenericDao()
 	{
 		return extintorInspecaoDao;
@@ -57,8 +63,6 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 
 	public void testGetCount()
 	{
-		
-		dbUnitManager.deleteAll(dataSet);
 		
 		Date hoje = new Date();
 		Calendar ontem = Calendar.getInstance();
