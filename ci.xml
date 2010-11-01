@@ -8,7 +8,7 @@
    	<path id="project.classpath">
 		<pathelement location="${build.dir}" />
 		<fileset dir="${lib.dir}">
-			<include name="*.jar" />
+			<include name="**/*.jar" />
 		</fileset>
    	</path>
 
@@ -108,6 +108,15 @@
 				</patternset>
 			</fileset>
 		</copy>
+
+		<copy todir="${build.dir}" includeEmptyDirs="no">
+			<fileset dir="${srcTeste.dir}">
+				<patternset>
+					<include name="**/*.xml"/>
+				</patternset>
+			</fileset>
+		</copy>
+
 	</target>
 
 	<target name="build">
