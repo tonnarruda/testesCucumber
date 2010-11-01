@@ -5,9 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 import javax.sql.DataSource;
 
@@ -26,23 +24,13 @@ public class DbUnitManager {
 	/**
 	 * Define se é necessário carregar os dados básicos do banco juntamente com os dados especificos do teste
 	 */
-	private boolean loadDefaultDataSet = true;
+	private boolean loadDefaultDataSet = false;
 	private DataSource dataSource;
 	
-	
-	public DbUnitManager() {
-		this(true);
-	}
-	/**
-	 * Instancia e define se é necessário carregar os dados básicos do banco juntamente com os dados especificos do teste
-	 */
-	public DbUnitManager(boolean loadDefaultDataSet) {
-		this.loadDefaultDataSet = loadDefaultDataSet;
-	}
+	public DbUnitManager() {}
 	
 	public DbUnitManager(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.loadDefaultDataSet = false;
 	}
 	
 	/**

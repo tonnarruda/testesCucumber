@@ -6,8 +6,8 @@ public class GeraBancoTeste
 {
 	public static void main(String[] args)
 	{
-		new DbUnitManager(false).cleanAndInsert("./test/com/fortes/rh/test/selenium/integracaoAC/deleteMinimoTestIntegracao.xml");
-		new DbUnitManager(false).cleanAndInsert("./test/com/fortes/rh/test/selenium/integracaoAC/dumpMinimoTestIntegracao.xml");
+		new DbUnitManager().cleanAndInsert("./test/com/fortes/rh/test/selenium/integracaoAC/deleteMinimoTestIntegracao.xml");
+		new DbUnitManager().cleanAndInsert("./test/com/fortes/rh/test/selenium/integracaoAC/dumpMinimoTestIntegracao.xml");
 		
 //		new DbUnitManager(false).deleteAll("./test/com/fortes/rh/test/selenium/integracaoAC/colaboradorOcorrenciaOcorrenciaDelete.xml");
 //		new DbUnitManager(false).cleanAndInsert("./test/com/fortes/rh/test/selenium/integracaoAC/ocorrenciaTipoOcorrenciaInsert.xml");

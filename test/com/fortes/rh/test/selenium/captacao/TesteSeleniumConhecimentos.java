@@ -21,7 +21,7 @@ public class TesteSeleniumConhecimentos extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		new DbUnitManager().clear();
-		new DbUnitManager(false).insert("./test/com/fortes/rh/test/selenium/captacao/conhecimento.xml");
+		new DbUnitManager().insert("./test/com/fortes/rh/test/selenium/captacao/conhecimento.xml");
 	}
 	
 	public void testConhecimento() throws Exception

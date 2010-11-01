@@ -22,14 +22,14 @@ public class TesteSeleniumIndice extends TestCase
 	@Override
 	protected void setUp() throws Exception
 	{
-		new DbUnitManager(false).deleteAll(getPathIntegracaoAC() + "deleteMinimoTestIntegracao.xml ");
-		new DbUnitManager(false).cleanAndInsert(getPathIntegracaoAC() + "dumpMinimoTestIntegracao.xml");
+		new DbUnitManager().deleteAll(getPathIntegracaoAC() + "deleteMinimoTestIntegracao.xml ");
+		new DbUnitManager().cleanAndInsert(getPathIntegracaoAC() + "dumpMinimoTestIntegracao.xml");
 	}
 
 	@Override
 	protected void tearDown() throws Exception
 	{
-		new DbUnitManager(false).deleteAll(getPathIntegracaoAC() + "deleteMinimoTestIntegracao.xml");
+		new DbUnitManager().deleteAll(getPathIntegracaoAC() + "deleteMinimoTestIntegracao.xml");
 	}
 	
 	public void testIndice() throws Exception
