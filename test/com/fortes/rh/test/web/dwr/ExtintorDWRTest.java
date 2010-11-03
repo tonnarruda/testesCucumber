@@ -36,9 +36,11 @@ public class ExtintorDWRTest extends MockObjectTestCase
 		extintor.setEstabelecimento(estabelecimento);
 		extintors.add(extintor);
 
-		extintorManager.expects(once()).method("findByEstabelecimento").will(returnValue(extintors));
+		extintorManager.expects(once()).method("findByEstabelecimento").with(eq(estabelecimento.getId()), eq(true)).will(returnValue(extintors));
 
 		assertNotNull(extintorDWR.getExtintorByEstabelecimento("1", "Selecione..."));
-		assertEquals(1, extintorDWR.getExtintorByEstabelecimento("", "").size());
+		
+		extintorManager.expects(once()).method("findByEstabelecimento").with(eq(null), eq(true)).will(returnValue(extintors));
+		assertEquals(2, extintorDWR.getExtintorByEstabelecimento("", "").size());
 	}
 }

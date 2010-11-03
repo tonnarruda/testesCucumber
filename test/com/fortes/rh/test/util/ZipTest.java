@@ -53,15 +53,17 @@ public class ZipTest extends TestCase
 	}
 
 	public void testIdentificaDiretorioDoArquivoOriginal(){
-        String dir = this.getClass().getResource(".").getPath();
+        String dir = ajustaBarrasDeAcordoComOS(this.getClass().getResource(".").getPath());
 		String path = dir + "arquivo.xml.fortesrh";
-		dir = dir.substring(0, dir.lastIndexOf("/"));
+		dir = dir.substring(0, dir.lastIndexOf(File.separator));
 		String diretorioDoArquivo = zip.identificaDiretorioDoArquivoOriginal(path);
 		assertEquals(dir, diretorioDoArquivo);
 	}
 
 	private String ajustaBarrasDeAcordoComOS(String path) {
-		return path.replace("\\", File.separator);
+		return path
+			.replace("/", File.separator)
+			.replace("\\", File.separator);
 	}
 
 	public void testIdentificaDiretorioDoArquivoOriginalNull()
