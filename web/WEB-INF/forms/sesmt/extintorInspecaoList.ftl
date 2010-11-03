@@ -23,7 +23,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	
 	<script type="text/javascript">
 
 
@@ -79,6 +80,20 @@
 			    window.location = host;
 			});
 		});
+		
+		jQuery(function($) {
+						
+			$('#relatorioTooltipHelp').qtip({
+				content: '<strong>Listagem de Inspeção de Extintores</strong><br />Será listado no relatório somente informações presentes no filtro.'
+				,
+				style: {
+		        	 width: '100px'
+		        }
+			});
+				
+				});
+				
+		
 	    
     </script>
 
@@ -144,12 +159,13 @@
 				
 	</@display.table>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
-
 			
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>
 		
 		<button class="btnListaDeInspecaoExtintores" id="btnListaDeInspecaoExtintores" ></button>
+		<img id="relatorioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" style="margin-left: -25px" width="16" height="16" /><br>
+				
 	</div>
 	
 </body>
