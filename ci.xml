@@ -10,6 +10,15 @@
 		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
 		</fileset>
+		<fileset dir="./extras">
+			<include name="servlet-api.jar" />
+		</fileset>
+   	</path>
+
+   	<path id="project.classpath.selenium">
+		<fileset dir="./extras">
+			<include name="*.jar" />
+		</fileset>
    	</path>
 
 	<path id="project.classpath.ireport">
@@ -59,6 +68,7 @@
 		</javac>
 		<javac debug="on" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${build.dir}" failonerror="true">
 			<classpath refid="project.classpath" />
+			<classpath refid="project.classpath.selenium" />
 		</javac>
 
 		<antcall target="resources"></antcall>
