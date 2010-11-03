@@ -5,8 +5,9 @@ import static com.fortes.rh.test.AbstractSeleniumSuite.getSeleniumInstance;
 import static com.fortes.rh.test.AbstractSeleniumSuite.verificaLogin;
 import junit.framework.TestCase;
 
-import com.fortes.rh.test.db.geral.DbUnitManager;
 import com.thoughtworks.selenium.Selenium;
+
+import dbunit.DbUnitManager;
 
 public class TesteSeleniumCargo extends TestCase
 {
@@ -19,13 +20,13 @@ public class TesteSeleniumCargo extends TestCase
 
 	@Override
 	protected void setUp() throws Exception {
-		new DbUnitManager(false).deleteAll("./test/com/fortes/rh/test/selenium/integracaoAC/cargoDelete.xml");
-		new DbUnitManager(false).cleanAndInsert("./test/com/fortes/rh/test/selenium/integracaoAC/cargoInsert.xml");
+		new DbUnitManager().deleteAll("./test/com/fortes/rh/test/selenium/integracaoAC/cargoDelete.xml");
+		new DbUnitManager().cleanAndInsert("./test/com/fortes/rh/test/selenium/integracaoAC/cargoInsert.xml");
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		new DbUnitManager(false).deleteAll("./test/com/fortes/rh/test/selenium/integracaoAC/cargoDelete.xml");
+		new DbUnitManager().deleteAll("./test/com/fortes/rh/test/selenium/integracaoAC/cargoDelete.xml");
 	}
 
 	public void testCargo() throws Exception
