@@ -23,8 +23,6 @@ import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorInspecaoFactory;
 import com.fortes.rh.util.DateUtil;
 
-import dbunit.DbUnitManager;
-
 public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<ExtintorInspecao>
 {
 	private ExtintorInspecaoDao extintorInspecaoDao;
@@ -33,7 +31,6 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 	private EmpresaDao empresaDao;
 	private EstabelecimentoDao estabelecimentoDao;
 	
-	DbUnitManager dbUnitManager;
 	
 	private static final String dataSet = "test/dbunit/dataset/ExtintorInspecaoDaoHibernateTest.xml";
 
@@ -47,7 +44,6 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
-		dbUnitManager.deleteAll(dataSet);
 	}
 	
 	@Override
@@ -155,21 +151,19 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintorInspecaoFora.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecaoFora);
 
-//<<<<<<< HEAD
-//		assertEquals(1, extintorInspecaoDao.
-//				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '0').size());
-//
-//		assertEquals(1, extintorInspecaoDao.
-//				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '2').size());
-//	
-//		assertEquals(0, extintorInspecaoDao.
-//				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '1').size());
-//=======
+		assertEquals(1, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '0').size());
+
+		assertEquals(1, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '2').size());
+	
+		assertEquals(0, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '1').size());
+
 		int numeroDeRegistrosEncontrados = extintorInspecaoDao.
 				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '0').size();
 		
-		assertEquals(2, numeroDeRegistrosEncontrados);
-//>>>>>>> 7bf25f4e24daee796482d010be7eb14202982193
+		assertEquals(1, numeroDeRegistrosEncontrados);
 	}
 
 	public void testFindEmpresasResponsaveisDistinct()
@@ -301,13 +295,4 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 	public void setExtintorInspecaoItemDao(ExtintorInspecaoItemDao extintorInspecaoItemDao) {
 		this.extintorInspecaoItemDao = extintorInspecaoItemDao;
 	}
-//<<<<<<< HEAD
-//}
-//=======
-	
-	public void setDbUnitManager(DbUnitManager dbUnitManager) {
-		this.dbUnitManager = dbUnitManager;
-	}
-	
 }
-//>>>>>>> 7bf25f4e24daee796482d010be7eb14202982193
