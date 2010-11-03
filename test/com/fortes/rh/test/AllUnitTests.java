@@ -556,7 +556,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(SolicitacaoBDSManagerTest.class);
         suite.addTestSuite(CandidatoCurriculoDaoHibernateTest.class);
         suite.addTestSuite(CandidatoCurriculoManagerTest.class);
-        
+
         suite.addTestSuite(CtpsTest.class);
 
         //Indicadores
@@ -580,16 +580,16 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(HistoricoColaboradorDaoHibernateTest.class);
         suite.addTestSuite(HistoricoColaboradorManagerTest.class);
         suite.addTestSuite(HistoricoColaboradorListActionTest.class);
-        
+
         suite.addTestSuite(RelatorioListaFrequenciaTest.class);
-        
+
         suite.addTestSuite(ColaboradorEditActionTest.class);
         suite.addTestSuite(ColaboradorListActionTest.class);
 
         suite.addTestSuite(ReajusteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(ReajusteColaboradorManagerTest.class);
         suite.addTestSuite(ReajusteColaboradorEditActionTest.class);
-        
+
         suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);
         suite.addTestSuite(IndiceEditActionTest.class);
@@ -606,45 +606,45 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CursoManagerTest.class);
         suite.addTestSuite(CursoEditActionTest.class);
         suite.addTestSuite(CursoListActionTest.class);
-        
+
         suite.addTestSuite(DiaTurmaDaoHibernateTest.class);
         suite.addTestSuite(DiaTurmaEditActionTest.class);
         suite.addTestSuite(DiaTurmaListActionTest.class);
         suite.addTestSuite(DiaTurmaManagerTest.class);
-        
+
         suite.addTestSuite(TurmaTest.class);
         suite.addTestSuite(TurmaDaoHibernateTest.class);
         suite.addTestSuite(TurmaEditActionTest.class);
         suite.addTestSuite(TurmaListActionTest.class);
         suite.addTestSuite(TurmaManagerTest.class);
-        
+
         suite.addTestSuite(DNTDaoHibernateTest.class);
         suite.addTestSuite(DNTManagerTest.class);
         suite.addTestSuite(DNTEditActionTest.class);
         suite.addTestSuite(DNTListActionTest.class);
-        
+
         suite.addTestSuite(ColaboradorTurmaEditActionTest.class);
         suite.addTestSuite(ColaboradorTurmaListActionTest.class);
         suite.addTestSuite(ColaboradorTurmaManagerTest.class);
         suite.addTestSuite(ColaboradorTurmaDaoHibernateTest.class);
-        
+
         suite.addTestSuite(ColaboradorPresencaEditActionTest.class);
         suite.addTestSuite(ColaboradorPresencaListActionTest.class);
         suite.addTestSuite(ColaboradorPresencaDaoHibernateTest.class);
         suite.addTestSuite(ColaboradorPresencaManagerTest.class);
-        
+
         suite.addTestSuite(PrioridadeTreinamentoEditActionTest.class);
         suite.addTestSuite(PrioridadeTreinamentoListActionTest.class);
-        
+
         suite.addTestSuite(RelatorioPresencaActionTest.class);
-        
+
         suite.addTestSuite(AvaliacaoCursoDaoHibernateTest.class);
         suite.addTestSuite(AvaliacaoCursoEditActionTest.class);
         suite.addTestSuite(AvaliacaoCursoListActionTest.class);
-        
+
         suite.addTestSuite(AproveitamentoAvaliacaoCursoDaoHibernateTest.class);
         suite.addTestSuite(AproveitamentoAvaliacaoCursoManagerTest.class);
-        
+
         suite.addTestSuite(CertificacaoDaoHibernateTest.class);
         suite.addTestSuite(CertificacaoManagerTest.class);
         suite.addTestSuite(CertificacaoListActionTest.class);
@@ -702,7 +702,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(EstadoManagerTest.class);
         suite.addTestSuite(CamposExtrasDaoHibernateTest.class);
         suite.addTestSuite(CamposExtrasManagerTest.class);
-        
+
         suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
 
         //contatoTest embedded Colaborador
@@ -809,7 +809,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(RiscoAmbienteDaoHibernateTest.class);
         suite.addTestSuite(RiscoAmbienteManagerTest.class);
         suite.addTestSuite(RiscoAmbienteDWRTest.class);
-        
+
         suite.addTestSuite(TipoEpiEditActionTest.class);
         suite.addTestSuite(TipoEpiListActionTest.class);
 
@@ -859,7 +859,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(MedicoCoordenadorListActionTest.class);
         suite.addTestSuite(MedicoCoordenadorDaoHibernateTest.class);
         suite.addTestSuite(MedicoCoordenadorManagerTest.class);
-        
+
         suite.addTestSuite(PcmsoListActionTest.class);
         suite.addTestSuite(PcmsoManagerTest.class);
 
@@ -947,24 +947,24 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ExtintorManutencaoManagerTest.class);
         suite.addTestSuite(ExtintorManutencaoEditActionTest.class);
         suite.addTestSuite(MotivoExtintorManutencaoTest.class);
-        
+
         suite.addTestSuite(MedicaoRiscoDaoHibernateTest.class);
         suite.addTestSuite(MedicaoRiscoManagerTest.class);
         suite.addTestSuite(MedicaoRiscoEditActionTest.class);
-        
+
         suite.addTestSuite(RiscoMedicaoRiscoDaoHibernateTest.class);
         suite.addTestSuite(RiscoMedicaoRiscoManagerTest.class);
 
         suite.addTestSuite(EventoDaoHibernateTest.class);
         suite.addTestSuite(EventoEditActionTest.class);
-        
+
         suite.addTestSuite(AgendaTest.class);
         suite.addTestSuite(AgendaDaoHibernateTest.class);
         suite.addTestSuite(AgendaManagerTest.class);
         suite.addTestSuite(AgendaEditActionTest.class);
-        
+
         suite.addTestSuite(PppRelatorioTest.class);
-        
+
         suite.addTestSuite(AsoRelatorioTest.class);
 
         // UTILITARIOS
@@ -987,24 +987,24 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ZipTest.class);
         suite.addTestSuite(ArquivoUtilTest.class);
         suite.addTestSuite(ImportacaoCSVUtilTest.class);
-        
+
         // Avaliacao
         suite.addTestSuite(AvaliacaoDaoHibernateTest.class);
         suite.addTestSuite(AvaliacaoManagerTest.class);
         suite.addTestSuite(AvaliacaoEditActionTest.class);
-        
+
         // Avaliacao de Experiencia
         suite.addTestSuite(PeriodoExperienciaDaoHibernateTest.class);
         suite.addTestSuite(PeriodoExperienciaManagerTest.class);
         suite.addTestSuite(PeriodoExperienciaEditActionTest.class);
         suite.addTestSuite(AvaliacaoExperienciaEditActionTest.class);
         suite.addTestSuite(PerguntaAvaliacaoEditActionTest.class);
-        
+
         // Avaliacao de Desempenho
         suite.addTestSuite(AvaliacaoDesempenhoDaoHibernateTest.class);
         suite.addTestSuite(AvaliacaoDesempenhoManagerTest.class);
         suite.addTestSuite(AvaliacaoDesempenhoEditActionTest.class);
-        
+
 
         // DICIONARIO
         suite.addTestSuite(StatusRetornoACTest.class);
@@ -1095,19 +1095,19 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AuditoriaManagerTest.class);
         suite.addTestSuite(MenuTest.class);
         suite.addTestSuite(UserDetailsImplTest.class);
-        
+
         //crud de Clientes somente para uso interno na Fortes Informática
         suite.addTestSuite(ClienteDaoHibernateTest.class);
         suite.addTestSuite(ClienteManagerTest.class);
         suite.addTestSuite(ClienteEditActionTest.class);
-        
-        // BACKUP e Ant Script 
+
+        // BACKUP e Ant Script
         suite.addTestSuite(BackupCleanerJobTest.class);
         suite.addTestSuite(BackupJobTest.class);
         suite.addTestSuite(BackupServiceImplTest.class);
         suite.addTestSuite(NotificadoDeBackupViaEmailImplTest.class);
-        suite.addTestSuite(RunAntScriptTest.class);
-        
+        //suite.addTestSuite(RunAntScriptTest.class);
+
         // AUDITORIA
         suite.addTestSuite(AtributosDaAuditoriaTest.class);
         suite.addTestSuite(AuditoriaGeralAdviceTest.class);
@@ -1122,3 +1122,4 @@ public class AllUnitTests extends TestSuite
         return suite;
     }
 }
+
