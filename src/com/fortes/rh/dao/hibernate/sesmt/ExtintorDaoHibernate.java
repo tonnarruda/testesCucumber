@@ -90,6 +90,7 @@ public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implemen
 		criteria.addOrder(Order.asc("e.localizacao"));
 		criteria.addOrder(Order.asc("e.numeroCilindro"));
 
+		if (estabelecimentoId != null && !estabelecimentoId.equals(""))
 		criteria.add(Expression.eq("e.estabelecimento.id", estabelecimentoId));
 
 		if (ativo != null)

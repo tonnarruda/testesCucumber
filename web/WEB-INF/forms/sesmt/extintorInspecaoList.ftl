@@ -40,11 +40,6 @@
 			})
 		}
 		
-		var verificarEstabelecimento = function() {
-			var estabelecimento = jQuery("#estabelecimento").val();
-			if(estabelecimento != "") populaExtintores();
-		};
-
 		function populaExtintores()
 	    {
 	      var estabelecimentoId = document.getElementById("estabelecimento").value;
@@ -62,7 +57,7 @@
 	    
 		jQuery(document).ready(function(){
 		
-			verificarEstabelecimento();
+		populaExtintores();
 		
 		    jQuery("#btnListaDeInspecaoExtintores").click(function(){
 			    var estabelecimento = jQuery("#estabelecimento").val();

@@ -30,6 +30,13 @@ public class ExtintorDWR
 			{
 				colecaoRetorno.addAll(extintores);
 			}
+		}else{
+			Collection<Extintor> extintores = extintorManager.findByEstabelecimento(null, true);
+			
+			if (!extintores.isEmpty())
+			{
+				colecaoRetorno.addAll(extintores);
+			}
 		}
 
 		return CollectionUtil.convertCollectionToMap(colecaoRetorno, "getId", "getDescricao", Extintor.class);
