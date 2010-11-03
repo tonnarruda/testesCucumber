@@ -136,7 +136,6 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		ExtintorInspecao extintorInspecao2 = ExtintorInspecaoFactory.getEntity();
 		extintorInspecao2.setExtintor(extintor);
 		extintorInspecao2.setData(ontem.getTime());
-		extintorInspecao2.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecao2);
 
 		ExtintorInspecao extintorInspecaoFora = ExtintorInspecaoFactory.getEntity();
@@ -145,8 +144,14 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintorInspecaoFora.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecaoFora);
 
-		assertEquals(2, extintorInspecaoDao.
+		assertEquals(1, extintorInspecaoDao.
 				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '0').size());
+
+		assertEquals(1, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '2').size());
+	
+		assertEquals(0, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '1').size());
 	}
 
 	public void testFindEmpresasResponsaveisDistinct()
