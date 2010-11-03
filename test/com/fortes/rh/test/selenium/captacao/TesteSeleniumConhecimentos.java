@@ -5,8 +5,9 @@ import static com.fortes.rh.test.AbstractSeleniumSuite.getSeleniumInstance;
 import static com.fortes.rh.test.AbstractSeleniumSuite.verificaLogin;
 import junit.framework.TestCase;
 
-import com.fortes.rh.test.db.geral.DbUnitManager;
 import com.thoughtworks.selenium.Selenium;
+
+import dbunit.DbUnitManager;
 
 public class TesteSeleniumConhecimentos extends TestCase
 {
@@ -20,7 +21,7 @@ public class TesteSeleniumConhecimentos extends TestCase
 	@Override
 	protected void setUp() throws Exception {
 		new DbUnitManager().clear();
-		new DbUnitManager(false).insert("./test/com/fortes/rh/test/selenium/captacao/conhecimento.xml");
+		new DbUnitManager().insert("./test/com/fortes/rh/test/selenium/captacao/conhecimento.xml");
 	}
 	
 	public void testConhecimento() throws Exception

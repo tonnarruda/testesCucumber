@@ -6,8 +6,9 @@ import static com.fortes.rh.test.AbstractSeleniumSuite.getSeleniumInstance;
 import static com.fortes.rh.test.AbstractSeleniumSuite.verificaLogin;
 import junit.framework.TestCase;
 
-import com.fortes.rh.test.db.geral.DbUnitManager;
 import com.thoughtworks.selenium.Selenium;
+
+import dbunit.DbUnitManager;
 
 public class TesteSeleniumColaboradorOcorrenciaOcorrencia extends TestCase
 {
@@ -21,17 +22,17 @@ public class TesteSeleniumColaboradorOcorrenciaOcorrencia extends TestCase
 	@Override
 	protected void setUp() throws Exception
 	{
-		new DbUnitManager(false).deleteAll(getPathIntegracaoAC() + "deleteColaboradorOcorrencia.xml");
-		new DbUnitManager(false).deleteAll(getPathIntegracaoAC() + "deleteMinimoTestIntegracao.xml ");
-		new DbUnitManager(false).cleanAndInsert(getPathIntegracaoAC() + "dumpMinimoTestIntegracao.xml");
-		new DbUnitManager(false).cleanAndInsert(getPathIntegracaoAC() + "dumpColaboradorOcorrencia.xml");
+		new DbUnitManager().deleteAll(getPathIntegracaoAC() + "deleteColaboradorOcorrencia.xml");
+		new DbUnitManager().deleteAll(getPathIntegracaoAC() + "deleteMinimoTestIntegracao.xml ");
+		new DbUnitManager().cleanAndInsert(getPathIntegracaoAC() + "dumpMinimoTestIntegracao.xml");
+		new DbUnitManager().cleanAndInsert(getPathIntegracaoAC() + "dumpColaboradorOcorrencia.xml");
 	}
 
 	@Override
 	protected void tearDown() throws Exception
 	{
-		new DbUnitManager(false).deleteAll(getPathIntegracaoAC() + "deleteColaboradorOcorrencia.xml");
-		new DbUnitManager(false).deleteAll(getPathIntegracaoAC() + "deleteMinimoTestIntegracao.xml");
+		new DbUnitManager().deleteAll(getPathIntegracaoAC() + "deleteColaboradorOcorrencia.xml");
+		new DbUnitManager().deleteAll(getPathIntegracaoAC() + "deleteMinimoTestIntegracao.xml");
 	}
 	
 	public void testColaboradorOcorrenciaOcorrencia() throws Exception

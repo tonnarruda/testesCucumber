@@ -1,5 +1,8 @@
 package com.fortes.rh.test.dao;
 
+import javax.sql.DataSource;
+
+import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public abstract class BaseDaoHibernateTest extends AbstractTransactionalSpringContextTests
@@ -48,4 +51,10 @@ public abstract class BaseDaoHibernateTest extends AbstractTransactionalSpringCo
     			"com/fortes/rh/config/backup/applicationContext-backup.xml"
     			};
 	}
+	
+	public DataSource getDataSource() {
+		HibernateTransactionManager tm = (HibernateTransactionManager) transactionManager;
+		return tm.getDataSource();
+	}
+	
 }
