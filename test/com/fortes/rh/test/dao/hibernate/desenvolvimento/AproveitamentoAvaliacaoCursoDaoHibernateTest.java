@@ -248,6 +248,114 @@ public class AproveitamentoAvaliacaoCursoDaoHibernateTest extends GenericDaoHibe
 		Collection<Long> ids = aproveitamentoAvaliacaoCursoDao.find(cursoIds, 2, true);
 		assertEquals(1, ids.size());
 	}
+	public void testFindColaboradorTurmaSemQtdAvaliacao()
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setMinimoAprovacao(50.0);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurmaAprovado = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaAprovado.setTurma(turma);
+		colaboradorTurmaAprovado.setColaborador(colaborador);
+		colaboradorTurmaDao.save(colaboradorTurmaAprovado);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCurso.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurmaAprovado);
+		aproveitamentoAvaliacaoCurso.setValor(20.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
+
+		int qtdAvaliacao = 0;
+		boolean qtdAvaliacaoBoolean = false;
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = aproveitamentoAvaliacaoCursoDao.findColaboradorTurma(turma.getCurso().getId(), qtdAvaliacao, "C", qtdAvaliacaoBoolean);
+		assertEquals(1, colaboradorTurmas.size());
+	}
+
+	public void testFindColaboradorTurmaComQtdAvaliacao()
+	{
+		Turma turma = TurmaFactory.getEntity();
+		turmaDao.save(turma);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setMinimoAprovacao(50.0);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurmaAprovado = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaAprovado.setTurma(turma);
+		colaboradorTurmaAprovado.setColaborador(colaborador);
+		colaboradorTurmaDao.save(colaboradorTurmaAprovado);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCurso.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurmaAprovado);
+		aproveitamentoAvaliacaoCurso.setValor(70.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
+		
+		int qtdAvaliacao = 1;
+		boolean qtdAvaliacaoBoolean = true;
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = aproveitamentoAvaliacaoCursoDao.findColaboradorTurma(turma.getId(), qtdAvaliacao, "T", qtdAvaliacaoBoolean);
+		assertEquals(1, colaboradorTurmas.size());
+	}
+
+	public void testFindColaboradores()
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurmaAprovado = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaAprovado.setTurma(turma);
+		colaboradorTurmaAprovado.setColaborador(colaborador);
+		colaboradorTurmaDao.save(colaboradorTurmaAprovado);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setMinimoAprovacao(50.0);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+
+		AvaliacaoCurso avaliacaoCurso2 = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso2.setMinimoAprovacao(90.0);
+		avaliacaoCursoDao.save(avaliacaoCurso2);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCurso.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurmaAprovado);
+		aproveitamentoAvaliacaoCurso.setValor(70.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
+		
+		int qtdAvaliacao = 1;
+		boolean aprovado = true;
+		
+		Collection<Long> colaboradorIds = aproveitamentoAvaliacaoCursoDao.findColaboradores(turma.getId(), qtdAvaliacao, "T", aprovado);
+		assertEquals(1, colaboradorIds.size());
+		
+		//reprovados
+		aprovado = false;
+		aproveitamentoAvaliacaoCurso.setAvaliacaoCurso(avaliacaoCurso2);
+		
+		Collection<Long> colaboradorIds2 = aproveitamentoAvaliacaoCursoDao.findColaboradores(turma.getCurso().getId(), qtdAvaliacao, "C", aprovado);
+		assertEquals(1, colaboradorIds2.size());
+	}
 
 	public void testFindReprovados()
 	{

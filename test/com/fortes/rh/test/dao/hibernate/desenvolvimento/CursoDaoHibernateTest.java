@@ -461,9 +461,9 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		cursoDao.save(curso);
 
 		Curso cursoFiltroBusca = new Curso();
-		cursoFiltroBusca.setNome("Filtro errado");
+		cursoFiltroBusca.setNome("Curso de direção");
 
-		assertEquals((Integer)0, cursoDao.getCount(cursoFiltroBusca, empresa.getId()));
+		assertEquals((Integer)1, cursoDao.getCount(cursoFiltroBusca, empresa.getId()));
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
