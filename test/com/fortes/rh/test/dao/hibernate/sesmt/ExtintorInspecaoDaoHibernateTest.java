@@ -23,6 +23,8 @@ import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorInspecaoFactory;
 import com.fortes.rh.util.DateUtil;
 
+import dbunit.DbUnitManager;
+
 public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<ExtintorInspecao>
 {
 	private ExtintorInspecaoDao extintorInspecaoDao;
@@ -33,6 +35,12 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 	
 	
 	private static final String dataSet = "test/dbunit/dataset/ExtintorInspecaoDaoHibernateTest.xml";
+	
+	DbUnitManager dbUnitManager;
+
+	public void setDbUnitManager(DbUnitManager dbUnitManager) {
+		this.dbUnitManager = dbUnitManager;
+	}
 
 	@Override
 	public ExtintorInspecao getEntity()
@@ -44,6 +52,7 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
+		dbUnitManager.deleteAll(dataSet);
 	}
 	
 	@Override
