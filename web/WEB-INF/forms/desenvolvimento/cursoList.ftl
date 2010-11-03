@@ -42,6 +42,7 @@
 	</@display.table>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
 	<div class="buttonGroup">

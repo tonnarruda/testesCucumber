@@ -176,6 +176,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
 		criteria.setProjection(Projections.rowCount());
 
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		if (curso != null && StringUtils.isNotBlank(curso.getNome()))
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + curso.getNome() + "%", Hibernate.STRING));
 
