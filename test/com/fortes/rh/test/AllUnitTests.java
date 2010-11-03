@@ -1,5 +1,6 @@
 package com.fortes.rh.test;
 
+
 import junit.framework.TestSuite;
 
 import com.fortes.rh.config.backup.BackupCleanerJobTest;
@@ -505,6 +506,8 @@ public class AllUnitTests extends TestSuite
 
         //ACESSO
         suite.addTestSuite(PapelManagerTest.class);
+
+
         suite.addTestSuite(PapelDaoHibernateTest.class);
         suite.addTestSuite(PerfilDaoHibernateTest.class);
         suite.addTestSuite(PerfilManagerTest.class);
@@ -1106,7 +1109,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(BackupJobTest.class);
         suite.addTestSuite(BackupServiceImplTest.class);
         suite.addTestSuite(NotificadoDeBackupViaEmailImplTest.class);
-        //suite.addTestSuite(RunAntScriptTest.class);
+        suite.addTestSuite(RunAntScriptTest.class);
 
         // AUDITORIA
         suite.addTestSuite(AtributosDaAuditoriaTest.class);
