@@ -33,9 +33,14 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 	private EmpresaDao empresaDao;
 	private EstabelecimentoDao estabelecimentoDao;
 	
-	DbUnitManager dbUnitManager;
 	
 	private static final String dataSet = "test/dbunit/dataset/ExtintorInspecaoDaoHibernateTest.xml";
+	
+	DbUnitManager dbUnitManager;
+
+	public void setDbUnitManager(DbUnitManager dbUnitManager) {
+		this.dbUnitManager = dbUnitManager;
+	}
 
 	@Override
 	public ExtintorInspecao getEntity()
@@ -147,7 +152,6 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		ExtintorInspecao extintorInspecao2 = ExtintorInspecaoFactory.getEntity();
 		extintorInspecao2.setExtintor(extintor);
 		extintorInspecao2.setData(ontem.getTime());
-		extintorInspecao2.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecao2);
 
 		ExtintorInspecao extintorInspecaoFora = ExtintorInspecaoFactory.getEntity();
@@ -156,10 +160,19 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintorInspecaoFora.setItens(extintorInspecaoItems);
 		extintorInspecaoDao.save(extintorInspecaoFora);
 
+		assertEquals(1, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '0').size());
+
+		assertEquals(1, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '2').size());
+	
+		assertEquals(0, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '1').size());
+
 		int numeroDeRegistrosEncontrados = extintorInspecaoDao.
 				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '0').size();
 		
-		assertEquals(2, numeroDeRegistrosEncontrados);
+		assertEquals(1, numeroDeRegistrosEncontrados);
 	}
 
 	public void testFindEmpresasResponsaveisDistinct()
@@ -291,9 +304,4 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 	public void setExtintorInspecaoItemDao(ExtintorInspecaoItemDao extintorInspecaoItemDao) {
 		this.extintorInspecaoItemDao = extintorInspecaoItemDao;
 	}
-	
-	public void setDbUnitManager(DbUnitManager dbUnitManager) {
-		this.dbUnitManager = dbUnitManager;
-	}
-	
 }

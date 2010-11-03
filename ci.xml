@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="FortesRH" basedir="." default="integrate">
+<project name="FortesRH" basedir="." default="integrate-server">
 
 	<property file="ci.properties" />
 
@@ -9,8 +9,10 @@
 		<pathelement location="${build.dir}" />
 		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
+			<include name="backup/ant-apache-log4j.jar" />
+			<exclude name="ant-junit.jar" />
 		</fileset>
-		<fileset dir="./extras">
+		<fileset dir="${project.dir}/extras">
 			<include name="servlet-api.jar" />
 		</fileset>
    	</path>
@@ -87,7 +89,7 @@
 		<sql driver="org.postgresql.Driver"
 			url="jdbc:postgresql://localhost:5432/template1"
 			userid="postgres"
-			password="postgres"
+			password="${postgres.password}"
 			classpath="${lib.dir}/postgresql-8.1-405.jdbc3.jar"
 			autocommit="true">
 			<transaction>
@@ -101,7 +103,7 @@
 		<sql driver="org.postgresql.Driver"
 			url="jdbc:postgresql://localhost:5432/template1"
 			userid="postgres"
-			password="postgres"
+			password="${postgres.password}"
 			classpath="${lib.dir}/postgresql-8.1-405.jdbc3.jar"
 			autocommit="true">
 			<transaction>
@@ -112,6 +114,7 @@
 
 		<exec failonerror="true" executable="psql"
 			input="${metadados.dir}/create.sql">
+			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
 			<arg value="fortesrh" />
@@ -120,6 +123,7 @@
 
 		<exec failonerror="true" executable="psql"
 			input="${metadados.dir}/update_dev.sql">
+			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
 			<arg value="fortesrh" />
@@ -130,12 +134,14 @@
 	<target name="recreate-bd" depends="recreate-bd-vazio">
 		<exec failonerror="true" executable="psql"
 			input="${metadados.dir}/create.sql">
+			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
 			<arg value="fortesrh" />
 		</exec>
 		<exec failonerror="true" executable="psql"
 			input="${metadados.dir}/create_data.sql">
+			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
 			<arg value="fortesrh" />
@@ -145,6 +151,7 @@
 	<target name="recreate-bd-populate" depends="recreate-bd-vazio">
 		<exec failonerror="true" executable="psql"
 			input="${metadados.dir}/populate.sql">
+			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
 			<arg value="fortesrh" />
@@ -154,6 +161,7 @@
 	<target name="recreate-and-update-bd" depends="recreate-bd">
 		<exec failonerror="true" executable="psql"
 			input="${metadados.dir}/update_dev.sql">
+			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
 			<arg value="fortesrh" />
@@ -164,16 +172,23 @@
 		<property name="allTests.class" value="com.fortes.rh.test.AllUnitTests" />
 
 		<dirname file="build.xml" property="current.dir" />
-		<junit haltonfailure="true" haltonerror="true" fork="true" dir="${current.dir}" maxmemory="512m">
+		<junit haltonfailure="true" haltonerror="true" 
+			fork="true" dir="${current.dir}" maxmemory="512m"
+			forkmode="once">
 			<jvmarg value="-javaagent:${jmockit.dir}" />
+            <jvmarg value="-Xms40m" />
+            <jvmarg value="-Xmx512m" />
+            <jvmarg value="-XX:MaxPermSize=512M" />
 			<classpath>
 				<path refid="project.classpath" />
+				<pathelement path="${build.dir}" />
 			</classpath>
 			<formatter type="plain" usefile="false" />
-			<test name="${allTests.class}" />
+
+            <test name="${allTests.class}" />
+
 		</junit>
 	</target>
-
 
 	<target name="integrate-server" depends="recreate-and-update-bd, test">
 		<echo message="Integração concluída com sucesso." />
