@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.33.22" data="04/11/2010">
+		- Legenda (regular e irregular) na tela de inspeção de extintores com filtros para facilitar controle e indicação para manutenção.
+		- Relatórios de inspeção de extintores :  opção para acompanhar extintores que precisam ser enviados para manutenção com opções de itens irregulares.
+		- Novo filtro na listagem de Colaborador, 
+	</Versao>
 	<Versao id="1.1.32.21" data="20/10/2010">
 		- Página Inicial: Opção para acessar o suporte da Fortes Informática via Chat.
 		- Relatório Colaborador por Cargo: Opção para exibir por cargo.

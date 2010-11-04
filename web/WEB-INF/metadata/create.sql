@@ -245,7 +245,8 @@ CREATE TABLE configuracaocampoextra (
 	descricao character varying(30),
 	titulo character varying(60),
 	ordem integer not null,
-	tipo character varying(60)
+	tipo character varying(60),
+	posicao Integer
 );
 
 ALTER TABLE configuracaocampoextra ADD CONSTRAINT configuracaocampoextra_pkey PRIMARY KEY (id);
@@ -261,7 +262,14 @@ CREATE TABLE camposExtras (
 	data3 date,
 	valor1 double precision,
 	valor2 double precision,
-	numero1 Integer
+	numero1 Integer,
+	texto4 character varying(250),
+	texto5 character varying(250),
+	texto6 character varying(250),
+	texto7 character varying(250),
+	texto8 character varying(250),
+	texto9 character varying(250),
+	texto10 character varying(250)
 );
 
 ALTER TABLE camposExtras ADD CONSTRAINT camposExtras_pkey PRIMARY KEY(id);
