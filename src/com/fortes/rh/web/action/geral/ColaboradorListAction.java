@@ -66,6 +66,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private Map statusRetornoACs = new StatusRetornoAC();
 	private Integer statusRetornoAC;
+	private boolean integraAc;
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private String[] areasCheck;
@@ -121,7 +122,9 @@ public class ColaboradorListAction extends MyActionSupportList
 
 		if (colaboradors == null || colaboradors.size() == 0)
 			addActionMessage("Não existem colaboradores a serem listados.");
-
+		
+		integraAc = getEmpresaSistema().isAcIntegra();
+		
 		return Action.SUCCESS;
 	}
 
@@ -520,4 +523,9 @@ public class ColaboradorListAction extends MyActionSupportList
 	public void setStatusRetornoAC(Integer statusRetornoAC) {
 		this.statusRetornoAC = statusRetornoAC;
 	}
+
+	public boolean isIntegraAc() {
+		return integraAc;
+	}
+
 }
