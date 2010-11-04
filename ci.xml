@@ -79,14 +79,14 @@
 
 	<target name="recreate-bd" depends="recreate-bd-vazio">
 		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/create.sql">
+			input="${metadados.dir}/create.sql" output="create.sql.log">
 			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
 			<arg value="fortesrh" />
 		</exec>
 		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/create_data.sql">
+			input="${metadados.dir}/create_data.sql" output="create_data.sql.log">
 			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
@@ -96,7 +96,7 @@
 
 	<target name="recreate-and-update-bd" depends="recreate-bd">
 		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/update_dev.sql">
+			input="${metadados.dir}/update_dev.sql" output="update_dev.sql.log">
 			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
@@ -110,17 +110,16 @@
 			<fileset dir="${build.dir}" includes="**/*/**" />
 		</delete>
 
-		<javac debug="on" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" failonerror="true">
+		<javac debug="true" debuglevel="vars,lines,source" nowarn="true" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" failonerror="true">
 			<classpath refid="project.classpath" />
 		</javac>
-		<javac debug="on" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${build.dir}" failonerror="true">
+		<javac debug="true" debuglevel="vars,lines,source" nowarn="true" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${build.dir}" failonerror="true">
 			<classpath refid="project.classpath" />
 			<classpath refid="project.classpath.selenium" />
 		</javac>
 
 		<antcall target="resources"></antcall>
 	</target>
-
 
 	<path id="cobertura.classpath">
 		<fileset dir="${cobertura.dir}">
@@ -142,7 +141,7 @@
 			<ignore regex="org.apache.log4j.*" />
 			<fileset dir="${build.dir}">
 				<include name="**/*.class" />
-				<exclude name="**/*Test.class" />
+				<exclude name="**/test/*.class" />
 			</fileset>
 		</cobertura-instrument>
 	</target>
@@ -153,23 +152,26 @@
 
 		<dirname file="ci.xml" property="current.dir" />
 		<junit haltonfailure="true" haltonerror="true"
-			fork="true" dir="${current.dir}" maxmemory="512m"
-			forkmode="once">
+			fork="yes" dir="${current.dir}" maxmemory="512m" showoutput="junit.log">
+
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${coverage.xml.dir}/cobertura.ser" />
+			<sysproperty key="basedir" value="." />
+            <formatter usefile="false" type="brief"/>
+
 			<jvmarg value="-javaagent:${jmockit.dir}" />
             <jvmarg value="-Xms40m" />
             <jvmarg value="-Xmx512m" />
             <jvmarg value="-XX:MaxPermSize=512M" />
 			<classpath>
 				<path refid="project.classpath" />
-				<pathelement path="${build.dir}" />
+
 				<fileset dir="${cobertura.dir}">
 					<include name="cobertura.jar" />
 				</fileset>
 				<pathelement path="${instrumented.dir}" />
+                <pathelement path="${build.dir}" />
 			</classpath>
-			<sysproperty key="net.sourceforge.cobertura.datafile" file="${coverage.xml.dir}/cobertura.ser" />
-			<sysproperty key="basedir" value="." />
-			<formatter type="plain" usefile="false" />
+
 
             <test name="${allTests.class}" />
 
