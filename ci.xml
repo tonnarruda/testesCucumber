@@ -11,6 +11,7 @@
 			<include name="*.jar" />
 			<include name="backup/ant-apache-log4j.jar" />
 			<exclude name="ant-junit.jar" />
+            <exclude name="webwork2-spring.jar" />
 		</fileset>
 		<fileset dir="${project.dir}/extras">
 			<include name="servlet-api.jar" />
@@ -22,6 +23,7 @@
 			<include name="*.jar" />
 			<include name="backup/ant-apache-log4j.jar" />
 			<exclude name="ant-junit.jar" />
+            <exclude name="webwork2-spring.jar" />
 		</fileset>
 		<fileset dir="${project.dir}/extras">
 			<include name="servlet-api.jar" />
