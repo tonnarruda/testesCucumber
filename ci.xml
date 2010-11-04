@@ -11,6 +11,19 @@
 			<include name="*.jar" />
 			<include name="backup/ant-apache-log4j.jar" />
 			<exclude name="ant-junit.jar" />
+            <exclude name="webwork2-spring.jar" />
+		</fileset>
+		<fileset dir="${project.dir}/extras">
+			<include name="servlet-api.jar" />
+		</fileset>
+   	</path>
+
+   	<path id="project.classpath2">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+			<include name="backup/ant-apache-log4j.jar" />
+			<exclude name="ant-junit.jar" />
+            <exclude name="webwork2-spring.jar" />
 		</fileset>
 		<fileset dir="${project.dir}/extras">
 			<include name="servlet-api.jar" />
@@ -79,14 +92,14 @@
 
 	<target name="recreate-bd" depends="recreate-bd-vazio">
 		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/create.sql">
+			input="${metadados.dir}/create.sql" output="create.sql.log">
 			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
 			<arg value="fortesrh" />
 		</exec>
 		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/create_data.sql">
+			input="${metadados.dir}/create_data.sql" output="create_data.sql.log">
 			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
@@ -96,7 +109,7 @@
 
 	<target name="recreate-and-update-bd" depends="recreate-bd">
 		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/update_dev.sql">
+			input="${metadados.dir}/update_dev.sql" output="update_dev.sql.log">
 			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="postgres" />
@@ -110,17 +123,16 @@
 			<fileset dir="${build.dir}" includes="**/*/**" />
 		</delete>
 
-		<javac debug="on" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" failonerror="true">
+		<javac debug="true" debuglevel="vars,lines,source" nowarn="true" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" failonerror="true">
 			<classpath refid="project.classpath" />
 		</javac>
-		<javac debug="on" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${build.dir}" failonerror="true">
+		<javac debug="true" debuglevel="vars,lines,source" nowarn="true" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${build.dir}" failonerror="true">
 			<classpath refid="project.classpath" />
 			<classpath refid="project.classpath.selenium" />
 		</javac>
 
 		<antcall target="resources"></antcall>
 	</target>
-
 
 	<path id="cobertura.classpath">
 		<fileset dir="${cobertura.dir}">
@@ -142,7 +154,7 @@
 			<ignore regex="org.apache.log4j.*" />
 			<fileset dir="${build.dir}">
 				<include name="**/*.class" />
-				<exclude name="**/*Test.class" />
+				<exclude name="**/test/**/*.class" />
 			</fileset>
 		</cobertura-instrument>
 	</target>
@@ -153,25 +165,28 @@
 
 		<dirname file="ci.xml" property="current.dir" />
 		<junit haltonfailure="true" haltonerror="true"
-			fork="true" dir="${current.dir}" maxmemory="512m"
-			forkmode="once">
+			fork="yes" dir="${current.dir}" maxmemory="512m">
+
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${coverage.xml.dir}/cobertura.ser" />
+			<sysproperty key="basedir" value="." />
+            <formatter usefile="false" type="brief"/>
+
 			<jvmarg value="-javaagent:${jmockit.dir}" />
             <jvmarg value="-Xms40m" />
             <jvmarg value="-Xmx512m" />
             <jvmarg value="-XX:MaxPermSize=512M" />
-			<classpath>
-				<path refid="project.classpath" />
-				<pathelement path="${build.dir}" />
-				<fileset dir="${cobertura.dir}">
-					<include name="cobertura.jar" />
-				</fileset>
-				<pathelement path="${instrumented.dir}" />
-			</classpath>
-			<sysproperty key="net.sourceforge.cobertura.datafile" file="${coverage.xml.dir}/cobertura.ser" />
-			<sysproperty key="basedir" value="." />
-			<formatter type="plain" usefile="false" />
 
-            <test name="${allTests.class}" />
+            <classpath refid="project.classpath2"/>
+            <classpath location="${instrumented.dir}"/>
+            <classpath location="${build.dir}"/>
+
+            <classpath refid="cobertura.classpath"/>
+
+            <batchtest todir="." >
+                <fileset dir="${srcTeste.dir}">
+                    <include name="**/test/**/*AllUnitTests.java" />
+                </fileset>
+            </batchtest>
 
 		</junit>
 	</target>
@@ -179,53 +194,6 @@
 	<target name="coverage" depends="test-coverage">
 		<cobertura-report datafile="${coverage.xml.dir}/cobertura.ser" srcdir="${src.dir}" destdir="${coverage.xml.dir}" format="xml" />
 	</target>
-
-<!--
-	<target name="emma-compile" depends="build">
-		<delete dir="${project.dir}/emma" />
-		<mkdir dir="${project.dir}/emma"/>
-		<mkdir dir="${project.dir}/emma/classes"/>
-		<mkdir dir="${project.dir}/emma/reports"/>
-
-		<emma verbosity="verbose">
-			<instr instrpath="${build.dir}" destdir="${project.dir}/emma/classes" metadatafile="${project.dir}/emma/metadado.emma" merge="false" mode="copy">
-				<filter excludes="*Test*" />
-				<filter excludes="*Mock*" />
-				<filter excludes="*Factory*" />
-				<filter excludes="*Suite*" />
-				<filter excludes="*BeanBasico*" />
-			</instr>
-		</emma>
-	</target>
-
-	<target name="emma-test" depends="emma-compile">
-		<property name="allTests.class" value="com.fortes.rh.test.AllUnitTests" />
-
-		<dirname file="ci.xml" property="current.dir" />
-		<junit haltonfailure="true" haltonerror="true" fork="true" dir="${current.dir}" maxmemory="512m" forkmode="once">
-			<classpath>
-				<pathelement location="${project.dir}/emma/classes"/>
-				<pathelement location="${project.dir}/emma/lib"/>
-				<path refid="project.classpath" />
-			</classpath>
-			<formatter type="plain" usefile="false" />
-			<test name="${allTests.class}" />
-
-			<jvmarg value="-javaagent:${jmockit.dir}" />
-			<jvmarg value="-Demma.coverage.out.file=${project.dir}/emma/cobertura.emma" />
-			<jvmarg value="-Demma.coverage.out.merge=false" />
-		</junit>
-
-		<emma>
-			<report sourcepath="${project.dir}" >
-				<fileset dir="${project.dir}/emma">
-					<include name="*.emma" />
-				</fileset>
-				<xml outfile="emma/reports/cobertura.xml" />
-			</report>
-		</emma>
-	</target>
--->
 
 	<target name="test" depends="build">
 		<property name="allTests.class" value="com.fortes.rh.test.AllUnitTests" />
