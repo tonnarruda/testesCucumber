@@ -42,6 +42,7 @@
 
 	<decorator name="externo" page="externo.ftl">
 		<pattern>/externo/**</pattern>
+		<pattern>/pesquisa/trafego/**</pattern>
 	</decorator>
 
 	<decorator name="recuperaSenha" page="recuperaSenha.ftl">

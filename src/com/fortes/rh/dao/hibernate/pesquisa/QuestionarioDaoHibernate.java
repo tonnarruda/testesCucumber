@@ -117,28 +117,40 @@ public class QuestionarioDaoHibernate extends GenericDaoHibernate<Questionario> 
 	@SuppressWarnings("unchecked")
 	public Collection<Questionario> findQuestionarioPorUsuario(Long usuarioId)
 	{
+		return montaQuery("c.usuario.id", usuarioId);
+	}
+
+	public Collection<Questionario> findQuestionario(Long colaboradorId) 
+	{
+		return montaQuery("c.id", colaboradorId);
+	}
+	
+	public Collection<Questionario> montaQuery(String property, Long id) 
+	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "q");
 		criteria.createCriteria("q.colaboradorQuestionarios", "cq", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "c");
-
+		
 		ProjectionList p = Projections.projectionList().create();
-
+		
 		p.add(Projections.property("q.id"), "id");
 		p.add(Projections.property("q.titulo"), "titulo");
 		p.add(Projections.property("q.dataInicio"), "dataInicio");
 		p.add(Projections.property("q.tipo"), "tipo");
-
+		
 		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("c.usuario.id", usuarioId));
+		Date hoje = new Date();
+		
+		criteria.add(Expression.eq(property, id));
+		
 		criteria.add(Expression.eq("cq.respondida", false));
 		criteria.add(Expression.eq("q.liberado", true));
-		criteria.add(Expression.le("q.dataInicio", new Date()));
-		criteria.add(Expression.ge("q.dataFim", new Date()));
-
+		criteria.add(Expression.le("q.dataInicio", hoje));
+		criteria.add(Expression.ge("q.dataFim", hoje));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-
+		
 		return criteria.list();
 	}
 }

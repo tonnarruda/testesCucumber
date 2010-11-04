@@ -30,6 +30,7 @@
 		@import url('<@ww.url includeParams="none" value="/css/externo.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
 
 		#topDiv {
 			width: 100%;

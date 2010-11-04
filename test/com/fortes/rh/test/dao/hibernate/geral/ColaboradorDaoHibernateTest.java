@@ -1036,6 +1036,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa));
 	}
+	
+	public void testFindByCodigoACUsuario()
+	{
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador.setCodigoAC("12345678");
+		colaborador.setUsuario(usuario);
+		colaborador = colaboradorDao.save(colaborador);
+		
+		assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa));
+	}
 
 	public void testFindByCodigoACEmpresaString()
 	{
