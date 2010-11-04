@@ -100,7 +100,6 @@
 		</td>
 	</tr>
 	
-		
 	<#assign i = 0/>
 	
 	<#list configuracaoCampoExtras as configuracaoCampoExtra>
@@ -230,20 +229,46 @@
 <br>
 </ul>
 
+
+
+
+
+<h4>Avaliação de Desempenho</h4>
+<ul>
+<table class="grade">
+	<tr>
+		<td>
+		<@display.table name="avaliacaoDesempenhos" id="avaliacaoDesempenho" class="dados">
+				<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
+				<@display.column property="avaliacao.titulo" title="Avaliação" />					
+				<@display.column property="performanceFormatada" title="Performance" />
+				<@display.column title="Obs." style="text-align: center;width: 50px">
+					<#if avaliacaoDesempenhos.observacao?exists && avaliacaoDesempenhos.observacao?trim != "">
+						<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoDesempenhos.observacao?j_string}');return false">...</span>
+					</#if>
+				</@display.column>
+		</@display.table>
+		</td>
+	</tr>
+</table>
+<br>
+</ul>
+
+
 <h4>Avaliações do Período de Experiência</h4>
 <ul>
 <table class="grade">
 	<tr>
 		<td>
-		<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
-			<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
-			<@display.column property="avaliacao.titulo" title="Avaliação" />
-			<@display.column property="performanceFormatada" title="Performance" />
-			<@display.column title="Obs." style="text-align: center;width: 50px">
-				<#if colaboradorQuestionario.observacao?exists && colaboradorQuestionario.observacao?trim != "">
-					<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${colaboradorQuestionario.observacao?j_string}');return false">...</span>
-				</#if>
-			</@display.column>
+		<@display.table name="avaliacaoExperiencias" id="avaliacaoExperiencia" class="dados">
+				<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
+				<@display.column property="avaliacao.titulo" title="Avaliação" />
+				<@display.column property="performanceFormatada" title="Performance" />
+				<@display.column title="Obs." style="text-align: center;width: 50px">
+					<#if avaliacaoExperiencia.observacao?exists && avaliacaoExperiencia.observacao?trim != "">
+						<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoExperiencia.observacao?j_string}');return false">...</span>
+					</#if>
+				</@display.column>
 		</@display.table>
 		</td>
 	</tr>

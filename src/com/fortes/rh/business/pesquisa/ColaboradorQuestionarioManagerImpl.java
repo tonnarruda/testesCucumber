@@ -17,6 +17,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.TipoAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -240,9 +241,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		this.perguntaManager = perguntaManager;
 	}
 
-	public Collection<ColaboradorQuestionario> findAvaliacaoExperienciaByColaborador(Long colaboradorId)
+	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean tipoAvaliacao)
 	{
-		return getDao().findAvaliacaoByColaborador(colaboradorId);
+		return getDao().findAvaliacaoByColaborador(colaboradorId, tipoAvaliacao);
 	}
 
 	public Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId)

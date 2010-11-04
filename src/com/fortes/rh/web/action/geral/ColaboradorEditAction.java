@@ -115,7 +115,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private CamposExtrasManager camposExtrasManager;
-
+	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
 	private Double salarioColaborador = 00.0;
@@ -132,7 +132,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private Collection<Estado> estados;
 	private Collection<Cidade> cidades;
 	private Collection<Estabelecimento> estabelecimentos;
-	private Collection<ColaboradorQuestionario> colaboradorQuestionarios;
+	private ColaboradorQuestionario avaliacaoExperiencia;
+	private ColaboradorQuestionario avaliacaoDesempenho;
+	private Collection<ColaboradorQuestionario> avaliacaoExperiencias;
+	private Collection<ColaboradorQuestionario> avaliacaoDesempenhos;
+	private Collection<ColaboradorQuestionario> colaboradorQuestionarioAvaloacaoExperiencias;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 
 	// Utilizados no insert e update para a chamada ao metodo saveDetalhes();
@@ -175,7 +179,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private boolean integraAc;
 	private boolean habilitaCampoExtra;
 	private CamposExtras camposExtras;
-
+	
 	//utilizado para permitir a edição de informações de colaborador com apenas hum histórico
 	private boolean editarHistorico = true;
 
@@ -690,7 +694,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(habilitaCampoExtra)
 				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
 			
-			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliacaoExperienciaByColaborador(colaborador.getId());
+			avaliacaoDesempenhos = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), true);
+			
+			avaliacaoExperiencias = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), false);
 			
 			historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), getEmpresaSistema().getId());
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
@@ -1299,7 +1305,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios()
 	{
-		return colaboradorQuestionarios;
+		return avaliacaoExperiencias;
 	}
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
@@ -1382,4 +1388,41 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setConfiguracaoCampoExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras) {
 		this.configuracaoCampoExtras = configuracaoCampoExtras;
 	}
+
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionarioAvaloacaoExperiencias() {
+		return colaboradorQuestionarioAvaloacaoExperiencias;
+	}
+
+	public Collection<ColaboradorQuestionario> getAvaliacaoExperiencias() {
+		return avaliacaoExperiencias;
+	}
+
+	public void setAvaliacaoExperiencias(Collection<ColaboradorQuestionario> avaliacaoExperiencias) {
+		this.avaliacaoExperiencias = avaliacaoExperiencias;
+	}
+
+	public Collection<ColaboradorQuestionario> getAvaliacaoDesempenhos() {
+		return avaliacaoDesempenhos;
+	}
+
+	public void setAvaliacaoDesempenhos(Collection<ColaboradorQuestionario> avaliacaoDesempenhos) {
+		this.avaliacaoDesempenhos = avaliacaoDesempenhos;
+	}
+
+	public ColaboradorQuestionario getAvaliacaoExperiencia() {
+		return avaliacaoExperiencia;
+	}
+
+	public void setAvaliacaoExperiencia(ColaboradorQuestionario avaliacaoExperiencia) {
+		this.avaliacaoExperiencia = avaliacaoExperiencia;
+	}
+
+	public ColaboradorQuestionario getAvaliacaoDesempenho() {
+		return avaliacaoDesempenho;
+	}
+
+	public void setAvaliacaoDesempenho(ColaboradorQuestionario avaliacaoDesempenho) {
+		this.avaliacaoDesempenho = avaliacaoDesempenho;
+	}
+
 }

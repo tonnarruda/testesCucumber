@@ -568,7 +568,7 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	public void setAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho) {
 		this.avaliacaoDesempenho = avaliacaoDesempenho;
 	}
-
+	
 	@NaoAudita
 	public void limparCampos() 
 	{

@@ -104,7 +104,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 				if(!colaborador.getNome().equals(colaborador.getNomeComercial()))
 					nomeComercialEntreParentese = " (" + colaborador.getNomeComercial() + ")";
 				
-				colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliacaoExperienciaByColaborador(colaborador.getId());				
+				colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(),false);				
 			}
 		}
 		

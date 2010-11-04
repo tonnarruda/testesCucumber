@@ -325,7 +325,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return (ColaboradorQuestionario) criteria.uniqueResult();
 	}
 
-	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId)
+	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean tipoAvaliacao)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 		criteria.createCriteria("cq.colaborador", "colab", Criteria.LEFT_JOIN);
@@ -344,7 +344,12 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("colab.id", colaboradorId));
-		criteria.add(Expression.isNull("cq.avaliacaoDesempenho"));
+		
+		if(tipoAvaliacao == true)
+			criteria.add(Expression.isNotNull("cq.avaliacaoDesempenho"));
+		
+		if(tipoAvaliacao == false)
+			criteria.add(Expression.isNull("cq.avaliacaoDesempenho"));
 		
 		criteria.addOrder(Order.desc("cq.respondidaEm"));
 		criteria.addOrder(Order.asc("colab.nome"));
