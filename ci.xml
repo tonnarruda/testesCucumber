@@ -165,7 +165,7 @@
 
 		<dirname file="ci.xml" property="current.dir" />
 		<junit haltonfailure="true" haltonerror="true"
-			fork="yes" dir="${current.dir}" maxmemory="512m" showoutput="junit.log">
+			fork="yes" dir="${current.dir}" maxmemory="512m">
 
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${coverage.xml.dir}/cobertura.ser" />
 			<sysproperty key="basedir" value="." />
