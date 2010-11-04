@@ -2966,7 +2966,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradors.size());
 	}
 	
-// TEM UM BABAU
 //	@SuppressWarnings("unchecked")
 //	public void testFindComHistoricoFuturoSQL()
 //	{
@@ -2980,7 +2979,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 //		faixaSalarialDao.save(faixaSalarial);
 //		
 //		Empresa empresa = EmpresaFactory.getEmpresa(4L);
-////		empresaDao.save(empresa);
+//		empresaDao.save(empresa);
 //		
 //		Colaborador joao = ColaboradorFactory.getEntity();
 //		joao.setNome("Joao ");
@@ -3030,7 +3029,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 //		
 //		assertEquals(2, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0).size());
 //	}	
-//	
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;

@@ -98,6 +98,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.acIntegra"), "acIntegra");
 		p.add(Projections.property("e.mensagemModuloExterno"), "mensagemModuloExterno");
 		criteria.setProjection(p);
 
