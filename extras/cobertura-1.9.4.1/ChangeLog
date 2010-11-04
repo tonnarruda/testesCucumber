@@ -1,3 +1,80 @@
+version 1.9.4.1:
+	* Fix a problem that occurs in Tomcat.   When TouchCollector 
+	  initializes, it calls ProjectData.initialize() which (with 
+	  Tomcat only) eventually calls TouchCollector.   However, 
+	  TouchCollector's static members have not been initialized.   
+	  Added a test that highlights this problem.   (Thanks to Jack Cobb
+	  for suggesting the fix).
+	* Runs on Java 5.  (Fix for Bug 2962599).
+	
+
+version 1.9.4:
+	* Cobertura is now up to 10x faster. Aggregates changes in
+	  temporary TouchCollector class (thread-safe, but lock-free) and after that
+	  applies it on real model (ProjectData) as a batch operation. (Piotr Tabor)
+	* Fixed "Some packages are included more then once" bug (#2875576) that
+	  caused some counts on the HTML report to be incorrect.  (Charlie Squires)
+	* Fixed "Inner classes not counted in coverage report total" bug (#2943320)
+	  (Charlie Squires)
+
+version 1.9.3:
+	* Update to the latest Javancss (32.53) to fix some complexity calculation
+	  problems.  Bug #2824425. (John Lewis)
+	* Non-Java source files (like Groovy) no longer show the JavaNCSS warnings
+	  during cobertura-report.  Fix of bug #2819844.
+	* Support the case where multiple classloaders each load the Cobertura 
+	  classes.  (Ed Randall)
+	* Fixed bug added with 1.9.2 where a NullPointerException is thrown
+	  if ProjectData.saveGlobalProjectData() is called before any instrumented
+	  code is executed.
+
+version 1.9.2:
+	* Cobertura is now thread safe.
+	* Fix for FileLocker exception when writing coverage data 
+	  (java.lang.IllegalStateException: Shutdown in progress) that started
+	  to appear with Java 6 update 14. (Chris van Es)
+	* Fix for bug "Unix scripts behave oddly due to DOS format - ID: 2788621"
+
+version 1.9.1.1:
+	* Just a copy of 1.9.1 with a corrected Maven POM file (cobertura-runtime.pom).
+	  A new version has to be created to get it uploaded to the central Maven repo.
+
+version 1.9.1:
+	* Complexity calculation now works with Java 5 language
+	  features such as Annotations. (Tri Bao Ho)
+	* Removed the bold font from the source-view for uncovered lines to
+	  improve the alignment.  (Jiri Mares)
+	* Support Ant <dirset>s. (Matt Cordes, John Lewis)
+	* Support the antlib mechanism for defining and importing 
+	  ant tasks. (Richard Atkins)
+	* Reports now support source encoded in something than UTF-8. (Jiri Mares)
+	* Report generation performance improvement. (Ignat Zapolsky)
+	* Report generation will look in zip and jar files if the 
+	  source java file is not found. (Charlie Squires, John Lewis)
+	* cobertura-check with linerate=0, branchrate=0, 
+	  packagebranchrate=0, packagelinerate=0, totalbranchrate=0,
+	  totallinerate=0 will no longer default all the values to
+	  50 as before.   Therefore, cobertura-check will always pass.
+	  Note that this still means that <cobertura-check /> (with
+	  no attributes) will still default to 50 for all rates. (Charlie
+	  Squires) (Bug 2152919)
+	* New coberturaFlush.war is created.   Deploy it to a 
+	  web server and invoke http://<HOST>:<PORT>/coberturaFlush/flushCobertura
+	  for a convenient way of flushing the cobertura data to the
+	  datafile without stopping the web server.  (Amit Nithianandan)
+	* XML report now shows total lines-covered, lines-valid, 
+	  branches-covered, branches-valid, and complexity.  (Julian Gamble)
+	* New report option called "summaryXml" will create
+	  a small summary XML report that does not have all the
+	  details on the classes - just the overall totals.  This
+	  is for large projects where the full XML report gets so
+	  big it impairs continuous build processes.  (Julian Gamble and Dan Godfrey)
+	* Migrated from asm-2.2.1 to asm-3.0. (Jiri Mares)
+	* The percentage coverage of 199 out of 200 lines has been 100%. 
+	  No more! Now it is 99%.  (Jiri Mares)
+	* Spelling error corrected in main.css file - changed magin to
+	  margin. (Dennis Lundberg)
+
 version 1.9:
 	* Much improved branch coverage.  Information on whether
 	  the true as well as the false of an if statement is

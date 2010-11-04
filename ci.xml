@@ -17,6 +17,17 @@
 		</fileset>
    	</path>
 
+   	<path id="project.classpath2">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+			<include name="backup/ant-apache-log4j.jar" />
+			<exclude name="ant-junit.jar" />
+		</fileset>
+		<fileset dir="${project.dir}/extras">
+			<include name="servlet-api.jar" />
+		</fileset>
+   	</path>
+
    	<path id="project.classpath.selenium">
 		<fileset dir="./extras">
 			<include name="*.jar" />
@@ -141,7 +152,7 @@
 			<ignore regex="org.apache.log4j.*" />
 			<fileset dir="${build.dir}">
 				<include name="**/*.class" />
-				<exclude name="**/test/*.class" />
+				<exclude name="**/test/**/*.class" />
 			</fileset>
 		</cobertura-instrument>
 	</target>
@@ -162,18 +173,18 @@
             <jvmarg value="-Xms40m" />
             <jvmarg value="-Xmx512m" />
             <jvmarg value="-XX:MaxPermSize=512M" />
-			<classpath>
-				<path refid="project.classpath" />
 
-				<fileset dir="${cobertura.dir}">
-					<include name="cobertura.jar" />
-				</fileset>
-				<pathelement path="${instrumented.dir}" />
-                <pathelement path="${build.dir}" />
-			</classpath>
+            <classpath refid="project.classpath2"/>
+            <classpath location="${instrumented.dir}"/>
+            <classpath location="${build.dir}"/>
 
+            <classpath refid="cobertura.classpath"/>
 
-            <test name="${allTests.class}" />
+            <batchtest todir="." >
+                <fileset dir="${srcTeste.dir}">
+                    <include name="**/test/**/*AllUnitTests.java" />
+                </fileset>
+            </batchtest>
 
 		</junit>
 	</target>
@@ -181,53 +192,6 @@
 	<target name="coverage" depends="test-coverage">
 		<cobertura-report datafile="${coverage.xml.dir}/cobertura.ser" srcdir="${src.dir}" destdir="${coverage.xml.dir}" format="xml" />
 	</target>
-
-<!--
-	<target name="emma-compile" depends="build">
-		<delete dir="${project.dir}/emma" />
-		<mkdir dir="${project.dir}/emma"/>
-		<mkdir dir="${project.dir}/emma/classes"/>
-		<mkdir dir="${project.dir}/emma/reports"/>
-
-		<emma verbosity="verbose">
-			<instr instrpath="${build.dir}" destdir="${project.dir}/emma/classes" metadatafile="${project.dir}/emma/metadado.emma" merge="false" mode="copy">
-				<filter excludes="*Test*" />
-				<filter excludes="*Mock*" />
-				<filter excludes="*Factory*" />
-				<filter excludes="*Suite*" />
-				<filter excludes="*BeanBasico*" />
-			</instr>
-		</emma>
-	</target>
-
-	<target name="emma-test" depends="emma-compile">
-		<property name="allTests.class" value="com.fortes.rh.test.AllUnitTests" />
-
-		<dirname file="ci.xml" property="current.dir" />
-		<junit haltonfailure="true" haltonerror="true" fork="true" dir="${current.dir}" maxmemory="512m" forkmode="once">
-			<classpath>
-				<pathelement location="${project.dir}/emma/classes"/>
-				<pathelement location="${project.dir}/emma/lib"/>
-				<path refid="project.classpath" />
-			</classpath>
-			<formatter type="plain" usefile="false" />
-			<test name="${allTests.class}" />
-
-			<jvmarg value="-javaagent:${jmockit.dir}" />
-			<jvmarg value="-Demma.coverage.out.file=${project.dir}/emma/cobertura.emma" />
-			<jvmarg value="-Demma.coverage.out.merge=false" />
-		</junit>
-
-		<emma>
-			<report sourcepath="${project.dir}" >
-				<fileset dir="${project.dir}/emma">
-					<include name="*.emma" />
-				</fileset>
-				<xml outfile="emma/reports/cobertura.xml" />
-			</report>
-		</emma>
-	</target>
--->
 
 	<target name="test" depends="build">
 		<property name="allTests.class" value="com.fortes.rh.test.AllUnitTests" />
