@@ -8,6 +8,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -32,7 +33,7 @@ public class DuracaoPreenchimentoVagaManagerImpl implements DuracaoPreenchimento
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(empresaId);
 		return new CollectionUtil<Estabelecimento>().convertCollectionToMap(estabelecimentos, "getId", "getNome");
 	}
-	
+
 	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorDuracaoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long empresaId) throws Exception
 	{
 		Map<Long, String> mapNomesAreas = getAreas(empresaId);
