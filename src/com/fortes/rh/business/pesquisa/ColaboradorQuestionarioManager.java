@@ -27,7 +27,7 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	ColaboradorQuestionario findByIdProjection(Long id);
 	ColaboradorQuestionario findByIdColaboradorCandidato(Long colaboradorQuestionarioId);
 	Collection<ColaboradorResposta> populaQuestionario(Avaliacao avaliacao);
-	Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean tipoAvaliacao);
+	Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean somenteAvaliacaoDesempenho);
 	Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId);
 	void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, boolean isAvaliado);
 	void remove(Long[] colaboradorParticipanteId, Long avaliacaoDesempenhoId, boolean isAvaliado) throws Exception;

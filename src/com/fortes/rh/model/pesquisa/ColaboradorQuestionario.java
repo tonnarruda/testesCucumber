@@ -515,7 +515,7 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	public String getPerformanceFormatada() {
 		if (performance == null)
 			return "0%";
-		
+
 	    DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt","BR"));//new DecimalFormat("0.##");
 	    df.applyPattern("0.##");
          

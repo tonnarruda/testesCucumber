@@ -185,7 +185,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		colaboradorQuestionario2.setAvaliacao(null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 
-		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findAvaliacaoByColaborador(colaborador.getId());
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findAvaliacaoByColaborador(colaborador.getId(), false);
 
 		assertEquals(1, retorno.size());
 	}

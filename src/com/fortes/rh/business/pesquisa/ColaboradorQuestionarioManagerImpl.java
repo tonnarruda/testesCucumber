@@ -241,9 +241,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		this.perguntaManager = perguntaManager;
 	}
 
-	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean tipoAvaliacao)
+	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean somenteAvaliacaoDesempenho)
 	{
-		return getDao().findAvaliacaoByColaborador(colaboradorId, tipoAvaliacao);
+		return getDao().findAvaliacaoByColaborador(colaboradorId, somenteAvaliacaoDesempenho);
 	}
 
 	public Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId)

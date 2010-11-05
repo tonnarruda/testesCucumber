@@ -28,7 +28,7 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 
 	ColaboradorQuestionario findByIdColaboradorCandidato(Long id);
 
-	Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean tipoAvaliacao);
+	Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean somenteAvaliacaoDesempenho);
 
 	Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId);
 
