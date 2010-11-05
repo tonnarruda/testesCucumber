@@ -62,6 +62,11 @@
 			<@ww.select label="Área Organizacional" name="areaOrganizacional.id" id="areaOrganizacional" list="areasList"  listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
 			<@ww.select label="Estabelecimento" name="estabelecimento.id" id="estabelecimento" list="estabelecimentosList" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
 			<@ww.select label="Cargo" name="cargo.id" id="cargo" list="cargosList" listKey="id" listValue="nomeMercado" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
+			
+			<#if integraAc>
+				<@ww.select label="Estatus no AC Pessoal" name="statusRetornoAC" id="statusRetornoAC" list="statusRetornoACs" listKey="id" listValue="statusRetornoAC" headerKey="" cssStyle="width: 355px;"/>
+			</#if>
+			
 			<@ww.hidden id="pagina" name="page"/>
 
 			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">

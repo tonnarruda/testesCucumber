@@ -587,4 +587,9 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 		this.colaboradorManager = colaboradorManager;
 	}
 
+	public Collection<Questionario> findQuestionario(Long colaboradorId) 
+	{
+		return getDao().findQuestionario(colaboradorId);
+	}
+
 }

@@ -6075,19 +6075,26 @@ INSERT INTO extintormanutencaoservico VALUES(10, 'Válvula Cilindro Adicional');
 insert into exame (id, nome, periodicidade, periodico, empresa_id) values (1, 'ASO', 0, false, 1);
 alter sequence exame_sequence restart with 2;
 
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo) values (1,'f','texto1','Campo de Texto 1', 1,'texto');
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo) values (2,'f','texto2','Campo de Texto 2', 1,'texto');
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo) values (3,'f','texto3','Campo de Texto 3', 1,'texto');
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo) values (4,'f','data1','Campo de Data 1', 1,'data');
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo) values (5,'f','data2','Campo de Data 2', 1,'data');
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo) values (6,'f','data3','Campo de Data 3', 1,'data');
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo) values (7,'f','valor1','Campo de Valor 1', 1,'valor');
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo) values (8,'f','valor2','Campo de Valor 2', 1,'valor');
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo) values (9,'f','numero1','Campo de Numero', 1,'numero');
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (1,'f','texto1','Campo de Texto 1', 1,'texto',1);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (2,'f','texto2','Campo de Texto 2', 1,'texto',2);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (3,'f','texto3','Campo de Texto 3', 1,'texto',3);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (4,'f','data1','Campo de Data 1', 1,'data',11);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (5,'f','data2','Campo de Data 2', 1,'data',12);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (6,'f','data3','Campo de Data 3', 1,'data',13);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (7,'f','valor1','Campo de Valor 1', 1,'valor',14);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (8,'f','valor2','Campo de Valor 2', 1,'valor',15);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (9,'f','numero1','Campo de Numero', 1,'numero',16);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (10,'f','texto4','Campo de Texto 4', 1,'texto',4);--.go
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (11,'f','texto5','Campo de Texto 5', 1,'texto',5);--.go
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (12,'f','texto6','Campo de Texto 6', 1,'texto',6);--.go
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (13,'f','texto7','Campo de Texto 7', 1,'texto',7);--.go
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (14,'f','texto8','Campo de Texto 8', 1,'texto',8);--.go
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (15,'f','texto9','Campo de Texto 9', 1,'texto',9);--.go
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (16,'f','texto10','Campo de Texto 10', 1,'texto',10);--.go
 
 alter sequence configuracaocampoextra_sequence restart with 10;
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, campoextracolaborador)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.32.21', '', '25', false,false, 2, '1.0.1.40', 1, 3, false);
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.33.22', '', '25', false,false, 2, '1.0.1.40', 1, 3, false);
 
 alter sequence parametrosdosistema_sequence restart with 2;

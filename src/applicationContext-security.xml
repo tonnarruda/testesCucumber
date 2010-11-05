@@ -312,6 +312,8 @@
 				/desenvolvimento/certificacao/*/**=ROLE_CAD_CERTIFICACAO
 				/desenvolvimento/indicadores/*/**=ROLE_MOV_CURSO
 
+				/pesquisa/trafego/*/**=ROLE_ANONYMOUS,ROLE_USER
+				
 				/pesquisa/pesquisa/preview.action*= ROLE_USER
 				/pesquisa/pesquisa/*/**= ROLE_MOV_QUESTIONARIO
 				/pesquisa/entrevista/*/**= ROLE_MOV_QUESTIONARIO

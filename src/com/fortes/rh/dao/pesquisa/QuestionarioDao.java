@@ -14,4 +14,5 @@ public interface QuestionarioDao extends GenericDao<Questionario>
 	void liberarQuestionario(Long questionarioId);
 	Collection<Questionario> findQuestionarioNaoLiberados(Date questionarioInicio);
 	Collection<Questionario> findQuestionarioPorUsuario(Long usuarioId);
+	Collection<Questionario> findQuestionario(Long colaboradorId);
 }

@@ -17,6 +17,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Mes;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -63,6 +64,10 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Map situacaos = new SituacaoColaborador();
 	private String situacao;
 
+	private Map statusRetornoACs = new StatusRetornoAC();
+	private Integer statusRetornoAC;
+	private boolean integraAc;
+	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -109,6 +114,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		parametros.put("estabelecimentoId", estabelecimento.getId());
 		parametros.put("cargoId", cargo.getId());
 		parametros.put("situacao", situacao);
+		parametros.put("statusRetornoAC", statusRetornoAC);
 
 		//BACALHAU, refatorar outra consulta que ta com HQL, essa é em SQL...ajustar size ta pegando o tamanho da lista
 		setTotalSize(colaboradorManager.getCountComHistoricoFuturoSQL(parametros));
@@ -116,7 +122,9 @@ public class ColaboradorListAction extends MyActionSupportList
 
 		if (colaboradors == null || colaboradors.size() == 0)
 			addActionMessage("Não existem colaboradores a serem listados.");
-
+		
+		integraAc = getEmpresaSistema().isAcIntegra();
+		
 		return Action.SUCCESS;
 	}
 
@@ -501,4 +509,23 @@ public class ColaboradorListAction extends MyActionSupportList
 	{
 		return empresaIds;
 	}
+
+	public Map getStatusRetornoACs() 
+	{
+		return statusRetornoACs;
+	}
+
+	public void setStatusRetornoACs(Map statusRetornoACs) 
+	{
+		this.statusRetornoACs = statusRetornoACs;
+	}
+
+	public void setStatusRetornoAC(Integer statusRetornoAC) {
+		this.statusRetornoAC = statusRetornoAC;
+	}
+
+	public boolean isIntegraAc() {
+		return integraAc;
+	}
+
 }

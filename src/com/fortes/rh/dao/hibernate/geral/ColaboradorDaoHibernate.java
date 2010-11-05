@@ -730,6 +730,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.codigoAC"), "codigoAC");
 		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
 		p.add(Projections.property("c.desligado"), "desligado");
+		p.add(Projections.property("c.usuario.id"), "usuarioIdProjection");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("e.codigoAC"), "empresaCodigoAC");
@@ -2471,6 +2472,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Long areaBuscaId = (Long) parametros.get("areaId");
 		Long estabelecimentoId = (Long) parametros.get("estabelecimentoId");
 		Long cargoId = (Long) parametros.get("cargoId");
+		Integer statusRetornoAC = (Integer) parametros.get("statusRetornoAC");
 		String situacao = (String) parametros.get("situacao");
 
 		String cpfBusca = (String) parametros.get("cpfBusca");
@@ -2494,7 +2496,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("		max(hc3.data) as maxData ");
 		sql.append("		from HistoricoColaborador hc3 ");
 		sql.append("		where  ");
-		sql.append("		hc3.data <= :hoje and hc3.status = :status ");
+		sql.append("		hc3.data <= :hoje ");
 		sql.append("		group by ");
 		sql.append("		hc3.colaborador_id ");
 		sql.append("	) subJoinMaxData  ");
@@ -2579,7 +2581,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		query.setDate("hoje", new Date());
 		query.setLong("empresaId", empresaId);
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(statusRetornoAC!=null)
+			query.setInteger("status", statusRetornoAC);
+		else
+			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		// Nome
 		if(nomeBusca != null && !nomeBusca.trim().equals(""))

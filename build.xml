@@ -10,6 +10,9 @@
 		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
 		</fileset>
+		<fileset dir="${project.dir}/extras">
+			<include name="*.jar" />
+		</fileset>
 		<fileset dir="${lib.dir}/backup">
 			<include name="*.jar" />
 		</fileset>

@@ -240,6 +240,7 @@
   <include file="/com/fortes/rh/web/action/desenvolvimento/xwork-IndicadorTreinamentos.xml" />
   <include file="/com/fortes/rh/web/action/pesquisa/xwork-Pergunta.xml" />
   <include file="/com/fortes/rh/web/action/pesquisa/xwork-Pesquisa.xml" />
+  <include file="/com/fortes/rh/web/action/pesquisa/xwork-PesquisaTrafego.xml" />
   <include file="/com/fortes/rh/web/action/pesquisa/xwork-ColaboradorResposta.xml" />
   <include file="/com/fortes/rh/web/action/pesquisa/xwork-Aspecto.xml" />
   <include file="/com/fortes/rh/web/action/pesquisa/xwork-ColaboradorQuestionario.xml" />

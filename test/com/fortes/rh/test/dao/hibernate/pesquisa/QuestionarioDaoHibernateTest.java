@@ -154,6 +154,31 @@ public class QuestionarioDaoHibernateTest extends GenericDaoHibernateTest<Questi
 
 		assertEquals(questionario, questionarios.toArray()[0]);
 	}
+	
+	public void testFindQuestionario()
+	{
+		Date dataAnterior = DateUtil.criarAnoMesDia(1900, 01, 01);
+		Date dataPosterior = new Date();
+		
+		Questionario questionario = preparaQuestionario();
+		questionario.setLiberado(true);
+		questionario.setDataInicio(dataAnterior);
+		questionario.setDataFim(dataPosterior);
+		questionario = questionarioDao.save(questionario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = colaboradorDao.save(colaborador);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario.setRespondida(false);
+		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		Collection<Questionario> questionarios = questionarioDao.findQuestionario(colaborador.getId());
+		
+		assertEquals(questionario, questionarios.toArray()[0]);
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
