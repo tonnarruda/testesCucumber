@@ -501,8 +501,10 @@
 </div>
 	
 	<div class="buttonGroup">
-		<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar" accesskey="V">
-		</button>
+		<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar" accesskey="V"></button>
+		<button class="btnImprimirPdf" onclick="window.location='imprimirPerformanceFuncional.action'" id="btnImprimePerformance"></button>
 	</div>
+	
+	
 </body>
 </html>
