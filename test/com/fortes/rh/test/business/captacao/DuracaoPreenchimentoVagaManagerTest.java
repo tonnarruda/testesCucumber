@@ -134,7 +134,7 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
 
     	Long empresaId=1L;
     	
-    	IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = new IndicadorDuracaoPreenchimentoVaga(1L, 1L, 1L, "Aumento de Quadro", 65);
+    	IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = new IndicadorDuracaoPreenchimentoVaga(1L, 1L, 1L, 1L, "Aumento de Quadro", 65);
     	List<IndicadorDuracaoPreenchimentoVaga> indicadores = Arrays.asList(indicadorDuracaoPreenchimentoVaga);
     	
 		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaId), eq(AreaOrganizacional.TODAS)).will(returnValue(areaOrganizacionals));

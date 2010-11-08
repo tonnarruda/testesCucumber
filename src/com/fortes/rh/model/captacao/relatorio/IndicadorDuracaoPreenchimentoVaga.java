@@ -2,6 +2,7 @@ package com.fortes.rh.model.captacao.relatorio;
 
 import java.io.Serializable;
 
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -17,7 +18,7 @@ public class IndicadorDuracaoPreenchimentoVaga implements Serializable
 	private Integer qtdCandidatos;
 	private Integer qtdVagas;
 	private Integer qtdContratados;
-	private String motivoSolicitacao;
+	private MotivoSolicitacao motivoSolicitacao;
 	private Integer qtdAberturas;
 	
 	public IndicadorDuracaoPreenchimentoVaga() {
@@ -66,7 +67,7 @@ public class IndicadorDuracaoPreenchimentoVaga implements Serializable
     }
 	
 	// usado por getIndicadorMotivosSolicitacao
-	public IndicadorDuracaoPreenchimentoVaga(Long estabelecimentoId, Long areaId, Long cargoId, String motivoSolicitacao, Integer qtdAberturas)
+	public IndicadorDuracaoPreenchimentoVaga(Long estabelecimentoId, Long areaId, Long cargoId, Long motivoSolicitacaoID, String motivoDescricao, Integer qtdAberturas)
 	{
 		this.estabelecimento = new Estabelecimento();
 		this.estabelecimento.setId(estabelecimentoId);
@@ -75,20 +76,14 @@ public class IndicadorDuracaoPreenchimentoVaga implements Serializable
 		this.cargo = new Cargo(); 
 		this.cargo.setId(cargoId);
 		this.qtdAberturas = qtdAberturas;
-		this.motivoSolicitacao = motivoSolicitacao;
+		this.motivoSolicitacao = new MotivoSolicitacao();
+		this.motivoSolicitacao.setId(motivoSolicitacaoID);
+		this.motivoSolicitacao.setDescricao(motivoDescricao);
 	}
 	
 	public Double getMediaDias()
 	{
 		return mediaDias;
-	}
-	public String getMotivoSolicitacao()
-	{
-		return motivoSolicitacao;
-	}
-	public void setMotivoSolicitacao(String motivoSolicitacao)
-	{
-		this.motivoSolicitacao = motivoSolicitacao;
 	}
 	public Integer getQtdCandidatos() {
 		return qtdCandidatos;
@@ -128,5 +123,9 @@ public class IndicadorDuracaoPreenchimentoVaga implements Serializable
 
 	public Integer getQtdAberturas() {
 		return qtdAberturas;
+	}
+
+	public MotivoSolicitacao getMotivoSolicitacao() {
+		return motivoSolicitacao;
 	}
 }
