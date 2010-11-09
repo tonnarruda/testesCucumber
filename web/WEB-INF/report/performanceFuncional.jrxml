@@ -50,6 +50,10 @@
 	<field name="idiomasColaborador" class="java.lang.Object"/>
 	<field name="avaliacaoDesempenhos" class="java.lang.Object"/>
 	<field name="avaliacaoExperiencias" class="java.lang.Object"/>
+	<field name="cursosColaborador" class="java.lang.Object"/>
+	<field name="historicoColaboradors" class="java.lang.Object"/>
+	<field name="ocorrenciasColaborador" class="java.lang.Object"/>
+	<field name="afastamentosColaborador" class="java.lang.Object"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -108,7 +112,7 @@
 		<group  name="AvaliacaoDesempenhos" >
 			<groupExpression><![CDATA[$F{avaliacaoDesempenhos}]]></groupExpression>
 			<groupHeader>
-			<band height="18"  isSplitAllowed="true" >
+			<band height="17"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="0"
@@ -133,10 +137,6 @@
 		<group  name="avaliacaoExperiencias" >
 			<groupExpression><![CDATA[$F{avaliacaoExperiencias}]]></groupExpression>
 			<groupHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupHeader>
-			<groupFooter>
 			<band height="18"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
@@ -152,6 +152,110 @@
 					</subreportParameter>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_avaliacaoExperiencias.jasper"]]></subreportExpression>
 				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="CursosColaborador" >
+			<groupExpression><![CDATA[$F{cursosColaborador}]]></groupExpression>
+			<groupHeader>
+			<band height="18"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="0"
+						y="0"
+						width="782"
+						height="13"
+						key="subreport-6"
+						stretchType="RelativeToBandHeight"
+						positionType="Float"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{cursosColaborador}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_cursosColaborador.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="HistoricoColaborador" >
+			<groupExpression><![CDATA[$F{historicoColaboradors}]]></groupExpression>
+			<groupHeader>
+			<band height="18"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="0"
+						y="0"
+						width="782"
+						height="13"
+						key="subreport-7"
+						stretchType="RelativeToBandHeight"
+						positionType="Float"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{historicoColaboradors}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_trajetoriaprofissional.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="Ocorrencias" >
+			<groupExpression><![CDATA[$F{ocorrenciasColaborador}]]></groupExpression>
+			<groupHeader>
+			<band height="18"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="0"
+						y="0"
+						width="782"
+						height="13"
+						key="subreport-8"
+						stretchType="RelativeToBandHeight"
+						positionType="Float"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{ocorrenciasColaborador}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_ocorrencias.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="AfastamentosColaborador" >
+			<groupExpression><![CDATA[$F{afastamentosColaborador}]]></groupExpression>
+			<groupHeader>
+			<band height="18"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="0"
+						y="0"
+						width="782"
+						height="13"
+						key="subreport-9"
+						stretchType="RelativeToBandHeight"
+						positionType="Float"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{afastamentosColaborador}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_afastamentosColaborador.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>

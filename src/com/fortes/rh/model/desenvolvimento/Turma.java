@@ -294,7 +294,7 @@ public class Turma extends AbstractModel implements Serializable
 		if (dataPrevIni != null)
 			periodo += DateUtil.formataDiaMesAno(dataPrevIni);
 		if (dataPrevFim != null)
-			periodo += " - " + DateUtil.formataDiaMesAno(dataPrevFim);
+			periodo += " a " + DateUtil.formataDiaMesAno(dataPrevFim);
 
 		return periodo;
 	}

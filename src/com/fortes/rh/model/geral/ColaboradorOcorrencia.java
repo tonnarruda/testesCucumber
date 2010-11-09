@@ -12,6 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -165,6 +166,15 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 	{
 		this.dataIni = dataIni;
 	}
+	
+	public String getPeriodo()
+	{
+		String periodo = "";
+		if(dataIni != null && dataFim != null)
+		periodo = DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
+		return periodo;
+	}
+
 	public Ocorrencia getOcorrencia()
 	{
 		return ocorrencia;
