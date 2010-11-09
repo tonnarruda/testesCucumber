@@ -22,6 +22,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.relatorio.RelatorioPerformanceFuncional;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -226,38 +227,6 @@ public class ColaboradorListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
-	public String imprimirPerformanceFuncional()
-	{
-		try
-		{
-			
-			//colaboradors = colaboradorManager.findAdmitidos(1L, dataIni, dataFim, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), exibirSomenteAtivos);
-			
-			String filtro = "Período : ";
-			//+ DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
-			
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Admitidos ", getEmpresaSistema(), filtro);
-			parametros.put("SOMENTE_ATIVOS", exibirSomenteAtivos);
-		}
-//		catch (ColecaoVaziaException e)
-//		{
-//			//addActionMessage(e.getMessage());
-//			//prepareRelatorioAdmitidos();
-//
-//			return Action.INPUT;
-//		}
-		catch (Exception e)
-		{
-			addActionError("Erro ao gerar relatório");
-			e.printStackTrace();
-			prepareRelatorioAdmitidos();
-
-			return Action.INPUT;
-		}
-		return SUCCESS;
-	}
-
-
 	public Collection getColaboradors()
 	{
 		return colaboradors;
@@ -559,5 +528,4 @@ public class ColaboradorListAction extends MyActionSupportList
 	public boolean isIntegraAc() {
 		return integraAc;
 	}
-
 }

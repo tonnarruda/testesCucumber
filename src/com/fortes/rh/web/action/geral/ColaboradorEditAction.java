@@ -72,11 +72,13 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
+import com.fortes.rh.model.relatorio.RelatorioPerformanceFuncional;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.rh.web.ws.AcPessoalClientSistema;
@@ -151,6 +153,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private AmbienteManager ambienteManager;
 
 	private IndiceHistoricoManager indiceHistoricoManager;
+	private RelatorioPerformanceFuncional relatorioPerformanceFuncional;
 
 	private String nomeBusca;
 	private String cpfBusca;
@@ -199,6 +202,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	private TipoAplicacaoIndice tipoAplicacaoIndice = new TipoAplicacaoIndice();
 	private boolean updateDados = true;
+
+	private Map<String,Object> parametros = new HashMap<String, Object>();
 
 	private void prepare() throws Exception
 	{
@@ -732,12 +737,42 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 					historico.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, historico.getAreaOrganizacional().getId()));
 			}
 
+			relatorioPerformanceFuncional = new RelatorioPerformanceFuncional(
+					colaborador, configuracaoCampoExtras, avaliacaoDesempenhos, avaliacaoExperiencias, historicoColaboradors, 
+					historicoColaborador, idiomasColaborador,formacaos,cursosColaborador, ocorrenciasColaborador, 
+					afastamentosColaborador, documentoAnexosColaborador, documentoAnexosCandidato, historicosCandidatoByColaborador,
+					catsColaborador, participacoesNaCipaColaborador, areaOrganizacionals);
+			
 			return Action.SUCCESS;
 
 		} else {
 			addActionError("Colaborador não selecionado");
 			return Action.INPUT;
 		}
+	}
+	
+	public String imprimirPerformanceFuncional() 
+	{
+		try
+		{
+			preparePerformanceFuncional();
+			String filtro = "Período : ";
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Admitidos ", getEmpresaSistema(), filtro);
+		}
+		catch (Exception e)
+		{
+			try {
+				preparePerformanceFuncional();
+			} catch (Exception e1) {
+				addActionError("Erro ao gerar relatório");
+				e1.printStackTrace();
+			}
+			addActionError("Erro ao gerar relatório");
+			e.printStackTrace();
+
+			return Action.INPUT;
+		}
+		return SUCCESS;
 	}
 
 	public String showFoto() throws Exception
@@ -1425,4 +1460,15 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.avaliacaoDesempenho = avaliacaoDesempenho;
 	}
 
+	public RelatorioPerformanceFuncional getRelatorioPerformanceFuncional() {
+		return relatorioPerformanceFuncional;
+	}
+
+	public void setRelatorioPerformanceFuncional(RelatorioPerformanceFuncional relatorioPerformanceFuncional) {
+		this.relatorioPerformanceFuncional = relatorioPerformanceFuncional;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
+	}
 }

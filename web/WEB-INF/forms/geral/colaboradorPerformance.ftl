@@ -502,7 +502,7 @@
 	
 	<div class="buttonGroup">
 		<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar" accesskey="V"></button>
-		<button class="btnImprimirPdf" onclick="window.location='imprimirPerformanceFuncional.action'" id="btnImprimePerformance"></button>
+		<button class="btnImprimirPdf" onclick="window.location='imprimirPerformanceFuncional.action?colaborador.id=${colaborador.id}'" id="btnImprimePerformance"></button>
 	</div>
 	
 	

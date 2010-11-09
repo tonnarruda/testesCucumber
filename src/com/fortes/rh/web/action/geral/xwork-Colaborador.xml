@@ -124,14 +124,14 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/prepareRelatorioAdmitidos.ftl</result>
 		</action>
 		
-		<action name="imprimirPerformanceFuncional" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="imprimirPerformanceFuncional">
+		<action name="imprimirPerformanceFuncional" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="imprimirPerformanceFuncional">
 			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/performaceFuncional.jasper</param>
-				<param name="dataSource">colaboradors</param>
+				<param name="location">WEB-INF/report/performanceFuncional.jasper</param>
+				<param name="dataSource">relatorioPerformanceFuncional</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">listagemPerformanceFuncional.pdf</param>
 			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/geral/prepareRelatorioAdmitidos.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorPerformance.ftl</result>
 		</action>
 		
 				
