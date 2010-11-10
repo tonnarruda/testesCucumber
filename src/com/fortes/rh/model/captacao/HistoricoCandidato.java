@@ -21,6 +21,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Contato;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -248,6 +249,17 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	{
 		return data;
 	}
+	
+	public String getDataFormatada()
+	{
+		String dataFormatada = "";
+		
+		if (data != null)
+			dataFormatada = DateUtil.formataDiaMesAno(data);
+
+		return dataFormatada;
+	}
+
 	public void setData(Date data)
 	{
 		this.data = data;

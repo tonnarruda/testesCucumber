@@ -42,7 +42,7 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="15"  isSplitAllowed="true" >
+			<band height="30"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="2"
@@ -55,6 +55,19 @@
 						<font pdfFontName="Helvetica-Bold" size="11" isBold="true" isItalic="true"/>
 					</textElement>
 				<text><![CDATA[Histórico de Cursos de Formação Profissional]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="2"
+						y="15"
+						width="221"
+						height="15"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="11" isBold="true" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[Formação]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
