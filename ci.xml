@@ -68,14 +68,12 @@
 
 
 	<target name="recreate-bd-vazio">
-        <!--
 		<exec executable="pg_dump"
 			output="./bkpDBFortesRh.sql">
 			<arg value="fortesrh" />
 			<arg value="-U" />
 			<arg value="postgres" />
 		</exec>
-        -->
 
 		<sql driver="org.postgresql.Driver"
 			url="jdbc:postgresql://localhost:5432/template1"
