@@ -1,3 +1,6 @@
+relatorio_cobertura.tar.gz
+cobertura-report/*
+extras/json/*.json
 web/WEB-INF/classes/
 *.class
 *.bak
@@ -9,3 +12,4 @@ file.fortesrh
 .settings/
 .mymetadata
 .myeclipse/
+
