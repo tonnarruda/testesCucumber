@@ -5,6 +5,7 @@ import java.util.Date;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.CandidatoEleicao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
+import com.fortes.rh.util.DateUtil;
 
 /**
  * Representa uma participação de Colaborador na CIPA, como:
@@ -49,6 +50,12 @@ public class ParticipacaoColaboradorCipa {
 
 	public Date getData() {
 		return data;
+	}
+	
+	public String getDataFormatada() {
+		String dataFormatada = ""; 
+		dataFormatada = DateUtil.formataDiaMesAno(data);
+		return dataFormatada;
 	}
 
 	public String getDescricao() {

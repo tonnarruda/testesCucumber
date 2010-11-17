@@ -31,6 +31,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SalarioUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -689,6 +690,15 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	{
 		return data;
 	}
+	
+	public String getDataFormatada()
+	{
+		String dataFormatada = "";
+		if(data != null)
+			dataFormatada = DateUtil.formataDiaMesAno(data);
+		return dataFormatada;
+	}
+
 
 	public void setData(Date data)
 	{
@@ -874,7 +884,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	{
 		return faixaSalarial;
 	}
-
+	
 	public void setFaixaSalarial(FaixaSalarial faixaSalarial)
 	{
 		this.faixaSalarial = faixaSalarial;

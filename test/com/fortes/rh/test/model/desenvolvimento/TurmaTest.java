@@ -17,7 +17,7 @@ public class TurmaTest extends TestCase
     	turma.setDataPrevIni(DateUtil.criarDataMesAno(01, 02, 2004));
     	turma.setDataPrevFim(DateUtil.criarDataMesAno(01, 02, 2005));
     	
-    	assertEquals("01/02/2004 - 01/02/2005", turma.getPeriodoFormatado());
+    	assertEquals("01/02/2004 a 01/02/2005", turma.getPeriodoFormatado());
     }
     
     public void testGetData()
