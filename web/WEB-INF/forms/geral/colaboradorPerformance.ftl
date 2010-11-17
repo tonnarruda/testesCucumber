@@ -352,7 +352,7 @@
 			<@display.table name="afastamentosColaborador" id="afastamento" class="dados" >
 				<@display.column property="afastamento.descricao" title="Motivo" style="width:240px"/>
 				<@display.column title="Período" style="width:140px">
-					<#if ocorrencia.dataIni?exists && ocorrencia.dataFim?exists>
+					<#if dataIni?exists && dataFim?exists>
 						${afastamento.inicio} a ${afastamento.fim}
 					</#if>
 				</@display.column>

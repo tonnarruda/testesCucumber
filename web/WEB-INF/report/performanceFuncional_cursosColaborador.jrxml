@@ -29,6 +29,7 @@
 	<field name="valorAvaliacao" class="java.lang.Double"/>
 	<field name="turma.instrutor" class="java.lang.String"/>
 	<field name="turma.PeriodoFormatado" class="java.lang.String"/>
+	<field name="nota" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{curso.nome}]]></variableExpression>
@@ -170,7 +171,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{aprovadoFormatado}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="659"
 						y="1"
