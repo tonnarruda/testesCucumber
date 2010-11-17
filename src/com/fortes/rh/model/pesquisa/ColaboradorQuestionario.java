@@ -536,15 +536,23 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	@NaoAudita
 	public String getDataMaisTempoPeriodoExperiencia()
 	{
-		String dataFmt = DateUtil.formataDiaMesAno(respondidaEm);
-		dataFmt = dataFmt + " (" + DateUtil.diferencaEntreDatas(colaborador.getDataAdmissao(), respondidaEm) 
-							+ " dias)";
+		String dataFmt = "";
+		if (respondidaEm != null)
+		{
+			dataFmt = DateUtil.formataDiaMesAno(respondidaEm);
 		
+			if ( colaborador.getDataAdmissao() != null)
+				dataFmt = dataFmt + " (" + DateUtil.diferencaEntreDatas(colaborador.getDataAdmissao(), respondidaEm) + " dias)";
+		}
 		return dataFmt;
 	}
+	
 
 	public String getObservacao()
 	{
+		if(observacao == null)
+			observacao = "";
+		
 		return observacao;
 	}
 
