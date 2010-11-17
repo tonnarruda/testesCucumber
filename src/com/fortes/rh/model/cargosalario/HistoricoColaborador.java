@@ -81,6 +81,8 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	@Transient private Collection<Ambiente> ambientes;
 	@Transient private Collection<Funcao> funcoes;
 	
+	@Transient private Double salarioVariavel;
+	
 	public HistoricoColaborador(String colaborador, String areaOrganizacional) {
 		
 		this.colaborador = new Colaborador(colaborador);
@@ -176,7 +178,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setDataAdmissao(dataAdmissao);
 	}
 	
-	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario)
+	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario)
 	{
 		this.setId(historicoId);
 		
@@ -184,6 +186,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setId(colaboradorId);
 		this.colaborador.setNome(colaboradorNome);
 		this.colaborador.setDataAdmissao(colaboradorDataAdmissao);
+		this.colaborador.setCodigoAC(colaboradorCodigoAC);
 		
 		this.faixaSalarial = new FaixaSalarial();
 		this.faixaSalarial.setId(faixaId);
@@ -934,5 +937,13 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	public void setMovimentoSalarialId(Integer movimentoSalarialId)
 	{
 		this.movimentoSalarialId = movimentoSalarialId;
+	}
+
+	public Double getSalarioVariavel() {
+		return salarioVariavel;
+	}
+
+	public void setSalarioVariavel(Double salarioVariavel) {
+		this.salarioVariavel = salarioVariavel;
 	}
 }

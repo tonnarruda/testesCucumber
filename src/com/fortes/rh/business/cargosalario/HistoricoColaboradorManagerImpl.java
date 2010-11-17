@@ -18,6 +18,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.ctc.wstx.util.DataUtil;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -1118,7 +1119,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	//testes samuel
 	@SuppressWarnings("static-access")
-	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao) throws Exception
+	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao) throws Exception
 	{
 		Collection<HistoricoColaborador> historicoColaboradors;
 		Date dataConsulta = null;
@@ -1141,7 +1142,29 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			dataAtualizacao = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMesesDesatualizacao, false);
 		
 		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao);
-			
+		
+//		COLOCAR REMUNERAÇÃO VARIÁVEL NO RELATÓRIO (MARLUS E SAMUEL)		
+//		ArrayList<String> colaboradoresIdsList = new ArrayList<String>();
+//		for (HistoricoColaborador historicoColaborador : historicoColaboradors) 
+//		{			
+//			if (historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getCodigoAC() != null && !historicoColaborador.getColaborador().getCodigoAC().equals(""))
+//				colaboradoresIdsList.add(historicoColaborador.getColaborador().getCodigoAC().toString());
+//		}
+//		
+//		String[] colaboradoresIds = new String[colaboradoresIdsList.size()];
+//		colaboradoresIds = colaboradoresIdsList.toArray(colaboradoresIds);
+//		
+//		if (colaboradoresIdsList.size() != 0)
+//		{
+//			Object[] remuneracoesVariaveis = acPessoalClientColaborador.getRemuneracoesVariaveis(empresa, colaboradoresIds, DateUtil.formataAnoMes(dataHistorico), DateUtil.formataAnoMes(dataHistorico));
+//		
+//			for (HistoricoColaborador historicoColaborador : historicoColaboradors) 
+//			{
+//				
+//			}
+//		
+//		}	
+		
 		if(historicoColaboradors.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
 			

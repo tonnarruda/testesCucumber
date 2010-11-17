@@ -946,3 +946,67 @@ function createListCandidatosHomonimos(data)
 	else
 		document.getElementById("homonimos").style.display = "none";
 }
+
+function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId, estadoFieldId)
+{
+	var $cep = jQuery('#' + cepFieldId)
+	$cep.blur(function(){
+		if(jQuery.trim($cep.val()) != "")
+		{
+			 /*
+			 Para conectar no serviço e executar o json, precisamos usar a função
+			 getScript do jQuery, o getScript e o dataType:"jsonp" conseguem fazer o cross-domain, os outros
+			 dataTypes não possibilitam esta interação entre domínios diferentes
+			 Estou chamando a url do serviço passando o parâmetro "formato=javascript" e o CEP digitado no formulário
+			 http://cep.republicavirtual.com.br/web_cep.php?formato=javascript&cep="+jQuery("cep").val()
+			 */
+			 var $logradouro = jQuery("#" + logradouroFieldId);
+			 var $bairro = jQuery("#" + bairroFieldId);
+			 var $cidade = jQuery("#" + cidadeFieldId);
+			 var $estado = jQuery("#" + estadoFieldId);
+			 var $numero = jQuery("#num");
+
+			 $logradouro.attr('disabled', true);
+			 $bairro.attr('disabled', true);
+			 $cidade.attr('disabled', true);
+			 $estado.attr('disabled', true);
+
+			 $numero.focus();
+			
+			 jQuery.ajax({
+				url:"http://cep.republicavirtual.com.br/web_cep.php?formato=javascript&cep="+$cep.val(),
+				success:function(data){
+					 // o getScript dá um eval no script, então é só ler!
+					 //Se o resultado for igual a 1
+
+					if(resultadoCEP["resultado"])
+					 {
+						 // troca o valor dos elementos
+						 $logradouro.val(unescape(resultadoCEP["tipo_logradouro"])+" "+unescape(resultadoCEP["logradouro"]));
+						 $estado.val(unescape(resultadoCEP["uf"]));
+						 $estado.change();
+						 $bairro.val(unescape(resultadoCEP["bairro"]));
+	
+						 $logradouro.attr('disabled', false);
+						 $bairro.attr('disabled', false);
+						 $cidade.attr('disabled', false);
+						 $estado.attr('disabled', false);
+					 }
+					 else
+					 {
+						 alert("Endereço não encontrado");
+					 }
+				}, 
+				error:function(data){
+					alert("Erro ao carregar pagina de busca do CPF.");
+					 $logradouro.attr('disabled', false);
+					 $bairro.attr('disabled', false);
+					 $cidade.attr('disabled', false);
+					 $estado.attr('disabled', false);
+					 $logradouro.focus();
+				}
+			});
+			 
+		}
+	});
+}

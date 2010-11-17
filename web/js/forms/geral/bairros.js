@@ -20,13 +20,23 @@
 		DWRUtil.useLoadingMessage('Carregando...');
 		DWRUtil.removeAllOptions("cidade");
 		DWRUtil.addOptions("cidade", data);
+		
+		if (jQuery("#cep").length && jQuery("#cidade").length)
+		{
+			jQuery("#cidade option").each(function() {
+				if (jQuery(this).text() == resultadoCEP["cidade"])
+				{
+					jQuery("#cidade").val(jQuery(this).val());
+					jQuery("#cidade").change();
+				}
+			});
+		}
 	};
 
 	var createListBairros = function(data) {
 		$('#bairroNome').unautocomplete();
 		bairrosArray = data;
 		$("#bairroNome").autocomplete(bairrosArray);
-		$("#bairroNome").focus();
 	};
 	
 	$("#uf").change(populaCidades);

@@ -36,6 +36,23 @@ public class DateUtil
 	}
 
 	/**
+	 * Formata ano e mês baseado numa Date()
+	 *
+	 * @param Date() data
+	 * @return data no formato yyyyMM
+	 */
+	public static String formataAnoMes(Date data)
+	{
+		if (data == null)
+			return  "";
+		
+		SimpleDateFormat formatar = new SimpleDateFormat("yyyyMM");
+		String dataAnoMes = formatar.format(data);
+
+		return dataAnoMes;
+	}
+	
+	/**
 	 * Formata mês e ano baseado numa Date()
 	 *
 	 * @param Date() data

@@ -2677,7 +2677,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  hql.append("   select max(hc2.data) ");
 		  hql.append("   from HistoricoColaborador as hc2 ");
 		  hql.append("   where hc2.colaborador.id = co.id ");
-		  hql.append("   and hc2.data <= :dataAtual and hc2.status = :status ");
+		  hql.append("   and hc2.data <= :dataAtual  ");
 		  hql.append("  ) ");
 		  hql.append("and co.desligado = false ");
 		  hql.append("and co.empresa.id = :empresaId ");
@@ -2697,7 +2697,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  query.setDate("periodoIni", periodoIni);
 		  query.setDate("periodoFim", periodoFim);
 		  query.setDate("dataAtual", new Date());
-		  query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		  if(areasCheck != null && areasCheck.length > 0)
 			  query.setParameterList("areasCheck", areasCheck);

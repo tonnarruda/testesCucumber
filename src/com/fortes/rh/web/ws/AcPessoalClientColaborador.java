@@ -14,4 +14,6 @@ public interface AcPessoalClientColaborador
 	public boolean verificaHistoricoNaFolhaAC(Long historicoColaboradorId, String colaboradorCodigoAC, Empresa empresa);
 
 	public boolean remove(Colaborador colaborador, Empresa empresa);
+	
+	public Object[] getRemuneracoesVariaveis(Empresa empresa, String[] colaboradoresIds, String anoMesInicial, String anoMesFinal) throws Exception;
 }

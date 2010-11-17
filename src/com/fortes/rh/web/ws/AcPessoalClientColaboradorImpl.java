@@ -6,6 +6,8 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
+import org.apache.axis.encoding.ser.ArrayDeserializerFactory;
+import org.apache.axis.encoding.ser.ArraySerializerFactory;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
@@ -181,4 +183,41 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 		return empregado;
 	}
+	
+	public Object[] getRemuneracoesVariaveis(Empresa empresa, String[] colaboradoresIds, String anoMesInicial, String anoMesFinal) throws Exception
+	{
+		Object[] result = null;
+		try
+		{
+			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "GetRemuneracoesVariaveis");
+
+			String token = acPessoalClient.getToken(empresa);
+
+			QName qname = new QName(empresa.getAcUrlWsdl(), "TRemuneracaoVariavel");
+            call.registerTypeMapping(Object[].class, qname, new ArraySerializerFactory(qname), new ArrayDeserializerFactory(qname));
+
+			QName xmlstring = new QName("xs:string");
+			QName xmlstringArray = new QName("xs:string[]");
+
+			//function GetRemuneracoesVariaveis(const Token: string; const Empresa: string; Empregados: TRegistro; const AnoMesInicial, AnoMesFinal: string): TRemuneracoesVariaveis
+			
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+			call.addParameter("Empregados", xmlstringArray, ParameterMode.IN);
+			call.addParameter("AnoMesInicial", xmlstring, ParameterMode.IN);
+			call.addParameter("AnoMesFinal", xmlstring, ParameterMode.IN);
+
+			call.setReturnType(qname);
+
+			Object[] param = new Object[] {token, empresa.getCodigoAC(), colaboradoresIds, anoMesInicial, anoMesFinal};
+
+			result = (Object[]) call.invoke(param);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new IntegraACException(e, "Não foi possível obter remunerações variáveis.");
+		}
+		return result;
+	}	
 }
