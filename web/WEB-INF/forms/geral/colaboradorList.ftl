@@ -78,12 +78,20 @@
 		<#assign style=""/>
 		<@display.column title="Ações" media="html" class="acao" style = "width:230px;">
 			<#if !colaborador.desligado>
-				<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Desligar colaborador" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>"></a>
+				<#if integraAc>
+					<img border="0" title="Desligue o colaborador no AC Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+				<#else>
+					<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Desligar colaborador" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>"></a>
+				</#if>
 
 				<img border="0" title="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" src="<@ww.url includeParams="none" value="/imgs/entrevistaBalaoDesligaNova.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
 				<#if colaborador.dataDesligamento?exists && !colaborador.motivoDemissao.motivo?exists>
-					<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Desligar colaborador" src="<@ww.url includeParams="none" value="/imgs/desligadoAC5.gif"/>"></a>
+					<#if integraAc>
+						<img border="0" title="Desligue o colaborador no AC Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+					<#else>
+						<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Desligar colaborador" src="<@ww.url includeParams="none" value="/imgs/desligadoAC5.gif"/>"></a>
+					</#if>			
 				<#else>
 					<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Colaborador já desligado" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);"></a>
 				</#if>
