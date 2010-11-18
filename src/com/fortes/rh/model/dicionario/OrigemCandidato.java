@@ -12,6 +12,7 @@ public class OrigemCandidato extends LinkedHashMap
 	public static final char EXTERNO = 'E';
 	public static final char IMPORTADO = 'I';
 	public static final char OFFICE = 'O';
+	public static final char F2RH = 'F';
 
 	public OrigemCandidato()
 	{
@@ -20,5 +21,6 @@ public class OrigemCandidato extends LinkedHashMap
 		put(IMPORTADO, "Importado");
 		put(EXTERNO, "Módulo Externo");
 		put(OFFICE, "MS Office");
+		put(F2RH, "Importado pelo F2RH");
 	}
 }
