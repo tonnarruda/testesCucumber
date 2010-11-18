@@ -481,6 +481,12 @@
 	width: 190px !important;
 }
 
+.btnTriagemF2RH
+{
+	background-image:url(../imgs/btnTriagemF2RH.gif);
+	width: 195px !important;
+}
+
 .btnSugerirReunioesOrdinarias{
 	background-image:url(../imgs/btnSugerirReunioesOrdinarias.gif);
 	width: 214px !important;
@@ -583,7 +589,8 @@
 .btnRelatorioPorCriterio,
 .btnRelatorioPorAvaliador,
 .btnListaDeInspecaoExtintores,
-.btnListaFrequenciaVotacao
+.btnListaFrequenciaVotacao,
+.btnTriagemF2RH
 {
 	border: 0;
 	background-repeat: no-repeat;

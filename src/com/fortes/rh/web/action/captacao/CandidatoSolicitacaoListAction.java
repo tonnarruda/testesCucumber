@@ -99,6 +99,14 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	public String listTriagemF2RH() throws Exception
+	{
+		solicitacao = solicitacaoManager.getValor(solicitacao.getId());
+		candidatoSolicitacaos = candidatoSolicitacaoManager.findBySolicitacaoTriagem(solicitacao.getId());
+
+		return Action.SUCCESS;
+	}
+
 	public String delete() throws Exception
 	{
 		candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());

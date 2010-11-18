@@ -141,6 +141,7 @@
 				<button onclick="window.location='prepareMover.action?solicitacao.id=${solicitacao.id}'" class="btnTransferirCandidatos" accesskey="M"></button>
 				<#if !solicitacao.encerrada>
 					<button onclick="window.location='listTriagem.action?solicitacao.id=${solicitacao.id}'" class="btnTriagemModuloExterno" accesskey="T"></button>
+					<button onclick="window.location='listTriagemF2RH.action?solicitacao.id=${solicitacao.id}'" class="btnTriagemF2RH" accesskey="T"></button>
 				</#if>
 			</div>
 		</@authz.authorize>
