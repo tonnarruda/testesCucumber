@@ -16,6 +16,8 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
@@ -232,6 +234,12 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			epiManager.sincronizar(empresaOrigemId, empresaDestinoId);
 		}
 		
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CURSOSETURMAS))
+		{
+			TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
+			turmaManager.sincronizar(empresaOrigemId, empresaDestinoId);
+		}
+		
 	}
 
 	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) {
@@ -274,5 +282,13 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setEpiManager(EpiManager epiManager) {
 		this.epiManager = epiManager;
+	}
+
+	public OcorrenciaManager getOcorrenciaManager() {
+		return ocorrenciaManager;
+	}
+
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
 	}
 }

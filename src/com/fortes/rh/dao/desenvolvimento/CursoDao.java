@@ -21,4 +21,5 @@ public interface CursoDao extends GenericDao<Curso>
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId);
 	public Integer getCount(Curso curso, Long empresaId);
 	public Collection<Long> findTurmas(Long empresaId, Long[] cursoIds);
+	public Collection<Curso> findCursosSemTurma(Long empresaId);
 }

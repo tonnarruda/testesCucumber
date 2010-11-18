@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.criterion.Projections;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
@@ -465,7 +467,32 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 
 		assertEquals((Integer)1, cursoDao.getCount(cursoFiltroBusca, empresa.getId()));
 	}
+	
 
+	public void testiFindCursoSemTurma()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Curso java = CursoFactory.getEntity();
+		java.setEmpresa(empresa);
+		cursoDao.save(java);
+		
+		Turma turmaA = TurmaFactory.getEntity();
+		turmaA.setCurso(java);
+		turmaA.setEmpresa(empresa);
+		turmaDao.save(turmaA);
+		
+		Curso delphi = CursoFactory.getEntity();
+		delphi.setEmpresa(empresa);
+		cursoDao.save(delphi);
+		
+		Collection<Curso> cursos = cursoDao.findCursosSemTurma(empresa.getId());
+		
+		assertEquals(1, cursos.size());
+	}
+	
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

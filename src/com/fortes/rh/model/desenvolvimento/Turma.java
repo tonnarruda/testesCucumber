@@ -27,7 +27,7 @@ import com.fortes.rh.util.MathUtil;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="turma_sequence", allocationSize=1)
-public class Turma extends AbstractModel implements Serializable
+public class Turma extends AbstractModel implements Serializable, Cloneable
 {
 	@Column(length=100)
 	private String descricao;
@@ -107,6 +107,19 @@ public class Turma extends AbstractModel implements Serializable
 
 	}
 
+	public Object clone()
+	{
+	   try
+	   {
+	      return super.clone();
+	   }
+	   catch (CloneNotSupportedException e)
+	   {
+		   e.printStackTrace();
+	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto, turma.");
+	   }
+	}
+	
 	public void setProjectionEmpresaId(Long projectionEmpresaId)
 	{
 		if(this.empresa == null)
@@ -132,6 +145,24 @@ public class Turma extends AbstractModel implements Serializable
 		inicializaCurso();
 		if(cargaHoraria != null)
 			curso.setCargaHoraria(cargaHoraria);
+	}
+
+	public void setProjectionCursoConteudoProgramatico(String conteudoProgramatico)
+	{
+		inicializaCurso();
+		curso.setConteudoProgramatico(conteudoProgramatico);
+	}
+
+	public void setProjectionCursoCriterioAvaliacao(String criterioAvaliacao)
+	{
+		inicializaCurso();
+		curso.setCriterioAvaliacao(criterioAvaliacao);
+	}
+	
+	public void setProjectionCursoPercentualMinimoFrequencia(Double percentualMinimoFrequencia)
+	{
+		inicializaCurso();
+		curso.setPercentualMinimoFrequencia(percentualMinimoFrequencia);
 	}
 
 	public Double getCusto()
@@ -346,6 +377,15 @@ public class Turma extends AbstractModel implements Serializable
 
 	public void setDiasEstimadosParaAprovacao(Double diasEstimadosParaAprovacao) {
 		this.diasEstimadosParaAprovacao = diasEstimadosParaAprovacao;
+	}
+
+	public void setEmpresaId(Long empresaDestinoId) 
+	{
+		if(empresa == null)
+			empresa = new Empresa();
+		
+		empresa.setId(empresaDestinoId);
+		
 	}
 
 }

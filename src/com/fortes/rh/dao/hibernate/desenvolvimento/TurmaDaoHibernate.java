@@ -9,14 +9,18 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
+import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -416,5 +420,41 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 
 		return query.list();	
 	}
- 
+	
+	public Collection<Turma> findByEmpresaOrderByCurso(Long empresaId){
+		
+		Criteria criteria = getSession().createCriteria(Turma.class,"t");
+        criteria.createCriteria("t.curso", "c");
+
+        ProjectionList p = Projections.projectionList().create();
+
+        p.add(Projections.property("t.id"), "id");
+        p.add(Projections.property("t.descricao"), "descricao");
+        p.add(Projections.property("t.dataPrevIni"), "dataPrevIni");
+        p.add(Projections.property("t.dataPrevFim"), "dataPrevFim");
+        p.add(Projections.property("t.instrutor"), "instrutor");
+        p.add(Projections.property("t.horario"), "horario");
+        p.add(Projections.property("t.custo"), "custo");
+        p.add(Projections.property("t.instituicao"), "instituicao");
+        p.add(Projections.property("t.realizada"), "realizada");
+        p.add(Projections.property("t.qtdParticipantesPrevistos"), "qtdParticipantesPrevistos");
+        
+		p.add(Projections.property("c.id"), "cursoId");
+		p.add(Projections.property("c.nome"), "cursoNome");
+		p.add(Projections.property("c.conteudoProgramatico"), "projectionCursoConteudoProgramatico");
+		p.add(Projections.property("c.criterioAvaliacao"), "projectionCursoCriterioAvaliacao");
+		p.add(Projections.property("c.cargaHoraria"), "projectionCursoCargaHoraria");
+		p.add(Projections.property("c.percentualMinimoFrequencia"), "projectionCursoPercentualMinimoFrequencia");
+		
+        criteria.setProjection(p);
+        criteria.add(Expression.eq("t.empresa.id", empresaId));
+
+        criteria.addOrder(Order.asc("c.id"));//não alterar a ordem
+        criteria.addOrder(Order.asc("t.id"));//não alterar a ordem
+
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(Turma.class));
+
+		return criteria.list();
+	}
 }

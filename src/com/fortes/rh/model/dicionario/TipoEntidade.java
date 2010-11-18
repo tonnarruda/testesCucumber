@@ -12,6 +12,7 @@ public class TipoEntidade extends LinkedHashMap<String,String>
 	public static final String AREAS_INTERESSE = "4";
 	public static final String TIPOS_OCORRENCIA = "5";
 	public static final String EPIS = "6";
+	public static final String CURSOSETURMAS = "7";
 	
 	public TipoEntidade()
 	{
@@ -21,5 +22,6 @@ public class TipoEntidade extends LinkedHashMap<String,String>
 		put(CARGOS, "Cargos");
 		put(TIPOS_OCORRENCIA, "Tipos de Ocorrencia");
 		put(EPIS, "EPIs");
+		put(CURSOSETURMAS, "Cursos e Turma");
 	}
 }

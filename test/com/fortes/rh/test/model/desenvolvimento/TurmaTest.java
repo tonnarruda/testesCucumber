@@ -43,4 +43,18 @@ public class TurmaTest extends TestCase
     	
     	assertEquals("Curso B / turma A", turma.getDescricaoCurso());
     }
+    
+    public void testClone()
+    {
+    	Curso java = CursoFactory.getEntity();
+    	java.setNome("Curso B");
+    	
+    	Turma turma_noite = TurmaFactory.getEntity();
+    	turma_noite.setDescricao("turma A");
+    	turma_noite.setCurso(java);
+    	
+    	Turma turmaClonada = (Turma) turma_noite.clone();
+    	
+    	assertEquals(turma_noite.getDescricao(), turmaClonada.getDescricao());
+    }
 }

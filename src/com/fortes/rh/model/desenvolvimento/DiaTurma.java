@@ -15,7 +15,7 @@ import com.fortes.rh.util.DateUtil;
 
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="diaTurma_sequence", allocationSize=1)
-public class DiaTurma extends AbstractModel implements Serializable
+public class DiaTurma extends AbstractModel implements Serializable, Cloneable
 {
     @Temporal(TemporalType.DATE)
     private Date dia;

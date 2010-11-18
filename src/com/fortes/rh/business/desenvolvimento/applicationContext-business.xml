@@ -74,6 +74,9 @@
     <property name="aproveitamentoAvaliacaoCursoManager">
       <ref bean="aproveitamentoAvaliacaoCursoManager" />
     </property>
+    <property name="cursoManager">
+      <ref bean="cursoManager" />
+    </property>
   </bean>
   <bean id="turmaManager" parent="parentManager">
     <property name="proxyInterfaces">
