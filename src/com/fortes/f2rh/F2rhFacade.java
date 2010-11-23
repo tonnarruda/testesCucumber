@@ -1,14 +1,11 @@
 package com.fortes.f2rh;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
-public class F2rhFacade {
+public interface F2rhFacade {
 
-	public static Collection<Curriculo> obter() {
-		Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
-		curriculos.add(new Curriculo());
-		return curriculos;
-	}
+	public abstract Collection<Curriculo> obterCurriculos(ConfigF2RH config);
+
+	public abstract String find_f2rh(ConfigF2RH config);
 
 }
