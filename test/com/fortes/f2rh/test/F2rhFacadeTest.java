@@ -2,12 +2,18 @@ package com.fortes.f2rh.test;
 
 import java.util.Collection;
 
+import mockit.Mockit;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.f2rh.ConfigF2RH;
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 
 public class F2rhFacadeTest extends MockObjectTestCase {
 
@@ -31,9 +37,27 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		f2rhFacade = new F2rhFacadeImpl();
 		config = new ConfigF2RH();
 		config.setJson(jsonList1);
+		
+	
+		Mockit.redefineMethods(GetMethod.class, MockHttpMethod.class);
+		
+	
+		
 	}
 	
 	public void testFindF2RHBasico() {
+		
+		
+		
+/*		Mockit.redefineMethods(GetMethod.class, new Object() {
+			
+			public String getResponseBodyAsString() throws IOException {
+				String json = "[{\"escolaridade_rh\":\"Superior Incompleto\",\"updated_at\":\"2010-10-25T16:24:27Z\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cidade_rh\":\"Fortaleza\",\"id\":15,\"estado\":\"CE\"},{\"escolaridade_rh\":null,\"updated_at\":\"2009-10-27T13:06:24Z\",\"nome\":\"Ana Cristina Soares Silva\",\"cidade_rh\":null,\"id\":112,\"estado\":null}]";
+				return json;
+			}
+			
+		});*/
+		
 		String[] consulta_basica = new String[]{"escolaridade=\"Superior Completo\""};
 		config.setConsulta(consulta_basica);
 		String curriculos = f2rhFacade.find_f2rh(config);
@@ -41,6 +65,16 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	}
 	
 	public void testFindF2RHAvancado() {
+		
+/*		Mockit.redefineMethods(GetMethod.class, new Object() {
+			
+			public String getResponseBodyAsString() throws IOException {
+				String json = "[{\"escolaridade_rh\":null,\"updated_at\":\"2009-10-29T14:25:51Z\",\"nome\":\"Laysa Lourenco Feitosa \",\"cidade_rh\":null,\"id\":1560,\"estado\":null},{\"escolaridade_rh\":\"Superior Completo\",\"updated_at\":\"2010-10-28T10:54:52Z\",\"nome\":\"marcio elvis oliveira da silva\",\"cidade_rh\":null,\"id\":5382,\"estado\":\"\"}]";
+				return json;
+			}
+			
+		});*/
+		
 		//id 5382
 		String[] consulta_avancada = new String[]{"escolaridade=\"Superior Completo\""};
 		config.setConsulta(consulta_avancada);
