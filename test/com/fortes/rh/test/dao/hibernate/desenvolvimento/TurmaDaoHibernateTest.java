@@ -478,7 +478,42 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		
 	}
 	
-	
+	public void testiFindByEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Curso java = CursoFactory.getEntity();
+		java.setEmpresa(empresa);
+		cursoDao.save(java);
+		
+		Turma turmaA = TurmaFactory.getEntity();
+		turmaA.setCurso(java);
+		turmaA.setEmpresa(empresa);
+		turmaDao.save(turmaA);
+		
+		Curso delphi = CursoFactory.getEntity();
+		delphi.setEmpresa(empresa);
+		cursoDao.save(delphi);
+
+		Turma turmaC = TurmaFactory.getEntity();
+		turmaC.setCurso(delphi);
+		turmaC.setEmpresa(empresa);
+		turmaDao.save(turmaC);
+		
+		Turma turmaB = TurmaFactory.getEntity();
+		turmaB.setCurso(java);
+		turmaB.setEmpresa(empresa);
+		turmaDao.save(turmaB);
+
+		Collection<Turma> turmas = turmaDao.findByEmpresaOrderByCurso(empresa.getId());
+
+		assertEquals(3, turmas.size());
+		
+		Turma[] turmasArray = turmas.toArray(new Turma[3]);
+		assertEquals(turmaA, turmasArray[0]);
+		assertEquals(turmaC, turmasArray[2]);
+	}
 	
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)
 	{

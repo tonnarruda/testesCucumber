@@ -7,11 +7,13 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -220,6 +222,37 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.add(Expression.in("c.id", cursoIds));
 
 
+		return criteria.list();
+	}
+
+	public Collection<Curso> findCursosSemTurma(Long empresaId)
+	{
+		DetachedCriteria subQuery = DetachedCriteria.forClass(Turma.class, "t");
+        
+		ProjectionList pSub = Projections.projectionList().create();
+		pSub.add(Projections.property("t.curso.id"), "id");
+        
+		subQuery.setProjection(pSub);
+        subQuery.add(Expression.eq("t.empresa.id", empresaId));
+        subQuery.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
+		Criteria criteria = getSession().createCriteria(Curso.class,"c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.conteudoProgramatico"), "conteudoProgramatico");
+		p.add(Projections.property("c.criterioAvaliacao"), "criterioAvaliacao");
+		p.add(Projections.property("c.cargaHoraria"), "cargaHoraria");
+		p.add(Projections.property("c.percentualMinimoFrequencia"), "percentualMinimoFrequencia");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Subqueries.propertyNotIn("c.id", subQuery));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
+		
 		return criteria.list();
 	}
 }

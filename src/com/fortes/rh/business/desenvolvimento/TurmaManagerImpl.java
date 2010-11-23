@@ -3,6 +3,7 @@ package com.fortes.rh.business.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -30,6 +32,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	private CursoManager cursoManager;
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{
@@ -135,6 +138,42 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			throw e;
 		}
 
+	}
+	
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId) 
+	{	
+		Collection<Turma> turmas = getDao().findByEmpresaOrderByCurso(empresaOrigemId);
+		
+		Long cursoIdTmp = 0L;
+		Curso cursoClonado = null;
+		
+		for (Turma turma : turmas) 
+		{
+			Turma turmaClonada = (Turma) turma.clone();
+			turmaClonada.setEmpresaId(empresaDestinoId);
+			turmaClonada.setId(null);
+			turmaClonada.setAvaliacaoTurma(null);
+			
+			if(cursoIdTmp.equals(turma.getCurso().getId()))
+			{
+				turmaClonada.setCurso(cursoClonado);
+			}
+			else
+			{
+				cursoClonado = cursoManager.saveClone((Curso) turma.getCurso().clone(), empresaDestinoId);
+				turmaClonada.setCurso(cursoClonado);
+			}
+			
+			getDao().save(turmaClonada);
+			cursoIdTmp = turma.getCurso().getId();
+
+			diaTurmaManager.clonarDiaTurmasDeTurma(turma, turmaClonada);
+		}
+		
+		Collection<Curso> cursosSemTurma = cursoManager.findCursosSemTurma(empresaOrigemId);
+		
+		for (Curso curso : cursosSemTurma) 
+			cursoManager.saveClone((Curso) curso.clone(), empresaDestinoId);
 	}
 
 	public Collection<Turma> getTurmaFinalizadas(Long cursoId)
@@ -249,5 +288,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			return getDao().findTurmaPresencaMinima(turmaIds);
 		else
 			return new ArrayList<Turma>();
+	}
+
+	public void setCursoManager(CursoManager cursoManager) {
+		this.cursoManager = cursoManager;
 	}
 }

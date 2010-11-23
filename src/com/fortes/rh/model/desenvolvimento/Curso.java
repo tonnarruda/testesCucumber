@@ -21,7 +21,7 @@ import com.fortes.rh.model.geral.Empresa;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="curso_sequence", allocationSize=1)
-public class Curso extends AbstractModel implements Serializable
+public class Curso extends AbstractModel implements Serializable, Cloneable
 {
     @ManyToOne
     private Empresa empresa;
@@ -74,6 +74,19 @@ public class Curso extends AbstractModel implements Serializable
 		empresa.setId(empresaId);
 	}
 
+	public Object clone()
+	{
+	   try
+	   {
+	      return super.clone();
+	   }
+	   catch (CloneNotSupportedException e)
+	   {
+		   e.printStackTrace();
+	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto, curso.");
+	   }
+	}
+	
 	public String getNome()
 	{
 		return nome;
@@ -147,5 +160,17 @@ public class Curso extends AbstractModel implements Serializable
 	public void setPercentualMinimoFrequencia(Double percentualMinimoFrequencia) {
 		this.percentualMinimoFrequencia = percentualMinimoFrequencia;
 	}
+	
+	public void setEmpresaId(Long empresaId)
+	{
+		if (this.empresa == null)
+			this.empresa = new Empresa();
+		
+		this.empresa.setId(empresaId);
+	}
 
+	public Long getEmpresaId()
+	{
+		return this.empresa.getId();
+	}
 }

@@ -20,6 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -59,6 +60,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 	Mock colaboradorPresencaManager;
 	Mock colaboradorQuestionarioManager;
 	Mock aproveitamentoAvaliacaoCursoManager;
+	Mock cursoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -84,6 +86,9 @@ public class TurmaManagerTest extends MockObjectTestCase
 		aproveitamentoAvaliacaoCursoManager = new Mock(AproveitamentoAvaliacaoCursoManager.class);
 		turmaManager.setAproveitamentoAvaliacaoCursoManager((AproveitamentoAvaliacaoCursoManager) aproveitamentoAvaliacaoCursoManager.proxy());
 		
+		cursoManager = new Mock(CursoManager.class);
+		turmaManager.setCursoManager((CursoManager) cursoManager.proxy());
+
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -428,6 +433,65 @@ public class TurmaManagerTest extends MockObjectTestCase
 		turmaDao.expects(once()).method("quantidadeParticipantesPrevistos").with(eq(dataTresMesesAtras.getTime()), eq(dataDoisMesesAtras.getTime()),eq(empresa.getId())).will(returnValue(new Integer (1)));
 
 		assertEquals(new Integer(1), turmaManager.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(),empresa.getId()));
+	}
+	
+	public void testClonarTurmaAndCursoEntreEmpresas() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Empresa empresaDestino = EmpresaFactory.getEmpresa(2L);
+
+		Curso java = CursoFactory.getEntity(2L);
+		java.setEmpresa(empresa);
+		
+		Turma turmaA_Java = TurmaFactory.getEntity(3L);
+		turmaA_Java.setCurso(java);
+		turmaA_Java.setEmpresa(empresa);
+		
+		Curso delphi = CursoFactory.getEntity(4L);
+		delphi.setEmpresa(empresa);
+
+		Turma turmaC_Delphi = TurmaFactory.getEntity(5L);
+		turmaC_Delphi.setCurso(delphi);
+		turmaC_Delphi.setEmpresa(empresa);
+		
+		Turma turmaB_Java = TurmaFactory.getEntity(6L);
+		turmaB_Java.setCurso(java);
+		turmaB_Java.setEmpresa(empresa);
+		
+		Collection<Turma> turmas = new ArrayList<Turma>();
+		turmas.add(turmaA_Java);
+		turmas.add(turmaB_Java);
+		turmas.add(turmaC_Delphi);
+		
+		turmaDao.expects(once()).method("findByEmpresaOrderByCurso").with(eq(empresa.getId())).will(returnValue(turmas));
+
+		cursoManager.expects(once()).method("saveClone").with(ANYTHING, eq(empresaDestino.getId()));
+		turmaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new Turma()));
+		turmaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new Turma()));
+
+		cursoManager.expects(once()).method("saveClone").with(ANYTHING, eq(empresaDestino.getId()));
+		turmaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new Turma()));
+
+		diaTurmaManager.expects(once()).method("clonarDiaTurmasDeTurma").with(ANYTHING, ANYTHING);
+		diaTurmaManager.expects(once()).method("clonarDiaTurmasDeTurma").with(ANYTHING, ANYTHING);
+		diaTurmaManager.expects(once()).method("clonarDiaTurmasDeTurma").with(ANYTHING, ANYTHING);
+		
+		//clonar Curso sem Turma
+		Curso php = CursoFactory.getEntity(77L);
+		php.setEmpresa(empresa);
+
+		Curso ruby = CursoFactory.getEntity(44L);
+		ruby.setEmpresa(empresa);
+		
+		Collection<Curso> cursosSemTurma = new ArrayList<Curso>();
+		cursosSemTurma.add(php);
+		cursosSemTurma.add(delphi);
+		
+		cursoManager.expects(once()).method("findCursosSemTurma").with(eq(empresa.getId())).will(returnValue(cursosSemTurma));
+		cursoManager.expects(once()).method("saveClone").with(ANYTHING, eq(empresaDestino.getId()));
+		cursoManager.expects(once()).method("saveClone").with(ANYTHING, eq(empresaDestino.getId()));
+		
+		turmaManager.sincronizar(empresa.getId(), empresaDestino.getId());
 	}
 
 }

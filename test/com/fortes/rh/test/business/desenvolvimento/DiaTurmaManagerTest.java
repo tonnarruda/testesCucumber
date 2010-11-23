@@ -12,8 +12,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 
@@ -134,5 +136,27 @@ public class DiaTurmaManagerTest extends MockObjectTestCase
 		diaTurmaDao.expects(once()).method("qtdDiasDasTurmas").with(eq(turma.getId())).will(returnValue(new Integer(2)));
 		
 		assertEquals(new Integer(2), diaTurmaManager.qtdDiasDasTurmas(turma.getId()));
+	}
+
+	public void testClonarDiaTurmasDeTurma()
+	{
+		Turma turmaDelphi = TurmaFactory.getEntity(1L);
+		Turma turmaDelphiClonada = TurmaFactory.getEntity(2L);
+
+		DiaTurma delphi = DiaTurmaFactory.getEntity(3L);
+		delphi.setTurma(turmaDelphi);
+
+		DiaTurma java = DiaTurmaFactory.getEntity(4L);
+		java.setTurma(turmaDelphi);
+		
+		Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
+		diaTurmas.add(delphi);
+		diaTurmas.add(java);
+
+		diaTurmaDao.expects(once()).method("findByTurma").with(eq(turmaDelphi.getId())).will(returnValue(diaTurmas));
+		diaTurmaDao.expects(once()).method("save").with(ANYTHING);
+		diaTurmaDao.expects(once()).method("save").with(ANYTHING);
+
+		diaTurmaManager.clonarDiaTurmasDeTurma(turmaDelphi, turmaDelphiClonada);
 	}
 }

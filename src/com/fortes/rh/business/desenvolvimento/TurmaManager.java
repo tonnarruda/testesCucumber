@@ -33,4 +33,5 @@ public interface TurmaManager extends GenericManager<Turma>
 	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId);
 	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long empresaId);
 	public Collection<Turma> findTurmaPresencaMinima(Collection<Long> turmaIds);
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 }

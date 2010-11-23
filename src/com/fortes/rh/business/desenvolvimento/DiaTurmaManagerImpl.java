@@ -11,6 +11,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.util.DateUtil;
@@ -104,5 +105,18 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 		else
 			return 0;
 	}
-
+	
+	public void clonarDiaTurmasDeTurma(Turma turmaOrigem, Turma turmaDestino) 
+	{
+		Collection<DiaTurma> diaTurmas = getDao().findByTurma(turmaOrigem.getId());
+		
+		for (DiaTurma diaTurma : diaTurmas) 
+		{
+			DiaTurma diaTurmaClonada = diaTurma;
+			diaTurmaClonada.setId(null);
+			diaTurmaClonada.setTurma(turmaDestino);
+			
+			getDao().save(diaTurmaClonada);
+		}
+	}
 }
