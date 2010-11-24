@@ -8,7 +8,6 @@ import net.sf.json.JsonConfig;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 
 public class F2rhFacadeImpl implements F2rhFacade {
