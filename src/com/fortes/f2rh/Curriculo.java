@@ -46,6 +46,7 @@ public class Curriculo {
 	private String area_formacao;
 	private String curso;
 	private String observacoes_complementares;
+	private String idioma;
 	
 	private BigDecimal salario;
 	private User user;
@@ -206,6 +207,14 @@ public class Curriculo {
 
 	public void setObservacoes_complementares(String observacoes_complementares) {
 		this.observacoes_complementares = observacoes_complementares;
+	}
+
+	public String getIdioma() {
+		return idioma;
+	}
+
+	public void setIdioma(String idioma) {
+		this.idioma = idioma;
 	}
 
 }

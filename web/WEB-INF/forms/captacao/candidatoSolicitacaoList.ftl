@@ -52,10 +52,6 @@
 	<br>
 	<div id="legendas" align="right"></div>
 
-	<#if totalSize?exists && totalSize != 0>
-		${totalSize} Registros encontrados
-	</#if>
-
 	<@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" class="dados" >
 	
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.apto>
@@ -121,10 +117,6 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
-	<#if totalSize?exists && totalSize != 0>
-		${totalSize} Registros encontrados
-	</#if>
-
 	<div class="buttonGroup">
 		<div style="float: left;width: 50%;">
 			<#if !solicitacao.encerrada>
@@ -141,7 +133,6 @@
 				<button onclick="window.location='prepareMover.action?solicitacao.id=${solicitacao.id}'" class="btnTransferirCandidatos" accesskey="M"></button>
 				<#if !solicitacao.encerrada>
 					<button onclick="window.location='listTriagem.action?solicitacao.id=${solicitacao.id}'" class="btnTriagemModuloExterno" accesskey="T"></button>
-					<button onclick="window.location='listTriagemF2RH.action?solicitacao.id=${solicitacao.id}'" class="btnTriagemF2RH" accesskey="T"></button>
 				</#if>
 			</div>
 		</@authz.authorize>

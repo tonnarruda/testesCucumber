@@ -33,7 +33,7 @@ public class F2rhFacadeImpl implements F2rhFacade {
 
 	public String find_f2rh(ConfigF2RH config) {
 		HttpClient client = new HttpClient();
-		GetMethod get = new GetMethod("http://localhost:3000/rh_curriculos.json");
+		GetMethod get = new GetMethod("http://10.1.2.9:3000/rh_curriculos.json");
 		String obj = "";
 		try {
 			client.executeMethod( get );

@@ -25,10 +25,6 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoSolicitacaoTriagemList.ftl</result>
 		</action>
 		
-		<action name="listTriagemF2RH" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="listTriagemF2RH">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoSolicitacaoTriagemListF2RH.ftl</result>
-		</action>
-		
 		<action name="delete" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="delete">
 			<interceptor-ref name="candidatoSolicitacaoListDeleteStack" />
 			<result name="success" type="redirect"><![CDATA[list.action?solicitacao.id=${solicitacao.id}]]></result>

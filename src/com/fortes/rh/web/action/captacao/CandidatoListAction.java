@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.f2rh.ConfigF2RH;
+import com.fortes.f2rh.Curriculo;
+import com.fortes.f2rh.F2rhFacade;
+import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
@@ -193,6 +197,9 @@ public class CandidatoListAction extends MyActionSupportList
 	private boolean exibeExterno; //exibir somente os do módulo externo
 	
 	private boolean somenteCandidatosSemSolicitacao;
+	
+	private Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
+	private Curriculo curriculo;
 
 	public String list() throws Exception
 	{
@@ -303,6 +310,14 @@ public class CandidatoListAction extends MyActionSupportList
 
 		return Action.SUCCESS;
 	}
+	
+	public String prepareBuscaF2rh() throws Exception
+	{
+		
+		setShowFilter(true);
+		
+		return Action.SUCCESS;
+	}
 
 	public String prepareBuscaSimples() throws Exception
 	{
@@ -337,6 +352,20 @@ public class CandidatoListAction extends MyActionSupportList
 		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
 
 		setShowFilter(true);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String buscaF2rh() throws Exception
+	{
+		F2rhFacade f2rhFacade = new F2rhFacadeImpl();
+		ConfigF2RH config = new ConfigF2RH();
+		String[] consulta_basica = new String[]{"escolaridade=\"Superior Completo\""};
+		config.setConsulta(consulta_basica);
+		String curriculos_string = f2rhFacade.find_f2rh(config);
+		
+		config.setJson(curriculos_string);
+		curriculos = f2rhFacade.obterCurriculos(config);
 		
 		return Action.SUCCESS;
 	}
@@ -1420,5 +1449,17 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setExibeExterno(boolean exibeExterno) {
 		this.exibeExterno = exibeExterno;
+	}
+
+	public Collection<Curriculo> getCurriculos() {
+		return curriculos;
+	}
+
+	public Curriculo getCurriculo() {
+		return curriculo;
+	}
+
+	public void setCurriculo(Curriculo curriculo) {
+		this.curriculo = curriculo;
 	}
 }
