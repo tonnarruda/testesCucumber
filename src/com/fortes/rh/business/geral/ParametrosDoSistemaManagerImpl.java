@@ -64,7 +64,7 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 		if(versaoMinimaWebServicxeCompativel != null && !versaoMinimaWebServicxeCompativel.replace(".", "").equals(""))
 			acVersaoCompativel = Long.parseLong(versaoMinimaWebServicxeCompativel.replace(".", ""));
 
-		if(acVersao == 0 || acVersaoCompativel == 0 || acVersao < acVersaoCompativel)
+		if(acVersao == 0 || acVersaoCompativel == 0 || acVersao != acVersaoCompativel)
 			return false;
 
 		return true;
