@@ -16,7 +16,7 @@
 	<@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}"  validate="true" method="POST">	
 		<@ww.textfield label="Descrição" name="ocorrencia.descricao" id="descricao" cssStyle="width: 282px;" maxLength="40" required="true"/>
-		<@ww.textfield label="Pontuação" name="ocorrencia.pontuacao" id="pontuacao" maxLength="10" onkeypress="return(somenteNumeros(event,'-'));" cssStyle="width:70px;"  required="true"/>
+		<@ww.textfield label="Pontuação" name="ocorrencia.pontuacao" id="pontuacao" maxLength="10" onkeypress="return(somenteNumeros(event,'-'));" cssStyle="width:70px;"  required="true" cssClass="pontuacao"/>
 
 		<#if empresaIntegradaComAC>
 			<#if ocorrencia.id?exists>
