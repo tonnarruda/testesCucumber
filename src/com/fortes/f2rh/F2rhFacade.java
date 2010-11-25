@@ -8,7 +8,4 @@ public interface F2rhFacade {
 
 	public abstract String find_f2rh(ConfigF2RH config);
 
-	public abstract String find_f2rh_by_ids(ConfigF2RH config);
-
-
 }

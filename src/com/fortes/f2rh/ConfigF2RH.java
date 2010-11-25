@@ -2,8 +2,17 @@ package com.fortes.f2rh;
 
 public class ConfigF2RH {
 
+	private String url;
 	private String json;
 	private String[] consulta;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public String[] getConsulta() {
 		return consulta;

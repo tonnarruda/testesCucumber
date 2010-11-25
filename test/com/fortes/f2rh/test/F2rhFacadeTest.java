@@ -1,6 +1,5 @@
 package com.fortes.f2rh.test;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -13,6 +12,7 @@ import com.fortes.f2rh.ConfigF2RH;
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
+import com.fortes.f2rh.User;
 
 public class F2rhFacadeTest extends MockObjectTestCase {
 
@@ -32,51 +32,55 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		expected.setCidade_rh("Fortaleza");
 		expected.setEstado("CE");
 		expected.setUpdated_at("2010-10-25T16:24:27Z");
+		User user = new User();
+		user.setLogin("01017806306");
+		expected.setUser(user);
 		
 		f2rhFacade = new F2rhFacadeImpl();
 		config = new ConfigF2RH();
-		config.setJson(jsonList1);
-		
-	
-		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 
 	}
 	
 	public void testFindF2RHBasico() {
-
+		
+		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		
 		String[] consulta_basica = new String[]{"escolaridade=\"Superior Completo\""};
 		config.setConsulta(consulta_basica);
+		config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
+		config.setJson(jsonList1);
 		String curriculos = f2rhFacade.find_f2rh(config);
 		assertEquals(curriculos, config.getJson());
 	}
 	
 	public void testFindF2RHAvancado() {
 		
-		
+		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod2.class);
 		
 		//id 5382
 		String[] consulta_avancada = new String[]{"escolaridade=\"Superior Completo\""};
 		config.setConsulta(consulta_avancada);
-		
+		config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
 		config.setJson(jsonList2);
 		String curriculos = f2rhFacade.find_f2rh(config);
 		assertEquals(curriculos, config.getJson());
 	}
 	
 	public void testObterCurriculos() {
+		config.setJson(jsonList1);
 		Collection<Curriculo> curriculos = f2rhFacade.obterCurriculos(config);
 		assertEquals("Curriculo encontrados", curriculos.size(), 2);
 	}
 	
 	public void testObterCurriculo() {
-		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod2.class);
-
-		String[] consulta = new String[]{"id=\"15\"", "id=\"1560\"" };
+		//Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
+		//Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod2.class);
+		config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
+		String[] consulta = new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"};
 		config.setConsulta(consulta);
-		String curriculos_s = f2rhFacade.find_f2rh_by_ids(config);
+		String curriculos_s = f2rhFacade.find_f2rh(config);
 		config.setJson(curriculos_s);
 		
 		Collection<Curriculo> curriculos = f2rhFacade.obterCurriculos(config);
@@ -85,9 +89,9 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	}
 
 	private Curriculo encontrar(Collection<Curriculo> curriculos, Curriculo expected) {
-		actual = null;
+		actual = new Curriculo();
 		for (Curriculo curriculo : curriculos) {
-			if(curriculo.getCpf() == expected.getCpf() ) {
+			if(curriculo.getCpf().equalsIgnoreCase(expected.getCpf())) {
 				actual = curriculo;
 			}
 		}

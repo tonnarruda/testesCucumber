@@ -8,6 +8,7 @@ import net.sf.json.JsonConfig;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 
 public class F2rhFacadeImpl implements F2rhFacade {
@@ -35,7 +36,8 @@ public class F2rhFacadeImpl implements F2rhFacade {
 
 	public String find_f2rh(ConfigF2RH config) {
 		HttpClient client = new HttpClient();
-		GetMethod get = new GetMethod("http://10.1.2.9:3000/rh_curriculos.json");
+		GetMethod get = new GetMethod( config.getUrl() );
+		get.setQueryString(prepareParams(config.getConsulta()));
 		String obj = "";
 		try {
 			client.executeMethod( get );
@@ -47,14 +49,19 @@ public class F2rhFacadeImpl implements F2rhFacade {
 		} finally {
 			get.releaseConnection();
 		}
-		 
 		return  obj;
 	}
-
-
-	public String find_f2rh_by_ids(ConfigF2RH config) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public NameValuePair[] prepareParams(String[] query) {
+		ArrayList<NameValuePair> lista = new ArrayList<NameValuePair>();
+		for (String string : query) {
+			String[] pair = string.split("=");
+			NameValuePair nvpair = new NameValuePair(pair[0], pair[1]);
+			lista.add(nvpair);
+		}
+		NameValuePair[] params = new NameValuePair[]{};
+		params = lista.toArray(params);
+		return params;
 	}
 
 }
