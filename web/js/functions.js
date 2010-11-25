@@ -300,6 +300,8 @@ function validaCamposObrigatorios(campos, formulario)
 				validacao = true;
 			else if(campoClass == "mascaraCep" && campo.value != valueCep)
 				validacao = true;
+			else if(campoClass == "pontuacao" && campo.value != '')
+				validacao = true;
 			else if((campoClass != "listCheckBox" && campoClass != "mascaraCnpj" && campoClass != "mascaraCep" && campoClass != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraDataMesAno" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
 				validacao = true;
 

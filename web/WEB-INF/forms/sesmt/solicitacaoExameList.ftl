@@ -161,7 +161,7 @@
 		</@display.column>
 
 		<@display.column title="Vinculo" style="vertical-align: top;">
-			<#if solicitacaoExame.colaborador?exists>
+			<#if solicitacaoExame.colaborador?exists && solicitacaoExame.cargoNome?exists >
 				${solicitacaoExame.cargoNome}
 			</#if>
 			<#if solicitacaoExame.candidato?exists>
