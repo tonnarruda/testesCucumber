@@ -9,7 +9,6 @@ public class MockHttpClient {
 
 	public int executeMethod(HttpMethod method) throws IOException, HttpException {
 		//method = new MockHttpMethod();
-		System.out.println("passou?");
 		return 0;
 	}
 
