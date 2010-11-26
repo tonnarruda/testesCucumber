@@ -80,9 +80,11 @@
 					<reportElement
 						x="0"
 						y="6"
-						width="67"
+						width="71"
 						height="16"
-						key="staticText-1"/>
+						key="staticText-1"
+						isPrintInFirstWholeBand="true"
+						isPrintWhenDetailOverflows="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="9"/>
@@ -93,12 +95,14 @@
 					<reportElement
 						x="0"
 						y="23"
-						width="67"
+						width="72"
 						height="16"
-						key="staticText-2"/>
+						key="staticText-2"
+						isPrintInFirstWholeBand="true"
+						isPrintWhenDetailOverflows="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 				<text><![CDATA[Qtd Ativos]]></text>
 				</staticText>
@@ -134,12 +138,14 @@
 					<reportElement
 						x="0"
 						y="40"
-						width="67"
+						width="72"
 						height="16"
-						key="staticText-5"/>
+						key="staticText-5"
+						isPrintInFirstWholeBand="true"
+						isPrintWhenDetailOverflows="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 				<text><![CDATA[Qtd Admitidos]]></text>
 				</staticText>
@@ -147,12 +153,14 @@
 					<reportElement
 						x="0"
 						y="57"
-						width="67"
+						width="71"
 						height="16"
-						key="staticText-6"/>
+						key="staticText-6"
+						isPrintInFirstWholeBand="true"
+						isPrintWhenDetailOverflows="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font size="9"/>
+						<font size="8" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Qtd Demitidos]]></text>
 				</staticText>
@@ -160,9 +168,11 @@
 					<reportElement
 						x="0"
 						y="74"
-						width="67"
+						width="71"
 						height="16"
-						key="staticText-7"/>
+						key="staticText-7"
+						isPrintInFirstWholeBand="true"
+						isPrintWhenDetailOverflows="true"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="9"/>
