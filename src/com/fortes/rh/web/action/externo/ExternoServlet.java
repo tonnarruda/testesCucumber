@@ -50,7 +50,8 @@ public class ExternoServlet extends HttpServlet
 		menu1("topo_bg.jpg","image/jpeg"),
 		menu2("topo_bg_right.jpg","image/jpeg"),
 		menu3("topo_img_right.jpg","image/jpeg"),
-		layout("layout.css","text");
+		layout("layout.css","text"),
+		trafego("trafego.css","text");
 
 		TipoParametro(String arquivoNome, String arquivoTipo)
 		{

@@ -11,7 +11,6 @@
 	<title>${tipoQuestionario.getDescricaoMaisc(questionario.tipo)} - ${questionario.titulo} ${complementoTitulo}</title>
 	<#assign formAction="salvaRespostaPesquisa.action"/>
 	<#assign buttonClass="btnGravar"/>
-	<#assign accessKey="A"/>
 	<#assign retorno="../../"/>
 
 	<#if voltarPara?exists>
@@ -20,6 +19,7 @@
 
 	<#assign exibirPorAspecto = questionario.aplicarPorAspecto/>
 	<#assign aspectoPerguntaAnterior="_"/>
+	<link rel="stylesheet" href="${request.contextPath}/externo/layout?tipo=trafego" />
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js"/>'></script>
 </#if>
@@ -159,6 +159,8 @@ function agrupaPerguntaseRespostas(formulario)
 		<@ww.hidden name="voltarPara" />
 		<@ww.hidden name="vinculo" />
 		<@ww.hidden name="turmaId"  />
+		<@ww.hidden name="empresaCodigo"  />
+		<@ww.hidden name="matricula"  />
 	<@ww.token />
 	</@ww.form>
 
@@ -210,9 +212,9 @@ function agrupaPerguntaseRespostas(formulario)
 	</div>
 	<div class="buttonGroup">
 		<#if questionario.perguntas?exists && 0 < questionario.perguntas?size>
-			<button onclick="${validarCampos}" class="${buttonClass}" accesskey="${accessKey}"></button>
+			<button onclick="${validarCampos}" class="${buttonClass}"></button>
 		</#if>
-		<button onclick="window.location='${retorno}'" class="btnVoltar" accesskey="V"></button>
+		<button onclick="window.location='${retorno}'" class="btnVoltar"></button>
 	</div>
 </body>
 </html>
