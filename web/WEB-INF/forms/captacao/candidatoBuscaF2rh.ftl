@@ -11,12 +11,17 @@
 	<style type="text/css">#menuBusca a.ativaF2rh{color: #FFCB03;}</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js"/>'></script>
 
-	<script type='text/javascript'>
-	</script>
+	<script type="text/javascript">
 
+
+	</script>
 	<#include "../ftl/showFilterImports.ftl" />
 
 	<#if !palavrasChave?exists>
@@ -36,19 +41,38 @@
 
 	<#include "../util/topFiltro.ftl" />	
 		<@ww.form name="formBuscaF2rh" id="formBuscaF2rh" action="buscaF2rh.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.textfield label="Nome" id="cargo" name="curriculo.nome" cssStyle="width: 350px;"/>
-			<@ww.textfield label="CPF" id="cpf" name="curriculo.user.cpf" cssStyle="width: 350px;"/>
-			<@ww.textfield label="Atualizado em" id="updated_at" name="curriculo.updated_at" cssStyle="width: 350px;"/>
-			<@ww.textfield label="Escolaridade" id="escolaridade" name="curriculo.escolaridade_rh" cssStyle="width: 350px;"/>
-			<@ww.textfield label="Idioma" id="idioma" name="curriculo.idioma" cssStyle="width: 350px;"/>
-			<@ww.textfield label="Estado" id="estado" name="curriculo.estado" cssStyle="width: 350px;"/>
-			<@ww.textfield label="Cidade" id="cidade" name="curriculo.cidade_rh" cssStyle="width: 350px;"/>
-			<@ww.textfield label="Bairro" id="bairro" name="curriculo.bairro" cssStyle="width: 350px;"/>
-			<@ww.textfield label="Sexo" id="sexo" name="curriculo.sexo" cssStyle="width: 350px;"/>
-			<@ww.textfield label="Idade" id="idade" name="curriculo.data_nascimento" cssStyle="width: 350px;"/>
-			<@ww.textfield label="Cargo" id="cargo" name="curriculo.cargo" cssStyle="width: 350px;"/>
+			<@ww.textfield label="Nome" id="cargo" name="curriculo.nome" cssStyle="width: 417px;" liClass="liLeft" />
+			<@ww.textfield label="CPF" id="cpf" name="curriculo.user.cpf" cssClass="mascaraCpf"/>
 			
-			<@ww.textfield label="Palavra chave" id="observacoes_complementares" name="curriculo.observacoes_complementares" cssStyle="width: 350px;"/>
+			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 170px;" liClass="liLeft" headerKey="" headerValue="" />
+			<@ww.select label="Idioma" name="idioma" id="idioma" list="idiomas" listKey="id" listValue="nome" liClass="liLeft" cssStyle="width: 150px;" headerKey="" headerValue=""/>
+			
+			<li>
+				<span>
+				Cadastrado/Atualizado entre:
+				</span>
+			</li>
+			<@ww.datepicker name="dataCadIni" id="dataCadIni" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
+			<@ww.datepicker name="dataCadFim" id="dataCadFim" cssClass="mascaraData validaDataFim" />
+
+			<@ww.textfield label="Cargo" id="cargo" name="curriculo.cargo" cssStyle="width: 290px;" liClass="liLeft"/>			
+			<@ww.select label="Sexo" name="curriculo.sexo" id="sexo" list="sexos" cssStyle="width: 100px;"  liClass="liLeft"/>
+			<li>
+				<span>
+				Idade Preferencial:
+				</span>
+			</li>
+
+			<@ww.textfield name="idadeMin" id="dataPrevIni" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
+			<@ww.label value="a" liClass="liLeft" />
+			<@ww.textfield name="idadeMax" id="dataPrevFim" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
+			<@ww.label value="anos"/>
+			
+			<@ww.select label="Estado" name="uf" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
+			<@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 200px;" headerKey="" headerValue="Selecione um Estado..." liClass="liLeft" />
+			<@ww.textfield label="Bairro" id="bairro" name="curriculo.bairro" cssStyle="width: 264px;"/>
+			
+			<@ww.textfield label="Palavra chave(Ex.: programador, superior completo)" id="observacoes_complementares" name="curriculo.observacoes_complementares" cssStyle="width: 525px;"/>
 			
 			<@ww.hidden name="filtro" value="true"/>
 			<@ww.hidden name="solicitacao.id"/>

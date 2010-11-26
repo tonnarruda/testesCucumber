@@ -313,7 +313,10 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	public String prepareBuscaF2rh() throws Exception
 	{
-		
+		escolaridades = new Escolaridade();
+		sexos = new Sexo();
+		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
+		idiomas = idiomaManager.findAll(new String[]{"nome"});
 		setShowFilter(true);
 		
 		return Action.SUCCESS;
