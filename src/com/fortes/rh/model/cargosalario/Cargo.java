@@ -58,7 +58,7 @@ public class Cargo extends AbstractModel implements Serializable
 	private String recrutamento;
 	@Lob
 	private String selecao;
-	@Column(length=1200)
+	@Lob
 	private String atitude;
 	@Lob
 	private String observacao;

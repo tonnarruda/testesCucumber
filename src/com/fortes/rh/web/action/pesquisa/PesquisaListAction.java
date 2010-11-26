@@ -151,4 +151,8 @@ public class PesquisaListAction extends MyActionSupportList
 		return SESSION_EMPRESA;
 	}
 
+	public String getEmpresaCodigo() {
+		return empresaCodigo;
+	}
+
 }

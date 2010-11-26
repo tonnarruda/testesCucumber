@@ -167,7 +167,7 @@ public class Index extends ActionSupport
 				boolean rhCompativelComAC  = parametrosDoSistemaManager.verificaCompatibilidadeComWebServiceAC(versaoWebServiceAC, versaoMinimaWebServicxeCompativel);
 
 				if(!rhCompativelComAC)
-					addActionMessage("A versão do WebService do AC Pessoal ("+versaoWebServiceAC+") está inferior à versão mínima ("+versaoMinimaWebServicxeCompativel+") exigida pelo FortesRH.");
+					addActionError("A versão do WebService do AC Pessoal ("+versaoWebServiceAC+") está diferente da versão ("+versaoMinimaWebServicxeCompativel+") exigida pelo FortesRH.");
 			}
 
 			pendenciaACs.addAll(historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId));

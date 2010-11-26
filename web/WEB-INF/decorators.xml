@@ -45,6 +45,10 @@
 		<pattern>/pesquisa/trafego/**</pattern>
 	</decorator>
 
+	<decorator name="trafego" page="trafego.ftl">
+		<pattern>/pesquisa/trafego/**</pattern>
+	</decorator>
+
 	<decorator name="recuperaSenha" page="recuperaSenha.ftl">
 		<pattern>/acesso/usuario/prepareRecuperaSenha.action**</pattern>
 		<pattern>/acesso/usuario/recuperaSenha.action**</pattern>

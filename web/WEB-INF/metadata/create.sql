@@ -495,7 +495,7 @@ CREATE TABLE cargo (
     empresa_id bigint,
     ativo boolean default true,
     exibirModuloExterno boolean,
-    atitude character varying(120)
+    atitude text
 );
 ALTER TABLE cargo ADD CONSTRAINT cargo_pkey PRIMARY KEY (id);
 ALTER TABLE cargo ADD CONSTRAINT cargo_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);

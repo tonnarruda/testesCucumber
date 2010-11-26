@@ -60,7 +60,9 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     
     private boolean respondePorOutroUsuario;
 
-	private Date respondidaEm; 
+	private Date respondidaEm;
+	private String empresaCodigo;
+	private String matricula;
     
 
     public String prepareEditFichaMedica() throws Exception
@@ -124,6 +126,32 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         retorno = voltarPara;
 
         return Action.SUCCESS;
+    }
+
+    public String prepareResponderQuestionarioTrafego() throws Exception
+    {
+    	questionario = questionarioManager.findResponderQuestionario(questionario);
+   		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
+    	
+    	if(questionario.getPerguntas().isEmpty())
+    		addActionMessage("Não existe pergunta neste questionario.");
+    		
+    	voltarPara = "../../pesquisa/trafego/list.action?empresaCodigo=" + empresaCodigo + "&matricula=" + matricula;
+    	
+    	return Action.SUCCESS;
+    }
+    
+    public String salvaQuestionarioRespondidoTrafego() throws Exception
+    {
+    	try {			
+    		colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm);
+    		actionMsg = "Respostas gravadas com sucesso.";
+		} catch (Exception e) {
+			e.printStackTrace();
+			actionMsg = "Erro ao gravar Respostas.";
+		}
+		
+		return Action.SUCCESS;
     }
 
     public String salvaQuestionarioRespondido() throws Exception
@@ -372,5 +400,21 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 
 	public void setRespondidaEm(Date respondidaEm) {
 		this.respondidaEm = respondidaEm;
+	}
+
+	public String getEmpresaCodigo() {
+		return empresaCodigo;
+	}
+
+	public void setEmpresaCodigo(String empresaCodigo) {
+		this.empresaCodigo = empresaCodigo;
+	}
+
+	public String getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
 	}
 }

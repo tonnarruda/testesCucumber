@@ -6095,6 +6095,6 @@ insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) 
 alter sequence configuracaocampoextra_sequence restart with 10;
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, campoextracolaborador)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.33.22', '', '25', false,false, 2, '1.0.1.40', 1, 3, false);
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.34.23', '', '25', false,false, 2, '1.0.1.40', 1, 3, false);
 
 alter sequence parametrosdosistema_sequence restart with 2;
