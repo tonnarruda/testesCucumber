@@ -25,6 +25,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.f2rh.Curriculo;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -41,9 +42,11 @@ import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
@@ -1099,5 +1102,29 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		else
 			candidato.setSenha(StringUtil.encodeString(candidato.getSenha()));
 
+	}
+
+	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidadeValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Map ufs, Collection<Idioma> idiomas) 
+	{
+		String nome = "";
+		String cpf = "";
+		String escolaridade = "";
+		String idioma = "";
+		String data_cad_ini = "";
+		String data_cad_fim = "";
+		String cargo = "";
+		String sexo = "";
+		String idade_ini = "";
+		String idade_fim = "";
+		String estado = "";
+		String cidade = "";
+		String bairro = "";
+		String palavra_chave = "";
+		
+		try {
+			escolaridade = "escolaridade=\" "+ new Escolaridade().get(escolaridadeValue) +"\"";
+		} catch (Exception e){}
+		
+		return new String[]{nome};
 	}
 }

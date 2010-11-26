@@ -8,6 +8,28 @@ import com.fortes.rh.model.captacao.Candidato;
 
 public class Curriculo {
 	
+	private int id;
+	private String updated_at;
+	private String nome;
+	private String endereco;
+	private String estado;
+	private String cidade_rh;
+	private String bairro;
+	private String cep;
+	private String data_nascimento;
+	private String nacionalidade;
+	private String estado_civil;
+	private String sexo;
+	private String escolaridade_rh;
+	private String area_formacao;
+	private String curso;
+	private String observacoes_complementares;
+	private String idioma;
+	
+	private BigDecimal salario;
+	private User user;
+	private ArrayList<CurriculoTelefone> curriculo_telefones;
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -30,28 +52,6 @@ public class Curriculo {
 		return true;
 	}
 
-	private int id;
-	private String updated_at;
-	private String nome;
-	private String endereco;
-	private String estado;
-	private String cidade_rh;
-	private String bairro;
-	private String cep;
-	private String data_nascimento;
-	private String nacionalidade;
-	private String estado_civil;
-	private String sexo;
-	private String escolaridade_rh;
-	private String area_formacao;
-	private String curso;
-	private String observacoes_complementares;
-	private String idioma;
-	
-	private BigDecimal salario;
-	private User user;
-	private ArrayList<CurriculoTelefone> curriculo_telefones;
-	
 	public int getId() {
 		return id;
 	}

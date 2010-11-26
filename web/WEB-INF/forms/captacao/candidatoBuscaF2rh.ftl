@@ -32,7 +32,7 @@
 	</#if>
 	
 
-	<#assign validarCampos="return validaFormulario('formBusca', null,  null)"/>
+	<#assign validarCampos="return validaFormulario('formBuscaF2rh', null, new Array('dataCadIni','dataCadFim'))"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
 
@@ -44,7 +44,7 @@
 			<@ww.textfield label="Nome" id="cargo" name="curriculo.nome" cssStyle="width: 417px;" liClass="liLeft" />
 			<@ww.textfield label="CPF" id="cpf" name="curriculo.user.cpf" cssClass="mascaraCpf"/>
 			
-			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 170px;" liClass="liLeft" headerKey="" headerValue="" />
+			<@ww.select label="Escolaridade" name="escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 170px;" liClass="liLeft" headerKey="" headerValue="" />
 			<@ww.select label="Idioma" name="idioma" id="idioma" list="idiomas" listKey="id" listValue="nome" liClass="liLeft" cssStyle="width: 150px;" headerKey="" headerValue=""/>
 			
 			<li>
@@ -72,7 +72,7 @@
 			<@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 200px;" headerKey="" headerValue="Selecione um Estado..." liClass="liLeft" />
 			<@ww.textfield label="Bairro" id="bairro" name="curriculo.bairro" cssStyle="width: 264px;"/>
 			
-			<@ww.textfield label="Palavra chave(Ex.: programador, superior completo)" id="observacoes_complementares" name="curriculo.observacoes_complementares" cssStyle="width: 525px;"/>
+			<@ww.textfield label="Palavra chave(Ex.: programador superior completo)" id="observacoes_complementares" name="curriculo.observacoes_complementares" cssStyle="width: 525px;"/>
 			
 			<@ww.hidden name="filtro" value="true"/>
 			<@ww.hidden name="solicitacao.id"/>

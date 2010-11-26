@@ -56,8 +56,10 @@ public class F2rhFacadeImpl implements F2rhFacade {
 		ArrayList<NameValuePair> lista = new ArrayList<NameValuePair>();
 		for (String string : query) {
 			String[] pair = string.split("=");
-			NameValuePair nvpair = new NameValuePair(pair[0], pair[1]);
-			lista.add(nvpair);
+			if(pair.length == 2) {
+				NameValuePair nvpair = new NameValuePair(pair[0], pair[1]);
+				lista.add(nvpair);				
+			}
 		}
 		NameValuePair[] params = new NameValuePair[]{};
 		params = lista.toArray(params);

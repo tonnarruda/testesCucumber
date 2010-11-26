@@ -6,6 +6,7 @@ import mockit.Mockit;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.NameValuePair;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.f2rh.ConfigF2RH;
@@ -85,7 +86,7 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		
 		Collection<Curriculo> curriculos = f2rhFacade.obterCurriculos(config);
 		actual = encontrar(curriculos, expected);
-		assertEquals("", expected, actual);
+		assertEquals(expected, actual);
 	}
 
 	private Curriculo encontrar(Collection<Curriculo> curriculos, Curriculo expected) {
@@ -97,4 +98,33 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		}
 		return actual;
 	}
+	
+	public void testPrepareParams() {
+		String[] consulta = new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"};
+		NameValuePair[] pairs = f2rhFacade.prepareParams(consulta);
+		NameValuePair[] pairsExpected = new NameValuePair[] {
+				new NameValuePair("curriculo[id][]", "15"),
+				new NameValuePair("curriculo[id][]", "1560")
+		};
+		assertEquals(pairsExpected.length, pairs.length);
+	}
+	
+	public void testPrepareParamsVazio() {
+		String[] consulta = new String[]{"",  "curriculo[id][]=1560"};
+		NameValuePair[] pairs = f2rhFacade.prepareParams(consulta);
+		NameValuePair[] pairsExpected = new NameValuePair[] {
+				new NameValuePair("curriculo[id][]", "1560")
+		};
+		assertEquals(pairsExpected.length, pairs.length);
+	}
+	
+	public void testPrepareParamsVazioMasComIgual() {
+		String[] consulta = new String[]{"=",  "curriculo[id][]=1560"};
+		NameValuePair[] pairs = f2rhFacade.prepareParams(consulta);
+		NameValuePair[] pairsExpected = new NameValuePair[] {
+				new NameValuePair("curriculo[id][]", "1560")
+		};
+		assertEquals(pairsExpected.length, pairs.length);
+	}
+	
 }

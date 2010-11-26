@@ -310,17 +310,6 @@ public class CandidatoListAction extends MyActionSupportList
 
 		return Action.SUCCESS;
 	}
-	
-	public String prepareBuscaF2rh() throws Exception
-	{
-		escolaridades = new Escolaridade();
-		sexos = new Sexo();
-		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
-		idiomas = idiomaManager.findAll(new String[]{"nome"});
-		setShowFilter(true);
-		
-		return Action.SUCCESS;
-	}
 
 	public String prepareBuscaSimples() throws Exception
 	{
@@ -359,16 +348,42 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	
+	private void montaFiltroF2rh() 
+	{
+		escolaridades = new Escolaridade();
+		sexos = new Sexo();
+		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
+		idiomas = idiomaManager.findAll(new String[]{"nome"});
+		setShowFilter(true);
+	}
+	
+	public String prepareBuscaF2rh() throws Exception
+	{
+		montaFiltroF2rh();
+		
+		return Action.SUCCESS;
+	}
+
 	public String buscaF2rh() throws Exception
 	{
-		F2rhFacade f2rhFacade = new F2rhFacadeImpl();
-		ConfigF2RH config = new ConfigF2RH();
-		String[] consulta_basica = new String[]{"escolaridade=\"Superior Completo\""};
-		config.setConsulta(consulta_basica);
-		String curriculos_string = f2rhFacade.find_f2rh(config);
+		montaFiltroF2rh();
 		
-		config.setJson(curriculos_string);
-		curriculos = f2rhFacade.obterCurriculos(config);
+		try {
+			F2rhFacade f2rhFacade = new F2rhFacadeImpl();
+			ConfigF2RH config = new ConfigF2RH();
+			config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
+			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, ufs, idiomas);
+			config.setConsulta(consulta_basica);
+			String curriculos_string = f2rhFacade.find_f2rh(config);
+			
+			config.setJson(curriculos_string);
+			curriculos = f2rhFacade.obterCurriculos(config);
+			
+		} catch (Exception e) {
+			addActionError("Erro ao buscar candidatos no F2rh.");
+			e.printStackTrace();
+		}
 		
 		return Action.SUCCESS;
 	}
