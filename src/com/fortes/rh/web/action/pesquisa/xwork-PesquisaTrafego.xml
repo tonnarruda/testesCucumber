@@ -6,8 +6,11 @@
 		<action name="list" class="com.fortes.rh.web.action.pesquisa.PesquisaListAction" method="listTrafego">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/pesquisaTrafegoList.ftl</result>
 		</action>
-		<action name="prepareResponderQuestionarioTrafeco" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="prepareResponderQuestionario">
+		<action name="prepareResponderQuestionarioTrafego" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="prepareResponderQuestionarioTrafego">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/responderPesquisa.ftl</result>
+		</action>
+		<action name="salvaQuestionarioRespondido" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="salvaQuestionarioRespondidoTrafego">
+			<result name="success" type="redirect"><![CDATA[list.action?msgAlert=${msgAlert}&empresaCodigo=${empresaCodigo}&matricula=${matricula}]]></result>
 		</action>
 	</package>
 </xwork>
