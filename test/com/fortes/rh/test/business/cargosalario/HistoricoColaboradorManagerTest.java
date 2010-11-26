@@ -189,6 +189,27 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.getHistoricosAtuaisByEstabelecimentoAreaGrupo(estabelecimentoIds, filtrarPor, areaOrganizacionalIds, grupoOcupacionalIds, empresaId, data);
 	}
 	
+	public void testRelatorioColaboradorCargoComColaboradoresRegistradosNoAC() throws Exception {
+		
+		HistoricoColaborador hc = dadoUmColaboradorQueTambemEstaRegistradoNoAC();
+		
+		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
+		historicoColaboradors.add(hc);
+		
+		Date data = new Date();
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		
+		//opcao 0
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(empresa, data, null, null, 2, '0', null, true, null).size());
+	}
+	
+	private HistoricoColaborador dadoUmColaboradorQueTambemEstaRegistradoNoAC() {
+		HistoricoColaborador hc = HistoricoColaboradorFactory.getEntity(1L);
+		hc.setColaboradorCodigoAC("123456");
+		return hc;
+	}
+
 	public void testRelatorioColaboradorCargo() throws Exception
 	{
 		//Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro

@@ -56,7 +56,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	public String list() throws Exception 
 	{
-		if(DateUtil.mesesEntreDatas(DateUtil.criarDataMesAno(dataDe), DateUtil.criarDataMesAno(dataAte)) > 12)
+		if(DateUtil.mesesEntreDatas(DateUtil.criarDataMesAno(dataDe), DateUtil.criarDataMesAno(dataAte)) >= 12)
 		{
 			addActionMessage("Não é permitido um período maior do 12 meses para a geração deste relatório");
 			prepare();

@@ -626,7 +626,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId)
+	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId, Long colaboradorId)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		
@@ -636,7 +636,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		if (colaboradorId != null)
+			criteria.add(Expression.not((Expression.eq("c.id", colaboradorId))));
+		
+		if (empresaId != null)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));

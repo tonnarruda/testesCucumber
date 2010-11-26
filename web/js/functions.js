@@ -871,26 +871,30 @@ function validaPercentual()
 		valorPercentual = 70;	
 }
  
-function verificaCpfDuplicado(valorCpf, empresaId, isModuloExterno, candidatoId)
+function verificaCpfDuplicado(valorCpf, empresaId, isModuloExterno, id, isCandidato)
 {
 	if(valorCpf.length == 14)
 	{
 		DWRUtil.useLoadingMessage('Carregando...');
-		CandidatoDWR.verificaCpfDuplicado(function(data){processaValidacao(data, valorCpf, isModuloExterno, empresaId);
-														}, valorCpf, empresaId, candidatoId);
+		CandidatoDWR.verificaCpfDuplicado(function(data){processaValidacao(data, valorCpf, isModuloExterno, empresaId, isCandidato);
+														}, valorCpf, empresaId, id, isCandidato);
 	}
 	else
 		document.getElementById("msgCPFDuplicado").style.display = "none";
 }
 
-function processaValidacao(data, valorCpf, isModuloExterno, empresaId)
+function processaValidacao(data, valorCpf, isModuloExterno, empresaId, isCandidato)
 {
-	if (data == 0)
+	if (data == "")
 		document.getElementById("msgCPFDuplicado").style.display = "none";
 	
-	if(data == 1)
+	if(data == "candidato")
 	{
-		var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"list.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Candidato(s) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+		if (isCandidato)
+			var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"list.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Candidato(s) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+		else
+			var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"listCandidato.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Candidato(s) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+		
 		if(isModuloExterno)
 			msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"prepareRecuperaSenha.action?empresaId=" + empresaId + "&cpf=" + valorCpf+ "\">" + "Já existe um currículo com esse CPF. Clique aqui para solicitar o envio de senha para seu e-mail." + "</a><br>";
 			
@@ -898,18 +902,19 @@ function processaValidacao(data, valorCpf, isModuloExterno, empresaId)
 		document.getElementById("msgCPFDuplicado").innerHTML = msg;	
 	}
 	
-	if(data == 2)
+	if(data == "colaborador")
 	{
-		var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"listColaborador.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Colaborador(es) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+		if (isCandidato)
+			var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"listColaborador.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Colaborador(es) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+		else
+			var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"list.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Colaborador(es) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+		
 		if(isModuloExterno)
 			msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" >" + "Entre em contato com a empresa, pois o CPF informado é de um Colaborador." + "</a><br>";
 			
 		document.getElementById("msgCPFDuplicado").style.display = "";
 		document.getElementById("msgCPFDuplicado").innerHTML = msg;	
 	}
-	
-	
-		
 }
 
 function exibeEscondeConteudo(){

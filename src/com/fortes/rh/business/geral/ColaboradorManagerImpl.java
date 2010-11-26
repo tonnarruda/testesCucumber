@@ -539,13 +539,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			return getDao().findColaboradorUsuarioByCpf(cpf, empresaId);
 	}
 
-	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId)
+	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId, Long colaboradorId)
 	{
 		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
 		if(cpfSemMascara.equals(""))
 			return null;
 		else
-			return getDao().findTodosColaboradorCpf(cpfSemMascara, empresaId);
+			return getDao().findTodosColaboradorCpf(cpfSemMascara, empresaId, colaboradorId);
 	}
 
 	public void enviaEmailEsqueciMinhaSenha(Colaborador colaborador, Empresa empresa)
