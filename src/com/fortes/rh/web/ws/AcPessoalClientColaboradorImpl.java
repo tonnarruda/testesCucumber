@@ -15,6 +15,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 
 public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborador
@@ -193,8 +194,14 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 			String token = acPessoalClient.getToken(empresa);
 
+			// mapeamento pro bean
 			QName qname = new QName(empresa.getAcUrlWsdl(), "TRemuneracaoVariavel");
-            call.registerTypeMapping(Object[].class, qname, new ArraySerializerFactory(qname), new ArrayDeserializerFactory(qname));
+			call.registerTypeMapping(TRemuneracaoVariavel.class, qname, new BeanSerializerFactory(TRemuneracaoVariavel.class, qname), 
+					new BeanDeserializerFactory(TRemuneracaoVariavel.class, qname));
+			// mapeamento pro array de bean
+			QName qnameArray = new QName(empresa.getAcUrlWsdl(), "TRemuneracoesVariaveis");
+            call.registerTypeMapping(TRemuneracaoVariavel[].class, qnameArray, 
+            			new ArraySerializerFactory(), new ArrayDeserializerFactory());
 
 			QName xmlstring = new QName("xs:string");
 			QName xmlstringArray = new QName("xs:string[]");
@@ -207,9 +214,10 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			call.addParameter("AnoMesInicial", xmlstring, ParameterMode.IN);
 			call.addParameter("AnoMesFinal", xmlstring, ParameterMode.IN);
 
-			call.setReturnType(qname);
+			call.setReturnType(qnameArray);
 
-			Object[] param = new Object[] {token, empresa.getCodigoAC(), colaboradoresIds, anoMesInicial, anoMesFinal};
+			// TODO: evita chave duplicada
+			Object[] param = new Object[] {token, empresa.getCodigoAC(), new String[]{"000002"}, anoMesInicial, anoMesFinal};
 
 			result = (Object[]) call.invoke(param);
 		}

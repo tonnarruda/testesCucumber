@@ -13,7 +13,9 @@
 		<div>Permissões</div>
 		<div class="listaOpcoes">
 			<ul>
-				${exibirPerfil}
+				<#if exibirPerfil?exists>
+					${exibirPerfil}
+				</#if>
 			</ul>
 		</div>
 	

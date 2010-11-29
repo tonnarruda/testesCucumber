@@ -84,29 +84,29 @@ public class CandidatoDWR
 		this.conhecimentoManager = conhecimentoManager;
 	}
 	
-	public Integer verificaCpfDuplicado(String cpf, Long empresaId, Long candidatoId) throws Exception
+	public String verificaCpfDuplicado(String cpf, Long empresaId, Long id, String edit) throws Exception
 	{
 		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
 		
 		if (!cpfSemMascara.equals("") && cpfSemMascara.length() == 11)
 		{
 			try {
-				Colaborador colaborador = colaboradorManager.findTodosColaboradorCpf(cpfSemMascara, empresaId); 
+				Colaborador colaborador = colaboradorManager.findTodosColaboradorCpf(cpfSemMascara, empresaId, id); 
 				if (colaborador != null)
-					return 2; //link para colaborador existente
+					return "colaborador"; //link para colaborador existente
 			} catch (Exception e) {
-				return 2;//link para colaborador existente	
+				return "colaborador";//link para colaborador existente	
 			}
 			try	{
-				Candidato candidato = candidatoManager.verifyCPF(cpfSemMascara, empresaId, candidatoId);
+				Candidato candidato = candidatoManager.verifyCPF(cpfSemMascara, empresaId, id);
 				if (candidato != null)
-					return 1; //link para candidato existente
+					return "candidato"; //link para candidato existente
 			} catch (NonUniqueResultException notUniqueResultException) {
-				return 1;//link para candidato existente
+				return "candidato";//link para candidato existente
 			}
 		}
 
-		return 0;//sem resultados
+		return "";//sem resultados
 	}
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {

@@ -56,6 +56,12 @@
 
 	<#include "../cargosalario/calculaSalarioInclude.ftl" />
 
+    <#if empresaId?exists>
+      <#assign idDaEmpresa=empresaId/>
+    <#else>
+      <#assign idDaEmpresa><@authz.authentication operation="empresaId"/></#assign>
+    </#if>
+
 	<script type="text/javascript">
 	
 		
@@ -146,6 +152,15 @@
 			
 			//addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');			
 		});
+		
+		function verificaCpf(data)
+	    {
+			<#if colaborador.id?exists>
+					verificaCpfDuplicado(data, ${idDaEmpresa}, null, ${colaborador.id}, false);
+			<#else>
+					verificaCpfDuplicado(data, ${idDaEmpresa}, null, null, false);
+			</#if>			
+	    }
 	</script>
 
 	<@ww.head />
@@ -167,6 +182,8 @@
 		<#assign funcaoDataAdmissao="sugerirDataHistorico();"/>
 	</#if>
 
+	<#assign edit="colaborador"/>
+	
 	<#if editarHistorico>
 		<#assign somenteLeitura="false"/>
 	</#if>
@@ -335,7 +352,8 @@
 			<@ww.datepicker label="Nascimento" name="colaborador.pessoal.dataNascimento" value="${dataNasc}" id="nascimento" required="true" liClass="liLeft" cssClass="mascaraData"/>
 
 			<@ww.select label="Sexo"   name="colaborador.pessoal.sexo" list="sexos" cssStyle="width: 85px;" liClass="liLeft" />
-			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" required="true" cssClass="mascaraCpf" />
+			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" required="true" cssClass="mascaraCpf"  onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);" />
+			<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>
 			<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
 			<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" required="true" cssStyle="width: 300px;" liClass="liLeft" maxLength="40"/>
 			<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" required="true" cssStyle="width:40px;" liClass="liLeft" maxLength="10"/>

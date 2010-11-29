@@ -420,6 +420,26 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		}
 
+		try 
+		{
+			Candidato candidatoTmp = candidatoManager.verifyCPF(candidato.getPessoal().getCpf(), empresaId, candidato.getId());
+			if(candidatoTmp != null)
+			{
+				if (moduloExterno)
+					addActionError("Já existe um currículo com esse CPF.");
+				else
+					addActionError("CPF já cadastrado!");
+				
+				prepare();
+				return Action.INPUT;				
+			}
+		} catch (NonUniqueResultException notUniqueResultException) 
+		{
+			addActionError("CPF já cadastrado!");
+			prepare();
+			return Action.INPUT;				
+		}
+		
 		Map session = ActionContext.getContext().getSession();
 		formacaos = (Collection<Formacao>) session.get("SESSION_FORMACAO");
 		idiomas = (Collection<CandidatoIdioma>) session.get("SESSION_IDIOMA");
@@ -444,26 +464,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		session.put("SESSION_FORMACAO", null);
 		session.put("SESSION_IDIOMA", null);
 		session.put("SESSION_EXPERIENCIA", null);
-
-		try 
-		{
-			Candidato candidatoTmp = candidatoManager.verifyCPF(candidato.getPessoal().getCpf(), empresaId, candidato.getId());
-			if(candidatoTmp != null)
-			{
-				if (moduloExterno)
-					addActionError("Já existe um currículo com esse CPF.");
-				else
-					addActionError("CPF já cadastrado!");
-				
-				prepare();
-				return Action.INPUT;				
-			}
-		} catch (NonUniqueResultException notUniqueResultException) 
-		{
-			addActionError("CPF já cadastrado!");
-			prepare();
-			return Action.INPUT;				
-		}
 		
 		return Action.SUCCESS;
 	}

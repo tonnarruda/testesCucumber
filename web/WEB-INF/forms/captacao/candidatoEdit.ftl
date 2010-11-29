@@ -192,11 +192,38 @@
 		$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${idDaEmpresa}"/>');
 	});
 	
+	
+	function verificaCpf(data)
+    {
+    	 <#if moduloExterno?exists && moduloExterno>
+			<#if candidato.id?exists>
+				<#if idDaEmpresa?exists>
+					verificaCpfDuplicado(data, ${idDaEmpresa}, true, ${candidato.id}, true);
+				<#else>
+					verificaCpfDuplicado(data, null, true, ${candidato.id}, true);
+				</#if>
+			<#else>
+				<#if idDaEmpresa?exists>
+					verificaCpfDuplicado(data, ${idDaEmpresa}, true, null, true);
+				<#else>
+					verificaCpfDuplicado(data, null, true, null, true);
+				</#if>
+			</#if>
+		<#else>
+			<#if candidato.id?exists>
+				verificaCpfDuplicado(data, ${idDaEmpresa}, null, ${candidato.id}, true);
+			<#else>
+				verificaCpfDuplicado(data, ${idDaEmpresa}, null, null, true);
+			</#if>			
+		</#if>
+    }
+	
 </script>
 
   <@ww.head />
   
   <#if moduloExterno?exists && moduloExterno>
+		
 
 	<#if upperCase?exists && upperCase>
 	  <#assign capitalizar = "this.value = this.value.toUpperCase();" />
@@ -221,6 +248,8 @@
       <#assign formAction="insert.action"/>
     </#if>
   </#if>
+
+	<#assign edit="true"/>
 
   <#if candidato.id?exists>
     <title>Editar Candidato</title>
@@ -366,8 +395,8 @@
 					<@ww.div id="nomesHomonimos" cssStyle="color:red;">	</@ww.div>
 				</#if>
 			</@ww.div>
-
-			<@ww.textfield label="CPF"  name="candidato.pessoal.cpf" id="cpf"  cssClass="mascaraCpf" liClass="liLeft" required="${cpfObrigatorio}" onchange="verificaCpfDuplicadoDecisao(this.value);" onblur="verificaCpfDuplicadoDecisao(this.value);"/>
+																																																							
+			<@ww.textfield label="CPF"  name="candidato.pessoal.cpf" id="cpf"  cssClass="mascaraCpf" liClass="liLeft" required="${cpfObrigatorio}" onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);"/>
 			<@ww.select label="Escolaridade" name="candidato.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 300px;"  required="true" headerKey="" headerValue="Selecione..."/>
 			<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>
 
