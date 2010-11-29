@@ -24,6 +24,16 @@ public class StringUtilTest extends TestCase
 
 		assertEquals(esperado, StringUtil.removeBreak(texto));
 	}
+	
+	public void testRemoveAspas()
+	{
+		
+		String texto = "Mas quando a 'branca '";
+		
+		String esperado = "Mas quando a `branca `";
+		
+		assertEquals(esperado, StringUtil.removeAspas(texto));
+	}
 
 	public void testStringToLong()
 	{

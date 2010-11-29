@@ -244,6 +244,11 @@ a.header,span.header {
 	font-size: 11px;
 }
 
+pre {
+	font-family: verdana, sans-serif;
+	width: 500px;
+}
+
 div {
 	font-family: verdana, sans-serif;
 	font-size: 13px;

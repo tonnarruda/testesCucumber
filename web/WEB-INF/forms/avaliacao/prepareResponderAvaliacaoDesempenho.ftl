@@ -14,7 +14,7 @@
 	<b>Avaliador: ${avaliador.nome}</b><br/>
 	<b>Avaliado: ${colaborador.nome}</b>
 	<#if colaboradorQuestionario.avaliacao?exists && colaboradorQuestionario.avaliacao.cabecalho?exists>
-		<h4>${colaboradorQuestionario.avaliacao.cabecalho}</h4>
+		<pre><h4>${colaboradorQuestionario.avaliacao.cabecalho}</h4></pre>
 	</#if>
 	<br/>
 	

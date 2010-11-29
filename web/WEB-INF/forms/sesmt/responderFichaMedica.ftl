@@ -168,7 +168,7 @@ function agrupaPerguntaseRespostas(formulario){
 
 	<div class="cabecalho">
 		<#if questionario?exists && questionario.cabecalho?exists>
-			<p>${questionario.cabecalho}</p>
+			<pre>${questionario.cabecalho}</pre>
 		</#if>
 	</div>
 	<div>

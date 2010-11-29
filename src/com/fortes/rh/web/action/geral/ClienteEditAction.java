@@ -56,7 +56,7 @@ public class ClienteEditAction extends MyActionSupportList
 	{
 		prepare();
 		
-		clientes = clienteManager.findAll();
+		clientes = clienteManager.findAll(new String[]{"nome"});
 		
 		return Action.SUCCESS;
 	}
