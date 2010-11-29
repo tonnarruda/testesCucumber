@@ -25,6 +25,7 @@ public class Curriculo {
 	private String curso;
 	private String observacoes_complementares;
 	private String idioma;
+	private String cargo;
 	
 	private BigDecimal salario;
 	private User user;
@@ -215,6 +216,14 @@ public class Curriculo {
 
 	public void setIdioma(String idioma) {
 		this.idioma = idioma;
+	}
+
+	public String getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
 	}
 
 }

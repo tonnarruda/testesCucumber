@@ -354,6 +354,9 @@ public class CandidatoListAction extends MyActionSupportList
 		escolaridades = new Escolaridade();
 		sexos = new Sexo();
 		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
+		if(uf != null)
+			cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+		
 		idiomas = idiomaManager.findAll(new String[]{"nome"});
 		setShowFilter(true);
 	}
@@ -373,7 +376,7 @@ public class CandidatoListAction extends MyActionSupportList
 			F2rhFacade f2rhFacade = new F2rhFacadeImpl();
 			ConfigF2RH config = new ConfigF2RH();
 			config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
-			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, ufs, idiomas);
+			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, ufs, cidades, idiomas);
 			config.setConsulta(consulta_basica);
 			String curriculos_string = f2rhFacade.find_f2rh(config);
 			

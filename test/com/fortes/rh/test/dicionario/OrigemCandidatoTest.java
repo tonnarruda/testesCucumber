@@ -10,6 +10,6 @@ public class OrigemCandidatoTest extends TestCase
 	{
 		OrigemCandidato OrigemCandidato = new OrigemCandidato();
 	
-		assertEquals(5, OrigemCandidato.size());
+		assertEquals(6, OrigemCandidato.size());
 	}
 }

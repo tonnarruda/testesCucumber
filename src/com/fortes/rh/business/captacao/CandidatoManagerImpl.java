@@ -58,6 +58,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
@@ -1104,7 +1105,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	}
 
-	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidadeValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Map ufs, Collection<Idioma> idiomas) 
+	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidadeValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Map ufs, Map cidades, Collection<Idioma> idiomas) 
 	{
 		String nome = "";
 		String cpf = "";
@@ -1121,10 +1122,47 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		String bairro = "";
 		String palavra_chave = "";
 		
-		try {
-			escolaridade = "escolaridade=\" "+ new Escolaridade().get(escolaridadeValue) +"\"";
-		} catch (Exception e){}
+		nome = montaParametro(nome, "nome", curriculo.getNome());
+		cpf = montaParametro(cpf, "cpf", curriculo.getCpf());
+		escolaridade = montaParametro(escolaridade, "escolaridade", new Escolaridade().get(escolaridadeValue));
+		idioma = montaParametro(idioma, "idioma", getIdioma(idiomas, curriculo.getIdioma()));
+		data_cad_ini = montaParametro(data_cad_ini, "data_cad_ini", DateUtil.formataDiaMesAno(dataCadIni));
+		data_cad_fim = montaParametro(data_cad_fim, "data_cad_fim", DateUtil.formataDiaMesAno(dataCadFim));
+		cargo = montaParametro(cargo, "cargo", curriculo.getCargo());
+		sexo = montaParametro(sexo, "sexo", curriculo.getSexo());
+		idade_ini = montaParametro(idade_ini, "idade_ini", idadeMin);
+		idade_fim = montaParametro(idade_fim, "idade_fim", idadeMax);
+		estado = montaParametro(estado, "estado", (String) ufs.get(uf));
+		cidade = montaParametro(cidade, "cidade", (String) cidades.get(cidade));
+		bairro = montaParametro(bairro, "bairro", curriculo.getBairro());
+		palavra_chave = montaParametro(palavra_chave, "palavra_chave", curriculo.getObservacoes_complementares());
 		
-		return new String[]{nome};
+		return new String[]{nome, cpf, escolaridade, idioma, data_cad_ini, data_cad_fim, cargo, sexo, idade_ini, idade_fim, estado, cidade, bairro, palavra_chave};
+	}
+
+	private String getIdioma(Collection<Idioma> idiomas, String value) 
+	{
+		if(StringUtils.isNotBlank(value))
+		{
+			for (Idioma idioma : idiomas) {
+				if(idioma.getId().equals(Long.parseLong(value)))
+					return idioma.getNome();
+			}
+		}
+		
+		return "";
+	}
+
+	private String montaParametro(String variavel, String chave, String value) {
+		if(StringUtils.isNotBlank(value))
+		{
+			try {
+				variavel = chave + "=\"" + value + "\"";
+			} catch (Exception e){
+				
+			}			
+		}
+		
+		return variavel;
 	}
 }
