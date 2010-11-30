@@ -55,6 +55,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -1164,5 +1165,64 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		}
 		
 		return variavel;
+	}
+
+	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId) 
+	{
+		Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+
+		for (Curriculo curriculo : curriculos) 
+		{
+			Candidato candidato = new Candidato();
+			bind(candidato, curriculo);
+			candidatos.add(save(candidato));
+		}
+		
+		return candidatos;
+	}
+
+	private void bind(Candidato candidato, Curriculo curriculo) 
+	{
+//		String nome = "";
+//		String cpf = "";
+//		String escolaridade = "";
+//		String idioma = "";
+//		String data_cad_ini = "";
+//		String data_cad_fim = "";
+//		String cargo = "";
+//		String sexo = "";
+//		String idade_ini = "";
+//		String idade_fim = "";
+//		String estado = "";
+//		String cidade = "";
+//		String bairro = "";
+//		String palavra_chave = "";
+		
+		candidato.setNome(curriculo.getNome());
+		
+		Pessoal pessoal = new Pessoal();
+		pessoal.setCpf(curriculo.getCpf());
+		pessoal.setEscolaridade(curriculo.getEscolaridade_rh());
+		pessoal.setSexo(curriculo.getSexo().charAt(0));
+		
+		candidato.setCandidatoIdiomas(null);
+		candidato.setDataCadastro(new Date());
+		candidato.setDataAtualizacao(DateUtil.criarDataMesAno(null));
+		
+		candidato.setPessoal(pessoal);
+		candidato.setColocacao(Vinculo.EMPREGO);
+		candidato.setPretencaoSalarial(null);
+		candidato.setDisponivel(true);
+		candidato.setBlackList(false);
+		candidato.setContratado(false);
+		candidato.setObservacao(curriculo.getObservacoes_complementares());
+		candidato.setOrigem(OrigemCandidato.F2RH);
+//
+//		Contato contato = new Contato();
+//	   	contato.setDdd(colaborador.getContato().getDdd());
+//	   	contato.setEmail(colaborador.getContato().getEmail());
+//	   	contato.setFoneFixo(colaborador.getContato().getFoneFixo());
+//	   	candidato.setContato(contato);
 	}
 }

@@ -1549,7 +1549,14 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		assertEquals("bairro", camposInformados[12], retorno[12]);
 		assertEquals("palavra_chave", camposInformados[13], retorno[13]);
 	}
-	
+		
+	public void testGetCurriculosF2rh() throws Exception
+	{
+		String[] curriculoIds = new String[]{"1", "2"};
+		
+		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds);
+//		assertEquals(2, candidatos.size());
+	}
 	//TODO remprot
 //    public void testValidaQtdCadastros()
 //    {

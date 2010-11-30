@@ -491,6 +491,15 @@ public class CandidatoListAction extends MyActionSupportList
 
 		return Action.SUCCESS;
 	}
+	
+	public String insertCandidatosByF2rh() throws Exception
+	{
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+		if(candidatosId != null && candidatosId.length > 0)
+			candidatos = candidatoManager.getCurriculosF2rh(candidatosId);
+		
+		return Action.SUCCESS;
+	}
 
 	public String insertCandidatos() throws Exception
 	{

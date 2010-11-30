@@ -114,6 +114,11 @@
 		<action name="insertCandidatos" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="insertCandidatos">
 			<result name="success" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}]]></result>
 		</action>
+
+		<action name="insertCandidatosByF2rh" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="insertCandidatosByF2rh">
+			<result name="success" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}]]></result>
+		</action>
+
 		<!-- Exportar candidatos para BDS XML -->
 		<action name="selecionaDestinatariosBDS" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="selecionaDestinatariosBDS">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/selecionaDestinatariosBDS.ftl</result>
