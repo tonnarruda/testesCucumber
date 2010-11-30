@@ -405,4 +405,9 @@ public final class StringUtil
 		}
 
 	}
+
+	public static String removeAspas(String value) 
+	{
+		return value.replaceAll("'","`");
+	}
 }

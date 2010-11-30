@@ -72,7 +72,7 @@ public class PesquisaEditAction extends MyActionSupportEdit implements ModelDriv
 	{
 		try
 		{
-			pesquisa.getQuestionario().setCabecalho(StringUtil.removeBreak(pesquisa.getQuestionario().getCabecalho()));
+			pesquisa.getQuestionario().setCabecalho(StringUtil.removeAspas(pesquisa.getQuestionario().getCabecalho()));
 			pesquisaManager.save(pesquisa, pesquisa.getQuestionario(), getEmpresaSistema());
 			questionario = pesquisa.getQuestionario();
 		}
@@ -89,7 +89,7 @@ public class PesquisaEditAction extends MyActionSupportEdit implements ModelDriv
 	{
 		try
 		{
-			pesquisa.getQuestionario().setCabecalho(StringUtil.removeBreak(pesquisa.getQuestionario().getCabecalho()));
+			pesquisa.getQuestionario().setCabecalho(StringUtil.removeAspas(pesquisa.getQuestionario().getCabecalho()));
 			pesquisaManager.update(pesquisa, pesquisa.getQuestionario(), getEmpresaSistema().getId());
 			questionario = pesquisa.getQuestionario();
 			

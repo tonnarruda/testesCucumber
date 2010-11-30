@@ -86,11 +86,11 @@
 	<br>
 	<div class="cabecalho">
 		<#if questionario?exists && questionario.cabecalho?exists>
-			<p>${questionario.cabecalho}</p>
+			<pre>${questionario.cabecalho}</pre>
 		</#if>
 		<#if avaliacao?exists && avaliacao.id?exists>
 			<p>Título: ${avaliacao.titulo}</p>	
-			</br>Cabeçalho: ${avaliacao.cabecalho}</br>		
+			</br>Cabeçalho: <pre>${avaliacao.cabecalho}</pre></br>		
 		</#if>
 	</div>
 	<#if perguntas?exists && 0 < perguntas?size >

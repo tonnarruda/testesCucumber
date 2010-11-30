@@ -27,7 +27,7 @@
 	<@ww.actionerror />
 	<h3>${anuncio.titulo}</h3>
 	<span class="item"><b>Descrição:</b></span><br>
-	${anuncio.cabecalhoFormatado}<br><br>
+	<pre>${anuncio.cabecalhoFormatado}</pre><br><br>
 
 	<div class="buttonGroup">
 		<button onclick="window.location='enviarCurriculo.action?candidato.id=&anuncio.id=${anuncio.id}&solicitacao.id=${anuncio.solicitacao.id}'" class="btnQueroMeCandidatar" accesskey="E">

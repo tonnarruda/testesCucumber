@@ -39,7 +39,7 @@
 
 <div class="cabecalho">
 	<#if questionario?exists && questionario.cabecalho?exists>
-		<p>${questionario.cabecalho}</p>
+		<pre>${questionario.cabecalho}</pre>
 	</#if>
 	<br>
 	<b>Colaborador: </b> ${colaborador.nomeComercial}

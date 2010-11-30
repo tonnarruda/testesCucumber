@@ -78,7 +78,7 @@
 </@ww.form>
 <div class="cabecalho">
 	<#if pesquisa?exists && pesquisa.questionario?exists && pesquisa.questionario.cabecalho?exists>
-		<p>${pesquisa.questionario.cabecalho}</p>
+		<pre>${pesquisa.questionario.cabecalho}</pre>
 	</#if>
 </div>
 <form name="form">
@@ -88,14 +88,14 @@
 	<#if pesquisa?exists && pesquisa.objetivo?exists && pesquisa.objetivo != "">
 		<fieldset>
 			<legend>Objetivo</legend>
-			<p>${pesquisa.objetivo}</p>
+			<pre>${pesquisa.objetivo}</pre>
 		</fieldset>
 	</#if>
 
 	<#if pesquisa?exists && pesquisa.instrucoes?exists && pesquisa.instrucoes != "">
 		<fieldset>
 			<legend>Instruções</legend>
-			<p>${pesquisa.instrucoes}</p>
+			<pre>${pesquisa.instrucoes}</pre>
 		</fieldset>
 	</#if>
 
