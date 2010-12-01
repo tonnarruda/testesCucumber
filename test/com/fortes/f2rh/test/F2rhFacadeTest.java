@@ -22,8 +22,8 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	F2rhFacade f2rhFacade;
 	ConfigF2RH config;
 	
-	String jsonList1 = "[{\"escolaridade_rh\":\"Superior Incompleto\",\"updated_at\":\"2010-10-25T16:24:27Z\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cidade_rh\":\"Fortaleza\",\"id\":15,\"estado\":\"CE\"},{\"escolaridade_rh\":null,\"updated_at\":\"2009-10-27T13:06:24Z\",\"nome\":\"Ana Cristina Soares Silva\",\"cidade_rh\":null,\"id\":112,\"estado\":null}]";
-	String jsonList2 = "[{\"escolaridade_rh\":null,\"updated_at\":\"2009-10-29T14:25:51Z\",\"nome\":\"Laysa Lourenco Feitosa \",\"cidade_rh\":null,\"id\":1560,\"estado\":null},{\"escolaridade_rh\":\"Superior Completo\",\"updated_at\":\"2010-10-28T10:54:52Z\",\"nome\":\"marcio elvis oliveira da silva\",\"cidade_rh\":null,\"id\":5382,\"estado\":\"\"}]";
+	String jsonList1 = "[{\"escolaridade_rh\":\"Superior Incompleto\",\"updated_at\":\"25/10/2010\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cidade_rh\":\"Fortaleza\",\"id\":15,\"estado\":\"CE\"},{\"escolaridade_rh\":null,\"updated_at\":\"27/10/2009\",\"nome\":\"Ana Cristina Soares Silva\",\"cidade_rh\":null,\"id\":112,\"estado\":null}]";
+	String jsonList2 = "[{\"escolaridade_rh\":null,\"updated_at\":\"29/10/2009\",\"nome\":\"Laysa Lourenco Feitosa \",\"cidade_rh\":null,\"id\":1560,\"estado\":null},{\"escolaridade_rh\":\"Superior Completo\",\"updated_at\":\"28/10/2010\",\"nome\":\"marcio elvis oliveira da silva\",\"cidade_rh\":null,\"id\":5382,\"estado\":\"\"}]";
 	
 	protected void setUp() {
 		expected = new Curriculo();
@@ -32,7 +32,7 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		expected.setEscolaridade_rh("Superior Incompleto");
 		expected.setCidade_rh("Fortaleza");
 		expected.setEstado("CE");
-		expected.setUpdated_at("2010-10-25T16:24:27Z");
+		expected.setUpdated_rh("25/10/2010");
 		User user = new User();
 		user.setLogin("01017806306");
 		expected.setUser(user);

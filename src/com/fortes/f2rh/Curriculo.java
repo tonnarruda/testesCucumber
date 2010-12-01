@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class Curriculo {
 	
 	private int id;
-	private String updated_at;
-	private String created_at;
+	private String updated_rh;
+	private String created_rh;
 	private String nome;
 	private String endereco;
 	private String estado;
@@ -57,14 +57,6 @@ public class Curriculo {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getUpdated_at() {
-		return updated_at;
-	}
-
-	public void setUpdated_at(String updated_at) {
-		this.updated_at = updated_at;
 	}
 
 	public String getCidade_rh() {
@@ -224,12 +216,19 @@ public class Curriculo {
 		this.cargo = cargo;
 	}
 
-	public String getCreated_at() {
-		return created_at;
+	public String getUpdated_rh() {
+		return updated_rh;
 	}
 
-	public void setCreated_at(String createdAt) {
-		created_at = createdAt;
+	public void setUpdated_rh(String updatedRh) {
+		updated_rh = updatedRh;
 	}
 
+	public String getCreated_rh() {
+		return created_rh;
+	}
+
+	public void setCreated_rh(String createdRh) {
+		created_rh = createdRh;
+	}
 }

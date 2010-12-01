@@ -1228,7 +1228,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		Date hoje = new Date();
 		
 		candidato.setCandidatoIdiomas(null);//falta pegar o array
-		candidato.setDataCadastro();
+		candidato.setDataCadastro(null);
 		candidato.setDataAtualizacao(hoje);
 		
 		candidato.setPessoal(pessoal);
