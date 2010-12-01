@@ -18,7 +18,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.ctc.wstx.util.DataUtil;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -28,7 +27,6 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -48,6 +46,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -594,11 +593,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return acPessoalClientColaborador.verificaHistoricoNaFolhaAC(historicoColaboradorId, colaboradorCodigoAC, empresa);
 	}
 
-	public void setAcPessoalClientColaborador(AcPessoalClientColaborador acPessoalClientColaborador)
-	{
-		this.acPessoalClientColaborador = acPessoalClientColaborador;
-	}
-
 	public void updateHistorico(HistoricoColaborador historicoColaborador, Empresa empresa) throws Exception
 	{
 		HistoricoColaborador historicoColaboradorTmp = findByIdProjection(historicoColaborador.getId());
@@ -893,6 +887,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		this.acPessoalClientTabelaReajuste = acPessoalClientTabelaReajuste;
 	}
 
+	public void setAcPessoalClientColaborador(AcPessoalClientColaborador acPessoalClientColaborador)
+	{
+		this.acPessoalClientColaborador = acPessoalClientColaborador;
+	}
+
 	public HistoricoColaborador ajustaAmbienteFuncao(HistoricoColaborador historicoColaborador)
 	{
 		if (historicoColaborador.getAmbiente() == null || historicoColaborador.getAmbiente().getId() == null || historicoColaborador.getAmbiente().getId() == -1)
@@ -1131,7 +1130,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			if(qtdMeses != null && qtdMeses > 0)
 			{
 				//consulta por quantidade de Meses 
-				
 				if (opcaoFiltro == '0')//data atual 
 					dataConsulta = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMeses, false);			
 				else if (opcaoFiltro == '1')//data de referencia 
@@ -1141,34 +1139,48 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if (qtdMesesDesatualizacao != null)
 			dataAtualizacao = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMesesDesatualizacao, false);
 		
-		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao);
+		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, empresa.getId());
 		
-//		COLOCAR REMUNERAÇÃO VARIÁVEL NO RELATÓRIO (MARLUS E SAMUEL)		
-//		ArrayList<String> colaboradoresIdsList = new ArrayList<String>();
-//		for (HistoricoColaborador historicoColaborador : historicoColaboradors) 
-//		{			
-//			if (historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getCodigoAC() != null && !historicoColaborador.getColaborador().getCodigoAC().equals(""))
-//				colaboradoresIdsList.add(historicoColaborador.getColaborador().getCodigoAC().toString());
-//		}
-//		
-//		String[] colaboradoresIds = new String[colaboradoresIdsList.size()];
-//		colaboradoresIds = colaboradoresIdsList.toArray(colaboradoresIds);
-//		
-//		if (colaboradoresIdsList.size() != 0)
-//		{
-//			Object[] remuneracoesVariaveis = acPessoalClientColaborador.getRemuneracoesVariaveis(empresa, colaboradoresIds, DateUtil.formataAnoMes(dataHistorico), DateUtil.formataAnoMes(dataHistorico));
-//		
-//			for (HistoricoColaborador historicoColaborador : historicoColaboradors) 
-//			{
-//				
-//			}
-//		
-//		}	
+		if (empresa.isAcIntegra())
+			getRemuneracaoVariavelByAcPessoal(empresa, dataHistorico, historicoColaboradors);
 		
 		if(historicoColaboradors.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
 			
 		return historicoColaboradors;
+	}
+
+	private void getRemuneracaoVariavelByAcPessoal(Empresa empresa, Date dataHistorico, Collection<HistoricoColaborador> historicoColaboradors) throws Exception 
+	{
+		ArrayList<String> colaboradoresIdsList = new ArrayList<String>();
+		for (HistoricoColaborador historicoColaborador : historicoColaboradors) 
+		{			
+			if (historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getCodigoAC() != null && !historicoColaborador.getColaborador().getCodigoAC().equals(""))
+				colaboradoresIdsList.add(historicoColaborador.getColaborador().getCodigoAC().toString());
+		}
+		
+		String[] colaboradoresIds = new String[colaboradoresIdsList.size()];
+		colaboradoresIds = colaboradoresIdsList.toArray(colaboradoresIds);
+		
+		if (colaboradoresIdsList.size() != 0)
+		{
+			TRemuneracaoVariavel[] remuneracoesVariaveis = acPessoalClientColaborador.getRemuneracoesVariaveis(empresa, colaboradoresIds, DateUtil.formataAnoMes(dataHistorico), DateUtil.formataAnoMes(dataHistorico));
+			
+			for (TRemuneracaoVariavel remuneracaoVariavel : remuneracoesVariaveis)
+			{
+				for (HistoricoColaborador historicoColaborador : historicoColaboradors) 
+				{
+					if (historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getCodigoAC() != null && !historicoColaborador.getColaborador().getCodigoAC().equals(""))
+					{
+						if (historicoColaborador.getColaborador().getCodigoAC().equals(remuneracaoVariavel.getCodigoEmpregado()))
+						{
+							historicoColaborador.setSalarioVariavel(remuneracaoVariavel.getValor());
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public Collection<HistoricoColaborador> montaRelatorioSituacoes(Long empresaId, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasIds, String origemSituacao) throws ColecaoVaziaException, Exception {

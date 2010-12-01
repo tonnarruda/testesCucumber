@@ -50,6 +50,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -200,7 +201,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		
 		//opcao 0
-		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
 		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(empresa, data, null, null, 2, '0', null, true, null).size());
 	}
 	
@@ -221,19 +222,19 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa();
 
 		//opcao 0
-		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
 		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(empresa, data, null, null, 2, '0', null, true, null).size());
 		
 		// opcao 1
-		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
 		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(empresa, data, null, null, 2, '1', null, true, null).size());
 
 		// quantidade de meses null
-		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
 		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(empresa, data, null, null, null, '1', null, true, null).size());
 
 		// qtd Meses Desatualizacao 10
-		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
 		assertEquals(1, historicoColaboradorManager.relatorioColaboradorCargo(empresa, data, null, null, null, '1', null, true, 10).size());
 	}
 	
@@ -241,16 +242,95 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	{
 		Exception exp = null;
 		
+		try {
+			//Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro
+			Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
+			HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+			historicoColaboradors.add(historicoColaborador);
+			
+			Date data = new Date();
+			Empresa empresa = EmpresaFactory.getEmpresa();
+			empresa.setAcIntegra(false);
+			historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(new Date()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<HistoricoColaborador>()));
+			
+			
+			Collection<HistoricoColaborador> resultado = historicoColaboradorManager.relatorioColaboradorCargo(empresa, new Date(), null, null, 2, '1', null, true, null);
+		} catch (Exception e) {
+			exp = e;
+		}
+		
+		assertNotNull(exp);
+	}
+
+	public void testRelatorioColaboradorCargoBuscaRemuneracaoVariavelNoACPessoal() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setAcIntegra(true);
+		
+		Colaborador francisco = ColaboradorFactory.getEntity();
+		francisco.setCodigoAC("000001");
+		HistoricoColaborador historicoColaboradorFrancisco = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaboradorFrancisco.setColaborador(francisco);
+
+		Colaborador samuel = ColaboradorFactory.getEntity();
+		samuel.setCodigoAC("000002");
+		HistoricoColaborador historicoColaboradorSamuel = HistoricoColaboradorFactory.getEntity(2L);
+		historicoColaboradorSamuel.setColaborador(samuel);
+		
+		Colaborador bruno = ColaboradorFactory.getEntity();
+		bruno.setCodigoAC("000003");
+		HistoricoColaborador historicoColaboradorBruno = HistoricoColaboradorFactory.getEntity(3L);
+		historicoColaboradorBruno.setColaborador(bruno);
+		
+		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
+		historicoColaboradors.add(historicoColaboradorFrancisco);
+		historicoColaboradors.add(historicoColaboradorSamuel);
+		historicoColaboradors.add(historicoColaboradorBruno);
+
+		TRemuneracaoVariavel tremRemuneracaoVariavel1 = new TRemuneracaoVariavel();
+		tremRemuneracaoVariavel1.setCodigoEmpregado("000001");
+		tremRemuneracaoVariavel1.setValor(100.0);
+
+		TRemuneracaoVariavel tremRemuneracaoVariavel2 = new TRemuneracaoVariavel();
+		tremRemuneracaoVariavel2.setCodigoEmpregado("000002");
+		tremRemuneracaoVariavel2.setValor(300.0);
+		
+		TRemuneracaoVariavel[] treRemuneracaoVariavels = new TRemuneracaoVariavel[]{tremRemuneracaoVariavel1, tremRemuneracaoVariavel2}; 
+
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(new Date()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		acPessoalClientColaborador.expects(once()).method("getRemuneracoesVariaveis").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(treRemuneracaoVariavels));
+		
+		Collection<HistoricoColaborador> resultado = historicoColaboradorManager.relatorioColaboradorCargo(empresa, new Date(), null, null, 2, '1', null, true, null);
+
+		assertEquals(3, resultado.size());
+		
+		HistoricoColaborador colab1 = (HistoricoColaborador) resultado.toArray()[0];
+		HistoricoColaborador colab2 = (HistoricoColaborador) resultado.toArray()[1];
+		HistoricoColaborador colab3 = (HistoricoColaborador) resultado.toArray()[2];
+		
+		assertEquals(100.0, colab1.getSalarioVariavel());
+		assertEquals(300.0, colab2.getSalarioVariavel());
+		assertNull(colab3.getSalarioVariavel());
+	}
+	
+	public void testRelatorioColaboradorCargo_ComRemuneracaoVariavelNoAC() throws Exception
+	{
+		Exception exp = null;
+		
 		try{
 			Empresa empresa = EmpresaFactory.getEmpresa();
-			historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(new Date()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<HistoricoColaborador>()));
+			historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(new Date()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<HistoricoColaborador>()));
 			historicoColaboradorManager.relatorioColaboradorCargo(empresa, new Date(), null, null, 2, '1', null, true, null);
+		
 		}catch (Exception e) {
 			exp = e;
 		}
 		
 		assertNotNull(exp);
 	}
+	
+	
+	
 	
 	public void testGetHistoricoAtual()
 	{

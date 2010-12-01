@@ -179,7 +179,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setDataAdmissao(dataAdmissao);
 	}
 	
-	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario)
+	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario, Boolean acIntegra)
 	{
 		this.setId(historicoId);
 		
@@ -188,6 +188,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setNome(colaboradorNome);
 		this.colaborador.setDataAdmissao(colaboradorDataAdmissao);
 		this.colaborador.setCodigoAC(colaboradorCodigoAC);
+		this.colaborador.getEmpresa().setAcIntegra(acIntegra);
 		
 		this.faixaSalarial = new FaixaSalarial();
 		this.faixaSalarial.setId(faixaId);
@@ -949,7 +950,11 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.movimentoSalarialId = movimentoSalarialId;
 	}
 
-	public Double getSalarioVariavel() {
+	public Double getSalarioVariavel() 
+	{
+		if (salarioVariavel == null)
+			return 0.0;
+		
 		return salarioVariavel;
 	}
 
