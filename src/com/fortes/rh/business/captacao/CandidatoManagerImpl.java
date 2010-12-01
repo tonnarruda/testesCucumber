@@ -1195,7 +1195,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		{
 			Candidato candidato = new Candidato();
 			bind(candidato, curriculo);
-			candidatos.add(save(candidato));
+//			candidatos.add(save(candidato));
 		}
 		
 		return candidatos;
@@ -1228,8 +1228,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		Date hoje = new Date();
 		
 		candidato.setCandidatoIdiomas(null);//falta pegar o array
-		candidato.setDataCadastro(null);
-		candidato.setDataAtualizacao(hoje);
+		candidato.setDataCadastro(DateUtil.montaDataByString(curriculo.getCreated_rh()));
+		candidato.setDataAtualizacao(DateUtil.montaDataByString(curriculo.getUpdated_rh()));
 		
 		candidato.setPessoal(pessoal);
 		candidato.setColocacao(Vinculo.EMPREGO);

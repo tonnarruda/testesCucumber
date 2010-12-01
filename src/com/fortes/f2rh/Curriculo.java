@@ -14,7 +14,7 @@ public class Curriculo {
 	private String cidade_rh;
 	private String bairro;
 	private String cep;
-	private String data_nascimento;
+	private String data_nascimento_rh;
 	private String nacionalidade;
 	private String estado_civil;
 	private String sexo;
@@ -73,14 +73,6 @@ public class Curriculo {
 
 	public void setEscolaridade_rh(String escolaridade_rh) {
 		this.escolaridade_rh = escolaridade_rh;
-	}
-
-	public String getData_nascimento() {
-		return data_nascimento;
-	}
-
-	public void setData_nascimento(String data_nascimento) {
-		this.data_nascimento = data_nascimento;
 	}
 
 	public String getCpf() {
@@ -230,5 +222,13 @@ public class Curriculo {
 
 	public void setCreated_rh(String createdRh) {
 		created_rh = createdRh;
+	}
+
+	public String getData_nascimento_rh() {
+		return data_nascimento_rh;
+	}
+
+	public void setData_nascimento_rh(String dataNascimentoRh) {
+		data_nascimento_rh = dataNascimentoRh;
 	}
 }
