@@ -2,14 +2,12 @@ package com.fortes.f2rh;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
-
-import com.fortes.rh.model.captacao.Candidato;
 
 public class Curriculo {
 	
 	private int id;
 	private String updated_at;
+	private String created_at;
 	private String nome;
 	private String endereco;
 	private String estado;
@@ -224,6 +222,14 @@ public class Curriculo {
 
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
+	}
+
+	public String getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(String createdAt) {
+		created_at = createdAt;
 	}
 
 }

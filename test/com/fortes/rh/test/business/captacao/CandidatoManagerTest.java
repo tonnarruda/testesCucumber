@@ -1552,10 +1552,10 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		
 	public void testGetCurriculosF2rh() throws Exception
 	{
-		String[] curriculoIds = new String[]{"1", "2"};
+		String[] curriculoIds = new String[]{"15", "156"};
 		
 		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds);
-//		assertEquals(2, candidatos.size());
+		assertEquals(2, candidatos.size());
 	}
 	//TODO remprot
 //    public void testValidaQtdCadastros()

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -25,7 +26,10 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.f2rh.ConfigF2RH;
 import com.fortes.f2rh.Curriculo;
+import com.fortes.f2rh.F2rhFacade;
+import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -1170,6 +1174,21 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId) 
 	{
 		Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
+		try {
+			F2rhFacade f2rhFacade = new F2rhFacadeImpl();
+			ConfigF2RH config = new ConfigF2RH();
+			config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
+			String[] consulta = new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"};
+			config.setConsulta(consulta);
+			String curriculos_s = f2rhFacade.find_f2rh(config);
+			config.setJson(curriculos_s);
+			
+			curriculos = f2rhFacade.obterCurriculos(config);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		Collection<Candidato> candidatos = new ArrayList<Candidato>();
 
 		for (Curriculo curriculo : curriculos) 
@@ -1206,9 +1225,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		pessoal.setEscolaridade(curriculo.getEscolaridade_rh());
 		pessoal.setSexo(curriculo.getSexo().charAt(0));
 		
-		candidato.setCandidatoIdiomas(null);
-		candidato.setDataCadastro(new Date());
-		candidato.setDataAtualizacao(DateUtil.criarDataMesAno(null));
+		Date hoje = new Date();
+		
+		candidato.setCandidatoIdiomas(null);//falta pegar o array
+		candidato.setDataCadastro();
+		candidato.setDataAtualizacao(hoje);
 		
 		candidato.setPessoal(pessoal);
 		candidato.setColocacao(Vinculo.EMPREGO);
