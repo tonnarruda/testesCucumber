@@ -33,6 +33,8 @@
 	<field name="colaborador.tempoDeServico" class="java.lang.String"/>
 	<field name="colaborador.dataAdmissaoFormatada" class="java.lang.String"/>
 	<field name="salario" class="java.lang.Double"/>
+	<field name="salarioVariavel" class="java.lang.Double"/>
+	<field name="colaborador.empresa.acIntegra" class="java.lang.Boolean"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpCargo" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -123,7 +125,7 @@
 					<reportElement
 						x="12"
 						y="13"
-						width="309"
+						width="283"
 						height="12"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -134,9 +136,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="334"
+						x="301"
 						y="13"
-						width="95"
+						width="117"
 						height="12"
 						key="staticText-5">
 							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -149,9 +151,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="440"
+						x="424"
 						y="13"
-						width="95"
+						width="104"
 						height="12"
 						key="staticText-8">
 							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -164,9 +166,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="324"
+						x="300"
 						y="13"
-						width="82"
+						width="70"
 						height="12"
 						key="staticText-9">
 							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -179,9 +181,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="410"
+						x="374"
 						y="13"
-						width="79"
+						width="59"
 						height="12"
 						key="staticText-10">
 							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -190,19 +192,49 @@
 					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Data de Admissão]]></text>
+				<text><![CDATA[Data de Admis.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="492"
+						x="436"
 						y="13"
-						width="42"
+						width="36"
 						height="12"
 						key="staticText-11">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Salário]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="476"
+						y="13"
+						width="60"
+						height="12"
+						key="staticText-12">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Rem. Variável]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="434"
+						y="13"
+						width="102"
+						height="12"
+						key="staticText-13">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Salário]]></text>
@@ -230,7 +262,7 @@
 					<reportElement
 						x="12"
 						y="2"
-						width="308"
+						width="283"
 						height="11"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -241,9 +273,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="335"
-						y="1"
-						width="96"
+						x="301"
+						y="2"
+						width="117"
 						height="11"
 						key="textField-9">
 							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -256,9 +288,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="440"
-						y="1"
-						width="96"
+						x="424"
+						y="2"
+						width="104"
 						height="11"
 						key="textField-10">
 							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -271,24 +303,24 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="493"
-						y="1"
-						width="41"
+						x="436"
+						y="2"
+						width="36"
 						height="11"
 						key="textField">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salario}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="324"
-						y="1"
-						width="81"
+						x="300"
+						y="2"
+						width="70"
 						height="11"
 						key="textField-11">
 							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -301,9 +333,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="409"
-						y="1"
-						width="80"
+						x="374"
+						y="2"
+						width="59"
 						height="11"
 						key="textField-12">
 							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -313,6 +345,36 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="479"
+						y="2"
+						width="56"
+						height="11"
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salarioVariavel}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="434"
+						y="2"
+						width="102"
+						height="11"
+						key="textField-13">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salario}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

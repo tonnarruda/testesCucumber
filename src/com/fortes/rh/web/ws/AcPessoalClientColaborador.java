@@ -3,6 +3,7 @@ package com.fortes.rh.web.ws;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 
 public interface AcPessoalClientColaborador
@@ -15,5 +16,5 @@ public interface AcPessoalClientColaborador
 
 	public boolean remove(Colaborador colaborador, Empresa empresa);
 	
-	public Object[] getRemuneracoesVariaveis(Empresa empresa, String[] colaboradoresIds, String anoMesInicial, String anoMesFinal) throws Exception;
+	public TRemuneracaoVariavel[] getRemuneracoesVariaveis(Empresa empresa, String[] colaboradoresIds, String anoMesInicial, String anoMesFinal) throws Exception;
 }

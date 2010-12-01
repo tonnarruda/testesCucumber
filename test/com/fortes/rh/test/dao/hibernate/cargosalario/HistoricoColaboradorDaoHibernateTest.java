@@ -991,17 +991,17 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Long[] areaOrganizacionalIds = new Long[]{areaOrganizacional.getId()};
 		Date dataConsulta = new Date();
 		
-		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, null);		
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, null, null);		
 		assertEquals(1, historicoColaboradors.size());
 		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
 		assertEquals("Desenvolvedor Junior", resultado1.getFaixaSalarial().getDescricao());
 		assertEquals("Maria", resultado1.getColaborador().getNome());
 
-		assertTrue(historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 1900), null, null, dataConsulta, null, null).isEmpty());
+		assertTrue(historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 1900), null, null, dataConsulta, null, null, null).isEmpty());
 
 		//desatualizados a partir de 01/07/2010 para tras
 		Date dataAtualizacao = DateUtil.criarDataMesAno(1, 7, 2010);
-		Collection<HistoricoColaborador> historicoColaboradorsDatAtaualizacao = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, dataAtualizacao);		
+		Collection<HistoricoColaborador> historicoColaboradorsDatAtaualizacao = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, dataAtualizacao, null);		
 		assertEquals(1, historicoColaboradorsDatAtaualizacao.size());
 	}
 

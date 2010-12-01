@@ -1530,6 +1530,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	public Empresa getEmpresa()
 	{
+		if (this.empresa == null)
+			this.empresa = new Empresa();
+			
 		return empresa;
 	}
 	public void setEmpresa(Empresa empresa)
