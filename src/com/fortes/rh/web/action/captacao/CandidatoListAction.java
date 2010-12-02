@@ -496,7 +496,7 @@ public class CandidatoListAction extends MyActionSupportList
 	{
 		Collection<Candidato> candidatos = new ArrayList<Candidato>();
 		if(candidatosId != null && candidatosId.length > 0)
-			candidatos = candidatoManager.getCurriculosF2rh(candidatosId);
+			candidatos = candidatoManager.getCurriculosF2rh(candidatosId, getEmpresaSistema());
 		
 		return Action.SUCCESS;
 	}

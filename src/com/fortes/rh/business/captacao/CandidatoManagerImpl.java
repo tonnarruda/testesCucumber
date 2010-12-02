@@ -1138,7 +1138,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		idade_ini = montaParametro(idade_ini, "idade_ini", idadeMin);
 		idade_fim = montaParametro(idade_fim, "idade_fim", idadeMax);
 		estado = montaParametro(estado, "estado", (String) ufs.get(uf));
-		cidade = montaParametro(cidade, "cidade", (String) cidades.get(cidade));
+		if(cidades != null && cidades.size() > 0)
+			cidade = montaParametro(cidade, "cidade", (String) cidades.get(cidade));
+		
 		bairro = montaParametro(bairro, "bairro", curriculo.getBairro());
 		palavra_chave = montaParametro(palavra_chave, "palavra_chave", curriculo.getObservacoes_complementares());
 		
@@ -1171,7 +1173,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return variavel;
 	}
 
-	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId) 
+	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId, Empresa empresa) 
 	{
 		Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
 		try {
@@ -1194,8 +1196,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		for (Curriculo curriculo : curriculos) 
 		{
 			Candidato candidato = new Candidato();
+			candidato.setEmpresa(empresa);
 			bind(candidato, curriculo);
-//			candidatos.add(save(candidato));
+			candidatos.add(getDao().save(candidato));
 		}
 		
 		return candidatos;
@@ -1203,29 +1206,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	private void bind(Candidato candidato, Curriculo curriculo) 
 	{
-//		String nome = "";
-//		String cpf = "";
-//		String escolaridade = "";
-//		String idioma = "";
-//		String data_cad_ini = "";
-//		String data_cad_fim = "";
-//		String cargo = "";
-//		String sexo = "";
-//		String idade_ini = "";
-//		String idade_fim = "";
-//		String estado = "";
-//		String cidade = "";
-//		String bairro = "";
-//		String palavra_chave = "";
-		
-		candidato.setNome(curriculo.getNome());
+		candidato.setNome(StringUtil.subStr(curriculo.getNome(), 60));
 		
 		Pessoal pessoal = new Pessoal();
-		pessoal.setCpf(curriculo.getCpf());
-		pessoal.setEscolaridade(curriculo.getEscolaridade_rh());
-		pessoal.setSexo(curriculo.getSexo().charAt(0));
-		
-		Date hoje = new Date();
+		pessoal.setCpf(StringUtil.subStr(curriculo.getCpf(), 11));
+		pessoal.setEscolaridade("");//ZIGADO
+		if(curriculo.getSexo() != null)
+			pessoal.setSexo(curriculo.getSexo().charAt(0));
 		
 		candidato.setCandidatoIdiomas(null);//falta pegar o array
 		candidato.setDataCadastro(DateUtil.montaDataByString(curriculo.getCreated_rh()));
@@ -1246,4 +1233,5 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 //	   	contato.setFoneFixo(colaborador.getContato().getFoneFixo());
 //	   	candidato.setContato(contato);
 	}
+
 }

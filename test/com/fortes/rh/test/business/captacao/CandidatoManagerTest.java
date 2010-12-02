@@ -1554,7 +1554,9 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	{
 		String[] curriculoIds = new String[]{"15", "156"};
 		
-		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds);
+		candidatoDao.expects(atLeastOnce()).method("save").with(ANYTHING).will(returnValue(new Candidato()));
+
+		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
 		assertEquals(2, candidatos.size());
 	}
 	//TODO remprot

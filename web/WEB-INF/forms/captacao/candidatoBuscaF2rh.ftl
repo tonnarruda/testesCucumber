@@ -102,7 +102,7 @@
 						${curriculo.cidade_rh}/${curriculo.estado}
 					</#if>
 				</@display.column>
-				<@display.column property="updated_at" title="Atualizado em" style="width: 100px;"/>
+				<@display.column property="updated_rh" title="Atualizado em" style="width: 100px;"/>
 			</@display.table>
 		</@ww.form>
 
