@@ -1,1 +1,1 @@
-update parametrosdosistema set appversao = '1.1.34.23';--.go
+update parametrosdosistema set appversao = '1.1.34.24';--.go
