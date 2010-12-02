@@ -286,7 +286,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		Map session = ActionContext.getContext().getSession();
 		colaborador = SecurityUtil.getColaboradorSession(session);
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-
+		
 		if(colaborador == null)
 		{
 			addActionMessage("Você não tem Colaborador cadastrado");
@@ -298,6 +298,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			cidades = cidadeManager.find(new String[]{"uf.id"}, new Object[]{colaborador.getEndereco().getUf().getId()}, new String[]{"nome"});
 			estados = estadoManager.findAll(new String[]{"sigla"});
+			
+			habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
+			if(habilitaCampoExtra)
+				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
+			
+			if(habilitaCampoExtra && colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
+				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
 
 			session.put("SESSION_IDIOMA", candidatoIdiomaManager.montaListCandidatoIdioma(colaborador.getId()));
 			session.put("SESSION_EXPERIENCIA", experienciaManager.findByColaborador(colaborador.getId()));
@@ -646,6 +653,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		try
 		{
 			recuperarSessao();
+			
+			if(camposExtras != null && habilitaCampoExtra)
+				colaborador.setCamposExtras(camposExtrasManager.update(camposExtras, colaborador.getCamposExtras().getId()));
+
 			colaboradorManager.updateInfoPessoais(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema());
 			prepareUpdateInfoPessoais();
 			addActionMessage("Colaborador editado com sucesso.");

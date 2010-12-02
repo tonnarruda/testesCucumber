@@ -211,6 +211,9 @@
 		<#if primeiraExecucao?exists && primeiraExecucao && possuiMensagem?exists && possuiMensagem>
 			alert('Você tem mensagens não lidas.');
 		</#if>
+		<#if idiomaIncorreto?exists && !idiomaIncorreto>
+			alert('O idioma do sistema está incorreto, favor alterar para Português-Brasileiro .');
+		</#if>
 	</script>
 </body>
 </html>

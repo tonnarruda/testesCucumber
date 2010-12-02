@@ -1215,7 +1215,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertEquals(100.0, colaboradorTurmaManager.percentualFrequencia(null, null, empresa.getId()));
 	}
 	
-// refatorar Samuel
+// refatorar
 //	public void testfindAprovadosByCertificacao() 
 //	{
 //		Colaborador colaboradorAprovado1 = ColaboradorFactory.getEntity(1L);

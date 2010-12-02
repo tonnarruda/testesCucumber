@@ -127,4 +127,15 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 		getDao().updateCampoExtra(campoExtraColaborador);
 		
 	}
+
+	public Boolean isIdiomaCorreto() 
+	{
+		String pais = System.getProperty("user.country");
+		String idioma = System.getProperty("user.language");
+		
+		if (pais.equals("BR") && idioma.equals("pt"))
+			return true;
+		
+		return false;
+	}
 }

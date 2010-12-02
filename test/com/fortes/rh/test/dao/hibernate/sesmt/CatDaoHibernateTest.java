@@ -53,7 +53,7 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		assertNotNull(cats);
 	}
 
-	//Refatorar samuel
+	//Refatorar
 	public void testFindAllSelect()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
