@@ -8,7 +8,7 @@ public class MockHttpMethod2 extends GetMethod {
 
 	@Override
 	public String getResponseBodyAsString() throws IOException {
-		String json = "[{\"escolaridade_rh\":null,\"updated_rh\":\"29/10/2009\",\"nome\":\"Laysa Lourenco Feitosa \",\"cidade_rh\":null,\"id\":1560,\"estado\":null},{\"escolaridade_rh\":\"Superior Completo\",\"updated_rh\":\"28/10/2010\",\"nome\":\"marcio elvis oliveira da silva\",\"cidade_rh\":null,\"id\":5382,\"estado\":\"\"}]";
+		String json = "[{\"endereco\":\"Rua Coronel Linhares 115/202\",\"data_nascimento_rh\":\"27/12/1984\",\"cidade_rh\":\"Alta Floresta D`Oeste\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cep\":\"60170-240\",\"escolaridade_rh\":\"Superior Incompleto\",\"user\":{\"name\":null,\"login\":\"010.178.063-06\",\"email\":\"henriquesoares@grupofortes.com.br\"},\"id\":15,\"created_rh\":\"23/10/2009\",\"nacionalidade\":\"Brasileiro\",\"bairro\":\"Meireles\",\"curriculo_telefones\":[{\"ddd\":\"85\",\"numero\":\"8747-2023\"}],\"updated_rh\":\"25/10/2010\",\"estado_civil\":\"1\",\"estado\":\"RO\",\"curso\":\"Letras\",\"sexo\":\"M\",\"observacoes_complementares\":\"\",\"salario\":0.0,\"area_formacao\":\"2\"}]";
 		return json;
 	}
 	

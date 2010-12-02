@@ -1,4 +1,4 @@
-/* autor: Moesio Medeiros
+/* autor: Moesioan Medeirostasull
  * Data: 07/06/2006
  * Requisito: RFA013 - Cadastro de candidato
  */
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -26,13 +25,15 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.f2rh.ConfigF2RH;
 import com.fortes.f2rh.Curriculo;
+import com.fortes.f2rh.CurriculoTelefone;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.BairroManager;
+import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -58,6 +59,8 @@ import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Endereco;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
@@ -87,6 +90,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	private BairroManager bairroManager;
 	private CandidatoCurriculoManager candidatoCurriculoManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
+	private CidadeManager cidadeManager;
+	private EstadoManager estadoManager;
 	private int totalSize;
 
 	public int getTotalSize()
@@ -1175,21 +1180,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId, Empresa empresa) 
 	{
-		Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
-		try {
-			F2rhFacade f2rhFacade = new F2rhFacadeImpl();
-			ConfigF2RH config = new ConfigF2RH();
-			config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
-			String[] consulta = new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"};
-			config.setConsulta(consulta);
-			String curriculos_s = f2rhFacade.find_f2rh(config);
-			config.setJson(curriculos_s);
-			
-			curriculos = f2rhFacade.obterCurriculos(config);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		F2rhFacade f2rhFacade = new F2rhFacadeImpl();
+		Collection<Curriculo> curriculos = f2rhFacade.buscarCurriculos(f2rhFacade.montaIds(curriculosId));
 		
 		Collection<Candidato> candidatos = new ArrayList<Candidato>();
 
@@ -1198,7 +1190,12 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			Candidato candidato = new Candidato();
 			candidato.setEmpresa(empresa);
 			bind(candidato, curriculo);
-			candidatos.add(getDao().save(candidato));
+			
+			Candidato candidatoJaGravado = findByCPF(candidato.getPessoal().getCpf(), null);
+			if(candidatoJaGravado == null)
+				candidatos.add(getDao().save(candidato));
+			else
+				candidatos.add(candidatoJaGravado);
 		}
 		
 		return candidatos;
@@ -1209,16 +1206,15 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setNome(StringUtil.subStr(curriculo.getNome(), 60));
 		
 		Pessoal pessoal = new Pessoal();
+		pessoal.setDataNascimento(DateUtil.montaDataByString(curriculo.getData_nascimento_rh()));
 		pessoal.setCpf(StringUtil.subStr(curriculo.getCpf(), 11));
-		pessoal.setEscolaridade("");//ZIGADO
+		
 		if(curriculo.getSexo() != null)
 			pessoal.setSexo(curriculo.getSexo().charAt(0));
 		
-		candidato.setCandidatoIdiomas(null);//falta pegar o array
 		candidato.setDataCadastro(DateUtil.montaDataByString(curriculo.getCreated_rh()));
 		candidato.setDataAtualizacao(DateUtil.montaDataByString(curriculo.getUpdated_rh()));
 		
-		candidato.setPessoal(pessoal);
 		candidato.setColocacao(Vinculo.EMPREGO);
 		candidato.setPretencaoSalarial(null);
 		candidato.setDisponivel(true);
@@ -1226,12 +1222,45 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setContratado(false);
 		candidato.setObservacao(curriculo.getObservacoes_complementares());
 		candidato.setOrigem(OrigemCandidato.F2RH);
-//
-//		Contato contato = new Contato();
-//	   	contato.setDdd(colaborador.getContato().getDdd());
-//	   	contato.setEmail(colaborador.getContato().getEmail());
-//	   	contato.setFoneFixo(colaborador.getContato().getFoneFixo());
-//	   	candidato.setContato(contato);
+
+		CurriculoTelefone curriculoTelefone = new CurriculoTelefone();
+		try {
+			curriculoTelefone = (CurriculoTelefone) curriculo.getCurriculo_telefones().toArray()[0];
+		} catch (Exception e) {}
+		
+		Contato contato = new Contato();
+		contato.setEmail(StringUtil.subStr(curriculo.getUser().getEmail(), 40));
+	   	contato.setDdd(StringUtil.subStr(curriculoTelefone.getDdd(), 5));
+	   	contato.setFoneFixo(StringUtil.subStr(curriculoTelefone.getNumero(), 10));
+	   	
+	   	Endereco endereco = new Endereco();
+	   	endereco.setBairro(StringUtil.subStr(curriculo.getBairro(), 20));
+	   	endereco.setLogradouro(StringUtil.subStr(curriculo.getEndereco(), 40));
+	   	endereco.setCep(StringUtil.subStr(curriculo.getCep(), 10));
+	   	
+	   	try {
+	   		Estado estado = estadoManager.findBySigla(curriculo.getEstado()); 
+	   		endereco.setUf(estado);
+
+	   		try {
+	   			if(StringUtils.isNotBlank(curriculo.getCidade_rh()))
+	   				endereco.setCidade(cidadeManager.findByNome(curriculo.getCidade_rh(), estado.getId()));
+	   		} catch (Exception e) {}
+		} catch (Exception e) {}
+
+		
+		candidato.setPessoal(pessoal);
+		candidato.setContato(contato);
+		candidato.setEndereco(endereco);
+	   	
+	}
+
+	public void setEstadoManager(EstadoManager estadoManager) {
+		this.estadoManager = estadoManager;
+	}
+
+	public void setCidadeManager(CidadeManager cidadeManager) {
+		this.cidadeManager = cidadeManager;
 	}
 
 }

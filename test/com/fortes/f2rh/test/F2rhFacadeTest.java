@@ -88,7 +88,27 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		actual = encontrar(curriculos, expected);
 		assertEquals(expected, actual);
 	}
+	
+	public void testBuscarCurriculos()
+	{
+		String[] consulta = new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"};
+		Collection<Curriculo> curriculos = f2rhFacade.buscarCurriculos(consulta);
+		actual = encontrar(curriculos, expected);
+		assertEquals(expected, actual);
+	}
 
+	public void testMontaIds() throws Exception
+	{
+		String[] curriculoIds = new String[]{"15", "156"};
+		
+		String[] retorno = f2rhFacade.montaIds(curriculoIds);
+
+		//Ex.: new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"}
+		assertEquals(2, retorno.length);
+		assertEquals("curriculo[id][]=15", retorno[0]);
+		assertEquals("curriculo[id][]=156", retorno[1]);
+	}
+	
 	private Curriculo encontrar(Collection<Curriculo> curriculos, Curriculo expected) {
 		actual = new Curriculo();
 		for (Curriculo curriculo : curriculos) {

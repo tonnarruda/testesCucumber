@@ -82,6 +82,8 @@
 			</div>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
+		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" ></button>
+		<br>
 
 	<#if curriculos?exists && 0 < curriculos?size>
 		<br>

@@ -12,4 +12,8 @@ public interface F2rhFacade {
 	
 	public abstract NameValuePair[] prepareParams(String[] query);
 
+	public abstract Collection<Curriculo> buscarCurriculos(String[] consulta);
+
+	public abstract String[] montaIds(String[] curriculosId);
+
 }

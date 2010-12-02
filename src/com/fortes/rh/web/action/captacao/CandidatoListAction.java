@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.fortes.f2rh.ConfigF2RH;
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
@@ -374,15 +373,10 @@ public class CandidatoListAction extends MyActionSupportList
 		
 		try {
 			F2rhFacade f2rhFacade = new F2rhFacadeImpl();
-			ConfigF2RH config = new ConfigF2RH();
-			config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
 			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, ufs, cidades, idiomas);
-			config.setConsulta(consulta_basica);
-			String curriculos_string = f2rhFacade.find_f2rh(config);
-			
-			config.setJson(curriculos_string);
-			curriculos = f2rhFacade.obterCurriculos(config);
-			
+			curriculos = f2rhFacade.buscarCurriculos(consulta_basica);
+			if(curriculos.size() == 100)
+				addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar a busca.");
 		} catch (Exception e) {
 			addActionError("Erro ao buscar candidatos no F2rh.");
 			e.printStackTrace();
@@ -494,9 +488,22 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	public String insertCandidatosByF2rh() throws Exception
 	{
-		Collection<Candidato> candidatos = new ArrayList<Candidato>();
-		if(candidatosId != null && candidatosId.length > 0)
-			candidatos = candidatoManager.getCurriculosF2rh(candidatosId, getEmpresaSistema());
+		try {
+			if(candidatosId != null && candidatosId.length > 0)
+			{
+				Collection<Candidato> candidatosParaSolicitacao = candidatoManager.getCurriculosF2rh(candidatosId, getEmpresaSistema());
+	
+				int cont = 0;
+				String[] candidatosParaSolicitacaoIds = new String[candidatosParaSolicitacao.size()];
+				for (Candidato candidato : candidatosParaSolicitacao)
+					candidatosParaSolicitacaoIds[cont++] = Long.toString(candidato.getId());
+				
+				if(candidatosParaSolicitacaoIds != null && candidatosParaSolicitacaoIds.length > 0)
+					candidatoSolicitacaoManager.insertCandidatos(candidatosParaSolicitacaoIds, solicitacao);
+			}
+		} catch (Exception e) {
+			addActionError("Não foi possível exportar os Candidatos.");
+		}
 		
 		return Action.SUCCESS;
 	}
