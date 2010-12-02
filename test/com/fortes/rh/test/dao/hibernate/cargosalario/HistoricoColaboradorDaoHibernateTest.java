@@ -946,6 +946,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	public void testFindByCargoEstabelecimento()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setAcIntegra(true);
 		empresaDao.save(empresa);
 		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
@@ -953,6 +954,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		
 		Cargo cargo = CargoFactory.getEntity();
 		cargo.setNome("Desenvolvedor");
+		cargo.setEmpresa(empresa);
 		cargoDao.save(cargo);
 
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
@@ -991,7 +993,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Long[] areaOrganizacionalIds = new Long[]{areaOrganizacional.getId()};
 		Date dataConsulta = new Date();
 		
-		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, null, null);		
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, null, empresa.getId());		
 		assertEquals(1, historicoColaboradors.size());
 		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
 		assertEquals("Desenvolvedor Junior", resultado1.getFaixaSalarial().getDescricao());
