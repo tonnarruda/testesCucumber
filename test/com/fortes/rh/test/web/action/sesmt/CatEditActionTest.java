@@ -232,7 +232,7 @@ public class CatEditActionTest extends MockObjectTestCase
 		assertEquals(action.prepareRelatorioCats(), "success");
 	}
     
-  //  Refatora Samuel
+  //  Refatora 
 //    public void testRelatorioCats() throws Exception
 //    {
 //    	action.setInicio(new Date());

@@ -144,4 +144,22 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
     	parametrosDoSistemaDao.expects(once()).method("findModulos").will(returnValue(""));
     	assertEquals(0, parametrosDoSistemaManager.getModulosDecodificados().length);
     }
+
+    public void testIsIdiomaCorreto()
+    {
+    	System.setProperty("user.country","BR");
+		System.setProperty("user.language", "pt");
+    	
+    	assertTrue(parametrosDoSistemaManager.isIdiomaCorreto());
+
+    	System.setProperty("user.country","US");
+    	System.setProperty("user.language", "en");
+    	
+    	assertFalse(parametrosDoSistemaManager.isIdiomaCorreto());
+
+    	System.setProperty("user.country","BR");
+    	System.setProperty("user.language", "en");
+    	
+    	assertFalse(parametrosDoSistemaManager.isIdiomaCorreto());
+    }
 }

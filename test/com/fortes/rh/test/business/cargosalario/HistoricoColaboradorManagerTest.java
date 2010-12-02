@@ -272,10 +272,10 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		HistoricoColaborador historicoColaboradorFrancisco = HistoricoColaboradorFactory.getEntity(1L);
 		historicoColaboradorFrancisco.setColaborador(francisco);
 
-		Colaborador samuel = ColaboradorFactory.getEntity();
-		samuel.setCodigoAC("000002");
-		HistoricoColaborador historicoColaboradorSamuel = HistoricoColaboradorFactory.getEntity(2L);
-		historicoColaboradorSamuel.setColaborador(samuel);
+		Colaborador fulano = ColaboradorFactory.getEntity();
+		fulano.setCodigoAC("000002");
+		HistoricoColaborador historicoColaboradorFulano = HistoricoColaboradorFactory.getEntity(2L);
+		historicoColaboradorFulano.setColaborador(fulano);
 		
 		Colaborador bruno = ColaboradorFactory.getEntity();
 		bruno.setCodigoAC("000003");
@@ -284,18 +284,18 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		historicoColaboradors.add(historicoColaboradorFrancisco);
-		historicoColaboradors.add(historicoColaboradorSamuel);
+		historicoColaboradors.add(historicoColaboradorFulano);
 		historicoColaboradors.add(historicoColaboradorBruno);
 
-		TRemuneracaoVariavel tremRemuneracaoVariavel1 = new TRemuneracaoVariavel();
-		tremRemuneracaoVariavel1.setCodigoEmpregado("000001");
-		tremRemuneracaoVariavel1.setValor(100.0);
+		TRemuneracaoVariavel tRemuneracaoVariavel1 = new TRemuneracaoVariavel();
+		tRemuneracaoVariavel1.setCodigoEmpregado("000001");
+		tRemuneracaoVariavel1.setValor(100.0);
 
 		TRemuneracaoVariavel tremRemuneracaoVariavel2 = new TRemuneracaoVariavel();
 		tremRemuneracaoVariavel2.setCodigoEmpregado("000002");
 		tremRemuneracaoVariavel2.setValor(300.0);
 		
-		TRemuneracaoVariavel[] treRemuneracaoVariavels = new TRemuneracaoVariavel[]{tremRemuneracaoVariavel1, tremRemuneracaoVariavel2}; 
+		TRemuneracaoVariavel[] treRemuneracaoVariavels = new TRemuneracaoVariavel[]{tRemuneracaoVariavel1, tremRemuneracaoVariavel2}; 
 
 		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(new Date()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
 		acPessoalClientColaborador.expects(once()).method("getRemuneracoesVariaveis").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(treRemuneracaoVariavels));
@@ -306,11 +306,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		HistoricoColaborador colab1 = (HistoricoColaborador) resultado.toArray()[0];
 		HistoricoColaborador colab2 = (HistoricoColaborador) resultado.toArray()[1];
-		HistoricoColaborador colab3 = (HistoricoColaborador) resultado.toArray()[2];
 		
 		assertEquals(100.0, colab1.getSalarioVariavel());
 		assertEquals(300.0, colab2.getSalarioVariavel());
-		assertNull(colab3.getSalarioVariavel());
 	}
 	
 	public void testRelatorioColaboradorCargo_ComRemuneracaoVariavelNoAC() throws Exception

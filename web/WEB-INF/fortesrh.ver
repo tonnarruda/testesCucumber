@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.34.24" data="02/12/2010">
+		- Nova funcionalidade: Relatório de colaboradores por cargo trás a exibição da Remuneração Variável do colaborador (eventos da folha).
+		- SESMT: Relatório de atendimentos com médico com controle ordenado por ordem de atendimento (agenda).
+		- Recrutamento e Seleção: opção de importar registros de candidatos do sistema CadCan.
+		- Integração com o sistema de Trafego Urbano: será enviado para o sistema TRU as pesquisas a responder dos colaboradores.
+	</Versao>
 	<Versao id="1.1.34.23" data="26/11/2010">
 		- Impressão do relatório Performance Funcional.
 		- Novo menu Utilitários > Importar Cadastros: replicar Cursos e Turmas.
