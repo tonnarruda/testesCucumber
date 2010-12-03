@@ -89,10 +89,11 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	public void testBuscarCurriculos()
 	{
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
+		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		String[] consulta = new String[]{"curriculo[id][]=15"};
 		Collection<Curriculo> curriculos = f2rhFacade.buscarCurriculos(consulta);
 		actual = encontrar(curriculos, expected);
-		assertEquals(expected, actual);
+		assertEquals(expected.getCpf(), actual.getCpf());
 	}
 
 	public void testMontaIds() throws Exception
