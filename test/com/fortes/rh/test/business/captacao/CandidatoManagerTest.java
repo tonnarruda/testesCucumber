@@ -21,7 +21,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.User;
-import com.fortes.f2rh.test.MockHttpMethod2;
+import com.fortes.f2rh.test.MockHttpMethod;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
@@ -1555,12 +1555,9 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	{
 		String[] curriculoIds = new String[]{"15"};
 		
-		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod2.class);
-//		candidatoDao.expects(atLeastOnce()).method("save").with(ANYTHING).will(returnValue(new Candidato()));
-		candidatoDao.expects(atLeastOnce()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Candidato()));
-
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
-		assertEquals(1, candidatos.size());
+		assertEquals(0, candidatos.size());
 	}
 	
 	//TODO remprot

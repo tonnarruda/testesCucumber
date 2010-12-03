@@ -22,8 +22,7 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	F2rhFacade f2rhFacade;
 	ConfigF2RH config;
 	
-	String jsonList1 = "[{\"escolaridade_rh\":\"Superior Incompleto\",\"updated_rh\":\"25/10/2010\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cidade_rh\":\"Fortaleza\",\"id\":15,\"estado\":\"CE\"},{\"escolaridade_rh\":null,\"updated_rh\":\"27/10/2009\",\"nome\":\"Ana Cristina Soares Silva\",\"cidade_rh\":null,\"id\":112,\"estado\":null}]";
-	String jsonList2 = "[{\"escolaridade_rh\":null,\"updated_rh\":\"29/10/2009\",\"nome\":\"Laysa Lourenco Feitosa \",\"cidade_rh\":null,\"id\":1560,\"estado\":null},{\"escolaridade_rh\":\"Superior Completo\",\"updated_rh\":\"28/10/2010\",\"nome\":\"marcio elvis oliveira da silva\",\"cidade_rh\":null,\"id\":5382,\"estado\":\"\"}]";
+	String jsonList1 = "[{\"endereco\":\"Rua Coronel Linhares 115/202\",\"data_nascimento_rh\":\"27/12/1984\",\"cidade_rh\":\"Alta Floresta D`Oeste\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cep\":\"60170-240\",\"escolaridade_rh\":\"Superior Incompleto\",\"user\":{\"name\":null,\"login\":\"010.178.063-06\",\"email\":\"henriquesoares@grupofortes.com.br\"},\"id\":15,\"created_rh\":\"23/10/2009\",\"nacionalidade\":\"Brasileiro\",\"bairro\":\"Meireles\",\"curriculo_telefones\":[{\"ddd\":\"85\",\"numero\":\"8747-2023\"}],\"updated_rh\":\"25/10/2010\",\"estado_civil\":\"1\",\"estado\":\"RO\",\"curso\":\"Letras\",\"sexo\":\"M\",\"observacoes_complementares\":\"\",\"salario\":0.0,\"area_formacao\":\"2\"}]";
 	
 	protected void setUp() {
 		expected = new Curriculo();
@@ -49,7 +48,6 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		
 		String[] consulta_basica = new String[]{"escolaridade=\"Superior Completo\""};
 		config.setConsulta(consulta_basica);
-		config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
 		config.setJson(jsonList1);
 		String curriculos = f2rhFacade.find_f2rh(config);
 		assertEquals(curriculos, config.getJson());
@@ -58,28 +56,27 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	public void testFindF2RHAvancado() {
 		
 		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
-		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod2.class);
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		
 		//id 5382
 		String[] consulta_avancada = new String[]{"escolaridade=\"Superior Completo\""};
 		config.setConsulta(consulta_avancada);
-		config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
-		config.setJson(jsonList2);
+		config.setJson(jsonList1);
 		String curriculos = f2rhFacade.find_f2rh(config);
 		assertEquals(curriculos, config.getJson());
 	}
 	
 	public void testObterCurriculos() {
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		config.setJson(jsonList1);
 		Collection<Curriculo> curriculos = f2rhFacade.obterCurriculos(config);
-		assertEquals("Curriculo encontrados", curriculos.size(), 2);
+		assertEquals("Curriculo encontrados", curriculos.size(), 1);
 	}
 	
 	public void testObterCurriculo() {
-		//Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
-		//Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod2.class);
-		config.setUrl("http://10.1.2.9:3000/rh_curriculos.json");
-		String[] consulta = new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"};
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
+		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
+		String[] consulta = new String[]{"curriculo[id][]=15"};
 		config.setConsulta(consulta);
 		String curriculos_s = f2rhFacade.find_f2rh(config);
 		config.setJson(curriculos_s);
@@ -91,7 +88,8 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	
 	public void testBuscarCurriculos()
 	{
-		String[] consulta = new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"};
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
+		String[] consulta = new String[]{"curriculo[id][]=15"};
 		Collection<Curriculo> curriculos = f2rhFacade.buscarCurriculos(consulta);
 		actual = encontrar(curriculos, expected);
 		assertEquals(expected, actual);
@@ -99,6 +97,7 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 
 	public void testMontaIds() throws Exception
 	{
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		String[] curriculoIds = new String[]{"15", "156"};
 		
 		String[] retorno = f2rhFacade.montaIds(curriculoIds);
@@ -106,7 +105,6 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		//Ex.: new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"}
 		assertEquals(2, retorno.length);
 		assertEquals("curriculo[id][]=15", retorno[0]);
-		assertEquals("curriculo[id][]=156", retorno[1]);
 	}
 	
 	private Curriculo encontrar(Collection<Curriculo> curriculos, Curriculo expected) {
@@ -120,16 +118,17 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	}
 	
 	public void testPrepareParams() {
-		String[] consulta = new String[]{"curriculo[id][]=15",  "curriculo[id][]=1560"};
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
+		String[] consulta = new String[]{"curriculo[id][]=15"};
 		NameValuePair[] pairs = f2rhFacade.prepareParams(consulta);
 		NameValuePair[] pairsExpected = new NameValuePair[] {
 				new NameValuePair("curriculo[id][]", "15"),
-				new NameValuePair("curriculo[id][]", "1560")
 		};
 		assertEquals(pairsExpected.length, pairs.length);
 	}
 	
 	public void testPrepareParamsVazio() {
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		String[] consulta = new String[]{"",  "curriculo[id][]=1560"};
 		NameValuePair[] pairs = f2rhFacade.prepareParams(consulta);
 		NameValuePair[] pairsExpected = new NameValuePair[] {
@@ -139,6 +138,7 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	}
 	
 	public void testPrepareParamsVazioMasComIgual() {
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		String[] consulta = new String[]{"=",  "curriculo[id][]=1560"};
 		NameValuePair[] pairs = f2rhFacade.prepareParams(consulta);
 		NameValuePair[] pairsExpected = new NameValuePair[] {

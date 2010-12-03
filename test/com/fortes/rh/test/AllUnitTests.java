@@ -3,6 +3,7 @@ package com.fortes.rh.test;
 
 import junit.framework.TestSuite;
 
+import com.fortes.f2rh.test.F2rhFacadeTest;
 import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
@@ -1122,6 +1123,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(InsertAuditorCallbackImplTest.class);
         suite.addTestSuite(RemoveAuditorCallbackImplTest.class);
         suite.addTestSuite(UpdateAuditorCallbackImplTest.class);
+        
+        suite.addTestSuite(F2rhFacadeTest.class);
+        
 
         return suite;
     }
