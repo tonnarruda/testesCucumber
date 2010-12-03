@@ -97,6 +97,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private EstabelecimentoManager estabelecimentoManager;
 	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager;
+	private F2rhFacade f2rhFacade;
 
 	private Collection<HistoricoCandidato> historicoCandidatos;
 	private Collection<SolicitacaoHistoricoColaborador> historicos;
@@ -372,7 +373,6 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroF2rh();
 		
 		try {
-			F2rhFacade f2rhFacade = new F2rhFacadeImpl();
 			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, ufs, cidades, idiomas);
 			curriculos = f2rhFacade.buscarCurriculos(consulta_basica);
 			if(curriculos.size() == 100)
@@ -1498,5 +1498,9 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setCurriculo(Curriculo curriculo) {
 		this.curriculo = curriculo;
+	}
+
+	public void setF2rhFacade(F2rhFacade f2rhFacade) {
+		this.f2rhFacade = f2rhFacade;
 	}
 }

@@ -590,6 +590,16 @@
       <ref bean="camposExtrasManagerTarget" />
     </property>
   </bean>
+  <bean id="f2rhFacadeTarget" class="com.fortes.f2rh.F2rhFacadeImpl">
+  </bean>
+  <bean id="f2rhFacade" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.f2rh.F2rhFacade</value>
+    </property>
+    <property name="target">
+      <ref bean="f2rhFacadeTarget" />
+    </property>
+  </bean>
 </beans>
 
 
