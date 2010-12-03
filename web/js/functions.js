@@ -979,9 +979,15 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 			 $estado.attr('disabled', true);
 
 			 $numero.focus();
-			
+
+
+			 
+			 
+			 
 			 jQuery.ajax({
-				url:"http://cep.republicavirtual.com.br/web_cep.php?formato=javascript&cep="+$cep.val(),
+//				url:"http://cep.republicavirtual.com.br/web_cep.php?formato=javascript&cep="+$cep.val(),
+//				url: "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20brazil.correios.ceplivre%20where%20cep%3D%22" + $cep.val() +"%22&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
+				url: "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20brazil.correios.ceplivre%20where%20cep%3D%2260525-460%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=cbfunc",
 				success:function(data){
 					 // o getScript dá um eval no script, então é só ler!
 					 //Se o resultado for igual a 1
