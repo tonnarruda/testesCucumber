@@ -980,7 +980,14 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 
 			 $numero.focus();
 
-
+			 
+			 var json = "";
+			 var parser = function(data) {
+				 return (new Function("return " + data))();
+			 }
+			 EnderecoDWR (cep, function(data) {
+				 json = parser(data);
+			 });
 			 
 			 
 			 

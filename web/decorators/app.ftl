@@ -11,7 +11,7 @@
 	<meta http-equiv="Expires" content="0" />
 	<title>${title}</title>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.3.2.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>

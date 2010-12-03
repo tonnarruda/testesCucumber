@@ -152,7 +152,7 @@
 		        }
 			});
 			
-			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');			
+			//addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');			
 		});
 		
 		function verificaCpf(data)
