@@ -19,7 +19,7 @@
 	<#assign topDivImg = "${request.contextPath}/externo/layout?tipo=menu1" />
 	<#assign userDivImg = "${request.contextPath}/externo/layout?tipo=menu2" />
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.3.2.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
