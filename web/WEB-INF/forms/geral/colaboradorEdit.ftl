@@ -38,6 +38,8 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type="text/javascript" src="jsr_class.js"> </script>
+	<script type="text/javascript">
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/areaOrganizacional.js"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js"/>"></script>
