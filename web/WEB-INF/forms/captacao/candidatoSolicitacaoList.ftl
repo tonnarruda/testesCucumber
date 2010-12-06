@@ -52,10 +52,6 @@
 	<br>
 	<div id="legendas" align="right"></div>
 
-	<#if totalSize?exists && totalSize != 0>
-		${totalSize} Registros encontrados
-	</#if>
-
 	<@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" class="dados" >
 	
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.apto>
@@ -120,10 +116,6 @@
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
-
-	<#if totalSize?exists && totalSize != 0>
-		${totalSize} Registros encontrados
-	</#if>
 
 	<div class="buttonGroup">
 		<div style="float: left;width: 50%;">

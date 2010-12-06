@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.f2rh.Curriculo;
+import com.fortes.f2rh.F2rhFacade;
+import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
@@ -94,6 +97,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private EstabelecimentoManager estabelecimentoManager;
 	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager;
+	private F2rhFacade f2rhFacade;
 
 	private Collection<HistoricoCandidato> historicoCandidatos;
 	private Collection<SolicitacaoHistoricoColaborador> historicos;
@@ -193,6 +197,9 @@ public class CandidatoListAction extends MyActionSupportList
 	private boolean exibeExterno; //exibir somente os do módulo externo
 	
 	private boolean somenteCandidatosSemSolicitacao;
+	
+	private Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
+	private Curriculo curriculo;
 
 	public String list() throws Exception
 	{
@@ -340,6 +347,43 @@ public class CandidatoListAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	}
+	
+	
+	private void montaFiltroF2rh() 
+	{
+		escolaridades = new Escolaridade();
+		sexos = new Sexo();
+		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
+		if(uf != null)
+			cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+		
+		idiomas = idiomaManager.findAll(new String[]{"nome"});
+		setShowFilter(true);
+	}
+	
+	public String prepareBuscaF2rh() throws Exception
+	{
+		montaFiltroF2rh();
+		
+		return Action.SUCCESS;
+	}
+
+	public String buscaF2rh() throws Exception
+	{
+		montaFiltroF2rh();
+		
+		try {
+			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, ufs, cidades, idiomas);
+			curriculos = f2rhFacade.buscarCurriculos(consulta_basica);
+			if(curriculos.size() == 100)
+				addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar a busca.");
+		} catch (Exception e) {
+			addActionError("Erro ao buscar candidatos no F2rh.");
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
 
 	public String busca() throws Exception
 	{
@@ -439,6 +483,28 @@ public class CandidatoListAction extends MyActionSupportList
 			setShowFilter(false);
 		}
 
+		return Action.SUCCESS;
+	}
+	
+	public String insertCandidatosByF2rh() throws Exception
+	{
+		try {
+			if(candidatosId != null && candidatosId.length > 0)
+			{
+				Collection<Candidato> candidatosParaSolicitacao = candidatoManager.getCurriculosF2rh(candidatosId, getEmpresaSistema());
+	
+				int cont = 0;
+				String[] candidatosParaSolicitacaoIds = new String[candidatosParaSolicitacao.size()];
+				for (Candidato candidato : candidatosParaSolicitacao)
+					candidatosParaSolicitacaoIds[cont++] = Long.toString(candidato.getId());
+				
+				if(candidatosParaSolicitacaoIds != null && candidatosParaSolicitacaoIds.length > 0)
+					candidatoSolicitacaoManager.insertCandidatos(candidatosParaSolicitacaoIds, solicitacao);
+			}
+		} catch (Exception e) {
+			addActionError("Não foi possível exportar os Candidatos.");
+		}
+		
 		return Action.SUCCESS;
 	}
 
@@ -1420,5 +1486,21 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setExibeExterno(boolean exibeExterno) {
 		this.exibeExterno = exibeExterno;
+	}
+
+	public Collection<Curriculo> getCurriculos() {
+		return curriculos;
+	}
+
+	public Curriculo getCurriculo() {
+		return curriculo;
+	}
+
+	public void setCurriculo(Curriculo curriculo) {
+		this.curriculo = curriculo;
+	}
+
+	public void setF2rhFacade(F2rhFacade f2rhFacade) {
+		this.f2rhFacade = f2rhFacade;
 	}
 }

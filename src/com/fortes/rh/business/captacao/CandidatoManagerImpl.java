@@ -1,4 +1,4 @@
-/* autor: Moesio Medeiros
+/* autor: Moesioan Medeirostasull
  * Data: 07/06/2006
  * Requisito: RFA013 - Cadastro de candidato
  */
@@ -25,9 +25,15 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.f2rh.Curriculo;
+import com.fortes.f2rh.CurriculoTelefone;
+import com.fortes.f2rh.F2rhFacade;
+import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.BairroManager;
+import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -41,9 +47,11 @@ import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
@@ -51,10 +59,14 @@ import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Endereco;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
@@ -78,6 +90,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	private BairroManager bairroManager;
 	private CandidatoCurriculoManager candidatoCurriculoManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
+	private CidadeManager cidadeManager;
+	private EstadoManager estadoManager;
 	private int totalSize;
 
 	public int getTotalSize()
@@ -1100,4 +1114,153 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			candidato.setSenha(StringUtil.encodeString(candidato.getSenha()));
 
 	}
+
+	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidadeValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Map ufs, Map cidades, Collection<Idioma> idiomas) 
+	{
+		String nome = "";
+		String cpf = "";
+		String escolaridade = "";
+		String idioma = "";
+		String data_cad_ini = "";
+		String data_cad_fim = "";
+		String cargo = "";
+		String sexo = "";
+		String idade_ini = "";
+		String idade_fim = "";
+		String estado = "";
+		String cidade = "";
+		String bairro = "";
+		String palavra_chave = "";
+		
+		nome = montaParametro(nome, "nome", curriculo.getNome());
+		cpf = montaParametro(cpf, "cpf", curriculo.getCpf());
+		escolaridade = montaParametro(escolaridade, "escolaridade", new Escolaridade().get(escolaridadeValue));
+		idioma = montaParametro(idioma, "idioma", getIdioma(idiomas, curriculo.getIdioma()));
+		data_cad_ini = montaParametro(data_cad_ini, "data_cad_ini", DateUtil.formataDiaMesAno(dataCadIni));
+		data_cad_fim = montaParametro(data_cad_fim, "data_cad_fim", DateUtil.formataDiaMesAno(dataCadFim));
+		cargo = montaParametro(cargo, "cargo", curriculo.getCargo());
+		sexo = montaParametro(sexo, "sexo", curriculo.getSexo());
+		idade_ini = montaParametro(idade_ini, "idade_ini", idadeMin);
+		idade_fim = montaParametro(idade_fim, "idade_fim", idadeMax);
+		estado = montaParametro(estado, "estado", (String) ufs.get(uf));
+		if(cidades != null && cidades.size() > 0)
+			cidade = montaParametro(cidade, "cidade", (String) cidades.get(cidade));
+		
+		bairro = montaParametro(bairro, "bairro", curriculo.getBairro());
+		palavra_chave = montaParametro(palavra_chave, "palavra_chave", curriculo.getObservacoes_complementares());
+		
+		return new String[]{nome, cpf, escolaridade, idioma, data_cad_ini, data_cad_fim, cargo, sexo, idade_ini, idade_fim, estado, cidade, bairro, palavra_chave};
+	}
+
+	private String getIdioma(Collection<Idioma> idiomas, String value) 
+	{
+		if(StringUtils.isNotBlank(value))
+		{
+			for (Idioma idioma : idiomas) {
+				if(idioma.getId().equals(Long.parseLong(value)))
+					return idioma.getNome();
+			}
+		}
+		
+		return "";
+	}
+
+	private String montaParametro(String variavel, String chave, String value) {
+		if(StringUtils.isNotBlank(value))
+		{
+			try {
+				variavel = chave + "=\"" + value + "\"";
+			} catch (Exception e){
+				
+			}			
+		}
+		
+		return variavel;
+	}
+
+	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId, Empresa empresa) 
+	{
+		F2rhFacade f2rhFacade = new F2rhFacadeImpl();
+		Collection<Curriculo> curriculos = f2rhFacade.buscarCurriculos(f2rhFacade.montaIds(curriculosId));
+		
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+
+		for (Curriculo curriculo : curriculos) 
+		{
+			Candidato candidato = new Candidato();
+			candidato.setEmpresa(empresa);
+			bind(candidato, curriculo);
+			
+			Candidato candidatoJaGravado = findByCPF(candidato.getPessoal().getCpf(), null);
+			if(candidatoJaGravado == null)
+				candidatos.add(getDao().save(candidato));
+			else
+				candidatos.add(candidatoJaGravado);
+		}
+		
+		return candidatos;
+	}
+
+	private void bind(Candidato candidato, Curriculo curriculo) 
+	{
+		candidato.setNome(StringUtil.subStr(curriculo.getNome(), 60));
+		
+		Pessoal pessoal = new Pessoal();
+		pessoal.setDataNascimento(DateUtil.montaDataByString(curriculo.getData_nascimento_rh()));
+		pessoal.setCpf(StringUtil.subStr(curriculo.getCpf(), 11));
+		
+		if(curriculo.getSexo() != null)
+			pessoal.setSexo(curriculo.getSexo().charAt(0));
+		
+		candidato.setDataCadastro(DateUtil.montaDataByString(curriculo.getCreated_rh()));
+		candidato.setDataAtualizacao(DateUtil.montaDataByString(curriculo.getUpdated_rh()));
+		
+		candidato.setColocacao(Vinculo.EMPREGO);
+		candidato.setPretencaoSalarial(null);
+		candidato.setDisponivel(true);
+		candidato.setBlackList(false);
+		candidato.setContratado(false);
+		candidato.setObservacao(curriculo.getObservacoes_complementares());
+		candidato.setOrigem(OrigemCandidato.F2RH);
+
+		CurriculoTelefone curriculoTelefone = new CurriculoTelefone();
+		try {
+			curriculoTelefone = (CurriculoTelefone) curriculo.getCurriculo_telefones().toArray()[0];
+		} catch (Exception e) {}
+		
+		Contato contato = new Contato();
+		contato.setEmail(StringUtil.subStr(curriculo.getUser().getEmail(), 40));
+	   	contato.setDdd(StringUtil.subStr(curriculoTelefone.getDdd(), 5));
+	   	contato.setFoneFixo(StringUtil.subStr(curriculoTelefone.getNumero(), 10));
+	   	
+	   	Endereco endereco = new Endereco();
+	   	endereco.setBairro(StringUtil.subStr(curriculo.getBairro(), 20));
+	   	endereco.setLogradouro(StringUtil.subStr(curriculo.getEndereco(), 40));
+	   	endereco.setCep(StringUtil.subStr(curriculo.getCep(), 10));
+	   	
+	   	try {
+	   		Estado estado = estadoManager.findBySigla(curriculo.getEstado()); 
+	   		endereco.setUf(estado);
+
+	   		try {
+	   			if(StringUtils.isNotBlank(curriculo.getCidade_rh()))
+	   				endereco.setCidade(cidadeManager.findByNome(curriculo.getCidade_rh(), estado.getId()));
+	   		} catch (Exception e) {}
+		} catch (Exception e) {}
+
+		
+		candidato.setPessoal(pessoal);
+		candidato.setContato(contato);
+		candidato.setEndereco(endereco);
+	   	
+	}
+
+	public void setEstadoManager(EstadoManager estadoManager) {
+		this.estadoManager = estadoManager;
+	}
+
+	public void setCidadeManager(CidadeManager cidadeManager) {
+		this.cidadeManager = cidadeManager;
+	}
+
 }

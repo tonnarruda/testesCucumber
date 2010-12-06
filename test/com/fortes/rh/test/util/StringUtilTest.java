@@ -35,6 +35,14 @@ public class StringUtilTest extends TestCase
 		assertEquals(esperado, StringUtil.removeAspas(texto));
 	}
 
+	public void testSubStr()
+	{
+		String texto = "Mas quando tamanho";//length = 20
+		assertEquals("Mas quando tamanho", StringUtil.subStr(texto, 20));
+		assertEquals(null, StringUtil.subStr(null, 20));
+		assertEquals("Mas q", StringUtil.subStr(texto, 5));
+	}
+	
 	public void testStringToLong()
 	{
 

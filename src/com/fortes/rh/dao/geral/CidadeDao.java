@@ -11,4 +11,5 @@ public interface CidadeDao extends GenericDao<Cidade>
 	Collection<Cidade> findAllByUf(String uf);
 	Cidade findByCodigoAC(String codigoAC, String sigla);
 	Cidade findByIdProjection(Long id);
+	Cidade findByNome(String nome, Long estadoId);
 }

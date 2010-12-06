@@ -37,4 +37,9 @@ public class CidadeManagerImpl extends GenericManagerImpl<Cidade, CidadeDao> imp
 		
 		return new ArrayList<Cidade>();
 	}
+
+	public Cidade findByNome(String nome, Long estadoId) 
+	{
+		return getDao().findByNome(nome, estadoId);
+	}
 }

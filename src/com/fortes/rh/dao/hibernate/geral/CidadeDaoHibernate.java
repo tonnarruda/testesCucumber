@@ -3,10 +3,12 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -92,6 +94,24 @@ public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements C
 
 		criteria.add(Expression.eq("c.codigoAC", codigoAC));
 		criteria.add(Expression.eq("e.sigla", sigla));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cidade.class));
+
+		return (Cidade) criteria.uniqueResult();
+	}
+
+	public Cidade findByNome(String nome, Long estadoId) 
+	{
+		Criteria criteria = getSession().createCriteria(Cidade.class, "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("c.uf.id", estadoId));
+		criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nome + "%", Hibernate.STRING));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cidade.class));
