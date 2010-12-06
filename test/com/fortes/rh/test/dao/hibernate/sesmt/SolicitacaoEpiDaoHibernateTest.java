@@ -206,7 +206,6 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		
 		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(1L, epiCheck);
 		
-		//Samuel - Refatorar metodo para teste foi colocado 0 somente para passar final de dia 
 		assertEquals(0,colecao.size());
 	}
 	

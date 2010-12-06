@@ -14,6 +14,7 @@ import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.CamposExtrasManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -31,6 +32,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
@@ -50,6 +52,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.FormacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorIdiomaFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
@@ -77,6 +80,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	private Mock catManager;
 	private Mock comissaoManager;
 	private Mock configuracaoCampoExtraManager;
+	private Mock camposExtrasManager;
 	private Mock parametrosDoSistemaManager;
 	
 
@@ -101,6 +105,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		catManager = mock(CatManager.class);
 		comissaoManager = mock(ComissaoManager.class);
 		configuracaoCampoExtraManager = mock(ConfiguracaoCampoExtraManager.class);
+		camposExtrasManager = new Mock(CamposExtrasManager.class);
 		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
 		
 		
@@ -121,6 +126,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setCatManager((CatManager) catManager.proxy());
 		action.setComissaoManager((ComissaoManager) comissaoManager.proxy());
 		action.setConfiguracaoCampoExtraManager((ConfiguracaoCampoExtraManager) configuracaoCampoExtraManager.proxy());
+		action.setCamposExtrasManager((CamposExtrasManager) camposExtrasManager.proxy());
 		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
@@ -142,8 +148,20 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 
 	public void testPrepareUpdateInfoPessoais() throws Exception
 	{
+		ConfiguracaoCampoExtra configuracaoCampoExtra = new ConfiguracaoCampoExtra();
+		configuracaoCampoExtra.setId(1L);
+		configuracaoCampoExtra.setAtivo(true);
+		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+		configuracaoCampoExtras.add(configuracaoCampoExtra);
+	
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+		parametrosDoSistema.setCampoExtraColaborador(true);
+		
+		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
+		colaborador.setCamposExtras(camposExtras);
 		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(colaborador));
 		
 		cidadeManager.expects(once()).method("find").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cidade>()));
@@ -152,6 +170,10 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		candidatoIdiomaManager.expects(once()).method("montaListCandidatoIdioma").with(ANYTHING);
 		experienciaManager.expects(once()).method("findByColaborador").with(ANYTHING);
 		formacaoManager.expects(once()).method("findByColaborador").with(ANYTHING);
+
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").will(returnValue(parametrosDoSistema));
+		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativo"}),eq(new Object[]{true}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
+		camposExtrasManager.expects(once()).method("findById").with(eq(colaborador.getCamposExtras().getId())).will(returnValue(camposExtras));
 		
 		assertEquals("success", action.prepareUpdateInfoPessoais());
 	}

@@ -66,6 +66,7 @@ public class Index extends ActionSupport
 	private boolean pgInicial = true;
 	private boolean possuiMensagem = true;
 	private boolean primeiraExecucao;
+	private boolean idiomaIncorreto;
 	
 	private boolean integradoAC;
 	private SolicitacaoManager solicitacaoManager;
@@ -98,7 +99,10 @@ public class Index extends ActionSupport
 			mensagems = usuarioMensagemManager.listaUsuarioMensagem(usuarioId, empresaId);
 
 			possuiMensagem = usuarioMensagemManager.possuiMensagemNaoLida(usuarioId, empresaId);
-
+			
+			if (parametrosDoSistemaManager.isIdiomaCorreto())
+				idiomaIncorreto = true;
+			
 			validaIntegracaoAC();
 			
 			validaAvaliacoesDesempenho();
@@ -357,6 +361,10 @@ public class Index extends ActionSupport
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
 		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+	}
+
+	public boolean isIdiomaIncorreto() {
+		return idiomaIncorreto;
 	}
 
 }

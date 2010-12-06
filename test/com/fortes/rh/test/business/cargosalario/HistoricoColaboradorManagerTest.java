@@ -272,10 +272,10 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		HistoricoColaborador historicoColaboradorFrancisco = HistoricoColaboradorFactory.getEntity(1L);
 		historicoColaboradorFrancisco.setColaborador(francisco);
 
-		Colaborador samuel = ColaboradorFactory.getEntity();
-		samuel.setCodigoAC("000002");
-		HistoricoColaborador historicoColaboradorSamuel = HistoricoColaboradorFactory.getEntity(2L);
-		historicoColaboradorSamuel.setColaborador(samuel);
+		Colaborador fulano = ColaboradorFactory.getEntity();
+		fulano.setCodigoAC("000002");
+		HistoricoColaborador historicoColaboradorFulano = HistoricoColaboradorFactory.getEntity(2L);
+		historicoColaboradorFulano.setColaborador(fulano);
 		
 		Colaborador bruno = ColaboradorFactory.getEntity();
 		bruno.setCodigoAC("000003");
@@ -284,7 +284,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		historicoColaboradors.add(historicoColaboradorFrancisco);
-		historicoColaboradors.add(historicoColaboradorSamuel);
+		historicoColaboradors.add(historicoColaboradorFulano);
 		historicoColaboradors.add(historicoColaboradorBruno);
 
 		TRemuneracaoVariavel tRemuneracaoVariavel1 = new TRemuneracaoVariavel();

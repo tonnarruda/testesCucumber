@@ -312,8 +312,8 @@
 					<h2>Situação proposta</h2>
 					<ul>
 						<#-- campo observação ficava no fim e foi movido pra ca devido a bug no IE7 -->
-						<@ww.textfield label="Observação" name="reajusteColaborador.observacao" id="observacao" cssClass="inputNome" maxLength="100" />
-					
+						<@ww.textarea label="Observação" name="reajusteColaborador.observacao" id="observacao" cssStyle="width:550px;height:60px" /><br><br><br>
+												
 						<#assign funcaoEstabelecimento="populaAmbiente(this.value,null);"/>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<#assign funcaoEstabelecimento=""/>
