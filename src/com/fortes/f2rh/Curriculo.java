@@ -2,6 +2,7 @@ package com.fortes.f2rh;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Curriculo {
 	
@@ -27,7 +28,7 @@ public class Curriculo {
 	
 	private BigDecimal salario;
 	private User user;
-	private ArrayList<CurriculoTelefone> curriculo_telefones;
+	private Collection<CurriculoTelefone> curriculo_telefones;
 
 	@Override
 	public int hashCode() {
@@ -87,7 +88,7 @@ public class Curriculo {
 		this.user = user;
 	}
 
-	public ArrayList<CurriculoTelefone> getCurriculo_telefones() {
+	public Collection<CurriculoTelefone> getCurriculo_telefones() {
 		return curriculo_telefones;
 	}
 

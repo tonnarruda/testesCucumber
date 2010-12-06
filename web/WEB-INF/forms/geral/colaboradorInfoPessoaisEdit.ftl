@@ -86,8 +86,30 @@
 			}
 		}
 	</script>
+	<#assign validaDataCamposExtras = ""/>
+	<#if habilitaCampoExtra>
+		<#list configuracaoCampoExtras as configuracaoCampoExtra>		
+			
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data1">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data1'"/>
+			</#if>
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data2">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data2'"/>
+			</#if>
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data3">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data3'"/>
+			</#if>
+		</#list>
+		
+		<#assign totalAbas = 4/>
+	<#else>
+		<#assign totalAbas = 3/>
+	</#if>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('ende','num','uf','cidade','ddd','fone','escolaridade'), new Array('cep'))"/>
+	
+	
+	
+	<#assign validarCampos="return validaFormulario('form', new Array('ende','num','uf','cidade','ddd','fone','escolaridade'), new Array('cep' ${validaDataCamposExtras}))"/>
 	<@ww.head />
 </head>
 <body>
@@ -96,9 +118,13 @@
 
 	<#if colaborador.id?exists>
 		<div id="abas">
-			<div id="aba1"><a href="javascript: abas(1, '', true, 3)">Dados Pessoais</a></div>
-			<div id="aba2"><a href="javascript: abas(2, '', true, 3)">Formação Escolar</a></div>
-			<div id="aba3"><a href="javascript: abas(3, '', true, 3)">Experiências</a></div>
+			<div id="aba1"><a href="javascript: abas(1, '', true, ${totalAbas})">Dados Pessoais</a></div>
+			<div id="aba2"><a href="javascript: abas(2, '', true, ${totalAbas})">Formação Escolar</a></div>
+			<div id="aba3"><a href="javascript: abas(3, '', true, ${totalAbas})">Experiências</a></div>
+			
+			<#if habilitaCampoExtra>
+				<div id="aba4"><a href="javascript: abas(4, '', true, ${totalAbas})">Extra</a></div>
+			</#if>
 		</div>
 	
 		<#-- Campos fora do formulário por causa do ajax.
@@ -137,12 +163,20 @@
 				<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" cssStyle="width: 300px;" maxLength="60"/>
 				<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40"/>
 			</div>
-	
+			
+			<#if habilitaCampoExtra>
+				<div id="content4" style="display: none;">
+					<#include "camposExtras.ftl" />
+			    </div>
+			</#if>
+			
+			<@ww.hidden name="colaborador.camposExtras.id" />		
 			<@ww.hidden name="colaborador.cursos" id="colaborador.cursos" />
 			<@ww.hidden name="colaborador.observacao" id="colaborador.observacao" />
 			<@ww.hidden name="colaborador.candidato.id"/>
 			<@ww.hidden name="colaborador.id"/>
 			<@ww.hidden name="colaborador.codigoAC"/>
+			
 			<@ww.token/>
 		</@ww.form>
 	
@@ -161,9 +195,9 @@
 				</button>
 			</div>
 			<div style="text-align: right;">
-				<button id='voltar' disabled="disabled" onclick="abas(-1, 'V', true, 3);" class="btnVoltarDesabilitado" accesskey="V">
+				<button id='voltar' disabled="disabled" onclick="abas(-1, 'V', true, ${totalAbas});" class="btnVoltarDesabilitado" accesskey="V">
 				</button>
-				<button id='avancar' onclick="abas(-1, 'A', true, 3);" class="btnAvancar" accesskey="A">
+				<button id='avancar' onclick="abas(-1, 'A', true, ${totalAbas});" class="btnAvancar" accesskey="A">
 				</button>
 			</div>
 		</div>

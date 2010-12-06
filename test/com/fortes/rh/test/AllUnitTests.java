@@ -3,6 +3,7 @@ package com.fortes.rh.test;
 
 import junit.framework.TestSuite;
 
+import com.fortes.f2rh.test.F2rhFacadeTest;
 import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
@@ -338,6 +339,7 @@ import com.fortes.rh.test.web.action.avaliacao.PerguntaAvaliacaoEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.PeriodoExperienciaEditActionTest;
 import com.fortes.rh.test.web.action.captacao.AnuncioListActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoEditActionTest;
+import com.fortes.rh.test.web.action.captacao.CandidatoListActionTest;
 import com.fortes.rh.test.web.action.captacao.EmpresaBdsEditActionTest;
 import com.fortes.rh.test.web.action.captacao.EmpresaBdsListActionTest;
 import com.fortes.rh.test.web.action.captacao.EtapaSeletivaEditActionTest;
@@ -525,6 +527,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CandidatoDaoHibernateTest.class);
         suite.addTestSuite(CandidatoManagerTest.class);
         suite.addTestSuite(CandidatoEditActionTest.class);
+        suite.addTestSuite(CandidatoListActionTest.class);
         suite.addTestSuite(ConhecimentoDaoHibernateTest.class);
         suite.addTestSuite(ConhecimentoManagerTest.class);
         suite.addTestSuite(DuracaoPreenchimentoVagaManagerTest.class);
@@ -1120,6 +1123,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(InsertAuditorCallbackImplTest.class);
         suite.addTestSuite(RemoveAuditorCallbackImplTest.class);
         suite.addTestSuite(UpdateAuditorCallbackImplTest.class);
+        
+        suite.addTestSuite(F2rhFacadeTest.class);
+        
 
         return suite;
     }

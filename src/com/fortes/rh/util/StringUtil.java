@@ -27,6 +27,13 @@ public final class StringUtil
 			Pattern.compile("[Ç]")
 	};
 
+	public static String subStr(String value, int max)
+	{
+		if(value != null && value.length() > max)
+			value = value.substring(0, max);
+		return value;
+	}
+	
 	public static String decodeString(String str)
 	{
 		BASE64Decoder dec = new BASE64Decoder();

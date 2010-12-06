@@ -82,6 +82,8 @@
 			</div>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
+		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" ></button>
+		<br>
 
 	<#if curriculos?exists && 0 < curriculos?size>
 		<br>
@@ -102,7 +104,7 @@
 						${curriculo.cidade_rh}/${curriculo.estado}
 					</#if>
 				</@display.column>
-				<@display.column property="updated_at" title="Atualizado em" style="width: 100px;"/>
+				<@display.column property="updated_rh" title="Atualizado em" style="width: 100px;"/>
 			</@display.table>
 		</@ww.form>
 

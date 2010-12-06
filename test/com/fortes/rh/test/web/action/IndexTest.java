@@ -11,6 +11,7 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -45,6 +46,7 @@ public class IndexTest extends MockObjectTestCase
 	Mock usuarioMensagemManager;
 	Mock historicoColaboradorManager;
 	Mock faixaSalarialHistoricoManager;
+	Mock parametrosDoSistemaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -64,6 +66,9 @@ public class IndexTest extends MockObjectTestCase
 
 		faixaSalarialHistoricoManager = new Mock(FaixaSalarialHistoricoManager.class);
 		index.setFaixaSalarialHistoricoManager((FaixaSalarialHistoricoManager) faixaSalarialHistoricoManager.proxy());
+
+		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+		index.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
@@ -123,6 +128,7 @@ public class IndexTest extends MockObjectTestCase
 		Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 
 		historicoColaboradorManager.expects(once()).method("findPendenciasByHistoricoColaborador").will(returnValue(pendenciaACs));
+		parametrosDoSistemaManager.expects(once()).method("isIdiomaCorreto").will(returnValue(false));
 
 		faixaSalarialHistoricoManager.expects(once()).method("findPendenciasByFaixaSalarialHistorico").will(returnValue(pendenciaACs));
 

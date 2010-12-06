@@ -62,5 +62,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public void ajustaSenha(Candidato candidato);
 	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);
 	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidade, String escolaridade, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Map ufs, Map cidades, Collection<Idioma> idiomas);
-	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId);
+	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId, Empresa empresa);
 }

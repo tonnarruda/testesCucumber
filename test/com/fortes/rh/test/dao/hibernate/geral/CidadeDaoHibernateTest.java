@@ -36,6 +36,19 @@ public class CidadeDaoHibernateTest extends GenericDaoHibernateTest<Cidade>
 
 		assertEquals(1, cidadeDao.findAllSelect(estado.getId()).size());
 	}
+	
+	public void testFindByNome()
+	{
+		Estado estado = EstadoFactory.getEntity();
+		estado = estadoDao.save(estado);
+		
+		Cidade cidade1 = CidadeFactory.getEntity();
+		cidade1.setNome("Párácuru");//o acento faz parte do teste
+		cidade1.setUf(estado);
+		cidade1 = cidadeDao.save(cidade1);
+		
+		assertEquals("Párácuru", cidadeDao.findByNome("ParacÚrÚ", estado.getId()).getNome());
+	}
 
 	public void testFindByCodigoAC()
 	{

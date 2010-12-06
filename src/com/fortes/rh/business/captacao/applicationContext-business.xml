@@ -42,6 +42,12 @@
     <property name="etapaSeletivaManager">
       <ref bean="etapaSeletivaManager" />
     </property>
+    <property name="cidadeManager">
+      <ref bean="cidadeManager" />
+    </property>
+    <property name="estadoManager">
+      <ref bean="estadoManager" />
+    </property>
   </bean>
   <bean id="candidatoManager" parent="parentManager">
     <property name="proxyInterfaces">

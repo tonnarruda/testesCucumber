@@ -12,6 +12,7 @@ import java.util.zip.ZipOutputStream;
 
 import mockit.Mockit;
 
+import org.apache.commons.httpclient.HttpMethodBase;
 import org.hibernate.NonUniqueResultException;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
@@ -20,6 +21,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.User;
+import com.fortes.f2rh.test.MockHttpMethod;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
@@ -29,7 +31,6 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
-import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -1552,11 +1553,13 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		
 	public void testGetCurriculosF2rh() throws Exception
 	{
-		String[] curriculoIds = new String[]{"15", "156"};
+		String[] curriculoIds = new String[]{"15"};
 		
-		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds);
-		assertEquals(2, candidatos.size());
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
+		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
+		assertEquals(0, candidatos.size());
 	}
+	
 	//TODO remprot
 //    public void testValidaQtdCadastros()
 //    {
