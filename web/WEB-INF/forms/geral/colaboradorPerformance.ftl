@@ -29,7 +29,7 @@
 		border: 1px solid #7E9DB9;
 	}
 	ul#sortable li h4 a.fechado {
-		background: #F00 url('${urlImg}/arrow_down.gif') no-repeat 4px 7px;
+		background: #EBECF1 url('${urlImg}/arrow_down.gif') no-repeat 4px 7px;
 	}
 	ul#sortable li h4 a:hover {
 		text-decoration: none;
@@ -52,12 +52,12 @@
 			var box = jQuery("#box" + value);
 			if(box.css("display") == "none")
 			{
-				jQuery("#sortable .box" + value + " h4 a").removeClass('fechado');
+				jQuery("#sortable .cabecalhoBox" + value + " h4 a").removeClass('fechado');
 				box.show();
 			}			
 			else
 			{
-				jQuery("#sortable .box" + value + " h4 a").addClass('fechado');
+				jQuery("#sortable .cabecalhoBox" + value + " h4 a").addClass('fechado');
 				box.hide();
 			}			
 		}
@@ -238,9 +238,8 @@
 
 <br>
 
-
 <ul id="sortable">
-			<li>
+			<li class="cabecalhoBox1">
 				<h4><a href="javascript:exibir('1');" >Histórico de Cursos de Formação Profissional</a></h4>
 				<ul id="box1">
 				<table class="grade">
@@ -267,7 +266,7 @@
 				</ul>
 			</li>
 			
-			<li>
+			<li class="cabecalhoBox2">
 				<h4><a href="javascript:exibir('2');" >Avaliação de Desempenho</a></h4>
 				<ul id="box2">
 				<table class="grade">
@@ -289,7 +288,7 @@
 				</ul>
 			</li>
 			
-			<li>
+			<li class="cabecalhoBox3">
 				<h4><a href="javascript:exibir('3');" >Avaliações do Período de Experiência</a></h4>
 				<ul id="box3">
 				<table class="grade">
@@ -311,7 +310,7 @@
 				</ul>
 			</li>
 			
-			<li >
+			<li  class="cabecalhoBox4">
 				<h4><a href="javascript:exibir('4');" >Participação de Eventos Educativos na Empresa</a></h4>
 				<ul id="box4">
 				<table class="grade">
@@ -334,7 +333,7 @@
 				</ul>
 			</li>
 			
-			<li >
+			<li class="cabecalhoBox5">
 				<h4><a href="javascript:exibir('5');" >Trajetória Profissional na Empresa</a></h4>
 				<ul id="box5">
 				<table class="grade">
@@ -361,7 +360,7 @@
 				</ul>
 			</li>
 			
-			<li >
+			<li class="cabecalhoBox6">
 				<h4><a href="javascript:exibir('6');" >Ocorrências</a></h4>
 				<ul id="box6">
 				<table class="grade">
@@ -382,7 +381,7 @@
 				</ul>
 			</li>
 			
-			<li >
+			<li  class="cabecalhoBox7">
 				<h4><a href="javascript:exibir('7');" >Afastamentos</a></h4>
 				<ul  id="box7">
 				<table class="grade">
@@ -405,7 +404,7 @@
 				</ul>
 			</li>
 			
-			<li >	
+			<li class="cabecalhoBox8">	
 				<h4><a href="javascript:exibir('8');" >Etapas Seletivas</a></h4>
 				<ul id="box8">
 				<table class="grade">
@@ -429,7 +428,7 @@
 				</ul>
 			</li>
 			
-			<li >
+			<li class="cabecalhoBox9">
 				<h4><a href="javascript:exibir('9');" >Participações na CIPA</a></h4>
 				<ul id="box9">
 				<table class="grade">
@@ -446,7 +445,7 @@
 				</ul>
 			</li>
 			
-			<li >
+			<li class="cabecalhoBox10">
 				<h4><a href="javascript:exibir('10');" >Acidentes de Trabalho</a></h4>
 				<ul id="box10">
 				<table class="grade">
@@ -464,7 +463,7 @@
 				</ul>
 			</li>
 			
-			<li >
+			<li class="cabecalhoBox11">
 				<h4><a href="javascript:exibir('11');" >Documentos</a></h4>
 				<ul id="box11">
 				<table class="grade">
@@ -504,7 +503,7 @@
 				</ul>
 			</li>
 			
-			<li >
+			<li class="cabecalhoBox12">
 				<#if colaborador.desligado>
 					<h4><a href="javascript:exibir('12');" >Desligamento</a></h4>
 					<ul id="box12">
@@ -528,7 +527,7 @@
 				</#if>
 			</li>
 			
-			<li >
+			<li class="cabecalhoBox13">
 				<#if colaborador.observacao?exists && colaborador.observacao!=''>
 					<h4><a href="javascript:exibir('13');" >Informações Adicionais</a></h4>
 					<ul id="box13">
