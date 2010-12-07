@@ -35,11 +35,11 @@
 		<@ww.password label="Senha" name="candidato.senha" cssStyle="width: 80px;" liClass="liLeft"/>
 		<@ww.password label="Confirma senha" name="confirmaSenha" cssStyle="width: 80px;"/>
 		<@ww.textfield label="Nome" name="candidato.nome" maxLength="100" cssStyle="width:445px;"/>
-		<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" maxLength="40" cssClass="medium"/>
-		<@ww.textfield label="Bairro" name="candidato.endereco.bairro" cssClass="medium"  maxLength="20"/>
-		<@ww.textfield label="Cidade" name="candidato.endereco.cidade" cssClass="medium"/>
-		<@ww.select label="Estado" name="candidato.endereco.uf" list="estados"/>
-		<@ww.textfield label="CEP" name="candidato.endereco.cep" cssClass="mascaraCep" />
+		<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" maxLength="40" cssClass="medium" id="ende"/>
+		<@ww.textfield label="Bairro" name="candidato.endereco.bairro" cssClass="medium"  maxLength="20" id="bairroNome"/>
+		<@ww.textfield label="Cidade" name="candidato.endereco.cidade" cssClass="medium" id="cidade"/>
+		<@ww.select label="Estado" name="candidato.endereco.uf" list="estados" id="uf"/>
+		<@ww.textfield label="CEP" name="candidato.endereco.cep" cssClass="mascaraCep" id="cep" />
 		<@ww.textfield label="Telefone fixo" name="candidato.contato.foneFixo" cssClass="medium"/>
 		<@ww.textfield label="Telefone celular" name="candidato.contato.foneCelular" cssClass="medium"/>
 		<@ww.textfield label="Email" name="candidato.contato.email" maxLength="40" cssStyle="width:445px;" />

@@ -39,7 +39,7 @@
   </style>
   <![endif]-->
 
-
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
@@ -190,6 +190,8 @@
 		$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
 		$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
 		$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${idDaEmpresa}"/>');
+		
+		addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 	});
 	
 	
@@ -395,20 +397,22 @@
 					<@ww.div id="nomesHomonimos" cssStyle="color:red;">	</@ww.div>
 				</#if>
 			</@ww.div>
+			
 																																																							
 			<@ww.textfield label="CPF"  name="candidato.pessoal.cpf" id="cpf"  cssClass="mascaraCpf" liClass="liLeft" required="${cpfObrigatorio}" onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);"/>
-			<@ww.select label="Escolaridade" name="candidato.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 300px;"  required="true" headerKey="" headerValue="Selecione..."/>
+			<@ww.select label="Escolaridade" name="candidato.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 300px;"  required="true" headerKey="" headerValue="Selecione..." />
 			<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>
-
+			
+			<@ww.textfield label="CEP" name="candidato.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
 			<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" id="ende" required="${camposObrigatorio}" cssStyle="width: 300px;" maxLength="40" liClass="liLeft" onblur="${capitalizar}"/>
 			<@ww.textfield label="Nº" name="candidato.endereco.numero" id="num" required="${camposObrigatorio}" cssStyle="width:40px;" maxLength="8" liClass="liLeft" onblur="${capitalizar}"/>
-			<@ww.textfield label="Complemento" name="candidato.endereco.complemento" cssStyle="width: 325px;" maxLength="20" onblur="${capitalizar}"/>
+			<@ww.textfield label="Complemento" name="candidato.endereco.complemento" cssStyle="width: 250px;" maxLength="20" onblur="${capitalizar}"/>
 
 			<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs" required="true" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
 			<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade" required="true" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" />
-			<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 292px;" maxLength="20" liClass="liLeft" onblur="${capitalizar}"/>
+			<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 362px;" maxLength="20" onblur="${capitalizar}"/>
 			<div id="bairroContainer"></div>
-			<@ww.textfield label="CEP" name="candidato.endereco.cep" id="cep" cssClass="mascaraCep"/>
+			
 
 			<@ww.textfield label="E-mail" name="candidato.contato.email" id="email" cssStyle="width: 300px;" maxLength="40" liClass="liLeft"/>
 			<@ww.textfield label="DDD" name="candidato.contato.ddd" id="ddd" required="true" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" cssStyle="width: 25px;" maxLength="2" />

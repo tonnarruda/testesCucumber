@@ -70,8 +70,8 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 					perguntaTmp.getRespostas().add(resposta);
 					respostasVerificadas.add(resposta.getId());
 				}
-				else
-					break;	//	Não cobre essa linha por BUG do Coverage
+//				else
+//					break;	//	Não cobre essa linha por BUG do Coverage
 			}
 
 			perguntaRetornos.add(perguntaTmp);
@@ -624,5 +624,12 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 			String perguntaTexto = pergunta.getTexto();
 			if (perguntaTexto != null)
 				pergunta.setTexto(perguntaTexto.replaceAll("#AVALIADO#", avaliadoNome));
+	}
+
+	public Collection<Pergunta> getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(Long questionarioId) {
+		
+		Collection<Pergunta> perguntas = getDao().findByQuestionarioAgrupadoPorAspecto(questionarioId);
+
+		return associarPerguntasRespostas(perguntas);
 	}
 }

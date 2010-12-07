@@ -1,3 +1,4 @@
+window.jsonCEP = "";
 
 (function($) {
 
@@ -22,24 +23,16 @@
 		DWRUtil.addOptions("cidade", data);
 		
 		
-//		CEP Marlus e Samuel
-		
-		if (jQuery("#cidade").length)
+		if (jQuery("#cidade").length && (jsonCEP != ''))
 		{
 			jQuery("#cidade option").each(function() {
-				jQuery("#cidade").val(jQuery(this).val());
-				jQuery("#cidade").change();
+				if (jQuery(this).text() == jsonCEP.query.results.cep.cidade)
+				{
+					jQuery("#cidade").val(jQuery(this).val());
+					jQuery("#cidade").change();
+					return;
+				}
 			});
-			
-//		if (jQuery("#cep").length && jQuery("#cidade").length)
-//		{
-//			jQuery("#cidade option").each(function() {
-//				if (jQuery(this).text() == resultadoCEP["cidade"])
-//				{
-//					jQuery("#cidade").val(jQuery(this).val());
-//					jQuery("#cidade").change();
-//				}
-//			});
 		}
 	};
 

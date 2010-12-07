@@ -22,6 +22,23 @@ public class PerguntaDaoHibernate extends GenericDaoHibernate<Pergunta> implemen
 {
 	public Collection<Pergunta> findByQuestionario(Long questionarioId)
 	{
+		Criteria criteria = getCriteriaParaQuestionario(questionarioId);
+		criteria.addOrder(Order.asc("pergunta.ordem"));
+		
+		return criteria.list();
+	}
+	
+	public Collection<Pergunta> findByQuestionarioAgrupadoPorAspecto(Long questionarioId)
+	{
+		Criteria criteria = getCriteriaParaQuestionario(questionarioId);
+		criteria.addOrder(Order.asc("aspecto.nome"));
+		criteria.addOrder(Order.asc("pergunta.ordem"));
+		
+		return criteria.list();
+	}
+
+	private Criteria getCriteriaParaQuestionario(Long questionarioId) {
+		
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"pergunta");
 		criteria.createCriteria("pergunta.aspecto", "aspecto", Criteria.LEFT_JOIN);
 
@@ -47,11 +64,8 @@ public class PerguntaDaoHibernate extends GenericDaoHibernate<Pergunta> implemen
         disjunction.add(Expression.eq("avaliacao.id", questionarioId));
         criteria.add(disjunction);
         
-		criteria.addOrder(Order.asc("pergunta.ordem"));
-
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-
-		return criteria.list();
+		return criteria;
 	}
 
 	public Collection<Pergunta> findByQuestionarioAspecto(Long questionarioId, Long[] aspectosIds)

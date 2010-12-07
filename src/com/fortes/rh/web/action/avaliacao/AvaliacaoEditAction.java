@@ -9,6 +9,7 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.Pergunta;
+import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -77,7 +78,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public String visualizar() throws Exception
 	{
 		avaliacao = avaliacaoManager.findById(avaliacao.getId());
-		perguntas = perguntaManager.getPerguntasRespostaByQuestionario(avaliacao.getId());
+		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId());
     	urlVoltar = "list.action";
     	
 		return Action.SUCCESS;

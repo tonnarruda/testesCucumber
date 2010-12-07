@@ -14,11 +14,18 @@
 </#if>
 	<#assign idEmpresa=empresaSistema.id>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-
+	
+	<style type="text/css">
+		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+	</style>
+	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
+	
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign validarCampos="return validaFormulario('form', new Array('nome','complementoCnpj','ende','num','bairro','uf','cidade'), new Array('cep'))"/>
 
@@ -85,6 +92,12 @@
 			}
 			${validarCampos}
 		}
+		
+		jQuery(function($) 
+		{
+			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');			
+		});
+		
 	</script>
 
 
@@ -104,13 +117,14 @@
 		<@ww.textfield label="" name="digitoVerificador" id="dv" cssStyle="width:18px;" disabled="${desabilita}" disabled="true"/>
 
 		<br>
+		<@ww.textfield label="CEP" name="estabelecimento.endereco.cep" id="cep" cssClass="mascaraCep" disabled="${desabilita}" liClass="liLeft"/>
 		<@ww.textfield label="Logradouro" name="estabelecimento.endereco.logradouro" id="ende" required="true" cssStyle="width: 300px;"  maxLength="40" liClass="liLeft" disabled="${desabilita}"/>
 		<@ww.textfield label="Nº" name="estabelecimento.endereco.numero" id="num" required="true" cssStyle="width:40px;"  maxLength="10" liClass="liLeft" disabled="${desabilita}"/>
-		<@ww.textfield label="Complemento" name="estabelecimento.endereco.complemento" cssStyle="width: 325px;" maxLength="20" disabled="${desabilita}"/>
-		<@ww.textfield label="Bairro" name="estabelecimento.endereco.bairro" id="bairro" cssStyle="width: 300px;" maxLength="20" required="true" liClass="liLeft" disabled="${desabilita}"/>
-		<@ww.select label="Estado" name="estabelecimento.endereco.uf.id" id="uf" list="ufs" required="true" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="-1" headerValue="" onchange="javascript:populaCidades()" disabled="${desabilita}"/>
-		<@ww.select label="Cidade" name="estabelecimento.endereco.cidade.id" id="cidade" required="true" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" disabled="${desabilita}"/>
-		<@ww.textfield label="CEP" name="estabelecimento.endereco.cep" id="cep" cssClass="mascaraCep" disabled="${desabilita}"/>
+		<@ww.textfield label="Complemento" name="estabelecimento.endereco.complemento" cssStyle="width: 252px;" maxLength="20" disabled="${desabilita}"/>
+		<@ww.select label="Estado" name="estabelecimento.endereco.uf.id" id="uf" list="ufs" required="true" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="-1" headerValue="" disabled="${desabilita}"/>
+		<@ww.select label="Cidade" name="estabelecimento.endereco.cidade.id" id="cidade" required="true" list="cidades"  listKey="id" listValue="nome" cssStyle="width: 300px;" headerKey="" headerValue="" disabled="${desabilita}" liClass="liLeft"/>
+		<@ww.textfield label="Bairro" name="estabelecimento.endereco.bairro" id="bairroNome" cssStyle="width: 307px;" maxLength="20" required="true"  disabled="${desabilita}"/>
+		<@ww.div id="bairroContainer"/>
 
 		<@ww.hidden name="estabelecimento.id" />
 		<@ww.hidden name="estabelecimento.codigoAC" />
@@ -125,6 +139,8 @@
 		<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V">
 		</button>
 	</div>
-
+	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js"/>'></script>
 </body>
 </html>
