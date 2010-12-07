@@ -20,6 +20,7 @@ import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -82,12 +83,14 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	private Mock configuracaoCampoExtraManager;
 	private Mock camposExtrasManager;
 	private Mock parametrosDoSistemaManager;
+	private Mock configuracaoPerformanceManager;
 	
 
 	protected void setUp () throws Exception
 	{
 		action = new ColaboradorEditAction();
 
+		configuracaoPerformanceManager = new Mock(ConfiguracaoPerformanceManager.class);
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
 		colaboradorIdiomaManager = new Mock(ColaboradorIdiomaManager.class);
@@ -128,6 +131,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setConfiguracaoCampoExtraManager((ConfiguracaoCampoExtraManager) configuracaoCampoExtraManager.proxy());
 		action.setCamposExtrasManager((CamposExtrasManager) camposExtrasManager.proxy());
 		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+		action.setConfiguracaoPerformanceManager((ConfiguracaoPerformanceManager) configuracaoPerformanceManager.proxy());
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -264,6 +268,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 
 		areaOrganizacionalManager.expects(once()).method("findAllList").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS)).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areas)).will(returnValue(areas));
+		configuracaoPerformanceManager.expects(once()).method("findByUsuario").with(ANYTHING);
 
 		String retorno = "";
 		Exception excep = null;
