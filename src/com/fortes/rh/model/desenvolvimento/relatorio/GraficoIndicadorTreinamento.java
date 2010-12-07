@@ -15,6 +15,10 @@ public class GraficoIndicadorTreinamento
 		this.legenda = legenda;
 	}
 
+	public GraficoIndicadorTreinamento() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getChave()
 	{
 		return chave;

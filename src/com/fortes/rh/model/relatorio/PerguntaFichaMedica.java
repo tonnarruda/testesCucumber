@@ -14,6 +14,9 @@ public class PerguntaFichaMedica
 		this.comentario = comentario;
 		this.tipo = tipo;
 	}
+	public PerguntaFichaMedica() {
+		// TODO Auto-generated constructor stub
+	}
 	public String getPergunta()
 	{
 		return pergunta;

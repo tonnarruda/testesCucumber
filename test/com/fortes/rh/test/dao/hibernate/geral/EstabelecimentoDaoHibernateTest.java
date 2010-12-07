@@ -48,7 +48,7 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		estabelecimento.setCodigoAC("123456");
 		estabelecimento = estabelecimentoDao.save(estabelecimento);
 
-		estabelecimentoDao.remove("123456", idEmpresa);
+		assertEquals(true, estabelecimentoDao.remove("123456", idEmpresa));
 
 		Estabelecimento est = estabelecimentoDao.findByCodigo("123456", "001122");
 

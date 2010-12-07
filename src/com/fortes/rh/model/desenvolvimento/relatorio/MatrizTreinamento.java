@@ -24,6 +24,10 @@ public class MatrizTreinamento implements Serializable
 		this.cursoId = cursoId;
 	}
 
+	public MatrizTreinamento() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getCertificacaoId()
 	{
 		return certificacaoId;

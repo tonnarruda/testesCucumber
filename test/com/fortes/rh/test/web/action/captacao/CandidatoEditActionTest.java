@@ -17,6 +17,7 @@ import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaInteresseManager;
+import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -29,6 +30,7 @@ import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaInteresse;
+import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
@@ -58,6 +60,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
 	private Mock formacaoManager;
 	private Mock candidatoIdiomaManager;
 	private Mock experienciaManager;
+	private Mock bairroManager;
 
     protected void setUp() throws Exception
     {
@@ -68,12 +71,14 @@ public class CandidatoEditActionTest extends MockObjectTestCase
         empresaManager = new Mock(EmpresaManager.class);
         estadoManager = new Mock(EstadoManager.class);
         cargoManager = new Mock(CargoManager.class);
+        bairroManager = new Mock(BairroManager.class);
 
         action.setCandidatoManager((CandidatoManager) manager.proxy());
         action.setCandidatoCurriculoManager((CandidatoCurriculoManager) candidatoCurriculoManager.proxy());
         action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
         action.setEstadoManager((EstadoManager) estadoManager.proxy());
         action.setCargoManager((CargoManager) cargoManager.proxy());
+        action.setBairroManager((BairroManager) bairroManager.proxy());
         
         parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
         action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
@@ -107,6 +112,66 @@ public class CandidatoEditActionTest extends MockObjectTestCase
         action = null;
         super.tearDown();
     }
+    
+    public void testPrepareInsertCurriculoTexto() throws Exception
+    {
+    	prepareMocksInsertCurriculo();
+    	
+    	assertEquals(action.prepareInsertCurriculoTexto(), "success");
+    	
+    	assertNotNull(action.getBairros());
+    	assertNotNull(action.getUfs());
+    	assertEquals(5, action.getMaxCandidataCargo());
+    }
+
+    public void testInsertCurriculoTextoException() throws Exception
+    {
+    	prepareMocksInsertCurriculo();
+    	
+    	action.setCandidatoManager(null);
+    	assertEquals("input" , action.insertCurriculoTexto());
+    }
+
+    public void testInsertCurriculoTextoExceptionCurriculo() throws Exception
+    {
+    	prepareMocksInsertCurriculo();
+    	
+    	manager.expects(once()).method("validaQtdCadastros").isVoid();
+    	action.setCandidato(null);
+    	
+    	assertEquals("input" , action.insertCurriculoTexto());
+    }
+
+    public void testInsertCurriculoTexto() throws Exception
+    {
+    	Candidato candidato = prepareMocksInsertCurriculo();
+
+    	
+    	manager.expects(once()).method("validaQtdCadastros").isVoid();
+    	manager.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
+    	
+    	assertEquals("success" , action.insertCurriculoTexto());
+    }
+
+	private Candidato prepareMocksInsertCurriculo() {
+		Candidato candidato = CandidatoFactory.getCandidato(1L);
+    	candidato.setOcrTexto("Teste");
+    	candidato.setNome("francisco");
+
+    	action.setCandidato(candidato);
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	empresa.setMaxCandidataCargo(5);
+    	Collection<Empresa> empresas = new ArrayList<Empresa>();
+    	empresas.add(empresa);
+    	
+    	bairroManager.expects(once()).method("getArrayBairros").will(returnValue(new String()));
+    	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
+    	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	
+    	return candidato;
+	}
 
     public void testPrepareInsertCurriculo() throws Exception
     {
@@ -133,7 +198,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
 
     	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Estado>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	assertEquals("success", action.prepareInsertCurriculoPlus());
     }
 
@@ -247,6 +312,26 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	conhecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Conhecimento>()));
     	
     	assertEquals("success", action.prepareInsert());
+    }
+
+    public void testInsertCurriculoException() throws Exception
+    {
+    	Collection<Empresa> empresas = Arrays.asList(EmpresaFactory.getEmpresa(1L));
+    	
+    	action.setModuloExterno(false);
+    	action.setUfs(new ArrayList<Estado>());
+    	
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+    	parametrosDoSistema.setUpperCase(true);
+    	
+    	cargoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Cargo>()));
+    	areaInteresseManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AreaInteresse>()));
+    	conhecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Conhecimento>()));
+    	empresaManager.expects(once()).method("findToList").will(returnValue(empresas));
+    	
+    	action.setCandidatoManager(null); 
+    	
+    	assertEquals("input", action.insertCurriculo());
     }
     
     public void testPrepareUpdate() throws Exception

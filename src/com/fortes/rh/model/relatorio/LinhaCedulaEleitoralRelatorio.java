@@ -10,6 +10,10 @@ public class LinhaCedulaEleitoralRelatorio
 		this.linhas = linhas;
 	}
 
+	public LinhaCedulaEleitoralRelatorio() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getLinhas()
 	{
 		return linhas;

@@ -26,6 +26,10 @@ public class AtaPosseRelatorio
 		this.texto2 = texto2;
 	}
 	
+	public AtaPosseRelatorio() {
+		// TODO Auto-generated constructor stub
+	}
+
 	//monta a parte 2 do texto com nomes do presidente e vice presidente da comissão 
 	public void montarTexto()
 	{

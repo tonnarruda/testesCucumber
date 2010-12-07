@@ -23,6 +23,10 @@ public class DadosAmbienteRisco
 		this.historicoAmbienteData = historicoAmbienteData;
 	}
 
+	public DadosAmbienteRisco() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getAmbienteId() {
 		return ambienteId;
 	}

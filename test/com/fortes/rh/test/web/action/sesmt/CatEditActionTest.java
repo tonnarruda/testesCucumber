@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import mockit.Mockit;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -18,6 +19,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.CatEditAction;
@@ -232,20 +234,19 @@ public class CatEditActionTest extends MockObjectTestCase
 		assertEquals(action.prepareRelatorioCats(), "success");
 	}
     
-  //  Refatora 
-//    public void testRelatorioCats() throws Exception
-//    {
-//    	action.setInicio(new Date());
-//    	action.setFim(new Date());
-//    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
-//    	action.setParametros( RelatorioUtil.getParametrosRelatorio("CAT's", action.getEmpresaSistema(), "--"));
-//    	
-//    	manager.expects(once()).method("findRelatorioCats").with(new Constraint[]{eq(action.getEmpresaSistema().getId()),eq(action.getInicio()),eq(action.getFim()), ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Cat>()));
-//    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
-//		manager.expects(once()).method("findAll");
-//		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
-//		
-//    	assertEquals(action.relatorioCats(), "success");
-//    }
+    public void testRelatorioCats() throws Exception
+    {
+    	Date dataIni = DateUtil.montaDataByString("02/02/2010");
+    	Date dataFim = DateUtil.montaDataByString("10/10/2010");
+    	action.setInicio(dataIni);
+    	action.setFim(dataFim);
+    	
+    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+    	
+    	Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
+    	manager.expects(once()).method("findRelatorioCats").with(new Constraint[]{eq(action.getEmpresaSistema().getId()),eq(action.getInicio()),eq(action.getFim()), ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Cat>()));
+
+    	assertEquals(action.relatorioCats(), "success");
+    }
     
 }

@@ -37,6 +37,10 @@ public class ColaboradorCertificacaoRelatorio implements Serializable
 		this.aprovado = "-";
 	}
 
+	public ColaboradorCertificacaoRelatorio() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getCertificacaoNome() {
 		return certificacaoNome;
 	}

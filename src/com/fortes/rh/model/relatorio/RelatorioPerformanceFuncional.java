@@ -115,6 +115,11 @@ public class RelatorioPerformanceFuncional {
 	}
 
 
+	public RelatorioPerformanceFuncional() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public Colaborador getColaborador() {
 		return colaborador;
 	}

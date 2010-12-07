@@ -22,6 +22,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtilVerifyRole;
 import com.fortes.rh.web.action.captacao.SolicitacaoListAction;
 import com.fortes.web.tags.CheckBox;
 
@@ -75,6 +76,22 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 
     	assertEquals(action.list(), "success");
     	manager.verify();
+    }
+    
+    public void testListRoleMovSolicitacaoSelecao() throws Exception
+    {
+    	Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtilVerifyRole.class);
+    	Solicitacao s1 = SolicitacaoFactory.getSolicitacao();
+    	s1.setId(1L);
+    	
+    	Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
+    	solicitacaos.add(s1);
+    	
+    	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
+    	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(solicitacaos));
+    	cargoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
+    	
+    	assertEquals(action.list(), "success");
     }
 
     public void testDelete() throws Exception
