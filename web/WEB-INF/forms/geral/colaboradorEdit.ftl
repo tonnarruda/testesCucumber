@@ -27,7 +27,8 @@
 	<![endif]-->
 
 	<#include "../ftl/mascarasImports.ftl" />
-
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js"/>'></script>
@@ -150,7 +151,7 @@
 		        }
 			});
 			
-			//addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');			
+			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');			
 		});
 		
 		function verificaCpf(data)
@@ -374,11 +375,6 @@
 			<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" cssStyle="width: 300px;" maxLength="60"/>
 			<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft"/>
 			<@ww.textfield label="Qtd. Filhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="colaborador.pessoal.qtdFilhos" id="qtdFilhos" cssStyle="width:25px; text-align:right;" maxLength="2" />
-	
-	
-	
-	
-	
 		</div>
 
 		<div id="content2" style="display: none;">

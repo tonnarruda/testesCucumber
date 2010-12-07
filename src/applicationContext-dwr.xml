@@ -10,6 +10,10 @@
 		<property name="tabelaReajusteColaboradorManager" ref="tabelaReajusteColaboradorManager"/>
 		<property name="reajusteColaboradorManager" ref="reajusteColaboradorManager"/>
 	</bean>
+	
+	<bean id="enderecoDWR" class="com.fortes.rh.web.dwr.EnderecoDWR">
+	</bean>
+	
 	<bean id="cargoDWR" class="com.fortes.rh.web.dwr.CargoDWR">
 		<property name="cargoManager" ref="cargoManager"/>
 	</bean>

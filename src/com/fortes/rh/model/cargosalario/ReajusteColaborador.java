@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
@@ -65,7 +66,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 	private Double quantidadeIndiceProposto;
 	private int tipoSalarioProposto;
 	
-	@Column(length=100)
+	@Lob
 	private String observacao;
 
 	@Transient

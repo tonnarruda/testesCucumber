@@ -957,7 +957,20 @@ function createListCandidatosHomonimos(data)
 function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId, estadoFieldId)
 {
 	var $cep = jQuery('#' + cepFieldId)
+	
+	$cep.data("oldValue", $cep.val());
+	
+	//Não foi possível utilizar o  evento change, pois o componente de mascara já utiliza e o indisponibiliza. 
 	$cep.blur(function(){
+		if (
+				(jQuery(this).data("oldValue") == jQuery(this).val())
+				||
+				(jQuery(this).val().replace(/\s/g, "").length < 9)
+			)
+				return;
+		
+		jQuery(this).data("oldValue", jQuery(this).val());
+		
 		if(jQuery.trim($cep.val()) != "")
 		{
 			 /*
@@ -979,41 +992,48 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 			 $estado.attr('disabled', true);
 
 			 $numero.focus();
-			
-			 jQuery.ajax({
-				url:"http://cep.republicavirtual.com.br/web_cep.php?formato=javascript&cep="+$cep.val(),
-				success:function(data){
-					 // o getScript dá um eval no script, então é só ler!
-					 //Se o resultado for igual a 1
-
-					if(resultadoCEP["resultado"])
-					 {
-						 // troca o valor dos elementos
-						 $logradouro.val(unescape(resultadoCEP["tipo_logradouro"])+" "+unescape(resultadoCEP["logradouro"]));
-						 $estado.val(unescape(resultadoCEP["uf"]));
-						 $estado.change();
-						 $bairro.val(unescape(resultadoCEP["bairro"]));
-	
-						 $logradouro.attr('disabled', false);
-						 $bairro.attr('disabled', false);
-						 $cidade.attr('disabled', false);
-						 $estado.attr('disabled', false);
-					 }
-					 else
-					 {
-						 alert("Endereço não encontrado");
-					 }
-				}, 
-				error:function(data){
-					alert("Erro ao carregar pagina de busca do CPF.");
-					 $logradouro.attr('disabled', false);
-					 $bairro.attr('disabled', false);
-					 $cidade.attr('disabled', false);
-					 $estado.attr('disabled', false);
-					 $logradouro.focus();
-				}
-			});
 			 
+			 jsonCEP = "";
+			 EnderecoDWR.buscaPorCep($cep.val(), {callback: function(data) {
+				 
+				 jsonCEP = jQuery.parseJSON(data);
+				 
+				 if (jsonCEP.query.results.cep.sucesso == 1)
+				 {
+			 		 $logradouro.val(jsonCEP.query.results.cep.tipo_logradouro + " " + jsonCEP.query.results.cep.logradouro);
+					 
+					jQuery("#uf option").each(function() {
+						if (jQuery(this).text() == jsonCEP.query.results.cep.estado_sigla)
+						{
+							jQuery(this).attr("selected", true);
+							//jQuery("#uf").val(jQuery(this).val());
+							return;
+						}
+					});
+					 
+					 $estado.change();
+					 //$cidade.val(json.query.results.cep.cidade);
+					 $bairro.val(jsonCEP.query.results.cep.bairro);
+	
+				 }
+				 else
+				 {
+					 alert("Endereço não encontrado");
+				 }
+				 $logradouro.attr('disabled', false);
+				 $bairro.attr('disabled', false);
+				 $cidade.attr('disabled', false);
+				 $estado.attr('disabled', false);				 
+			 },
+			 errorHandler: function (errorString, exception){
+				 $logradouro.attr('disabled', false);				 
+				 $bairro.attr('disabled', false);
+				 $cidade.attr('disabled', false);
+				 $estado.attr('disabled', false);				 
+
+				 alert("Erro ao tentar buscar CEP: " + errorString); 
+//				 alert("Não possivel estabelecer a conexão com o servidor remoto. Favor verificar acesso a internet."); 
+			 }});
 		}
 	});
 }
