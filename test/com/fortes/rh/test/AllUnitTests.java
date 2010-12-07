@@ -68,6 +68,7 @@ import com.fortes.rh.test.business.geral.ClienteManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorIdiomaManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorOcorrenciaManagerTest;
+import com.fortes.rh.test.business.geral.ConfiguracaoPerformanceManagerTest;
 import com.fortes.rh.test.business.geral.DocumentoAnexoManagerTest;
 import com.fortes.rh.test.business.geral.EmpresaManagerTest;
 import com.fortes.rh.test.business.geral.EstabelecimentoManagerTest;
@@ -188,6 +189,7 @@ import com.fortes.rh.test.dao.hibernate.geral.ClienteDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorIdiomaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorOcorrenciaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoPerformanceDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.DependenteDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.DocumentoAnexoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.EmpresaDaoHibernateTest;
@@ -478,6 +480,7 @@ import com.fortes.rh.test.web.dwr.ColaboradorDWRTest;
 import com.fortes.rh.test.web.dwr.ComissaoPeriodoDWRTest;
 import com.fortes.rh.test.web.dwr.ComissaoPlanoTrabalhoDWRTest;
 import com.fortes.rh.test.web.dwr.ComissaoReuniaoDWRTest;
+import com.fortes.rh.test.web.dwr.ConfiguracaoPerformanceDWRTest;
 import com.fortes.rh.test.web.dwr.ConhecimentoDWRTest;
 import com.fortes.rh.test.web.dwr.DiaTurmaDWRTest;
 import com.fortes.rh.test.web.dwr.DntDWRTest;
@@ -707,6 +710,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(EstadoManagerTest.class);
         suite.addTestSuite(CamposExtrasDaoHibernateTest.class);
         suite.addTestSuite(CamposExtrasManagerTest.class);
+        suite.addTestSuite(ConfiguracaoPerformanceManagerTest.class);
+        suite.addTestSuite(ConfiguracaoPerformanceDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoPerformanceDWRTest.class);
 
         suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
 

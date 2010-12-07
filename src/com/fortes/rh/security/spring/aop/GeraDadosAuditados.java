@@ -84,6 +84,7 @@ public class GeraDadosAuditados {
 			return valor.toString();
 		return JSONSerializer.toJSON(valor, jsonConfig).toString(2);
 	}
+	
 	/**
 	 * Retorna o resultado retornado do método auditado.
 	 */

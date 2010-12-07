@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import com.fortes.rh.model.geral.ConfiguracaoPerformance;
 import com.fortes.rh.util.StringUtil;
 
 public class StringUtilTest extends TestCase
@@ -23,6 +24,18 @@ public class StringUtilTest extends TestCase
 		String esperado = "Mas quando a branca estrela matutina.Surgiu do espaço e as brisas forasteiras.No verde leque das `gentis` palmeiras.Foram cantar os hinos do arrebol.";
 
 		assertEquals(esperado, StringUtil.removeBreak(texto));
+	}
+	
+	public void testToJson() 
+	{
+		ConfiguracaoPerformance config1 = new ConfiguracaoPerformance(1L, "1", 2, true);
+		ConfiguracaoPerformance config2 = new ConfiguracaoPerformance(2L, "2", 1, false);
+		
+		Collection<ConfiguracaoPerformance> configuracaoPerformances = new ArrayList<ConfiguracaoPerformance>();
+		configuracaoPerformances.add(config1);
+		configuracaoPerformances.add(config2);
+		
+		assertEquals("[{\"aberta\":true,\"caixa\":\"1\",\"id\":0,\"ordem\":2},{\"aberta\":false,\"caixa\":\"2\",\"id\":0,\"ordem\":1}]", StringUtil.toJSON(configuracaoPerformances, new String[]{"usuario"}));
 	}
 	
 	public void testRemoveAspas()

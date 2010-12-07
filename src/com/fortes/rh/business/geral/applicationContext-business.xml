@@ -600,7 +600,21 @@
       <ref bean="f2rhFacadeTarget" />
     </property>
   </bean>
+  <bean id="configuracaoPerformanceManagerTarget" class="com.fortes.rh.business.geral.ConfiguracaoPerformanceManagerImpl">
+    <property name="dao">
+      <ref bean="configuracaoPerformanceDao" />
+    </property>
+  </bean>
+  <bean id="configuracaoPerformanceManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.ConfiguracaoPerformanceManager</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoPerformanceManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

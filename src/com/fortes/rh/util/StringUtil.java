@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sf.json.JSONSerializer;
+import net.sf.json.JsonConfig;
+
 import org.apache.commons.lang.StringUtils;
 
 import sun.misc.BASE64Decoder;
@@ -27,6 +30,14 @@ public final class StringUtil
 			Pattern.compile("[Ç]")
 	};
 
+	public static String toJSON(Object valor, String[] excludes) 
+	{
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.setExcludes(excludes);
+		
+		return JSONSerializer.toJSON(valor, jsonConfig).toString();
+	}
+	
 	public static String subStr(String value, int max)
 	{
 		if(value != null && value.length() > max)

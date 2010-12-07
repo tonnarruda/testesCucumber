@@ -47,5 +47,4 @@ public class GeraDadosAuditadosTest extends TestCase {
 		String dados = new GeraDadosAuditados(new Object[]{new Long(14)}, null).gera();
 		assertEquals(ID_FORMATADO, dados);
 	}
-
 }

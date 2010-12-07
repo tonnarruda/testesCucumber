@@ -58,6 +58,9 @@
 	<bean id="dntDWR" class="com.fortes.rh.web.dwr.DntDWR">
 		<property name="turmaManager" ref="turmaManager"/>
 	</bean>
+	<bean id="configuracaoPerformanceDWR" class="com.fortes.rh.web.dwr.ConfiguracaoPerformanceDWR">
+		<property name="configuracaoPerformanceManager" ref="configuracaoPerformanceManager"/>
+	</bean>
 	<bean id="riscosDWR" class="com.fortes.rh.web.dwr.RiscosDWR">
 		<property name="riscoManager" ref="riscoManager"/>
 	</bean>

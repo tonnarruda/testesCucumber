@@ -298,3 +298,4 @@
   <include file="/com/fortes/rh/web/action/thumb/xwork-Thumbnail.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-ConfiguracaoCampoExtra.xml" />
 </xwork>
+

@@ -28,6 +28,7 @@ import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -117,6 +118,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private CamposExtrasManager camposExtrasManager;
+	private ConfiguracaoPerformanceManager configuracaoPerformanceManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -202,6 +204,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	private TipoAplicacaoIndice tipoAplicacaoIndice = new TipoAplicacaoIndice();
 	private boolean updateDados = true;
+	private String configPerformanceBoxes;
 
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 
@@ -753,6 +756,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 					historicoColaborador, idiomasColaborador,formacaos,cursosColaborador, ocorrenciasColaborador, 
 					afastamentosColaborador, documentoAnexosColaborador, documentoAnexosCandidato, historicosCandidatoByColaborador,
 					catsColaborador, participacoesNaCipaColaborador, areaOrganizacionals);
+			
+			configPerformanceBoxes = StringUtil.toJSON(configuracaoPerformanceManager.findByUsuario(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession())), new String[]{"usuario"}); 
 			
 			return Action.SUCCESS;
 
@@ -1481,5 +1486,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+	public String getConfigPerformanceBoxes() {
+		return configPerformanceBoxes;
+	}
+
+	public void setConfiguracaoPerformanceManager(ConfiguracaoPerformanceManager configuracaoPerformanceManager) {
+		this.configuracaoPerformanceManager = configuracaoPerformanceManager;
 	}
 }

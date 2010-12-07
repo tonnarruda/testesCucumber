@@ -6,8 +6,8 @@ import java.io.IOException;
 public class Principal
 {
 							//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "CamposExtras";
-	public static String NOME_CLASSE_MINUSCULO = "camposExtras";
+	public static String NOME_CLASSE = "ConfiguracaoPerformance";
+	public static String NOME_CLASSE_MINUSCULO = "configuracaoPerformance";
 	public static String NOME_PACOTE = "geral";
 	
 	private static final char separator = java.io.File.separatorChar;
@@ -17,6 +17,7 @@ public class Principal
 		try
 		{
 			Gerador gerador = new Gerador(NOME_CLASSE, NOME_CLASSE_MINUSCULO, NOME_PACOTE);
+			System.out.println(gerador.WORKSPACE);
 
 			//com.fortes.rh...
 			gerador.criarClass("model", NOME_CLASSE + ".java", "model.java", "src");

@@ -137,20 +137,10 @@
     <mapping class="com.fortes.rh.model.avaliacao.PeriodoExperiencia" />
     <mapping class="com.fortes.rh.model.avaliacao.Avaliacao" />
     <mapping class="com.fortes.rh.model.geral.Cliente" />
-      <mapping class="com.fortes.rh.model.avaliacao.AvaliacaoDesempenho" />
-      <mapping class="com.fortes.rh.model.geral.ConfiguracaoCampoExtra" />
-      <mapping class="com.fortes.rh.model.geral.CamposExtras" />
+    <mapping class="com.fortes.rh.model.avaliacao.AvaliacaoDesempenho" />
+    <mapping class="com.fortes.rh.model.geral.ConfiguracaoCampoExtra" />
+    <mapping class="com.fortes.rh.model.geral.CamposExtras" />
+    <mapping class="com.fortes.rh.model.geral.ConfiguracaoPerformance" />
   </session-factory>
-
-
-
-
-
-
-
-
-
-
-
 </hibernate-configuration>
 
