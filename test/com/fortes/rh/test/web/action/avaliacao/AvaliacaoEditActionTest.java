@@ -104,7 +104,7 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 		action.setAvaliacao(avaliacao);
 		
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacao));
-		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionario").with(eq(1L)).will(returnValue(new ArrayList<Pergunta>()));
+		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(1L)).will(returnValue(new ArrayList<Pergunta>()));
 		
 		assertEquals("success",action.visualizar());
 		assertEquals("list.action", action.getUrlVoltar());

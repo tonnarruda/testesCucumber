@@ -34,4 +34,5 @@ public interface PerguntaManager extends GenericManager<Pergunta>
 	Collection<Pergunta> findByQuestionario(Long questionarioId);
 	void montaImpressaoPergunta(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPergunta, StringBuilder textoComentario);
 	void setAvaliadoNaPerguntaDeAvaliacaoDesempenho(Pergunta pergunta, String avaliadoNome);
+	Collection<Pergunta> getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(Long questionarioId);
 }

@@ -323,7 +323,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		avaliacaoManager.expects(once()).method("find").will(returnValue(new ArrayList<Avaliacao>()));
 		colaboradorQuestionarioManager.expects(once()).method("populaQuestionario").will(returnValue(colaboradorRespostas));
 		perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq(colaborador.getNome()));
-		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionario").with(eq(10L)).will(returnValue(perguntas));
+		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(10L)).will(returnValue(perguntas));
 		respostaManager.expects(once()).method("findByPergunta").with(eq(perguntaObj.getId())).will(returnValue(respostasDaPerguntaObj));
 		respostaManager.expects(once()).method("findByPergunta").with(eq(perguntaMult.getId())).will(returnValue(respostasDaPerguntaMulti));
 		
@@ -387,7 +387,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		colaboradorQuestionarioManager.expects(once()).method("findByIdProjection").will(returnValue(colaboradorQuestionario));
 		colaboradorManager.expects(atLeastOnce()).method("findByIdProjectionEmpresa").with(ANYTHING).will(returnValue(colaborador));
 		colaboradorQuestionarioManager.expects(once()).method("populaQuestionario").will(returnValue(new ArrayList<ColaboradorResposta>()));
-		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionario").with(eq(10L)).will(returnValue(new ArrayList<Pergunta>()));
+		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(10L)).will(returnValue(new ArrayList<Pergunta>()));
 		
 		assertEquals("success",action.prepareResponderAvaliacaoDesempenho());
 		
@@ -397,7 +397,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		colaboradorQuestionarioManager.expects(once()).method("findByIdProjection").will(returnValue(colaboradorQuestionario));
 		colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").will(returnValue(colaborador));
 		colaboradorRespostaManager.expects(once()).method("findByColaboradorQuestionario").will(returnValue(new ArrayList<ColaboradorResposta>()));
-		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionario").with(eq(10L)).will(returnValue(new ArrayList<Pergunta>()));
+		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(10L)).will(returnValue(new ArrayList<Pergunta>()));
 		
 		assertEquals("success",action.prepareResponderAvaliacaoDesempenho());
 	}

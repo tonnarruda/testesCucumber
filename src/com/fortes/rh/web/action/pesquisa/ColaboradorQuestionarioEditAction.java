@@ -210,7 +210,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private void montaPerguntasRespostas() {
 		
 		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null)
-			perguntas = perguntaManager.getPerguntasRespostaByQuestionario(colaboradorQuestionario.getAvaliacao().getId());
+			perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(colaboradorQuestionario.getAvaliacao().getId());
 		else
 			perguntas = new ArrayList<Pergunta>();
 		

@@ -83,6 +83,47 @@ public class PerguntaDaoHibernateTest extends GenericDaoHibernateTest<Pergunta>
 		assertEquals(3, retorno.size());
 	}
 
+	public void testFindByQuestionarioComAspecto() throws Exception
+	{
+		Questionario questionario = QuestionarioFactory.getEntity(1L);
+		questionario = questionarioDao.save(questionario);
+		
+		Aspecto aspectoA = new Aspecto();
+		aspectoA.setNome("Aspecto A");
+		aspectoDao.save(aspectoA);
+		
+		Aspecto aspectoB = new Aspecto();
+		aspectoB.setNome("Aspecto B");
+		aspectoDao.save(aspectoB);
+		
+		Pergunta pergunta1 = PerguntaFactory.getEntity();
+		pergunta1.setQuestionario(questionario);
+		pergunta1.setAspecto(aspectoA);
+		pergunta1 = perguntaDao.save(pergunta1);
+		
+		Pergunta pergunta2 = PerguntaFactory.getEntity();
+		pergunta2.setQuestionario(questionario);
+		pergunta2.setAspecto(aspectoB);
+		pergunta2 = perguntaDao.save(pergunta2);
+		
+		Pergunta pergunta3 = PerguntaFactory.getEntity();
+		pergunta3.setQuestionario(questionario);
+		pergunta3 = perguntaDao.save(pergunta3);
+		
+		Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
+		perguntas.add(pergunta1);
+		perguntas.add(pergunta2);
+		perguntas.add(pergunta3);
+		
+		Pesquisa pesquisa = PesquisaFactory.getEntity();
+		pesquisa.setQuestionario(questionario);
+		pesquisa = pesquisaDao.save(pesquisa);
+		
+		Collection<Pergunta> retorno = perguntaDao.findByQuestionarioAgrupadoPorAspecto(questionario.getId());
+		
+		assertEquals(3, retorno.size());
+	}
+
 	public void testFindByQuestionarioAspecto() throws Exception
 	{
 		Aspecto aspecto = AspectoFactory.getEntity();

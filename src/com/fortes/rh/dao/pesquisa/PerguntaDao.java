@@ -20,7 +20,7 @@ public interface PerguntaDao extends GenericDao<Pergunta>
 	Collection<Pergunta> findByQuestionarioAspectoPergunta(Long questionarioId, Long[] aspectosIds, Long[] perguntasIds, boolean agruparPorAspectos);
 	void removerPerguntasDoQuestionario(Long questionarioId);
 	Collection<Long> findPerguntasDoQuestionario(Long questionarioId);
-
 	int getTotalPerguntas(Long questionarioId);
 	boolean existsOrdem(Long questionarioOrAvaliacaoId, Integer ordem);
+	public Collection<Pergunta> findByQuestionarioAgrupadoPorAspecto(Long questionarioId);
 }
