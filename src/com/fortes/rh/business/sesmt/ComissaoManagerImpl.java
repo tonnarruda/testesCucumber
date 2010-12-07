@@ -9,7 +9,6 @@ import com.fortes.rh.model.dicionario.TipoMembroComissao;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
-import com.fortes.rh.model.sesmt.ComissaoReuniao;
 import com.fortes.rh.model.sesmt.relatorio.AtaPosseRelatorio;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -107,23 +106,15 @@ public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDa
 	public Collection<ParticipacaoColaboradorCipa> getParticipacoesDeColaboradorNaCipa(Long colaboradorId)
 	{
 		EleicaoManager eleicaoManager = (EleicaoManager) SpringUtil.getBean("eleicaoManager");
-		
-		 
 		Collection<ParticipacaoColaboradorCipa> participacoesNaCipa = null;
 		
 		// participações em eleições
 		participacoesNaCipa = eleicaoManager.getParticipacoesDeColaboradorEmEleicoes(colaboradorId);
-		
 		// participação em comissões
 		Collection<ComissaoMembro> comissaoMembros = comissaoMembroManager.findByColaborador(colaboradorId);
 		
 		for (ComissaoMembro comissaoMembro : comissaoMembros)
-		{
 			participacoesNaCipa.add( new ParticipacaoColaboradorCipa(comissaoMembro) );
-		}
-		
-		CollectionUtil<ParticipacaoColaboradorCipa> util = new CollectionUtil<ParticipacaoColaboradorCipa>();
-		participacoesNaCipa = util.sortCollectionDate(participacoesNaCipa, "data", "asc");
 		
 		return participacoesNaCipa;
 	}

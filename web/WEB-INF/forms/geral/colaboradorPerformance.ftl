@@ -58,6 +58,11 @@
 		width: 100%;		
 		height: 23px;
 	}
+
+	.painelConfiguracao a:hover {
+		text-decoration: none;
+		color: #000;
+	}
 </style>
 
 <title>Performance Funcional</title>
