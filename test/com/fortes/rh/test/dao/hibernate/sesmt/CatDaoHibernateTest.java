@@ -53,15 +53,14 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		assertNotNull(cats);
 	}
 
-	//Refatorar
 	public void testFindAllSelect()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-//		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-//		areaOrganizacional.setNome("teste");
-//		areaOrganizacionalDao.save(areaOrganizacional);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setNome("teste");
+		areaOrganizacionalDao.save(areaOrganizacional);
 
 		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity();
 		estabelecimentoAtual.setEmpresa(empresa);
@@ -72,17 +71,20 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		colaborador.setNome("Ana");
 		colaborador.setEmpresa(empresa);
 		colaborador.setEstabelecimentoNomeProjection(estabelecimentoAtual.getNome());
-		//colaborador.setAreaOrganizacionalId(areaOrganizacional.getId());
+		colaborador.setAreaOrganizacional(areaOrganizacional);
 		colaboradorDao.save(colaborador);
 
 		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
-//		historicoColaboradorAtual.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorAtual.setAreaOrganizacional(areaOrganizacional);
 		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2009));
 		historicoColaboradorAtual.setColaborador(colaborador);
 		historicoColaboradorAtual.setEstabelecimento(estabelecimentoAtual);
 		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
 
 		Cat cat = new Cat();
+		cat.setNumeroCat("123456");
+		cat.setObservacao("observacao");
+		cat.setGerouAfastamento(false);
 		cat.setData(new Date());
 		cat.setColaborador(colaborador);
 		catDao.save(cat);
@@ -91,7 +93,7 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 
 		Collection<Cat> colecao = catDao.findAllSelect(empresa.getId(), new Date(), new Date(), estabelecimentoIds, "a");
 
-		assertEquals(0, colecao.size());
+		assertEquals(1, colecao.size());
 	}
 	
 	public void testGetCountRelatorio()
@@ -156,5 +158,9 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
 	{
 		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
 }

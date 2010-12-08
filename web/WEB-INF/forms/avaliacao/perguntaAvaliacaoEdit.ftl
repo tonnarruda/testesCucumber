@@ -23,7 +23,7 @@
 			$("#aspecto").autocomplete(aspectos);
 			
 			$('#criterioTooltipHelp').qtip({
-				content: 'Utilize #AVALIADO# onde desejar<br> exibir o nome do colaborador avaliado.'
+				content: 'Utilize o parametro #AVALIADO#, caso deseje<br> inserir nome no formulário de avaliação.'
 				,
 				style: {
 		        	 width: '280px'
