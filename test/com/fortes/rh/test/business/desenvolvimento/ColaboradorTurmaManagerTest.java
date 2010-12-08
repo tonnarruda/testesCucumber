@@ -32,6 +32,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.Certificado;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -832,164 +833,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Collection<Colaborador> resultado = colaboradorTurmaManager.findAprovadosByCertificacao(cursos);
 		assertEquals(1, resultado.size());
 	}
-//
-//	public void testFindAprovadosByCertificacaoReprovadoNaoInscrito()
-//	{
-//		// Existem 3 cursos, e o colaborador está inscrito em apenas 2.
-//		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-//
-//		Long colaboradorId = 1L;
-//		Collection<Curso> cursos = new ArrayList<Curso>();
-//		Curso curso1 = new Curso(); curso1.setId(1L); curso1.setEmpresa(empresa); cursos.add(curso1);
-//		Curso curso2 = new Curso(); curso2.setId(2L); curso1.setEmpresa(empresa); cursos.add(curso2);
-//		Curso curso3 = new Curso(); curso3.setId(3L); curso1.setEmpresa(empresa); cursos.add(curso3);
-//		
-//		CollectionUtil<Curso> util = new CollectionUtil<Curso>();
-//		Long[] cursoIds = util.convertCollectionToArrayIds(cursos);
-//		
-//		Collection<ColaboradorTurma> cursosInscrito = new ArrayList<ColaboradorTurma>();
-//		ColaboradorTurma colaboradorTurma1 = new ColaboradorTurma();
-//		colaboradorTurma1.setColaboradorId(colaboradorId);
-//		colaboradorTurma1.setCursoId(1L);
-//		ColaboradorTurma colaboradorTurma2 = new ColaboradorTurma();
-//		colaboradorTurma2.setColaboradorId(colaboradorId);
-//		colaboradorTurma2.setCursoId(2L);
-//		ColaboradorTurma colaboradorTurma3 = new ColaboradorTurma();
-//		colaboradorTurma3.setColaboradorId(colaboradorId);
-//		colaboradorTurma3.setCursoId(3L);
-//		cursosInscrito.add(colaboradorTurma1);
-//		cursosInscrito.add(colaboradorTurma2);
-//
-//		Turma turma1 = TurmaFactory.getEntity(1L);
-//		turma1.setCurso(curso1);
-//		Turma turma2 = TurmaFactory.getEntity(2L);
-//		turma2.setCurso(curso2);
-//		Turma turma3 = TurmaFactory.getEntity(3L);
-//		turma3.setCurso(curso3);
-//		
-//		Collection<Turma> turmas = new ArrayList<Turma>();
-//		turmas.add(turma1);
-//		turmas.add(turma2);
-//		turmas.add(turma3);
-//		
-//		CollectionUtil<Turma> turmaUtil = new CollectionUtil<Turma>();
-//		Long[] turmaIds = turmaUtil.convertCollectionToArrayIds(turmas);
-//
-//		Collection<Long> colaboradorIdsAprovados = new ArrayList<Long>();
-//		colaboradorIdsAprovados.add(colaboradorId);
-//
-//		Colaborador colaborador = new Colaborador();
-//		colaborador.setId(colaboradorId);
-//		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-//		colaboradores.add(colaborador);
-//
-//		avaliacaoCursoManager.expects(once()).method("countAvaliacoes").with(ANYTHING).will(returnValue(3));
-//		aproveitamentoAvaliacaoCursoManager.expects(once()).method("find").with(ANYTHING, eq(3), eq(true)).will(returnValue(colaboradorIdsAprovados));
-//
-//		colaboradorTurmaDao.expects(once()).method("findHistoricoTreinamentosByColaborador").with(ANYTHING, eq(colaboradorId), eq(null), eq(null)).will(returnValue(cursosInscrito));
-//
-//		cursoManager.expects(once()).method("findTurmas").with(ANYTHING, ANYTHING).will(returnValue(turmaIds));
-//		
-//		colaboradorTurmaManager.colaboradorIdAprovadoFrequencias(empresa.getId(),cursoIds);
-//		
-//		Collection<Colaborador> resultado = colaboradorTurmaManager.findAprovadosByCertificacao(1L, cursos);
-//		assertEquals(0, resultado.size());
-//	}
-//	
-//	public void testMontaRelatorioColaboradorCertificacao() throws Exception
-//	{
-//		Long empresaId=1L;
-//		Long[] areaIds = new Long[]{1L};
-//		Long[] estabelecimentoIds = new Long[]{1L,2L};
-//		
-//		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(100L);
-//		avaliacaoCurso.setTipo(TipoAvaliacaoCurso.NOTA);
-//		avaliacaoCurso.setMinimoAprovacao(7d);
-//		Collection<AvaliacaoCurso> avaliacaoCursos = new ArrayList<AvaliacaoCurso>();
-//		avaliacaoCursos.add(avaliacaoCurso);
-//		
-//		Curso curso = CursoFactory.getEntity(10L);
-//		curso.setAvaliacaoCursos(avaliacaoCursos);
-//		Curso cursoSemAvaliacao = CursoFactory.getEntity(10L);
-//		cursoSemAvaliacao.setAvaliacaoCursos(null);
-//		Collection<Curso> cursos = new ArrayList<Curso>();
-//		cursos.add(curso);
-//		cursos.add(cursoSemAvaliacao);
-//		
-//		Certificacao certificacao = CertificacaoFactory.getEntity(5L);
-//		certificacao.setNome("Habilidades Interpessoais");
-//		certificacao.setCursos(cursos);
-////		
-////		Collection<Certificacao> certificacaos = new ArrayList<Certificacao>();
-////		certificacaos.add(certificacao);
-////		
-////		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-////		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
-////		colaborador.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
-////		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(10L);
-////		faixaSalarial.setCertificacaos(certificacaos);
-////		colaborador.setFaixaSalarial(faixaSalarial);
-////		
-////		Colaborador colaborador2 = ColaboradorFactory.getEntity(1001L);
-////		colaborador2.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
-////		colaborador2.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
-////		colaborador.setFaixaSalarial(faixaSalarial);
-////		
-////		Turma turma = TurmaFactory.getEntity(31L);
-////		turma.setCurso(curso);
-////		turma.setDescricao("Turma A");
-////		
-////		Turma turmaDoCursoSemAvaliacao = TurmaFactory.getEntity(31L);
-////		turmaDoCursoSemAvaliacao.setCurso(curso);
-////		turmaDoCursoSemAvaliacao.setDescricao("Turma Zé Moleza");
-////		
-////		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(50L);
-////		colaboradorTurma.setCurso(curso);
-////		colaboradorTurma.setTurma(turma);
-////		colaboradorTurma.setColaborador(colaborador);
-////		
-////		ColaboradorTurma colaboradorTurmaCursoSemAvaliacao = ColaboradorTurmaFactory.getEntity(55L);
-////		colaboradorTurmaCursoSemAvaliacao.setCurso(cursoSemAvaliacao);
-////		colaboradorTurmaCursoSemAvaliacao.setTurma(turmaDoCursoSemAvaliacao);
-////		colaboradorTurmaCursoSemAvaliacao.setColaborador(colaborador2);
-////		
-////		Collection<ColaboradorTurma> colaboradorTurmas  = new ArrayList<ColaboradorTurma>();
-////		colaboradorTurmas.add(colaboradorTurma);
-////		colaboradorTurmas.add(colaboradorTurmaCursoSemAvaliacao);
-////		
-////		Collection<ColaboradorTurma> colabTurmasAprovados = new ArrayList<ColaboradorTurma>();
-////		colabTurmasAprovados.add(colaboradorTurma);
-////		
-////		
-////		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
-////		areaOrganizacionalManager.expects(once()).method("findAllList").with(eq(empresaId), ANYTHING).will(returnValue(areas));
-////		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areas)).will(returnValue(areas));
-////		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
-////		
-////		// curso sem avaliação
-////		avaliacaoCursoManager.expects(once()).method("countAvaliacoes").with(eq(colaboradorTurmaCursoSemAvaliacao.getTurma().getId()),eq("T")).will(returnValue(0));
-////		
-////		// curso com avaliação, colaboradorTurma aprovado
-////		avaliacaoCursoManager.expects(once()).method("countAvaliacoes").with(eq(colaboradorTurma.getTurma().getId()),eq("T")).will(returnValue(1));
-////		//aprovados + nota
-////		aproveitamentoAvaliacaoCursoManager.expects(once()).method("findColaboradorTurma").with(eq(turma.getId()), eq(1), eq("T"), eq(true)).will(returnValue(colabTurmasAprovados));
-////		//reprovados + nota
-////		aproveitamentoAvaliacaoCursoManager.expects(once()).method("findColaboradorTurma").with(eq(turma.getId()), eq(1), eq("T"), eq(false)).will(returnValue(new ArrayList<ColaboradorTurma>()));
-//
-////		colaboradorTurmaDao.expects(once()).method("findHistoricoTreinamentosByColaborador").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
-////		avaliacaoCursoManager.expects(atLeastOnce()).method("countAvaliacoes").with(eq(turma.getId()), eq("T")).will(returnValue(1));
-////		colaboradorTurmaDao.expects(once()).method("findColaboradorByTurma").with(eq(turma.getId())).will(returnValue(colaboradorTurmas));
-//
-//		certificacaoManager.expects(once()).method("findById").with(eq(5L)).will(returnValue(certificacao));
-//		cursoManager.expects(once()).method("findByCertificacao").will(returnValue(cursos));
-//		colaboradorTurmaDao.expects(once()).method("findColaboradoresCertificacoes").with(eq(empresaId),eq(certificacao),eq(areaIds),eq(estabelecimentoIds)).will(returnValue(colaboradorTurmas));
-//
-//		Collection<ColaboradorCertificacaoRelatorio> resultado = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(empresaId, certificacao, areaIds, estabelecimentoIds);
-//		
-//		// 2 Colaboradores X 2 Cursos da Certificação 
-//		assertEquals(4, resultado.size());
-//	}
-	
+
 	public void testMontaRelatorioColaboradorCertificacaoColecaoVazia() throws Exception
 	{
 		Certificacao certificacao = CertificacaoFactory.getEntity(5L);
@@ -1287,93 +1131,25 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertEquals(100.0, colaboradorTurmaManager.percentualFrequencia(null, null, empresa.getId()));
 	}
 	
-// refatorar
-//	public void testfindAprovadosByCertificacao() 
-//	{
-//		Colaborador colaboradorAprovado1 = ColaboradorFactory.getEntity(1L);
-//		Colaborador colaboradorAprovado2 = ColaboradorFactory.getEntity(2L);
-//		Colaborador colaboradorReprovado1 = ColaboradorFactory.getEntity(3L);
-//		Colaborador colaboradorReprovado2 = ColaboradorFactory.getEntity(4L);
-//		
-//		AvaliacaoCurso avaliacaoCursoAprovados = AvaliacaoCursoFactory.getEntity(1L);
-//		avaliacaoCursoAprovados.setMinimoAprovacao(2.0);
-//		AvaliacaoCurso avaliacaoCursoReprovados = AvaliacaoCursoFactory.getEntity(2L);
-//		avaliacaoCursoReprovados.setMinimoAprovacao(8.0);
-//		
-//		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoAprovado = new AproveitamentoAvaliacaoCurso();
-//		aproveitamentoAvaliacaoCursoAprovado.setAvaliacaoCurso(avaliacaoCursoAprovados);
-//		aproveitamentoAvaliacaoCursoAprovado.setValor(7.0);
-//		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoReprovado = new AproveitamentoAvaliacaoCurso();
-//		aproveitamentoAvaliacaoCursoReprovado.setAvaliacaoCurso(avaliacaoCursoReprovados);
-//		aproveitamentoAvaliacaoCursoReprovado.setValor(3.0);
-//		
-//		Collection<AproveitamentoAvaliacaoCurso> aproveitamentoAvaliacaoCursoAprovados = new ArrayList<AproveitamentoAvaliacaoCurso>();
-//		aproveitamentoAvaliacaoCursoAprovados.add(aproveitamentoAvaliacaoCursoAprovado);
-//		Collection<AproveitamentoAvaliacaoCurso> aproveitamentoAvaliacaoCursoReprovados = new ArrayList<AproveitamentoAvaliacaoCurso>();
-//		aproveitamentoAvaliacaoCursoReprovados.add(aproveitamentoAvaliacaoCursoReprovado);
-//
-//		Curso curso = CursoFactory.getEntity(1L);
-//		Turma turma = TurmaFactory.getEntity(1L);
-//		turma.setRealizada(true);
-//		turma.setDiasEstimadosParaAprovacao(3.0);
-//		turma.setCurso(curso);
-//		
-//		ColaboradorTurma colaboradorTurmaAprovado = new ColaboradorTurma();
-//		colaboradorTurmaAprovado.setId(1L);
-//		colaboradorTurmaAprovado.setAproveitamentoAvaliacaoCursos(aproveitamentoAvaliacaoCursoAprovados);
-//		colaboradorTurmaAprovado.setColaborador(colaboradorAprovado1);
-//		colaboradorTurmaAprovado.setColaborador(colaboradorAprovado2);
-//		colaboradorTurmaAprovado.setTurma(turma);
-//		
-//		ColaboradorTurma colaboradorTurmaReprovado = new ColaboradorTurma();
-//		colaboradorTurmaReprovado.setId(2L);
-//		colaboradorTurmaReprovado.setAproveitamentoAvaliacaoCursos(aproveitamentoAvaliacaoCursoReprovados);
-//		colaboradorTurmaReprovado.setColaborador(colaboradorReprovado1);
-//		colaboradorTurmaReprovado.setColaborador(colaboradorReprovado2);
-//		colaboradorTurmaReprovado.setTurma(turma);
-//		
-//		ColaboradorPresenca colaboradorPresencaAprovado = new ColaboradorPresenca(colaboradorAprovado1.getId(), turma.getId(), 20);
-//		colaboradorPresencaAprovado.setDiasPresente(20);
-//		colaboradorPresencaAprovado.setColaboradorTurma(colaboradorTurmaAprovado);
-//		
-//		ColaboradorPresenca colaboradorPresencaReprovado = new ColaboradorPresenca(colaboradorAprovado1.getId(), turma.getId(), 2);
-//		colaboradorPresencaReprovado.setColaboradorTurma(colaboradorTurmaReprovado);
-//		colaboradorPresencaReprovado.setDiasPresente(1);
-//		
-//		Collection<Long> turmaIds = new ArrayList<Long>();
-//		turmaIds.add(turma.getId());
-//		Collection<Turma> turmas = new ArrayList<Turma>();
-//		turmas.add(turma);
-//		
-//		Collection<Curso> cursos = new ArrayList<Curso>();
-//		cursos.add(curso);
-//
-//		Collection<Colaborador> colaboradorAprovados = new ArrayList<Colaborador>();
-//		colaboradorAprovados.add(colaboradorAprovado1);
-//		colaboradorAprovados.add(colaboradorAprovado2);
-//
-//		Collection<Colaborador> colaboradorReprovados = new ArrayList<Colaborador>();
-//		colaboradorReprovados.add(colaboradorReprovado1);
-//		colaboradorReprovados.add(colaboradorReprovado2);
-//
-//		Collection<Long> colaboradorAprovadoIds = LongUtil.collectionToCollectionLong(colaboradorAprovados);
-//		Collection<Long> colaboradorReprovadoIds = LongUtil.collectionToCollectionLong(colaboradorReprovados);
-//		
-//		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
-//		MockSpringUtil.mocks.put("turmaManager", turmaManager);
-//		
-//		turmaManager.expects(atLeastOnce()).method("getTurmaFinalizadas").with(eq(curso.getId())).will(returnValue(turmas));
-//		colaboradorPresencaManager.expects(atLeastOnce()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), ANYTHING).will(returnValue(colaboradorAprovados));
-//		turmaManager.expects(atLeastOnce()).method("findTurmaPresencaMinima").with(eq(turmaIds)).will(returnValue(turmas));
-//		
-//		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(true)).will(returnValue(colaboradorAprovados));
-//		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorAprovadoIds)).will(returnValue(colaboradorReprovados));
-//		
-//		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(false)).will(returnValue(colaboradorReprovados));
-//		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorReprovadoIds)).will(returnValue(colaboradorReprovados));
-//		
-//		assertEquals(4, colaboradorTurmaManager.findAprovadosByCertificacao(cursos).size());
-//	}
-//	
+	public void testMontaCertificados() 
+	{
+		Colaborador marlus = ColaboradorFactory.getEntity(1L);
+		marlus.setNome("Marlus");
+		
+		Certificado certificadoA = new Certificado();
+		certificadoA.setConteudo("mamae quer #NOMECOLABORADOR#");
+		certificadoA.setNomeColaborador(marlus.getNome());
+		
+		Certificado certificadoB = new Certificado();
+		
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		colaboradores.add(marlus);
+		
+		Collection<Certificado>  certificadosResults = colaboradorTurmaManager.montaCertificados(colaboradores, certificadoA);
+		
+		Certificado certificadoClonado = (Certificado) certificadosResults.toArray()[0];
+		
+		assertEquals("mamae quer Marlus", certificadoClonado.getConteudo());
+	}
 
 }

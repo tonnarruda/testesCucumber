@@ -144,7 +144,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{areaOrganizacional.responsavel.nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{areaOrganizacional.responsavel.nome} == null)?"-":$F{areaOrganizacional.responsavel.nome}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
