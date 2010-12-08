@@ -234,6 +234,13 @@ public class ReajusteColaboradorDaoHibernateTest extends GenericDaoHibernateTest
         assertEquals(historicoColaborador.getFaixaSalarial(), reajusteColaboradorRetorno.getFaixaSalarialProposta());
         assertEquals(historicoColaborador.getAreaOrganizacional(), reajusteColaboradorRetorno.getAreaOrganizacionalProposta());
 
+        //testUpdateFromHistoricoColaborador quando colaborador Null
+        reajusteColaborador.setColaborador(null);
+        reajusteColaborador.setFaixaSalarialProposta(null);
+        reajusteColaborador.setAreaOrganizacionalProposta(null);
+        reajusteColaboradorDao.updateFromHistoricoColaborador(historicoColaborador);
+        assertEquals(reajusteColaborador.getId(), reajusteColaboradorRetorno.getId());
+        
         //teste do switch
         historicoColaborador.setTipoSalario(TipoAplicacaoIndice.CARGO);
         reajusteColaboradorDao.updateFromHistoricoColaborador(historicoColaborador);

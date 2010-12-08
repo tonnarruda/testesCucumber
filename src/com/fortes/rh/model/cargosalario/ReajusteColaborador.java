@@ -281,37 +281,37 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setNomeColaborador(String nome)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		initColaborador();
 		colaborador.setNome(nome);
 	}
 
 	public void setNomeComercialProjection(String nomeComercialProjection)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		initColaborador();
 		colaborador.setNomeComercial(nomeComercialProjection);
 	}
 
 	public void setColaboradorCodigoACProjection(String codigoACProjection)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		initColaborador();
 		colaborador.setCodigoAC(codigoACProjection);
 	}
 	
 	public void setProjectionColaboradorNaoIntegraAC(boolean colaboradorNaoIntegraAC)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		initColaborador();
 		colaborador.setNaoIntegraAc(colaboradorNaoIntegraAC);
 	}
 
 	public void setIdColaborador(Long id)
 	{
+		initColaborador();
+		colaborador.setId(id);
+	}
+
+	private void initColaborador() {
 		if (colaborador == null)
 			colaborador = new Colaborador();
-		colaborador.setId(id);
 	}
 
 	public void setTabelaReajusteColaboradorId(Long id)
@@ -330,8 +330,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setAreaOrganizacionalId(Long id)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		initColaborador();
 
 		if (colaborador.getAreaOrganizacional() == null)
 			colaborador.setAreaOrganizacional(new AreaOrganizacional());
@@ -341,8 +340,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setAreaOrganizacionalNome(String nome)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		initColaborador();
 
 		if (colaborador.getAreaOrganizacional() == null)
 			colaborador.setAreaOrganizacional(new AreaOrganizacional());
@@ -376,8 +374,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setAreaOrganizacionalMae(AreaOrganizacional mae)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		initColaborador();
 
 		if (colaborador.getAreaOrganizacional() == null)
 			colaborador.setAreaOrganizacional(new AreaOrganizacional());
@@ -475,59 +472,51 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setProjectionFaixaSalarialAtualId(Long faixaSalarialAtualId)
 	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
+		initFaixaSalarialAtual();
 
 		this.faixaSalarialAtual.setId(faixaSalarialAtualId);
 	}
 
 	public void setProjectionFaixaSalarialAtualNome(String faixaSalarialAtualNome)
 	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
+		initFaixaSalarialAtual();
 
 		this.faixaSalarialAtual.setNome(faixaSalarialAtualNome);
 	}
 
 	public void setProjectionFaixaSalarialPropostaId(Long projectionFaixaSalarialPropostaId)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		this.faixaSalarialProposta.setId(projectionFaixaSalarialPropostaId);
 	}
 
 	public void setProjectionFaixaSalarialPropostaNome(String projectionFaixaSalarialPropostaNome)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		this.faixaSalarialProposta.setNome(projectionFaixaSalarialPropostaNome);
 	}
 
 	public void setProjectionFaixaSalarialPropostaCodigoAC(String projectionFaixaSalarialPropostaCodigoAC)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		this.faixaSalarialProposta.setCodigoAC(projectionFaixaSalarialPropostaCodigoAC);
 	}
 
 	public void setProjectionCargoAtualNome(String projectionCargoAtualNome)
 	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
+		initFaixaSalarialAtual();
 
-		if (this.faixaSalarialAtual.getCargo() == null)
-			this.faixaSalarialAtual.setCargo(new Cargo());
+		initFaixaSalarialAtualCargo();
 
 		this.faixaSalarialAtual.getCargo().setNome(projectionCargoAtualNome);
 	}
 
 	public void setFaixaSalarialHistoricoAtualValor(Double faixaSalarialHistoricoAtualValor)
 	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
+		initFaixaSalarialAtual();
 
 		if (this.faixaSalarialAtual.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialAtual.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -537,8 +526,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setFaixaSalarialHistoricoAtualTipo(Integer faixaSalarialHistoricoAtualTipo)
 	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
+		initFaixaSalarialAtual();
 
 		if (this.faixaSalarialAtual.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialAtual.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -549,8 +537,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setFaixaSalarialHistoricoAtualQuantidade(Double faixaSalarialHistoricoAtualQuantidade)
 	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
+		initFaixaSalarialAtual();
 
 		if (this.faixaSalarialAtual.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialAtual.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -561,8 +548,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setIndiceFaixaSalarialHistoricoPropostoId(Long indiceFaixaSalarialHistoricoPropostoId)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		if (this.faixaSalarialProposta.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialProposta.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -575,8 +561,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setFaixaSalarialHistoricoPropostoId(Long faixaSalarialHistoricoPropostoId)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		if (this.faixaSalarialProposta.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialProposta.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -586,8 +571,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setFaixaSalarialHistoricoPropostoValor(Double faixaSalarialHistoricoPropostoValor)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		if (this.faixaSalarialProposta.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialProposta.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -597,8 +581,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setFaixaSalarialHistoricoPropostoTipo(Integer faixaSalarialHistoricoPropostoTipo)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		if (this.faixaSalarialProposta.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialProposta.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -609,8 +592,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setFaixaSalarialHistoricoPropostoQuantidade(Double faixaSalarialHistoricoPropostoQuantidade)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		if (this.faixaSalarialProposta.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialProposta.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -621,19 +603,26 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setIndiceHistoricoAtualValor(Double indiceHistoricoAtualValor)
 	{
-		if (this.indiceAtual == null)
-			this.indiceAtual = new Indice();
+		initIndiceAtual();
 
-		if (this.indiceAtual.getIndiceHistoricoAtual() == null)
-			this.indiceAtual.setIndiceHistoricoAtual(new IndiceHistorico());
+		initIndiceAtualHistorico();
 
 		this.indiceAtual.getIndiceHistoricoAtual().setValor(indiceHistoricoAtualValor);
 	}
 
+	private void initIndiceAtualHistorico() {
+		if (this.indiceAtual.getIndiceHistoricoAtual() == null)
+			this.indiceAtual.setIndiceHistoricoAtual(new IndiceHistorico());
+	}
+
+	private void initIndiceAtual() {
+		if (this.indiceAtual == null)
+			this.indiceAtual = new Indice();
+	}
+
 	public void setIndiceHistoricoPropostoValor(Double indiceHistoricoPropostoValor)
 	{
-		if (this.indiceProposto == null)
-			this.indiceProposto = new Indice();
+		initIndiceProposto();
 
 		if (this.indiceProposto.getIndiceHistoricoAtual() == null)
 			this.indiceProposto.setIndiceHistoricoAtual(new IndiceHistorico());
@@ -643,134 +632,146 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setProjectionCargoPropostoNome(String projectionCargoPropostoNome)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
-		if (this.faixaSalarialProposta.getCargo() == null)
-			this.faixaSalarialProposta.setCargo(new Cargo());
+		initFaixaSalarialPropostaCargo();
 
 		this.faixaSalarialProposta.getCargo().setNome(projectionCargoPropostoNome);
 	}
 
-	public void setProjectionGrupoOcupacionalPropostoId(Long projectionGrupoOcupacionalPropostoId)
-	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
-
+	private void initFaixaSalarialPropostaCargo() {
 		if (this.faixaSalarialProposta.getCargo() == null)
 			this.faixaSalarialProposta.setCargo(new Cargo());
+	}
 
-		if (this.faixaSalarialProposta.getCargo().getGrupoOcupacional() == null)
-			this.faixaSalarialProposta.getCargo().setGrupoOcupacional(new GrupoOcupacional());
+	private void initFaixaSalarialProposta() {
+		if (this.faixaSalarialProposta == null)
+			this.faixaSalarialProposta = new FaixaSalarial();
+	}
+
+	public void setProjectionGrupoOcupacionalPropostoId(Long projectionGrupoOcupacionalPropostoId)
+	{
+		initFaixaSalarialProposta();
+
+		initFaixaSalarialPropostaCargo();
+
+		initFaixaSalarialPropostaGrupoOcupacional();
 
 		this.faixaSalarialProposta.getCargo().getGrupoOcupacional().setId(projectionGrupoOcupacionalPropostoId);
 	}
 
-	public void setProjectionGrupoOcupacionalPropostoNome(String projectionGrupoOcupacionalPropostoNome)
-	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
-
-		if (this.faixaSalarialProposta.getCargo() == null)
-			this.faixaSalarialProposta.setCargo(new Cargo());
-
+	private void initFaixaSalarialPropostaGrupoOcupacional() {
 		if (this.faixaSalarialProposta.getCargo().getGrupoOcupacional() == null)
 			this.faixaSalarialProposta.getCargo().setGrupoOcupacional(new GrupoOcupacional());
+	}
+
+	public void setProjectionGrupoOcupacionalPropostoNome(String projectionGrupoOcupacionalPropostoNome)
+	{
+		initFaixaSalarialProposta();
+
+		initFaixaSalarialPropostaCargo();
+
+		initFaixaSalarialPropostaGrupoOcupacional();
 
 		this.faixaSalarialProposta.getCargo().getGrupoOcupacional().setNome(projectionGrupoOcupacionalPropostoNome);
 	}
 
 	public void setProjectionGrupoOcupacionalAtualId(Long projectionGrupoOcupacionalAtualId)
 	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
+		initFaixaSalarialAtual();
 
-		if (this.faixaSalarialAtual.getCargo() == null)
-			this.faixaSalarialAtual.setCargo(new Cargo());
+		initFaixaSalarialAtualCargo();
 
-		if (this.faixaSalarialAtual.getCargo().getGrupoOcupacional() == null)
-			this.faixaSalarialAtual.getCargo().setGrupoOcupacional(new GrupoOcupacional());
+		initFaixaSalarialAtualGrupoOcupacional();
 
 		this.faixaSalarialAtual.getCargo().getGrupoOcupacional().setId(projectionGrupoOcupacionalAtualId);
 	}
 
-	public void setProjectionGrupoOcupacionalAtualNome(String projectionGrupoOcupacionalAtualNome)
-	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
-
-		if (this.faixaSalarialAtual.getCargo() == null)
-			this.faixaSalarialAtual.setCargo(new Cargo());
-
+	private void initFaixaSalarialAtualGrupoOcupacional() {
 		if (this.faixaSalarialAtual.getCargo().getGrupoOcupacional() == null)
 			this.faixaSalarialAtual.getCargo().setGrupoOcupacional(new GrupoOcupacional());
+	}
+
+	private void initFaixaSalarialAtualCargo() {
+		if (this.faixaSalarialAtual.getCargo() == null)
+			this.faixaSalarialAtual.setCargo(new Cargo());
+	}
+
+	private void initFaixaSalarialAtual() {
+		if (this.faixaSalarialAtual == null)
+			this.faixaSalarialAtual = new FaixaSalarial();
+	}
+
+	public void setProjectionGrupoOcupacionalAtualNome(String projectionGrupoOcupacionalAtualNome)
+	{
+		initFaixaSalarialAtual();
+
+		initFaixaSalarialAtualCargo();
+
+		initFaixaSalarialAtualGrupoOcupacional();
 
 		this.faixaSalarialAtual.getCargo().getGrupoOcupacional().setNome(projectionGrupoOcupacionalAtualNome);
 	}
 
 	public void setProjectionIndicePropostoId(Long projectionIndicePropostoId)
 	{
-		if (this.indiceProposto == null)
-			this.indiceProposto = new Indice();
+		initIndiceProposto();
 
 		this.indiceProposto.setId(projectionIndicePropostoId);
 	}
 
 	public void setProjectionIndicePropostoCodigoAC(String projectionIndicePropostoCodigoAC)
 	{
-		if (this.indiceProposto == null)
-			this.indiceProposto = new Indice();
+		initIndiceProposto();
 
 		this.indiceProposto.setCodigoAC(projectionIndicePropostoCodigoAC);
 	}
 
-	public void setProjectionIndicePropostoNome(String projectionIndicePropostoNome)
-	{
+	private void initIndiceProposto() {
 		if (this.indiceProposto == null)
 			this.indiceProposto = new Indice();
+	}
+
+	public void setProjectionIndicePropostoNome(String projectionIndicePropostoNome)
+	{
+		initIndiceProposto();
 
 		this.indiceProposto.setNome(projectionIndicePropostoNome);
 	}
 
 	public void setProjectionIndiceAtualId(Long projectionIndiceAtualId)
 	{
-		if (this.indiceAtual == null)
-			this.indiceAtual = new Indice();
+		initIndiceAtual();
 
 		this.indiceAtual.setId(projectionIndiceAtualId);
 	}
 
 	public void setProjectionIndiceAtualNome(String projectionIndiceAtualNome)
 	{
-		if (this.indiceAtual == null)
-			this.indiceAtual = new Indice();
+		initIndiceAtual();
 
 		this.indiceAtual.setNome(projectionIndiceAtualNome);
 	}
 
 	public void setProjectionIndiceAtualCodigoAC(String projectionIndiceAtualcodigoAC)
 	{
-		if (this.indiceAtual == null)
-			this.indiceAtual = new Indice();
+		initIndiceAtual();
 
 		this.indiceAtual.setCodigoAC(projectionIndiceAtualcodigoAC);
 	}
 
 	public void setProjectionIndiceHistoricoAtualValor(Double projectionIndiceHistoricoAtualValor)
 	{
-		if (this.indiceAtual == null)
-			this.indiceAtual = new Indice();
+		initIndiceAtual();
 
-		if(this.indiceAtual.getIndiceHistoricoAtual() == null)
-			this.indiceAtual.setIndiceHistoricoAtual(new IndiceHistorico());
+		initIndiceAtualHistorico();
 
 		this.indiceAtual.getIndiceHistoricoAtual().setValor(projectionIndiceHistoricoAtualValor);
 	}
 
 	private void setIndiceHistoricoFaixaSalarialAtualValor(Double indiceHistoricoFaixaSalarialAtualValor)
 	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
+		initFaixaSalarialAtual();
 
 		if (this.faixaSalarialAtual.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialAtual.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -787,8 +788,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	private void setIndiceHistoricoFaixaSalarialPropostaValor(Double indiceHistoricoFaixaSalarialPropostaValor)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		if (this.faixaSalarialProposta.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialProposta.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -804,8 +804,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	private void setIndiceHistoricoFaixaSalarialPropostaId(Long indiceHistoricoFaixaSalarialPropostaId)
 	{
-		if (this.faixaSalarialProposta == null)
-			this.faixaSalarialProposta = new FaixaSalarial();
+		initFaixaSalarialProposta();
 
 		if (this.faixaSalarialProposta.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialProposta.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -1082,8 +1081,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public void setProjectionFaixaHistoricoAtualIndiceValor(Double faixaHistoricoAtualIndiceValor)
 	{
-		if (this.faixaSalarialAtual == null)
-			this.faixaSalarialAtual = new FaixaSalarial();
+		initFaixaSalarialAtual();
 
 		if (this.faixaSalarialAtual.getFaixaSalarialHistoricoAtual() == null)
 			this.faixaSalarialAtual.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
