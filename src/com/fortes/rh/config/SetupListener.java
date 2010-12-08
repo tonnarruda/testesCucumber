@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.servlet.ServletContextEvent;
@@ -34,12 +35,18 @@ public class SetupListener implements ServletContextListener
 
 	String systemConfigPath = ArquivoUtil.getRhHome() + File.separatorChar + "system.conf";
 
+	private Locale pt_BR = new Locale("pt", "BR");
+
 	/**
 	 * Inicializa o contexto.
 	 */
 	public void contextInitialized(ServletContextEvent servletContextEvent)
 	{
+		
+		Locale.setDefault(pt_BR); // define idioma pt_BR como padrão
+		
 		logger.info("---------- FORTES RH ----------");
+		logger.info("Define Idioma Padrão para 'pt_BR'.");
 		logger.info("Arquivo de configuração local: " + systemConfigPath);
 
 		try

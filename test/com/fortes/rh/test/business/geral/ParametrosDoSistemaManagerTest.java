@@ -2,6 +2,7 @@ package com.fortes.rh.test.business.geral;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -147,18 +148,21 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
 
     public void testIsIdiomaCorreto()
     {
-    	System.setProperty("user.country","BR");
-		System.setProperty("user.language", "pt");
+//    	System.setProperty("user.country","BR");
+//		System.setProperty("user.language", "pt");
+    	Locale.setDefault(new Locale("pt","BR"));
     	
     	assertTrue(parametrosDoSistemaManager.isIdiomaCorreto());
 
-    	System.setProperty("user.country","US");
-    	System.setProperty("user.language", "en");
+//    	System.setProperty("user.country","US");
+//    	System.setProperty("user.language", "en");
+    	Locale.setDefault(new Locale("en","US"));
     	
     	assertFalse(parametrosDoSistemaManager.isIdiomaCorreto());
 
-    	System.setProperty("user.country","BR");
-    	System.setProperty("user.language", "en");
+//    	System.setProperty("user.country","BR");
+//    	System.setProperty("user.language", "en");
+    	Locale.setDefault(new Locale("en","BR"));
     	
     	assertFalse(parametrosDoSistemaManager.isIdiomaCorreto());
     }

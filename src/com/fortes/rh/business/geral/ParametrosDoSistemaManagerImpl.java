@@ -2,6 +2,7 @@ package com.fortes.rh.business.geral;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -130,12 +131,7 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 
 	public Boolean isIdiomaCorreto() 
 	{
-		String pais = System.getProperty("user.country");
-		String idioma = System.getProperty("user.language");
-		
-		if (pais.equals("BR") && idioma.equals("pt"))
-			return true;
-		
-		return false;
+		Locale pt_BR = new Locale("pt", "BR");
+		return pt_BR.equals(Locale.getDefault());
 	}
 }
