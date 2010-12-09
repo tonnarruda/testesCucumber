@@ -26,6 +26,7 @@
 			<@ww.select label="Ativa" name="avaliacao.ativo" id="ativo" list=r"#{true:'Sim',false:'Não'}"/>
 		
 			<@ww.hidden name="avaliacao.id" />
+			<@ww.hidden name="avaliacao.tipoModeloAvaliacao" />
 			<@ww.hidden name="avaliacao.empresa.id" />
 			<@ww.token/>
 		</@ww.form>

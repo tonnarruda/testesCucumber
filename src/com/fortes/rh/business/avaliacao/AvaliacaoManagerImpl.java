@@ -43,9 +43,9 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	private RespostaManager respostaManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	
-	public Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo) 
+	public Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo, char modeloAvaliacao) 
 	{
-		return getDao().findAllSelect(empresaId, ativo);
+		return getDao().findAllSelect(empresaId, ativo, modeloAvaliacao);
 	}
 	
 	public Collection<QuestionarioRelatorio> getQuestionarioRelatorio(Avaliacao avaliacao) {

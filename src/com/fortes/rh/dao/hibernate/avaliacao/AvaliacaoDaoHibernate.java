@@ -15,14 +15,15 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 @SuppressWarnings("unchecked")
 public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implements AvaliacaoDao
 {
-	public Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo)
+	public Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo, char modeloAvaliacao)
 	{
 		Criteria criteria = getSession().createCriteria(Avaliacao.class, "a");
 		
 		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		criteria.add(Expression.eq("a.tipoModeloAvaliacao", modeloAvaliacao));
 		
 		if(ativo != null)
-			criteria.add(Expression.eq("a.ativo", ativo));	
+			criteria.add(Expression.eq("a.ativo", ativo));
 		
 		criteria.addOrder(Order.asc("a.titulo"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

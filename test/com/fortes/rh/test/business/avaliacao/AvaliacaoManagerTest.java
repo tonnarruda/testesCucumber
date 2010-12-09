@@ -23,6 +23,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -87,8 +88,8 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 		
 		Collection<Avaliacao> avaliacaos = AvaliacaoFactory.getCollection(1L);
 
-		avaliacaoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(null)).will(returnValue(avaliacaos));
-		assertEquals(avaliacaos, avaliacaoManager.findAllSelect(empresaId, null));
+		avaliacaoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(null), eq(TipoModeloAvaliacao.DESEMPENHO)).will(returnValue(avaliacaos));
+		assertEquals(avaliacaos, avaliacaoManager.findAllSelect(empresaId, null, TipoModeloAvaliacao.DESEMPENHO));
 	}
 	
 	public void testGetQuestionarioRelatorio()

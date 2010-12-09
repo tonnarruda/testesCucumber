@@ -607,7 +607,7 @@
 					<subreportParameter  name="REPORT_DATA_SOURCE">
 						<subreportParameterExpression><![CDATA[$F{historicoColaboradors}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_trajetoriaprofissional.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_trajetoriaProfissional.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
 			</groupHeader>
@@ -707,7 +707,7 @@
 					<subreportParameter  name="REPORT_DATA_SOURCE">
 						<subreportParameterExpression><![CDATA[$F{participacoesNaCipaColaborador}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_participacoesNaCipa.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "performanceFuncional_participacoesNaCIPA.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
 			</groupHeader>

@@ -36,7 +36,7 @@
 	</@display.table>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnInserir" onclick="window.location='prepareInsert.action?modeloAvaliacao=${modeloAvaliacao}'"></button>
 	</div>
 </body>
 </html>

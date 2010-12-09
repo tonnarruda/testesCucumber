@@ -26,7 +26,8 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	private String cabecalho;
 	
 	private boolean ativo;
-
+	private char tipoModeloAvaliacao = 'D';
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Empresa empresa;
 	
@@ -85,5 +86,13 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	   {
 	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
 	   }
+	}
+
+	public char getTipoModeloAvaliacao() {
+		return tipoModeloAvaliacao;
+	}
+
+	public void setTipoModeloAvaliacao(char tipoModeloAvaliacao) {
+		this.tipoModeloAvaliacao = tipoModeloAvaliacao;
 	}
 }

@@ -10,6 +10,7 @@ import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
@@ -61,7 +62,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	
 	public String prepareResultado()
 	{
-		avaliacaoExperiencias = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null);
+		avaliacaoExperiencias = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, TipoModeloAvaliacao.DESEMPENHO);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		return SUCCESS;
