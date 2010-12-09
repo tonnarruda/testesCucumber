@@ -12,3 +12,5 @@ CREATE TABLE ConfiguracaoPerformance (
 ALTER TABLE ONLY configuracaoPerformance ADD CONSTRAINT configuracaoPerformance_pkey PRIMARY KEY (id); --.go
 ALTER TABLE configuracaoPerformance ADD CONSTRAINT configuracaoPerformance_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id); --.go
 CREATE SEQUENCE configuracaoPerformance_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1; --.go
+
+update papel set nome = 'Relatório de Ranking de Performace de Avaliação de Desempenho' where id = 491;

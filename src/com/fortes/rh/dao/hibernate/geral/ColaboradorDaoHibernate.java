@@ -2690,14 +2690,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  hql.append("and cq.respondidaEm between :periodoIni and :periodoFim ");
 		  hql.append("and cq.avaliacao.id = :modeloAvaliacaoId ");
 		  hql.append("and cq.respondida = true ");
-		  hql.append("order by cq.performance desc, co.nome asc ");
-		  
+		  		  
 		  if(areasCheck != null && areasCheck.length > 0) 
 			  hql.append("and hc.areaOrganizacional.id in (:areasCheck) ");
 
 		  if(estabelecimentosCheck != null && estabelecimentosCheck.length > 0) 
 			  hql.append("and hc.estabelecimento.id in (:estabelecimentoCheck) ");
 
+		  hql.append("order by cq.performance desc, co.nome asc ");
+		  
 		  Query query = getSession().createQuery(hql.toString());
 		  query.setLong("empresaId", empresaId);
 		  query.setLong("modeloAvaliacaoId", modeloAvaliacaoId);
