@@ -14,3 +14,5 @@ ALTER TABLE configuracaoPerformance ADD CONSTRAINT configuracaoPerformance_usuar
 CREATE SEQUENCE configuracaoPerformance_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1; --.go
 
 update papel set nome = 'Relatório de Ranking de Performace de Avaliação de Desempenho' where id = 491;
+
+update papel set nome = 'Dias do Acompanhamento do Período de Experiência',  papelmae_id = 481, ordem = 2 where id = 467;
