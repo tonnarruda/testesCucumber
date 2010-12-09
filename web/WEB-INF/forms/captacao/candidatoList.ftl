@@ -58,9 +58,6 @@
 	<p>
 		<span style="background-color: #454C54;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Disponíveis&nbsp;&nbsp;<span style="background-color: #F00;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Indisponíveis
 	</P>
-	<#if totalSize?exists && totalSize != 0>
-		${totalSize} Registros encontrados
-	</#if>
 
 	<@display.table name="candidatos" id="candidato" class="dados">
 
