@@ -114,10 +114,14 @@
 					</textElement>
 				<text><![CDATA[Performance]]></text>
 				</staticText>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="17"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="0"
-						y="19"
+						y="0"
 						width="781"
 						height="16"
 						backcolor="#EEEEEE"
@@ -129,10 +133,6 @@
 						</reportElement>
 					<graphicElement stretchType="RelativeToTallestObject" pen="None"/>
 				</rectangle>
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="17"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
@@ -159,7 +159,7 @@
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{respondidaEm}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="305"
 						y="0"

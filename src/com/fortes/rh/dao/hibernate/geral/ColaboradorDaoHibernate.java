@@ -2690,6 +2690,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  hql.append("and cq.respondidaEm between :periodoIni and :periodoFim ");
 		  hql.append("and cq.avaliacao.id = :modeloAvaliacaoId ");
 		  hql.append("and cq.respondida = true ");
+		  hql.append("order by cq.performance desc, co.nome asc ");
 		  
 		  if(areasCheck != null && areasCheck.length > 0) 
 			  hql.append("and hc.areaOrganizacional.id in (:areasCheck) ");

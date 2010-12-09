@@ -164,7 +164,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, modeloAvaliacao.getId(), areasCheck, estabelecimentoCheck);
 			Avaliacao modelo = avaliacaoManager.findById(modeloAvaliacao.getId());
 			String filtroCabecalho = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + "Modelo de Avaliação: " + modelo.getTitulo(); 
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ranking de Performace do Período de Experiência", getEmpresaSistema(), filtroCabecalho);
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ranking de Performace de Avaliação de Desempenho", getEmpresaSistema(), filtroCabecalho);
 			
 		}
 		catch (Exception e)
