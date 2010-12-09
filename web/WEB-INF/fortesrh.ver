@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.35.25" data="09/12/2010">
+		- Configuração da tela de performance profissional.
+		- Preenchimento dos campos do endereço de acordo com o CEP.
+		- Permitir alterar campos extras na opção alterar meus dados.
+		- Solicitação de realinhamento: limite de caracteres foi aumentado.
+	</Versao>
 	<Versao id="1.1.34.24" data="02/12/2010">
 		- Nova funcionalidade: Relatório de colaboradores por cargo trás a exibição da Remuneração Variável do colaborador (eventos da folha).
 		- SESMT: Relatório de atendimentos com médico com controle ordenado por ordem de atendimento (agenda).
