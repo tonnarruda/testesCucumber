@@ -86,11 +86,11 @@
 	<br>
 	<div class="cabecalho">
 		<#if questionario?exists && questionario.cabecalho?exists>
-			<pre>${questionario.cabecalho}</pre>
+			<pre class="modelo_avaliacao_pre">${questionario.cabecalho}</pre>
 		</#if>
 		<#if avaliacao?exists && avaliacao.id?exists>
 			<p>Título: ${avaliacao.titulo}</p>	
-			</br>Cabeçalho: <pre>${avaliacao.cabecalho}</pre></br>		
+			</br>Cabeçalho: <pre class="modelo_avaliacao_pre">${avaliacao.cabecalho}</pre></br>		
 		</#if>
 	</div>
 	
