@@ -4,11 +4,10 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (492,
 
 alter sequence papel_sequence restart with 493;--.go
 
-update papel set nome = 'Relatório de Ranking de Performace de Avaliação de Desempenho' where id = 491;
+update papel set nome = 'Relatório de Ranking de Performace de Avaliação de Desempenho' where id = 491;--.go
 
-update papel set nome = 'Dias do Acompanhamento do Período de Experiência',  papelmae_id = 481, ordem = 2 where id = 467;
+update papel set nome = 'Dias do Acompanhamento do Período de Experiência',  papelmae_id = 481, ordem = 2 where id = 467;--.go
 
 alter table avaliacao add column tipoModeloAvaliacao character(1);--.go
 update avaliacao set tipoModeloAvaliacao='D';--.go
 alter table avaliacao alter column tipoModeloAvaliacao set not null;--.go
-
