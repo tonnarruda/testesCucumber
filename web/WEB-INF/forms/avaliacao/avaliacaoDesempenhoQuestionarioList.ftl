@@ -9,7 +9,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>Avaliações de Desempenho</title>
+	<title>Responder Avaliações de Desempenho</title>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<#include "../ftl/showFilterImports.ftl" />

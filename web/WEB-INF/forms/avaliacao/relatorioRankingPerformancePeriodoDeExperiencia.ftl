@@ -4,7 +4,7 @@
 <head>
 <@ww.head/>
 
-	<title>Relatório de Ranking de Performace do Período de Experiência</title>
+	<title>Ranking de Performace das Avaliações de Desempenho</title>
 
 	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('modeloAvaliacao','periodoIni','periodoFim'), new Array('periodoIni','periodoFim'))"/>
 	<#include "../ftl/mascarasImports.ftl" />

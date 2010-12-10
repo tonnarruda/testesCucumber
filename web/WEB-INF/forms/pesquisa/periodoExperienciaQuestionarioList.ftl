@@ -4,7 +4,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Avaliação do Período de Experiência</title>
+	<title>Acompanhamento do Período de Experiência</title>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
