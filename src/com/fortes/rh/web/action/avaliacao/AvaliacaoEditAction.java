@@ -9,7 +9,6 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.Pergunta;
-import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -33,6 +32,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private Map<String, Object> parametros;
 	private Collection<QuestionarioRelatorio> dataSource;
 	private boolean imprimirFormaEconomica = false;
+	private char modeloAvaliacao = 'D';  
 	
 	private void prepare() throws Exception
 	{
@@ -51,6 +51,8 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		prepare();
 		avaliacao = new Avaliacao();
 		avaliacao.setAtivo(true);
+		
+		avaliacao.setTipoModeloAvaliacao(modeloAvaliacao);
 		
 		return Action.SUCCESS;
 	}
@@ -86,7 +88,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null);
+		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, modeloAvaliacao);
 		return Action.SUCCESS;
 	}
 
@@ -170,5 +172,13 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public void setImprimirFormaEconomica(boolean imprimirFormaEconomica)
 	{
 		this.imprimirFormaEconomica = imprimirFormaEconomica;
+	}
+
+	public char getModeloAvaliacao() {
+		return modeloAvaliacao;
+	}
+
+	public void setModeloAvaliacao(char modeloAvaliacao) {
+		this.modeloAvaliacao = modeloAvaliacao;
 	}
 }

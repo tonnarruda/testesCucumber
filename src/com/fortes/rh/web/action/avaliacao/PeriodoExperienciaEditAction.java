@@ -21,6 +21,7 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -128,7 +129,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 				
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-    	modeloAvaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null);
+    	modeloAvaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, TipoModeloAvaliacao.DESEMPENHO);
     	
 		return Action.SUCCESS;
 		
@@ -137,14 +138,14 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia() throws Exception 
     {
 		try {
-				dataReferencia = getDataReferencia();
-				colaboradores = colaboradorManager.findAdmitidosNoPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck);
-				
-				String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
-				parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiencia", getEmpresaSistema(), filtro);
-				
-				String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(getEmpresaSistema().getId()); 
-				parametros.put("rodapePeriodoExperiencia", rodape);
+			dataReferencia = getDataReferencia();
+			colaboradores = colaboradorManager.findAdmitidosNoPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck);
+			
+			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiencia", getEmpresaSistema(), filtro);
+			
+			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(getEmpresaSistema().getId()); 
+			parametros.put("rodapePeriodoExperiencia", rodape);
 		}
 		catch (Exception e)
 		{

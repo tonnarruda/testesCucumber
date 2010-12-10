@@ -1,18 +1,14 @@
-update parametrosdosistema set appversao = '1.1.34.24';--.go
+update parametrosdosistema set appversao = '1.1.35.25';--.go
 
-ALTER TABLE reajusteColaborador ALTER COLUMN observacao TYPE text;--go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (492, 'ROLE_MOV_SOLICITACAO', 'Modelos de Avaliação de Solicitação', '/avaliacaoCandidato/modelo/list.action?tipoModeloAvaliacao=S', 7, true, 358);--.go
 
-CREATE TABLE ConfiguracaoPerformance (
-    id bigint NOT NULL,
-    usuario_id bigint,
-	caixa character varying(10),
-	ordem integer,
-	aberta boolean
-); --.go
-ALTER TABLE ONLY configuracaoPerformance ADD CONSTRAINT configuracaoPerformance_pkey PRIMARY KEY (id); --.go
-ALTER TABLE configuracaoPerformance ADD CONSTRAINT configuracaoPerformance_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id); --.go
-CREATE SEQUENCE configuracaoPerformance_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1; --.go
+alter sequence papel_sequence restart with 493;--.go
 
 update papel set nome = 'Relatório de Ranking de Performace de Avaliação de Desempenho' where id = 491;
 
 update papel set nome = 'Dias do Acompanhamento do Período de Experiência',  papelmae_id = 481, ordem = 2 where id = 467;
+
+alter table avaliacao add column tipoModeloAvaliacao character(1);--.go
+update avaliacao set tipoModeloAvaliacao='D';--.go
+alter table avaliacao alter column tipoModeloAvaliacao set not null;--.go
+

@@ -6,6 +6,7 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.PerguntaDao;
 import com.fortes.rh.dao.pesquisa.RespostaDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -50,7 +51,7 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 		
 		avaliacaoDao.save(avaliacao);
 		
-		assertEquals(1, avaliacaoDao.findAllSelect(empresa.getId(), true).size());
+		assertEquals(1, avaliacaoDao.findAllSelect(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO).size());
 	}
 	
 	public void testGetPontuacaoMaximaDaPerformance()

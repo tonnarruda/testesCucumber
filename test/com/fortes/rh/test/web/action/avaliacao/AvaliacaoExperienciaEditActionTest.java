@@ -13,6 +13,7 @@ import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 import com.fortes.rh.security.SecurityUtil;
@@ -88,7 +89,7 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
     	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(avaliacaoExperiencia.getId()), ANYTHING, ANYTHING, eq(true)).will(returnValue(new ArrayList<Pergunta>()));
     	
     	//prepareResultado
-    	manager.expects(once()).method("findAllSelect").with(eq(1L), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
+    	manager.expects(once()).method("findAllSelect").with(eq(1L), ANYTHING, eq(TipoModeloAvaliacao.DESEMPENHO)).will(returnValue(new ArrayList<Avaliacao>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
     	assertEquals("input", action.imprimeResultado());
     }
@@ -105,7 +106,7 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
     	manager.expects(once()).method("montaResultado").will(throwException(new Exception()));
     	
     	//prepareResultado
-    	manager.expects(once()).method("findAllSelect").with(eq(1L), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
+    	manager.expects(once()).method("findAllSelect").with(eq(1L), ANYTHING, eq(TipoModeloAvaliacao.DESEMPENHO)).will(returnValue(new ArrayList<Avaliacao>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
     	assertEquals("input", action.imprimeResultado());
     }

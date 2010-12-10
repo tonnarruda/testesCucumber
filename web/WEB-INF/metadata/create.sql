@@ -1438,7 +1438,7 @@ CREATE TABLE reajustecolaborador (
     tipoSalarioatual Integer,
     indiceatual_id bigint,
 	quantidadeIndiceatual double precision,
-	observacao character varying(100),
+	observacao text,
 	faixasalarialatual_id bigint,
 	faixasalarialproposta_id bigint
 );
@@ -2122,3 +2122,14 @@ CREATE TABLE cargo_etapaseletiva (
 );
 ALTER TABLE cargo_etapaseletiva ADD CONSTRAINT cargo_etapaseletiva_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id); 
 ALTER TABLE cargo_etapaseletiva ADD CONSTRAINT cargo_etapaseletiva_etapaseletiva_fk FOREIGN KEY (etapaseletivas_id) REFERENCES etapaseletiva(id); 
+
+CREATE TABLE ConfiguracaoPerformance (
+    id bigint NOT NULL,
+    usuario_id bigint,
+	caixa character varying(10),
+	ordem integer,
+	aberta boolean
+); 
+ALTER TABLE ONLY configuracaoPerformance ADD CONSTRAINT configuracaoPerformance_pkey PRIMARY KEY (id);
+ALTER TABLE configuracaoPerformance ADD CONSTRAINT configuracaoPerformance_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);
+CREATE SEQUENCE configuracaoPerformance_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;

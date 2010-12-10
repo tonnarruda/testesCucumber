@@ -19,6 +19,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -83,7 +84,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		if(avaliacaoDesempenho != null && avaliacaoDesempenho.getId() != null)
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		
-		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true); 
+		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO); 
 	}
 	
 	public String enviarLembrete() throws Exception
