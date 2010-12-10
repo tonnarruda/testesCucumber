@@ -114,6 +114,15 @@
       <ref bean="configuracaoImpressaoCurriculoDaoTarget" />
     </property>
   </bean>
+  <bean id="habilidadeDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.captacao.HabilidadeDao</value>
+    </property>
+    <property name="target">
+      <ref bean="habilidadeDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 

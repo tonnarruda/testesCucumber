@@ -288,6 +288,20 @@
       <ref bean="configuracaoImpressaoCurriculoManagerTarget" />
     </property>
   </bean>
+  <bean id="habilidadeManagerTarget" class="com.fortes.rh.business.captacao.HabilidadeManagerImpl">
+    <property name="dao">
+      <ref bean="habilidadeDao" />
+    </property>
+  </bean>
+  <bean id="habilidadeManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.HabilidadeManager</value>
+    </property>
+    <property name="target">
+      <ref bean="habilidadeManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
