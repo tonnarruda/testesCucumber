@@ -1,6 +1,6 @@
 update parametrosdosistema set appversao = '1.1.35.25';--.go
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (492, 'ROLE_MOV_SOLICITACAO', 'Modelos de Avaliação de Solicitação', '/avaliacaoCandidato/modelo/list.action?tipoModeloAvaliacao=S', 7, true, 358);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (492, 'ROLE_MOV_SOLICITACAO', 'Modelos de Avaliação de Solicitação', '/avaliacao/modeloCandidato/list.action?modeloAvaliacao=S', 7, true, 358);--.go
 
 alter sequence papel_sequence restart with 493;--.go
 

@@ -23,7 +23,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="update">
-			<result name="success" type="redirect">list.action?avaliacao.id=${avaliacao.id}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>
 		</action>
 	</package>

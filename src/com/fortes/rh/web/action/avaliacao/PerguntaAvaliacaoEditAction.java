@@ -53,7 +53,8 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	private String aspectosFormatados;
 	
 	private boolean temCriterioRespondido;
-
+	private char modeloAvaliacao = 'D';
+	
 	private void prepare() throws Exception
 	{
 		respostasSugeridas = respostaManager.findRespostasSugeridas(avaliacao.getId());
@@ -298,5 +299,13 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
 		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+	}
+
+	public char getModeloAvaliacao() {
+		return modeloAvaliacao;
+	}
+
+	public void setModeloAvaliacao(char modeloAvaliacao) {
+		this.modeloAvaliacao = modeloAvaliacao;
 	}	
 }

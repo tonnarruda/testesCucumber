@@ -81,7 +81,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	{
 		avaliacao = avaliacaoManager.findById(avaliacao.getId());
 		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId());
-    	urlVoltar = "list.action";
+    	urlVoltar = "list.action?modeloAvaliacao=" + modeloAvaliacao;
     	
 		return Action.SUCCESS;
 	}
