@@ -761,4 +761,16 @@ public class CargoEditAction extends MyActionSupportEdit
 		this.atitudeManager = atitudeManager;
 	}
 
+	public HabilidadeManager getHabilidadeManager() {
+		return habilidadeManager;
+	}
+
+	public void setHabilidadeManager(HabilidadeManager habilidadeManager) {
+		this.habilidadeManager = habilidadeManager;
+	}
+
+	public AtitudeManager getAtitudeManager() {
+		return atitudeManager;
+	}
+
 }

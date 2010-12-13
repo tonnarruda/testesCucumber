@@ -45,3 +45,18 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (493,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (494, 'ROLE_CAD_ATITUDE', 'Atitudes', '/captacao/atitude/list.action', 5, true, 362);--.go
 alter sequence papel_sequence restart with 495;
 
+CREATE TABLE cargo_habilidade(
+    cargo_id bigint NOT NULL,
+    habilidades_id bigint NOT NULL
+);--.go
+ALTER TABLE cargo_habilidade ADD CONSTRAINT cargo_habilidade_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);--.go 
+ALTER TABLE cargo_habilidade ADD CONSTRAINT cargo_habilidade_habilidade_fk FOREIGN KEY (habilidades_id) REFERENCES habilidade(id);--.go
+
+CREATE TABLE cargo_atitude(
+    cargo_id bigint NOT NULL,
+    atitudes_id bigint NOT NULL
+);--.go
+ALTER TABLE cargo_atitude ADD CONSTRAINT cargo_atitude_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);--.go 
+ALTER TABLE cargo_atitude ADD CONSTRAINT cargo_atitude_atitude_fk FOREIGN KEY (atitudes_id) REFERENCES atitude(id);--.go
+
+
