@@ -137,6 +137,11 @@
 
 		<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
 		<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
+		
+		<@ww.select  id="avaliacaoId" label="Modelo Avaliação" 
+			name="solicitacao.avaliacao.id" list="avaliacoes"  
+			cssStyle="width: 250px;" listKey="id" listValue="titulo"  headerKey="" headerValue="" />
+	
 		<br/>
 		
 		<li>

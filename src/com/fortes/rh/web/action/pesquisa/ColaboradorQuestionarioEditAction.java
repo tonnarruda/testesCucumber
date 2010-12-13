@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -17,6 +18,8 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
@@ -49,11 +52,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	private PerguntaManager perguntaManager;
 	private RespostaManager respostaManager;
+	private CandidatoManager candidatoManager;
 
 	private Avaliacao avaliacaoExperiencia;
 	private Questionario questionario;
 	private Colaborador colaborador;
 	private Colaborador avaliador;
+	private Candidato candidato;
 	private ColaboradorQuestionario colaboradorQuestionario;
 	
 	private Collection<ColaboradorResposta> colaboradorRespostas;
@@ -88,7 +93,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Long empresaId;
 	
 	private TipoQuestionario tipoQuestionario = new TipoQuestionario();
-
+	private Solicitacao solicitacao;
 
 	public String prepareInsert() throws Exception
 	{
@@ -197,7 +202,32 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
 		
 		montaPerguntasRespostas();
+		
+		return Action.SUCCESS;
+	}
+	
+	public String prepareUpdateAvaliacaoSolicitacao()
+	{
+		colaboradorQuestionario = colaboradorQuestionarioManager.findById(colaboradorQuestionario.getId());
+		
+		candidato = candidatoManager.findByCandidatoId(candidato.getId());
+		colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
+		
+		montaPerguntasRespostas();
+		
+		return Action.SUCCESS;
+	}
+	
+	public String prepareInsertAvaliacaoSolicitacao()
+	{
+		candidato = candidatoManager.findByCandidatoId(candidato.getId());
+		colaboradorQuestionario.setAvaliacao(avaliacaoManager.findEntidadeComAtributosSimplesById(colaboradorQuestionario.getAvaliacao().getId()));
+		colaboradorQuestionario.setRespondidaEm(new Date());
 
+		colaboradorRespostas = colaboradorQuestionarioManager.populaQuestionario(colaboradorQuestionario.getAvaliacao());
+		
+		montaPerguntasRespostas();
+		
 		return Action.SUCCESS;
 	}
 	
@@ -217,7 +247,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		for (Pergunta pergunta : perguntas)
 		{
 			// setando #AVALIADO# com nome do colaborador avaliado.
-			perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, colaborador.getNome());
+			if(colaborador != null && colaborador.getNome() != null)
+				perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, colaborador.getNome());
+			else if(candidato != null && candidato.getNome() != null)
+				perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, candidato.getNome());
 			
 			Collection<Resposta> respostas = respostaManager.findByPergunta(pergunta.getId());
 			pergunta.setRespostas(respostas);
@@ -239,7 +272,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public String insertAvaliacaoExperiencia()
 	{
 		//TODO: Este metodo tambem insere o "colaboradorQuestionario" relacionado. O ideal seria
-		//      que o "colaboradorQuestionarioManager" inserisse as respostas e nao o contrario. 
+		//      que o "colaboradorQuestionarioManager" inserisse as respostas e nao o contrario.
 		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		
 		return Action.SUCCESS;
@@ -547,5 +580,25 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public void setAvaliador(Colaborador avaliador)
 	{
 		this.avaliador = avaliador;
+	}
+
+	public Candidato getCandidato() {
+		return candidato;
+	}
+
+	public void setCandidato(Candidato candidato) {
+		this.candidato = candidato;
+	}
+
+	public Solicitacao getSolicitacao() {
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) {
+		this.solicitacao = solicitacao;
+	}
+
+	public void setCandidatoManager(CandidatoManager candidatoManager) {
+		this.candidatoManager = candidatoManager;
 	}
 }

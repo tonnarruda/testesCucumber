@@ -60,6 +60,8 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	private int qtdCandidatos;
 	@Transient
 	private int qtdAptos;
+	@Transient
+	private Long colaboradorQuestionarioId;
 
 	public CandidatoSolicitacao()
 	{
@@ -487,6 +489,14 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	public void setHistoricoCandidatos(Collection<HistoricoCandidato> historicoCandidatos)
 	{
 		this.historicoCandidatos = historicoCandidatos;
+	}
+	
+	public Long getColaboradorQuestionarioId() {
+		return colaboradorQuestionarioId;
+	}
+
+	public void setColaboradorQuestionarioId(Long colaboradorQuestionarioId) {
+		this.colaboradorQuestionarioId = colaboradorQuestionarioId;
 	}
 
 }

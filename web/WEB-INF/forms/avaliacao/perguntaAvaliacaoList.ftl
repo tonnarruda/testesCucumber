@@ -20,10 +20,10 @@
 			<#else>
 				<#assign editarOuVisualizar = "Visualizar" />
 			</#if>
-			<a href="prepareUpdate.action?pergunta.id=${pergunta.id}&avaliacao.id=${avaliacao.id}"><img border="0" title="${editarOuVisualizar}" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="prepareUpdate.action?pergunta.id=${pergunta.id}&avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="${editarOuVisualizar}" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			
 			<#if !temCriterioRespondido>
-				<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?pergunta.id=${pergunta.id}&avaliacao.id=${avaliacao.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?pergunta.id=${pergunta.id}&avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</#if>
 			
 		</@display.column>
@@ -36,10 +36,14 @@
 		<#if !temCriterioRespondido>
 			<button class="btnInserir" onclick="window.location='prepareInsert.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'"></button>
 		</#if>
-		${tipoModeloAvaliacao.SOLICITACAO}>
+		<#if modeloAvaliacao = tipoModeloAvaliacao.getSolicitacao()>
+			<#assign urlVoltar = "../../avaliacao/modeloCandidato/list.action" />
+		<#else>
+			<#assign urlVoltar = "../../avaliacao/modelo/list.action" />
+		</#if>
 		
 		
-		<button onclick="window.location='../../avaliacao/modelo/list.action?modeloAvaliacao=${modeloAvaliacao}'" class="btnVoltar"></button>
+		<button onclick="window.location='${urlVoltar}?modeloAvaliacao=${modeloAvaliacao}'" class="btnVoltar"></button>
 	</div>
 </body>
 </html>

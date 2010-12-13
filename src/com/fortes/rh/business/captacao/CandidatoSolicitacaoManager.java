@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Empresa;
@@ -29,4 +30,5 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 
 	Collection<Long> getCandidatosBySolicitacao(Long solicitacaoId);
 	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca);
+	void setColaboradorQuestionarioId(Collection<CandidatoSolicitacao> candidatoSolicitacaos, Avaliacao avaliacao);
 }

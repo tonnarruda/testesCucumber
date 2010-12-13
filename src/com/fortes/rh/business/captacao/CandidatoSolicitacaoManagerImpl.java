@@ -2,26 +2,23 @@ package com.fortes.rh.business.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
 
-import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.util.ComparatorString;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
@@ -33,6 +30,7 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
     private Mail mail;
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
     private ColaboradorManager colaboradorManager;//SpringUtil deu  PAUUUUU com o applicationContext
+    private ColaboradorQuestionarioManager colaboradorQuestionarioManager;//deu pau nos tests quando setei no xml.(ta com applicationContext)
 
     public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
     {
@@ -213,4 +211,26 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 	{
 		return getDao().getCount(solicitacaoId, etapaSeletivaId, indicadoPor, visualizar, contratado, observacaoRH, nomeBusca);
 	}
+
+	public void setColaboradorQuestionarioId(Collection<CandidatoSolicitacao> candidatoSolicitacaos, Avaliacao avaliacao) 
+	{
+		if (avaliacao.getId() != null) 
+		{
+			colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+			Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByAvaliacaoRespondidas(avaliacao.getId());
+			
+			for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacaos) 
+			{
+				for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios) 
+				{
+					if(candidatoSolicitacao.getCandidato().equals(colaboradorQuestionario.getCandidato()))
+					{
+						candidatoSolicitacao.setColaboradorQuestionarioId(colaboradorQuestionario.getId());
+						break;
+					}
+				}
+			}
+		}
+	}
+
 }

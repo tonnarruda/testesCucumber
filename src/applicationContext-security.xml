@@ -389,6 +389,7 @@
 				/avaliacao/desempenho/*/**=ROLE_MOV_AVALIACAO
 				
 				/avaliacao/modelo/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
+				/avaliacao/modeloCandidato/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
 				
 				/geral/cliente/*/**=ROLE_CAD_CLIENTE
 				

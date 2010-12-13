@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.pesquisa;
 
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Pesquisa;
@@ -20,7 +21,8 @@ public class AspectoEditAction extends MyActionSupportEdit implements ModelDrive
 	private Avaliacao avaliacao;
 	private Pesquisa pesquisa = new Pesquisa();
 	private Pergunta pergunta = new Pergunta();
-	
+	private char modeloAvaliacao = 'D'; 
+	private TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
 	
 	private void prepare() throws Exception
 	{
@@ -144,5 +146,17 @@ public class AspectoEditAction extends MyActionSupportEdit implements ModelDrive
 	public void setAvaliacao(Avaliacao avaliacao)
 	{
 		this.avaliacao = avaliacao;
+	}
+
+	public char getModeloAvaliacao() {
+		return modeloAvaliacao;
+	}
+
+	public void setModeloAvaliacao(char modeloAvaliacao) {
+		this.modeloAvaliacao = modeloAvaliacao;
+	}
+
+	public TipoModeloAvaliacao getTipoModeloAvaliacao() {
+		return tipoModeloAvaliacao;
 	}
 }

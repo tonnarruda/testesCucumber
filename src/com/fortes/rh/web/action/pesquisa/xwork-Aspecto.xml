@@ -34,12 +34,12 @@
 		</action>
 		<action name="insertAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="insertAvaliacao">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect">listAvaliacao.action?avaliacao.id=${avaliacao.id}</result>
+			<result name="success" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/aspectoEdit.ftl</result>
 		</action>
 		<action name="updateAvaliacao" class="com.fortes.rh.web.action.pesquisa.AspectoEditAction" method="updateAvaliacao">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect">listAvaliacao.action?avaliacao.id=${avaliacao.id}</result>
+			<result name="success" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
 			<result name="input" type="redirect"><![CDATA[listAvaliacao.action?avaliacao.id=${avaliacao.id}&actionErr=${actionErr}]]></result>
 		</action>
 	</package>

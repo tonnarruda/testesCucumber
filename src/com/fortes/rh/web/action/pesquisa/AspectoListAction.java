@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -33,6 +34,8 @@ public class AspectoListAction extends MyActionSupportList
 	private String urlVoltar;
 	
 	private TipoQuestionario tipoQuestionario = new TipoQuestionario();
+	private TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
+	private char modeloAvaliacao = 'D'; 
 
 	private void doDelete()
 	{
@@ -163,6 +166,18 @@ public class AspectoListAction extends MyActionSupportList
 	public void setAvaliacao(Avaliacao avaliacao)
 	{
 		this.avaliacao = avaliacao;
+	}
+
+	public TipoModeloAvaliacao getTipoModeloAvaliacao() {
+		return tipoModeloAvaliacao;
+	}
+
+	public char getModeloAvaliacao() {
+		return modeloAvaliacao;
+	}
+
+	public void setModeloAvaliacao(char modeloAvaliacao) {
+		this.modeloAvaliacao = modeloAvaliacao;
 	}
 
 }

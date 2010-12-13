@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -87,13 +88,16 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	
 	@Lob
 	private String obsSuspensao;
+	
+	@ManyToOne
+	private Avaliacao avaliacao;
 
 	public Solicitacao()
 	{
 
 	}
 
-	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Double valorDoHistoricoDaFaixaSalarial, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante)
+	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Double valorDoHistoricoDaFaixaSalarial, Long avaliacaoId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante)
 	{
 		setId(id);
 		setQuantidade(quantidade);
@@ -102,6 +106,9 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		setSolicitanteNome(nomeSolicitante);
 		this.encerrada = encerrada;
 
+		setAvaliacao(new Avaliacao());
+		getAvaliacao().setId(avaliacaoId);
+		
 		setFaixaSalarial(new FaixaSalarial());
 		getFaixaSalarial().setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
 		getFaixaSalarial().getFaixaSalarialHistoricoAtual().setValor(valorDoHistoricoDaFaixaSalarial);
@@ -571,6 +578,19 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public String getIdadeMaximaDesc() {
 		return StringUtil.valueOf(this.idadeMaxima);
+	}
+
+	public Avaliacao getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Avaliacao avaliacao) {
+		this.avaliacao = avaliacao;
+	}
+	public void setProjectionAvaliacaoId(Long avaliacaoId) {
+		if (avaliacao == null)
+			avaliacao = new Avaliacao();
+		avaliacao.setId(avaliacaoId);
 	}
 
 }

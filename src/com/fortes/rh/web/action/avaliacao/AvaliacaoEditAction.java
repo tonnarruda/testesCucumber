@@ -7,6 +7,7 @@ import java.util.Map;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
@@ -32,7 +33,8 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private Map<String, Object> parametros;
 	private Collection<QuestionarioRelatorio> dataSource;
 	private boolean imprimirFormaEconomica = false;
-	private char modeloAvaliacao = 'D';  
+	private char modeloAvaliacao = 'D'; 
+	private TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
 	
 	private void prepare() throws Exception
 	{
@@ -180,5 +182,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setModeloAvaliacao(char modeloAvaliacao) {
 		this.modeloAvaliacao = modeloAvaliacao;
+	}
+
+	public TipoModeloAvaliacao getTipoModeloAvaliacao() {
+		return tipoModeloAvaliacao;
 	}
 }

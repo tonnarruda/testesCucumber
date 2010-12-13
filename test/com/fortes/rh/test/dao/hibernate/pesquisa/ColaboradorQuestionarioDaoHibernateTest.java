@@ -121,6 +121,32 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 		assertEquals(1, retorno.size());
 	}
+	
+	public void testFindByAvaliacaoRespondidas() throws Exception
+	{
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorQuestionario colaboradorQuestionario1 = new ColaboradorQuestionario();
+		colaboradorQuestionario1.setRespondida(true);
+		colaboradorQuestionario1.setCandidato(candidato);
+		colaboradorQuestionario1.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = new ColaboradorQuestionario();
+		colaboradorQuestionario2.setRespondida(false);
+		colaboradorQuestionario2.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByAvaliacaoRespondidas(avaliacao.getId());
+		
+		assertEquals(1, retorno.size());
+		
+		assertEquals(candidato.getId(), ((ColaboradorQuestionario)retorno.toArray()[0]).getCandidato().getId());
+	}
 
 	public void testFindColaboradorHistoricoByQuestionario() throws Exception
 	{
