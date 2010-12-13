@@ -107,7 +107,7 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(1L)).will(returnValue(new ArrayList<Pergunta>()));
 		
 		assertEquals("success",action.visualizar());
-		assertEquals("list.action", action.getUrlVoltar());
+		assertEquals("list.action?modeloAvaliacao=D", action.getUrlVoltar());
 	}
 
 	public void testUpdate() throws Exception

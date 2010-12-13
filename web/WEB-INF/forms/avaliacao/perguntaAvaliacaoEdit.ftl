@@ -374,13 +374,14 @@
 		<@ww.hidden name="avaliacao.id" id="avaliacao" />
 		<@ww.hidden name="pergunta.id" />
 		<@ww.hidden name="respostaSugerida" id="respostaSugerida" />
+		<@ww.hidden name="modeloAvaliacao" />
 	</@ww.form>
 
 	<div class="buttonGroup">
 		<#if !temCriterioRespondido>
 			<button onclick="${validarCampos}" class="btnGravar"></button>
 		</#if>
-		<button onclick="window.location='../perguntaAvaliacao/list.action?avaliacao.id=${avaliacao.id}'" class="btnVoltar"></button>
+		<button onclick="window.location='../perguntaAvaliacao/list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'" class="btnVoltar"></button>
 	</div>
 
 	<script type="text/javascript">

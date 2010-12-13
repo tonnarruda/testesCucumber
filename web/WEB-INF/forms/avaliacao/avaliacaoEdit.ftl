@@ -28,12 +28,13 @@
 			<@ww.hidden name="avaliacao.id" />
 			<@ww.hidden name="avaliacao.tipoModeloAvaliacao" />
 			<@ww.hidden name="avaliacao.empresa.id" />
+			<@ww.hidden name="modeloAvaliacao" />
 			<@ww.token/>
 		</@ww.form>
 	
 		<div class="buttonGroup">
 			<button onclick="${validarCampos};" class="${btnClass}"></button>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button onclick="window.location='list.action?modeloAvaliacao=${modeloAvaliacao}'" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>
