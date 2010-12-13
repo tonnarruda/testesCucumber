@@ -122,7 +122,16 @@
       <ref bean="habilidadeDaoTarget" />
     </property>
   </bean>
+  <bean id="atitudeDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.captacao.AtitudeDao</value>
+    </property>
+    <property name="target">
+      <ref bean="atitudeDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

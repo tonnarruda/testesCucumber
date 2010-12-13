@@ -142,7 +142,9 @@
     <mapping class="com.fortes.rh.model.geral.CamposExtras" />
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoPerformance" />
       <mapping class="com.fortes.rh.model.captacao.Habilidade" />
+      <mapping class="com.fortes.rh.model.captacao.Atitude" />
   </session-factory>
+
 
 </hibernate-configuration>
 

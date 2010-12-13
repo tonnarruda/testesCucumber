@@ -19,7 +19,6 @@ update papel set nome = 'Resultado das Avaliações de Desempenho e Acompanhamen
 update papel set nome = 'Acompanhamento do Período de Experiência' where id = 490;--.go
 update papel set nome = 'Ranking de Performace das Avaliações de Desempenho' where id = 491;--.go
 
-
 CREATE TABLE habilidade (
 id bigint NOT NULL,
 nome character varying(100),

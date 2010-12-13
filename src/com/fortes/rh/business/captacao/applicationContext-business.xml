@@ -301,7 +301,21 @@
       <ref bean="habilidadeManagerTarget" />
     </property>
   </bean>
+  <bean id="atitudeManagerTarget" class="com.fortes.rh.business.captacao.AtitudeManagerImpl">
+    <property name="dao">
+      <ref bean="atitudeDao" />
+    </property>
+  </bean>
+  <bean id="atitudeManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.AtitudeManager</value>
+    </property>
+    <property name="target">
+      <ref bean="atitudeManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
