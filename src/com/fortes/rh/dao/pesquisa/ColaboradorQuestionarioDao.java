@@ -49,4 +49,6 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	void removeByParticipante(Long avaliacaoDesempenhoId, Long[] participanteIds, boolean isAvaliado);
 
 	Collection<ColaboradorQuestionario> getPerformance(Collection<Long> avaliados, Long avaliacaoDesempenhoId);
+
+	Collection<ColaboradorQuestionario> findByAvaliacaoRespondidas(Long avaliacaoId);
 }

@@ -149,6 +149,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		hql.append("						solicitacao.data,  ");
 		hql.append("						solicitacao.encerrada,  ");
 		hql.append("						historicoFaixaSalarial.valor, ");
+		hql.append("						solicitacao.avaliacao.id, ");
 		hql.append("						cargo.id, ");
 		hql.append("						cargo.nome, ");
 		hql.append("						areaOrganizacional.nome, ");
@@ -246,6 +247,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("es.nome"), "projectionEstabelecimentoNome");
 		p.add(Projections.property("ci.id"), "projectionCidadeId");
 		p.add(Projections.property("est.id"), "projectionCidadeUf");
+		p.add(Projections.property("s.avaliacao.id"), "projectionAvaliacaoId");
 
 		criteria.setProjection(p);
 

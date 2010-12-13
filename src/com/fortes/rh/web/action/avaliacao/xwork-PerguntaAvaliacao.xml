@@ -9,8 +9,8 @@
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack"/>
-			<result name="success" type="redirect">list.action?avaliacao.id=${avaliacao.id}</result>
-			<result name="error" type="redirect">list.action?avaliacao.id=${avaliacao.id}</result>
+			<result name="success" type="redirect"><![CDATA[list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
+			<result name="error" type="redirect"><![CDATA[list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}]]></result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.avaliacao.PerguntaAvaliacaoEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/perguntaAvaliacaoEdit.ftl</result>

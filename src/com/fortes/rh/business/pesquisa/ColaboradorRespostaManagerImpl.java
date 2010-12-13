@@ -385,29 +385,41 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	
 	public void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
 	{
+		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionario = colaboradorQuestionarioManager.save(colaboradorQuestionario);
 		
 		// TODO tratamento avaliação anônima
 		
+		ajustaEntidadesNull(colaboradorQuestionario);
 		saveRespostas(colaboradorRespostas, colaboradorQuestionario);
 			
 		if (colaboradorQuestionario.getAvaliacao() != null)
 			savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
 	}
 
+	private void ajustaEntidadesNull(ColaboradorQuestionario colaboradorQuestionario)
+	{
+		if(colaboradorQuestionario.getColaborador() != null && colaboradorQuestionario.getColaborador().getId() == null)
+			colaboradorQuestionario.setColaborador(null);
+		if(colaboradorQuestionario.getCandidato() != null && colaboradorQuestionario.getCandidato().getId() == null)
+			colaboradorQuestionario.setCandidato(null);
+	}
+
 	private void saveRespostas(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
 	{
-		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorQuestionario.getColaborador().getId());
-		
 		AreaOrganizacional areaOrganizacional = null;
 		Estabelecimento estabelecimento = null;
-		
-		if(historicoColaborador != null)
+		if(colaboradorQuestionario.getColaborador() != null && colaboradorQuestionario.getColaborador().getId() != null)
 		{
-			if(historicoColaborador.getAreaOrganizacional() != null && historicoColaborador.getAreaOrganizacional().getId() != null)
-				areaOrganizacional = historicoColaborador.getAreaOrganizacional();
-			if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
-				estabelecimento = historicoColaborador.getEstabelecimento();
+			HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorQuestionario.getColaborador().getId());
+			
+			if(historicoColaborador != null)
+			{
+				if(historicoColaborador.getAreaOrganizacional() != null && historicoColaborador.getAreaOrganizacional().getId() != null)
+					areaOrganizacional = historicoColaborador.getAreaOrganizacional();
+				if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
+					estabelecimento = historicoColaborador.getEstabelecimento();
+			}
 		}
 		
 		for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
@@ -464,6 +476,8 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 
 	public void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
 	{
+		ajustaEntidadesNull(colaboradorQuestionario);
+		
 		getDao().removeByColaboradorQuestionario(colaboradorQuestionario.getId());
 		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionarioManager.update(colaboradorQuestionario);

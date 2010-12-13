@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
@@ -26,6 +27,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -36,6 +38,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
@@ -75,6 +78,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private CidadeManager cidadeManager;
     private BairroManager bairroManager;
     private EmpresaManager empresaManager;
+    private AvaliacaoManager avaliacaoManager;
 
     private Solicitacao solicitacao = new Solicitacao();
     private MotivoSolicitacao motivoSolicitacao;
@@ -120,6 +124,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	private char visualizar;
 	private Cargo cargo;
+	private Collection<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
     private void prepare() throws Exception
     {
@@ -153,6 +158,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO), "cargo.nome");
 
         motivoSolicitacaos = motivoSolicitacaoManager.findAll();
+        
+        avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO);
 
         escolaridades = new Escolaridade();
         sexos = new Sexo();
@@ -218,6 +225,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         
         if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
         	solicitacao.setCidade(null);
+        
+        if (solicitacao.getAvaliacao().getId() == null)
+        	solicitacao.setAvaliacao(null);
 
         solicitacaoManager.save(solicitacao);
 
@@ -258,6 +268,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         if (solicitacao.getEmpresa() == null || solicitacao.getEmpresa().getId() == null)
         	solicitacao.setEmpresa(solicitacaoAux.getEmpresa());
 
+        if (solicitacao.getAvaliacao().getId() == null)
+        	solicitacao.setAvaliacao(null);
         if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
         	solicitacao.setCidade(null);
         
@@ -712,5 +724,13 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	public String getDataDoDia() 
 	{
 		return DateUtil.formataDiaMesAno(new Date());
+	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
+	}
+
+	public Collection<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
 	}
 }

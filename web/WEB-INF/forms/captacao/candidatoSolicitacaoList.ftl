@@ -74,7 +74,7 @@
 		</#if>
 		
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
-		<@display.column title="Ações" media="html" class="acao" style="width: 100px;">
+		<@display.column title="Ações" media="html" class="acao" style="width: 120px;">
 			<#if !solicitacao.encerrada>
 				<a href="../historicoCandidato/list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}"><img border="0" title="Histórico" src="<@ww.url includeParams="none" value="/imgs/page_user.gif"/>"></a>
 			<#else>
@@ -92,6 +92,14 @@
 					<img border="0" style="opacity:0.2;filter:alpha(opacity=20)" title="Este candidato já possui históricos. Não é possível removê-lo da seleção." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>">
 				</#if>
 				<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" title="Documentos Anexos"><img border="0"  src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
+			</#if>
+			
+			<#if solicitacao.avaliacao.id?exists>
+				<#if candidatoSolicitacao.colaboradorQuestionarioId?exists>
+					<a href="prepareUpdateAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.id=${candidatoSolicitacao.colaboradorQuestionarioId}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Responder Avaliação" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
+				<#else>
+					<a href="prepareInsertAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacao.avaliacao.id}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Editar Respostas" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				</#if>
 			</#if>
 		</@display.column>
 		</@authz.authorize>
