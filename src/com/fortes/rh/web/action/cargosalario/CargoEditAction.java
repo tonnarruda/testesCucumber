@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
+import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
@@ -42,6 +44,8 @@ public class CargoEditAction extends MyActionSupportEdit
 	private CargoManager cargoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ConhecimentoManager conhecimentoManager;
+	private HabilidadeManager habilidadeManager;
+	private AtitudeManager atitudeManager;
 	private AreaFormacaoManager areaFormacaoManager;
 	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private FaixaSalarialManager faixaSalarialManager;
@@ -67,6 +71,8 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Collection<CheckBox> conhecimentosCheckList = new ArrayList<CheckBox>();
 	private String[] habilidadesCheck;
 	private Collection<CheckBox> habilidadesCheckList = new ArrayList<CheckBox>();
+	private String[] atitudesCheck;
+	private Collection<CheckBox> atitudesCheckList = new ArrayList<CheckBox>();
 	private String[] cargosCheck;
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 	private String[] gruposCheck;
@@ -105,6 +111,8 @@ public class CargoEditAction extends MyActionSupportEdit
 			cargo.setAreaFormacaos(areaFormacaoManager.findByCargo(cargo.getId()));
 			cargo.setAreasOrganizacionais(areaOrganizacionalManager.findByCargo(cargo.getId()));
 			cargo.setConhecimentos(conhecimentoManager.findByCargo(cargo.getId()));
+			cargo.setHabilidades(habilidadeManager.findByCargo(cargo.getId()));
+			cargo.setAtitudes(atitudeManager.findByCargo(cargo.getId()));
 			cargo.setEtapaSeletivas(etapaSeletivaManager.findByCargo(cargo.getId()));
 		}
 
@@ -115,6 +123,8 @@ public class CargoEditAction extends MyActionSupportEdit
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		areasFormacaoCheckList = areaFormacaoManager.populaCheckOrderNome();
 		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(getEmpresaSistema().getId());
+		habilidadesCheckList = habilidadeManager.populaCheckOrderNome(getEmpresaSistema().getId());
+		atitudesCheckList = atitudeManager.populaCheckOrderNome(getEmpresaSistema().getId());
 		etapaSeletivaCheckList = etapaSeletivaManager.populaCheckOrderNome(getEmpresaSistema().getId());
 	}
 
@@ -245,7 +255,12 @@ public class CargoEditAction extends MyActionSupportEdit
 		else
 			conhecimentosCheckList = conhecimentoManager.populaCheckOrderNomeByAreaOrganizacionals(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(cargo.getAreasOrganizacionais()), getEmpresaSistema().getId());
 
+		habilidadesCheckList = habilidadeManager.populaCheckOrderNome(getEmpresaSistema().getId());
+		atitudesCheckList = atitudeManager.populaCheckOrderNome(getEmpresaSistema().getId());
+		
 		conhecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(conhecimentosCheckList, cargo.getConhecimentos(), "getId");
+		habilidadesCheckList = CheckListBoxUtil.marcaCheckListBox(habilidadesCheckList, cargo.getHabilidades(), "getId");
+		atitudesCheckList = CheckListBoxUtil.marcaCheckListBox(atitudesCheckList, cargo.getAtitudes(), "getId");
 
 		return Action.SUCCESS;
 	}
@@ -263,6 +278,8 @@ public class CargoEditAction extends MyActionSupportEdit
 		cargo.setAreasOrganizacionais(areaOrganizacionalManager.populaAreas(areasCheck));
 		cargo.setAreaFormacaos(areaFormacaoManager.populaAreas(areasFormacaoCheck));
 		cargo.setConhecimentos(conhecimentoManager.populaConhecimentos(conhecimentosCheck));
+		cargo.setHabilidades(habilidadeManager.populaHabilidades(habilidadesCheck));
+		cargo.setAtitudes(atitudeManager.populaAtitudes(atitudesCheck));
 		cargo.setEtapaSeletivas(etapaSeletivaManager.populaEtapaseletiva(etapaCheck));
 
 		if (cargo.getGrupoOcupacional().getId() == null || cargo.getGrupoOcupacional().getId() == -1)
@@ -287,6 +304,8 @@ public class CargoEditAction extends MyActionSupportEdit
 		cargo.setAreasOrganizacionais(areaOrganizacionalManager.populaAreas(areasCheck));
 		cargo.setAreaFormacaos(areaFormacaoManager.populaAreas(areasFormacaoCheck));
 		cargo.setConhecimentos(conhecimentoManager.populaConhecimentos(conhecimentosCheck));
+		cargo.setHabilidades(habilidadeManager.populaHabilidades(habilidadesCheck));
+		cargo.setAtitudes(atitudeManager.populaAtitudes(atitudesCheck));
 		cargo.setFaixaSalarials(faixaSalarialManager.findFaixaSalarialByCargo(cargo.getId()));
 		cargo.setEtapaSeletivas(etapaSeletivaManager.populaEtapaseletiva(etapaCheck));
 
@@ -720,6 +739,26 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public void setHabilidadesCheckList(Collection<CheckBox> habilidadesCheckList) {
 		this.habilidadesCheckList = habilidadesCheckList;
+	}
+
+	public String[] getAtitudesCheck() {
+		return atitudesCheck;
+	}
+
+	public void setAtitudesCheck(String[] atitudesCheck) {
+		this.atitudesCheck = atitudesCheck;
+	}
+
+	public Collection<CheckBox> getAtitudesCheckList() {
+		return atitudesCheckList;
+	}
+
+	public void setAtitudesCheckList(Collection<CheckBox> atitudesCheckList) {
+		this.atitudesCheckList = atitudesCheckList;
+	}
+
+	public void setAtitudeManager(AtitudeManager atitudeManager) {
+		this.atitudeManager = atitudeManager;
 	}
 
 }

@@ -20,8 +20,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -70,6 +72,10 @@ public class Cargo extends AbstractModel implements Serializable
 	private Collection<AreaOrganizacional> areasOrganizacionais;
 	@ManyToMany(fetch=FetchType.LAZY)
 	private Collection<Conhecimento> conhecimentos;
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<Habilidade> habilidades;
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<Atitude> atitudes;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="cargo")
 	private Collection<FaixaSalarial> faixaSalarials;
 	@ManyToOne
@@ -434,5 +440,20 @@ public class Cargo extends AbstractModel implements Serializable
 	public void setEtapaSeletivas(Collection<EtapaSeletiva> etapaSeletivas) {
 		this.etapaSeletivas = etapaSeletivas;
 	}
-	
+
+	public Collection<Habilidade> getHabilidades() {
+		return habilidades;
+	}
+
+	public void setHabilidades(Collection<Habilidade> habilidades) {
+		this.habilidades = habilidades;
+	}
+
+	public Collection<Atitude> getAtitudes() {
+		return atitudes;
+	}
+
+	public void setAtitudes(Collection<Atitude> atitudes) {
+		this.atitudes = atitudes;
+	}
 }

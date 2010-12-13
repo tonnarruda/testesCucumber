@@ -19,15 +19,28 @@ update papel set nome = 'Resultado das Avaliações de Desempenho e Acompanhamen
 update papel set nome = 'Acompanhamento do Período de Experiência' where id = 490;--.go
 update papel set nome = 'Ranking de Performace das Avaliações de Desempenho' where id = 491;--.go
 
-
 CREATE TABLE habilidade (
 id bigint NOT NULL,
 nome character varying(100),
 empresa_id bigint
 );--.go
 
+ALTER TABLE habilidade ADD CONSTRAINT habilidade_pkey PRIMARY KEY(id);--.go
+ALTER TABLE habilidade ADD CONSTRAINT habilidade_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
 CREATE SEQUENCE habilidade_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+CREATE TABLE atitude (
+id bigint NOT NULL,
+nome character varying(100),
+empresa_id bigint
+);--.go
+
+ALTER TABLE atitude ADD CONSTRAINT atitude_pkey PRIMARY KEY(id);--.go
+ALTER TABLE atitude ADD CONSTRAINT atitude_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE atitude_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
 update papel set ordem = 6 where id = 11;--.go
 update papel set ordem = 7 where id = 404;--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (493, 'ROLE_CAD_HABILIDADE', 'Habilidades', '/captacao/habilidade/list.action', 4, true, 362);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (494, 'ROLE_CAD_ATITUDE', 'Atitudes', '/captacao/atitude/list.action', 5, true, 362);--.go
+alter sequence papel_sequence restart with 495;

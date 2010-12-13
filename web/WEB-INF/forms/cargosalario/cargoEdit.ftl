@@ -65,8 +65,13 @@
 				<@frt.checkListBox name="conhecimentosCheck" id="conhecimentosCheck" label="Conhecimentos Requeridos" list="conhecimentosCheckList" />
 				<@ww.select label="Escolaridade" name="cargo.escolaridade" list="escolaridades"  headerKey="" headerValue=""/>
 				<@frt.checkListBox name="areasFormacaoCheck" id="areasFormacaoCheck" label="Áreas de Formação Relacionadas" list="areasFormacaoCheckList"/>
-				<@ww.textarea label="Habilidade" name="cargo.competencias" cssStyle="width:500px;height:30px;"/>
-				<@ww.textarea label="Atitudes" name="cargo.atitude" cssStyle="width:500px;height:45px;"/>
+				
+				<@frt.checkListBox name="habilidadesCheck" id="habilidadesCheck" label="Habilidades Requeridas" list="habilidadesCheckList" />
+				<@ww.textarea label="Observações das Habilidade" name="cargo.competencias" cssStyle="width:500px;height:30px;"/>
+				
+				<@frt.checkListBox name="atitudesCheck" id="atitudesCheck" label="Atitudes Requeridas" list="atitudesCheckList" />
+				<@ww.textarea label="Observações das Atitudes" name="cargo.atitude" cssStyle="width:500px;height:45px;"/>
+				
 				<@ww.textarea label="Experiência Desejada" name="cargo.experiencia" cssStyle="width:500px;height:45px;"/>
 				<@ww.textarea label="Observações" name="cargo.observacao" cssStyle="width:500px;height:45px;"/>
 			</ul>
