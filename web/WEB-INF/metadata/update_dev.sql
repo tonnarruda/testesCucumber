@@ -27,3 +27,7 @@ empresa_id bigint
 );--.go
 
 CREATE SEQUENCE habilidade_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+update papel set ordem = 6 where id = 11;--.go
+update papel set ordem = 7 where id = 404;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (493, 'ROLE_CAD_HABILIDADE', 'Habilidades', '/captacao/habilidade/list.action', 4, true, 362);--.go

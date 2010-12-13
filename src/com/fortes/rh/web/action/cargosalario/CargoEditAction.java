@@ -65,6 +65,8 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Collection<CheckBox> areasFormacaoCheckList = new ArrayList<CheckBox>();
 	private String[] conhecimentosCheck;
 	private Collection<CheckBox> conhecimentosCheckList = new ArrayList<CheckBox>();
+	private String[] habilidadesCheck;
+	private Collection<CheckBox> habilidadesCheckList = new ArrayList<CheckBox>();
 	private String[] cargosCheck;
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 	private String[] gruposCheck;
@@ -702,6 +704,22 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public void setQtdMesesDesatualizacao(Integer qtdMesesDesatualizacao) {
 		this.qtdMesesDesatualizacao = qtdMesesDesatualizacao;
+	}
+
+	public String[] getHabilidadesCheck() {
+		return habilidadesCheck;
+	}
+
+	public void setHabilidadesCheck(String[] habilidadesCheck) {
+		this.habilidadesCheck = habilidadesCheck;
+	}
+
+	public Collection<CheckBox> getHabilidadesCheckList() {
+		return habilidadesCheckList;
+	}
+
+	public void setHabilidadesCheckList(Collection<CheckBox> habilidadesCheckList) {
+		this.habilidadesCheckList = habilidadesCheckList;
 	}
 
 }
