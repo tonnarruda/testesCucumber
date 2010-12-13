@@ -6,9 +6,9 @@ import java.io.IOException;
 public class Principal
 {
 							//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "ConfiguracaoPerformance";
-	public static String NOME_CLASSE_MINUSCULO = "configuracaoPerformance";
-	public static String NOME_PACOTE = "geral";
+	public static String NOME_CLASSE = "Habilidade";
+	public static String NOME_CLASSE_MINUSCULO = "habilidade";
+	public static String NOME_PACOTE = "captacao";
 	
 	private static final char separator = java.io.File.separatorChar;
 	

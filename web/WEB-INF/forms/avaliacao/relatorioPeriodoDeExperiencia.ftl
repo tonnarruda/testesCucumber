@@ -3,7 +3,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório Período de Acompanhamento de Experiência</title>
+	<title>Acompanhamento do Período de Experiência</title>
 
 <#assign DataAtual = "${dataDoDia}"/>
 

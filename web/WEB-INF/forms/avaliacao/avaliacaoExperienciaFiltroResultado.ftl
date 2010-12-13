@@ -3,7 +3,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Resultado da Avaliação do Período de Experiência</title>
+	<title>Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência</title>
 
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');

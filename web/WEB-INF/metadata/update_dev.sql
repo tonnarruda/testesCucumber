@@ -11,3 +11,19 @@ update papel set nome = 'Dias do Acompanhamento do Período de Experiência',  p
 alter table avaliacao add column tipoModeloAvaliacao character(1);--.go
 update avaliacao set tipoModeloAvaliacao='D';--.go
 alter table avaliacao alter column tipoModeloAvaliacao set not null;--.go
+
+update papel set nome = 'Avaliações de Desempenho' where id = 55;--.go
+update papel set nome = 'Responder Avaliações de Desempenho' where id = 483;--.go
+update papel set nome = 'Acompanhamento do Período de Experiência' where id = 470;--.go
+update papel set nome = 'Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência' where id = 479;--.go 
+update papel set nome = 'Acompanhamento do Período de Experiência' where id = 490;--.go
+update papel set nome = 'Ranking de Performace das Avaliações de Desempenho' where id = 491;--.go
+
+
+CREATE TABLE habilidade (
+id bigint NOT NULL,
+nome character varying(100),
+empresa_id bigint
+);--.go
+
+CREATE SEQUENCE habilidade_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go

@@ -72,6 +72,12 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="habilidadeDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.HabilidadeDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
