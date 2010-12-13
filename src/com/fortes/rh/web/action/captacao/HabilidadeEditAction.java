@@ -75,11 +75,6 @@ public class HabilidadeEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String execute() throws Exception
-	{
-		return Action.SUCCESS;
-	}
-	
 	public Habilidade getHabilidade()
 	{
 		if(habilidade == null)

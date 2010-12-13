@@ -1,6 +1,5 @@
 package com.fortes.rh.web.action.captacao;
 
-
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
@@ -76,11 +75,6 @@ public class AtitudeEditAction extends MyActionSupportList
 			addActionError("Não foi possível excluir esta atitude.");
 		}
 
-		return Action.SUCCESS;
-	}
-	
-	public String execute() throws Exception
-	{
 		return Action.SUCCESS;
 	}
 	

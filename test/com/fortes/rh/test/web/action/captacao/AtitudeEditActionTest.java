@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.captacao.EmpresaBds;
+import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.web.action.captacao.AtitudeEditAction;
 
 public class AtitudeEditActionTest extends MockObjectTestCase
@@ -27,6 +32,30 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setAtitude(new Atitude());
 	}
 
+	public void testPrepareInsert() throws Exception
+	{
+		Atitude Atitude = new Atitude();
+		Atitude.setId(1L);
+		action.setAtitude(Atitude);
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		
+		manager.expects(once()).method("findById").will(returnValue(Atitude));
+		
+		assertEquals("success", action.prepareInsert());
+	}
+
+	public void testPrepareUpdate() throws Exception
+	{
+		Atitude Atitude = new Atitude();
+		Atitude.setId(1L);
+		action.setAtitude(Atitude);
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		
+		manager.expects(once()).method("findById").will(returnValue(Atitude));
+		
+		assertEquals("success", action.prepareUpdate());
+	}
+	
 	protected void tearDown() throws Exception
 	{
 		manager = null;
@@ -36,7 +65,13 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<Atitude>()));
+		Atitude atitude = new Atitude();
+		atitude.setId(1L);
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		
+		manager.expects(once()).method("getCount").will(returnValue(new Integer (1)));
+		manager.expects(once()).method("findToList").will(returnValue(new ArrayList<Atitude>()));
+		
 		assertEquals("success", action.list());
 		assertNotNull(action.getAtitudes());
 	}
@@ -47,7 +82,6 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setAtitude(atitude);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<Atitude>()));
 		assertEquals("success", action.delete());
 	}
 	
@@ -72,8 +106,19 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 
 	public void testInsertException() throws Exception
 	{
-		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		assertEquals("input", action.insert());
+		Exception exception = null;
+		
+    	try
+		{
+    		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+    		action.insert();
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+
+		assertNotNull(exception);
 	}
 
 	public void testUpdate() throws Exception
@@ -88,13 +133,20 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 
 	public void testUpdateException() throws Exception
 	{
-		Atitude atitude = AtitudeFactory.getEntity(1L);
-		action.setAtitude(atitude);
+		Exception exception = null;
+		
+    	try
+		{
+    		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+    		action.update();
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
 
-		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("findById").with(eq(atitude.getId())).will(returnValue(atitude));
-
-		assertEquals("input", action.update());
+		assertNotNull(exception);
+		
 	}
 
 	public void testGetSet() throws Exception
