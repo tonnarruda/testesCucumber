@@ -34,9 +34,12 @@
 	
 	<div class="buttonGroup">
 		<#if !temCriterioRespondido>
-			<button class="btnInserir" onclick="window.location='prepareInsert.action?avaliacao.id=${avaliacao.id}'"></button>
+			<button class="btnInserir" onclick="window.location='prepareInsert.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'"></button>
 		</#if>
-		<button onclick="window.location='../../avaliacao/modelo/list.action'" class="btnVoltar"></button>
+		${tipoModeloAvaliacao.SOLICITACAO}>
+		
+		
+		<button onclick="window.location='../../avaliacao/modelo/list.action?modeloAvaliacao=${modeloAvaliacao}'" class="btnVoltar"></button>
 	</div>
 </body>
 </html>

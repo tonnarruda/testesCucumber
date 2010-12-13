@@ -13,6 +13,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -54,6 +55,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	
 	private boolean temCriterioRespondido;
 	private char modeloAvaliacao = 'D';
+	private TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
 	
 	private void prepare() throws Exception
 	{
@@ -307,5 +309,9 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 
 	public void setModeloAvaliacao(char modeloAvaliacao) {
 		this.modeloAvaliacao = modeloAvaliacao;
+	}
+
+	public TipoModeloAvaliacao getTipoModeloAvaliacao() {
+		return tipoModeloAvaliacao;
 	}	
 }
