@@ -41,9 +41,6 @@
 
 	<#include "../util/topFiltro.ftl" />	
 		<@ww.form name="formBuscaF2rh" id="formBuscaF2rh" action="buscaF2rh.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.textfield label="Nome" id="cargo" name="curriculo.nome" cssStyle="width: 417px;" liClass="liLeft" />
-			<@ww.textfield label="CPF" id="cpf" name="curriculo.user.cpf" cssClass="mascaraCpf"/>
-			
 			<@ww.select label="Escolaridade" name="escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 170px;" liClass="liLeft" headerKey="" headerValue="" />
 			<@ww.select label="Idioma" name="idioma" id="idioma" list="idiomas" listKey="id" listValue="nome" liClass="liLeft" cssStyle="width: 150px;" headerKey="" headerValue=""/>
 			

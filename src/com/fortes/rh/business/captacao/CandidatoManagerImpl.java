@@ -1132,9 +1132,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		String bairro = "";
 		String palavra_chave = "";
 		
-		nome = montaParametro(nome, "nome", curriculo.getNome());
-		cpf = montaParametro(cpf, "cpf", curriculo.getCpf());
-		escolaridade = montaParametro(escolaridade, "escolaridade", new Escolaridade().get(escolaridadeValue));
+		nome = montaParametro(nome, "nome", "");
+		cpf = montaParametro(cpf, "cpf", "");
+		escolaridade = montaParametro(escolaridade, "escolaridade", new Escolaridade().getEscolaridadeF2rh(escolaridadeValue));
 		idioma = montaParametro(idioma, "idioma", getIdioma(idiomas, curriculo.getIdioma()));
 		data_cad_ini = montaParametro(data_cad_ini, "data_cad_ini", DateUtil.formataDiaMesAno(dataCadIni));
 		data_cad_fim = montaParametro(data_cad_fim, "data_cad_fim", DateUtil.formataDiaMesAno(dataCadFim));
@@ -1171,7 +1171,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			try {
 				variavel = chave + "=\"" + value + "\"";
 			} catch (Exception e){
-				
+				variavel = chave + "=\"\"";
 			}			
 		}
 		

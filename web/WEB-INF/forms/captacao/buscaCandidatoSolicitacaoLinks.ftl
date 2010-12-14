@@ -29,7 +29,7 @@
 <div id="menuBusca">
 	<a href="../candidato/prepareBuscaSimples.action?solicitacao.id=${solicitacao.id}" class="ativaSimples">Busca Simples</a>
 	<a href="../candidato/prepareBusca.action?solicitacao.id=${solicitacao.id}" class="ativaAvancada">Busca Avançada</a>
-	<!-- <a href="../candidato/prepareBuscaF2rh.action?solicitacao.id=${solicitacao.id}" class="ativaF2rh">Busca no F2rh</a>-->
+	<a href="../candidato/prepareBuscaF2rh.action?solicitacao.id=${solicitacao.id}" class="ativaF2rh">Busca no F2rh</a>
 	
 	<a style="border-right: none;">&nbsp;</a> <!-- Essa ultima serve só para deixar uma bordinha clara -->
 	<div style="clear: both"></div>

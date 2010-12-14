@@ -1,5 +1,6 @@
 package com.fortes.rh.model.dicionario;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class Escolaridade extends LinkedHashMap<String,String>
@@ -33,5 +34,29 @@ public class Escolaridade extends LinkedHashMap<String,String>
 		put(ESPECIALIZACAO, "Especialização");
 		put(MESTRADO, "Mestrado");
 		put(DOUTORADO, "Doutorado");
+	} 
+	
+	public static String getEscolaridadeF2rh(String chave)
+	{
+		try {
+			HashMap<String, String> convert = new HashMap<String, String>();
+			convert.put(ANALFABETO, "Não Alfabetizado");
+			convert.put(PRIMARIO_INCOMPLETO, "Ensino Fundamental Incompleto");
+			convert.put(PRIMARIO_COMPLETO, "Ensino Fundamental Completo");
+			convert.put(GINASIO_INCOMPLETO, "Ensino Fundamental Incompleto");
+			convert.put(GINASIO_COMPLETO, "Ensino Fundamental Completo");
+			convert.put(COLEGIAL_INCOMPLETO, "Ensino Médio Incompleto");
+			convert.put(COLEGIAL_COMPLETO, "Ensino Médio Completo");
+			convert.put(SUPERIOR_INCOMPLETO, "Superior Incompleto");
+			convert.put(SUPERIOR_COMPLETO, "Superior Completo");
+			convert.put(ESPECIALIZACAO, "Pós-graduação");
+			convert.put(MESTRADO, "Mestrado");
+			convert.put(DOUTORADO, "Doutorado");
+		
+			return convert.get(chave);
+			
+		} catch (Exception e) {
+			return "";
+		}
 	}
 }
