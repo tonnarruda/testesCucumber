@@ -52,6 +52,7 @@
 				<@ww.select label="Avaliação do Período de Experiência" name="colaboradorQuestionario.avaliacao.id" id="cidade" list="avaliacaoExperiencias" listKey="id" listValue="titulo" cssStyle="width: 245px;" headerKey="" headerValue="Selecione..."  onchange="this.form.submit();" disabled="${desabilitarAvaliacaoSelect}"/>
 				
 				<@ww.hidden name="colaboradorQuestionario.candidato.id" />
+				<@ww.hidden name="colaboradorQuestionario.colaborador.id" />
 			</@ww.form>
 		</#if>
 	</@ww.div><br/>	

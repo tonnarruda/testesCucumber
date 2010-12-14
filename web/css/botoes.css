@@ -27,7 +27,7 @@
 
 .btnTransferirCandidatos{
 	background-image:url(../imgs/btnTransferirCandidatos.gif);
-	width: 176px !important;
+	width: 155px !important;
 }
 
 .btnUnirBairros{
@@ -72,6 +72,12 @@
 {
 	background-image:url(../imgs/btnEnviarBlue.gif);
 	width: 81px !important;
+}
+.btnResultadoAvaliacao
+{
+	background-image:url(../imgs/btnResultadoAvaliacao.gif);
+	width: 190px !important;
+	height: 30px !important;
 }
 .btnEditarHistoricos
 {
@@ -590,6 +596,7 @@
 .btnRelatorioPorAvaliador,
 .btnListaDeInspecaoExtintores,
 .btnListaFrequenciaVotacao,
+.btnResultadoAvaliacao,
 .btnTriagemF2RH
 {
 	border: 0;

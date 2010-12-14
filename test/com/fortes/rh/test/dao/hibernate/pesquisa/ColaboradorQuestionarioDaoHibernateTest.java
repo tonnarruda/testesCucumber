@@ -6,6 +6,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
+import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -19,6 +20,7 @@ import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -37,6 +39,7 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -49,30 +52,19 @@ import com.fortes.rh.util.DateUtil;
 public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorQuestionario>
 {
 	private QuestionarioDao questionarioDao;
-
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
-
 	private ColaboradorDao colaboradorDao;
-
 	private EmpresaDao empresaDao;
-
 	private TurmaDao turmaDao;
-
 	private ColaboradorRespostaDao colaboradorRespostaDao;
-
 	private CandidatoDao candidatoDao;
-
 	private AvaliacaoDao avaliacaoDao;
-
 	private HistoricoColaboradorDao historicoColaboradorDao;
-
 	private AreaOrganizacionalDao areaOrganizacionalDao;
-
 	private CargoDao cargoDao;
-
 	private FaixaSalarialDao faixaSalarialDao;
-
 	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
+	private SolicitacaoDao solicitacaoDao;
 
 	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
 	{
@@ -122,26 +114,53 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(1, retorno.size());
 	}
 	
+	public void testFindRespondidasBySolicitacao() throws Exception
+	{
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidato.setNome("Maria da Silva");
+		candidatoDao.save(candidato);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+		
+		ColaboradorQuestionario colaboradorQuestionario1 = new ColaboradorQuestionario();
+		colaboradorQuestionario1.setRespondida(true);
+		colaboradorQuestionario1.setCandidato(candidato);
+		colaboradorQuestionario1.setSolicitacao(solicitacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = new ColaboradorQuestionario();
+		colaboradorQuestionario2.setRespondida(false);
+		colaboradorQuestionario2.setSolicitacao(solicitacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		Collection<Colaborador> retorno = colaboradorQuestionarioDao.findRespondidasBySolicitacao(solicitacao.getId());
+		
+		assertEquals(1, retorno.size());
+		
+		assertEquals(candidato.getNome(), ((Colaborador)retorno.toArray()[0]).getNome());
+	}
+	
 	public void testFindByAvaliacaoRespondidas() throws Exception
 	{
 		Candidato candidato = CandidatoFactory.getCandidato();
 		candidatoDao.save(candidato);
 		
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacaoDao.save(avaliacao);
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
 		
 		ColaboradorQuestionario colaboradorQuestionario1 = new ColaboradorQuestionario();
 		colaboradorQuestionario1.setRespondida(true);
 		colaboradorQuestionario1.setCandidato(candidato);
-		colaboradorQuestionario1.setAvaliacao(avaliacao);
+		colaboradorQuestionario1.setSolicitacao(solicitacao);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
 		
 		ColaboradorQuestionario colaboradorQuestionario2 = new ColaboradorQuestionario();
 		colaboradorQuestionario2.setRespondida(false);
-		colaboradorQuestionario2.setAvaliacao(avaliacao);
+		colaboradorQuestionario2.setSolicitacao(solicitacao);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 		
-		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByAvaliacaoRespondidas(avaliacao.getId());
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findBySolicitacaoRespondidas(solicitacao.getId());
 		
 		assertEquals(1, retorno.size());
 		
@@ -699,5 +718,9 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao)
 	{
 		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
+	}
+
+	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao) {
+		this.solicitacaoDao = solicitacaoDao;
 	}
 }

@@ -24,6 +24,7 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -361,6 +362,8 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		perguntas.add(pergunta);
 		
 		action.setPerguntas(perguntas);
+		action.setColaboradorQuestionario(new ColaboradorQuestionario());
+		action.setSolicitacao(new Solicitacao());
 		
 		colaboradorRespostaManager.expects(once()).method("save");
 		assertEquals("success", action.insertAvaliacaoExperiencia());
@@ -369,6 +372,8 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 	{
 		Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
 		action.setPerguntas(perguntas);
+		action.setColaboradorQuestionario(new ColaboradorQuestionario());
+		action.setSolicitacao(new Solicitacao());
 		
 		colaboradorRespostaManager.expects(once()).method("update");
 		assertEquals("success", action.updateAvaliacaoExperiencia());
@@ -412,6 +417,8 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		action.setColaboradorQuestionario(colaboradorQuestionario);
 		Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
 		action.setPerguntas(perguntas);
+		
+		action.setSolicitacao(new Solicitacao());
 		
 		colaboradorRespostaManager.expects(once()).method("update");
 		assertEquals("success", action.updateAvaliacaoExperiencia());

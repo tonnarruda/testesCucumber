@@ -14,6 +14,9 @@
 	{
 		color: #008000 !important;
 	}
+	.btnTriagem, .btnInserirEtapasEmGrupo, .btnResultadoAvaliacao, .btnVoltar{
+		margin: 5px 5px 0px 0px;
+	}
 	</style>
 
 	<title>Candidatos da Seleção</title>
@@ -51,6 +54,7 @@
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
 	<div id="legendas" align="right"></div>
+	<#assign jaResponderam = false/>
 
 	<@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" class="dados" >
 	
@@ -96,9 +100,10 @@
 			
 			<#if solicitacao.avaliacao.id?exists>
 				<#if candidatoSolicitacao.colaboradorQuestionarioId?exists>
-					<a href="prepareUpdateAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.id=${candidatoSolicitacao.colaboradorQuestionarioId}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Responder Avaliação" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
+					<#assign jaResponderam = true/>
+					<a href="prepareUpdateAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.id=${candidatoSolicitacao.colaboradorQuestionarioId}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Editar Respostas" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<#else>
-					<a href="prepareInsertAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacao.avaliacao.id}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Editar Respostas" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+					<a href="prepareInsertAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacao.avaliacao.id}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Responder Avaliação" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
 				</#if>
 			</#if>
 		</@display.column>
@@ -125,17 +130,22 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
-	<div class="buttonGroup">
-		<div style="float: left;width: 50%;">
+	<div class="buttonGroup" style="margin: 0px;">
+		<div style="float: left;width: 60%;">
 			<#if !solicitacao.encerrada>
 				<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 					<button class="btnTriagem" onclick="window.location='../candidato/prepareBuscaSimples.action?solicitacao.id=${solicitacao.id}'" accesskey="I"></button>
 				</@authz.authorize>
 			</#if>
 				<button onclick="window.location='../historicoCandidato/prepareInsert.action?solicitacao.id=${solicitacao.id}'" class="btnInserirEtapasEmGrupo" accesskey="M"></button>
-				<button onclick="window.location='../solicitacao/list.action'" class="btnVoltar" accesskey="V"></button>
+	
+			<#if jaResponderam>
+				<button onclick="window.location='imprimeRankingAvaliacao.action?solicitacao.id=${solicitacao.id}&solicitacao.avaliacao.id=${solicitacao.avaliacao.id}'" class="btnResultadoAvaliacao"></button>
+			</#if>
+	
+			<button onclick="window.location='../solicitacao/list.action'" class="btnVoltar" accesskey="V"></button>
 		</div>
-
+	
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 			<div style="text-align: right;">
 				<button onclick="window.location='prepareMover.action?solicitacao.id=${solicitacao.id}'" class="btnTransferirCandidatos" accesskey="M"></button>

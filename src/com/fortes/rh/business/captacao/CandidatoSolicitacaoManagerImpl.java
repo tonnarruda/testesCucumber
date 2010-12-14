@@ -212,12 +212,12 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		return getDao().getCount(solicitacaoId, etapaSeletivaId, indicadoPor, visualizar, contratado, observacaoRH, nomeBusca);
 	}
 
-	public void setColaboradorQuestionarioId(Collection<CandidatoSolicitacao> candidatoSolicitacaos, Avaliacao avaliacao) 
+	public void setColaboradorQuestionarioId(Collection<CandidatoSolicitacao> candidatoSolicitacaos, Avaliacao avaliacao, Long solicitacaoId) 
 	{
-		if (avaliacao.getId() != null) 
+		if (avaliacao != null && avaliacao.getId() != null) 
 		{
 			colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
-			Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByAvaliacaoRespondidas(avaliacao.getId());
+			Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findBySolicitacaoRespondidas(solicitacaoId);
 			
 			for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacaos) 
 			{

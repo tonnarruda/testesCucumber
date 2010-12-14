@@ -119,7 +119,6 @@
 				<param name="dataSource">resultados</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">resultadoAvaliacaoDesempenhoPorCriterios.pdf</param>
-			
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/prepareResultado.ftl</result>
 		</action>

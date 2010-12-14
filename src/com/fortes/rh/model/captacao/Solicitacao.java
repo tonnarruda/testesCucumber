@@ -203,7 +203,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 		empresa.setNome(projectionEmpresaNome);
 	}
-
+	
 	public void setNomeCargo(String nomeCargo)
 	{
 		if(faixaSalarial == null)
@@ -587,10 +587,22 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	public void setAvaliacao(Avaliacao avaliacao) {
 		this.avaliacao = avaliacao;
 	}
-	public void setProjectionAvaliacaoId(Long avaliacaoId) {
-		if (avaliacao == null)
-			avaliacao = new Avaliacao();
+	
+	public void setProjectionAvaliacaoId(Long avaliacaoId) 
+	{
+		inicializaAvaliacao();
 		avaliacao.setId(avaliacaoId);
+	}
+
+	public void setProjectionAvaliacaoTitulo(String avaliacaoTitulo)
+	{
+		inicializaAvaliacao();
+		avaliacao.setTitulo(avaliacaoTitulo);
+	}
+
+	private void inicializaAvaliacao() {
+		if(this.avaliacao == null)
+			avaliacao = new Avaliacao();
 	}
 
 }

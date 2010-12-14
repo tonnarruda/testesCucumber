@@ -165,12 +165,16 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		}		
 	}
 	
-	public String prepareResultado() throws Exception
+	public String prepareResultado()
 	{
-		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true);
-		colaboradorsCheckList = populaCheckListBox(participantes, "getId", "getNome");
-		colaboradorsCheckList = CheckListBoxUtil.marcaCheckListBox(colaboradorsCheckList, colaboradorsCheck);
+		try {
+			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
+			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true);
+			colaboradorsCheckList = populaCheckListBox(participantes, "getId", "getNome");
+			colaboradorsCheckList = CheckListBoxUtil.marcaCheckListBox(colaboradorsCheckList, colaboradorsCheck);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return Action.SUCCESS;
 	}
@@ -188,6 +192,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		colaboradorQuestionarios = colaboradorQuestionarioManager.getPerformance(LongUtil.arrayStringToCollectionLong(colaboradorsCheck), avaliacaoDesempenho.getId());
 		parametros = RelatorioUtil.getParametrosRelatorio("Resultado Avaliação Desempenho (" + avaliacaoDesempenho.getTitulo() + ")", getEmpresaSistema(), "Período: " + avaliacaoDesempenho.getPeriodoFormatado());
+		
+		if(colaboradorQuestionarios.isEmpty())
+		{
+			addActionMessage("Não existem respostas para o filtro informado.");
+			prepareResultado();
+			return Action.INPUT;
+		}
 		
 		if(avaliacaoDesempenho.isAnonima())
 			return "SUCCESS_ANONIMA";
@@ -213,7 +224,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		
 		} catch (ColecaoVaziaException e) 
 		{
-			addActionMessage(e.getMessage());
+			addActionMessage("Não existem respostas para o filtro informado.");
 			e.printStackTrace();
 			prepareResultado();
 			return INPUT;
