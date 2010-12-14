@@ -289,15 +289,19 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			}
 		}
 	}
+	
+	private void ajustaSolicitacao() {
+		if(solicitacao.getId() == null)
+			colaboradorQuestionario.setSolicitacao(null);
+		else
+			colaboradorQuestionario.setSolicitacao(solicitacao);
+	}
 
 	public String insertAvaliacaoExperiencia()
 	{
 		//TODO: Este metodo tambem insere o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" inserisse as respostas e nao o contrario.
-		if(solicitacao.getId() == null)
-			colaboradorQuestionario.setSolicitacao(null);
-		else
-			colaboradorQuestionario.setSolicitacao(solicitacao);
+		ajustaSolicitacao();
 		
 		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		
@@ -308,7 +312,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	{
 		//TODO: Este metodo tambem atualiza o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" atualizasse as respostas e nao o contrario. 		
-		colaboradorQuestionario.setSolicitacao(solicitacao);
+		ajustaSolicitacao();
 		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		
 		return Action.SUCCESS;
