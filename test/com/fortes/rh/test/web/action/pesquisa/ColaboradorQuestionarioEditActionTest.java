@@ -361,6 +361,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		perguntas.add(pergunta);
 		
 		action.setPerguntas(perguntas);
+		action.setColaboradorQuestionario(new ColaboradorQuestionario());
 		
 		colaboradorRespostaManager.expects(once()).method("save");
 		assertEquals("success", action.insertAvaliacaoExperiencia());
@@ -369,6 +370,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 	{
 		Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
 		action.setPerguntas(perguntas);
+		action.setColaboradorQuestionario(new ColaboradorQuestionario());
 		
 		colaboradorRespostaManager.expects(once()).method("update");
 		assertEquals("success", action.updateAvaliacaoExperiencia());

@@ -18,6 +18,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -47,6 +48,8 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     
     @ManyToOne(fetch=FetchType.LAZY)
     private Avaliacao avaliacao;
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Solicitacao solicitacao;
     
     private Double performance; // desempenho de Avaliações
     @Lob
@@ -584,5 +587,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		this.setRespondidaEm(null);
 		this.setObservacao(null);
 		this.setPerformance(null);
+	}
+
+	public Solicitacao getSolicitacao() {
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) {
+		this.solicitacao = solicitacao;
 	}
 }

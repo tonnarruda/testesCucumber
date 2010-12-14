@@ -401,8 +401,13 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().getPerformance(avaliados, avaliacaoDesempenhoId);
 	}
 
-	public Collection<ColaboradorQuestionario> findByAvaliacaoRespondidas(Long avaliacaoId) 
+	public Collection<ColaboradorQuestionario> findBySolicitacaoRespondidas(Long solicitacaoId) 
 	{
-		return getDao().findByAvaliacaoRespondidas(avaliacaoId);
+		return getDao().findBySolicitacaoRespondidas(solicitacaoId);
+	}
+
+	public Collection<Colaborador> findRespondidasBySolicitacao(Long solicitacaoid) {
+		
+		return getDao().findRespondidasBySolicitacao(solicitacaoid);
 	}
 }

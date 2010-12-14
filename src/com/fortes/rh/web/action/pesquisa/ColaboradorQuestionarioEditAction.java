@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -31,7 +32,9 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -94,6 +97,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	private TipoQuestionario tipoQuestionario = new TipoQuestionario();
 	private Solicitacao solicitacao;
+	private Map<String, Object> parametros;
 
 	public String prepareInsert() throws Exception
 	{
@@ -116,6 +120,23 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		questionario = questionarioManager.findByIdProjection(questionario.getId());
 
 		return Action.SUCCESS;
+	}
+	
+	public String imprimeRankingAvaliacao()
+	{
+		try 
+		{
+			colaboradores = colaboradorQuestionarioManager.findRespondidasBySolicitacao(solicitacao.getId());
+			Avaliacao modelo = avaliacaoManager.findById(solicitacao.getAvaliacao().getId());
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ranking de Avaliação da Solicitação", getEmpresaSistema(), "Modelo de Avaliação: " + modelo.getTitulo());
+			return Action.SUCCESS;		
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao gerar relatório.");
+			e.printStackTrace();
+			return Action.INPUT;
+		}
 	}
 
 	public String listFiltro() throws Exception
@@ -273,6 +294,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	{
 		//TODO: Este metodo tambem insere o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" inserisse as respostas e nao o contrario.
+		colaboradorQuestionario.setSolicitacao(solicitacao);
 		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		
 		return Action.SUCCESS;
@@ -282,6 +304,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	{
 		//TODO: Este metodo tambem atualiza o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" atualizasse as respostas e nao o contrario. 		
+		colaboradorQuestionario.setSolicitacao(solicitacao);
 		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		
 		return Action.SUCCESS;
@@ -600,5 +623,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setCandidatoManager(CandidatoManager candidatoManager) {
 		this.candidatoManager = candidatoManager;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }

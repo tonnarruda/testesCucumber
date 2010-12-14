@@ -39,5 +39,6 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	void clonar(Collection<ColaboradorQuestionario> participantes, AvaliacaoDesempenho avaliacaoDesempenho, boolean liberada) throws Exception;
 	Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, Boolean respondida);
 	Collection<ColaboradorQuestionario> getPerformance(Collection<Long> avaliados, Long avaliacaoDesempenhoId);
-	Collection<ColaboradorQuestionario> findByAvaliacaoRespondidas(Long avaliacaoId);
+	Collection<ColaboradorQuestionario> findBySolicitacaoRespondidas(Long solicitacaoId);
+	Collection<Colaborador> findRespondidasBySolicitacao(Long solicitacaoid);
 }

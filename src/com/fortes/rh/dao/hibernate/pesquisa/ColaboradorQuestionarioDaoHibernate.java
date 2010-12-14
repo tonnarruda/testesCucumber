@@ -23,6 +23,7 @@ import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
 @SuppressWarnings("unchecked")
@@ -615,7 +616,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 
-	public Collection<ColaboradorQuestionario> findByAvaliacaoRespondidas(Long avaliacaoId) 
+	public Collection<ColaboradorQuestionario> findBySolicitacaoRespondidas(Long solicitacaoId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 
@@ -624,12 +625,31 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.candidato.id"), "projectionCandidatoId");
 
-	    criteria.add(Expression.eq("cq.avaliacao.id", avaliacaoId));
+	    criteria.add(Expression.eq("cq.solicitacao.id", solicitacaoId));
 	    criteria.add(Expression.eq("cq.respondida", true));
 
 		criteria.setProjection(Projections.distinct(p));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
+	}
+
+	public Collection<Colaborador> findRespondidasBySolicitacao(Long solicitacaoId) {
+		
+		StringBuilder hql = new StringBuilder();
+		  hql.append("select new Colaborador(ca.nome, ca.nome, av.titulo, cq.respondidaEm, cq.performance, av.titulo) ");
+		  hql.append("from ColaboradorQuestionario as cq ");
+		  hql.append("left join cq.avaliacao as av ");
+		  hql.append("left join cq.candidato as ca ");
+		  hql.append("where ");
+		  hql.append("cq.respondida = true ");
+		  hql.append("and cq.solicitacao.id = :solicitacaoId ");
+		  		  		  
+		  hql.append("order by cq.performance desc, ca.nome asc ");
+		  
+		  Query query = getSession().createQuery(hql.toString());
+		  query.setLong("solicitacaoId", solicitacaoId);
+		  
+		  return query.list();
 	}
 }

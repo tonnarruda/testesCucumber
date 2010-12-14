@@ -59,5 +59,15 @@
 	    <action name="updateAvaliacaoSolicitacao" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="updateAvaliacaoExperiencia">
 			<result name="success" type="redirect">../../captacao/candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}</result>
 	    </action>
+	    
+		<action name="imprimeRankingAvaliacao" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="imprimeRankingAvaliacao">
+		  	<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/rankingPerformaceExperiencia.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">rankingAvaliacaoSolicitacao.pdf</param>
+			</result>
+			<result name="input" type="redirect">list.action?solicitacao.id=${solicitacao.id}</result>
+		</action>
 	</package>
 </xwork>

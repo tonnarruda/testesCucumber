@@ -61,3 +61,6 @@ ALTER TABLE cargo_atitude ADD CONSTRAINT cargo_atitude_atitude_fk FOREIGN KEY (a
 
 alter table solicitacao add column avaliacao_id bigint;--.go
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);--.go
+
+alter table colaboradorquestionario add column solicitacao_id bigint;--.go
+ALTER TABLE colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);--.go

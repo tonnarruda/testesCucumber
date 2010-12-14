@@ -542,9 +542,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setEmpresaNome(empresaNome);
 	}
 
-	
-	// aqui co.nome, co.nomeComercial, av.titulo, cq.respondidaem, cq.performance
-				   //co.nome, co.nomeComercial, av.titulo, cq.respondidaEm, cq.performance, ad.titulo
 	public Colaborador(String nome, String nomeComercial, String avaliacaoTitulo, Date respondidaEm, Double performance, String titulo)
 	{
 		this.nome = nome;
