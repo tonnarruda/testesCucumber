@@ -134,14 +134,18 @@
 		<#else>
 			<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="Selecione..." listValue="descricao" required="true" cssStyle="width: 347px;"/>
 		</#if>
-
+		
+		<#if !clone && somenteLeitura && solicitacao.avaliacao?exists && solicitacao.avaliacao.id?exists>
+			<@ww.textfield readonly="true" label="Modelo Avaliação" name="solicitacao.avaliacao.titulo" id="avaliacaoId" cssStyle="width: 347px;background: #EBEBEB;"/>
+			<@ww.hidden name="solicitacao.avaliacao.id"/>
+		<#else>
+			<@ww.select  label="Modelo Avaliação" name="solicitacao.avaliacao.id" id="avaliacaoId" list="avaliacoes" cssStyle="width: 250px;" listKey="id" listValue="titulo"  headerKey="" headerValue="" />
+		</#if>
+			
 		<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
 		<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
 		
-		<@ww.select  id="avaliacaoId" label="Modelo Avaliação" 
-			name="solicitacao.avaliacao.id" list="avaliacoes"  
-			cssStyle="width: 250px;" listKey="id" listValue="titulo"  headerKey="" headerValue="" />
-	
+		
 		<br/>
 		
 		<li>

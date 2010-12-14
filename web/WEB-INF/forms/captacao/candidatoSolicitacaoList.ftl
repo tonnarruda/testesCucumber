@@ -14,6 +14,9 @@
 	{
 		color: #008000 !important;
 	}
+	.btnTriagem, .btnInserirEtapasEmGrupo, .btnResultadoAvaliacao, .btnVoltar{
+		margin: 5px 5px 0px 0px;
+	}
 	</style>
 
 	<title>Candidatos da Seleção</title>
@@ -127,8 +130,8 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
-	<div class="buttonGroup">
-		<div style="float: left;width: 55%;">
+	<div class="buttonGroup" style="margin: 0px;">
+		<div style="float: left;width: 60%;">
 			<#if !solicitacao.encerrada>
 				<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 					<button class="btnTriagem" onclick="window.location='../candidato/prepareBuscaSimples.action?solicitacao.id=${solicitacao.id}'" accesskey="I"></button>
@@ -137,7 +140,7 @@
 				<button onclick="window.location='../historicoCandidato/prepareInsert.action?solicitacao.id=${solicitacao.id}'" class="btnInserirEtapasEmGrupo" accesskey="M"></button>
 	
 			<#if jaResponderam>
-				<button onclick="window.location='imprimeRankingAvaliacao.action?solicitacao.id=${solicitacao.id}&solicitacao.avaliacao.id=${solicitacao.avaliacao.id}'" class="btnRelatorio"></button>
+				<button onclick="window.location='imprimeRankingAvaliacao.action?solicitacao.id=${solicitacao.id}&solicitacao.avaliacao.id=${solicitacao.avaliacao.id}'" class="btnResultadoAvaliacao"></button>
 			</#if>
 	
 			<button onclick="window.location='../solicitacao/list.action'" class="btnVoltar" accesskey="V"></button>

@@ -21,6 +21,7 @@ import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
@@ -32,7 +33,6 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -204,7 +204,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public String prepareInsertAvaliacaoExperiencia()
 	{
 		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
-		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"titulo"});
+		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo", "tipoModeloAvaliacao"}, new Object[]{true, TipoModeloAvaliacao.DESEMPENHO}, new String[]{"titulo"});
 		
 		colaboradorRespostas = colaboradorQuestionarioManager.populaQuestionario(colaboradorQuestionario.getAvaliacao());
 		
@@ -218,7 +218,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		colaboradorQuestionario = colaboradorQuestionarioManager.findById(colaboradorQuestionario.getId());
 		
 		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
-		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"titulo"});
+		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo", "tipoModeloAvaliacao"}, new Object[]{true, TipoModeloAvaliacao.DESEMPENHO}, new String[]{"titulo"});
 		
 		colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
 		
