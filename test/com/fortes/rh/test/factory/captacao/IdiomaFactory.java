@@ -12,4 +12,10 @@ public class IdiomaFactory
 		idioma.setNome("nome");
 		return idioma;
 	}
+
+	public static Idioma getIdioma(long id) {
+		Idioma idioma = getIdioma();
+		idioma.setId(id);
+		return idioma;
+	}
 }

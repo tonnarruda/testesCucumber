@@ -33,6 +33,9 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.captacao.CandidatoIdioma;
+import com.fortes.rh.model.captacao.Experiencia;
+import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
@@ -49,7 +52,10 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.ExperienciaFactory;
+import com.fortes.rh.test.factory.captacao.FormacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
+import com.fortes.rh.test.factory.geral.CandidatoIdiomaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
@@ -81,6 +87,10 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock experienciaManager;
     private Mock acPessoalClientColaborador;
     private Mock parametrosDoSistemaManager;
+	private Colaborador colaborador;
+	private List<Formacao> formacoes;
+	private List<CandidatoIdioma> idiomas;
+	private List<Experiencia> experiencias;
 
 
     protected void setUp() throws Exception
@@ -501,8 +511,90 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId());
     }
+    public void testFindByAreasOrganizacionalIds() throws Exception
+    {
+    	Long[] ids = new Long[]{1L};
+    	colaboradorDao.expects(once()).method("findByAreaOrganizacionalIds").with(eq(ids)).will(returnValue(new ArrayList<Colaborador>()));
+    	
+    	assertNotNull(colaboradorManager.findByAreasOrganizacionalIds(ids));
+    }
+    
+    public void testSaveDetalhes() {
+    	// dado que
+    	dadoUmColaboradorQualquer();
+    	dadoDuasFormacoes();
+    	dadoDoisIdiomas();
+    	dadoDuasExperiencias();
+    	// quando
+    	colaboradorManager.saveDetalhes(colaborador, formacoes, idiomas, experiencias);
+    	// entao espera-se que
+    	assertQueFormacoesForamSalvas();
+    	assertQueIdiomasForamSalvos();
+    	assertQueExperienciasForamSalvas();
+    }
+    
 
-    public void testRemoveColaborador() throws Exception
+    private void assertQueExperienciasForamSalvas() {
+    	assertQueDadosDaExperienciaForamAlterados(experiencias.get(0));
+    	assertQueDadosDaExperienciaForamAlterados(experiencias.get(1));
+    	experienciaManager.verify();
+	}
+
+	private void assertQueDadosDaExperienciaForamAlterados(Experiencia experiencia) {
+		assertNull("id", experiencia.getId());
+		assertEquals("colaborador", colaborador, experiencia.getColaborador());
+		assertNull("candidato", experiencia.getCandidato());
+		assertNull("cargo", experiencia.getCargo());
+	}
+
+	private void assertQueIdiomasForamSalvos() {
+    	colaboradorIdiomaManager.verify();
+	}
+
+	private void assertQueFormacoesForamSalvas() {
+		assertQueDadosDaFormacaoForamAlterados(formacoes.get(0));
+    	assertQueDadosDaFormacaoForamAlterados(formacoes.get(1));
+    	formacaoManager.verify();
+	}
+	
+	private void assertQueDadosDaFormacaoForamAlterados(Formacao formacao) {
+		assertNull("id", formacao.getId());
+		assertEquals("colaborador", colaborador, formacao.getColaborador());
+		assertNull("candidato", formacao.getCandidato());
+	}
+
+	private void dadoDuasExperiencias() {
+    	experiencias = new ArrayList<Experiencia>();
+    	experiencias.add(ExperienciaFactory.getEntity(1L));
+    	experiencias.add(ExperienciaFactory.getEntity(2L));
+    	// esperado
+    	experienciaManager.expects(once()).method("save").with(eq(experiencias.get(0)));
+    	experienciaManager.expects(once()).method("save").with(eq(experiencias.get(1)));
+	}
+
+	private void dadoDoisIdiomas() {
+    	idiomas = new ArrayList<CandidatoIdioma>();
+    	idiomas.add(CandidatoIdiomaFactory.getCandidatoIdioma(1L));
+    	idiomas.add(CandidatoIdiomaFactory.getCandidatoIdioma(2L));
+    	// esperado
+    	colaboradorIdiomaManager.expects(once()).method("save").with(ANYTHING); // codigo instancia novos idiomas
+    	colaboradorIdiomaManager.expects(once()).method("save").with(ANYTHING); // codigo instancia novos idiomas
+	}
+
+	private void dadoDuasFormacoes() {
+    	formacoes = new ArrayList<Formacao>();
+    	formacoes.add(FormacaoFactory.getEntity(1L));
+    	formacoes.add(FormacaoFactory.getEntity(2L));
+    	// esperado
+    	formacaoManager.expects(once()).method("save").with(eq(formacoes.get(0)));
+    	formacaoManager.expects(once()).method("save").with(eq(formacoes.get(1)));
+	}
+
+	private void dadoUmColaboradorQualquer() {
+		colaborador = ColaboradorFactory.getEntity(14L);
+	}
+
+	public void testRemoveColaborador() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	empresa.setAcIntegra(true);

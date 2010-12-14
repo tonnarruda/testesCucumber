@@ -29,7 +29,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.model.type.File;
 import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
@@ -1940,4 +1939,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setDataAtualizacao(Date dataAtualizacao) {
 		this.dataAtualizacao = dataAtualizacao;
 	}
+
+	/**
+	 * Verifica se este colaborador já foi um candidato
+	 */
+	public boolean jaFoiUmCandidato() {
+		return (candidato != null && candidato.getId() != null);
+	}
+	
 }

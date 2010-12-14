@@ -195,4 +195,12 @@ public class Formacao extends AbstractModel implements Serializable
 						this.candidato).append("conclusao", this.conclusao)
 				.toString();
 	}
+
+	public void atualizaColaboradorECandidato(Colaborador colaborador) {
+		this.colaborador = colaborador;
+		if (colaborador.jaFoiUmCandidato())
+			this.candidato = colaborador.getCandidato();
+		else
+			this.candidato = null;
+	}
 }

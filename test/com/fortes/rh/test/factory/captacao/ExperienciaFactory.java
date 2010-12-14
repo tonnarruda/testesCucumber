@@ -15,4 +15,10 @@ public class ExperienciaFactory
 
 		return experiencia;
 	}
+
+	public static Experiencia getEntity(long id) {
+		Experiencia exp = getEntity();
+		exp.setId(id);
+		return exp;
+	}
 }

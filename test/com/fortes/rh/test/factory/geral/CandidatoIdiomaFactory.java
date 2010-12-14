@@ -14,4 +14,10 @@ public class CandidatoIdiomaFactory
 
 		return candidatoIdioma;
 	}
+
+	public static CandidatoIdioma getCandidatoIdioma(long id) {
+		CandidatoIdioma idioma = getCandidatoIdioma();
+		idioma.setId(id);
+		return idioma;
+	}
 }

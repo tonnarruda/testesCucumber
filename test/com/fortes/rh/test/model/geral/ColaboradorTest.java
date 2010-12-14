@@ -1,5 +1,6 @@
 package com.fortes.rh.test.model.geral;
 
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -26,5 +27,22 @@ public class ColaboradorTest extends TestCase {
 		
 		colaborador = new Colaborador();
 		assertEquals("", colaborador.getNomeComercialEmpresa());
-	}	
+	}
+	
+	public void testDeveriaJaTerSidoUmCandidato() {
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setCandidato(new Candidato(1L, null));
+		
+		assertTrue("deveria ser candidato", colaborador.jaFoiUmCandidato());
+		
+	}
+	
+	public void testDeveriaNaoSerUmCandidato() { 
+		
+		Colaborador colaborador = new Colaborador();
+		
+		assertFalse("deveria nao ser candidato", colaborador.jaFoiUmCandidato());
+	}
+	
 }

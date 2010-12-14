@@ -230,4 +230,16 @@ public class Experiencia extends AbstractModel implements Serializable
 	public void setMotivoSaida(String motivoSaida) {
 		this.motivoSaida = motivoSaida;
 	}
+
+	public void atualizaColaboradorECandidato(Colaborador colaborador) {
+		this.colaborador = colaborador;
+		if (colaborador.jaFoiUmCandidato())
+			this.candidato = colaborador.getCandidato();
+		else
+			this.candidato = null;
+	}
+
+	public boolean possuiCargo() {
+		return !(cargo == null || cargo.getId() == null);
+	}
 }

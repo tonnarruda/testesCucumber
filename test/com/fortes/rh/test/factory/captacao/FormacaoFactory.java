@@ -15,4 +15,10 @@ public class FormacaoFactory
 
 		return formacao;
 	}
+
+	public static Formacao getEntity(long id) {
+		Formacao entity = getEntity();
+		entity.setId(id);
+		return entity;
+	}
 }

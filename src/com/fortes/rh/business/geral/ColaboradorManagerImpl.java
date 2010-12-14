@@ -419,11 +419,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			for (Formacao f : formacaos)
 			{
 				f.setId(null);
-				f.setColaborador(colaborador);
-				if (colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null)
-					f.setCandidato(colaborador.getCandidato());
-				else
-					f.setCandidato(null);
+				f.atualizaColaboradorECandidato(colaborador);
 
 				formacaoManager.save(f);
 			}
@@ -448,14 +444,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			for (Experiencia e : experiencias)
 			{
 				e.setId(null);
-				e.setColaborador(colaborador);
-
-				if (colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null)
-					e.setCandidato(colaborador.getCandidato());
-				else
-					e.setCandidato(null);
-
-				if (e.getCargo() == null || e.getCargo().getId() == null)
+				e.atualizaColaboradorECandidato(colaborador);
+				
+				if (!e.possuiCargo())
 					e.setCargo(null);
 
 				experienciaManager.save(e);
