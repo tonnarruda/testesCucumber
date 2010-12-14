@@ -63,14 +63,8 @@ public class HabilidadeEditAction extends MyActionSupportList
 	
 	public String delete() throws Exception
 	{
-		try {
-			habilidadeManager.remove(habilidade.getId());
-			addActionMessage("Habilidade excluída com sucesso.");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			addActionError("Não foi possível excluir esta habilidade.");
-		}
+		habilidadeManager.remove(habilidade.getId());
+		addActionMessage("Habilidade excluída com sucesso.");
 
 		return Action.SUCCESS;
 	}

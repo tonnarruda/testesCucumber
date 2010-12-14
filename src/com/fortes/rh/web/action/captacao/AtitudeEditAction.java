@@ -64,16 +64,8 @@ public class AtitudeEditAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		try
-		{
-			atitudeManager.remove(atitude.getId());
-			addActionMessage("Atitude excluído com sucesso.");
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			addActionError("Não foi possível excluir esta atitude.");
-		}
+		atitudeManager.remove(atitude.getId());
+		addActionMessage("Atitude excluído com sucesso.");
 
 		return Action.SUCCESS;
 	}

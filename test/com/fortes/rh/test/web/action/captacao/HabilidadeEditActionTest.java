@@ -7,14 +7,10 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
-import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
-import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Habilidade;
-import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
-import com.fortes.rh.web.action.captacao.AtitudeEditAction;
 import com.fortes.rh.web.action.captacao.HabilidadeEditAction;
 
 public class HabilidadeEditActionTest extends MockObjectTestCase
@@ -91,7 +87,14 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		action.setHabilidade(Habilidade);
 		
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		assertEquals("success", action.delete());
+		
+		try {
+			action.delete();
+		} catch (Exception e) {
+			return;
+		}
+		
+		fail("Deveria ter lançado uma exceçao");
 	}
 
 	public void testInsert() throws Exception

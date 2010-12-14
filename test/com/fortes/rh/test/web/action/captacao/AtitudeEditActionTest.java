@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.model.captacao.Atitude;
-import com.fortes.rh.model.captacao.EmpresaBds;
-import com.fortes.rh.model.captacao.Habilidade;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.web.action.captacao.AtitudeEditAction;
@@ -91,7 +87,13 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setAtitude(atitude);
 		
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		assertEquals("success", action.delete());
+		try {
+			action.delete();
+		} catch (Exception e) {
+			return;
+		}
+		
+		fail("Deveria ter lançado uma exceçao");
 	}
 
 	public void testInsert() throws Exception

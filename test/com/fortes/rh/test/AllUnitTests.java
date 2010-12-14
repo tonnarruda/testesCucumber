@@ -347,6 +347,7 @@ import com.fortes.rh.test.web.action.captacao.AnuncioListActionTest;
 import com.fortes.rh.test.web.action.captacao.AtitudeEditActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoListActionTest;
+import com.fortes.rh.test.web.action.captacao.ConhecimentoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.EmpresaBdsEditActionTest;
 import com.fortes.rh.test.web.action.captacao.EmpresaBdsListActionTest;
 import com.fortes.rh.test.web.action.captacao.EtapaSeletivaEditActionTest;
@@ -537,6 +538,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CandidatoManagerTest.class);
         suite.addTestSuite(CandidatoEditActionTest.class);
         suite.addTestSuite(CandidatoListActionTest.class);
+        suite.addTestSuite(ConhecimentoEditActionTest.class);
         suite.addTestSuite(ConhecimentoDaoHibernateTest.class);
         suite.addTestSuite(ConhecimentoManagerTest.class);
         suite.addTestSuite(AtitudeEditActionTest.class);
