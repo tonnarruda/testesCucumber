@@ -294,7 +294,11 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	{
 		//TODO: Este metodo tambem insere o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" inserisse as respostas e nao o contrario.
-		colaboradorQuestionario.setSolicitacao(solicitacao);
+		if(solicitacao.getId() == null)
+			colaboradorQuestionario.setSolicitacao(null);
+		else
+			colaboradorQuestionario.setSolicitacao(solicitacao);
+		
 		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		
 		return Action.SUCCESS;

@@ -31,6 +31,7 @@ import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -273,8 +274,11 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		action.setOpcaoResultado("avaliador");
 		
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+		colaboradorQuestionarios.add(ColaboradorQuestionarioFactory.getEntity(1L));
+		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorQuestionarioManager.expects(once()).method("getPerformance").will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		colaboradorQuestionarioManager.expects(once()).method("getPerformance").will(returnValue(colaboradorQuestionarios));
 		
 		assertEquals("success", action.resultado());
 	}
@@ -286,10 +290,32 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		action.setOpcaoResultado("avaliador");
 		
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+		colaboradorQuestionarios.add(ColaboradorQuestionarioFactory.getEntity(1L));
+		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorQuestionarioManager.expects(once()).method("getPerformance").will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		colaboradorQuestionarioManager.expects(once()).method("getPerformance").will(returnValue(colaboradorQuestionarios));
 		
 		assertEquals("SUCCESS_ANONIMA", action.resultado());
+	}
+
+	public void testResultadoPorAvaliadorAnonimoException() throws Exception
+	{
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
+		avaliacaoDesempenho.setAnonima(true);
+		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		
+		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		action.setOpcaoResultado("avaliador");
+		
+		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
+		colaboradorQuestionarioManager.expects(once()).method("getPerformance").will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+
+		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+		
+		assertEquals("input", action.resultado());
 	}
 	
 	public void testResultadoPorCriterio() throws Exception
