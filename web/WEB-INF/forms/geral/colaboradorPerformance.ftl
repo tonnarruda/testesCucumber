@@ -158,8 +158,8 @@
 	
 	<#assign i = 0/>
 	
-	<#list configuracaoCampoExtras as configuracaoCampoExtra>
 	<tr rowspan="2">
+	<#list configuracaoCampoExtras as configuracaoCampoExtra>
 	<td>
 		
 		<b> ${configuracaoCampoExtras[i].titulo}:</b>  
@@ -246,8 +246,11 @@
 			
 				
 	</td>
-	</tr>
 		<#assign i = i + 1/>
+		
+	<#if i % 3 == 0>
+		</tr>
+	</#if>
 	</#list>
 	
 </table>
