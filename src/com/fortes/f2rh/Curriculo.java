@@ -1,8 +1,6 @@
 package com.fortes.f2rh;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class Curriculo {
 	
@@ -20,6 +18,8 @@ public class Curriculo {
 	private String estado_civil;
 	private String sexo;
 	private String escolaridade_rh;
+	private String telefone_rh;
+	private String ddd_rh;
 	private String area_formacao;
 	private String curso;
 	private String observacoes_complementares;
@@ -28,7 +28,6 @@ public class Curriculo {
 	
 	private BigDecimal salario;
 	private User user;
-	private Collection<CurriculoTelefone> curriculo_telefones;
 
 	@Override
 	public int hashCode() {
@@ -88,14 +87,6 @@ public class Curriculo {
 		this.user = user;
 	}
 
-	public Collection<CurriculoTelefone> getCurriculo_telefones() {
-		return curriculo_telefones;
-	}
-
-	public void setCurriculo_telefones(
-			ArrayList<CurriculoTelefone> curriculo_telefones) {
-		this.curriculo_telefones = curriculo_telefones;
-	}
 
 	public String getNome() {
 		return nome;
@@ -231,5 +222,21 @@ public class Curriculo {
 
 	public void setData_nascimento_rh(String dataNascimentoRh) {
 		data_nascimento_rh = dataNascimentoRh;
+	}
+
+	public String getTelefone_rh() {
+		return telefone_rh;
+	}
+
+	public void setTelefone_rh(String telefoneRh) {
+		telefone_rh = telefoneRh;
+	}
+
+	public String getDdd_rh() {
+		return ddd_rh;
+	}
+
+	public void setDdd_rh(String dddRh) {
+		ddd_rh = dddRh;
 	}
 }

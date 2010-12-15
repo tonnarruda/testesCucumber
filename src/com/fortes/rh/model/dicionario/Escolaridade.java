@@ -3,10 +3,9 @@ package com.fortes.rh.model.dicionario;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class Escolaridade extends LinkedHashMap<String,String>
-{
+public class Escolaridade extends LinkedHashMap<String, String> {
 	private static final long serialVersionUID = -8052661735365734073L;
-	
+
 	private static final String ANALFABETO = "01";
 	private static final String PRIMARIO_INCOMPLETO = "02";
 	private static final String PRIMARIO_COMPLETO = "03";
@@ -20,8 +19,7 @@ public class Escolaridade extends LinkedHashMap<String,String>
 	private static final String DOUTORADO = "11";
 	private static final String ESPECIALIZACAO = "12";
 
-	public Escolaridade()
-	{
+	public Escolaridade() {
 		put(ANALFABETO, "Sem escolaridade");
 		put(PRIMARIO_INCOMPLETO, "Ensino Fundamental Incompleto (até 5ºano)");
 		put(PRIMARIO_COMPLETO, "Ensino Fundamental Completo (até 5ºano)");
@@ -34,10 +32,37 @@ public class Escolaridade extends LinkedHashMap<String,String>
 		put(ESPECIALIZACAO, "Especialização");
 		put(MESTRADO, "Mestrado");
 		put(DOUTORADO, "Doutorado");
-	} 
-	
-	public static String getEscolaridadeF2rh(String chave)
+	}
+
+	public static String bindF2rh(String chave) 
 	{
+		try {
+			HashMap<String, String> convert = new HashMap<String, String>();
+			convert.put("Não Alfabetizado", ANALFABETO);
+			convert.put("Ensino Fundamental (1º Grau) Incompleto", GINASIO_INCOMPLETO);
+			convert.put("Ensino Fundamental (1º Grau) Completo", GINASIO_COMPLETO);
+			convert.put("Ensino Médio (2º Grau) Incompleto", COLEGIAL_INCOMPLETO);
+			convert.put("Ensino Médio Técnico (2º Grau) Incompleto", COLEGIAL_INCOMPLETO);
+			convert.put("Ensino Médio (2º Grau) Completo", COLEGIAL_COMPLETO);
+			convert.put("Ensino Médio Técnico (2º Grau) Completo", COLEGIAL_COMPLETO);
+			convert.put("Superior Incompleto", SUPERIOR_INCOMPLETO);
+			convert.put("Superior Completo", SUPERIOR_COMPLETO);
+			convert.put("Pós-graduação Incompleta", SUPERIOR_COMPLETO);
+			convert.put("Pós-graduação Completa", ESPECIALIZACAO);
+			convert.put("Mestrado Incompleto", SUPERIOR_COMPLETO);
+			convert.put("Mestrado Completo", MESTRADO);
+			convert.put("Doutorado Incompleto", MESTRADO);
+			convert.put("Doutorado Completo", DOUTORADO);
+			
+			return convert.get(chave);
+			
+		} catch (Exception e) {
+			return "";
+		}
+		
+	}
+
+	public static String getEscolaridadeF2rh(String chave) {
 		try {
 			HashMap<String, String> convert = new HashMap<String, String>();
 			convert.put(ANALFABETO, "Não Alfabetizado");
@@ -52,9 +77,9 @@ public class Escolaridade extends LinkedHashMap<String,String>
 			convert.put(ESPECIALIZACAO, "Pós-graduação");
 			convert.put(MESTRADO, "Mestrado");
 			convert.put(DOUTORADO, "Doutorado");
-		
+
 			return convert.get(chave);
-			
+
 		} catch (Exception e) {
 			return "";
 		}
