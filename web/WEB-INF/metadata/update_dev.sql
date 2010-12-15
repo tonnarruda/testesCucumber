@@ -64,3 +64,5 @@ ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_avaliacao_fk FOREIGN KEY (ava
 
 alter table colaboradorquestionario add column solicitacao_id bigint;--.go
 ALTER TABLE colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);--.go
+
+update papel set nome = 'Modelos de Avaliação do Candidato' where id = 492;--.go
