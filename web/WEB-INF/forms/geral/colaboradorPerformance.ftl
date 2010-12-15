@@ -12,6 +12,15 @@
 		border:1px solid #7E9DB9;
 		width: 100%;
 	}
+	.grade td {
+		line-height: 20px;
+		vertical-align: top;	
+	}
+	.grade .grade_field {
+		float: left;
+		width: 32%;
+		padding: 2px 4px;
+	}	
 	ul#sortable li {
 		margin: 20px 0;
 		background: #FFF;
@@ -86,174 +95,104 @@
 <span id="exibir">
 	<strong>Identificação do Colaborador</strong>
 </span>
-<table class="grade" id="conteudo">
-	<tr>
-		<td colspan="2">
-			<strong>Nome:</strong> ${colaborador.nome}
-		</td>
-		<td>
-			<strong>Admissão:</strong> ${colaborador.dataAdmissao}
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.cargo?exists>${historicoColaborador.faixaSalarial.cargo.nome}</#if>
-		</td>
-		<td>
-			<strong>Estado Civil:</strong> ${colaborador.pessoal.getEstadoCivilDic()}
-		</td>
-		<td>
-			<strong>Escolaridade:</strong> ${colaborador.pessoal.getEscolaridadeDic()}
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<strong>Endereço:</strong> ${colaborador.endereco.enderecoFormatado}
-		</td>
-		<td>
-			<strong>Bairro:</strong> ${colaborador.endereco.bairro}
-		</td>
-	</tr>
-	<tr rowspan="2">
-		<#if colaborador.endereco?exists && colaborador.endereco.cidade?exists && colaborador.endereco.cidade.nome?exists>
-			<td>
-				<strong>Cidade/Estado:</strong> ${colaborador.endereco.cidade.nome} / ${colaborador.endereco.uf.sigla}
-			</td>
-		</#if>
-		<#if colaborador.contato?exists && colaborador.contato.foneFixo?exists>
-			<td>
-				<strong>Telefone:</strong> (${colaborador.contato.ddd}) ${colaborador.contato.foneFixoFormatado}
-			</td>
-		</#if>
-		
-		<#if colaborador.contato?exists && colaborador.contato.foneCelular?exists>
-			<td>
-				<strong>Celular:</strong> (${colaborador.contato.ddd}) ${colaborador.contato.foneCelularFormatado}
-			</td>
-		</#if>
-	</tr>
-	<tr rowspan="2">
-		<td>
-			<strong>CEP:</strong> ${colaborador.endereco.cepFormatado}
-		</td>
-	
-		<#if colaborador.pessoal?exists && colaborador.pessoal.conjuge?exists && colaborador.pessoal.conjuge != "">
-			<td>
-				<strong>Cônjuge:</strong> ${colaborador.pessoal.conjuge}
-			</td>
-			<td>
-				<strong>Cônjuge Trabalha:</strong> <#if colaborador.pessoal.conjugeTrabalha>Sim<#else>Não</#if>
-			</td>
-		</#if>
-	</tr>
-	
-	<tr rowspan="2">
-		<td>
-			<strong>Deficiência:</strong> ${colaborador.pessoal.deficienciaDescricao}
-		</td>
-		<td>
-			<strong>Vínculo:</strong> ${colaborador.vinculoDescricao}
-		</td>
-	</tr>
+<div class='grade'>
+	<div class='grade_field'><strong>Nome:</strong> ${colaborador.nome}</div>
+	<div class='grade_field'><strong>Admissão:</strong> ${colaborador.dataAdmissao}</div>
+	<div class='grade_field'><strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.cargo?exists>${historicoColaborador.faixaSalarial.cargo.nome}</#if></div>
+	<div class='grade_field'><strong>Estado Civil:</strong> ${colaborador.pessoal.getEstadoCivilDic()}</div>
+	<div class='grade_field'><strong>Escolaridade:</strong> ${colaborador.pessoal.getEscolaridadeDic()}</div>
+	<div class='grade_field'><strong>Bairro:</strong> ${colaborador.endereco.bairro}</div>
+	<div class='grade_field'><strong>Endereço:</strong> ${colaborador.endereco.enderecoFormatado}</div>
+	<#if colaborador.endereco?exists && colaborador.endereco.cidade?exists && colaborador.endereco.cidade.nome?exists>
+		<div class='grade_field'><strong>Cidade/Estado:</strong> ${colaborador.endereco.cidade.nome} / ${colaborador.endereco.uf.sigla}</div>
+	</#if>
+	<div class='grade_field'><strong>CEP:</strong> ${colaborador.endereco.cepFormatado}</div>
+	<#if colaborador.contato?exists && colaborador.contato.foneFixo?exists>
+		<div class='grade_field'><strong>Telefone:</strong> (${colaborador.contato.ddd}) ${colaborador.contato.foneFixoFormatado}</div>
+	</#if>
+	<#if colaborador.contato?exists && colaborador.contato.foneCelular?exists>
+		<div class='grade_field'><strong>Celular:</strong> (${colaborador.contato.ddd}) ${colaborador.contato.foneCelularFormatado}</div>
+	</#if>
+	<#if colaborador.pessoal?exists && colaborador.pessoal.conjuge?exists && colaborador.pessoal.conjuge != "">
+		<div class='grade_field'><strong>Cônjuge:</strong> ${colaborador.pessoal.conjuge}</div>
+		<div class='grade_field'><strong>Cônjuge Trabalha:</strong> <#if colaborador.pessoal.conjugeTrabalha>Sim<#else>Não</#if></div>
+	</#if>
+	<div class='grade_field'><strong>Deficiência:</strong> ${colaborador.pessoal.deficienciaDescricao}</div>
+	<div class='grade_field'><strong>Vínculo:</strong> ${colaborador.vinculoDescricao}</div>
 	
 	<#assign i = 0/>
-	
-	<tr rowspan="2">
 	<#list configuracaoCampoExtras as configuracaoCampoExtra>
-	<td>
-		
-		<b> ${configuracaoCampoExtras[i].titulo}:</b>  
-					
-			<#if colaborador.camposExtras.texto1?exists && configuracaoCampoExtras[i].nome == "texto1" >
-			${colaborador.camposExtras.texto1}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.texto2?exists && configuracaoCampoExtras[i].nome == "texto2">
-			${colaborador.camposExtras.texto2}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.texto3?exists && configuracaoCampoExtras[i].nome == "texto3">
-			${colaborador.camposExtras.texto3}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.texto4?exists && configuracaoCampoExtras[i].nome == "texto4">
-			${colaborador.camposExtras.texto4}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.texto5?exists && configuracaoCampoExtras[i].nome == "texto5">
-			${colaborador.camposExtras.texto5}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.texto6?exists && configuracaoCampoExtras[i].nome == "texto6">
-			${colaborador.camposExtras.texto6}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.texto7?exists && configuracaoCampoExtras[i].nome == "texto7">
-			${colaborador.camposExtras.texto7}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.texto8?exists && configuracaoCampoExtras[i].nome == "texto8">
-			${colaborador.camposExtras.texto8}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.texto9?exists && configuracaoCampoExtras[i].nome == "texto9">
-			${colaborador.camposExtras.texto9}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.texto10?exists && configuracaoCampoExtras[i].nome == "texto10">
-			${colaborador.camposExtras.texto10}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.data1?exists && configuracaoCampoExtras[i].nome == "data1">
-			${colaborador.camposExtras.data1}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.data2?exists && configuracaoCampoExtras[i].nome == "data2">
-			${colaborador.camposExtras.data2}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.data3?exists && configuracaoCampoExtras[i].nome == "data3">
-			${colaborador.camposExtras.data3}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.valor1?exists && configuracaoCampoExtras[i].nome == "valor1">
-			${colaborador.camposExtras.valor1}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.valor2?exists && configuracaoCampoExtras[i].nome == "valor2">
-			${colaborador.camposExtras.valor2}
-			<br>
-			</#if>
-			
-			<#if colaborador.camposExtras.numero1?exists && configuracaoCampoExtras[i].nome == "numero1">
-			${colaborador.camposExtras.numero1}
-			<br>
-			</#if>
-			
+	<div class='grade_field'><strong>${configuracaoCampoExtras[i].titulo}: </strong>  
 				
-	</td>
-		<#assign i = i + 1/>
+		<#if colaborador.camposExtras.texto1?exists && configuracaoCampoExtras[i].nome == "texto1" >
+			${colaborador.camposExtras.texto1}<br>
+		</#if>
 		
-	<#if i % 3 == 0>
-		</tr>
-	</#if>
+		<#if colaborador.camposExtras.texto2?exists && configuracaoCampoExtras[i].nome == "texto2">
+			${colaborador.camposExtras.texto2}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.texto3?exists && configuracaoCampoExtras[i].nome == "texto3">
+			${colaborador.camposExtras.texto3}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.texto4?exists && configuracaoCampoExtras[i].nome == "texto4">
+			${colaborador.camposExtras.texto4}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.texto5?exists && configuracaoCampoExtras[i].nome == "texto5">
+			${colaborador.camposExtras.texto5}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.texto6?exists && configuracaoCampoExtras[i].nome == "texto6">
+			${colaborador.camposExtras.texto6}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.texto7?exists && configuracaoCampoExtras[i].nome == "texto7">
+			${colaborador.camposExtras.texto7}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.texto8?exists && configuracaoCampoExtras[i].nome == "texto8">
+			${colaborador.camposExtras.texto8}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.texto9?exists && configuracaoCampoExtras[i].nome == "texto9">
+			${colaborador.camposExtras.texto9}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.texto10?exists && configuracaoCampoExtras[i].nome == "texto10">
+			${colaborador.camposExtras.texto10}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.data1?exists && configuracaoCampoExtras[i].nome == "data1">
+			${colaborador.camposExtras.data1}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.data2?exists && configuracaoCampoExtras[i].nome == "data2">
+			${colaborador.camposExtras.data2}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.data3?exists && configuracaoCampoExtras[i].nome == "data3">
+			${colaborador.camposExtras.data3}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.valor1?exists && configuracaoCampoExtras[i].nome == "valor1">
+			${colaborador.camposExtras.valor1}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.valor2?exists && configuracaoCampoExtras[i].nome == "valor2">
+			${colaborador.camposExtras.valor2}<br>
+		</#if>
+		
+		<#if colaborador.camposExtras.numero1?exists && configuracaoCampoExtras[i].nome == "numero1">
+			${colaborador.camposExtras.numero1}<br>
+		</#if>
+	</div>
+	<#assign i = i + 1/>
 	</#list>
 	
-</table>
+	<br style='clear: both'>
+</div>
 
 <br>
 <div class="painelConfiguracao">
