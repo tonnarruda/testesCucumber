@@ -105,7 +105,12 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		// Experiencia
 		if( parametros.get("experiencias") != null && !parametros.get("tempoExperiencia").equals("") && !parametros.get("tempoExperiencia").equals("0"))
 		{
-			Collection<Candidato> candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, empresaId);
+			Collection<Candidato> candidatosExperiencia;
+			if (empresaId == -1L)
+				candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, null);
+			else			
+				candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, empresaId);
+			
 			candidatos = new ArrayList<Candidato>();
 
 			for (Candidato candidato : candidatosExperiencia)
@@ -135,7 +140,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		if(candidatos != null && candidatos.size() == 0)
 			retorno = null;
 		else
-			retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao);
+		{
+			if (empresaId != -1)
+				retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao);
+			else
+				retorno = getDao().findBusca(parametros, null, idsCandidatos, somenteSemSolicitacao);
+			
+		}
 
 		return retorno;
 	}

@@ -19,6 +19,7 @@
 		<#assign actionInserir="prepareEnviarForm();"/>
 	</#if>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
@@ -33,6 +34,19 @@
 	<style type="text/css">#menuBusca a.ativaAvancada{color: #FFCB03;}</style>
 
 	<script type="text/javascript">
+		function populaCargosConhecimentos(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
+			CargoDWR.getByEmpresa(createListCargos, empresaId);
+			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId);
+		}
+	
+		function createListCargos(data)
+		{
+			addChecks('cargosCheck',data)
+		}
+
 		function populaBairros()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -75,6 +89,8 @@
 			<#if BDS?exists && !BDS>
 				window.location = "prepareBusca.action?solicitacao.id=${solicitacao.id}&empresaId="+empresaId;
 			</#if>
+			
+			populaCargosConhecimentos(empresaId);
 		}
 
 		function limparFiltro()
@@ -135,7 +151,7 @@
 		<@ww.form name="formBusca" id="formBusca" action="busca.action" onsubmit="${validarCampos}" method="POST">
 
 			<#if BDS?exists && !BDS>
-				<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" onchange="enviaEmpresa(this.value)" liClass="liLeft"/>
+				<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" onchange="enviaEmpresa(this.value)" liClass="liLeft" headerKey="-1" headerValue="Todas"/>
 			</#if>
 
 			<@ww.hidden name="BDS"/>

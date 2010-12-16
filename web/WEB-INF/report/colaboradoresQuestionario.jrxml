@@ -35,13 +35,28 @@
 	<field name="respondida" class="java.lang.Boolean"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
-		<variableExpression><![CDATA[$F{colaborador.nomeComercial}]]></variableExpression>
+		<variableExpression><![CDATA[$F{colaborador.empresa.nome}]]></variableExpression>
 	</variable>
 
 		<group  name="grpEmpresa" isReprintHeaderOnEachPage="true" >
 			<groupExpression><![CDATA[$F{colaborador.empresa.nome}]]></groupExpression>
 			<groupHeader>
 			<band height="16"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="2"
+						width="537"
+						height="12"
+						backcolor="#EEEEEE"
+						key="rectangle-1"
+						stretchType="RelativeToBandHeight"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="RelativeToBandHeight" pen="None"/>
+				</rectangle>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
@@ -159,21 +174,6 @@
 		</columnHeader>
 		<detail>
 			<band height="15"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="3"
-						width="537"
-						height="12"
-						backcolor="#EEEEEE"
-						key="rectangle-1"
-						stretchType="RelativeToBandHeight"
-						positionType="Float">
-							<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
-						</reportElement>
-					<graphicElement stretchType="RelativeToBandHeight" pen="None"/>
-				</rectangle>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="9"

@@ -19,7 +19,7 @@ import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 public interface CandidatoDao extends GenericDao<Candidato>
 {
     public Candidato findByCPF(String cpf, Long empresaId, Long candidatoId);
-	public Collection<Candidato> findBusca(Map parametros, long empresa, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao) throws Exception;
+	public Collection<Candidato> findBusca(Map parametros, Long empresa, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao) throws Exception;
 	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
 	public Integer getCount(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
 	public Collection<Candidato> findCandidatosById(Long[] ids);
@@ -36,7 +36,7 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public List findAreaInteressesByCandidatoId(Long candidatoId);
 	public void atualizaTextoOcr(Candidato candidato);
 	public Collection<Candidato> getCandidatosByNome(String candidatoNome);
-	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, long empresa);
+	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, Long empresa);
 	public void updateSenha(Long candidatoId, String senha, String novaSenha);
 	Integer getCount(Map parametros, long empresaId);
 	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds);
