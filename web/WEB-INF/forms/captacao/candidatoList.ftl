@@ -11,6 +11,16 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	<#include "../ftl/showFilterImports.ftl" />
 	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript">
+		jQuery(function($) {
+			$('#help_exibeExterno').qtip({
+				content: '<strong>Módulo externo</strong><br />Esse campo filtrara apenas os currículos que foram cadastrados através do site, pelo link Trabalhe Conosco.'
+				, style: { width: '100px' }
+			});
+		});
+	</script>
+	
 	<#if dataCadIni?exists>
 		<#assign dataValueIni = dataCadIni?date/>
 	<#else>
@@ -48,7 +58,9 @@
 			<@ww.hidden id="pagina" name="page"/>
 			
 			<@ww.checkbox label="Exibir também contratados" id="exibeContratados" name="exibeContratados" labelPosition="left"/>
-			<@ww.checkbox label="Exibir somente cadastrados pelo módulo externo" id="exibeExterno" name="exibeExterno" labelPosition="left"/>
+			<@ww.checkbox label="" id="exibeExterno" name="exibeExterno" labelPosition="left" theme="simple" />
+			Exibir somente cadastrados pelo módulo externo
+			<span class="hotspot" id="help_exibeExterno" ><img src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /></span><br>
 
 			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 		</@ww.form>
