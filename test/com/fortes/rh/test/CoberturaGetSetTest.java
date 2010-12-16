@@ -2,6 +2,7 @@ package com.fortes.rh.test;
 
 import java.lang.reflect.Method;
 
+import org.apache.log4j.Logger;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.model.acesso.Papel;
@@ -455,6 +456,9 @@ import com.fortes.rh.web.action.thumb.ThumbnailAction;
 
 public class CoberturaGetSetTest extends MockObjectTestCase
 {
+	
+	private static final Logger log = Logger.getLogger(CoberturaGetSetTest.class.getSimpleName());
+	
 	public void testCobreGetSet()
 	{
 		cobreGetSet(new Papel());
@@ -949,7 +953,8 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+//				e.printStackTrace();
+				log.warn("Erro ao cobrir método " + m + " da classe " + obj.getClass().getSimpleName());
 			}
 		}
 	}

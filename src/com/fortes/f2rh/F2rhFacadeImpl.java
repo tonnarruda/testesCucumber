@@ -1,5 +1,4 @@
 package com.fortes.f2rh;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -7,7 +6,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 
@@ -26,9 +24,8 @@ public class F2rhFacadeImpl implements F2rhFacade {
 
 			JSONArray arr = JSONArray.fromObject(config.getJson(), jsonConfig);
 			cus = (ArrayList<Curriculo>) JSONArray.toList(arr, Curriculo.class);
-			//cu = (Curriculo) JSONObject.toBean(json, Curriculo.class);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		
 		curriculos.addAll(cus);
@@ -36,7 +33,8 @@ public class F2rhFacadeImpl implements F2rhFacade {
 	}
 	
 
-	public String find_f2rh(ConfigF2RH config) {
+	public String find_f2rh(ConfigF2RH config) throws Exception 
+	{
 		HttpClient client = new HttpClient();
 		GetMethod get = new GetMethod( config.getUrl() );
 		get.setQueryString(prepareParams(config.getConsulta()));
@@ -44,13 +42,13 @@ public class F2rhFacadeImpl implements F2rhFacade {
 		try {
 			client.executeMethod( get );
 			obj = get.getResponseBodyAsString();
-		} catch (HttpException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			throw e;
 		} finally {
 			get.releaseConnection();
 		}
+		
 		return  obj;
 	}
 	
@@ -69,22 +67,14 @@ public class F2rhFacadeImpl implements F2rhFacade {
 	}
 
 
-	public Collection<Curriculo> buscarCurriculos(String[] consulta) 
+	public Collection<Curriculo> buscarCurriculos(String[] consulta) throws Exception 
 	{
-		Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
-		try {
-			F2rhFacade f2rhFacade = new F2rhFacadeImpl();
-			
-			ConfigF2RH config = new ConfigF2RH(consulta);
-			
-			config.setJson(f2rhFacade.find_f2rh(config));
-			
-			curriculos = f2rhFacade.obterCurriculos(config);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		F2rhFacade f2rhFacade = new F2rhFacadeImpl();
 		
-		return curriculos;
+		ConfigF2RH config = new ConfigF2RH(consulta);		
+		config.setJson(f2rhFacade.find_f2rh(config));
+		
+		return f2rhFacade.obterCurriculos(config);
 	}
 
 
