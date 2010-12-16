@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 
 @SuppressWarnings("unchecked")
@@ -20,7 +21,12 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		Criteria criteria = getSession().createCriteria(Avaliacao.class, "a");
 		
 		criteria.add(Expression.eq("a.empresa.id", empresaId));
-		criteria.add(Expression.eq("a.tipoModeloAvaliacao", modeloAvaliacao));
+		
+		boolean modeloDeDesempenho = TipoModeloAvaliacao.DESEMPENHO == modeloAvaliacao;
+		if (modeloDeDesempenho)
+			criteria.add(Expression.ne("a.tipoModeloAvaliacao", TipoModeloAvaliacao.SOLICITACAO));
+		else
+			criteria.add(Expression.eq("a.tipoModeloAvaliacao", modeloAvaliacao));
 		
 		if(ativo != null)
 			criteria.add(Expression.eq("a.ativo", ativo));

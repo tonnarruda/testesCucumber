@@ -8,11 +8,13 @@ public class TipoModeloAvaliacao extends LinkedHashMap<Character, String>
 	
 	public static final char SOLICITACAO = 'S';
 	public static final char DESEMPENHO = 'D';
+	public static final char ACOMPANHAMENTO_EXPERIENCIA = 'A';
 	
 	public TipoModeloAvaliacao()
 	{
 		put(SOLICITACAO, "Solicitação");
 		put(DESEMPENHO, "Desempenho");
+		put(ACOMPANHAMENTO_EXPERIENCIA, "Acompanhamento de Experiência");
 	}
 
 	public char getSolicitacao() {
@@ -21,5 +23,9 @@ public class TipoModeloAvaliacao extends LinkedHashMap<Character, String>
 
 	public char getDesempenho() {
 		return DESEMPENHO;
+	}
+
+	public static char getAcompanhamentoExperiencia() {
+		return ACOMPANHAMENTO_EXPERIENCIA;
 	}
 }

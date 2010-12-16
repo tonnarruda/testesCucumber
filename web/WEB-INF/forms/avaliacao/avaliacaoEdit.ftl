@@ -24,6 +24,11 @@
 			<@ww.textarea label="Cabeçalho" name="avaliacao.cabecalho"/>
 			
 			<@ww.select label="Ativa" name="avaliacao.ativo" id="ativo" list=r"#{true:'Sim',false:'Não'}"/>
+			
+			<#if avaliacao.tipoModeloAvaliacao != 'S'>
+				<@ww.select label="Tipo de Avaliação" name="avaliacao.tipoModeloAvaliacao" 
+				id="tipoModeloAvaliacao" list=r"#{'D':'Avaliação de Desempenho','A':'Acompanhamento do Período de Experiência'}"/>
+			</#if>
 		
 			<@ww.hidden name="avaliacao.id" />
 			<@ww.hidden name="avaliacao.tipoModeloAvaliacao" />

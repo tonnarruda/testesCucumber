@@ -91,6 +91,28 @@
 		<@ww.actionmessage />
 		<@ww.actionerror />
 
+		<!- Avisa Temporário -->	
+		<div class="waDivTituloX">Aviso!</div>
+		<div class="waDivFormularioX">
+
+			<p>
+			<strong><i>Caro cliente,</strong></i><br>
+				Foi criada uma classificação no cadastro de modelos de avaliação para 
+				definir se um modelo é de avaliação de desempenho ou de acompanhamento 
+				do período de experiência.
+				Por padrão, o sistema configurou todos os modelos como acompanhamento do 
+				período de experiência. Portanto, caso o cliente possua modelos de 
+				avaliação de desempenho, é necessário que entre no cadastro de modelos 
+				de avalição/acomp. de período de experiência, no módulo de treinamento 
+				de desenvolvimento e configure a referida opção.
+			</p>
+		
+			</div>
+			<br>
+		
+		
+		
+		
 		<#if questionarios?exists || avaliacoesDesempenhoPendentes?exists>
 			<div class="waDivTituloX">Pesquisas/Avaliações Disponíveis</div>
 			<div class="waDivFormularioX">

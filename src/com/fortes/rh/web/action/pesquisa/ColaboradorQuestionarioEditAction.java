@@ -204,7 +204,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public String prepareInsertAvaliacaoExperiencia()
 	{
 		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
-		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo", "tipoModeloAvaliacao"}, new Object[]{true, TipoModeloAvaliacao.DESEMPENHO}, new String[]{"titulo"});
+		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo", "tipoModeloAvaliacao"}, new Object[]{true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA}, new String[]{"titulo"});
 		
 		colaboradorRespostas = colaboradorQuestionarioManager.populaQuestionario(colaboradorQuestionario.getAvaliacao());
 		
@@ -218,7 +218,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		colaboradorQuestionario = colaboradorQuestionarioManager.findById(colaboradorQuestionario.getId());
 		
 		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
-		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo", "tipoModeloAvaliacao"}, new Object[]{true, TipoModeloAvaliacao.DESEMPENHO}, new String[]{"titulo"});
+		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo", "tipoModeloAvaliacao"}, new Object[]{true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA}, new String[]{"titulo"});
 		
 		colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
 		

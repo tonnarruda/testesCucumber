@@ -48,10 +48,24 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
 		avaliacao.setAtivo(true);
 		avaliacao.setEmpresa(empresa);
-		
+		avaliacao.setTipoModeloAvaliacao(TipoModeloAvaliacao.SOLICITACAO);
 		avaliacaoDao.save(avaliacao);
 		
-		assertEquals(1, avaliacaoDao.findAllSelect(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO).size());
+		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
+		avaliacao2.setAtivo(true);
+		avaliacao2.setEmpresa(empresa);
+		avaliacao2.setTipoModeloAvaliacao(TipoModeloAvaliacao.DESEMPENHO);
+		avaliacaoDao.save(avaliacao2);
+		
+		Avaliacao avaliacao3 = AvaliacaoFactory.getEntity();
+		avaliacao3.setAtivo(true);
+		avaliacao3.setEmpresa(empresa);
+		avaliacao3.setTipoModeloAvaliacao(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
+		avaliacaoDao.save(avaliacao3);
+		
+		
+		assertEquals(1, avaliacaoDao.findAllSelect(empresa.getId(), true, TipoModeloAvaliacao.SOLICITACAO).size());
+		assertEquals(2, avaliacaoDao.findAllSelect(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO).size());
 	}
 	
 	public void testGetPontuacaoMaximaDaPerformance()
