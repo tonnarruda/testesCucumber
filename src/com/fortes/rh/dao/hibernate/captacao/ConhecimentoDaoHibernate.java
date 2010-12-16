@@ -108,6 +108,7 @@ public class ConhecimentoDaoHibernate extends GenericDaoHibernate<Conhecimento> 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.observacao"), "observacao");
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("c.id", conhecimentoId));

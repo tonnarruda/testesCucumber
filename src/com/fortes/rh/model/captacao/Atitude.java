@@ -7,6 +7,7 @@ import com.fortes.rh.model.geral.Empresa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -21,6 +22,8 @@ public class Atitude extends AbstractModel implements Serializable
 	private String nome;
 	@ManyToOne
 	private Empresa empresa;
+	@Lob
+	private String observacao;
 
 	public Atitude()	{
 	}
@@ -49,5 +52,13 @@ public class Atitude extends AbstractModel implements Serializable
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 }

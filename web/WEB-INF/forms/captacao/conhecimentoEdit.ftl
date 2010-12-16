@@ -5,11 +5,9 @@
 <#if conhecimento.id?exists>
 	<title>Editar Conhecimento</title>
 	<#assign formAction="update.action"/>
-	<#assign accessKey="A"/>
 <#else>
 	<title>Inserir Conhecimento</title>
 	<#assign formAction="insert.action"/>
-	<#assign accessKey="I"/>
 </#if>
 
 <#assign validarCampos="return validaFormulario('form', new Array('nome','@areasCheck'), null)"/>
@@ -18,9 +16,10 @@
 <@ww.actionerror />
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 
-	<@ww.textfield label="Nome" name="conhecimento.nome" id="nome" required="true" cssClass="inputNome" maxLength="100"/>
+	<@ww.textfield label="Nome" name="conhecimento.nome" id="nome" required="true" cssClass="inputNome" maxLength="100" cssStyle="width:500px;"/>
 
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais *" list="areasCheckList"/>
+	<@ww.textarea label="Observação" name="conhecimento.observacao" id="observacao" cssStyle="width:500px;"/>
 
 	<@ww.hidden label="Id" name="conhecimento.id" />
 
@@ -29,10 +28,8 @@
 
 
 <div class="buttonGroup">
-	<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}">
-	</button>
-	<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V">
-	</button>
+	<button onclick="${validarCampos};" class="btnGravar" ></button>
+	<button onclick="window.location='list.action'" class="btnCancelar" ></button>
 </div>
 </body>
 </html>

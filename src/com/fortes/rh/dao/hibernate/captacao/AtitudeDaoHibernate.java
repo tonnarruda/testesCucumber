@@ -10,11 +10,9 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.fortes.rh.model.captacao.Atitude;
-import com.fortes.rh.model.captacao.Conhecimento;
-import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.AtitudeDao;
+import com.fortes.rh.model.captacao.Atitude;
 
 public class AtitudeDaoHibernate extends GenericDaoHibernate<Atitude> implements AtitudeDao
 {
