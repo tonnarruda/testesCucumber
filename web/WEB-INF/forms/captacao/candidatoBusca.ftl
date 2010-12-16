@@ -19,6 +19,7 @@
 		<#assign actionInserir="prepareEnviarForm();"/>
 	</#if>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
@@ -33,6 +34,19 @@
 	<style type="text/css">#menuBusca a.ativaAvancada{color: #FFCB03;}</style>
 
 	<script type="text/javascript">
+		function populaCargosConhecimentos(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
+			CargoDWR.getByEmpresa(createListCargos, empresaId);
+			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId);
+		}
+	
+		function createListCargos(data)
+		{
+			addChecks('cargosCheck',data)
+		}
+
 		function populaBairros()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -75,6 +89,8 @@
 			<#if BDS?exists && !BDS>
 				window.location = "prepareBusca.action?solicitacao.id=${solicitacao.id}&empresaId="+empresaId;
 			</#if>
+			
+			populaCargosConhecimentos(empresaId);
 		}
 
 		function limparFiltro()
@@ -135,7 +151,7 @@
 		<@ww.form name="formBusca" id="formBusca" action="busca.action" onsubmit="${validarCampos}" method="POST">
 
 			<#if BDS?exists && !BDS>
-				<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" onchange="enviaEmpresa(this.value)" liClass="liLeft"/>
+				<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" onchange="enviaEmpresa(this.value)" liClass="liLeft" headerKey="-1" headerValue="Todas"/>
 			</#if>
 
 			<@ww.hidden name="BDS"/>
@@ -178,11 +194,9 @@
 			<@ww.textfield name="idadeMin" id="dataPrevIni" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.textfield name="idadeMax" id="dataPrevFim" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
-			<@ww.label value="anos"/>
+			<@ww.label value="anos"/><div style="clear: both"></div>
 
 			<@ww.select label="Deficiência" name="deficiencia" id="deficiencia" list="deficiencias" cssStyle="width: 130px;" liClass="liLeft"/>
-
-			<li style="clear:both;"></li>
 
 			<@ww.select label="Possui Veículo" name="veiculo" id="veiculo" list=r"#{'I':'Indiferente','S':'Sim','N':'Não'}" cssStyle="width: 100px;" />
 			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />

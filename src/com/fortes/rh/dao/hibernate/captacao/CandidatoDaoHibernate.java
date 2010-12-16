@@ -211,7 +211,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	}
 
-	public Collection<Candidato> findBusca(Map parametros, long empresa, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao) throws Exception
+	public Collection<Candidato> findBusca(Map parametros, Long empresaId, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao) throws Exception
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		
@@ -253,7 +253,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		criteria.setProjection(p);
 
-		montaCriteriaFiltros(parametros, empresa, criteria);
+		montaCriteriaFiltros(parametros, empresaId, criteria);
 
 		if (idsCandidatos.size() > 0)
 			criteria.add(Expression.not((Expression.in("c.id", idsCandidatos))));
@@ -286,8 +286,12 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.add(Expression.eq("c.disponivel", true));
 		criteria.add(Expression.eq("c.contratado", false));
 		criteria.add(Expression.eq("c.blackList", false));
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
-
+		
+		if (empresaId != null)
+		{
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		}
+		
 		if(parametros.get("candidatosComExperiencia") != null && ((Long[])parametros.get("candidatosComExperiencia")).length > 0)
 		{
 			criteria.add(Expression.in("c.id", (Long[])parametros.get("candidatosComExperiencia")));
@@ -692,7 +696,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return criteria.list();
 	}
 
-	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, long empresa)
+	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, Long empresa)
 	{
 		Criteria criteria = getSession().createCriteria(Experiencia.class, "e");
 		criteria.createCriteria("e.cargo", "ca", Criteria.LEFT_JOIN);

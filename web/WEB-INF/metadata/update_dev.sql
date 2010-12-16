@@ -1,5 +1,6 @@
-update parametrosdosistema set appversao = '1.1.35.25';--.go
+update parametrosdosistema set appversao = '1.1.36.26';--.go
 
+<<<<<<< HEAD
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (492, 'ROLE_MOV_SOLICITACAO', 'Modelos de Avaliação de Solicitação', '/avaliacao/modeloCandidato/list.action?modeloAvaliacao=S', 7, true, 358);--.go
 
 alter sequence papel_sequence restart with 493;--.go
@@ -69,3 +70,8 @@ update papel set nome = 'Modelos de Avaliação do Candidato' where id = 492;--.
 
 update papel set nome = 'Avaliações de Desempenho/Acomp. do Período de Experiência' where id = 482;--.go
 update avaliacao set tipomodeloavaliacao = 'A' where tipomodeloavaliacao <> 'S';--.go
+=======
+alter table conhecimento add column observacao text; --.go
+alter table habilidade add column observacao text; --.go
+alter table atitude add column observacao text; --.go
+>>>>>>> 244e5fe6e316fb89d2d151253374a14b78588684

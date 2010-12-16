@@ -7,6 +7,7 @@ import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -29,6 +30,8 @@ public class Conhecimento extends AbstractModel implements Serializable
 	private Collection<AreaOrganizacional> areaOrganizacionals;
 	@ManyToOne
 	private Empresa empresa;
+	@Lob
+	private String observacao;
 
 	public Conhecimento()
 	{
@@ -98,5 +101,13 @@ public class Conhecimento extends AbstractModel implements Serializable
 		 string.append("nome", this.nome);
 
 		 return string.toString();
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 }

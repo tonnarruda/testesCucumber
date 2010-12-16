@@ -5,11 +5,9 @@
 <#if atitude.id?exists>
 	<title>Editar Atitude</title>
 	<#assign formAction="update.action"/>
-	<#assign accessKey="A"/>
 <#else>
 	<title>Inserir Atitude</title>
 	<#assign formAction="insert.action"/>
-	<#assign accessKey="I"/>
 </#if>
 
 <#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
@@ -19,7 +17,7 @@
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 
 	<@ww.textfield label="Nome" name="atitude.nome" id="nome" required="true" cssClass="inputNome" maxLength="100"/>
-
+	<@ww.textarea label="Observação" name="atitude.observacao" id="observacao" cssStyle="width:445px;"/>
 	<@ww.hidden label="Id" name="atitude.id" />
 
 <@ww.token/>
@@ -27,10 +25,8 @@
 
 
 <div class="buttonGroup">
-	<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}">
-	</button>
-	<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V">
-	</button>
+	<button onclick="${validarCampos};" class="btnGravar" ></button>
+	<button onclick="window.location='list.action'" class="btnCancelar"></button>
 </div>
 </body>
 </html>

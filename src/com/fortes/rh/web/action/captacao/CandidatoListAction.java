@@ -392,6 +392,8 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String busca() throws Exception
 	{
+		empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+		
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("indicadoPor", indicadoPorBusca);

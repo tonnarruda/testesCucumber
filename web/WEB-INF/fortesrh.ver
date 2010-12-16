@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.36.26" data="16/12/2010">
+		- Integração com o banco de currículos com o site de recolocação F2RH
+		- Cargos e Salário > Cadastros: novos cadastros de Habilidades e Atitudes, para facilitar o cadastros dos cargos.
+		- Recrut. e Seleção > Cadastros >Modelo de Avaliação: foi criada uma nova opção para que o RH possa realizar avaliação de desempenho para candidatos que estão participando do processo seletivo.
+		- Info. Funcionais > Cadastros > Candidatos > Performance Profissional: adicionado as informações referentes aos campos extras.
+	</Versao>
 	<Versao id="1.1.35.25" data="09/12/2010">
 		- Configuração da tela de performance profissional.
 		- Preenchimento dos campos do endereço de acordo com o CEP.
