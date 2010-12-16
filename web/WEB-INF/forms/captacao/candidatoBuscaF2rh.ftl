@@ -32,6 +32,17 @@
 	</#if>
 	
 
+	<#if dataCadIni?exists>
+		<#assign dataIni = dataCadIni?date/>
+	<#else>
+		<#assign dataIni = ""/>
+	</#if>
+	<#if dataCadFim?exists>
+		<#assign dataFim = dataCadFim?date/>
+	<#else>
+		<#assign dataFim = ""/>
+	</#if>
+
 	<#assign validarCampos="return validaFormulario('formBuscaF2rh', null, new Array('dataCadIni','dataCadFim'))"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
@@ -49,8 +60,8 @@
 				Cadastrado/Atualizado entre:
 				</span>
 			</li>
-			<@ww.datepicker name="dataCadIni" id="dataCadIni" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
-			<@ww.datepicker name="dataCadFim" id="dataCadFim" cssClass="mascaraData validaDataFim" />
+			<@ww.datepicker name="dataCadIni" value="${dataIni}" id="dataCadIni" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
+			<@ww.datepicker name="dataCadFim" value="${dataFim}" id="dataCadFim" cssClass="mascaraData validaDataFim" />
 
 			<@ww.textfield label="Cargo" id="cargo" name="curriculo.cargo" cssStyle="width: 290px;" liClass="liLeft"/>			
 			<@ww.select label="Sexo" name="curriculo.sexo" id="sexo" list="sexos" cssStyle="width: 100px;"  liClass="liLeft"/>
@@ -63,7 +74,7 @@
 			<@ww.textfield name="idadeMin" id="dataPrevIni" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.textfield name="idadeMax" id="dataPrevFim" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
-			<@ww.label value="anos"/>
+			<@ww.label value="anos"/><div style="clear: both"></div>
 			
 			<@ww.select label="Estado" name="uf" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
 			<@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 200px;" headerKey="" headerValue="Selecione um Estado..." liClass="liLeft" />
@@ -94,14 +105,14 @@
 					<input type="checkbox" value="${curriculo.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
 				</@display.column>
 			
-				<@display.column property="nome" title="Nome" style="width: 200px;"/>
-				<@display.column property="escolaridade_rh" title="Escolaridade" style="width: 100px;"/>
-				<@display.column title="Cidade/UF" style="width: 200px;">
+				<@display.column property="nome" title="Nome" style="width: 250px;"/>
+				<@display.column property="escolaridade_rh" title="Escolaridade" style="width: 150px;"/>
+				<@display.column title="Cidade/UF" style="width: 150px;">
 					<#if curriculo.cidade_rh?exists && curriculo.estado?exists>
 						${curriculo.cidade_rh}/${curriculo.estado}
 					</#if>
 				</@display.column>
-				<@display.column property="updated_rh" title="Atualizado em" style="width: 100px;"/>
+				<@display.column property="updated_rh" title="Atualizado em" style="width: 60px;text-align:center;"/>
 			</@display.table>
 		</@ww.form>
 

@@ -626,6 +626,19 @@ ALTER TABLE historicofuncao ADD CONSTRAINT historicofuncao_pkey PRIMARY KEY (id)
 ALTER TABLE historicofuncao ADD CONSTRAINT historicofuncao_funcao_fk FOREIGN KEY (funcao_id) REFERENCES funcao(id);
 CREATE SEQUENCE historicofuncao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
+CREATE TABLE avaliacao (
+	id bigint NOT NULL,
+	titulo character varying(100),
+	cabecalho text,
+	ativo boolean,
+	empresa_id bigint,
+	tipoModeloAvaliacao character(1) NOT NULL
+);
+
+ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_pkey PRIMARY KEY(id);
+ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+--nao tem sequence, ta ok.
+
 CREATE TABLE solicitacao (
     id bigint NOT NULL,
     data date,
@@ -649,7 +662,8 @@ CREATE TABLE solicitacao (
     cidade_id bigint,
     empresa_id bigint,
     faixasalarial_id bigint,
-    descricao character varying(100)
+    descricao character varying(100),
+    avaliacao_id bigint
 );
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_areaorganizacional_fk FOREIGN KEY (areaorganizacional_id) REFERENCES areaorganizacional(id);
@@ -659,6 +673,7 @@ ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_estabelecimento_fk FOREIGN KE
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_motivosolicitacao_fk FOREIGN KEY (motivosolicitacao_id) REFERENCES motivosolicitacao(id);
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_usuario_fk FOREIGN KEY (solicitante_id) REFERENCES usuario(id);
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
+ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);
 CREATE SEQUENCE solicitacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 -- fk de solicitacao_id em colaborador
@@ -1188,18 +1203,6 @@ ALTER TABLE ONLY questionario ADD CONSTRAINT questionario_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY questionario ADD CONSTRAINT questionario_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE questionario_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
-CREATE TABLE avaliacao (
-	id bigint NOT NULL,
-	titulo character varying(100),
-	cabecalho text,
-	ativo boolean,
-	empresa_id bigint
-);
-
-ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_pkey PRIMARY KEY(id);
-ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
---nao tem sequence, ta ok.
-
 CREATE TABLE aspecto (
     id bigint NOT NULL,
     nome character varying(100),
@@ -1316,7 +1319,8 @@ CREATE TABLE colaboradorquestionario (
     performance double precision,
     observacao text,
     avaliacaodesempenho_id bigint,
-    avaliador_id bigint
+    avaliador_id bigint,
+    solicitacao_id bigint
 );
 ALTER TABLE ONLY colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
@@ -1326,6 +1330,7 @@ ALTER TABLE ONLY colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_
 ALTER TABLE ONLY colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);
 ALTER TABLE ONLY colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);
 ALTER TABLE ONLY colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_avaliador_fk FOREIGN KEY (avaliador_id) REFERENCES colaborador(id);
+ALTER TABLE ONLY colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);
 
 CREATE SEQUENCE colaboradorquestionario_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
@@ -2133,3 +2138,35 @@ CREATE TABLE ConfiguracaoPerformance (
 ALTER TABLE ONLY configuracaoPerformance ADD CONSTRAINT configuracaoPerformance_pkey PRIMARY KEY (id);
 ALTER TABLE configuracaoPerformance ADD CONSTRAINT configuracaoPerformance_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);
 CREATE SEQUENCE configuracaoPerformance_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE habilidade (
+id bigint NOT NULL,
+nome character varying(100),
+empresa_id bigint
+);
+ALTER TABLE habilidade ADD CONSTRAINT habilidade_pkey PRIMARY KEY(id);
+ALTER TABLE habilidade ADD CONSTRAINT habilidade_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE habilidade_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE atitude (
+id bigint NOT NULL,
+nome character varying(100),
+empresa_id bigint
+);
+ALTER TABLE atitude ADD CONSTRAINT atitude_pkey PRIMARY KEY(id);
+ALTER TABLE atitude ADD CONSTRAINT atitude_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE atitude_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE cargo_habilidade(
+    cargo_id bigint NOT NULL,
+    habilidades_id bigint NOT NULL
+);
+ALTER TABLE cargo_habilidade ADD CONSTRAINT cargo_habilidade_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id); 
+ALTER TABLE cargo_habilidade ADD CONSTRAINT cargo_habilidade_habilidade_fk FOREIGN KEY (habilidades_id) REFERENCES habilidade(id);
+
+CREATE TABLE cargo_atitude(
+    cargo_id bigint NOT NULL,
+    atitudes_id bigint NOT NULL
+);
+ALTER TABLE cargo_atitude ADD CONSTRAINT cargo_atitude_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id); 
+ALTER TABLE cargo_atitude ADD CONSTRAINT cargo_atitude_atitude_fk FOREIGN KEY (atitudes_id) REFERENCES atitude(id);

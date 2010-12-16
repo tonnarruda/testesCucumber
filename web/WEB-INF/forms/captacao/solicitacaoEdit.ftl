@@ -136,10 +136,10 @@
 		</#if>
 		
 		<#if !clone && somenteLeitura && solicitacao.avaliacao?exists && solicitacao.avaliacao.id?exists>
-			<@ww.textfield readonly="true" label="Modelo Avaliação" name="solicitacao.avaliacao.titulo" id="avaliacaoId" cssStyle="width: 347px;background: #EBEBEB;"/>
+			<@ww.textfield readonly="true" label="Modelo Avaliação do Candidato" name="solicitacao.avaliacao.titulo" id="avaliacaoId" cssStyle="width: 347px;background: #EBEBEB;"/>
 			<@ww.hidden name="solicitacao.avaliacao.id"/>
 		<#else>
-			<@ww.select  label="Modelo Avaliação" name="solicitacao.avaliacao.id" id="avaliacaoId" list="avaliacoes" cssStyle="width: 250px;" listKey="id" listValue="titulo"  headerKey="" headerValue="" />
+			<@ww.select  label="Modelo Avaliação do Candidato" name="solicitacao.avaliacao.id" id="avaliacaoId" list="avaliacoes" cssStyle="width: 250px;" listKey="id" listValue="titulo"  headerKey="" headerValue="" />
 		</#if>
 			
 		<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
@@ -169,7 +169,7 @@
 					<@ww.textfield name="solicitacao.idadeMinima" id="dataPrevIni" liClass="liLeft" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 					<@ww.label value="a" liClass="liLeft"/>
 					<@ww.textfield name="solicitacao.idadeMaxima" id="dataPrevFim" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft"/>
-					<@ww.label value="anos"/>
+					<@ww.label value="anos"/><div style="clear: both"></div>
 					
 					<@ww.select label="Estado"  id="estado" name="estado.id" list="estados" listKey="id" listValue="sigla" liClass="liLeft" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
 					<@ww.select label="Cidade"  id="cidade" name="solicitacao.cidade.id" list="cidades" listKey="id" listValue="nome" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" />

@@ -2,7 +2,9 @@ package com.fortes.f2rh;
 
 public class ConfigF2RH {
 
-	private String url = "http://10.1.4.30:3000/rh_curriculos.json";
+	private String url = "http://www.f2rh.com.br/rh_curriculos.json";
+//	private String url = "http://10.1.4.30:3000/rh_curriculos.json";//testes
+	
 	private String json;
 	private String[] consulta;
 

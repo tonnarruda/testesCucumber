@@ -1487,7 +1487,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	public void testMontaStringBuscaF2rh() throws Exception
 	{
 		Date hoje = new Date();
-		String hojeFormatado = DateUtil.formataDiaMesAno(hoje);
+		String hojeFormatado = DateUtil.formataDate(hoje, "yyyy-MM-dd");
 		
 		User user = new User();
 		user.setLogin("34964858170");
@@ -1514,18 +1514,18 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		Collection<Idioma> idiomas = new ArrayList<Idioma>();
 		idiomas.add(idioma);
 		
-		String[] retorno = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadeValue, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, ufs, cidades, idiomas);
+		String[] retorno = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadeValue, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, cidades, idiomas);
 		
-		String[] camposInformados = new String[]{"nome=\"Joao da Silva\"",
-				"cpf=\"34964858170\"",
-				"escolaridade=\"Superior Completo\"",
-				"idioma=\"Italiano\"",
-				"data_cad_ini=\"" + hojeFormatado + "\"",
-				"data_cad_fim=\"" + hojeFormatado + "\"",
+		String[] camposInformados = new String[]{"",
+				"",
+				"escolaridade=Superior Completo",
+				"idioma=Italiano",
+				"data_cad_ini=" + hojeFormatado + "",
+				"data_cad_fim=" + hojeFormatado + "",
 				"",
 				"",
-				"idade_ini=\"15\"",
-				"idade_fim=\"35\"",
+				"idade_ini=15",
+				"idade_fim=35",
 				"",
 				"",
 				"",				
@@ -1551,13 +1551,27 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		assertEquals("palavra_chave", camposInformados[13], retorno[13]);
 	}
 		
-	public void testGetCurriculosF2rh() throws Exception
+	public void testGetCurriculosF2rhSave() throws Exception
 	{
 		String[] curriculoIds = new String[]{"15"};
 		
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
+		
+		candidatoDao.expects(once()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+		candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new Candidato()));
 		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
-		assertEquals(0, candidatos.size());
+		assertEquals(1, candidatos.size());
+	}
+	
+	public void testGetCurriculosF2rhJaGravado() throws Exception
+	{
+		String[] curriculoIds = new String[]{"15"};
+		
+		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
+		
+		candidatoDao.expects(once()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Candidato()));
+		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
+		assertEquals(1, candidatos.size());
 	}
 	
 	//TODO remprot

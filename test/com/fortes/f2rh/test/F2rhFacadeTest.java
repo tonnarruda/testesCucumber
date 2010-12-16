@@ -22,7 +22,7 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 	F2rhFacade f2rhFacade;
 	ConfigF2RH config;
 	
-	String jsonList1 = "[{\"endereco\":\"Rua Coronel Linhares 115/202\",\"data_nascimento_rh\":\"27/12/1984\",\"cidade_rh\":\"Alta Floresta D`Oeste\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cep\":\"60170-240\",\"escolaridade_rh\":\"Superior Incompleto\",\"user\":{\"name\":null,\"login\":\"010.178.063-06\",\"email\":\"henriquesoares@grupofortes.com.br\"},\"id\":15,\"created_rh\":\"23/10/2009\",\"nacionalidade\":\"Brasileiro\",\"bairro\":\"Meireles\",\"curriculo_telefones\":[{\"ddd\":\"85\",\"numero\":\"8747-2023\"}],\"updated_rh\":\"25/10/2010\",\"estado_civil\":\"1\",\"estado\":\"RO\",\"curso\":\"Letras\",\"sexo\":\"M\",\"observacoes_complementares\":\"\",\"salario\":0.0,\"area_formacao\":\"2\"}]";
+	String jsonList1 = "[{\"ddd_rh\":\"85\",\"endereco\":\"Rua Coronel Linhares 115/202\",\"cidade_rh\":\"Fortaleza\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cep\":\"60170-240\",\"escolaridade_rh\":\"Superior Incompleto\",\"id\":15,\"user\":{\"name\":null,\"login\":\"010.178.063-06\",\"email\":\"henriquesoares@grupofortes.com.br\"},\"nacionalidade\":\"Brasileiro\",\"data_nascimento_rh\":\"27/12/1984\",\"bairro\":\"Meireles\",\"estado_civil\":\"1\",\"estado\":\"CE\",\"curso\":\"Letras\",\"telefone_rh\":\"87472023\",\"sexo\":\"M\",\"observacoes_complementares\":\"\",\"salario\":0.0,\"area_formacao\":\"2\"}]";
 	
 	protected void setUp() {
 		expected = new Curriculo();
@@ -41,19 +41,19 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 
 	}
 	
-	public void testFindF2RHBasico() {
+	public void testFindF2RHBasico() throws Exception {
 		
 		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		
-		String[] consulta_basica = new String[]{"escolaridade=\"Superior Completo\""};
+		String[] consulta_basica = new String[]{"escolaridade=Superior Completo"};
 		config.setConsulta(consulta_basica);
 		config.setJson(jsonList1);
 		String curriculos = f2rhFacade.find_f2rh(config);
 		assertEquals(curriculos, config.getJson());
 	}
 	
-	public void testFindF2RHAvancado() {
+	public void testFindF2RHAvancado() throws Exception {
 		
 		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
@@ -73,7 +73,7 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		assertEquals("Curriculo encontrados", curriculos.size(), 1);
 	}
 	
-	public void testObterCurriculo() {
+	public void testObterCurriculo() throws Exception {
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		String[] consulta = new String[]{"curriculo[id][]=15"};
@@ -83,10 +83,10 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		
 		Collection<Curriculo> curriculos = f2rhFacade.obterCurriculos(config);
 		actual = encontrar(curriculos, expected);
-		assertEquals(expected, actual);
+		assertEquals(expected.getNome(), actual.getNome());
 	}
 	
-	public void testBuscarCurriculos()
+	public void testBuscarCurriculos() throws Exception
 	{
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);

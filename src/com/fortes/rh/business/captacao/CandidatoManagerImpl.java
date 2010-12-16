@@ -26,7 +26,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.f2rh.Curriculo;
-import com.fortes.f2rh.CurriculoTelefone;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.File;
@@ -1126,7 +1125,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	}
 
-	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidadeValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Map ufs, Map cidades, Collection<Idioma> idiomas) 
+	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidadeValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idiomaValue, Map ufs, Map cidades, Collection<Idioma> idiomas) 
 	{
 		String nome = "";
 		String cpf = "";
@@ -1146,16 +1145,16 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		nome = montaParametro(nome, "nome", "");
 		cpf = montaParametro(cpf, "cpf", "");
 		escolaridade = montaParametro(escolaridade, "escolaridade", new Escolaridade().getEscolaridadeF2rh(escolaridadeValue));
-		idioma = montaParametro(idioma, "idioma", getIdioma(idiomas, curriculo.getIdioma()));
-		data_cad_ini = montaParametro(data_cad_ini, "data_cad_ini", DateUtil.formataDiaMesAno(dataCadIni));
-		data_cad_fim = montaParametro(data_cad_fim, "data_cad_fim", DateUtil.formataDiaMesAno(dataCadFim));
+		idioma = montaParametro(idioma, "idioma", getIdioma(idiomas, idiomaValue));
+		data_cad_ini = montaParametro(data_cad_ini, "data_cad_ini", DateUtil.formataDate(dataCadIni, "yyyy-MM-dd"));
+		data_cad_fim = montaParametro(data_cad_fim, "data_cad_fim", DateUtil.formataDate(dataCadFim, "yyyy-MM-dd"));
 		cargo = montaParametro(cargo, "cargo", curriculo.getCargo());
 		sexo = montaParametro(sexo, "sexo", curriculo.getSexo());
 		idade_ini = montaParametro(idade_ini, "idade_ini", idadeMin);
 		idade_fim = montaParametro(idade_fim, "idade_fim", idadeMax);
 		estado = montaParametro(estado, "estado", (String) ufs.get(uf));
 		if(cidades != null && cidades.size() > 0)
-			cidade = montaParametro(cidade, "cidade", (String) cidades.get(cidade));
+			cidade = montaParametro(cidade, "cidade", (String) cidades.get(cidadeValue));
 		
 		bairro = montaParametro(bairro, "bairro", curriculo.getBairro());
 		palavra_chave = montaParametro(palavra_chave, "palavra_chave", curriculo.getObservacoes_complementares());
@@ -1163,12 +1162,12 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return new String[]{nome, cpf, escolaridade, idioma, data_cad_ini, data_cad_fim, cargo, sexo, idade_ini, idade_fim, estado, cidade, bairro, palavra_chave};
 	}
 
-	private String getIdioma(Collection<Idioma> idiomas, String value) 
+	private String getIdioma(Collection<Idioma> idiomas, Long value) 
 	{
-		if(StringUtils.isNotBlank(value))
+		if(value != null)
 		{
 			for (Idioma idioma : idiomas) {
-				if(idioma.getId().equals(Long.parseLong(value)))
+				if(idioma.getId().equals(value))
 					return idioma.getNome();
 			}
 		}
@@ -1180,9 +1179,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		if(StringUtils.isNotBlank(value))
 		{
 			try {
-				variavel = chave + "=\"" + value + "\"";
+				variavel = chave + "=" + value;
 			} catch (Exception e){
-				variavel = chave + "=\"\"";
+				variavel = chave + "=";
 			}			
 		}
 		
@@ -1192,7 +1191,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId, Empresa empresa) 
 	{
 		F2rhFacade f2rhFacade = new F2rhFacadeImpl();
-		Collection<Curriculo> curriculos = f2rhFacade.buscarCurriculos(f2rhFacade.montaIds(curriculosId));
+		Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
+		
+		try {
+			curriculos = f2rhFacade.buscarCurriculos(f2rhFacade.montaIds(curriculosId));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		Collection<Candidato> candidatos = new ArrayList<Candidato>();
 
@@ -1219,6 +1224,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		Pessoal pessoal = new Pessoal();
 		pessoal.setDataNascimento(DateUtil.montaDataByString(curriculo.getData_nascimento_rh()));
 		pessoal.setCpf(StringUtil.subStr(curriculo.getCpf(), 11));
+		pessoal.setEscolaridade(Escolaridade.bindF2rh(curriculo.getEscolaridade_rh()));
 		
 		if(curriculo.getSexo() != null)
 			pessoal.setSexo(curriculo.getSexo().charAt(0));
@@ -1234,15 +1240,10 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setObservacao(curriculo.getObservacoes_complementares());
 		candidato.setOrigem(OrigemCandidato.F2RH);
 
-		CurriculoTelefone curriculoTelefone = new CurriculoTelefone();
-		try {
-			curriculoTelefone = (CurriculoTelefone) curriculo.getCurriculo_telefones().toArray()[0];
-		} catch (Exception e) {}
-		
 		Contato contato = new Contato();
 		contato.setEmail(StringUtil.subStr(curriculo.getUser().getEmail(), 40));
-	   	contato.setDdd(StringUtil.subStr(curriculoTelefone.getDdd(), 5));
-	   	contato.setFoneFixo(StringUtil.subStr(curriculoTelefone.getNumero(), 10));
+	   	contato.setDdd(StringUtil.subStr(curriculo.getDdd_rh(), 5));
+	   	contato.setFoneFixo(StringUtil.subStr(curriculo.getTelefone_rh(), 10));
 	   	
 	   	Endereco endereco = new Endereco();
 	   	endereco.setBairro(StringUtil.subStr(curriculo.getBairro(), 20));

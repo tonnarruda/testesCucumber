@@ -1,5 +1,6 @@
 package com.fortes.rh.web.action.captacao;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -373,10 +374,14 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroF2rh();
 		
 		try {
-			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, ufs, cidades, idiomas);
+			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma, ufs, cidades, idiomas);
 			curriculos = f2rhFacade.buscarCurriculos(consulta_basica);
-			if(curriculos.size() == 100)
+
+			if(curriculos.size() >= 100)
 				addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar a busca.");
+		} catch (ConnectException e) {
+			addActionError("Erro ao tentar se conectar ao F2rh. verifique se o site do F2rh está no ar, clicando <a href=\"http://www.f2rh.com.br/\" target=\"_blank\">aqui</a>.");
+			e.printStackTrace();
 		} catch (Exception e) {
 			addActionError("Erro ao buscar candidatos no F2rh.");
 			e.printStackTrace();
@@ -504,7 +509,7 @@ public class CandidatoListAction extends MyActionSupportList
 					candidatoSolicitacaoManager.insertCandidatos(candidatosParaSolicitacaoIds, solicitacao);
 			}
 		} catch (Exception e) {
-			addActionError("Não foi possível exportar os Candidatos.");
+			addActionError("Não foi possível importar os Candidatos.");
 		}
 		
 		return Action.SUCCESS;
