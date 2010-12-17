@@ -291,4 +291,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void setCargoManager(CargoManager cargoManager) {
 		this.cargoManager = cargoManager;
 	}
+
+	public void removeEmpresaPadrao(long id) 
+	{
+		getDao().removeEmpresaPadrao(id);
+	}
 }
