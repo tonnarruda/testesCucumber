@@ -13,11 +13,13 @@ import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -42,6 +44,9 @@ public class SolicitacaoListAction extends MyActionSupportList
     private Candidato candidato;
     private Long[] solicitacaosCheckIds;
     private String dataEncerramento;
+    private Empresa empresa;
+    private Collection<Empresa> empresas;
+    private EmpresaManager empresaManager;
 
     private Collection<Cargo> cargos;
     private Cargo cargo = new Cargo();
@@ -83,6 +88,8 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public String verSolicitacoes() throws Exception
     {
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_SOLICITACAO");
+		
     	candidato = candidatoManager.findByCandidatoId(candidato.getId());
 
     	solicitacaos = solicitacaoManager.findSolicitacaoList(getEmpresaSistema().getId(), false, true, false);
@@ -272,5 +279,21 @@ public class SolicitacaoListAction extends MyActionSupportList
     public Anuncio getAnuncio() 
     {
 		return anuncio;
+	}
+
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public EmpresaManager getEmpresaManager() {
+		return empresaManager;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

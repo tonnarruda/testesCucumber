@@ -53,6 +53,9 @@
 		<property name="conhecimentoManager" ref="conhecimentoManager"/>
 		<property name="colaboradorManager" ref="colaboradorManager"/>
 	</bean>
+	<bean id="solicitacaoDWR" class="com.fortes.rh.web.dwr.SolicitacaoDWR">
+		<property name="solicitacaoManager" ref="solicitacaoManager"/>
+	</bean>
 	<bean id="conhecimentoDWR" class="com.fortes.rh.web.dwr.ConhecimentoDWR">
 		<property name="conhecimentoManager" ref="conhecimentoManager"/>
 	</bean>

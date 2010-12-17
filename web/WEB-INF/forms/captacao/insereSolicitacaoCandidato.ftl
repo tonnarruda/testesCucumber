@@ -6,14 +6,34 @@
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
 </style>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+
+	<script type='text/javascript'>
+	    function populaSolicitacoes(empresaId)
+	    {
+	      	SolicitacaoDWR.getSolicitacoes(createListSolicitacaos, empresaId);	
+	    }
+	    
+	    function createListSolicitacaos(data)
+	    {
+	    	addChecks('solicitacaosCheckIds',data)
+	    }
+	</script>
+	
 <title>Incluir candidato "${candidato.nome}" em uma solicitação em aberto</title>
 <#assign validarCampos="return validaFormulario('form', new Array('@solicitacaosCheckIds'), null)"/>
 </head>
 <body>
 
 	<@ww.form name="form" action="gravarSolicitacoesCandidato.action" onsubmit="${validarCampos}"  validate="true" method="POST">
+	
 		<@ww.hidden name="candidato.id"/>
+		<@ww.select label="Empresa" name="empresas.nome" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" onchange="populaSolicitacoes(this.value)";/>
 		<@frt.checkListBox label="Solicitações disponíveis" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600"/>
+	
 	</@ww.form>
 
 	<div class="buttonGroup">

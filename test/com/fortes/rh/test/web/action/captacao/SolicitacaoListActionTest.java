@@ -16,6 +16,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -143,6 +144,8 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     
     public void testVerSolicitacoes() throws Exception
     {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	
     	Candidato candidato = CandidatoFactory.getCandidato();
     	candidato.setId(100L);
     	
