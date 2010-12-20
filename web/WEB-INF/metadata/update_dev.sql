@@ -7,3 +7,9 @@ alter table atitude add column observacao text; --.go
 update papel set nome = 'Modelos de Avaliação do Candidato' where id = 492;--.go
 update papel set nome = 'Avaliações de Desempenho/Acomp. do Período de Experiência' where id = 482;--.go
 update avaliacao set tipomodeloavaliacao = 'A' where tipomodeloavaliacao <> 'S';--.go
+
+CREATE FUNCTION alter_trigger(CHARACTER, CHARACTER) RETURNS void AS '
+BEGIN
+	execute ''ALTER TABLE '' || $1 || '' '' || $2 || '' TRIGGER ALL'';
+END;
+' LANGUAGE plpgsql;--.go

@@ -3,10 +3,7 @@
  * Requisito: RFA003 */
 package com.fortes.rh.dao.hibernate.geral;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Collection;
-import java.util.Properties;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -22,7 +19,6 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.util.ArquivoUtil;
 
 @SuppressWarnings("unchecked")
 public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements EmpresaDao
@@ -137,12 +133,11 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 	}
 
 	public void removeEmpresaPadrao(long id) 
-	{		
+	{
+		String acao = "DISABLE";
+		JDBCConnection.executeQuery(new String[]{executaTrigger(acao)});
+		
 		String[] sqls = new String[]{
-				"delete from areainteresse_areaorganizacional where areasinteresse_id in (select id from areainteresse where empresa_id=" + id + ");",
-				"delete from areainteresse where empresa_id=" + id + ";",
-				"delete from auditoria where empresa_id = " + id + ";",
-				"delete from cargo_areaorganizacional where cargo_id in (select ID from cargo where empresa_id = " + id + ");",
 				"delete from faixasalarialhistorico where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + "));",
 				"delete from anuncio where solicitacao_id in (select id from solicitacao where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + ")));",
 				"delete from historicocandidato where candidatosolicitacao_id in (select id from candidatosolicitacao where solicitacao_id in (select id from solicitacao where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + "))));",
@@ -173,10 +168,79 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from estabelecimento where empresa_id = " + id + ";",
 				"delete from etapaseletiva where empresa_id = " + id + ";",
 				"delete from usuarioempresa where empresa_id = " + id + ";",
-				"delete from empresa where id = " + id + ";"
+				"delete from empresa where id = " + id + ";",
+				"delete from historicoambiente where ambiente_id in (select id from ambiente where empresa_id = " + id + ");",
+				"delete from historicocolaborador where ambiente_id in (select id from ambiente where empresa_id = " + id + ");",
+				"delete from medicaorisco where ambiente_id in (select id from ambiente where empresa_id = " + id + ");",
+				"delete from aspecto where avaliacao_id in (select id from avaliacao where empresa_id = " + id + ");",
+				"delete from avaliacaodesempenho where avaliacao_id in (select id from avaliacao where empresa_id = " + id + ");",
+				"delete from colaboradorquestionario where avaliacao_id in (select id from avaliacao where empresa_id = " + id + ");",
+				"delete from pergunta where avaliacao_id in (select id from avaliacao where empresa_id = " + id + ");",
+				"delete from historicobeneficio where beneficio_id in (select id from beneficio where empresa_id = " + id + ");",
+				"delete from clinicaautorizada_exame where clinicaautorizada_id in (select id from clinicaautorizada where empresa_id = " + id + ");",
+				"delete from examesolicitacaoexame where clinicaautorizada_id in (select id from clinicaautorizada where empresa_id = " + id + ");",
+				"delete from cat where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from colaboradorafastamento where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from colaboradoridioma where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from colaboradorocorrencia where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from colaboradorquestionario where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from colaboradorturma where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from comissaoeleicao where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from comissaomembro where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from comissaoreuniaopresenca where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from dependente where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from experiencia where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from formacao where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from gastoempresa where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from historicocolaborador where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from historicocolaboradorbeneficio where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from prontuario where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from reajustecolaborador where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from solicitacaoepi where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from solicitacaoexame where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from colaboradorturma where curso_id in (select id from curso where empresa_id = " + id + ");",
+				"delete from turma where curso_id in (select id from curso where empresa_id = " + id + ");",
+				"delete from colaboradorturma where dnt_id in (select id from dnt where empresa_id = " + id + ");",
+				"delete from candidatoeleicao where eleicao_id in (select id from eleicao where empresa_id = " + id + ");",
+				"delete from comissao where eleicao_id in (select id from eleicao where empresa_id = " + id + ");",
+				"delete from comissaoeleicao where eleicao_id in (select id from eleicao where empresa_id = " + id + ");",
+				"delete from etapaprocessoeleitoral where eleicao_id in (select id from eleicao where empresa_id = " + id + ");",
+				"delete from examesolicitacaoexame where exame_id in (select id from exame where empresa_id = " + id + ");",
+				"delete from parametrosdosistema where exame_id in (select id from exame where empresa_id = " + id + ");",
+				"delete from extintorinspecao where extintor_id in (select id from extintor where empresa_id = " + id + ");",
+				"delete from extintormanutencao where extintor_id in (select id from extintor where empresa_id = " + id + ");",
+				"delete from gastoempresaitem where gasto_id in (select id from gasto where empresa_id = " + id + ");",
+				"delete from gasto where grupogasto_id in (select id from grupogasto where empresa_id = " + id + ");",
+				"delete from aspecto where questionario_id in (select id from questionario where empresa_id = " + id + ");",
+				"delete from avaliacaoturma where questionario_id in (select id from questionario where empresa_id = " + id + ");",
+				"delete from colaboradorquestionario where questionario_id in (select id from questionario where empresa_id = " + id + ");",
+				"delete from entrevista where questionario_id in (select id from questionario where empresa_id = " + id + ");",
+				"delete from fichamedica where questionario_id in (select id from questionario where empresa_id = " + id + ");",
+				"delete from pergunta where questionario_id in (select id from questionario where empresa_id = " + id + ");",
+				"delete from pesquisa where questionario_id in (select id from questionario where empresa_id = " + id + ");",
+				"delete from risco_epi where risco_id in (select id from risco where empresa_id = " + id + ");",
+				"delete from riscoambiente where risco_id in (select id from risco where empresa_id = " + id + ");",
+				"delete from riscomedicaorisco where risco_id in (select id from risco where empresa_id = " + id + ");",
+				"delete from solicitacaoepi_item where solicitacaoepi_id in (select id from solicitacaoepi where empresa_id = " + id + ");",
+				"delete from examesolicitacaoexame where solicitacaoexame_id in (select id from solicitacaoexame where empresa_id = " + id + ");",
+				"delete from reajustecolaborador where tabelareajustecolaborador_id in (select id from tabelareajustecolaborador where empresa_id = " + id + ");",
+				"delete from colaboradorquestionario where turma_id in (select id from turma where empresa_id = " + id + ");",
+				"delete from colaboradorturma where turma_id in (select id from turma where empresa_id = " + id + ");",
+				"delete from diaturma where turma_id in (select id from turma where empresa_id = " + id + ");"
 		};
 		
 		JDBCConnection.executeQuery(sqls);
 		
+		acao = "ENABLE";
+		JDBCConnection.executeQuery(new String[]{executaTrigger(acao)});
+	}
+
+	private String executaTrigger(String acao) 
+	{
+		String execTrigger = "select alter_trigger(table_name, '" + acao + "') FROM information_schema.constraint_column_usage " +
+							" where table_schema='public' " +
+							" and table_catalog='fortesrh' group by table_name;";
+
+		return execTrigger;
 	}
 }
