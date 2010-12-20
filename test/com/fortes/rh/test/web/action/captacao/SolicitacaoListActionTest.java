@@ -13,6 +13,7 @@ import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -34,6 +35,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 	private Mock candidatoSolicitacaoManager;
 	private Mock candidatoManager;
 	private Mock cargoManager;
+	private Mock empresaManager;
 
     protected void setUp() throws Exception
     {
@@ -41,11 +43,13 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
         manager = new Mock(SolicitacaoManager.class);
         candidatoManager = new Mock(CandidatoManager.class);
         candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
-        cargoManager = new Mock(CargoManager.class);
+        cargoManager = new Mock(CargoManager.class);        
+        empresaManager = new Mock(EmpresaManager.class);
         action.setSolicitacaoManager((SolicitacaoManager) manager.proxy());
         action.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
         action.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
         action.setCargoManager((CargoManager)cargoManager.proxy());
+        action.setEmpresaManager((EmpresaManager)empresaManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         
@@ -144,12 +148,11 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     
     public void testVerSolicitacoes() throws Exception
     {
-    	Empresa empresa = EmpresaFactory.getEmpresa();
-    	
     	Candidato candidato = CandidatoFactory.getCandidato();
     	candidato.setId(100L);
     	
 		action.setCandidato(candidato);
+		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	candidatoManager.expects(once()).method("findByCandidatoId").with(eq(100L)).will(returnValue(candidato));
 		manager.expects(once()).method("findSolicitacaoList").with(eq(1L),eq(false),eq(true),eq(false)).will(returnValue(new ArrayList<Solicitacao>()));
 		
