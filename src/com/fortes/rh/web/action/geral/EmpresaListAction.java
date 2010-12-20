@@ -28,7 +28,11 @@ public class EmpresaListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		empresaManager.remove(new Long[]{empresa.getId()});
+		if(empresa.getId().equals(1L) && !empresa.getId().equals(getEmpresa().getId()))
+			empresaManager.removeEmpresaPadrao(1L);//só vai apagar se for a padrão, id=1 e caso o usuario não esteja logada nela
+		else
+			empresaManager.remove(new Long[]{empresa.getId()});
+		
 		addActionMessage("Empresa excluída com sucesso.");
 
 		return Action.SUCCESS;

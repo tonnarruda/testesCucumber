@@ -3,7 +3,10 @@
  * Requisito: RFA003 */
 package com.fortes.rh.dao.hibernate.geral;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Collection;
+import java.util.Properties;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -14,10 +17,12 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.util.ArquivoUtil;
 
 @SuppressWarnings("unchecked")
 public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements EmpresaDao
@@ -129,5 +134,49 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		return criteria.list();
+	}
+
+	public void removeEmpresaPadrao(long id) 
+	{		
+		String[] sqls = new String[]{
+				"delete from areainteresse_areaorganizacional where areasinteresse_id in (select id from areainteresse where empresa_id=" + id + ");",
+				"delete from areainteresse where empresa_id=" + id + ";",
+				"delete from auditoria where empresa_id = " + id + ";",
+				"delete from cargo_areaorganizacional where cargo_id in (select ID from cargo where empresa_id = " + id + ");",
+				"delete from faixasalarialhistorico where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + "));",
+				"delete from anuncio where solicitacao_id in (select id from solicitacao where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + ")));",
+				"delete from historicocandidato where candidatosolicitacao_id in (select id from candidatosolicitacao where solicitacao_id in (select id from solicitacao where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + "))));",
+				"delete from candidatosolicitacao where solicitacao_id in (select id from solicitacao where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + ")));",
+				"delete from solicitacao where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + "));",
+				"delete from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + ");",
+				"delete from cargo_areaformacao where cargo_id in (select id from cargo where empresa_id = " + id + ");",
+				"delete from cargo_conhecimento where cargo_id in (select id from cargo where empresa_id = " + id + ");",
+				"delete from candidato_cargo where cargos_id in (select id from cargo where empresa_id = " + id + ");",
+				"delete from cargo where empresa_id = " + id + ";",
+				"delete from conhecimento_areaorganizacional where conhecimentos_id in (select id from conhecimento where empresa_id = " + id + ");",
+				"delete from conhecimento where empresa_id = " + id + ";",
+				"delete from epihistorico where epi_id in (select id from epi where empresa_id = " + id + ");",
+				"delete from epi where empresa_id = " + id + ";",
+				"delete from grupoocupacional where empresa_id = " + id + ";",
+				"delete from ocorrencia where empresa_id = " + id + ";",
+				"delete from tipoepi where empresa_id = " + id + ";",
+				"delete from areainteresse_areaorganizacional where areasorganizacionais_id in (select id from areaorganizacional where empresa_id = " + id + ");",
+				"delete from cargo_areaorganizacional where areasorganizacionais_id in (select id from areaorganizacional where empresa_id = " + id + ");",
+				"delete from areaorganizacional where empresa_id = " + id + ";",
+				"delete from areainteresse where empresa_id = " + id + ";",
+				"delete from auditoria where empresa_id = " + id + ";",
+				"delete from formacao where candidato_id in (select id from candidato where empresa_id = " + id + ");",
+				"delete from candidatocurriculo where candidato_id in (select id from candidato where empresa_id = " + id + ");",
+				"delete from candidatoidioma where candidato_id in (select id from candidato where empresa_id = " + id + ");",
+				"delete from candidato where empresa_id = " + id + ";",
+				"delete from configuracaoimpressaocurriculo where empresa_id = " + id + ";",
+				"delete from estabelecimento where empresa_id = " + id + ";",
+				"delete from etapaseletiva where empresa_id = " + id + ";",
+				"delete from usuarioempresa where empresa_id = " + id + ";",
+				"delete from empresa where id = " + id + ";"
+		};
+		
+		JDBCConnection.executeQuery(sqls);
+		
 	}
 }

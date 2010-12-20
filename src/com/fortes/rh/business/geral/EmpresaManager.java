@@ -31,4 +31,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Empresa findByIdProjection(Long id);
 	Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String role);
 	Long[] selecionaEmpresa(Empresa empresa, Long usuarioId, String role);
+	void removeEmpresaPadrao(long id);
 }

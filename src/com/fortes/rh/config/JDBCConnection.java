@@ -1,5 +1,7 @@
 package com.fortes.rh.config;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,6 +11,8 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import com.fortes.rh.util.ArquivoUtil;
 
 public class JDBCConnection {
 
@@ -139,4 +143,25 @@ public class JDBCConnection {
 		return resultado;
 	}
 
+	public static void executeQuery(String[] sqls)
+	{
+		String systemConfigPath = ArquivoUtil.getRhHome() + File.separatorChar + "system.conf";
+		Properties configuracao = new Properties();
+		FileInputStream is = null;
+		try {
+			is = new FileInputStream(new File(systemConfigPath));
+			configuracao.load(is);
+			
+			JDBCConnection jdbcConn = new JDBCConnection(configuracao);
+			jdbcConn.execute(sqls);
+
+			if(is != null)
+				is.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			is = null;
+		}
+	}
 }

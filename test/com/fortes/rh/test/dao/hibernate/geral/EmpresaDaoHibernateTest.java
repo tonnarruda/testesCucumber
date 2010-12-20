@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
@@ -164,6 +165,17 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		Collection<Empresa> empresas = empresaDao.findByUsuarioPermissao(joao.getId(), "ROLE_REL_ANIV");
 		assertEquals(1, empresas.size());
 		assertEquals(vega, empresas.toArray()[0]);
+	}
+	
+	public void testRemoveEmpresaPadrao()
+	{
+		String[] sqls = new String[]{"INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,acurlsoap,acurlwsdl) VALUES (998855999,'EmpresaTesteDao','00000000','EmpresaTesteDao',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal');"};
+		JDBCConnection.executeQuery(sqls);
+		
+		empresaDao.removeEmpresaPadrao(998855999L);
+		
+		Empresa retorno = empresaDao.findByIdProjection(998855999L);
+		assertEquals(null, retorno);
 	}
 	
 	public void testFindCidade()
