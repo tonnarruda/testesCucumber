@@ -38,6 +38,9 @@
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{clinicaNome}]]></variableExpression>
 	</variable>
+	<variable name="countExameRealizado" class="java.lang.Integer" resetType="Report" calculation="Count">
+		<variableExpression><![CDATA[$F{clinicaNome}]]></variableExpression>
+	</variable>
 
 		<group  name="grp_clinica" >
 			<groupExpression><![CDATA[$F{clinicaNome}]]></groupExpression>
@@ -59,7 +62,20 @@
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="2"  isSplitAllowed="true" >
+			<band height="15"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="456"
+						y="0"
+						width="79"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Total: " + $V{grp_clinica_COUNT}.toString()]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
