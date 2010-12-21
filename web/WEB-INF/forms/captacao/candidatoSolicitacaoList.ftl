@@ -134,7 +134,7 @@
 		<div style="float: left;width: 60%;">
 			<#if !solicitacao.encerrada>
 				<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
-					<button class="btnTriagem" onclick="window.location='../candidato/prepareBuscaSimples.action?solicitacao.id=${solicitacao.id}'" accesskey="I"></button>
+					<button class="btnTriagem" onclick="window.location='../candidato/prepareBusca.action?solicitacao.id=${solicitacao.id}'"></button>
 				</@authz.authorize>
 			</#if>
 				<button onclick="window.location='../historicoCandidato/prepareInsert.action?solicitacao.id=${solicitacao.id}'" class="btnInserirEtapasEmGrupo" accesskey="M"></button>

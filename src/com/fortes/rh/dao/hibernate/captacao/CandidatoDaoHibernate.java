@@ -288,34 +288,23 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.add(Expression.eq("c.blackList", false));
 		
 		if (empresaId != null)
-		{
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
-		}
 		
 		if(parametros.get("candidatosComExperiencia") != null && ((Long[])parametros.get("candidatosComExperiencia")).length > 0)
-		{
 			criteria.add(Expression.in("c.id", (Long[])parametros.get("candidatosComExperiencia")));
-		}
 
 		if(parametros.get("bairros") != null && ((String[])parametros.get("bairros")).length > 0)
-		{
 			criteria.add(Expression.in("c.endereco.bairro", (String[])parametros.get("bairros")));
-		}
 
 		if(parametros.get("areasIds")  != null && ((Long[])parametros.get("areasIds")).length > 0)
-		{
 			criteria.createCriteria("c.areasInteresse", "a", Criteria.LEFT_JOIN).add(Expression.in("a.id", (Long[])parametros.get("areasIds")));
-		}
 
 		if(parametros.get("cargosIds")  != null && ((Long[])parametros.get("cargosIds")).length > 0)
-		{
 			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.id", (Long[])parametros.get("cargosIds")));
-		}
 
 		if(parametros.get("conhecimentosIds")  != null && ((Long[])parametros.get("conhecimentosIds")).length > 0)
-		{
 			criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.id", (Long[])parametros.get("conhecimentosIds")));
-		}
+
 		// Idioma
 		if(parametros.get("idioma") != null)
 		{
@@ -330,33 +319,23 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		//indicadoPor
 		if(isNotBlank((String)parametros.get("indicadoPor")))
-		{
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.indicadoPor) ilike  normalizar(?)", "%" + parametros.get("indicadoPor") + "%", Hibernate.STRING));
-		}
 
 		//nomeBUsca
 		if(isNotBlank((String)parametros.get("nomeBusca")))
-		{
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + parametros.get("nomeBusca") + "%", Hibernate.STRING));
-		}
 
 		//CPF
 		if(isNotBlank((String)parametros.get("cpfBusca")))
-		{
 			criteria.add(Expression.eq("c.pessoal.cpf",parametros.get("cpfBusca")));
-		}
-//
+
 		//dataINi
 		if(parametros.get("dataCadIni") != null)
-		{
 			criteria.add(Expression.ge("c.dataAtualizacao",parametros.get("dataCadIni")));
-		}
 
 		if(parametros.get("dataCadFim") != null)
-		{
 			criteria.add(Expression.le("c.dataAtualizacao",parametros.get("dataCadFim")));
-		}
-//
+
 		// Sexo
 		String sexo = (String) parametros.get("sexo");
 
@@ -437,6 +416,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 				{
 					juncao.add(Restrictions.sqlRestriction("normalizar(this_.ocrTexto) ilike  normalizar(?)", "%" + palavrasExpressao[i].trim() + "%", Hibernate.STRING) );
 				}
+				
 				criteria.add(juncao);
 
 			}

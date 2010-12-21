@@ -34,19 +34,6 @@
 	<style type="text/css">#menuBusca a.ativaAvancada{color: #FFCB03;}</style>
 
 	<script type="text/javascript">
-		function populaCargosConhecimentos(empresaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
-			CargoDWR.getByEmpresa(createListCargos, empresaId);
-			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId);
-		}
-	
-		function createListCargos(data)
-		{
-			addChecks('cargosCheck',data)
-		}
-
 		function populaBairros()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -58,23 +45,10 @@
 			addChecks("bairrosCheck",data)
 		}
 
-		function populaConhecimento(frm, nameCheck)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			var areasIds = getArrayCheckeds(frm, nameCheck);
-			CandidatoDWR.getConhecimentos(createListConhecimentos, areasIds, document.getElementById("empresaSelect").value);
-		}
-
-		function createListConhecimentos(data)
-		{
-			addChecks('conhecimentosCheck',data)
-		}
-
 		function prepareEnviarFormBDS()
 		{
 			if(verificaCandidatos())
 			{
-				
 				document.formCand.action = "selecionaDestinatariosBDS.action";
 				document.formCand.submit();
 			}
@@ -89,8 +63,6 @@
 			<#if BDS?exists && !BDS>
 				window.location = "prepareBusca.action?solicitacao.id=${solicitacao.id}&empresaId="+empresaId;
 			</#if>
-			
-			populaCargosConhecimentos(empresaId);
 		}
 
 		function limparFiltro()
@@ -200,7 +172,7 @@
 
 			<@ww.select label="Possui Veículo" name="veiculo" id="veiculo" list=r"#{'I':'Indiferente','S':'Sim','N':'Não'}" cssStyle="width: 100px;" />
 			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
-			<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList" onClick="populaConhecimento(document.forms[0],'areasCheck');"/>
+			<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList"/>
 			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" />
 			<br>
 			<#if solicitacao?exists && solicitacao.experiencia?exists>

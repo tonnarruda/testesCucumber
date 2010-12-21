@@ -87,16 +87,33 @@ public class BairroDaoHibernateTest extends GenericDaoHibernateTest<Bairro>
 		cidade1 = cidadeDao.save(cidade1);
 
 		Bairro bairro1 = new Bairro();
-		bairro1.setNome("Teste");
+		bairro1.setNome("testeTeste");
 		bairro1.setCidade(cidade1);
 		bairro1 = bairroDao.save(bairro1);
 
 		Bairro bairro2 = new Bairro();
-		bairro2.setNome("teste");
+		bairro2.setNome("Testeteste");
 		bairro2.setCidade(cidade1);
 		bairro2 = bairroDao.save(bairro2);
 
 		assertTrue(bairroDao.existeBairro(bairro2));
+	}
+	
+	public void testExisteBairroUpdate()
+	{
+		Estado estado = EstadoFactory.getEntity();
+		estado = estadoDao.save(estado);
+		
+		Cidade cidade1 = CidadeFactory.getEntity();
+		cidade1.setUf(estado);
+		cidade1 = cidadeDao.save(cidade1);
+		
+		Bairro bairro1 = new Bairro();
+		bairro1.setNome("Testetes");
+		bairro1.setCidade(cidade1);
+		bairro1 = bairroDao.save(bairro1);
+		
+		assertFalse(bairroDao.existeBairro(bairro1));
 	}
 
 	public void testFindAllSelect()

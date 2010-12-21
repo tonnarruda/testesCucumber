@@ -16,7 +16,7 @@ public interface ConhecimentoManager extends GenericManager<Conhecimento>
 	public Collection<Conhecimento> findByAreasOrganizacionalIds(Long[] areasOrganizacionais, Long empresaId);
 	public Collection<Conhecimento> findAllSelect(Long empresaId);
 	public Collection<Conhecimento> findByCargo(Long cargoId);
-	Collection<CheckBox> populaCheckOrderNome(long empresaId);
+	Collection<CheckBox> populaCheckOrderNome(Long empresaId);
 	Collection<CheckBox> populaCheckOrderNomeByAreaOrganizacionals(Long[] areasId, long empresaId);
 	Collection<Conhecimento> populaConhecimentos(String[] conhecimentosCheck);
 	public Conhecimento findByIdProjection(Long conhecimentoId);

@@ -77,7 +77,8 @@ public class ConhecimentoDaoHibernate extends GenericDaoHibernate<Conhecimento> 
 		p.add(Projections.property("c.nome"), "nome");
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		if(empresaId != null)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
 
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

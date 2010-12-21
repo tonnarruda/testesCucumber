@@ -50,7 +50,8 @@ public class AreaInteresseDaoHibernate extends GenericDaoHibernate<AreaInteresse
 		p.add(Projections.property("ai.nome"), "nome");
 
 		criteria.setProjection(p);
-		criteria.add(Expression.eq("ai.empresa.id", empresaId));
+		if(empresaId != null)
+			criteria.add(Expression.eq("ai.empresa.id", empresaId));
 
 		criteria.addOrder(Order.asc("ai.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

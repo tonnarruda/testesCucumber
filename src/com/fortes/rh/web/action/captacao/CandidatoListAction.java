@@ -13,7 +13,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.F2rhFacade;
-import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
@@ -233,6 +232,11 @@ public class CandidatoListAction extends MyActionSupportList
 
 	private void prepareBuscaCandidato() throws Exception
 	{
+		if(empresaId == null)		
+			empresaId = getEmpresaSistema().getId();
+		else if(empresaId.equals(-1L))//todas as empresa
+			empresaId = null;
+		
 		deficiencias = new Deficiencia();
 		escolaridades = new Escolaridade();
 		nivels = new NivelIdioma();
@@ -241,13 +245,15 @@ public class CandidatoListAction extends MyActionSupportList
 
 		idiomas = idiomaManager.findAll(new String[]{"nome"});
 
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado"), "getId", "getNomeMercado");
+		Collection<Cargo> cargos = cargoManager.findAllSelect(empresaId, "nomeMercado");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
 
-		Collection<AreaInteresse> areaInteressesAux = areaInteresseManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"empresa.id"},new Object[]{getEmpresaSistema().getId()},new String[]{"nome"});
+		Collection<AreaInteresse> areaInteressesAux = areaInteresseManager.findAllSelect(empresaId);
 		areasCheckList = CheckListBoxUtil.populaCheckListBox(areaInteressesAux, "getId", "getNome");
-		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(getEmpresaSistema().getId());
+		
+		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(empresaId);
 
-		experienciasCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado"), "getId", "getNomeMercado");
+		experienciasCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
 
 		if(solicitacao != null && solicitacao.getId() != null)
 		{
@@ -300,9 +306,6 @@ public class CandidatoListAction extends MyActionSupportList
 	public String prepareBusca() throws Exception
 	{
 		prepareBuscaCandidato();
-		
-		if(empresaId == null)		
-			empresaId = getEmpresaSistema().getId();
 	
 		if (!msgAlert.equals(""))
 			addActionMessage(msgAlert);

@@ -40,7 +40,7 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 		return getDao().findByCargo(cargoId);
 	}
 
-	public Collection<CheckBox> populaCheckOrderNome(long empresaId)
+	public Collection<CheckBox> populaCheckOrderNome(Long empresaId)
 	{
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 		try

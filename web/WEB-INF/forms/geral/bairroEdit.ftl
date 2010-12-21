@@ -9,7 +9,7 @@
 	<title>Novo Bairro</title>
 	<#assign formAction="insert.action"/>
 </#if>
-	<#assign validarCampos="return validaFormulario('form', new Array('cidade','nome'), null)"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('cidade','bairroNome'), null)"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>

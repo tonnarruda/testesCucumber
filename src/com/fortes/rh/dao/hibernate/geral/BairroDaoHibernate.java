@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -62,13 +62,11 @@ public class BairroDaoHibernate extends GenericDaoHibernate<Bairro> implements B
 		p.add(Projections.property("bairro.id"),"id");
 		criteria.setProjection(p);
 
-		Example example = Example.create(new Bairro());
-		example.ignoreCase();
-		example.enableLike();
-
-		criteria.add(example);
 		criteria.add(Restrictions.eq("cidade.id", bairro.getCidade().getId()));
-		criteria.add(Restrictions.like("bairro.nome", "%"+ bairro.getNome() +"%").ignoreCase());
+		
+		if(bairro.getId() != null)
+			criteria.add(Restrictions.ne("bairro.id", bairro.getId()));
+		criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + bairro.getNome() + "%", Hibernate.STRING));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Bairro.class));

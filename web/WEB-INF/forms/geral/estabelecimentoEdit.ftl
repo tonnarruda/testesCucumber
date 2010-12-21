@@ -27,7 +27,7 @@
 	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
-	<#assign validarCampos="return validaFormulario('form', new Array('nome','complementoCnpj','ende','num','bairro','uf','cidade'), new Array('cep'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('nome','complementoCnpj','ende','num','bairroNome','uf','cidade'), new Array('cep'))"/>
 
 	<script type='text/javascript'>
 		function populaCidades()
