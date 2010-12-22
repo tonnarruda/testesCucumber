@@ -74,7 +74,7 @@
 	}
 </style>
 
-<title>Performance Funcional</title>
+<title>Performance Profissional</title>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<#assign usuarioId><@authz.authentication operation="id"/></#assign>

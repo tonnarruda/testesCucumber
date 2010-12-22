@@ -42,7 +42,7 @@ public class ProdutividadeReportAction extends MyActionSupport
 
 		try
 		{
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Produtividade Anual - " + ano, getEmpresaSistema(), "");
+			parametros = RelatorioUtil.getParametrosRelatorio("Análise das Etapas Seletiva - " + ano, getEmpresaSistema(), "");
 
 		}
 		catch (Exception e)

@@ -13,3 +13,5 @@ BEGIN
 	execute ''ALTER TABLE '' || $1 || '' '' || $2 || '' TRIGGER ALL'';
 END;
 ' LANGUAGE plpgsql;--.go
+
+update papel set nome = 'Análise das Etapas Seletivas' where id = 47;--.go

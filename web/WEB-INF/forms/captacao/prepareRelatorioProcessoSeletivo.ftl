@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Processos Seletivos</title>
+	<title>Análise das Etapas Seletivas</title>
 	<#assign validarCampos="return validaFormulario('form', new Array('ano', 'cargo', '@etapaCheck'), null)"/>
 	
 </head>
