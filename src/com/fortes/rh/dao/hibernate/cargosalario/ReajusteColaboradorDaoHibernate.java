@@ -26,7 +26,7 @@ public class ReajusteColaboradorDaoHibernate extends GenericDaoHibernate<Reajust
 		StringBuilder hql = new StringBuilder();
 
 		hql.append("select new ReajusteColaborador(rc.id, aa.id, fsa.nome, ca.nome, fsp.id, fsp.nome, fsp.codigoAC, ");
-		hql.append("cp.nome, rc.tipoSalarioAtual, rc.tipoSalarioProposto, rc.salarioAtual, rc.salarioProposto, ");
+		hql.append("cp.nome, rc.tipoSalarioAtual, rc.tipoSalarioProposto, rc.salarioAtual, rc.salarioProposto, rc.observacao,  ");
 		hql.append("c.id, c.nome, c.nomeComercial,c.codigoAC, c.naoIntegraAc, aa.id, ap.id, ap.nome, ap.codigoAC, trc.id, trc.data, ");
 		hql.append("fsha.valor, fsha.tipo, fsha.quantidade, ");
 		hql.append("fshp.valor, fshp.tipo, fshp.quantidade, ");

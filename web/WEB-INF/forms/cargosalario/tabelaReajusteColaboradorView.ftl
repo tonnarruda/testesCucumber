@@ -134,7 +134,7 @@
 						<tr>
 							<th class="sorted order1" style="background:#7BA6D3;" colspan=2>Colaborador</th>
 							<th colspan=3 class="sorted order1" style="background:#7BA6D3;" width=360>Situação Atual</th>
-							<th colspan=3 class="sorted order1" style="background:#7BA6D3;" width=360>Situação Proposta</th>
+							<th colspan=4 class="sorted order1" style="background:#7BA6D3;" width=360>Situação Proposta</th>
 							<th colspan="2" align="center" class="sorted order1" style="background:#7BA6D3;">Diferença</th>
 						</tr>
 					</thead>
@@ -147,8 +147,9 @@
 						<th align=left>Tipo Salário</th>
 						<th align=right>Salário&nbsp;</th>
 						<th width=150 align=left>&nbsp;Cargo/Faixa</th>
-						<th align=left>Tipo Salário</th>
-						<th align=right>Salário</th>
+						<th width=50 align=left>Tipo Salário</th>
+						<th align=left>Salário</th>
+						<th align=center>Obs.</th>
 						<th align=right>(R$)</th>
 						<th align=right>(%)</th>
 					</tr>
@@ -178,6 +179,9 @@
 				  	<td> ${reajusteColaborador.faixaSalarialProposta.descricao}</td>
 				  	<td> ${reajusteColaborador.descricaoTipoSalarioProposto}</td>
 				  	<td align="right"> ${salarioProposto?string(",##0.00")}</td>
+				  	<td align="center">
+						<span href=# style="cursor: default;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Obs.: ' + '${reajusteColaborador.observacao}');return false">...</span>
+				  	</td>
 				  	<td align="right"> ${(salarioProposto - salarioAtual)?string(",##0.00")}</td>
 					<td align="right">
 						<#if (salarioAtual > 0) >
@@ -197,7 +201,7 @@
 				<td></td>
 				<td align="right"><b>SUB-TOTAL</b></td>
 				<td colspan=3 align="right" width=360> <b>${subTotalSalarioAtual?string(",##0.00")}</b></td>
-				<td colspan=3 align="right" width=360> <b>${subTotalSalarioProposto?string(",##0.00")}</b></td>
+				<td colspan=4 align="right" width=360> <b>${subTotalSalarioProposto?string(",##0.00")}</b></td>
 				<td align="right"> <b>${(subTotalSalarioProposto - subTotalSalarioAtual)?string(",##0.00")}</b></td>
 				<#if (subTotalSalarioAtual > 0)>
 					<td align="right"> <b>${((((subTotalSalarioProposto - subTotalSalarioAtual) / subTotalSalarioAtual)) * 100)?string(",##0.00")}%</b></td>
