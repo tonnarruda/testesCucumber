@@ -17,6 +17,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.SolicitacaoExameDao;
 import com.fortes.rh.model.dicionario.ResultadoExame;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
@@ -41,6 +42,11 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		hql.append("left join hc.faixaSalarial fs ");
 		hql.append("left join fs.cargo cg ");
 		hql.append("where se.empresa.id = :empresaId ");
+		
+		hql.append("and hc.data = (select max(hc2.data) ");
+		hql.append("from HistoricoColaborador as hc2 ");
+		hql.append("where hc2.colaborador.id = co.id ");
+		hql.append("and hc2.data <= se.data and hc2.status = :status ) ");
 		
 		if (exameIds != null && exameIds.length > 0)
 			hql.append("and ese.exame.id in (:exameIds) ");
@@ -84,6 +90,8 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		
 		Query query = getSession().createQuery(hql.toString());
 
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
 		if (dataIni != null && dataFim != null)
 		{
 			query.setDate("dataIni", dataIni);
