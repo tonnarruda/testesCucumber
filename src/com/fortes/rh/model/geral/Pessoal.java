@@ -249,6 +249,10 @@ public class Pessoal implements Serializable
 	public int getQtdFilhos() {
 		return qtdFilhos;
 	}
+	
+	public String getQtdFilhosString() {
+		return StringUtil.valueOf(qtdFilhos);
+	}
 
 	public void setQtdFilhos(int qtdFilhos) {
 		this.qtdFilhos = qtdFilhos;
@@ -267,6 +271,11 @@ public class Pessoal implements Serializable
 	public Date getRgDataExpedicao()
 	{
 		return rgDataExpedicao;
+	}
+
+	public String getRgDataExpedicaoFormatada()
+	{
+		return DateUtil.formataDiaMesAno(this.rgDataExpedicao);
 	}
 
 	public void setRgDataExpedicao(Date rgDataExpedicao)

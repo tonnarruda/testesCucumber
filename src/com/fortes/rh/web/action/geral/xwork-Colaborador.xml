@@ -148,7 +148,19 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorPerformance.ftl</result>
 		</action>
-		
+		<action name="prepareRelatorioDinamico" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioDinamico">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
+		</action>
+		<action name="relatorioDinamico" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioDinamico">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/relatorioDinamico.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">listagemColaboradores.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
+		</action>
 				
 	</package>
 </xwork>

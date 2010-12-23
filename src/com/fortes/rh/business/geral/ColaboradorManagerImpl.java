@@ -55,6 +55,7 @@ import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.model.geral.Contato;
+import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estado;
@@ -72,6 +73,7 @@ import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.util.BeanUtils;
 import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings("unchecked")
@@ -1616,6 +1618,24 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			throw new Exception("Não existe informações para os filtros selecionados");
 		
 		
+		return retorno;
+	}
+ 
+	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas) 
+	{
+		Collection<DynaRecord> retorno = new ArrayList<DynaRecord>();
+		
+		for (Colaborador colaborador : colaboradores)
+		{				
+			DynaRecord record = new DynaRecord();
+			
+			for (int i=1; i <= colunasMarcadas.size(); i++)
+				BeanUtils.setValue(record, "campo" + i, BeanUtils.getValue(colaborador, (String) colunasMarcadas.toArray()[i - 1]));
+
+			record.setColaborador(colaborador);
+			retorno.add(record);
+		}			
+
 		return retorno;
 	}
 	

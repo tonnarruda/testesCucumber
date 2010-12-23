@@ -950,7 +950,22 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			CamposExtras camposExtras, boolean habilitaCampoExtra)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome) ");
+		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
+				"co.nomeComercial, co.matricula, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.pessoal.estadoCivil,  " +
+				"co.pessoal.escolaridade, co.pessoal.mae, co.pessoal.pai, co.pessoal.cpf, co.pessoal.pis, co.pessoal.rg,  " +
+				"co.pessoal.rgOrgaoEmissor, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
+				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.habilitacao.numeroHab, co.habilitacao.emissao,  " +
+				"co.habilitacao.vencimento, co.habilitacao.categoria, co.endereco.logradouro, co.endereco.complemento, co.endereco.numero,  " +
+				"co.endereco.bairro, co.endereco.cep, co.contato.email, co.contato.foneCelular,	co.contato.foneFixo " );
+				
+				if(habilitaCampoExtra && camposExtras != null)
+				{
+					hql.append(" ,ce.texto1, ce.texto2, ce.texto3, ce.texto4, ce.texto5, ce.texto6, ce.texto7, ce.texto8, ce.texto9, ce.texto10, ");
+					hql.append(" ce.data1, ce.data2, ce.data3, ce.valor1, ce.valor2, ce.numero1 ");
+				}
+				
+		hql.append(" )  " );
+		
 		hql.append("from HistoricoColaborador as hc1 ");
 		hql.append("right join hc1.areaOrganizacional as ao ");
 		hql.append("left join hc1.areaOrganizacional.responsavel as re ");

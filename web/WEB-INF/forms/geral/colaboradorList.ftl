@@ -22,7 +22,7 @@
 		{
 			link = "prepareDesliga.action?colaborador.id="+colaborador+
 					"&nomeBusca="+document.getElementById('nomeBusca').value+
-					"&cpfBusca="+limpaCamposMascaraCpf(document.getElementById('cpfBusca').value);
+					"&cpfBusc="+limpaCamposMascaraCpf(document.getElementById('cpfBusca').value);
 			window.location=link;
 		}
 
@@ -148,6 +148,10 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>
+		
+		<button class="btnListagemColaborador" onclick="window.location='prepareRelatorioDinamico.action'">
+		</button>
+		
 	</div>
 
 </body>

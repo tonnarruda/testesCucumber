@@ -446,15 +446,25 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public Colaborador(String esNome, String aoNome, String reNome, String coNome, String cgNome, String fsNome)
 	{
-		this.setEstabelecimentoNomeProjection(esNome);
-		this.setAreaOrganizacionalNome(aoNome);
-		this.setAreaOrganizacionalResponsavelNomeProjection(reNome);
-		this.setNome(coNome);
-		this.setFaixaSalarialNomeProjection(fsNome);
-		this.setCargoNomeProjection(cgNome);
+	  this.setEstabelecimentoNomeProjection(esNome);
+	  this.setAreaOrganizacionalNome(aoNome);
+	  this.setAreaOrganizacionalResponsavelNomeProjection(reNome);
+	  this.setNome(coNome);
+	  this.setFaixaSalarialNomeProjection(fsNome);
+	  this.setCargoNomeProjection(cgNome);
 	}
-
-	public Colaborador(String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, String empresaNome)
+	
+	public Colaborador(
+						String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, String empresaNome,
+						String nomeComercial,  String matricula, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
+						String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
+						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
+						Date dataNascimento, String conjuge, Integer qtdFilhos, String numeroHab, Date emissao, 
+						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
+						String bairro, String cep, String email, String foneCelular, String foneFixo, 
+						String texto1,  String texto2,  String texto3,  String texto4,  String texto5,  String texto6,  String texto7,  String texto8,  String texto9,  String texto10,
+						Date data1,  Date data2,  Date data3,  Double valor1,  Double valor2,  Integer numero1  
+					   ) 
 	{
 		this.setEstabelecimentoNomeProjection(esNome);
 		this.setAreaOrganizacionalId(aoId);
@@ -464,6 +474,142 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setFaixaSalarialNomeProjection(fsNome);
 		this.setCargoNomeProjection(cgNome);
 		this.setEmpresaNome(empresaNome);
+		
+		this.nomeComercial = nomeComercial;
+		this.matricula = matricula;
+		this.dataAdmissao = dataAdmissao;
+		this.dataDesligamento = dataDesligamento;
+		this.vinculo = vinculo;
+				
+		if (this.pessoal == null)
+			this.pessoal = new Pessoal();
+				
+		this.getPessoal().setEstadoCivil(estadoCivil);
+		this.getPessoal().setEscolaridade(escolaridade);
+		this.getPessoal().setMae(mae);
+		this.getPessoal().setPai(pai);
+		this.getPessoal().setCpf(cpf);
+		this.getPessoal().setPis(pis);
+		this.getPessoal().setRg(rg);
+		this.getPessoal().setRgOrgaoEmissor(rgOrgaoEmissor);
+		this.getPessoal().setDeficiencia(deficiencia);
+		this.getPessoal().setRgDataExpedicao(rgDataExpedicao);
+		this.getPessoal().setSexo(sexo);
+		this.getPessoal().setDataNascimento(dataNascimento);
+		this.getPessoal().setConjuge(conjuge);
+		this.getPessoal().setQtdFilhos(qtdFilhos);
+				
+		if (this.habilitacao == null)
+			this.habilitacao = new Habilitacao();
+		
+		this.getHabilitacao().setNumeroHab(numeroHab);
+		this.getHabilitacao().setEmissao(emissao);
+		this.getHabilitacao().setVencimento(vencimento);
+		this.getHabilitacao().setCategoria(categoria);
+				
+		if (this.endereco == null)
+			this.endereco = new Endereco();
+				
+		this.getEndereco().setLogradouro(logradouro);
+		this.getEndereco().setComplemento(complemento);
+		this.getEndereco().setNumero(numero);
+		this.getEndereco().setBairro(bairro);
+		this.getEndereco().setCep(cep);
+		
+		if (contato == null)
+			this.contato = new Contato();
+		
+		this.getContato().setEmail(email);
+		this.getContato().setFoneCelular(foneCelular);
+		this.getContato().setFoneFixo(foneFixo);
+		
+		if (this.camposExtras == null)
+			this.camposExtras = new CamposExtras();
+		
+		this.getCamposExtras().setTexto1(texto1);
+		this.getCamposExtras().setTexto2(texto2);
+		this.getCamposExtras().setTexto3(texto3);
+		this.getCamposExtras().setTexto4(texto4);
+		this.getCamposExtras().setTexto5(texto5);
+		this.getCamposExtras().setTexto6(texto6);
+		this.getCamposExtras().setTexto7(texto7);
+		this.getCamposExtras().setTexto8(texto8);
+		this.getCamposExtras().setTexto9(texto9);
+		this.getCamposExtras().setTexto10(texto10);
+		this.getCamposExtras().setData1(data1);
+		this.getCamposExtras().setData2(data2);
+		this.getCamposExtras().setData3(data3);
+		this.getCamposExtras().setValor1(valor1);
+		this.getCamposExtras().setValor2(valor2);
+		this.getCamposExtras().setNumero1(numero1);
+	}
+
+	public Colaborador(
+			String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, String empresaNome,
+			String nomeComercial,  String matricula, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
+			String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
+			String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
+			Date dataNascimento, String conjuge, Integer qtdFilhos, String numeroHab, Date emissao, 
+			Date vencimento, String categoria, String logradouro, String complemento, String numero, 
+			String bairro, String cep, String email, String foneCelular, String foneFixo 
+			) 
+	{
+		this.setEstabelecimentoNomeProjection(esNome);
+		this.setAreaOrganizacionalId(aoId);
+		this.setAreaOrganizacionalNome(aoNome);
+		this.setAreaOrganizacionalResponsavelNomeProjection(reNome);
+		this.setNome(coNome);
+		this.setFaixaSalarialNomeProjection(fsNome);
+		this.setCargoNomeProjection(cgNome);
+		this.setEmpresaNome(empresaNome);
+		
+		this.nomeComercial = nomeComercial;
+		this.matricula = matricula;
+		this.dataAdmissao = dataAdmissao;
+		this.dataDesligamento = dataDesligamento;
+		this.vinculo = vinculo;
+		
+		if (this.pessoal == null)
+			this.pessoal = new Pessoal();
+		
+		this.getPessoal().setEstadoCivil(estadoCivil);
+		this.getPessoal().setEscolaridade(escolaridade);
+		this.getPessoal().setMae(mae);
+		this.getPessoal().setPai(pai);
+		this.getPessoal().setCpf(cpf);
+		this.getPessoal().setPis(pis);
+		this.getPessoal().setRg(rg);
+		this.getPessoal().setRgOrgaoEmissor(rgOrgaoEmissor);
+		this.getPessoal().setDeficiencia(deficiencia);
+		this.getPessoal().setRgDataExpedicao(rgDataExpedicao);
+		this.getPessoal().setSexo(sexo);
+		this.getPessoal().setDataNascimento(dataNascimento);
+		this.getPessoal().setConjuge(conjuge);
+		this.getPessoal().setQtdFilhos(qtdFilhos);
+		
+		if (this.habilitacao == null)
+			this.habilitacao = new Habilitacao();
+		
+		this.getHabilitacao().setNumeroHab(numeroHab);
+		this.getHabilitacao().setEmissao(emissao);
+		this.getHabilitacao().setVencimento(vencimento);
+		this.getHabilitacao().setCategoria(categoria);
+		
+		if (this.endereco == null)
+			this.endereco = new Endereco();
+		
+		this.getEndereco().setLogradouro(logradouro);
+		this.getEndereco().setComplemento(complemento);
+		this.getEndereco().setNumero(numero);
+		this.getEndereco().setBairro(bairro);
+		this.getEndereco().setCep(cep);
+		
+		if (contato == null)
+			this.contato = new Contato();
+		
+		this.getContato().setEmail(email);
+		this.getContato().setFoneCelular(foneCelular);
+		this.getContato().setFoneFixo(foneFixo);
 	}
 
 	public Colaborador(Long id, String nome, String estabelecimentoNome, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome,
@@ -1380,6 +1526,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public Date getDataDesligamento()
 	{
 		return dataDesligamento;
+	}
+	public String getDataDesligamentoFormatada()
+	{
+		return DateUtil.formataDiaMesAno(this.dataDesligamento);
 	}
 	public void setDataDesligamento(Date dataDesligamento)
 	{
