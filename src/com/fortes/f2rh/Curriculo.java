@@ -2,6 +2,8 @@ package com.fortes.f2rh;
 
 import java.math.BigDecimal;
 
+import com.fortes.rh.util.StringUtil;
+
 public class Curriculo {
 	
 	private int id;
@@ -49,6 +51,10 @@ public class Curriculo {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	public String getS() {
+		return StringUtil.montaTokenF2rh(this.nome);
 	}
 
 	public int getId() {
