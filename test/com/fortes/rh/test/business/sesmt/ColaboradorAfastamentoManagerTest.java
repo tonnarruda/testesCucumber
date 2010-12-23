@@ -67,7 +67,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 	public void testFindAllSelect()
 	{
 		colaboradorAfastamentoDao.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<ColaboradorAfastamento>()));
-		assertNotNull(colaboradorAfastamentoManager.findAllSelect(0, 0, 1L, "", estabelecimentoCheck, colaboradorAfastamento, "DESC", false, 'T'));
+		assertNotNull(colaboradorAfastamentoManager.findAllSelect(0, 0, 1L, "", estabelecimentoCheck, null, colaboradorAfastamento, "DESC", false, 'T'));
 	}
 
 	public void testFindRelatorioAfastamentos() throws Exception
@@ -86,7 +86,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionais));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(areaOrganizacional));
 
-		assertNotNull(colaboradorAfastamentoManager.findRelatorioAfastamentos(1L, "", estabelecimentoCheck, colaboradorAfastamento, false, 'T'));
+		assertNotNull(colaboradorAfastamentoManager.findRelatorioAfastamentos(1L, "", estabelecimentoCheck, null, colaboradorAfastamento, false, 'T'));
 	}
 
 	public void testFindRelatorioAfastamentosException()
@@ -97,7 +97,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 
 		try
 		{
-			colaboradorAfastamentoManager.findRelatorioAfastamentos(1L, "", estabelecimentoCheck, colaboradorAfastamento, false, 'T');
+			colaboradorAfastamentoManager.findRelatorioAfastamentos(1L, "", estabelecimentoCheck, null, colaboradorAfastamento, false, 'T');
 		}
 		catch (ColecaoVaziaException e)
 		{

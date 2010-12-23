@@ -72,9 +72,9 @@ public class CatManagerTest extends MockObjectTestCase
 		String[] estabelecimentosCheck = new String[]{"1","2"};
 		Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
 		
-		catDao.expects(once()).method("findAllSelect").with(new Constraint[]{eq(1L),eq(hoje),eq(hoje),eq(estabelecimentoIds), ANYTHING}).will(returnValue(new ArrayList<Cat>()));
+		catDao.expects(once()).method("findAllSelect").with(new Constraint[]{eq(1L),eq(hoje),eq(hoje),eq(estabelecimentoIds), ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Cat>()));
 		
-		assertNotNull(catManager.findAllSelect(1L, hoje, hoje, estabelecimentosCheck, null));
+		assertNotNull(catManager.findAllSelect(1L, hoje, hoje, estabelecimentosCheck, null, null));
 	}
 
 	public void testFindRelatorioCats() throws ColecaoVaziaException
@@ -92,7 +92,7 @@ public class CatManagerTest extends MockObjectTestCase
 		colecao.add(cat);
 		Collection<AreaOrganizacional> areaOrganizacionais = new ArrayList<AreaOrganizacional>();
 		
-		catDao.expects(once()).method("findAllSelect").with(new Constraint[]{eq(1L),eq(hoje),eq(hoje),eq(estabelecimentoIds), ANYTHING}).will(returnValue(colecao));
+		catDao.expects(once()).method("findAllSelect").with(new Constraint[]{eq(1L),eq(hoje),eq(hoje),eq(estabelecimentoIds), ANYTHING, ANYTHING}).will(returnValue(colecao));
 		areaOrganizacionalManager.expects(once()).method("findAllList").will(returnValue(areaOrganizacionais ));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionais));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(areaOrganizacional));

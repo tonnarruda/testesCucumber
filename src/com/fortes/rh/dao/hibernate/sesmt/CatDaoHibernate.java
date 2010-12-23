@@ -57,7 +57,7 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		return  criteria.list();
 	}
 
-	public Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, Long[] estabelecimentoIds, String nomeBusca)
+	public Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, Long[] estabelecimentoIds, String nomeBusca, Long[] areaIds)
 	{
 
 		StringBuilder hql = new StringBuilder("select new Cat(c.id, c.data, c.numeroCat, c.observacao, c.gerouAfastamento, co.id, co.nome, es.nome, ao.id) ");
@@ -75,11 +75,12 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 
 		if (estabelecimentoIds.length > 0)
 			hql.append("and es.id in (:estabelecimentoIds) ");
+		
+		if (areaIds.length > 0)
+			hql.append("and ao.id in (:areaIds) ");
 
 		if (inicio != null && fim != null)
-		{
 			hql.append("and c.data between :inicio and :fim ");
-		}
 
 		hql.append("and hc.data = ( ");
 		hql.append("select max(hc2.data) " );
@@ -106,6 +107,9 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 
 		if (estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		
+		if (areaIds.length > 0)
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
 
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		

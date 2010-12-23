@@ -31,6 +31,7 @@
 		<@ww.datepicker name="colaboradorAfastamento.fim" id="fim" value="${fim}" cssClass="mascaraData validaDataFim" />
 
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
+		<@frt.checkListBox name="areasCheck" label="Área Organizacional" list="areasCheckList"/>
 
 		<@ww.textfield label="Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 		<@ww.select label="Motivo" name="colaboradorAfastamento.afastamento.id" id="tipo" required="true" list="afastamentos" listKey="id" listValue="descricao" headerKey="" headerValue="Todos"/>

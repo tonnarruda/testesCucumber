@@ -90,8 +90,9 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		catDao.save(cat);
 
 		Long[] estabelecimentoIds = new Long[]{estabelecimentoAtual.getId(), -1325L};
+		Long[] areaIds = new Long[]{areaOrganizacional.getId()};
 
-		Collection<Cat> colecao = catDao.findAllSelect(empresa.getId(), new Date(), new Date(), estabelecimentoIds, "a");
+		Collection<Cat> colecao = catDao.findAllSelect(empresa.getId(), new Date(), new Date(), estabelecimentoIds, "a", areaIds);
 
 		assertEquals(1, colecao.size());
 	}

@@ -105,7 +105,12 @@
 					<input type="checkbox" value="${curriculo.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
 				</@display.column>
 			
-				<@display.column property="nome" title="Nome" style="width: 250px;"/>
+				<@display.column title="Nome" style="width: 250px;">
+					<a title="Ver Currículo" href="javascript:popup('http://www.f2rh.com.br/curriculos/${curriculo.id?string?replace(".", "")?replace(",","")}?s=${curriculo.s}', 780, 750)">
+						${curriculo.nome}
+					</a>
+				</@display.column>
+				
 				<@display.column property="escolaridade_rh" title="Escolaridade" style="width: 150px;"/>
 				<@display.column title="Cidade/UF" style="width: 150px;">
 					<#if curriculo.cidade_rh?exists && curriculo.estado?exists>

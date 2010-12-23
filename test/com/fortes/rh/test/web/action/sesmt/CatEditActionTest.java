@@ -10,9 +10,11 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.CatManager;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Pessoal;
@@ -30,6 +32,7 @@ public class CatEditActionTest extends MockObjectTestCase
 	private Mock manager;
 	private Mock colaboradorManager;
 	private Mock estabelecimentoManager;
+	private Mock areaOrganizacionalManager;
 
     protected void setUp() throws Exception
     {
@@ -42,6 +45,8 @@ public class CatEditActionTest extends MockObjectTestCase
         action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
         estabelecimentoManager = mock(EstabelecimentoManager.class);
         action.setEstabelecimentoManager((EstabelecimentoManager)estabelecimentoManager.proxy());
+        areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+        action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
         action.setInicio(new Date());
@@ -172,6 +177,7 @@ public class CatEditActionTest extends MockObjectTestCase
 
 		manager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Cat>()));
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
+		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").will(returnValue(new ArrayList<AreaOrganizacional>()));
 
     	assertEquals(action.list(), "success");
 
