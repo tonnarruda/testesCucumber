@@ -37,6 +37,7 @@
 		<@ww.datepicker name="fim" id="fim" value="${dataFim}" cssClass="mascaraData" />
 
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
+		<@frt.checkListBox name="areasCheck" label="Área Organizacional" list="areasCheckList"/>
 
 		<@ww.textfield label="Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 

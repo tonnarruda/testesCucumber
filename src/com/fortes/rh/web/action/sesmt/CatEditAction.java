@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.CatManager;
@@ -27,6 +28,7 @@ public class CatEditAction extends MyActionSupportList
 	private CatManager catManager;
 	private ColaboradorManager colaboradorManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private Colaborador colaborador;
 	private Cat cat;
@@ -36,7 +38,10 @@ public class CatEditAction extends MyActionSupportList
 	private Date fim;
 	private String nomeBusca;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	
 	private String[] estabelecimentosCheck;
+	private String[] areasCheck;
 	private Collection<Colaborador> colaboradors;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 
@@ -45,11 +50,14 @@ public class CatEditAction extends MyActionSupportList
 		if (!validaPeriodo())
 			return SUCCESS;
 
-		cats = catManager.findAllSelect(getEmpresaSistema().getId(), inicio, fim, estabelecimentosCheck, nomeBusca);
+		cats = catManager.findAllSelect(getEmpresaSistema().getId(), inicio, fim, estabelecimentosCheck, nomeBusca, areasCheck);
 
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+		
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
 		return SUCCESS;
 	}
@@ -268,5 +276,17 @@ public class CatEditAction extends MyActionSupportList
 
 	public void setParametros(Map<String, Object> parametros) {
 		this.parametros = parametros;
+	}
+
+	public Collection<CheckBox> getAreasCheckList() {
+		return areasCheckList;
+	}
+
+	public void setAreasCheck(String[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

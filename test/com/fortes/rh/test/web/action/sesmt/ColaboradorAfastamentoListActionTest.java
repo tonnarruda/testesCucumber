@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -20,6 +22,7 @@ public class ColaboradorAfastamentoListActionTest extends MockObjectTestCase
 	private Mock manager;
 	private Mock afastamentoManager;
 	private Mock estabelecimentoManager;
+	private Mock areaOrganizacionalManager;
 
 	protected void setUp() throws Exception
 	{
@@ -32,6 +35,9 @@ public class ColaboradorAfastamentoListActionTest extends MockObjectTestCase
 		action.setAfastamentoManager((AfastamentoManager)afastamentoManager.proxy());
 		estabelecimentoManager = mock (EstabelecimentoManager.class);
 		action.setEstabelecimentoManager((EstabelecimentoManager)estabelecimentoManager.proxy());
+        areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+        action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+
 	}
 
 	protected void tearDown() throws Exception
@@ -74,7 +80,8 @@ public class ColaboradorAfastamentoListActionTest extends MockObjectTestCase
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		afastamentoManager.expects(once()).method("findAll");
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
-
+		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").will(returnValue(new ArrayList<AreaOrganizacional>()));
+		
 		assertEquals(action.prepareRelatorio(), "success");
 	}
 

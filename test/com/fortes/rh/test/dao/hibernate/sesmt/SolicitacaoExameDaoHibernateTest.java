@@ -16,6 +16,7 @@ import com.fortes.rh.dao.sesmt.SolicitacaoExameDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -93,6 +94,10 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 	
 	public void testGetCount()
 	{
+		Date dataSolicitacao = DateUtil.criarDataMesAno(01, 01, 2010);
+		Date dataIni = DateUtil.criarDataMesAno(01, 01, 2010);
+		Date dataFim = DateUtil.criarDataMesAno(01, 05, 2010);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -103,12 +108,18 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		colaborador.setCandidato(candidato);
 		colaboradorDao.save(colaborador);
 		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(dataSolicitacao);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaboradorDao.save(historicoColaborador);
+		
 		MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
 		medicoCoordenadorDao.save(medicoCoordenador);
 		
 		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
 		solicitacaoExame1.setEmpresa(empresa);
-		solicitacaoExame1.setData(DateUtil.criarDataMesAno(01, 01, 2010));
+		solicitacaoExame1.setData(dataSolicitacao);
 		solicitacaoExame1.setCandidato(candidato);
 		solicitacaoExame1.setMedicoCoordenador(medicoCoordenador);
 		solicitacaoExame1.setMotivo(MotivoSolicitacaoExame.PERIODICO);
@@ -127,9 +138,6 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		exameSolicitacaoExame.setSolicitacaoExame(solicitacaoExame1);
 		exameSolicitacaoExame.setRealizacaoExame(realizacaoExame);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame);
-		
-		Date dataIni = DateUtil.criarDataMesAno(01, 01, 2010);
-		Date dataFim = DateUtil.criarDataMesAno(01, 05, 2010);
 		
 		assertEquals(1,solicitacaoExameDao.getCount(empresa.getId(), dataIni, dataFim, TipoPessoa.TODOS, "", "", null, null, null).intValue());
 		

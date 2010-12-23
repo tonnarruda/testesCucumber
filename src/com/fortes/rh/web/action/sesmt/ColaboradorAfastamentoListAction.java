@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
@@ -35,14 +36,17 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private EstabelecimentoManager estabelecimentoManager;
 	private boolean ordenaColaboradorPorNome;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
-
+	private String[] areasCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	
 	public String list() throws Exception
 	{
 		if (!validaPeriodo())
 			return SUCCESS;
 
 		setTotalSize(colaboradorAfastamentoManager.getCount(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento));
-		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento, "DESC", false, 'T');
+		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, null, colaboradorAfastamento, "DESC", false, 'T');
 	
 		afastamentos = afastamentoManager.findAll();
 
@@ -79,6 +83,8 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		return SUCCESS;
 	}
 
@@ -89,7 +95,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			if (!validaPeriodo())
 				return INPUT;
 			
-			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento, ordenaColaboradorPorNome, afastadoPeloINSS);
+			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, areasCheck, colaboradorAfastamento, ordenaColaboradorPorNome, afastadoPeloINSS);
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
 		}
 		catch (ColecaoVaziaException e)
@@ -196,6 +202,18 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 
 	public void setAfastadoPeloINSS(char afastadoPeloINSS) {
 		this.afastadoPeloINSS = afastadoPeloINSS;
+	}
+
+	public void setAreasCheck(String[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public Collection<CheckBox> getAreasCheckList() {
+		return areasCheckList;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 

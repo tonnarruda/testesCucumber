@@ -32,16 +32,17 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		return getDao().findCatsColaboradorByDate(colaborador,data);
 	}
 
-	public Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca)
+	public Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca, String[] areasCheck)
 	{
+		Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
 		Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
 
-		return getDao().findAllSelect(empresaId,inicio,fim,estabelecimentoIds, nomeBusca);
+		return getDao().findAllSelect(empresaId,inicio,fim,estabelecimentoIds, nomeBusca, areaIds);
 	}
 	
 	public Collection<Cat> findRelatorioCats (Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca) throws ColecaoVaziaException
 	{
-		Collection<Cat> cats = findAllSelect(empresaId, inicio, fim, estabelecimentosCheck, nomeBusca);
+		Collection<Cat> cats = findAllSelect(empresaId, inicio, fim, estabelecimentosCheck, nomeBusca, null);
 
 		if (cats == null || cats.isEmpty())
 			throw new ColecaoVaziaException("Não há CAT's para o filtro informado.");

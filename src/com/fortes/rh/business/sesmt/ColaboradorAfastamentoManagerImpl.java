@@ -47,7 +47,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return getDao().getCount(empresaId, afastamentoId, nomeBusca, estabelecimentoIds, inicio, fim);
 	}
 
-	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, String nomeBusca, String[] estabelecimentoCheck, ColaboradorAfastamento colaboradorAfastamento, String ascOuDesc, boolean ordenaColaboradorPorNome, char afastadoPeloINSS)
+	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, String ascOuDesc, boolean ordenaColaboradorPorNome, char afastadoPeloINSS)
 	{
 		Date inicio=null,fim=null;
 		Long afastamentoId = null;
@@ -62,12 +62,14 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		}
 
 		Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentoCheck);
-		return getDao().findAllSelect(page, pagingSize, empresaId, afastamentoId, nomeBusca, estabelecimentoIds, inicio, fim, ascOuDesc, ordenaColaboradorPorNome, afastadoPeloINSS);
+		Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
+		
+		return getDao().findAllSelect(page, pagingSize, empresaId, afastamentoId, nomeBusca, estabelecimentoIds, areaIds, inicio, fim, ascOuDesc, ordenaColaboradorPorNome, afastadoPeloINSS);
 	}
 
-	public Collection<ColaboradorAfastamento> findRelatorioAfastamentos(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, ColaboradorAfastamento colaboradorAfastamento, boolean ordenaColaboradorPorNome, char afastadoPeloINSS) throws ColecaoVaziaException
+	public Collection<ColaboradorAfastamento> findRelatorioAfastamentos(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, boolean ordenaColaboradorPorNome, char afastadoPeloINSS) throws ColecaoVaziaException
 	{
-		Collection<ColaboradorAfastamento> colaboradorAfastamentos = findAllSelect(0, 0, empresaId, nomeBusca, estabelecimentoCheck, colaboradorAfastamento, "ASC", ordenaColaboradorPorNome, afastadoPeloINSS);
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = findAllSelect(0, 0, empresaId, nomeBusca, estabelecimentoCheck, areasCheck, colaboradorAfastamento, "ASC", ordenaColaboradorPorNome, afastadoPeloINSS);
 
 		if (colaboradorAfastamentos == null || colaboradorAfastamentos.isEmpty())
 			throw new ColecaoVaziaException("Não há afastamentos para o filtro informado.");

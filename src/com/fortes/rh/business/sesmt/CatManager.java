@@ -13,7 +13,7 @@ public interface CatManager extends GenericManager<Cat>
 {
 	Collection<Cat> findByColaborador(Colaborador colaborador);
 	Collection<Cat> findCatsColaboradorByDate(Colaborador colaborador, Date data);
-	Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca);
+	Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca, String[] areasCheck);
 	Collection<CatRelatorioAnual> getRelatorioAnual(Long estabelecimentoId, Date dataFim);
 	public Collection<Cat> findRelatorioCats (Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca) throws ColecaoVaziaException;
 }
