@@ -15,3 +15,6 @@ END;
 ' LANGUAGE plpgsql;--.go
 
 update papel set nome = 'Análise das Etapas Seletivas' where id = 47;--.go
+
+alter table empresa add column exibirDadosAmbiente boolean;--.go
+update empresa set exibirDadosAmbiente=false;--.go

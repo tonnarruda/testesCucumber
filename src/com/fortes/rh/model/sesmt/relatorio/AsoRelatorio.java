@@ -1,12 +1,15 @@
 package com.fortes.rh.model.sesmt.relatorio;
 
+import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
+import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.DateUtil;
 
@@ -18,6 +21,12 @@ public class AsoRelatorio
 
 	private Colaborador colaborador;
 	private Candidato candidato;
+	
+	private String grpRiscoFisico = "";
+	private String grpRiscoQuimico = "";
+	private String grpRiscoBiologico = "";
+	private String grpRiscoErgonomico = "";
+	private String grpRiscoAcidente = "";
 
 	public AsoRelatorio(SolicitacaoExame solicitacaoExame, Empresa empresa)
 	{
@@ -84,5 +93,78 @@ public class AsoRelatorio
 
 	public String getMotivo() {
 		return motivo;
+	}
+	
+	public String getGrpRiscoFisico() {
+		return grpRiscoFisico;
+	}
+
+	public String getGrpRiscoQuimico() {
+		return grpRiscoQuimico;
+	}
+
+	public String getGrpRiscoBiologico() {
+		return grpRiscoBiologico;
+	}
+
+
+	public String getGrpRiscoErgonomico() {
+		return grpRiscoErgonomico;
+	}
+
+	public String getGrpRiscoAcidente() {
+		return grpRiscoAcidente;
+	}
+	
+	public void setGrpRiscoFisico(String grpRiscoFisico) {
+		this.grpRiscoFisico = grpRiscoFisico;
+	}
+	
+	public void setGrpRiscoQuimico(String grpRiscoQuimico) {
+		this.grpRiscoQuimico = grpRiscoQuimico;
+	}
+	
+	public void setGrpRiscoBiologico(String grpRiscoBiologico) {
+		this.grpRiscoBiologico = grpRiscoBiologico;
+	}
+	
+	public void setGrpRiscoErgonomico(String grpRiscoErgonomico) {
+		this.grpRiscoErgonomico = grpRiscoErgonomico;
+	}
+	
+	public void setGrpRiscoAcidente(String grpRiscoAcidente) {
+		this.grpRiscoAcidente = grpRiscoAcidente;
+	}
+
+	public void formataRiscos(Collection<Risco> riscos) 
+	{
+		for (Risco risco : riscos) 
+		{
+			if(risco.getGrupoRisco().equals(GrupoRisco.FISICO))
+			{
+				grpRiscoFisico += grpRiscoFisico.equals("")?"Físicos: ":", ";
+				grpRiscoFisico += risco.getDescricao();
+			}
+			else if(risco.getGrupoRisco().equals(GrupoRisco.QUIMICO))
+			{
+				grpRiscoQuimico += grpRiscoQuimico.equals("")?"Químicos: ":", ";
+				grpRiscoQuimico += risco.getDescricao();
+			}
+			else if(risco.getGrupoRisco().equals(GrupoRisco.BIOLOGICO))
+			{
+				grpRiscoBiologico += grpRiscoBiologico.equals("")?"Biológicos: ":", ";
+				grpRiscoBiologico += risco.getDescricao();
+			}
+			else if(risco.getGrupoRisco().equals(GrupoRisco.ERGONOMICO))
+			{
+				grpRiscoErgonomico += grpRiscoErgonomico.equals("")?"Ergonômicos: ":", ";
+				grpRiscoErgonomico += risco.getDescricao();
+			}
+			else if(risco.getGrupoRisco().equals(GrupoRisco.ACIDENTE))
+			{
+				grpRiscoAcidente += grpRiscoAcidente.equals("")?"Acidentes: ":", ";
+				grpRiscoAcidente += risco.getDescricao();
+			}
+		}
 	}
 }

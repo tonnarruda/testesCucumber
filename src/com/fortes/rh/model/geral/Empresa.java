@@ -49,6 +49,7 @@ public class Empresa extends AbstractModel implements Serializable
     private String endereco;
 
 	private boolean exibirSalario;
+	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
     @Column(length=120)
     private String acUrlSoap;
@@ -345,5 +346,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setMensagemModuloExterno(String mensagemModuloExterno) {
 		this.mensagemModuloExterno = mensagemModuloExterno;
+	}
+
+	public boolean isExibirDadosAmbiente() {
+		return exibirDadosAmbiente;
+	}
+
+	public void setExibirDadosAmbiente(boolean exibirDadosAmbiente) {
+		this.exibirDadosAmbiente = exibirDadosAmbiente;
 	}
 }

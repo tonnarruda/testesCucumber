@@ -24,7 +24,7 @@ public class RiscoAmbienteDaoHibernate extends GenericDaoHibernate<RiscoAmbiente
 
 	public Collection<Risco> findRiscosByAmbienteData(Long ambienteId, Date data) 
 	{
-		StringBuilder hql = new StringBuilder("select new Risco(r.id, r.descricao) ");
+		StringBuilder hql = new StringBuilder("select new Risco(r.id, r.descricao, r.grupoRisco) ");
 		hql.append("from RiscoAmbiente ra join ra.risco r join ra.historicoAmbiente ha ");
 		hql.append("where ha.ambiente.id = :ambienteId ");
 		hql.append("and ha.data = (select max(ha2.data) " +

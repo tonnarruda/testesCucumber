@@ -329,6 +329,12 @@
     <property name="transactionManager">
       <ref bean="transactionManager" />
     </property>
+    <property name="historicoColaboradorManager">
+      <ref bean="historicoColaboradorManager" />
+    </property>
+    <property name="riscoAmbienteManager">
+      <ref bean="riscoAmbienteManager" />
+    </property>
   </bean>
   <bean id="solicitacaoExameManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -168,14 +168,13 @@ public class ExameListAction extends MyActionSupportList
 		try
 		{
 			asoRelatorio = solicitacaoExameManager.montaRelatorioAso(getEmpresaSistema(), solicitacaoExame);
+			parametros = RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", getEmpresaSistema(), "ATESTADO DE SAÚDE OCUPACIONAL - ASO");
 		} catch (ColecaoVaziaException e)
 		{
 			addActionError(e.getMessage());
 			e.printStackTrace();
 			return INPUT;
 		}
-		
-		parametros = RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", getEmpresaSistema(), "ATESTADO DE SAÚDE OCUPACIONAL - ASO");
 
 		return SUCCESS;
 	}

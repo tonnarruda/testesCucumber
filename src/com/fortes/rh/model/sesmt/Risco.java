@@ -39,6 +39,13 @@ public class Risco extends AbstractModel implements Serializable
 		this.descricao = descricao;
 	}
 	
+	public Risco(Long id, String descricao, String grupoRisco)
+	{
+		setId(id);
+		this.descricao = descricao;
+		this.grupoRisco = grupoRisco;
+	}
+	
 	public Boolean getEpiEficaz()
 	{
 		return epis != null && !epis.isEmpty();

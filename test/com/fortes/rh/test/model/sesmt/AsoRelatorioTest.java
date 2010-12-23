@@ -1,12 +1,16 @@
 package com.fortes.rh.test.model.sesmt;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -57,6 +61,30 @@ public class AsoRelatorioTest extends TestCase
 	{
 		AsoRelatorio asoRelatorio = new AsoRelatorio();
 		assertEquals("____/____/____", asoRelatorio.getDataNascimento());
+	}
+	
+	public void testFormataRiscos()
+	{
+		AsoRelatorio asoRelatorio = new AsoRelatorio();
+		Collection<Risco> riscos = new ArrayList<Risco>();
+		
+		riscos.add(new Risco(null, "fis01", GrupoRisco.FISICO));
+		riscos.add(new Risco(null, "fis02", GrupoRisco.FISICO));
+		riscos.add(new Risco(null, "qui01", GrupoRisco.QUIMICO));
+		riscos.add(new Risco(null, "qui02", GrupoRisco.QUIMICO));
+		riscos.add(new Risco(null, "bio01", GrupoRisco.BIOLOGICO));
+		riscos.add(new Risco(null, "bio02", GrupoRisco.BIOLOGICO));
+		riscos.add(new Risco(null, "ergo01", GrupoRisco.ERGONOMICO));
+		riscos.add(new Risco(null, "ergo02", GrupoRisco.ERGONOMICO));
+		riscos.add(new Risco(null, "acid01", GrupoRisco.ACIDENTE));
+		riscos.add(new Risco(null, "acid02", GrupoRisco.ACIDENTE));
+		
+		asoRelatorio.formataRiscos(riscos);
+		assertEquals("Físicos: fis01, fis02", asoRelatorio.getGrpRiscoFisico());
+		assertEquals("Químicos: qui01, qui02", asoRelatorio.getGrpRiscoQuimico());
+		assertEquals("Biológicos: bio01, bio02", asoRelatorio.getGrpRiscoBiologico());
+		assertEquals("Ergonômicos: ergo01, ergo02", asoRelatorio.getGrpRiscoErgonomico());
+		assertEquals("Acidentes: acid01, acid02", asoRelatorio.getGrpRiscoAcidente());
 	}
 
 }

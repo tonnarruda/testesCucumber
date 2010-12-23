@@ -11,12 +11,15 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.dao.sesmt.SolicitacaoExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
+import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio;
@@ -28,6 +31,8 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	private PlatformTransactionManager transactionManager;
 	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
 	private RealizacaoExameManager realizacaoExameManager;
+	private RiscoAmbienteManager riscoAmbienteManager;
+	private HistoricoColaboradorManager historicoColaboradorManager;
 
 	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame)
 	{
@@ -152,6 +157,18 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		
 		AsoRelatorio asoRelatorio = new AsoRelatorio(solicitacaoExame, empresa);
 		
+		if(empresa.isExibirDadosAmbiente() && solicitacaoExame.getColaborador() != null && solicitacaoExame.getColaborador().getId() != null)
+		{
+			HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(solicitacaoExame.getColaborador().getId());
+			
+			if(historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
+			{
+				Collection<Risco> riscos = riscoAmbienteManager.findRiscosByAmbienteData(historicoColaborador.getAmbiente().getId(), solicitacaoExame.getData());
+				asoRelatorio.formataRiscos(riscos);
+			}
+			
+		}
+		
 //		medicoCoordenador = medicoCoordenadorManager.findByIdProjection(medicoCoordenador.getId());
 //		String cidadeNome = getEmpresaSistema().getCidade().getNome();
 //
@@ -199,6 +216,14 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	public SolicitacaoExame findByIdProjection(Long id)
 	{
 		return getDao().findByIdProjection(id);
+	}
+
+	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
+		this.riscoAmbienteManager = riscoAmbienteManager;
+	}
+
+	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
+		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 
 }
