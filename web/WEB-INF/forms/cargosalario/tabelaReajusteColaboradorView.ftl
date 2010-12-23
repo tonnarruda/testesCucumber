@@ -34,7 +34,7 @@
 <#include "../ftl/showFilterImports.ftl" />
 
 
-	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+ 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
 <body>
 	<@ww.actionmessage />

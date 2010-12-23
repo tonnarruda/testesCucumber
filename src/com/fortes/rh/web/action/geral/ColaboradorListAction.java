@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -31,6 +35,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.relatorio.RelatorioPerformanceFuncional;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -302,7 +307,89 @@ public class ColaboradorListAction extends MyActionSupportList
 					parametros.put("TITULO" + (i+1), campo);
 			}
 			
-			parametros.put("largura1", 50);
+			/////////////////////////////////////////////////////////////////
+
+		       Context cx = Context.enter();
+		        try {
+		            // Set version to JavaScript1.2 so that we get object-literal style
+		            // printing instead of "[object Object]"
+		            cx.setLanguageVersion(Context.VERSION_1_7);
+
+		            // Initialize the standard objects (Object, Function, etc.)
+		            // This must be done before scripts can be executed.
+		            Scriptable scope = cx.initStandardObjects();
+		            
+		            // Now we can evaluate a script. Let's create a new object
+		            // using the object literal notation.
+		            
+		            String xml = ArquivoUtil.getReportSource("relatorioDinamico.jrxml");
+		            xml = xml.replaceAll("\"", "\\\"");
+		            String path = "columnHeader..reportElement.(@key==\"textField\").@width";
+		            String value = "300";
+		            
+		            StringBuffer sb = new StringBuffer();
+		            sb.append("    var xml = new XML('" + xml + "');");
+		            sb.append("    eval('xml." + path + " = \"" + value + "\"');");
+		            sb.append("    obj = xml.toXMLString();");
+		            
+//		            sb.append("obj = 111");
+		            
+//		            sb.append("obj = function(xmlString, path, value)");
+//		            sb.append("{");
+//		            sb.append("    var xml = new XML(xmlString);");
+//		            sb.append("    eval('xml.' + path = 'value');");
+//		            sb.append("    return xml.toXMLString();");
+//		            sb.append("}");
+		            
+		            Object result = cx.evaluateString(
+		            		scope, 
+		            		sb.toString(), 
+		            		"MySource", 
+		            		1, 
+		            		null);
+
+		            System.out.println(result.toString());
+		            //"obj = setXmlElement('<root><part id=\"p343-3456\" quantity=\"2\"/><part id=\"p343-2110\" quantity=\"1\"/></root>')",
+
+//		            Function fn = (Function) scope.get("obj", scope);
+//
+//		            String xmlAlterado = (String)fn.call(cx, scope, fn, new Object[]{
+//		            		"<root><part id=\"p343-3456\" quantity=\"2\"/><part id=\"p343-2110\" quantity=\"1\"/></root>",
+//		            		"part.(@quantity==\"1\").@id",
+//		            		"123"}
+//		            );
+//		            System.out.println(xmlAlterado);
+		            
+		            
+		            
+//		            // Should print "obj == result" (Since the result of an assignment
+//		            // expression is the value that was assigned)
+//		            System.out.println("obj " + (obj == result ? "==" : "!=") +
+//		                               " result");
+//
+//		            // Should print "obj.a == 1"
+//		            System.out.println("obj.a == " + obj.get("a", obj));
+//
+//		            Scriptable b = (Scriptable) obj.get("b", obj);
+//
+//		            // Should print "obj.b[0] == x"
+//		            System.out.println("obj.b[0] == " + b.get(0, b));
+//
+//		            // Should print "obj.b[1] == y"
+//		            System.out.println("obj.b[1] == " + b.get(1, b));
+//
+//		            // Should print {a:1, b:["x", "y"]}
+//		            //Function fn = (Function) ScriptableObject.getProperty(obj, "toString");
+//		            
+//		            System.out.println(fn.call(cx, scope, obj, new Object[0]));
+		            
+		        } finally {
+		            Context.exit();
+		        }
+		    
+			
+			
+			
 			
 			return Action.SUCCESS;
 		}
@@ -319,6 +406,11 @@ public class ColaboradorListAction extends MyActionSupportList
  			return Action.INPUT;
 		}
 	}
+	
+//	private String setXmlElement(String xml, String path, String value)
+//	{
+//		return 
+//	}
 	
 	public String relatorioAniversariantes()
 	{

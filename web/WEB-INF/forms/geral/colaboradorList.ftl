@@ -149,8 +149,8 @@
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>
 		
-		<button class="btnListagemColaborador" onclick="window.location='prepareRelatorioDinamico.action'">
-		</button>
+		<!--<button class="btnListagemColaborador" onclick="window.location='prepareRelatorioDinamico.action'">
+		</button>-->
 		
 	</div>
 
