@@ -88,7 +88,7 @@ public class Contato implements Serializable
 			result += StringUtil.criarMascaraTelefone(foneFixo);
 		
 		if (StringUtils.isNotBlank(foneCelular))
-		{
+		{ 
 			if (StringUtils.isNotBlank(foneFixo))
 				result += " / " + StringUtil.criarMascaraTelefone(foneCelular);
 			else

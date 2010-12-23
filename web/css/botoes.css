@@ -136,6 +136,11 @@
 	background-image:url(../imgs/btnCancelar.gif);
 	width: 89px !important;
 }
+.btnListagemColaborador
+{
+	background-image:url(../imgs/btnListagemColaborador.gif);
+	width: 220px !important;
+}
 .btnFechar
 {
 	background-image:url(../imgs/btnFechar.gif);
@@ -597,7 +602,8 @@
 .btnListaDeInspecaoExtintores,
 .btnListaFrequenciaVotacao,
 .btnResultadoAvaliacao,
-.btnTriagemF2RH
+.btnTriagemF2RH,
+.btnListagemColaborador
 {
 	border: 0;
 	background-repeat: no-repeat;

@@ -42,6 +42,7 @@ import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
@@ -768,6 +769,32 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         colaboradorDao.expects(once()).method("setRespondeuEntrevista").with(eq(colaborador.getId()));
 
         colaboradorManager.respondeuEntrevista(colaborador.getId());
+    }
+    
+    public void testPreparaRelatorioDinamico()
+    {
+    	Colaborador chico = ColaboradorFactory.getEntity(1L, "chico barroso", "Barroso", "99999");
+    	Colaborador bruno = ColaboradorFactory.getEntity(2L, "Bruno", "Bruno", "888888");
+    	Colaborador samuel = ColaboradorFactory.getEntity(3L, "Samuel", "Pinheiro", "5555555");
+
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	colaboradores.add(chico);
+    	colaboradores.add(bruno);
+    	colaboradores.add(samuel);
+    	
+    	Collection<String> colunasMarcadas = new ArrayList<String>();
+    	colunasMarcadas = Arrays.asList("nome", "matricula", "nomeComercial");
+    	
+    	Collection<DynaRecord> relatorio = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas);
+    	
+    	assertEquals(3, relatorio.size());
+    	
+    	assertEquals("chico barroso", ((DynaRecord)relatorio.toArray()[0]).getCampo1());
+    	assertEquals("99999", ((DynaRecord)relatorio.toArray()[0]).getCampo2());
+    	assertEquals("Barroso", ((DynaRecord)relatorio.toArray()[0]).getCampo3());
+
+    	assertEquals("Samuel", ((DynaRecord)relatorio.toArray()[2]).getCampo1());
+    	assertEquals("Pinheiro", ((DynaRecord)relatorio.toArray()[2]).getCampo3());
     }
 
     public void testFindAllSelect()

@@ -14,6 +14,8 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.fortes.rh.util.DateUtil;
+
 public class Habilitacao implements Serializable
 {
 	@Column(length=11)
@@ -36,6 +38,10 @@ public class Habilitacao implements Serializable
 	public Date getEmissao() {
 		return emissao;
 	}
+
+	public String getEmissaoFormatada() {
+		return DateUtil.formataDiaMesAno(emissao);
+	}
 	public void setEmissao(Date emissao) {
 		this.emissao = emissao;
 	}
@@ -54,6 +60,9 @@ public class Habilitacao implements Serializable
 	}
 	public Date getVencimento() {
 		return vencimento;
+	}
+	public String getVencimentoFormatada() {
+		return DateUtil.formataDiaMesAno(vencimento);
 	}
 	public void setVencimento(Date vencimento) {
 		this.vencimento = vencimento;

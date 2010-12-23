@@ -50,7 +50,7 @@
 		<@display.column title="Açőes" class="acao">
 			<a href="prepareUpdate.action?cat.id=${cat.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?cat.id=${cat.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-		</@display.column>
+		 </@display.column>
 		<@display.column property="colaborador.nome" title="Colaborador" style="width:280px;"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;"/>
 		<@display.column property="numeroCat" title="Número" style="width:85px;"/>

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fortes.rh.model.geral.CamposExtras;
+import com.fortes.rh.util.DateUtil;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.print.DocFlavor.STRING;
 
 import com.fortes.model.AbstractModel;
 
@@ -94,6 +96,12 @@ public class CamposExtras extends AbstractModel implements Serializable
 	{
 		return data1;
 	}
+
+	public String getData1String()
+	{
+		return DateUtil.formataDiaMesAno(data1);
+	}
+	
 	public void setData1(Date data1)
 	{
 		this.data1 = data1;
@@ -106,9 +114,17 @@ public class CamposExtras extends AbstractModel implements Serializable
 	{
 		this.data2 = data2;
 	}
+	public String getData2String()
+	{
+		return DateUtil.formataDiaMesAno(data2);
+	}
 	public Date getData3()
 	{
 		return data3;
+	}
+	public String getData3String()
+	{
+		return DateUtil.formataDiaMesAno(data3);
 	}
 	public void setData3(Date data3)
 	{
@@ -118,6 +134,10 @@ public class CamposExtras extends AbstractModel implements Serializable
 	{
 		return valor1;
 	}
+	public String getValor1String()
+	{
+		return (valor1 == null)?"":String.valueOf(valor1);
+	}
 	public void setValor1(Double valor1)
 	{
 		this.valor1 = valor1;
@@ -126,6 +146,10 @@ public class CamposExtras extends AbstractModel implements Serializable
 	{
 		return valor2;
 	}
+	public String getValor2String()
+	{
+		return (valor2 == null)?"":String.valueOf(valor2);
+	}
 	public void setValor2(Double valor2)
 	{
 		this.valor2 = valor2;
@@ -133,6 +157,10 @@ public class CamposExtras extends AbstractModel implements Serializable
 	public Integer getNumero1()
 	{
 		return numero1;
+	}
+	public String getNumero1String()
+	{
+		return (numero1 == null)?"":String.valueOf(numero1);
 	}
 	public void setNumero1(Integer numero1)
 	{

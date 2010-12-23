@@ -79,7 +79,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 	}
 
 	public ReajusteColaborador(Long id, Long areaAtualId, String faixaSalarialAtualNome, String cargoAtualNome, Long faixaSalarialPropostaId, String faixaSalarialPropostaNome,
-			String faixaSalarialPropostaCodigoAC, String cargoPropostoNome, Integer tipoSalarioAtual, Integer tipoSalarioProposto, Double salarioAtual, Double salarioProposto,
+			String faixaSalarialPropostaCodigoAC, String cargoPropostoNome, Integer tipoSalarioAtual, Integer tipoSalarioProposto, Double salarioAtual, Double salarioProposto, String observacao,
 			Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorCodigoAC, boolean colaboradorNaoIntegraAC, Long areaColaboradorId, Long areaPropostaId, String areaPropostaNome,
 			String areaPropostaCodigoAC, Long tabelaReajusteColaboradorId, Date tabelaReajusteColaboradorData, Double faixaSalarialHistoricoAtualValor, Integer faixaSalarialHistoricoAtualTipo,
 			Double faixaSalarialHistoricoAtualQuantidade, Double faixaSalarialHistoricoPropostoValor, Integer faixaSalarialHistoricoPropostoTipo, Double faixaSalarialHistoricoPropostoQuantidade,
@@ -93,6 +93,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 		this.setTipoSalarioProposto(tipoSalarioProposto);
 		this.setSalarioAtual(salarioAtual);
 		this.setSalarioProposto(salarioProposto);
+		this.setObservacao(observacao);
 		this.setAreaOrganizacionalPropostaId(areaPropostaId);
 		this.setAreaOrganizacionalPropostaNome(areaPropostaNome);
 		this.setAreaOrganizacionalPropostaCodigoAC(areaPropostaCodigoAC);

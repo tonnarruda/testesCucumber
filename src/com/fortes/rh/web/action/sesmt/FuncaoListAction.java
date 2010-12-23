@@ -129,15 +129,26 @@ public class FuncaoListAction extends MyActionSupportList
 
 	public String gerarRelatorioQtdPorFuncao()
 	{
+		String msg = new String();
 		try
 		{
 			parametros = RelatorioUtil.getParametrosRelatorio("Distribuição de Colaboradores por Função", getEmpresaSistema(), "Data: " + DateUtil.formataDiaMesAno(data));
 			dataSource = funcaoManager.montaRelatorioQtdPorFuncao(getEmpresaSistema(), estabelecimento, data);
+			
+			if (dataSource.isEmpty())
+			{
+				msg = "Não existe dados para relatório";
+				throw new Exception(msg);  
+			}
+			
 			parametros.put("QTD_TOTAL", getQtdTotal());
 		} catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Erro ao gerar relatório.");
+			if (msg == null )
+				addActionError("Erro ao gerar relatório.");
+			else
+				addActionError(msg);
 			prepareRelatorioQtdPorFuncao();
 			return INPUT;
 		}

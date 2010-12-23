@@ -59,6 +59,17 @@ public class ColaboradorFactory
 
 		return colaborador;
 	}
+	
+	public static Colaborador getEntity(Long id, String nome, String nomeComercial, String matricula)
+	{
+		Colaborador colaborador = getEntity();
+		colaborador.setId(id);
+		colaborador.setNome(nome);
+		colaborador.setNomeComercial(nomeComercial);
+		colaborador.setMatricula(matricula);
+		
+		return colaborador;
+	}
 
 	public static Collection<Colaborador> getCollection()
 	{
@@ -67,4 +78,5 @@ public class ColaboradorFactory
 
 		return colaboradors;
 	}
+
 }
