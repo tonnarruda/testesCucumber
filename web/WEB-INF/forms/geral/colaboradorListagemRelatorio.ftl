@@ -25,6 +25,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jquery.picklists.js"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
@@ -82,6 +83,12 @@
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
 		});
+
+		jQuery(document).ready(function($)
+		{
+			jQuery("#colunasMarcadas").pickList(); 
+		});
+		
 		
 	</script>
 
@@ -98,6 +105,8 @@
 
 		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" />
 		
+		<@ww.select label="Colunas Marcadas" multiple="true" name="colunasMarcadas" id="colunasMarcadas" list="colunasMarcadas" listKey="id" />
+				
 		<#if habilitaCampoExtra>
 			<fieldset class="fieldsetPadrao" style="width:583px;">
 				<ul>
