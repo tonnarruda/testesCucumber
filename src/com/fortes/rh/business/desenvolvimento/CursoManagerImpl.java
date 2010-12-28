@@ -93,9 +93,10 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 
 			Double custoPerCapita = 0d;
 			Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaId);
-
+			Integer qtdAtivos = colaboradorManager.getCountAtivos(dataIni, dataFim, empresaId);
+			
 			if (qtdInscritos != null && qtdInscritos > 0)
-				custoPerCapita = (indicadorTreinamento.getCustoTotal() / qtdInscritos);
+				custoPerCapita = (indicadorTreinamento.getCustoTotal() / qtdAtivos);
 
 			indicadorTreinamento.setCustoPerCapita(custoPerCapita);
 			// aproveita e seta os inscritos
