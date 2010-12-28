@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 
@@ -24,7 +23,15 @@ public class ConfiguracaoCampoExtra extends AbstractModel implements Serializabl
 	private String tipo;
 	@Column(length=30)
 	private String descricao;
-		
+	
+	public int getSize()
+	{
+		if(tipo.equals("texto"))
+			return 150;
+		else
+			return 50;// data, valor ou numero
+	}
+	
 	public boolean isAtivo() {
 		return ativo;
 	}

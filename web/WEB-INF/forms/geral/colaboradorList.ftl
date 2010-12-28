@@ -146,12 +146,8 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
-		</button>
-		
-		<!--<button class="btnListagemColaborador" onclick="window.location='prepareRelatorioDinamico.action'">
-		</button>-->
-		
+		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnListagemColaborador" onclick="window.location='prepareRelatorioDinamico.action'"></button>
 	</div>
 
 </body>
