@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Colaboradores</title>
+	<title>Listagem de Colaboradores</title>
 
 	<#assign validaDataCamposExtras = ""/>
 	<#if habilitaCampoExtra>
@@ -72,7 +72,7 @@
 	
 		function validarCampos()
 		{
-			return validaFormulario('form', new Array('@estabelecimentosCheck','@estabelecimentosCheck', '@areaOrganizacionalsCheck'), new Array('naoApague' ${validaDataCamposExtras}));
+			return validaFormulario('form', new Array(), new Array('naoApague' ${validaDataCamposExtras}));
 		}
 	
 		jQuery(document).ready(function($)
@@ -85,7 +85,7 @@
 		
 		var maxSize = 780;
 		var totalSize = 0;
-		var espace = 0;
+		var espace = 4;
 		function verifySize(check)
 		{
 		
@@ -117,23 +117,20 @@
 
 		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" />
 		
-		<#if habilitaCampoExtra>
-			<fieldset class="fieldsetPadrao" style="width:583px;">
-				<ul>
-					<legend>Campos para impressão</legend>
-					<div class='grade'>
-						<#list colunas as coluna>
-							<div class='grade_field'>
-								<@ww.checkbox label="${coluna.name}" fieldValue="${coluna.property}" id = "${coluna.property}" name="colunasMarcadas" labelPosition="left" value="" cssClass="${coluna.size}"  onclick="verifySize(this);"/>
-							</div>
-						 </#list>
-					</div>
-				</ul>
-			</fieldset>
-		</#if>
+		<fieldset class="fieldsetPadrao" style="width:583px;">
+			<ul>
+				<legend>Campos para impressão</legend>
+				<div class='grade'>
+					<#list colunas as coluna>
+						<div class='grade_field'>
+							<@ww.checkbox label="${coluna.name}" fieldValue="${coluna.property}" id = "${coluna.property}" name="colunasMarcadas" labelPosition="left" value="" cssClass="${coluna.size}"  onclick="verifySize(this);"/>
+						</div>
+					 </#list>
+				</div>
+			</ul>
+		</fieldset>
 		
 		<@ww.hidden name="habilitaCampoExtra" />
-		
 	</@ww.form>
 
 	<div class="buttonGroup">

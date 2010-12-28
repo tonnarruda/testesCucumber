@@ -2,7 +2,6 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -19,6 +18,7 @@ import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
@@ -60,7 +60,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByEstabelecimento(Long[] estabelecimentoIds);
 	public Collection<Colaborador> getColaboradoresIntegraAc(Collection<Colaborador> colaboradores);
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId);
-	public Collection<Colaborador> findAreaOrganizacionalByAreas(HashMap<Object, Object> filtros, boolean habilitaCampoExtra);
+	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId);
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
 	void atualizarUsuario(Long colaboradorId, Long usuarioId) throws Exception;
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);

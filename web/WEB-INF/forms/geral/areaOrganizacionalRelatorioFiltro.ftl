@@ -58,7 +58,7 @@
 	
 		function validarCampos()
 		{
-			return validaFormulario('form', new Array('@estabelecimentosCheck','@estabelecimentosCheck', '@areaOrganizacionalsCheck'), new Array('naoApague' ${validaDataCamposExtras}));
+			return validaFormulario('form', new Array(), new Array('naoApague' ${validaDataCamposExtras}));
 		}
 	
 		jQuery(document).ready(function($)

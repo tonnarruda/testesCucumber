@@ -24,8 +24,6 @@ public class DynaRecord implements Serializable, Cloneable
 	private String campo15;
 	private Colaborador colaborador;
 	
-	
-	
 	public DynaRecord()
 	{
 
