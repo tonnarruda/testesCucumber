@@ -135,8 +135,7 @@
 					 </#list>
 				</div>
 			</ul>
-		<@ww.select label="Colunas Marcadas" multiple="true" name="colunasMarcadas" id="colunasMarcadas" list="colunasMarcadas" listKey="id" />
-				
+		</fieldset>	
 		
 		<@ww.hidden name="habilitaCampoExtra" />
 	</@ww.form>
