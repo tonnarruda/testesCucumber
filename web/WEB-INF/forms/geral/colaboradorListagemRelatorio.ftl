@@ -83,6 +83,25 @@
 			populaEstabelecimento(empresa);
 		});
 		
+		var maxSize = 780;
+		var totalSize = 0;
+		var espace = 0;
+		function verifySize(check)
+		{
+		
+			if(check.checked)
+    			totalSize += new Number(check.className) + espace; 
+			else
+    			totalSize -= (new Number(check.className) + espace); 
+			
+			if (totalSize > maxSize)
+			{
+				alert("campo exagerado");
+				check.checked = false;
+				totalSize -= (new Number(check.className) + espace);
+			}
+		}
+		
 	</script>
 
 
@@ -103,15 +122,18 @@
 				<ul>
 					<legend>Campos para impressão</legend>
 					<div class='grade'>
-						<#list colunasMarcadas as colunasMarcada>
+						<#list colunas as coluna>
 							<div class='grade_field'>
-								<@ww.checkbox label="${colunasMarcada}" fieldValue="${colunasMarcada}" name="colunasMarcadas" labelPosition="left" value=""/>
+								<@ww.checkbox label="${coluna.name}" fieldValue="${coluna.property}" id = "${coluna.property}" name="colunasMarcadas" labelPosition="left" value="" cssClass="${coluna.size}"  onclick="verifySize(this);"/>
 							</div>
 						 </#list>
 					</div>
 				</ul>
 			</fieldset>
 		</#if>
+		
+		<@ww.hidden name="habilitaCampoExtra" />
+		
 	</@ww.form>
 
 	<div class="buttonGroup">

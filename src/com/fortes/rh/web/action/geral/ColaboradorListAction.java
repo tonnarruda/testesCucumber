@@ -1,7 +1,6 @@
 package com.fortes.rh.web.action.geral;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,9 +9,7 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
 
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
@@ -25,6 +22,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.ColunasRelatorioDinamico;
 import com.fortes.rh.model.dicionario.Mes;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -33,9 +31,9 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.DynaRecord;
+import com.fortes.rh.model.geral.DynaRecordColumn;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.relatorio.RelatorioPerformanceFuncional;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -47,9 +45,9 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
-import com.sun.xml.bind.v2.util.CollisionCheckStack;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorListAction extends MyActionSupportList
@@ -96,8 +94,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Collection<Empresa> empresas;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 
-	//private Collection<String> colunasMarcadas = new ArrayList<String>();
 	private Collection<String> colunasMarcadas = new ArrayList<String>();
+	private Collection<DynaRecordColumn> colunas = new ArrayList<DynaRecordColumn>();
 
 	private boolean exibirNomeComercial;
 	private boolean habilitaCampoExtra;
@@ -186,28 +184,28 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String prepareRelatorioDinamico()
 	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_AREAORGANIZACIONAL");
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_CAD_COLABORADOR");
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
 		
 		empresa = getEmpresaSistema();
-
-		colunasMarcadas = new ArrayList<String>(Arrays.asList("Nome", "Nome Comercial", "Matrícula","Data Admissão","Cargo Atual", "Estado Civil", "Nome da Mãe", "Nome do Pai",
-				"Data de Desligamento","Vinculo","Cpf","Pis","Rg","Orgão Emissor","Deficiência","Data de Expedição(RG)","Sexo","Data de Nascimento",
-				"Conjugue", "Qtd de Filhos", "Número da Habilitação", "Emissão da Habilitação", "Vencimento da Habilit.", "Categoria da Habilit.",
-				"Logradouro","Comp. do Logradouro",	"Número do Logradouro","Bairro","Cep","Email","Celular","Fone Fixo"));
 		
 		habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
-		if(habilitaCampoExtra)
-			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
-		
-		for (int i=0; i< configuracaoCampoExtras.size(); i++)
-		{	
-			ConfiguracaoCampoExtra configuracaoCampoExtra = (ConfiguracaoCampoExtra) configuracaoCampoExtras.toArray()[i];
-			colunasMarcadas.add(configuracaoCampoExtra.getTitulo());
-		}
+
+		montaColunas();
 		
 		return Action.SUCCESS;
+	}
+
+	private void montaColunas() {
+		colunas = DynaRecordColumn.getColumns();
+		if(habilitaCampoExtra)
+		{
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
+			
+			for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras) 
+				colunas.add(new DynaRecordColumn(configuracaoCampoExtra.getTitulo(), configuracaoCampoExtra.getNome(), configuracaoCampoExtra.getSize()));
+		}
 	}
 
 	public String relatorioDinamico() throws Exception
@@ -215,17 +213,6 @@ public class ColaboradorListAction extends MyActionSupportList
 		String msg = null;
 		try
 		{
-			if (colunasMarcadas.size() > 6)
-			{
-				msg = "Marque apenas 6 itens para exibição no relatório";
-				throw new Exception(msg);
-			}
-			
-			habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
-			
-			if(habilitaCampoExtra)
-				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
-			
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 
@@ -238,146 +225,73 @@ public class ColaboradorListAction extends MyActionSupportList
 			filtros.put("camposExtras", camposExtras);
 			
 			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(filtros, habilitaCampoExtra);
-			
-			HashMap<String, String> tituloMap = new HashMap<String, String>();
-			
-			tituloMap.put("Nome", "nome");
-			tituloMap.put("Nome Comercial", "nomeComercial");
-			tituloMap.put("Matrícula", "matricula");
-			tituloMap.put("Data Admissão", "dataAdmissaoFormatada");
-			tituloMap.put("Cargo Atual", "faixaSalarial.cargo.nome");
-			tituloMap.put("Estado Civil", "pessoal.estadoCivilDic");
-			tituloMap.put("Nome da Mãe", "pessoal.mae");
-			tituloMap.put("Nome do Pai", "pessoal.pai");
-			tituloMap.put("Data de Desligamento", "dataDesligamentoFormatada");
-			tituloMap.put("Vinculo", "vinculoDescricao");
-			tituloMap.put("Cpf", "pessoal.cpfFormatado");
-			tituloMap.put("Pis", "pessoal.pis");
-			tituloMap.put("Rg", "pessoal.rg");
-			tituloMap.put("Orgão Emissor", "pessoal.rgOrgaoEmissor");
-			tituloMap.put("Deficiência", "pessoal.deficienciaDescricao");
-			tituloMap.put("Data de Expedição(RG)", "pessoal.rgDataExpedicaoFormatada");
-			tituloMap.put("Sexo", "pessoal.sexoDic");
-			tituloMap.put("Data de Nascimento", "pessoal.dataNascimentoFormatada");
-			tituloMap.put("Conjugue", "pessoal.conjuge");
-			tituloMap.put("Qtd de Filhos", "pessoal.qtdFilhosString");
-			tituloMap.put("Número da Habilitação", "habilitacao.numeroHab");
-			tituloMap.put("Emissão da Habilitação", "habilitacao.emissaoFormatada");
-			tituloMap.put("Vencimento da Habilit.", "habilitacao.vencimentoFormatada");
-			tituloMap.put("Categoria da Habilit.", "habilitacao.categoria");
-			tituloMap.put("Logradouro", "endereco.logradouro");
-			tituloMap.put("Comp. do Logradouro", "endereco.complemento");
-			tituloMap.put("Número do Logradouro", "endereco.numero");
-			tituloMap.put("Bairro", "endereco.bairro");
-			tituloMap.put("Cep", "endereco.cepFormatado");
-			tituloMap.put("Email", "contato.email");
-			tituloMap.put("Celular", "contato.foneCelularFormatado");
-			tituloMap.put("Fone Fixo", "contato.foneFixoFormatado");
 
-//			HashMap<String, Integer> tamanhoCampoMap = new HashMap<String, Integer>();
-//			
-//			tamanhoCampoMap.put("Nome", 150);
-//			
-//			tamanhoCampoMap.get("matricula");
-//			
-//			tamanhoCampoMap.put("Nome Comercial", 150);
-//			tamanhoCampoMap.put("Matrícula", 100);
-//			tamanhoCampoMap.put("Data Admissão", 50);
-//			tamanhoCampoMap.put("Cargo Atual", 120);
-//			tamanhoCampoMap.put("Estado Civil", 120);
-//			tamanhoCampoMap.put("Nome da Mãe", 150);
-//			tamanhoCampoMap.put("Nome do Pai", 150);
-//			tamanhoCampoMap.put("Data de Desligamento", 50);
-//			tamanhoCampoMap.put("Vinculo", 60);
-//			tamanhoCampoMap.put("Cpf", 60);
-//			tamanhoCampoMap.put("Pis", 60);
-//			tamanhoCampoMap.put("Rg", 80);
-//			tamanhoCampoMap.put("Orgão Emissor", 60);
-//			tamanhoCampoMap.put("Deficiência", 60);
-//			tamanhoCampoMap.put("Data de Expedição(RG)", 50);
-//			tamanhoCampoMap.put("Sexo", 40);
-//			tamanhoCampoMap.put("Data de Nascimento", 50);
-//			tamanhoCampoMap.put("Conjugue", 150);
-//			tamanhoCampoMap.put("Qtd de Filhos", 30);
-//			tamanhoCampoMap.put("Número da Habilitação", 60);
-//			tamanhoCampoMap.put("Emissão da Habilitação", 50);
-//			tamanhoCampoMap.put("Vencimento da Habilit.", "habilitacao.vencimentoFormatada");
-//			tamanhoCampoMap.put("Categoria da Habilit.", "habilitacao.categoria");
-//			tamanhoCampoMap.put("Logradouro", "endereco.logradouro");
-//			tamanhoCampoMap.put("Comp. do Logradouro", "endereco.complemento");
-//			tamanhoCampoMap.put("Número do Logradouro", "endereco.numero");
-//			tamanhoCampoMap.put("Bairro", "endereco.bairro");
-//			tamanhoCampoMap.put("Cep", "endereco.cepFormatado");
-//			tamanhoCampoMap.put("Email", "contato.email");
-//			tamanhoCampoMap.put("Celular", "contato.foneCelularFormatado");
-//			tamanhoCampoMap.put("Fone Fixo", "contato.foneFixoFormatado");
-
-			for (int i=0; i< configuracaoCampoExtras.size(); i++)
-			{	
-				ConfiguracaoCampoExtra configuracaoCampoExtra = (ConfiguracaoCampoExtra) configuracaoCampoExtras.toArray()[i];
-				if(configuracaoCampoExtra.getNome().equals("texto"+(i+1)))
-					tituloMap.put(configuracaoCampoExtra.getTitulo(), "camposExtras."+configuracaoCampoExtra.getNome());
-				else
-					tituloMap.put(configuracaoCampoExtra.getTitulo(), "camposExtras."+configuracaoCampoExtra.getNome()+"String");
-			}
-
-			ArrayList<String> nomeColunasMarcadas = new ArrayList<String>(colunasMarcadas.size());		
-			for (int i=0;i<colunasMarcadas.size();i++)
-			{
-				String campo = (String) colunasMarcadas.toArray()[i];
-				if (tituloMap.get(campo) != null)
-					nomeColunasMarcadas.add(tituloMap.get(campo));
-			}
-			
-			dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, nomeColunasMarcadas);
-
-			if(dataSource == null || dataSource.isEmpty())
-			{
-				ResourceBundle bundle = ResourceBundle.getBundle("application");
-				msg = bundle.getString("error.relatorio.vazio");
-				throw new Exception(msg);
-			}
-
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Listagem de Colaboradores", getEmpresaSistema(), null);
-			
-			for (int i=0;i<colunasMarcadas.size();i++)
-			{
-				String campo = (String) colunasMarcadas.toArray()[i];
-				if (tituloMap.get(campo) != null)
-					parametros.put("TITULO" + (i+1), campo);
-			}
-
-	       Context cx = Context.enter();
+			Context cx = Context.enter();
 	        try {
 	            cx.setLanguageVersion(Context.VERSION_1_7);
 	            Scriptable scope = cx.initStandardObjects();
 	            
 	            String xml = ArquivoUtil.getReportSource("relatorioDinamico.jrxml");
 	            xml = xml.replaceAll("<\\?.*\\s+<!.*\\s+<!.*\\s+", "");
-	            String path = "columnHeader..reportElement.(@key==\"textField\").@width";
-	            String value = "300";
 	            
-	            StringBuffer sb = new StringBuffer();
+	            StringBuilder sb = new StringBuilder();
 	            sb.append("    var xml = " + xml + ";");
-	            sb.append("    eval('xml." + path + " = \"" + value + "\"');");
-	            sb.append("    obj = xml.toXMLString();");
+	           
+	            int posicaoX = 0;
+	            int valueWidth = 0;
+	            int valueX = 0;
+	            String campo = "";
+
+	            montaColunas();
+	            parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Listagem de Colaboradores", getEmpresaSistema(), null);
 	            
+	            int count = 1;
+	            for (DynaRecordColumn coluna : colunas)
+	            {
+	            	if(coluna.isMarcada(colunasMarcadas))
+	            	{
+		            	parametros.put("TITULO" + (count), coluna.getName());
+	            		
+		            	valueWidth = coluna.getSize();
+			            valueX = posicaoX;
+			            
+			            sb.append(DynaRecord.montaEval("columnHeader", "width", count, valueWidth));
+			            sb.append(DynaRecord.montaEval("columnHeader", "x", count, valueX));
+			            sb.append(DynaRecord.montaEval("detail", "width", count, valueWidth));
+			            sb.append(DynaRecord.montaEval("detail", "x", count, valueX));
+			            
+			            posicaoX += valueWidth + 4;
+			            count++;
+	            	}
+				}
+	            	            
+				sb.append("    obj = xml.toXMLString();");
 	            Object result = cx.evaluateString(scope, sb.toString(),	"MySource", 1,	null);
 
 	            String relatoriDinamico = "" +
 	            		"<?xml version=\"1.0\" encoding=\"UTF-8\"  ?>" +
+	            		"<!DOCTYPE jasperReport PUBLIC \"//JasperReports//DTD Report Design//EN\" \"http://jasperreports.sourceforge.net/dtds/jasperreport.dtd\">" +
 	            		result.toString();
 	            
 	            File arquivo = new File();
 	            arquivo.setBytes(relatoriDinamico.getBytes());
 	            arquivo.setName("deumnomeai.jrxml");
 	            
-	            String pasta = System.getenv("WORKSPACE_FORTESRH") + "/web/WEB-INF/report/";
+	            String pasta = ServletActionContext.getServletContext().getRealPath("/WEB-INF/report/") + java.io.File.separator;
 	            pasta = pasta.replace("\\", "/").replace("%20", " ");
 	            pasta = pasta.replace('/', java.io.File.separatorChar);
 	            
-	            java.io.File Salvar = FileUtil.bytesToFile(arquivo.getBytes(), pasta + arquivo.getName());
+	            dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas);
 	            
+
+				if(dataSource == null || dataSource.isEmpty())
+				{
+					ResourceBundle bundle = ResourceBundle.getBundle("application");
+					msg = bundle.getString("error.relatorio.vazio");
+					throw new Exception(msg);
+				}
+
+	            FileUtil.bytesToFile(arquivo.getBytes(), pasta + arquivo.getName());
 	        }
 	        finally 
 	        {
@@ -842,4 +756,15 @@ public class ColaboradorListAction extends MyActionSupportList
 	public void setParametros(Map<String, Object> parametros) {
 		this.parametros = parametros;
 	}
+
+
+	public Collection<DynaRecordColumn> getColunas() {
+		return colunas;
+	}
+
+	public void setColunas(Collection<DynaRecordColumn> colunas) {
+		this.colunas = colunas;
+	}
+
+	
 }

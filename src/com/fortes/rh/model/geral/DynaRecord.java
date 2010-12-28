@@ -13,7 +13,18 @@ public class DynaRecord implements Serializable, Cloneable
 	private String campo4;
 	private String campo5;
 	private String campo6;
+	private String campo7;
+	private String campo8;
+	private String campo9;
+	private String campo10;
+	private String campo11;
+	private String campo12;
+	private String campo13;
+	private String campo14;
+	private String campo15;
 	private Colaborador colaborador;
+	
+	
 	
 	public DynaRecord()
 	{
@@ -75,6 +86,87 @@ public class DynaRecord implements Serializable, Cloneable
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
+
+	public static Object montaEval(String elementoPai, String atributo, int key, int valor) 
+	{
+		String path = elementoPai + "..reportElement.(@key==\"textField"+ key +"\").@" + atributo;
+		return " eval('xml." + path + " = \"" + valor + "\"'); ";
+	}
+
+	public String getCampo7() {
+		return campo7;
+	}
+
+	public void setCampo7(String campo7) {
+		this.campo7 = campo7;
+	}
+
+	public String getCampo8() {
+		return campo8;
+	}
+
+	public void setCampo8(String campo8) {
+		this.campo8 = campo8;
+	}
+
+	public String getCampo9() {
+		return campo9;
+	}
+
+	public void setCampo9(String campo9) {
+		this.campo9 = campo9;
+	}
+
+	public String getCampo10() {
+		return campo10;
+	}
+
+	public void setCampo10(String campo10) {
+		this.campo10 = campo10;
+	}
+
+	public String getCampo11() {
+		return campo11;
+	}
+
+	public void setCampo11(String campo11) {
+		this.campo11 = campo11;
+	}
+
+	public String getCampo12() {
+		return campo12;
+	}
+
+	public void setCampo12(String campo12) {
+		this.campo12 = campo12;
+	}
+
+	public String getCampo13() {
+		return campo13;
+	}
+
+	public void setCampo13(String campo13) {
+		this.campo13 = campo13;
+	}
+
+	public String getCampo14() {
+		return campo14;
+	}
+
+	public void setCampo14(String campo14) {
+		this.campo14 = campo14;
+	}
+
+	public String getCampo15() {
+		return campo15;
+	}
+
+	public void setCampo15(String campo15) {
+		this.campo15 = campo15;
+	}
+	
+	
+	
 	
 	
 	
