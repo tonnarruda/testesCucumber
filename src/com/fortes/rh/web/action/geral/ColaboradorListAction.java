@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
 import org.mozilla.javascript.Context;
@@ -22,7 +21,6 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.dicionario.ColunasRelatorioDinamico;
 import com.fortes.rh.model.dicionario.Mes;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -31,9 +29,9 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.DynaRecord;
-import com.fortes.rh.model.geral.DynaRecordColumn;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.ReportColumn;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -95,7 +93,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 
 	private Collection<String> colunasMarcadas = new ArrayList<String>();
-	private Collection<DynaRecordColumn> colunas = new ArrayList<DynaRecordColumn>();
+	private Collection<ReportColumn> colunas = new ArrayList<ReportColumn>();
 
 	private boolean exibirNomeComercial;
 	private boolean habilitaCampoExtra;
@@ -198,33 +196,32 @@ public class ColaboradorListAction extends MyActionSupportList
 	}
 
 	private void montaColunas() {
-		colunas = DynaRecordColumn.getColumns();
+		colunas = ReportColumn.getColumns();
 		if(habilitaCampoExtra)
 		{
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
 			
-			for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras) 
-				colunas.add(new DynaRecordColumn(configuracaoCampoExtra.getTitulo(), configuracaoCampoExtra.getNome(), configuracaoCampoExtra.getSize()));
+			for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras)
+			{
+				String nomeExtra = "camposExtras." + configuracaoCampoExtra.getNome();
+				if(!configuracaoCampoExtra.getTipo().equals("texto"))
+					nomeExtra = "camposExtras." + configuracaoCampoExtra.getNome() + "String";
+					
+				colunas.add(new ReportColumn(configuracaoCampoExtra.getTitulo(), nomeExtra, configuracaoCampoExtra.getSize(), false));
+			}
+				
 		}
 	}
 
 	public String relatorioDinamico() throws Exception
 	{
-		String msg = null;
 		try
 		{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
-
 			camposExtras.setId(1l);
-			
-			HashMap<Object, Object> filtros = new HashMap<Object,Object>();
-			//parametros dos filtros
-			filtros.put("estabelecimentos", estabelecimentos);
-			filtros.put("areas", areas);
-			filtros.put("camposExtras", camposExtras);
-			
-			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(filtros, habilitaCampoExtra);
+
+			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId());
 
 			Context cx = Context.enter();
 	        try {
@@ -240,29 +237,27 @@ public class ColaboradorListAction extends MyActionSupportList
 	            int posicaoX = 0;
 	            int valueWidth = 0;
 	            int valueX = 0;
-	            String campo = "";
 
 	            montaColunas();
-	            parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Listagem de Colaboradores", getEmpresaSistema(), null);
+	            parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Colaboradores", getEmpresaSistema(), null);
 	            
+	            Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
+
 	            int count = 1;
-	            for (DynaRecordColumn coluna : colunas)
+	            for (ReportColumn coluna : colunasMarcadasRedimensionadas)
 	            {
-	            	if(coluna.isMarcada(colunasMarcadas))
-	            	{
-		            	parametros.put("TITULO" + (count), coluna.getName());
-	            		
-		            	valueWidth = coluna.getSize();
-			            valueX = posicaoX;
-			            
-			            sb.append(DynaRecord.montaEval("columnHeader", "width", count, valueWidth));
-			            sb.append(DynaRecord.montaEval("columnHeader", "x", count, valueX));
-			            sb.append(DynaRecord.montaEval("detail", "width", count, valueWidth));
-			            sb.append(DynaRecord.montaEval("detail", "x", count, valueX));
-			            
-			            posicaoX += valueWidth + 4;
-			            count++;
-	            	}
+            		parametros.put("TITULO" + (count), coluna.getName());
+            		
+	            	valueWidth = coluna.getSize();
+		            valueX = posicaoX;
+		            			        
+		            sb.append(DynaRecord.montaEval("columnHeader", "width", count, valueWidth));
+		            sb.append(DynaRecord.montaEval("columnHeader", "x", count, valueX));
+		            sb.append(DynaRecord.montaEval("detail", "width", count, valueWidth));
+		            sb.append(DynaRecord.montaEval("detail", "x", count, valueX));
+		            
+		            posicaoX += valueWidth + ReportColumn.getSpace();
+		            count++;
 				}
 	            	            
 				sb.append("    obj = xml.toXMLString();");
@@ -282,14 +277,6 @@ public class ColaboradorListAction extends MyActionSupportList
 	            pasta = pasta.replace('/', java.io.File.separatorChar);
 	            
 	            dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas);
-	            
-
-				if(dataSource == null || dataSource.isEmpty())
-				{
-					ResourceBundle bundle = ResourceBundle.getBundle("application");
-					msg = bundle.getString("error.relatorio.vazio");
-					throw new Exception(msg);
-				}
 
 	            FileUtil.bytesToFile(arquivo.getBytes(), pasta + arquivo.getName());
 	        }
@@ -304,11 +291,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-
-			if(msg != null)
-				addActionMessage(msg);
-			else
-				addActionMessage("Não foi possível gerar o relatório");
+			addActionMessage("Não foi possível gerar o relatório");
 			
 			prepareRelatorioDinamico();
  			return Action.INPUT;
@@ -758,11 +741,11 @@ public class ColaboradorListAction extends MyActionSupportList
 	}
 
 
-	public Collection<DynaRecordColumn> getColunas() {
+	public Collection<ReportColumn> getColunas() {
 		return colunas;
 	}
 
-	public void setColunas(Collection<DynaRecordColumn> colunas) {
+	public void setColunas(Collection<ReportColumn> colunas) {
 		this.colunas = colunas;
 	}
 

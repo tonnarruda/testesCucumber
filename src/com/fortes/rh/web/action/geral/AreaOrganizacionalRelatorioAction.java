@@ -84,15 +84,8 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
-
-			HashMap<Object, Object> filtros = new HashMap<Object,Object>();
-			//parametros dos filtros
-			filtros.put("estabelecimentos", estabelecimentos);
-			filtros.put("areas", areas);
-			filtros.put("grupos", null);//foi retirado, Francisco Barroso 08/09/2010
-			filtros.put("camposExtras", camposExtras);
-
-			dataSource = colaboradorManager.findAreaOrganizacionalByAreas(filtros, habilitaCampoExtra);
+				
+			dataSource = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId());
 			if(dataSource == null || dataSource.isEmpty())
 			{
 				ResourceBundle bundle = ResourceBundle.getBundle("application");

@@ -9,6 +9,8 @@ import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
 import com.fortes.rh.config.backup.NotificadoDeBackupViaEmailImplTest;
 import com.fortes.rh.config.backup.RunAntScriptTest;
+import com.fortes.rh.model.geral.DynaRecord;
+import com.fortes.rh.model.geral.ReportColumn;
 import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
 import com.fortes.rh.security.spring.aop.AuditoriaGeralAdviceTest;
 import com.fortes.rh.security.spring.aop.AuditoriaPointcutTest;
@@ -301,6 +303,7 @@ import com.fortes.rh.test.model.desenvolvimento.CertificadoTest;
 import com.fortes.rh.test.model.desenvolvimento.TurmaTest;
 import com.fortes.rh.test.model.geral.AreaOrganizacionalTest;
 import com.fortes.rh.test.model.geral.ColaboradorTest;
+import com.fortes.rh.test.model.geral.ReportColumnTest;
 import com.fortes.rh.test.model.geral.PendenciaACTest;
 import com.fortes.rh.test.model.pesquisa.ColaboradorRespostaTest;
 import com.fortes.rh.test.model.pesquisa.PerguntaTest;
@@ -1105,6 +1108,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CandidatoTest.class);
         suite.addTestSuite(PendenciaACTest.class);
         suite.addTestSuite(AreaOrganizacionalTest.class);
+        suite.addTestSuite(ReportColumnTest.class);
 
         suite.addTestSuite(ResultadoPesquisaTest.class);
         suite.addTestSuite(ProgressaoColaboradorTest.class);

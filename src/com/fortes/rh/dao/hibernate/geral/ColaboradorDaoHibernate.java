@@ -946,8 +946,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	public Collection<Colaborador> findAreaOrganizacionalByAreas(Collection<Long> estabelecimentoIds, Collection<Long> areaOrganizacionalIds,
-			CamposExtras camposExtras, boolean habilitaCampoExtra)
+	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds,
+			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
@@ -991,11 +991,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	) ");
 		hql.append("	and co.desligado = :desligado ");
 		hql.append("	and hc1.status = :status ");
+		
+		if(empresaId != null)
+			hql.append("	and emp.id = :empresaId ");
 
-		if(estabelecimentoIds != null)
+		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			hql.append(" and hc1.estabelecimento.id in (:estabelecimentoIds) ");
 
-		if(areaOrganizacionalIds != null)
+		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
 
 		if(habilitaCampoExtra && camposExtras != null)
@@ -1040,11 +1043,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("hoje", new Date());
 		query.setBoolean("desligado", false);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 
-		if(estabelecimentoIds != null)
+		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 
-		if(areaOrganizacionalIds != null)
+		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
 		
 		if(habilitaCampoExtra && camposExtras != null)
