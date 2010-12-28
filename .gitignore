@@ -6,6 +6,7 @@ web/WEB-INF/classes/
 *.bak
 *.log
 dist/
+.classpath
 .project
 file.fortesrh
 .settings/
