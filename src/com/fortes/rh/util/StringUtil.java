@@ -35,7 +35,8 @@ public final class StringUtil
 	public static String toJSON(Object valor, String[] excludes) 
 	{
 		JsonConfig jsonConfig = new JsonConfig();
-		jsonConfig.setExcludes(excludes);
+		if(excludes != null)
+			jsonConfig.setExcludes(excludes);
 		
 		return JSONSerializer.toJSON(valor, jsonConfig).toString();
 	}

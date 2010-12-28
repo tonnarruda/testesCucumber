@@ -113,9 +113,9 @@ public class ReportColumn implements Serializable, Cloneable
 		Collection<ReportColumn> colunasResize = new ArrayList<ReportColumn>();
 		int rest = MAX_SIZE;
 		int qtdResize = 0;
-		for (ReportColumn coluna : colunas) 
+		for (String colunaMarcada : colunasMarcadas) 
 		{
-			for (String colunaMarcada : colunasMarcadas) 
+			for (ReportColumn coluna : colunas) 
 			{
 				if(colunaMarcada.equals(coluna.getProperty()))
 				{

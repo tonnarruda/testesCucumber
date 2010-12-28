@@ -191,7 +191,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
 
 		montaColunas();
-		
+
 		return Action.SUCCESS;
 	}
 
