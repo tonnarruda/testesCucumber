@@ -25,6 +25,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jquery.picklists.js"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
@@ -82,6 +83,12 @@
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
 		});
+
+		jQuery(document).ready(function($)
+		{
+			jQuery("#colunasMarcadas").pickList(); 
+		});
+		
 		
 		var maxSize = 780;
 		var totalSize = 0;
@@ -128,7 +135,8 @@
 					 </#list>
 				</div>
 			</ul>
-		</fieldset>
+		<@ww.select label="Colunas Marcadas" multiple="true" name="colunasMarcadas" id="colunasMarcadas" list="colunasMarcadas" listKey="id" />
+				
 		
 		<@ww.hidden name="habilitaCampoExtra" />
 	</@ww.form>
