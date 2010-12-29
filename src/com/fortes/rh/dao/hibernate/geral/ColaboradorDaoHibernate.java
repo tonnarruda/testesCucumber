@@ -947,7 +947,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds,
-			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId)
+			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
@@ -1035,7 +1035,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		}
 
 		// Ordenação
-		hql.append(" order by es.nome, ao.nome, co.nome ");
+		if(order == null)
+			hql.append(" order by es.nome, ao.nome, co.nome ");
+		else
+			hql.append(" order by " + order);
 
 		Query query = getSession().createQuery(hql.toString());
 

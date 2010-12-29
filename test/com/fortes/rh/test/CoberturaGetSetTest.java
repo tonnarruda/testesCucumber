@@ -122,6 +122,7 @@ import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.ConfiguracaoPerformance;
+import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Dependente;
 import com.fortes.rh.model.geral.DocumentoAnexo;
@@ -912,6 +913,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new TipoEPIEditAction());
 		cobreGetSet(new TipoEPIListAction());
 		cobreGetSet(new ThumbnailAction());
+		cobreGetSet(new ConfiguracaoRelatorioDinamico());
 
 	}
 	

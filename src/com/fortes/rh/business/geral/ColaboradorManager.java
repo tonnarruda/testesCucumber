@@ -60,7 +60,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByEstabelecimento(Long[] estabelecimentoIds);
 	public Collection<Colaborador> getColaboradoresIntegraAc(Collection<Colaborador> colaboradores);
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId);
-	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId);
+	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId, String order);
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
 	void atualizarUsuario(Long colaboradorId, Long usuarioId) throws Exception;
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);

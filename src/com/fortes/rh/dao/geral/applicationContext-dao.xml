@@ -274,7 +274,16 @@
       <ref bean="configuracaoPerformanceDaoTarget" />
     </property>
   </bean>
+  <bean id="configuracaoRelatorioDinamicoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.ConfiguracaoRelatorioDinamicoDao</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoRelatorioDinamicoDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

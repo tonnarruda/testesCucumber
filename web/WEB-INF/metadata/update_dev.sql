@@ -18,3 +18,14 @@ update papel set nome = 'Análise das Etapas Seletivas' where id = 47;--.go
 
 alter table empresa add column exibirDadosAmbiente boolean;--.go
 update empresa set exibirDadosAmbiente=false;--.go
+
+CREATE TABLE configuracaoRelatorioDinamico (
+id bigint NOT NULL,
+usuario_id bigint,
+campos character varying(600),
+titulo character varying(100)
+);--.go
+
+ALTER TABLE configuracaoRelatorioDinamico ADD CONSTRAINT configuracaoRelatorioDinamico_pkey PRIMARY KEY(id);--.go
+ALTER TABLE configuracaoRelatorioDinamico ADD CONSTRAINT configuracaoRelatorioDinamico_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);--.go
+CREATE SEQUENCE configuracaoRelatorioDinamico_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go

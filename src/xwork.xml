@@ -300,7 +300,9 @@
   <include file="/com/fortes/rh/web/action/avaliacao/xwork-AvaliacaoCandidato.xml" />
   <include file="/com/fortes/rh/web/action/captacao/xwork-Habilidade.xml" />
   <include file="/com/fortes/rh/web/action/captacao/xwork-Atitude.xml" />
+  <include file="/com/fortes/rh/web/action/geral/xwork-ConfiguracaoRelatorioDinamico.xml" />
 </xwork>
+
 
 
 

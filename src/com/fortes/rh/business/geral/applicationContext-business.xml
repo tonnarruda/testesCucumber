@@ -613,7 +613,21 @@
       <ref bean="configuracaoPerformanceManagerTarget" />
     </property>
   </bean>
+  <bean id="configuracaoRelatorioDinamicoManagerTarget" class="com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManagerImpl">
+    <property name="dao">
+      <ref bean="configuracaoRelatorioDinamicoDao" />
+    </property>
+  </bean>
+  <bean id="configuracaoRelatorioDinamicoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoRelatorioDinamicoManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

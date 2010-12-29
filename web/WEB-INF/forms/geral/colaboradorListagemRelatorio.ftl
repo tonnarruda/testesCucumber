@@ -66,6 +66,17 @@
 			background-color: #FFF;
 			cursor: pointer;
 		}
+		.pickListTo {
+			margin-top: -16px;
+			margin-left: 300px;
+		}
+		
+		.saveLayout {
+			float: right;
+			margin-top: 10px;
+			border: 0;
+			cursor: pointer;
+		}
 		
 		option[disabled] {
 			background-color:#FFF;
@@ -75,6 +86,10 @@
 
 	
 	<script type="text/javascript">
+		var ieColor = '#AAA';
+		var ieBg = '#FFF';
+		var msgLimiteLargura = "Os campos selecionados não podem ser adicionados ao relatório.\nMotivo: Largura máxima excedida.";
+		var colunasInfo = ${colunasJson};
 
 		jQuery(document).ready(function($)
 		{
@@ -83,8 +98,6 @@
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
 			
-			var ieColor = '#AAA'; 
-			var ieBg = '#FFF';
 
 			$("#colunas").pickList({
 				buttons: true,
@@ -93,7 +106,7 @@
 				removeText: '', 
 				removeImage: '<@ww.url value="/imgs/anterior.gif"/>',
 				ieColor: ieColor, 
-				ieBg: ieBg			
+				ieBg: ieBg
 			});
 			
 			$("#from_colunas option").dblclick(function(e) {
@@ -105,44 +118,55 @@
 				if(!sizeOk())
 				{
 					e.stopPropagation();
-					alert("Largura máxima das colunas excedidas.");
+					alert(msgLimiteLargura);
 				}
 			});
 
 			$("#b_to_colunas").unbind('click');
 			$("#b_to_colunas").click(function(e) {
 				e.preventDefault(); 
-				
 				alterBackground('#FFF');
-				if(sizeOk())
-				{
-					var from = 'from_colunas';
-					var to = 'colunas';
-					
-					var dest = jQuery("#"+to)[0];
-	
-					jQuery("#"+from+" option:selected").clone().each(function() {
-						if (this.disabled == true) return
-						jQuery(this)
-						.appendTo(dest)
-						.attr("selected", false);
-					});
-					jQuery("#"+from+" option:selected")
-						.attr("selected", false)
-						.attr("disabled", true)
-					
-					if (jQuery.fn.obviouslyDisabled)
-			      jQuery("#"+from).obviouslyDisabled({textColor: ieColor, bgColor: ieBg});
-				}
-				else
-				{				 
-					alert("Largura máxima das colunas excedidas.");
-				}
-				
+				selecionaCampos();
 				return false;
 			});
 			
+			var configuracaoRelatorioDinamico = '${configuracaoRelatorioDinamico.campos}';
+			
+			$(configuracaoRelatorioDinamico.split(',')).each(function (){
+				$("#from_colunas option[value=" + this +  "]").attr('selected', true);
+				selecionaCampos();
+			});
+			
 		});
+
+		function selecionaCampos()
+		{			
+			if(sizeOk())
+			{
+				var from = 'from_colunas';
+				var to = 'colunas';
+				
+				var dest = jQuery("#"+to)[0];
+
+				jQuery("#"+from+" option:selected").clone().each(function() {
+					if (this.disabled == true) return
+					jQuery(this)
+					.appendTo(dest)
+					.attr("selected", false);
+				});
+				
+				jQuery("#"+from+" option:selected")
+					.attr("selected", false)
+					.attr("disabled", true)
+				
+				if (jQuery.fn.obviouslyDisabled)
+		     		jQuery("#"+from).obviouslyDisabled({textColor: ieColor, bgColor: ieBg});
+			}
+			else
+			{				 
+				alert(msgLimiteLargura);
+			}
+		}
 
 		var empresaIds = new Array();
 		var colunasSizes = new Array();
@@ -187,6 +211,12 @@
 			}
 			else
 			{
+				var firstOption = jQuery('#colunas option:first');
+				var fromOption = jQuery('#from_colunas option[value=' + firstOption.val() + ']');
+				var index = jQuery('#from_colunas option').index(fromOption)
+				var order = colunasInfo[index].orderField;
+				jQuery('#orderField').val(order);
+				
 				jQuery('#colunas option').attr('selected', true);
 				return validaFormulario('form', new Array(), new Array('naoApague' ${validaDataCamposExtras}));
 			}
@@ -230,6 +260,22 @@
 			jQuery('#colunas').css({background: cor});
 			jQuery('#from_colunas').css({background: cor});
 		}
+		
+		function salvarLayout()	
+		{
+			var values = jQuery('#colunas option').map(function () {
+    			return jQuery(this).val();
+			});
+			
+			var campos = jQuery.makeArray(values).join(',');
+			jQuery.get('<@ww.url value="/geral/configuracaoRelatorioDinamico/update.action?campos="/>' + campos + '&titulo=' + jQuery('#titulo').val(), function(data) {
+				if(data == "OK")
+					alert("Layout do relatório salvo com sucesso.");
+				else
+					alert("Erro ao salvar layout.");
+			});
+		}
+		
 	</script>
 
 
@@ -239,6 +285,7 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="relatorioDinamico.action" onsubmit="return validarCampos();" validate="true" method="POST">
+	
 		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);"/>
 		
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
@@ -247,18 +294,26 @@
 		
 		<fieldset class="fieldsetPadrao" style="width:578px; padding: 10px; padding-top: 0">
 			<ul>
-				<legend>Campos para impressão</legend><br>
+				<legend>Configurações de impressão</legend><br>
+
+				<@ww.textfield label="Título" id="titulo" name="configuracaoRelatorioDinamico.titulo" maxLength="100" cssStyle="width:542px;"/>
+				<div class="pickListFrom">Campos disponíveis</div>
+				<div class="pickListTo">Campos selecionados</div>
+				
 				<@ww.select theme="simple" label="" multiple="true" name="colunasMarcadas" id="colunas" list="colunas" listKey="property" listValue="name" />
 
 				<div class="ordenador">
-					<img border="0" onClick="prev();" title="" src="<@ww.url value="/imgs/up.gif"/>">
-					<img border="0" onClick="next();" title="" src="<@ww.url value="/imgs/down.gif"/>">
+					<img border="0" onClick="prev();" title="Subir campo(s) selecionado(s)" src="<@ww.url value="/imgs/up.gif"/>">
+					<img border="0" onClick="next();" title="Baixar campo(s) selecionado(s)" src="<@ww.url value="/imgs/down.gif"/>">
 				</div>
 				
+				<img border="0" class="saveLayout" onClick="salvarLayout();" title="Salvar layout do relatório" src="<@ww.url value="/imgs/saveLayout.gif"/>">
 				<div style="clear: both"></div>
 			</ul>
 		</fieldset>
+	
 		<@ww.hidden name="habilitaCampoExtra" />
+		<@ww.hidden id="orderField" name="orderField" />
 	</@ww.form>
 
 	<div class="buttonGroup">

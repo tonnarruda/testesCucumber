@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="configuracaoRelatorioDinamico" extends="default" namespace="/geral/configuracaoRelatorioDinamico">
+		<action name="update" class="com.fortes.rh.web.action.geral.ConfiguracaoRelatorioDinamicoEditAction" method="update">
+			<result name="success" type="plaintext">/WEB-INF/forms/geral/ok.txt</result>
+			<result name="error" type="plaintext">/WEB-INF/forms/geral/error.txt</result>
+		</action>
+	</package>
+</xwork>

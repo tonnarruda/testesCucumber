@@ -143,7 +143,9 @@
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoPerformance" />
       <mapping class="com.fortes.rh.model.captacao.Habilidade" />
       <mapping class="com.fortes.rh.model.captacao.Atitude" />
+      <mapping class="com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico" />
   </session-factory>
+
 
 
 </hibernate-configuration>

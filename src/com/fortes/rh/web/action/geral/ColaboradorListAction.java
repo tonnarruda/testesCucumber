@@ -16,6 +16,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -28,6 +29,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -59,6 +61,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
 	
 	private Collection<Colaborador> colaboradors = null;
 	private Colaborador colaborador;
@@ -113,6 +116,9 @@ public class ColaboradorListAction extends MyActionSupportList
 	private CamposExtras camposExtras = new CamposExtras();;
 
 	private Collection<DynaRecord> dataSource;
+	private ConfiguracaoRelatorioDinamico configuracaoRelatorioDinamico;
+	private String colunasJson;
+	private String orderField;
 
 	public String list() throws Exception
 	{
@@ -182,15 +188,21 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String prepareRelatorioDinamico()
 	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_CAD_COLABORADOR");
+		Long usuarioId = SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession());
+		empresas = empresaManager.findByUsuarioPermissao(usuarioId, "ROLE_CAD_COLABORADOR");
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
 		
 		empresa = getEmpresaSistema();
 		
 		habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
-
+		
+		configuracaoRelatorioDinamico = configuracaoRelatorioDinamicoManager.findByUsuario(usuarioId);
+		if(configuracaoRelatorioDinamico == null)
+			configuracaoRelatorioDinamico = new ConfiguracaoRelatorioDinamico();
+		
 		montaColunas();
+		colunasJson = StringUtil.toJSON(colunas, null);
 
 		return Action.SUCCESS;
 	}
@@ -203,13 +215,13 @@ public class ColaboradorListAction extends MyActionSupportList
 			
 			for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras)
 			{
+				String orderField = "ce." + configuracaoCampoExtra.getNome();
 				String nomeExtra = "camposExtras." + configuracaoCampoExtra.getNome();
 				if(!configuracaoCampoExtra.getTipo().equals("texto"))
 					nomeExtra = "camposExtras." + configuracaoCampoExtra.getNome() + "String";
 					
-				colunas.add(new ReportColumn(configuracaoCampoExtra.getTitulo(), nomeExtra, configuracaoCampoExtra.getSize(), false));
+				colunas.add(new ReportColumn(configuracaoCampoExtra.getTitulo(), nomeExtra, orderField, configuracaoCampoExtra.getSize(), false));
 			}
-				
 		}
 	}
 
@@ -221,7 +233,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
 
-			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId());
+			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField);
 
 			Context cx = Context.enter();
 	        try {
@@ -239,7 +251,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	            int valueX = 0;
 
 	            montaColunas();
-	            parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Colaboradores", getEmpresaSistema(), null);
+	            parametros = RelatorioUtil.getParametrosRelatorio(configuracaoRelatorioDinamico.getTitulo(), getEmpresaSistema(), null);
 	            
 	            Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
 
@@ -747,6 +759,27 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setColunas(Collection<ReportColumn> colunas) {
 		this.colunas = colunas;
+	}
+
+
+	public void setConfiguracaoRelatorioDinamicoManager(ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager) {
+		this.configuracaoRelatorioDinamicoManager = configuracaoRelatorioDinamicoManager;
+	}
+
+	public ConfiguracaoRelatorioDinamico getConfiguracaoRelatorioDinamico() {
+		return configuracaoRelatorioDinamico;
+	}
+
+	public void setConfiguracaoRelatorioDinamico(ConfiguracaoRelatorioDinamico configuracaoRelatorioDinamico) {
+		this.configuracaoRelatorioDinamico = configuracaoRelatorioDinamico;
+	}
+
+	public String getColunasJson() {
+		return colunasJson;
+	}
+
+	public void setOrderField(String orderField) {
+		this.orderField = orderField;
 	}
 
 	
