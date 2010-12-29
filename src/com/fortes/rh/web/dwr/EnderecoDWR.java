@@ -5,9 +5,11 @@ import org.apache.commons.httpclient.methods.GetMethod;
 
 public class EnderecoDWR {
 
+	private static final int TIMEOUT = 15000; // 15 sec
+
 	public String buscaPorCep(String cep) 
 	{
-		HttpClient client = new HttpClient();
+		HttpClient client = createHttpClientWithTimeout(TIMEOUT);
 		GetMethod get = new GetMethod(getUrlParaCep(cep));
 		try {
 			client.executeMethod( get );
@@ -19,6 +21,13 @@ public class EnderecoDWR {
 		} finally {
 			get.releaseConnection();
 		}
+	}
+
+	private HttpClient createHttpClientWithTimeout(int timeout) {
+		HttpClient client = new HttpClient();
+		client.getParams().setParameter("http.socket.timeout", timeout);
+		client.getParams().setParameter("http.connection.timeout", timeout);
+		return client;
 	}
 
 	private String getUrlParaCep(String cep) 
