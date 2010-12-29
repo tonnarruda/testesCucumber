@@ -28,10 +28,10 @@ public class ReportColumnTest extends TestCase {
 		
 		assertEquals(5, colunasMarcadasRedimensionadas.size());
 		assertEquals(216, ((ReportColumn)colunasMarcadasRedimensionadas.toArray()[0]).getSize());
-		assertEquals(216, ((ReportColumn)colunasMarcadasRedimensionadas.toArray()[1]).getSize());
-		assertEquals(40, ((ReportColumn)colunasMarcadasRedimensionadas.toArray()[2]).getSize());
-		assertEquals(216, ((ReportColumn)colunasMarcadasRedimensionadas.toArray()[3]).getSize());
-		assertEquals(70, ((ReportColumn)colunasMarcadasRedimensionadas.toArray()[4]).getSize());
+		assertEquals(40, ((ReportColumn)colunasMarcadasRedimensionadas.toArray()[1]).getSize());
+		assertEquals(216, ((ReportColumn)colunasMarcadasRedimensionadas.toArray()[2]).getSize());
+		assertEquals(70, ((ReportColumn)colunasMarcadasRedimensionadas.toArray()[3]).getSize());
+		assertEquals(216, ((ReportColumn)colunasMarcadasRedimensionadas.toArray()[4]).getSize());
 	}
 
 	public void testResizeColumnsResizeZero() 

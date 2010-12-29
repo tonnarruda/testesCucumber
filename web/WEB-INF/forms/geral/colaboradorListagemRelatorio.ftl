@@ -42,20 +42,29 @@
 		#from_colunas,
 		#colunas {
 			float: left;
-			width: 260px;
+			width: 245px;
 			height: 302px;
 		}
 
-		.pickListButtons {
+		.pickListButtons,
+		.ordenador {
 			float: left;
-			padding: 125px 0;
+			padding: 125px 10px;
+		}
+		.ordenador {
+			padding-right: 0;
+		}
+		.ordenador img {
+			display: block;
+			margin-bottom: 10px;
+			cursor: pointer;
 		}
 		.pickListButtons button {
 			display: block;
-			margin: 5px 15px;
-			width: 25px;
+			margin: 5px 0;
 			border: 0;
 			background-color: #FFF;
+			cursor: pointer;
 		}
 		
 		option[disabled] {
@@ -74,8 +83,8 @@
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
 			
-			var ieColor = '#FFFFFF'; 
-			var ieBg = 'graytext';
+			var ieColor = '#AAA'; 
+			var ieBg = '#FFF';
 
 			$("#colunas").pickList({
 				buttons: true,
@@ -89,6 +98,10 @@
 			
 			$("#from_colunas option").dblclick(function(e) {
 				alterBackground('#FFF');
+
+				if($(this).attr("disabled"))
+					e.stopPropagation();
+				
 				if(!sizeOk())
 				{
 					e.stopPropagation();
@@ -232,14 +245,18 @@
 
 		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" />
 		
-		<fieldset class="fieldsetPadrao" style="width:583px;">
+		<fieldset class="fieldsetPadrao" style="width:578px; padding: 10px; padding-top: 0">
 			<ul>
 				<legend>Campos para impressão</legend><br>
 				<@ww.select theme="simple" label="" multiple="true" name="colunasMarcadas" id="colunas" list="colunas" listKey="property" listValue="name" />
+
+				<div class="ordenador">
+					<img border="0" onClick="prev();" title="" src="<@ww.url value="/imgs/up.gif"/>">
+					<img border="0" onClick="next();" title="" src="<@ww.url value="/imgs/down.gif"/>">
+				</div>
+				
 				<div style="clear: both"></div>
 			</ul>
-			<img border="0" onClick="prev();" title="" src="<@ww.url value="/imgs/up.gif"/>">
-			<img border="0" onClick="next();" title="" src="<@ww.url value="/imgs/down.gif"/>">
 		</fieldset>
 		<@ww.hidden name="habilitaCampoExtra" />
 	</@ww.form>

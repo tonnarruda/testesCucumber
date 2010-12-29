@@ -270,7 +270,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	            
 	            File arquivo = new File();
 	            arquivo.setBytes(relatoriDinamico.getBytes());
-	            arquivo.setName("deumnomeai.jrxml");
+	            arquivo.setName("colaboradorDinamico.jrxml");
 	            
 	            String pasta = ServletActionContext.getServletContext().getRealPath("/WEB-INF/report/") + java.io.File.separator;
 	            pasta = pasta.replace("\\", "/").replace("%20", " ");
