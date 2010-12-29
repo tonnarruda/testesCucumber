@@ -5,7 +5,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 
 public class EnderecoDWR {
 
-	private static final int TIMEOUT = 15000; // 15 sec
+	private static final int TIMEOUT = 8000; // 8 sec
 
 	public String buscaPorCep(String cep) 
 	{

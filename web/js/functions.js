@@ -994,7 +994,7 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 			 $numero.focus();
 			 
 			 jsonCEP = "";
-			 EnderecoDWR.buscaPorCep($cep.val(), {timeout:30000, callback: function(data) {
+			 EnderecoDWR.buscaPorCep($cep.val(), {timeout:10000, callback: function(data) {
 				 
 				 jsonCEP = jQuery.parseJSON(data);
 				 
