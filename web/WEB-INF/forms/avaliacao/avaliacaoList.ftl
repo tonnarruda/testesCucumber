@@ -9,7 +9,7 @@
 	<#if modeloAvaliacao?exists && modeloAvaliacao = tipoModeloAvaliacao.getSolicitacao()>
 		<title>Modelos de Avaliação de Solicitação</title>
 	<#else>
-		<title>Modelos de Avaliação de Desempenho</title>
+		<title>Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência</title>
 	</#if>
 </head>
 <body>
