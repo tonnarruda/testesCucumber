@@ -19,6 +19,7 @@ import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
 import com.ibm.icu.text.CharsetDetector;
 import com.ibm.icu.text.CharsetMatch;
+import com.opensymphony.webwork.ServletActionContext;
 
 public class ArquivoUtil
 {
@@ -174,7 +175,7 @@ public class ArquivoUtil
 	
 	public static String getReportSource(String report)
 	{
-		String path = System.getenv("WORKSPACE_FORTESRH") + "/web/WEB-INF/report/" + report;
+		String path = ServletActionContext.getServletContext().getRealPath("/WEB-INF/report/") + java.io.File.separator + report;
 		path = path.replace("\\", "/").replace("%20", " ");
 		path = path.replace('/', java.io.File.separatorChar);
     	java.io.File file = new java.io.File(path);
