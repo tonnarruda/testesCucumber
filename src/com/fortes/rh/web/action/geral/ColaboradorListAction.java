@@ -1,5 +1,8 @@
 package com.fortes.rh.web.action.geral;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -119,6 +122,12 @@ public class ColaboradorListAction extends MyActionSupportList
 	private ConfiguracaoRelatorioDinamico configuracaoRelatorioDinamico;
 	private String colunasJson;
 	private String orderField;
+	
+	private InputStream reportInputStream;
+
+	public InputStream getReportInputStream() {
+		return reportInputStream;
+	}
 
 	public String list() throws Exception
 	{
@@ -275,22 +284,14 @@ public class ColaboradorListAction extends MyActionSupportList
 				sb.append("    obj = xml.toXMLString();");
 	            Object result = cx.evaluateString(scope, sb.toString(),	"MySource", 1,	null);
 
-	            String relatoriDinamico = "" +
+	            String relatorioDinamico = "" +
 	            		"<?xml version=\"1.0\" encoding=\"UTF-8\"  ?>" +
 	            		"<!DOCTYPE jasperReport PUBLIC \"//JasperReports//DTD Report Design//EN\" \"http://jasperreports.sourceforge.net/dtds/jasperreport.dtd\">" +
 	            		result.toString();
 	            
-	            File arquivo = new File();
-	            arquivo.setBytes(relatoriDinamico.getBytes());
-	            arquivo.setName("colaboradorDinamico.jrxml");
-	            
-	            String pasta = ServletActionContext.getServletContext().getRealPath("/WEB-INF/report/") + java.io.File.separator;
-	            pasta = pasta.replace("\\", "/").replace("%20", " ");
-	            pasta = pasta.replace('/', java.io.File.separatorChar);
-	            
+	            reportInputStream = new ByteArrayInputStream(relatorioDinamico.getBytes());
 	            dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas);
 
-	            FileUtil.bytesToFile(arquivo.getBytes(), pasta + arquivo.getName());
 	        }
 	        finally 
 	        {
