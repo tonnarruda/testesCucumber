@@ -36,7 +36,7 @@
 		</@authz.authorize>
 			<a href="../../sesmt/funcao/list.action?cargoTmp.id=${cargo.id}"><img border="0" title="Funções" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
 			<a href="../faixaSalarial/list.action?cargo.id=${cargo.id}"><img border="0" title="Faixas Salariais" src="<@ww.url includeParams="none" value="/imgs/insertCell.gif"/>"></a>
-			<a href="prepareUpdate.action?cargo.id=${cargo.id}&page=${page}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			C<a href="prepareUpdate.action?cargo.id=${cargo.id}&page=${page}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?cargo.id=${cargo.id}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			<a href="imprimir.action?cargo.id=${cargo.id}"><img border="0" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 		</@display.column>
