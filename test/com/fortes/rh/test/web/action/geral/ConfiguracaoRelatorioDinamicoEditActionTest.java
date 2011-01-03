@@ -1,11 +1,13 @@
 package com.fortes.rh.test.web.action.geral;
 
+import mockit.Mockit;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
-import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
-import com.fortes.rh.test.factory.geral.ConfiguracaoRelatorioDinamicoFactory;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.geral.ConfiguracaoRelatorioDinamicoEditAction;
 
 public class ConfiguracaoRelatorioDinamicoEditActionTest extends MockObjectTestCase
@@ -20,6 +22,7 @@ public class ConfiguracaoRelatorioDinamicoEditActionTest extends MockObjectTestC
 		action = new ConfiguracaoRelatorioDinamicoEditAction();
 		action.setConfiguracaoRelatorioDinamicoManager((ConfiguracaoRelatorioDinamicoManager) manager.proxy());
 
+		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
 
 	protected void tearDown() throws Exception
@@ -32,9 +35,7 @@ public class ConfiguracaoRelatorioDinamicoEditActionTest extends MockObjectTestC
 
 	public void testUpdate() throws Exception
 	{
-		ConfiguracaoRelatorioDinamico configuracaoRelatorioDinamico = ConfiguracaoRelatorioDinamicoFactory.getEntity(1L);
-
-		manager.expects(once()).method("update").with(eq(configuracaoRelatorioDinamico)).isVoid();
+		manager.expects(once()).method("update").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
 
 		assertEquals("success", action.update());
 	}
