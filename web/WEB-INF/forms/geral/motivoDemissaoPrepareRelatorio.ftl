@@ -48,13 +48,14 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
+			var empresaId = jQuery('#empresa').val();
+			
 			if(areasIds.length == 0)
 			{
-				var empresaId = jQuery('#empresa').val();
 				CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
 			}
 			else
-				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa");
+				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
 		}
 
 		function createListCargosByArea(data)

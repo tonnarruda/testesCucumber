@@ -61,7 +61,7 @@
 		<#else>
 			<input type="button" value=" " onclick="if (confirm('Confirma desligamento?')) enviarForm(this);" class="btnDesligarColaborador" />
 		</#if>
-		<input type="button" value=" " onclick="window.location='list.action?nomeBusca=${nomeBusca}&cpfBusca=${cpfBusca}'" class="btnVoltar" />
+		<input type="button" value=" " onclick="window.location='list.action'" class="btnVoltar" />
 		<#if colaborador.desligado>
 			<input type="button" value=" " onclick=" if (confirm('Tem certeza que deseja cancelar o desligamento?')) enviarForm(this);" id="religa" class="btnCancelarDesligamento" />
 		</#if>

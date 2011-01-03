@@ -2739,4 +2739,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  return query.list();
 	}
 
+	public void setCandidatoNull(Long idCandidato) 
+	{
+		String hql = "update Colaborador set candidato.id = null where candidato.id = :candidatoId)";
+
+		Query query = getSession().createQuery(hql);
+		query.setLong("candidatoId", idCandidato);
+		
+		query.executeUpdate();
+
+	}
+
 }

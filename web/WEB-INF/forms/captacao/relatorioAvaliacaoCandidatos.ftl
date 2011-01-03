@@ -16,7 +16,7 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var gruposIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByGrupo(createListCargos, gruposIds);
+			CargoDWR.getCargoByGrupo(createListCargos, gruposIds, <@authz.authentication operation="empresaId"/>);
 		}
 
 		function createListCargos(data)

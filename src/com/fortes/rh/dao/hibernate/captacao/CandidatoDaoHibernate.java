@@ -211,6 +211,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	}
 
+	//max 100 registros
 	public Collection<Candidato> findBusca(Map parametros, Long empresaId, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao) throws Exception
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
@@ -259,6 +260,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			criteria.add(Expression.not((Expression.in("c.id", idsCandidatos))));
 
 		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setMaxResults(100);
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
@@ -1042,5 +1044,17 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.add(Expression.eq("c.id", id));
         
 		return (String) criteria.uniqueResult();
+	}
+
+	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long colaboradorId) 
+	{
+		String hql = "update Candidato set disponivel = :disponivel, contratado = :contratado where id=(select candidato.id from Colaborador where id = :colaboradorId)";
+
+		Query query = getSession().createQuery(hql);
+		query.setBoolean("disponivel", disponivel);
+		query.setBoolean("contratado", contratado);
+		query.setLong("colaboradorId", colaboradorId);
+		
+		query.executeUpdate();
 	}
 }

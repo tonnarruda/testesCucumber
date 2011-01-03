@@ -347,8 +347,10 @@
 		<@ww.textarea id="obs" name="obs" cssStyle="width: 705px;" onblur="${capitalizar}"/>
 
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">
-			Observações do RH<br />
-			<@ww.textarea id="obsrh" name="obsrh" cssStyle="width: 705px;"/>
+			<#if !moduloExterno>
+				Observações do RH<br />
+				<@ww.textarea id="obsrh" name="obsrh" cssStyle="width: 705px;"/>
+			</#if>	
 		</@authz.authorize>
 	</div>
 

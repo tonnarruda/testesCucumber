@@ -380,7 +380,6 @@
 		<copy todir="${tmpweb}">
 			<fileset dir="${base}">
 				<exclude name="WEB-INF/lib/**" />
-				<exclude name="WEB-INF/report/*.jrxml" />
 				<exclude name="WEB-INF/report/*.java" />
 				<exclude name="WEB-INF/report/*.bak" />
 				<exclude name="WEB-INF/anexosLtcat/*.*" />

@@ -151,6 +151,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		colaborador.setEmpresa(empresa);
 		
+		if(idCandidato != null)
+			getDao().setCandidatoNull(idCandidato);
+			
 		save(colaborador);
 		
 		// Inicia historico do colaborador
@@ -932,6 +935,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 			usuarioManager.desativaAcessoSistema(colaboradorId);
+			candidatoManager.habilitaByColaborador(colaboradorId);
 			getDao().desligaColaborador(desligado, dataDesligamento, observacao, motivoDemissaoId, colaboradorId);
 
 			transactionManager.commit(status);
@@ -947,6 +951,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 		usuarioManager.reativaAcessoSistema(colaboradorId);
+		candidatoManager.reabilitaByColaborador(colaboradorId);
 		getDao().religaColaborador(colaboradorId);
 	}
 
