@@ -58,15 +58,17 @@
 			<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width: 243px;"/>
 			<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" cssClass="mascaraCpf"/>
 			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 353px;"/>
-			<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" cssStyle="width: 355px;"/>
+			
+			<#if integraAc>
+				<@ww.select label="Situação" name="situacao" id="situacao" list="situacaosIntegraAC" cssStyle="width: 355px;"/>
+			<#else>
+				<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" cssStyle="width: 355px;"/>
+			</#if>
+			
 			<@ww.select label="Área Organizacional" name="areaOrganizacional.id" id="areaOrganizacional" list="areasList"  listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
 			<@ww.select label="Estabelecimento" name="estabelecimento.id" id="estabelecimento" list="estabelecimentosList" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
 			<@ww.select label="Cargo" name="cargo.id" id="cargo" list="cargosList" listKey="id" listValue="nomeMercado" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
-			
-			<#if integraAc>
-				<@ww.select label="Estatus no AC Pessoal" name="statusRetornoAC" id="statusRetornoAC" list="statusRetornoACs"  cssStyle="width: 355px;"/>
-			</#if>
-			
+
 			<@ww.hidden id="pagina" name="page"/>
 
 			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">

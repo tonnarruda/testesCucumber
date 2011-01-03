@@ -39,5 +39,8 @@ function abas(value, direcao, edicao, _qtdAbas)
 	document.getElementById('voltar').className		= link == 1 ? 'btnVoltarDesabilitado' : 'btnVoltar';
 
 	document.getElementById('avancar').disabled		= link == qtdAbas;
-	document.getElementById('avancar').className		= link == qtdAbas ? 'btnAvancarDesabilitado' : 'btnAvancar';
+	document.getElementById('avancar').className	= link == qtdAbas ? 'btnAvancarDesabilitado' : 'btnAvancar';
+
+	document.getElementById('gravarModuloExterno').disabled		= link != qtdAbas;
+	document.getElementById('gravarModuloExterno').className		= link == qtdAbas ? 'btnGravar': 'btnGravarDesabilitado';
 }

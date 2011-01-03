@@ -2502,7 +2502,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Long areaBuscaId = (Long) parametros.get("areaId");
 		Long estabelecimentoId = (Long) parametros.get("estabelecimentoId");
 		Long cargoId = (Long) parametros.get("cargoId");
-		Integer statusRetornoAC = (Integer) parametros.get("statusRetornoAC");
 		String situacao = (String) parametros.get("situacao");
 
 		String cpfBusca = (String) parametros.get("cpfBusca");
@@ -2551,7 +2550,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("	max(hc2.data) as maxData ");
 		sql.append("	from ");
 		sql.append("	HistoricoColaborador hc2 ");
-		sql.append("	where hc2.status = :status  ");
+		sql.append("	where hc2.status in (:status)  ");
 		sql.append("	group by ");
 		sql.append("	hc2.colaborador_id ");
 		sql.append("	having count(hc2.id) = 1 ");
@@ -2574,7 +2573,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("on md.id = colab_.motivoDemissao_id ");
 		sql.append("where ");
 		sql.append("colab_.empresa_id = :empresaId ");
-		sql.append("and hc.status = :status ");
+		sql.append("and hc.status in (:status) ");
 		
 		// Area
 		if(areaBuscaId != null)
@@ -2612,10 +2611,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("hoje", new Date());
 		query.setLong("empresaId", empresaId);
 		
-		if(statusRetornoAC!=null)
-			query.setInteger("status", statusRetornoAC);
-		else
-			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+	
 		
 		// Nome
 		if(nomeBusca != null && !nomeBusca.trim().equals(""))
@@ -2639,9 +2635,30 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(situacao != null && !situacao.trim().equals("") && !situacao.trim().equals("T"))
 		{
 			if(situacao.trim().equals("A"))
+			{
 				query.setBoolean("situacao", false);
+				query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+			}
 			if(situacao.trim().equals("D"))
+			{
 				query.setBoolean("situacao", true);
+				query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+			}
+			if(situacao.trim().equals("G"))
+			{
+				query.setBoolean("situacao", false);
+				query.setInteger("status", StatusRetornoAC.AGUARDANDO);
+			}
+			if(situacao.trim().equals("C"))
+			{
+				query.setBoolean("situacao", false);
+				query.setInteger("status", StatusRetornoAC.CANCELADO);
+			}
+			
+		}else
+		{
+				Integer[] todosStatus = {StatusRetornoAC.CONFIRMADO,StatusRetornoAC.AGUARDANDO,StatusRetornoAC.CANCELADO};
+				query.setParameterList("status", todosStatus);
 		}
 
 		return query.list();

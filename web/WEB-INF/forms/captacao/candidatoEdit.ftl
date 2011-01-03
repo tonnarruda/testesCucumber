@@ -526,9 +526,14 @@
 
     <div class="buttonGroup" style="float:left; width:49%;">
        
-       	<button class="btnGravar" onclick="if(setaCampos())javascript:validarCamposCpf();" id="gravar" accesskey="${accessKey}">
-        </button>
-
+		<#if moduloExterno>
+       		<button class="btnGravarDesabilitado"  disabled="disabled" onclick="if(setaCampos())javascript:validarCamposCpf();" id="gravarModuloExterno" >
+        	</button>
+        <#else>
+       		<button class="btnGravar" onclick="if(setaCampos())javascript:validarCamposCpf();" id="gravar" >
+        	</button>
+        </#if>
+		
         <button class="btnCancelar" onclick="if (confirm('Tem certeza que deseja cancelar?')) window.location='${actionCancelar}'" class="btnCancelar" accesskey="C">
         </button>
     </div>
