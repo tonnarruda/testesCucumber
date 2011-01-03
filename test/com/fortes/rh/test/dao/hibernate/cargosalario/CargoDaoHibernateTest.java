@@ -140,7 +140,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		cargo.setGrupoOcupacional(grupoOcupacional);
 		cargo = cargoDao.save(cargo);
 
-		Collection<Cargo> retorno = cargoDao.findByGrupoOcupacionalIdsProjection(new Long[] {grupoOcupacional.getId()});
+		Collection<Cargo> retorno = cargoDao.findByGrupoOcupacionalIdsProjection(new Long[] {grupoOcupacional.getId()}, null);
 
 		assertEquals(1, retorno.size());
 	}
@@ -229,9 +229,9 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		Cargo cargo2 = CargoFactory.getEntity();
 		cargo2 = cargoDao.save(cargo2);
 
-		Collection<Cargo> retorno1 = cargoDao.findByAreaOrganizacionalIdsProjection(new Long[] {areaOrganizacional.getId()});
-		Collection<Cargo> retorno2 = cargoDao.findByAreaOrganizacionalIdsProjection(new Long[] {});
-		Collection<Cargo> retorno3 = cargoDao.findByAreaOrganizacionalIdsProjection(null);
+		Collection<Cargo> retorno1 = cargoDao.findByAreaOrganizacionalIdsProjection(new Long[] {areaOrganizacional.getId()}, null);
+		Collection<Cargo> retorno2 = cargoDao.findByAreaOrganizacionalIdsProjection(new Long[] {}, null);
+		Collection<Cargo> retorno3 = cargoDao.findByAreaOrganizacionalIdsProjection(null, null);
 
 		assertEquals("Ids das áreas preenchidos", 1, retorno1.size());
 		assertTrue("Ids das áreas vazio", retorno2.size() >= 2);

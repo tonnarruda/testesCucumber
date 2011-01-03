@@ -93,7 +93,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 	}
 
-	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong)
+	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 
@@ -105,6 +105,9 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		if(idsLong != null && idsLong.length > 0)
 			criteria.add(Expression.in("grupoOcupacional.id", idsLong));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("empresa.id", empresaId));
 
 		criteria.addOrder(Order.asc("c.nomeMercado"));
 
@@ -114,7 +117,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return criteria.list();
 	}
 
-	public Collection<Cargo> findByAreaOrganizacionalIdsProjection(Long[] idsLong)
+	public Collection<Cargo> findByAreaOrganizacionalIdsProjection(Long[] idsLong, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 		criteria.createCriteria("areasOrganizacionais","a", Criteria.LEFT_JOIN);
@@ -131,6 +134,8 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		if(idsLong != null && idsLong.length > 0)
 			criteria.add(Expression.in("a.id", idsLong));
+		if(empresaId != null)
+			criteria.add(Expression.eq("e.id", empresaId));
 
 		criteria.addOrder(Order.asc("c.nomeMercado"));
 

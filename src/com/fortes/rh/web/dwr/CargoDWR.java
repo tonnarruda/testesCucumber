@@ -14,20 +14,20 @@ public class CargoDWR
 {
 	private CargoManager cargoManager;
 
-	public Map getCargoByGrupo(String[] grupoOcupacionalIds)
+	public Map getCargoByGrupo(String[] grupoOcupacionalIds, Long empresaId)
 	{
 		Long [] idsLong = LongUtil.arrayStringToArrayLong(grupoOcupacionalIds);
 
-		Collection<Cargo> cargos = cargoManager.findByGrupoOcupacionalIdsProjection(idsLong);
+		Collection<Cargo> cargos = cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, empresaId);
 
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercado");
 	}
 
-	public Map getCargoByArea(String[] areaOrganizacionalIds, String label)
+	public Map getCargoByArea(String[] areaOrganizacionalIds, String label, Long empresaId)
 	{
 		Long [] idsLong = LongUtil.arrayStringToArrayLong(areaOrganizacionalIds);
 
-		Collection<Cargo> cargos = cargoManager.findByAreasOrganizacionalIdsProjection(idsLong);
+		Collection<Cargo> cargos = cargoManager.findByAreasOrganizacionalIdsProjection(idsLong, empresaId);
 
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", label);
 	}

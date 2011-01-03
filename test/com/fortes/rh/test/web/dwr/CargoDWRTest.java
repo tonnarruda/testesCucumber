@@ -44,9 +44,9 @@ public class CargoDWRTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoManager.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING).will(returnValue(cargos));
+		cargoManager.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING, ANYTHING).will(returnValue(cargos));
 
-		Map retorno = cargoDWR.getCargoByGrupo(grupoOcupacionalIds);
+		Map retorno = cargoDWR.getCargoByGrupo(grupoOcupacionalIds, 1L);
 
 		assertEquals(1, retorno.size());
 	}
@@ -66,9 +66,9 @@ public class CargoDWRTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoManager.expects(once()).method("findByAreasOrganizacionalIdsProjection").with(ANYTHING).will(returnValue(cargos));
+		cargoManager.expects(once()).method("findByAreasOrganizacionalIdsProjection").with(ANYTHING, ANYTHING).will(returnValue(cargos));
 
-		Map retorno = cargoDWR.getCargoByArea(areaOrganizacionalIds, "getNomeMercado");
+		Map retorno = cargoDWR.getCargoByArea(areaOrganizacionalIds, "getNomeMercado", null);
 
 		assertEquals(1, retorno.size());
 	}

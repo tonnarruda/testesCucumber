@@ -234,9 +234,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		Long[] idsLong = new Long[] { 1L };
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 
-		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(idsLong)).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(idsLong), ANYTHING).will(returnValue(cargos));
 
-		assertEquals(cargos, cargoManager.findByGrupoOcupacionalIdsProjection(idsLong));
+		assertEquals(cargos, cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L));
 	}
 	
 	public void testFindBySolicitacao()
@@ -252,9 +252,9 @@ public class CargoManagerTest extends MockObjectTestCase
 	{
 		Long[] idsLong = new Long[] {};
 
-		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(null)).will(returnValue(null));
+		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(null), ANYTHING).will(returnValue(null));
 
-		assertNull(cargoManager.findByGrupoOcupacionalIdsProjection(idsLong));
+		assertNull(cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L));
 	}
 
 	public void testGetCargosFromFaixaSalarialHistoricos()
@@ -296,14 +296,14 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		Collection<Cargo> cargosNull = new ArrayList<Cargo>();
 
-		cargoDao.expects(once()).method("findByAreaOrganizacionalIdsProjection").with(eq(idsLong)).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findByAreaOrganizacionalIdsProjection").with(eq(idsLong), ANYTHING).will(returnValue(cargos));
 
-		assertEquals(cargos, cargoManager.findByAreasOrganizacionalIdsProjection(idsLong));
+		assertEquals(cargos, cargoManager.findByAreasOrganizacionalIdsProjection(idsLong, 1L));
 
 		idsLong = null;
-		cargoDao.expects(once()).method("findByAreaOrganizacionalIdsProjection").with(NULL).will(returnValue(cargosNull));
+		cargoDao.expects(once()).method("findByAreaOrganizacionalIdsProjection").with(NULL, ANYTHING).will(returnValue(cargosNull));
 
-		assertEquals(cargosNull, cargoManager.findByAreasOrganizacionalIdsProjection(idsLong));
+		assertEquals(cargosNull, cargoManager.findByAreasOrganizacionalIdsProjection(idsLong, null));
 	}
 
 	public void testGetCargosByIds()
@@ -485,7 +485,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING, ANYTHING).will(returnValue(cargos));
 
 		String[] gruposCheck = new String[] { "1" };
 		assertEquals(1, cargoManager.populaCheckBox(gruposCheck, null, 1L).size());
