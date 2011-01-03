@@ -367,17 +367,18 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			candidato.setId(idCandidato);
 		}
 
-		if(colaboradorManager.candidatoEhColaborador(candidato.getId(), getEmpresaSistema().getId()))
+		candidato = candidatoManager.findByIdProjection(candidato.getId());
+		
+		if(candidato.isContratado() && colaboradorManager.candidatoEhColaborador(candidato.getId(), getEmpresaSistema().getId()))
 		{
 			colaborador = (Colaborador) colaboradorManager.find(new String[]{"candidato.id"}, new Object[]{candidato.getId()}).toArray()[0];
 			solicitacao = solicitacaoManager.getValor(solicitacao.getId());
 			solicitacao.setValorPromocao(String.valueOf(solicitacao.getFaixaSalarial().getFaixaSalarialHistoricoAtual().getValor()));
 
-			return "ehColaborador";
+			return "ehColaborador";//preparePromoverCandidato.action
 		}
 
 		Map session = ActionContext.getContext().getSession();
-		candidato = candidatoManager.findByIdProjection(candidato.getId());
 		candidato.setFoto(candidatoManager.getFoto(candidato.getId()));
 
 		prepareInsert();

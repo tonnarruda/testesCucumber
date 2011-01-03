@@ -15,7 +15,6 @@ import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
 
-@SuppressWarnings("unchecked")
 public class ColaboradorDesligaAction extends MyActionSupport implements ModelDriven
 {
 	private static final long serialVersionUID = 1L;

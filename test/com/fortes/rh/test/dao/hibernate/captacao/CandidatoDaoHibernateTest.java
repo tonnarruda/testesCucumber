@@ -23,6 +23,7 @@ import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.BairroDao;
 import com.fortes.rh.dao.geral.CidadeDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.EstadoDao;
@@ -41,6 +42,7 @@ import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -86,6 +88,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	private HistoricoCandidatoDao historicoCandidatoDao;
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 	private EtapaSeletivaDao etapaSeletivaDao;
+	private ColaboradorDao colaboradorDao;
 
 	public void setHistoricoCandidatoDao(HistoricoCandidatoDao historicoCandidatoDao)
 	{
@@ -2034,6 +2037,38 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertNotNull(resultados);
 		assertEquals(1, resultados.size());
 	}
+	
+	public void testUpdateDisponivelAndContratadoByColaborador()
+	{
+		Candidato candidato = getCandidato();
+		candidato.setDisponivel(false);
+		candidato.setContratado(true);
+		candidatoDao.save(candidato);
+
+		Colaborador colaborador = new Colaborador();
+		colaborador.setCandidato(candidato);
+		colaboradorDao.save(colaborador);
+		
+		candidatoDao.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());
+		
+		Candidato retorno = candidatoDao.findByCandidatoId(candidato.getId());
+		assertEquals(true, retorno.isDisponivel());
+
+		//caso não exista candidato para o colaborador
+		candidato = getCandidato();
+		candidato.setDisponivel(false);
+		candidato.setContratado(true);
+		candidatoDao.save(candidato);
+		
+		colaborador = new Colaborador();
+		colaboradorDao.save(colaborador);
+		
+		candidatoDao.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());
+		
+		retorno = candidatoDao.findByCandidatoId(candidato.getId());
+		assertEquals(false, retorno.isDisponivel());
+		assertEquals(true, retorno.isContratado());
+	}
 
 	public void testFindCandidatosForSolicitacaoAllEmpresas()
 	{
@@ -2256,6 +2291,10 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	public void setEtapaSeletivaDao(EtapaSeletivaDao etapaSeletivaDao)
 	{
 		this.etapaSeletivaDao = etapaSeletivaDao;
+	}
+
+	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+		this.colaboradorDao = colaboradorDao;
 	}
 
 }
