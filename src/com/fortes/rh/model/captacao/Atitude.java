@@ -1,13 +1,17 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -24,6 +28,8 @@ public class Atitude extends AbstractModel implements Serializable
 	private Empresa empresa;
 	@Lob
 	private String observacao;
+	@ManyToMany(fetch=FetchType.EAGER)
+	private Collection<AreaOrganizacional> areaOrganizacionals;
 
 	public Atitude()	{
 	}
@@ -60,5 +66,13 @@ public class Atitude extends AbstractModel implements Serializable
 
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
+	}
+
+	public Collection<AreaOrganizacional> getAreaOrganizacionals() {
+		return areaOrganizacionals;
+	}
+
+	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals) {
+		this.areaOrganizacionals = areaOrganizacionals;
 	}
 }
