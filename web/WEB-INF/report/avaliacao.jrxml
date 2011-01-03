@@ -48,14 +48,14 @@
 			<band height="100"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="279"
+						x="271"
 						y="57"
-						width="48"
+						width="56"
 						height="15"
 						key="staticText-4"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Matricula:]]></text>
@@ -64,35 +64,35 @@
 					<reportElement
 						x="0"
 						y="57"
-						width="32"
+						width="38"
 						height="15"
 						key="staticText-5"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Nome:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="380"
+						x="375"
 						y="57"
-						width="34"
+						width="39"
 						height="15"
 						key="staticText-6"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Cargo:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="328"
+						x="327"
 						y="56"
-						width="50"
+						width="48"
 						height="17"
 						key="staticText-7"
 						positionType="Float"/>
@@ -104,9 +104,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="32"
+						x="39"
 						y="56"
-						width="247"
+						width="232"
 						height="17"
 						key="staticText-8"
 						positionType="Float"/>
