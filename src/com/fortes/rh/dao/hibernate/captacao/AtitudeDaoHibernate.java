@@ -1,5 +1,6 @@
 package com.fortes.rh.dao.hibernate.captacao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
@@ -12,6 +13,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.AtitudeDao;
+import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Atitude;
 
 public class AtitudeDaoHibernate extends GenericDaoHibernate<Atitude> implements AtitudeDao
@@ -31,6 +33,28 @@ public class AtitudeDaoHibernate extends GenericDaoHibernate<Atitude> implements
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Atitude.class));
 
+		return criteria.list();
+	}
+	
+	public Collection<Atitude> findByAreasOrganizacionalIds(Long[] areaOrganizacionalIds, Long empresasId)
+	{
+		if(areaOrganizacionalIds == null || areaOrganizacionalIds.length == 0)
+			return new ArrayList();
+
+		Criteria criteria = getSession().createCriteria(Atitude.class, "a");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.nome"), "nome");
+		criteria.setProjection(p);
+
+		criteria.createCriteria("a.areaOrganizacionals","ao");
+		criteria.add(Expression.in("ao.id", areaOrganizacionalIds));
+		criteria.add(Expression.eq("empresa.id", empresasId));
+
+		criteria.addOrder(Order.asc("a.nome"));
+		criteria.setProjection(Projections.distinct(p));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Atitude.class));
 		return criteria.list();
 	}
 	

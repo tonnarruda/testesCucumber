@@ -57,4 +57,9 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 	{
 		return getDao().findByCargo(cargoId);
 	}
+
+	public Collection<Atitude> findByAreasOrganizacionalIds(Long[] areaOrganizacionalIds, Long empresasId) 
+	{
+		return getDao().findByAreasOrganizacionalIds(areaOrganizacionalIds, empresasId);
+	}
 }

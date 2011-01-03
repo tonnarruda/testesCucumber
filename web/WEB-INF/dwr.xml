@@ -52,6 +52,12 @@
 		<create creator="spring" javascript="ConhecimentoDWR">
 			<param name="beanName" value="conhecimentoDWR"/>
 		</create>
+		<create creator="spring" javascript="HabilidadeDWR">
+			<param name="beanName" value="habilidadeDWR"/>
+		</create>
+		<create creator="spring" javascript="AtitudeDWR">
+			<param name="beanName" value="atitudeDWR"/>
+		</create>
 		<create creator="spring" javascript="CidadeDWR">
 			<param name="beanName" value="cidadeDWR"/>
 		</create>

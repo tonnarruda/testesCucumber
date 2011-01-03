@@ -88,7 +88,7 @@ public class DynaRecord implements Serializable, Cloneable
 	public static Object montaEval(String elementoPai, String atributo, int key, int valor) 
 	{
 		String path = elementoPai + "..reportElement.(@key==\"textField"+ key +"\").@" + atributo;
-		return " eval('xml." + path + " = \"" + valor + "\"'); ";
+		return " xml." + path + " = \"" + valor + "\"; ";
 	}
 
 	public String getCampo7() {

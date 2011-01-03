@@ -129,7 +129,7 @@
 
 					<thead>
 						<tr>
-							<th colspan="10" class="sorted order1" align=left><b>&nbsp; ${areaOrganizacionalDesc}</b></th>
+							<th colspan="11" class="sorted order1" align=left><b>&nbsp; ${areaOrganizacionalDesc}</b></th>
 						</tr>
 						<tr>
 							<th class="sorted order1" style="background:#7BA6D3;" colspan=2>Colaborador</th>
@@ -180,7 +180,9 @@
 				  	<td> ${reajusteColaborador.descricaoTipoSalarioProposto}</td>
 				  	<td align="right"> ${salarioProposto?string(",##0.00")}</td>
 				  	<td align="center">
-						<span href=# style="cursor: default;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Obs.: ' + '${reajusteColaborador.observacao}');return false">...</span>
+						<#if reajusteColaborador.observacao?exists>
+							<span href=# style="cursor: default;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Obs.: ' + '${reajusteColaborador.observacao}');return false">...</span>
+						</#if>
 				  	</td>
 				  	<td align="right"> ${(salarioProposto - salarioAtual)?string(",##0.00")}</td>
 					<td align="right">

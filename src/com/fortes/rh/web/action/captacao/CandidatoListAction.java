@@ -442,11 +442,8 @@ public class CandidatoListAction extends MyActionSupportList
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
-		else if(candidatos.size() > 150)
-		{
+		else if(candidatos.size() >= 100)
 			addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar a busca.");
-			candidatos = null;
-		}
 
 		prepareBuscaCandidato();
 

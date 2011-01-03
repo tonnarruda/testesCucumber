@@ -25,7 +25,7 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var gruposIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByGrupo(createListCargos, gruposIds);
+			CargoDWR.getCargoByGrupo(createListCargos, gruposIds, empresaId);
 		}
 
 		function createListCargos(data)

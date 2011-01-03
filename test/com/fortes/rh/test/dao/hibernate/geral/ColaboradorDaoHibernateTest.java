@@ -762,6 +762,26 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		assertEquals(colaborador.getId(), ((Colaborador) colaboradors.toArray()[0]).getId());
 	}
+	
+	public void testSetCandidatoNull()
+	{
+		Empresa empresa = new Empresa();
+		empresa.setNome("empresa1");
+		empresaDao.save(empresa);
+		
+		Candidato candidato = getCandidato();
+		candidato.setEmpresa(empresa);
+		candidatoDao.save(candidato);
+		
+		Colaborador colaborador = getColaborador();
+		colaborador.setEmpresa(empresa);
+		colaborador.setCandidato(candidato);
+		colaboradorDao.save(colaborador);
+		
+		colaboradorDao.setCandidatoNull(candidato.getId());
+		
+		assertEquals(0, colaboradorDao.findbyCandidato(candidato.getId(),empresa.getId()).size());
+	}
 
 	private Candidato getCandidato()
 	{

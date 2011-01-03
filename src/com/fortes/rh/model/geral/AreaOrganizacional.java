@@ -18,7 +18,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
@@ -40,6 +42,10 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	private Collection<AreaInteresse> areasInteresse;
 	@ManyToMany(fetch = FetchType.EAGER,mappedBy = "areaOrganizacionals")
 	private Collection<Conhecimento> conhecimentos;
+	@ManyToMany(fetch = FetchType.EAGER,mappedBy = "areaOrganizacionals")
+	private Collection<Habilidade> habilidades;
+	@ManyToMany(fetch = FetchType.EAGER,mappedBy = "areaOrganizacionals")
+	private Collection<Atitude> atitudes;
 	@Column(length=12)
 	private String codigoAC;
 	@ManyToOne
@@ -323,5 +329,21 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 	public void setColaboradorCount(Integer colaboradorCount) {
 		this.colaboradorCount = colaboradorCount;
+	}
+
+	public Collection<Habilidade> getHabilidades() {
+		return habilidades;
+	}
+
+	public void setHabilidades(Collection<Habilidade> habilidades) {
+		this.habilidades = habilidades;
+	}
+
+	public Collection<Atitude> getAtitudes() {
+		return atitudes;
+	}
+
+	public void setAtitudes(Collection<Atitude> atitudes) {
+		this.atitudes = atitudes;
 	}
 }

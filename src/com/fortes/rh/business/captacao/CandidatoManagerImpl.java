@@ -1275,4 +1275,14 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		this.cidadeManager = cidadeManager;
 	}
 
+	public void habilitaByColaborador(Long colaboradorId) 
+	{
+		getDao().updateDisponivelAndContratadoByColaborador(true, false, colaboradorId);
+	}
+
+	public void reabilitaByColaborador(Long colaboradorId) 
+	{
+		getDao().updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);		
+	}
+
 }

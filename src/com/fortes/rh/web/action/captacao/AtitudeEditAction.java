@@ -1,10 +1,15 @@
 package com.fortes.rh.web.action.captacao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 public class AtitudeEditAction extends MyActionSupportList
@@ -13,12 +18,22 @@ public class AtitudeEditAction extends MyActionSupportList
 	private AtitudeManager atitudeManager;
 	private Atitude atitude;
 	private Collection<Atitude> atitudes;
+	
+	private AreaOrganizacionalManager areaOrganizacionalManager = null;
+	
+	private String[] areasCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	
+	private AreaOrganizacional areaOrganizacional;
+	private Collection<AreaOrganizacional> areaOrganizacionals;
+
 
 	private void prepare() throws Exception
 	{
 		if(atitude != null && atitude.getId() != null)
 			atitude = (Atitude) atitudeManager.findById(atitude.getId());
-
+	
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -30,11 +45,13 @@ public class AtitudeEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, atitude.getAreaOrganizacionals(), "getId");
 		return Action.SUCCESS;
 	}
 
 	public String insert() throws Exception
 	{
+		atitude.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		atitude.setEmpresa(getEmpresaSistema());
 		atitudeManager.save(atitude);
 		return Action.SUCCESS;
@@ -42,6 +59,7 @@ public class AtitudeEditAction extends MyActionSupportList
 
 	public String update() throws Exception
 	{
+		atitude.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		atitude.setEmpresa(getEmpresaSistema());
 		atitudeManager.update(atitude);
 		return Action.SUCCESS;
@@ -90,5 +108,37 @@ public class AtitudeEditAction extends MyActionSupportList
 	public Collection<Atitude> getAtitudes()
 	{
 		return atitudes;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setAreasCheck(String[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public Collection<CheckBox> getAreasCheckList() {
+		return areasCheckList;
+	}
+
+	public void setAreasCheckList(Collection<CheckBox> areasCheckList) {
+		this.areasCheckList = areasCheckList;
+	}
+
+	public AreaOrganizacional getAreaOrganizacional() {
+		return areaOrganizacional;
+	}
+
+	public void setAreaOrganizacional(AreaOrganizacional areaOrganizacional) {
+		this.areaOrganizacional = areaOrganizacional;
+	}
+
+	public Collection<AreaOrganizacional> getAreaOrganizacionals() {
+		return areaOrganizacionals;
+	}
+
+	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals) {
+		this.areaOrganizacionals = areaOrganizacionals;
 	}
 }
