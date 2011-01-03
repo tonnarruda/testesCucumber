@@ -59,6 +59,12 @@
 	<bean id="conhecimentoDWR" class="com.fortes.rh.web.dwr.ConhecimentoDWR">
 		<property name="conhecimentoManager" ref="conhecimentoManager"/>
 	</bean>
+	<bean id="habilidadeDWR" class="com.fortes.rh.web.dwr.HabilidadeDWR">
+		<property name="habilidadeManager" ref="habilidadeManager"/>
+	</bean>
+	<bean id="atitudeDWR" class="com.fortes.rh.web.dwr.AtitudeDWR">
+		<property name="atitudeManager" ref="atitudeManager"/>
+	</bean>
 	<bean id="cidadeDWR" class="com.fortes.rh.web.dwr.CidadeDWR">
 		<property name="cidadeManager" ref="cidadeManager"/>
 	</bean>

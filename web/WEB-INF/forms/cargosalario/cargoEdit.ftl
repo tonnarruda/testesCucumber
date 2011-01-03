@@ -18,21 +18,35 @@
 <#assign validarCampos="return validaFormulario('form', new Array('nome','nomeMercado','@areasCheck'), null)"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ConhecimentoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HabilidadeDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AtitudeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script language='javascript'>
 
-		function populaConhecimento(frm, nameCheck)
+		function populaCHA(frm, nameCheck)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(frm, nameCheck);
 
 			ConhecimentoDWR.getConhecimentos(createListConhecimentos, areasIds, <@authz.authentication operation="empresaId"/>);
+			HabilidadeDWR.getHabilidades(createListHabilidades, areasIds, <@authz.authentication operation="empresaId"/>);
+			AtitudeDWR.getAtitudes(createListAtitudes, areasIds, <@authz.authentication operation="empresaId"/>);
 		}
 
 		function createListConhecimentos(data)
 		{
 			addChecks('conhecimentosCheck',data)
+		}
+
+		function createListHabilidades(data)
+		{
+			addChecks('habilidadesCheck',data)
+		}
+
+		function createListAtitudes(data)
+		{
+			addChecks('atitudesCheck',data)
 		}
 	</script>
 
@@ -52,7 +66,7 @@
 	<@ww.textfield label="Código CBO" name="cargo.cboCodigo" id="cboCodigo" cssStyle="width:50px;" maxLength = "6"/>
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>
-	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais Relacionadas*" list="areasCheckList" onClick="populaConhecimento(document.forms[0],'areasCheck');" />
+	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais Relacionadas*" list="areasCheckList" onClick="populaCHA(document.forms[0],'areasCheck');" />
 	<@ww.textarea label="Missão do Cargo" name="cargo.missao" cssStyle="width:500px;height:60px;"/>
 	<@ww.textarea label="Fontes de Recrutamento" name="cargo.recrutamento" cssStyle="width:500px;height:30px"/>
 	<@frt.checkListBox name="etapaCheck" id="etapaCheck" label="Etapas Seletivas" list="etapaSeletivaCheckList" />

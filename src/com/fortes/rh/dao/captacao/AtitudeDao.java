@@ -9,4 +9,5 @@ public interface AtitudeDao extends GenericDao<Atitude>
 {
 	public Collection<Atitude> findAllSelect(Long empresaId);
 	public Collection<Atitude> findByCargo(Long cargoId);
+	public Collection<Atitude> findByAreasOrganizacionalIds(Long[] areaOrganizacionalIds, Long empresasId);
 }

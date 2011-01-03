@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.captacao;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
@@ -8,29 +9,36 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.captacao.HabilidadeManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.web.action.captacao.HabilidadeEditAction;
+import com.fortes.web.tags.CheckBox;
 
 public class HabilidadeEditActionTest extends MockObjectTestCase
 {
 	private HabilidadeEditAction action;
-	private Mock manager;
+	private Mock areaOrganizacionalManager;
+	private Mock habilidadeManager;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		manager = new Mock(HabilidadeManager.class);
+		habilidadeManager = new Mock(HabilidadeManager.class);
 		action = new HabilidadeEditAction();
-		action.setHabilidadeManager((HabilidadeManager) manager.proxy());
-
+		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+		
 		action.setHabilidade(new Habilidade());
+		action.setHabilidadeManager((HabilidadeManager) habilidadeManager.proxy());
+		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 	}
 
 	protected void tearDown() throws Exception
 	{
-		manager = null;
+		habilidadeManager = null;
 		action = null;
 		super.tearDown();
 	}
@@ -42,7 +50,9 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		action.setHabilidade(habilidade);
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
-		manager.expects(once()).method("findById").will(returnValue(habilidade));
+		habilidadeManager.expects(once()).method("findById").will(returnValue(habilidade));
+		Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();		
+		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(areasCheckList));
 		
 		assertEquals("success", action.prepareInsert());
 	}
@@ -54,7 +64,9 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		action.setHabilidade(habilidade);
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
-		manager.expects(once()).method("findById").will(returnValue(habilidade));
+		habilidadeManager.expects(once()).method("findById").will(returnValue(habilidade));
+		Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();		
+		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(areasCheckList));
 		
 		assertEquals("success", action.prepareUpdate());
 	}
@@ -65,8 +77,8 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		Habilidade.setId(1L);
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
-		manager.expects(once()).method("getCount").will(returnValue(new Integer (1)));
-		manager.expects(once()).method("findToList").will(returnValue(new ArrayList<Habilidade>()));
+		habilidadeManager.expects(once()).method("getCount").will(returnValue(new Integer (1)));
+		habilidadeManager.expects(once()).method("findToList").will(returnValue(new ArrayList<Habilidade>()));
 		
 		assertEquals("success", action.list());
 		assertNotNull(action.getHabilidades());
@@ -77,7 +89,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		Habilidade Habilidade = HabilidadeFactory.getEntity(1L);
 		action.setHabilidade(Habilidade);
 
-		manager.expects(once()).method("remove");
+		habilidadeManager.expects(once()).method("remove");
 		assertEquals("success", action.delete());
 	}
 	
@@ -86,7 +98,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		Habilidade Habilidade = HabilidadeFactory.getEntity(1L);
 		action.setHabilidade(Habilidade);
 		
-		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		habilidadeManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		
 		try {
 			action.delete();
@@ -99,11 +111,15 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 
 	public void testInsert() throws Exception
 	{
-		Habilidade Habilidade = HabilidadeFactory.getEntity(1L);
-		action.setHabilidade(Habilidade);
+		Habilidade habilidade = HabilidadeFactory.getEntity(1L);
+		action.setHabilidade(habilidade);
 
-		manager.expects(once()).method("save").with(eq(Habilidade)).will(returnValue(Habilidade));
+		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
+		
+		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
+		habilidadeManager.expects(once()).method("save").with(eq(habilidade)).will(returnValue(habilidade));
 
+		
 		assertEquals("success", action.insert());
 	}
 
@@ -113,7 +129,10 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		
     	try
 		{
-    		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+    		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
+    		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
+    		
+    		habilidadeManager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     		action.insert();
 		}
 		catch (Exception e)
@@ -126,10 +145,14 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 
 	public void testUpdate() throws Exception
 	{
-		Habilidade Habilidade = HabilidadeFactory.getEntity(1L);
-		action.setHabilidade(Habilidade);
+		Habilidade habilidade = HabilidadeFactory.getEntity(1L);
+		action.setHabilidade(habilidade);
 
-		manager.expects(once()).method("update").with(eq(Habilidade)).isVoid();
+		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
+		
+		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
+		
+		habilidadeManager.expects(once()).method("update").with(eq(habilidade)).isVoid();
 
 		assertEquals("success", action.update());
 	}
@@ -140,7 +163,10 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		
     	try
 		{
-    		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+    		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
+    	
+    		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
+    		habilidadeManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     		action.update();
 		}
 		catch (Exception e)
@@ -158,5 +184,12 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 
 		assertNotNull(action.getHabilidade());
 		assertTrue(action.getHabilidade() instanceof Habilidade);
+	}
+	
+	private Collection<AreaOrganizacional> collectionAreasOrganizacionais() {
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity(1L);
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+		areas.add(area);
+		return areas;
 	}
 }

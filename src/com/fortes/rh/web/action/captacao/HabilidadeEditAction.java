@@ -1,11 +1,17 @@
 package com.fortes.rh.web.action.captacao;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.HabilidadeManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 public class HabilidadeEditAction extends MyActionSupportList
@@ -14,11 +20,23 @@ public class HabilidadeEditAction extends MyActionSupportList
 	private HabilidadeManager habilidadeManager;
 	private Habilidade habilidade;
 	private Collection<Habilidade> habilidades;
+	
+
+	private AreaOrganizacionalManager areaOrganizacionalManager = null;
+	
+	private String[] areasCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	
+	private AreaOrganizacional areaOrganizacional;
+	private Collection<AreaOrganizacional> areaOrganizacionals;
+
 
 	private void prepare() throws Exception
 	{
 		if(habilidade != null && habilidade.getId() != null)
 			habilidade = (Habilidade) habilidadeManager.findById(habilidade.getId());
+		
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -30,11 +48,13 @@ public class HabilidadeEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, habilidade.getAreaOrganizacionals(), "getId");
 		return Action.SUCCESS;
 	}
 
 	public String insert() throws Exception
 	{
+		habilidade.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		habilidade.setEmpresa(getEmpresaSistema());
 		habilidadeManager.save(habilidade);
 		return Action.SUCCESS;
@@ -42,6 +62,7 @@ public class HabilidadeEditAction extends MyActionSupportList
 
 	public String update() throws Exception
 	{
+		habilidade.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		habilidade.setEmpresa(getEmpresaSistema());
 		habilidadeManager.update(habilidade);
 		return Action.SUCCESS;
@@ -89,5 +110,45 @@ public class HabilidadeEditAction extends MyActionSupportList
 	public Collection<Habilidade> getHabilidades()
 	{
 		return habilidades;
+	}
+
+	public AreaOrganizacionalManager getAreaOrganizacionalManager() {
+		return areaOrganizacionalManager;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public String[] getAreasCheck() {
+		return areasCheck;
+	}
+
+	public void setAreasCheck(String[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public Collection<CheckBox> getAreasCheckList() {
+		return areasCheckList;
+	}
+
+	public void setAreasCheckList(Collection<CheckBox> areasCheckList) {
+		this.areasCheckList = areasCheckList;
+	}
+
+	public AreaOrganizacional getAreaOrganizacional() {
+		return areaOrganizacional;
+	}
+
+	public void setAreaOrganizacional(AreaOrganizacional areaOrganizacional) {
+		this.areaOrganizacional = areaOrganizacional;
+	}
+
+	public Collection<AreaOrganizacional> getAreaOrganizacionals() {
+		return areaOrganizacionals;
+	}
+
+	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals) {
+		this.areaOrganizacionals = areaOrganizacionals;
 	}
 }

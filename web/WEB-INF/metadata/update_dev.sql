@@ -29,3 +29,18 @@ titulo character varying(100)
 ALTER TABLE configuracaoRelatorioDinamico ADD CONSTRAINT configuracaoRelatorioDinamico_pkey PRIMARY KEY(id);--.go
 ALTER TABLE configuracaoRelatorioDinamico ADD CONSTRAINT configuracaoRelatorioDinamico_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);--.go
 CREATE SEQUENCE configuracaoRelatorioDinamico_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+
+CREATE TABLE habilidade_areaorganizacional (
+    habilidades_id bigint NOT NULL,
+    areaOrganizacionals_id bigint NOT NULL
+); --.go
+ALTER TABLE habilidade_areaorganizacional ADD CONSTRAINT habilidade_areaorganizaciona_habilidade_fk FOREIGN KEY (habilidades_id) REFERENCES habilidade(id); --.go
+ALTER TABLE habilidade_areaorganizacional ADD CONSTRAINT habilidade_areaorganizaciona_areaOrganizacional_fk FOREIGN KEY (areaOrganizacionals_id) REFERENCES areaOrganizacional(id); --.go
+
+CREATE TABLE atitude_areaorganizacional (
+    atitudes_id bigint NOT NULL,
+    areaOrganizacionals_id bigint NOT NULL
+); --.go
+ALTER TABLE atitude_areaorganizacional ADD CONSTRAINT atitude_areaorganizaciona_atitude_fk FOREIGN KEY (atitudes_id) REFERENCES atitude(id); --.go
+ALTER TABLE atitude_areaorganizacional ADD CONSTRAINT atitude_areaorganizaciona_areaOrganizacional_fk FOREIGN KEY (areaOrganizacionals_id) REFERENCES areaOrganizacional(id); --.go

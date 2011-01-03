@@ -56,4 +56,9 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 	{
 		return getDao().findByCargo(cargoId);
 	}
+
+	public Collection<Habilidade> findByAreasOrganizacionalIds(Long[] areaOrganizacionalIds, Long empresasId)
+	{
+		return getDao().findByAreasOrganizacionalIds(areaOrganizacionalIds, empresasId);
+	}
 }
