@@ -423,7 +423,7 @@ public class Cargo extends AbstractModel implements Serializable
 		this.atitude = atitude;
 	}
 
-	public Boolean isExibirModuloExterno() {
+	public Boolean getExibirModuloExterno() {
 		return exibirModuloExterno;
 	}
 

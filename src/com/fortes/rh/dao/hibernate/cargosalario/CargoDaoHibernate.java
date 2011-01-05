@@ -255,7 +255,6 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cargo.class));
-		criteria.setMaxResults(1);
 
 		return (Cargo) criteria.uniqueResult();
 	}
