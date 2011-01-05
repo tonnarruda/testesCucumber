@@ -61,12 +61,12 @@ function gravarConfiguracao(usuarioId)
 
 function retorno()
 {
-	alert("Configuração gravada com sucesso.");
+	alert("Posição gravada com sucesso.");
 }
 
 function errorGravarConfiguracaoPerformance()
 {
-	alert("Ocorreu um erro ao gravar configuração.");
+	alert("Ocorreu um erro ao gravar posição.");
 }
 
 function ordenaBoxes()
