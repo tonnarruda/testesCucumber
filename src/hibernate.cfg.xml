@@ -141,10 +141,12 @@
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoCampoExtra" />
     <mapping class="com.fortes.rh.model.geral.CamposExtras" />
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoPerformance" />
-      <mapping class="com.fortes.rh.model.captacao.Habilidade" />
-      <mapping class="com.fortes.rh.model.captacao.Atitude" />
-      <mapping class="com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico" />
+    <mapping class="com.fortes.rh.model.captacao.Habilidade" />
+    <mapping class="com.fortes.rh.model.captacao.Atitude" />
+    <mapping class="com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico" />
+    <mapping class="com.fortes.rh.model.geral.CodigoCBO" />
   </session-factory>
+
 
 
 

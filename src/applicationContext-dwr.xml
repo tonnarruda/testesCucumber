@@ -86,6 +86,9 @@
 	<bean id="aspectoDWR" class="com.fortes.rh.web.dwr.AspectoDWR">
 		<property name="aspectoManager" ref="aspectoManager"/>
 	</bean>
+	<bean id="codigoCBODWR" class="com.fortes.rh.web.dwr.CodigoCBODWR">
+		<property name="codigoCBOManager" ref="codigoCBOManager"/>
+	</bean>
 	<bean id="perguntaDWR" class="com.fortes.rh.web.dwr.PerguntaDWR">
 		<property name="perguntaManager" ref="perguntaManager"/>
 	</bean>
