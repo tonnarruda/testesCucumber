@@ -30,6 +30,7 @@
 		<pattern>/security/auditoria/listaOperacoes.action</pattern>
 		<pattern>/updateConf.action</pattern>
 		<pattern>/gerarBD.action</pattern>
+		<pattern>/geral/codigoCBO/find.action*</pattern>
 	</excludes>
 
 	<decorator name="login" page="login.ftl">

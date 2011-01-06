@@ -9,9 +9,18 @@ import com.fortes.rh.dao.geral.CodigoCBODao;
 
 public class CodigoCBOManagerImpl extends GenericManagerImpl<CodigoCBO, CodigoCBODao> implements CodigoCBOManager
 {
-	public Collection<String> buscaCodigosCBO(String codigo)
+	public Collection<CodigoCBO> buscaCodigosCBO(String codigo, String descricao)
 	{
-		return getDao().buscaCodigosCBO(codigo);
+		return getDao().buscaCodigosCBO(codigo, descricao);
 	}
-	
+	public String findDescricaoByCodigo(String cboCodigo)
+	{
+		if (cboCodigo != null && !cboCodigo.equals(""))
+		{
+			String desc = getDao().findDescricaoByCodigo(cboCodigo);
+			return desc != null ? desc : "";
+		}
+		
+		return "";
+	}
 }

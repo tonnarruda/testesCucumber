@@ -16,6 +16,7 @@ import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.exception.IntegraACException;
@@ -25,6 +26,7 @@ import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.CodigoCBO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -53,8 +55,9 @@ public class CargoEditAction extends MyActionSupportEdit
 	private HistoricoColaboradorManager historicoColaboradorManager;
     private EtapaSeletivaManager etapaSeletivaManager;
     private EmpresaManager empresaManager;
-    private boolean exibirSalario;
+    private CodigoCBOManager codigoCBOManager;
 
+    private boolean exibirSalario;
 	private Collection<Cargo> cargos = new ArrayList<Cargo>();
 	private Collection<HistoricoColaborador> historicoColaboradors;
 	private Collection<GrupoOcupacional> grupoOcupacionals = new ArrayList<GrupoOcupacional>();
@@ -62,6 +65,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	private HashMap<String, String> escolaridades;
 	private Map<String, Object> parametros;
 	private String filtro;
+	private String descricaoCBO;
 
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -261,6 +265,8 @@ public class CargoEditAction extends MyActionSupportEdit
 		conhecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(conhecimentosCheckList, cargo.getConhecimentos(), "getId");
 		habilidadesCheckList = CheckListBoxUtil.marcaCheckListBox(habilidadesCheckList, cargo.getHabilidades(), "getId");
 		atitudesCheckList = CheckListBoxUtil.marcaCheckListBox(atitudesCheckList, cargo.getAtitudes(), "getId");
+		descricaoCBO = codigoCBOManager.findDescricaoByCodigo(cargo.getCboCodigo());
+		
 
 		return Action.SUCCESS;
 	}
@@ -771,6 +777,14 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public AtitudeManager getAtitudeManager() {
 		return atitudeManager;
+	}
+
+	public String getDescricaoCBO() {
+		return descricaoCBO;
+	}
+
+	public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
+		this.codigoCBOManager = codigoCBOManager;
 	}
 
 }
