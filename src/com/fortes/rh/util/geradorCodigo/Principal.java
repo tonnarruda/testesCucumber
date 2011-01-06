@@ -6,8 +6,8 @@ import java.io.IOException;
 public class Principal
 {
 							//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "ConfiguracaoRelatorioDinamico";
-	public static String NOME_CLASSE_MINUSCULO = "configuracaoRelatorioDinamico";
+	public static String NOME_CLASSE = "CodigoCBO";
+	public static String NOME_CLASSE_MINUSCULO = "codigoCBO";
 	public static String NOME_PACOTE = "geral";
 	
 	private static final char separator = java.io.File.separatorChar;

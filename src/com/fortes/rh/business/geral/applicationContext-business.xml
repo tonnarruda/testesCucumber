@@ -626,7 +626,21 @@
       <ref bean="configuracaoRelatorioDinamicoManagerTarget" />
     </property>
   </bean>
+  <bean id="codigoCBOManagerTarget" class="com.fortes.rh.business.geral.CodigoCBOManagerImpl">
+    <property name="dao">
+      <ref bean="codigoCBODao" />
+    </property>
+  </bean>
+  <bean id="codigoCBOManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.CodigoCBOManager</value>
+    </property>
+    <property name="target">
+      <ref bean="codigoCBOManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

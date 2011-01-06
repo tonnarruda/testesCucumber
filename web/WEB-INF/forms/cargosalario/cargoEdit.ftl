@@ -20,8 +20,18 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ConhecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HabilidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AtitudeDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CodigoCBODWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	
+	<style type="text/css">
+    @import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+    </style>
+	
+	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
+	
+	
 	<script language='javascript'>
 
 		function populaCHA(frm, nameCheck)
@@ -48,6 +58,28 @@
 		{
 			addChecks('atitudesCheck',data)
 		}
+	
+		jQuery(document).ready(function() {
+			jQuery("#codigoCBO").keyup(function() 
+			{
+				var codigo = jQuery(this).val();
+				if (jQuery(this).val().length == 2)
+				{
+					var CodigosCBOArray = new Array();
+			
+					CodigoCBODWR.getCodigosCBO(function(data) {
+						CodigosCBOArray = data;
+						jQuery("#codigoCBO").autocomplete(CodigosCBOArray);
+						setTimeout(function () {
+							jQuery("#codigoCBO").trigger('change');
+						}, 1000);
+					}, codigo);
+					
+				}
+			});
+		});
+	
+		
 	</script>
 
 </head>
@@ -63,7 +95,12 @@
 	<@ww.textfield label="Nomenclatura" name="cargo.nome" id="nome" required="true" cssStyle="width:180px;" maxLength="30"/>
 	<@ww.checkbox labelPosition="right" label="Exibir no modulo externo" name="cargo.exibirModuloExterno" />
 	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:180px;" maxLength="24"/>
-	<@ww.textfield label="Código CBO" name="cargo.cboCodigo" id="cboCodigo" cssStyle="width:50px;" maxLength = "6"/>
+	
+	
+	<@ww.textfield label="Código CBO" name="cargo.cboCodigo" id="codigoCBO" cssStyle="width:70px;" maxLength="6"  />
+	
+	
+	
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais Relacionadas*" list="areasCheckList" onClick="populaCHA(document.forms[0],'areasCheck');" />
@@ -103,6 +140,7 @@
 	<button class="btnCancelar" onclick="window.location='list.action?page=${page}'" accesskey="V">
 	</button>
 </div>
-
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
+	<!--<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/pesquisa/CodigoCBO.js"/>'></script>-->
 </body>
 </html>

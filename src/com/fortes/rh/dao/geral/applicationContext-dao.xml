@@ -282,7 +282,16 @@
       <ref bean="configuracaoRelatorioDinamicoDaoTarget" />
     </property>
   </bean>
+  <bean id="codigoCBODao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.CodigoCBODao</value>
+    </property>
+    <property name="target">
+      <ref bean="codigoCBODaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
