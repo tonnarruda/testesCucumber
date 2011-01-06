@@ -14,14 +14,14 @@ public class CodigoCBO implements Serializable
 	@Column(length=6)
 	private String codigo;
 	@Column(length=200)
-	private String Descricao;
+	private String descricao;
 
-	public String getDescricao() {
-		return Descricao;
+	public String getdescricao() {
+		return descricao;
 	}
 
 	public void setDescricao(String descricao) {
-		Descricao = descricao;
+		this.descricao = descricao;
 	}
 
 	public String getCodigo() {

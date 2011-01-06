@@ -2,6 +2,7 @@ package com.fortes.f2rh;
 
 import java.math.BigDecimal;
 
+import com.fortes.model.type.File;
 import com.fortes.rh.util.StringUtil;
 
 public class Curriculo {
@@ -30,6 +31,9 @@ public class Curriculo {
 	
 	private BigDecimal salario;
 	private User user;
+	
+	private String foto_file_name;
+	private File foto;
 
 	@Override
 	public int hashCode() {
@@ -245,4 +249,20 @@ public class Curriculo {
 	public void setDdd_rh(String dddRh) {
 		ddd_rh = dddRh;
 	}
+
+	public File getFoto() {
+		return foto;
+	}
+	public void setFoto(File foto) {
+		this.foto = foto;
+	}
+	
+	public String getFoto_file_name() {
+		return foto_file_name;
+	}
+
+	public void setFoto_file_name(String foto_file_name) {
+		this.foto_file_name = foto_file_name;
+	}
+
 }

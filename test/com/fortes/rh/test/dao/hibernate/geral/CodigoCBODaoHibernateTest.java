@@ -3,6 +3,7 @@ package com.fortes.rh.test.dao.hibernate.geral;
 import java.util.Collection;
 
 import com.fortes.rh.dao.geral.CodigoCBODao;
+import com.fortes.rh.model.geral.CodigoCBO;
 import com.fortes.rh.test.dao.BaseDaoHibernateTest;
 
 public class CodigoCBODaoHibernateTest extends BaseDaoHibernateTest
@@ -16,8 +17,8 @@ public class CodigoCBODaoHibernateTest extends BaseDaoHibernateTest
 
 	public void testBuscaCodigosCBO()
 	{
-		Collection<String> cbos = codigoCBODao.buscaCodigosCBO("84");
-		assertEquals("840105", cbos.toArray()[0]);
+		Collection<CodigoCBO> cbos = codigoCBODao.buscaCodigosCBO("84", "");
+		assertTrue(false);//refazer
 	}
 
 	public CodigoCBODao getCodigoCBODao() {

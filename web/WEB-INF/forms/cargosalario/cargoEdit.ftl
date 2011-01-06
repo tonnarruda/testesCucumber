@@ -20,17 +20,15 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ConhecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HabilidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AtitudeDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CodigoCBODWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	
 	<style type="text/css">
-    @import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
-    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+	    @import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+	    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+	    @import url('<@ww.url includeParams="none" value="/css/jquery-ui/redmond.css"/>');
     </style>
-	
-	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
-	
 	
 	<script language='javascript'>
 
@@ -60,25 +58,81 @@
 		}
 	
 		jQuery(document).ready(function() {
-			jQuery("#codigoCBO").keyup(function() 
-			{
-				var codigo = jQuery(this).val();
-				if (jQuery(this).val().length == 2)
-				{
-					var CodigosCBOArray = new Array();
+			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
 			
-					CodigoCBODWR.getCodigosCBO(function(data) {
-						CodigosCBOArray = data;
-						jQuery("#codigoCBO").autocomplete(CodigosCBOArray);
-						setTimeout(function () {
-							jQuery("#codigoCBO").trigger('change');
-						}, 1000);
-					}, codigo);
-					
+			jQuery("#codigoCBO").autocomplete({
+				source: function( request, response ) {
+					jQuery.ajax({
+						url: urlFind,
+						dataType: "json",
+						data: {
+							descricao: '',
+							codigo: request.term
+						},
+						success: function( data ) {
+							response( jQuery.map( data, function( item ) {
+								return {
+									label: item.codigo.replace(
+										new RegExp(
+											"(?![^&;]+;)(?!<[^<>]*)(" +
+											jQuery.ui.autocomplete.escapeRegex(request.term) +
+											")(?![^<>]*>)(?![^&;]+;)", "gi"
+										), "<strong>$1</strong>" ) + " - " + item.descricao ,
+									value: item.codigo,
+									descricao: item.descricao
+								}
+							}));
+						}
+					});
+				},
+				minLength: 2,
+				select: function( event, ui ) {
+					jQuery("#descricaoCBO").val(ui.item.descricao);
 				}
-			});
+			}).data( "autocomplete" )._renderItem = function( ul, item ) {
+					return jQuery( "<li></li>" )
+						.data( "item.autocomplete", item )
+						.append( "<a>" + item.label + "</a>" )
+						.appendTo( ul );
+			};
+			
+			jQuery("#descricaoCBO").autocomplete({
+				source: function( request, response ) {
+					jQuery.ajax({
+						url: urlFind,
+						dataType: "json",
+						data: {
+							descricao: request.term,
+							codigo: ''
+						},
+						success: function( data ) {
+							response( jQuery.map( data, function( item ) {
+								return {
+									label: item.descricao.replace(
+											new RegExp(
+												"(?![^&;]+;)(?!<[^<>]*)(" +
+												jQuery.ui.autocomplete.escapeRegex(request.term) +
+												")(?![^<>]*>)(?![^&;]+;)", "gi"
+											), "<strong>$1</strong>" ) + " - " + item.codigo ,
+									
+									value: item.descricao,
+									codigo: item.codigo
+								}
+							}));
+						}
+					});
+				},
+				minLength: 2,
+				select: function( event, ui ) {
+					jQuery("#codigoCBO").val(ui.item.codigo);
+				}
+			}).data( "autocomplete" )._renderItem = function( ul, item ) {
+					return jQuery( "<li></li>" )
+						.data( "item.autocomplete", item )
+						.append( "<a>" + item.label + "</a>" )
+						.appendTo( ul );
+			};
 		});
-	
 		
 	</script>
 
@@ -95,12 +149,8 @@
 	<@ww.textfield label="Nomenclatura" name="cargo.nome" id="nome" required="true" cssStyle="width:180px;" maxLength="30"/>
 	<@ww.checkbox labelPosition="right" label="Exibir no modulo externo" name="cargo.exibirModuloExterno" />
 	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:180px;" maxLength="24"/>
-	
-	
-	<@ww.textfield label="Código CBO" name="cargo.cboCodigo" id="codigoCBO" cssStyle="width:70px;" maxLength="6"  />
-	
-	
-	
+	<@ww.textfield label="Código CBO" name="cargo.cboCodigo" id="codigoCBO" cssStyle="width:100px;" maxLength="6" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft"/>
+	<@ww.textfield label="Descrição CBO" name="descricaoCBO" id="descricaoCBO" cssStyle="width:500px;" maxLength="200"  />
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais Relacionadas*" list="areasCheckList" onClick="populaCHA(document.forms[0],'areasCheck');" />
@@ -140,7 +190,5 @@
 	<button class="btnCancelar" onclick="window.location='list.action?page=${page}'" accesskey="V">
 	</button>
 </div>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
-	<!--<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/pesquisa/CodigoCBO.js"/>'></script>-->
 </body>
 </html>

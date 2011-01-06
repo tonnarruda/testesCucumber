@@ -1194,7 +1194,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
 		
 		try {
-			curriculos = f2rhFacade.buscarCurriculos(f2rhFacade.montaIds(curriculosId));
+			curriculos = f2rhFacade.buscarCurriculosComFoto(f2rhFacade.montaIds(curriculosId));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1220,6 +1220,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	private void bind(Candidato candidato, Curriculo curriculo) 
 	{
 		candidato.setNome(StringUtil.subStr(curriculo.getNome(), 60));
+		candidato.setFoto(curriculo.getFoto()); // anexa foto
 		
 		Pessoal pessoal = new Pessoal();
 		pessoal.setDataNascimento(DateUtil.montaDataByString(curriculo.getData_nascimento_rh()));

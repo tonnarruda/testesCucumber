@@ -3,29 +3,9 @@
 
 <xwork>
 	<package name="codigoCBO" extends="default" namespace="/geral/codigoCBO">
-		<action name="list" class="com.fortes.rh.web.action.geral.CodigoCBOEditAction" method="list">
-			<result name="success" type="freemarker">/WEB-INF/forms/geral/codigoCBOList.ftl</result>
-		</action>
-		<action name="delete" class="com.fortes.rh.web.action.geral.CodigoCBOEditAction" method="delete">
-			<result name="success" type="freemarker">/WEB-INF/forms/geral/codigoCBOList.ftl</result>
-		</action>
-		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.CodigoCBOEditAction" method="prepareInsert">
-			<result name="success" type="freemarker">/WEB-INF/forms/geral/codigoCBOEdit.ftl</result>
-		</action>
-		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.CodigoCBOEditAction" method="prepareUpdate">
-			<result name="success" type="freemarker">/WEB-INF/forms/geral/codigoCBOEdit.ftl</result>
-		</action>
-		<action name="insert" class="com.fortes.rh.web.action.geral.CodigoCBOEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/geral/codigoCBOEdit.ftl</result>
-		</action>
-		<action name="update" class="com.fortes.rh.web.action.geral.CodigoCBOEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/geral/codigoCBOEdit.ftl</result>
+		<action name="find" class="com.fortes.rh.web.action.geral.CodigoCBOEditAction" method="find">
+		     <result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		     <param name="contentType">application/json</param>
 		</action>
 	</package>
 </xwork>

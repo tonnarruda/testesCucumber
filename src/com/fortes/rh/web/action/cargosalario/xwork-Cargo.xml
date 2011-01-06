@@ -5,7 +5,6 @@
 
 	<package name="cargo" extends="default" namespace="/cargosalario/cargo">
     <!-- ###### LIST/DELETE ###### -->    
-    
 		<action name="list" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="list">
 	    	<interceptor-ref name="defaultListStack">
 	    		<param name="scope.session">cargo,areaOrganizacional</param>
