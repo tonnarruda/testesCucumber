@@ -3,13 +3,11 @@ package com.fortes.rh.business.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.captacao.HabilidadeManager;
-import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.web.tags.CheckBox;
 
 public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, HabilidadeDao> implements HabilidadeManager

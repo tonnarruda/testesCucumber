@@ -6,12 +6,17 @@ import java.util.Collection;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
@@ -22,6 +27,8 @@ public class HabilidadeDaoHibernateTest extends GenericDaoHibernateTest<Habilida
 	private HabilidadeDao habilidadeDao;
 	private EmpresaDao empresaDao;
 	private CargoDao cargoDao;
+	private AreaOrganizacional areaOrganizacional;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
 	
 	public void testFindAllSelect()
 	{
@@ -77,6 +84,36 @@ public class HabilidadeDaoHibernateTest extends GenericDaoHibernateTest<Habilida
 		assertEquals(2, atitudesRetorno.size());
 	}
 	
+	public void testFindByAreasOrganizacionalIds()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		area = areaOrganizacionalDao.save(area);
+
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+		areas.add(area);
+
+		Long[] areasIds = new Long[]{area.getId()};
+
+		Habilidade habilidade = HabilidadeFactory.getEntity();
+		habilidade.setNome("Habilidade");
+		habilidade.setEmpresa(empresa);
+		habilidade.setAreaOrganizacionals(areas);
+		habilidade = habilidadeDao.save(habilidade);
+
+		Collection<Habilidade> habilidades = habilidadeDao.findByAreasOrganizacionalIds(areasIds, empresa.getId());
+
+		assertEquals(1, habilidades.size());
+	}
+
+	public void testFindByAreasOrganizacionalIdsVazia() {
+		Long[] areasIds = new Long[]{};
+		Collection<Habilidade> habilidades = habilidadeDao.findByAreasOrganizacionalIds(areasIds, 1L);
+		assertTrue(habilidades.isEmpty());
+	}
+
 	
 	@Override
 	public Habilidade getEntity()
@@ -101,5 +138,9 @@ public class HabilidadeDaoHibernateTest extends GenericDaoHibernateTest<Habilida
 
 	public void setEmpresaDao(EmpresaDao empresaDao) {
 		this.empresaDao = empresaDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
 }

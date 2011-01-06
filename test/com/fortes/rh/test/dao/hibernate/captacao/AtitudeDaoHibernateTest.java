@@ -6,13 +6,16 @@ import java.util.Collection;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -23,6 +26,10 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 	private AtitudeDao atitudeDao;
 	private EmpresaDao empresaDao;
 	private CargoDao cargoDao;
+	private Atitude atitude;
+	private Empresa empresa;
+	private AreaOrganizacional area;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
 	
 	public void testFindAllSelect()
 	{
@@ -78,6 +85,30 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 		assertEquals(2, atitudesRetorno.size());
 	}
 	
+	public void testFindByAreasOrganizacionalIds()
+	{
+		empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+				
+		area = AreaOrganizacionalFactory.getEntity();
+		area = areaOrganizacionalDao.save(area);
+		
+		Long[] areasIds = new Long[]{area.getId()};
+		
+		Collection<AreaOrganizacional> areas =  new ArrayList<AreaOrganizacional>();
+		areas.add(area);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitude.setEmpresa(empresa);
+		atitude.setAreaOrganizacionals(areas);
+		atitude = atitudeDao.save(atitude);
+				
+		Collection<Atitude> atitudes = atitudeDao.findByAreasOrganizacionalIds(areasIds, empresa.getId());
+
+		assertEquals(1, atitudes.size());
+		
+	}
+	
 	@Override
 	public Atitude getEntity()
 	{
@@ -102,4 +133,17 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 	public void setCargoDao(CargoDao cargoDao) {
 		this.cargoDao = cargoDao;
 	}
+
+	public AreaOrganizacional getArea() {
+		return area;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+
+	public Atitude getAtitude() {
+		return atitude;
+	}
+
 }

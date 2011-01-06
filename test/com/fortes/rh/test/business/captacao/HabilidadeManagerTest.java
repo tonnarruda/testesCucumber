@@ -6,29 +6,25 @@ import java.util.Collection;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import com.fortes.rh.business.captacao.AtitudeManagerImpl;
 import com.fortes.rh.business.captacao.HabilidadeManagerImpl;
-import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
-import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.web.tags.CheckBox;
 
 public class HabilidadeManagerTest extends MockObjectTestCase
 {
-	HabilidadeManagerImpl HabilidadeManager;
-	Mock HabilidadeDao;
+	HabilidadeManagerImpl habilidadeManagerImpl;
+	Mock habilidadeDao;
 
     protected void setUp() throws Exception
     {
-        HabilidadeManager = new HabilidadeManagerImpl();
+        habilidadeManagerImpl = new HabilidadeManagerImpl();
 
-        HabilidadeDao = new Mock(HabilidadeDao.class);
-        HabilidadeManager.setDao((HabilidadeDao) HabilidadeDao.proxy());
+        habilidadeDao = new Mock(HabilidadeDao.class);
+        habilidadeManagerImpl.setDao((HabilidadeDao) habilidadeDao.proxy());
         
     }
 
@@ -39,16 +35,16 @@ public class HabilidadeManagerTest extends MockObjectTestCase
 
     	String[] HabilidadesCheck = new String[]{"1"};
 
-    	assertEquals(1, HabilidadeManager.populaHabilidades(HabilidadesCheck).size());
+    	assertEquals(1, habilidadeManagerImpl.populaHabilidades(HabilidadesCheck).size());
     }
     public void testPopulaCheckOrderNome()
     {
     	Empresa empresa = new Empresa();
     	empresa.setId(1L);
 
-    	HabilidadeDao.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(HabilidadeFactory.getCollection()));
+    	habilidadeDao.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(HabilidadeFactory.getCollection()));
 
-    	assertEquals(1, HabilidadeManager.populaCheckOrderNome(empresa.getId()).size());
+    	assertEquals(1, habilidadeManagerImpl.populaCheckOrderNome(empresa.getId()).size());
     }
 
     public void testPopulaCheckOrderNomeException()
@@ -56,9 +52,9 @@ public class HabilidadeManagerTest extends MockObjectTestCase
     	Empresa empresa = new Empresa();
     	empresa.setId(1L);
 
-    	HabilidadeManager.setDao(null);
+    	habilidadeManagerImpl.setDao(null);
 
-    	Collection<CheckBox> checks = HabilidadeManager.populaCheckOrderNome(empresa.getId());
+    	Collection<CheckBox> checks = habilidadeManagerImpl.populaCheckOrderNome(empresa.getId());
 		assertTrue(checks.isEmpty());
     }
     
@@ -67,9 +63,33 @@ public class HabilidadeManagerTest extends MockObjectTestCase
     	Cargo cargo = new Cargo();
     	cargo.setId(1L);
 
-    	HabilidadeDao.expects(once()).method("findByCargo").with(eq(cargo.getId())).will(returnValue(new ArrayList<Habilidade>()));
+    	habilidadeDao.expects(once()).method("findByCargo").with(eq(cargo.getId())).will(returnValue(new ArrayList<Habilidade>()));
 
-    	assertNotNull(HabilidadeManager.findByCargo(cargo.getId()));
+    	assertNotNull(habilidadeManagerImpl.findByCargo(cargo.getId()));
     }
+    
+    public void testFindByAreasOrganizacionalIds() {
+    	
+    	Long[] areas = new Long[] {1L};
+		Long empresaId = 69L;
+		
+		habilidadeDao.expects(once())
+			.method("findByAreasOrganizacionalIds")
+				.with(eq(areas), eq(empresaId))
+					.will(returnValue(getListaDeHabilidades()));
+		
+		Collection<Habilidade> habilidades = habilidadeManagerImpl.findByAreasOrganizacionalIds(areas, empresaId);
+    	
+		assertEquals("quantidade de habilidades encontradas", 2, habilidades.size());
+    }
+
+	private Collection<Habilidade> getListaDeHabilidades() {
+		Collection<Habilidade> habilidades = new ArrayList<Habilidade>();
+
+		habilidades.add(HabilidadeFactory.getEntity());
+		habilidades.add(HabilidadeFactory.getEntity());
+		
+		return habilidades;
+	}
     
 }
