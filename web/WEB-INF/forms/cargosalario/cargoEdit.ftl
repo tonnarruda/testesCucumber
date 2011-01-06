@@ -56,6 +56,12 @@
 		{
 			addChecks('atitudesCheck',data)
 		}
+
+		function limpar(data)
+		{
+			if(data == '' || data.length < 6)
+				jQuery("#descricaoCBO").val('');
+		}
 	
 		jQuery(document).ready(function() {
 			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
@@ -125,7 +131,10 @@
 				minLength: 2,
 				select: function( event, ui ) {
 					jQuery("#codigoCBO").val(ui.item.codigo);
-				}
+				},
+				change: function(){
+					alet()
+				} 
 			}).data( "autocomplete" )._renderItem = function( ul, item ) {
 					return jQuery( "<li></li>" )
 						.data( "item.autocomplete", item )
@@ -149,7 +158,7 @@
 	<@ww.textfield label="Nomenclatura" name="cargo.nome" id="nome" required="true" cssStyle="width:180px;" maxLength="30"/>
 	<@ww.checkbox labelPosition="right" label="Exibir no modulo externo" name="cargo.exibirModuloExterno" />
 	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:180px;" maxLength="24"/>
-	<@ww.textfield label="Código CBO" name="cargo.cboCodigo" id="codigoCBO" cssStyle="width:100px;" maxLength="6" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft"/>
+	<@ww.textfield label="Código CBO" name="cargo.cboCodigo" id="codigoCBO" cssStyle="width:100px;" maxLength="6" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" onblur="limpar(this.value);" />
 	<@ww.textfield label="Descrição CBO" name="descricaoCBO" id="descricaoCBO" cssStyle="width:500px;" maxLength="200"  />
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>

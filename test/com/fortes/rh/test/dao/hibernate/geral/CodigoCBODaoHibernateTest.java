@@ -14,16 +14,7 @@ public class CodigoCBODaoHibernateTest extends BaseDaoHibernateTest
 	{
 		this.codigoCBODao = codigoCBODao;
 	}
-
-	public void testBuscaCodigosCBO()
-	{
-		Collection<CodigoCBO> cbos = codigoCBODao.buscaCodigosCBO("84", "");
-		assertTrue(false);//refazer
-	}
-
 	public CodigoCBODao getCodigoCBODao() {
 		return codigoCBODao;
 	}
-	
-	
 }

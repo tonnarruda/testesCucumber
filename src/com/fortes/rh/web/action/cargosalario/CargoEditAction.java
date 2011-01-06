@@ -267,7 +267,6 @@ public class CargoEditAction extends MyActionSupportEdit
 		atitudesCheckList = CheckListBoxUtil.marcaCheckListBox(atitudesCheckList, cargo.getAtitudes(), "getId");
 		descricaoCBO = codigoCBOManager.findDescricaoByCodigo(cargo.getCboCodigo());
 		
-
 		return Action.SUCCESS;
 	}
 
