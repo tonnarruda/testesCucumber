@@ -112,6 +112,10 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		return MotivoSolicitacaoExame.ATESTADO;
 	}
+	public String getMotivoSOLICITACAOEXAME()
+	{
+		return MotivoSolicitacaoExame.SOLICITACAOEXAME;
+	}
 
 	private void prepare() throws Exception
 	{

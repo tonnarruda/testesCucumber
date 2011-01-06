@@ -78,7 +78,7 @@
 		function marcarDesmarcar(frm)
 		{
 			var motivo = document.getElementById("motivoExame");
-			var motivoExameEhAso = (motivo.value != '${motivoCONSULTA}' && motivo.value != '${motivoATESTADO}' && motivo.value != '');
+			var motivoExameEhAso = (motivo.value != '${motivoCONSULTA}' && motivo.value != '${motivoATESTADO}' && motivo.value != '${motivoSOLICITACAOEXAME}' && motivo.value != '');
 			 
 			var vMarcar;
 	
@@ -119,7 +119,7 @@
 		function acaoCheckExame(elementCheck)
 		{
 			var motivo = document.getElementById("motivoExame");
-			var motivoExameEhAso = (motivo.value != '${motivoCONSULTA}' && motivo.value != '${motivoATESTADO}' && motivo.value != '');
+			var motivoExameEhAso = (motivo.value != '${motivoCONSULTA}' && motivo.value != '${motivoATESTADO}' && motivo.value != '${motivoSOLICITACAOEXAME}'&& motivo.value != '');
 		 	
 		 	// quando motivo nao for um dos ASOs, o exame ASO nao eh obrigatorio 
 			if (elementCheck.value == ${exameAso.id} && motivoExameEhAso)
@@ -146,7 +146,7 @@
 		function getMotivoExameEhAso()
 		{
 			var motivo = document.getElementById("motivoExame");
-			var motivoExameEhAso = (motivo.value != '${motivoCONSULTA}' && motivo.value != '${motivoATESTADO}' && motivo.value != '');
+			var motivoExameEhAso = (motivo.value != '${motivoCONSULTA}' && motivo.value != '${motivoATESTADO}' && motivo.value != '${motivoSOLICITACAOEXAME}' && motivo.value != '');
 			return motivoExameEhAso;
 		}
 	
