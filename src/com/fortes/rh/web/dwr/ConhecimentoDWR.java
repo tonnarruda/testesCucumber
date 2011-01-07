@@ -21,7 +21,7 @@ public class ConhecimentoDWR
 		if (areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
 			conhecimentos =  conhecimentoManager.findByAreasOrganizacionalIds(LongUtil.arrayStringToArrayLong(areaOrganizacionalIds),empresaId);
 		else
-			conhecimentos =  conhecimentoManager.find(new String[]{"empresa.id"},new Object[]{empresaId},new String[]{"nome"});
+			conhecimentos =  conhecimentoManager.findAllSelect(empresaId);
 
 		return new CollectionUtil<Conhecimento>().convertCollectionToMap(conhecimentos,"getId","getNome");
 	}

@@ -12,4 +12,5 @@ public interface HabilidadeManager extends GenericManager<Habilidade>
 	public Collection<Habilidade> findByCargo(Long cargoId);
 	public Collection<Habilidade> populaHabilidades(String[] habilidadesCheck);
 	public Collection<Habilidade> findByAreasOrganizacionalIds(Long[] areaOrganizacionalIds, Long empresasId);
+	public Collection<Habilidade> findAllSelect(Long empresaId);
 }

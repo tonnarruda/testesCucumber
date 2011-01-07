@@ -244,7 +244,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(historicoColaborador.getSalarioCalculado() != null)
 				salarioColaborador = historicoColaborador.getSalarioCalculado();
 
-			funcoes = funcaoManager.find(new String[]{"cargo.id"}, new Object[]{historicoColaborador.getFaixaSalarial().getCargo().getId()}, new String[]{"nome"});
+			funcoes = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
 			
 			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 			
@@ -325,8 +325,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			editarHistorico = false;
 
 		Map session = ActionContext.getContext().getSession();
-
-		funcoes = funcaoManager.find(new String[]{"cargo.id"}, new Object[]{historicoColaborador.getFaixaSalarial().getCargo().getId()}, new String[]{"nome"});
 
 		//Tipo aplicação do indice, salario
 		salarioPropostoPor = historicoColaborador.getTipoSalario();

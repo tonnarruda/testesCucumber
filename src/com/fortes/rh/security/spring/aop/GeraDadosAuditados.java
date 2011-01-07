@@ -82,7 +82,13 @@ public class GeraDadosAuditados {
 	private String geraJson(Object valor) {
 		if (valor instanceof Long)
 			return valor.toString();
-		return JSONSerializer.toJSON(valor, jsonConfig).toString(2);
+		String retorno = "";
+		try {
+			retorno = JSONSerializer.toJSON(valor, jsonConfig).toString(2);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return retorno;
 	}
 	
 	/**
