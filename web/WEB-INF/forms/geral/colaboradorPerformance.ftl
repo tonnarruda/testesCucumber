@@ -21,6 +21,11 @@
 		width: 32%;
 		padding: 2px 4px;
 	}	
+	.grade .grade_field_foto {
+		float: right;
+		width: 13.5%;
+		padding: 10px 0px;
+	}	
 	ul#sortable li {
 		margin: 20px 0;
 		background: #FFF;
@@ -98,6 +103,13 @@
 <div class='grade'>
 	<div class='grade_field'><strong>Nome:</strong> ${colaborador.nome}</div>
 	<div class='grade_field'><strong>Admissão:</strong> ${colaborador.dataAdmissao}</div>
+		
+	<#if colaborador.foto?exists>
+		<div class='grade_field_foto'>
+			<img src="<@ww.url includeParams="none" value="showFoto.action?colaborador.id=${colaborador.id}"/>" style="display:inline" id="fotoImg" width="120px" height="120px">
+		</div>
+	</#if>
+			
 	<div class='grade_field'><strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.cargo?exists>${historicoColaborador.faixaSalarial.cargo.nome}</#if></div>
 	<div class='grade_field'><strong>Estado Civil:</strong> ${colaborador.pessoal.getEstadoCivilDic()}</div>
 	<div class='grade_field'><strong>Escolaridade:</strong> ${colaborador.pessoal.getEscolaridadeDic()}</div>

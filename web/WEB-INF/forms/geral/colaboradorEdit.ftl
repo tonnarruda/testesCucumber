@@ -318,7 +318,6 @@
 				<#assign somenteLeituraIntegraAC="true" />
 			</#if>
 
-
 			<#if colaborador.foto?exists || (candidato?exists && candidato.id?exists && candidato.foto?exists)>
 				<div id="fotoTbl">
 					<table style="border:0px;">
