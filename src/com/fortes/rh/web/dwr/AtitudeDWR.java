@@ -1,6 +1,5 @@
 package com.fortes.rh.web.dwr;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public class AtitudeDWR
 		if (areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
 			atitudes =  atitudeManager.findByAreasOrganizacionalIds(LongUtil.arrayStringToArrayLong(areaOrganizacionalIds),empresaId);
 		else
-			atitudes =  atitudeManager.find(new String[]{"empresa.id"},new Object[]{empresaId},new String[]{"nome"});
+			atitudes =  atitudeManager.findAllSelect(empresaId);
 
 		return new CollectionUtil<Atitude>().convertCollectionToMap(atitudes,"getId","getNome");
 	}

@@ -45,7 +45,8 @@ CREATE TABLE empresa (
 	uf_id bigint,
 	cidade_id bigint,
 	atividade character varying(200),
-	mensagemModuloExterno character varying(400)
+	mensagemModuloExterno character varying(400),
+	exibirDadosAmbiente boolean default false
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
@@ -518,6 +519,7 @@ ALTER TABLE faixasalarial ADD CONSTRAINT faixasalarial_cargo_fk FOREIGN KEY (car
 CREATE TABLE conhecimento (
     id bigint NOT NULL,
     nome character varying(100),
+    observacao text,
     empresa_id bigint
 );
 ALTER TABLE conhecimento ADD CONSTRAINT conhecimento_pkey PRIMARY KEY (id);
@@ -2142,20 +2144,36 @@ CREATE SEQUENCE configuracaoPerformance_sequence START WITH 1 INCREMENT BY 1 NO 
 CREATE TABLE habilidade (
 id bigint NOT NULL,
 nome character varying(100),
+observacao text,
 empresa_id bigint
 );
 ALTER TABLE habilidade ADD CONSTRAINT habilidade_pkey PRIMARY KEY(id);
 ALTER TABLE habilidade ADD CONSTRAINT habilidade_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE habilidade_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
+CREATE TABLE habilidade_areaorganizacional (
+    habilidades_id bigint NOT NULL,
+    areaOrganizacionals_id bigint NOT NULL
+);
+ALTER TABLE habilidade_areaorganizacional ADD CONSTRAINT habilidade_areaorganizaciona_habilidade_fk FOREIGN KEY (habilidades_id) REFERENCES habilidade(id);
+ALTER TABLE habilidade_areaorganizacional ADD CONSTRAINT habilidade_areaorganizaciona_areaOrganizacional_fk FOREIGN KEY (areaOrganizacionals_id) REFERENCES areaOrganizacional(id);
+
 CREATE TABLE atitude (
 id bigint NOT NULL,
 nome character varying(100),
+observacao text,
 empresa_id bigint
 );
 ALTER TABLE atitude ADD CONSTRAINT atitude_pkey PRIMARY KEY(id);
 ALTER TABLE atitude ADD CONSTRAINT atitude_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE atitude_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE atitude_areaorganizacional (
+    atitudes_id bigint NOT NULL,
+    areaOrganizacionals_id bigint NOT NULL
+);
+ALTER TABLE atitude_areaorganizacional ADD CONSTRAINT atitude_areaorganizaciona_atitude_fk FOREIGN KEY (atitudes_id) REFERENCES atitude(id);
+ALTER TABLE atitude_areaorganizacional ADD CONSTRAINT atitude_areaorganizaciona_areaOrganizacional_fk FOREIGN KEY (areaOrganizacionals_id) REFERENCES areaOrganizacional(id);
 
 CREATE TABLE cargo_habilidade(
     cargo_id bigint NOT NULL,
@@ -2170,3 +2188,28 @@ CREATE TABLE cargo_atitude(
 );
 ALTER TABLE cargo_atitude ADD CONSTRAINT cargo_atitude_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id); 
 ALTER TABLE cargo_atitude ADD CONSTRAINT cargo_atitude_atitude_fk FOREIGN KEY (atitudes_id) REFERENCES atitude(id);
+
+CREATE FUNCTION alter_trigger(CHARACTER, CHARACTER) RETURNS void AS '
+BEGIN
+	execute ''ALTER TABLE '' || $1 || '' '' || $2 || '' TRIGGER ALL'';
+END;
+' LANGUAGE plpgsql;
+
+CREATE TABLE configuracaoRelatorioDinamico (
+id bigint NOT NULL,
+usuario_id bigint,
+campos character varying(600),
+titulo character varying(100)
+);
+
+ALTER TABLE configuracaoRelatorioDinamico ADD CONSTRAINT configuracaoRelatorioDinamico_pkey PRIMARY KEY(id);
+ALTER TABLE configuracaoRelatorioDinamico ADD CONSTRAINT configuracaoRelatorioDinamico_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);
+CREATE SEQUENCE configuracaoRelatorioDinamico_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+
+CREATE TABLE codigoCBO (
+codigo character varying(6) NOT NULL,
+descricao character varying(200)
+);
+
+alter table codigoCBO add constraint codigocbo_codigo_uk unique (codigo); 

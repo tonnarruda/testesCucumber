@@ -158,8 +158,10 @@
 	<@ww.textfield label="Nomenclatura" name="cargo.nome" id="nome" required="true" cssStyle="width:180px;" maxLength="30"/>
 	<@ww.checkbox labelPosition="right" label="Exibir no modulo externo" name="cargo.exibirModuloExterno" />
 	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:180px;" maxLength="24"/>
-	<@ww.textfield label="Código CBO" name="cargo.cboCodigo" id="codigoCBO" cssStyle="width:100px;" maxLength="6" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" onblur="limpar(this.value);" />
-	<@ww.textfield label="Descrição CBO" name="descricaoCBO" id="descricaoCBO" cssStyle="width:500px;" maxLength="200"  />
+	
+	<@ww.textfield label="CBO Cód." name="cargo.cboCodigo" id="codigoCBO" cssStyle="width:60px;" maxLength="6" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" onblur="limpar(this.value);" />
+	<@ww.textfield label="Descrição" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 430px;" maxLength="200"  />
+
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais Relacionadas*" list="areasCheckList" onClick="populaCHA(document.forms[0],'areasCheck');" />

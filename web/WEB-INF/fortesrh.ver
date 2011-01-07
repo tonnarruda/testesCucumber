@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.37.27" data="06/01/2011">
+		- CeS > Cadastros > Cargos e Faixas > Listagem sugerindo CBO no campo Código CBO.
+		- Info. Funcionais > Cadastros > Colaboradores > Listagem de Colaboradores: relatório dinâmico  com várias opções de filtros.
+		- SESMT > Movimentos > Solicitações/Atendimentos Médicos > Imprimir ASO: melhorias no relatório de ASO com os riscos do ambiente indicados de forma automática.
+	</Versao>
 	<Versao id="1.1.36.26" data="16/12/2010">
 		- Integração com o banco de currículos com o site de recolocação F2RH
 		- Cargos e Salário > Cadastros: novos cadastros de Habilidades e Atitudes, para facilitar o cadastros dos cargos.
-		- Recrut. e Seleção > Cadastros >Modelo de Avaliação: foi criada uma nova opção para que o RH possa realizar avaliação de desempenho para candidatos que estão participando do processo seletivo.
+		- ReS > Cadastros > Modelo de Avaliação: foi criada uma nova opção para que o RH possa realizar avaliação de desempenho para candidatos que estão participando do processo seletivo.
 		- Info. Funcionais > Cadastros > Candidatos > Performance Profissional: adicionado as informações referentes aos campos extras.
 	</Versao>
 	<Versao id="1.1.35.25" data="09/12/2010">

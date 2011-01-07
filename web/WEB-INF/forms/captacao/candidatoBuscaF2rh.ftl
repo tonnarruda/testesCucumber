@@ -30,20 +30,8 @@
 	<#if !formas?exists>
 		<#assign formas=""/>
 	</#if>
-	
 
-	<#if dataCadIni?exists>
-		<#assign dataIni = dataCadIni?date/>
-	<#else>
-		<#assign dataIni = ""/>
-	</#if>
-	<#if dataCadFim?exists>
-		<#assign dataFim = dataCadFim?date/>
-	<#else>
-		<#assign dataFim = ""/>
-	</#if>
-
-	<#assign validarCampos="return validaFormulario('formBuscaF2rh', null, new Array('dataCadIni','dataCadFim'))"/>
+	<#assign validarCampos="return validaFormulario('formBuscaF2rh', null, null)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
 
@@ -52,18 +40,10 @@
 
 	<#include "../util/topFiltro.ftl" />	
 		<@ww.form name="formBuscaF2rh" id="formBuscaF2rh" action="buscaF2rh.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.select label="Escolaridade" name="escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 170px;" liClass="liLeft" headerKey="" headerValue="" />
-			<@ww.select label="Idioma" name="idioma" id="idioma" list="idiomas" listKey="id" listValue="nome" liClass="liLeft" cssStyle="width: 150px;" headerKey="" headerValue=""/>
-			
-			<li>
-				<span>
-				Cadastrado/Atualizado entre:
-				</span>
-			</li>
-			<@ww.datepicker name="dataCadIni" value="${dataIni}" id="dataCadIni" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
-			<@ww.datepicker name="dataCadFim" value="${dataFim}" id="dataCadFim" cssClass="mascaraData validaDataFim" />
-
-			<@ww.textfield label="Cargo" id="cargo" name="curriculo.cargo" cssStyle="width: 290px;" liClass="liLeft"/>			
+			<@ww.textfield label="Cargo" id="cargo" name="curriculo.cargo" cssStyle="width: 526px;"  />
+						
+			<@ww.select label="Escolaridade" name="escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 180px;" headerKey="" headerValue="" liClass="liLeft"/>
+			<@ww.select label="Idioma" name="idioma" id="idioma" list="idiomas" listKey="id" listValue="nome"  cssStyle="width: 110px;" headerKey="" headerValue=""  liClass="liLeft"/>
 			<@ww.select label="Sexo" name="curriculo.sexo" id="sexo" list="sexos" cssStyle="width: 100px;"  liClass="liLeft"/>
 			<li>
 				<span>

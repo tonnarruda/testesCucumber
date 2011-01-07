@@ -86,7 +86,7 @@ public class F2rhFacadeImpl implements F2rhFacade {
 	 */
 	public Collection<Curriculo> buscarCurriculosComFoto(String[] consulta) throws Exception {
 		Collection<Curriculo> curriculos = buscarCurriculos(consulta);
-		carregaFotosDoF2rh(curriculos); // baixa as fotos dos candidatos
+		//carregaFotosDoF2rh(curriculos); // baixa as fotos dos candidatos
 		return curriculos;
 	}
 

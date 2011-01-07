@@ -62,7 +62,7 @@ public class StringUtilTest extends TestCase
 	public void testMontaTokenF2rh()
 	{
 		Calendar calendar = new GregorianCalendar();
-		assertEquals("42H"+ (calendar.get(GregorianCalendar.MONTH) + 1) +"0t3" + calendar.get(GregorianCalendar.DAY_OF_MONTH), StringUtil.montaTokenF2rh("Henrique de Albuquerque Vasconcelos Soares"));
+		assertEquals("42H"+ (calendar.get(GregorianCalendar.MONTH) + 1) +"0t3" + calendar.get(GregorianCalendar.DAY_OF_MONTH), StringUtil.montaTokenF2rh("Henriqué de Albuquerque Vasconcelos Soares"));
 	}
 	
 	public void testStringToLong()
