@@ -11,6 +11,7 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.f2rh.ConfigF2RH;
 import com.fortes.f2rh.Curriculo;
+import com.fortes.f2rh.F2rhDownloadFacade;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.f2rh.User;
@@ -102,11 +103,16 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		String[] consulta = new String[]{"curriculo[id][]=15"};
+		
+		// mocka F2rhDownloadFacade
+		F2rhDownloadFacade downloader = new MockF2rhDownloadFacade();
+		f2rhFacade = new F2rhFacadeImpl(downloader);
+		
 		Collection<Curriculo> curriculos = f2rhFacade.buscarCurriculosComFoto(consulta);
 		actual = encontrar(curriculos, expected);
 		assertNotNull("deveria carregar foto", actual.getFoto_file_name());
 		assertEquals("rponte.jpg", actual.getFoto_file_name());
-		// TODO: verificar se foto foi gerado
+		assertNotNull("foto", actual.getFoto());
 	}
 
 	public void testMontaIds() throws Exception
