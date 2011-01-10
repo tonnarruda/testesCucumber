@@ -46,6 +46,12 @@
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
 	</variable>
+	<variable name="totalizadorColaborador" class="java.lang.Long" resetType="Report" calculation="Count">
+		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
+	</variable>
+	<variable name="ContadorSubtotalColaboradores" class="java.lang.Long" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Count">
+		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
+	</variable>
 
 		<group  name="grpEstabelecimento" >
 			<groupExpression><![CDATA[$F{colaborador.estabelecimento.nome}]]></groupExpression>
@@ -67,7 +73,33 @@
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="15"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="14"
+						y="2"
+						width="95"
+						height="11"
+						key="staticText-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Total de Colaboradores:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="110"
+						y="2"
+						width="25"
+						height="11"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$V{totalizadorColaborador}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -91,7 +123,33 @@
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="5"  isSplitAllowed="true" >
+			<band height="15"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="14"
+						y="2"
+						width="33"
+						height="11"
+						key="staticText-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica" size="8" isBold="false" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Subtotal:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="47"
+						y="2"
+						width="23"
+						height="11"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$V{ContadorSubtotalColaboradores}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
