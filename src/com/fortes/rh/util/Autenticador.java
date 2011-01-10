@@ -19,7 +19,7 @@ public class Autenticador
 		*/
 		//TODO remprot
 //		RPClient c = getRemprot(url);
-
+//
 //		System.out.println("applicationId: " + c.getApplicationId());	// codigo de reset do produto (numero fixo para cada produto: AC=1, AG=16, Nettion=22 etc)
 //		System.out.println("installationId: " + c.getInstallationId());	// numero de serie recebido atraves de codigo de resposta (unico por cliente, sequencial independente de produto)
 //		System.out.println("resetCounter: " + c.getResetCounter());	    // quantas vezes esta licenca já recebeu resets (ajuda a detectar fraudes)
@@ -29,7 +29,8 @@ public class Autenticador
 //		System.out.println("errors: " + c.getErrors());			        // se errors==0 entao nao houve problemas na conversa com o servidor
 //		System.out.println("registered: " + c.getRegistered());		    // se nao esta registrado entao é cópia pirata (ou maquina nova, dá no mesmo)
 
-		return true;//c.getRegistered();
+		//return c.getRegistered();
+		return true;
 	}
 
 	public static RPClient getRemprot(String url)
@@ -53,11 +54,10 @@ public class Autenticador
 	public static String getMsgAutenticado(String url)
 	{
 		//TODO remprot
-//		if(getRemprot(url).getRegistered())
-//			return "";
-//		else
-//			return getMsgPadrao();
-		return "";
+		if(getRemprot(url).getRegistered())
+			return "";
+		else
+			return getMsgPadrao();
 	}
 
 	public static int getQtdCadastrosVersaoDemo()

@@ -38,6 +38,7 @@ public class LoginAction extends MyActionSupport
 			{
 				msgRemprot = "Este sistema não está licenciado para uso";
 				msgAutenticacao = Autenticador.getMsgPadrao();
+				return "not_registered";
 			}
 			
 			ActionContext.getContext().getSession().put("REG_LOGS", rhRegistrado);

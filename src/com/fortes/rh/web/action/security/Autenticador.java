@@ -25,7 +25,11 @@ public class Autenticador extends ActionSupport
 		client.setServerAddress(parametrosDoSistema.getServidorRemprot());
 		client.loadLicense();
 
-		codigoOperacional = client.requestKey(cnpj, nome, false);
+		try {
+			codigoOperacional = client.requestKey(cnpj, nome, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return ActionSupport.SUCCESS;
 	}
@@ -39,6 +43,8 @@ public class Autenticador extends ActionSupport
 		client.loadLicense();
 
 		client.applyResponse(cnpj, nome, codigoResposta);
+		
+		client.loadLicense();
 
 		if (client.getRegistered())
 			return ActionSupport.SUCCESS;
