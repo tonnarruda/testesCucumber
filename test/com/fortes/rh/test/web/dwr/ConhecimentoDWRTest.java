@@ -66,7 +66,7 @@ public class ConhecimentoDWRTest extends MockObjectTestCase
 		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>();
 		conhecimentos.add(conhecimento);
 
-		conhecimentoManager.expects(once()).method("find").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(conhecimentos));
+		conhecimentoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(conhecimentos));
 
 		String [] areaOrganizacionalIds = null;
 

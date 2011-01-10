@@ -3,14 +3,11 @@ package com.fortes.rh.business.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fortes.rh.model.captacao.Atitude;
-import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.captacao.AtitudeManager;
-import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.web.tags.CheckBox;
 
 public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> implements AtitudeManager
@@ -61,5 +58,9 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 	public Collection<Atitude> findByAreasOrganizacionalIds(Long[] areaOrganizacionalIds, Long empresasId) 
 	{
 		return getDao().findByAreasOrganizacionalIds(areaOrganizacionalIds, empresasId);
+	}
+
+	public Collection<Atitude> findAllSelect(Long empresaId) {
+		return getDao().findAllSelect(empresaId);
 	}
 }

@@ -21,7 +21,7 @@ public class HabilidadeDWR
 		if (areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
 			habilidades =  habilidadeManager.findByAreasOrganizacionalIds(LongUtil.arrayStringToArrayLong(areaOrganizacionalIds),empresaId);
 		else
-			habilidades =  habilidadeManager.find(new String[]{"empresa.id"},new Object[]{empresaId},new String[]{"nome"});
+			habilidades =  habilidadeManager.findAllSelect(empresaId);
 
 		return new CollectionUtil<Habilidade>().convertCollectionToMap(habilidades,"getId","getNome");
 	}

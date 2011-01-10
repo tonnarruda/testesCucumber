@@ -387,7 +387,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 					.getTipoSalario(), colaborador.getHistoricoColaborador().getIndice(), colaborador.getHistoricoColaborador().getQuantidadeIndice(),
 					salarioColaborador);
 
-			historicoColaboradorManager.update(historicoColaborador);
+			try {
+				
+				historicoColaboradorManager.update(historicoColaborador);
+			} catch (Exception e) {
+e.printStackTrace();
+			}
 			colaborador.setHistoricoColaborador(historicoColaborador);
 		}
 		

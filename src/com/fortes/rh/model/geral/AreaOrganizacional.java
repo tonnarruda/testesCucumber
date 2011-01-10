@@ -40,11 +40,11 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	private AreaOrganizacional areaMae;
 	@ManyToMany(mappedBy = "areasOrganizacionais")
 	private Collection<AreaInteresse> areasInteresse;
-	@ManyToMany(fetch = FetchType.EAGER,mappedBy = "areaOrganizacionals")
+	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "areaOrganizacionals")
 	private Collection<Conhecimento> conhecimentos;
-	@ManyToMany(fetch = FetchType.EAGER,mappedBy = "areaOrganizacionals")
+	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "areaOrganizacionals")
 	private Collection<Habilidade> habilidades;
-	@ManyToMany(fetch = FetchType.EAGER,mappedBy = "areaOrganizacionals")
+	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "areaOrganizacionals")
 	private Collection<Atitude> atitudes;
 	@Column(length=12)
 	private String codigoAC;
