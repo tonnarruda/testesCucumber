@@ -1,4 +1,5 @@
 package com.fortes.f2rh;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +11,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
@@ -18,6 +20,8 @@ import com.fortes.thumb.GeradorDeThumbnailUtils;
 
 public class F2rhFacadeImpl implements F2rhFacade {
 
+	public static final Logger log = Logger.getLogger(F2rhFacadeImpl.class);
+	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public Collection<Curriculo> obterCurriculos(ConfigF2RH config) {
 		
@@ -86,7 +90,7 @@ public class F2rhFacadeImpl implements F2rhFacade {
 	 */
 	public Collection<Curriculo> buscarCurriculosComFoto(String[] consulta) throws Exception {
 		Collection<Curriculo> curriculos = buscarCurriculos(consulta);
-		//carregaFotosDoF2rh(curriculos); // baixa as fotos dos candidatos
+		carregaFotosDoF2rh(curriculos); // baixa as fotos dos candidatos
 		return curriculos;
 	}
 
@@ -124,7 +128,7 @@ public class F2rhFacadeImpl implements F2rhFacade {
 			java.io.File thumbnail = gerador.gera(dst.getAbsolutePath());
 			return thumbnail;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Erro ao fazer download da foto: " + e.getMessage());
 		}
 		return null;
 	}
@@ -133,9 +137,36 @@ public class F2rhFacadeImpl implements F2rhFacade {
 	 * Exemplo: http://www.f2rh.com.br/fotos/746/original/camilla.jpg
 	 */
 	private String getUrlDaFoto(int id, String filename) {
-//		String url = "http://www.f2rh.com.br/fotos/" + id +  "/original/" + filename;
-		String url = "http://www.f2rh.com.br/fotos/746/original/camilla.jpg";
+		String url = encode(id, filename);
+		if (url == null) {
+			url = "http://www.f2rh.com.br/fotos/" + id +  "/original/" + filename;
+			log.warn("Utilizando url original: " + url);
+		}
 		return url;
+	}
+
+	/**
+	 * Encoda URL para evitar problemas com caracteres não alfanuméricos.<br/>
+	 * Exemplo:<br/>
+	 * <blockquote>
+	 * A URL <b>"http://www.f2rh.com.br/fotos/3040/original/FOTO 3X4.jpg"</b> será encodada para
+	 * <b>"http://www.f2rh.com.br/fotos/3040/original/FOTO%203X4.jpg"</b>
+	 * </blockquote>
+	 */
+	private String encode(int id, String filename) {
+		URI uri;
+		try {
+			uri = new URI(
+				    "http", 
+				    "www.f2rh.com.br", 
+				    "/fotos/" + id +  "/original/" + filename,
+				    null);
+			URL url = uri.toURL();
+			return url.toString();
+		} catch (Exception e) {
+			log.warn("Problema ao encodar url da foto: " + e.getMessage(), e);
+		}
+		return null;
 	}
 	
 	public String[] montaIds(String[] curriculosId) 
