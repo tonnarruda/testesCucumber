@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.mortbay.html.Break;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -984,11 +986,16 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradoresCertificacoes;
 	}
 	
+	//BACALHAU Consulta muito grande quando muitos colaboradores
 	private void setAprovacoesDosColaboradoresTurmas(Collection<ColaboradorTurma> colaboradorTurmas) throws Exception 
 	{
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
 		{
 			Long turmaId = colaboradorTurma.getTurma().getId();
+			
+			if (turmaId == null)
+				continue;
+			
 			Integer qtdAvaliacoes = avaliacaoCursoManager.countAvaliacoes(turmaId, "T");
 
 			if(qtdAvaliacoes.equals(0) && colaboradorAprovadoByTurma(colaboradorTurma.getColaborador().getId(), colaboradorTurma.getTurma().getId()))
