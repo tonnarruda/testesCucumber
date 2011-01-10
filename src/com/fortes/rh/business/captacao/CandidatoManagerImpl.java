@@ -9,10 +9,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
@@ -1217,6 +1219,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return candidatos;
 	}
 
+	//F2RH
 	private void bind(Candidato candidato, Curriculo curriculo) 
 	{
 		candidato.setNome(StringUtil.subStr(curriculo.getNome(), 60));
@@ -1230,7 +1233,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		if(curriculo.getSexo() != null)
 			pessoal.setSexo(curriculo.getSexo().charAt(0));
 		
-		candidato.setDataCadastro(DateUtil.montaDataByString(curriculo.getCreated_rh()));
+		candidato.setDataCadastro(new Date());
 		candidato.setDataAtualizacao(DateUtil.montaDataByString(curriculo.getUpdated_rh()));
 		
 		candidato.setColocacao(Vinculo.EMPREGO);
@@ -1284,6 +1287,34 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	public void reabilitaByColaborador(Long colaboradorId) 
 	{
 		getDao().updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);		
+	}
+
+	public String enviaEmailQtdCurriculosCadastrados()
+	{
+		Date hoje = new Date();
+		Date inicioMes = DateUtil.getInicioMesData(hoje);
+		Date fimMes = DateUtil.getUltimoDiaMes(hoje);
+		
+		Collection<Candidato> candidatos = findQtdCadastradosByOrigem(inicioMes, fimMes);
+		
+		StringBuilder body = new StringBuilder("Candidatos cadastros no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes) + "\n");
+		body.append(String.format("%15s", "Empresa") + "|" + String.format("%23s", "Origem") + "|" + String.format("%10s", "Qtd. cadastros") + "\n");
+		
+		OrigemCandidato origemCandidato = new OrigemCandidato();
+		
+		for (Candidato candidato : candidatos) 
+		{
+			body.append(String.format("%15s", candidato.getEmpresa().getNome()) + "|" + String.format("%23s", origemCandidato.get(candidato.getOrigem())) + "|" + String.format("%10s", candidato.getQtdCurriculosCadastrados()) + "\n");
+		}
+		
+//		parametrosdosistema buscar aqui os caras do to
+//		mail.send(empresa, parametros, subject, body, attachedFiles, to)
+		return body.toString();
+	}
+
+	private Collection<Candidato> findQtdCadastradosByOrigem(Date date, Date date2) 
+	{
+		return getDao().findQtdCadastradosByOrigem(date, date2);
 	}
 
 }

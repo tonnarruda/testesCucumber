@@ -47,4 +47,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public void converteTodasAsFotosParaThumbnail();
 	public String getSenha(Long id);
 	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long colaboradorId);
+	public Collection<Candidato> findQtdCadastradosByOrigem(Date dataIni, Date dataFim);
 }

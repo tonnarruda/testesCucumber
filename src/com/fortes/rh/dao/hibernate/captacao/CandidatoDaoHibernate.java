@@ -1057,4 +1057,20 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		query.executeUpdate();
 	}
+
+	public Collection<Candidato> findQtdCadastradosByOrigem(Date dataIni, Date dataFim) 
+	{
+		StringBuilder hql = new StringBuilder("select new Candidato(e.nome, c.origem, count(c.origem)) ");
+		hql.append("from Candidato c ");
+		hql.append("join c.empresa e ");
+		hql.append("where c.dataCadastro between :dataIni and :dataFim ");
+		hql.append("group by c.origem, e.nome order by e.nome asc, count(c.origem) desc ");
+
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+
+		return query.list();
+	}
 }

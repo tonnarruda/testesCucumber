@@ -38,6 +38,8 @@ import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
@@ -138,6 +140,35 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		candidato = candidatoDao.findByCPF("00000", null, null);
 		assertNull(candidato);
+	}
+	
+	public void testFindQtdCadastradosByOrigem()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Candidato c1 = getCandidato();
+		c1.setDataCadastro(DateUtil.criarDataMesAno(03, 02, 1984));
+		c1.setOrigem(OrigemCandidato.CADASTRADO);
+		c1.setEmpresa(empresa);
+		candidatoDao.save(c1);
+		
+		Candidato c2 = getCandidato();
+		c2.setDataCadastro(DateUtil.criarDataMesAno(02, 03, 1984));
+		c2.setOrigem(OrigemCandidato.F2RH);
+		c2.setEmpresa(empresa);
+		candidatoDao.save(c2);
+		
+		Candidato c3 = getCandidato();
+		c3.setDataCadastro(DateUtil.criarDataMesAno(02, 02, 1984));
+		c3.setOrigem(OrigemCandidato.F2RH);
+		c3.setEmpresa(empresa);
+		candidatoDao.save(c3);
+		
+		Collection<Candidato> candidatos = candidatoDao.findQtdCadastradosByOrigem(DateUtil.criarDataMesAno(01, 01, 1984), DateUtil.criarDataMesAno(03, 04, 1984));
+		assertEquals(2, candidatos.size());
+		assertEquals(2, ((Candidato)candidatos.toArray()[0]).getQtdCurriculosCadastrados());//qtd de cadastrados no F2RH
+		assertEquals(1, ((Candidato)candidatos.toArray()[1]).getQtdCurriculosCadastrados());//qtd de cadastrados no sistema(CADASTRADO)
 	}
 
 	public void testFindByCandidatoId()

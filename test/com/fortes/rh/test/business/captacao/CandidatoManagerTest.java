@@ -48,6 +48,7 @@ import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
@@ -188,6 +189,22 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatoDao.expects(once()).method("updateBlackList").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING});
 
     	candidatoManager.setBlackList(historicoCandidato, idsCandidatos, blackList);
+    }
+    
+    public void testEnviaEmailQtdCurriculosCadastrados() throws Exception
+    {
+    	Candidato candidato1 = new Candidato("Casa Pio", OrigemCandidato.CADASTRADO, 10);
+    	Candidato candidato2 = new Candidato("Casa Pio", OrigemCandidato.F2RH, 5);
+    	Candidato candidato3 = new Candidato("Havaianas", OrigemCandidato.F2RH, 9);
+    	
+    	Collection<Candidato> candidatos = new ArrayList<Candidato>();
+    	candidatos.add(candidato1);
+    	candidatos.add(candidato2);
+    	candidatos.add(candidato3);
+    	
+    	candidatoDao.expects(once()).method("findQtdCadastradosByOrigem").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(candidatos));
+    	
+    	assertFalse(candidatoManager.enviaEmailQtdCurriculosCadastrados().equals(""));
     }
 
     public void testFindCandidatosById() throws Exception

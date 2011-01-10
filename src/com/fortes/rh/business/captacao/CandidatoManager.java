@@ -65,4 +65,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId, Empresa empresa);
 	public void habilitaByColaborador(Long colaboradorId);
 	public void reabilitaByColaborador(Long colaboradorId);
+	public String enviaEmailQtdCurriculosCadastrados();
 }

@@ -113,7 +113,17 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	@Lob
 	private String observacaoRH;
 
+	@Transient
+	private int qtdCurriculosCadastrados;
+	
 	public Candidato() {}
+	
+	public Candidato(String empresaNome, char origem, int qtdPorOrigem) 
+	{
+		setEmpresaNome(empresaNome);
+		this.origem = origem;
+		this.qtdCurriculosCadastrados = qtdPorOrigem;
+	}
 	
 	public Candidato(Long id, File foto) {
 		setId(id);
@@ -1063,5 +1073,9 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private void instanciaFotoSeNecessario() {
 		if (foto == null)
 			foto = new File();
+	}
+
+	public int getQtdCurriculosCadastrados() {
+		return qtdCurriculosCadastrados;
 	}
 }

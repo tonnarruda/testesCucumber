@@ -54,10 +54,10 @@ public class Autenticador
 	public static String getMsgAutenticado(String url)
 	{
 		//TODO remprot
-		if(getRemprot(url).getRegistered())
+//		if(getRemprot(url).getRegistered())
 			return "";
-		else
-			return getMsgPadrao();
+//		else
+//			return getMsgPadrao();
 	}
 
 	public static int getQtdCadastrosVersaoDemo()
