@@ -18,18 +18,19 @@ public class Autenticador
 		da licenca.
 		*/
 		//TODO remprot
-		RPClient c = getRemprot(url);
+//		RPClient c = getRemprot(url);
+//
+//		System.out.println("applicationId: " + c.getApplicationId());	// codigo de reset do produto (numero fixo para cada produto: AC=1, AG=16, Nettion=22 etc)
+//		System.out.println("installationId: " + c.getInstallationId());	// numero de serie recebido atraves de codigo de resposta (unico por cliente, sequencial independente de produto)
+//		System.out.println("resetCounter: " + c.getResetCounter());	    // quantas vezes esta licenca já recebeu resets (ajuda a detectar fraudes)
+//		System.out.println("customerId: " + c.getCustomerId());		    // CPF ou CNPJ do cliente
+//		System.out.println("customerName: " + c.getCustomerName());	    // denominacao social do cliente
+//		System.out.println("nextCrashDate: " + c.getNextCrashDate());	// data limite da execucao (o remprot nao implementa os bloqueios, o sistema deve faze-lo)
+//		System.out.println("errors: " + c.getErrors());			        // se errors==0 entao nao houve problemas na conversa com o servidor
+//		System.out.println("registered: " + c.getRegistered());		    // se nao esta registrado entao é cópia pirata (ou maquina nova, dá no mesmo)
 
-		System.out.println("applicationId: " + c.getApplicationId());	// codigo de reset do produto (numero fixo para cada produto: AC=1, AG=16, Nettion=22 etc)
-		System.out.println("installationId: " + c.getInstallationId());	// numero de serie recebido atraves de codigo de resposta (unico por cliente, sequencial independente de produto)
-		System.out.println("resetCounter: " + c.getResetCounter());	    // quantas vezes esta licenca já recebeu resets (ajuda a detectar fraudes)
-		System.out.println("customerId: " + c.getCustomerId());		    // CPF ou CNPJ do cliente
-		System.out.println("customerName: " + c.getCustomerName());	    // denominacao social do cliente
-		System.out.println("nextCrashDate: " + c.getNextCrashDate());	// data limite da execucao (o remprot nao implementa os bloqueios, o sistema deve faze-lo)
-		System.out.println("errors: " + c.getErrors());			        // se errors==0 entao nao houve problemas na conversa com o servidor
-		System.out.println("registered: " + c.getRegistered());		    // se nao esta registrado entao é cópia pirata (ou maquina nova, dá no mesmo)
-
-		return c.getRegistered();
+		//return c.getRegistered();
+		return true;
 	}
 
 	public static RPClient getRemprot(String url)
