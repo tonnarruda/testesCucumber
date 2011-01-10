@@ -707,6 +707,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		if (colaborador != null && colaborador.getId() != null)
 		{
 			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			colaborador.setFoto(colaboradorManager.getFoto(colaborador.getId()));
 			habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
 			
 			if(habilitaCampoExtra)

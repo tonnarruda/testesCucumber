@@ -250,6 +250,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		parametrosDoSistema.setCampoExtraColaborador(true);
 		
 		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").will(returnValue(parametrosDoSistema));
+		colaboradorManager.expects(once()).method("getFoto").with(eq(colaborador.getId())).will(returnValue(null));
 		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativo"}),eq(new Object[]{true}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
 		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
 		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoByColaborador").with(eq(colaborador.getId()), eq(false)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
