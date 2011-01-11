@@ -21,6 +21,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.NonUniqueResultException;
+import org.jmock.core.Constraint;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -1289,26 +1290,54 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);		
 	}
 
-	public String enviaEmailQtdCurriculosCadastrados()
+	public String enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas)
 	{
-		Date hoje = new Date();
-		Date inicioMes = DateUtil.getInicioMesData(hoje);
-		Date fimMes = DateUtil.getUltimoDiaMes(hoje);
+		Date DiaDoMesDeReferencia = DateUtil.retornaDataDiaAnterior(new Date());
+		Date inicioMes = DateUtil.getInicioMesData(DiaDoMesDeReferencia);
+		Date fimMes = DateUtil.getUltimoDiaMes(DiaDoMesDeReferencia);
 		
 		Collection<Candidato> candidatos = findQtdCadastradosByOrigem(inicioMes, fimMes);
 		
-		StringBuilder body = new StringBuilder("Candidatos cadastros no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes) + "\n");
-		body.append(String.format("%15s", "Empresa") + "|" + String.format("%23s", "Origem") + "|" + String.format("%10s", "Qtd. cadastros") + "\n");
+		String subject = "Candidatos cadastros no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes);
+		
+		StringBuilder body = new StringBuilder("Candidatos cadastros no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes) + "<br>");
+		body.append( "<table>" +
+					"<thead><tr>" +
+					"<th>Empresa</th>" +
+					"<th>|</th>" +
+					"<th>Origem</th>" +
+					"<th>|</th>" +
+					"<th>Qtd. cadastros</th>" +
+					"</tr></thead><tbody>");
 		
 		OrigemCandidato origemCandidato = new OrigemCandidato();
 		
 		for (Candidato candidato : candidatos) 
 		{
-			body.append(String.format("%15s", candidato.getEmpresa().getNome()) + "|" + String.format("%23s", origemCandidato.get(candidato.getOrigem())) + "|" + String.format("%10s", candidato.getQtdCurriculosCadastrados()) + "\n");
+			body.append("<tr>" +
+						"<td>" + candidato.getEmpresa().getNome() + "</td>" +
+						"<td>|</td>" +
+						"<td>" + origemCandidato.get(candidato.getOrigem())+ "</td>" +
+						"<td>|</td>" +
+						"<td align='center'>" + candidato.getQtdCurriculosCadastrados() + "</td>" +
+						"</tr>");
 		}
 		
-//		parametrosdosistema buscar aqui os caras do to
-//		mail.send(empresa, parametros, subject, body, attachedFiles, to)
+		body.append("</tbody></table>");
+		
+		try
+		{
+			for (Empresa empresa : empresas) 
+			{
+				mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
+			}
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		return body.toString();
 	}
 

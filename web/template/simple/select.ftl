@@ -40,7 +40,7 @@
         </#if>
         <#assign itemKeyStr = itemKey.toString() />
         <#if parameters.listValue?exists>
-            <#assign itemValue = stack.findString(parameters.listValue)/>
+           <#assign itemValue = stack.findString(parameters.listValue)/>
         <#else>
             <#assign itemValue = stack.findString('top')/>
         </#if>

@@ -193,9 +193,18 @@ public class CandidatoManagerTest extends MockObjectTestCase
     
     public void testEnviaEmailQtdCurriculosCadastrados() throws Exception
     {
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	Collection<Empresa> empresas = new ArrayList<Empresa>();
+    	empresas.add(empresa);
+    	
     	Candidato candidato1 = new Candidato("Casa Pio", OrigemCandidato.CADASTRADO, 10);
     	Candidato candidato2 = new Candidato("Casa Pio", OrigemCandidato.F2RH, 5);
     	Candidato candidato3 = new Candidato("Havaianas", OrigemCandidato.F2RH, 9);
+    	
+    	candidato1.setEmpresa(empresa);
+    	candidato2.setEmpresa(empresa);
+    	candidato3.setEmpresa(empresa);
     	
     	Collection<Candidato> candidatos = new ArrayList<Candidato>();
     	candidatos.add(candidato1);
@@ -203,8 +212,9 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatos.add(candidato3);
     	
     	candidatoDao.expects(once()).method("findQtdCadastradosByOrigem").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(candidatos));
+    	mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
     	
-    	assertFalse(candidatoManager.enviaEmailQtdCurriculosCadastrados().equals(""));
+    	assertFalse(candidatoManager.enviaEmailQtdCurriculosCadastrados(empresas).equals(""));
     }
 
     public void testFindCandidatosById() throws Exception

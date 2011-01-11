@@ -19,4 +19,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	Empresa findByIdProjection(Long id);
 	Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String role);
 	void removeEmpresaPadrao(long id);
+	Collection<Empresa> findTodasEmpresas();
 }

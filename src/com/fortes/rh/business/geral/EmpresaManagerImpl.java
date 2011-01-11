@@ -241,6 +241,14 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		}
 		
 	}
+	
+	public Collection<Empresa> findEmailsEmpresa()
+	{
+		
+		return getDao().findTodasEmpresas();
+		
+	}
+	
 
 	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) {
 		this.conhecimentoManager = conhecimentoManager;

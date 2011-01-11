@@ -235,6 +235,27 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		JDBCConnection.executeQuery(new String[]{executaTrigger(acao)});
 	}
 
+	public Collection<Empresa> findTodasEmpresas()
+	{
+		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"),"nome");
+		p.add(Projections.property("e.emailRemetente"),"emailRemetente");
+		p.add(Projections.property("e.emailRespSetorPessoal"),"emailRespSetorPessoal");
+		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
+	
+	
+	
+	
 	private String executaTrigger(String acao) 
 	{
 		String execTrigger = "select alter_trigger(table_name, '" + acao + "') FROM information_schema.constraint_column_usage " +
@@ -243,4 +264,6 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 
 		return execTrigger;
 	}
+	
+	
 }

@@ -1478,7 +1478,8 @@ e.printStackTrace();
 	public Long verificaColaboradorLogadoVerAreas()
 	{
 		Long colaboradorLogadoId = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId();
-		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
+		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"})
+				|| SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_AVALDESEMPENHO"}))
 			return null;//pega todas as áreas
 		else
 			if(colaboradorLogadoId == null)

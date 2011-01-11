@@ -122,6 +122,7 @@
   
   <bean name="quantidadeCurriculosJob" class="com.fortes.rh.business.captacao.QuantidadeCurriculos">
 	<property name="candidatoManager" ref="candidatoManager" />
+	<property name="empresaManager" ref="empresaManager" />
   </bean>
   <bean name="quantidadeCurriculos" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     <property name="targetObject" ref="quantidadeCurriculosJob"/>
@@ -179,12 +180,10 @@
     <property name="jobDetail" ref="lembretePeriodoExperiencia" />
     <property name="cronExpression" value="0 0 7 * * ?" />
   </bean>
-  
   <bean id="cronTriggerQuantidadeCurriculos" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="quantidadeCurriculos" />
     <property name="cronExpression" value="0 0 7 1,15 * ?" /> <!-- Todo dia 1 e 15 de cada mes as 07:00h am -->
   </bean>
-
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
       <list>
