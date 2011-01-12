@@ -182,7 +182,7 @@
   </bean>
   <bean id="cronTriggerQuantidadeCurriculos" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="quantidadeCurriculos" />
-    <property name="cronExpression" value="0 0 7 1,15 * ?" /> <!-- Todo dia 1 e 15 de cada mes as 07:00h am -->
+    <property name="cronExpression" value="0 10 7 1 * ?" /> <!-- Todo dia 1 de cada mes as 07:10h am -->
   </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
