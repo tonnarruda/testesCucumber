@@ -116,6 +116,11 @@
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/favourites.gif"/>">
 				</span>
 			</#if>
+			<#if candidatoSolicitacao.candidato.idF2RH?exists>
+				<a title="Visualizar Currículo F2RH" href="javascript:popup('http://www.f2rh.com.br/curriculos/${candidatoSolicitacao.candidato.idF2RH?string}?s=${candidatoSolicitacao.candidato.s}', 780, 750)">
+					<img border="0" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>">
+				</a>
+			</#if>
 		</@display.column>
 		<@display.column property="etapaSeletiva.nome" title="Etapa" class="${classe}"/>
 		<@display.column property="responsavel" title="Responsável" class="${classe}"/>

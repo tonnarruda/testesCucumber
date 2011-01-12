@@ -1223,6 +1223,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	//F2RH
 	private void bind(Candidato candidato, Curriculo curriculo) 
 	{
+		candidato.setIdF2RH(curriculo.getId());
 		candidato.setNome(StringUtil.subStr(curriculo.getNome(), 60));
 		candidato.setFoto(curriculo.getFoto()); // anexa foto
 		
