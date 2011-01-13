@@ -176,6 +176,7 @@
 					<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros" list="bairrosCheckList" width="695"/>
 					<@ww.textarea label="Informações Complementares" name="solicitacao.infoComplementares" cssStyle="width:445px;" cssStyle="width: 695px;"/>
 					
+					<@ww.hidden name="solicitacao.liberador.id"  />
 					<@ww.div id="divcomplementar"/>
 				</ul>
 			</@ww.div>

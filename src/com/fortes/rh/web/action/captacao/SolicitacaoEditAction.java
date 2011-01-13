@@ -27,6 +27,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
@@ -173,7 +174,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
         solicitacao.setQuantidade(1);
         solicitacao.setSexo("I");
-
         return Action.SUCCESS;
     }
 
@@ -196,6 +196,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     	solicitacao.setId(null);
     	solicitacao.setSolicitante(null);
+    	solicitacao.setLiberador(null);
     	solicitacao.setData(null);
 
     	clone = true;
@@ -207,20 +208,13 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     {
         if (bairrosCheck != null)
         {
-        	Collection<Bairro> bairrosTmp = new ArrayList<Bairro>();
-
-        	for (int i = 0; i < bairrosCheck.length; i++)
-        	{
-        		Bairro bairroTmp = new Bairro();
-        		bairroTmp.setId(Long.parseLong(bairrosCheck[i]));
-        		bairrosTmp.add(bairroTmp);
-        	}
-
+        	Collection<Bairro> bairrosTmp = montaCargos();
         	solicitacao.setBairros(bairrosTmp);
         }
 
         solicitacao.setData(new Date());
-        solicitacao.setSolicitante(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+        Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+        solicitacao.setSolicitante(usuarioLogado);
         solicitacao.setEmpresa(getEmpresaSistema());
         
         if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
@@ -228,7 +222,12 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         
         if (solicitacao.getAvaliacao().getId() == null)
         	solicitacao.setAvaliacao(null);
-
+        
+        if(solicitacao.isLiberada())
+           	solicitacao.setLiberador(usuarioLogado);
+        else
+           	solicitacao.setLiberador(null);
+        
         solicitacaoManager.save(solicitacao);
 
         return Action.SUCCESS;
@@ -240,23 +239,23 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
         if (bairrosCheck != null)
         {
-        	Collection<Bairro> bairrosTmp = new ArrayList<Bairro>();
-
-        	for (int i = 0; i < bairrosCheck.length; i++)
-        	{
-        		Bairro bairroTmp = new Bairro();
-        		bairroTmp.setId(Long.parseLong(bairrosCheck[i]));
-        		bairrosTmp.add(bairroTmp);
-        	}
-
+        	Collection<Bairro> bairrosTmp = montaCargos();
         	solicitacao.setBairros(bairrosTmp);
         }
         else
         	solicitacao.setBairros(null);
 
-        if(!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
+        if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
+        {
+        	if(solicitacao.isLiberada() && !solicitacaoAux.isLiberada())//já foi liberada antes, não podemos editar o liberador
+        		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+        	
+        	if(!solicitacao.isLiberada())
+        		solicitacao.setLiberador(null);
+        }else
         {
         	solicitacao.setLiberada(solicitacaoAux.isLiberada());
+        	solicitacao.setLiberador(solicitacaoAux.getLiberador());
         }
 
         if (solicitacao.getAreaOrganizacional() == null || solicitacao.getAreaOrganizacional().getId() == null)
@@ -277,6 +276,18 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
         return Action.SUCCESS;
     }
+
+	private Collection<Bairro> montaCargos() {
+		Collection<Bairro> bairrosTmp = new ArrayList<Bairro>();
+
+		for (int i = 0; i < bairrosCheck.length; i++)
+		{
+			Bairro bairroTmp = new Bairro();
+			bairroTmp.setId(Long.parseLong(bairrosCheck[i]));
+			bairrosTmp.add(bairroTmp);
+		}
+		return bairrosTmp;
+	}
 
     public String prepareRelatorioProcessoSeletivo() throws Exception
     {

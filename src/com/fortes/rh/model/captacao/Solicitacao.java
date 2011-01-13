@@ -69,6 +69,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private FaixaSalarial faixaSalarial;
 	@ManyToOne
 	private Usuario solicitante;
+	@ManyToOne
+	private Usuario liberador;
 	@OneToOne (mappedBy="solicitacao", fetch = FetchType.LAZY)
 	private Anuncio anuncio;
 
@@ -603,6 +605,14 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private void inicializaAvaliacao() {
 		if(this.avaliacao == null)
 			avaliacao = new Avaliacao();
+	}
+
+	public Usuario getLiberador() {
+		return liberador;
+	}
+
+	public void setLiberador(Usuario liberador) {
+		this.liberador = liberador;
 	}
 
 }

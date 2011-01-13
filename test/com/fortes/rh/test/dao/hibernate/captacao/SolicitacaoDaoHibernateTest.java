@@ -246,12 +246,16 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 	public void testFindByIdProjectionForUpdate()
 	{
+		Usuario liberador = UsuarioFactory.getEntity();
+
 		Solicitacao s1 = getEntity();
-		s1 = solicitacaoDao.save(s1);
+		s1.setLiberador(usuarioDao.save(liberador));
+		solicitacaoDao.save(s1);
 
 		Solicitacao solicitacao = solicitacaoDao.findByIdProjectionForUpdate(s1.getId());
 
 		assertEquals(s1, solicitacao);
+		assertEquals(liberador, solicitacao.getLiberador());
 	}
 
 	public void testUpdateEncerraSolicitacao()
