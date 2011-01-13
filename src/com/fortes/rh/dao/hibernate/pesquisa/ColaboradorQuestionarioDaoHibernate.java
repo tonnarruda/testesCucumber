@@ -91,7 +91,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		criteria.setProjection(Projections.distinct(p));
 		
-		if(empresaId != null)
+		if(empresaId != null && !empresaId.equals(-1L))
 			criteria.add(Expression.eq("emp.id", empresaId));
 		
 		if(respondida != null)
@@ -400,7 +400,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 
-	public Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId)
+	public Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId, Boolean respondida, Long empresaId)
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
         ProjectionList pSub = Projections.projectionList().create();
@@ -440,6 +440,12 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
 		criteria.add(Expression.eq("q.id", questionarioId));
 
+		if(empresaId != null && !empresaId.equals(-1L))
+			criteria.add(Expression.eq("emp.id", empresaId));
+		
+		if(respondida != null)
+			criteria.add(Expression.eq("cq.respondida", respondida));
+		
 		criteria.setProjection(Projections.distinct(p));
 		criteria.addOrder(Order.asc("emp.nome"));
 		criteria.addOrder(Order.asc("c.nome"));

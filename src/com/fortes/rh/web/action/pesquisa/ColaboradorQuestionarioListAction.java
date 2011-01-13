@@ -22,7 +22,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.PerguntaFichaMedica;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -79,13 +79,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_PESQUISA");
 		questionario = questionarioManager.findByIdProjection(questionario.getId());
 		
-		Boolean respondidaBoolean = null;
-		if (respondida == 'S' )
-			respondidaBoolean = true;
-		if (respondida == 'N' )
-			respondidaBoolean = false;
-		
-		colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionario.getId(), respondidaBoolean, empresaId);
+		colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionario.getId(), BooleanUtil.getValueCombo(respondida), empresaId);
 
 		urlVoltar = TipoQuestionario.getUrlVoltarList(questionario.getTipo(), null);
 
@@ -95,7 +89,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	public String imprimirColaboradores() throws Exception
 	{
 		questionario = questionarioManager.findByIdProjection(questionario.getId());
-		colaboradorQuestionarios = colaboradorQuestionarioManager.findColaboradorHistoricoByQuestionario(questionario.getId());
+		colaboradorQuestionarios = colaboradorQuestionarioManager.findColaboradorHistoricoByQuestionario(questionario.getId(), BooleanUtil.getValueCombo(respondida), empresaId);
 
 		if(colaboradorQuestionarios.isEmpty())
 			return Action.INPUT;

@@ -62,6 +62,16 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
     	assertEquals(colaboradorQuestionarios, colaboradorQuestionarioManager.findByQuestionario(questionario.getId()));
     }
 
+    public void testFindByQuestionarioEmpresaRespondida()
+    {
+    	Collection<ColaboradorQuestionario> colaboradorQuestionarios = ColaboradorQuestionarioFactory.getCollection();
+    	Questionario questionario = QuestionarioFactory.getEntity(1L);
+    	
+    	colaboradorQuestionarioDao.expects(once()).method("findByQuestionarioEmpresaRespondida").with(eq(questionario.getId()), ANYTHING, ANYTHING).will(returnValue(colaboradorQuestionarios));
+    	
+    	assertEquals(colaboradorQuestionarios, colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionario.getId(), null, null));
+    }
+
     public void testSelecionaColaboradoresPercentual()
     {
     	Collection<Colaborador> colaboradores = montaColecaoColaborador();
