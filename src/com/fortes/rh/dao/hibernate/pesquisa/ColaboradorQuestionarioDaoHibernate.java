@@ -401,6 +401,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		criteria.add(Expression.eq("q.id", questionarioId));
 
 		criteria.setProjection(Projections.distinct(p));
+		criteria.addOrder(Order.asc("emp.nome"));
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
