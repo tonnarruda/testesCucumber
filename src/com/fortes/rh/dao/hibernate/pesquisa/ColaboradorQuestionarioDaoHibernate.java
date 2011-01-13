@@ -63,6 +63,46 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 		return criteria.list();
 	}
+
+	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioOrAvaliacaoId, Boolean respondida, Long empresaId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+		criteria.createCriteria("cq.questionario", "q", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cq.avaliacao", "avaliacao", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cq.colaborador", "c");
+		criteria.createCriteria("c.empresa", "emp");
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("cq.id"), "id");
+		p.add(Projections.property("cq.respondida"), "respondida");
+		p.add(Projections.property("q.id"), "projectionQuestionarioId");
+		p.add(Projections.property("c.id"), "projectionColaboradorId");
+		p.add(Projections.property("emp.id"), "projectionColaboradorEmpresaId");
+		p.add(Projections.property("emp.nome"), "projectionColaboradorEmpresaNome");
+		p.add(Projections.property("c.contato.email"), "projectionColaboradorContatoEmail");
+		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
+		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
+		
+		Disjunction disjunction = Expression.disjunction();
+		disjunction.add(Expression.eq("q.id", questionarioOrAvaliacaoId));
+		disjunction.add(Expression.eq("avaliacao.id", questionarioOrAvaliacaoId));
+		criteria.add(disjunction);
+		
+		criteria.setProjection(Projections.distinct(p));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("emp.id", empresaId));
+		
+		if(respondida != null)
+			criteria.add(Expression.eq("cq.respondida", respondida));
+		
+		criteria.addOrder(Order.asc("c.nomeComercial"));
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
 	
 	public ColaboradorQuestionario findByQuestionario(Long questionarioId, Long colaboradorId, Long turmaId)
 	{

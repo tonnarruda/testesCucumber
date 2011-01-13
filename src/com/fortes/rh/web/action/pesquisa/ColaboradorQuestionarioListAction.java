@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
@@ -15,15 +16,19 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.PerguntaFichaMedica;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorQuestionarioListAction extends MyActionSupportList
 {
@@ -64,10 +69,23 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Collection<PerguntaFichaMedica> perguntasRespondidas = new ArrayList<PerguntaFichaMedica>();
 	
+	private EmpresaManager empresaManager;
+	private Collection<Empresa> empresas;
+	private Long empresaId = null;
+	private char respondida;
+	
 	public String list() throws Exception
 	{
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_PESQUISA");
 		questionario = questionarioManager.findByIdProjection(questionario.getId());
-		colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionario(questionario.getId());
+		
+		Boolean respondidaBoolean = null;
+		if (respondida == 'S' )
+			respondidaBoolean = true;
+		if (respondida == 'N' )
+			respondidaBoolean = false;
+		
+		colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionario.getId(), respondidaBoolean, empresaId);
 
 		urlVoltar = TipoQuestionario.getUrlVoltarList(questionario.getTipo(), null);
 
@@ -356,4 +374,37 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	public void setColaboradorCheck(String[] colaboradorCheck) {
 		this.colaboradorCheck = colaboradorCheck;
 	}
+	
+//	public Empresa getEmpresa() {
+//		return empresa;
+//	}
+//
+//	public void setEmpresa(Empresa empresa) {
+//		this.empresa = empresa;
+//	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
+
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public char getRespondida() {
+		return respondida;
+	}
+
+	public void setRespondida(char respondida) {
+		this.respondida = respondida;
+	}
+	
 }
