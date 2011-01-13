@@ -110,36 +110,44 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		etapaSeletiva.setId(eId);
 		etapaSeletiva.setNome(eNome);
 	}
+	
+	private void inicializaCandidato() {
+		if (candidato == null)
+			candidato = new Candidato();
+	}
 
 	//utilizado no daoHibernate
 	public void setCandidatoId(Long candidatoId)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 
 		candidato.setId(candidatoId);
 	}
 
 	public void setCandidatoNome(String candidatoNome)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 
 		candidato.setNome(candidatoNome);
+	}
+	
+	public void setCandidatoIdF2RH(Integer candidatoIdF2RH)
+	{
+		inicializaCandidato();
+		
+		candidato.setIdF2RH(candidatoIdF2RH);
 	}
 
 	public void setCandidatoContratado(boolean candidatoContratado)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 
 		candidato.setContratado(candidatoContratado);
 	}
 
 	public void setCandidatoIndicadoPor(String candidatoIndicadoPor)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 		
 		if(candidato.getPessoal() == null)
 			candidato.setPessoal(new Pessoal());
@@ -149,16 +157,14 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setProjectionCandidatoDataAtualizacao(Date projectionCandidatoDataAtualizacao)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 
 		candidato.setDataAtualizacao(projectionCandidatoDataAtualizacao);
 	}
 
 	public void setProjectionCandidatoEmail(String projectionCandidatoEmail)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 		if(candidato.getContato() == null)
 			candidato.setContato(new Contato());
 
@@ -167,8 +173,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setProjectionCandidatoOrigem(char projectionCandidatoOrigem)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 
 		candidato.setOrigem(projectionCandidatoOrigem);
 	}
@@ -191,16 +196,14 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setProjectionCandidatoBlackList(boolean projectionCandidatoBlackList)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 
 		candidato.setBlackList(projectionCandidatoBlackList);
 	}
 
 	public void setProjectionCidadeNome(String projectionCidadeNome)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 		if (candidato.getEndereco() == null)
 			candidato.setEndereco(new Endereco());
 		if (candidato.getEndereco().getCidade() == null)
@@ -216,8 +219,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	
 	public void setProjectionUfSigla(String projectionUfSigla)
 	{
-		if (candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 		if (candidato.getEndereco() == null)
 			candidato.setEndereco(new Endereco());
 		if (candidato.getEndereco().getUf() == null)
@@ -236,8 +238,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setCandidatoPessoalCpf(String cpf)
 	{
-		if(candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 
 		if(candidato.getPessoal() == null)
 			candidato.setPessoal(new Pessoal());
@@ -248,8 +249,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setProjectionCandidatoEscolaridade(String projectionCandidatoEscolaridade)
 	{
-		if(candidato == null)
-			candidato = new Candidato();
+		inicializaCandidato();
 
 		if(candidato.getPessoal() == null)
 			candidato.setPessoal(new Pessoal());

@@ -20,7 +20,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -228,6 +227,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("s.remuneracao"), "remuneracao");
 		p.add(Projections.property("s.infoComplementares"), "infoComplementares");
 		p.add(Projections.property("s.data"), "data");
+		p.add(Projections.property("s.liberador"), "liberador");
 		p.add(Projections.property("s.liberada"), "liberada");
 		p.add(Projections.property("s.encerrada"), "encerrada");
 		p.add(Projections.property("s.suspensa"), "suspensa");
