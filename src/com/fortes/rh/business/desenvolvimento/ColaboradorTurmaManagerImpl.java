@@ -80,7 +80,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		switch (filtrarPor)
 		{
 			case 1: // Áreas organizacionais
-				colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), colaborador);
+				colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), colaborador, empresaId);
 				retorno = geraColaboradorTurma(colaboradores, turma);
 				break;
 			case 3: // Cargos // TODO BACALHAU , consulta GIGANTE (dá OutOfMemoryError)

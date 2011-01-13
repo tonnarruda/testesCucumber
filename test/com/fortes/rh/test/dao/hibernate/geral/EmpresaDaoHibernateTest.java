@@ -169,13 +169,13 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 	
 	public void testRemoveEmpresaPadrao()
 	{
-		String[] sqls = new String[]{"INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,acurlsoap,acurlwsdl) VALUES (998855999,'EmpresaTesteDao','00000000','EmpresaTesteDao',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal');", 
-									"INSERT INTO auditoria (id, empresa_id, dados) values(nextval('auditoria_sequence'), 998855999, 'TESTE teste da empresa');"};
+		String[] sqls = new String[]{"INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,acurlsoap,acurlwsdl) VALUES (998855920,'EmpresaTesteDao','00000000','EmpresaTesteDao',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal');", 
+									"INSERT INTO auditoria (id, empresa_id, dados) values(nextval('auditoria_sequence'), 998855920, 'TESTE teste da empresa');"};
 		JDBCConnection.executeQuery(sqls);
 		
-		empresaDao.removeEmpresaPadrao(998855999L);
+		empresaDao.removeEmpresaPadrao(998855920L);
 		
-		Empresa retorno = empresaDao.findByIdProjection(998855999L);
+		Empresa retorno = empresaDao.findByIdProjection(998855920L);
 		assertEquals(null, retorno);
 		
 		String qtdTabelasComEmpresa = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'empresa_id';");
