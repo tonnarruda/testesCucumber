@@ -7,11 +7,31 @@
 <@ww.head/>
 	<title>Colaboradores da ${tipoQuestionario.getDescricaoMaisc(questionario.tipo)}</title>
 
+    <#include "../ftl/mascarasImports.ftl" />
+    <#include "../ftl/showFilterImports.ftl" />
+
+    <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+    
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
 </head>
 <body>
+
+    <@ww.actionmessage />
+    <@ww.actionerror />
+
+    <#include "../util/topFiltro.ftl" />
+        <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
+
+            <@ww.select label="Empresa" name="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" liClass="liLeft"/>
+            <@ww.select label="Respondida" name="respondida" list=r"#{'S':'Sim','N':'Não'}" headerValue="Todas" headerKey="T"/>
+            <@ww.hidden name="questionario.id"/>
+
+            <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+        </@ww.form>
+    <#include "../util/bottomFiltro.ftl" />
+    <br>
 
 	<#if colaboradorQuestionarios?exists && 0 < colaboradorQuestionarios?size>
 		<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
