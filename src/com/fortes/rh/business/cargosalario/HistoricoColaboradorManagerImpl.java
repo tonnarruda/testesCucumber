@@ -108,7 +108,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return colaboradoresFiltroVecDistinct;
 	}
 
-	public Collection<Colaborador> findByCargosIds(int page, int pagingSize, Long[] cargoIds, Long empresaId, Colaborador colaborador)
+	public Collection<Colaborador> findByCargosIds(int page, int pagingSize, Long[] cargoIds, Colaborador colaborador, Long empresaId)
 	{
 		CollectionUtil<Long> cl = new CollectionUtil<Long>();
 

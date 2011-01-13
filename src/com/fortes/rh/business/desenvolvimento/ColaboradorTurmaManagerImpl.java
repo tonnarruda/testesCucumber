@@ -82,7 +82,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				retorno = geraColaboradorTurma(colaboradores, turma);
 				break;
 			case 3: // Cargos // TODO BACALHAU , consulta GIGANTE (dá OutOfMemoryError)
-				colaboradores = historicoColaboradorManager.findByCargosIds(page, pagingSize, LongUtil.arrayStringToArrayLong(cargosCheck), empresaId, colaborador);
+				colaboradores = historicoColaboradorManager.findByCargosIds(page, pagingSize, LongUtil.arrayStringToArrayLong(cargosCheck), colaborador, empresaId);
 				retorno = geraColaboradorTurma(colaboradores, turma);
 				break;
 			case 4:

@@ -360,7 +360,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaboradores.add(colaborador);
 
-		historicoColaboradorManager.expects(once()).method("findByCargosIds").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, eq(empresaId), ANYTHING}).will(
+		historicoColaboradorManager.expects(once()).method("findByCargosIds").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, ANYTHING, eq(empresaId
+				)}).will(
 				returnValue(colaboradores));
 		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck,
 				filtrarPor, turma, null, empresaId).size());
