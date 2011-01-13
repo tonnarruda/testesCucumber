@@ -7,11 +7,31 @@
 <@ww.head/>
 	<title>Colaboradores da ${tipoQuestionario.getDescricaoMaisc(questionario.tipo)}</title>
 
+    <#include "../ftl/mascarasImports.ftl" />
+    <#include "../ftl/showFilterImports.ftl" />
+
+    <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+    
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
 </head>
 <body>
+
+    <@ww.actionmessage />
+    <@ww.actionerror />
+
+    <#include "../util/topFiltro.ftl" />
+        <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
+
+            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" liClass="liLeft"/>
+            <@ww.select label="Respondida" name="respondida" id="respondida" list=r"#{'S':'Sim','N':'Não'}" headerValue="Todas" headerKey="T"/>
+            <@ww.hidden name="questionario.id"/>
+
+            <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+        </@ww.form>
+    <#include "../util/bottomFiltro.ftl" />
+    <br>
 
 	<#if colaboradorQuestionarios?exists && 0 < colaboradorQuestionarios?size>
 		<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
@@ -63,15 +83,15 @@
 			<@display.column property="colaborador.empresa.nome" title="Empresa" style="width:200px;"/>
 		</@display.table>
 
+		${colaboradorQuestionarios?size} registro(s) encontrado(s).
 		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-		<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}'/>
+		
 	</#if>
 
 	<div class="buttonGroup">
 		<button onclick="window.location='prepareInsert.action?questionario.id=${questionario.id}'" id="btnInserir" class="btnInserir" ></button>
 
-
-		<button onclick="window.location='imprimirColaboradores.action?questionario.id=${questionario.id}'" class="btnRelatorio" ></button>
+		<button onclick="window.location='imprimirColaboradores.action?questionario.id=${questionario.id}&empresaId=' + jQuery('#empresaId').val() + '&respondida=' + jQuery('#respondida').val()" class="btnImprimirPdf" ></button>
 
 		<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->
 		<#if urlVoltar?exists && !exibirBotaoConcluir>

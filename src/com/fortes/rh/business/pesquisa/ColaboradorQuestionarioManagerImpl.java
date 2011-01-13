@@ -35,6 +35,11 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findByQuestionario(questionarioId);
 	}
 
+	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioId, Boolean respondida, Long empresaId )
+	{
+		return getDao().findByQuestionarioEmpresaRespondida(questionarioId, respondida, empresaId);
+	}
+
 	public Collection<Colaborador> selecionaColaboradores(Collection<Colaborador> colaboradores, char qtdPercentual, double percentual, int quantidade)
 	{
 		if(colaboradores.size() == 0)
@@ -245,9 +250,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findAvaliacaoByColaborador(colaboradorId, somenteAvaliacaoDesempenho);
 	}
 
-	public Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId)
+	public Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId, Boolean respondida, Long empresaId)
 	{
-		return getDao().findColaboradorHistoricoByQuestionario(questionarioId);
+		return getDao().findColaboradorHistoricoByQuestionario(questionarioId, respondida, empresaId);
 	}
 	
 	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, boolean isAvaliado) 

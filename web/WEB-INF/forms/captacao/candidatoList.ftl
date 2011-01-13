@@ -101,6 +101,11 @@
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/favourites.gif"/>">
 				</span>
 			</#if>
+			<#if candidato.idF2RH?exists>
+				<a title="Visualizar Currículo F2RH" href="javascript:popup('http://www.f2rh.com.br/curriculos/${candidato.idF2RH?string}?s=${candidato.s}', 780, 750)">
+					<img border="0" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>">
+				</a>
+			</#if>
 		</@display.column>
 
 		<@display.column property="dataCadastro" format="{0,date,dd/MM/yyyy}" title="Data Cadastro" style="text-align:center;width:80px;color: ${color}"/>

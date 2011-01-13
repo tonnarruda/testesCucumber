@@ -1,5 +1,6 @@
 package com.fortes.rh.test.web.action.pesquisa;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -8,10 +9,12 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -30,6 +33,7 @@ public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock colaboradorRespostaManager;
 	private Mock questionarioManager;
+	private Mock empresaManager;
 
     protected void setUp() throws Exception
     {
@@ -48,6 +52,9 @@ public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
 
         questionarioManager = new Mock(QuestionarioManager.class);
         colaboradorQuestionarioAction.setQuestionarioManager((QuestionarioManager) questionarioManager.proxy());
+
+        empresaManager = new Mock(EmpresaManager.class);
+        colaboradorQuestionarioAction.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -72,7 +79,8 @@ public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
     	colaboradorQuestionarioAction.setQuestionario(questionario);
 
-    	colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(eq(questionario.getId())).will(returnValue(colaboradorQuestionarios));
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
+    	colaboradorQuestionarioManager.expects(once()).method("findByQuestionarioEmpresaRespondida").with(eq(questionario.getId()), ANYTHING, ANYTHING).will(returnValue(colaboradorQuestionarios));
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
 
     	assertEquals("success", colaboradorQuestionarioAction.list());
