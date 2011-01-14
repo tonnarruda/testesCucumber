@@ -45,12 +45,17 @@ public abstract class Menu
 		menu.append("<li><a href='" + contexto + "/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
 
 		
+		menu.append("<li style='float: right; line-height: 0.8em'>" +
+				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes Rh'>" +
+				"<img src='"+ contexto + "/imgs/favicon.ico' style='vertical-align: middle;'></a>");
+		
 		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
-					menu.append("<li style='float: right; line-height: 0.8em'>" +
-					"<a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=" + parametros.getCodEmpresaSuporte()
-					+ "&codCliente=" + parametros.getCodClienteSuporte()
-					+ "&token=sistema' target='_blank' /><img src='"
-					+ contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;' > Suporte</a></li>\n");
+			menu.append("<a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=" + parametros.getCodEmpresaSuporte()
+						+ "&codCliente=" + parametros.getCodClienteSuporte()
+						+ "&token=sistema' target='_blank' /><img src='"
+						+ contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;' > Suporte</a>");
+		
+		menu.append("</li>\n");
 
 		menu.append("</ul>\n\n");
 
