@@ -69,6 +69,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	private ColaboradorManager colaboradorManager;
 	private Map<String, Object> parametros;
+	private Integer diasDeAcompanhamento;
 		
 	private void prepare() throws Exception
 	{
@@ -139,7 +140,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
     {
 		try {
 			dataReferencia = getDataReferencia();
-			colaboradores = colaboradorManager.findAdmitidosNoPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck);
+			colaboradores = colaboradorManager.findAdmitidosNoPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, diasDeAcompanhamento);
 			
 			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiencia", getEmpresaSistema(), filtro);
@@ -344,5 +345,13 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 		public void setModeloAvaliacao(Avaliacao modeloAvaliacao) {
 			this.modeloAvaliacao = modeloAvaliacao;
+		}
+
+		public Integer getDiasDeAcompanhamento() {
+			return diasDeAcompanhamento;
+		}
+
+		public void setDiasDeAcompanhamento(Integer diasDeAcompanhamento) {
+			this.diasDeAcompanhamento = diasDeAcompanhamento;
 		}
 }

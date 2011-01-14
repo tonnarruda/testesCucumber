@@ -1572,7 +1572,7 @@ e.printStackTrace();
 
 	}
 
-	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer diasDeAcompanhamento) throws Exception 
 	{
 		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck);
 		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
@@ -1596,9 +1596,17 @@ e.printStackTrace();
 			datas += "\n";
 			
 			if(datasColab.get(colaborador.getId()) == null)
-				datasColab.put(colaborador.getId(), datas);
+			{
+				if (validarDataDiasDeAcompanhamento(diasDeAcompanhamento, colaborador,datas))
+					datasColab.put(colaborador.getId(), datas);
+				else
+					datasColab.put(colaborador.getId(), "");
+			}
 			else
-				datasColab.put(colaborador.getId(), datasColab.get(colaborador.getId()) + datas);
+			{
+				if (validarDataDiasDeAcompanhamento(diasDeAcompanhamento, colaborador,datas))
+					datasColab.put(colaborador.getId(), datasColab.get(colaborador.getId()) + datas);
+			}	
 		}
 		
 		Long idColab = 0L;
@@ -1620,6 +1628,15 @@ e.printStackTrace();
 		return retorno;
 	}
 
+	private Boolean validarDataDiasDeAcompanhamento(Integer diasDeAcompanhamento, Colaborador colaborador, String datas)
+	{
+		if (diasDeAcompanhamento != null && colaborador.getDiasDeEmpresa() >= diasDeAcompanhamento 
+				&& colaborador.getAvaliacaoRespondidaEm() != null 
+				&& DateUtil.incrementaDias(colaborador.getAvaliacaoRespondidaEm(), diasDeAcompanhamento).after(new Date()))
+					return false;
+		return true;
+	}
+	
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long id2, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
 	{
 		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
