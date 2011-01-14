@@ -93,7 +93,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	{
 		prepare();
 		
-		if(empresaIntegradaComAC)
+		if(ocorrencia != null && ocorrencia.getId() != null && empresaIntegradaComAC)
 			ocorrencia.setIntegraAC(true);
 		
 		return Action.SUCCESS;

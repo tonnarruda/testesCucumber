@@ -73,14 +73,14 @@
 
 	<@display.table name="candidatos" id="candidato" class="dados">
 
-		<#if candidato.disponivel=true>
+		<#if candidato.disponivel = true>
 			<#assign color="#454C54"/>
 		<#else>
 			<#assign color="#F00"/>
 		</#if>
 
 		<@display.column title="Ações" media="html" style="text-align:center; width: 140px;" >
-	    	<#if candidato.disponivel=true>
+	    	<#if candidato.disponivel = true>
 				<#assign nomeFormatado=stringUtil.removeApostrofo(candidato.nome)>
 				<a href="javascript:if (confirm('Deseja realmente contratar o candidato ${nomeFormatado}?')) window.location='<@ww.url includeParams="none" value="/geral/colaborador/prepareContrata.action?candidato.id=${candidato.id}"/>'"><img border="0" title="Contratar Candidato" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
 			<#else>
