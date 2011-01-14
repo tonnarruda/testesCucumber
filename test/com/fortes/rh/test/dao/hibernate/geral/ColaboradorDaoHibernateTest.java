@@ -1133,23 +1133,25 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void testFindByAreaOrganizacionalIds()
 	{
-		Empresa empresa = new Empresa();
-		empresa = empresaDao.save(empresa);
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
 
 		Colaborador colaborador1 = getColaborador();
 		colaborador1.setEmpresa(empresa);
 		colaborador1.setNome("Pedro Jose");
 		colaborador1.setMatricula("12e3456789");
-		colaborador1 = colaboradorDao.save(colaborador1);
+		colaboradorDao.save(colaborador1);
 
 		Colaborador colaborador2 = getColaborador();
 		colaborador2.setEmpresa(empresa);
-		colaborador2 = colaboradorDao.save(colaborador2);
+		colaboradorDao.save(colaborador2);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setEmpresa(empresa);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
 		AreaOrganizacional areaOrganizacionalAntiga = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalAntiga.setEmpresa(empresa);
 		areaOrganizacionalAntiga = areaOrganizacionalDao.save(areaOrganizacionalAntiga);
 
 		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
@@ -1183,7 +1185,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaboradorBusca = ColaboradorFactory.getEntity(1L);
 		colaboradorBusca.setNome("dro j");
 		colaboradorBusca.setMatricula("2E3");
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(areaIds, 1, 10, colaboradorBusca);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(areaIds, 1, 10, colaboradorBusca, empresa.getId());
 
 		assertEquals(1, colaboradores.size());
 		Colaborador retorno = (Colaborador) colaboradores.toArray()[0];
@@ -1195,7 +1197,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		//Teste findByAreaOrganizacionalIds
 		Long[] areasIds = new Long[]{areaOrganizacional.getId()};
-		colaboradores = colaboradorDao.findByAreaOrganizacionalIds(1, 10, areasIds, null);
+		colaboradores = colaboradorDao.findByAreaOrganizacionalIds(1, 10, areasIds, null, areaOrganizacional.getEmpresa().getId());
 		assertEquals(1, colaboradores.size());
 
 		//Teste findByAreaOrganizacionalIds

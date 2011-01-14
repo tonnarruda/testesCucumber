@@ -8,7 +8,6 @@ import java.util.GregorianCalendar;
 import junit.framework.TestCase;
 
 import com.fortes.rh.model.geral.ConfiguracaoPerformance;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class StringUtilTest extends TestCase

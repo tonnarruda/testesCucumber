@@ -164,7 +164,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void enviarEmailParaLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception
 	{
-		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findAll().toArray()[0];
+		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 		String link = parametrosDoSistema.getAppUrl();
 		
 		Collection<String> emails = perfilManager.getEmailsByRoleLiberaSolicitacao(empresa.getId());

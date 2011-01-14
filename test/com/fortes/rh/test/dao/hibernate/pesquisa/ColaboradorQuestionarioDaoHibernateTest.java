@@ -113,6 +113,29 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 		assertEquals(1, retorno.size());
 	}
+
+	public void findByQuestionarioEmpresaRespondida() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario = questionarioDao.save(questionario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador = colaboradorDao.save(colaborador);
+		
+		ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setRespondida(true);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByQuestionarioEmpresaRespondida(questionario.getId(), true, empresa.getId());
+		
+		assertEquals(1, retorno.size());
+	}
 	
 	public void testFindRespondidasBySolicitacao() throws Exception
 	{
@@ -182,6 +205,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario();
 		colaboradorQuestionario.setColaborador(colaborador);
 		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
@@ -203,7 +227,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		historicoColaboradorAtual1.setFaixaSalarial(faixaSalarial1);
 		historicoColaboradorDao.save(historicoColaboradorAtual1);
 
-		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findColaboradorHistoricoByQuestionario(questionario.getId());
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findColaboradorHistoricoByQuestionario(questionario.getId(), true, empresa.getId());
 
 		assertEquals(1, retorno.size());
 	}

@@ -392,7 +392,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findByCargosIds").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(historicos));
 
-		assertEquals(2, historicoColaboradorManager.findByCargosIds(0,0,cargosIds,1L, null).size());
+		assertEquals(2, historicoColaboradorManager.findByCargosIds(0,0,cargosIds,null, 1L).size());
 	}
 
 	public void testFindByGrupoOcupacionalIdsPaginado()

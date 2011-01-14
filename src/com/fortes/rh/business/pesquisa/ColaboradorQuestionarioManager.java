@@ -28,7 +28,7 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	ColaboradorQuestionario findByIdColaboradorCandidato(Long colaboradorQuestionarioId);
 	Collection<ColaboradorResposta> populaQuestionario(Avaliacao avaliacao);
 	Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean somenteAvaliacaoDesempenho);
-	Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId);
+	Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId, Boolean respondida, Long empresaId);
 	void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, boolean isAvaliado);
 	void remove(Long[] colaboradorParticipanteId, Long avaliacaoDesempenhoId, boolean isAvaliado) throws Exception;
 	boolean verifyTemParticipantesAssociados(Long avaliacaoDesempenhoId);
@@ -41,4 +41,5 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	Collection<ColaboradorQuestionario> getPerformance(Collection<Long> avaliados, Long avaliacaoDesempenhoId);
 	Collection<ColaboradorQuestionario> findBySolicitacaoRespondidas(Long solicitacaoId);
 	Collection<Colaborador> findRespondidasBySolicitacao(Long solicitacaoid);
+	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioId, Boolean respondida, Long empresaId );
 }

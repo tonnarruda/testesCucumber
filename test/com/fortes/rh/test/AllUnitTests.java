@@ -321,6 +321,7 @@ import com.fortes.rh.test.security.UserDetailsImplTest;
 import com.fortes.rh.test.util.ArquivoUtilTest;
 import com.fortes.rh.test.util.AutenticadorTest;
 import com.fortes.rh.test.util.AuthenticatorImplTest;
+import com.fortes.rh.test.util.BooleanUtilTest;
 import com.fortes.rh.test.util.CheckListBoxUtilTest;
 import com.fortes.rh.test.util.CnpjUtilTest;
 import com.fortes.rh.test.util.CollectionUtilTest;
@@ -1020,6 +1021,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(MontaRelatorioItextTest.class);
         suite.addTestSuite(SpringUtilTest.class);
         suite.addTestSuite(StringUtilTest.class);
+        suite.addTestSuite(BooleanUtilTest.class);
         suite.addTestSuite(ZipTest.class);
         suite.addTestSuite(ArquivoUtilTest.class);
         suite.addTestSuite(ImportacaoCSVUtilTest.class);

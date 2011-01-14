@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.mortbay.html.Break;
-
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -80,11 +78,11 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		switch (filtrarPor)
 		{
 			case 1: // Áreas organizacionais
-				colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), colaborador);
+				colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), colaborador, empresaId);
 				retorno = geraColaboradorTurma(colaboradores, turma);
 				break;
 			case 3: // Cargos // TODO BACALHAU , consulta GIGANTE (dá OutOfMemoryError)
-				colaboradores = historicoColaboradorManager.findByCargosIds(page, pagingSize, LongUtil.arrayStringToArrayLong(cargosCheck), empresaId, colaborador);
+				colaboradores = historicoColaboradorManager.findByCargosIds(page, pagingSize, LongUtil.arrayStringToArrayLong(cargosCheck), colaborador, empresaId);
 				retorno = geraColaboradorTurma(colaboradores, turma);
 				break;
 			case 4:

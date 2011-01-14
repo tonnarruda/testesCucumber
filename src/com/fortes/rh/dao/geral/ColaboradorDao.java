@@ -15,8 +15,8 @@ import com.fortes.rh.model.geral.Empresa;
 @SuppressWarnings("unchecked")
 public interface ColaboradorDao extends GenericDao<Colaborador>
 {
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Integer page, Integer pagingSize, Colaborador colaborador);
-	public Collection<Colaborador> findByAreaOrganizacionalIds(int page, int pagingSize, Long[] ids, Colaborador colaborador);
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Integer page, Integer pagingSize, Colaborador colaborador, Long empresaId);
+	public Collection<Colaborador> findByAreaOrganizacionalIds(int page, int pagingSize, Long[] ids, Colaborador colaborador, Long empresaId);
 	public Collection<Colaborador> findByAreaOrganizacionalIds(Long[] ids);
 	public Collection<Colaborador> findByArea(AreaOrganizacional areaFiltro);
 
