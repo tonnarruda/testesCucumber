@@ -357,7 +357,7 @@ public class CargoManagerTest extends MockObjectTestCase
 
 		cargos.add(cargo);
 
-		cargoDao.expects(once()).method("findCargosByIds").with(eq(idsLong)).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findCargosByIds").with(eq(idsLong), ANYTHING).will(returnValue(cargos));
 		
 		conhecimentoManager.expects(atLeastOnce()).method("findByCargo").will(returnValue(conhecimentos));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("findByCargo").will(returnValue(areas));
@@ -365,7 +365,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		faixaSalarialManager.expects(atLeastOnce()).method("findByCargo").will(returnValue(faixas));
 		etapaSeletivaManager.expects(atLeastOnce()).method("findByCargo").will(returnValue(etapaSeletivas));
 		
-		Collection<Cargo> cargosRetorno = cargoManager.getCargosByIds(idsLong);
+		Collection<Cargo> cargosRetorno = cargoManager.getCargosByIds(idsLong, null);
 
 		assertEquals(1, cargosRetorno.size());
 	}

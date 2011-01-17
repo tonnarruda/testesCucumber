@@ -191,7 +191,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			cargos = cargoManager.getCargosByIds(LongUtil.arrayStringToArrayLong(cargosCheck));
+			cargos = cargoManager.getCargosByIds(LongUtil.arrayStringToArrayLong(cargosCheck), getEmpresaSistema().getId());
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Cargos", getEmpresaSistema(), null);
 		}
 		catch (Exception e)

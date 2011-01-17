@@ -111,7 +111,7 @@ public class CargoEditActionTest extends MockObjectTestCase
 		
     	action.setCargosCheck(cargosCheck);
 		
-    	manager.expects(once()).method("getCargosByIds").with(eq(ids)).will(returnValue(cargos));
+    	manager.expects(once()).method("getCargosByIds").with(eq(ids), ANYTHING).will(returnValue(cargos));
     	
     	assertEquals("success", action.relatorioCargo());
     }
@@ -125,7 +125,7 @@ public class CargoEditActionTest extends MockObjectTestCase
     	
     	action.setCargosCheck(cargosCheck);
     	
-    	manager.expects(once()).method("getCargosByIds").with(eq(ids)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(cargo.getId(),""))));
+    	manager.expects(once()).method("getCargosByIds").with(eq(ids), ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(cargo.getId(),""))));
     	
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").will(returnValue(null));
     	areaFormacaoManager.expects(once()).method("populaCheckOrderNome").withNoArguments();
