@@ -105,7 +105,6 @@
     <property name="parametrosDoSistemaManager">
       <ref bean="parametrosDoSistemaManager" />
     </property>
-
   </bean>
   <bean id="solicitacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

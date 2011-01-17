@@ -30,11 +30,12 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	public Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId);
 	public void updateSuspendeSolicitacao(boolean suspender, String obsSuspensao, Long solicitacaoId);
 	public void migrarBairro(Long bairroId, Long bairroDestinoId);
-	void enviarEmailParaLiberadorSolicitacao(Solicitacao solicitacao, Empresa mpresa) throws Exception;
+	void enviarEmailParaLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa, String[] emailsAvulsos) throws Exception;
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos);
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId);
 	public void emailParaSolicitante(Usuario solicitante, Solicitacao solicitacao, Empresa empresa);
+	public Solicitacao save(Solicitacao solicitacao, String[] emailsCheck);
 	
 }

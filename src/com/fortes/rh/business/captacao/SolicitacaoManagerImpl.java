@@ -148,15 +148,14 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		getDao().migrarBairro(bairroId, bairroDestinoId);
 	}
 	
-	@Override
-	public Solicitacao save(Solicitacao solicitacao)
+	public Solicitacao save(Solicitacao solicitacao, String[] emailsAvulsos)
 	{
 		super.save(solicitacao);
 		
 		try {
 			
 			if (!solicitacao.isLiberada())
-				enviarEmailParaLiberadorSolicitacao(solicitacao, solicitacao.getEmpresa());
+				enviarEmailParaLiberadorSolicitacao(solicitacao, solicitacao.getEmpresa(), emailsAvulsos);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -165,25 +164,32 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return solicitacao;
 	}
 
-	public void enviarEmailParaLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception
+	public void enviarEmailParaLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa, String[] emailsAvulsos) throws Exception
 	{
 		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 		String link = parametrosDoSistema.getAppUrl();
 		
 		Collection<String> emails = perfilManager.getEmailsByRoleLiberaSolicitacao(empresa.getId());
+		incluiEmails(emails, emailsAvulsos);
 		
 		if (emails != null && !emails.isEmpty())
 		{
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+			String nomeSolicitante = preparaNome(colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId()));
+			
 			solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
 		
 			String subject = "Liberação de Solicitação de Pessoal";
 			StringBuilder body = new StringBuilder("Existe uma Solicitação de Pessoal na empresa " + empresa.getNome() + " aguardando liberação.<br>");
+			
 			if (solicitacao.getDescricao() != null)
 				body.append("<p style=\"font-weight:bold;\">" + solicitacao.getDescricao() + "</p>");
-			body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
+			
+			body.append("<br>Descrição: " + solicitacao.getDescricao());
 			body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
 			body.append("<br>Motivo: " + solicitacao.getMotivoSolicitacao().getDescricao());
-			body.append("<br>Solicitante: " + solicitacao.getSolicitante().getNome() + " (" + solicitacao.getSolicitante().getLogin() + ")");
+			body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
+			body.append("<br>Solicitante: " + nomeSolicitante);
 			body.append("<br>Acesse o FortesRH para mais detalhes:<br>");
 			body.append("<a href='" + link + "'>Fortes RH</a>");
 			
@@ -191,6 +197,17 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		}
 	}
 	
+	private void incluiEmails(Collection<String> emails, String[] emailsAvulsos) 
+	{
+		if(emailsAvulsos != null)
+		{
+			for (String emailAvulso : emailsAvulsos) 
+			{
+				emails.add(emailAvulso);
+			}
+		}
+	}
+
 	public void emailParaSolicitante(Usuario solicitante, Solicitacao solicitacao , Empresa empresa)
 	{
 		try {
@@ -219,7 +236,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		if(colaborador == null)
 			return "Usuário sem colaborador";
 		
-		return colaborador.getNome();
+		return colaborador.getNome() + " (" + colaborador.getNomeComercial()+ ")";
 	}
 
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId)

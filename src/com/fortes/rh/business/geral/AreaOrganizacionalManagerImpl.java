@@ -546,5 +546,38 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		else
 			areaOrganizacional.setAreaMae(getDao().findAreaOrganizacionalByCodigoAc(lotacao.getAreaMaeCodigo(), lotacao.getEmpresaCodigo()));
 	}
+
+	public Collection<AreaOrganizacional> getAncestrais(Collection<AreaOrganizacional> areas, Long id) 
+	{
+		Collection<AreaOrganizacional> familia = new ArrayList<AreaOrganizacional>();
+		
+		for (AreaOrganizacional area : areas) 
+		{
+			if(area.getId().equals(id))
+			{
+				procuraMae(familia, areas, area.getAreaMae());
+				familia.add(area);
+				break;
+			}
+		}
+		
+		return familia;
+	}
+
+	private void procuraMae(Collection<AreaOrganizacional> familia, Collection<AreaOrganizacional> areas, AreaOrganizacional areaMae) 
+	{
+		if(areaMae != null && areaMae.getId() != null)
+		{
+			for (AreaOrganizacional area : areas) 
+			{
+				if(area.getId().equals(areaMae.getId()))
+				{
+					procuraMae(familia, areas, area.getAreaMae());
+					familia.add(area);
+					break;
+				}
+			}
+		}
+	}
 	
 }

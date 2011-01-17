@@ -23,6 +23,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
@@ -32,79 +33,90 @@
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 	</style>
 
-
-<script type="text/javascript">
-	function populaCidades()
-	{
-		DWRUtil.useLoadingMessage('Carregando...');
-		if(document.getElementById('estado').value == "")
+	<#assign empresaId><@authz.authentication operation="empresaId"/></#assign>
+	<script type="text/javascript">
+		function populaEmails(id)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getEmailsResponsaveis(createListEmails, id, ${empresaId});
+		}
+	
+		function createListEmails(data)
+		{
+			addChecks("emailsCheck", data)
+		}
+		
+		function populaCidades()
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			if(document.getElementById('estado').value == "")
+			{
+				DWRUtil.useLoadingMessage('Carregando...');
+				DWRUtil.removeAllOptions("cidade");
+			}else{
+				CidadeDWR.getCidades(createListCidades, document.getElementById('estado').value);
+			}
+		}
+	
+		function createListCidades(data)
+		{
 			DWRUtil.removeAllOptions("cidade");
-		}else{
-			CidadeDWR.getCidades(createListCidades, document.getElementById('estado').value);
+			DWRUtil.addOptions("cidade", data);
 		}
-	}
-
-	function createListCidades(data)
-	{
-		DWRUtil.removeAllOptions("cidade");
-		DWRUtil.addOptions("cidade", data);
-	}
-
-	function populaBairros()
-	{
-		if(document.getElementById('cidade').value == "")
+	
+		function populaBairros()
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			DWRUtil.removeAllOptions("bairrosCheck");
-		}else{
-			BairroDWR.getBairrosMap(createListBairros, document.getElementById('cidade').value);
+			if(document.getElementById('cidade').value == "")
+			{
+				DWRUtil.useLoadingMessage('Carregando...');
+				DWRUtil.removeAllOptions("bairrosCheck");
+			}else{
+				BairroDWR.getBairrosMap(createListBairros, document.getElementById('cidade').value);
+			}
 		}
-	}
-
-	function createListBairros(data)
-	{
-		addChecks("bairrosCheck",data)
-	}
-
-	var bairrosMarcados = new Array();
-
-	var retorno = new Array();
-
-	function calculaSalario()
-	{
-		tipoSalario     = 1;// CARGO
-		faixaSalarialId = document.getElementById("faixa").value;
-		IndiceId        = 0;
-		quantidade      = 0;
-		salario         = 0;
-
-		ReajusteDWR.calculaSalario(setSalarioCalculado, tipoSalario, faixaSalarialId, IndiceId, quantidade, salario);
-	}
-
-	function setSalarioCalculado(data)
-	{
-		document.getElementById("remuneracao").value = data;
-	}
-
-	function compl()
-	{
-		var compl = document.getElementById("complementares");
-		var img = document.getElementById("imgCompl");
-		if(compl.style.display == "none")
+	
+		function createListBairros(data)
 		{
-			compl.style.display = "";
-			img.src = "<@ww.url includeParams="none" value="/imgs/arrow_up.gif"/>"
+			addChecks("bairrosCheck",data)
 		}
-		else
+	
+		var bairrosMarcados = new Array();
+	
+		var retorno = new Array();
+	
+		function calculaSalario()
 		{
-			compl.style.display = "none";
-			img.src = "<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"
+			tipoSalario     = 1;// CARGO
+			faixaSalarialId = document.getElementById("faixa").value;
+			IndiceId        = 0;
+			quantidade      = 0;
+			salario         = 0;
+	
+			ReajusteDWR.calculaSalario(setSalarioCalculado, tipoSalario, faixaSalarialId, IndiceId, quantidade, salario);
 		}
-	}
-
-</script>
+	
+		function setSalarioCalculado(data)
+		{
+			document.getElementById("remuneracao").value = data;
+		}
+	
+		function compl()
+		{
+			var compl = document.getElementById("complementares");
+			var img = document.getElementById("imgCompl");
+			if(compl.style.display == "none")
+			{
+				compl.style.display = "";
+				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_up.gif"/>"
+			}
+			else
+			{
+				compl.style.display = "none";
+				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"
+			}
+		}
+	
+	</script>
 
 	<#assign validarCampos="return validaFormulario('form', new Array('estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol'))"/>
 </head>
@@ -125,7 +137,7 @@
 			<@ww.textfield readonly="true" label="Área" name="solicitacao.areaOrganizacional.nome" id="area" required="true" cssStyle="width: 347px;background: #EBEBEB;"/>
 			<@ww.hidden name="solicitacao.areaOrganizacional.id"/>
 		<#else>
-			<@ww.select label="Área Organizacional" name="solicitacao.areaOrganizacional.id" id="area" list="areas" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;"/>
+			<@ww.select label="Área Organizacional" name="solicitacao.areaOrganizacional.id" id="area" list="areas" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;" onchange="javascript:populaEmails(this.value);" />
 		</#if>
 
 		<#if !clone && somenteLeitura && solicitacao.faixaSalarial?exists && solicitacao.faixaSalarial.id?exists>
@@ -145,7 +157,9 @@
 		<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
 		<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
 		
-		
+		<#if !solicitacao.id?exists>
+			<@frt.checkListBox name="emailsCheck" id="emailsCheck" label="Enviar avisos" list="emailsCheckList" />
+		</#if>
 		<br/>
 		
 		<li>

@@ -50,4 +50,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<ExamesPrevistosRelatorio> setFamiliaAreas(Collection<ExamesPrevistosRelatorio> examesPrevistosRelatorios, Long empresaId) throws Exception;
 	public void bind(AreaOrganizacional areaOrganizacionalTmp, TAreaOrganizacional areaOrganizacional);
 	public Collection<CheckBox> populaCheckOrderDescricao(Long[] empresaIds);
+	public Collection<AreaOrganizacional> findAreasPossiveis(Collection<AreaOrganizacional> areas, Long id);
+	public Collection<AreaOrganizacional> getAncestrais(Collection<AreaOrganizacional> areas, Long id);
 }

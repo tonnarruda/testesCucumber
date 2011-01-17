@@ -199,28 +199,63 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 	public void setNomeResponsavel(String nomeResponsavel)
 	{
+		preparaResponsavel();
+		responsavel.setNomeComercial(nomeResponsavel);
+	}
+	
+	public void setEmailResponsavel(String emailResponsavel)
+	{
+		preparaResponsavel();
+		responsavel.setEmailColaborador(emailResponsavel);
+	}
+
+	private void preparaResponsavel() {
 		if(responsavel == null)
 			responsavel = new Colaborador();
-
-		responsavel.setNomeComercial(nomeResponsavel);
 	}
 
 	public void setIdResponsavel(Long idResponsavel)
 	{
-		if(responsavel == null)
-			responsavel = new Colaborador();
-
+		preparaResponsavel();
 		responsavel.setId(idResponsavel);
 	}
 	
 	public void setResponsavelNome(String nome) {
-		if(responsavel == null) responsavel = new Colaborador();
+		preparaResponsavel();
 		responsavel.setNome(nome);
 	}
 	
 	public String getResponsavelNome() {
-		if(responsavel == null) responsavel = new Colaborador();
+		preparaResponsavel();
 		return responsavel.getNome();
+	}
+	
+	public String getResponsavelEmailNomeComercial() {
+		try {
+			String email = "";
+			if(responsavel.getContato().getEmail() != null)
+				email = responsavel.getContato().getEmail();
+			
+			if(responsavel.getNomeComercial() != null)
+				email += " (" + responsavel.getNomeComercial() + ")";
+				
+			return email;
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
+	public String getResponsavelEmail() {
+		try {
+			String email = "";
+			
+			if(responsavel.getContato().getEmail() != null)
+				email = responsavel.getContato().getEmail();
+			
+			return email;
+		} catch (Exception e) {
+			return "";
+		}
 	}
 
 	public void setAreaMaeId(Long areaMaeId)

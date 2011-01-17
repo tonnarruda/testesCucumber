@@ -50,6 +50,22 @@ public class AreaOrganizacionalDWR
 
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresa");
 	}
+
+	@SuppressWarnings("unchecked")
+	public Map<Object, Object> getEmailsResponsaveis(Long id, Long empresaId) throws Exception
+	{
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllList(empresaId, true); 
+		areas = areaOrganizacionalManager.getAncestrais(areas, id);
+		Collection<AreaOrganizacional> areasComEmailResp = new ArrayList<AreaOrganizacional>();
+		
+		for (AreaOrganizacional area : areas) 
+		{
+			if(area.getResponsavel() != null && area.getResponsavel().getContato() != null && area.getResponsavel().getContato().getEmail() != null && !area.getResponsavel().getContato().getEmail().equals(""))
+				areasComEmailResp.add(area);
+		}
+		
+		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areasComEmailResp, "getResponsavelEmail", "getResponsavelEmailNomeComercial");
+	}
 	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{

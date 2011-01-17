@@ -217,6 +217,44 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	assertEquals(3, retorno.size());
     }
+    
+    public void testGetAncestrais()
+    {
+    	Collection<AreaOrganizacional> todasAreas = new ArrayList<AreaOrganizacional>();
+    	
+    	AreaOrganizacional avo = new AreaOrganizacional();
+    	avo.setId(1L);
+    	
+    	AreaOrganizacional mae = new AreaOrganizacional();
+    	mae.setAreaMae(avo);
+    	mae.setId(2L);
+    	
+    	AreaOrganizacional filha = new AreaOrganizacional();
+    	filha.setAreaMae(mae);
+    	filha.setId(3L);
+    	
+    	AreaOrganizacional vizinha = new AreaOrganizacional();
+    	vizinha.setId(4L);
+
+    	AreaOrganizacional babau = new AreaOrganizacional();
+    	babau.setAreaMae(vizinha);
+    	babau.setId(7L);
+    	
+    	AreaOrganizacional irma = new AreaOrganizacional();
+    	irma.setAreaMae(mae);
+    	irma.setId(5L);
+    	
+    	todasAreas.add(avo);
+    	todasAreas.add(mae);
+    	todasAreas.add(filha);
+    	todasAreas.add(vizinha);
+    	todasAreas.add(babau);
+    	todasAreas.add(irma);
+    	
+    	Collection<AreaOrganizacional> retorno = areaOrganizacionalManager.getAncestrais(todasAreas, filha.getId());
+    	
+    	assertEquals(3, retorno.size());
+    }
 
     public void	testFindAreasPossiveis()
     {

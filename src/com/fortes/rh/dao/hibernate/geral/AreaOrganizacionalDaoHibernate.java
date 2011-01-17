@@ -49,6 +49,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
 		criteria.createCriteria("ao.areaMae", "areaMae", Criteria.LEFT_JOIN);
+		criteria.createCriteria("ao.responsavel", "r", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ao.id"), "id");
@@ -57,7 +58,9 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("ao.codigoAC"), "codigoAC");
 		p.add(Projections.property("areaMae.id"), "areaMaeId");
 		p.add(Projections.property("areaMae.nome"), "areaMaeNome");
-		p.add(Projections.property("ao.responsavel.id"), "idResponsavel");
+		p.add(Projections.property("r.id"), "idResponsavel");
+		p.add(Projections.property("r.nomeComercial"), "nomeResponsavel");
+		p.add(Projections.property("r.contato.email"), "emailResponsavel");
 		p.add(Projections.property("ao.empresa.id"), "empresaId");
 		criteria.setProjection(p);
 
@@ -91,6 +94,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("am.nome"), "nomeAreaMae");
 		p.add(Projections.property("r.id"), "idResponsavel");
 		p.add(Projections.property("r.nomeComercial"), "nomeResponsavel");
+		p.add(Projections.property("r.contato.email"), "emailResponsavel");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nome"), "empresaNome");
 

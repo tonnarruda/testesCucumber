@@ -94,6 +94,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     private String[] bairrosCheck;
     private Collection<CheckBox> bairrosCheckList = new ArrayList<CheckBox>();
+    private String[] emailsCheck;
+    private Collection<CheckBox> emailsCheckList = new ArrayList<CheckBox>();
     private Collection<Cargo> cargos = new ArrayList<Cargo>();
     private Long cargoId;
 
@@ -228,7 +230,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         else
            	solicitacao.setLiberador(null);
         
-        solicitacaoManager.save(solicitacao);
+        solicitacaoManager.save(solicitacao, emailsCheck);
 
         return Action.SUCCESS;
     }
@@ -746,5 +748,13 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public Collection<Avaliacao> getAvaliacoes() {
 		return avaliacoes;
+	}
+
+	public Collection<CheckBox> getEmailsCheckList() {
+		return emailsCheckList;
+	}
+
+	public void setEmailsCheck(String[] emailsCheck) {
+		this.emailsCheck = emailsCheck;
 	}
 }
