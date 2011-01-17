@@ -35,6 +35,6 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId);
-	public void emailParaSolicitante(Usuario usuario, Solicitacao solicitacao, Empresa getEmpresaSistema);
+	public void emailParaSolicitante(Usuario solicitante, Solicitacao solicitacao, Empresa empresa);
 	
 }

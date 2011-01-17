@@ -22,6 +22,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, SolicitacaoDao> implements SolicitacaoManager
@@ -31,7 +32,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private Mail mail;
 	private PerfilManager perfilManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private ColaboradorManager colaboradorManager;
 
 	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Long usuarioId, Long cargoId)
 	{
@@ -191,42 +191,24 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		}
 	}
 	
-	public void emailParaSolicitante(Usuario liberador, Solicitacao solicitante , Empresa empresa)
+	public void emailParaSolicitante(Usuario solicitante, Solicitacao solicitacao , Empresa empresa)
 	{
 		try {
-			Colaborador solicitanteColab = colaboradorManager.findByUsuarioProjection(solicitante.getId());
-			String descricaoSolicitacao = solicitante.getDescricao();
-			String nomeSolicitante = preparaNome(solicitanteColab);
-			String nomeLiberador = preparaNome(colaboradorManager.findByUsuarioProjection(liberador.getId()));
-			String dataSolicitacao = DateUtil.formataDiaMesAno(solicitante.getData());
-			String dataAprovacaoSolicitacao = DateUtil.formataDiaMesAno(new Date());
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+			
+			Colaborador colaboradorSolicitante = colaboradorManager.findByUsuarioProjection(solicitante.getId());
+			String nomeSolicitante = preparaNome(colaboradorSolicitante);
+			String nomeLiberador = preparaNome(colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId()));
+	
 			StringBuilder body = new StringBuilder();
-		
-
-			body.append( "<table>" +
-					"<thead>" +
-					"<tr>" +
-						"<th>Solicitação</th>" +
-						"<th>|</th>" +
-						"<th>Data da Solicitação</th>" +
-						"<th>|</th>" +
-						"<th>Liberado por:</th>" +
-						"<th>|</th>" +
-						"<th>Data da Aprovação:</th>" +
-					"</tr>" +
-					"<tr>" +
-						"<td>descricaoSolicitacao</td>" +
-						"<td>|</td>" +
-						"<td>dataSolicitacao</td>" +
-						"<td>|</td>" +
-						"<td>nomeLiberador</td>" +
-						"<td>|</td>" +
-						"<td>dataAprovacaoSolicitacao</td>" +
-					"</tr>" +
-					"</thead><tbody>");
+			body.append("Solicitação Liberada");
+			body.append("<br>Descrição: " + solicitacao.getDescricao());
+			body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
+			body.append("<br>Solicitante: " + nomeSolicitante);
+			body.append("<br><br>Liberada por: " + nomeLiberador);
+			body.append("<br>Liberada em: " + DateUtil.formataDiaMesAno(new Date()));
 			
-			
-			mail.send(empresa, "Liberação de Solicitação", body.toString(), null, solicitanteColab.getContato().getEmail());
+			mail.send(empresa, "Solicitação Liberada", body.toString(), null, colaboradorSolicitante.getContato().getEmail());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -234,12 +216,10 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	
 	private String preparaNome(Colaborador colaborador) 
 	{
-		String nome = colaborador.getNome();
+		if(colaborador == null)
+			return "Usuário sem colaborador";
 		
-		if(nome == null || nome.equals(""))
-			nome = colaborador.getUsuario().getNome();
-		
-		return nome;
+		return colaborador.getNome();
 	}
 
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId)
@@ -271,8 +251,4 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().getIndicadorQtdCandidatos(dataDe, dataAte, areasIds, estabelecimentosIds);
 	}
 
-//	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-//		this.colaboradorManager = colaboradorManager;
-//	}
-	
 }

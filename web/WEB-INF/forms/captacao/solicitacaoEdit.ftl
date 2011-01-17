@@ -184,7 +184,6 @@
 		<br/>
 		
 		<@ww.hidden name="solicitacao.id" />
-		<@ww.hidden name="solicitacao.data" />
 		<@ww.hidden name="solicitacao.solicitante.id" />
 		<@ww.hidden name="solicitacao.empresa.id" />
 
