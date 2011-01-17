@@ -42,7 +42,7 @@ public class BarChartCustomizer extends JRAbstractChartCustomizer
 		     }
 		};
 		renderer.setBaseItemLabelGenerator(oldRenderer.getBaseItemLabelGenerator());
-	    renderer.setBaseItemLabelFont(new Font("SansSerif",Font.PLAIN,6));
+	    renderer.setBaseItemLabelFont(new Font("Sans-serif",Font.PLAIN,6));
 	    renderer.setBaseItemLabelPaint(Color.black);
 		renderer.setBaseItemLabelsVisible(true);
 		renderer.setBarPainter(new StandardBarPainter());
@@ -69,7 +69,7 @@ public class BarChartCustomizer extends JRAbstractChartCustomizer
 		{
 			final ValueMarker target = new ValueMarker(totalColab);
 			target.setLabel("Total: " + totalColab);
-			target.setLabelFont(new Font("SansSerif", Font.PLAIN, 5));
+			target.setLabelFont(new Font("Sans-serif", Font.PLAIN, 5));
 			target.setLabelAnchor(RectangleAnchor.LEFT);
 			target.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
 			target.setLabelPaint(new Color(0, 143, 255));
