@@ -11,11 +11,13 @@ import java.util.List;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.PerfilManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.DateUtil;
@@ -29,6 +31,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private Mail mail;
 	private PerfilManager perfilManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private ColaboradorManager colaboradorManager;
 
 	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Long usuarioId, Long cargoId)
 	{
@@ -188,6 +191,57 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		}
 	}
 	
+	public void emailParaSolicitante(Usuario liberador, Solicitacao solicitante , Empresa empresa)
+	{
+		try {
+			Colaborador solicitanteColab = colaboradorManager.findByUsuarioProjection(solicitante.getId());
+			String descricaoSolicitacao = solicitante.getDescricao();
+			String nomeSolicitante = preparaNome(solicitanteColab);
+			String nomeLiberador = preparaNome(colaboradorManager.findByUsuarioProjection(liberador.getId()));
+			String dataSolicitacao = DateUtil.formataDiaMesAno(solicitante.getData());
+			String dataAprovacaoSolicitacao = DateUtil.formataDiaMesAno(new Date());
+			StringBuilder body = new StringBuilder();
+		
+
+			body.append( "<table>" +
+					"<thead>" +
+					"<tr>" +
+						"<th>Solicitação</th>" +
+						"<th>|</th>" +
+						"<th>Data da Solicitação</th>" +
+						"<th>|</th>" +
+						"<th>Liberado por:</th>" +
+						"<th>|</th>" +
+						"<th>Data da Aprovação:</th>" +
+					"</tr>" +
+					"<tr>" +
+						"<td>descricaoSolicitacao</td>" +
+						"<td>|</td>" +
+						"<td>dataSolicitacao</td>" +
+						"<td>|</td>" +
+						"<td>nomeLiberador</td>" +
+						"<td>|</td>" +
+						"<td>dataAprovacaoSolicitacao</td>" +
+					"</tr>" +
+					"</thead><tbody>");
+			
+			
+			mail.send(empresa, "Liberação de Solicitação", body.toString(), null, solicitanteColab.getContato().getEmail());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String preparaNome(Colaborador colaborador) 
+	{
+		String nome = colaborador.getNome();
+		
+		if(nome == null || nome.equals(""))
+			nome = colaborador.getUsuario().getNome();
+		
+		return nome;
+	}
+
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId)
 	{
 		return getDao().getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresaId);
@@ -216,4 +270,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds) {
 		return getDao().getIndicadorQtdCandidatos(dataDe, dataAte, areasIds, estabelecimentosIds);
 	}
+
+//	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+//		this.colaboradorManager = colaboradorManager;
+//	}
+	
 }

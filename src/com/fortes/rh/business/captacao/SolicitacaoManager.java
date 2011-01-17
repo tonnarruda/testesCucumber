@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.geral.Empresa;
@@ -34,4 +35,6 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId);
+	public void emailParaSolicitante(Usuario usuario, Solicitacao solicitacao, Empresa getEmpresaSistema);
+	
 }

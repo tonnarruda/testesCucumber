@@ -280,6 +280,22 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertNull(colaboradorRetorno.getUsuario().getId());
 	}
 
+	public void testFindByUsuarioProjection() throws Exception
+	{		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setNome("João Batista");
+		usuarioDao.save(usuario);
+	
+		Colaborador colaborador = getEntity();
+		colaborador.setNome("João");
+		colaborador.setUsuario(usuario);
+		colaboradorDao.save(colaborador);
+
+		Colaborador retorno = colaboradorDao.findByUsuarioProjection(usuario.getId());
+		assertEquals("João", retorno.getNome());
+		assertEquals("João Batista", retorno.getUsuario().getNome());
+	}
+	
 	@Override
 	public void testRemove() throws Exception
 	{

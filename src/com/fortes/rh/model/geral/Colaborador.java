@@ -1422,6 +1422,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		usuario.setId(usuarioIdProjection);
 	}
 
+	public void setUsuarioNomeProjection(String usuarioNome)
+	{
+		if (usuario == null)
+			usuario = new Usuario();
+		usuario.setNome(usuarioNome);
+	}
+
 	public void setAreaOrganizacionalId(Long id)
 	{
 		if (areaOrganizacional == null)

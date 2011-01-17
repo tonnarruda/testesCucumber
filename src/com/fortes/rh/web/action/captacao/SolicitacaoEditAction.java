@@ -53,6 +53,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -236,7 +237,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     public String update() throws Exception
     {
     	Solicitacao solicitacaoAux = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
-
+    	
         if (bairrosCheck != null)
         {
         	Collection<Bairro> bairrosTmp = montaCargos();
@@ -247,8 +248,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
         if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
         {
-        	if(solicitacao.isLiberada() && !solicitacaoAux.isLiberada())//já foi liberada antes, não podemos editar o liberador
-        		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+        	if(solicitacao.isLiberada() && !solicitacaoAux.isLiberada())
+    		{
+    			solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+    			solicitacaoManager.emailParaSolicitante(solicitacaoAux.getSolicitante(), solicitacao, getEmpresaSistema());
+    		}
         	
         	if(!solicitacao.isLiberada())
         		solicitacao.setLiberador(null);

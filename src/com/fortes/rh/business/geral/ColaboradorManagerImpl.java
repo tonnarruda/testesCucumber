@@ -1649,5 +1649,10 @@ e.printStackTrace();
 
 		return retorno;
 	}
+
+	public Colaborador findByUsuarioProjection(Long usuarioId) 
+	{
+		return getDao().findByUsuarioProjection(usuarioId);
+	}
 	
 }

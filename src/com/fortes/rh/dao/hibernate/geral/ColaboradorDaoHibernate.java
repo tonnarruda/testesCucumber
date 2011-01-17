@@ -1776,6 +1776,25 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return (Long) criteria.uniqueResult();
 	}
+	
+	public Colaborador findByUsuarioProjection(Long usuarioId)
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.usuario", "u", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.contato.email"), "emailColaborador");
+		p.add(Projections.property("u.nome"), "usuarioNomeProjection");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("u.id", usuarioId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+		
+		return (Colaborador) criteria.uniqueResult();
+	}
 
 	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC)
 	{
