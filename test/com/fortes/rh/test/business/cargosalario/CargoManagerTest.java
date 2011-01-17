@@ -365,7 +365,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		faixaSalarialManager.expects(atLeastOnce()).method("findByCargo").will(returnValue(faixas));
 		etapaSeletivaManager.expects(atLeastOnce()).method("findByCargo").will(returnValue(etapaSeletivas));
 		
-		Collection<Cargo> cargosRetorno = cargoManager.getCargosByIds(idsLong);
+		Collection<Cargo> cargosRetorno = cargoManager.getCargosByIds(idsLong, null);
 
 		assertEquals(1, cargosRetorno.size());
 	}

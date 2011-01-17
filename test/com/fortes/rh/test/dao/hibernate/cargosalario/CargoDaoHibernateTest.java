@@ -246,7 +246,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		Cargo cargo2 = CargoFactory.getEntity();
 		cargo2 = cargoDao.save(cargo2);
 
-		Collection<Cargo> retorno = cargoDao.findCargosByIds(new Long[]{cargo1.getId(), cargo2.getId()});
+		Collection<Cargo> retorno = cargoDao.findCargosByIds(new Long[]{cargo1.getId(), cargo2.getId()}, null);
 
 		assertEquals(2, retorno.size());
 	}

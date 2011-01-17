@@ -145,7 +145,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return criteria.list();
 	}
 
-	public Collection<Cargo> findCargosByIds(Long[] cargoIds)
+	public Collection<Cargo> findCargosByIds(Long[] cargoIds, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 		criteria.createCriteria("grupoOcupacional", "go", Criteria.LEFT_JOIN);
@@ -169,6 +169,9 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		
 		criteria.setProjection(p);
 
+		if(empresaId != null)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
 		criteria.add(Expression.in("c.id", cargoIds));
 		criteria.addOrder(Order.asc("c.nomeMercado"));
 

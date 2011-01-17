@@ -76,11 +76,11 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return cargos;
 	}
 
-	public Collection<Cargo> getCargosByIds(Long[] cargoIds)
+	public Collection<Cargo> getCargosByIds(Long[] cargoIds, Long empresaId)
 	{
 		FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
 		
-		Collection<Cargo> cargos = getDao().findCargosByIds(cargoIds);
+		Collection<Cargo> cargos = getDao().findCargosByIds(cargoIds, empresaId);
 		
 		for (Cargo cargo : cargos)
 		{
