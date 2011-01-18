@@ -32,7 +32,7 @@
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="colaborador.tempoDeServico" class="java.lang.String"/>
 	<field name="colaborador.dataAdmissaoFormatada" class="java.lang.String"/>
-	<field name="salario" class="java.lang.Double"/>
+	<field name="salarioCalculado" class="java.lang.Double"/>
 	<field name="salarioVariavel" class="java.lang.Double"/>
 	<field name="colaborador.empresa.acIntegra" class="java.lang.Boolean"/>
 
@@ -401,6 +401,21 @@
 						</reportElement>
 					<graphicElement stretchType="RelativeToTallestObject" pen="None"/>
 				</rectangle>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="397"
+						y="1"
+						width="140"
+						height="11"
+						key="textField-10">
+							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="397"
@@ -414,7 +429,7 @@
 					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salario}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salarioCalculado}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -429,7 +444,7 @@
 					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salario}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salarioCalculado}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -504,22 +519,7 @@
 					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double($F{salarioVariavel}.doubleValue() + $F{salario}.doubleValue())]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="397"
-						y="1"
-						width="140"
-						height="11"
-						key="textField-10">
-							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double($F{salarioVariavel}.doubleValue() + $F{salarioCalculado}.doubleValue())]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

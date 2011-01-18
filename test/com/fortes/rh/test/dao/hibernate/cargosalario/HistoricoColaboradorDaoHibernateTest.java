@@ -8,8 +8,11 @@ import com.fortes.dao.GenericDao;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.dao.cargosalario.GrupoOcupacionalDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.cargosalario.IndiceDao;
+import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
 import com.fortes.rh.dao.cargosalario.ReajusteColaboradorDao;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
@@ -24,6 +27,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
@@ -52,6 +56,7 @@ import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
+import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
@@ -72,6 +77,10 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	private TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao;
 	private AmbienteDao ambienteDao;
 	private FuncaoDao funcaoDao;
+	private IndiceDao indiceDao;
+	private IndiceHistoricoDao indiceHistoricoDao;
+	
+	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
 
 	public HistoricoColaborador getEntity()
 	{
@@ -945,33 +954,75 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	
 	public void testFindByCargoEstabelecimento()
 	{
+		// dado uma empresa
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setAcIntegra(true);
 		empresaDao.save(empresa);
 		
+		// dado um estabelecimento
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento);
 		
+		// dado um cargo
 		Cargo cargo = CargoFactory.getEntity();
 		cargo.setNome("Desenvolvedor");
 		cargo.setEmpresa(empresa);
 		cargoDao.save(cargo);
-
+		
+		Indice indice = IndiceFactory.getEntity();
+		indice.setNome("Indice");
+		indiceDao.save(indice);
+		
+		IndiceHistorico indiceHistorico = IndiceHistoricoFactory.getEntity();
+		indiceHistorico.setIndice(indice);
+		indiceHistorico.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		indiceHistorico.setValor(12.00);
+		indiceHistoricoDao.save(indiceHistorico);
+		
+		// dado uma faixa com seu historico
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial.setNome("Junior");
 		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 
+		FaixaSalarial faixaSalarialColab = FaixaSalarialFactory.getEntity();
+		faixaSalarialColab.setNome("Tadeu");
+		faixaSalarialColab.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarialColab);
+
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarialColab);
+		faixaSalarialHistorico.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		faixaSalarialHistorico.setValor(875.99);
+		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
+		faixaSalarialHistorico.setStatus(StatusRetornoAC.CONFIRMADO);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		
+		// dado uma area organizacional
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(areaOrganizacional);
 		
+		// dado um colaborador
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome("Maria");
 		colaborador.setEmpresa(empresa);
 		colaborador.setDataAtualizacao(DateUtil.criarDataMesAno(1, 6, 2010));
 		colaborador.setDesligado(false);
-		
 		colaboradorDao.save(colaborador);
+
+		Colaborador colaboradorFaixaSalarial = ColaboradorFactory.getEntity();
+		colaboradorFaixaSalarial.setNome("colaboradorFaixaSalarial");
+		colaboradorFaixaSalarial.setEmpresa(empresa);
+		colaboradorFaixaSalarial.setDataAtualizacao(DateUtil.criarDataMesAno(1, 6, 2010));
+		colaboradorFaixaSalarial.setDesligado(false);
+		colaboradorDao.save(colaboradorFaixaSalarial);
+
+		Colaborador colaboradorIndice = ColaboradorFactory.getEntity();
+		colaboradorIndice.setNome("colaboradorIndice");
+		colaboradorIndice.setEmpresa(empresa);
+		colaboradorIndice.setDataAtualizacao(DateUtil.criarDataMesAno(1, 6, 2010));
+		colaboradorIndice.setDesligado(false);
+		colaboradorDao.save(colaboradorIndice);
 		
 		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador1.setData(DateUtil.criarDataMesAno(1, 2, 2010));
@@ -980,7 +1031,30 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador1.setEstabelecimento(estabelecimento);
 		historicoColaborador1.setAreaOrganizacional(areaOrganizacional);
 		historicoColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador1.setSalario(1000.00);
 		historicoColaboradorDao.save(historicoColaborador1);
+
+		HistoricoColaborador historicoColaboradorFaixasalarial = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorFaixasalarial.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		historicoColaboradorFaixasalarial.setTipoSalario(TipoAplicacaoIndice.CARGO);
+		historicoColaboradorFaixasalarial.setColaborador(colaboradorFaixaSalarial);
+		historicoColaboradorFaixasalarial.setFaixaSalarial(faixaSalarialColab);
+		historicoColaboradorFaixasalarial.setEstabelecimento(estabelecimento);
+		historicoColaboradorFaixasalarial.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorFaixasalarial.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaboradorFaixasalarial);
+
+		HistoricoColaborador historicoColaboradorIndice = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorIndice.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		historicoColaboradorIndice.setTipoSalario(TipoAplicacaoIndice.INDICE);
+		historicoColaboradorIndice.setColaborador(colaboradorIndice);
+		historicoColaboradorIndice.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorIndice.setEstabelecimento(estabelecimento);
+		historicoColaboradorIndice.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorIndice.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorIndice.setIndice(indice);
+		historicoColaboradorIndice.setQuantidadeIndice(2.0);
+		historicoColaboradorDao.save(historicoColaboradorIndice);
 		
 		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador2.setData(DateUtil.criarDataMesAno(10, 2, 2010));//esse é o atual mas ta com status = AGUARDANDO
@@ -988,23 +1062,34 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador2.setStatus(StatusRetornoAC.AGUARDANDO);
 		historicoColaboradorDao.save(historicoColaborador2);
 		
+		// quando
 		Long[] cargoIds = new Long[]{cargo.getId()};
 		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
 		Long[] areaOrganizacionalIds = new Long[]{areaOrganizacional.getId()};
 		Date dataConsulta = new Date();
 		
 		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, null, empresa.getId());		
-		assertEquals(1, historicoColaboradors.size());
-		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
+		assertEquals(3, historicoColaboradors.size());
+		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[1];
 		assertEquals("Desenvolvedor Junior", resultado1.getFaixaSalarial().getDescricao());
 		assertEquals("Maria", resultado1.getColaborador().getNome());
+		assertEquals(1000.00, resultado1.getSalarioCalculado());
+
+		HistoricoColaborador resultadoColabFaixaSalarial = (HistoricoColaborador) historicoColaboradors.toArray()[2];
+		assertEquals("colaboradorFaixaSalarial", resultadoColabFaixaSalarial.getColaborador().getNome());
+		assertEquals(875.99, resultadoColabFaixaSalarial.getSalarioCalculado());
+		
+		HistoricoColaborador resultadoColabIndice = (HistoricoColaborador) historicoColaboradors.toArray()[0];
+		assertEquals("colaboradorIndice", resultadoColabIndice.getColaborador().getNome());
+		assertEquals(24.00, resultadoColabIndice.getSalarioCalculado());
 
 		assertTrue(historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 1900), null, null, dataConsulta, null, null, null).isEmpty());
 
 		//desatualizados a partir de 01/07/2010 para tras
 		Date dataAtualizacao = DateUtil.criarDataMesAno(1, 7, 2010);
-		Collection<HistoricoColaborador> historicoColaboradorsDatAtaualizacao = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, dataAtualizacao, null);		
-		assertEquals(1, historicoColaboradorsDatAtaualizacao.size());
+		Collection<HistoricoColaborador> historicoColaboradorsDatAtaualizacao = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, dataAtualizacao, null);
+		
+		assertEquals(3, historicoColaboradorsDatAtaualizacao.size());
 	}
 
 	public void testFindHistoricoAprovado()
@@ -1288,5 +1373,17 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 
 	public void setFuncaoDao(FuncaoDao funcaoDao) {
 		this.funcaoDao = funcaoDao;
+	}
+
+	public void setFaixaSalarialHistoricoDao(FaixaSalarialHistoricoDao faixaSalarialHistoricoDao) {
+		this.faixaSalarialHistoricoDao = faixaSalarialHistoricoDao;
+	}
+
+	public void setIndiceDao(IndiceDao indiceDao) {
+		this.indiceDao = indiceDao;
+	}
+
+	public void setIndiceHistoricoDao(IndiceHistoricoDao indiceHistoricoDao) {
+		this.indiceHistoricoDao = indiceHistoricoDao;
 	}
 }
