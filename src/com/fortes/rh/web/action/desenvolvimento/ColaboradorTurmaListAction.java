@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
+import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -33,6 +34,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -51,6 +53,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private TurmaManager turmaManager;
 	private CertificacaoManager certificacaoManager;
 	private ColaboradorManager colaboradorManager;
+	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<Colaborador> colaboradors;
@@ -58,6 +61,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private ColaboradorTurma colaboradorTurma;
 	private Curso curso;
 	private Colaborador colaborador;
+	private Long colaboradorId;
+	private Long cursoId;
+	private String json = "";
 
 	private int qtdMesesSemCurso = 0;
 
@@ -375,6 +381,12 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 
+	}
+	
+	public String findNotas()
+	{
+		json = StringUtil.toJSON(aproveitamentoAvaliacaoCursoManager.findByColaboradorCurso(colaboradorId, cursoId), null);
+		return SUCCESS;
 	}
 
 	public Collection<ColaboradorTurma> getColaboradorTurmas()
@@ -729,5 +741,21 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setColaboradorId(Long colaboradorId) {
+		this.colaboradorId = colaboradorId;
+	}
+
+	public void setCursoId(Long cursoId) {
+		this.cursoId = cursoId;
+	}
+
+	public String getJson() {
+		return json;
+	}
+
+	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager) {
+		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
 	}
 }

@@ -31,4 +31,5 @@ public interface AproveitamentoAvaliacaoCursoManager extends GenericManager<Apro
 
 	
 	Collection<ColaboradorTurma> findColaboradorTurma(Long id, int qtdAvaliacao, String wherePor, Boolean aprovado);
+	Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId);
 }

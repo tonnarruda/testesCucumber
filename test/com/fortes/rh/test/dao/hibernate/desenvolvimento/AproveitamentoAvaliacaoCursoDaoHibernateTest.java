@@ -92,6 +92,38 @@ public class AproveitamentoAvaliacaoCursoDaoHibernateTest extends GenericDaoHibe
 		AproveitamentoAvaliacaoCurso aproveitamento = aproveitamentoAvaliacaoCursoDao.findByColaboradorTurmaAvaliacaoId(colaboradorTurma.getId(), avaliacaoCurso.getId());
 		assertNotNull(aproveitamento);
 	}
+	
+	public void testFindByColaboradorCurso()
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCursoDao.save(avaliacaoCurso);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso1 = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCurso1.setColaboradorTurma(colaboradorTurma);
+		aproveitamentoAvaliacaoCurso1.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCurso1.setValor(5.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso1);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso2 = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCurso2.setColaboradorTurma(colaboradorTurma);
+		aproveitamentoAvaliacaoCurso2.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCurso2.setValor(55.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso2);
+		
+		Collection<AproveitamentoAvaliacaoCurso> notas = aproveitamentoAvaliacaoCursoDao.findByColaboradorCurso(colaborador.getId(), curso.getId());
+		assertEquals(2, notas.size());
+	}
 
 	public void testFindAprovadoByTurma()
 	{

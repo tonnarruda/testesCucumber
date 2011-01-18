@@ -30,19 +30,19 @@
 		
 		function populaNotas(colaboradorId)
 		{
-			${turma.curso.id}
-			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
-		
+			jQuery('input[id^="nota_"]').val('');
+			
+			var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/colaboradorTurma/findNotas.action"/>";
+			
 			jQuery.getJSON(urlFind,
 			{
-	    		format: "json",
-	    		codigo:"84",
-	    		descricao:"a"
+	    		cursoId:"${turma.curso.id}",
+	    		colaboradorId:colaboradorId
 	  		},
 	  		function(data) {
 		  		jQuery.each(data, function(i,item){
-	            if ( i == 3 ) alert(item.codigo);
-	          });
+	            	jQuery("#nota_" + item.avaliacaoCurso.id).val(item.valor);
+	          	});
 	  		});
 		}
 		
@@ -61,8 +61,7 @@
 		<a href="#" onclick="populaColaborador();"><img border="0" src="<@ww.url value="/imgs/btnPesquisar.gif"/>"></a><br><br>
 	</div>
 	
-	
-		<@ww.select label="Colaborador (Nome - CPF - Matrícula)" name="colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" required="true" cssStyle="width: 500px;" headerKey="" headerValue="Utilize o filtro..." /><br>
+		<@ww.select label="Colaborador (Nome - CPF - Matrícula)" name="colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" required="true" cssStyle="width: 500px;" headerKey="" headerValue="Utilize o filtro..." onchange="javascript: populaNotas(this.value);"/><br>
 		
 		<#if avaliacaoCursos?exists && 0 < avaliacaoCursos?size>
 			<@display.table name="avaliacaoCursos" id="avaliacaoCurso" class="dados">
