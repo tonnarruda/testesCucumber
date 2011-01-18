@@ -24,9 +24,28 @@
 		function createListColaborador(data)
 		{
 			DWRUtil.removeAllOptions('colaborador');
-			jQuery('#colaborador').append('<option>Selecione...</option>');
+			jQuery('#colaborador').append('<option value=\"\">Selecione...</option>');
 			DWRUtil.addOptions("colaborador", data);
 		}
+		
+		function populaNotas(colaboradorId)
+		{
+			${turma.curso.id}
+			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
+		
+			jQuery.getJSON(urlFind,
+			{
+	    		format: "json",
+	    		codigo:"84",
+	    		descricao:"a"
+	  		},
+	  		function(data) {
+		  		jQuery.each(data, function(i,item){
+	            if ( i == 3 ) alert(item.codigo);
+	          });
+	  		});
+		}
+		
 	</script>
 </head>
 <body>
@@ -43,14 +62,14 @@
 	</div>
 	
 	
-		<@ww.select label="Colaborador (Nome - CPF - Matrícula)" name="colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" required="true" cssStyle="width: 500px;" headerKey="" headerValue="Utilize o filtro..."/><br>
+		<@ww.select label="Colaborador (Nome - CPF - Matrícula)" name="colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" required="true" cssStyle="width: 500px;" headerKey="" headerValue="Utilize o filtro..." /><br>
 		
 		<#if avaliacaoCursos?exists && 0 < avaliacaoCursos?size>
 			<@display.table name="avaliacaoCursos" id="avaliacaoCurso" class="dados">
 				<@display.column property="titulo" title="Avaliação" style="width: 400px;"/>
 
 				<@display.column title="Nota" style="width: 60px;text-align: center;">
-					<@ww.textfield id="" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress="return(somenteNumeros(event,'.,,'));"/>
+					<@ww.textfield id="nota_${avaliacaoCurso.id}" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress="return(somenteNumeros(event,'.,,'));"/>
 					<@ww.hidden name="avaliacaoCursoIds" value="${avaliacaoCurso.id}"/>
 				</@display.column>
 			</@display.table>
@@ -58,7 +77,7 @@
 		
 		<@ww.hidden name="planoTreinamento" />
 		<@ww.hidden name="turma.id" />
-		<@ww.hidden name="turma.curso.id" />
+		<@ww.hidden name="turma.curso.id"/>
 	</@ww.form>
 
 	<div class="buttonGroup">
