@@ -32,6 +32,7 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 	Collection<ColaboradorResposta> findRespostasColaborador(Long colaboradorQuestionarioId, Boolean aplicarPorAspecto);
 
 	void removeByColaboradorQuestionario(Long colaboradorQuestionarioId);
+	void removeByColaboradorQuestionario(Long[] colaboradorQuestionarioIds);
 
 	Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId);
 	
@@ -46,5 +47,4 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 	List<Object[]> countRespostas(Long avaliadoId, Long avaliacaoDesempenhoId);
 	
 	List<Object[]> countRespostasMultiplas(Long avaliadoId, Long avaliacaoDesempenhoId);
-
 }

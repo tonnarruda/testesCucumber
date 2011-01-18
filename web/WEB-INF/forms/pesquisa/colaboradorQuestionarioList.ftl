@@ -34,54 +34,57 @@
     <br>
 
 	<#if colaboradorQuestionarios?exists && 0 < colaboradorQuestionarios?size>
-		<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
-			<@display.column title="Ações" class="acao">
-
-				<#if !questionario.liberado>
-
-					<img border="0" title="Pesquisa não liberada." src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-
-					<img border="0" title="Responder a pesquisa por este colaborador (a Pesquisa precisa ser liberada antes)" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-
-					<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-
-				<#else>
-
-					<#if colaboradorQuestionario.respondida>
-
-						<#if questionario.anonimo?exists && questionario.anonimo>
-							<img border="0" title="Pesquisa Anônima." src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-						<#else>
-							<a href="visualizarRespostasPorColaborador.action?questionario.id=${questionario.id}&colaboradorId=${colaboradorQuestionario.colaborador.id}"><img border="0" title="Visualizar respostas do colaborador" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
-						</#if>
-
-						<img border="0" title="Pesquisa já respondida. Não é possível editar esta pesquisa." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-
-						<img border="0" title="Pesquisa já respondida. Não é possível excluir colaboradores." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-
-					<#else>
-
-						<img border="0" title="Esta pesquisa ainda não foi respondida." src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-
-						<@authz.authorize ifNotGranted="ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO">
-							<img border="0" title="Você não tem permissão para responder a pesquisa por este colaborador." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-						</@authz.authorize>
-
-						<@authz.authorize ifAllGranted="ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO">
-							<a href="../colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${questionario.id}&colaborador.id=${colaboradorQuestionario.colaborador.id}&validarFormulario=true&voltarPara=../colaboradorQuestionario/list.action?questionario.id=${questionario.id}&tela=colaboradorQuestionarioList"><img border="0" title="Responder a pesquisa por este colaborador" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-						</@authz.authorize>
-
+		<@ww.form name="form" action="deleteColaboradores.action" method="POST">
+            <@ww.hidden name="questionario.id"/>
+            
+			<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
+	
+				<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkColaborador\", this.checked);' />" style="width: 26px; text-align: center;">
+					<input type="checkbox" class="checkColaborador" value="${colaboradorQuestionario.id}" name="colaboradorQuestionarioIds" />
+				</@display.column>
+	
+				<@display.column title="Ações" style="width:60px;text-align:center">
+					<#if !questionario.liberado>
+	
+						<img border="0" title="Pesquisa não liberada." src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+	
+						<img border="0" title="Responder a pesquisa por este colaborador (a Pesquisa precisa ser liberada antes)" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+	
 						<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-
+	
+					<#else>
+						<#if colaboradorQuestionario.respondida>
+	
+							<#if questionario.anonimo?exists && questionario.anonimo>
+								<img border="0" title="Pesquisa Anônima." src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+							<#else>
+								<a href="visualizarRespostasPorColaborador.action?questionario.id=${questionario.id}&colaboradorId=${colaboradorQuestionario.colaborador.id}"><img border="0" title="Visualizar respostas do colaborador" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
+							</#if>
+	
+							<img border="0" title="Pesquisa já respondida. Não é possível editar esta pesquisa." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+	
+							<img border="0" title="Pesquisa já respondida. Não é possível excluir colaboradores." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+	
+						<#else>
+							<img border="0" title="Esta pesquisa ainda não foi respondida." src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+	
+							<@authz.authorize ifNotGranted="ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO">
+								<img border="0" title="Você não tem permissão para responder a pesquisa por este colaborador." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+							</@authz.authorize>
+	
+							<@authz.authorize ifAllGranted="ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO">
+								<a href="../colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${questionario.id}&colaborador.id=${colaboradorQuestionario.colaborador.id}&validarFormulario=true&voltarPara=../colaboradorQuestionario/list.action?questionario.id=${questionario.id}&tela=colaboradorQuestionarioList"><img border="0" title="Responder a pesquisa por este colaborador" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+							</@authz.authorize>
+	
+							<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+						</#if>
 					</#if>
-
-				</#if>
-
-			</@display.column>
-			<@display.column property="colaborador.nomeComercial" title="Colaborador"/>
-			<@display.column property="colaborador.contato.email" title="E-mail"/>
-			<@display.column property="colaborador.empresa.nome" title="Empresa" style="width:200px;"/>
-		</@display.table>
+				</@display.column>
+				<@display.column property="colaborador.nomeComercial" title="Colaborador"/>
+				<@display.column property="colaborador.contato.email" title="E-mail"/>
+				<@display.column property="colaborador.empresa.nome" title="Empresa" style="width:200px;"/>
+			</@display.table>
+		</@ww.form>
 
 		${colaboradorQuestionarios?size} registro(s) encontrado(s).
 		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -90,7 +93,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="window.location='prepareInsert.action?questionario.id=${questionario.id}'" id="btnInserir" class="btnInserir" ></button>
-
+		<button onclick="javascript: if (confirm('Confirma exclusão dos colaboradores selecionados?')) document.form.submit();" class="btnExcluir"></button>
 		<button onclick="window.location='imprimirColaboradores.action?questionario.id=${questionario.id}&empresaId=' + jQuery('#empresaId').val() + '&respondida=' + jQuery('#respondida').val()" class="btnImprimirPdf" ></button>
 
 		<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->

@@ -473,6 +473,24 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		
 		assertEquals(0, colaboradorRespostaDao.findRespostasColaborador(colaboradorQuestionario.getId(), null).size());
 	}
+	
+	public void testRemoveByColaboradorQuestionarios()
+	{
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta = colaboradorRespostaDao.save(colaboradorResposta);
+		
+		ColaboradorResposta colaboradorResposta2 = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta2.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta2 = colaboradorRespostaDao.save(colaboradorResposta2);
+		
+		colaboradorRespostaDao.removeByColaboradorQuestionario(new Long[]{colaboradorQuestionario.getId()});
+		
+		assertEquals(0, colaboradorRespostaDao.findRespostasColaborador(colaboradorQuestionario.getId(), null).size());
+	}
 
 	private void montaColaboradorResposta(Questionario questionario, Pergunta pergunta, Resposta resposta, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Date respondidaEm, Turma turma)
 	{

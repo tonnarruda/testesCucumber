@@ -73,6 +73,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private Collection<Empresa> empresas;
 	private Long empresaId = null;
 	private char respondida;
+	private Long[] colaboradorQuestionarioIds;
 	
 	public String list() throws Exception
 	{
@@ -128,6 +129,13 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		//TODO: Este metodo tambem remove o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" removesse as respostas e nao o contrario. 
 		colaboradorRespostaManager.removeFicha(colaboradorQuestionario.getId());
+		
+		return Action.SUCCESS;
+	}
+	
+	public String deleteColaboradores() throws Exception
+	{
+		colaboradorRespostaManager.removeFichas(colaboradorQuestionarioIds);
 		
 		return Action.SUCCESS;
 	}
@@ -399,6 +407,10 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public void setRespondida(char respondida) {
 		this.respondida = respondida;
+	}
+
+	public void setColaboradorQuestionarioIds(Long[] colaboradorQuestionarioIds) {
+		this.colaboradorQuestionarioIds = colaboradorQuestionarioIds;
 	}
 	
 }

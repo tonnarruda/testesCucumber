@@ -340,6 +340,15 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     	getDao().removeByColaboradorQuestionario(colaboradorQuestionarioId);
     	colaboradorQuestionarioManager.remove(colaboradorQuestionarioId);
 	}
+	
+	public void removeFichas(Long[] colaboradorQuestionarioIds) 
+	{
+		if(colaboradorQuestionarioIds != null && colaboradorQuestionarioIds.length > 0)
+		{
+			getDao().removeByColaboradorQuestionario(colaboradorQuestionarioIds);
+			colaboradorQuestionarioManager.remove(colaboradorQuestionarioIds);
+		}
+	}
 
 	public Collection<ColaboradorResposta> findByColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario, Long questionarioId)
 	{

@@ -1,4 +1,5 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 
