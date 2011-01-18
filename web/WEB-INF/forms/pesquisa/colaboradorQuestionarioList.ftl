@@ -93,7 +93,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="window.location='prepareInsert.action?questionario.id=${questionario.id}'" id="btnInserir" class="btnInserir" ></button>
-		<button onclick="javascript: if (confirm('Confirma exclusão das mensagens selecionadas?')) document.form.submit();" class="btnExcluir"></button>
+		<button onclick="javascript: if (confirm('Confirma exclusão dos colaboradores selecionados?')) document.form.submit();" class="btnExcluir"></button>
 		<button onclick="window.location='imprimirColaboradores.action?questionario.id=${questionario.id}&empresaId=' + jQuery('#empresaId').val() + '&respondida=' + jQuery('#respondida').val()" class="btnImprimirPdf" ></button>
 
 		<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->
