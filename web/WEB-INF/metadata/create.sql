@@ -221,7 +221,8 @@ CREATE TABLE candidato (
     empresa_id bigint,
     indicadopor character varying(100),
     nomecontato character varying(30),
-    datacadastro date
+    datacadastro date,
+    idF2RH int
 );
 ALTER TABLE candidato ADD CONSTRAINT candidato_pkey PRIMARY KEY (id);
 ALTER TABLE candidato ADD CONSTRAINT candidato_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
@@ -665,7 +666,8 @@ CREATE TABLE solicitacao (
     empresa_id bigint,
     faixasalarial_id bigint,
     descricao character varying(100),
-    avaliacao_id bigint
+    avaliacao_id bigint,
+    liberador_id bigint
 );
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_areaorganizacional_fk FOREIGN KEY (areaorganizacional_id) REFERENCES areaorganizacional(id);
@@ -676,6 +678,7 @@ ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_motivosolicitacao_fk FOREIGN 
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_usuario_fk FOREIGN KEY (solicitante_id) REFERENCES usuario(id);
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);
+ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_liberador_fk FOREIGN KEY (liberador_id) REFERENCES usuario(id);
 CREATE SEQUENCE solicitacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 -- fk de solicitacao_id em colaborador

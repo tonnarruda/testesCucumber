@@ -46,7 +46,7 @@ public abstract class Menu
 
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes Rh'>" +
+				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes RH'>" +
 				"<img src='"+ contexto + "/imgs/favicon.ico' style='vertical-align: middle;'></a>");
 		
 		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))

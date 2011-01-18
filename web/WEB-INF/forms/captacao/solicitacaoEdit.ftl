@@ -158,7 +158,7 @@
 		<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
 		
 		<#if !solicitacao.id?exists>
-			<@frt.checkListBox name="emailsCheck" id="emailsCheck" label="Enviar avisos" list="emailsCheckList" />
+			<@frt.checkListBox name="emailsCheck" id="emailsCheck" label="Comunicar responsáveis da Área Organizacional" list="emailsCheckList" />
 		</#if>
 		<br/>
 		

@@ -5090,3 +5090,11 @@ insert into codigoCBO (codigo, descricao) values ('514120','Zelador de edifício
 insert into codigoCBO (codigo, descricao) values ('223310','Zootecnista');--.go
 
 update parametrosdosistema set appversao = '1.1.37.27';--.go
+
+-- versao 1.1.38.28
+alter table candidato add column idF2RH int;--.go
+
+alter table solicitacao add column liberador_id bigint;--.go
+ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_liberador_fk FOREIGN KEY (liberador_id) REFERENCES usuario(id);--.go
+
+update parametrosdosistema set appversao = '1.1.38.28';--.go

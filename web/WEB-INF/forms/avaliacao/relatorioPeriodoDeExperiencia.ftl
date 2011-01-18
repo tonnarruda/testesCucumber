@@ -37,18 +37,11 @@
 		<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action" method="POST">
 		
 			<@ww.datepicker label="Data" name="dataReferencia" required="true" id="dataReferencia" value="${DataAtual}" cssClass="mascaraData"/>
-			<li>
-				<a href="javascript:compl();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"> Filtro complementar</a>
-			</li>
-			<li>
-				<@ww.div id="complementares" cssStyle="display: ;" cssClass="divInfo">
-					<ul>
-						Colaboradores com mais de  
-						<@ww.textfield theme="simple" name="diasDeAcompanhamento" id="diasDeAcompanhamento" cssStyle="width:25px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/> 
-						Dias sem Acompanhamento do Período de Experiência.  
-					</ul>
-				</@ww.div>
-			</li><br>
+			<br>
+			Desconsiderar colaboradores com mais de  
+			<@ww.textfield theme="simple" name="diasDeAcompanhamento" id="diasDeAcompanhamento" cssStyle="width:25px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/> 
+			dias sem Acompanhamento do Período de Experiência.
+			<br><br>  
 			<!-- <@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas"/> -->
 			<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
