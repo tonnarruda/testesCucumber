@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.37.27" data="06/01/2011">
-		- CeS > Cadastros > Cargos e Faixas > Listagem sugerindo CBO no campo Código CBO.
+	<Versao id="1.1.38.28" data="18/01/2011">
+		- Pesquisas >Movimentações: novo filtro [campos: empresa e respondida] na listagem dos colaboradores da pesquisa.
+		- ReS > Movimentações> Solicitação de Pessoal: novo campo possibilitando que o solicitante da vaga possa enviar avisos para responsáveis da área organizacional. Envio de email para o solicitante no momento da aprovação da vaga.
+		- Link de acesso ao blog do Fortes RH
+		- Avaliação de Desempenho > Relatório > Acompanhamento do Período de Experiência: novo campo no filtro [Desconsiderar colaboradores com mais de X dias sem Acompanhamento do Período de Experiência].
+		- ReS> Cadastro > Candidatos: link dos currículos dos candidatos importados do F2RH.
+		- Envio de email mensal sobre a quantidade de currículos cadastrados.
+		- Modulo Externo: botão Gravar foi movido para a última aba do cadastro.
+		- CeS> Cadastros > Cargos/Faixas : campo CBO, listagem com sugestões de  CBO´s.
+		- TeD > Relatórios: inclusão de totalizadores nos relatórios.
 		- Info. Funcionais > Cadastros > Colaboradores > Listagem de Colaboradores: relatório dinâmico  com várias opções de filtros.
 		- SESMT > Movimentos > Solicitações/Atendimentos Médicos > Imprimir ASO: melhorias no relatório de ASO com os riscos do ambiente indicados de forma automática.
 	</Versao>
 	<Versao id="1.1.36.26" data="16/12/2010">
-		- Integração com o banco de currículos com o site de recolocação F2RH
+		- ReS > Movimentações> Solicitação de Pessoal:Opção para triar currículos utilizando o site de recolocação F2RH com a opção de importar os currículos para o banco do Fortes RH.
 		- Cargos e Salário > Cadastros: novos cadastros de Habilidades e Atitudes, para facilitar o cadastros dos cargos.
 		- ReS > Cadastros > Modelo de Avaliação: foi criada uma nova opção para que o RH possa realizar avaliação de desempenho para candidatos que estão participando do processo seletivo.
 		- Info. Funcionais > Cadastros > Candidatos > Performance Profissional: adicionado as informações referentes aos campos extras.

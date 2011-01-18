@@ -33,7 +33,7 @@ public class MenuTest extends TestCase
 		menu.append("</li>\n");
 		menu.append("<li><a href='localhost/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes Rh'>" +
+				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes RH'>" +
 				"<img src='localhost/imgs/favicon.ico' style='vertical-align: middle;'></a>" +
 				"<a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=0002&codCliente=000006&token=sistema' target='_blank' /><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;' > Suporte</a></li>\n");
 		menu.append("</ul>\n");
@@ -91,7 +91,7 @@ public class MenuTest extends TestCase
 		menu.append("</li>\n");
 		menu.append("<li><a href='localhost/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes Rh'>" +
+				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes RH'>" +
 				"<img src='localhost/imgs/favicon.ico' style='vertical-align: middle;'></a>" +
 				"<a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=0002&codCliente=000006&token=sistema' target='_blank' /><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;' > Suporte</a></li>\n");
 		menu.append("</ul>\n");

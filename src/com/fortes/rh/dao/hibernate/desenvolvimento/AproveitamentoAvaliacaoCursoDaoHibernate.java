@@ -262,4 +262,25 @@ public class AproveitamentoAvaliacaoCursoDaoHibernate extends GenericDaoHibernat
 
 		query.executeUpdate();
 	}
+
+	public Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId) 
+	{
+		Criteria criteria = getSession().createCriteria(AproveitamentoAvaliacaoCurso.class, "a");
+		criteria.createCriteria("a.colaboradorTurma", "ct");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.valor"), "valor");
+		p.add(Projections.property("a.avaliacaoCurso.id"), "projectionAvaliacaoCursoId");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("ct.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("ct.curso.id", cursoId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
 }

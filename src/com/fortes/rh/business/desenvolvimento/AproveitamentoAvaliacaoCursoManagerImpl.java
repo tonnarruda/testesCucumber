@@ -140,4 +140,8 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		
 		return getDao().findColaboradorTurma(id, qtdAvaliacao, wherePor, aprovado);
 	}
+
+	public Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId) {
+		return getDao().findByColaboradorCurso(colaboradorId, cursoId);
+	}
 }

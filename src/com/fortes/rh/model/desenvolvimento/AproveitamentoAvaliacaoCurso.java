@@ -8,7 +8,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("serial")
 @Entity
@@ -40,6 +39,13 @@ public class AproveitamentoAvaliacaoCurso extends AbstractModel implements Seria
 		if (this.colaboradorTurma == null)
 			this.colaboradorTurma = new ColaboradorTurma();
 		this.colaboradorTurma.setId(colaboradorTurmaId);
+	}
+	
+	public void setProjectionAvaliacaoCursoId(Long avaliacaoCursoId)
+	{
+		if (this.avaliacaoCurso == null)
+			this.avaliacaoCurso = new AvaliacaoCurso();
+		this.avaliacaoCurso.setId(avaliacaoCursoId);
 	}
 	
     public AvaliacaoCurso getAvaliacaoCurso()

@@ -19,4 +19,5 @@ public interface AproveitamentoAvaliacaoCursoDao extends GenericDao<Aproveitamen
 	void removeByTurma(Long turmaId);
 	void remove(Long curosId, String[] avaliacaoCursoIds);
 	Collection<ColaboradorTurma> findColaboradorTurma(Long id, int qtdAvaliacao, String wherePor, Boolean aprovado);
+	Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId);
 }

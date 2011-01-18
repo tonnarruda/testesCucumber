@@ -112,5 +112,9 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorCertificacao.ftl</result>
 		</action>
+		<action name="findNotas" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="findNotas">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		    <param name="contentType">application/json</param>
+		</action>
 	</package>
 </xwork>

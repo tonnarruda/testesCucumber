@@ -24,9 +24,28 @@
 		function createListColaborador(data)
 		{
 			DWRUtil.removeAllOptions('colaborador');
-			jQuery('#colaborador').append('<option>Selecione...</option>');
+			jQuery('#colaborador').append('<option value=\"\">Selecione...</option>');
 			DWRUtil.addOptions("colaborador", data);
 		}
+		
+		function populaNotas(colaboradorId)
+		{
+			jQuery('input[id^="nota_"]').val('');
+			
+			var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/colaboradorTurma/findNotas.action"/>";
+			
+			jQuery.getJSON(urlFind,
+			{
+	    		cursoId:"${turma.curso.id}",
+	    		colaboradorId:colaboradorId
+	  		},
+	  		function(data) {
+		  		jQuery.each(data, function(i,item){
+	            	jQuery("#nota_" + item.avaliacaoCurso.id).val(item.valor);
+	          	});
+	  		});
+		}
+		
 	</script>
 </head>
 <body>
@@ -42,15 +61,14 @@
 		<a href="#" onclick="populaColaborador();"><img border="0" src="<@ww.url value="/imgs/btnPesquisar.gif"/>"></a><br><br>
 	</div>
 	
-	
-		<@ww.select label="Colaborador (Nome - CPF - Matrícula)" name="colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" required="true" cssStyle="width: 500px;" headerKey="" headerValue="Utilize o filtro..."/><br>
+		<@ww.select label="Colaborador (Nome - CPF - Matrícula)" name="colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" required="true" cssStyle="width: 500px;" headerKey="" headerValue="Utilize o filtro..." onchange="javascript: populaNotas(this.value);"/><br>
 		
 		<#if avaliacaoCursos?exists && 0 < avaliacaoCursos?size>
 			<@display.table name="avaliacaoCursos" id="avaliacaoCurso" class="dados">
 				<@display.column property="titulo" title="Avaliação" style="width: 400px;"/>
 
 				<@display.column title="Nota" style="width: 60px;text-align: center;">
-					<@ww.textfield id="" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress="return(somenteNumeros(event,'.,,'));"/>
+					<@ww.textfield id="nota_${avaliacaoCurso.id}" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress="return(somenteNumeros(event,'.,,'));"/>
 					<@ww.hidden name="avaliacaoCursoIds" value="${avaliacaoCurso.id}"/>
 				</@display.column>
 			</@display.table>
@@ -58,7 +76,7 @@
 		
 		<@ww.hidden name="planoTreinamento" />
 		<@ww.hidden name="turma.id" />
-		<@ww.hidden name="turma.curso.id" />
+		<@ww.hidden name="turma.curso.id"/>
 	</@ww.form>
 
 	<div class="buttonGroup">
