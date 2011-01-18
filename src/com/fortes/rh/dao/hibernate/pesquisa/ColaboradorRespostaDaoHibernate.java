@@ -285,6 +285,17 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		query.executeUpdate();
 	}
+	
+	public void removeByColaboradorQuestionario(Long[] colaboradorQuestionarioIds) 
+	{
+		String queryHQL = "delete from ColaboradorResposta r where r.colaboradorQuestionario.id in (:colaboradorQuestionarioIds)";
+		
+		Query query = getSession().createQuery(queryHQL);
+		
+		query.setParameterList("colaboradorQuestionarioIds", colaboradorQuestionarioIds, Hibernate.LONG);
+		
+		query.executeUpdate();
+	}
 
 	public Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId)
 	{
@@ -472,4 +483,5 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		return query.list();
 	}
+
 }
