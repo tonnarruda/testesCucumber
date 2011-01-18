@@ -788,7 +788,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta, Long[] areaOrganizacionalIds, Date dataAtualizacao, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new HistoricoColaborador(hc.id, co.id, co.nome, co.dataAdmissao, co.codigoAC, c.id, c.nome, fs.id, fs.nome, e.id, e.nome, emp.id, emp.nome, hc.salario, emp.acIntegra) ");
+		hql.append("select new HistoricoColaborador(hc.id, co.id, co.nome, co.dataAdmissao, co.codigoAC, c.id, c.nome, fs.id, fs.nome, e.id, e.nome, emp.id, emp.nome, hc.salario, emp.acIntegra, hc.tipoSalario, hc.quantidadeIndice, i, fs, hfs, hi) ");
 
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
@@ -797,6 +797,18 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as c ");
 		hql.append("left join c.empresa as emp ");
+
+		hql.append("	left join fs.faixaSalarialHistoricos hfs with hfs.data = (select max(historicoFaixaSalarial2.data) ");
+		hql.append("															from FaixaSalarialHistorico historicoFaixaSalarial2 ");
+		hql.append("															where historicoFaixaSalarial2.faixaSalarial.id = fs.id ");
+		hql.append("															and historicoFaixaSalarial2.data <= :data and historicoFaixaSalarial2.status != :statusFaixaSalarial");
+		hql.append("															)");  
+		
+		hql.append("left join hc.indice as i ");
+		hql.append(" left join i.indiceHistoricos hi with hi.data = (select max(hi2.data) ");
+		hql.append("                                            from IndiceHistorico hi2 ");
+		hql.append("                                           where hi2.indice.id = i.id ");
+		hql.append("                                             and hi2.data <= :data) ");		
 		
 		hql.append("where co.desligado = :desligado ");
 		hql.append("and hc.status = :status ");
@@ -827,6 +839,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", dataHistorico);
+		query.setInteger("statusFaixaSalarial", StatusRetornoAC.CANCELADO);
 		
 		if(dataConsulta != null)
 			query.setDate("dataConsulta", dataConsulta);

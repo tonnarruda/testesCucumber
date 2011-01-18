@@ -179,7 +179,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setDataAdmissao(dataAdmissao);
 	}
 	
-	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario, Boolean acIntegra)
+	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario, Boolean acIntegra, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico)
 	{
 		this.setId(historicoId);
 		
@@ -203,7 +203,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.estabelecimento.setNome(estabelecimentoNome);
 		
 		this.salario = salario;
+		this.tipoSalario = tipoSalario;
+		this.quantidadeIndice = quantidadeIndice;
 		
+		this.indice = indice != null ? indice : new Indice();
+		this.indice.setIndiceHistoricoAtual(indiceHistorico);
+
+		this.faixaSalarial = faixaSalarial != null ? faixaSalarial : new FaixaSalarial();
+		this.faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
 	}
 	
 	// usado em findByPeriodo
