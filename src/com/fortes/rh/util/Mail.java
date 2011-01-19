@@ -114,6 +114,7 @@ public class Mail
     	Properties properties = new Properties();
         properties.put("mail.smtp.host", mailSender.getHost());
         properties.put("mail.smtp.port", mailSender.getPort());
+        properties.put("mail.smtp.sendpartial", "true");
 
     	if ((mailSender.getUsername()== null || mailSender.getUsername().equals("")) && (mailSender.getPassword() == null || mailSender.getPassword().equals("")))
     	{
