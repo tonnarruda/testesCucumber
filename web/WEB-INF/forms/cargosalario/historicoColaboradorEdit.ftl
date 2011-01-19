@@ -89,7 +89,7 @@
 			}
 			else
 			{
-				alert("Preencha o campo Data.");
+				jAlert("Preencha o campo Data.");
 				return false;
 			}			
 		}
@@ -104,7 +104,7 @@
 
 		function error(msg)
   		{
-    		alert(msg);
+    		jAlert(msg);
     		document.getElementById("tipoSalario").value = '';
 			document.getElementById("salarioCalculado").value = '0,00';
   		}

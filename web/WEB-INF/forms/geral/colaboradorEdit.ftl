@@ -106,7 +106,7 @@
 		{
 			if(data == null)
 			{
-				alert("Código " + document.getElementById('codCbo').value + " não encontrado.");
+				jAlert("Código " + document.getElementById('codCbo').value + " não encontrado.");
 				document.getElementById('descricaoCargo').value = "";
 				document.getElementById('codCbo').value = "";
 				document.getElementById('funcaoId').value = "";
@@ -444,7 +444,7 @@
 						</div>
 						<div id="valorCalculadoDiv">
 							<ul>
-								<@ww.textfield label="Valor" name="valorCalculado" id="salarioCalculado" cssStyle="width:85px; text-align:right;" disabled= "true" cssClass="currency" onchange="window.alert(this)" />
+								<@ww.textfield label="Valor" name="valorCalculado" id="salarioCalculado" cssStyle="width:85px; text-align:right;" disabled= "true" cssClass="currency" onchange="window.jAlert(this)" />
 							</ul>
 						</div>
 					</ul>

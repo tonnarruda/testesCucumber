@@ -36,7 +36,7 @@
 			<#if 0 < avaliacaoTurma.questionario.quantidadeDeResposta>
 				<img border="0" title="Já existe resposta para este questionário, não é permitido excluir." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
-				<a href="javascript:if (confirm('Confirma exclusão?')) window.location='delete.action?avaliacaoTurma.id=${avaliacaoTurma.id}&avaliacaoTurma.questionario.empresa.id=${avaliacaoTurma.questionario.empresa.id}&page=${page}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<a href="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?avaliacaoTurma.id=${avaliacaoTurma.id}&avaliacaoTurma.questionario.empresa.id=${avaliacaoTurma.questionario.empresa.id}&page=${page}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			</#if>
 			<a href="../questionario/imprimir.action?questionario.id=${avaliacaoTurma.questionario.id}"><img border="0" title="Imprimir avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<a href="../questionario/imprimir.action?questionario.id=${avaliacaoTurma.questionario.id}&imprimirFormaEconomica=true"><img border="0" title="Imprimir pesquisa em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>

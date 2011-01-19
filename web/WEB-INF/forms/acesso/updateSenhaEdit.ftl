@@ -12,7 +12,7 @@
 
 	<#if mensagem?exists>
 		<script>
-			alert('${mensagem}');
+			jAlert('${mensagem}');
 		</script>
 	</#if>
 

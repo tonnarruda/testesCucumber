@@ -16,8 +16,7 @@
 		{
 			if (alterouCampo)
 			{
-				if(confirm('Você alterou alguns campos, deseja mudar de avaliação sem gravar?'))
-					document.formFiltro.submit();
+				newConfirm('Você alterou alguns campos, deseja mudar de avaliação sem gravar?', function(){document.formFiltro.submit();});
 			}
 			else
 				document.formFiltro.submit();

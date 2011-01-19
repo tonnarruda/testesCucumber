@@ -14,7 +14,7 @@
 		<@display.table name="eleicaos" id="eleicao" class="dados" style="width: 780px;">
 			<@display.column title="Ações" class="acao" style="width: 60px;">
 				<a href="prepareUpdate.action?eleicao.id=${eleicao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-				<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?eleicao.id=${eleicao.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?eleicao.id=${eleicao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 			<@display.column property="posse" title="Posse" format="{0,date,dd/MM/yyyy}" style="text-align:center;width: 90px;"/>
 			<@display.column property="votacaoPeriodoFormatado" title="Votacão" style="text-align:center;width: 180px;"/>

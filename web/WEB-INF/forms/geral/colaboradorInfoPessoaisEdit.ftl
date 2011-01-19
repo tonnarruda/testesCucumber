@@ -71,7 +71,7 @@
 		{
 			if(data == null)
 			{
-				alert("Código " + document.getElementById('codCbo').value + " não encontrado.");
+				jAlert("Código " + document.getElementById('codCbo').value + " não encontrado.");
 				document.getElementById('descricaoCargo').value = "";
 				document.getElementById('codCbo').value = "";
 				document.getElementById('funcaoId').value = "";

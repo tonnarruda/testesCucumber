@@ -35,7 +35,7 @@
 		}
 		if (qtdPerguntas != qtdRespostas)
 		{
-			alert('Atenção: todas as perguntas devem ser respondidas.');
+			jAlert('Atenção: todas as perguntas devem ser respondidas.');
 		}
 		else
 		{

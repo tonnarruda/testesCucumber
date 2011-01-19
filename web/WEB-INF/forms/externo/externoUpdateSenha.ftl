@@ -43,7 +43,7 @@
 </div>
 	<#if msg?exists>
 		<script>
-			alert('${msg}');
+			jAlert('${msg}');
 		</script>
 	</#if>
 </body>

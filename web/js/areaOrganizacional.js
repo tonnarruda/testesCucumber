@@ -10,7 +10,7 @@ function verificaMaternidade(areaId, campoAreaId)
 			//function error
 			errorHandler:function(msg, exception){
 				document.getElementById(campoAreaId).value = "";			
-				alert(msg);
+				jAlert(msg);
 			}
 		});
 	}

@@ -54,7 +54,7 @@
 				<@display.column title="Ações" class="acao">
 					<a href="../indiceHistorico/prepareUpdate.action?indiceHistorico.id=${indiceHistorico.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 					<#if 1 < indicesHistoricos?size>
-						<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='../indiceHistorico/delete.action?indiceHistorico.id=${indiceHistorico.id}&indiceAux.id=${indiceHistorico.indice.id}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../indiceHistorico/delete.action?indiceHistorico.id=${indiceHistorico.id}&indiceAux.id=${indiceHistorico.indice.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 					<#else>
 						<img border="0" title="Não é possível excluir, um índice deve possuir pelo menos um histórico." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					</#if>

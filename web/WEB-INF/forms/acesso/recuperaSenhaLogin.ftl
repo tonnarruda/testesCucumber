@@ -78,7 +78,7 @@
 		
 		<#if msg?exists && msg != "">
 			<script>
-				alert('${msg}');
+				jAlert('${msg}');
 				document.getElementById('cpfRH').focus();
 			</script>
 		</#if>

@@ -57,13 +57,13 @@
 	    {
 			if(!document.getElementById('cargoNomeId').disabled && document.getElementById('cargoNomeId').value == "")
 			{
-				alert("Selecione um cargo.");
+				jAlert("Selecione um cargo.");
 				return false;
 			}
 			
 			if(document.getElementById('cargoNomeId').disabled && document.getElementById('nomeCargo').value.trim() == "")
 			{
-				alert("Informe o nome do cargo.");
+				jAlert("Informe o nome do cargo.");
 				document.getElementById('nomeCargo').focus();
 				return false;
 			}

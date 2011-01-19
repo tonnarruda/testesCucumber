@@ -27,7 +27,7 @@
 	<@display.table name="historicoCandidatos" id="historicoCandidato" class="dados">
 		<@display.column title="Ações" media="html" class="acao" style="width: 60px;">
 			<a href="prepareUpdate.action?historicoCandidato.id=${historicoCandidato.id}&candidatoSol.id=${candidatoSolicitacao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?historicoCandidato.id=${historicoCandidato.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?historicoCandidato.id=${historicoCandidato.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="etapaSeletiva.nome" title="Etapa" />
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="text-align: center;width: 90px;"/>

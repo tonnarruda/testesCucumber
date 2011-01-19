@@ -35,7 +35,7 @@
 			}
 			else
 			{
-				alert("Opção: Integra com AC Pessoal não selecionada.");
+				jAlert("Opção: Integra com AC Pessoal não selecionada.");
 			}
 		}
 		
@@ -54,7 +54,7 @@
 		function apresenta_Msg(msg)
 		{
 			document.getElementById("btnTransferir").src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>";
-			alert(msg);
+			jAlert(msg);
 		}
 
 		function habilitaDesabilitaCamposAC()
@@ -78,7 +78,7 @@
 		{
 			if(document.getElementById('mensagemModuloExterno').value.length > 400)
 			{
-				alert("A quantidade de carácteres não pode ser maior que 400");
+				jAlert("A quantidade de carácteres não pode ser maior que 400");
 				return false;
 			}
 						
@@ -90,7 +90,7 @@
 			 		${validarCampos};
 			}
 			else
-				alert("Base CNPJ deve ter 8 dígitos.");
+				jAlert("Base CNPJ deve ter 8 dígitos.");
 		}
 	</script>
 

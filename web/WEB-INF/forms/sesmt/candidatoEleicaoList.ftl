@@ -54,7 +54,7 @@
 	</div>
 		<@display.table name="candidatoEleicaos" id="candidatoEleicao" class="dados">
 		<@display.column title="Ações" class="acao" style="width: 40px;">
-			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?candidatoEleicao.id=${candidatoEleicao.id}&eleicao.id=${eleicao.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?candidatoEleicao.id=${candidatoEleicao.id}&eleicao.id=${eleicao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<a href="imprimirComprovanteInscricao.action?candidatoEleicao.candidato.id=${candidatoEleicao.candidato.id}&eleicao.id=${eleicao.id}"><img border="0" title="Imprimir o comprovante de inscrição" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Candidato">

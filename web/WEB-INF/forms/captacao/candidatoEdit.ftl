@@ -103,7 +103,7 @@
 		<#if maxCandidataCargo?exists && 0 < maxCandidataCargo>
 		  if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') > ${maxCandidataCargo})
 		  {
-		    alert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
+		    jAlert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
 		    return false;
 		  }
 		</#if>
@@ -122,7 +122,7 @@
 		var senhaValue = document.getElementById('senha').value;
 		if(senhaValue != "" && senhaValue != document.getElementById('comfirmaSenha').value )
 		{
-			alert("Senha não confere");
+			jAlert("Senha não confere");
 			return false;
 		}
 	
@@ -133,13 +133,13 @@
 	{	
 		if(document.getElementById('senha').value == "" )
 		{
-			alert("Senha obrigatória para acesso ao modulo exteno.");
+			jAlert("Senha obrigatória para acesso ao modulo exteno.");
 			return false;
 		}
 	    
 		if((document.getElementById('senha').value != document.getElementById('comfirmaSenha').value) )
 		{
-			alert("Senha não confere.");
+			jAlert("Senha não confere.");
 			return false;
 		}
 	
@@ -151,7 +151,7 @@
     {
       if(data == null)
       {
-        alert("Código " + document.getElementById('codCbo').value + " não encontrado.");
+        jAlert("Código " + document.getElementById('codCbo').value + " não encontrado.");
         document.getElementById('descricaoCargo').value = "";
         document.getElementById('codCbo').value = "";
         document.getElementById('funcaoId').value = "";
@@ -534,7 +534,7 @@
         	</button>
         </#if>
 		
-        <button class="btnCancelar" onclick="if (confirm('Tem certeza que deseja cancelar?')) window.location='${actionCancelar}'" class="btnCancelar" accesskey="C">
+        <button class="btnCancelar" onclick="newConfirm('Tem certeza que deseja cancelar?', function(){window.location='${actionCancelar}'});" class="btnCancelar" accesskey="C">
         </button>
     </div>
     <div class="buttonGroup" style="width:50%; float:right; text-align:right;">

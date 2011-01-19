@@ -28,7 +28,7 @@
 			document.getElementById('listCheckBoxdiasCheck').innerHTML = dias;;
 		}
 		else
-			alert("Não existem datas a serem selecinadas.");
+			jAlert("Não existem datas a serem selecinadas.");
 	}
 
 	function listaTurma()
@@ -74,7 +74,7 @@
 				if(qtdChecked > 2)
 				{
 					check.checked = false;
-					alert("Não é permitido exibir mais de duas colunas extras.");
+					jAlert("Não é permitido exibir mais de duas colunas extras.");
 				}
 			}
 		}
@@ -82,7 +82,7 @@
 		// verificação do submit, se há exatamente duas colunas
 		if (!onclick && qtdChecked != 2)
 		{
-			alert("É necessário selecionar exatamente duas colunas extras.");
+			jAlert("É necessário selecionar exatamente duas colunas extras.");
 			return false;
 		}
 

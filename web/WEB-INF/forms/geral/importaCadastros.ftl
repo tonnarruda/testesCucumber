@@ -17,7 +17,7 @@
 			
 			if (origem.value == destino.value)
 			{
-				alert('Selecione empresas Origem e Destino diferentes.');
+				jAlert('Selecione empresas Origem e Destino diferentes.');
 				valida = false;
 			}
 		}

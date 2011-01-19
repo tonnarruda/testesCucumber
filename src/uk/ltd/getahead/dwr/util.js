@@ -519,7 +519,7 @@ DWRUtil.getValues = function(data) {
   if (DWRUtil._isHTMLElement(data)) ele = data;
   if (ele != null) {
     if (ele.elements == null) {
-      alert("getValues() requires an object or reference to a form element.");
+      jAlert("getValues() requires an object or reference to a form element.");
       return null;
     }
     var reply = {};
@@ -602,7 +602,7 @@ DWRUtil.addOptions = function(ele, data) {
   else if (arguments[3] != null) {
     for (var prop in data) {
       if (!useOptions) {
-        alert("DWRUtil.addOptions can only create select lists from objects.");
+        jAlert("DWRUtil.addOptions can only create select lists from objects.");
         return;
       }
       value = DWRUtil._getValueFrom(data[prop], arguments[2]);
@@ -868,5 +868,5 @@ DWRUtil._importNode = function(doc, importedNode, deep) {
  * Used internally when some message needs to get to the programmer
  */
 DWRUtil.debug = function(message) {
-  alert(message);
+  jAlert(message);
 }

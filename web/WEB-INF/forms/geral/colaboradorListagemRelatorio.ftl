@@ -118,7 +118,7 @@
 				if(!sizeOk())
 				{
 					e.stopPropagation();
-					alert(msgLimiteLargura);
+					jAlert(msgLimiteLargura);
 				}
 			});
 
@@ -164,7 +164,7 @@
 			}
 			else
 			{				 
-				alert(msgLimiteLargura);
+				jAlert(msgLimiteLargura);
 			}
 		}
 
@@ -207,7 +207,7 @@
 			if(jQuery('#colunas option').length < 1)
 			{
 				alterBackground('#FFEEC2');
-				alert("Por favor selecione os campos para impressão.");
+				jAlert("Por favor selecione os campos para impressão.");
 			}
 			else
 			{
@@ -270,9 +270,9 @@
 			var campos = jQuery.makeArray(values).join(',');
 			jQuery.get('<@ww.url value="/geral/configuracaoRelatorioDinamico/update.action?campos="/>' + campos + '&titulo=' + jQuery('#titulo').val(), function(data) {
 				if(data == "OK")
-					alert("Layout do relatório salvo com sucesso.");
+					jAlert("Layout do relatório salvo com sucesso.");
 				else
-					alert("Erro ao salvar layout.");
+					jAlert("Erro ao salvar layout.");
 			});
 		}
 		

@@ -62,7 +62,7 @@
 				return true;
 			else
 			{
-				alert("Informe pelo menos um candidato e uma solicitação!");
+				jAlert("Informe pelo menos um candidato e uma solicitação!");
 				return false;
 			}
 		}

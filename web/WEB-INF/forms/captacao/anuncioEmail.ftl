@@ -14,7 +14,7 @@
 			}
 			else
 			{
-				alert("Nenhum Destinatário Informado.");
+				jAlert("Nenhum Destinatário Informado.");
 			}
 		}
 		function verificaEmailBDS()

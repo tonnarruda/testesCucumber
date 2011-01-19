@@ -34,7 +34,7 @@
 	<@display.table name="areaOrganizacionals" id="areaOrganizacional" class="dados" >
 		<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
 			<a href="prepareUpdate.action?areaOrganizacional.id=${areaOrganizacional.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?areaOrganizacional.id=${areaOrganizacional.id}&areaOrganizacional.empresa.id=${areaOrganizacional.empresa.id}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="jConfirmX('Confirma exclusão?', function(){window.location='delete.action?areaOrganizacional.id=${areaOrganizacional.id}&areaOrganizacional.empresa.id=${areaOrganizacional.empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
 		<@display.column property="responsavel.nomeComercial" title="Responsável"/>

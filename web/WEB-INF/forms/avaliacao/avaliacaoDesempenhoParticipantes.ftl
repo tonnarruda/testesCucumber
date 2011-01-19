@@ -91,7 +91,7 @@
 					<#if avaliacaoDesempenho.liberada>
 						<img border="0" title="" src="<@ww.url value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<#else>
-						<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='${deleteAction}?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}&participanteIds=${participante.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='${deleteAction}?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}&participanteIds=${participante.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 					</#if>
 				</@display.column>
 				<@display.column title="${tituloLista}" property="nome" style="width:330px;"/>
@@ -108,7 +108,7 @@
 				<button class="btnExcluirDesabilitado" disabled="disabled" onmouseover="cursor:pointer;" ></button>
 			<#else>
 				<button onclick="openbox('${tituloModal}', 'nomeBusca');" class="btnInserir"></button>
-				<button onclick="javascript: if (confirm('Confirma exclusão das mensagens selecionadas?')) document.form.submit();" class="btnExcluir"></button>
+				<button onclick="javascript: newConfirm('Confirma exclusão das mensagens selecionadas?', function(){document.form.submit();});" class="btnExcluir"></button>
 			</#if>
 			<button onclick="window.location='list.action'" class="btnVoltar"></button>
 		</div>

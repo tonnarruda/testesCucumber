@@ -18,13 +18,13 @@
 				}
 				else
 				{
-					alert("Nenhum Destinatário Informado.");
+					jAlert("Nenhum Destinatário Informado.");
 				}
 			}
 			else
 			{
 				campo.style.background = "#FFEEC2";
-				alert("Preencha campos indicados.");
+				jAlert("Preencha campos indicados.");
 			}
 		}
 		function verificaEmailBDS()

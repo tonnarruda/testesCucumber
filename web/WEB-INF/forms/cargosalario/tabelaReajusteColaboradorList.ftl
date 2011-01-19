@@ -15,7 +15,7 @@
 		<@display.column title="Ações" media="html" style="width:95px;">
 			<a href="../reajusteRelatorio/formFiltro.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}"><img border="0" title="<@ww.text name="list.print.hint"/>" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<#if tabelaReajusteColaborador.ehUltimo>
-				<a href="javascript:if (confirm('Tem certeza que deseja desfazer os Realinhamentos?')) window.location='cancelarReajuste.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'"><img title="Cancelar Reajuste" border="0" src="<@ww.url includeParams="none" value="/imgs/undo.gif"/>"></a>
+				<a href="javascript:newConfirm('Tem certeza que deseja desfazer os Realinhamentos?', function(){window.location='cancelarReajuste.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});"><img title="Cancelar Reajuste" border="0" src="<@ww.url includeParams="none" value="/imgs/undo.gif"/>"></a>
 				<img border="0" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -24,7 +24,7 @@
 				<#if !tabelaReajusteColaborador.aprovada>
 					<a href="visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}"><img border="0" title="Visualizar Realinhamentos" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>"></a>
 					<a href="prepareUpdate.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			 		<a href="javascript:if (confirm('Confirma exclusão?')) window.location='delete.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&page=${page}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			 		<a href="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&page=${page}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">

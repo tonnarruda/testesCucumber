@@ -17,11 +17,11 @@
 
 		if(qtdEstabelecimentoSelect == 0 && validar)
 		{
-			alert("Nenhum Estabelecimeto selecionado.");
+			jAlert("Nenhum Estabelecimeto selecionado.");
 		}
 		else if(qtdSelectObj == 0 && validar)
 		{
-			alert("Nenhuma Área Organizacional selecionada.");
+			jAlert("Nenhuma Área Organizacional selecionada.");
 		}
 		else
 		{

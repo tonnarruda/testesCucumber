@@ -34,7 +34,7 @@
 	<@display.table name="idiomasCandidato" id="idiomaTable" class="dados" defaultsort=2 >
 		<@display.column title="Ações" media="html" class="acao">
 			<a href="javascript:prepareUpdateIdioma(${idiomaTable.id})"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:if (confirm('Confirma exclusão?')) removeIdioma(${idiomaTable.id})"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript:newConfirm('Confirma exclusão?', function(){removeIdioma(${idiomaTable.id})});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="idioma.nome" title="Nome"/>
 		<@display.column title="Nível">

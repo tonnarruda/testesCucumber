@@ -37,11 +37,11 @@
 
 		if(qtdEstabelecimentoSelect == 0 && validar)
 		{
-			alert("Nenhum Estabelecimeto selecionado.");
+			jAlert("Nenhum Estabelecimeto selecionado.");
 		}
 		else if(qtdSelectGrupo == 0 && qtdSelectCargo == 0 && validar)
 		{
-			alert("Nenhum Grupo Ocupacional ou Cargo selecionado.");
+			jAlert("Nenhum Grupo Ocupacional ou Cargo selecionado.");
 		}
 		else
 		{

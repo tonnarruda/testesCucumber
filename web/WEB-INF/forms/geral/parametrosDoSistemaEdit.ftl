@@ -23,12 +23,12 @@
 						UtilDWR.enviaEmail(apresentaMsg, email);
 					}
 					else
-						alert("Email Inválido!");
+						jAlert("Email Inválido!");
 				}
 			}
 			else
 			{
-						alert("Marque a opção Enviar e-mails de confirmação e grave as configurações");
+						jAlert("Marque a opção Enviar e-mails de confirmação e grave as configurações");
 			}
 		}
 	</script>

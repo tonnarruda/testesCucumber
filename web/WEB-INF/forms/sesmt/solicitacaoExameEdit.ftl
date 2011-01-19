@@ -125,7 +125,7 @@
 			if (elementCheck.value == ${exameAso.id} && motivoExameEhAso)
 			{
 				elementCheck.checked = true;
-				alert('O exame ASO é obrigatório.');
+				jAlert('O exame ASO é obrigatório.');
 			}
 			else
 			{
@@ -140,7 +140,7 @@
 		function alertaExameDentroDoPrazo(data)
 		{
 			if (data != "")
-				alert(data);
+				jAlert(data);
 		}
 				
 		function getMotivoExameEhAso()

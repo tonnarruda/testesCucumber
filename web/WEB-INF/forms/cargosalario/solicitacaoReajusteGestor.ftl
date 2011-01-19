@@ -35,7 +35,7 @@
 		function errorVerificaColaborador(msg) 
 		{
 			document.getElementById('colaborador').value = "-1";
-			alert(msg);
+			jAlert(msg);
 			limpaDados();
 		}
 

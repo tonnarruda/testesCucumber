@@ -32,7 +32,7 @@
 	<@display.table name="medicaoRiscos" id="medicaoRisco" class="dados">
 		<@display.column title="Ações" class="acao">
 			<a href="prepareUpdate.action?medicaoRisco.id=${medicaoRisco.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?medicaoRisco.id=${medicaoRisco.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?medicaoRisco.id=${medicaoRisco.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Data da Medição" property="data" format="{0,date,dd/MM/yyyy}" />
 		<@display.column title="Ambiente" property="ambiente.nome" />

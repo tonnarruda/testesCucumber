@@ -22,8 +22,8 @@
 
 <@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" pagesize=15 class="dados" >
 	<@display.column title="Ações" media="html" class="acao" style="width: 60px;">
-		<a href="javascript: if (confirm('Confirma inclusão na seleção?')) window.location='removerTriagem.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}&solicitacao.id=${solicitacao.id}'"><img border="0" title="Incluir na Seleção" src="<@ww.url includeParams="none" value="/imgs/add.gif"/>"></a>
-		<a href="javascript: if (confirm('Confirma exclusão?')) window.location='delete.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+		<a href="javascript: newConfirm('Confirma inclusão na seleção?', function(){window.location='removerTriagem.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}&solicitacao.id=${solicitacao.id}'});"><img border="0" title="Incluir na Seleção" src="<@ww.url includeParams="none" value="/imgs/add.gif"/>"></a>
+		<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='delete.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 	</@display.column>
 	<@display.column title="Nome" >
 		<a href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}"/>', 580, 750)">

@@ -79,7 +79,7 @@
 			var qtdSelect = qtdeChecksSelected(document.forms[0], 'candidatosCheck');
 			if(qtdSelect == 0)
 			{
-				alert("Nenhum Candidato selecionado.");
+				jAlert("Nenhum Candidato selecionado.");
 				return false;
 			}
 			return true;

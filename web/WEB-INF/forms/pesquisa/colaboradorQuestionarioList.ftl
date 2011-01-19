@@ -50,7 +50,7 @@
 	
 						<img border="0" title="Responder a pesquisa por este colaborador (a Pesquisa precisa ser liberada antes)" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 	
-						<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 	
 					<#else>
 						<#if colaboradorQuestionario.respondida>
@@ -76,7 +76,7 @@
 								<a href="../colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${questionario.id}&colaborador.id=${colaboradorQuestionario.colaborador.id}&validarFormulario=true&voltarPara=../colaboradorQuestionario/list.action?questionario.id=${questionario.id}&tela=colaboradorQuestionarioList"><img border="0" title="Responder a pesquisa por este colaborador" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 							</@authz.authorize>
 	
-							<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+							<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&questionario.id=${questionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 						</#if>
 					</#if>
 				</@display.column>
@@ -93,7 +93,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="window.location='prepareInsert.action?questionario.id=${questionario.id}'" id="btnInserir" class="btnInserir" ></button>
-		<button onclick="javascript: if (confirm('Confirma exclusão dos colaboradores selecionados?')) document.form.submit();" class="btnExcluir"></button>
+		<button onclick="javascript: newConfirm('Confirma exclusão dos colaboradores selecionados?', function(){document.form.submit();});" class="btnExcluir"></button>
 		<button onclick="window.location='imprimirColaboradores.action?questionario.id=${questionario.id}&empresaId=' + jQuery('#empresaId').val() + '&respondida=' + jQuery('#respondida').val()" class="btnImprimirPdf" ></button>
 
 		<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->

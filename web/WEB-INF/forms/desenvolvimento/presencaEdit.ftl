@@ -120,7 +120,7 @@
 
 		function errorListaPresenca(msg)
 		{
-			alert(msg);
+			jAlert(msg);
 		}
 	</script>
 

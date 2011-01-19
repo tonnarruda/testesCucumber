@@ -37,9 +37,9 @@ function addError(e, errorText) {
         var ctrlDiv = e.parentNode; // wwctrl_ div or span
         var enclosingDiv = ctrlDiv.parentNode; // wwgrp_ div
 
-        /*alert(ctrlDiv.nodeName);
+        /*jAlert(ctrlDiv.nodeName);
 		if (!ctrlDiv || (ctrlDiv.nodeName != "DIV" && ctrlDiv.nodeName != "SPAN") || !enclosingDiv || enclosingDiv.nodeName != "DIV") {
-			alert("do not validate:" + e.id);
+			jAlert("do not validate:" + e.id);
 			return;
 		}*/
 		
@@ -65,7 +65,7 @@ function addError(e, errorText) {
         errorDiv.appendChild(error);
         firstDiv.appendChild(errorDiv);
     } catch (e) {
-        alert(e);
+        jAlert(e);
     }
 }
 

@@ -54,7 +54,7 @@
 			}
 			else
 			{
-				alert("Nenhum Candidato selecionado!");
+				jAlert("Nenhum Candidato selecionado!");
 			}
 		}
 

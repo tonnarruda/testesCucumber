@@ -41,7 +41,7 @@ function validaRespostas(camposObrigatorios, camposValidos, submete, validaObj, 
 			jQuery(".pergunta" + this).css("backgroundColor", "#FFEEC2");
 		});
 		
-		alert('Responda as perguntas indicadas.');
+		jAlert('Responda as perguntas indicadas.');
 		
 		return false;
 	}

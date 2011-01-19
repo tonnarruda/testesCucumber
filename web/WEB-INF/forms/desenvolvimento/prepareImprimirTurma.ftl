@@ -37,15 +37,15 @@
 
 		if(document.getElementById("dnt").value == "-1")
 		{
-			alert("Selecione uma DNT.");
+			jAlert("Selecione uma DNT.");
 		}
 		else if(qtdSelectE == 0)
 		{
-			alert("Nenhum Estabelecimento selecionado.");
+			jAlert("Nenhum Estabelecimento selecionado.");
 		}
 		else if(qtdSelect == 0 && document.getElementById("colaboradores").value == "")
 		{
-			alert("Nenhuma Área ou Colaborador selecionado.");
+			jAlert("Nenhuma Área ou Colaborador selecionado.");
 		}
 		else
 		{

@@ -18,15 +18,15 @@
 
 				if(value == "1" && qtdAreasSelect == 0)
 				{
-					alert("Nenhuma Área Organizacional selecionada.");
+					jAlert("Nenhuma Área Organizacional selecionada.");
 				}
 				else if(value == "2" && qtdGruposSelect == 0)
 				{
-					alert("Nenhum Grupo Ocupacional selecionado.");
+					jAlert("Nenhum Grupo Ocupacional selecionado.");
 				}
 				else if(qtdEstabelecimentoSelect == 0)
 				{
-					alert("Nenhum Estabelecimeto selecionado.");
+					jAlert("Nenhum Estabelecimeto selecionado.");
 				}
 				else
 				{

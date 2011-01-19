@@ -11,7 +11,7 @@
 		{
 			if(document.getElementById("dataClone").value == "  /    " || document.getElementById("dataClone").value.length != 7)
 			{
-				alert("Informe Mes/Ano no formato mm/aaaa.");
+				jAlert("Informe Mes/Ano no formato mm/aaaa.");
 				document.getElementById("dataClone").focus();
 			}
 			else

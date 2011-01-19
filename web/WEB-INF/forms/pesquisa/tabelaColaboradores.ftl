@@ -30,7 +30,7 @@
 			}
 		}
 
-		alert('Selecione ao menos um colaborador!');
+		jAlert('Selecione ao menos um colaborador!');
 		return false;
 	}
 

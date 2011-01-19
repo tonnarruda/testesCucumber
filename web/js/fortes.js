@@ -72,7 +72,7 @@ function validaCheck(frm, nameCheck, mensagem)
 		if (mensagem == null || mensagem == "undefined" )
 			mensagem = "Selecione pelo menos uma opção.";
 
-		alert(mensagem);
+		jAlert(mensagem);
 	}
 	return valido;
 }
@@ -162,14 +162,14 @@ function compararData(dataInicio, dataFinal)
 	{
 		if (dataIniSplit[0]>12)
 		{
-			alert(document.getElementById(dataInicio).value + " Não é uma data válida.");
+			jAlert(document.getElementById(dataInicio).value + " Não é uma data válida.");
 			document.getElementById(dataInicio).focus();
 			return false;
 		}
 
 		if (dataFimSplit[0]>12)
 		{
-			alert("Data inválida.");
+			jAlert("Data inválida.");
 			document.getElementById(dataFinal).focus();
 			return false;
 		}
@@ -184,7 +184,7 @@ function compararData(dataInicio, dataFinal)
 	}
 	else
 	{
-		alert("Datas Incompatíveis.");
+		jAlert("Datas Incompatíveis.");
 		return false;
 	}
 
@@ -194,7 +194,7 @@ function compararData(dataInicio, dataFinal)
 	}
 	else
 	{
-		alert("Datas inválidas, data Inicial deve ser menor que Final.");
+		jAlert("Datas inválidas, data Inicial deve ser menor que Final.");
 		return false;
 	}
 }
@@ -239,7 +239,7 @@ function validaPagina(evento, pagina, maxPaginas)
 			return true;
 		else
 		{
-			alert("Esta Página não existe.");
+			jAlert("Esta Página não existe.");
 			return false;
 		}
 	}

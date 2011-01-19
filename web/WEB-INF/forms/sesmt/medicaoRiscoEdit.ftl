@@ -145,7 +145,7 @@
 	    {
 	    	if (desabilitarGravar == "true")
 	    	{
-	    		alert("Clique em Carregar Riscos.");
+	    		jAlert("Clique em Carregar Riscos.");
 	    		return false;
 	    	}
 	    	

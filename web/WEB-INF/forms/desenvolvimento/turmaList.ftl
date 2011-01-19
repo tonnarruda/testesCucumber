@@ -24,7 +24,7 @@
 			<a href="prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="prepareAproveitamento.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="Aproveitamento/Notas" src="<@ww.url value="/imgs/favourites.gif"/>"></a>
 			<a href="preparePresenca.action?turma.id=${turma.id}&curso.id=${curso.id}&voltarPara=list.action"><img border="0" title="Lista de Frequência" src="<@ww.url value="/imgs/check.gif"/>"></a>
-			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?turma.id=${turma.id}&turma.empresa.id=${turma.empresa.id}&curso.id=${curso.id}&curso.nome=${curso.nome}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?turma.id=${turma.id}&turma.empresa.id=${turma.empresa.id}&curso.id=${curso.id}&curso.nome=${curso.nome}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<a href="imprimirConfirmacaoCertificado.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="Relatório de Realização de Curso" src="<@ww.url value="/imgs/report.gif"/>"></a>
 			<#if turma.avaliacaoTurma.questionario.id?exists>
 				<a href="../../pesquisa/questionario/imprimir.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&filtroQuestionario=${turma.id?string?replace(".", "")?replace(",","")}"><img border="0" title="Imprimir Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>

@@ -72,7 +72,7 @@
 		<@display.table name="faixasDoCargo" id="faixaSalarial" pagesize=10 class="dados" defaultsort=2 sort="list">
 				<@display.column title="Ações" class="acao">
 					<a href="../faixaSalarial/prepareUpdate.action?faixaSalarialAux.id=${faixaSalarial.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-					<a href="javascript: if (confirm('Confirma exclusão?')) window.location='../faixaSalarial/delete.action?faixaSalarial.id=${faixaSalarial.id}&cargo.id=${cargo.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='../faixaSalarial/delete.action?faixaSalarial.id=${faixaSalarial.id}&cargo.id=${cargo.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				</@display.column>
 				<@display.column property="nome" title="Faixa"/>
 			</@display.table>

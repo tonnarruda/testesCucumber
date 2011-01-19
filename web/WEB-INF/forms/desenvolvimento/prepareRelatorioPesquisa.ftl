@@ -15,7 +15,7 @@
 		pesquisaId = document.getElementById("pesquisaSelect").value;
 		if(pesquisaId == "")
 		{
-		  alert("Selecione a Pesquisa");
+		  jAlert("Selecione a Pesquisa");
 		}
 		else
 		{

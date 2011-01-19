@@ -44,13 +44,12 @@
 
 		function prepareDelete(prontuarioId)
 		{
-			if (confirm('Confirma exclusão?'))
-			{
+			newConfirm('Confirma exclusão?', function(){
 				document.form.action="delete.action";
 				document.getElementById("prontuario").value = prontuarioId;
 				
 				document.form.submit();
-			}
+			});
 		}
 	</script>
 </head>

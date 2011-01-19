@@ -170,7 +170,7 @@
 				<tr class=${class}>
 				  	<td>
 						<a href="../reajusteColaborador/prepareUpdate.action?reajusteColaborador.id=${reajusteColaborador.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}" ><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif" border="0"/>"></a>
-						<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='../reajusteColaborador/delete.action?reajusteColaborador.id=${reajusteColaborador.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'"><img border="0" title="Excluir" src="<@ww.url includeParams="none" value="/imgs/delete.gif" border="0"/>"></a>
+						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../reajusteColaborador/delete.action?reajusteColaborador.id=${reajusteColaborador.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url includeParams="none" value="/imgs/delete.gif" border="0"/>"></a>
 					</td>
 				  	<td> ${reajusteColaborador.colaborador.nomeComercial}</td>
 				  	<td> ${reajusteColaborador.faixaSalarialAtual.descricao}</td>
@@ -249,7 +249,7 @@
 		</button>
 		<#if tabelaReajusteColaborador.id?exists && reajustes?exists && 0 < reajustes?size>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button onclick="if (confirm('Deseja realmente aplicar o reajuste?')) window.location='aplicar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'" class="btnAplicar" accesskey="P">
+			<button onclick="newConfirm('Deseja realmente aplicar o reajuste?', function(){window.location='aplicar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});" class="btnAplicar" accesskey="P">
 			</button>
 		</#if>
 	</div>

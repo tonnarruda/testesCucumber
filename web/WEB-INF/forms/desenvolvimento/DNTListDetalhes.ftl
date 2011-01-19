@@ -36,7 +36,7 @@
 			<@display.table name="getColabTurmas(${colab.id?string?replace('.', '')?replace(',','')})" id="ct" class="dados">
 				<@display.column title="Ações" class="acao" style="width:60px;">
 					<a href="../colaboradorTurma/prepareUpdateDnt.action?colaboradorTurma.dnt.id=${dnt.id}&areaFiltroId=${areaFiltro.id}&colaboradorTurma.id=${ct.id}&gestor=${gestor?string}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-					<a href="javascript:if (confirm('Confirma exclusão?')) window.location='../colaboradorTurma/delete.action?dntId=${dnt.id}&areaFiltroId=${areaFiltro.id}&colaboradorTurma.id=${ct.id}&gestor=${gestor?string}&estabelecimento.id=${estabelecimento.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<a href="javascript:newConfirm('Confirma exclusão?', function(){window.location='../colaboradorTurma/delete.action?dntId=${dnt.id}&areaFiltroId=${areaFiltro.id}&colaboradorTurma.id=${ct.id}&gestor=${gestor?string}&estabelecimento.id=${estabelecimento.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				</@display.column>
 				<@display.column property="curso.nome" title="Curso" style="width:220px;"/>
 				<@display.column property="turma.descricao" title="Turma" style="width:180px;"/>

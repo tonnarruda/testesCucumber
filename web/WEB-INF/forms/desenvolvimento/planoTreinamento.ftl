@@ -45,7 +45,7 @@
 
 		function errorUpdateRealizada(msg)
 		{
-			alert(msg);
+			jAlert(msg);
 		}
 
 		function mudaAction()
@@ -103,7 +103,7 @@
 		<@display.table name="turmas" id="turma" class="dados" >
 			<@display.column title="Ações" media="html" class="acao">
 				<a href="prepareUpdate.action?turma.id=${turma.id}&planoTreinamento=true"><img border="0" title="<@ww.text name="list.edit.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-				<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?turma.id=${turma.id}&planoTreinamento=true'"><img border="0" title="<@ww.text name="list.del.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?turma.id=${turma.id}&planoTreinamento=true'});"><img border="0" title="<@ww.text name="list.del.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 				<a href="../colaboradorTurma/list.action?turma.id=${turma.id}&planoTreinamento=true"><img border="0" title="Colaboradores Inscritos na Turma" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 
 				<#if turma.realizada>

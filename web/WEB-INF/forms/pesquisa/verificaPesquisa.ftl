@@ -52,46 +52,13 @@
 	<@authz.authorize ifAllGranted="ROLE_PESQUISA">
 		<#if pesquisas?exists>
 		<br><br>
-			<#--div class="waDivTitulo">Pesquisas Bloqueadas</div>
-			<div class="waDivFormularioX" style="padding: 0 !important;">
-
-				<#assign odd = true />
-				<#list pesquisasAtrasadas as pesq>
-					<#if odd>
-						<#assign class="odd"/>
-					<#else>
-						<#assign class="even"/>
-					</#if>
-					<div class="${class}">
-						<a href="javascript:if (confirm('Deseja liberar esta pesquisa?')) window.location='./pesquisa/pesquisa/liberar.action?pesquisa.id=${pesq.id}'">${pesq.titulo}</a>
-						<br>
-						Data de Inicio: ${pesq.dataInicio}
-					</div>
-					<#assign odd = !odd />
-				</#list>
-
-				<#assign odd = true />
-				<#list pesquisas as pesq>
-					<#if odd>
-						<#assign class="odd"/>
-					<#else>
-						<#assign class="even"/>
-					</#if>
-					<div class="${class}">
-						<a style="color:#000; font-size: 14px;" href="javascript:if (confirm('Deseja liberar esta Pesquisa?')) window.location='./pesquisa/pesquisa/liberar.action?pesquisa.id=${pesq.id}'">${pesq.titulo}</a>
-						<br>
-						Data de Inicio: ${pesq.dataInicio}
-					</div>
-					<#assign odd = !odd />
-				</#list-->
-
 
 				<#if pesquisas?size < 1>
 					<span style="color:#F00; font-size: 12px;">	NÃO EXISTEM PESQUISAS BLOQUEADAS</span>
 				<#else>
 					<@display.table name="pesquisas" id="pesquisa" class="dados">
 						<@display.column title="Liberar" class="acao">
-							<a href="javascript:if (confirm('Deseja liberar esta Pesquisa?')) window.location='./pesquisa/pesquisa/liberar.action?pesquisa.id=${pesquisa.id}'"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/flag_green.gif"/>"></a>
+							<a href="javascript:newConfirm('Deseja liberar esta Pesquisa?', function(){window.location='./pesquisa/pesquisa/liberar.action?pesquisa.id=${pesquisa.id}'});"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/flag_green.gif"/>"></a>
 						</@display.column>
 						<@display.column property="titulo" title="Pesquisas Bloqueadas"/>
 						<@display.column property="dataInicio" title="Início"  format="{0,date,dd/MM/yyyy}" style="width:80px;text-align:center;"/>

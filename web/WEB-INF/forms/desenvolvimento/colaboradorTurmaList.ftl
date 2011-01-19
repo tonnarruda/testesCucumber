@@ -26,7 +26,7 @@
 						<a href="../../pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&colaborador.id=${colaboradorTurma.colaborador.id}&turmaId=${turma.id}&voltarPara=../../desenvolvimento/colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Responder a avaliação da turma por este colaborador" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
 					</#if>
 				</#if>
-				<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='../colaboradorTurma/delete.action?colaboradorTurma.id=${colaboradorTurma.id}&colaboradorTurma.colaborador.id=${colaboradorTurma.colaborador.id}&turma.id=${turma.id}&planoTreinamento=${planoTreinamento?string}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../colaboradorTurma/delete.action?colaboradorTurma.id=${colaboradorTurma.id}&colaboradorTurma.colaborador.id=${colaboradorTurma.colaborador.id}&turma.id=${turma.id}&planoTreinamento=${planoTreinamento?string}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 
 			<@display.column property="colaborador.nome" title="Nome" style="width: 450px;"/>

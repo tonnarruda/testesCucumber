@@ -160,7 +160,7 @@
 						
 						<@display.column title="Ações" style="width: 40px;text-align:center">
 							<a href="javascript: popup('<@ww.url includeParams="none" value="geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.id=${mensagem.id}&usuarioMensagem.empresa.id=${empresaId}"/>', 400, 500)"><img border="0" title="Visualizar mensagem"  src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
-							<a href="javascript: if (confirm('Confirma exclusão?')) window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${mensagem.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+							<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${mensagem.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 						</@display.column>
 	
 						<@display.column property="mensagem.remetente" title="De" style='${style}' />
@@ -179,7 +179,7 @@
 					</@display.table>
 				</@ww.form>
 				<div class="buttonGroup">
-					<button onclick="javascript: if (confirm('Confirma exclusão das mensagens selecionadas?')) document.formMensagemUsuario.submit();" class="btnExcluir"></button>
+					<button onclick="javascript: newConfirm('Confirma exclusão das mensagens selecionadas?', function(){document.formMensagemUsuario.submit();});" class="btnExcluir"></button>
 				</div>
 			</#if>
 			</div>
@@ -231,10 +231,10 @@
 
 	<script type="text/javascript">
 		<#if primeiraExecucao?exists && primeiraExecucao && possuiMensagem?exists && possuiMensagem>
-			alert('Você tem mensagens não lidas.');
+			jAlert('Você tem mensagens não lidas.');
 		</#if>
 		<#if idiomaIncorreto?exists && !idiomaIncorreto>
-			alert('O idioma do sistema está incorreto, favor alterar para Português-Brasileiro .');
+			jAlert('O idioma do sistema está incorreto, favor alterar para Português-Brasileiro .');
 		</#if>
 	</script>
 </body>

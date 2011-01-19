@@ -24,7 +24,7 @@
 			}
 			else
 			{
-				alert("É obrigatório o preenchimento de pelo menos um campo da pesquisa");
+				jAlert("É obrigatório o preenchimento de pelo menos um campo da pesquisa");
 				return false;
 			}
 		}

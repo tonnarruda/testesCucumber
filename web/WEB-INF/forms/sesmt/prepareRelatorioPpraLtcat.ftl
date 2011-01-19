@@ -30,7 +30,7 @@
 	    	 
 	    	if (gerarPpra.checked == false && gerarLtcat.checked == false)
 	    	{
-	    		alert('Selecione o relatório a ser gerado.');
+	    		jAlert('Selecione o relatório a ser gerado.');
 	    		return false;
 	    	}
 	    	else

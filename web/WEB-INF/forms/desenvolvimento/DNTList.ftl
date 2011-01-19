@@ -15,7 +15,7 @@
 		<@display.column title="Ações" class="acao">
 			<a href="listDetalhes.action?dnt.id=${d.id}"><img border="0" title="Colaborador X Curso X Prioridade" src="<@ww.url value="/imgs/usuarios.gif"/>"></a>
 			<a href="prepareUpdate.action?dnt.id=${d.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?dnt.id=${d.id}&page=${page}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?dnt.id=${d.id}&page=${page}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Nome" />
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width: 80px;"/>

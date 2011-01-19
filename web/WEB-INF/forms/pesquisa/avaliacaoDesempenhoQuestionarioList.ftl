@@ -41,7 +41,7 @@
 		<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
 			<@display.column title="Ações" class="acao">
 				<a href="prepareUpdateAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-				<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='deleteAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 			<@display.column property="data" title="Data" style="width: 140px;"/>
 			<@display.column property="avaliacao.titulo" title="Avaliação" />

@@ -88,10 +88,10 @@
 			<#if !solicitacao.encerrada>
 				<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
 				
-				<a href="javascript:if (confirm('${alertContrata} ${nomeFormatado}?')) window.location='<@ww.url includeParams="none" value="${actionContrata}"/>'"><img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
+				<a href="javascript:newConfirm('${alertContrata} ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrata}"/>'});"><img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
 				
 				<#if (!candidatoSolicitacao.etapaSeletiva?exists || !candidatoSolicitacao.etapaSeletiva.id?exists) && (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && !candidatoSolicitacao.candidato.contratado)>
-					<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<img border="0" style="opacity:0.2;filter:alpha(opacity=20)" title="Este candidato já possui históricos. Não é possível removê-lo da seleção." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>">
 				</#if>

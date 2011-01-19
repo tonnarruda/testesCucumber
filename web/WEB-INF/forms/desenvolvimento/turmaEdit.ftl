@@ -39,7 +39,7 @@
 			marcaCheckListBoxString(diasIds);
 		}
 		else
-			alert("Data Inválida.");
+			jAlert("Data Inválida.");
 	}
 
 	function marcaCheckListBoxString(checks)

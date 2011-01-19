@@ -38,7 +38,7 @@
 		var qtdSelectE = qtdeChecksSelected(document.forms[0], 'estabelecimentosCheck');
 		if(qtdSelectE == 0)
 		{
-			alert("Nenhum Estabelecimento selecionado.");
+			jAlert("Nenhum Estabelecimento selecionado.");
 			return false;
 		}
 		else

@@ -31,7 +31,7 @@
 			Cliente Marpe solicitaou que a imagem não fosse obrigatoria.
 			if(document.getElementById("imagemEscaneada").value == "")
 			{
-				alert("O campo 'Imagem da página 1' é obrigatório");
+				jAlert("O campo 'Imagem da página 1' é obrigatório");
 				return false;
 			}
 			*/
@@ -43,14 +43,14 @@
 		<#if maxCandidataCargo?exists && 0 < maxCandidataCargo>
 			if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') > ${maxCandidataCargo})
 			{
-				alert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
+				jAlert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
 				return false;
 			}
 		</#if>
 
 			if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') == 0 )
 			{
-				alert("Deve ser selecionado pelo menos um item do campo 'Cargo/Função Pretendida'");
+				jAlert("Deve ser selecionado pelo menos um item do campo 'Cargo/Função Pretendida'");
 				return false;
 			}
 

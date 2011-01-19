@@ -53,7 +53,7 @@
 		{
 			if (!data)
 			{
-				alert('Data inválida, ou fora do período válido da comissão.');
+				jAlert('Data inválida, ou fora do período válido da comissão.');
 				document.formComissaoPeriodo.aPartirDe.value = '  /  /    ';
 			}
 		}
@@ -107,7 +107,7 @@
 		<br/>Membros da comissão:
 		<@display.table name="comissaoMembros" id="comissaoMembro" class="dados">
 			<@display.column title="Ações" class="acao" style="width: 40px;">
-				<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='deleteComissaoMembro.action?comissaoMembro.id=${comissaoMembro.id}&comissaoPeriodo.id=${comissaoPeriodo.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteComissaoMembro.action?comissaoMembro.id=${comissaoMembro.id}&comissaoPeriodo.id=${comissaoPeriodo.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 			<@display.column property="colaborador.nome" title="Nome"/>
 			<@display.column title="Função" style="width: 280px;text-align:center;">

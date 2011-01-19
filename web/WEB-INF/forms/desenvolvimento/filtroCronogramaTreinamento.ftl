@@ -25,7 +25,7 @@
 
 		function errorMsg(msg)
 		{
-			alert(msg);
+			jAlert(msg);
 			addChecks('turmasCheck', null);
 		}
 	</script>

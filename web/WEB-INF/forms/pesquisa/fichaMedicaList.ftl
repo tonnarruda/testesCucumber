@@ -36,7 +36,7 @@
 			<#if 0 < fichaMedica.questionario.quantidadeDeResposta>
 				<img border="0" title="Já existe resposta para este questionário, não é permitido excluir." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
-				<a href="javascript:if (confirm('Confirma exclusão?')) window.location='delete.action?fichaMedica.id=${fichaMedica.id}&fichaMedica.questionario.empresa.id=${fichaMedica.questionario.empresa.id}&page=${page}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<a href="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?fichaMedica.id=${fichaMedica.id}&fichaMedica.questionario.empresa.id=${fichaMedica.questionario.empresa.id}&page=${page}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			</#if>
 			<a href="imprimirFichaMedicaList.action?questionario.id=${fichaMedica.questionario.id}"><img border="0" title="Imprimir ficha" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			

@@ -43,13 +43,13 @@
 	</table>
 	<#if msgAlert?exists && msgAlert != "">
 		<script>
-			alert('${msgAlert}');
+			jAlert('${msgAlert}');
 		</script>
 	</#if>
 
 	<#if sucessoEnvioCurriculo>		
 		<script language='javascript'>
-			alert('Agradecemos seu interesse. Seu currículo será analisado e, se aprovado, entraremos em contato.');
+			jAlert('Agradecemos seu interesse. Seu currículo será analisado e, se aprovado, entraremos em contato.');
 		</script>
 	</#if>	
 

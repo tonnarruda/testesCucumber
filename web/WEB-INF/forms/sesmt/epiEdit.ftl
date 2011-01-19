@@ -121,7 +121,7 @@
 		<@display.table name="epiHistoricos" id="epiHistorico" pagesize=10 class="dados" defaultsort=2 sort="list" defaultorder="descending">
 			<@display.column title="Ações" class="acao">
 				<a href="../epiHistorico/prepareUpdate.action?epiHistorico.id=${epiHistorico.id}&epi.id=${epi.id}&epi.nome=${epi.nome}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-				<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='../epiHistorico/delete.action?epiHistorico.id=${epiHistorico.id}&epi.id=${epi.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../epiHistorico/delete.action?epiHistorico.id=${epiHistorico.id}&epi.id=${epi.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 			<@display.column property="data" title="A partir de" style="width:140px;" format="{0,date,dd/MM/yyyy}"/>
 			<@display.column property="atenuacao" title="Percentual Atenuação" style="width:40px;"/>

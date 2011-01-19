@@ -39,7 +39,7 @@
 			<#if 0 < entrevista.questionario.quantidadeDeResposta>
 				<img border="0" title="Já existe resposta para esta entrevista, não é permitido excluir." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
-				<a href="javascript:if (confirm('Confirma exclusão?')) window.location='delete.action?entrevista.id=${entrevista.id}&entrevista.questionario.empresa.id=${entrevista.questionario.empresa.id}&page=${page}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<a href="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?entrevista.id=${entrevista.id}&entrevista.questionario.empresa.id=${entrevista.questionario.empresa.id}&page=${page}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			</#if>
 		</@display.column>
 

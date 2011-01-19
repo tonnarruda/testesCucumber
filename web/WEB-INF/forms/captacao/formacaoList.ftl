@@ -42,7 +42,7 @@
 	<@display.table name="formacaos" id="formacao" class="dados" defaultsort=6 defaultorder="descending">
 		<@display.column title="Ações" media="html" class="acao">
 			<a href="javascript:prepareUpdateFormacao(${formacao.id})"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:if (confirm('Confirma exclusão?')) removeFormacao(${formacao.id})"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript:newConfirm('Confirma exclusão?', function(){removeFormacao(${formacao.id})});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="curso" title="Curso"/>
 		<#switch formacao.tipo>

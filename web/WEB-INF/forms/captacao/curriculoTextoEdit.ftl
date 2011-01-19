@@ -27,7 +27,7 @@
 			<#if maxCandidataCargo?exists && 0 < maxCandidataCargo>
 				if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') > ${maxCandidataCargo})
 				{
-					alert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
+					jAlert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
 					return false;
 				}
 			</#if>

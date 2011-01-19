@@ -61,7 +61,7 @@
 				<a href="prepareUpdate.action?anexo.id=${anexo.id}&anexo.origemId=${anexo.origemId}">
 					<img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>">
 				</a>
-				<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?anexo.id=${anexo.id}&anexo.origemId=${anexo.origemId}&anexo.origem=${anexo.origem}'">
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?anexo.id=${anexo.id}&anexo.origemId=${anexo.origemId}&anexo.origem=${anexo.origem}'});">
 					<img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>">
 				</a>
 				<#if anexo.url?exists>

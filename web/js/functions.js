@@ -245,7 +245,7 @@ function validaCampos(campos)
 
 	if(erro > 0)
 	{
-		alert("Campos inválidos.");
+		jAlert("Campos inválidos.");
 		campoFocus.focus();
 		return false;
 	}
@@ -325,7 +325,7 @@ function validaCamposObrigatorios(campos, formulario)
 
 	if(erro > 0)
 	{
-		alert("Preencha os campos indicados.");
+		jAlert("Preencha os campos indicados.");
 		campoFocus.focus();
 		return false;
 	}
@@ -700,7 +700,7 @@ function validaEmail(email)
 	return true;
 }
 
-function apresentaMsg(data) { alert(data); }
+function apresentaMsg(data) { jAlert(data); }
 
 function GetWidth() {
     var x = 0;
@@ -819,7 +819,7 @@ jQuery.fn.insertAtCaret = function (tagName) {
 
 		if( parseInt(dt2) > parseInt(dt1) )
 		{
-			alert("Data final inferior a data inicial.");
+			jAlert("Data final inferior a data inicial.");
 			return false;
 		}
 		else
@@ -847,7 +847,7 @@ jQuery.fn.insertAtCaret = function (tagName) {
 
 		if( parseInt(dt2) > parseInt(dt1) )
 		{
-			alert("Data final inferior a data inicial.");
+			jAlert("Data final inferior a data inicial.");
 			return false;
 		}
 		else
@@ -866,7 +866,7 @@ function validaPercentual()
 	var valorPercentual = document.form.percentualMinimoFrequencia.value;
 	
 	if(valorPercentual < 0 || valorPercentual > 100)
-		alert("Percentual Informado Inválido"); 
+		jAlert("Percentual Informado Inválido"); 
 	if(valorPercentual == null || valorPercentual == 0 )
 		valorPercentual = 70;	
 }
@@ -1018,7 +1018,7 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 				 }
 				 else
 				 {
-					 alert("Endereço não encontrado");
+					 jAlert("Endereço não encontrado");
 				 }
 				 $logradouro.attr('disabled', false);
 				 $bairro.attr('disabled', false);
@@ -1031,8 +1031,8 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 				 $cidade.attr('disabled', false);
 				 $estado.attr('disabled', false);				 
 
-				 alert("Erro ao tentar buscar CEP: " + errorString); 
-//				 alert("Não possivel estabelecer a conexão com o servidor remoto. Favor verificar acesso a internet."); 
+				 jAlert("Erro ao tentar buscar CEP: " + errorString); 
+//				 jAlert("Não possivel estabelecer a conexão com o servidor remoto. Favor verificar acesso a internet."); 
 			 }});
 		}
 	});

@@ -39,7 +39,7 @@ function addError(e, errorText) {
         var enclosingDiv = ctrlDiv.parentNode; // wwgrp_ div
 
 		if (!ctrlDiv || (ctrlDiv.nodeName != "DIV" && ctrlDiv.nodeName != "SPAN") || !enclosingDiv || enclosingDiv.nodeName != "DIV") {
-			alert("do not validate:" + e.id);
+			jAlert("do not validate:" + e.id);
 			return;
 		}
 		
@@ -62,7 +62,7 @@ function addError(e, errorText) {
         errorDiv.appendChild(error);
         enclosingDiv.insertBefore(errorDiv, firstDiv);
     } catch (e) {
-        alert(e);
+        jAlert(e);
     }
 }
 

@@ -69,7 +69,7 @@
 			if(data == "XX")
 			{
 				document.getElementById("complementoCnpj").style.backgroundColor = "#FEE";
-				alert("CNPJ já cadastrado");
+				jAlert("CNPJ já cadastrado");
 			}
 			else
 				document.getElementById("complementoCnpj").style.backgroundColor = "#FFF";
@@ -80,14 +80,14 @@
 		{
 			if(document.getElementById('complementoCnpj').value.length != 4)
 			{
-				alert("Complemento do CNPJ deve ter 4 dígitos.");
+				jAlert("Complemento do CNPJ deve ter 4 dígitos.");
 				document.getElementById("complementoCnpj").style.backgroundColor = "#FEE";
 				return false;
 			}
 		
 			if(document.getElementById("dv").value == "XX")
 			{
-				alert("CNPJ já existe.")
+				jAlert("CNPJ já existe.")
 				return false;
 			}
 			${validarCampos}

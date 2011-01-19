@@ -61,12 +61,12 @@ function gravarConfiguracao(usuarioId)
 
 function retorno()
 {
-	alert("Layout gravado com sucesso.");
+	jAlert("Layout gravado com sucesso.");
 }
 
 function errorGravarConfiguracaoPerformance()
 {
-	alert("Ocorreu um erro ao gravar o layout.");
+	jAlert("Ocorreu um erro ao gravar o layout.");
 }
 
 function ordenaBoxes()

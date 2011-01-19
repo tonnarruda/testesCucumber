@@ -93,8 +93,7 @@
 
 		function encerraSolicitacao(fraseConfirma, actionEncerra, solicitacaoId)
 		{
-			if (confirm(fraseConfirma))
-			{
+			newConfirm(fraseConfirma, function(){
 				var modal = document.getElementById("modal");
 				modal.style.display="block";
 				var janela = document.getElementById("dataEncerramentoDiv");
@@ -103,13 +102,12 @@
 				document.getElementById("dataEncerramento").focus();
 				var combo = document.getElementById("visualizacao");
 				combo.style.display='none';
-			}
+			});
 		}
 
 		function suspenderSolicitacao(fraseConfirma, solicitacaoId)
 		{
-			if (confirm(fraseConfirma))
-			{
+			newConfirm(fraseConfirma, function(){
 				var modal = document.getElementById("modal");
 				modal.style.display="block";
 				var janela = document.getElementById("suspendeDiv");
@@ -118,7 +116,7 @@
 				document.getElementById("obsSuspensao").focus();
 				var combo = document.getElementById("visualizacao");
 				combo.style.display='none';
-			}
+			});
 		}
 
 		function setPage()
@@ -150,7 +148,7 @@
 			<@authz.authorize ifNotGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 				<#if !solicitacao.liberada && !solicitacao.encerrada>
 					<a href="prepareUpdate.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-					<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?solicitacao.id=${solicitacao.id}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<img border="0" title="Não é possível editar a solicitação. Esta já foi liberada ou encerrada." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -159,7 +157,7 @@
 			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 				<#if !solicitacao.encerrada>
 					<a href="prepareUpdate.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-					<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?solicitacao.id=${solicitacao.id}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 
 					<#if solicitacao.anuncio?exists>
 						<#if solicitacao.anuncio.exibirModuloExterno>
@@ -179,7 +177,7 @@
 					<img border="0" title="Não é possível editar a solicitação. Esta já foi liberada ou encerrada." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<img border="0" title="Não é possível anunciar a solicitação. Esta já foi encerrada." src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-					<a href="#" onclick="if (confirm('${fraseConfirma}'))window.location='${actionEncerra}?solicitacao.id=${solicitacao.id}'"><img border="0" title="${titleEncerra}" src="<@ww.url includeParams="none" value="/imgs/${imgEncerra}"/>"></a>
+					<a href="#" onclick="newConfirm('${fraseConfirma}', function(){window.location='${actionEncerra}?solicitacao.id=${solicitacao.id}'});"><img border="0" title="${titleEncerra}" src="<@ww.url includeParams="none" value="/imgs/${imgEncerra}"/>"></a>
 					<img border="0" title="Não é possível suspender a solicitação. Esta já foi encerrada." src="<@ww.url includeParams="none" value="/imgs/control_pause.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				</#if>
 			</@authz.authorize>

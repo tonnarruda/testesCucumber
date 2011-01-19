@@ -59,11 +59,11 @@
 		<#if colaborador.motivoDemissao.id?exists>
 			<input type="button" value=" " onclick="enviarForm(this);" class="btnGravar" />
 		<#else>
-			<input type="button" value=" " onclick="if (confirm('Confirma desligamento?')) enviarForm(this);" class="btnDesligarColaborador" />
+			<input type="button" value=" " onclick="newConfirm('Confirma desligamento?', function(){enviarForm(this);});" class="btnDesligarColaborador" />
 		</#if>
 		<input type="button" value=" " onclick="window.location='list.action'" class="btnVoltar" />
 		<#if colaborador.desligado>
-			<input type="button" value=" " onclick=" if (confirm('Tem certeza que deseja cancelar o desligamento?')) enviarForm(this);" id="religa" class="btnCancelarDesligamento" />
+			<input type="button" value=" " onclick=" newConfirm('Tem certeza que deseja cancelar o desligamento?', function(){enviarForm(this);});" id="religa" class="btnCancelarDesligamento" />
 		</#if>
 		
 	</div>

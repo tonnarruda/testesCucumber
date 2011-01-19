@@ -40,7 +40,7 @@
 	<@display.table name="colaboradorOcorrencias" id="colaboradorOcorrencia" class="dados">
 		<@display.column title="Ações" class="acao">
 			<a href="prepareUpdate.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}&colaborador.id=${colaborador.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}&colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="ocorrencia.descricao" 	title="Descrição"/>
 		<@display.column property="dataIni" 				title="Início" 	format="{0,date,dd/MM/yyyy}"/>

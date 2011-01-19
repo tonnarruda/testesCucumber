@@ -166,7 +166,7 @@
 				}
 			}
 
-			alert('Selecione algum Colaborador!');
+			jAlert('Selecione algum Colaborador!');
 			return false;
 		}
 	</script>

@@ -82,13 +82,13 @@
 		<@display.column title="Ações" media="html" style="text-align:center; width: 140px;" >
 	    	<#if candidato.disponivel = true>
 				<#assign nomeFormatado=stringUtil.removeApostrofo(candidato.nome)>
-				<a href="javascript:if (confirm('Deseja realmente contratar o candidato ${nomeFormatado}?')) window.location='<@ww.url includeParams="none" value="/geral/colaborador/prepareContrata.action?candidato.id=${candidato.id}"/>'"><img border="0" title="Contratar Candidato" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
+				<a href="javascript:newConfirm('Deseja realmente contratar o candidato ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="/geral/colaborador/prepareContrata.action?candidato.id=${candidato.id}"/>'});"><img border="0" title="Contratar Candidato" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
 			<#else>
 				<img border="0" title="Candidato já contratado" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
 			<a href="javascript:popup('infoCandidato.action?candidato.id=${candidato.id}', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
 			<a href="prepareUpdate.action?candidato.id=${candidato.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:if (confirm('Confirma exclusão?')) window.location='delete.action?candidato.id=${candidato.id}&candidato.empresa.id=${candidato.empresa.id}'"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?candidato.id=${candidato.id}&candidato.empresa.id=${candidato.empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			<a href="prepareUpdateCurriculo.action?candidato.id=${candidato.id}"><img border="0" title="Currículo Escaneado" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>"></a>
 			<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidato.id}"><img border="0" title="Documentos do Candidato" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			<a href="../../captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>

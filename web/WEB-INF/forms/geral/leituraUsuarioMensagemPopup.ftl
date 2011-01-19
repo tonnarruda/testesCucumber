@@ -5,9 +5,12 @@
 <link rel="stylesheet" href="<@ww.url value='/webwork/css_xhtml/styles.css' encode='false' includeParams='none'/>" type="text/css"/>
 <link rel="stylesheet" href="<@ww.url value='/webwork/jscalendar/calendar-blue.css' encode='false' includeParams='none'/>" type="text/css"/>
 
+
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
+
 <script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js"/>"></script>
-
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -32,17 +35,17 @@
 
 	function errorUsuarioMensagem()
 	{
-		alert("Ocorreu um erro na operação.");
+		jAlert("Ocorreu um erro na operação.");
 	}
 
 </script>
 
 <style type="text/css">
-		@import url('/fortesrh/css/displaytag.css');
-
-	@import url('/fortesrh/css/default.css');
-	@import url('/fortesrh/css/fortes.css');
-	@import url('/fortesrh/css/botoes.css');
+	@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/jquery.alerts.css"/>');
 </style>
 </head>
 <body>
@@ -140,7 +143,7 @@
 	</@ww.form>
 
 	<#assign btnExcluir="btnExcluir" />
-	<#assign acaoExcluir="if (confirm('Confirma exclusão?')) validaFormulario('formDelete', null); window.opener.location.reload();" />
+	<#assign acaoExcluir="newConfirm('Confirma exclusão?', function(){validaFormulario('formDelete', null); window.opener.location.reload();});" />
 
 
 <#if usuarioMensagemAnteriorId?exists>
