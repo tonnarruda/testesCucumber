@@ -47,7 +47,7 @@ public abstract class Menu
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
 				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes RH'>" +
-				"<img src='"+ contexto + "/imgs/favicon.ico' style='vertical-align: middle;'></a>");
+				"<img src='"+ contexto + "/imgs/blog.png' style='vertical-align: middle;'></a>");
 		
 		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
 			menu.append("<a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=" + parametros.getCodEmpresaSuporte()
