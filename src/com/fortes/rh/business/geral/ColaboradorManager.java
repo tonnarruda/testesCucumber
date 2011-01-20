@@ -88,7 +88,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findByIdComHistorico(Long colaboradorId);
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor);
 	public Collection<Colaborador> findAllSelect(Long... empresaIds);
-	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds);
+	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado);
 	
 	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa) throws Exception;
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId);

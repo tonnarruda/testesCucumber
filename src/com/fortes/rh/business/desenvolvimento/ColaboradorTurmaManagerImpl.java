@@ -698,7 +698,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 
 		if(!colaboradorIds.isEmpty())
-			colaboradors = colaboradorManager.findAllSelect(colaboradorIds);
+			colaboradors = colaboradorManager.findAllSelect(colaboradorIds, false);
 		else
 			colaboradors = new ArrayList<Colaborador>();
 
@@ -770,7 +770,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		Collection<Colaborador> colaboradorAprovAvaliacaos = new ArrayList<Colaborador>();
 		if (!colaboradorPresencaAprovAvaliacaoIds.isEmpty())
-			colaboradorAprovAvaliacaos = colaboradorManager.findAllSelect(colaboradorPresencaAprovAvaliacaoIds);
+			colaboradorAprovAvaliacaos = colaboradorManager.findAllSelect(colaboradorPresencaAprovAvaliacaoIds, null);
 		
 		return colaboradorAprovAvaliacaos;
 	}
@@ -804,7 +804,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		Collection<Colaborador> colaboradorAprovFalta = new ArrayList<Colaborador>();
 		if (!colaboradorIds.isEmpty())
-			colaboradorAprovFalta = colaboradorManager.findAllSelect(colaboradorIds);
+			colaboradorAprovFalta = colaboradorManager.findAllSelect(colaboradorIds, false);
 		
 		return colaboradorAprovFalta;
 	}

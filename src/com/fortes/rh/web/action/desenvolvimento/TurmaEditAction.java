@@ -417,7 +417,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		parametros.put("LOGO", logo);
 		parametros.put("PATH_IMG", path);
 
-		colaboradores = colaboradorManager.findAllSelect(LongUtil.arrayStringToCollectionLong(colaboradoresCheck));
+		colaboradores = colaboradorManager.findAllSelect(LongUtil.arrayStringToCollectionLong(colaboradoresCheck), false);
 		dataSource = colaboradorTurmaManager.montaCertificados(colaboradores, certificado);
 
 		if(certificado.getTamanho().equals("1"))

@@ -58,11 +58,12 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(1L), eq(10L)).will(returnValue(null));
 		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(2L), eq(10L)).will(returnValue(null));
+		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(3L), ANYTHING).will(returnValue(null));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save").with(ANYTHING);
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(3L), eq(10L)).will(returnValue(new AproveitamentoAvaliacaoCurso()));
-		aproveitamentoAvaliacaoCursoDao.expects(once()).method("remove");
+		//aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(3L), eq(10L)).will(returnValue(new AproveitamentoAvaliacaoCurso()));
+		//aproveitamentoAvaliacaoCursoDao.expects(once()).method("remove");
 		
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
 	}

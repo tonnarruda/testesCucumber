@@ -1108,9 +1108,9 @@ e.printStackTrace();
 		return getDao().findAllSelect(empresaIds);
 	}
 	
-	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds)
+	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado)
 	{
-		return getDao().findAllSelect(colaboradorIds);
+		return getDao().findAllSelect(colaboradorIds, colabDesligado);
 	}
 
 	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas,

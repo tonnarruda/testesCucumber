@@ -132,9 +132,9 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 		hql.append("left join avc.avaliacaoCurso ac ");
 		
 		if (aprovado)
-			hql.append("where ((ac.minimoAprovacao is not null and avc.valor is not null and avc.valor >= ac.minimoAprovacao) or (ac.minimoAprovacao is null)) ");
+			hql.append("where ((ac.minimoAprovacao is not null and avc.valor is not null and avc.valor >= ac.minimoAprovacao) or (ac.minimoAprovacao is null) ) ");
 		else
-			hql.append("where ((ac.minimoAprovacao is not null and avc.valor is not null and avc.valor < ac.minimoAprovacao) or  (ac.minimoAprovacao is not null and avc.valor is null)) ");
+			hql.append("where ((ac.minimoAprovacao is not null and avc.valor is null) or (ac.minimoAprovacao is not null and avc.valor is not null and avc.valor < ac.minimoAprovacao)) ");
 		
 		if (turmaIds != null && !turmaIds.isEmpty())
 			hql.append("and  t.id in (:turmaId) ");

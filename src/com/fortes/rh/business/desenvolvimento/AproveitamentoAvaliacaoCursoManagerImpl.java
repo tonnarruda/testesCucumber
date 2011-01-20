@@ -28,20 +28,23 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		{
 			for (int i=0; i<colaboradorTurmaIds.length; i++)
 			{
-				if(!notas[i].equals(""))
-				{
-					Double valor = Double.parseDouble(notas[i].replace(',', '.'));
-
+				Double valor = 0.0;
+//				if(notas[i] == null || !notas[i].equals("") )
+//				{
+					if (!notas[i].equals(""))
+						valor = Double.parseDouble(notas[i].replace(',', '.'));
+					
 					ColaboradorTurma colabTurma = new ColaboradorTurma();
 					colabTurma.setId(colaboradorTurmaIds[i]);
+					
 					AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso(colabTurma, avaliacaoCurso, valor);
 					
 					saveOrUpdate(aproveitamento);
-				}
-				else
-				{
-					remove(colaboradorTurmaIds[i], avaliacaoCurso);
-				}
+//				}
+//				else
+//				{
+//					remove(colaboradorTurmaIds[i], avaliacaoCurso);
+//				}
 			}
 
 			transactionManager.commit(status);

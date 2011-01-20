@@ -550,7 +550,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(ANYTHING, ANYTHING).will(returnValue(colaboradorPresencas));
 		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(ANYTHING).will(returnValue(turmas));
-		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
 		
 
 		Collection<ColaboradorTurma> colaboradorTurmasResposta = new ArrayList<ColaboradorTurma>();		
@@ -616,7 +616,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(ANYTHING, ANYTHING).will(returnValue(colaboradorPresencas));
 		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(ANYTHING).will(returnValue(turmas));
-		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
 		
 		Collection<ColaboradorTurma> colaboradorTurmasResposta = new ArrayList<ColaboradorTurma>();		
 		colaboradorTurmasResposta = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, 1L, null, null);
@@ -737,7 +737,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(true)).will(returnValue(colaboradorPresencas));
 		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(eq(turmaIds)).will(returnValue(turmas));
-		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds)).will(returnValue(colaboradores));
+		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds), eq(false)).will(returnValue(colaboradores));
 	
 		// aprovado
 		assertEquals(1, colaboradorTurmaManager.countAprovados(hoje, hoje, empresaId, true).intValue());
@@ -746,7 +746,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		turmaManager.expects(once()).method("findByFiltro").with(eq(hoje), eq(hoje), eq('T'), eq(empresaId)).will(returnValue(turmas));
 		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(true)).will(returnValue(colaboradorPresencas));
 		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(eq(turmaIds)).will(returnValue(turmas));
-		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds)).will(returnValue(colaboradores));
+		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds), eq(false)).will(returnValue(colaboradores));
 		colaboradorManager.expects(once()).method("qtdColaboradoresByTurmas").with(eq(turmaIds)).will(returnValue(colaboradores.size()));
 		
 		assertEquals(0, colaboradorTurmaManager.countAprovados(hoje, hoje, empresaId, false).intValue());
@@ -830,7 +830,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 		turmaManager.expects(atLeastOnce()).method("getTurmaFinalizadas").with(ANYTHING).will(returnValue(turmas));
 		turmaManager.expects(atLeastOnce()).method("findTurmaPresencaMinima").with(ANYTHING).will(returnValue(turmas));
-		colaboradorManager.expects(atLeastOnce()).method("findAllSelect").with(ANYTHING).will(returnValue(colaboradores));
+		colaboradorManager.expects(atLeastOnce()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(colaboradores));
 		colaboradorPresencaManager.expects(atLeastOnce()).method("findColabPresencaAprovOuRepAvaliacao").with(ANYTHING, ANYTHING).will(returnValue(colaboradorPresencas));
 
 		Collection<Colaborador> resultado = colaboradorTurmaManager.findAprovadosByCertificacao(cursos);
@@ -1074,7 +1074,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(true)).will(returnValue(colaboradorPresencas));
 		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(eq(turmaIds)).will(returnValue(turmas));
-		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds)).will(returnValue(colaboradores));
+		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds), eq(false)).will(returnValue(colaboradores));
 		
 		Collection<Colaborador> retorno = colaboradorTurmaManager.findAprovadosByTurma(turmaIds);
 		assertEquals(1, retorno.size());

@@ -1860,7 +1860,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds)
+	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 
@@ -1870,7 +1870,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setProjection(p);
 
 		criteria.add(Expression.in("c.id", colaboradorIds));
-		criteria.add(Expression.eq("c.desligado", false));
+		
+		if (colabDesligado != null)
+			criteria.add(Expression.eq("c.desligado", colabDesligado ));
 
 		criteria.addOrder(Order.asc("nomeComercial"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

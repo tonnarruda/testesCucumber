@@ -57,7 +57,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findByIdComHistorico(Long colaboradorId, Integer statusRetornoAC);
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor);
 	public Collection<Colaborador> findAllSelect(Long... empresaIds);
-	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds);
+	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado);
 	public void updateInfoPessoais(Colaborador colaborador);
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC);
 	public Long findByUsuario(Long usuarioId);
