@@ -1070,18 +1070,18 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		
 		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, null, empresa.getId());		
 		assertEquals(3, historicoColaboradors.size());
-		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[1];
+		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
 		assertEquals("Desenvolvedor Junior", resultado1.getFaixaSalarial().getDescricao());
 		assertEquals("Maria", resultado1.getColaborador().getNome());
 		assertEquals(1000.00, resultado1.getSalarioCalculado());
 
+		HistoricoColaborador resultadoColabIndice = (HistoricoColaborador) historicoColaboradors.toArray()[1];
+		assertEquals("colaboradorIndice", resultadoColabIndice.getColaborador().getNome());
+		assertEquals(24.00, resultadoColabIndice.getSalarioCalculado());
+		
 		HistoricoColaborador resultadoColabFaixaSalarial = (HistoricoColaborador) historicoColaboradors.toArray()[2];
 		assertEquals("colaboradorFaixaSalarial", resultadoColabFaixaSalarial.getColaborador().getNome());
 		assertEquals(875.99, resultadoColabFaixaSalarial.getSalarioCalculado());
-		
-		HistoricoColaborador resultadoColabIndice = (HistoricoColaborador) historicoColaboradors.toArray()[0];
-		assertEquals("colaboradorIndice", resultadoColabIndice.getColaborador().getNome());
-		assertEquals(24.00, resultadoColabIndice.getSalarioCalculado());
 
 		assertTrue(historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 1900), null, null, dataConsulta, null, null, null).isEmpty());
 
