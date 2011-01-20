@@ -20,6 +20,7 @@
 	<#assign userDivImg = "${request.contextPath}/externo/layout?tipo=menu2" />
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
@@ -27,6 +28,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/mooTools/mootools-1.2.4.js"/>'></script><#--JQuery no externo só funciona com esse js-->
 
 	<style type="text/css">
+		@import url('<@ww.url includeParams="none" value="/css/jquery.alerts.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/externo.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
