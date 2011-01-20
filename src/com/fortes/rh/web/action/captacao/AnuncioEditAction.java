@@ -60,7 +60,8 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 	public String prepareInsert() throws Exception
 	{
 		solicitacao = solicitacaoManager.findByIdProjectionAreaFaixaSalarial(solicitacao.getId());
-		anuncio = new Anuncio();
+		if (anuncio == null)
+			anuncio = new Anuncio();
 		anuncio.setTitulo(solicitacao.getDescricao());
 		prepare();
 			

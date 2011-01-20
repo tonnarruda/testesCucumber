@@ -981,14 +981,19 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		
 		// dado uma faixa com seu historico
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setNome("Junior");
+		faixaSalarial.setNome("A");
 		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 
 		FaixaSalarial faixaSalarialColab = FaixaSalarialFactory.getEntity();
-		faixaSalarialColab.setNome("Tadeu");
+		faixaSalarialColab.setNome("B");
 		faixaSalarialColab.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarialColab);
+
+		FaixaSalarial faixaSalarialColabIndice = FaixaSalarialFactory.getEntity();
+		faixaSalarialColabIndice.setNome("C");
+		faixaSalarialColabIndice.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarialColabIndice);
 
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
 		faixaSalarialHistorico.setFaixaSalarial(faixaSalarialColab);
@@ -1048,7 +1053,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaboradorIndice.setData(DateUtil.criarDataMesAno(1, 2, 2010));
 		historicoColaboradorIndice.setTipoSalario(TipoAplicacaoIndice.INDICE);
 		historicoColaboradorIndice.setColaborador(colaboradorIndice);
-		historicoColaboradorIndice.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorIndice.setFaixaSalarial(faixaSalarialColabIndice);
 		historicoColaboradorIndice.setEstabelecimento(estabelecimento);
 		historicoColaboradorIndice.setAreaOrganizacional(areaOrganizacional);
 		historicoColaboradorIndice.setStatus(StatusRetornoAC.CONFIRMADO);
@@ -1071,17 +1076,17 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds,  dataConsulta, areaOrganizacionalIds, null, empresa.getId());		
 		assertEquals(3, historicoColaboradors.size());
 		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
-		assertEquals("Desenvolvedor Junior", resultado1.getFaixaSalarial().getDescricao());
+		assertEquals("Desenvolvedor A", resultado1.getFaixaSalarial().getDescricao());
 		assertEquals("Maria", resultado1.getColaborador().getNome());
 		assertEquals(1000.00, resultado1.getSalarioCalculado());
 
-		HistoricoColaborador resultadoColabIndice = (HistoricoColaborador) historicoColaboradors.toArray()[1];
-		assertEquals("colaboradorIndice", resultadoColabIndice.getColaborador().getNome());
-		assertEquals(24.00, resultadoColabIndice.getSalarioCalculado());
-		
-		HistoricoColaborador resultadoColabFaixaSalarial = (HistoricoColaborador) historicoColaboradors.toArray()[2];
+		HistoricoColaborador resultadoColabFaixaSalarial = (HistoricoColaborador) historicoColaboradors.toArray()[1];
 		assertEquals("colaboradorFaixaSalarial", resultadoColabFaixaSalarial.getColaborador().getNome());
 		assertEquals(875.99, resultadoColabFaixaSalarial.getSalarioCalculado());
+
+		HistoricoColaborador resultadoColabIndice = (HistoricoColaborador) historicoColaboradors.toArray()[2];
+		assertEquals("colaboradorIndice", resultadoColabIndice.getColaborador().getNome());
+		assertEquals(24.00, resultadoColabIndice.getSalarioCalculado());
 
 		assertTrue(historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 1900), null, null, dataConsulta, null, null, null).isEmpty());
 
