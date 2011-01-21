@@ -132,7 +132,7 @@ public class AnuncioEditActionTest extends MockObjectTestCase
 		
 		anuncioManager.expects(once()).method("findById").with(eq(anuncio.getId())).will(returnValue(anuncio));
 		anuncioManager.expects(once()).method("findByIdProjection").with(eq(anuncio.getId())).will(returnValue(anuncio));
-		ServletActionContext.
+		
 		assertEquals("input", action.enviaEmail());
 	}
 	

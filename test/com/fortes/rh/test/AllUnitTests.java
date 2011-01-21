@@ -435,6 +435,7 @@ import com.fortes.rh.test.web.action.sesmt.AgendaEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AmbienteEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AnexoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AnexoListActionTest;
+import com.fortes.rh.test.web.action.sesmt.AnuncioEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.CandidatoEleicaoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.CatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ClinicaAutorizadaEditActionTest;
@@ -516,6 +517,7 @@ import com.fortes.rh.test.web.dwr.UtilDWRTest;
 import com.fortes.rh.test.web.service.AcPessoalClientCargoTest;
 import com.fortes.rh.test.web.service.AcPessoalClientColaboradorOcorrenciaTest;
 import com.fortes.rh.test.web.service.AcPessoalClientOcorrenciaTest;
+import com.fortes.rh.web.action.captacao.AnuncioEditAction;
 
 public class AllUnitTests extends TestSuite
 {
@@ -1003,7 +1005,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(PppRelatorioTest.class);
 
         suite.addTestSuite(AsoRelatorioTest.class);
-
+        suite.addTestSuite(AnuncioEditActionTest.class);
+        
         // UTILITARIOS
         suite.addTestSuite(AutenticadorTest.class);
         suite.addTestSuite(AuthenticatorImplTest.class);
