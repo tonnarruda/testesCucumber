@@ -78,7 +78,6 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 
 	public Collection<Curso> findByCertificacao(Long certificacaoId)
 	{
-		//
 		StringBuilder hql = new StringBuilder("select new Curso(curso.id, curso.nome, curso.cargaHoraria, curso.conteudoProgramatico, curso.criterioAvaliacao, curso.percentualMinimoFrequencia ) ");
 		hql.append("from Certificacao cert ");
 		hql.append("left join cert.cursos curso ");

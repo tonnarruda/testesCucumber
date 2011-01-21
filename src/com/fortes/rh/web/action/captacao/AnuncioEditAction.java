@@ -68,7 +68,8 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 		return Action.SUCCESS;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
+	{
 		this.solicitacaoManager = solicitacaoManager;
 	}
 
