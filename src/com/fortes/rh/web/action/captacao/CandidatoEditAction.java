@@ -301,7 +301,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		
 		try 
 		{
-			Candidato candidatoTmp = candidatoManager.verifyCPF(candidato.getPessoal().getCpf(), getEmpresaSistema().getId(), candidato.getId());
+			Candidato candidatoTmp = candidatoManager.verifyCPF(candidato.getPessoal().getCpf(), empresa.getId(), candidato.getId());
 			if(candidatoTmp != null)
 			{
 				if (moduloExterno)
