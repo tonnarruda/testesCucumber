@@ -1,9 +1,11 @@
 package com.fortes.rh.dao.hibernate.desenvolvimento;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -23,9 +25,12 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 @SuppressWarnings("unchecked")
 public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<ColaboradorTurma> implements ColaboradorTurmaDao
 {
@@ -506,52 +511,165 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	
 	public Collection<ColaboradorTurma> findColaboradoresCertificacoes(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds)
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(c.id, c.nome, c.matricula, ao.id, es.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, ct.id, ct.aprovado, curso.id,curso.nome) " );
-		hql.append("from Colaborador as c ");
-		hql.append("join c.historicoColaboradors as hc ");
-		hql.append("left join c.colaboradorTurmas as ct ");
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("select ");
+		sql.append("co.id as colaborador, ");
+		sql.append("co.nome as colaboradornome, ");
+		sql.append("e.id as estabelecimentoId, ");
+		sql.append("e.nome as estabelecimento, ");
+		sql.append("a.id as area, ");
+			sql.append("t.id as turma, ");
+			sql.append("t.descricao as col_6_0_, ");
+			sql.append("t.dataPrevIni as dataPrevIni, ");
+			sql.append("t.dataPrevFim as dataPrevFim, ");
+			sql.append("ct.id as colaboradorturma, ");
+			sql.append("ct.aprovado as colaboradorturmaAprovado, ");
+			sql.append("c.id as col_11_0_, ");
+			sql.append("c.nome as cursoNome, ");
+			sql.append("c.percentualMinimoFrequencia as percentualMinimoFrequencia, ");
+			sql.append("dt.totaldias, ");
+			sql.append("cp.qtdpresenca, ");
+		sql.append("ca.qtdavaliacoescurso, ");
+		sql.append("rct.qtdavaliacoesaprovadaspornota, ");
+		sql.append("rct.nota ");
+		sql.append("from ");
+			sql.append("Colaboradorturma ct  ");
+		sql.append("left join ");
+		sql.append("colaborador co on co.id = ct.colaborador_id ");
+		sql.append("left join ");
+		sql.append("historicocolaborador hc on hc.colaborador_id = co.id ");
+		sql.append("left join ");
+		sql.append("estabelecimento e on e.id = hc.estabelecimento_id ");
+		sql.append("left join ");
+		sql.append("areaorganizacional a on a.id = hc.areaorganizacional_id ");
+		sql.append("left join ");
+		sql.append("turma t on t.id=ct.turma_id ");
+		sql.append("left join  ");
+		sql.append("curso c on c.id=t.curso_id ");
+		sql.append("left join ");
+		sql.append("certificacao_curso cc on cc.cursos_id=c.id ");
 		
-		hql.append("left join ct.curso as curso ");
-		hql.append("left join curso.certificacaos as certificacao ");
-		hql.append("left join ct.turma as t ");
+		sql.append("left join ");
+		sql.append("( ");
+			sql.append("select  ");
+				sql.append("cursos_id, ");
+				sql.append("count(avaliacaocursos_id) qtdavaliacoescurso ");
+			sql.append("from curso_avaliacaocurso ");
+			sql.append("group by cursos_id ");
+			sql.append("order by cursos_id ");
+		sql.append(")as ca on ca.cursos_id = c.id ");
 		
-		hql.append("join hc.areaOrganizacional as ao ");
-		hql.append("join hc.estabelecimento as es ");
-		hql.append("join hc.faixaSalarial as fs ");
-		hql.append("join fs.certificacaos as certificacao ");
+		sql.append("left join ");
+		sql.append("( ");
+			sql.append("select turma_id, count(dia) totaldias from diaturma ");
+			sql.append("group by turma_id ");
+			sql.append("order by turma_id ");
+		sql.append(") as dt	on dt.turma_id = t.id ");
+		sql.append("left join ");
+			sql.append("(         ");
+			sql.append("select colaboradorturma_id, count(id) qtdpresenca  ");
+			sql.append("from colaboradorpresenca ");
+			sql.append("where presenca=true ");
+			sql.append("group by colaboradorturma_id ");
+			sql.append("order by colaboradorturma_id ");
+			sql.append(")as cp on cp.colaboradorturma_id = ct.id ");
+		sql.append("left join		 ");
+		sql.append("( ");
+			sql.append("select  ");
+				sql.append("aac.colaboradorturma_id,  ");
+				sql.append("count(aac.colaboradorturma_id) as qtdavaliacoescurso,  ");
+				sql.append("sum(  cast(((aac.valor >= ac.minimoaprovacao) or ac.minimoaprovacao is null) as int)  ) as qtdavaliacoesaprovadaspornota, ");
+				sql.append("sum(aac.valor) as nota ");
+				sql.append("from  ");
+					sql.append("aproveitamentoavaliacaocurso aac ");
+					sql.append("left join  ");
+					sql.append("avaliacaocurso ac on ac.id = aac.avaliacaocurso_id ");
+					sql.append("group by ");
+					sql.append("aac.colaboradorturma_id ");
+					sql.append("order by aac.colaboradorturma_id ");
+		sql.append(") as rct on rct.colaboradorturma_id = ct.id ");
+		sql.append("where ");
+			sql.append("cc.certificacaos_id = :certificacaoId ");
+			sql.append("and co.desligado = :desligado ");
+			sql.append("and co.empresa_id = :empresaId ");
+			
+			if (areaIds != null && areaIds.length > 0)
+				sql.append("and a.id in (:areasId) ");
 
-//		hql.append("join certificacao.cursos curso ");
-//		hql.append("join curso.turmas as t ");
-		
-		hql.append("where c.desligado = false and c.empresa.id = :empresaId ");
+			if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
+				sql.append("and e.id in (:estabelecimentosId) ");
+			
+			sql.append("and hc.data = ( ");
+			sql.append("select max(hc2.data) from historicocolaborador hc2 ");
+				sql.append("where hc2.colaborador_id = co.id ");
+				sql.append("and hc2.data <= :hoje ");
+				sql.append("and hc2.status <> :statusCancelado ");
+			sql.append(") order by e.nome, a.nome, co.nome, c.nome ");
 
-		if (areaIds != null && areaIds.length > 0)
-			hql.append("and ao.id in (:areasId) ");
-
-		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			hql.append("and es.id in (:estabelecimentosId) ");
-		
-		hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id=c.id and hc2.data <= :hoje and hc2.status = :status ) ");
-		hql.append("and certificacao.id = :certificacaoId ");
-		hql.append("and fs.certificacaos.id = certificacao.id ");
-
-		hql.append(" order by es.nome, ao.nome, certificacao.nome, c.nome ");
-
-		Query query = getSession().createQuery(hql.toString());
-
-		query.setDate("hoje", new Date());
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setLong("empresaId", empresaId);
+		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("certificacaoId", certificacao.getId());
-
+		query.setLong("empresaId", empresaId);
+		query.setBoolean("desligado", false);
+		
 		if (areaIds != null && areaIds.length > 0)
 			query.setParameterList("areasId", areaIds, Hibernate.LONG);
 
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentosId", estabelecimentoIds, Hibernate.LONG);
+
+		query.setDate("hoje", new Date());
+		query.setInteger("statusCancelado", StatusRetornoAC.CANCELADO);
 		
-		return query.list();
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		
+		List resultado = query.list();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			ColaboradorTurma ct = new ColaboradorTurma();
+		
+			Object[] res = it.next();
+			ct.setColaboradorId(((BigInteger)res[0]).longValue());
+			ct.setColaboradorNome((String)res[1]);
+			
+			ct.getColaborador().setEstabelecimento(new Estabelecimento());
+			ct.getColaborador().getEstabelecimento().setId(((BigInteger)res[2]).longValue());
+			ct.getColaborador().getEstabelecimento().setNome((String)res[3]);
+			
+			ct.getColaborador().setAreaOrganizacional(new AreaOrganizacional());
+			ct.getColaborador().getAreaOrganizacional().setId(((BigInteger)res[4]).longValue());
+			
+			ct.setTurma(new Turma());
+			ct.getTurma().setId(((BigInteger)res[5]).longValue());
+			ct.getTurma().setDescricao((String)res[6]);
+			ct.getTurma().setDataPrevIni((Date)res[7]);
+			ct.getTurma().setDataPrevFim((Date)res[8]);
+			
+			ct.setId(((BigInteger)res[9]).longValue());
+			ct.setAprovado((Boolean)res[10]);
+			
+			ct.setCurso(new Curso());
+			ct.getCurso().setId(((BigInteger)res[11]).longValue());
+			ct.getCurso().setNome((String)res[12]);
+			
+			if(res[13] != null)
+				ct.getCurso().setPercentualMinimoFrequencia((Double)res[13]);
+			if(res[14] != null)
+				ct.setTotalDias(((BigInteger)res[14]).intValue());
+			if(res[15] != null)
+				ct.setQtdPresenca(((BigInteger)res[15]).intValue());
+			if(res[16] != null)
+				ct.setQtdAvaliacoesCurso(((BigInteger)res[16]).intValue());
+			if(res[17] != null)
+				ct.setQtdAvaliacoesAprovadasPorNota(((BigInteger)res[17]).intValue());
+			if(res[18] != null)
+				ct.setNota((Double)res[18]);
+			
+			colaboradorTurmas.add(ct);
+		}
+		
+		return colaboradorTurmas;
 	}
 
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId)

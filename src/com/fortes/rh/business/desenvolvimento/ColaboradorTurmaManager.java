@@ -63,5 +63,5 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId);
 	public Integer findQuantidade(Date dataIni, Date dataFim, Long empresaId);
 	public Double percentualFrequencia(Date dataIni, Date dataFim, Long empresaId);
-	
+	public void carregaResultados(Collection<ColaboradorTurma> colaboradorTurmas);
 }

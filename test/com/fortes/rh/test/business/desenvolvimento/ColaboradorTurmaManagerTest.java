@@ -29,7 +29,6 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
@@ -59,7 +58,6 @@ import com.fortes.rh.test.factory.desenvolvimento.DntFactory;
 import com.fortes.rh.test.factory.desenvolvimento.PrioridadeTreinamentoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
-import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorTurmaManagerTest extends MockObjectTestCase
@@ -163,6 +161,82 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 				assertEquals(1, matriz.getSoma());
 			}
 		}
+	}
+	
+	public void testCarregaResultados()
+	{
+		Curso curso = CursoFactory.getEntity();
+		curso.setPercentualMinimoFrequencia(50.00);
+
+		Curso cursoSemMinimoFrequencia = CursoFactory.getEntity();
+		cursoSemMinimoFrequencia.setPercentualMinimoFrequencia(null);
+		
+		ColaboradorTurma aprovadoFrequencia = ColaboradorTurmaFactory.getEntity(1L);
+		aprovadoFrequencia.setCurso(curso);
+		aprovadoFrequencia.setQtdPresenca(6);
+		aprovadoFrequencia.setTotalDias(10);
+		
+		ColaboradorTurma aprovadoSemChamada = ColaboradorTurmaFactory.getEntity(2L);
+		aprovadoSemChamada.setCurso(curso);
+		aprovadoSemChamada.setTotalDias(null);
+		
+		ColaboradorTurma aprovadoCursoSemMinimoFrequencia = ColaboradorTurmaFactory.getEntity(3L);
+		aprovadoCursoSemMinimoFrequencia.setCurso(cursoSemMinimoFrequencia);
+		
+		ColaboradorTurma reprovadoFrequencia = ColaboradorTurmaFactory.getEntity(4L);
+		reprovadoFrequencia.setCurso(curso);
+		reprovadoFrequencia.setQtdPresenca(3);
+		reprovadoFrequencia.setTotalDias(10);
+		
+		ColaboradorTurma aprovadoNota = ColaboradorTurmaFactory.getEntity(5L);
+		aprovadoNota.setQtdAvaliacoesCurso(1);
+		aprovadoNota.setQtdAvaliacoesAprovadasPorNota(1);
+		aprovadoNota.setNota(9.0);
+		aprovadoNota.setCurso(curso);
+		aprovadoNota.setQtdPresenca(6);
+		aprovadoNota.setTotalDias(10);
+		
+		ColaboradorTurma reprovadoNota = ColaboradorTurmaFactory.getEntity(6L);
+		reprovadoNota.setQtdAvaliacoesCurso(2);
+		reprovadoNota.setQtdAvaliacoesAprovadasPorNota(1);
+		reprovadoNota.setNota(5.0);
+		reprovadoNota.setCurso(curso);
+		reprovadoNota.setQtdPresenca(6);
+		reprovadoNota.setTotalDias(10);
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(aprovadoFrequencia);
+		colaboradorTurmas.add(aprovadoSemChamada);
+		colaboradorTurmas.add(aprovadoCursoSemMinimoFrequencia);
+		colaboradorTurmas.add(reprovadoFrequencia);
+		colaboradorTurmas.add(aprovadoNota);
+		colaboradorTurmas.add(reprovadoNota);
+		
+		colaboradorTurmaManager.carregaResultados(colaboradorTurmas);
+		
+		assertEquals(true, getColaboradorTurma(1L, colaboradorTurmas).isAprovado());
+		assertEquals(true, getColaboradorTurma(2L, colaboradorTurmas).isAprovado());
+		assertEquals(true, getColaboradorTurma(3L, colaboradorTurmas).isAprovado());
+		assertEquals(false, getColaboradorTurma(4L, colaboradorTurmas).isAprovado());
+		
+		ColaboradorTurma aprovNota = getColaboradorTurma(5L, colaboradorTurmas);
+		assertEquals(true, aprovNota.isAprovado());
+		assertEquals(9.0, aprovNota.getNota());
+		
+		ColaboradorTurma reprovNota = getColaboradorTurma(6L, colaboradorTurmas);
+		assertEquals(false, reprovNota.isAprovado());
+		assertEquals(null, reprovNota.getNota());
+	}
+
+	private ColaboradorTurma getColaboradorTurma(Long id, Collection<ColaboradorTurma> colaboradorTurmas) 
+	{
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+		{
+			if(colaboradorTurma.getId().equals(id))
+				return colaboradorTurma;
+		}
+		
+		return null;
 	}
 
 	public void testFindByTurma()
