@@ -2,6 +2,7 @@ package com.fortes.rh.test.business.cargosalario;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -119,6 +120,65 @@ public class CargoManagerTest extends MockObjectTestCase
 		super.tearDown();
 	}
 
+	public void testFindByEmpresaACPorCodigoDaEmpresa() {
+		
+		String codigoDaEmpresa = "123";
+		String codigo = "";
+		
+		// deveria chamar este método
+		cargoDao.expects(once()).method("findByEmpresaAC").with(eq(codigoDaEmpresa)).will(returnValue(Collections.EMPTY_LIST));
+		
+		cargoManager.findByEmpresaAC(codigoDaEmpresa, codigo);
+		
+		cargoDao.verify();
+	}
+	
+	public void testFindByEmpresaACPorCodigoDaEmpresaECodigo() {
+		
+		String codigoDaEmpresa = "123";
+		String codigo = "321";
+		
+		// deveria chamar este método
+		cargoDao.expects(once()).method("findByEmpresaAC").with(eq(codigoDaEmpresa), eq(codigo)).will(returnValue(Collections.EMPTY_LIST));
+		
+		cargoManager.findByEmpresaAC(codigoDaEmpresa, codigo);
+		
+		cargoDao.verify();
+	}
+	
+	public void testFindAllSelectPorIdDasEmpresas() {
+		
+		Long[] empresaIds = new Long[] {1L, 2L};
+		
+		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaIds)).will(returnValue(Collections.EMPTY_LIST));
+		
+		cargoManager.findAllSelect(empresaIds);
+		
+		cargoDao.verify();
+	}
+	
+	public void testPopulaCargosComArraysDeLong() {
+		
+		Long[] ids = new Long[]{1L, 2L};
+		
+		Collection<Cargo> cargos = cargoManager.populaCargos(ids);
+		
+		assertEquals(2, cargos.size());
+	}
+	
+	public void testFindAllSelectModuloExterno() {
+		
+		Long empresaId = 69L;
+		String ordenarPor = "nome";
+		
+		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(true)).will(returnValue(Collections.EMPTY_LIST));
+		
+		cargoManager.findAllSelectModuloExterno(empresaId, ordenarPor);
+		
+		cargoDao.verify();
+	}
+	
+	
 	public void testGetCount()
 	{
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
