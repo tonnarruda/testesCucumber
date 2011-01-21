@@ -60,7 +60,20 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	
 	@Transient
 	private Double valorAvaliacao;
+
+	@Transient
+	private Integer totalDias;
+	@Transient
+	private Integer qtdPresenca;
+	@Transient
+	private Integer qtdAvaliacoesCurso;
+	@Transient
+	private Integer qtdAvaliacoesAprovadasPorNota;
+	@Transient
+	private Double nota;
 	
+	
+
 
 	public String getColuna01RelatorioPresenca()
 	{
@@ -145,7 +158,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 //		this.setAprovado(aprovado);
 	}
 	// findColaboradoresCertificacoes
-	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String estabelecimentoNome, Long turmaId, String turmaDescricao, Date dataPrevIni, Date dataPrevFim, Long id, Boolean aprovado, Long cursoId, String cursoNome)
+	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String estabelecimentoNome, Long turmaId, String turmaDescricao, Date dataPrevIni, Date dataPrevFim, Long id, Boolean aprovado, Long cursoId, String cursoNome, Double percentualMinimoFrequencia)
 	{
 		this.colaborador = new Colaborador();
 		this.colaborador.setId(colaboradorId);
@@ -169,6 +182,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.curso = new Curso();
 		this.curso.setId(cursoId);
 		this.curso.setNome(cursoNome);
+		this.curso.setPercentualMinimoFrequencia(percentualMinimoFrequencia);
 	}
 
 	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, String estabelecimentoNome, String faixaSalarialNome, String cargoNome)
@@ -621,5 +635,45 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		}
 		
 		return aprovadoMaisNota;
+	}
+
+	public Integer getTotalDias() {
+		return totalDias;
+	}
+
+	public void setTotalDias(Integer totalDias) {
+		this.totalDias = totalDias;
+	}
+
+	public Integer getQtdPresenca() {
+		return qtdPresenca;
+	}
+
+	public void setQtdPresenca(Integer qtdPresenca) {
+		this.qtdPresenca = qtdPresenca;
+	}
+
+	public Integer getQtdAvaliacoesAprovadasPorNota() {
+		return qtdAvaliacoesAprovadasPorNota;
+	}
+
+	public void setQtdAvaliacoesAprovadasPorNota(Integer qtdAvaliacoesAprovadasPorNota) {
+		this.qtdAvaliacoesAprovadasPorNota = qtdAvaliacoesAprovadasPorNota;
+	}
+
+	public Double getNota() {
+		return nota;
+	}
+
+	public void setNota(Double nota) {
+		this.nota = nota;
+	}
+
+	public Integer getQtdAvaliacoesCurso() {
+		return qtdAvaliacoesCurso;
+	}
+
+	public void setQtdAvaliacoesCurso(Integer qtdAvaliacoesCurso) {
+		this.qtdAvaliacoesCurso = qtdAvaliacoesCurso;
 	}
 }

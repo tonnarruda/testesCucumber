@@ -7,13 +7,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.hibernate.mapping.Array;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.GrupoOcupacionalDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
@@ -31,6 +30,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
@@ -40,6 +40,7 @@ import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -83,6 +84,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 	private FaixaSalarialDao faixaSalarialDao;
 	private AvaliacaoCursoDao avaliacaoCursoDao;
 	private CertificacaoDao certificacaoDao;
+	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao;
 
     public ColaboradorTurma getEntity()
     {
@@ -908,9 +910,63 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCursoDao.save(avaliacaoCurso);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setAvaliacaoCursos(new ArrayList<AvaliacaoCurso>());
+		curso.getAvaliacaoCursos().add(avaliacaoCurso);
+		cursoDao.save(curso);
+
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso);
+		
 		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setCursos(cursos);
 		certificacaoDao.save(certificacao);
 		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		DiaTurma diaTurma = new DiaTurma();
+		diaTurma.setTurma(turma);
+		diaTurmaDao.save(diaTurma);
+
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+    	estabelecimentoDao.save(estabelecimento);
+    	
+        AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+        areaOrganizacionalDao.save(areaOrganizacional);
+
+        Colaborador colaborador = ColaboradorFactory.getEntity();
+        colaborador.setEmpresa(empresa);
+        colaborador.setDesligado(false);
+        colaboradorDao.save(colaborador);
+
+        HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+        historicoColaborador.setColaborador(colaborador);
+        historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+        historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2001));
+        historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+        historicoColaborador.setEstabelecimento(estabelecimento);
+        historicoColaboradorDao.save(historicoColaborador);
+        
+        ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+        colaboradorTurma.setCurso(curso);
+        colaboradorTurma.setTurma(turma);
+        colaboradorTurma.setColaborador(colaborador);
+        colaboradorTurmaDao.save(colaboradorTurma);
+        
+        AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
+        aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
+        aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
+		
+        ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
+    	colaboradorPresencaDao.save(colaboradorPresenca);
+    	
+    	//não podemos testar o SQL, o teste joga na transação
 		assertNotNull(colaboradorTurmaDao.findColaboradoresCertificacoes(empresa.getId(), certificacao, new Long[0], new Long[0]));
 	}
 
@@ -1030,6 +1086,10 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 
 	public void setCertificacaoDao(CertificacaoDao certificacaoDao) {
 		this.certificacaoDao = certificacaoDao;
+	}
+
+	public void setAproveitamentoAvaliacaoCursoDao(AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao) {
+		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
 	}
 
 }

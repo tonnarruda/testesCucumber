@@ -957,7 +957,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			throw new ColecaoVaziaException();
 		
 		// monta aprovados e não aprovados
-		setAprovacoesDosColaboradoresTurmas(colaboradorTurmas);
+		carregaResultados(colaboradorTurmas);
+		
 		setFamiliaAreas(colaboradorTurmas, empresaId);
 		
 		Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes = new ArrayList<ColaboradorCertificacaoRelatorio>();
@@ -976,7 +977,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				{
 					colaboradorCertificacao.setTurma(colaboradorTurma.getTurma());
 					colaboradorCertificacao.setAprovado(colaboradorTurma.isAprovado());
-					colaboradorCertificacao.setValorAvaliacao(colaboradorTurma.getValorAvaliacao());
+					colaboradorCertificacao.setValorAvaliacao(colaboradorTurma.getNota());
 				}
 			}
 		}
@@ -984,6 +985,52 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradoresCertificacoes;
 	}
 	
+	public void carregaResultados(Collection<ColaboradorTurma> colaboradorTurmas) 
+	{
+		for (ColaboradorTurma ct : colaboradorTurmas) 
+		{
+			boolean aprovadoPresenca = true;
+			boolean aprovadoNota = true;
+			
+			//verifica presença
+			if(ct.getTotalDias() != null && !ct.getTotalDias().equals(0))
+			{
+				Double presenca = 0.0;
+				if(ct.getQtdPresenca() != null && !ct.getQtdPresenca().equals(0))
+					presenca = calculaPresenca(ct);
+				
+				if(ct.getCurso().getPercentualMinimoFrequencia() != null && presenca < ct.getCurso().getPercentualMinimoFrequencia())
+					aprovadoPresenca = false;
+			}
+			
+			//verifica nota
+			if(ct.getQtdAvaliacoesCurso() != null)
+			{
+				if(ct.getQtdAvaliacoesAprovadasPorNota() == null)
+					ct.setQtdAvaliacoesAprovadasPorNota(0);
+					
+				if(!ct.getQtdAvaliacoesCurso().equals(ct.getQtdAvaliacoesAprovadasPorNota()))
+					aprovadoNota = false;
+				
+				if(!ct.getQtdAvaliacoesCurso().equals(1))//só é para ter nota se existir apenas uma avaliação no curso
+					ct.setNota(null);
+			}
+			
+			ct.setAprovado(aprovadoPresenca && aprovadoNota);
+		}
+	}
+	
+	private Double calculaPresenca(ColaboradorTurma colaboradorTurma) 
+	{
+		Double presenca;
+		double resultado = (double) (colaboradorTurma.getQtdPresenca().doubleValue() / colaboradorTurma.getTotalDias().doubleValue());
+
+		BigDecimal valor = new BigDecimal(resultado);
+		valor.setScale(2, BigDecimal.ROUND_UP); //Seta o n° de casas decimais para 2 e o arredondamento para cima  
+		presenca = valor.doubleValue() * 100.00;
+		return presenca;
+	}
+
 	//BACALHAU Consulta muito grande quando muitos colaboradores
 	private void setAprovacoesDosColaboradoresTurmas(Collection<ColaboradorTurma> colaboradorTurmas) throws Exception 
 	{
