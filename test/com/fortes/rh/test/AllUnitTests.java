@@ -438,6 +438,7 @@ import com.fortes.rh.test.web.action.sesmt.AnexoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.AnuncioEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.CandidatoEleicaoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.CatEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.CertificacaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ClinicaAutorizadaEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ClinicaAutorizadaListActionTest;
 import com.fortes.rh.test.web.action.sesmt.ColaboradorAfastamentoEditActionTest;
@@ -469,6 +470,7 @@ import com.fortes.rh.test.web.action.sesmt.FuncaoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.HistoricoAmbienteEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.HistoricoFuncaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.HistoricoFuncaoListActionTest;
+import com.fortes.rh.test.web.action.sesmt.IndicadorTreinamentosListActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedicaoRiscoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedicoCoordenadorEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedicoCoordenadorListActionTest;
@@ -1006,6 +1008,10 @@ public class AllUnitTests extends TestSuite
 
         suite.addTestSuite(AsoRelatorioTest.class);
         suite.addTestSuite(AnuncioEditActionTest.class);
+
+        suite.addTestSuite(IndicadorTreinamentosListActionTest.class);
+        suite.addTestSuite(AreaFormacaoManagerTest.class);
+        suite.addTestSuite(CertificacaoEditActionTest.class);
         
         // UTILITARIOS
         suite.addTestSuite(AutenticadorTest.class);
