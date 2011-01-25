@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import mockit.Mockit;
+
+import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiHistoricoManager;
+import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.EpiManagerImpl;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -22,6 +27,10 @@ import com.fortes.rh.model.sesmt.relatorio.FichaEpiRelatorio;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.sun.accessibility.internal.resources.accessibility;
+import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.web.tags.CheckBox;
 
 public class EpiManagerTest extends MockObjectTestCase
 {
@@ -49,6 +58,8 @@ public class EpiManagerTest extends MockObjectTestCase
 
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		epiManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		
+		Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
     }
 
 	public void testFindByIdProjection() throws Exception
@@ -59,6 +70,25 @@ public class EpiManagerTest extends MockObjectTestCase
 		epiDao.expects(once()).method("findByIdProjection").with(eq(epi.getId())).will(returnValue(epi));
 
 		assertEquals(epi, epiManager.findByIdProjection(epi.getId()));
+	}
+	
+	public void testPopulaCheckToEpi() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		Long empresaId = empresa.getId();
+		
+		Collection<Epi> epis = new ArrayList<Epi>();
+		Collection<CheckBox> ids = new ArrayList<CheckBox>();
+		
+		epiDao.expects(once()).method("find").with(eq(new String[]{"empresa.id"}),eq(new Object[]{empresaId}),eq(new String[]{"nome"}) ).will(returnValue(epis));
+		
+		assertEquals(ids, epiManager.populaCheckToEpi(empresaId));
+	}
+
+	public void testPopulaCheckToEpiException() throws Exception
+	{
+		epiDao.expects(once()).method("find").with(ANYTHING, ANYTHING, ANYTHING ).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		assertEquals(new ArrayList<Epi>(), epiManager.populaCheckToEpi(1L));
 	}
 
 	public void testSaveEpi() throws Exception
