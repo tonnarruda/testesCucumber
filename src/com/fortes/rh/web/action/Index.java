@@ -96,9 +96,11 @@ public class Index extends ActionSupport
 
 			colaborador = colaboradorManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), empresaId);
 
-			mensagems = usuarioMensagemManager.listaUsuarioMensagem(usuarioId, empresaId);
-
-			possuiMensagem = usuarioMensagemManager.possuiMensagemNaoLida(usuarioId, empresaId);
+			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_MSG"}) )
+			{
+				mensagems = usuarioMensagemManager.listaUsuarioMensagem(usuarioId, empresaId);
+				possuiMensagem = usuarioMensagemManager.possuiMensagemNaoLida(usuarioId, empresaId);
+			}
 			
 			if (parametrosDoSistemaManager.isIdiomaCorreto())
 				idiomaIncorreto = true;
@@ -107,7 +109,7 @@ public class Index extends ActionSupport
 			
 			validaAvaliacoesDesempenho();
 			
-			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}) )
+			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_SOLICITACAO_PESSOAL"}) )
 			{
 				solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, false, null);
 				candidatoSolicitacaos = candidatoSolicitacaoManager.findByFiltroSolicitacaoTriagem(true);
@@ -174,9 +176,11 @@ public class Index extends ActionSupport
 					addActionError("A versão do WebService do AC Pessoal ("+versaoWebServiceAC+") está diferente da versão ("+versaoMinimaWebServicxeCompativel+") exigida pelo FortesRH.");
 			}
 
-			pendenciaACs.addAll(historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId));
-
-			pendenciaACs.addAll(faixaSalarialHistoricoManager.findPendenciasByFaixaSalarialHistorico(empresaId));
+			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_PENDENCIA_AC"}))
+			{
+				pendenciaACs.addAll(historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId));
+				pendenciaACs.addAll(faixaSalarialHistoricoManager.findPendenciasByFaixaSalarialHistorico(empresaId));
+			}
 		}
 	}
 

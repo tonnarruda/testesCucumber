@@ -73,71 +73,55 @@
 </head>
 <body>
 	<#assign usuarioId><@authz.authentication operation="id"/></#assign>
-			<#--
-		<#if pesquisasColaborador?exists>
-			<div class="waDivTituloX">Pesquisas/Avaliações em Aberto</div>
-			<div class="waDivFormularioX">
-				<#list pesquisasColaborador as pesquisa>
-					<a href="#" onclick="popup('<@ww.url includeParams="none" value="/pesquisa/pesquisa/preview.action?pesquisa.id=${pesquisa.id}&colaborador.id=${colaborador.id}"/>', 580, 750)">${pesquisa.questionario.titulo}</a><br>
-				</#list>
 
-				<#if pesquisasColaborador?size < 1>
-					<span>NÃO EXISTEM PESQUISAS DISPONÍVEIS</span>
-				</#if>
-			</div>
-		</#if>
-		-->
+	<@ww.actionmessage />
+	<@ww.actionerror />
 
-		<@ww.actionmessage />
-		<@ww.actionerror />
+	<!- Avisa Temporário -->	
+	<div class="waDivTituloX">Aviso!</div>
+	<div class="waDivFormularioX">
 
-		<!- Avisa Temporário -->	
-		<div class="waDivTituloX">Aviso!</div>
+		<p>
+		<strong><i>Caro cliente,</strong></i><br>
+			Foi criada uma classificação no cadastro de modelos de avaliação para 
+			definir se um modelo é de avaliação de desempenho ou de acompanhamento 
+			do período de experiência.
+			Por padrão, o sistema configurou todos os modelos como acompanhamento do 
+			período de experiência. Portanto, caso o cliente possua modelos de 
+			avaliação de desempenho, é necessário que entre no cadastro de modelos 
+			de avalição/acomp. de período de experiência, no módulo de treinamento 
+			de desenvolvimento e configure a referida opção.
+		</p>
+	
+		</div>
+		<br>
+	
+	<#if questionarios?exists || avaliacoesDesempenhoPendentes?exists>
+		<div class="waDivTituloX">Pesquisas/Avaliações Disponíveis</div>
 		<div class="waDivFormularioX">
 
-			<p>
-			<strong><i>Caro cliente,</strong></i><br>
-				Foi criada uma classificação no cadastro de modelos de avaliação para 
-				definir se um modelo é de avaliação de desempenho ou de acompanhamento 
-				do período de experiência.
-				Por padrão, o sistema configurou todos os modelos como acompanhamento do 
-				período de experiência. Portanto, caso o cliente possua modelos de 
-				avaliação de desempenho, é necessário que entre no cadastro de modelos 
-				de avalição/acomp. de período de experiência, no módulo de treinamento 
-				de desenvolvimento e configure a referida opção.
-			</p>
-		
-			</div>
-			<br>
-		
-		
-		
-		
-		<#if questionarios?exists || avaliacoesDesempenhoPendentes?exists>
-			<div class="waDivTituloX">Pesquisas/Avaliações Disponíveis</div>
-			<div class="waDivFormularioX">
+			<#if colaborador?exists && colaborador.id?exists>
+				<#list questionarios as questionario>
+					<p><a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=${questionario.id}&colaborador.id=${colaborador.id}&tela=index&validarFormulario=true">${questionario.titulo}</a></p><br>
+				</#list>
+			</#if>
+			
+			<#if colaborador?exists && colaborador.id?exists>
+				<#list avaliacoesDesempenhoPendentes as avaliacaoDesempenho>
+					<p>
+					<a href="avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}">${avaliacaoDesempenho.avaliacaoDesempenho.titulo} (${avaliacaoDesempenho.colaborador.nome}) (${avaliacaoDesempenho.avaliacaoDesempenho.periodoFormatado})</a>
+					</p>
+				</#list>
+			</#if>
 
-				<#if colaborador?exists && colaborador.id?exists>
-					<#list questionarios as questionario>
-						<p><a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=${questionario.id}&colaborador.id=${colaborador.id}&tela=index&validarFormulario=true">${questionario.titulo}</a></p><br>
-					</#list>
-				</#if>
-				
-				<#if colaborador?exists && colaborador.id?exists>
-					<#list avaliacoesDesempenhoPendentes as avaliacaoDesempenho>
-						<p>
-						<a href="avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}">${avaliacaoDesempenho.avaliacaoDesempenho.titulo} (${avaliacaoDesempenho.colaborador.nome}) (${avaliacaoDesempenho.avaliacaoDesempenho.periodoFormatado})</a>
-						</p>
-					</#list>
-				</#if>
-
-				<#if questionarios?size < 1 && avaliacoesDesempenhoPendentes?size < 1>
-					<span>Não existem questionários disponíveis</span>
-				</#if>
-			</div>
-		</#if>
-		<br>
-		
+			<#if questionarios?size < 1 && avaliacoesDesempenhoPendentes?size < 1>
+				<span>Não existem questionários disponíveis</span>
+			</#if>
+		</div>
+	</#if>
+	<br>
+	
+	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
 		<#if mensagems?exists>
 			<div class="waDivTituloX">Caixa de Mensagens</div>
 			<div class="waDivFormularioX">
@@ -185,7 +169,9 @@
 			</div>
 		</#if>
 		<br>
-		
+	</@authz.authorize>
+	
+	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_SOLICITACAO_PESSOAL">
 		<#if solicitacaos?exists && 0 < solicitacaos?size >
 			<div class="waDivTituloX">Existem solicitações de pessoal aguardando liberação</div>
 			<div class="waDivFormularioX">
@@ -203,36 +189,32 @@
 			</div>
 		</#if>
 		<br>
+	</@authz.authorize>
 
-		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
-			<#if integradoAC && pendenciaACs?exists>
-				<div class="waDivTituloX">Pendências com o AC Pessoal</div>
-				<div class="waDivFormularioX">
-				<#if pendenciaACs?size < 1>
-					<span>Nenhuma pendência</span>
-				<#else>
-					<@display.table name="pendenciaACs" id="pendenciaAC" class="dados" defaultsort=2 sort="list">
-						<@display.column property="pendencia" title="Pendência" />
-						<@display.column property="detalhes" title="Detalhes" />
-						<@display.column property="status" title="Status" />
-					</@display.table>
-				</#if>
-				</div>
+	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
+		<#if integradoAC && pendenciaACs?exists>
+			<div class="waDivTituloX">Pendências com o AC Pessoal</div>
+			<div class="waDivFormularioX">
+			<#if pendenciaACs?size < 1>
+				<span>Nenhuma pendência</span>
+			<#else>
+				<@display.table name="pendenciaACs" id="pendenciaAC" class="dados" defaultsort=2 sort="list">
+					<@display.column property="pendencia" title="Pendência" />
+					<@display.column property="detalhes" title="Detalhes" />
+					<@display.column property="status" title="Status" />
+				</@display.table>
 			</#if>
-		</@authz.authorize>
-
-	<@authz.authorize ifAllGranted="ROLE_PESQUISA">
-		<#if pesquisas?exists>
-		<br><br>
 			</div>
-
 		</#if>
 	</@authz.authorize>
 
 	<script type="text/javascript">
-		<#if primeiraExecucao?exists && primeiraExecucao && possuiMensagem?exists && possuiMensagem>
-			jAlert('Você tem mensagens não lidas.');
-		</#if>
+		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
+			<#if primeiraExecucao?exists && primeiraExecucao && possuiMensagem?exists && possuiMensagem>
+				jAlert('Você tem mensagens não lidas.');
+			</#if>
+		</@authz.authorize>
+			
 		<#if idiomaIncorreto?exists && !idiomaIncorreto>
 			jAlert('O idioma do sistema está incorreto, favor alterar para Português-Brasileiro .');
 		</#if>

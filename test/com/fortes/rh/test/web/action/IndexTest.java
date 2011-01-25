@@ -18,7 +18,6 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
-import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.UsuarioMensagem;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
@@ -121,19 +120,9 @@ public class IndexTest extends MockObjectTestCase
 
 		index.setActionMsg("Teste");
 
-		usuarioMensagemManager.expects(once()).method("listaUsuarioMensagem").with(ANYTHING, ANYTHING).will(returnValue(usuarioMensagems));
-
-		usuarioMensagemManager.expects(once()).method("possuiMensagemNaoLida").with(ANYTHING,ANYTHING).will(returnValue(true));
-
-		Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
-
-		historicoColaboradorManager.expects(once()).method("findPendenciasByHistoricoColaborador").will(returnValue(pendenciaACs));
 		parametrosDoSistemaManager.expects(once()).method("isIdiomaCorreto").will(returnValue(false));
 
-		faixaSalarialHistoricoManager.expects(once()).method("findPendenciasByFaixaSalarialHistorico").will(returnValue(pendenciaACs));
-
 		assertEquals("success", index.index());
-
 	}
 
 	public void testGetSet(){
