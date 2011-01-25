@@ -788,27 +788,19 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta, Long[] areaOrganizacionalIds, Date dataAtualizacao, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new HistoricoColaborador(hc.id, co.id, co.nome, co.dataAdmissao, co.codigoAC, c.id, c.nome, fs.id, fs.nome, e.id, e.nome, emp.id, emp.nome, hc.salario, emp.acIntegra, hc.tipoSalario, hc.quantidadeIndice, i, fs, hfs, hi) ");
-
+		hql.append("select new HistoricoColaborador(hc.id, co.id, co.nome, co.dataAdmissao, co.codigoAC, c.id, c.nome, fs.id, fs.nome, e.id, e.nome, emp.id, emp.nome, hc.salario, emp.acIntegra, hc.tipoSalario, hc.quantidadeIndice, i, fs, fsh, ih, ifs, ifsh) ");
 		hql.append("from HistoricoColaborador as hc ");
-		hql.append("left join hc.colaborador as co ");
-		hql.append("right join hc.areaOrganizacional as ao ");
+		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.estabelecimento as e ");
-		hql.append("left join hc.faixaSalarial as fs ");
-		hql.append("left join fs.cargo as c ");
-		hql.append("left join c.empresa as emp ");
-
-		hql.append("	left join fs.faixaSalarialHistoricos hfs with hfs.data = (select max(historicoFaixaSalarial2.data) ");
-		hql.append("															from FaixaSalarialHistorico historicoFaixaSalarial2 ");
-		hql.append("															where historicoFaixaSalarial2.faixaSalarial.id = fs.id ");
-		hql.append("															and historicoFaixaSalarial2.data <= :data and historicoFaixaSalarial2.status != :statusFaixaSalarial");
-		hql.append("															)");  
-		
 		hql.append("left join hc.indice as i ");
-		hql.append(" left join i.indiceHistoricos hi with hi.data = (select max(hi2.data) ");
-		hql.append("                                            from IndiceHistorico hi2 ");
-		hql.append("                                           where hi2.indice.id = i.id ");
-		hql.append("                                             and hi2.data <= :data) ");		
+		hql.append("left join i.indiceHistoricos as ih with ih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = i.id and ih2.data <= :data) ");
+		hql.append("left join hc.colaborador as co ");
+		hql.append("left join co.empresa as emp ");
+		hql.append("left join hc.faixaSalarial as fs ");
+		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh2.data) from FaixaSalarialHistorico fsh2 where fsh2.faixaSalarial.id = fs.id and fsh2.data <= :data and fsh2.status != :statusFaixaSalarial) ");
+		hql.append("left join fsh.indice as ifs ");
+		hql.append("left join ifs.indiceHistoricos as ifsh with ifsh.data = (select max(ih3.data) from IndiceHistorico ih3 where ih3.indice.id = ifs.id and ih3.data <= :data) ");
+		hql.append("left join fs.cargo as c ");
 		
 		hql.append("where co.desligado = :desligado ");
 		hql.append("and hc.status = :status ");

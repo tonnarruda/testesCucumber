@@ -179,7 +179,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setDataAdmissao(dataAdmissao);
 	}
 	
-	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario, Boolean acIntegra, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico)
+	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario, Boolean acIntegra, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico, Indice faixaIndice, IndiceHistorico faixaHistoricoIndice)
 	{
 		this.setId(historicoId);
 		
@@ -211,6 +211,10 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 		this.faixaSalarial = faixaSalarial != null ? faixaSalarial : new FaixaSalarial();
 		this.faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
+		if (faixaSalarialHistorico != null)
+			this.faixaSalarial.getFaixaSalarialHistoricoAtual().setIndice(faixaIndice);
+		if(faixaIndice != null)
+			this.faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().setIndiceHistoricoAtual(faixaHistoricoIndice);
 	}
 	
 	// usado em findByPeriodo
