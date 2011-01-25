@@ -590,10 +590,12 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 	public void updateBlackList(String observacao, boolean blackList, Long... candidatoIds)
 	{
-		String hql = "update Candidato set blackList = :blackList, observacaoBlackList = :observacaoBlackList where id in (:ids)";
+		String hql = "update Candidato set blackList = :blackList, observacaoBlackList = :observacaoBlackList, disponivel = :disponivel where id in (:ids)";
 
 		Query query = getSession().createQuery(hql);
 
+		query.setBoolean("blackList", blackList);
+		query.setBoolean("disponivel", !blackList);
 		query.setBoolean("blackList", blackList);
 		query.setString("observacaoBlackList", observacao);
 		query.setParameterList("ids", candidatoIds, Hibernate.LONG);
