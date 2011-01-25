@@ -69,20 +69,13 @@ public class Mail
     	procSend(empresa, parametros, subject, body, dsArray, to);
     }
 
-    public void send(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, File[] attachedFiles, String... to) throws AddressException, MessagingException
+    public void send(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, String... to) throws AddressException, MessagingException
     {
-    	DataSource[] dsArray = new DataSource[attachedFiles.length];
-    	for (int i = 0; i < attachedFiles.length; i++) 
-    	{
-			dsArray[i] = new FileDataSource(attachedFiles[i]);
-		}
-    	
-    	procSend(empresa, parametros, subject, body, dsArray, to);
+    	procSend(empresa, parametros, subject, body, null, to);
     }
 
     private void procSend(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, DataSource[] attachedFiles, String... to) throws AddressException, MessagingException
     {
-//    	if(parametros.getEnviarEmail()!= null && parametros.getEnviarEmail())
     	if(parametros.isEnvioDeEmailHabilitado())
     	{
 			if (to == null || to.length == 0)

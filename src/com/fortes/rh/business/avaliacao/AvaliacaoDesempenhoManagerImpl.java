@@ -140,7 +140,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
                 corpo.append("ATENÇÃO:<br>");
                 corpo.append("Existe Avaliação de Desempenho para ser respondida.<br>Por favor acesse <a href=\" "+ parametros.getAppUrl() + "\">Fortes RH</a>") ;
 
-                mail.send(empresa, parametros, "[Fortes RH] Lembrete responder Avaliação de Desempenho", corpo.toString(), null, avaliador.getContato().getEmail());
+                mail.send(empresa, parametros, "[Fortes RH] Lembrete responder Avaliação de Desempenho", corpo.toString(), avaliador.getContato().getEmail());
             }
             catch (Exception e)
             {

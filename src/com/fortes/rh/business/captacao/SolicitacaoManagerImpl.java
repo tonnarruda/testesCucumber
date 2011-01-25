@@ -193,7 +193,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			body.append("<br>Acesse o FortesRH para mais detalhes:<br>");
 			body.append("<a href='" + link + "'>Fortes RH</a>");
 			
-			mail.send(empresa, parametrosDoSistema, subject, body.toString(), null, StringUtil.converteCollectionToArrayString(emails));
+			mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emails));
 		}
 	}
 	

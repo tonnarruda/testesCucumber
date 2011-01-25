@@ -1,9 +1,6 @@
 package com.fortes.rh.business.captacao;
 
-import java.util.Collection;
-
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.model.geral.Empresa;
 
 
 public class QuantidadeCurriculos

@@ -1,19 +1,16 @@
 package com.fortes.rh.business.sesmt;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.ZipOutputStream;
 
 import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
 
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -23,8 +20,9 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
-import org.springframework.core.io.ByteArrayResource;
+import bsh.StringUtil;
 
+import com.ctc.wstx.util.DataUtil;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -46,18 +44,18 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.SpringUtil;
-import com.fortes.rh.util.Zip;
 import com.fortes.web.tags.CheckBox;
-import javax.mail.util.ByteArrayDataSource;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.opensymphony.webwork.ServletActionContext;
+import com.opensymphony.xwork.ActionContext;
 
 public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implements ExameManager
 {
+	private static final ServletActionContext String = null;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ColaboradorManager colaboradorManager;
 	private Mail mail;
+	Map<String,Object> parametros = new HashMap<String, Object>();
 	
 	public Exame findByIdProjection(Long exameId)
 	{
@@ -132,7 +130,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		examesAVencer = this.filtrarApenasExamesVencidos(data, examesRealizadosAteData, examesAVencer);
 		
 		if (examesAVencer.isEmpty())
-			throw new ColecaoVaziaException("Não há exames previstos.");
+			return examesAVencer;
 
 		CollectionUtil<ExamesPrevistosRelatorio> collectionUtil = new CollectionUtil<ExamesPrevistosRelatorio>();
 		
@@ -258,127 +256,74 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 
 	public void enviaLembreteExamesPrevistos(Collection<Empresa> empresas) 
 	{
-		//java.io.File xmlFile = null;
-		//java.io.File zipFile = null;
-
-		try
+		try	
 		{
-			// Cria o arquivo xml
-//			String fileName = "candidato" + Calendar.getInstance().getTimeInMillis() + ".xml";
-//			xmlFile = new java.io.File(fileName);
-//			FileOutputStream outputStream = new FileOutputStream(xmlFile);
-//			String encoding = "UTF-8";
-//			XStream stream = new XStream(new DomDriver(encoding));
-//
-//			outputStream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n".getBytes());
-//			stream.toXML(candidatos, outputStream);
-//			outputStream.flush();
-//			outputStream.close();
-//
-//			// Compacta o arquivo
-//			ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh");// cria o arquivo candidatos.zip
-//			zipOutputStream.close();
-//
-//			// Envia o arquivo por email
-//			zipFile = new java.io.File(fileName + ".fortesrh");
-
-			String body = "TESTE:<br>"+
-						  "Exames previstos <br>";
-			
-			//String subject = "Exames previstos no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes);
-			String subject = "Exames previstos no período: TODO a TODO";
-			
 			for (Empresa empresa : empresas) 
 			{
-				//byte[] output;
-				//(new ByteArrayResource(output)).getFile()
-				//findRelatorioExamesPrevistos()
 				Collection<String> emailsCollection = colaboradorManager.findEmailsByPapel(empresa.getId(), "ROLE_RECEBE_EXAMES_PREVISTOS");
 				if (!emailsCollection.isEmpty())
 				{
-					Date data = new Date(2011, 02, 28);
 					Collection<ExamesPrevistosRelatorio> colecaoExamesPrevistos;
+					Date ultimoDiaDoMesPosterior = DateUtil.getUltimoDiaMes(DateUtil.incrementaMes(new Date(), 1));
+					String dataString = DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior);
+					String subject = "(" + empresa.getNome()+ ")" + "Exames previstos até " + dataString;
+					String body = "<B>" + empresa.getNome() + "<B><br><br>" + "Segue em anexo Relatório de Exames Previstos até " + dataString;
 					
 					try 
 					{
-						String path = "C:\\workspace\\FortesRH\\web\\WEB-INF\\report\\"; 
-						//ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
+						char barra = File.separatorChar;
+						String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
+						path = path + barra + "web" + barra + "WEB-INF" + barra +"report" + barra; 
 						ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
 						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-						String msgRegistro = Autenticador.getMsgPadrao();
+						String msgRegistro = Autenticador.getMsgAutenticado("");
 						String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
-						Map<String,Object> parametros = new HashMap<String, Object>();
-				    	Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(data), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro);
+				    	Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro);
 				    	cabecalho.setLicenciadoPara(empresa.getNome());
 				    	parametros.put("CABECALHO", cabecalho);
 				    	parametros.put("SUBREPORT_DIR", path);
-						
-						//parametros = RelatorioUtil.getParametrosRelatorio("Exames Previstos até " + DateUtil.formataDiaMesAno(data), empresa, "BLA");
-						
-						colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), data, null, null, null, null, false, true);
+				    	
+						colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, false, true);
 						byte[] output;
 						JasperPrint jasperPrint;
 
-						// Fill the report and produce a print object
-						try
+						if (!colecaoExamesPrevistos.isEmpty())
 						{
-							JasperReport jasperReport = (JasperReport) JRLoader.loadObject(path + "exames_previstos.jasper");
-							//JasperReport jasperReport = compileReport("C:\\workspace\\FortesRH\\web\\WEB-INF\\report\\exames_previstos.jasper", (InputStream) stack.findValue("reportInputStream"));
-							jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JRBeanCollectionDataSource((Collection) colecaoExamesPrevistos));
+							try
+							{
+								JasperReport jasperReport = (JasperReport) JRLoader.loadObject(parametros.get("SUBREPORT_DIR") + "exames_previstos.jasper");
+								jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JRBeanCollectionDataSource((Collection) colecaoExamesPrevistos));
+							}
+							catch (JRException e)
+							{
+								throw new Exception(e.getMessage(), e);
+							}
+							
+							output = JasperExportManager.exportReportToPdf(jasperPrint);
+	
+							ByteArrayDataSource file = new ByteArrayDataSource(output, "application/pdf"){
+					            @Override
+					            public String getName() {
+					                return "relatorio.pdf";
+					            }
+					        };
+					        
+					        DataSource[] files = new DataSource[]{file};
+							String[] emails = new String[emailsCollection.size()];
+							emails = emailsCollection.toArray(emails);
+							mail.send(empresa, subject, files, body.toString(), emails);
 						}
-						catch (JRException e)
-						{
-							throw new Exception(e.getMessage(), e);
-						}
-						
-						output = JasperExportManager.exportReportToPdf(jasperPrint);
-
-						ByteArrayDataSource file = new ByteArrayDataSource(output, "application/pdf"){
-				            @Override
-				            public String getName() {
-				                return "relatorio.pdf";
-				            }
-				        };
-												
-						//File[] files = new File[]{bar.getFile()};
-				        
-				        DataSource[] files = new DataSource[]{file};
-						/////////////////////////////////////////////////////////
-						
-						String[] emails = new String[emailsCollection.size()];
-						emails = emailsCollection.toArray(emails);
-						mail.send(empresa, subject, files, body.toString(), emails);
-						//mail.send(empresa, assunto, body, new java.io.File[] { zipFile }, anuncioManager.montaEmails(emailAvulso, empresasCheck));
-						
 					} 
-					catch (ColecaoVaziaException e) {
-						// TODO: handle exception
+					catch (ColecaoVaziaException e) 
+					{
+						throw new Exception(e.getMessage(), e);
 					}
-					
-					
-
-					
-					/////////////////////////////////////////////////////////
-					
 				}
 			}
 		}
 		catch (Throwable e)
 		{
 			e.printStackTrace();
-			//throw e;
-		}
-		finally
-		{
-//			if(zipFile != null && zipFile.exists())
-//			{
-//				zipFile.delete();
-//			}
-//
-//			if(xmlFile != null && xmlFile.exists())
-//			{
-//				xmlFile.delete();
-//			}
 		}
 	}
 
@@ -400,6 +345,10 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		else
 			jasperReport = JasperCompileManager.compileReport(reportInputStream);
 		return jasperReport;
+	}
+
+	public void setParametros(Map<String, Object> parametros) {
+		this.parametros = parametros;
 	}
 	
 }
