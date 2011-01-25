@@ -1572,13 +1572,14 @@ e.printStackTrace();
 
 	}
 
-	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer diasDeAcompanhamento) throws Exception 
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa) throws Exception 
 	{
 		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck);
 		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
-		
 		HashMap<Long, String> datasColab = new HashMap<Long, String>();
-		Date hoje = new Date();
+		
+		if (tempoDeEmpresa == null)
+			tempoDeEmpresa = 0;
 		
 		for (Colaborador colaborador : colaboradores) 
 		{
@@ -1598,29 +1599,28 @@ e.printStackTrace();
 			
 			if(datasColab.get(colaborador.getId()) == null)
 			{
-				if (validarDataDiasDeAcompanhamento(diasDeAcompanhamento, colaborador, hoje))
-					datasColab.put(colaborador.getId(), datas);
-				else
-					datasColab.put(colaborador.getId(), "");
+				datasColab.put(colaborador.getId(), datas);
 			}
 			else
 			{
-				if (validarDataDiasDeAcompanhamento(diasDeAcompanhamento, colaborador, hoje))
-					datasColab.put(colaborador.getId(), datasColab.get(colaborador.getId()) + datas);
+				datasColab.put(colaborador.getId(), datasColab.get(colaborador.getId()) + datas);
 			}	
 		}
 		
 		Long idColab = 0L;
 		for (Colaborador colaborador : colaboradores) 
 		{
-			if(colaborador.getId().equals(0L) || !colaborador.getId().equals(idColab))
+			if (colaborador.getDiasDeEmpresa() >= tempoDeEmpresa)
 			{
-				String datasFormat = datasColab.get(colaborador.getId());
-				colaborador.setDatasDeAvaliacao(datasFormat.substring(0, (datasFormat.length() - 1)));
-				retorno.add(colaborador);
+				if(colaborador.getId().equals(0L) || !colaborador.getId().equals(idColab))
+				{
+					String datasFormat = datasColab.get(colaborador.getId());
+					colaborador.setDatasDeAvaliacao(datasFormat.substring(0, (datasFormat.length() - 1)));
+					retorno.add(colaborador);
+				}
+				
+				idColab = colaborador.getId();
 			}
-			
-			idColab = colaborador.getId();
 		}
 		
 		if(retorno.isEmpty())
@@ -1629,16 +1629,6 @@ e.printStackTrace();
 		return retorno;
 	}
 
-	private Boolean validarDataDiasDeAcompanhamento(Integer diasDeAcompanhamento, Colaborador colaborador, Date hoje)
-	{
-		if (diasDeAcompanhamento != null 
-				&& colaborador.getDiasDeEmpresa() >= diasDeAcompanhamento 
-				&& colaborador.getAvaliacaoRespondidaEm() != null 
-				&& DateUtil.incrementaDias(colaborador.getAvaliacaoRespondidaEm(), diasDeAcompanhamento).after(hoje))
-					return false;
-		return true;
-	}
-	
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long id2, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
 	{
 		Collection<Colaborador> retorno = new ArrayList<Colaborador>();

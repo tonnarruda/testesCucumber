@@ -33,6 +33,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
@@ -50,6 +51,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -148,6 +150,35 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Mockit.redefineMethods(ImportacaoCSVUtil.class, MockImportacaoCSVUtil.class);
     }
 
+    public void testFindAdmitidosNoPeriodo() throws Exception
+    {
+    	Date dataReferencia = DateUtil.criarDataMesAno(25, 01, 2011);
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	Integer tempoDeEmpresa = 150;
+    	    	
+    	String[] areasCheck = new String[1];
+    	String[] estabelecimentoCheck = new String[1];
+
+    	Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+    	colaborador1.setNome("Samuel");
+    	colaborador1.setDataAdmissao(DateUtil.criarDataMesAno(05, 10, 2010));
+    	colaborador1.setAvaliacaoRespondidaEm(DateUtil.criarDataMesAno(05, 01, 2011));
+    	colaborador1.setAvaliacaoDesempenhoId(AvaliacaoDesempenhoFactory.getEntity(1L).getId());
+    	
+    	Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
+    	colaborador2.setNome("Bruno");
+    	colaborador2.setDataAdmissao(DateUtil.criarDataMesAno(05, 10, 2009));
+    	colaborador2.setAvaliacaoRespondidaEm(DateUtil.criarDataMesAno(05, 01, 2010));
+    	
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	colaboradores.add(colaborador1);
+    	colaboradores.add(colaborador2);
+    	
+    	colaboradorDao.expects(once()).method("findAdmitidosNoPeriodo").with(eq(dataReferencia), eq(empresa), eq(areasCheck), eq(estabelecimentoCheck)).will(returnValue(colaboradores));
+    	
+    	assertEquals(1, colaboradorManager.findAdmitidosNoPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa).size());
+    }
+    
     public void testFindByAreaEstabelecimento()
     {
         AreaOrganizacional areaOrganizacional = new AreaOrganizacional();

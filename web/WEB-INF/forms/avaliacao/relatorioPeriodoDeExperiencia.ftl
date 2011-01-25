@@ -38,9 +38,9 @@
 		
 			<@ww.datepicker label="Data" name="dataReferencia" required="true" id="dataReferencia" value="${DataAtual}" cssClass="mascaraData"/>
 			<br>
-			Desconsiderar colaboradores com mais de  
-			<@ww.textfield theme="simple" name="diasDeAcompanhamento" id="diasDeAcompanhamento" cssStyle="width:25px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/> 
-			dias sem Acompanhamento do Período de Experiência.
+			Desconsiderar colaboradores com menos de  
+			<@ww.textfield theme="simple" name="diasDeAcompanhamento" id="diasDeAcompanhamento" cssStyle="width:60px; text-align:right;" maxLength="8" onkeypress = "return(somenteNumeros(event,''));"/> 
+			dias de empresa.
 			<br><br>  
 			<!-- <@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas"/> -->
 			<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						

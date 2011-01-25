@@ -2100,5 +2100,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public boolean jaFoiUmCandidato() {
 		return (candidato != null && candidato.getId() != null);
 	}
+
+	public void setAvaliacaoDesempenhoId(Long avaliacaoDesempenhoId) {
+		this.avaliacaoDesempenhoId = avaliacaoDesempenhoId;
+	}
 	
 }
