@@ -426,57 +426,75 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		areaOrganizacional.setNome(areaOrganizacionalNome);
 	}
 
+	public void setColaboradorArea(Long areaId)
+	{
+		inicializaColaborador();
+		if(colaborador.getAreaOrganizacional() == null)
+			colaborador.setAreaOrganizacional(new AreaOrganizacional());
+		colaborador.getAreaOrganizacional().setId(areaId);
+	}
+	
 	public void setColaboradorDataAdmissao(Date colaboradorDataAdmissao)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		inicializaColaborador();
 		
 		colaborador.setDataAdmissao(colaboradorDataAdmissao);
 	}
 	public void setColaboradorNomeComercial(String colaboradorNomeComercial)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		inicializaColaborador();
 
 		colaborador.setNomeComercial(colaboradorNomeComercial);
 	}
 
 	public void setColaboradorNome(String colaboradorNome)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		inicializaColaborador();
 
 		colaborador.setNome(colaboradorNome);
 	}
 
 	public void setColaboradorCodigoAC(String colaboradorCodigoAC)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		inicializaColaborador();
 
 		colaborador.setCodigoAC(colaboradorCodigoAC);
+	}
+	
+	public void setColaboradorMatricula(String colaboradorMatricula)
+	{
+		inicializaColaborador();
+		colaborador.setMatricula(colaboradorMatricula);
+	}
+	
+	public void setColaboradorDesligado(Boolean colaboradorDesligado)
+	{
+		inicializaColaborador();
+		colaborador.setDesligado(colaboradorDesligado);
+	}
+
+	private void inicializaColaborador() {
+		if (colaborador == null)
+			colaborador = new Colaborador();
 	}
 
 	public void setProjectionColaboradorNaoIntegraAc(boolean naoIntegraAc)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		inicializaColaborador();
 
 		colaborador.setNaoIntegraAc(naoIntegraAc);
 	}
 
 	public void setColaboradorId(Long id)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		inicializaColaborador();
 
 		colaborador.setId(id);
 	}
 
 	public void setEmpresaId(Long id)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		inicializaColaborador();
 
 		if (colaborador.getEmpresa() == null)
 			colaborador.setEmpresa(new Empresa());
@@ -929,8 +947,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 	public void setProjectionColaboradorCodigoAC(String projectionColaboradorCodigoAC)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
+		inicializaColaborador();
 
 		colaborador.setCodigoAC(projectionColaboradorCodigoAC);
 	}

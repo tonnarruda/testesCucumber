@@ -125,35 +125,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("left join c.grupoOcupacional as go ");
 	}
 
-	private Criteria montaFindByCargosIds(Colaborador colaborador, Collection cargosIds, Long empresaId, Criteria criteria)
-	{
-		criteria.createCriteria("hc.faixaSalarial","fs");
-		criteria.createCriteria("fs.cargo", "c");
-		criteria.createCriteria("hc.colaborador","col");
-		criteria.createCriteria("col.empresa", "emp");
-
-		criteria.add(Expression.eq("col.desligado", false));
-
-		if(empresaId != null)
-			criteria.add(Expression.eq("emp.id", empresaId));
-
-		if(cargosIds != null && !cargosIds.isEmpty())
-			criteria.add(Expression.in("c.id", cargosIds));
-
-		if (colaborador != null)
-		{
-			if(colaborador.getNome() != null && !colaborador.getNome().equals(""))
-				criteria.add(Expression.like("col.nome", "%"+ colaborador.getNome() +"%").ignoreCase() );
-
-			if(colaborador.getMatricula() != null && !colaborador.getMatricula().equals(""))
-				criteria.add(Expression.like("col.matricula", "%"+ colaborador.getMatricula() +"%").ignoreCase() );
-		}
-
-		criteria.addOrder(Order.asc("hc.data"));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		return criteria;
-	}
-
 	private Criteria montaFindByGrupoOcupacionalIds(Collection gruposIds, Long empresaId,Criteria criteria)
 	{
 		criteria.addOrder(Order.asc("hc.data"));
@@ -173,19 +144,52 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 	public Collection<HistoricoColaborador> findByCargosIds(int page, int pagingSize, Collection<Long> cargosIds, Long empresaId, Colaborador colaborador)
 	{
+		if(cargosIds == null || cargosIds.size() == 0)
+			return new ArrayList();
+
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.faixaSalarial","fs", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("fs.cargo", "c", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("hc.colaborador","col", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("hc.areaOrganizacional","ao", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("col.empresa", "emp");
 
-		if(cargosIds != null && cargosIds.size() > 0)
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hc.id"), "id");
+		p.add(Projections.property("ao.id"), "colaboradorArea");//seta area no colaborador
+		p.add(Projections.property("col.id"), "colaboradorId");
+		p.add(Projections.property("col.nomeComercial"), "colaboradorNomeComercial");
+		p.add(Projections.property("col.nome"), "colaboradorNome");
+		p.add(Projections.property("col.matricula"), "colaboradorMatricula");
+		p.add(Projections.property("col.desligado"), "colaboradorDesligado");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("col.desligado", false));
+
+		if(empresaId != null)
+			criteria.add(Expression.eq("emp.id", empresaId));
+
+		if(cargosIds != null && !cargosIds.isEmpty())
+			criteria.add(Expression.in("c.id", cargosIds));
+
+		if (colaborador != null)
 		{
-			criteria = montaFindByCargosIds(colaborador, cargosIds, empresaId, criteria);
+			if(colaborador.getNome() != null && !colaborador.getNome().equals(""))
+				criteria.add(Expression.like("col.nome", "%"+ colaborador.getNome() +"%").ignoreCase() );
 
-			criteria.setFirstResult(((page - 1) * pagingSize));
-			criteria.setMaxResults(pagingSize);
-
-			return criteria.list();
+			if(colaborador.getMatricula() != null && !colaborador.getMatricula().equals(""))
+				criteria.add(Expression.like("col.matricula", "%"+ colaborador.getMatricula() +"%").ignoreCase() );
 		}
 
-		return new ArrayList();
+		criteria.addOrder(Order.asc("hc.data"));
+
+		criteria.setFirstResult(((page - 1) * pagingSize));
+		criteria.setMaxResults(pagingSize);
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+
+		return criteria.list();
 
 	}
 

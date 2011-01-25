@@ -1578,6 +1578,7 @@ e.printStackTrace();
 		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
 		
 		HashMap<Long, String> datasColab = new HashMap<Long, String>();
+		Date hoje = new Date();
 		
 		for (Colaborador colaborador : colaboradores) 
 		{
@@ -1597,14 +1598,14 @@ e.printStackTrace();
 			
 			if(datasColab.get(colaborador.getId()) == null)
 			{
-				if (validarDataDiasDeAcompanhamento(diasDeAcompanhamento, colaborador,datas))
+				if (validarDataDiasDeAcompanhamento(diasDeAcompanhamento, colaborador, hoje))
 					datasColab.put(colaborador.getId(), datas);
 				else
 					datasColab.put(colaborador.getId(), "");
 			}
 			else
 			{
-				if (validarDataDiasDeAcompanhamento(diasDeAcompanhamento, colaborador,datas))
+				if (validarDataDiasDeAcompanhamento(diasDeAcompanhamento, colaborador, hoje))
 					datasColab.put(colaborador.getId(), datasColab.get(colaborador.getId()) + datas);
 			}	
 		}
@@ -1628,11 +1629,12 @@ e.printStackTrace();
 		return retorno;
 	}
 
-	private Boolean validarDataDiasDeAcompanhamento(Integer diasDeAcompanhamento, Colaborador colaborador, String datas)
+	private Boolean validarDataDiasDeAcompanhamento(Integer diasDeAcompanhamento, Colaborador colaborador, Date hoje)
 	{
-		if (diasDeAcompanhamento != null && colaborador.getDiasDeEmpresa() >= diasDeAcompanhamento 
+		if (diasDeAcompanhamento != null 
+				&& colaborador.getDiasDeEmpresa() >= diasDeAcompanhamento 
 				&& colaborador.getAvaliacaoRespondidaEm() != null 
-				&& DateUtil.incrementaDias(colaborador.getAvaliacaoRespondidaEm(), diasDeAcompanhamento).after(new Date()))
+				&& DateUtil.incrementaDias(colaborador.getAvaliacaoRespondidaEm(), diasDeAcompanhamento).after(hoje))
 					return false;
 		return true;
 	}

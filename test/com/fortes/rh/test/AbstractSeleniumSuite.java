@@ -33,7 +33,7 @@ public abstract class AbstractSeleniumSuite extends TestSuite
 //		if(properties.getProperty("selenium.app.url") != null)
 //			appUrl = properties.getProperty("selenium.app.url");
 //		else
-			appUrl = "http://localhost/fortesrh";
+			appUrl = "http://localhost:8080/fortesrh";
 	}
 
 

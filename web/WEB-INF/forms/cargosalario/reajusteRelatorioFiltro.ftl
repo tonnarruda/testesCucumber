@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Planejamento de Relinhamentos</title>
+	<title>Relatório de Planejamento de Realinhamentos</title>
 	<#assign formAction="gerarRelatorio.action"/>
 	<#assign accessKey="I"/>
 

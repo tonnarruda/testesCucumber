@@ -149,7 +149,6 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 		criteria.createCriteria("grupoOcupacional", "go", Criteria.LEFT_JOIN);
-		criteria.createCriteria("c.etapaSeletivas", "e", Criteria.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
@@ -165,7 +164,6 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.cboCodigo"), "cboCodigo");
 		p.add(Projections.property("c.atitude"), "atitude");
 		p.add(Projections.property("go.nome"), "grupoNome");
-		p.add(Projections.property("c.etapaSeletivas"), "etapaSeletivas");
 		
 		criteria.setProjection(p);
 
