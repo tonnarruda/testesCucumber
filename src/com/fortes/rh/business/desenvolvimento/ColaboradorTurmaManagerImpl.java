@@ -705,6 +705,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradors;
 	}
 	
+	//BACALHAU verdadeira comedia pra pegar os aprovados e reprovados
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Collection<Long> turmaIds)
 	{
 		Collection<Colaborador> colaboradorAprovAvaliacaos = colaboradorAprovOuRepAvaliacaos(turmaIds, true);
