@@ -25,6 +25,7 @@
         <interceptor-ref name="reference-resolver" />
         <interceptor-ref name="alias" />
         <interceptor-ref name="servlet-config" />
+        <interceptor-ref name="booleanTweaker" />
         <interceptor-ref name="params" />
         <interceptor-ref name="prepare" />
         <interceptor-ref name="i18n" />
