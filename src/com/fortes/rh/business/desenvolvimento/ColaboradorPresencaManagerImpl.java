@@ -111,6 +111,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		getDao().removeByColaboradorTurma(colaboradorTurmaIds);
 	} 
 	
+	//TODO BACALHAU retirar metodo, trocar pelo SQL
 	public Collection<ColaboradorPresenca> findColabPresencaAprovOuRepAvaliacao(Collection<Long> turmaIds, boolean aprovado)
 	{
 		if(turmaIds != null && !turmaIds.isEmpty())

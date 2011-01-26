@@ -705,58 +705,41 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradors;
 	}
 	
-	//BACALHAU verdadeira comedia pra pegar os aprovados e reprovados
-	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Collection<Long> turmaIds)
+	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId)
 	{
-		Collection<Colaborador> colaboradorAprovAvaliacaos = colaboradorAprovOuRepAvaliacaos(turmaIds, true);
-		Collection<Colaborador> colaboradorRepAvaliacaos = colaboradorAprovOuRepAvaliacaos(turmaIds, false);
-		Collection<Colaborador> colaboradorAprovFalta = colaboradorAprovFalta(turmaIds);
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, null, turmaId, null, null, true);
 		
-		Collection<Colaborador> colaboradorRepFaltas = new ArrayList<Colaborador>();
-		colaboradorRepFaltas.addAll(colaboradorAprovAvaliacaos);
-		colaboradorRepFaltas.addAll(colaboradorRepAvaliacaos);
-		colaboradorRepFaltas.removeAll(colaboradorAprovFalta);
+		//add colaboradores aprovados. Tem que ser dois for, primeiro os aprovados(é uma regra do multiSelectBox)
+		for (ColaboradorTurma ct : colaboradorTurmas) 
+		{
+			if(verificaPresenca(ct) && verificaNota(ct))
+				colaboradores.add(ct.getColaborador());
+		}
+		
+		//add colaboradores reprovados. Tem que ser dois for, primeiro os aprovados(é uma regra do multiSelectBox)
+		for (ColaboradorTurma ct : colaboradorTurmas) 
+		{
+			String texto = "";
+			
+			boolean aprovadoPresenca = verificaPresenca(ct);
+			boolean aprovadoNota = verificaNota(ct);
 
-		Collection<Colaborador> colaboradorAprovado = new ArrayList<Colaborador>();
-		colaboradorAprovado.addAll(colaboradorAprovAvaliacaos);
-		colaboradorAprovado.removeAll(colaboradorRepFaltas);
-		
-		//Id colaboradores reprovados por nota e falta
-		Collection<Colaborador> colaboradorRepFaltaAvaliacaos = new ArrayList<Colaborador>();
-		for (Colaborador colaboradorRepFalta : colaboradorRepFaltas)
-			for (Colaborador colaboradorRepAvaliacao : colaboradorRepAvaliacaos)
-				if (colaboradorRepFalta.getId().equals(colaboradorRepAvaliacao.getId()))
-					colaboradorRepFaltaAvaliacaos.add(colaboradorRepFalta);
-		
-		//Apaga Duplicatas
-		colaboradorRepAvaliacaos.removeAll(colaboradorRepFaltaAvaliacaos);
-		colaboradorRepFaltas.removeAll(colaboradorRepFaltaAvaliacaos);
-		
-		//adicionando ao nome
-		for (Colaborador colaboradorRepFalta : colaboradorRepFaltas) 
-			colaboradorRepFalta.setNome("<span style='color: red;'>" + colaboradorRepFalta.getNome() + " (reprovado por falta)</span>");
-		for (Colaborador colaboradorRepAvaliacao : colaboradorRepAvaliacaos) 
-			colaboradorRepAvaliacao.setNome("<span style='color: red;'>" + colaboradorRepAvaliacao.getNome() + " (reprovado por nota)</span>");
-		for (Colaborador colaboradorRepFaltaAvaliacao : colaboradorRepFaltaAvaliacaos) 
-			colaboradorRepFaltaAvaliacao.setNome("<span style='color: red;'>" + colaboradorRepFaltaAvaliacao.getNome() + " (reprovado por nota e falta)</span>");
-		
-		//Ordenação e junção
-		Collection<Colaborador> colaboradorTemps =new ArrayList<Colaborador>();
-		CollectionUtil<Colaborador> collectionUtil = new CollectionUtil<Colaborador>();
-		
-		colaboradorTemps.addAll(colaboradorRepFaltas);
-		colaboradorTemps.addAll(colaboradorRepAvaliacaos);
-		colaboradorTemps.addAll(colaboradorRepFaltaAvaliacaos);
-		colaboradorTemps = collectionUtil.sortCollectionStringIgnoreCase(colaboradorTemps, "nome");
-		
-		colaboradorAprovado = collectionUtil.sortCollectionStringIgnoreCase(colaboradorAprovado, "nome");
-		
-		//Retorno
-		Collection<Colaborador> colaboradors =new ArrayList<Colaborador>();
-		colaboradors.addAll(colaboradorAprovado);
-		colaboradors.addAll(colaboradorTemps);
+			if(!aprovadoPresenca && !aprovadoNota)
+				texto = "(reprovado por nota e falta)";
+			else if(!aprovadoPresenca)
+				texto = "(reprovado por falta)";
+			else if(!aprovadoNota)
+				texto = "(reprovado por Nota)";
+			
+			if(!aprovadoPresenca || !aprovadoNota)
+			{
+				ct.getColaborador().setNome("<span style='color: red;'>" + ct.getColaborador().getNome() + " " + texto + "</span>");
+				colaboradores.add(ct.getColaborador());
+			}
+		}
 
-		return colaboradors;
+		return colaboradores;
 	}
 	
 	private Collection<Colaborador> colaboradorAprovOuRepAvaliacaos(Collection<Long> turmaIds, boolean aprovado)
@@ -952,7 +935,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		certificacao.setNome(certificacaoManager.findById(certificacao.getId()).getNome());
 		Collection<Curso> cursos = cursoManager.findByCertificacao(certificacao.getId());
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, certificacao, areaIds, estabelecimentoIds);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, certificacao, null, areaIds, estabelecimentoIds, false);
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -990,35 +973,44 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{
-			boolean aprovadoPresenca = true;
-			boolean aprovadoNota = true;
-			
-			//verifica presença
-			if(ct.getTotalDias() != null && !ct.getTotalDias().equals(0))
-			{
-				Double presenca = 0.0;
-				if(ct.getQtdPresenca() != null && !ct.getQtdPresenca().equals(0))
-					presenca = calculaPresenca(ct);
-				
-				if(ct.getCurso().getPercentualMinimoFrequencia() != null && presenca < ct.getCurso().getPercentualMinimoFrequencia())
-					aprovadoPresenca = false;
-			}
-			
-			//verifica nota
-			if(ct.getQtdAvaliacoesCurso() != null)
-			{
-				if(ct.getQtdAvaliacoesAprovadasPorNota() == null)
-					ct.setQtdAvaliacoesAprovadasPorNota(0);
-					
-				if(!ct.getQtdAvaliacoesCurso().equals(ct.getQtdAvaliacoesAprovadasPorNota()))
-					aprovadoNota = false;
-				
-				if(!ct.getQtdAvaliacoesCurso().equals(1))//só é para ter nota se existir apenas uma avaliação no curso
-					ct.setNota(null);
-			}
+			boolean aprovadoPresenca = verificaPresenca(ct);
+			boolean aprovadoNota = verificaNota(ct);
 			
 			ct.setAprovado(aprovadoPresenca && aprovadoNota);
 		}
+	}
+	
+	private boolean verificaNota(ColaboradorTurma ct)
+	{
+		boolean aprovadoNota = true;
+		if(ct.getQtdAvaliacoesCurso() != null)
+		{
+			if(ct.getQtdAvaliacoesAprovadasPorNota() == null)
+				ct.setQtdAvaliacoesAprovadasPorNota(0);
+				
+			if(!ct.getQtdAvaliacoesCurso().equals(ct.getQtdAvaliacoesAprovadasPorNota()))
+				aprovadoNota = false;
+			
+			if(!ct.getQtdAvaliacoesCurso().equals(1))//só é para ter nota se existir apenas uma avaliação no curso
+				ct.setNota(null);
+		}
+		return aprovadoNota;
+	}
+	
+	private boolean verificaPresenca(ColaboradorTurma ct) 
+	{
+		boolean aprovado = true;
+		if(ct.getTotalDias() != null && !ct.getTotalDias().equals(0))
+		{
+			Double presenca = 0.0;
+			if(ct.getQtdPresenca() != null && !ct.getQtdPresenca().equals(0))
+				presenca = calculaPresenca(ct);
+			
+			if(ct.getCurso().getPercentualMinimoFrequencia() != null && presenca < ct.getCurso().getPercentualMinimoFrequencia())
+				aprovado = false;
+		}
+		
+		return aprovado;
 	}
 	
 	private Double calculaPresenca(ColaboradorTurma colaboradorTurma) 

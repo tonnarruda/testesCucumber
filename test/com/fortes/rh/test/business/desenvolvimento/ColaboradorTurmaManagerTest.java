@@ -165,6 +165,26 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	
 	public void testCarregaResultados()
 	{
+		Collection<ColaboradorTurma> colaboradorTurmas = montaAprovadosReprovados();
+		
+		colaboradorTurmaManager.carregaResultados(colaboradorTurmas);
+		
+		assertEquals(true, getColaboradorTurma(1L, colaboradorTurmas).isAprovado());
+		assertEquals(true, getColaboradorTurma(2L, colaboradorTurmas).isAprovado());
+		assertEquals(true, getColaboradorTurma(3L, colaboradorTurmas).isAprovado());
+		assertEquals(false, getColaboradorTurma(4L, colaboradorTurmas).isAprovado());
+		
+		ColaboradorTurma aprovNota = getColaboradorTurma(5L, colaboradorTurmas);
+		assertEquals(true, aprovNota.isAprovado());
+		assertEquals(9.0, aprovNota.getNota());
+		
+		ColaboradorTurma reprovNota = getColaboradorTurma(6L, colaboradorTurmas);
+		assertEquals(false, reprovNota.isAprovado());
+		assertEquals(null, reprovNota.getNota());
+	}
+
+	private Collection<ColaboradorTurma> montaAprovadosReprovados() 
+	{
 		Curso curso = CursoFactory.getEntity();
 		curso.setPercentualMinimoFrequencia(50.00);
 
@@ -204,6 +224,14 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		reprovadoNota.setQtdPresenca(6);
 		reprovadoNota.setTotalDias(10);
 		
+		ColaboradorTurma reprovadoNotaFrequencia = ColaboradorTurmaFactory.getEntity(7L);
+		reprovadoNotaFrequencia.setQtdAvaliacoesCurso(2);
+		reprovadoNotaFrequencia.setQtdAvaliacoesAprovadasPorNota(1);
+		reprovadoNotaFrequencia.setNota(5.0);
+		reprovadoNotaFrequencia.setCurso(curso);
+		reprovadoNotaFrequencia.setQtdPresenca(2);
+		reprovadoNotaFrequencia.setTotalDias(10);
+		
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmas.add(aprovadoFrequencia);
 		colaboradorTurmas.add(aprovadoSemChamada);
@@ -211,21 +239,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmas.add(reprovadoFrequencia);
 		colaboradorTurmas.add(aprovadoNota);
 		colaboradorTurmas.add(reprovadoNota);
+		colaboradorTurmas.add(reprovadoNotaFrequencia);
 		
-		colaboradorTurmaManager.carregaResultados(colaboradorTurmas);
-		
-		assertEquals(true, getColaboradorTurma(1L, colaboradorTurmas).isAprovado());
-		assertEquals(true, getColaboradorTurma(2L, colaboradorTurmas).isAprovado());
-		assertEquals(true, getColaboradorTurma(3L, colaboradorTurmas).isAprovado());
-		assertEquals(false, getColaboradorTurma(4L, colaboradorTurmas).isAprovado());
-		
-		ColaboradorTurma aprovNota = getColaboradorTurma(5L, colaboradorTurmas);
-		assertEquals(true, aprovNota.isAprovado());
-		assertEquals(9.0, aprovNota.getNota());
-		
-		ColaboradorTurma reprovNota = getColaboradorTurma(6L, colaboradorTurmas);
-		assertEquals(false, reprovNota.isAprovado());
-		assertEquals(null, reprovNota.getNota());
+		return colaboradorTurmas;
 	}
 
 	private ColaboradorTurma getColaboradorTurma(Long id, Collection<ColaboradorTurma> colaboradorTurmas) 
@@ -631,6 +647,45 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmasResposta = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, 1L, null, null);
 		
 		assertEquals(1, colaboradorTurmasResposta.size());
+	}
+	
+	public void testMontaExibicaoAprovadosReprovados() throws Exception
+	{
+		Collection<ColaboradorTurma> colaboradorTurmas = montaAprovadosReprovados(); 
+		
+		long id = 1;
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+			colaboradorTurma.setColaborador(ColaboradorFactory.getEntity(id++));
+		
+		colaboradorTurmaDao.expects(once()).method("findColaboradoresCertificacoes").withAnyArguments().will(returnValue(colaboradorTurmas));
+
+		Collection<Colaborador> colaboradores = colaboradorTurmaManager.montaExibicaoAprovadosReprovados(null, null);
+
+		assertEquals(7, colaboradores.size());
+		
+		String nomeColaboradorAprovado = "nome colaborador";
+		assertEquals(nomeColaboradorAprovado, buscaNomeColaborador(1L, colaboradores));
+		assertEquals(nomeColaboradorAprovado, buscaNomeColaborador(2L, colaboradores));
+		assertEquals(nomeColaboradorAprovado, buscaNomeColaborador(3L, colaboradores));
+		assertEquals(nomeColaboradorAprovado, buscaNomeColaborador(5L, colaboradores));
+		
+		String span = "<span style='color: red;'>nome colaborador "; 
+		String _span = "</span>";
+		
+		assertEquals(span + "(reprovado por falta)" + _span, buscaNomeColaborador(4L, colaboradores));
+		assertEquals(span + "(reprovado por Nota)" + _span, buscaNomeColaborador(6L, colaboradores));
+		assertEquals(span + "(reprovado por nota e falta)" + _span, buscaNomeColaborador(7L, colaboradores));
+	}
+
+	private String buscaNomeColaborador(Long id, Collection<Colaborador> colaboradores) 
+	{
+		for (Colaborador colaborador : colaboradores) 
+		{
+			if(colaborador.getId().equals(id))
+				return colaborador.getNome();
+		}
+		
+		return "";
 	}
 
 	public void testFindRelatorioHistoricoTreinamentosSemAvaliacoes() throws Exception

@@ -37,7 +37,7 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public boolean comparaEmpresa(ColaboradorTurma colaboradorTurma, Empresa empresa);
 	public boolean verifcaExisteNoCurso(Colaborador colaborador, Curso curso, DNT dnt);
 	public Collection<ColaboradorTurma> findByTurma(Long turmaId);
-	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Collection<Long> turmaIds);
+	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId);
 	public Collection<ColaboradorTurma> getColaboradoresAprovadoByTurma(Long turmaId);
 	public Map<String, Object> getDadosTurma(Collection<ColaboradorTurma> colaboradorTurmas, Map<String, Object> parametros) throws Exception;
 	public void saveUpdate(Collection<Long> colaboradoresId, boolean aprovado) throws Exception;

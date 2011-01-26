@@ -330,7 +330,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
     	colaboradorTurmas.add(colaboradorTurma);
 
-    	colaboradorTurmaManager.expects(once()).method("montaExibicaoAprovadosReprovados").with(eq(turmaIds)).will(returnValue(colaboradors));
+    	colaboradorTurmaManager.expects(once()).method("montaExibicaoAprovadosReprovados").with(ANYTHING, eq(turma.getId())).will(returnValue(colaboradors));
     	turmaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(turma));
     	empresaManager.expects(once()).method("findCidade").with(eq(1L)).will(returnValue("Fortaleza"));
     	

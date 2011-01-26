@@ -509,108 +509,115 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findColaboradoresCertificacoes(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds)
+	public Collection<ColaboradorTurma> findColaboradoresCertificacoes(Long empresaId, Certificacao certificacao, Long turmaId, Long[] areaIds, Long[] estabelecimentoIds, boolean ordenarPorColaboradorNome)
 	{
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("select ");
-		sql.append("co.id as colaborador, ");
-		sql.append("co.nome as colaboradornome, ");
-		sql.append("e.id as estabelecimentoId, ");
-		sql.append("e.nome as estabelecimento, ");
-		sql.append("a.id as area, ");
-			sql.append("t.id as turma, ");
-			sql.append("t.descricao as col_6_0_, ");
-			sql.append("t.dataPrevIni as dataPrevIni, ");
-			sql.append("t.dataPrevFim as dataPrevFim, ");
-			sql.append("ct.id as colaboradorturma, ");
-			sql.append("ct.aprovado as colaboradorturmaAprovado, ");
-			sql.append("c.id as col_11_0_, ");
-			sql.append("c.nome as cursoNome, ");
-			sql.append("c.percentualMinimoFrequencia as percentualMinimoFrequencia, ");
-			sql.append("dt.totaldias, ");
-			sql.append("cp.qtdpresenca, ");
-		sql.append("ca.qtdavaliacoescurso, ");
-		sql.append("rct.qtdavaliacoesaprovadaspornota, ");
-		sql.append("rct.nota ");
-		sql.append("from ");
-			sql.append("Colaboradorturma ct  ");
-		sql.append("left join ");
-		sql.append("colaborador co on co.id = ct.colaborador_id ");
-		sql.append("left join ");
-		sql.append("historicocolaborador hc on hc.colaborador_id = co.id ");
-		sql.append("left join ");
-		sql.append("estabelecimento e on e.id = hc.estabelecimento_id ");
-		sql.append("left join ");
-		sql.append("areaorganizacional a on a.id = hc.areaorganizacional_id ");
-		sql.append("left join ");
-		sql.append("turma t on t.id=ct.turma_id ");
-		sql.append("left join  ");
-		sql.append("curso c on c.id=t.curso_id ");
-		sql.append("left join ");
-		sql.append("certificacao_curso cc on cc.cursos_id=c.id ");
+		sql.append("	co.id as colaborador, ");
+		sql.append("	co.nome as colaboradornome, ");
+		sql.append("	e.id as estabelecimentoId, ");
+		sql.append("	e.nome as estabelecimento, ");
+		sql.append("	a.id as area, ");
+		sql.append("	t.id as turma, ");
+		sql.append("	t.descricao as col_6_0_, ");
+		sql.append("	t.dataPrevIni as dataPrevIni, ");
+		sql.append("	t.dataPrevFim as dataPrevFim, ");
+		sql.append("	ct.id as colaboradorturma, ");
+		sql.append("	ct.aprovado as colaboradorturmaAprovado, ");
+		sql.append("	c.id as col_11_0_, ");
+		sql.append("	c.nome as cursoNome, ");
+		sql.append("	c.percentualMinimoFrequencia as percentualMinimoFrequencia, ");
+		sql.append("	dt.totaldias, ");
+		sql.append("	cp.qtdpresenca, ");
+		sql.append("	ca.qtdavaliacoescurso, ");
+		sql.append("	rct.qtdavaliacoesaprovadaspornota, ");
+		sql.append("	rct.nota ");
+		sql.append("from Colaboradorturma ct  ");
+		sql.append("left join colaborador co on co.id = ct.colaborador_id ");
+		sql.append("left join historicocolaborador hc on hc.colaborador_id = co.id ");
+		sql.append("left join estabelecimento e on e.id = hc.estabelecimento_id ");
+		sql.append("left join areaorganizacional a on a.id = hc.areaorganizacional_id ");
+		sql.append("left join turma t on t.id=ct.turma_id ");
+		sql.append("left join curso c on c.id=t.curso_id ");
+		sql.append("left join certificacao_curso cc on cc.cursos_id=c.id ");
 		
-		sql.append("left join ");
-		sql.append("( ");
-			sql.append("select  ");
-				sql.append("cursos_id, ");
-				sql.append("count(avaliacaocursos_id) qtdavaliacoescurso ");
-			sql.append("from curso_avaliacaocurso ");
-			sql.append("group by cursos_id ");
-			sql.append("order by cursos_id ");
-		sql.append(")as ca on ca.cursos_id = c.id ");
+		sql.append("left join ( ");
+		sql.append("	select  ");
+		sql.append("		cursos_id, ");
+		sql.append("		count(avaliacaocursos_id) qtdavaliacoescurso ");
+		sql.append("	from curso_avaliacaocurso ");
+		sql.append("	group by cursos_id ");
+		sql.append("	order by cursos_id )as ca on ca.cursos_id = c.id ");
 		
-		sql.append("left join ");
-		sql.append("( ");
-			sql.append("select turma_id, count(dia) totaldias from diaturma ");
-			sql.append("group by turma_id ");
-			sql.append("order by turma_id ");
-		sql.append(") as dt	on dt.turma_id = t.id ");
-		sql.append("left join ");
-			sql.append("(         ");
-			sql.append("select colaboradorturma_id, count(id) qtdpresenca  ");
-			sql.append("from colaboradorpresenca ");
-			sql.append("where presenca=true ");
-			sql.append("group by colaboradorturma_id ");
-			sql.append("order by colaboradorturma_id ");
-			sql.append(")as cp on cp.colaboradorturma_id = ct.id ");
-		sql.append("left join		 ");
-		sql.append("( ");
-			sql.append("select  ");
-				sql.append("aac.colaboradorturma_id,  ");
-				sql.append("count(aac.colaboradorturma_id) as qtdavaliacoescurso,  ");
-				sql.append("sum(  cast(((aac.valor >= ac.minimoaprovacao) or ac.minimoaprovacao is null) as int)  ) as qtdavaliacoesaprovadaspornota, ");
-				sql.append("sum(aac.valor) as nota ");
-				sql.append("from  ");
-					sql.append("aproveitamentoavaliacaocurso aac ");
-					sql.append("left join  ");
-					sql.append("avaliacaocurso ac on ac.id = aac.avaliacaocurso_id ");
-					sql.append("group by ");
-					sql.append("aac.colaboradorturma_id ");
-					sql.append("order by aac.colaboradorturma_id ");
+		sql.append("left join ( ");
+		sql.append("	select turma_id, count(dia) totaldias from diaturma ");
+		sql.append("	group by turma_id ");
+		sql.append("	order by turma_id ");
+		sql.append("	) as dt	on dt.turma_id = t.id ");
+		
+		sql.append("left join ( ");
+		sql.append("	select colaboradorturma_id, count(id) qtdpresenca  ");
+		sql.append("	from colaboradorpresenca ");
+		sql.append("	where presenca=true ");
+		sql.append("	group by colaboradorturma_id ");
+		sql.append("	order by colaboradorturma_id ");
+		sql.append("	)as cp on cp.colaboradorturma_id = ct.id ");
+		
+		sql.append("left join ( ");
+		sql.append("	select  ");
+		sql.append("		aac.colaboradorturma_id,  ");
+		sql.append("		count(aac.colaboradorturma_id) as qtdavaliacoescurso,  ");
+		sql.append("		sum(  cast(((aac.valor >= ac.minimoaprovacao) or ac.minimoaprovacao is null) as int)  ) as qtdavaliacoesaprovadaspornota, ");
+		sql.append("		sum(aac.valor) as nota ");
+		sql.append("	from  ");
+		sql.append("	aproveitamentoavaliacaocurso aac ");
+		
+		sql.append("left join avaliacaocurso ac on ac.id = aac.avaliacaocurso_id ");
+		
+		sql.append("group by ");
+		sql.append("	aac.colaboradorturma_id ");
+		sql.append("order by aac.colaboradorturma_id ");
 		sql.append(") as rct on rct.colaboradorturma_id = ct.id ");
+		
 		sql.append("where ");
-			sql.append("cc.certificacaos_id = :certificacaoId ");
-			sql.append("and co.desligado = :desligado ");
-			sql.append("and co.empresa_id = :empresaId ");
+		sql.append("	co.desligado = :desligado ");
+		
+		if(certificacao != null)
+			sql.append("	and cc.certificacaos_id = :certificacaoId ");
+		
+		if(turmaId != null)
+			sql.append("	and t.id = :turmaId ");
+		
+		sql.append("	and co.empresa_id = :empresaId ");
 			
-			if (areaIds != null && areaIds.length > 0)
-				sql.append("and a.id in (:areasId) ");
+		if (areaIds != null && areaIds.length > 0)
+			sql.append("and a.id in (:areasId) ");
 
-			if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-				sql.append("and e.id in (:estabelecimentosId) ");
+		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			sql.append("and e.id in (:estabelecimentosId) ");
 			
-			sql.append("and hc.data = ( ");
-			sql.append("select max(hc2.data) from historicocolaborador hc2 ");
-				sql.append("where hc2.colaborador_id = co.id ");
-				sql.append("and hc2.data <= :hoje ");
-				sql.append("and hc2.status <> :statusCancelado ");
-			sql.append(") order by e.nome, a.nome, co.nome, c.nome ");
+		sql.append("and hc.data = ( ");
+		sql.append("select max(hc2.data) from historicocolaborador hc2 ");
+		sql.append("	where hc2.colaborador_id = co.id ");
+		sql.append("	and hc2.data <= :hoje ");
+		sql.append("	and hc2.status <> :statusCancelado ) ");
+		
+		if(ordenarPorColaboradorNome)
+			sql.append("	order by co.nome ");
+		else
+			sql.append("	order by e.nome, a.nome, co.nome, c.nome ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
-		query.setLong("certificacaoId", certificacao.getId());
+		
 		query.setLong("empresaId", empresaId);
 		query.setBoolean("desligado", false);
+
+		if(certificacao != null)
+			query.setLong("certificacaoId", certificacao.getId());
+		
+		if(turmaId != null)
+			query.setLong("turmaId", turmaId);
 		
 		if (areaIds != null && areaIds.length > 0)
 			query.setParameterList("areasId", areaIds, Hibernate.LONG);

@@ -375,9 +375,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		if(certificadoDe == 'T')
 		{
-			Collection<Long> turmaIds = new ArrayList<Long>();
-			turmaIds.add(turma.getId());
-			colaboradores = colaboradorTurmaManager.montaExibicaoAprovadosReprovados(turmaIds);
+			colaboradores = colaboradorTurmaManager.montaExibicaoAprovadosReprovados(getEmpresaSistema().getId(), turma.getId());
 			turma = turmaManager.findByIdProjection(turma.getId());
 			certificado = new Certificado(turma, empresaManager.findCidade(getEmpresaSistema().getId()), true, true);
 		}
