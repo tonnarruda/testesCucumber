@@ -35,6 +35,7 @@
 
 	<#assign empresaId><@authz.authentication operation="empresaId"/></#assign>
 	<script type="text/javascript">
+	
 		function populaEmails(id)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
