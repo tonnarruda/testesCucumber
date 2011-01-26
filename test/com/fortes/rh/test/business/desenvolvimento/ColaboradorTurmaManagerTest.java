@@ -992,123 +992,16 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	
 	public void testFindRelatorioComTreinamento() throws Exception
 	{
-		Curso curso = CursoFactory.getEntity(10L);
-		Long empresaId=1L;
-		Long[] areaIds=null;
-		Long[] estabelecimentoIds=null;
-		char aprovadoFiltro='T';
+		Collection<ColaboradorTurma> colaboradorTurmas = montaAprovadosReprovados();
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(100L);
-		colaboradorTurmas.add(colaboradorTurma);
+		colaboradorTurmaDao.expects(atLeastOnce()).method("findColaboradoresCertificacoes").withAnyArguments().will(returnValue(colaboradorTurmas));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllList").with(ANYTHING, ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
-		colaboradorTurma.setColaborador(colaborador);
-		
-		// Sem avaliação
-		avaliacaoCursoManager.expects(once()).method("countAvaliacoes").with(eq(curso.getId()),eq("C")).will(returnValue(0));
-		colaboradorTurmaDao.expects(once()).method("findRelatorioComTreinamento").will(returnValue(colaboradorTurmas));
-		mockValidaRelatorio(curso, empresaId);
-		
-		Collection<ColaboradorTurma> resultadoSemAvaliacao = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, areaIds, estabelecimentoIds, aprovadoFiltro);
-		
-		assertEquals(1,resultadoSemAvaliacao.size());
-		
-		ColaboradorTurma colabTurma = (ColaboradorTurma) resultadoSemAvaliacao.toArray()[0];
-		assertEquals(true,colabTurma.isAprovado());
-		
-		// Com avaliação
-		
-		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(101L);
-		colaboradorTurmas.add(colaboradorTurma2);
-		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
-		colaboradorTurma2.setColaborador(colaborador);
-		
-		Collection<ColaboradorTurma> colaboradorTurmasReprovados = new ArrayList<ColaboradorTurma>();
-		colaboradorTurma2.setAprovado(false);
-		colaboradorTurma2.setValorAvaliacao(5.0);
-		colaboradorTurmasReprovados.add(colaboradorTurma2);
-		
-		avaliacaoCursoManager.expects(once()).method("countAvaliacoes").with(eq(curso.getId()),eq("C"))
-				.will(returnValue(1));
-		colaboradorTurmaDao.expects(once()).method("findRelatorioComTreinamento").will(returnValue(colaboradorTurmas));
-		Collection<Long> colabTurmasAprovados = new ArrayList<Long>();
-		colabTurmasAprovados.add(100L);
-		aproveitamentoAvaliacaoCursoManager.expects(once()).method("find").with(eq(curso.getId()),eq(1),eq("C"),eq(true)).will(returnValue(colabTurmasAprovados));
-		aproveitamentoAvaliacaoCursoManager.expects(once()).method("findColaboradorTurma").with(eq(curso.getId()),eq(1),eq("C"),eq(false)).will(returnValue(colaboradorTurmasReprovados));
-		mockValidaRelatorio(curso, empresaId);
-		
-		Collection<ColaboradorTurma> resultadoComAvaliacao = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, areaIds, estabelecimentoIds, aprovadoFiltro);
-		
-		assertEquals(2, resultadoComAvaliacao.size());
-	}
-	
-	public void testFindRelatorioComTreinamentoApenasAprovadosOuReprovados() throws Exception
-	{
-		Curso curso = CursoFactory.getEntity(10L);
-		Long empresaId=1L;
-		Long[] areaIds=null;
-		Long[] estabelecimentoIds=null;
-		char aprovadoFiltro='S';
-		
-		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(100L);
-		colaboradorTurmas.add(colaboradorTurma);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
-		colaboradorTurma.setColaborador(colaborador);
-		
-		Collection<Long> colabTurmasIds = new ArrayList<Long>();
-		colabTurmasIds.add(100L);
-		
-		avaliacaoCursoManager.expects(once()).method("countAvaliacoes").with(eq(curso.getId()),eq("C")).will(returnValue(1));
-		aproveitamentoAvaliacaoCursoManager.expects(once()).method("find").with(eq(curso.getId()),eq(1),eq("C"),eq(true)).will(returnValue(colabTurmasIds));
-		colaboradorTurmaDao.expects(once()).method("findRelatorioComTreinamento").will(returnValue(colaboradorTurmas));
-		mockValidaRelatorio(curso, empresaId);
-		
-		Collection<ColaboradorTurma> resultadoAprovados = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, areaIds, estabelecimentoIds, aprovadoFiltro);
-		
-		assertEquals(1, resultadoAprovados.size());
-		
-		ColaboradorTurma colabTurma = (ColaboradorTurma) resultadoAprovados.toArray()[0];
-		assertEquals(true,colabTurma.isAprovado());
-		
-		// Reprovados
-		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
-		aprovadoFiltro = 'N';
-		
-		avaliacaoCursoManager.expects(once()).method("countAvaliacoes").with(eq(curso.getId()),eq("C")).will(returnValue(1));
-		aproveitamentoAvaliacaoCursoManager.expects(once()).method("find").with(eq(curso.getId()),eq(1),eq("C"),eq(false)).will(returnValue(colabTurmasIds));
-		colaboradorTurmaDao.expects(once()).method("findRelatorioComTreinamento").will(returnValue(colaboradorTurmas));
-		aproveitamentoAvaliacaoCursoManager.expects(once()).method("findColaboradorTurma").with(eq(curso.getId()),eq(1),eq("C"),eq(false)).will(returnValue(colaboradorTurmas));
-		mockValidaRelatorio(curso, empresaId);
-		
-		Collection<ColaboradorTurma> resultadoReprovados = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, areaIds, estabelecimentoIds, aprovadoFiltro);
-		ColaboradorTurma reprovado = (ColaboradorTurma) resultadoReprovados.toArray()[0];
-		assertEquals(false,reprovado.isAprovado());
-	}
-	
-	public void testFindRelatorioComTreinamentoColecaoVaziaException()
-	{
-		Curso curso = CursoFactory.getEntity(10L);
-		Long empresaId=1L;
-		Long[] areaIds=null;
-		Long[] estabelecimentoIds=null;
-		char aprovadoFiltro='N';
-		
-		avaliacaoCursoManager.expects(once()).method("countAvaliacoes").with(eq(curso.getId()),eq("C")).will(returnValue(0));
-		aproveitamentoAvaliacaoCursoManager.expects(once()).method("find").with(eq(curso.getId()),eq(0),eq("C"),eq(false)).will(returnValue(new ArrayList<Long>()));
-		
-		Exception exception = null;
-		try
-		{
-			colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, areaIds, estabelecimentoIds, aprovadoFiltro);
-		}
-		catch (Exception e) { exception = e; }
-		
-		assertTrue(exception instanceof ColecaoVaziaException);
+		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, 'T').size());		
+		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, 'S').size());		
+		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, 'N').size());		
 	}
 	
 	public void testFindRelatorioSemTreinamento() throws Exception

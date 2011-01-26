@@ -509,13 +509,14 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findColaboradoresCertificacoes(Long empresaId, Certificacao certificacao, Long turmaId, Long[] areaIds, Long[] estabelecimentoIds, boolean ordenarPorColaboradorNome)
+	public Collection<ColaboradorTurma> findColaboradoresCertificacoes(Long empresaId, Certificacao certificacao, Long turmaId, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, boolean ordenarPorColaboradorNome)
 	{
-		StringBuilder sql = new StringBuilder();
-
+		StringBuilder sql = new StringBuilder();		
+		
 		sql.append("select ");
 		sql.append("	co.id as colaborador, ");
 		sql.append("	co.nome as colaboradornome, ");
+		sql.append("	co.matricula as colaboradormatricula, ");
 		sql.append("	e.id as estabelecimentoId, ");
 		sql.append("	e.nome as estabelecimento, ");
 		sql.append("	a.id as area, ");
@@ -588,6 +589,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		if(turmaId != null)
 			sql.append("	and t.id = :turmaId ");
+
+		if(cursoId != null)
+			sql.append("	and c.id = :cursoId ");
 		
 		sql.append("	and co.empresa_id = :empresaId ");
 			
@@ -619,6 +623,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(turmaId != null)
 			query.setLong("turmaId", turmaId);
 		
+		if(cursoId != null)
+			query.setLong("cursoId", cursoId);
+		
 		if (areaIds != null && areaIds.length > 0)
 			query.setParameterList("areasId", areaIds, Hibernate.LONG);
 
@@ -639,39 +646,43 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			Object[] res = it.next();
 			ct.setColaboradorId(((BigInteger)res[0]).longValue());
 			ct.setColaboradorNome((String)res[1]);
+			ct.setColaboradorMatricula((String)res[2]);
 			
 			ct.getColaborador().setEstabelecimento(new Estabelecimento());
-			ct.getColaborador().getEstabelecimento().setId(((BigInteger)res[2]).longValue());
-			ct.getColaborador().getEstabelecimento().setNome((String)res[3]);
+			ct.getColaborador().getEstabelecimento().setId(((BigInteger)res[3]).longValue());
+			ct.getColaborador().getEstabelecimento().setNome((String)res[4]);
 			
 			ct.getColaborador().setAreaOrganizacional(new AreaOrganizacional());
-			ct.getColaborador().getAreaOrganizacional().setId(((BigInteger)res[4]).longValue());
+			ct.getColaborador().getAreaOrganizacional().setId(((BigInteger)res[5]).longValue());
 			
 			ct.setTurma(new Turma());
-			ct.getTurma().setId(((BigInteger)res[5]).longValue());
-			ct.getTurma().setDescricao((String)res[6]);
-			ct.getTurma().setDataPrevIni((Date)res[7]);
-			ct.getTurma().setDataPrevFim((Date)res[8]);
+			ct.getTurma().setId(((BigInteger)res[6]).longValue());
+			ct.getTurma().setDescricao((String)res[7]);
+			ct.getTurma().setDataPrevIni((Date)res[8]);
+			ct.getTurma().setDataPrevFim((Date)res[9]);
 			
-			ct.setId(((BigInteger)res[9]).longValue());
-			ct.setAprovado((Boolean)res[10]);
+			ct.setId(((BigInteger)res[10]).longValue());
+			ct.setAprovado((Boolean)res[11]);
 			
 			ct.setCurso(new Curso());
-			ct.getCurso().setId(((BigInteger)res[11]).longValue());
-			ct.getCurso().setNome((String)res[12]);
+			ct.getCurso().setId(((BigInteger)res[12]).longValue());
+			ct.getCurso().setNome((String)res[13]);
 			
-			if(res[13] != null)
-				ct.getCurso().setPercentualMinimoFrequencia((Double)res[13]);
 			if(res[14] != null)
-				ct.setTotalDias(((BigInteger)res[14]).intValue());
+				ct.getCurso().setPercentualMinimoFrequencia((Double)res[14]);
 			if(res[15] != null)
-				ct.setQtdPresenca(((BigInteger)res[15]).intValue());
+				ct.setTotalDias(((BigInteger)res[15]).intValue());
 			if(res[16] != null)
-				ct.setQtdAvaliacoesCurso(((BigInteger)res[16]).intValue());
+				ct.setQtdPresenca(((BigInteger)res[16]).intValue());
 			if(res[17] != null)
-				ct.setQtdAvaliacoesAprovadasPorNota(((BigInteger)res[17]).intValue());
+				ct.setQtdAvaliacoesCurso(((BigInteger)res[17]).intValue());
 			if(res[18] != null)
-				ct.setNota((Double)res[18]);
+				ct.setQtdAvaliacoesAprovadasPorNota(((BigInteger)res[18]).intValue());
+			if(res[19] != null)
+			{
+				ct.setNota((Double)res[19]);
+				ct.setValorAvaliacao((Double)res[19]);				
+			}
 			
 			colaboradorTurmas.add(ct);
 		}

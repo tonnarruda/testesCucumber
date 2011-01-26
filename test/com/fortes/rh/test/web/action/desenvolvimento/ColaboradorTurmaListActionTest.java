@@ -252,7 +252,8 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	curso.setNome("Como Raparigar");
     	action.setCurso(curso);
     	
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").with(new Constraint[]{ANYTHING, eq(curso), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	cursoManager.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(curso));
     	
     	assertEquals("success", action.relatorioColaboradorComTreinamento());
     }

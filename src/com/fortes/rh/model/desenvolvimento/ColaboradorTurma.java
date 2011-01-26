@@ -376,6 +376,12 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		colaborador.setNome(colaboradorNome);
 	}
 
+	public void setColaboradorMatricula(String matricula) 
+	{
+		inicializaColaborador();
+		colaborador.setMatricula(matricula);
+	}
+	
 	public void setTurmaDescricao(String turmaDescricao)
 	{
 		if(turma == null)
@@ -605,6 +611,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.valorAvaliacao = valorAvaliacao;
 	}
 	
+	//usado no relatorio e ftl
 	public String getAprovadoFormatado()
 	{
 		String aprovadoFmt; 
@@ -622,19 +629,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		return aprovadoFmt;
 	}
 	
+	//usado no relatorio e ftl
 	public String getAprovadoMaisNota()
 	{
-		String aprovadoMaisNota = "-"; 
-		
 		if (aprovado)
-			aprovadoMaisNota = "Sim";
-		else
-		{
-			if (valorAvaliacao != null)
-				aprovadoMaisNota = "Não";
-		}
-		
-		return aprovadoMaisNota;
+			return "Sim";
+
+		return "Não";
 	}
 
 	public Integer getTotalDias() {
@@ -676,4 +677,5 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	public void setQtdAvaliacoesCurso(Integer qtdAvaliacoesCurso) {
 		this.qtdAvaliacoesCurso = qtdAvaliacoesCurso;
 	}
+
 }

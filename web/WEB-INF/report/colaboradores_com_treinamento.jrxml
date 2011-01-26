@@ -160,9 +160,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="236"
+						x="233"
 						y="26"
-						width="59"
+						width="49"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -199,9 +199,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="299"
+						x="285"
 						y="26"
-						width="82"
+						width="107"
 						height="11"
 						key="staticText-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -212,7 +212,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="386"
+						x="395"
 						y="26"
 						width="95"
 						height="11"
@@ -225,13 +225,13 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="488"
+						x="493"
 						y="26"
-						width="40"
+						width="41"
 						height="11"
 						key="staticText-14"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
+					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Aprovado]]></text>
@@ -243,9 +243,9 @@
 				<rectangle>
 					<reportElement
 						mode="Opaque"
-						x="12"
+						x="10"
 						y="1"
-						width="519"
+						width="525"
 						height="10"
 						backcolor="#EEEEEE"
 						key="rectangle-1"
@@ -257,9 +257,9 @@
 				</rectangle>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="15"
+						x="13"
 						y="1"
-						width="215"
+						width="216"
 						height="11"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -270,9 +270,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="236"
+						x="233"
 						y="1"
-						width="60"
+						width="50"
 						height="11"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -283,9 +283,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="299"
+						x="285"
 						y="1"
-						width="82"
+						width="107"
 						height="11"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -296,7 +296,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="386"
+						x="395"
 						y="1"
 						width="95"
 						height="11"
@@ -309,13 +309,13 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="488"
+						x="493"
 						y="1"
-						width="46"
+						width="41"
 						height="11"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
+					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{aprovadoMaisNota}]]></textFieldExpression>
