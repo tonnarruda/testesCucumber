@@ -1037,3 +1037,12 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 		}
 	});
 }
+
+
+// DWR global error handler
+
+jQuery(function() {		
+	DWREngine.setErrorHandler(function (msg, exc) {
+		  jAlert(msg);
+	});
+});

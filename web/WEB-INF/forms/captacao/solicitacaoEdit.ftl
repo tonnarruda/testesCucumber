@@ -35,6 +35,7 @@
 
 	<#assign empresaId><@authz.authentication operation="empresaId"/></#assign>
 	<script type="text/javascript">
+	
 		function populaEmails(id)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -121,6 +122,9 @@
 	<#assign validarCampos="return validaFormulario('form', new Array('estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol'))"/>
 </head>
 <body>
+
+	<#include "../ftl/mascarasImports.ftl" />
+	
 	<@ww.form name="form" id="form" action="${formAction}" validate="true" onsubmit="${validarCampos}" method="POST">
 		<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
 		
