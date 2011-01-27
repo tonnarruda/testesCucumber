@@ -10,6 +10,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
@@ -208,6 +209,16 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		examesRealizados = collectionUtil.sortCollectionDate(examesRealizados, "data", "asc");
 		examesRealizados = collectionUtil.sortCollectionStringIgnoreCase(examesRealizados, "nome");
 		examesRealizados = collectionUtil.sortCollectionStringIgnoreCase(examesRealizados, "clinicaNome");
+		
+		return examesRealizados;
+	}
+
+	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizadosResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds) throws ColecaoVaziaException
+	{
+		Collection<ExamesRealizadosRelatorio> examesRealizados = getDao().findExamesRealizadosRelatorioResumido(empresaId, dataInicio, dataFim, clinicaAutorizada, examesIds);
+		
+		if (examesRealizados == null || examesRealizados.isEmpty())
+			throw new ColecaoVaziaException("Não existem exames realizados para os filtros informados.");
 		
 		return examesRealizados;
 	}

@@ -18,6 +18,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
@@ -142,6 +143,39 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		return query.list();
 	}
 
+	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosRelatorioResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds)
+	{
+		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id, e.nome, clinica.id, clinica.nome, count(*)) ");
+		hql.append("from ExameSolicitacaoExame ese ");
+		hql.append("join ese.realizacaoExame re ");
+		hql.append("left join ese.clinicaAutorizada clinica ");
+		hql.append("join ese.exame e ");
+
+		hql.append(" where e.empresa.id = :empresaId ");
+		hql.append(" and re.data between :dataInicio and :dataFim ");
+		
+		if (clinicaAutorizada != null && clinicaAutorizada.getId() != null)
+			hql.append(" and clinica.id = :clinicaAutorizadaId ");
+		
+		if (examesIds != null && examesIds.length > 0)
+			hql.append(" and e.id in (:exameIds) ");
+		
+		hql.append(" group by e.id, e.nome, clinica.id, clinica.nome ");
+		hql.append(" order by e.nome, clinica.nome ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setDate("dataInicio", dataInicio);
+		query.setDate("dataFim", dataFim);
+		query.setLong("empresaId", empresaId);
+		
+		if (clinicaAutorizada != null && clinicaAutorizada.getId() != null)
+			query.setLong("clinicaAutorizadaId", clinicaAutorizada.getId());
+		
+		if (examesIds != null && examesIds.length > 0)
+			query.setParameterList("exameIds", examesIds, Hibernate.LONG);
+		
+		return query.list();
+	}
 	public Collection<ExamesRealizadosRelatorio> findExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, String vinculo)  
 	{
 		String whereEstabelecimentos = "", whereExames = "", whereResultado="", whereClinica="", whereMotivo="";
