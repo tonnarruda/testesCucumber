@@ -596,7 +596,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		query.setBoolean("blackList", blackList);
 		query.setBoolean("disponivel", !blackList);
-		query.setBoolean("blackList", blackList);
 		query.setString("observacaoBlackList", observacao);
 		query.setParameterList("ids", candidatoIds, Hibernate.LONG);
 

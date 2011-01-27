@@ -149,6 +149,36 @@
 			<band height="32"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
+						x="457"
+						y="21"
+						width="75"
+						height="11"
+						key="staticText-nao-exibe-venc-ca">
+							<printWhenExpression><![CDATA[new Boolean(!$P{EXIBIRVENCIMENTOCA}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Vencimento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="257"
+						y="21"
+						width="197"
+						height="11"
+						key="staticText-nao-exibe-venc-ca">
+							<printWhenExpression><![CDATA[new Boolean(!$P{EXIBIRVENCIMENTOCA}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Cargo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
 						x="4"
 						y="8"
 						width="531"
@@ -162,9 +192,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="411"
+						x="388"
 						y="21"
-						width="51"
+						width="66"
 						height="11"
 						key="staticText-4">
 							<printWhenExpression><![CDATA[$P{EXIBIRVENCIMENTOCA}]]></printWhenExpression>
@@ -179,7 +209,7 @@
 					<reportElement
 						x="257"
 						y="21"
-						width="151"
+						width="129"
 						height="11"
 						key="staticText-5">
 							<printWhenExpression><![CDATA[$P{EXIBIRVENCIMENTOCA}]]></printWhenExpression>
@@ -205,9 +235,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="466"
+						x="456"
 						y="21"
-						width="65"
+						width="75"
 						height="11"
 						key="staticText-7">
 							<printWhenExpression><![CDATA[$P{EXIBIRVENCIMENTOCA}]]></printWhenExpression>
@@ -217,36 +247,6 @@
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Vencimento CA]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="477"
-						y="21"
-						width="55"
-						height="11"
-						key="staticText-nao-exibe-venc-ca">
-							<printWhenExpression><![CDATA[new Boolean(!$P{EXIBIRVENCIMENTOCA}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Vencimento]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="257"
-						y="21"
-						width="210"
-						height="11"
-						key="staticText-nao-exibe-venc-ca">
-							<printWhenExpression><![CDATA[new Boolean(!$P{EXIBIRVENCIMENTOCA}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Cargo]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -269,13 +269,12 @@
 				</rectangle>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						style="Vencimento_Bold"
-						x="411"
+						x="457"
 						y="1"
-						width="51"
+						width="75"
 						height="11"
-						key="textField">
-							<printWhenExpression><![CDATA[$P{EXIBIRVENCIMENTOCA}]]></printWhenExpression>
+						key="textField-nao-exibe-venc-ca">
+							<printWhenExpression><![CDATA[new Boolean(!$P{EXIBIRVENCIMENTOCA}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -287,7 +286,38 @@
 					<reportElement
 						x="257"
 						y="1"
-						width="151"
+						width="197"
+						height="11"
+						key="textField-nao-exibe-venc-ca">
+							<printWhenExpression><![CDATA[new Boolean(!$P{EXIBIRVENCIMENTOCA}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cargo.nome}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						style="Vencimento_Bold"
+						x="388"
+						y="1"
+						width="66"
+						height="11"
+						key="textField">
+							<printWhenExpression><![CDATA[$P{EXIBIRVENCIMENTOCA}]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataVencimentoEpi}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="257"
+						y="1"
+						width="129"
 						height="11"
 						key="textField-3">
 							<printWhenExpression><![CDATA[$P{EXIBIRVENCIMENTOCA}]]></printWhenExpression>
@@ -314,9 +344,9 @@
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="Vencimento_AC_Bold"
-						x="466"
+						x="456"
 						y="1"
-						width="65"
+						width="75"
 						height="11"
 						key="textField-6">
 							<printWhenExpression><![CDATA[$P{EXIBIRVENCIMENTOCA}]]></printWhenExpression>
@@ -326,36 +356,6 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{vencimentoCA}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="257"
-						y="1"
-						width="210"
-						height="11"
-						key="textField-nao-exibe-venc-ca">
-							<printWhenExpression><![CDATA[new Boolean(!$P{EXIBIRVENCIMENTOCA}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cargo.nome}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="477"
-						y="1"
-						width="55"
-						height="11"
-						key="textField-nao-exibe-venc-ca">
-							<printWhenExpression><![CDATA[new Boolean(!$P{EXIBIRVENCIMENTOCA}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataVencimentoEpi}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

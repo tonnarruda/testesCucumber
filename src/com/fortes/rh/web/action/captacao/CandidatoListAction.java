@@ -193,8 +193,8 @@ public class CandidatoListAction extends MyActionSupportList
 	private StringUtil stringUtil = new StringUtil();
 	private boolean montaFiltroBySolicitacao = true;
 	
-	private boolean exibeContratados; //exibir contratados na listagem
-	private boolean exibeExterno; //exibir somente os do módulo externo
+	private boolean exibeContratados = false; //exibir contratados na listagem
+	private boolean exibeExterno = false; //exibir somente os do módulo externo
 	
 	private boolean somenteCandidatosSemSolicitacao;
 	
