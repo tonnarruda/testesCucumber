@@ -1042,7 +1042,9 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 // DWR global error handler
 
 jQuery(function() {		
-	DWREngine.setErrorHandler(function (msg, exc) {
+	//if (window.DWREngine != undefined)
+	if(typeof(DWREngine) !== 'undefined') 
+		DWREngine.setErrorHandler(function (msg, exc) {
 		  jAlert(msg);
 	});
 });
