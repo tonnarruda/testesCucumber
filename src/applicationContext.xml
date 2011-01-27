@@ -97,7 +97,6 @@
   <!-- Tarefas agendadas -->
   
   <bean name="lembretePesquisaJob" class="com.fortes.rh.business.pesquisa.LembretePesquisa">
-  	<property name="empresaManager" ref="empresaManager" />
   </bean>
   <bean name="lembretePesquisa" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     <property name="targetObject" ref="lembretePesquisaJob"/>

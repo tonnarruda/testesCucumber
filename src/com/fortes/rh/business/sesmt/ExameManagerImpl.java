@@ -9,6 +9,7 @@ import java.util.zip.ZipOutputStream;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -31,6 +32,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 {
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private ColaboradorManager colaboradorManager;
 	private Mail mail;
 	
 	public Exame findByIdProjection(Long exameId)
@@ -264,10 +266,13 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 			
 			for (Empresa empresa : empresas) 
 			{
-				mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
+				//findRelatorioExamesPrevistos()
+				Collection<String> emailsCollection = colaboradorManager.findEmailsByPapel(empresa.getId(), "ROLE_RECEBE_EXAMES_PREVISTOS");
+				String[] emails = new String[emailsCollection.size()];
+				emails = emailsCollection.toArray(emails);
+				mail.send(empresa, subject, body.toString(), null, emails);
 				//mail.send(empresa, assunto, body, new java.io.File[] { zipFile }, anuncioManager.montaEmails(emailAvulso, empresasCheck));
 			}
-			
 		}
 		catch (Throwable e)
 		{
@@ -291,6 +296,10 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	public void setMail(Mail mail)
 	{
 		this.mail = mail;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
 	}
 	
 }

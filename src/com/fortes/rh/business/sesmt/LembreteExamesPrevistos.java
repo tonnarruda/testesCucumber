@@ -12,6 +12,7 @@ public class LembreteExamesPrevistos
 	public void execute() 
 	{	
 		exameManager = (ExameManager) SpringUtil.getBeanOld("exameManager");
+		empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
 		try
 		{
 			exameManager.enviaLembreteExamesPrevistos(empresaManager.findEmailsEmpresa());

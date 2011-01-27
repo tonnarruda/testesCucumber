@@ -1664,4 +1664,9 @@ e.printStackTrace();
 		return getDao().findByUsuarioProjection(usuarioId);
 	}
 	
+	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel)
+	{
+		return getDao().findEmailsByPapel(empresaId, codPapel);
+	}
+	
 }

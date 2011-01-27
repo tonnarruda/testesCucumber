@@ -12,11 +12,16 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.ExameManagerImpl;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.Exame;
@@ -26,6 +31,7 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
+import com.fortes.rh.util.SpringUtil;
 
 public class ExameManagerTest extends MockObjectTestCase
 {
@@ -264,4 +270,19 @@ public class ExameManagerTest extends MockObjectTestCase
 		
 		assertEquals(33L, exameManager.getExameAso().getId().longValue());
     }
+    
+    public void testEnviaLembreteExamesPrevistos() throws Exception
+    {
+    	ExameManager exameManager = (ExameManager) SpringUtil.getBeanOld("exameManager");
+    	EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
+		try
+		{
+			exameManager.enviaLembreteExamesPrevistos(empresaManager.findEmailsEmpresa());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}		
+    }
+    
 }
