@@ -2640,7 +2640,6 @@ ALTER TABLE configuracaoRelatorioDinamico ADD CONSTRAINT configuracaoRelatorioDi
 ALTER TABLE configuracaoRelatorioDinamico ADD CONSTRAINT configuracaoRelatorioDinamico_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);--.go
 CREATE SEQUENCE configuracaoRelatorioDinamico_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-
 CREATE TABLE habilidade_areaorganizacional (
     habilidades_id bigint NOT NULL,
     areaOrganizacionals_id bigint NOT NULL
