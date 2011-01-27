@@ -38,7 +38,7 @@
 		
 			<@ww.datepicker label="Data" name="dataReferencia" required="true" id="dataReferencia" value="${DataAtual}" cssClass="mascaraData"/>
 			<br>
-			Desconsiderar colaboradores com menos de  
+			Desconsiderar colaboradores com mais de  
 			<@ww.textfield theme="simple" name="diasDeAcompanhamento" id="diasDeAcompanhamento" cssStyle="width:60px; text-align:right;" maxLength="8" onkeypress = "return(somenteNumeros(event,''));"/> 
 			dias de empresa.
 			<br><br>  
