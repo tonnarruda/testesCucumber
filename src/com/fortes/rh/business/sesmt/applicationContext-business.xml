@@ -211,6 +211,9 @@
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
     </property>
+    <property name="mail">
+      <ref bean="mail" />
+    </property>    
   </bean>
   <bean id="exameManager" parent="parentManager">
     <property name="proxyInterfaces">

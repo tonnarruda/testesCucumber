@@ -97,9 +97,17 @@
   <!-- Tarefas agendadas -->
   
   <bean name="lembretePesquisaJob" class="com.fortes.rh.business.pesquisa.LembretePesquisa">
+  	<property name="empresaManager" ref="empresaManager" />
   </bean>
   <bean name="lembretePesquisa" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     <property name="targetObject" ref="lembretePesquisaJob"/>
+    <property name="targetMethod" value="execute"/>
+  </bean>
+
+  <bean name="lembreteExamesPrevistosJob" class="com.fortes.rh.business.sesmt.LembreteExamesPrevistos">
+  </bean>
+  <bean name="lembreteExamesPrevistos" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="lembreteExamesPrevistosJob"/>
     <property name="targetMethod" value="execute"/>
   </bean>
   
@@ -175,6 +183,10 @@
   <bean id="cronTriggerLembretePesquisa" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembretePesquisa" />
     <property name="cronExpression" value="0 0 6 * * ?" />
+  </bean>
+  <bean id="cronTriggerLembreteExamesPrevistos" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="lembreteExamesPrevistos" />
+	<property name="cronExpression" value="0 0 3 25 * ?" /> <!-- Todo dia 15 de cada mes as 03:00h am -->
   </bean>
   <bean id="cronTriggerLembretePeriodoExperiencia" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembretePeriodoExperiencia" />

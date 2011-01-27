@@ -1,28 +1,38 @@
 package com.fortes.rh.business.sesmt;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.zip.ZipOutputStream;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.Mail;
+import com.fortes.rh.util.Zip;
 import com.fortes.web.tags.CheckBox;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implements ExameManager
 {
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
-
+	private Mail mail;
+	
 	public Exame findByIdProjection(Long exameId)
 	{
 		return getDao().findByIdProjection(exameId);
@@ -219,4 +229,68 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
+
+	public void enviaLembreteExamesPrevistos(Collection<Empresa> empresas) 
+	{
+		//java.io.File xmlFile = null;
+		//java.io.File zipFile = null;
+
+		try
+		{
+			// Cria o arquivo xml
+//			String fileName = "candidato" + Calendar.getInstance().getTimeInMillis() + ".xml";
+//			xmlFile = new java.io.File(fileName);
+//			FileOutputStream outputStream = new FileOutputStream(xmlFile);
+//			String encoding = "UTF-8";
+//			XStream stream = new XStream(new DomDriver(encoding));
+//
+//			outputStream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n".getBytes());
+//			stream.toXML(candidatos, outputStream);
+//			outputStream.flush();
+//			outputStream.close();
+//
+//			// Compacta o arquivo
+//			ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh");// cria o arquivo candidatos.zip
+//			zipOutputStream.close();
+//
+//			// Envia o arquivo por email
+//			zipFile = new java.io.File(fileName + ".fortesrh");
+
+			String body = "TESTE:<br>"+
+						  "Exames previstos <br>";
+			
+			//String subject = "Exames previstos no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes);
+			String subject = "Exames previstos no período: TODO a TODO";
+			
+			for (Empresa empresa : empresas) 
+			{
+				mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
+				//mail.send(empresa, assunto, body, new java.io.File[] { zipFile }, anuncioManager.montaEmails(emailAvulso, empresasCheck));
+			}
+			
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			//throw e;
+		}
+		finally
+		{
+//			if(zipFile != null && zipFile.exists())
+//			{
+//				zipFile.delete();
+//			}
+//
+//			if(xmlFile != null && xmlFile.exists())
+//			{
+//				xmlFile.delete();
+//			}
+		}
+	}
+
+	public void setMail(Mail mail)
+	{
+		this.mail = mail;
+	}
+	
 }
