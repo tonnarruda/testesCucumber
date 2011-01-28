@@ -2799,17 +2799,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel)
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select distinct c.email from papel pa ");
-		hql.append("inner join perfil_papel pp on pa.id = pp.papeis_id ");
-		hql.append("inner join perfil p on p.id = pp.perfil_id ");
-		hql.append("inner join usuarioempresa ue on p.id = ue.perfil_id ");
-		hql.append("inner join usuario u on u.id = ue.usuario_id ");
-		hql.append("inner join colaborador c on c.usuario_id = u.id ");
-		hql.append("where codigo = :papel ");
-		hql.append("and ue.id = :empresaId ");			
+		StringBuilder sql = new StringBuilder();
+		sql.append("select distinct c.email from papel pa ");
+		sql.append("inner join perfil_papel pp on pa.id = pp.papeis_id ");
+		sql.append("inner join perfil p on p.id = pp.perfil_id ");
+		sql.append("inner join usuarioempresa ue on p.id = ue.perfil_id ");
+		sql.append("inner join usuario u on u.id = ue.usuario_id ");
+		sql.append("inner join colaborador c on c.usuario_id = u.id ");
+		sql.append("where codigo = :papel ");
+		sql.append("and ue.empresa_id = :empresaId ");			
 
-		Query query = getSession().createQuery(hql.toString());
+		Query query = getSession().createSQLQuery(sql.toString());
 		query.setString("papel", codPapel);
 		query.setLong("empresaId", empresaId);
 		

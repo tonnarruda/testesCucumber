@@ -1,11 +1,29 @@
 package com.fortes.rh.business.sesmt;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipOutputStream;
+
+import javax.activation.DataSource;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+
+import org.springframework.core.io.ByteArrayResource;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -15,16 +33,22 @@ import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
+import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
+import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.Zip;
 import com.fortes.web.tags.CheckBox;
+import javax.mail.util.ByteArrayDataSource;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -266,12 +290,77 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 			
 			for (Empresa empresa : empresas) 
 			{
+				//byte[] output;
+				//(new ByteArrayResource(output)).getFile()
 				//findRelatorioExamesPrevistos()
 				Collection<String> emailsCollection = colaboradorManager.findEmailsByPapel(empresa.getId(), "ROLE_RECEBE_EXAMES_PREVISTOS");
-				String[] emails = new String[emailsCollection.size()];
-				emails = emailsCollection.toArray(emails);
-				mail.send(empresa, subject, body.toString(), null, emails);
-				//mail.send(empresa, assunto, body, new java.io.File[] { zipFile }, anuncioManager.montaEmails(emailAvulso, empresasCheck));
+				if (!emailsCollection.isEmpty())
+				{
+					Date data = new Date(2011, 02, 28);
+					Collection<ExamesPrevistosRelatorio> colecaoExamesPrevistos;
+					
+					try 
+					{
+						String path = "C:\\workspace\\FortesRH\\web\\WEB-INF\\report\\"; 
+						//ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
+						ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
+						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+						String msgRegistro = Autenticador.getMsgPadrao();
+						String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
+						Map<String,Object> parametros = new HashMap<String, Object>();
+				    	Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(data), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro);
+				    	cabecalho.setLicenciadoPara(empresa.getNome());
+				    	parametros.put("CABECALHO", cabecalho);
+				    	parametros.put("SUBREPORT_DIR", path);
+						
+						//parametros = RelatorioUtil.getParametrosRelatorio("Exames Previstos até " + DateUtil.formataDiaMesAno(data), empresa, "BLA");
+						
+						colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), data, null, null, null, null, false, true);
+						byte[] output;
+						JasperPrint jasperPrint;
+
+						// Fill the report and produce a print object
+						try
+						{
+							JasperReport jasperReport = (JasperReport) JRLoader.loadObject(path + "exames_previstos.jasper");
+							//JasperReport jasperReport = compileReport("C:\\workspace\\FortesRH\\web\\WEB-INF\\report\\exames_previstos.jasper", (InputStream) stack.findValue("reportInputStream"));
+							jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JRBeanCollectionDataSource((Collection) colecaoExamesPrevistos));
+						}
+						catch (JRException e)
+						{
+							throw new Exception(e.getMessage(), e);
+						}
+						
+						output = JasperExportManager.exportReportToPdf(jasperPrint);
+
+						ByteArrayDataSource file = new ByteArrayDataSource(output, "application/pdf"){
+				            @Override
+				            public String getName() {
+				                return "relatorio.pdf";
+				            }
+				        };
+												
+						//File[] files = new File[]{bar.getFile()};
+				        
+				        DataSource[] files = new DataSource[]{file};
+						/////////////////////////////////////////////////////////
+						
+						String[] emails = new String[emailsCollection.size()];
+						emails = emailsCollection.toArray(emails);
+						mail.send(empresa, subject, files, body.toString(), emails);
+						//mail.send(empresa, assunto, body, new java.io.File[] { zipFile }, anuncioManager.montaEmails(emailAvulso, empresasCheck));
+						
+					} 
+					catch (ColecaoVaziaException e) {
+						// TODO: handle exception
+					}
+					
+					
+
+					
+					/////////////////////////////////////////////////////////
+					
+				}
 			}
 		}
 		catch (Throwable e)
@@ -300,6 +389,17 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+
+	
+	private JasperReport compileReport(String reportPath, InputStream reportInputStream) throws JRException {
+		JasperReport jasperReport;// = JasperCompileManager.compileReport(systemId.replaceAll("jasper", "jrxml"));
+		if (reportInputStream == null)
+			jasperReport = JasperCompileManager.compileReport(reportPath.replaceAll("jasper", "jrxml"));
+		else
+			jasperReport = JasperCompileManager.compileReport(reportInputStream);
+		return jasperReport;
 	}
 	
 }

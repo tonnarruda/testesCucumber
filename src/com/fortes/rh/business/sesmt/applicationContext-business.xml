@@ -213,6 +213,9 @@
     </property>
     <property name="mail">
       <ref bean="mail" />
+    </property>
+    <property name="colaboradorManager">
+      <ref bean="colaboradorManager" />
     </property>    
   </bean>
   <bean id="exameManager" parent="parentManager">
