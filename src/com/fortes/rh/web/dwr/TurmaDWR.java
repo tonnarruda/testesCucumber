@@ -46,12 +46,12 @@ public class TurmaDWR
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricaoCurso");
 	}
 
-	public Map getTurmasByFiltroInvestimento(Long empresaId, Long[] cursoIds)throws Exception
+	public Map getTurmasByCursos(Long[] cursoIds)throws Exception
 	{
-		Collection<Turma> turmas = turmaManager.findByTurmasRelatorioInvestimento(empresaId, cursoIds);
+		if (cursoIds.length == 0)
+			return null;
 		
-		if(turmas.isEmpty())
-			throw new Exception("Não existe Turmas para o filtro informado.");
+		Collection<Turma> turmas = turmaManager.findByCursos(cursoIds);
 		
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricaoCurso");
 	}

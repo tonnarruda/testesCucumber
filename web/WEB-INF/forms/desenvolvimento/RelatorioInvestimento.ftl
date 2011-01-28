@@ -4,7 +4,7 @@
 <head>
 
 <@ww.head/>
-	<title>Cronograma de treinamento</title>
+	<title>Relatório de Investimentos de T&D</title>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -14,32 +14,41 @@
 		function getTurmasByFiltro()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			DWREngine.setErrorHandler(errorMsg);
-			TurmaDWR.getTurmasByFiltroInvestimento(populaTurmas, <@authz.authentication operation="empresaId"/>, null);
+			var cursoIds = getArrayCheckeds(document.forms[0], 'cursosCheck');
+			TurmaDWR.getTurmasByCursos(populaTurmas, cursoIds);
 		}
 
 		function populaTurmas(data)
 		{
 			addChecks('turmasCheck', data);
 		}
-
-		function errorMsg(msg)
-		{
-			jAlert(msg);
-			addChecks('turmasCheck', null);
-		}
 	</script>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<#assign validarCampos="return validaFormulario('form', new Array('@turmasCheck'), null)"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('inicio','fim','@turmasCheck'), new Array('inicio','fim'))"/>
+	
+	<#if dataIni?exists>
+		<#assign inicio=dataIni?date />
+	<#else>
+		<#assign inicio="" />
+	</#if>
+	<#if dataFim?exists>
+		<#assign fim=dataFim?date />
+	<#else>
+		<#assign fim="" />
+	</#if>
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
 	<@ww.form name="form" action="imprimirRelatorioInvestimento.action" onsubmit="${validarCampos}" method="POST">
-		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" width="735" height="300"/>
-		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas" list="turmasCheckList" width="735" height="300"/>
+		<@ww.datepicker label="Período" required="true" value="${inicio}" name="dataIni" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
+		<@ww.datepicker label="" value="${fim}" name="dataFim" id="fim" cssClass="mascaraData validaDataFim"/>
+
+		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" onClick="getTurmasByFiltro();" width="600" />
+		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas *" list="turmasCheckList" width="600" />
+		<@ww.select id="realizada" label="Turmas Realizadas" name="realizada" list=r"#{'T':'Todas','S':'Sim','N':'Não'}" />
 	</@ww.form>
 
 	<div class="buttonGroup">

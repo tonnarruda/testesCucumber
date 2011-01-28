@@ -22,6 +22,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 
 public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implements TurmaManager
@@ -250,9 +251,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findByFiltro(dataPrevIni, dataPrevFim, realizadaValue(realizada), empresaId);
 	}
 	
-	public Collection<Turma> findByTurmasRelatorioInvestimento(Long empresaId, Long[] cursoIds)
+	public Collection<Turma> findByCursos(Long[] cursoIds)
 	{
-		return getDao().findByTurmasRelatorioInvestimento(empresaId, cursoIds);
+		return getDao().findByCursos(cursoIds);
 		
 	}
 
@@ -286,6 +287,11 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long empresaId) 
 	{
 		return getDao().quantidadeParticipantesPrevistos(dataIni, dataFim, empresaId);
+	}
+	
+	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada) 
+	{
+		return getDao().findByTurmasPeriodo(turmasCheck,  dataIni, dataFim, realizada);
 	}
 
 	public Collection<Turma> findTurmaPresencaMinima(Collection<Long> turmaIds) 
