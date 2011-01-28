@@ -13,6 +13,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -177,6 +178,9 @@ public class TurmaListAction extends MyActionSupportList
 
 	public String relatorioInvestimento() throws Exception
 	{
+		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
+		cursosCheckList = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+		
 		return Action.SUCCESS;
 	}
 	

@@ -38,7 +38,7 @@
 	<@ww.actionerror />
 
 	<@ww.form name="form" action="imprimirRelatorioInvestimento.action" onsubmit="${validarCampos}" method="POST">
-		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos / Turmas" list="cursosCheckList" width="735" height="300"/>
+		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" width="735" height="300"/>
 		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas" list="turmasCheckList" width="735" height="300"/>
 	</@ww.form>
 
