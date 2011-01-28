@@ -44,6 +44,9 @@ public class TurmaListAction extends MyActionSupportList
 	private String[] turmasCheck;
 	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>();
 
+	private String[] cursosCheck;
+	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
+
 	public String filtroPlanoTreinamento() throws Exception
 	{
 		prepareDatas();
@@ -172,6 +175,19 @@ public class TurmaListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	public String relatorioInvestimento() throws Exception
+	{
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirRelatorioInvestimento() throws Exception
+	{
+		turmas = turmaManager.findByIdProjection(LongUtil.arrayStringToArrayLong(turmasCheck));
+		parametros = RelatorioUtil.getParametrosRelatorio("Cronograma de Treinamentos", getEmpresaSistema(), null);
+		
+		return Action.SUCCESS;
+	}
+
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
@@ -277,5 +293,13 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setPlanoTreinamento(boolean planoTreinamento) {
 		this.planoTreinamento = planoTreinamento;
+	}
+
+	public Collection<CheckBox> getCursosCheckList() {
+		return cursosCheckList;
+	}
+
+	public void setCursosCheck(String[] cursosCheck) {
+		this.cursosCheck = cursosCheck;
 	}
 }

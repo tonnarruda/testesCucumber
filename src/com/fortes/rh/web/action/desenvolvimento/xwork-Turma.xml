@@ -139,6 +139,17 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/filtroCronogramaTreinamento.ftl</result>
 		</action>
+		<action name="relatorioInvestimento" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="relatorioInvestimento">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/RelatorioInvestimento.ftl</result>
+		</action>
+		<action name="imprimirRelatorioInvestimento" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="imprimirRelatorioInvestimento">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/cronograma_treinamento.jasper</param>
+				<param name="dataSource">turmas</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/filtroCronogramaTreinamento.ftl</result>
+		</action>
 		<action name="filtroPlanoTreinamento" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="filtroPlanoTreinamento">
 			<interceptor-ref name="defaultListStack">
 				<param name="scope.session">filtroPlanoTreinamento.cursoId,filtroPlanoTreinamento.dataIni,filtroPlanoTreinamento.dataFim,filtroPlanoTreinamento.realizada,filtroPlanoTreinamento.page</param>

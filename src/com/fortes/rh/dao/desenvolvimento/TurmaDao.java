@@ -24,4 +24,5 @@ public interface TurmaDao extends GenericDao<Turma>
 	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long empresaId);
 	public Collection<Turma> findTurmaPresencaMinima (Collection<Long> turmaIds);
 	public Collection<Turma> findByEmpresaOrderByCurso(Long empresaId);
+	public Collection<Turma> findByTurmasRelatorioInvestimento(Long empresaId, Long[] cursoIds);
 }

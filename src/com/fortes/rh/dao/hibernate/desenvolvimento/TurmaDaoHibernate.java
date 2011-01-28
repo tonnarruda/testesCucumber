@@ -352,6 +352,32 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         return criteria.list();
 	}
 
+	public Collection<Turma> findByTurmasRelatorioInvestimento(Long empresaId, Long[] cursoIds)
+	{
+		Criteria criteria = getSession().createCriteria(Turma.class,"t");
+		criteria.createCriteria("t.curso", "c");
+		criteria.createCriteria("t.empresa", "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("t.id"), "id");
+		p.add(Projections.property("t.descricao"), "descricao");
+		p.add(Projections.property("c.nome"), "cursoNome");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("e.id", empresaId));
+		
+		
+		if (cursoIds != null)
+			criteria.add(Expression.in("c.id", cursoIds));
+		
+		criteria.addOrder(Order.asc("t.descricao"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Turma.class));
+		
+		return criteria.list();
+	}
+
 	public Collection<Turma> findByIdProjection(Long[] ids)
 	{
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
@@ -370,7 +396,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         p.add(Projections.property("c.nome"), "cursoNome");
 
         criteria.setProjection(p);
-        criteria.add(Expression.in("t.id", ids));
+       	criteria.add(Expression.in("t.id", ids));
 
         criteria.addOrder(Order.asc("t.dataPrevIni"));
         criteria.addOrder(Order.asc("c.nome"));

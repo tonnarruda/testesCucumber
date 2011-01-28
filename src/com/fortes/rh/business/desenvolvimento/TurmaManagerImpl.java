@@ -249,6 +249,12 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	{
 		return getDao().findByFiltro(dataPrevIni, dataPrevFim, realizadaValue(realizada), empresaId);
 	}
+	
+	public Collection<Turma> findByTurmasRelatorioInvestimento(Long empresaId, Long[] cursoIds)
+	{
+		return getDao().findByTurmasRelatorioInvestimento(empresaId, cursoIds);
+		
+	}
 
 	public Boolean realizadaValue(char realizada)
 	{
