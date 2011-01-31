@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.Address;
 import javax.mail.Message;
@@ -49,20 +50,32 @@ public class Mail
         this.message = message;
     }
 
-    public void send(Empresa empresa, String subject, String body, File[] attachedFiles, String... to) throws AddressException, MessagingException
+    public void send(Empresa empresa, String subject, DataSource[] attachedFiles, String body, String... to) throws AddressException, MessagingException
     {
     	ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
     	procSend(empresa, parametros, subject, body, attachedFiles, to);
     }
-
-    public void send(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, File[] attachedFiles, String... to) throws AddressException, MessagingException
+    
+    public void send(Empresa empresa, String subject, String body, File[] attachedFiles, String... to) throws AddressException, MessagingException
     {
-    	procSend(empresa, parametros, subject, body, attachedFiles, to);
+    	ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
+    	
+    	DataSource[] dsArray = new DataSource[attachedFiles.length];
+    	for (int i = 0; i < attachedFiles.length; i++) 
+    	{
+			dsArray[i] = new FileDataSource(attachedFiles[i]);
+		}
+    	
+    	procSend(empresa, parametros, subject, body, dsArray, to);
     }
 
-    private void procSend(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, File[] attachedFiles, String... to) throws AddressException, MessagingException
+    public void send(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, String... to) throws AddressException, MessagingException
     {
-//    	if(parametros.getEnviarEmail()!= null && parametros.getEnviarEmail())
+    	procSend(empresa, parametros, subject, body, null, to);
+    }
+
+    private void procSend(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, DataSource[] attachedFiles, String... to) throws AddressException, MessagingException
+    {
     	if(parametros.isEnvioDeEmailHabilitado())
     	{
 			if (to == null || to.length == 0)
@@ -95,7 +108,7 @@ public class Mail
     	}
     }
 
-	private Message prepareMessage(Empresa empresa, ParametrosDoSistema params, String subject, String body, File[] attachedFiles) throws MessagingException, AddressException
+	private Message prepareMessage(Empresa empresa, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles) throws MessagingException, AddressException
 	{
 		Session session;
 
@@ -146,12 +159,12 @@ public class Mail
 
         if (attachedFiles != null)
         {
-	    	for (File file : attachedFiles)
+	    	for (DataSource file : attachedFiles)
 	    	{
 				MimeBodyPart mimeBodyPart = new MimeBodyPart();
 				mimeBodyPart.setFileName(file.getName());
-				mimeBodyPart.setDataHandler(new DataHandler(new FileDataSource(file)));
 				mimesContainer.addBodyPart(mimeBodyPart);
+				mimeBodyPart.setDataHandler(new DataHandler(file));
 			}
         }
 

@@ -304,7 +304,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 
     	questionarioDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(questionario));
 
-    	mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+    	mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 
     	questionarioManager.liberarQuestionario(questionario.getId(), empresa);
 
@@ -331,7 +331,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 
     	questionarioDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(questionario));
 
-    	mail.expects(atLeastOnce()).method("send").with(new Constraint [] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException("Erro")));
+    	mail.expects(atLeastOnce()).method("send").with(new Constraint [] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException("Erro")));
 
     	Exception exception = null;
 

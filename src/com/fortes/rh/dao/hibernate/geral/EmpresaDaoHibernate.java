@@ -245,6 +245,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.emailRemetente"),"emailRemetente");
 		p.add(Projections.property("e.emailRespSetorPessoal"),"emailRespSetorPessoal");
 		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
+		p.add(Projections.property("e.logoUrl"),"logoUrl");
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.addOrder(Order.asc("e.nome"));

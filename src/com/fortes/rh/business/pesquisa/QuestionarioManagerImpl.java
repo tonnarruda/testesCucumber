@@ -118,7 +118,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
             {
                 try
                 {
-                    mail.send(empresa, parametros, "[Fortes RH] Nova " + label, corpo.toString(), null, colaboradorQuestionario.getColaborador().getContato().getEmail());
+                    mail.send(empresa, parametros, "[Fortes RH] Nova " + label, corpo.toString(), colaboradorQuestionario.getColaborador().getContato().getEmail());
                 }
                 catch (Exception e)
                 {

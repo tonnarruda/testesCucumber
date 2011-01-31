@@ -82,14 +82,6 @@ public class MailTest extends MockObjectTestCase
 		assertNotNull("Test 1", exp);
 	}
 	
-	public void testSendParametrosNull() throws Exception
-	{
-		ParametrosDoSistema parametros = new ParametrosDoSistema();
-		parametros.setEnviarEmail(false);
-		
-		mail.send(null, parametros, null, null, null, null);
-	}
-
 	public void testSendComAnexo() throws Exception
 	{
 		

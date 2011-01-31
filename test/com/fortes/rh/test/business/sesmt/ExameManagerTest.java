@@ -12,11 +12,16 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.ExameManagerImpl;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.Exame;
@@ -26,7 +31,11 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
+<<<<<<< HEAD
+import com.fortes.rh.util.SpringUtil;
+=======
 import com.fortes.rh.util.DateUtil;
+>>>>>>> 510fddb8b4565cea88d5290cb1ddc73c9f616274
 
 public class ExameManagerTest extends MockObjectTestCase
 {
@@ -173,21 +182,9 @@ public class ExameManagerTest extends MockObjectTestCase
     public void testFindRelatorioExamesPrevistosColecaoVaziaException() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
     	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),ANYTHING,ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
 
-    	Exception exception = null;
-
-    	try
-		{
-			exameManager.findRelatorioExamesPrevistos(empresa.getId(), null, null, null, null, null,false, false);
-		}
-		catch (ColecaoVaziaException e)
-		{
-			exception = e;
-		}
-
-		assertNotNull(exception);
+		assertTrue(exameManager.findRelatorioExamesPrevistos(empresa.getId(), null, null, null, null, null,false, false).isEmpty());
     }
 
     public void testFindBySolicitacaoExame()
@@ -304,4 +301,19 @@ public class ExameManagerTest extends MockObjectTestCase
 		
 		assertEquals(33L, exameManager.getExameAso().getId().longValue());
     }
+    
+    public void testEnviaLembreteExamesPrevistos() throws Exception
+    {
+    	ExameManager exameManager = (ExameManager) SpringUtil.getBeanOld("exameManager");
+    	EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
+		try
+		{
+			exameManager.enviaLembreteExamesPrevistos(empresaManager.findEmailsEmpresa());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}		
+    }
+    
 }
