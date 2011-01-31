@@ -5,11 +5,13 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.model.dicionario.ResultadoExame;
+import com.fortes.rh.model.sesmt.Exame;
 
 public class ExamesRealizadosRelatorio 
 {
 	private Long exameId;
 	private Long clinicaId;
+	private Exame exame;
 	private String colaboradorNome;
 	private String candidatoNome;
 	private String exameNome;
@@ -17,6 +19,7 @@ public class ExamesRealizadosRelatorio
 	private String resultado;
 	private String motivoSolicitacaoExame;
 	private Date data;
+	private Integer qtdExamesRealizados;
 
 	public ExamesRealizadosRelatorio() {
 	}
@@ -35,6 +38,15 @@ public class ExamesRealizadosRelatorio
 			this.resultado = ResultadoExame.NAO_REALIZADO.toString();
 		else
 			this.resultado = exameResultado;
+	}
+
+	public ExamesRealizadosRelatorio(Long exameId, String exameNome, Long clinicaId, String clinicaNome, Integer qtdExamesRealizados)
+	{
+		this.exameId = exameId;
+		this.exameNome = exameNome;
+		this.clinicaId = clinicaId;
+		this.clinicaNome = clinicaNome;
+		this.qtdExamesRealizados = qtdExamesRealizados;
 	}
 	
 	public String getNome()
@@ -71,6 +83,18 @@ public class ExamesRealizadosRelatorio
 
 	public String getMotivoSolicitacaoExame() {
 		return motivoSolicitacaoExame;
+	}
+
+	public Integer getQtdExamesRealizados() {
+		return qtdExamesRealizados;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public Exame getExame() {
+		return exame;
 	}
 
 }

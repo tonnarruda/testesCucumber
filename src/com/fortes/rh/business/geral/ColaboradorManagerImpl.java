@@ -1610,7 +1610,7 @@ e.printStackTrace();
 		Long idColab = 0L;
 		for (Colaborador colaborador : colaboradores) 
 		{
-			if (colaborador.getDiasDeEmpresa() >= tempoDeEmpresa)
+			if (colaborador.getDiasDeEmpresa() <= tempoDeEmpresa)
 			{
 				if(colaborador.getId().equals(0L) || !colaborador.getId().equals(idColab))
 				{

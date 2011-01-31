@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.38.29" data="27/01/2011">
+		- SESMT > Relatório > Exames Realizados, nova opção para gerar relatório resumido.
+		- Utilitários > Perfil > Nova configuração para recebimentos de mensagens na tela principal. 
+	</Versao>
 	<Versao id="1.1.38.28" data="18/01/2011">
 		- Pesquisas >Movimentações: novo filtro [campos: empresa e respondida] na listagem dos colaboradores da pesquisa.
 		- ReS > Movimentações> Solicitação de Pessoal: novo campo possibilitando que o solicitante da vaga possa enviar avisos para responsáveis da área organizacional. Envio de email para o solicitante no momento da aprovação da vaga.

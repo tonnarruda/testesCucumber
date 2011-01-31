@@ -10,19 +10,21 @@ alter sequence empresa_sequence restart with 2;
 INSERT INTO estabelecimento (id, nome, complementocnpj, empresa_id) values (1,'Estabelecimento Padrão','0000',1);
 alter sequence estabelecimento_sequence restart with 2;
 
-
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (382, 'ROLE_AVALDESEMPENHO', 'Aval. Desempenho', '#', 4, true, 'v', NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (365, 'ROLE_T&D', 'T&D', '#', 5, true, 'T', NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (373, 'ROLE_COLAB', 'Info. Funcionais', '#', 6, true, 'I', NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (75, 'ROLE_SESMT', 'SESMT', '#', 8, true, 'S', NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (37, 'ROLE_UTI', 'Utilitários', '#', 9, true, 'U', NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (361, 'ROLE_C&S', 'C&S', '#', 2, true, 'C', NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (353, 'ROLE_PES', 'Pesquisas', '#', 3, true, 'P', NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (357, 'ROLE_R&S', 'R&S', '#', 1, true, 'R', NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (495, 'ROLE_VISUALIZAR_MSG', 'Visualizar Caixa de Mensagens', '#', 1, false, null);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (411, 'ROLE_VISUALIZAR_PENDENCIA_AC', 'Visualizar as pendências do AC', '', 2, false, null);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (382, 'ROLE_AVALDESEMPENHO', 'Aval. Desempenho', '#', 6, true, 'v', NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (365, 'ROLE_T&D', 'T&D', '#', 7, true, 'T', NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (373, 'ROLE_COLAB', 'Info. Funcionais', '#', 8, true, 'I', NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (75, 'ROLE_SESMT', 'SESMT', '#', 10, true, 'S', NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (37, 'ROLE_UTI', 'Utilitários', '#', 11, true, 'U', NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (361, 'ROLE_C&S', 'C&S', '#', 4, true, 'C', NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (353, 'ROLE_PES', 'Pesquisas', '#', 5, true, 'P', NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (357, 'ROLE_R&S', 'R&S', '#', 3, true, 'R', NULL);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (463, 'INATIVOS', 'Inativos', '#', 99, true, 37);
 
 -- Modulo R&S
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (496, 'ROLE_VISUALIZAR_SOLICITACAO_PESSOAL', 'Visualizar Solicitação de Pessoal', '#', 14, false, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (461, 'ROLE_R&S_IND', 'Indicadores', '#', 4, true, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (358, 'ROLE_R&S_CAD', 'Cadastros', '#', 1, true, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (2, 'ROLE_CAD_CANDIDATO', 'Candidatos', '/captacao/candidato/list.action', 1, true, 358);
@@ -182,12 +184,12 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (466,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (408, 'ROLE_MOV_SOLICITACAO_REALINHAMENTO', 'Pode Solicitar Realinhamento', '', 4, false, 361);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (410, 'RECEBE_ALERTA_SETORPESSOAL', 'Recebe Mensagem do AC Pessoal', '', 5, false, 37);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (411, 'ROLE_VISUALIZAR_PENDENCIA_AC', 'Visualizar as pendências do AC', '', 5, false, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (451, 'ROLE_LOGGING', 'Logs', '/logging/list.action', 8, true, 37);
 
 -- Fim Utilitarios
 -- Modulo SESMT
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (385, 'ROLE_SESMT', 'Cadastros', '#', 1, true, 75);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (497, 'ROLE_RECEBE_EXAMES_PREVISTOS', 'Recebe email de exames previstos', '#', 1, false, 75);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (385, 'ROLE_SESMT', 'Cadastros', '#', 2, true, 75);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (456, 'ROLE_CAD_PCMSO', 'PCMSO', '#', 9, true, 385);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (452, 'ROLE_CAD_EVENTO', 'Eventos', '/sesmt/evento/list.action', 1, true, 456);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (453, 'ROLE_CAD_AGENDA', 'Agenda', '/sesmt/agenda/list.action', 2, true, 456);
@@ -211,7 +213,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (445,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 15, true, 385);
 
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (386, 'ROLE_SESMT', 'Movimentações', '#', 2, true, 75);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (386, 'ROLE_SESMT', 'Movimentações', '#', 3, true, 75);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (426, 'ROLE_CAD_SOLICITACAOEXAME', 'Solicitações/Atendimentos Médicos', '/sesmt/solicitacaoExame/list.action', 5, true, 386);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (66, 'ROLE_SESMT_MUDANCA_FUNCAO', 'Mudança de Função', '/sesmt/funcao/mudancaFuncaoFiltro.action', 5, true, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (425, 'ROLE_CAD_PRONTUARIO', 'Registro de Prontuário', '/sesmt/prontuario/list.action', 6, true, 386);
@@ -224,7 +226,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (457,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (446, 'ROLE_CAD_EXTINTOR', 'Inspeção', '/sesmt/extintorInspecao/list.action', 1, true, 457);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (447, 'ROLE_CAD_EXTINTOR', 'Manutenção', '/sesmt/extintorManutencao/list.action', 2, true, 457);
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (387, 'ROLE_SESMT', 'Relatórios', '#', 3, true, 75);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (387, 'ROLE_SESMT', 'Relatórios', '#', 4, true, 75);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (488, 'ROLE_CAT', 'CATs (Acidentes de Trabalho)', '/sesmt/cat/prepareRelatorioCats.action', 16, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (388, 'ROLE_PPRA', 'PPRA e LTCAT', '/sesmt/ppra/prepareRelatorio.action', 1, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (389, 'ROLE_CAD_PCMSO', 'PCMSO', '/sesmt/pcmso/prepareRelatorio.action', 7, true, 387);
@@ -244,13 +246,13 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (460,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (458, 'ROLE_FUNCAO', 'Distribuição de Colaboradores por Função', '/sesmt/funcao/prepareRelatorioQtdPorFuncao.action', 13, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (489, 'ROLE_REL_EPIVENCIMENTO', 'EPIs Entregues', '/sesmt/solicitacaoEpi/prepareRelatorioEntregaEpi.action', 4, true, 387);
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/list.action', 4, false, 75);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/list.action', 5, false, 75);
 -- Fim SESMT
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 10, false, null);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 495;
+alter sequence papel_sequence restart with 498;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -8526,6 +8528,6 @@ insert into codigoCBO (codigo, descricao) values ('514120','Zelador de edifício
 insert into codigoCBO (codigo, descricao) values ('223310','Zootecnista');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, campoextracolaborador)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.38.28', '', '25', false,false, 2, '1.0.1.42', 1, 3, false);
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.38.29', '', '25', false,false, 2, '1.0.1.42', 1, 3, false);
 
 alter sequence parametrosdosistema_sequence restart with 2;

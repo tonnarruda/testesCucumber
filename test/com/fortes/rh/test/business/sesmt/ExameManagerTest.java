@@ -31,7 +31,11 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
+<<<<<<< HEAD
 import com.fortes.rh.util.SpringUtil;
+=======
+import com.fortes.rh.util.DateUtil;
+>>>>>>> 510fddb8b4565cea88d5290cb1ddc73c9f616274
 
 public class ExameManagerTest extends MockObjectTestCase
 {
@@ -229,6 +233,22 @@ public class ExameManagerTest extends MockObjectTestCase
     	
     	assertEquals(1,exameManager.findRelatorioExamesRealizados(empresa.getId(), null, new Date(), new Date(), null, null, null, null, null, null).size());
     }
+
+    public void testFindRelatorioExamesRealizadosResumido() throws ColecaoVaziaException
+    {
+    	Date dataIni = DateUtil.criarDataMesAno(1, 1, 2009); 
+		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2011); 
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	Collection<ExamesRealizadosRelatorio> colecao = new ArrayList<ExamesRealizadosRelatorio>();
+    	ExamesRealizadosRelatorio examesPrevistosRelatorio = new ExamesRealizadosRelatorio();
+    	colecao.add(examesPrevistosRelatorio);
+    	
+    	exameDao.expects(once()).method("findExamesRealizadosRelatorioResumido").will(returnValue(colecao));
+    	
+    	assertEquals(1,exameManager.findRelatorioExamesRealizadosResumido(empresa.getId(), dataIni, dataFim, null, null).size());
+    }
+    
     public void testFindRelatorioExamesRealizadosColecaoVaziaException()
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -247,6 +267,29 @@ public class ExameManagerTest extends MockObjectTestCase
 		}
 
 		assertNotNull(exception);
+    }
+
+    public void testFindRelatorioExamesRealizadosResumidoColecaoVaziaException()
+    {
+    	Date dataIni = DateUtil.criarDataMesAno(1, 1, 2009); 
+		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2011); 
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	exameDao.expects(once()).method("findExamesRealizadosRelatorioResumido").will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
+    	
+    	Exception exception = null;
+    	
+    	try
+    	{
+    		exameManager.findRelatorioExamesRealizadosResumido(empresa.getId(), dataIni, dataFim, null, null).size();
+    	}
+    	catch (ColecaoVaziaException e)
+    	{
+    		exception = e;
+    	}
+    	
+    	assertNotNull(exception);
     }
     
     public void testGetExameAso()

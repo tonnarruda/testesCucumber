@@ -6,13 +6,13 @@
 <#if epiHistorico.id?exists>
 	<title>
 	Editar Histórico de EPI
-	<ul><@ww.label name="epi.nome"/></ul>
+	<ul><@ww.label name="epiNome"/></ul>
 	</title>
 	<#assign formAction="update.action"/>
 <#else>
 	<title>
 	Inserir Histórico de EPI
-	<ul><@ww.label name="epi.nome"/></ul>
+	<ul><@ww.label name="epiNome"/></ul>
 	</title>
 	<#assign formAction="insert.action"/>
 </#if>

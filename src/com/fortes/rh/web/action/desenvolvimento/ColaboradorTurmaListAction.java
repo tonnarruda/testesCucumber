@@ -17,6 +17,7 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -29,8 +30,10 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -38,11 +41,13 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorTurmaListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
+	private EmpresaManager empresaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private CursoManager cursoManager;
@@ -105,6 +110,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private boolean exibeFiltro;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private Long empresaId;
+	private Collection<Empresa> empresas;
 	
 	//relatório de Colaboradores x Certificações
 	private Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes;
@@ -127,13 +133,14 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		if(msgAlert != null && !msgAlert.equals(""))
 			addActionMessage(msgAlert);
 
+		empresaId = empresaManager.ajustaCombo(empresaId);
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");	
+		
 		turma = turmaManager.findByIdProjection(turma.getId());
-		
-		
-		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId());
-		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, getEmpresaSistema().getId());
+		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), empresaId);
+		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 
-		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId());
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
 
 		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
 		{
@@ -758,5 +765,13 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager) {
 		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
+	}
+
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

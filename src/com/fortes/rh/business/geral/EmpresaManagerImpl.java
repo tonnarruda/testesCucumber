@@ -16,7 +16,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
-import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -303,5 +302,13 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void removeEmpresaPadrao(long id) 
 	{
 		getDao().removeEmpresaPadrao(id);
+	}
+
+	public Long ajustaCombo(Long empresaId) 
+	{
+		if(empresaId == null || empresaId == -1)
+			return null;
+		else
+			return empresaId;
 	}
 }

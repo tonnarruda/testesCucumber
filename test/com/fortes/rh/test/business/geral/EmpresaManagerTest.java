@@ -81,6 +81,13 @@ public class EmpresaManagerTest extends MockObjectTestCase
 
     	assertEquals(empresa.getAcSenha(), empresa.getAcSenha());
     }
+    
+    public void testAjustaCombo()
+    {
+    	assertNull(empresaManager.ajustaCombo(-1L));
+    	assertNull(empresaManager.ajustaCombo(null));
+    	assertEquals(new Long(22), empresaManager.ajustaCombo(22L));
+    }
 
     public void testSaveLogo()
     {

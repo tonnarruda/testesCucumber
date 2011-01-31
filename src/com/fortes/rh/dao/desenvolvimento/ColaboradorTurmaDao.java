@@ -24,7 +24,7 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findByTurmaCurso(Long cursoId);
 	Collection<ColaboradorTurma> findByDNTColaboradores(DNT dnt, Collection<Colaborador> colaboradors);
 	Empresa findEmpresaDoColaborador(ColaboradorTurma colaboradorTurma);
-	Collection<ColaboradorTurma> findByTurma(Long turmaId);
+	Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId);
 	void updateColaboradorTurmaSetPrioridade(long colaboradorTurma, long prioridadeId);
 	void updateColaboradorTurmaSetAprovacao(Long colaboradorTurmaId, boolean aprovacao) throws Exception;
 	Collection<ColaboradorTurma> getColaboradoresByTurma(Collection<Long> turmaIds);

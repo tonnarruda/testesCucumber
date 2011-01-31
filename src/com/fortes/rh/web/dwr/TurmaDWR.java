@@ -46,6 +46,16 @@ public class TurmaDWR
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricaoCurso");
 	}
 
+	public Map getTurmasByCursos(Long[] cursoIds)throws Exception
+	{
+		if (cursoIds.length == 0)
+			return null;
+		
+		Collection<Turma> turmas = turmaManager.findByCursos(cursoIds);
+		
+		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricaoCurso");
+	}
+
 	public Map getTurmasFinalizadas(String cursoId)
 	{
 		if(cursoId == null || cursoId.trim().equals(""))

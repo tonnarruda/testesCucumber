@@ -72,6 +72,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">examesRealizados.pdf</param>
 			</result>
+			<result name="successRelatResumido" type="jasper">
+				<param name="dataSource">examesRealizados</param>
+				<param name="location">WEB-INF/report/exames_realizados_resumido.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">examesRealizadosResumido.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesRealizados.ftl</result>
 		</action>
 	</package>

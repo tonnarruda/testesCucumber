@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,8 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.util.BooleanUtil;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -43,6 +46,12 @@ public class TurmaListAction extends MyActionSupportList
 
 	private String[] turmasCheck;
 	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>();
+
+	private String[] cursosCheck;
+	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
+	private Date dataIni;
+	private Date dataFim;
+	private char realizada;
 
 	public String filtroPlanoTreinamento() throws Exception
 	{
@@ -172,6 +181,31 @@ public class TurmaListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	public String relatorioInvestimento() throws Exception
+	{
+		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
+		cursosCheckList = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirRelatorioInvestimento() throws Exception
+	{
+		turmas = turmaManager.findByTurmasPeriodo(LongUtil.arrayStringToArrayLong(turmasCheck),  dataIni, dataFim, BooleanUtil.getValueCombo(realizada));
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatorio Invetimento", getEmpresaSistema(),  getPeriodoFormatado());
+		
+		return Action.SUCCESS;
+	}
+
+	private String getPeriodoFormatado()
+	{
+		String periodoFormatado = "-";
+		if (dataIni != null && dataFim != null)
+			periodoFormatado = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " - " + DateUtil.formataDiaMesAno(dataFim);
+
+		return periodoFormatado;
+	}
+	
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
@@ -277,5 +311,37 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setPlanoTreinamento(boolean planoTreinamento) {
 		this.planoTreinamento = planoTreinamento;
+	}
+
+	public Collection<CheckBox> getCursosCheckList() {
+		return cursosCheckList;
+	}
+
+	public void setCursosCheck(String[] cursosCheck) {
+		this.cursosCheck = cursosCheck;
+	}
+
+	public Date getDataIni() {
+		return dataIni;
+	}
+
+	public void setDataIni(Date dataIni) {
+		this.dataIni = dataIni;
+	}
+
+	public Date getDataFim() {
+		return dataFim;
+	}
+
+	public void setDataFim(Date dataFim) {
+		this.dataFim = dataFim;
+	}
+
+	public void setRealizada(char realizada) {
+		this.realizada = realizada;
+	}
+
+	public char getRealizada() {
+		return realizada;
 	}
 }

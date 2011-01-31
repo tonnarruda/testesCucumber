@@ -28,6 +28,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
@@ -137,6 +138,53 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		assertEquals(2, turmas.size());
 	}
 
+	public void testFindByTurmasRelatorioInvestimento() 
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setCurso(curso);
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setCurso(curso);
+		turmaDao.save(turma2);
+		
+		Long[] ids = new Long[]{curso.getId()};
+		
+		assertEquals(2, turmaDao.findByCursos(ids).size());
+	}
+	
+	public void testFindByTurmasPeriodo() 
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma1 = criaTurmaAndColaboradorTurma(curso, "02/01/2009", true);
+		Turma turma2 = criaTurmaAndColaboradorTurma(curso, "02/01/2010", true);
+		Turma turma3 = criaTurmaAndColaboradorTurma(curso, "02/01/2011", true);
+		Turma turma4 = criaTurmaAndColaboradorTurma(curso, "02/01/2010", false);
+		
+		Long[] turmaIds = new Long[]{turma1.getId(), turma2.getId(), turma3.getId(), turma4.getId()};
+		
+		assertEquals(1, turmaDao.findByTurmasPeriodo(turmaIds, DateUtil.montaDataByString("01/01/2010"), DateUtil.montaDataByString("05/05/2010"), true).size());
+	}
+
+	private Turma criaTurmaAndColaboradorTurma(Curso curso, String ini, boolean realizada) 
+	{
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turma.setDataPrevIni(DateUtil.montaDataByString(ini));
+		turma.setRealizada(realizada);
+		turmaDao.save(turma);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+
+		return turma;
+	}
 	public void testFindAllSelect()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

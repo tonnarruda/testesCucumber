@@ -93,6 +93,7 @@ public class ExameListAction extends MyActionSupportList
 	private boolean imprimirAfastados = false;
 
 	private String vinculo;
+	private boolean relatorioExamesPrevistosResumido;
 	private String nomeBusca;
 
 
@@ -260,10 +261,14 @@ public class ExameListAction extends MyActionSupportList
 
 		try
 		{
-			examesRealizados = exameManager.findRelatorioExamesRealizados(getEmpresaSistema().getId(), nomeBusca, inicio, fim, motivo, resultado, clinicaAutorizada.getId(), examesIds, estabelecimentosIds, vinculo);
+			if (relatorioExamesPrevistosResumido)
+				examesRealizados = exameManager.findRelatorioExamesRealizadosResumido(getEmpresaSistema().getId(), inicio, fim, clinicaAutorizada, examesIds);
+			else
+				examesRealizados = exameManager.findRelatorioExamesRealizados(getEmpresaSistema().getId(), nomeBusca, inicio, fim, motivo, resultado, clinicaAutorizada.getId(), examesIds, estabelecimentosIds, vinculo);
+
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Exames Realizados", getEmpresaSistema(), "Período: " + DateUtil.formataDiaMesAno(inicio) + " - " + DateUtil.formataDiaMesAno(fim) + "\n" + nomeEstabelecimento);
 			
-			return SUCCESS;
+			return relatorioExamesPrevistosResumido ? "successRelatResumido" : SUCCESS;
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -549,5 +554,9 @@ public class ExameListAction extends MyActionSupportList
 
 	public void setNomeBusca(String nomeBusca) {
 		this.nomeBusca = nomeBusca;
+	}
+
+	public void setRelatorioExamesPrevistosResumido(boolean relatorioExamesPrevistosResumido) {
+		this.relatorioExamesPrevistosResumido = relatorioExamesPrevistosResumido;
 	}
 }

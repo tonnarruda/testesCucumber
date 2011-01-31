@@ -303,7 +303,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         colaboradorTurma.setColaborador(colaborador);
         colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
 
-        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId());
+        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId(), null);
 
         ColaboradorTurma colaboradorTurmaRetorno = (ColaboradorTurma) retornos.toArray()[0];
 

@@ -264,7 +264,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if (diaTurmas.isEmpty())
 			addActionMessage("Não existe previsão de dias para esta turma.");
 
-		colaboradorTurmasLista = colaboradorTurmaManager.findByTurma(turma.getId());
+		colaboradorTurmasLista = colaboradorTurmaManager.findByTurma(turma.getId(), null);
 		CollectionUtil<ColaboradorTurma> util = new CollectionUtil<ColaboradorTurma>();
 		colaboradorTurmasIds = util.convertCollectionToArrayIds(colaboradorTurmasLista);
 

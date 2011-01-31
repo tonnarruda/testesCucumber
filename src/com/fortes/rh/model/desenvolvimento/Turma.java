@@ -70,6 +70,18 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	public Turma()
 	{
 	}
+	
+	public Turma(Long cursoId, String cursoNome, Long id, String descricao, Date dataPrevIni, Date dataPrevFim, Double custo, Integer qtdPessoas)
+	{
+		setCursoId(cursoId);
+		curso.setNome(cursoNome);
+		setId(id);
+		this.descricao = descricao;
+		this.dataPrevIni = dataPrevIni;
+		this.dataPrevFim = dataPrevFim;
+		this.custo = custo;
+		this.qtdPessoas = qtdPessoas;
+	}
 
 	public Turma(Long id, Double diasEstimadosParaAprovacao)
 	{

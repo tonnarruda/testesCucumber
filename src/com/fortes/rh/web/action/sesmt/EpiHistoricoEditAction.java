@@ -21,8 +21,9 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 	private Collection<Epi> epis;
 
 	private Epi epi = new Epi();
-
+	
 	private boolean epiEhFardamento;
+	private String epiNome = "";
 
 	public boolean isEpiEhFardamento()
 	{
@@ -39,6 +40,7 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 	public String prepareInsert() throws Exception
 	{
 		epi = epiManager.findById(epi.getId());
+		epiNome = epi.getNome();
 		epiEhFardamento = epi.getFardamento();
 		return Action.SUCCESS;
 	}
@@ -46,6 +48,7 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 	public String prepareUpdate() throws Exception
 	{
 		epiHistorico = epiHistoricoManager.findById(epiHistorico.getId());
+		epiNome = epiHistorico.getEpi().getNome();
 		epiEhFardamento = epiHistorico.getEpi().getFardamento();
 
 		return Action.SUCCESS;
@@ -138,5 +141,9 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 	public Epi getEpi()
 	{
 		return epi;
+	}
+
+	public String getEpiNome() {
+		return epiNome;
 	}
 }

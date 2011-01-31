@@ -363,22 +363,29 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	
 	public void testFindRespondidasByTurma()
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
 		colaboradorDao.save(colaborador);
+		
 		Turma turma = TurmaFactory.getEntity();
 		turmaDao.save(turma);
+		
 		ColaboradorQuestionario colaboradorQuestionarioRespondida = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionarioRespondida.setColaborador(colaborador);
 		colaboradorQuestionarioRespondida.setTurma(turma);
 		colaboradorQuestionarioRespondida.setRespondida(true);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioRespondida);
+		
 		ColaboradorQuestionario colaboradorQuestionarioNaoRespondida = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionarioNaoRespondida.setColaborador(colaborador);
 		colaboradorQuestionarioNaoRespondida.setTurma(turma);
 		colaboradorQuestionarioNaoRespondida.setRespondida(false);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioNaoRespondida);
 
-		Collection<ColaboradorQuestionario> respondidasPorTurma = colaboradorQuestionarioDao.findRespondidasByColaboradorETurma(null, turma.getId());
+		Collection<ColaboradorQuestionario> respondidasPorTurma = colaboradorQuestionarioDao.findRespondidasByColaboradorETurma(null, turma.getId(), empresa.getId());
 
 		assertEquals(1, respondidasPorTurma.size());
 	}

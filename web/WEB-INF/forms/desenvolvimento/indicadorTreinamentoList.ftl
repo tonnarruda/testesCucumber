@@ -60,7 +60,7 @@
 								<dd>${indicadorTreinamento.custoPerCapitaFmt}</dd>
 								<dt>Horas de treinamento per capita</dt>
 								<dd>${indicadorTreinamento.horasPerCapitaFmt}</dd>
-								<dt>Total de investimentos (R$)</dt>
+								<dt>Total de investimentos dos treinamentos realizados (R$)</dt>
 								<dd>${indicadorTreinamento.custoTotalFmt}</dd>
 								<dt>Percentual de frequência (aprovados) </dt>
 								<dd>${percentualFrequencia}%</dd>
