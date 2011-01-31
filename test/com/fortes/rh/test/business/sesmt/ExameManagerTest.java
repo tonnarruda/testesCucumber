@@ -18,10 +18,7 @@ import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.ExameManagerImpl;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.captacao.Candidato;
-import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.Exame;
@@ -31,11 +28,8 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
-<<<<<<< HEAD
-import com.fortes.rh.util.SpringUtil;
-=======
 import com.fortes.rh.util.DateUtil;
->>>>>>> 510fddb8b4565cea88d5290cb1ddc73c9f616274
+import com.fortes.rh.util.SpringUtil;
 
 public class ExameManagerTest extends MockObjectTestCase
 {
