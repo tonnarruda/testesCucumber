@@ -20,6 +20,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 
 @SuppressWarnings("serial")
@@ -185,7 +186,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.curso.setPercentualMinimoFrequencia(percentualMinimoFrequencia);
 	}
 
-	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, String estabelecimentoNome, String faixaSalarialNome, String cargoNome)
+	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, String estabelecimentoNome, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome)
 	{
 		this.setId(id);
 
@@ -204,6 +205,12 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.colaborador.getAreaOrganizacional().setId(areaOrganizacionalId);
 		this.colaborador.getAreaOrganizacional().setNome(areaOrganizacionalNome);
 
+		if(this.colaborador.getEmpresa() == null)
+			this.colaborador.setEmpresa(new Empresa());
+		
+		this.colaborador.getEmpresa().setId(empresaId);
+		this.colaborador.getEmpresa().setNome(empresaNome);
+		
 		if(this.colaborador.getHistoricoColaborador() == null)
 			this.colaborador.setHistoricoColaborador(new HistoricoColaborador());
 

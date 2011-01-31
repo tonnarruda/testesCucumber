@@ -17,7 +17,7 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 
 	void removeByColaboradorETurma(Long colaboradorId, Long turmaId);
 
-	Collection<ColaboradorQuestionario> findRespondidasByColaboradorETurma(Long colaboradorId, Long turmaId);
+	Collection<ColaboradorQuestionario> findRespondidasByColaboradorETurma(Long colaboradorId, Long turmaId, Long empresaId);
 
 	Collection<ColaboradorQuestionario> findFichasMedicas(Character vinculo, Date dataIni, Date dataFim, String nomeBusca, String cpfBusca, String matriculaBusca);
 

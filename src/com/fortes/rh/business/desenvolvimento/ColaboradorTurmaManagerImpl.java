@@ -412,9 +412,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTurmas;
 	}
 
-	public Collection<ColaboradorTurma> findByTurma(Long turmaId)
+	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId)
 	{
-		return getDao().findByTurma(turmaId);
+		return getDao().findByTurma(turmaId, empresaId);
 	}
 
 	public void saveUpdate(Collection<Long> colaboradoresTurmaId, boolean aprovado) throws Exception

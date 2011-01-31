@@ -21,7 +21,7 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	void save(Questionario questionario, Long[] colaboradoresId, Turma turma) throws Exception;
 	ColaboradorQuestionario findColaboradorComEntrevistaDeDesligamento(Long colaboradorId);
 	void removeByColaboradorETurma(Long colaboradorId, Long turmaId);
-	Collection<ColaboradorQuestionario> findRespondidasByColaboradorETurma(Long colaboradorId, Long turmaId);
+	Collection<ColaboradorQuestionario> findRespondidasByColaboradorETurma(Long colaboradorId, Long turmaId, Long empresaId);
 	Collection<ColaboradorQuestionario> findFichasMedicas(Character vinculo, Date dataIni, Date dataFim, String nomeBusca, String cpfBusca, String matriculaBusca);
 	ColaboradorQuestionario findByQuestionarioCandidato(Long id, Long candidatoId);
 	ColaboradorQuestionario findByIdProjection(Long id);

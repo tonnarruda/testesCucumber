@@ -274,7 +274,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 
 	public boolean verificaAvaliacaoDeTurmaRespondida(Long turmaId)
 	{
-		Collection<ColaboradorQuestionario> respondidas = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turmaId);
+		Collection<ColaboradorQuestionario> respondidas = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turmaId, null);
 
 		return (respondidas == null) ? false : (respondidas.size() > 0);
 	}

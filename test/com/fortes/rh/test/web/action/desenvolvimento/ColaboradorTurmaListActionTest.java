@@ -2,8 +2,6 @@ package com.fortes.rh.test.web.action.desenvolvimento;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import mockit.Mockit;
 
@@ -11,19 +9,18 @@ import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -53,18 +50,16 @@ import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
+import com.fortes.rh.test.util.mockObjects.MockLongUtil;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockStringUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction;
 import com.fortes.web.tags.CheckBox;
-import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
-import com.fortes.rh.test.util.mockObjects.MockLongUtil;
-import com.fortes.rh.test.util.mockObjects.MockStringUtil;
-import com.fortes.rh.util.RelatorioUtil;
-import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.StringUtil;
 
 
 public class ColaboradorTurmaListActionTest extends MockObjectTestCase
@@ -81,6 +76,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 	private Mock certificacaoManager;
 	private Mock colaboradorManager;
 	private Mock aproveitamentoAvaliacaoCursoManager;
+	private Mock empresaManager;
 
     protected void setUp() throws Exception
     {
@@ -116,6 +112,9 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 
         colaboradorManager = new Mock(ColaboradorManager.class);
         action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+        
+        empresaManager = new Mock(EmpresaManager.class);
+        action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
         
         aproveitamentoAvaliacaoCursoManager = new Mock(AproveitamentoAvaliacaoCursoManager.class);
         action.setAproveitamentoAvaliacaoCursoManager((AproveitamentoAvaliacaoCursoManager) aproveitamentoAvaliacaoCursoManager.proxy());
@@ -159,9 +158,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Collection<ColaboradorQuestionario> colaboradorQuestionarioCollection = new ArrayList<ColaboradorQuestionario>();
     	colaboradorQuestionarioCollection.add(colaboradorQuestionario);
 
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId())).will(returnValue(colaboradorTurmas));
+    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING).will(returnValue(null));
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
-    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId())).will(returnValue(colaboradorQuestionarioCollection));
+    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(colaboradorQuestionarioCollection));
     	
     	assertEquals("success", action.list());
     	assertEquals(colaboradorTurmas, action.getColaboradorTurmas());
@@ -493,11 +494,14 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Turma turma = TurmaFactory.getEntity(1L);
     	action.setTurma(turma);
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
-
+    	
+    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING).will(returnValue(null));
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+    	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId())).will(returnValue(colaboradorTurmas));
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
-    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId())).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 
     	assertEquals("input", action.delete());
     }
@@ -515,10 +519,13 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	action.setTurma(turma);
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
 
+    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING).will(returnValue(null));
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+    	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId())).will(returnValue(colaboradorTurmas));
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
-    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId())).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 
     	assertEquals("input", action.delete());
     }

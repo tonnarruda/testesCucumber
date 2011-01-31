@@ -193,9 +193,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		getDao().removeByColaboradorETurma(colaboradorId, turmaId);
 	}
 
-	public Collection<ColaboradorQuestionario> findRespondidasByColaboradorETurma(Long colaboradorId, Long turmaId)
+	public Collection<ColaboradorQuestionario> findRespondidasByColaboradorETurma(Long colaboradorId, Long turmaId, Long empresaId)
 	{
-		return getDao().findRespondidasByColaboradorETurma(colaboradorId, turmaId);
+		return getDao().findRespondidasByColaboradorETurma(colaboradorId, turmaId, empresaId);
 	}
 
 	public Collection<ColaboradorQuestionario> findFichasMedicas(Character vinculo, Date dataIni, Date dataFim, String nomeBusca, String cpfBusca, String matriculaBusca)

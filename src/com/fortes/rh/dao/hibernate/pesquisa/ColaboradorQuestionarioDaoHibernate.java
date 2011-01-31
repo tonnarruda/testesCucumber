@@ -206,10 +206,11 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		queryColaboradorQuestionario.executeUpdate();
 	}
 
-	public Collection<ColaboradorQuestionario> findRespondidasByColaboradorETurma(Long colaboradorId, Long turmaId)
+	public Collection<ColaboradorQuestionario> findRespondidasByColaboradorETurma(Long colaboradorId, Long turmaId, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 
@@ -221,6 +222,8 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 		if (colaboradorId != null)
 			criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
+		if (empresaId != null)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
 
 		criteria.add(Expression.eq("cq.turma.id", turmaId));
 		criteria.add(Expression.eq("cq.respondida", true));

@@ -61,7 +61,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 
 		try
 		{
-			colaboradorTurmas = colaboradorTurmaManager.findByTurma(colaboradorTurma.getTurma().getId());
+			colaboradorTurmas = colaboradorTurmaManager.findByTurma(colaboradorTurma.getTurma().getId(), null);
 			colaboradorTurmas = colaboradorTurmaManager.montaColunas(colaboradorTurmas, exibirNomeComercial, exibirCargo, exibirEstabelecimento, exibirAssinatura);
 
 			listaDePresencas = new ArrayList<ListaDePresenca>();

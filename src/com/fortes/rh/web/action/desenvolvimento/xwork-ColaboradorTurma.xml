@@ -3,8 +3,15 @@
 
 <xwork>
 	<package name="colaboradorTurma" extends="default" namespace="/desenvolvimento/colaboradorTurma">
+		<action name="updateFilter" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
+		
 		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaList.ftl</result>
+			<interceptor-ref name="defaultDeleteStack">
+				<param name="scope.session">turma.id,empresa.id</param>
+			</interceptor-ref>
 		</action>
 		<action name="prepareFiltroHistoricoTreinamentos" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="prepareFiltroHistoricoTreinamentos">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioHistoricoTreinamentos.ftl</result>
@@ -26,6 +33,9 @@
 			<result name="successFiltroPlanoTreinamento" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&planoTreinamento=${planoTreinamento}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaList.ftl</result>
 			<result name="successDnt" type="redirect"><![CDATA[../dnt/listDetalhes.action?dnt.id=${dntId}&areaFiltro.id=${areaFiltroId}&gestor=${gestor}&msgAlert=${msgAlert}&estabelecimento.id=${estabelecimento.id}]]></result>
+			<interceptor-ref name="defaultDeleteStack">
+				<param name="scope.session">turma.id,empresa.id</param>
+			</interceptor-ref>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction" method="prepareInsert">
 			<result name="list" type="redirect"><![CDATA[list.action?turma.id=${turma.id}]]></result>

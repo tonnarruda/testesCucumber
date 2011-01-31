@@ -6,10 +6,22 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 	<title>Colaboradores Inscritos no curso de ${turma.curso.nome}, Turma - ${turma.descricao}</title>
+	
+    <#include "../ftl/mascarasImports.ftl" />
+    <#include "../ftl/showFilterImports.ftl" />
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	
+	<#include "../util/topFiltro.ftl" />
+        <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
+            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" liClass="liLeft"/>
+            <@ww.hidden name="turma.id"/>
+        </@ww.form>
+    <#include "../util/bottomFiltro.ftl" />
+    <br>
 	
 	<#if colaboradorTurmas.size()?exists>
 		<b>${colaboradorTurmas.size()} Colaboradores Inscritos</b>
@@ -29,9 +41,10 @@
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../colaboradorTurma/delete.action?colaboradorTurma.id=${colaboradorTurma.id}&colaboradorTurma.colaborador.id=${colaboradorTurma.colaborador.id}&turma.id=${turma.id}&planoTreinamento=${planoTreinamento?string}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 
-			<@display.column property="colaborador.nome" title="Nome" style="width: 450px;"/>
-			<@display.column property="colaborador.matricula" title="Matrícula" style="width: 100px;"/>
-			<@display.column property="colaborador.areaOrganizacional.descricao" title="Área" style="width: 250px;"/>
+			<@display.column property="colaborador.nome" title="Nome" style="width: 400px;"/>
+			<@display.column property="colaborador.matricula" title="Matrícula" style="width: 80px;"/>
+			<@display.column property="colaborador.empresa.nome" title="Empresa" style="width: 120px;"/>
+			<@display.column property="colaborador.areaOrganizacional.descricao" title="Área" style="width: 200px;"/>
 
 		</@display.table>
 	</#if>
