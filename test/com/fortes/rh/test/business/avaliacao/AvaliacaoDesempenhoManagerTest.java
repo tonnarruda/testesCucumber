@@ -146,7 +146,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(1L),eq(false),eq(false)).will(returnValue(colaboradors));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametros));
-		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		
 		avaliacaoDesempenhoManager.enviarLembrete(1L, empresa);
 	}

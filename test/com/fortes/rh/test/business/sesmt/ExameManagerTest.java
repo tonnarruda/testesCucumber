@@ -178,21 +178,9 @@ public class ExameManagerTest extends MockObjectTestCase
     public void testFindRelatorioExamesPrevistosColecaoVaziaException() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
     	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),ANYTHING,ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
 
-    	Exception exception = null;
-
-    	try
-		{
-			exameManager.findRelatorioExamesPrevistos(empresa.getId(), null, null, null, null, null,false, false);
-		}
-		catch (ColecaoVaziaException e)
-		{
-			exception = e;
-		}
-
-		assertNotNull(exception);
+		assertTrue(exameManager.findRelatorioExamesPrevistos(empresa.getId(), null, null, null, null, null,false, false).isEmpty());
     }
 
     public void testFindBySolicitacaoExame()
