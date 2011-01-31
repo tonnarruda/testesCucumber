@@ -125,6 +125,7 @@
 				<param name="location">WEB-INF/report/confirmacao_certificado.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">confirmacao_certificado.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaList.ftl</result>
 		</action>

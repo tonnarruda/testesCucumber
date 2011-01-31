@@ -16,6 +16,7 @@ import com.fortes.rh.business.desenvolvimento.PrioridadeTreinamentoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -28,11 +29,13 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ModelDriven;
 
 public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements ModelDriven
@@ -49,6 +52,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	private TurmaManager turmaManager;
 	private CursoManager cursoManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
+	private EmpresaManager empresaManager;
 
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<PrioridadeTreinamento> prioridadeTreinamentos = null;
@@ -115,6 +119,9 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	
 	public String prepareInsertNota() throws Exception
 	{
+		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");
+		
 		avaliacaoCursos = avaliacaoCursoManager.findByCurso(turma.getCurso().getId());
 		return SUCCESS;
 	}
@@ -140,17 +147,20 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		prepare();
 		turma = turmaManager.findByIdProjection(turma.getId());
 		colaboradorTurma.setTurma(turma);
-		empresaId = getEmpresaSistema().getId();
+		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");
+		
 		questionario = turma.getAvaliacaoTurma().getQuestionario();
 
-		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
+		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.TODAS);
 		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricao");
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
-		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome"), "getId", "getNome");
-		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
-		gruposCheckList = populaCheckListBox(grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome");
-		gruposCheckList = CheckListBoxUtil.marcaCheckListBox(gruposCheckList, gruposCheck);
+		//31/01/2011 - Francisco, retirei acho que os clientes não tão usando, retirar depois de 3 meses, hehehe 
+//		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(empresaId, "nome"), "getId", "getNome");
+//		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
+//		gruposCheckList = populaCheckListBox(grupoOcupacionalManager.findAllSelect(empresaId), "getId", "getNome");
+//		gruposCheckList = CheckListBoxUtil.marcaCheckListBox(gruposCheckList, gruposCheck);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresByCursoTurmaIsNull(turma.getCurso().getId());
 		colaboradoresCursosCheckList = populaCheckListBox(colaboradorTurmaManager.getListaColaboradores(colaboradorTurmas), "getId", "getNome");
@@ -161,9 +171,10 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 
 	public String listFiltro() throws Exception
 	{
+		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 		totalSize = 10000;
-		colaboradorTurmas = colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, colaborador, getEmpresaSistema().getId());
-		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, getEmpresaSistema().getId());
+		colaboradorTurmas = colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, colaborador, empresaId);
+		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 
 		return prepareInsert();
 	}
@@ -749,5 +760,9 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 
 	public void setPlanoTreinamento(boolean planoTreinamento) {
 		this.planoTreinamento = planoTreinamento;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

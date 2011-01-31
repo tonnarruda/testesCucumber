@@ -2014,7 +2014,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
 
 		criteria.setProjection(p);
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		if(empresaId != null && !empresaId.equals(-1L))
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
 
 		if(colaborador != null && StringUtils.isNotBlank(colaborador.getNome()))
 			criteria.add(Expression.like("c.nome", "%" + colaborador.getNome() + "%").ignoreCase());

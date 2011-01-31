@@ -10,7 +10,7 @@
 		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaList.ftl</result>
 			<interceptor-ref name="defaultDeleteStack">
-				<param name="scope.session">turma.id,empresa.id</param>
+				<param name="scope.session">turma.id,empresaId</param>
 			</interceptor-ref>
 		</action>
 		<action name="prepareFiltroHistoricoTreinamentos" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="prepareFiltroHistoricoTreinamentos">
@@ -30,11 +30,11 @@
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="delete">
 			<result name="success" type="redirect"><![CDATA[list.action?turma.id=${turma.id}]]></result>
-			<result name="successFiltroPlanoTreinamento" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&planoTreinamento=${planoTreinamento}]]></result>
+			<result name="successFiltroPlanoTreinamento" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&planoTreinamento=${planoTreinamento}&empresaId=${empresaId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaList.ftl</result>
-			<result name="successDnt" type="redirect"><![CDATA[../dnt/listDetalhes.action?dnt.id=${dntId}&areaFiltro.id=${areaFiltroId}&gestor=${gestor}&msgAlert=${msgAlert}&estabelecimento.id=${estabelecimento.id}]]></result>
+			<result name="successDnt" type="redirect"><![CDATA[../dnt/listDetalhes.action?dnt.id=${dntId}&areaFiltro.id=${areaFiltroId}&gestor=${gestor}&msgAlert=${msgAlert}&estabelecimento.id=${estabelecimento.id}&empresaId=${empresaId}]]></result>
 			<interceptor-ref name="defaultDeleteStack">
-				<param name="scope.session">turma.id,empresa.id</param>
+				<param name="scope.session">turma.id,empresaId</param>
 			</interceptor-ref>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction" method="prepareInsert">

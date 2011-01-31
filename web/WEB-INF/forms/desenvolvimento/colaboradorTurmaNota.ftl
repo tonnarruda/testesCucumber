@@ -19,8 +19,9 @@
 		function populaColaborador()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.find(createListColaborador, jQuery('#nome').val(), "", jQuery('#matricula').val(), <@authz.authentication operation="empresaId"/>, true);
+			ColaboradorDWR.find(createListColaborador, jQuery('#nome').val(), "", jQuery('#matricula').val(), jQuery('#empresaId').val(), true);
 		}
+		
 		function createListColaborador(data)
 		{
 			DWRUtil.removeAllOptions('colaborador');
@@ -55,6 +56,7 @@
 	<@ww.form name="form" action="insertColaboradorNota.action" onsubmit="${validarCampos}" validate="true" method="POST">
 	
 	<div class="divFiltro">
+	    <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" />
 		<@ww.textfield label="Nome do Colaborador" id="nome" name="colaborador.nome" maxLength="100" cssStyle="width: 500px;" />
 		<@ww.textfield label="Matrícula do Colaborador" id="matricula" name="colaborador.matricula" maxLength="20" cssStyle="width: 170px;"/>
 

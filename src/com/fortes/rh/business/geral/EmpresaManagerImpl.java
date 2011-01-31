@@ -304,9 +304,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		getDao().removeEmpresaPadrao(id);
 	}
 
-	public Long ajustaCombo(Long empresaId) 
+	public Long ajustaCombo(Long empresaId, Long empresaSistemaId) 
 	{
-		if(empresaId == null || empresaId == -1)
+		if(empresaId == null)
+			return empresaSistemaId;
+		else if(empresaId == -1)
 			return null;
 		else
 			return empresaId;

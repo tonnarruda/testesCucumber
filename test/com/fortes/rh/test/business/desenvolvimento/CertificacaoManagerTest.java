@@ -52,9 +52,9 @@ public class CertificacaoManagerTest extends MockObjectTestCase
 		String nomeBusca = "habilidades humanas";
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		Collection<Certificacao> certificacaos = new ArrayList<Certificacao>();
-		certificacaoDao.expects(once()).method("findAllSelect").with(eq(empresa.getId()),eq(nomeBusca)).will(returnValue(certificacaos));
+		certificacaoDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, eq(empresa.getId()),eq(nomeBusca)).will(returnValue(certificacaos));
 		
-		assertEquals(certificacaos, certificacaoManager.findAllSelect(empresa.getId(), nomeBusca));
+		assertEquals(certificacaos, certificacaoManager.findAllSelect(null, null, empresa.getId(), nomeBusca));
 	}
 	
 	public void testFindByIdProjection()

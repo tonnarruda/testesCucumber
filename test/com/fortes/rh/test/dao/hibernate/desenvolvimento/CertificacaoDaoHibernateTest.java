@@ -62,7 +62,24 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 		certificacao2.setEmpresa(empresa);
 		certificacaoDao.save(certificacao2);
 		
-		assertEquals(1, certificacaoDao.findAllSelect(empresa.getId(), "Gerencia").size());
+		assertEquals(1, certificacaoDao.findAllSelect(0, 0, empresa.getId(), "Gerencia").size());
+	}
+	
+	public void testGetCount()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setNome("Gerência de Projetos");
+		certificacao.setEmpresa(empresa);
+		certificacaoDao.save(certificacao);
+		
+		Certificacao certificacao2 = CertificacaoFactory.getEntity();
+		certificacao2.setEmpresa(empresa);
+		certificacaoDao.save(certificacao2);
+		
+		assertEquals(new Integer(1), certificacaoDao.getCount(empresa.getId(), "Gerencia"));
 	}
 	
 	public void testFindByIdProjection()

@@ -84,9 +84,9 @@ public class EmpresaManagerTest extends MockObjectTestCase
     
     public void testAjustaCombo()
     {
-    	assertNull(empresaManager.ajustaCombo(-1L));
-    	assertNull(empresaManager.ajustaCombo(null));
-    	assertEquals(new Long(22), empresaManager.ajustaCombo(22L));
+    	assertNull(empresaManager.ajustaCombo(-1L, null));
+    	assertNull(empresaManager.ajustaCombo(null, null));
+    	assertEquals(new Long(22), empresaManager.ajustaCombo(22L, null));
     }
 
     public void testSaveLogo()

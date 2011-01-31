@@ -67,7 +67,12 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 			return null;
 	}
 
-	public Collection<Certificacao> findAllSelect(Long id, String nomeBusca) {
-		return getDao().findAllSelect(id,nomeBusca);
+	public Collection<Certificacao> findAllSelect(Integer page, Integer pagingSize, Long id, String nomeBusca) {
+		return getDao().findAllSelect(page, pagingSize, id, nomeBusca);
+	}
+
+	public Integer getCount(Long empresaId, String nomeBusca) 
+	{
+		return getDao().getCount(empresaId, nomeBusca);
 	}
 }

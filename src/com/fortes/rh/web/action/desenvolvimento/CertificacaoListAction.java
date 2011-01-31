@@ -41,7 +41,8 @@ public class CertificacaoListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		certificacaos = certificacaoManager.findAllSelect(getEmpresaSistema().getId(), nomeBusca);
+		setTotalSize(certificacaoManager.getCount(getEmpresaSistema().getId(), nomeBusca));
+		certificacaos = certificacaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca);
 
 		return Action.SUCCESS;
 	}

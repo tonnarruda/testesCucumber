@@ -14,5 +14,6 @@ public interface CertificacaoManager extends GenericManager<Certificacao>
 	Collection<MatrizTreinamento> getByFaixasOrCargos(String[] faixaSalarialsCheck, String[] cargosCheck);
 	Certificacao findByIdProjection(Long id);
 	Collection<MatrizTreinamento> montaMatriz(boolean imprimirMatriz, String[] faixaSalarialId, Collection<ColaboradorTurma> colaboradorTurmas);
-	Collection<Certificacao> findAllSelect(Long id, String nomeBusca);
+	Collection<Certificacao> findAllSelect(Integer page, Integer pagingSize, Long id, String nomeBusca);
+	Integer getCount(Long empresaId, String nomeBusca);
 }

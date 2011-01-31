@@ -17,7 +17,6 @@ import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRela
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("unchecked")
 public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma>
@@ -34,7 +33,6 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findByTurmaCurso(Long cursoId);
 	public Collection<SomatorioCursoMatriz> getSomaPontuacao(Collection<ColaboradorCursoMatriz> colaboradorCursoMatrizs);
 	public Collection<ColaboradorTurma> findByDNTColaboradores(DNT dnt, Collection<Colaborador> colaboradors);
-	public boolean comparaEmpresa(ColaboradorTurma colaboradorTurma, Empresa empresa);
 	public boolean verifcaExisteNoCurso(Colaborador colaborador, Curso curso, DNT dnt);
 	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId);
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId);

@@ -780,25 +780,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertEquals(colaboradorTurmas, colaboradorTurmaManager.findByDNTColaboradores(null, null));
 	}
 
-	public void testComparaEmpresa()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
-
-		colaboradorTurmaDao.expects(once()).method("findEmpresaDoColaborador").with(eq(colaboradorTurma)).will(returnValue(empresa));
-		assertEquals(true, colaboradorTurmaManager.comparaEmpresa(colaboradorTurma, empresa));
-	}
-
-	public void testComparaEmpresaInvalida()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		Empresa empresa2 = EmpresaFactory.getEmpresa(2L);
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
-
-		colaboradorTurmaDao.expects(once()).method("findEmpresaDoColaborador").with(eq(colaboradorTurma)).will(returnValue(empresa2));
-		assertEquals(false, colaboradorTurmaManager.comparaEmpresa(colaboradorTurma, empresa));
-	}
-
 	public void testVerifcaExisteNoCurso()
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);

@@ -32,7 +32,6 @@ import com.fortes.rh.model.desenvolvimento.relatorio.CursoPontuacaoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -81,6 +80,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), colaborador, empresaId);
 				retorno = geraColaboradorTurma(colaboradores, turma);
 				break;
+				//31/01/2011 - Francisco, retirei acho que os clientes não tão usando, retirar depois de 3 meses, hehehe
 			case 3: // Cargos
 				colaboradores = historicoColaboradorManager.findByCargosIds(page, pagingSize, LongUtil.arrayStringToArrayLong(cargosCheck), colaborador, empresaId);
 				retorno = geraColaboradorTurma(colaboradores, turma);
@@ -354,13 +354,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findByDNTColaboradores(DNT dnt, Collection<Colaborador> colaboradors)
 	{
 		return getDao().findByDNTColaboradores(dnt, colaboradors);
-	}
-
-	public boolean comparaEmpresa(ColaboradorTurma colaboradorTurma, Empresa empresa)
-	{
-		Empresa emp = getDao().findEmpresaDoColaborador(colaboradorTurma);
-
-		return (emp != null && emp.getId().equals(empresa.getId()));
 	}
 
 	public boolean verifcaExisteNoCurso(Colaborador colaborador, Curso curso, DNT dnt)

@@ -17,8 +17,10 @@
 	
 	<#include "../util/topFiltro.ftl" />
         <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
-            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" liClass="liLeft"/>
+            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1"/>
             <@ww.hidden name="turma.id"/>
+            
+            <input type="submit" value="" class="btnPesquisar grayBGE" >
         </@ww.form>
     <#include "../util/bottomFiltro.ftl" />
     <br>
@@ -38,7 +40,7 @@
 						<a href="../../pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&colaborador.id=${colaboradorTurma.colaborador.id}&turmaId=${turma.id}&voltarPara=../../desenvolvimento/colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Responder a avaliação da turma por este colaborador" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
 					</#if>
 				</#if>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../colaboradorTurma/delete.action?colaboradorTurma.id=${colaboradorTurma.id}&colaboradorTurma.colaborador.id=${colaboradorTurma.colaborador.id}&turma.id=${turma.id}&planoTreinamento=${planoTreinamento?string}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../colaboradorTurma/delete.action?colaboradorTurma.id=${colaboradorTurma.id}&colaboradorTurma.colaborador.id=${colaboradorTurma.colaborador.id}&turma.id=${turma.id}&planoTreinamento=${planoTreinamento?string}&empresaId=' + jQuery('#empresaId').val()});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 
 			<@display.column property="colaborador.nome" title="Nome" style="width: 400px;"/>

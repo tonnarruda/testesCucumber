@@ -8,29 +8,26 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 	<script type='text/javascript'>
-		function populaCargos(frm, nameCheck, empresaId)
+		function populaAreas(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			var gruposIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByGrupo(createListCargos, gruposIds, empresaId);
+			AreaOrganizacionalDWR.getByEmpresa(createListAreas, empresaId);
 		}
 
-		function createListCargos(data)
+		function createListAreas(data)
 		{
-			addChecks('cargosCheck',data)
+			addChecks('areasCheck', data)
 		}
-
+		
 		function enviaForm()
 		{
 			if(document.getElementById('divAreaOrganizacionals').style.display != 'none')
 				document.getElementById('filtrarPor').value = 1;
-			else if(document.getElementById('divGruposCargos').style.display != 'none')
-				document.getElementById('filtrarPor').value = 3;
 			else if(document.getElementById('divColaboradors').style.display != 'none')
 				document.getElementById('filtrarPor').value = 4;
 
@@ -94,19 +91,16 @@
 			{
 				exibe("divColaboradors");
 				oculta("divAreaOrganizacionals");
-				oculta("divGruposCargos");
 			}
 			else if(value == "2")
 			{
 				oculta("divColaboradors");
 				exibe("divAreaOrganizacionals");
-				oculta("divGruposCargos");
 			}
 			else if(value == "3")
 			{
 				oculta("divColaboradors");
 				oculta("divAreaOrganizacionals");
-				exibe("divGruposCargos");
 			}
 		}
 
@@ -141,11 +135,12 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="listFiltro.action" onsubmit="enviaForm();" method="POST" id="formBusca">
 
+            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="populaAreas(this.value);" />
 			<@ww.textfield label="Nome do Colaborador" id="nome" name="colaborador.nome" maxLength="100" cssStyle="width: 500px;" />
 			<@ww.textfield label="Matrícula do Colaborador" id="matricula" name="colaborador.matricula" maxLength="20" cssStyle="width: 170px;"/>
 
 			<@ww.select id="optFiltro" label="Filtrar Por" name="filtro"
-				list=r"#{'2':'Áreas Organizacionais','1':'Colaboradores pré-inscritos no curso','3':'Grupos Ocupacionais/Cargos'}" onchange="filtrarOpt();" />
+				list=r"#{'2':'Áreas Organizacionais','1':'Colaboradores pré-inscritos no curso'}" onchange="filtrarOpt();" />
 
 			<#--filtrarPor do colaboradoresCursosCheck tem que ser 4 ta amarrado nocodigo pois dele depende um update no ColaboradorTurmaEdit e o hidden no formColab-->
 			<br>
@@ -157,10 +152,13 @@
 				<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
 			</span>
 
-			<span id="divGruposCargos" style="display:none">
-				<@frt.checkListBox name="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos(document.forms[0],'gruposCheck', ${empresaId});"/>
-				<@frt.checkListBox name="cargosCheck" label="Cargos" id="cargosCheck" list="cargosCheckList" />
-			</span>
+			<!-- 
+				//31/01/2011 - Francisco, retirei acho que os clientes não tão usando, retirar depois de 3 meses, hehehe
+				<span id="divGruposCargos" style="display:none">
+					<@frt.checkListBox name="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos(document.forms[0],'gruposCheck', ${empresaId});"/>
+					<@frt.checkListBox name="cargosCheck" label="Cargos" id="cargosCheck" list="cargosCheckList" />
+				</span>
+			-->
 
 			<input type="submit" value="" class="btnPesquisar grayBGE" />
 

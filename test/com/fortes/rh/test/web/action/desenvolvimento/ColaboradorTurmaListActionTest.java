@@ -158,7 +158,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Collection<ColaboradorQuestionario> colaboradorQuestionarioCollection = new ArrayList<ColaboradorQuestionario>();
     	colaboradorQuestionarioCollection.add(colaboradorQuestionario);
 
-    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING).will(returnValue(null));
+    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
@@ -470,7 +470,6 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
     	action.setColaboradorTurma(colaboradorTurma);
 
-    	colaboradorTurmaManager.expects(once()).method("comparaEmpresa").with(eq(colaboradorTurma), ANYTHING).will(returnValue(true));
     	colaboradorTurmaManager.expects(once()).method("remove").with(eq(colaboradorTurma));
 
     	Long idFiltro = new Long(1L);
@@ -483,35 +482,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	assertEquals(idFiltro, action.getAreaFiltroId());
     }
 
-    public void testDeleteEmpresaErrada() throws Exception
-    {
-    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
-    	action.setColaboradorTurma(colaboradorTurma);
-
-    	colaboradorTurmaManager.expects(once()).method("comparaEmpresa").with(eq(colaboradorTurma), ANYTHING).will(returnValue(false));
-
-    	//list
-    	Turma turma = TurmaFactory.getEntity(1L);
-    	action.setTurma(turma);
-    	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
-    	
-    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING).will(returnValue(null));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
-    	
-    	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(colaboradorTurmas));
-    	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
-    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
-
-    	assertEquals("input", action.delete());
-    }
-
     public void testDeleteException() throws Exception
     {
     	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
     	action.setColaboradorTurma(colaboradorTurma);
 
-    	colaboradorTurmaManager.expects(once()).method("comparaEmpresa").with(eq(colaboradorTurma), ANYTHING).will(returnValue(true));
     	colaboradorTurmaManager.expects(once()).method("remove").with(eq(colaboradorTurma)).will(throwException(new org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException(new ObjectNotFoundException(colaboradorTurma.getId(),""))));;
 
     	//list
@@ -519,7 +494,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	action.setTurma(turma);
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
 
-    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING).will(returnValue(null));
+    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();

@@ -38,7 +38,7 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		return criteria.list();
 	}
 	
-	public Collection<Certificacao> findAllSelect(Long empresaId, String nomeBusca)
+	public Collection<Certificacao> findAllSelect(Integer page, Integer pagingSize, Long empresaId, String nomeBusca)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 
@@ -48,6 +48,12 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
+	
+		if(pagingSize != 0)
+        {
+        	criteria.setFirstResult(((page - 1) * pagingSize));
+        	criteria.setMaxResults(pagingSize);
+        }
 		
 		if(StringUtils.isNotBlank(nomeBusca))
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
@@ -111,5 +117,18 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return (Certificacao) criteria.uniqueResult();
+	}
+
+	public Integer getCount(Long empresaId, String nomeBusca) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.setProjection(Projections.rowCount());
+		
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+	
+		if(StringUtils.isNotBlank(nomeBusca))
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
+		
+		return (Integer) criteria.uniqueResult();
 	}
 }

@@ -58,14 +58,13 @@
 		function populaAreas(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			
 			AreaOrganizacionalDWR.getByEmpresa(createListAreas, empresaId);
 		}
 
 		function createListAreas(data)
 		{
 			addChecks('colaboradorsCheck');
-			addChecks('areasCheck',data)
+			addChecks('areasCheck', data);
 		}
 		</script>
 	</head>

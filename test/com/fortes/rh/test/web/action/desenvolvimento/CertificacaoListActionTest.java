@@ -57,6 +57,7 @@ public class CertificacaoListActionTest extends MockObjectTestCase
     {
     	Collection<Certificacao> certificacaos = new ArrayList<Certificacao>();
     	
+    	certificacaoManager.expects(once()).method("getCount").will(returnValue(2));
     	certificacaoManager.expects(once()).method("findAllSelect").will(returnValue(certificacaos));
     	
     	assertEquals("success", action.list());

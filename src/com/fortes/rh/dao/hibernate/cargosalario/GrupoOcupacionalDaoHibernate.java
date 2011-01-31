@@ -53,7 +53,8 @@ public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupa
 
 	private void montaConsulta(Criteria criteria, Long empresaId)
 	{
-		criteria.add(Expression.eq("g.empresa.id", empresaId));
+		if(empresaId != null)
+			criteria.add(Expression.eq("g.empresa.id", empresaId));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	}

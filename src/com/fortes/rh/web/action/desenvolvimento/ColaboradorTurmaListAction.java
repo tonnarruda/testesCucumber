@@ -133,7 +133,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		if(msgAlert != null && !msgAlert.equals(""))
 			addActionMessage(msgAlert);
 
-		empresaId = empresaManager.ajustaCombo(empresaId);
+		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");	
 		
 		turma = turmaManager.findByIdProjection(turma.getId());
@@ -228,23 +228,14 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		if(colaboradorTurmaManager.comparaEmpresa(colaboradorTurma, getEmpresaSistema()))
+		try
 		{
-			try
-			{
-				colaboradorTurma.setTurma(turma);
-				colaboradorTurmaManager.remove(colaboradorTurma);
-			}
-			catch (Exception e)
-			{
-				addActionError("Não é possível remover o colaborador da turma, pois este já possui presença(s) registrada(s).");
-				list();
-				return Action.INPUT;
-			}
+			colaboradorTurma.setTurma(turma);
+			colaboradorTurmaManager.remove(colaboradorTurma);
 		}
-		else
+		catch (Exception e)
 		{
-			addActionError("Você só pode remover registros da sua empresa");
+			addActionError("Não é possível remover o colaborador da turma, pois este já possui presença(s) registrada(s).");
 			list();
 			return Action.INPUT;
 		}

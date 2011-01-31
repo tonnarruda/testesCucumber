@@ -33,5 +33,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Long[] selecionaEmpresa(Empresa empresa, Long usuarioId, String role);
 	void removeEmpresaPadrao(long id);
 	Collection<Empresa> findEmailsEmpresa();
-	Long ajustaCombo(Long empresaId);
+	Long ajustaCombo(Long empresaId, Long empresaDoSistemaId);
 }
