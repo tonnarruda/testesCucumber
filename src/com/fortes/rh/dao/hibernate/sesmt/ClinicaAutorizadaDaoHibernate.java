@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -58,11 +59,14 @@ public class ClinicaAutorizadaDaoHibernate extends GenericDaoHibernate<ClinicaAu
 
 		criteria.add(Expression.eq("ca.empresa.id", empresaId));
 		criteria.add(Expression.le("ca.data", data));
-		criteria.add(Expression.isNull("ca.dataInativa"));
 		criteria.add(Expression.eq("ex.id", exameId));
 
+		Junction juncao = Expression.disjunction();
+		juncao.add(Expression.ge("ca.dataInativa", data));
+		juncao.add(Expression.isNull("ca.dataInativa"));
+		criteria.add(juncao);
+		
 		criteria.addOrder(Order.asc("ca.nome"));
-
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ClinicaAutorizada.class));
 
 		return criteria.list();
