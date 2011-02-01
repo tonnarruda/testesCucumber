@@ -58,7 +58,7 @@ public class ClinicaAutorizadaDaoHibernate extends GenericDaoHibernate<ClinicaAu
 
 		criteria.add(Expression.eq("ca.empresa.id", empresaId));
 		criteria.add(Expression.le("ca.data", data));
-		criteria.add(Expression.isNull("ca.dataInativa"));
+//		criteria.add(Expression.isNull("ca.dataInativa"));
 		criteria.add(Expression.eq("ex.id", exameId));
 
 		criteria.addOrder(Order.asc("ca.nome"));

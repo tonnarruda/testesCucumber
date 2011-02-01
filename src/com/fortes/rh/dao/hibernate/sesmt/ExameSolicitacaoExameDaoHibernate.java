@@ -1,20 +1,27 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExameSolicitacaoExameDao;
 import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
+import com.fortes.rh.model.sesmt.RealizacaoExame;
 
 /**
  * @author Tiago Lopes
@@ -87,6 +94,15 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 
 	public ExameSolicitacaoExame findDataSolicitacaoExame(Long colaboradorId, Long candidatoId, Long exameId)
 	{
+//		DetachedCriteria subQuery = DetachedCriteria.forClass(RealizacaoExame.class, "re2");
+//		ProjectionList pSub = Projections.projectionList().create();
+//
+//		pSub.add(Projections.max("re2.data"));
+//		subQuery.setProjection(pSub);
+//
+////		subQuery.add(Restrictions.sqlRestriction("this0__.colaborador_id=c1_.id"));
+//		subQuery.add(Expression.le("re2.data", new Date()));
+		
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"ese");
 		criteria.createCriteria("ese.solicitacaoExame", "se");
 		criteria.createCriteria("ese.exame", "e");
@@ -111,6 +127,8 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 		
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("e.id", exameId));
+		criteria.add(Expression.le("re.data", new Date()));
+//		?criteria.add(Subqueries.propertyEq("re.data", subQuery));
 		
 		if (colaboradorId != null)
 			criteria.add(Expression.eq("col.id", colaboradorId));

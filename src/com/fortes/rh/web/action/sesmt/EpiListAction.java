@@ -95,6 +95,7 @@ public class EpiListAction extends MyActionSupportList
 		if (dataSource.isEmpty())
 		{
 			addActionMessage("Não existem EPIs com CA a vencer até a data informada.");
+			prepareImprimirVencimentoCa();
 			return Action.INPUT;
 		}
 
