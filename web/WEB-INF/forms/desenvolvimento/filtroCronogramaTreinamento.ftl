@@ -42,7 +42,7 @@
 	</#if>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<#assign validarCampos="return validaFormulario('form', new Array('@turmasCheck'), null)"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('@turmasCheck'), new Array('dataIni', 'dataFim'))"/>
 </head>
 <body>
 	<@ww.actionmessage />
