@@ -236,7 +236,7 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="147"  isSplitAllowed="true" >
+			<band height="154"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="0"
@@ -376,7 +376,7 @@
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="0"
-						y="53"
+						y="60"
 						width="537"
 						height="92"
 						key="subreport-1"/>
@@ -388,6 +388,19 @@
 					</subreportParameter>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "resultado_eleicao_grafico.jasper"]]></subreportExpression>
 				</subreport>
+				<staticText>
+					<reportElement
+						x="0"
+						y="46"
+						width="77"
+						height="14"
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[* Eleito(s)]]></text>
+				</staticText>
 			</band>
 		</summary>
 </jasperReport>

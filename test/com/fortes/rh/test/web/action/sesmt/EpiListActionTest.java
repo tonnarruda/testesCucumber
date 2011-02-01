@@ -125,6 +125,7 @@ public class EpiListActionTest extends MockObjectTestCase
     	//Colecao vazia
     	dataSource.clear();
     	manager.expects(once()).method("findByVencimentoCa").with(eq(venc),eq(1L), ANYTHING).will(returnValue(dataSource));
+    	tipoEPIManager.expects(once()).method("getByEmpresa").with(eq(1L)).will(returnValue(null));
 
     	try {
     		ret = action.imprimirVencimentoCa();
