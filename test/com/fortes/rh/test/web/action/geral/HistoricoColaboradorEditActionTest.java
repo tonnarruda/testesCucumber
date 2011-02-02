@@ -159,6 +159,33 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		assertQueMetodoPrepareFoiChamado();
 	}
 	
+	public void testInsertQuandoNaoExisteHistoricoNaData() throws Exception {
+		
+		dadoQueNaoExisteHistoricoNaData();
+		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
+		dadoQueNaoOcorreErroAoInserirHistoricoDeColaborador();
+		
+		String outcome = action.insert();
+		
+		assertEquals("success", outcome);
+	}
+	
+	private void dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador() {
+		historicoColaboradorManager.expects(once()).method("ajustaAmbienteFuncao")
+			.with(eq(historicoColaborador)).will(returnValue(historicoColaborador));
+	}
+
+	private void dadoQueNaoOcorreErroAoInserirHistoricoDeColaborador() {
+		historicoColaboradorManager.expects(once()).method("insertHistorico")
+			.with(eq(historicoColaborador), eq(empresaDoSistema));
+	}
+
+	private void dadoQueNaoExisteHistoricoNaData() {
+		action.setHistoricoColaborador(historicoColaborador);
+		historicoColaboradorManager.expects(once()).method("existeHistoricoData")
+			.with(eq(historicoColaborador)).will(returnValue(false));
+	}
+
 	public void testInsertQuandoJaExisteHistoricoNaData() throws Exception {
 		// comportamento do insert()
 		dadoQueJaExisteHistoricoNaData();
@@ -185,6 +212,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	}
 
 	private void dadoQueJaExisteHistoricoNaData() {
+		action.setHistoricoColaborador(historicoColaborador);
 		historicoColaboradorManager.expects(once()).method("existeHistoricoData")
 			.with(eq(historicoColaborador)).will(returnValue(true));
 	}
