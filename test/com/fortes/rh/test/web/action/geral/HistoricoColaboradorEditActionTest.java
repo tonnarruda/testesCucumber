@@ -198,6 +198,42 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		assertQueMetodoPrepareInsertFoiChamado();
 	}
 	
+	public void testInsertQuandoOcorrerErroInternoQualquer() throws Exception {
+		
+		dadoQueNaoExisteHistoricoNaData();
+		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
+		dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador();
+		simulaComportamentoDoPrepareInsert();
+		
+		String outcome = action.insert();
+		
+		assertEquals("input", outcome);
+		assertQueMetodoPrepareInsertFoiChamado();
+	}
+	
+	private void dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador() {
+		historicoColaboradorManager.expects(once()).method("insertHistorico")
+			.with(eq(historicoColaborador), eq(empresaDoSistema)).will(throwException(new RuntimeException("Erro interno.")));
+	}
+
+	public void testInsertQuandoOcorrerErroDeIntegraACException() throws Exception {
+		
+		dadoQueNaoExisteHistoricoNaData();
+		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
+		dadoQueOcorreErroDeIntegracaoACAoInserirHistoricoDeColaborador();
+		simulaComportamentoDoPrepareInsert();
+		
+		String outcome = action.insert();
+		
+		assertEquals("input", outcome);
+		assertQueMetodoPrepareInsertFoiChamado();
+	}
+	
+	private void dadoQueOcorreErroDeIntegracaoACAoInserirHistoricoDeColaborador() {
+		historicoColaboradorManager.expects(once()).method("insertHistorico")
+			.with(eq(historicoColaborador), eq(empresaDoSistema)).will(throwException(new IntegraACException("Erro de Integração.")));
+	}
+
 	private void assertQueMetodoPrepareInsertFoiChamado() {
 		assertNull("id do colaborador", historicoColaborador.getId());
 		assertNotNull("data do colaborador", historicoColaborador.getData());
