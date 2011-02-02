@@ -45,10 +45,26 @@ public class ExameSolicitacaoExame extends AbstractModel implements Serializable
 	{
 	}
 
+	public ExameSolicitacaoExame(Long id, Integer periodicidade, String exameNome, Date realizacaoData, String colaboradorNome, String candidatoNome)
+	{
+		this.setId(id);
+		this.periodicidade = periodicidade;
+		
+		newExame();
+		this.exame.setNome(exameNome);
+		
+		newRealizacaoExame();
+		this.realizacaoExame.setData(realizacaoData);
+		
+		this.colaboradorNome = colaboradorNome;
+		this.candidatoNome = candidatoNome;
+	}
+
 	public ExameSolicitacaoExame(Long exameId, Long clinicaAutorizadaId)
 	{
 		clinicaAutorizada = new ClinicaAutorizada();
 		clinicaAutorizada.setId(clinicaAutorizadaId);
+		
 		exame = new Exame();
 		exame.setId(exameId);
 	}

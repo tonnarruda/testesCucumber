@@ -113,7 +113,7 @@ public class ExameSolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTe
 	public void testFindDataSolicitacaoExameComColaborador()
 	{
 		Exame exame = ExameFactory.getEntity();
-		exame.setNome("teste");
+		exame.setNome("ColaboradorExame");
 		exameDao.save(exame);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -143,7 +143,7 @@ public class ExameSolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTe
 	public void testFindDataSolicitacaoExameComCandidato()
 	{
 		Exame exame = ExameFactory.getEntity();
-		exame.setNome("teste");
+		exame.setNome("CandidatoExame");
 		exameDao.save(exame);
 		
 		Candidato candidato = CandidatoFactory.getCandidato();

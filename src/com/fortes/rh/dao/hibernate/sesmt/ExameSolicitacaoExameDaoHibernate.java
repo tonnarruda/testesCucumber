@@ -5,23 +5,16 @@ import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExameSolicitacaoExameDao;
-import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
-import com.fortes.rh.model.sesmt.RealizacaoExame;
+
 
 /**
  * @author Tiago Lopes
@@ -43,8 +36,8 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"ese");
 		criteria.createCriteria("ese.solicitacaoExame", "se");
 		criteria.createCriteria("ese.exame", "e");
-		criteria.createCriteria("ese.realizacaoExame", "re", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("ese.clinicaAutorizada", "cli", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("ese.realizacaoExame", "re", Criteria.LEFT_JOIN);
+		criteria.createCriteria("ese.clinicaAutorizada", "cli", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ese.id"), "id");
@@ -73,7 +66,7 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"ese");
 		criteria.createCriteria("ese.solicitacaoExame", "se");
 		criteria.createCriteria("ese.exame", "e");
-		criteria.createCriteria("ese.realizacaoExame", "re", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("ese.realizacaoExame", "re", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ese.id"), "id");
@@ -94,51 +87,45 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 
 	public ExameSolicitacaoExame findDataSolicitacaoExame(Long colaboradorId, Long candidatoId, Long exameId)
 	{
-//		DetachedCriteria subQuery = DetachedCriteria.forClass(RealizacaoExame.class, "re2");
-//		ProjectionList pSub = Projections.projectionList().create();
-//
-//		pSub.add(Projections.max("re2.data"));
-//		subQuery.setProjection(pSub);
-//
-////		subQuery.add(Restrictions.sqlRestriction("this0__.colaborador_id=c1_.id"));
-//		subQuery.add(Expression.le("re2.data", new Date()));
+		StringBuilder hql = new StringBuilder();
 		
-		Criteria criteria = getSession().createCriteria(getEntityClass(),"ese");
-		criteria.createCriteria("ese.solicitacaoExame", "se");
-		criteria.createCriteria("ese.exame", "e");
-		criteria.createCriteria("ese.realizacaoExame", "re", CriteriaSpecification.LEFT_JOIN);
-		
+		hql.append("select new ExameSolicitacaoExame(ese.id, ese.periodicidade, e.nome, re.data, col.nome, can.nome) ");
+
+		hql.append("from ExameSolicitacaoExame as ese ");
+		hql.append("left join ese.solicitacaoExame as se ");
+		hql.append("left join ese.exame as e ");
+		hql.append("inner join ese.realizacaoExame as re ");//tem que ser inner
+		hql.append("left join se.candidato as can ");
+		hql.append("left join se.colaborador as col ");
+
+		hql.append("where e.id = :exameId ");
 		if (colaboradorId != null)
-			criteria.createCriteria("se.colaborador", "col", CriteriaSpecification.LEFT_JOIN);
+			hql.append("and se.colaborador.id = :colaboradorId ");
 		if (candidatoId != null)
-			criteria.createCriteria("se.candidato", "cand", CriteriaSpecification.LEFT_JOIN);
+			hql.append("and se.candidato.id = :candidatoId ");
 		
-		ProjectionList p = Projections.projectionList().create();
+		hql.append("and re.data = ( ");
 		
-		p.add(Projections.property("e.nome"), "projectionExameNome");
-		p.add(Projections.property("re.data"), "projectionRealizacaoExameData");
-		p.add(Projections.property("ese.id"), "id");
-		p.add(Projections.property("ese.periodicidade"), "periodicidade");
-		
+		hql.append("select max(reSub.data) from ExameSolicitacaoExame eseSub ");
+		hql.append("left join eseSub.solicitacaoExame as seSub ");
+		hql.append("inner join eseSub.realizacaoExame as reSub ");//tem que ser inner
+		hql.append("where reSub.data <= :hoje ");
 		if (colaboradorId != null)
-			p.add(Projections.property("col.nome"), "projectionColaboradorNome");
+			hql.append("and seSub.colaborador.id = :colaboradorId ");
 		if (candidatoId != null)
-			p.add(Projections.property("cand.nome"), "projectionCandidatoNome");
-		
-		criteria.setProjection(p);
-		criteria.add(Expression.eq("e.id", exameId));
-		criteria.add(Expression.le("re.data", new Date()));
-//		?criteria.add(Subqueries.propertyEq("re.data", subQuery));
-		
+			hql.append("and seSub.candidato.id = :candidatoId ");
+		hql.append("and eseSub.exame.id = :exameId) ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setDate("hoje", new Date());
+		query.setLong("exameId", exameId);
+
 		if (colaboradorId != null)
-			criteria.add(Expression.eq("col.id", colaboradorId));
+			query.setLong("colaboradorId", colaboradorId);
 		if (candidatoId != null)
-			criteria.add(Expression.eq("cand.id", candidatoId));
-		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-		
-		return (ExameSolicitacaoExame) criteria.uniqueResult();
+			query.setLong("candidatoId", candidatoId);
+
+		return (ExameSolicitacaoExame) query.uniqueResult();
 	}
 	
 	public ExameSolicitacaoExame findIdColaboradorOUCandidato(Long solicitacaoExameId, Long exameId)
