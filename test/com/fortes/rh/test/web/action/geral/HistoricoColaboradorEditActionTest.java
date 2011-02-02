@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.geral;
 
 import java.util.Collections;
+import java.util.Date;
 
 import mockit.Mockit;
 
@@ -22,6 +23,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -142,6 +144,52 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		ambienteManager.verify();
 	}
 	
+	public void testPrepareInsert() throws Exception {
+		
+		// comportamente do prepareInsert()
+		dadoQueExisteHistoricoAtualParaColaborador();
+		// comportamento do prepare()
+		simulaComportamentoDoPrepare();
+		
+		String outcome = action.prepareInsert();
+		
+		assertEquals("success", outcome);
+		assertNull("id do colaborador", historicoColaborador.getId());
+		assertNotNull("data do colaborador", historicoColaborador.getData());
+		assertQueMetodoPrepareFoiChamado();
+	}
+	
+	private void assertQueMetodoPrepareFoiChamado() {
+		estabelecimentoManager.verify();
+		indiceManager.verify();
+		faixaSalarialManager.verify();
+		areaOrganizacionalManager.verify();
+		funcaoManager.verify();
+		ambienteManager.verify();
+	}
+
+	private void simulaComportamentoDoPrepare() {
+		dadoQueExistemEstabelecimentosParaEmpresaDoSistema();
+		dadoQueExistemIndicesCadastrados();
+		dadoQueExistemFaixasSalariaisAtivasParaEmpresaDoSistema();
+		dadoQueExistemAreasOrganizacionaisParaEmpresaDoSistema();
+		dadoQueHistoricoDoColaboradorPossuiUmCargo();
+		dadoQueExistemFuncoesCadastradas();
+		dadoQueHistoricoDoColaboradorPossuiUmEstabelecimento();
+		dadoQueExistemAmbientesCadastrados();		
+	}
+
+	private void dadoQueExisteHistoricoAtualParaColaborador() {
+		action.setColaborador(ColaboradorFactory.getEntity(1L));
+		historicoColaboradorManager.expects(once()).method("getHistoricoAtual")
+			.with(eq(1L)).will(returnValue(historicoColaborador));
+	}
+
+	private void dadoQueJaExisteHistoricoNaData() {
+		historicoColaboradorManager.expects(once()).method("existeHistoricoData")
+			.with(eq(historicoColaborador)).will(returnValue(true));
+	}
+
 	private void dadoQueExistemAmbientesCadastrados() {
 		ambienteManager.expects(once()).method("findByEstabelecimento")
 			.with(eq(historicoColaborador.getEstabelecimento().getId()))
