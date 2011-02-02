@@ -159,6 +159,36 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		assertQueMetodoPrepareFoiChamado();
 	}
 	
+	public void testInsertQuandoJaExisteHistoricoNaData() throws Exception {
+		// comportamento do insert()
+		dadoQueJaExisteHistoricoNaData();
+		// comportamento do prepareInsert()
+		simulaComportamentoDoPrepareInsert();
+		
+		String outcome = action.insert();
+		
+		assertEquals("input", outcome);
+		assertQueMetodoPrepareInsertFoiChamado();
+	}
+	
+	private void assertQueMetodoPrepareInsertFoiChamado() {
+		assertNull("id do colaborador", historicoColaborador.getId());
+		assertNotNull("data do colaborador", historicoColaborador.getData());
+		assertQueMetodoPrepareFoiChamado();		
+	}
+
+	private void simulaComportamentoDoPrepareInsert() {
+		// comportamente do prepareInsert()
+		dadoQueExisteHistoricoAtualParaColaborador();
+		// comportamento do prepare()
+		simulaComportamentoDoPrepare();
+	}
+
+	private void dadoQueJaExisteHistoricoNaData() {
+		historicoColaboradorManager.expects(once()).method("existeHistoricoData")
+			.with(eq(historicoColaborador)).will(returnValue(true));
+	}
+	
 	private void assertQueMetodoPrepareFoiChamado() {
 		estabelecimentoManager.verify();
 		indiceManager.verify();
@@ -183,11 +213,6 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		action.setColaborador(ColaboradorFactory.getEntity(1L));
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtual")
 			.with(eq(1L)).will(returnValue(historicoColaborador));
-	}
-
-	private void dadoQueJaExisteHistoricoNaData() {
-		historicoColaboradorManager.expects(once()).method("existeHistoricoData")
-			.with(eq(historicoColaborador)).will(returnValue(true));
 	}
 
 	private void dadoQueExistemAmbientesCadastrados() {
