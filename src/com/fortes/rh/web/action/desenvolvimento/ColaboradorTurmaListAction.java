@@ -251,9 +251,10 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public String prepareRelatorioColaborador()
 	{
+		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), new String[]{"ROLE_REL_COLABORADOR_SEM_TREINAMENTO", "ROLE_REL_COLABORADOR_COM_TREINAMENTO"});
+		
 		cursos = cursoManager.findToList(new String[]{"id","nome"}, new String[]{"id","nome"}, new String[]{"nome"});
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		empresaId = getEmpresaSistema().getId();
 
 		return Action.SUCCESS;
@@ -263,7 +264,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		try
 		{
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamento(getEmpresaSistema().getId(), curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
+			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
+			
+			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que não fizeram o treinamento", getEmpresaSistema(), curso.getNome());
 
 			return Action.SUCCESS;
@@ -272,8 +275,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		{
 			addActionMessage(e.getMessage());
 			prepareRelatorioColaborador();
-			areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
-			estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 
 			return Action.INPUT;
 		}
@@ -291,7 +292,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		try
 		{
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(getEmpresaSistema().getId(), curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), aprovado);
+			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
+			
+			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), aprovado);
 			curso = cursoManager.findByIdProjection(curso.getId());
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que fizeram o treinamento", getEmpresaSistema(), curso.getNome());
 
@@ -301,8 +304,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		{
 			addActionMessage(e.getMessage());
 			prepareRelatorioColaborador();
-			areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
-			estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 
 			return Action.INPUT;
 		}
@@ -338,8 +339,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		{
 			addActionMessage(e.getMessage());
 			prepareRelatorioColaborador();
-			areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
-			estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 
 			return Action.INPUT;
 		}

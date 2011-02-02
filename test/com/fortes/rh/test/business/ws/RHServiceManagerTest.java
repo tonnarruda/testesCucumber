@@ -216,6 +216,12 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(colaborador));
 		assertEquals(true, rHServiceManager.atualizarEmpregado(colaborador));
 	}
+	
+	public void testGetFaixas() throws Exception
+	{
+		faixaSalarialManager.expects(once()).method("getFaixasAC").will(returnValue(new TCargo[]{new TCargo()}));
+		assertTrue(rHServiceManager.getFaixas().length > 0);
+	}
 
 	public void testAtualizarColaboradorException() throws Exception
 	{

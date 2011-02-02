@@ -142,6 +142,11 @@ public class RHServiceImpl implements RHService
 		Collection<Cargo> cargos = cargoManager.findByEmpresaAC(empCodigo, codigo);
 		return cargosToArray(cargos, false);
 	}
+	
+	public TCargo[] getFaixas() 
+	{
+		return faixaSalarialManager.getFaixasAC();
+	}
 
 	public String getNomesHomologos(String nomeCandidato)
 	{
@@ -937,7 +942,7 @@ public class RHServiceImpl implements RHService
 			return false;
 		}
 	}
-	
+
 	public boolean criarEmpresa(TEmpresa empresaAC)
 	{
 		return empresaManager.criarEmpresa(empresaAC);
@@ -1038,5 +1043,4 @@ public class RHServiceImpl implements RHService
 		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
-	
 }

@@ -16,6 +16,14 @@ public class TCargo implements Serializable
 	public TCargo()
 	{
 	}
+	
+	public TCargo(String empresaCodigoAC, String codigo, String descricao)
+	{
+		super();
+		this.empresaCodigoAC = empresaCodigoAC;
+		this.codigo = codigo;
+		this.descricao = descricao;
+	}
 
 	public TCargo(Long id, String codigo, String descricao)
 	{

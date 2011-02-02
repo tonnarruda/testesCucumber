@@ -29,7 +29,7 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Collection<CheckBox> populaCadastrosCheckBox();
 	void sincronizaEntidades(Long empresaOrigemId, Long empresaDestinoId, String[] cadastrosCheck) throws Exception;
 	Empresa findByIdProjection(Long id);
-	Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String role);
+	Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String... roles);
 	Long[] selecionaEmpresa(Empresa empresa, Long usuarioId, String role);
 	void removeEmpresaPadrao(long id);
 	Collection<Empresa> findEmailsEmpresa();

@@ -463,7 +463,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, char aprovadoFiltro) throws Exception
 	{
 		Boolean aprovado = aprovadoFiltro == 'T' ? null : aprovadoFiltro == 'S';
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, null, null, curso.getId(), areaIds, estabelecimentoIds, false);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, null, null, curso.getId(), areaIds, estabelecimentoIds, " emp.nome, e.nome, a.nome, co.nome, c.nome ");
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -664,9 +664,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	}
 	
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId)
-	{
+	{//BABAU
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, null, turmaId, null, null, null, true);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, null, turmaId, null, null, null, " co.nome ");
 		
 		//add colaboradores aprovados. Tem que ser dois for, primeiro os aprovados(é uma regra do multiSelectBox)
 		for (ColaboradorTurma ct : colaboradorTurmas) 
@@ -859,7 +859,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		certificacao.setNome(certificacaoManager.findById(certificacao.getId()).getNome());
 		Collection<Curso> cursos = cursoManager.findByCertificacao(certificacao.getId());
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, certificacao, null, null, areaIds, estabelecimentoIds, false);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, certificacao, null, null, areaIds, estabelecimentoIds, " e.nome, a.nome, co.nome, c.nome ");
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();

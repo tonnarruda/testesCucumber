@@ -25,6 +25,7 @@ public interface RHService
 	TCidade[] getCidades(String uf);
 	TCargo[] getCargos(Long empresaId);
 	TCargo[] getCargosAC(String empCodigo, String codigo);
+	TCargo[] getFaixas();
 	public String getNomesHomologos(String nomeCandidato);
 
 	boolean cadastrarCandidato(TCandidato candidato) throws Exception;

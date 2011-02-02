@@ -26,4 +26,5 @@ public interface FaixaSalarialDao extends GenericDao<FaixaSalarial>
 	Collection<FaixaSalarial> findByCargo(Long cargoId);
 	Collection<Long> findByCargos(Collection<Long> cargoIds);
 	void updateAC(TCargo tCargo);
+	TCargo[] getFaixasAC();
 }

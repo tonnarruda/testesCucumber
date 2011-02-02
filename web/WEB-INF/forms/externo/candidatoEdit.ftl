@@ -34,7 +34,7 @@
 		<@ww.textfield label="CPF" name="candidato.pessoal.cpf" cssClass="mascaraCpf" />
 		<@ww.password label="Senha" name="candidato.senha" cssStyle="width: 80px;" liClass="liLeft"/>
 		<@ww.password label="Confirma senha" name="confirmaSenha" cssStyle="width: 80px;"/>
-		<@ww.textfield label="Nome" name="candidato.nome" maxLength="100" cssStyle="width:445px;"/>
+		<@ww.textfield label="Nome" name="candidato.nome" maxLength="60" cssStyle="width:445px;"/>
 		<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" maxLength="40" cssClass="medium" id="ende"/>
 		<@ww.textfield label="Bairro" name="candidato.endereco.bairro" cssClass="medium"  maxLength="20" id="bairroNome"/>
 		<@ww.textfield label="Cidade" name="candidato.endereco.cidade" cssClass="medium" id="cidade"/>

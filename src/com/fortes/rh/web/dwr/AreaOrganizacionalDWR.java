@@ -39,7 +39,7 @@ public class AreaOrganizacionalDWR
 	public Map<Object, Object> getByEmpresas(Long empresaId, Long[] empresaIds) throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-		if(empresaId == 0)
+		if(empresaId == 0 || empresaId == -1 )
 			areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(empresaIds, AreaOrganizacional.TODAS);
 		else
 			areaOrganizacionals = areaOrganizacionalManager.findAllList(empresaId, AreaOrganizacional.TODAS);

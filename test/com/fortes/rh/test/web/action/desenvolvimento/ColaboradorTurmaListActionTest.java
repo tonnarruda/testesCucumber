@@ -158,7 +158,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Collection<ColaboradorQuestionario> colaboradorQuestionarioCollection = new ArrayList<ColaboradorQuestionario>();
     	colaboradorQuestionarioCollection.add(colaboradorQuestionario);
 
-    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
@@ -217,7 +217,8 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Curso curso = CursoFactory.getEntity(1L);
     	curso.setNome("Como Raparigar");
     	action.setCurso(curso);
-    	
+
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").with(ANYTHING, eq(curso), ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	
     	assertEquals("success", action.relatorioColaboradorSemTreinamento());
@@ -225,11 +226,10 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     
     public void testRelatorioColaboradorSemTreinamentoException() throws Exception
     {
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);    	
     	assertEquals("input", action.relatorioColaboradorSemTreinamento());
     }
 
@@ -239,10 +239,10 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	curso.setNome("Como Raparigar");
     	action.setCurso(curso);
     	
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	
     	assertEquals("input", action.relatorioColaboradorSemTreinamento());
     }
@@ -253,6 +253,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	curso.setNome("Como Raparigar");
     	action.setCurso(curso);
     	
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));    	
     	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
     	cursoManager.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(curso));
     	
@@ -261,10 +262,10 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     
     public void testRelatorioColaboradorComTreinamentoException() throws Exception
     {
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	
     	assertEquals("input", action.relatorioColaboradorComTreinamento());
     }
@@ -274,11 +275,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Curso curso = CursoFactory.getEntity(1L);
     	curso.setNome("Como Raparigar");
     	action.setCurso(curso);
-    	
+
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	
     	assertEquals("input", action.relatorioColaboradorComTreinamento());
     }
@@ -303,30 +304,31 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	
     	String[] estabelecimentosCheck = new String[]{"1"};
     	action.setEstabelecimentosCheck(estabelecimentosCheck);
-    	
+
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioSemIndicacaoTreinamento").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	
     	assertEquals("input", action.relatorioColaboradorSemIndicacaoTreinamento());
     }
 
     public void testPrepareRelatorioColaboradorSemIndicacao() throws Exception
     {
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("success", action.prepareRelatorioColaboradorSemIndicacao());
     }
 
     public void testPrepareRelatorioColaboradorCertificacao() throws Exception
     {
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("success", action.prepareRelatorioColaboradorCertificacao());
     }
@@ -343,11 +345,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 
     public void testRelatorioColaboradorCertificacaoException() throws Exception
     {
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorCertificacaoRelatorio>()));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("input", action.relatorioColaboradorCertificacao());
     }
@@ -364,11 +366,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	certificacao.setNome("Cerificação");
     	action.setCertificacao(certificacao);
     	
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(ANYTHING, eq(certificacao), ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("input", action.relatorioColaboradorCertificacao());
     }
@@ -430,10 +432,10 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
     	action.setDataFim(DateUtil.criarAnoMesDia(2010, 01, 01));
     	
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(colaborador.getId()), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(returnValue(colabTurmaCollection));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colabTurmaCollection));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("input", action.relatorioHistoricoTreinamentos());
     }
@@ -456,11 +458,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	action.setColaborador(colaborador);
     	action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
     	action.setDataFim(DateUtil.criarAnoMesDia(2010, 01, 01));
-    	
+
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(colaborador.getId()), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("input", action.relatorioHistoricoTreinamentos());
     }
@@ -494,7 +496,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	action.setTurma(turma);
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
 
-    	empresaManager.expects(once()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
+    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();

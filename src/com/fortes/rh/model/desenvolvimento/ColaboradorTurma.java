@@ -158,7 +158,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.setId(id);
 //		this.setAprovado(aprovado);
 	}
-	// findColaboradoresCertificacoes
+
 	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String estabelecimentoNome, Long turmaId, String turmaDescricao, Date dataPrevIni, Date dataPrevFim, Long id, Boolean aprovado, Long cursoId, String cursoNome, Double percentualMinimoFrequencia)
 	{
 		this.colaborador = new Colaborador();

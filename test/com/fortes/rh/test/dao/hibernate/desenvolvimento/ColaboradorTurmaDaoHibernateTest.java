@@ -967,7 +967,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorPresencaDao.save(colaboradorPresenca);
     	
     	//não podemos testar o SQL, o teste joga na transação
-		assertNotNull(colaboradorTurmaDao.findColaboradoresCertificacoes(empresa.getId(), certificacao, null, null, new Long[0], new Long[0], false));
+		assertNotNull(colaboradorTurmaDao.findColaboradoresCertificacoes(empresa.getId(), certificacao, null, null, new Long[0], new Long[0], " e.nome, a.nome, co.nome, c.nome "));
 	}
 
 	public void testFindAllSelectQuantidade()		

@@ -265,9 +265,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().findByIdProjection(id);
 	}
 
-	public Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String role)
+	public Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String... roles)
 	{
-		return getDao().findByUsuarioPermissao(usuarioId, role);
+		return getDao().findByUsuarioPermissao(usuarioId, roles);
 	}
 
 	public Long[] selecionaEmpresa(Empresa empresa, Long usuarioId, String role)
