@@ -117,6 +117,10 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		return (HistoricoColaboradorManager) historicoColaboradorManager.proxy();
 	}
 	
+	public void testList() throws Exception {
+		assertEquals("success", action.list()); 
+	}
+	
 	public void testPrepare() throws Exception {
 		// dado que
 		dadoQueExistemEstabelecimentosParaEmpresaDoSistema();
@@ -138,10 +142,6 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		ambienteManager.verify();
 	}
 	
-	public void testInsert() {
-		
-	}
-
 	private void dadoQueExistemAmbientesCadastrados() {
 		ambienteManager.expects(once()).method("findByEstabelecimento")
 			.with(eq(historicoColaborador.getEstabelecimento().getId()))
