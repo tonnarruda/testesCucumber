@@ -1,7 +1,6 @@
 package com.fortes.rh.test.web.action.geral;
 
 import java.util.Collections;
-import java.util.Date;
 
 import mockit.Mockit;
 
@@ -22,7 +21,6 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
@@ -31,7 +29,6 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction;
-import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
 public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
