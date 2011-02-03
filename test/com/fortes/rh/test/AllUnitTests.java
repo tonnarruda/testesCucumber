@@ -411,6 +411,7 @@ import com.fortes.rh.test.web.action.geral.HistoricoBeneficioEditActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoBeneficioListActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoColaboradorBeneficioEditActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoColaboradorBeneficioListActionTest;
+import com.fortes.rh.test.web.action.geral.HistoricoColaboradorEditActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoColaboradorListActionTest;
 import com.fortes.rh.test.web.action.geral.MotivoDemissaoListActionTest;
 import com.fortes.rh.test.web.action.geral.OcorrenciaEditActionTest;
@@ -615,6 +616,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(HistoricoColaboradorDaoHibernateTest.class);
         suite.addTestSuite(HistoricoColaboradorManagerTest.class);
         suite.addTestSuite(HistoricoColaboradorListActionTest.class);
+        suite.addTestSuite(HistoricoColaboradorEditActionTest.class);
 
         suite.addTestSuite(RelatorioListaFrequenciaTest.class);
 
