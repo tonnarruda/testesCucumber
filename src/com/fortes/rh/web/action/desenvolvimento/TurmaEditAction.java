@@ -48,7 +48,6 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
@@ -375,7 +374,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		if(certificadoDe == 'T')
 		{
-			colaboradores = colaboradorTurmaManager.montaExibicaoAprovadosReprovados(getEmpresaSistema().getId(), turma.getId());
+			colaboradores = colaboradorTurmaManager.montaExibicaoAprovadosReprovados(null, turma.getId());
 			turma = turmaManager.findByIdProjection(turma.getId());
 			certificado = new Certificado(turma, empresaManager.findCidade(getEmpresaSistema().getId()), true, true);
 		}

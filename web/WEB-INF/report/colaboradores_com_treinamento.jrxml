@@ -34,6 +34,7 @@
 	<field name="turma.periodoFormatado" class="java.lang.String"/>
 	<field name="aprovado" class="java.lang.Boolean"/>
 	<field name="aprovadoMaisNota" class="java.lang.String"/>
+	<field name="colaborador.empresa.nome" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -46,7 +47,7 @@
 	</variable>
 
 		<group  name="grpEstabelecimento" isReprintHeaderOnEachPage="true" >
-			<groupExpression><![CDATA[$F{colaborador.estabelecimento.nome}]]></groupExpression>
+			<groupExpression><![CDATA[$F{colaborador.empresa.nome} + " - " + $F{colaborador.estabelecimento.nome}]]></groupExpression>
 			<groupHeader>
 			<band height="17"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -60,7 +61,7 @@
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.estabelecimento.nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.empresa.nome} + " - " + $F{colaborador.estabelecimento.nome}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
@@ -175,14 +176,14 @@
 					<reportElement
 						x="-1"
 						y="0"
-						width="205"
+						width="278"
 						height="11"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Estabelecimento]]></text>
+				<text><![CDATA[Empresa - Estabelecimento]]></text>
 				</staticText>
 				<staticText>
 					<reportElement

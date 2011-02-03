@@ -386,7 +386,7 @@
 
 			<hr style="border:0; border-top:1px solid #CCCCCC;">
 
-			<@ww.textfield label="Nome" name="candidato.nome" id="nome" required="true" liClass="liLeft" cssStyle="width: 300px;" maxLength="100" onblur="${capitalizar}" onblur="getCandidatosHomonimos();"/>
+			<@ww.textfield label="Nome" name="candidato.nome" id="nome" required="true" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="${capitalizar}" onblur="getCandidatosHomonimos();"/>
 			<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento" liClass="liLeft" cssClass="mascaraData" value="${dataNas}"/>
 			<@ww.textfield label="Naturalidade" name="candidato.pessoal.naturalidade" cssStyle="width: 160px;" maxLength="100" liClass="liLeft" onblur="${capitalizar}"/>
 			<@ww.select label="Sexo" name="candidato.pessoal.sexo" list="sexos" />

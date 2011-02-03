@@ -436,12 +436,16 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new ColaboradorTurma(c.id, c.nome, c.matricula, ao.id, es.nome) " );
+		hql.append("select new ColaboradorTurma(c.id, c.nome, c.matricula, ao.id, es.nome, emp.nome) " );
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join hc.colaborador as c ");
-		hql.append("where c.desligado = false and c.empresa.id = :empresaId ");
+		hql.append("left join c.empresa as emp ");
+		hql.append("where c.desligado = false  " );
+		
+		if(empresaId != null)
+			hql.append(	"and c.empresa.id = :empresaId ");
 
 		if (areaIds.length > 0)
 			hql.append("and ao.id in (:areasId) ");
@@ -453,13 +457,16 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("and c.id not in (select ct.colaborador.id from ColaboradorTurma as ct where ct.colaborador.id=c.id ");
 		hql.append("and ct.curso.id = :cursoId ");
 
-		hql.append(") order by es.nome, ao.nome, c.nome ");
+		hql.append(") order by emp.nome, es.nome, ao.nome, c.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
 
 		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setLong("empresaId", empresaId);
+		
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
+		
 		query.setLong("cursoId", curso.getId());
 
 		if (areaIds.length > 0)
@@ -517,7 +524,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findColaboradoresCertificacoes(Long empresaId, Certificacao certificacao, Long turmaId, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, boolean ordenarPorColaboradorNome)
+	public Collection<ColaboradorTurma> findColaboradoresCertificacoes(Long empresaId, Certificacao certificacao, Long turmaId, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy)
 	{
 		StringBuilder sql = new StringBuilder();		
 		
@@ -541,9 +548,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("	cp.qtdpresenca, ");
 		sql.append("	ca.qtdavaliacoescurso, ");
 		sql.append("	rct.qtdavaliacoesaprovadaspornota, ");
-		sql.append("	rct.nota ");
+		sql.append("	rct.nota, ");
+		sql.append("	emp.nome ");
 		sql.append("from Colaboradorturma ct  ");
 		sql.append("left join colaborador co on co.id = ct.colaborador_id ");
+		sql.append("left join empresa emp on emp.id = co.empresa_id ");
 		sql.append("left join historicocolaborador hc on hc.colaborador_id = co.id ");
 		sql.append("left join estabelecimento e on e.id = hc.estabelecimento_id ");
 		sql.append("left join areaorganizacional a on a.id = hc.areaorganizacional_id ");
@@ -601,7 +610,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(cursoId != null)
 			sql.append("	and c.id = :cursoId ");
 		
-		sql.append("	and co.empresa_id = :empresaId ");
+		if(empresaId != null)
+			sql.append("	and co.empresa_id = :empresaId ");
 			
 		if (areaIds != null && areaIds.length > 0)
 			sql.append("and a.id in (:areasId) ");
@@ -615,15 +625,14 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("	and hc2.data <= :hoje ");
 		sql.append("	and hc2.status <> :statusCancelado ) ");
 		
-		if(ordenarPorColaboradorNome)
-			sql.append("	order by co.nome ");
-		else
-			sql.append("	order by e.nome, a.nome, co.nome, c.nome ");
+		sql.append("	order by " + orderBy);
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		
-		query.setLong("empresaId", empresaId);
 		query.setBoolean("desligado", false);
+
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 
 		if(certificacao != null)
 			query.setLong("certificacaoId", certificacao.getId());
@@ -691,6 +700,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 				ct.setNota((Double)res[19]);
 				ct.setValorAvaliacao((Double)res[19]);				
 			}
+			
+			ct.getColaborador().setEmpresa(new Empresa());
+			ct.getColaborador().getEmpresa().setNome((String)res[20]);
 			
 			colaboradorTurmas.add(ct);
 		}

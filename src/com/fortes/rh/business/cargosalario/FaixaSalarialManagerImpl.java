@@ -315,4 +315,9 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		getDao().updateAC(tCargo);
 	}
 
+	public TCargo[] getFaixasAC() 
+	{
+		return getDao().getFaixasAC();
+	}
+
 }

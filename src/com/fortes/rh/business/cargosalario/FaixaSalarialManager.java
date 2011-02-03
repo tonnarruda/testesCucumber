@@ -33,4 +33,5 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	void sincronizar(Map<Long, Long> cargoIds);
 	FaixaSalarial montaFaixa(TCargo tCargo);
 	void updateAC(TCargo tCargo);
+	TCargo[] getFaixasAC();
 }

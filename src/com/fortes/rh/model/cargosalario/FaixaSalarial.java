@@ -45,6 +45,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	@ManyToMany(fetch=FetchType.LAZY)
 	private Collection<Certificacao> certificacaos;
 
+	@Transient
+	private String empresaCodigoAC;
 
 	public FaixaSalarial()
 	{
@@ -305,6 +307,14 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	public void setNomeACPessoal(String nomeACPessoal)
 	{
 		this.nomeACPessoal = nomeACPessoal;
+	}
+
+	public String getEmpresaCodigoAC() {
+		return empresaCodigoAC;
+	}
+
+	public void setEmpresaCodigoAC(String empresaCodigoAC) {
+		this.empresaCodigoAC = empresaCodigoAC;
 	}
 	
 }

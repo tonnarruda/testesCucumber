@@ -283,4 +283,36 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 
 		q.executeUpdate();		
 	}
+
+	public TCargo[] getFaixasAC() 
+	{
+		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
+		criteria.createCriteria("fs.cargo", "c");
+		criteria.createCriteria("c.empresa", "e");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("fs.nome"), "nome");
+		p.add(Projections.property("fs.codigoAC"), "codigoAC");
+		p.add(Projections.property("e.codigoAC"), "empresaCodigoAC");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.ne("e.codigoAC", ""));
+		criteria.add(Expression.ne("fs.codigoAC", ""));
+		
+		criteria.addOrder(Order.asc("e.codigoAC"));
+		criteria.addOrder(Order.asc("fs.codigoAC"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
+
+		Collection<FaixaSalarial> faixas = criteria.list();
+		TCargo[] tCargos = new TCargo[faixas.size()];
+		int i = 0;
+		for (FaixaSalarial faixa : faixas) 
+		{
+			tCargos[i++] = new TCargo(faixa.getEmpresaCodigoAC(), faixa.getCodigoAC(), faixa.getNome());
+		}
+		
+		return tCargos;
+	}
 }

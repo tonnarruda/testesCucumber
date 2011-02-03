@@ -122,7 +122,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		papelDao.save(papel1);
 
 		Papel papel2 = new Papel();
-		papel2.setCodigo("ROLE_REL_CARGO");
+		papel2.setCodigo("ROLE_REL_XX");
 		papelDao.save(papel2);
 		
 		Collection<Papel> papeis1 = new ArrayList<Papel>();
@@ -162,9 +162,9 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		usuarioEmpresa2.setPerfil(perfilCargo);
 		usuarioEmpresaDao.save(usuarioEmpresa2);
 		
-		Collection<Empresa> empresas = empresaDao.findByUsuarioPermissao(joao.getId(), "ROLE_REL_ANIV");
-		assertEquals(1, empresas.size());
-		assertEquals(vega, empresas.toArray()[0]);
+		Collection<Empresa> empresas = empresaDao.findByUsuarioPermissao(joao.getId(), new String[]{"ROLE_REL_ANIV", "ROLE_REL_XX"});
+		assertEquals(2, empresas.size());
+		assertEquals(vega, empresas.toArray()[1]);
 	}
 	
 	public void testRemoveEmpresaPadrao()

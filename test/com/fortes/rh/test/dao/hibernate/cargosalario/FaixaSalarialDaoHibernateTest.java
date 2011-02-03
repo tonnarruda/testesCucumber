@@ -87,6 +87,27 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     	assertEquals(faixaSalarial.getId(), retorno.getId());
     }
     
+    public void testGetFaixasAC()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setCodigoAC("99999299");
+    	empresaDao.save(empresa);
+    	
+    	Cargo cargo = CargoFactory.getEntity();
+    	cargo.setEmpresa(empresa);
+    	cargoDao.save(cargo);
+    	
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+    	faixaSalarial.setCargo(cargo);
+    	faixaSalarial.setNome("TESTE_AC");
+    	faixaSalarial.setCodigoAC("99999299");
+    	faixaSalarialDao.save(faixaSalarial);
+    	
+    	TCargo[] tCargos = faixaSalarialDao.getFaixasAC();
+    	
+    	assertTrue(tCargos.length > 0);
+    }
+    
     public void testUpdateAC()
     {
     	Cargo cargo = CargoFactory.getEntity();

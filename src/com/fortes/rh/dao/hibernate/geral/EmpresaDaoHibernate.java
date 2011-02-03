@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -109,7 +110,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		return (Empresa) criteria.uniqueResult();
 	}
 
-	public Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String role)
+	public Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String... roles)
 	{
 		Criteria criteria = getSession().createCriteria(UsuarioEmpresa.class, "ue");
 		criteria.createCriteria("ue.empresa", "e");
@@ -123,7 +124,19 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.eq("u.id", usuarioId));
-		criteria.add(Expression.eq("papel.codigo", role));
+		
+		if(roles != null && roles.length > 0)
+		{
+	        Disjunction disjunction = Expression.disjunction();
+
+	        for (String role : roles) 
+	        {
+	        	disjunction.add(Expression.eq("papel.codigo", role));
+			}
+	        
+	        criteria.add(disjunction);
+		}
+		
 		criteria.add(Expression.eq("u.acessoSistema", true));
 		
 		criteria.addOrder(Order.asc("e.nome"));
