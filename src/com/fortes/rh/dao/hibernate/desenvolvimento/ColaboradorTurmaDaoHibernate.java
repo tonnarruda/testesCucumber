@@ -436,13 +436,16 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new ColaboradorTurma(c.id, c.nome, c.matricula, ao.id, es.nome) " );
+		hql.append("select new ColaboradorTurma(c.id, c.nome, c.matricula, ao.id, es.nome, emp.nome) " );
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join hc.colaborador as c ");
 		hql.append("left join c.empresa as emp ");
-		hql.append("where c.desligado = false and c.empresa.id = :empresaId ");
+		hql.append("where c.desligado = false  " );
+		
+		if(empresaId != null)
+			hql.append(	"and c.empresa.id = :empresaId ");
 
 		if (areaIds.length > 0)
 			hql.append("and ao.id in (:areasId) ");
