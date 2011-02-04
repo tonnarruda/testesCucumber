@@ -144,7 +144,6 @@ import com.fortes.rh.test.dao.hibernate.acesso.PerfilDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.acesso.UsuarioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.acesso.UsuarioEmpresaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoDaoHibernateTest;
-import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoDesempenhoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.PeriodoExperienciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.AnuncioDaoHibernateTest;
@@ -214,6 +213,7 @@ import com.fortes.rh.test.dao.hibernate.geral.OcorrenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ParametrosDoSistemaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.UsuarioMensagemDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AspectoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.ColaboradorQuestionarioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.ColaboradorRespostaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.EntrevistaDaoHibernateTest;
@@ -521,7 +521,6 @@ import com.fortes.rh.test.web.dwr.UtilDWRTest;
 import com.fortes.rh.test.web.service.AcPessoalClientCargoTest;
 import com.fortes.rh.test.web.service.AcPessoalClientColaboradorOcorrenciaTest;
 import com.fortes.rh.test.web.service.AcPessoalClientOcorrenciaTest;
-import com.fortes.rh.web.action.captacao.AnuncioEditAction;
 
 public class AllUnitTests extends TestSuite
 {
@@ -1042,8 +1041,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AvaliacaoDaoHibernateTest.class);
         suite.addTestSuite(AvaliacaoManagerTest.class);
         suite.addTestSuite(AvaliacaoEditActionTest.class);
-
-        // Avaliacao
         suite.addTestSuite(AvaliacaoTurmaDaoHibernateTest.class);
         
         
