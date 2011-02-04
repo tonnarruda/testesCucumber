@@ -90,9 +90,9 @@
 			<#else>
 				<#if colaborador.dataDesligamento?exists && !colaborador.motivoDemissao.motivo?exists>
 					<#if integraAc>
-						<img border="0" title="Desligue o colaborador no AC Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-					<#else>
 						<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Desligar colaborador" src="<@ww.url includeParams="none" value="/imgs/desligadoAC5.gif"/>"></a>
+					<#else>
+						<img border="0" title="Desligue o colaborador no AC Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					</#if>			
 				<#else>
 					<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Colaborador já desligado" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);"></a>
