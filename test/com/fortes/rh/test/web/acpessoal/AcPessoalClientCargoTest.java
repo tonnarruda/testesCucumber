@@ -1,5 +1,6 @@
 package com.fortes.rh.test.web.acpessoal;
 
+import java.sql.ResultSet;
 import java.util.Date;
 
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -20,7 +21,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 
 	private FaixaSalarial faixaSalarial;
 	private FaixaSalarialHistorico faixaSalarialHistorico;
-	
+	private Date data = DateUtil.montaDataByString("01/01/2011");
 
 	@Override
 	protected void setUp() throws Exception
@@ -42,138 +43,159 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		faixaSalarialHistorico.setData(data);
 	}
 
-	public void testInsertCargoACPorValor() throws Exception
+	@Override
+	protected void tearDown() throws Exception
+	{
+		delete("delete from rhsca where car_codigo >= '237' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
+		delete("delete from car where codigo >= '237' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
+		super.tearDown();
+	}
+	
+	public void testStatusAC() throws Exception
+	{
+		ResultSet result = execute("select count(*) as total from car where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
+		if (result.next())
+			assertEquals(172, result.getInt("total"));
+		else
+			fail("Consulta não retornou nada...");
+		
+		result = execute("select count(*) as total from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
+		if (result.next())
+			assertEquals(0, result.getInt("total"));
+		else
+			fail("Consulta não retornou nada...");
+	}
+	
+	public void testInsertEdicaoDeleteCargoACPorValor() throws Exception
 	{
 		faixaSalarial.setNome("Motorista de Nave");
 		faixaSalarial.setNomeACPessoal("Motorista de Nave AC");
 		
 		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
 		faixaSalarialHistorico.setValor(200.00);
-
+		faixaSalarialHistorico.setData(data);
+		
 		String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa);
-		String[] cargoAC = super.getCargoAC(codigoAC, empresa.getCodigoAC());
+		String sql = "select data, saltipo, valor, rh_sca_id from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and car_codigo = '" + codigoAC + "'";
+		ResultSet result = execute(sql);
+		if (result.next())
+		{
+			assertEquals("2011-01-01 00:00:00.0", result.getString("data"));
+			assertEquals("V", result.getString("saltipo"));
+			assertEquals("200.0", result.getString("valor"));
+			assertEquals("1", result.getString("rh_sca_id"));
+		}
+		else
+			fail("Consulta não retornou nada...");
 		
-		assertEquals(empresa.getCodigoAC(), cargoAC[0]);
-		assertEquals(codigoAC, cargoAC[1]);
-		assertEquals(faixaSalarial.getNomeACPessoal(), cargoAC[2]);
-		assertEquals(faixaSalarial.getNome(), cargoAC[3]);
-		assertTrue(cargoAC[4].equals("1"));
 		
-		String[] cargoSituacaoAC = super.getSituacaoCargoAC(codigoAC, empresa.getCodigoAC(), DateUtil.formataDiaMesAno(faixaSalarialHistorico.getData()), "rhsca");		//EMP_CODIGO, CAR_CODIGO, DATA, SALCONTRATUAL, IND_CODIGO_SALARIO, SALTIPO, VALOR, INDQTDE, RH_SCA_ID
-		assertEquals(empresa.getCodigoAC(), cargoSituacaoAC[0]);
-		assertEquals(codigoAC, cargoSituacaoAC[1]);
-		assertEquals("S", cargoSituacaoAC[3]);
-		assertNull(cargoSituacaoAC[4]);
-		assertEquals("V", cargoSituacaoAC[5]);
-		assertEquals(faixaSalarialHistorico.getValor(), Double.parseDouble(cargoSituacaoAC[6]));
-		assertEquals(0.0, Double.parseDouble(cargoSituacaoAC[7]));
-		assertTrue(cargoSituacaoAC[8].equals("1"));
+		sql = "select nome, nome_faixa_rh from car where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoAC + "'";
+		result = execute(sql);
+		if (result.next())
+		{
+			assertEquals(faixaSalarial.getNomeACPessoal(), result.getString("nome"));
+			assertEquals(faixaSalarial.getNome(), result.getString("nome_faixa_rh"));
+		}
+		else
+			fail("Consulta não retornou nada...");
 		
 		//Teste edição cargo
 		faixaSalarial.setCodigoAC(codigoAC);
-		faixaSalarial.setNome("Chefe do Castelo");
+		faixaSalarial.setNome("Chefe Castelo RH");
 		faixaSalarial.setNomeACPessoal("Castelo do AC");
 		acPessoalClientCargo.updateCargo(faixaSalarial, empresa);
-		cargoAC = super.getCargoAC(codigoAC, empresa.getCodigoAC());
 		
-		assertEquals(empresa.getCodigoAC(), cargoAC[0]);
-		assertEquals(codigoAC, cargoAC[1]);
-		assertEquals(faixaSalarial.getNomeACPessoal(), cargoAC[2]);
-		assertEquals(faixaSalarial.getNome(), cargoAC[3]);
-		assertTrue(cargoAC[4].equals("1"));
+		result = execute(sql);
+		if (result.next())
+		{
+			assertEquals(faixaSalarial.getNomeACPessoal(), result.getString("nome"));
+			assertEquals(faixaSalarial.getNome(), result.getString("nome_faixa_rh"));
+		}
+		else
+			fail("Consulta não retornou nada...");
+
+		//insert novo historico
+		faixaSalarialHistorico.setData(data);
+		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
+		faixaSalarialHistorico.setValor(222.00);
+		faixaSalarial.setCodigoAC(codigoAC);
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
 		
-		deleteCargoAndSituacao(codigoAC);
+		acPessoalClientCargo.criarFaixaSalarialHistorico(faixaSalarialHistorico, empresa);
+		
+		sql = "select data, saltipo, valor, rh_sca_id from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and car_codigo = '"+ codigoAC +"' and data='01-01-2011'";
+		result = execute(sql);
+		if (result.next())
+		{
+			assertEquals("2011-01-01 00:00:00.0", result.getString("data"));
+			assertEquals("V", result.getString("saltipo"));
+			assertEquals("222.0", result.getString("valor"));
+			assertEquals("1", result.getString("rh_sca_id"));
+		}
+		else
+			fail("Consulta não retornou nada...");
+		
+		//delete faixaSalarial historico
+		acPessoalClientCargo.deleteFaixaSalarialHistorico(faixaSalarialHistorico.getId(), empresa);
+		result = execute(sql);
+		if (result.next())
+			fail("Consulta RETORNOU coisa...");
+		else
+			assertTrue(true);
+
 	}
 
-	public void testInsertCargoACPorIndice() throws Exception
+	public void testInsertEdicaoDeleteCargoACPorIndice() throws Exception
 	{
-		faixaSalarial.setNome("Motorista de Navio");
-		faixaSalarial.setNomeACPessoal("Motorista de Navio AC");
-
 		Indice indice = IndiceFactory.getEntity(1L);
 		indice.setCodigoAC("1000");//salario minimo no AC
+		
+		faixaSalarial.setNome("Motorista de Nave");
+		faixaSalarial.setNomeACPessoal("Motorista de Nave AC");
 		
 		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.INDICE);
 		faixaSalarialHistorico.setIndice(indice);
 		faixaSalarialHistorico.setQuantidade(5.0);
+		faixaSalarialHistorico.setData(data);
 
 		String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa);
-		String[] cargoAC = super.getCargoAC(codigoAC, empresa.getCodigoAC());
-		
-		assertEquals(empresa.getCodigoAC(), cargoAC[0]);
-		assertEquals(codigoAC, cargoAC[1]);
-		assertEquals(faixaSalarial.getNomeACPessoal(), cargoAC[2]);
-		assertEquals(faixaSalarial.getNome(), cargoAC[3]);
-		assertTrue(cargoAC[4].equals("1"));
-		
-		String[] cargoSituacaoAC = super.getSituacaoCargoAC(codigoAC, empresa.getCodigoAC(), DateUtil.formataDiaMesAno(faixaSalarialHistorico.getData()), "rhsca");
-		//EMP_CODIGO, CAR_CODIGO, DATA, SALCONTRATUAL, IND_CODIGO_SALARIO, SALTIPO, VALOR, INDQTDE, RH_SCA_ID
-		assertEquals(empresa.getCodigoAC(), cargoSituacaoAC[0]);
-		assertEquals(codigoAC, cargoSituacaoAC[1]);
-		assertEquals("S", cargoSituacaoAC[3]);
-		assertEquals("1000", cargoSituacaoAC[4]);
-		assertEquals("I", cargoSituacaoAC[5]);
-		assertEquals(0.0, Double.parseDouble(cargoSituacaoAC[6]));
-		assertEquals(5.0, Double.parseDouble(cargoSituacaoAC[7]));
-		assertTrue(cargoSituacaoAC[8].equals("1"));
+		String sqlHist = "select data, saltipo, valor, indqtde, ind_codigo_salario, rh_sca_id from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and car_codigo = '" + codigoAC + "'";
+		ResultSet result = execute(sqlHist);
+		if (result.next())
+		{
+			assertEquals("2011-01-01 00:00:00.0", result.getString("data"));
+			assertEquals("I", result.getString("saltipo"));
+			assertEquals("1000", result.getString("ind_codigo_salario"));
+			assertEquals("5.0", result.getString("indqtde"));
+			assertEquals("0.0", result.getString("valor"));
+			assertEquals("1", result.getString("rh_sca_id"));
+		}
+		else
+			fail("Consulta não retornou nada...");
 
-		//Teste cria situação para o cargo
-		faixaSalarial.setCodigoAC(codigoAC);
-		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(2L);
-		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistorico2.setTipo(TipoAplicacaoIndice.VALOR);
-		faixaSalarialHistorico2.setValor(200.00);
-		faixaSalarialHistorico2.setData(DateUtil.criarDataMesAno(01, 02, 2009));
+		String sql = "select nome, nome_faixa_rh from car where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoAC + "'";
+		result = execute(sql);
+		if (result.next())
+		{
+			assertEquals("Motorista de Nave AC", result.getString("nome"));
+			assertEquals("Motorista de Nave", result.getString("nome_faixa_rh"));
+		}
+		else
+			fail("Consulta não retornou nada...");
 		
-		assertTrue(acPessoalClientCargo.criarFaixaSalarialHistorico(faixaSalarialHistorico2, empresa));
-		
-		cargoSituacaoAC = super.getSituacaoCargoAC(codigoAC, empresa.getCodigoAC(), DateUtil.formataDiaMesAno(faixaSalarialHistorico2.getData()), "rhsca");
-		//EMP_CODIGO, CAR_CODIGO, DATA, SALCONTRATUAL, IND_CODIGO_SALARIO, SALTIPO, VALOR, INDQTDE, RH_SCA_ID
-		assertEquals(empresa.getCodigoAC(), cargoSituacaoAC[0]);
-		assertEquals(codigoAC, cargoSituacaoAC[1]);
-		assertEquals("S", cargoSituacaoAC[3]);
-		assertNull(cargoSituacaoAC[4]);
-		assertEquals("V", cargoSituacaoAC[5]);
-		assertEquals(faixaSalarialHistorico2.getValor(), Double.parseDouble(cargoSituacaoAC[6]));
-		assertEquals(0.0, Double.parseDouble(cargoSituacaoAC[7]));
-		assertTrue(cargoSituacaoAC[8].equals("2"));
-		
-		deleteCargoAndSituacao(codigoAC);
-	}
+		//delete
+		assertEquals(true, acPessoalClientCargo.deleteCargo(new String[]{codigoAC}, empresa));
+		result = execute(sql);
+		if (result.next())
+			fail("Consulta RETORNOU coisa...");
+		else
+			assertTrue(true);
 
-	public void testEditaCargo() throws Exception
-	{
-		String codigoAC = "073";
-		FaixaSalarial acabamento = FaixaSalarialFactory.getEntity(2L);
-		acabamento.setNome("Acabamento RH 1234567891234567");
-		acabamento.setNomeACPessoal("Acabamento AC 1234567891234567");
-		acabamento.setCodigoAC(codigoAC);
-		
-		acPessoalClientCargo.updateCargo(acabamento, empresa);
-		String[] cargoAC = super.getCargoAC(codigoAC, empresa.getCodigoAC());
-		assertEquals(empresa.getCodigoAC(), cargoAC[0]);
-		assertEquals(codigoAC, cargoAC[1]);
-		assertEquals(acabamento.getNomeACPessoal(), cargoAC[2]);
-		assertEquals(acabamento.getNome(), cargoAC[3]);
-		assertNull(cargoAC[4]);
-	}
-	
-	private void deleteCargoAndSituacao(String codigoAC) throws Exception
-	{
-		String[] cargoAC;
-		String[] cargoSituacaoAC;
-		//Teste delete situação
-		boolean deletou = acPessoalClientCargo.deleteFaixaSalarialHistorico(faixaSalarialHistorico.getId(), empresa);
-		assertTrue(deletou);
-		
-		cargoSituacaoAC = super.getSituacaoCargoAC(codigoAC, empresa.getCodigoAC(), DateUtil.formataDiaMesAno(faixaSalarialHistorico.getData()), "rhsca");
-		assertNull(cargoSituacaoAC);
-		
-		//Teste delete cargo
-		deletou = acPessoalClientCargo.deleteCargo(new String[]{codigoAC}, empresa);
-		assertTrue(deletou);
-		
-		cargoAC = super.getCargoAC(codigoAC, empresa.getCodigoAC());
-		assertNull(cargoAC);
+		//verifica delete do hist
+		result = execute(sqlHist);
+		if (result.next())
+			fail("Consulta RETORNOU coisa...");
+		else
+			assertTrue(true);
 	}
 }
