@@ -1,5 +1,7 @@
 package com.fortes.rh.test.web.acpessoal;
 
+import java.sql.ResultSet;
+
 import com.fortes.rh.model.ws.TOcorrencia;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrenciaImpl;
@@ -36,6 +38,31 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 		tOcorrenciaEmpregado.setData("01/02/2010");
 	}
 
+	@Override
+	protected void tearDown() throws Exception
+	{
+		delete("delete from ocr where codigo > '001' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
+		delete("delete from oce where ocr_codigo > '001' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
+		super.tearDown();
+	}
+	
+	public void testStatusAC() throws Exception
+	{
+		//ocr
+		ResultSet result = execute("select count(*) as total from ocr where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
+		if (result.next())
+			assertEquals(1, result.getInt("total"));
+		else
+			fail("Consulta não retornou nada...");
+		
+		//oce
+		result = execute("select count(*) as total from oce where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
+		if (result.next())
+			assertEquals(0, result.getInt("total"));
+		else
+			fail("Consulta não retornou nada...");
+	}
+	
 	public void testCriarColaboradorOcorrencia() throws Exception
 	{
 		String codigoOcorrencia = acPessoalClientOcorrenciaImpl.criarTipoOcorrencia(tOcorrencia, empresa);
