@@ -901,7 +901,7 @@ e.printStackTrace();
 		for (Object[] item : lista)
 		{
 			if(item[0] == null)
-				motivos.add(new MotivoDemissaoQuantidade("Motivo não informado", getDao().countSemMotivos(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim)));
+				motivos.add(new MotivoDemissaoQuantidade("<Motivo não informado>", getDao().countSemMotivos(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim)));
 			else
 				motivos.add(new MotivoDemissaoQuantidade((String) item[0], (Integer) item[1]));
 		}
