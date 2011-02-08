@@ -33,7 +33,7 @@
 
 			<@display.column title="Exame" style="width:500px;">
 				${lista[0].nome}
-a
+
 			</@display.column>
 
 			<#assign selected=""/>
