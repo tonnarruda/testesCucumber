@@ -2,7 +2,6 @@ package com.fortes.rh.test.web.acpessoal;
 
 import java.sql.ResultSet;
 
-import com.fortes.rh.model.ws.TOcorrencia;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrenciaImpl;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrenciaImpl;
@@ -14,7 +13,9 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 	private AcPessoalClientOcorrenciaImpl acPessoalClientOcorrenciaImpl;
 
 	private TOcorrenciaEmpregado tOcorrenciaEmpregado;
-	private TOcorrencia tOcorrencia;
+	
+	private String empCodigo;
+	private String epgCodigo = "000029";
 
 	@Override
 	protected void setUp() throws Exception
@@ -27,36 +28,24 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 		acPessoalClientOcorrenciaImpl = new AcPessoalClientOcorrenciaImpl();
 		acPessoalClientOcorrenciaImpl.setAcPessoalClient(acPessoalClientImpl);
 
-		tOcorrencia = new TOcorrencia();
-		tOcorrencia.setCodigo(null);
-		tOcorrencia.setEmpresa(empresa.getCodigoAC());
-		tOcorrencia.setDescricao("Reclamação");
-		
 		tOcorrenciaEmpregado = new TOcorrenciaEmpregado();
-		tOcorrenciaEmpregado.setCodigoEmpregado("000029");
+		tOcorrenciaEmpregado.setCodigoEmpregado(epgCodigo);
 		tOcorrenciaEmpregado.setEmpresa(empresa.getCodigoAC());
 		tOcorrenciaEmpregado.setData("01/02/2010");
+		
+		empCodigo =  getEmpresa().getCodigoAC();
 	}
 
 	@Override
 	protected void tearDown() throws Exception
 	{
-		delete("delete from ocr where codigo > '001' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
-		delete("delete from oce where ocr_codigo > '001' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
+		execute("delete from oce where ocr_codigo > '001' and emp_codigo='" + empCodigo + "'");
 		super.tearDown();
 	}
 	
 	public void testStatusAC() throws Exception
 	{
-		//ocr
-		ResultSet result = execute("select count(*) as total from ocr where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
-		if (result.next())
-			assertEquals(1, result.getInt("total"));
-		else
-			fail("Consulta não retornou nada...");
-		
-		//oce
-		result = execute("select count(*) as total from oce where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
+		ResultSet result = query("select count(*) as total from oce where emp_codigo = '" + empCodigo + "'");
 		if (result.next())
 			assertEquals(0, result.getInt("total"));
 		else
@@ -65,19 +54,33 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 	
 	public void testCriarColaboradorOcorrencia() throws Exception
 	{
-		String codigoOcorrencia = acPessoalClientOcorrenciaImpl.criarTipoOcorrencia(tOcorrencia, empresa);
-		tOcorrenciaEmpregado.setCodigo(codigoOcorrencia);
-		
+		tOcorrenciaEmpregado.setCodigo("001");
 		assertEquals(true, acPessoalClientColaboradorOcorrenciaImpl.criarColaboradorOcorrencia(tOcorrenciaEmpregado, empresa));
+
+		ResultSet result = query("select ocr_codigo, data from oce where emp_codigo = '" + empCodigo + "' and epg_codigo ='" + epgCodigo + "'");
+		if (result.next())
+		{
+			assertEquals("001", result.getString("ocr_codigo"));
+			assertEquals("2010-02-01 00:00:00.0", result.getString("data"));			
+		}
+		else
+			fail("Consulta não retornou nada...");		
 	}
 	
 	public void testRemoverColaboradorOcorrencia() throws Exception
 	{
-		String codigoOcorrencia = acPessoalClientOcorrenciaImpl.criarTipoOcorrencia(tOcorrencia, empresa);
-		tOcorrenciaEmpregado.setCodigo(codigoOcorrencia);
-
+		tOcorrenciaEmpregado.setCodigo("001");
 		acPessoalClientColaboradorOcorrenciaImpl.criarColaboradorOcorrencia(tOcorrenciaEmpregado, empresa);
 		
+		String sql = "select ocr_codigo, data from oce where emp_codigo = '" + empCodigo + "' and epg_codigo ='" + epgCodigo + "'"; 
+		ResultSet result = query(sql);
+		if (!result.next())
+			fail("Consulta não retornou nada...");		
+		
 		assertEquals(true, acPessoalClientColaboradorOcorrenciaImpl.removerColaboradorOcorrencia(tOcorrenciaEmpregado, empresa));
+		
+		result = query(sql);
+		if (result.next())
+			fail("Consulta retornou algo...");
 	}
 }

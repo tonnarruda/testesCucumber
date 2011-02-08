@@ -2,19 +2,20 @@ package com.fortes.rh.test.web.acpessoal;
 
 import java.sql.ResultSet;
 
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorImpl;
 
 public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 {
-	private Colaborador colaborador;
 	private TEmpregado tEmpregado;
 	private TSituacao tSituacao;
 
 	private AcPessoalClientColaboradorImpl acPessoalClientColaboradorImpl;
+	private String empCodigo;
 
 	@Override
 	protected void setUp() throws Exception
@@ -27,6 +28,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		tEmpregado = new TEmpregado();
 		tEmpregado.setId(1);
 		tEmpregado.setNome("Fulano da Silva");
+		tEmpregado.setNomeComercial("Fulano");
 		tEmpregado.setDataAdmissao("02/10/2009");
 		tEmpregado.setDataNascimento("01/05/2000");
 		tEmpregado.setEmpresaCodigoAC(empresa.getCodigoAC());
@@ -34,92 +36,211 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		tSituacao = new TSituacao();
 		tSituacao.setId(2);
 		tSituacao.setData("02/10/2009");
-		tSituacao.setValor(5.0);
-		tSituacao.setValorAnterior(4.0);
-		tSituacao.setIndiceQtd(0.0);
+		
+		empCodigo =  getEmpresa().getCodigoAC();
 	}
 	
 	@Override
 	protected void tearDown() throws Exception
 	{
-		delete("delete from ctt where empcodigoac='" + getEmpresa().getCodigoAC() + "'");
-		delete("update epg set nome='AMANDA LEITAO DOS SANTOS' where codigo >= '000029' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
+		execute("delete from ctt where empcodigoac='" + empCodigo + "'");
+		execute("delete from epg where emp_codigo='" + empCodigo + "' and codigo='991199'");
 		
-		String sqlAmanda = "INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME,DTNASCIMENTO,NACIONALIDADE,ANOCHEGADA,TIPOVISTO,DTVALIDADERG,DTVALIDADECTPS,MUN_UFD_SIGLA_NATURALIDADE,MUN_CODIGO_NATURALIDADE,GRAUINSTRUCAO,RACACOR,SEXO,MAENOME,PAINOME,ESTADOCIVIL,CONJUGENOME,CONJUGECPF,CONJUGEDTNASCIMENTO,CONTACORRENTE,AGE_BAN_CODIGO,AGE_CODIGO,CONTACORRENTENUMERO,CONTASALARIO,DDD,FONE,CELULAR,EMAIL,ENDLOGRADOURO,ENDNUMERO,ENDCOMPLEMENTO,BAIRRO,CEP,MUN_UFD_SIGLA,MUN_CODIGO,CTPSSERIE,CTPSDV,UFD_SIGLA_CTPS,CTPSDTEXPEDICAO,PIS,CPF,TITULO,ZONA,SECAO,IDENTIDADENUMERO,IDENTIDADEORGAOEXPEDIDOR,IDENTIDADEDTEXPEDICAO,REGISTROLIVRO,REGISTRONUMERO,ADMISSAODATA,ADMISSAOTIPO,ADMISSAONATUREZA,ADMISSAOVINCULO,FGTS,FGTSDTOPCAO,FGTSCODCEF,EXAMEMEDICODTULTIMO,EXAMEMEDICOVALIDADE,FERIASDTPREVISAO,DTRESCISAO,PRAZODETERMINADO,QTDDIASPRAZO,QTDDIASPRAZOPRORROGACAO,DTTERMINOPRAZO,ANOCTRSINDICAL,DEFICIENTEFISICO,CATEGORIA,CIPA,DTAPOSENTADORIA,HABILITACAONUMERO,HABILITACAOEMISSAO,HABILITACAOVENCIMENTO,HABILITACAOCATEGORIA,PARTICIPAPAT,ALVARA,DTTRANSFERENCIA,CMTIPO,CMNUMERO,CMSERIE,CMCATEGORIA,CMCSM_OAM,CMRM_DN_COMAR,EXPRADIACAO,TIPOSANGUINEO,FATORRH,CTPSNUMERO,SENHAWEB,MUN_UFD_SIGLA_IDENTORGAOEXPED,DTFALECIMENTO,DTEXONERACAO,SALARIOCONTRATUAL,ANO1EMPREGO,NOMECOMERCIAL,FOTO,HORARIOPONTO) VALUES ('0006','000029','AMANDA LEITAO DOS SANTOS','1972-03-12 00:00:00','10',NULL,NULL,NULL,NULL,'CE','12908','09','2','M','FRANCISCA EVANILDA ALVES MEDEIROS','JOSE CLEITON CAVALCANTE','03',NULL,NULL,NULL,'N',NULL,NULL,NULL,0,'085','2354862',NULL,NULL,'RUA NICARAGUA','59','A','ANTONIO BEZERRA','60510000','CE','04400','00029',NULL,'CE',NULL,'12504617994','43067310306','327718307/52','089','024','180791-88','SSP',NULL,NULL,'00002','1997-11-01 00:00:00','20','9','10','N','1997-11-01 00:00:00','00000080060',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2004','0','01','N',NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'N',NULL,NULL,'0072399',NULL,NULL,NULL,NULL,'1',NULL,NULL,NULL,NULL)";
+		execute("update epg set nome='JOAO BATISTA SOARES' where codigo = '000007' and emp_codigo = '" + empCodigo + "'");
+		
+		//limpa dados da folha, futuramente o JUSTINO vai colocar no banco demo (07/02/2011)
+		execute("delete from fol where emp_codigo='0006' and seq=500");
+		execute("delete from fpg where emp_codigo='0006' and fol_seq=500");
+		execute("delete from efo where emp_codigo='0006' and fol_seq=500");
+		execute("delete from efp where emp_codigo='0006' and efo_fol_seq=500");
+		execute("delete from erh");
 		super.tearDown();
 	}
 	
 	public void testStatusAC() throws Exception
 	{
-		ResultSet result = execute("select count(*) as total from car where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
+		ResultSet result = query("select count(*) as total from car where emp_codigo = '" + empCodigo + "'");
 		if (result.next())
 			assertEquals(172, result.getInt("total"));
 		else
 			fail("Consulta não retornou nada...");
 	}
 	
-	public void testContratarColaboradorAC() throws Exception
+	public void testContratarColaboradorACPorValor() throws Exception
 	{
-		assertTrue(acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa));
+		tSituacao.setValor(5.5);
+		tSituacao.setTipoSalario(TipoAplicacaoIndice.VALOR + "");
+		tSituacao.setIndiceQtd(0.0);
+		tSituacao.setValorAnterior(0.0);
 		
-		try
-		{
-			TEmpregado empregadoAC = acPessoalClientColaboradorImpl.getEmpregadoACAConfirmar(tEmpregado.getId(), empresa);
-			assertEquals(tEmpregado.getNome(), empregadoAC.getNome());
-			assertEquals(tEmpregado.getDataAdmissao(), empregadoAC.getDataAdmissao());
-			assertEquals(tEmpregado.getDataNascimento(), empregadoAC.getDataNascimento());
-			assertEquals(tEmpregado.getEmpresaCodigoAC(), empregadoAC.getEmpresaCodigoAC());
-			assertEquals(tEmpregado.getId(), empregadoAC.getId());
-		}
-		finally
-		{
-//			colaborador = ColaboradorFactory.getEntity(1L);
-//			colaborador.setCodigoAC(null);
-//			assertEquals(true, acPessoalClientColaboradorImpl.remove(colaborador, empresa));
-		}
-	}
+		assertTrue(acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa));
 
-	public void testEditarColaboradorAC() throws Exception
-	{
-		tEmpregado.setEmpresaCodigoAC(empresa.getCodigoAC());
-		acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa);
-
-		try
+		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , salariovalor from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		if (result.next())
 		{
-			tEmpregado.setNome("Fulano da Silva Sauro");
-			tEmpregado.setCodigoAC("000029");
-			tEmpregado.setCidadeCodigoAC("04400");
-			tEmpregado.setUfSigla("CE");
-			acPessoalClientColaboradorImpl.atualizar(tEmpregado, empresa);
-			
-			TEmpregado empregadoAC = acPessoalClientColaboradorImpl.getEmpregadoACAConfirmar(tEmpregado.getId(), empresa);
-			assertEquals(tEmpregado.getNome(), empregadoAC.getNome());
-			assertEquals(tEmpregado.getCodigoAC(), empregadoAC.getCodigoAC());			
-			assertEquals(tEmpregado.getUfSigla(), empregadoAC.getUfSigla());
+			assertEquals("Fulano da Silva", result.getString("nome"));			
+			assertEquals("Fulano", result.getString("nomecomercial"));
+			assertEquals("2009-10-02 00:00:00.0", result.getString("dataadmissao"));
+			assertEquals("2000-05-01 00:00:00.0", result.getString("datanascimento"));
+			assertEquals(3, result.getInt("sal_tipo"));
+			assertEquals(5.5, result.getDouble("salariovalor"));
 		}
-		finally
-		{
-			colaborador = ColaboradorFactory.getEntity(1L);
-			colaborador.setCodigoAC(null);
-			assertEquals(true, acPessoalClientColaboradorImpl.remove(colaborador, empresa));
-		}
+		else
+			fail("Consulta não retornou nada...");
 	}
 	
-	public void testRemoverColaboradorAC() throws Exception
+	public void testContratarColaboradorACPorIndice() throws Exception
 	{
-		colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setCodigoAC(null);
-		
-		tEmpregado.setId(1);
+		tSituacao.setValor(0.0);
+		tSituacao.setTipoSalario(TipoAplicacaoIndice.INDICE + "");
+		tSituacao.setIndiceQtd(2.0);
+		tSituacao.setValorAnterior(0.0);
+		tSituacao.setIndiceCodigoAC("1000");
 		
 		assertTrue(acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa));
+		
+		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , ind_codigo_salario from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		if (result.next())
+		{
+			assertEquals("Fulano da Silva", result.getString("nome"));			
+			assertEquals("Fulano", result.getString("nomecomercial"));
+			assertEquals("2009-10-02 00:00:00.0", result.getString("dataadmissao"));
+			assertEquals("2000-05-01 00:00:00.0", result.getString("datanascimento"));
+			assertEquals(2, result.getInt("sal_tipo"));
+			assertEquals("1000", result.getString("ind_codigo_salario"));
+		}
+		else
+			fail("Consulta não retornou nada...");
+	}
+	
+	public void testContratarColaboradorACPorCargo() throws Exception
+	{
+		tSituacao.setValor(0.0);
+		tSituacao.setIndiceQtd(0.0);
+		tSituacao.setValorAnterior(0.0);
+		tSituacao.setTipoSalario(TipoAplicacaoIndice.CARGO + "");
+		tSituacao.setCargoCodigoAC("220");
+		
+		assertTrue(acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa));
+		
+		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , car_codigo from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		if (result.next())
+		{
+			assertEquals("Fulano da Silva", result.getString("nome"));			
+			assertEquals("Fulano", result.getString("nomecomercial"));
+			assertEquals("2009-10-02 00:00:00.0", result.getString("dataadmissao"));
+			assertEquals("2000-05-01 00:00:00.0", result.getString("datanascimento"));
+			assertEquals(1, result.getInt("sal_tipo"));
+			assertEquals("220", result.getString("car_codigo"));
+		}
+		else
+			fail("Consulta não retornou nada...");
+	}
+
+	public void testEditarColaboradorAC_CTT() throws Exception
+	{
+		tSituacao.setValor(6.7);
+		tSituacao.setIndiceQtd(0.0);
+		tSituacao.setValorAnterior(0.0);
+		tSituacao.setTipoSalario(TipoAplicacaoIndice.CARGO + "");
+		tSituacao.setCargoCodigoAC("220");
+		
+		acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa);
+
+		tEmpregado.setNome("Fulano da Silva Sauro");
+		tEmpregado.setNomeComercial("Fulano Sauro");
+		tSituacao.setTipoSalario(TipoAplicacaoIndice.VALOR + "");
+		tSituacao.setValor(5.5);
+		tSituacao.setIndiceQtd(0.0);
+		tSituacao.setValorAnterior(0.0);
+		
+		acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa);
+		
+		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , salariovalor from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		if (result.next())
+		{
+			assertEquals("Fulano da Silva Sauro", result.getString("nome"));			
+			assertEquals("Fulano Sauro", result.getString("nomecomercial"));
+			assertEquals("2009-10-02 00:00:00.0", result.getString("dataadmissao"));
+			assertEquals("2000-05-01 00:00:00.0", result.getString("datanascimento"));
+			assertEquals(3, result.getInt("sal_tipo"));
+			assertEquals(5.5, result.getDouble("salariovalor"));
+		}
+		else
+			fail("Consulta não retornou nada...");
+	}
+	
+	public void testEditarColaboradorAC_EPG() throws Exception
+	{
+		tEmpregado.setNome("JOAO BATISTA foi editado");
+		tEmpregado.setCodigoAC("000007");
+		tEmpregado.setEmpresaCodigoAC(empCodigo);
+		tEmpregado.setUfSigla("CE");
+		tEmpregado.setCidadeCodigoAC("04400");
+		
+		acPessoalClientColaboradorImpl.atualizar(tEmpregado, empresa);
+		
+		ResultSet result = query("select nome from epg where codigo = '000007' and emp_codigo = '" + empCodigo + "'");
+		if (result.next())
+			assertEquals("JOAO BATISTA foi editado", result.getString("nome"));			
+		else
+			fail("Consulta não retornou nada...");
+	}
+	
+	public void testRemuneracaoVariavel() throws Exception
+	{
+		execute("insert into fol(emp_codigo, seq, folha, dtcalculo, encerrada) values('0006', 500, 2, '2010-01-31', 'S')");
+		execute("insert into fpg(emp_codigo, fol_seq, anomes, sequencial, dtinicial, dtfinal, tipo) values('0006', 500, '201001','01', '2010-01-01', '2010-01-31', 4)");
+		execute("insert into efo(emp_codigo, fol_seq, epg_codigo, sep_data) values('0006', 500, '000014', '2000-01-01')");
+		execute("insert into efp(emp_codigo, efo_fol_seq, efo_epg_codigo, eve_codigo, referencia, valor, parametro, atributo, demonstracao) values ('0006', 500, '000014', '011', '00', 99, '00', null, null)");
+		execute("insert into erh (eve_codigo, buscaremfolha) values ('011', 1)");
+		
+		String[] codigoACs = new String[]{"000015", "000014", "000013"};
+		TRemuneracaoVariavel[] remuneracaos = acPessoalClientColaboradorImpl.getRemuneracoesVariaveis(empresa, codigoACs, "200001", "202001");
+		TRemuneracaoVariavel remuneracaoVariavel = remuneracaos[0];
+		assertEquals("201001", remuneracaoVariavel.getAnoMes());
+		assertEquals("000014", remuneracaoVariavel.getCodigoEmpregado());
+		assertEquals(99.0, remuneracaoVariavel.getValor());
+	}
+	
+	public void testRemoverColaboradorAC_CTT() throws Exception
+	{
+		tSituacao.setValor(0.0);
+		tSituacao.setIndiceQtd(0.0);
+		tSituacao.setValorAnterior(0.0);
+		tSituacao.setTipoSalario(TipoAplicacaoIndice.CARGO + "");
+		tSituacao.setCargoCodigoAC("220");
+		
+		assertTrue(acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa));
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setId(1L);
 		assertEquals(true, acPessoalClientColaboradorImpl.remove(colaborador, empresa));
+
+		ResultSet result = query("select nome from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		if (result.next())
+			fail("Consulta RETORNOU algo...");
+	}
+	
+	public void testRemoverColaboradorAC_EPG() throws Exception
+	{
+		execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empCodigo +"','991199','TESTE do RH')");
+		ResultSet result = query("select nome from epg where codigo = '991199' and emp_codigo = '" + empCodigo + "'");
+		if (!result.next())
+			fail("Consulta RETORNOU algo...");
+
+		Colaborador colaborador = new Colaborador();
+		colaborador.setCodigoAC("991199");
+		colaborador.setId(0L);
+		assertTrue(acPessoalClientColaboradorImpl.remove(colaborador, empresa));
+
+		result = query("select nome from epg where codigo = '991199' and emp_codigo = '" + empCodigo + "'");
+		if (result.next())
+			fail("Consulta RETORNOU algo...");
 	}
 
 	public void testVerificaHistoricoNaFolhaAC() throws Exception
 	{
 		assertEquals(false, acPessoalClientColaboradorImpl.verificaHistoricoNaFolhaAC(1L, "99554", empresa));
-		//AMANDA LEITÃO, ta no banco com uma folha, precisei setar a data da situação na tabela EFO
-		assertEquals(true, acPessoalClientColaboradorImpl.verificaHistoricoNaFolhaAC(27L, "000029", empresa));
 	}
 }

@@ -6,8 +6,6 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
-import org.apache.axis.encoding.ser.ArrayDeserializerFactory;
-import org.apache.axis.encoding.ser.ArraySerializerFactory;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
@@ -25,6 +23,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		this.acPessoalClient = acPessoalClient;
 	}
 
+	//atualiza apenas o epg
 	public void atualizar(TEmpregado empregado, Empresa empresa) throws Exception {
 		try {
 			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "atualizarEmpregado");
@@ -188,7 +187,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 			call.setReturnType(qnameArr);
 
-			Object[] param = new Object[] { token, empresa.getCodigoAC(), colaboradoresIds, "200001", anoMesFinal };
+			Object[] param = new Object[] { token, empresa.getCodigoAC(), colaboradoresIds, anoMesInicial, anoMesFinal };
 
 			result = (TRemuneracaoVariavel[]) call.invoke(param);
 
