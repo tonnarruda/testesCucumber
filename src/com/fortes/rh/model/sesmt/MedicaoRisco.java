@@ -15,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.geral.Estabelecimento;
 
 @SuppressWarnings("serial")
 @Entity
@@ -60,6 +61,15 @@ public class MedicaoRisco extends AbstractModel implements Serializable
 			ambiente = new Ambiente();
 		
 		ambiente.setNome(ambienteNome);
+	}
+	
+	public void setProjectionEstabelecimentoNome(String estabelecimentoNome)
+	{
+		if (ambiente == null)
+			ambiente = new Ambiente();
+		
+		this.ambiente.setEstabelecimento(new Estabelecimento());
+		this.ambiente.getEstabelecimento().setNome(estabelecimentoNome);
 	}
 	
 	public Date getData() {

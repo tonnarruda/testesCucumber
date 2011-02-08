@@ -32,12 +32,14 @@ public class MedicaoRiscoDaoHibernate extends GenericDaoHibernate<MedicaoRisco> 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "medicao");
 		criteria.createCriteria("medicao.ambiente", "ambiente");
+		criteria.createCriteria("ambiente.estabelecimento", "estab");
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("medicao.id"), "id");
 		p.add(Projections.property("medicao.data"), "data");
 		p.add(Projections.property("ambiente.id"), "projectionAmbienteId");
 		p.add(Projections.property("ambiente.nome"), "projectionAmbienteNome");
+		p.add(Projections.property("estab.nome"), "projectionEstabelecimentoNome");
 		
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("ambiente.empresa.id", empresaId));
