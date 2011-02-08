@@ -36,6 +36,7 @@
 		</@display.column>
 		<@display.column title="Data da Medição" property="data" format="{0,date,dd/MM/yyyy}" />
 		<@display.column title="Ambiente" property="ambiente.nome" />
+		<@display.column title="Estabelecimento" property="ambiente.estabelecimento.nome" />
 	</@display.table>
 	
 	<div class="buttonGroup">

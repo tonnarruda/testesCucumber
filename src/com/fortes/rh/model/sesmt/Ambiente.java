@@ -103,6 +103,7 @@ public class Ambiente extends AbstractModel implements Serializable
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
 	}
+
 	
 	/**
 	 * Variável <i>Transiente</i>.
