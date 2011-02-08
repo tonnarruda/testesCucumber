@@ -31,11 +31,13 @@
 
 	<@display.table name="cargos" id="cargo" class="dados" >
 		<@display.column title="Ações" class="acao" style="width: 120px;">
-		<@authz.authorize ifAllGranted="ROLE_TRANSFERIR_FAIXAS_AC">
-			<a href="prepareTransferirFaixasCargo.action?cargo.id=${cargo.id}"><img border="0" title="Transferir Faixas para este cargo" src="<@ww.url includeParams="none" value="/imgs/faixas.gif"/>"></a>
-		</@authz.authorize>
+			<@authz.authorize ifAllGranted="ROLE_TRANSFERIR_FAIXAS_AC">
+				<a href="prepareTransferirFaixasCargo.action?cargo.id=${cargo.id}"><img border="0" title="Transferir Faixas para este cargo" src="<@ww.url includeParams="none" value="/imgs/faixas.gif"/>"></a>
+			</@authz.authorize>
 			<a href="../../sesmt/funcao/list.action?cargoTmp.id=${cargo.id}"><img border="0" title="Funções" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
-			<a href="../faixaSalarial/list.action?cargo.id=${cargo.id}"><img border="0" title="Faixas Salariais" src="<@ww.url includeParams="none" value="/imgs/insertCell.gif"/>"></a>
+			<@authz.authorize ifAllGranted="ROLE_CAD_FAIXA_SALARIAL">
+				<a href="../faixaSalarial/list.action?cargo.id=${cargo.id}"><img border="0" title="Faixas Salariais" src="<@ww.url includeParams="none" value="/imgs/insertCell.gif"/>"></a>
+			</@authz.authorize>
 			<a href="prepareUpdate.action?cargo.id=${cargo.id}&page=${page}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cargo.id=${cargo.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			<a href="imprimir.action?cargo.id=${cargo.id}"><img border="0" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>

@@ -41,7 +41,10 @@ public class ResultadoQuestionario implements Serializable
 		
 		for (ColaboradorResposta colaboradorResposta : this.colabRespostas)
 		{
-			if(!colaboradorResposta.getPergunta().getId().equals(perguntaId) || (colaboradorResposta.getColaboradorQuestionario() != null && colaboradorResposta.getColaboradorQuestionario().getId() != null && !colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioId)))
+			if(!colaboradorResposta.getPergunta().getId().equals(perguntaId) || 
+			(colaboradorResposta.getColaboradorQuestionario() != null && 
+				colaboradorResposta.getColaboradorQuestionario().getId() != null && 
+				!colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioId)))
 			{
 				if (colaboradorResposta.getColaboradorQuestionario().getId() == null)
 					colaboradorResposta.getColaboradorQuestionario().setId(0L);
@@ -65,15 +68,17 @@ public class ResultadoQuestionario implements Serializable
 	{
 		this.colabComentariosDistinct = new ArrayList<ColaboradorResposta>();
 		Long perguntaId = 0L;
-		Long colaboradorQuestionarioId = 0L;
 		
 		for (ColaboradorResposta colaboradorResposta : colabRespostas) 
 		{
-			if(StringUtils.isNotBlank(colaboradorResposta.getComentario()) && (!colaboradorResposta.getPergunta().getId().equals(perguntaId) || (colaboradorResposta.getColaboradorQuestionario() != null && colaboradorResposta.getColaboradorQuestionario().getId() != null && !colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioId))))
+			if(StringUtils.isNotBlank(colaboradorResposta.getComentario()) && 
+			(!colaboradorResposta.getPergunta().getId().equals(perguntaId) || 
+			(colaboradorResposta.getColaboradorQuestionario() != null && 
+			colaboradorResposta.getColaboradorQuestionario().getId() != null  
+			)))
 				colabComentariosDistinct.add(colaboradorResposta);
 			
 			perguntaId = colaboradorResposta.getPergunta().getId();
-			colaboradorQuestionarioId = colaboradorResposta.getColaboradorQuestionario().getId();
 		}
 	}
 	

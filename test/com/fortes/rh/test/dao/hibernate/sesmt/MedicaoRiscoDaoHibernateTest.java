@@ -4,18 +4,21 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.dao.sesmt.MedicaoRiscoDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.dao.sesmt.RiscoMedicaoRiscoDao;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.MedicaoRiscoFactory;
 
 public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<MedicaoRisco>
@@ -24,6 +27,7 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 	private RiscoMedicaoRiscoDao riscoMedicaoRiscoDao;
 	private AmbienteDao ambienteDao;
 	private EmpresaDao empresaDao;
+	private EstabelecimentoDao estabelecimentoDao;
 	
 	private Empresa empresa = null;
 	private MedicaoRisco medicaoRisco = null;
@@ -94,8 +98,13 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 	}
 
 	private void saveDadosMedicao() {
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setNome("Estabelecimento");
+		estabelecimentoDao.save(estabelecimento);
+		
 		ambiente = AmbienteFactory.getEntity();
 		ambiente.setEmpresa(empresa);
+		ambiente.setEstabelecimento(estabelecimento);
 		ambienteDao.save(ambiente);
 		
 		medicaoRisco = MedicaoRiscoFactory.getEntity();
@@ -126,6 +135,10 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 
 	public void setHistoricoAmbienteDao(HistoricoAmbienteDao historicoAmbienteDao) {
 		this.historicoAmbienteDao = historicoAmbienteDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
 	}
 
 }
