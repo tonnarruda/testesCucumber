@@ -18,6 +18,7 @@ public class Certificado implements Cloneable
 	private String tamanho;
 	private boolean imprimirMoldura;
 	private boolean imprimirLogo;
+	private boolean imprimirLogoCertificado;
 	
 	public Certificado()
 	{
@@ -167,6 +168,14 @@ public class Certificado implements Cloneable
 		}
 
 		return certificacaoTreinamentos;
+	}
+
+	public boolean isImprimirLogoCertificado() {
+		return imprimirLogoCertificado;
+	}
+
+	public void setImprimirLogoCertificado(boolean imprimirLogoCertificado) {
+		this.imprimirLogoCertificado = imprimirLogoCertificado;
 	}
 
 }

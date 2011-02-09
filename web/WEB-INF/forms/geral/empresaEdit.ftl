@@ -1,3 +1,4 @@
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -109,7 +110,21 @@
 					</ul>
 				</@ww.div>
 			</li>
-
+		<br>
+		
+		<@authz.authorize ifAllGranted="ROLE_CERTIFICADO_CURSO">
+			<@ww.file label="Logo dos Certificados(110px x 110px)" name="logoCert" id="logoCert" liClass="liLeft"/>
+			<li>
+				<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
+					<ul>
+						<#if empresa.id?exists && empresa.logoCertificadoUrl?exists && empresa.logoCertificadoUrl != "">
+							<img border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showLogoCertificado.action?empresa.logoCertificadoUrl=${empresa.logoCertificadoUrl}"/>">
+						</#if>
+					</ul>
+				</@ww.div>
+			</li>
+		</@authz.authorize>
+		
 		<@ww.textfield label="Nome" name="empresa.nome" id="nome" required="true" cssClass="inputNome" maxLength="15"/>
 		<@ww.textfield label="Denominação Social" name="empresa.razaoSocial" id="razao" required="true" cssClass="inputNome" maxLength="60" />
 		<@ww.textfield label="Endereço" name="empresa.endereco"  cssClass="inputNome" maxLength="100" />
@@ -147,12 +162,11 @@
 
 		<@ww.hidden name="empresa.id" />
 		<@ww.hidden name="empresa.logoUrl" />
+		<@ww.hidden name="empresa.logoCertificacaoUrl" />
 		<@ww.hidden name="empresa.codigoAC" id="codigoAC" />
 	<@ww.token/>
 	</@ww.form>
-	<#if empresa.logo?exists>
-		<img src="<@ww.url includeParams="none" value="/geral/empresa/showLogo.action?empresa.id=${empresa.id}"/>" style="display:''" id="logoImg">
-	</#if>
+
 
 	<div class="buttonGroup">
 		<button onclick="enviaForm();" class="btnGravar" accesskey="${accessKey}">

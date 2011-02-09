@@ -52,7 +52,7 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> montaColunas(Collection<ColaboradorTurma> colaboradorTurmas, boolean exibirNomeComercial, boolean exibirCargo, boolean exibirEstabelecimento, boolean exibirAssinatura);
 	public Collection<ColaboradorTurma> findRelatorioHistoricoTreinamentos(Long empresaId, Long colaboradorId, Date dataIni, Date dataFim) throws ColecaoVaziaException, Exception;
 	public Collection<Colaborador> findAprovadosByTurma(Collection<Long> turmaId);
-	public Collection<Certificado> montaCertificados(Collection<Colaborador> colaboradores, Certificado certificado);
+	public Collection<Certificado> montaCertificados(Collection<Colaborador> colaboradores, Certificado certificado, Long empresaId);
 	public Collection<Colaborador> findAprovadosByCertificacao(Collection<Curso> cursos);
 	public Integer countAprovados(Date dataIni, Date dataFim, Long empresaId, boolean aprovado);
 	public Collection<ColaboradorCertificacaoRelatorio> montaRelatorioColaboradorCertificacao(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds) throws Exception;

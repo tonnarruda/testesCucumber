@@ -22,6 +22,9 @@
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
     <property name="historicoColaboradorManager">
       <ref bean="historicoColaboradorManager" />
     </property>

@@ -364,14 +364,14 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	colaboradors.add(colaborador);
 		
     	colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
-    	colaboradorTurmaManager.expects(once()).method("montaCertificados").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+    	colaboradorTurmaManager.expects(once()).method("montaCertificados").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
     	
     	assertEquals("successGrande", action.imprimirCertificado());
     	
     	certificado.setTamanho("0"); //pequeno
     	
     	colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
-    	colaboradorTurmaManager.expects(once()).method("montaCertificados").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+    	colaboradorTurmaManager.expects(once()).method("montaCertificados").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
     	
     	assertEquals("successPequeno", action.imprimirCertificado());
     }

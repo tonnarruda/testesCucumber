@@ -66,7 +66,9 @@ public class Empresa extends AbstractModel implements Serializable
     private String logoUrl;
     @Column(length=200)
     private String atividade;
-
+    @Column(length=200)
+    private String logoCertificadoUrl;
+   
     @ManyToOne
 	private Estado uf;
 	@ManyToOne
@@ -354,5 +356,15 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setExibirDadosAmbiente(boolean exibirDadosAmbiente) {
 		this.exibirDadosAmbiente = exibirDadosAmbiente;
+	}
+
+	public void setLogoCertificadoUrl(String logoCertificadoUrl)
+	{
+		this.logoCertificadoUrl = logoCertificadoUrl;
+	}
+
+	public String getLogoCertificadoUrl() 
+	{
+		return logoCertificadoUrl;
 	}
 }

@@ -32,6 +32,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/empresaEdit.ftl</result>
 		</action>
 		<action name="showLogo" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showLogo" />
+		<action name="showLogoCertificado" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showLogoCertificado" />
 		
 		<action name="prepareImportarCadastros" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="prepareImportarCadastros">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/importaCadastros.ftl</result>

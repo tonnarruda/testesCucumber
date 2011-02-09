@@ -107,7 +107,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
 
     	File logo = new File();
     	logo.setName("teste.jpg");
-    	empresa = empresaManager.setLogo(empresa, logo, null);
+    	empresa = empresaManager.setLogo(empresa, logo, null, null);
 
     	assertNotNull(empresa.getLogoUrl());
     }

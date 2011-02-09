@@ -16,6 +16,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.desenvolvimento.relatorio.CursoPontuacaoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -42,6 +44,7 @@ import com.ibm.icu.math.BigDecimal;
 public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorTurma, ColaboradorTurmaDao> implements ColaboradorTurmaManager
 {
 	private ColaboradorManager colaboradorManager;
+	private EmpresaManager empresaManager;
 	private DiaTurmaManager diaTurmaManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -754,14 +757,18 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			return 100.0;
 	}
 	
-	public Collection<Certificado> montaCertificados(Collection<Colaborador> colaboradores, Certificado certificado)
+	public Collection<Certificado> montaCertificados(Collection<Colaborador> colaboradores, Certificado certificado, Long empresaId)
 	{
+		Empresa empresa = empresaManager.findById(empresaId); 
+		Boolean imprimirLogoCertificado = empresa.getLogoCertificadoUrl() != null ? true : false;
+		
 		Collection<Certificado> certificados = new ArrayList<Certificado>(colaboradores.size());
 		for (Colaborador colaborador : colaboradores)
 		{
 			Certificado certificadoTmp = new Certificado();
 			certificadoTmp = (Certificado) certificado.clone();
 			certificadoTmp.setNomeColaborador(colaborador.getNome());
+			certificadoTmp.setImprimirLogoCertificado(imprimirLogoCertificado);
 			certificados.add(certificadoTmp);
 		}
 
@@ -1078,6 +1085,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager) 
 	{
 		this.diaTurmaManager = diaTurmaManager;
+	}
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 	
 }

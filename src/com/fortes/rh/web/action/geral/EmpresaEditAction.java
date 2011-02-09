@@ -3,6 +3,7 @@
  * Requisito: RFA003 */
 package com.fortes.rh.web.action.geral;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -48,6 +49,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private ParametrosDoSistema parametrosDoSistema;
 
 	private File logo;
+	private File logoCert;
 	private Collection<Empresa> empresas;
 
 	public String execute() throws Exception
@@ -88,7 +90,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String insert() throws Exception
 	{
-		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas");
+		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
 		
 		if(StringUtils.isEmpty(empresa.getLogoUrl()))
 			empresa.setLogoUrl("fortes.gif");
@@ -100,7 +102,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String update() throws Exception
 	{
-		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas");
+		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
 		empresaManager.updateEmpresa(empresa);
 
 		if(empresa.equals(getEmpresaSistema()))
@@ -117,28 +119,44 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		if (empresa.getLogoUrl() != null && !empresa.getLogoUrl().equals(""))
 		{
 			java.io.File file = ArquivoUtil.getArquivo(empresa.getLogoUrl(),"logoEmpresas");
-			com.fortes.model.type.File arquivo = new com.fortes.model.type.File();
-			arquivo.setBytes(FileUtil.getFileBytes(file));
-			arquivo.setName(file.getName());
-			arquivo.setSize(file.length());
-			int pos = arquivo.getName().indexOf(".");
-			if(pos > 0){
-				arquivo.setContentType(arquivo.getName().substring(pos));
-			}
-			if (arquivo != null && arquivo.getBytes() != null)
-			{
-				HttpServletResponse response = ServletActionContext.getResponse();
-
-				response.addHeader("Expires", "0");
-				response.addHeader("Pragma", "no-cache");
-				response.addHeader("Content-type", arquivo.getContentType());
-				response.addHeader("Content-Transfer-Encoding", "binary");
-
-				response.getOutputStream().write(arquivo.getBytes());
-			}
+			showFile(file);
 		}
-
+		
 		return Action.SUCCESS;
+	}
+
+	public String showLogoCertificado() throws Exception
+	{
+		if (empresa.getLogoCertificadoUrl() != null && !empresa.getLogoCertificadoUrl().equals(""))
+		{
+			java.io.File file = ArquivoUtil.getArquivo(empresa.getLogoCertificadoUrl(),"logoEmpresas");
+			showFile(file);
+		}
+		
+		return Action.SUCCESS;
+	}
+
+	private void showFile(java.io.File file) throws IOException 
+	{
+		com.fortes.model.type.File arquivo = new com.fortes.model.type.File();
+		arquivo.setBytes(FileUtil.getFileBytes(file));
+		arquivo.setName(file.getName());
+		arquivo.setSize(file.length());
+		int pos = arquivo.getName().indexOf(".");
+		if(pos > 0){
+			arquivo.setContentType(arquivo.getName().substring(pos));
+		}
+		if (arquivo != null && arquivo.getBytes() != null)
+		{
+			HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.addHeader("Content-type", arquivo.getContentType());
+			response.addHeader("Content-Transfer-Encoding", "binary");
+
+			response.getOutputStream().write(arquivo.getBytes());
+		}
 	}
 	
 	public String prepareImportarCadastros() 
@@ -265,5 +283,15 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public ParametrosDoSistema getParametrosDoSistema()
 	{
 		return parametrosDoSistema;
+	}
+
+	public File getLogoCert() 
+	{
+		return logoCert;
+	}
+
+	public void setLogoCert(File logoCert) 
+	{
+		this.logoCert = logoCert;
 	}
 }

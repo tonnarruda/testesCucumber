@@ -30,3 +30,5 @@ END;
 
 select ajusta_perfil_papel_faixa(); --.go
 drop function ajusta_perfil_papel_faixa(); --.go
+
+alter table empresa add column logoCertificadoUrl varchar(200);--.go

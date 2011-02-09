@@ -107,12 +107,16 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return url;
 	}
 
-	public Empresa setLogo(Empresa empresa, File logo, String local)
+	public Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado)
 	{
 		String logoUrl = saveLogo(logo, local);
+		String logoCertificadoUrl = saveLogo(logoCertificado, local);
 
 		if(!logoUrl.equals(""))
 			empresa.setLogoUrl(logoUrl);
+		
+		if(!logoCertificadoUrl.equals(""))
+			empresa.setLogoCertificadoUrl(logoCertificadoUrl);
 
 		return empresa;
 	}

@@ -408,14 +408,15 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			prepareImprimirCertificado();
 			return Action.INPUT;
 		}
-
-		String logo = ArquivoUtil.getPathLogoEmpresa() + getEmpresaSistema().getLogoUrl();
+		
+		String EscolhaDeLogo = getEmpresaSistema().getLogoCertificadoUrl() == null ? getEmpresaSistema().getLogoUrl():  getEmpresaSistema().getLogoCertificadoUrl();
+		String logo = ArquivoUtil.getPathLogoEmpresa() + EscolhaDeLogo;
 		String path = ServletActionContext.getServletContext().getRealPath("/imgs/") + File.separator;
 		parametros.put("LOGO", logo);
 		parametros.put("PATH_IMG", path);
 
 		colaboradores = colaboradorManager.findAllSelect(LongUtil.arrayStringToCollectionLong(colaboradoresCheck), false);
-		dataSource = colaboradorTurmaManager.montaCertificados(colaboradores, certificado);
+		dataSource = colaboradorTurmaManager.montaCertificados(colaboradores, certificado, getEmpresaSistema().getId());
 
 		if(certificado.getTamanho().equals("1"))
 			return "successGrande";

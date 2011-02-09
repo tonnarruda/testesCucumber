@@ -44,7 +44,7 @@
         <interceptor-ref name="conversionError" />
         <interceptor-ref name="validation">
           <param name="excludeMethods">prepareUpdateInfoPessoais,prepareClonar,prepareCriarUsuario,prepareUpdate,prepareInsert,input,back,cancel,prepareContrata,prepareUpdateCandidatoExterno,enviarCurriculo,preparePerformanceFuncional,
-			  editBusca,prepareBuscaCandidato,busca,prepareAplicarReajuste,listFiltro,aplicarReajuste,populaColaboradores,showFoto,showCurriculo,showLogo,showDocumento,showImagensCurriculo,
+			  editBusca,prepareBuscaCandidato,busca,prepareAplicarReajuste,listFiltro,aplicarReajuste,populaColaboradores,showFoto,showCurriculo,showLogo,showLogoCertificado,showDocumento,showImagensCurriculo,
 			  verCurriculo,imprimir,email,emailColaboradorSemUsuario,upload,reabrirSolicitacao,encerrarSolicitacao,
 			  prepareRelatorio,imprimirRelatorio,prepareUpdateSenhaUsuario,updateSenhaUsuario,imprimirVencimentoCa,
 			  prepareList,viewAuditoria,prepareProdutividade,imprimirCurriculo,prepareRelatorioProcessoSeletivo,imprimirRelatorioProcessoSeletivo,insertSolicitacaoReajuste,

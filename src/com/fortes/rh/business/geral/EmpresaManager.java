@@ -19,7 +19,7 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	void updateEmpresa(Empresa empresa);
 	Empresa findByCodigoAC(String codigo);
 	String saveLogo(File logo, String local) throws Exception;
-	Empresa setLogo(Empresa empresa, File logo, String local) throws Exception;
+	Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado) throws Exception;
 	boolean findIntegracaoAC(Long id);
 	boolean findExibirSalarioById(Long empresaId);
 	boolean criarEmpresa(TEmpresa empresa);

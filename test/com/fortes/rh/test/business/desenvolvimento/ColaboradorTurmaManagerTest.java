@@ -27,6 +27,7 @@ import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
@@ -70,6 +71,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	private Mock avaliacaoCursoManager;
 	private Mock aproveitamentoAvaliacaoCursoManager;
 	private Mock cursoManager;
+	private Mock empresaManager;
 	private Mock diaTurmaManager;
 	private Mock certificacaoManager;
 	Mock turmaManager;
@@ -103,6 +105,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 		diaTurmaManager = new Mock(DiaTurmaManager.class);
 		colaboradorTurmaManager.setDiaTurmaManager((DiaTurmaManager) diaTurmaManager.proxy());
+
+		empresaManager = new Mock(EmpresaManager.class);
+		colaboradorTurmaManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
 		turmaManager = new Mock(TurmaManager.class);
 
@@ -1139,6 +1144,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	
 	public void testMontaCertificados() 
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		
 		Colaborador marlus = ColaboradorFactory.getEntity(1L);
 		marlus.setNome("Marlus");
 		
@@ -1151,7 +1158,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		colaboradores.add(marlus);
 		
-		Collection<Certificado>  certificadosResults = colaboradorTurmaManager.montaCertificados(colaboradores, certificadoA);
+		empresaManager.expects(once()).method("findById").with(eq(empresa.getId())).will(returnValue(empresa));
+		
+		Collection<Certificado>  certificadosResults = colaboradorTurmaManager.montaCertificados(colaboradores, certificadoA, null);
 		
 		Certificado certificadoClonado = (Certificado) certificadosResults.toArray()[0];
 		
