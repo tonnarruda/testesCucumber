@@ -46,20 +46,20 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 	@Override
 	protected void tearDown() throws Exception
 	{
-		delete("delete from rhsca where car_codigo >= '237' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
-		delete("delete from car where codigo >= '237' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
+		execute("delete from rhsca where car_codigo >= '237' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
+		execute("delete from car where codigo >= '237' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
 		super.tearDown();
 	}
 	
 	public void testStatusAC() throws Exception
 	{
-		ResultSet result = execute("select count(*) as total from car where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
+		ResultSet result = query("select count(*) as total from car where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
 		if (result.next())
 			assertEquals(172, result.getInt("total"));
 		else
 			fail("Consulta não retornou nada...");
 		
-		result = execute("select count(*) as total from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
+		result = query("select count(*) as total from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
 		if (result.next())
 			assertEquals(0, result.getInt("total"));
 		else
@@ -77,7 +77,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		
 		String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa);
 		String sql = "select data, saltipo, valor, rh_sca_id from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and car_codigo = '" + codigoAC + "'";
-		ResultSet result = execute(sql);
+		ResultSet result = query(sql);
 		if (result.next())
 		{
 			assertEquals("2011-01-01 00:00:00.0", result.getString("data"));
@@ -90,7 +90,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		
 		
 		sql = "select nome, nome_faixa_rh from car where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoAC + "'";
-		result = execute(sql);
+		result = query(sql);
 		if (result.next())
 		{
 			assertEquals(faixaSalarial.getNomeACPessoal(), result.getString("nome"));
@@ -105,7 +105,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		faixaSalarial.setNomeACPessoal("Castelo do AC");
 		acPessoalClientCargo.updateCargo(faixaSalarial, empresa);
 		
-		result = execute(sql);
+		result = query(sql);
 		if (result.next())
 		{
 			assertEquals(faixaSalarial.getNomeACPessoal(), result.getString("nome"));
@@ -124,7 +124,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		acPessoalClientCargo.criarFaixaSalarialHistorico(faixaSalarialHistorico, empresa);
 		
 		sql = "select data, saltipo, valor, rh_sca_id from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and car_codigo = '"+ codigoAC +"' and data='01-01-2011'";
-		result = execute(sql);
+		result = query(sql);
 		if (result.next())
 		{
 			assertEquals("2011-01-01 00:00:00.0", result.getString("data"));
@@ -137,7 +137,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		
 		//delete faixaSalarial historico
 		acPessoalClientCargo.deleteFaixaSalarialHistorico(faixaSalarialHistorico.getId(), empresa);
-		result = execute(sql);
+		result = query(sql);
 		if (result.next())
 			fail("Consulta RETORNOU coisa...");
 		else
@@ -160,7 +160,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 
 		String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa);
 		String sqlHist = "select data, saltipo, valor, indqtde, ind_codigo_salario, rh_sca_id from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and car_codigo = '" + codigoAC + "'";
-		ResultSet result = execute(sqlHist);
+		ResultSet result = query(sqlHist);
 		if (result.next())
 		{
 			assertEquals("2011-01-01 00:00:00.0", result.getString("data"));
@@ -174,7 +174,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 			fail("Consulta não retornou nada...");
 
 		String sql = "select nome, nome_faixa_rh from car where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoAC + "'";
-		result = execute(sql);
+		result = query(sql);
 		if (result.next())
 		{
 			assertEquals("Motorista de Nave AC", result.getString("nome"));
@@ -185,14 +185,14 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		
 		//delete
 		assertEquals(true, acPessoalClientCargo.deleteCargo(new String[]{codigoAC}, empresa));
-		result = execute(sql);
+		result = query(sql);
 		if (result.next())
 			fail("Consulta RETORNOU coisa...");
 		else
 			assertTrue(true);
 
 		//verifica delete do hist
-		result = execute(sqlHist);
+		result = query(sqlHist);
 		if (result.next())
 			fail("Consulta RETORNOU coisa...");
 		else

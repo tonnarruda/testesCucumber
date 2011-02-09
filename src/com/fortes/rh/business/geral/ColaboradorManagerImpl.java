@@ -391,7 +391,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				
 				historicoColaboradorManager.update(historicoColaborador);
 			} catch (Exception e) {
-e.printStackTrace();
+				e.printStackTrace();
 			}
 			colaborador.setHistoricoColaborador(historicoColaborador);
 		}

@@ -28,13 +28,13 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 	@Override
 	protected void tearDown() throws Exception
 	{
-		delete("delete from lot where codigo >= '003' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
+		execute("delete from lot where codigo >= '003' and emp_codigo='" + getEmpresa().getCodigoAC() + "'");
 		super.tearDown();
 	}
 	
 	public void testStatusAC() throws Exception
 	{
-		ResultSet result = execute("select count(*) as total from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
+		ResultSet result = query("select count(*) as total from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
 		if (result.next())
 			assertEquals(6, result.getInt("total"));
 		else
@@ -58,7 +58,7 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 		assertEquals("00301", codigoACFilha);
 		
 		//mae
-		ResultSet result = execute("select nome, lot_codigo_mae, rh_lot from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoACMae + "'");
+		ResultSet result = query("select nome, lot_codigo_mae, rh_lot from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoACMae + "'");
 		if (result.next())
 		{
 			assertEquals("Mamae", result.getString("nome"));
@@ -69,7 +69,7 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 			fail("Consulta não retornou nada...");
 		
 		//filha
-		result = execute("select nome, lot_codigo_mae, rh_lot from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoACFilha + "'");
+		result = query("select nome, lot_codigo_mae, rh_lot from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoACFilha + "'");
 		if (result.next())
 		{
 			assertEquals("filha", result.getString("nome"));
@@ -91,7 +91,7 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 		assertEquals(3, updatedCodigoAC.length());
 		assertEquals(codigoAC, updatedCodigoAC);
 		
-		ResultSet result = execute("select nome, lot_codigo_mae, rh_lot from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoAC + "'");
+		ResultSet result = query("select nome, lot_codigo_mae, rh_lot from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoAC + "'");
 		if (result.next())
 		{
 			assertEquals("Area 51", result.getString("nome"));
@@ -109,7 +109,7 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 
 		// delete
 		assertTrue(acPessoalClientLotacaoImpl.deleteLotacao(areaOrganizacional, empresa));
-		ResultSet result = execute("select nome, lot_codigo_mae, rh_lot from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoAC + "'");
+		ResultSet result = query("select nome, lot_codigo_mae, rh_lot from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoAC + "'");
 		assertFalse(result.next());
 	}
 }

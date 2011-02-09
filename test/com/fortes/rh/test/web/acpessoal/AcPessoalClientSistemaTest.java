@@ -18,11 +18,7 @@ public class AcPessoalClientSistemaTest extends AcPessoalClientTest
 
 	public void testGetVersaoWebServiceAC() throws Exception
 	{
-		String codigoAC = acPessoalClientsistemaImpl.getVersaoWebServiceAC(empresa);
-		assertNotNull(codigoAC);
-		assertNotSame("", codigoAC);
-		assertNotSame(0, codigoAC);
-
+		assertEquals("1.0.1.41", acPessoalClientsistemaImpl.getVersaoWebServiceAC(empresa));
 	}
 
 	public void testIdACIntegrado() throws Exception

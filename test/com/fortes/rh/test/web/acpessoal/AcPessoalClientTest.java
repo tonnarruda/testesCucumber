@@ -16,7 +16,7 @@ import com.fortes.rh.web.ws.AcPessoalClientImpl;
 
 public abstract class AcPessoalClientTest extends TestCase
 {
-	protected static final String baseAcUrl = "http://127.0.0.1:1024";
+	protected static final String baseAcUrl = "http://10.1.4.26:1024";
 
 	protected AcPessoalClientImpl acPessoalClientImpl;
 
@@ -25,7 +25,7 @@ public abstract class AcPessoalClientTest extends TestCase
 	public Connection getConexaoAC() throws ClassNotFoundException, SQLException 
 	{
 		Class.forName("org.firebirdsql.jdbc.FBDriver");
-		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:localhost/3051:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
+		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:10.1.4.26/3051:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
 		conexao.setAutoCommit(true);
 		
 		return conexao;
@@ -48,18 +48,18 @@ public abstract class AcPessoalClientTest extends TestCase
 		empresa.setAcIntegra(true);
 	}
 	
-    public static ResultSet execSelect(Connection conn, String sql) throws Exception 
+    public static ResultSet execQuery(Connection conn, String sql) throws Exception 
     {
         Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         return stm.executeQuery(sql);
     }
 	
-	public ResultSet execute(String sql) throws Exception
+	public ResultSet query(String sql) throws Exception
 	{
-		return execSelect(getConexaoAC(), sql);
+		return execQuery(getConexaoAC(), sql);
 	}
 
-	public void delete(String sql) throws Exception
+	public void execute(String sql) throws Exception
 	{
 		try
 		{

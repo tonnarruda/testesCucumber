@@ -134,8 +134,8 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		return modulosIds;
 	}
 	
-	public void atualizarPapeis(Long atualizaPapeisIdsAPartirDe) {
-		
+	public void atualizarPapeis(Long atualizaPapeisIdsAPartirDe) 
+	{
 		if (atualizaPapeisIdsAPartirDe != null)
 		{
 			Collection<Long> papeisPermitidosIds = getPapeisPermitidos();
