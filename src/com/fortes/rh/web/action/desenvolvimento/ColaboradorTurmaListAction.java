@@ -137,10 +137,10 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");	
 		
 		turma = turmaManager.findByIdProjection(turma.getId());
-		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), empresaId);
-		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
+		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), null);
+		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, null);
 
-		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), null);
 
 		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
 		{
