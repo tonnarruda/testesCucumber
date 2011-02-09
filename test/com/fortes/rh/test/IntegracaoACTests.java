@@ -5,6 +5,7 @@ import junit.framework.TestSuite;
 import com.fortes.rh.test.web.acpessoal.AcPessoalClientCargoTest;
 import com.fortes.rh.test.web.acpessoal.AcPessoalClientColaboradorOcorrenciaTest;
 import com.fortes.rh.test.web.acpessoal.AcPessoalClientColaboradorTest;
+import com.fortes.rh.test.web.acpessoal.AcPessoalClientGastoTest;
 import com.fortes.rh.test.web.acpessoal.AcPessoalClientHistoricoColaboradorTest;
 import com.fortes.rh.test.web.acpessoal.AcPessoalClientLotacaoTest;
 import com.fortes.rh.test.web.acpessoal.AcPessoalClientOcorrenciaTest;
@@ -23,6 +24,7 @@ public class IntegracaoACTests extends TestSuite
         suite.addTestSuite(AcPessoalClientOcorrenciaTest.class);
         suite.addTestSuite(AcPessoalClientSistemaTest.class);
         suite.addTestSuite(AcPessoalClientHistoricoColaboradorTest.class);
+        suite.addTestSuite(AcPessoalClientGastoTest.class);
         
         return suite;
     }	
