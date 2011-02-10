@@ -60,13 +60,18 @@ public class Mail
     {
     	ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
     	
-    	DataSource[] dsArray = new DataSource[attachedFiles.length];
-    	for (int i = 0; i < attachedFiles.length; i++) 
+    	if(attachedFiles != null)
     	{
-			dsArray[i] = new FileDataSource(attachedFiles[i]);
-		}
-    	
-    	procSend(empresa, parametros, subject, body, dsArray, to);
+	    	DataSource[] dsArray = new DataSource[attachedFiles.length];
+	    	for (int i = 0; i < attachedFiles.length; i++) 
+	    	{
+				dsArray[i] = new FileDataSource(attachedFiles[i]);
+			}
+    	}
+    	else
+    	{
+    		procSend(empresa, parametros, subject, body, null, to);
+    	}
     }
 
     public void send(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, String... to) throws AddressException, MessagingException

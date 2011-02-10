@@ -18,11 +18,9 @@ DECLARE
     mviews RECORD;
 BEGIN
     FOR mviews IN
-		select distinct perfil_id as perfilId, (select count(*) from perfil_papel where papeis_id = 11) as qtd from perfil_papel where papeis_id = 11 order by perfil_id
+		select distinct perfil_id as perfilId from perfil_papel where papeis_id = 11 order by perfil_id
 		LOOP
-		  IF mviews.qtd != 0 THEN
-			EXECUTE ''insert into perfil_papel(perfil_id, papeis_id) values(''|| mviews.perfilId ||'', ''|| 499 ||'')'';
-		  END IF;
+		  EXECUTE ''insert into perfil_papel(perfil_id, papeis_id) values(''|| mviews.perfilId ||'', ''|| 499 ||'')'';
 		END LOOP;
     RETURN 1;
 END;
