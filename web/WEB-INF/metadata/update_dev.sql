@@ -10,7 +10,7 @@ UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=498 WHERE atualizaPape
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (499, 'ROLE_CAD_FAIXA_SALARIAL', 'Exibir Faixa Salarial de Cargos', '', 5, false, 11); --.go
 alter sequence papel_sequence restart with 500; --.go
 
-UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=361 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=498 WHERE atualizaPapeisIdsAPartirDe is null;--.go
 
 
 CREATE FUNCTION ajusta_perfil_papel_faixa() RETURNS integer AS '
