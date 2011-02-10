@@ -6,7 +6,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
-	<title>Aproveitamento/Notas</title>
+	<title>Avaliações dos Alunos</title>
 
 	<script type='text/javascript'>
 		var alterouCampo = false;
