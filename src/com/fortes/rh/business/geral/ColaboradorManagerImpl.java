@@ -1355,7 +1355,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		experienciaManager.removeColaborador(colaborador);
 
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
-
+		
+		if (colaboradorTmp.getCandidato().getId() != null)
+		{
+			Candidato candidatoTmp = candidatoManager.findById(colaboradorTmp.getCandidato().getId());
+			candidatoTmp.setContratado(false);
+			candidatoTmp.setDisponivel(true);
+			candidatoManager.update(candidatoTmp);
+		}
+		
 		historicoColaboradorManager.removeColaborador(colaborador.getId());
 				
 		remove(colaborador.getId());
