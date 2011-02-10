@@ -64,22 +64,6 @@ public class MailTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(atLeastOnce()).method("findById").with(eq(1L)).will(returnValue(param));
 
 		mail.send(empresa, "", "corpo", new File[] {}, new String[] { "rodrigomaia@grupofortes.com.br" });
-
-		//Teste para empresa null
-		mail.send(null, "", "corpo", new File[] {}, new String[] { "rodrigomaia@grupofortes.com.br" });
-
-		Exception exp = null;
-
-		try
-		{
-			mail.send(empresa, "", "corpo", new File[] {}, new String[] {});
-		}
-		catch (Exception e)
-		{
-			exp = e;
-		}
-
-		assertNotNull("Test 1", exp);
 	}
 	
 	public void testSendComAnexo() throws Exception
