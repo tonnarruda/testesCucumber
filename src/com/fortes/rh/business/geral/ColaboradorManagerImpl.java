@@ -1356,7 +1356,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
 		
-		if (colaboradorTmp.getCandidato().getId() != null)
+		if (colaboradorTmp != null && colaboradorTmp.getCandidato()!= null && colaboradorTmp.getCandidato().getId() != null)
 		{
 			Candidato candidatoTmp = candidatoManager.findById(colaboradorTmp.getCandidato().getId());
 			candidatoTmp.setContratado(false);
