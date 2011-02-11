@@ -13,8 +13,10 @@ import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
+import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
+import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.cargosalario.CargoManagerImpl;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
@@ -66,6 +68,8 @@ public class CargoManagerTest extends MockObjectTestCase
 	Mock areaFormacaoManager;
 	Mock grupoOcupacionalManager;
 	Mock etapaSeletivaManager;
+	Mock habilidadeManager;
+	Mock atitudeManager;
 	
 
 	protected void setUp() throws Exception
@@ -104,6 +108,12 @@ public class CargoManagerTest extends MockObjectTestCase
 
 		etapaSeletivaManager = mock(EtapaSeletivaManager.class);
 		cargoManager.setEtapaSeletivaManager((EtapaSeletivaManager) etapaSeletivaManager.proxy());
+
+		atitudeManager = mock(AtitudeManager.class);
+		cargoManager.setAtitudeManager((AtitudeManager) atitudeManager.proxy());
+		
+		habilidadeManager = mock(HabilidadeManager.class);
+		cargoManager.setHabilidadeManager((HabilidadeManager) habilidadeManager.proxy());
 		
 		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
 
@@ -424,6 +434,8 @@ public class CargoManagerTest extends MockObjectTestCase
 		areaFormacaoManager.expects(atLeastOnce()).method("findByCargo").will(returnValue(areasF));
 		faixaSalarialManager.expects(atLeastOnce()).method("findByCargo").will(returnValue(faixas));
 		etapaSeletivaManager.expects(atLeastOnce()).method("findByCargo").will(returnValue(etapaSeletivas));
+		habilidadeManager.expects(atLeastOnce()).method("findByCargo");
+		atitudeManager.expects(atLeastOnce()).method("findByCargo");
 		
 		Collection<Cargo> cargosRetorno = cargoManager.getCargosByIds(idsLong, null);
 

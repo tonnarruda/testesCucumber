@@ -29,7 +29,7 @@
 	<field name="nome" class="java.lang.String"/>
 	<field name="nomeMercado" class="java.lang.String"/>
 	<field name="observacao" class="java.lang.String"/>
-	<field name="competencias" class="java.lang.String"/>
+	<field name="descHabilidade" class="java.lang.String"/>
 	<field name="descEscolaridade" class="java.lang.String"/>
 	<field name="experiencia" class="java.lang.String"/>
 	<field name="missao" class="java.lang.String"/>
@@ -41,7 +41,7 @@
 	<field name="descAreaOrganizacioal" class="java.lang.String"/>
 	<field name="descConhecimento" class="java.lang.String"/>
 	<field name="descFaixaSalarial" class="java.lang.String"/>
-	<field name="atitude" class="java.lang.String"/>
+	<field name="descAtitude" class="java.lang.String"/>
 	<field name="cboCodigo" class="java.lang.String"/>
 	<field name="descEtapaSeletiva" class="java.lang.String"/>
 
@@ -131,7 +131,7 @@
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="290"
+						y="244"
 						width="535"
 						height="11"
 						backcolor="#E6E6E6"
@@ -147,7 +147,7 @@
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="244"
+						y="290"
 						width="535"
 						height="11"
 						backcolor="#E6E6E6"
@@ -227,7 +227,7 @@
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="267"
+						y="313"
 						width="535"
 						height="11"
 						backcolor="#E6E6E6"
@@ -334,7 +334,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="301"
+						y="255"
 						width="535"
 						height="10"
 						key="textField"
@@ -343,12 +343,12 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{competencias}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{descHabilidade}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="255"
+						y="301"
 						width="535"
 						height="10"
 						key="textField"
@@ -418,7 +418,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="278"
+						y="324"
 						width="535"
 						height="10"
 						key="textField"
@@ -489,7 +489,7 @@
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="313"
+						y="267"
 						width="535"
 						height="11"
 						backcolor="#E6E6E6"
@@ -504,7 +504,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="324"
+						y="278"
 						width="535"
 						height="10"
 						key="textField-3"
@@ -513,7 +513,7 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{atitude}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{descAtitude}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement

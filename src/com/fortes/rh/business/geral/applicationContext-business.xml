@@ -138,6 +138,12 @@
     <property name="etapaSeletivaManager">
       <ref bean="etapaSeletivaManager" />
     </property>
+    <property name="habilidadeManager">
+      <ref bean="habilidadeManager" />
+    </property>
+    <property name="atitudeManager">
+      <ref bean="atitudeManager" />
+    </property>
   </bean>
   <bean id="cargoManager" parent="parentManager">
     <property name="proxyInterfaces">

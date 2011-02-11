@@ -8,15 +8,19 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
+import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -40,6 +44,8 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private AreaFormacaoManager areaFormacaoManager;
 	private ConhecimentoManager conhecimentoManager;
+	private HabilidadeManager habilidadeManager;
+	private AtitudeManager atitudeManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
 
@@ -95,6 +101,12 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 			
 			Collection<Conhecimento> conhecimentos = conhecimentoManager.findByCargo(cargo.getId());
 			cargo.setConhecimentos(conhecimentos);
+			
+			Collection<Habilidade> habilidades = habilidadeManager.findByCargo(cargo.getId());
+			cargo.setHabilidades(habilidades);
+			
+			Collection<Atitude> atitudes = atitudeManager.findByCargo(cargo.getId());
+			cargo.setAtitudes(atitudes);
 			
 			Collection<FaixaSalarial> faixaSalarials = faixaSalarialManager.findByCargo(cargo.getId());
 			cargo.setFaixaSalarials(faixaSalarials);
@@ -482,6 +494,14 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	public Collection<Cargo> findAllSelect(Long[] empresaIds)
 	{
 		return getDao().findAllSelect(empresaIds);
+	}
+
+	public void setHabilidadeManager(HabilidadeManager habilidadeManager) {
+		this.habilidadeManager = habilidadeManager;
+	}
+
+	public void setAtitudeManager(AtitudeManager atitudeManager) {
+		this.atitudeManager = atitudeManager;
 	}
 
 

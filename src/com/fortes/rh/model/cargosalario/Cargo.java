@@ -384,16 +384,42 @@ public class Cargo extends AbstractModel implements Serializable
 		return descricao.toString();
 	}
 
+	public String getDescHabilidade()
+	{
+		StringBuilder descricao = new StringBuilder();
+		
+		if(this.habilidades != null)
+			for (Habilidade habilidade : this.habilidades)
+				descricao.append(habilidade.getNome() + "\n");
+		
+		if (this.competencias != null)
+			descricao.append(this.competencias);
+		
+		return descricao.toString();
+	}
+	
+	public String getDescAtitude()
+	{
+		StringBuilder descricao = new StringBuilder();
+		
+		if(this.atitudes != null)
+			for (Atitude atitude : this.atitudes)
+				descricao.append(atitude.getNome() + "\n");
+		
+		if (this.atitude != null)
+			descricao.append(this.atitude);
+		
+		return descricao.toString();
+	}
+
 	public String getDescFaixaSalarial()
 	{
 		StringBuilder descricao = new StringBuilder();
 
 		if(this.faixaSalarials != null)
 			for (FaixaSalarial faixaSalarial : this.faixaSalarials)
-			{
 				descricao.append(faixaSalarial.getNome() + "\n");
-			}
-
+		
 		return descricao.toString();
 	}
 
