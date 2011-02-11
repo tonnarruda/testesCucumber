@@ -5114,3 +5114,35 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (497,
 alter sequence papel_sequence restart with 498;--.go
 
 update parametrosdosistema set appversao = '1.1.38.29';--.go
+
+-- versao 1.1.39.30
+
+update papel set ordem=ordem + 1 where papelmae_id=362 and ordem >= 7;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (498, 'ROLE_CRONOGRAMA_TREINAMENTO', 'Relatorio de investimento de T&D', '/desenvolvimento/turma/relatorioInvestimento.action', 12, true, 368);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (499, 'ROLE_CAD_FAIXA_SALARIAL', 'Exibir Faixa Salarial de Cargos', '', 7, false, 362); --.go
+alter sequence papel_sequence restart with 500; --.go
+
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=498 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+
+update papel set nome = 'Acompanhamento do Período de Experiência e Avaliação de Desempenho' where id = 490;--.go
+update papel set nome = 'Avaliações dos Alunos' where id = 413;--.go
+update papel set nome = 'Modelos de Avaliação de Curso' where id = 419;--.go
+
+CREATE FUNCTION ajusta_perfil_papel_faixa() RETURNS integer AS '
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select distinct perfil_id as perfilId from perfil_papel where papeis_id = 11 order by perfil_id
+		LOOP
+		  EXECUTE ''insert into perfil_papel(perfil_id, papeis_id) values(''|| mviews.perfilId ||'', ''|| 499 ||'')'';
+		END LOOP;
+    RETURN 1;
+END;
+' LANGUAGE plpgsql;--.go
+select ajusta_perfil_papel_faixa();--.go
+drop function ajusta_perfil_papel_faixa();--.go
+
+alter table empresa add column logoCertificadoUrl varchar(200);--.go
+
+update parametrosdosistema set appversao = '1.1.39.30';--.go

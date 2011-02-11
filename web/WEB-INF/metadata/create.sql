@@ -46,7 +46,8 @@ CREATE TABLE empresa (
 	cidade_id bigint,
 	atividade character varying(200),
 	mensagemModuloExterno character varying(400),
-	exibirDadosAmbiente boolean default false
+	exibirDadosAmbiente boolean default false,
+	logoCertificadoUrl varchar(200)
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
