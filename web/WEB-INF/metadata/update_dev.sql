@@ -7,7 +7,8 @@ update papel set nome = 'Acompanhamento do Período de Experiência e Avaliaçã
 
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=498 WHERE atualizaPapeisIdsAPartirDe is null;--.go
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (499, 'ROLE_CAD_FAIXA_SALARIAL', 'Exibir Faixa Salarial de Cargos', '', 5, false, 11); --.go
+update papel set ordem=ordem + 1 where papelmae_id=362 and ordem >= 7;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (499, 'ROLE_CAD_FAIXA_SALARIAL', 'Exibir Faixa Salarial de Cargos', '', 7, false, 362); --.go
 alter sequence papel_sequence restart with 500; --.go
 
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=498 WHERE atualizaPapeisIdsAPartirDe is null;--.go
@@ -32,3 +33,4 @@ drop function ajusta_perfil_papel_faixa(); --.go
 alter table empresa add column logoCertificadoUrl varchar(200);--.go
 
 update papel set nome = 'Avaliações dos Alunos' where id = 413;--.go
+update papel set nome = 'Modelos de Avaliação de Curso' where id = 419;--.go

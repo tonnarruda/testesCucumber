@@ -34,7 +34,11 @@
 			<@authz.authorize ifAllGranted="ROLE_TRANSFERIR_FAIXAS_AC">
 				<a href="prepareTransferirFaixasCargo.action?cargo.id=${cargo.id}"><img border="0" title="Transferir Faixas para este cargo" src="<@ww.url includeParams="none" value="/imgs/faixas.gif"/>"></a>
 			</@authz.authorize>
-			<a href="../../sesmt/funcao/list.action?cargoTmp.id=${cargo.id}"><img border="0" title="Funções" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
+		
+			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
+				<a href="../../sesmt/funcao/list.action?cargoTmp.id=${cargo.id}"><img border="0" title="Funções" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
+			</@authz.authorize>
+		
 			<@authz.authorize ifAllGranted="ROLE_CAD_FAIXA_SALARIAL">
 				<a href="../faixaSalarial/list.action?cargo.id=${cargo.id}"><img border="0" title="Faixas Salariais" src="<@ww.url includeParams="none" value="/imgs/insertCell.gif"/>"></a>
 			</@authz.authorize>
