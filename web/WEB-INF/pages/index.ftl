@@ -147,8 +147,8 @@
 							<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${mensagem.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 						</@display.column>
 	
-						<@display.column property="mensagem.remetente" title="De" style='${style}' />
-						<@display.column property="mensagem.data" title="Data" format="{0,date,dd/MM/yyyy HH:mm}" style='${style} width: 40px;' />
+						<@display.column property="mensagem.remetente" title="De" style='${style} width: 80px;' />
+						<@display.column property="mensagem.data" title="Data" format="{0,date,dd/MM/yyyy HH:mm}" style='${style} width: 100px;' />
 						<@display.column title="Mensagem" style='${style}'>
 							<#if mensagem.mensagem.link?exists>
 								<a href="${mensagem.mensagem.link}" title="${mensagem.mensagem.textoAbreviado}"  onclick="marcarMensagemLida(${mensagem.id});">${mensagem.mensagem.textoAbreviado}</a>
