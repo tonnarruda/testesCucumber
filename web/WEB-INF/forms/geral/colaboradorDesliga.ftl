@@ -26,11 +26,15 @@
 	<script type="text/javascript">
 		function enviarForm(acao)
 		{
-			if (acao.id == 'religa'){
+			if (acao.id == 'religa')
+			{
 				document.form.action = 'religa.action';
-				validaFormulario('form', null, null);
-			}else{
-				validaFormulario('form', new Array('data','motivoId'), new Array('data'));
+				newConfirm('Tem certeza que deseja cancelar o desligamento?', function(){validaFormulario('form', null, null);});
+			}
+			else
+			{
+				if(validaFormulario('form', new Array('data','motivoId'), new Array('data'), true))
+					newConfirm('Confirma desligamento?', function(){document.form.submit();});
 			}
 		}
 	</script>
@@ -46,7 +50,13 @@
 		<br>
 	
 		<@ww.hidden label="Desligado" name="desligado" fieldValue="true" value="true" />
-		<@ww.datepicker label="Data de Desligamento" name="dataDesligamento" value="${dataDesligamento}" id="data" cssClass="mascaraData" required="true"/>
+		<#if integraAc>
+			Data de Desligamento: ${dataDesligamento}<br><br>
+			<@ww.hidden name="dataDesligamento" value="${dataDesligamento}" id="data" />
+		<#else>
+			<@ww.datepicker label="Data de Desligamento" name="dataDesligamento" value="${dataDesligamento}" id="data" cssClass="mascaraData" required="true"/>
+		</#if>	
+
 		<@ww.select label="Motivo do Desligamento" name="motDemissao.id" id="motivoId" list="motivoDemissaos"  listKey="id" listValue="motivo" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" required="true" />
 		<@ww.textarea label="Observações" name="observacao" value="${observacao}" cssStyle="width:445px;"/>
 	
@@ -59,11 +69,13 @@
 		<#if colaborador.motivoDemissao.id?exists>
 			<input type="button" value=" " onclick="enviarForm(this);" class="btnGravar" />
 		<#else>
-			<input type="button" value=" " onclick="newConfirm('Confirma desligamento?', function(){enviarForm(this);});" class="btnDesligarColaborador" />
+			<input type="button" value=" " onclick="enviarForm(this);" class="btnDesligarColaborador" />
 		</#if>
+		
 		<input type="button" value=" " onclick="window.location='list.action'" class="btnVoltar" />
-		<#if colaborador.desligado>
-			<input type="button" value=" " onclick=" newConfirm('Tem certeza que deseja cancelar o desligamento?', function(){enviarForm(this);});" id="religa" class="btnCancelarDesligamento" />
+		
+		<#if colaborador.desligado && !integraAc>
+			<input type="button" value=" " onclick="enviarForm(this);" id="religa" class="btnCancelarDesligamento" />
 		</#if>
 		
 	</div>

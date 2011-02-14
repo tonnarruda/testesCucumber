@@ -31,6 +31,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	private String nomeBusca;
 	private String cpfBusca;
+	private boolean integraAc;
 
 	public String execute() throws Exception
 	{
@@ -39,6 +40,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public String prepareUpdate() throws Exception
 	{
+		integraAc = getEmpresaSistema().isAcIntegra();
 		motivoDemissaos = motivoDemissaoManager.findAllSelect(getEmpresaSistema().getId());
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 		motDemissao = colaborador.getMotivoDemissao();
@@ -47,6 +49,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public String prepareDesliga() throws Exception
 	{
+		integraAc = getEmpresaSistema().isAcIntegra();
 		motivoDemissaos = motivoDemissaoManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"motivo asc"});
 
 		return Action.SUCCESS;
@@ -162,5 +165,9 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	public void setMotDemissao(MotivoDemissao motivoDemissao)
 	{
 		this.motDemissao = motivoDemissao;
+	}
+
+	public boolean isIntegraAc() {
+		return integraAc;
 	}
 }
