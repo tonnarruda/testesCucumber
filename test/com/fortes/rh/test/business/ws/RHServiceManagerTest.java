@@ -156,10 +156,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	{
 		String empresaCodigoAC = "123456";
 		String colaboradorCodigoAC = "123123";
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
-		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC)).will(returnValue(empresa));
-		colaboradorManager.expects(once()).method("religaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresa)).will(returnValue(true));
+		colaboradorManager.expects(once()).method("religaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC)).will(returnValue(true));
 		assertEquals(true, rHServiceManager.religarEmpregado(colaboradorCodigoAC, empresaCodigoAC));
 	}
 

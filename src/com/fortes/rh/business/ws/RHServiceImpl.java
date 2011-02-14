@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.NonUniqueResultException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -271,8 +269,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(empCodigo);
-			return colaboradorManager.religaColaboradorAC(codigo, empresa);
+			return colaboradorManager.religaColaboradorAC(codigo, empCodigo);
 		}
 		catch (Exception e)
 		{
