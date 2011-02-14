@@ -371,7 +371,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	
 	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Integer totalColaboradores)
 	{
-	   List<Object[]> countRespostas = getDao().countRespostasMultiplas(perguntasIds, estabelecimentosIds, areasIds, periodoIni, periodoFim, turmaId);
+    	List<Object[]> countRespostas = getDao().countRespostasMultiplas(perguntasIds, estabelecimentosIds, areasIds, periodoIni, periodoFim, turmaId);
 
         Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
 

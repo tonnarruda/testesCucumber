@@ -68,7 +68,7 @@ public class BarChartCustomizer extends JRAbstractChartCustomizer
 		if (totalColab != 0)
 		{
 			final ValueMarker target = new ValueMarker(totalColab);
-			target.setLabel("Total: " + totalColab);
+			target.setLabel("Total de Colab.: " + totalColab);
 			target.setLabelFont(new Font("Sans-serif", Font.PLAIN, 5));
 			target.setLabelAnchor(RectangleAnchor.LEFT);
 			target.setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);

@@ -415,4 +415,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		
 		return getDao().findRespondidasBySolicitacao(solicitacaoid);
 	}
+
+	public Integer countByQuestionarioRespondido(Long questionarioId) 
+	{
+		return getDao().countByQuestionarioRespondido(questionarioId);
+	}
 }

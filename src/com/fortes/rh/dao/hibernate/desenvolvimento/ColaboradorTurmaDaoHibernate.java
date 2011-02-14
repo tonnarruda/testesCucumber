@@ -397,8 +397,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("c.id"), "colaboradorId");
 		p.add(Projections.property("c.nome"), "colaboradorNome");
 		p.add(Projections.property("cur.nome"), "cursoNome");
+		p.add(Projections.property("cur.cargaHoraria"), "projectionCursoCargaHoraria");
 		p.add(Projections.property("cur.conteudoProgramatico"), "projectionCursoConteudoProgramatico");
 		p.add(Projections.property("t.descricao"), "turmaDescricao");
+		p.add(Projections.property("t.horario"), "turmaHorario");
 		p.add(Projections.property("t.instrutor"), "instrutor");
 		p.add(Projections.property("t.dataPrevIni"), "projectionDataPrevIni");
 		p.add(Projections.property("t.dataPrevFim"), "projectionDataPrevFim");
@@ -738,6 +740,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("cur.cargaHoraria"), "projectionCursoCargaHoraria");
 		p.add(Projections.property("cur.conteudoProgramatico"), "projectionCursoConteudoProgramatico");
 		p.add(Projections.property("t.descricao"), "turmaDescricao");
+		p.add(Projections.property("t.horario"), "turmaHorario");
 		p.add(Projections.property("t.instrutor"), "instrutor");
 		p.add(Projections.property("t.dataPrevIni"), "projectionDataPrevIni");
 		p.add(Projections.property("t.dataPrevFim"), "projectionDataPrevFim");

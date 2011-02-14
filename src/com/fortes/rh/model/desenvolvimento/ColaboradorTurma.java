@@ -392,38 +392,44 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		colaborador.setMatricula(matricula);
 	}
 	
-	public void setTurmaDescricao(String turmaDescricao)
-	{
+	private void inicializaTurma() {
 		if(turma == null)
 			this.turma = new Turma();
+	}
+	
+	public void setTurmaDescricao(String turmaDescricao)
+	{
+		inicializaTurma();
 		turma.setDescricao(turmaDescricao);
+	}
+	
+	public void setTurmaHorario(String turmaHorario)
+	{
+		inicializaTurma();
+		turma.setHorario(turmaHorario);
 	}
 
 	public void setTurmaId(Long turmaId)
 	{
-		if(turma == null)
-			this.turma = new Turma();
+		inicializaTurma();
 		turma.setId(turmaId);
 	}
 
 	public void setInstrutor(String instrutor)
 	{
-		if(turma == null)
-			this.turma = new Turma();
+		inicializaTurma();
 		turma.setInstrutor(instrutor);
 	}
 
 	public void setProjectionDataPrevIni(Date dataPrevIni)
 	{
-		if(turma == null)
-			this.turma = new Turma();
+		inicializaTurma();
 		turma.setDataPrevIni(dataPrevIni);
 	}
 
 	public void setProjectionDataPrevFim(Date dataPrevFim)
 	{
-		if(turma == null)
-			this.turma = new Turma();
+		inicializaTurma();
 		turma.setDataPrevFim(dataPrevFim);
 	}
 
@@ -448,7 +454,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		curso.setConteudoProgramatico(projectionCursoConteudoProgramatico);
 	}
 
-	public void setProjectionCursoCargaHoraria(int cursoCargaHoraria)
+	public void setProjectionCursoCargaHoraria(Integer cursoCargaHoraria)
 	{
 		if(curso == null)
 			this.curso = new Curso();

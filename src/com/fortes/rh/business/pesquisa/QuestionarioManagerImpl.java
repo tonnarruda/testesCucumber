@@ -326,7 +326,12 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         	throw new Exception("Nenhuma pergunta foi respondida.");
 
         Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areaIds, periodoIni, periodoFim, turmaId);
-        questionario.setTotalColab(countColaborador(colaboradorRespostas)); 
+        
+        if(questionario.isAnonimo())
+        	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
+        else
+        	questionario.setTotalColab(countColaborador(colaboradorRespostas)); 
+        
         Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areaIds, periodoIni, periodoFim, turmaId, questionario.getTotalColab());
         percentuaisDeRespostas.addAll(calculaPercentualRespostasMultiplas);
         

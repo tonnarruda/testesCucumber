@@ -56,4 +56,6 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	Collection<Colaborador> findRespondidasBySolicitacao(Long solicitacaoid);
 	
 	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioOrAvaliacaoId, Boolean respondida, Long empresaId);
+
+	Integer countByQuestionarioRespondido(Long questionarioId);
 }

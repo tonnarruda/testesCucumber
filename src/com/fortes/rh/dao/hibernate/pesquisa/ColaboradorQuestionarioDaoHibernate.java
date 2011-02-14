@@ -702,4 +702,16 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		  
 		  return query.list();
 	}
+
+	public Integer countByQuestionarioRespondido(Long questionarioId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+		
+		criteria.setProjection(Projections.rowCount());
+		
+		criteria.add(Expression.eq("cq.questionario.id", questionarioId));
+		criteria.add(Expression.eq("cq.respondida", true));
+		
+		return (Integer) criteria.uniqueResult();
+	}
 }

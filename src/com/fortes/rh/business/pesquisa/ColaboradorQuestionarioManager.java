@@ -42,4 +42,5 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	Collection<ColaboradorQuestionario> findBySolicitacaoRespondidas(Long solicitacaoId);
 	Collection<Colaborador> findRespondidasBySolicitacao(Long solicitacaoid);
 	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioId, Boolean respondida, Long empresaId );
+	Integer countByQuestionarioRespondido(Long questionarioId);
 }

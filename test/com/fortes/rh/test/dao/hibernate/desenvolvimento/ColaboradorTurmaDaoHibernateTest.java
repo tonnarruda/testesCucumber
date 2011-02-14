@@ -545,6 +545,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     public void testGetColaboradoresAprovadoByTurma()
     {
         Curso curso = CursoFactory.getEntity();
+        curso.setCargaHoraria(1);
         curso = cursoDao.save(curso);
 
         Turma turma = TurmaFactory.getEntity();
