@@ -1,8 +1,13 @@
 package com.fortes.rh.test.util;
 
+import mockit.Mockit;
 import junit.framework.TestCase;
 
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.model.type.FileUtil;
+import com.fortes.rh.test.util.mockObjects.MockFileUtil;
+import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
+import com.opensymphony.webwork.ServletActionContext;
 
 @SuppressWarnings("static-access")
 public class ArquivoUtilTest extends TestCase
@@ -12,11 +17,28 @@ public class ArquivoUtilTest extends TestCase
 
     protected void setUp()
     {
+
     }
 
     public void testGetRhHome()
     {
+    	//Tem que testar se o arquivo fortes_home.properties não existe
     	assertNotNull(arquivoUtil.getRhHome());
+    }
+    
+    public void testGetLoggingPath()
+    {
+    	assertEquals(System.getenv("FORTES_HOME") + java.io.File.separatorChar + "RH"  + java.io.File.separatorChar + "logging", arquivoUtil.getLoggingPath());
+    }
+
+    public void testGetDbBackupPath()
+    {
+    	assertEquals(System.getenv("FORTES_HOME") + java.io.File.separatorChar + "RH"  + java.io.File.separatorChar + "backup_db", arquivoUtil.getDbBackupPath());
+    }
+    
+    public void testGetSystemConf()
+    {
+    	assertNotNull(arquivoUtil.getSystemConf());
     }
 
     //NAO APAGAR, ta sendo testado no momento que a versão é fechada, esse teste quebra no Hudsom e Coverage
@@ -91,7 +113,12 @@ public class ArquivoUtilTest extends TestCase
     	com.fortes.model.type.File file = new com.fortes.model.type.File();
     	file.setName("teste.txt");
 
-    	assertEquals(null, arquivoUtil.salvaArquivo("curriculos", file, true));
+    	assertNull(arquivoUtil.salvaArquivo("curriculos", file, true));
+    	
+      
+        Mockit.redefineMethods(FileUtil.class, MockFileUtil.class);
+    	
+        assertNotNull(arquivoUtil.salvaArquivo("curriculos", file, true));
     }
 
     public void testGetPathExterno()

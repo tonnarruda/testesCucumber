@@ -477,6 +477,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
 				colaborador.setCandidato(null);
+			
+			if(colaborador.getMotivoDemissao() == null || colaborador.getMotivoDemissao().getId() == null)
+				colaborador.setMotivoDemissao(null);
 
 			if(idCandidato != null && colaborador.getFoto() == null)
 				colaborador.setFoto(candidatoManager.getFoto(idCandidato));
@@ -609,6 +612,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				colaborador.setCandidato(colaboradorAux.getCandidato());
 			else
 				colaborador.setCandidato(null);
+			
+			if(colaborador.getMotivoDemissao() == null || colaborador.getMotivoDemissao().getId() == null)
+				colaborador.setMotivoDemissao(null);
 
 			colaborador.setEmpresa(getEmpresaSistema());
 			

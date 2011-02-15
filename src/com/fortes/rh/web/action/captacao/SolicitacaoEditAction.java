@@ -276,6 +276,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         	solicitacao.setAvaliacao(null);
         if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
         	solicitacao.setCidade(null);
+      	if(solicitacao.getLiberador() == null || solicitacao.getLiberador().getId() == null)
+    		solicitacao.setLiberador(null);
         
         solicitacaoManager.update(solicitacao);
 

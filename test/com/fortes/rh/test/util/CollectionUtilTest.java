@@ -478,6 +478,8 @@ public class CollectionUtilTest extends TestCase
 		assertEquals("Test 9", b2, beanssSort.toArray()[2]);
 		assertEquals("Test 10", b3, beanssSort.toArray()[3]);
 		assertEquals("Test 11", b4, beanssSort.toArray()[4]);
+
+		beanssSort = cu.sortCollectionStringIgnoreCase(beanss, "nomeNaoExist");
 	}
 
 	@SuppressWarnings("deprecation")
