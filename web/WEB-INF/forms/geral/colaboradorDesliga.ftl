@@ -16,10 +16,10 @@
 		<#assign dataDesligamento = ""/>
 	</#if>
 
-	<#if colaborador.observacao?exists>
-		<#assign observacao = colaborador.observacao/>
+	<#if colaborador.observacaoDemissao?exists>
+		<#assign observacaoDemissao = colaborador.observacaoDemissao/>
 	<#else>
-		<#assign observacao = ""/>
+		<#assign observacaoDemissao = ""/>
 	</#if>
 
 	<#include "../ftl/mascarasImports.ftl" />
@@ -58,7 +58,7 @@
 		</#if>	
 
 		<@ww.select label="Motivo do Desligamento" name="motDemissao.id" id="motivoId" list="motivoDemissaos"  listKey="id" listValue="motivo" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" required="true" />
-		<@ww.textarea label="Observações" name="observacao" value="${observacao}" cssStyle="width:445px;"/>
+		<@ww.textarea label="Observações" name="observacaoDemissao" value="${observacaoDemissao}" cssStyle="width:445px;"/>
 	
 		<@ww.hidden name="nomeBusca" />
 		<@ww.hidden name="cpfBusca" />

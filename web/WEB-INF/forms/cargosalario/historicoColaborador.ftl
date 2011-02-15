@@ -20,7 +20,7 @@
 			<strong>Colaborador Desligado</strong><br>
 			<strong>Data Desligamento:</strong> <#if colaborador?exists && colaborador.dataDesligamento?exists>${colaborador.dataDesligamento}</#if><br>
 			<strong>Motivo:</strong> <#if colaborador?exists && colaborador.motivoDemissao?exists && colaborador.motivoDemissao.motivo?exists>${colaborador.motivoDemissao.motivo}</#if><br>
-			<strong>Observação:</strong> <#if colaborador?exists && colaborador.observacao?exists>${colaborador.observacao}</#if><br>
+			<strong>Observação:</strong> <#if colaborador?exists && colaborador.observacaoDemissao?exists>${colaborador.observacaoDemissao}</#if><br>
 		<#else>
 			<strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists>${historicoColaborador.faixaSalarial.descricao}</#if><br>
 			<strong>Área Organizacional Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.areaOrganizacional?exists>${historicoColaborador.areaOrganizacional.descricao}</#if><br>

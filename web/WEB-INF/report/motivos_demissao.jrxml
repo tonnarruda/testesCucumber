@@ -34,7 +34,7 @@
 	<field name="faixaSalarial.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.nome" class="java.lang.String"/>
 	<field name="periodoFormatado" class="java.lang.String"/>
-	<field name="observacao" class="java.lang.String"/>
+	<field name="observacaoDemissao" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpMotivo" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>

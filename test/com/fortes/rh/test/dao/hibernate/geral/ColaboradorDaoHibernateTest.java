@@ -955,7 +955,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setDataDesligamento(null);
-		colaborador.setObservacao("");
+		colaborador.setObservacaoDemissao("");
 		colaborador.setDesligado(false);
 		colaborador.setMotivoDemissao(null);
 		colaborador = colaboradorDao.save(colaborador);
@@ -970,7 +970,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaboradorRetorno = colaboradorDao.findColaboradorById(colaborador.getId());
 
 		assertEquals(true, colaboradorRetorno.isDesligado());
-		assertEquals("desligado", colaboradorRetorno.getObservacao());
+		assertEquals("desligado", colaboradorRetorno.getObservacaoDemissao());
 		assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno.getDataDesligamento()));
 		assertEquals(motivo.getId(), colaboradorRetorno.getMotivoDemissao().getId());
 	}

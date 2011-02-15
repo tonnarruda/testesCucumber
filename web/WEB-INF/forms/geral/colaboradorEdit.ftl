@@ -529,6 +529,8 @@
 		<@ww.hidden name="colaborador.pessoal.parentesAmigos" />
 		<@ww.hidden name="colaborador.pessoal.qtdFilhos" />
 		<@ww.hidden name="colaborador.candidato.id"/>
+		<@ww.hidden name="colaborador.motivoDemissao.id"/>
+		<@ww.hidden name="colaborador.observacaoDemissao"/>
 
 		<@ww.hidden name="page" />
 		<#if candidato?exists>

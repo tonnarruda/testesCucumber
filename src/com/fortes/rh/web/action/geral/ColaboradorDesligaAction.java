@@ -26,7 +26,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	private boolean desligado;
 	private Date dataDesligamento;
-	private String observacao;
+	private String observacaoDemissao;
 	private MotivoDemissao motDemissao;
 
 	private String nomeBusca;
@@ -57,7 +57,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public String desliga() throws Exception
 	{
-		colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacao, motDemissao.getId(), colaborador.getId());
+		colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId());
 
 		addActionMessage("Colaborador desligado com sucesso.");
 		return Action.SUCCESS;
@@ -116,16 +116,6 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		this.desligado = desligado;
 	}
 
-	public String getObservacao()
-	{
-		return observacao;
-	}
-
-	public void setObservacao(String observacao)
-	{
-		this.observacao = observacao;
-	}
-
 	public String getCpfBusca() {
 		return cpfBusca;
 	}
@@ -169,5 +159,13 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public boolean isIntegraAc() {
 		return integraAc;
+	}
+
+	public String getObservacaoDemissao() {
+		return observacaoDemissao;
+	}
+
+	public void setObservacaoDemissao(String observacaoDemissao) {
+		this.observacaoDemissao = observacaoDemissao;
 	}
 }

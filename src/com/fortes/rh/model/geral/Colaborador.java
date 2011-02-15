@@ -95,6 +95,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private String titulo;
 	
+	@Lob
+	private String observacaoDemissao;
+	
 	@Transient
 	private Integer admitidoHa;//usado no ireport
 	
@@ -236,14 +239,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setGrupoNomeProjection(grupoNome);
 	}
 	//usado em Relatório de Desligamento
-	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, Date dataDesligamento, String observacao, String motivoDemissao, String cargoNome, String faixaSalarialNome)
+	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, Date dataDesligamento, String observacaoDemissao, String motivoDemissao, String cargoNome, String faixaSalarialNome)
 	{
 		this.setId(id);
 		this.nome = nome;
 		this.matricula = matricula;
 		this.dataAdmissao = dataAdmissao;
 		this.dataDesligamento = dataDesligamento;
-		this.observacao = observacao;
+		this.observacaoDemissao = observacaoDemissao;
 
 		if(this.motivoDemissao == null)
 			this.motivoDemissao = new MotivoDemissao();
@@ -420,6 +423,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.desligado = colaborador.isDesligado();
 		this.dataDesligamento = colaborador.getDataDesligamento();
 		this.observacao = colaborador.getObservacao();
+		this.observacaoDemissao = colaborador.getObservacaoDemissao();
 		this.dataAdmissao = colaborador.getDataAdmissao();
 
 		this.areaOrganizacional = historicoColaborador.getAreaOrganizacional();
@@ -2103,6 +2107,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setAvaliacaoDesempenhoId(Long avaliacaoDesempenhoId) {
 		this.avaliacaoDesempenhoId = avaliacaoDesempenhoId;
+	}
+
+	public String getObservacaoDemissao() {
+		return observacaoDemissao;
+	}
+
+	public void setObservacaoDemissao(String observacaoDemissao) {
+		this.observacaoDemissao = observacaoDemissao;
 	}
 	
 }

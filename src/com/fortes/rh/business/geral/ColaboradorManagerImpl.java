@@ -938,7 +938,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
-	public void desligaColaborador(boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId) throws Exception
+	public void desligaColaborador(boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -949,7 +949,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 			usuarioManager.desativaAcessoSistema(colaboradorId);
 			candidatoManager.habilitaByColaborador(colaboradorId);
-			getDao().desligaColaborador(desligado, dataDesligamento, observacao, motivoDemissaoId, colaboradorId);
+			getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradorId);
 
 			transactionManager.commit(status);
 		}
