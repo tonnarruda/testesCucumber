@@ -51,13 +51,6 @@ public class ArquivoUtilTest extends TestCase
     	assertNotNull(arquivoUtil.getSystemConf());
     }
     
-    public void testRetornaTipoCharSet()
-    {
-    	char b = java.io.File.separatorChar;
-    	String path = "com"+ b + "fortes"+ b + "rh"+ b + "test"+ b + "AllUnitTests.java";
-    	assertEquals("UTF-8", arquivoUtil.retornaTipoCharSet(ArquivoUtil.getSrcResourceBytes(path)));
-    }
-    
     public void testGetReportSource()
     {
     	Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
