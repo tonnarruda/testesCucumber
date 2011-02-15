@@ -1,12 +1,12 @@
 package com.fortes.rh.test.util;
 
-import mockit.Mockit;
 import junit.framework.TestCase;
+import mockit.Mockit;
 
-import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.test.util.mockObjects.MockFileUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
+import com.fortes.rh.util.ArquivoUtil;
 import com.opensymphony.webwork.ServletActionContext;
 
 @SuppressWarnings("static-access")
@@ -35,10 +35,55 @@ public class ArquivoUtilTest extends TestCase
     {
     	assertEquals(System.getenv("FORTES_HOME") + java.io.File.separatorChar + "RH"  + java.io.File.separatorChar + "backup_db", arquivoUtil.getDbBackupPath());
     }
+
+    public void testGetContents ()
+    {
+    	String systemConfigPath = ArquivoUtil.getRhHome() + java.io.File.separatorChar + "system.conf";
+    	java.io.File aFile = new java.io.File(systemConfigPath);
+    	assertNotNull(arquivoUtil.getContents(aFile));
+
+    	systemConfigPath = ArquivoUtil.getRhHome() + java.io.File.separatorChar + "babau.conf";
+    	assertEquals("", arquivoUtil.getContents(new java.io.File(systemConfigPath)));
+    }
     
     public void testGetSystemConf()
     {
     	assertNotNull(arquivoUtil.getSystemConf());
+    }
+    
+    public void testRetornaTipoCharSet()
+    {
+    	char b = java.io.File.separatorChar;
+    	String path = "com"+ b + "fortes"+ b + "rh"+ b + "test"+ b + "AllUnitTests.java";
+    	assertEquals("UTF-8", arquivoUtil.retornaTipoCharSet(ArquivoUtil.getSrcResourceBytes(path)));
+    }
+    
+    public void testGetReportSource()
+    {
+    	Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
+    	assertNotNull(arquivoUtil.getReportSource("babau.jrxml"));
+    }
+    
+    public void testDeletaArquivos()
+    {
+    	arquivoUtil.deletaArquivos("curriculos", new String[]{"a"});
+    }
+    
+    public void testSalvaArquivo()
+    {
+    	com.fortes.model.type.File file = new com.fortes.model.type.File();
+    	file.setName("teste.txt");
+    	
+    	assertNull(arquivoUtil.salvaArquivo("curriculos", file, true));
+    	
+    	Mockit.redefineMethods(FileUtil.class, MockFileUtil.class);
+    	
+    	assertNotNull(arquivoUtil.salvaArquivo("curriculos", file, true));
+    }
+    
+    public void testGetPathExterno()
+    {
+    	assertNotNull(ArquivoUtil.getPathExterno());
     }
 
     //NAO APAGAR, ta sendo testado no momento que a versão é fechada, esse teste quebra no Hudsom e Coverage
@@ -91,39 +136,7 @@ public class ArquivoUtilTest extends TestCase
 //		
 //    	assertEquals(converted.trim(), target.trim());
 //    }
-    
-    public void testGetTextoInputStream()
-    {
-    	com.fortes.model.type.File file = new com.fortes.model.type.File();
-    	assertEquals("", arquivoUtil.getTextoInputStream(file, "ISO-8859-2"));
-    }
+//FIM DO COMENTARIO
 
-    public void testGetTexto()
-    {
-    	assertEquals("", arquivoUtil.getTexto(null));
-    }
-
-    public void testDeletaArquivos()
-    {
-    	arquivoUtil.deletaArquivos("curriculos", new String[]{"a"});
-    }
-
-    public void testSalvaArquivo()
-    {
-    	com.fortes.model.type.File file = new com.fortes.model.type.File();
-    	file.setName("teste.txt");
-
-    	assertNull(arquivoUtil.salvaArquivo("curriculos", file, true));
-    	
-      
-        Mockit.redefineMethods(FileUtil.class, MockFileUtil.class);
-    	
-        assertNotNull(arquivoUtil.salvaArquivo("curriculos", file, true));
-    }
-
-    public void testGetPathExterno()
-    {
-    	assertNotNull(ArquivoUtil.getPathExterno());
-    }
 
 }

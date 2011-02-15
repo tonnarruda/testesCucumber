@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -117,6 +116,7 @@ public class ArquivoUtil
 	/*
 	 * Retorna o array de bytes de resourcePath.
 	 * O caminho do recurso será relativo a localização de baseClass. 
+	 * está sendo usado pelo teste para fechar versão NÃO APAGAR
 	 */
 	public static byte[] getSrcResourceBytes(String resourcePath)
 	{
@@ -182,56 +182,6 @@ public class ArquivoUtil
 
 		return getContents(file);
 	}
-	
-	public static String getTexto(File arquivo)
-	{
-		StringBuilder texto = new StringBuilder();
-
-		try
-		{
-			if (arquivo != null)
-			{
-				
-				FileReader fileReader = new FileReader(arquivo.getFileArchive());
-				BufferedReader reader = new BufferedReader(fileReader);
-
-				String linha;
-				while ((linha = reader.readLine()) != null)
-					texto.append(linha + "\n");
-
-				reader.close();
-				fileReader.close();
-			}
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return texto.toString();
-	}
-
-	public static String getTextoInputStream(File arquivo, String encoding)
-	{
-		StringBuilder texto = new StringBuilder();
-
-		try
-		{
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo.getFileArchive()), encoding));
-
-			String linha;
-			while ((linha = reader.readLine()) != null)
-				texto.append(linha + "\n");
-
-			reader.close();
-
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return texto.toString();
-	}
 
 	public static String retornaTipoCharSet(byte[] bytes)
 	{
@@ -277,11 +227,6 @@ public class ArquivoUtil
 		path.append(java.io.File.separatorChar);
 
 		return path.toString();
-	}
-
-	public static String getPath(String pasta)
-	{
-		return getRhHome() + java.io.File.separatorChar + "anexos" + java.io.File.separatorChar + pasta + java.io.File.separatorChar;
 	}
 
 	public static String getPathExterno()

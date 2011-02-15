@@ -8,12 +8,7 @@ public class MockArquivoUtil
 	{
 		return new java.io.File("arquivo");
 	}
-
-	public static String getTexto(File ocrTexto)
-	{
-		return "texto";
-	}
-
+	
 	public static void deletaArquivos(String pasta, String[] arquivos)
 	{
 
