@@ -38,7 +38,7 @@
 	</script>
 	
 	<#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
-	<h3>Experiência Profissional 3</h3>
+	<h3>Experiência Profissional</h3>
 	<@display.table name="experiencias" id="exp" class="dados" defaultsort=4 defaultorder="descending">
 		<@display.column title="Ações" media="html" class="acao">
 			<a href="javascript:prepareUpdateExperiencia(${exp.id?string?replace(".", "")?replace(",","")})"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
