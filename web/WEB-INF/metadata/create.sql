@@ -353,7 +353,8 @@ CREATE TABLE colaborador (
 	nomecontato character varying(30),
 	camposextras_id bigint,
 	solicitacao_id bigint,
-	dataatualizacao date
+	dataatualizacao date,
+	observacaodemissao text
 );
 ALTER TABLE colaborador ADD CONSTRAINT colaborador_pkey PRIMARY KEY (id);
 ALTER TABLE colaborador ADD CONSTRAINT colaborador_candidato_uk UNIQUE (candidato_id);

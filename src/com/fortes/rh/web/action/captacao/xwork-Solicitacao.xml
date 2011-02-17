@@ -130,5 +130,9 @@
 			<result name="success" type="redirect">list.action</result>
 		</action>
 
+		<action name="agenda" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="agenda">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/agenda.ftl</result>
+		</action>
+
 	</package>
 </xwork>

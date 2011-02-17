@@ -5146,3 +5146,10 @@ drop function ajusta_perfil_papel_faixa();--.go
 alter table empresa add column logoCertificadoUrl varchar(200);--.go
 
 update parametrosdosistema set appversao = '1.1.39.30';--.go
+
+-- versao 1.1.40.31
+
+alter table colaborador add column observacaodemissao text;--.go
+update colaborador set observacaodemissao=observacao where motivodemissao_id is not null and observacao is not null;--.go
+
+update parametrosdosistema set appversao = '1.1.40.31';--.go

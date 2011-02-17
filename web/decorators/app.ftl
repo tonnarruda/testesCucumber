@@ -95,7 +95,7 @@
 	<div style="clear: both"></div>
 	<div id="waDiv">
 		<br>
-		<#if !pgInicial?exists>
+		<#if !pgInicial?exists || !pgInicial>
 			<#if title != "">
 				<div id="waDivTitulo">${title}</div>
 			</#if>

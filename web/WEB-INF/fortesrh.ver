@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.40.31" data="17/02/2011">
+		- Pesquisas > Correção do gráfico de barras.
+		- CeS > Relatórios > Descrição de Cargos > Reformulação do relatório.
+	</Versao>
 	<Versao id="1.1.39.30" data="11/02/2011">
 		- SESMT > Movimentos > Medição dos Riscos nos Ambientes: nova coluna de Estabelecimento na listagem.
 		- Utilitários > Cadastro > Perfis: opçao de exibir Faixa Salarial na listagem de Cargos e Faixas.

@@ -8530,6 +8530,6 @@ insert into codigoCBO (codigo, descricao) values ('514120','Zelador de edifício
 insert into codigoCBO (codigo, descricao) values ('223310','Zootecnista');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, campoextracolaborador)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.39.30', '', '25', false,false, 2, '1.0.1.41', 1, 3, false);
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.40.31', '', '25', false,false, 2, '1.0.1.41', 1, 3, false);
 
 alter sequence parametrosdosistema_sequence restart with 2;

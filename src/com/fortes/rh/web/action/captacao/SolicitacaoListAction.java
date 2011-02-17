@@ -47,6 +47,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private Empresa empresa;
     private Collection<Empresa> empresas;
     private EmpresaManager empresaManager;
+    private boolean pgInicial = false;//usado pelo decorator
 
     private Collection<Cargo> cargos;
     private Cargo cargo = new Cargo();
@@ -84,6 +85,12 @@ public class SolicitacaoListAction extends MyActionSupportList
     {
         return Action.SUCCESS;
     }
+	
+	public String agenda() throws Exception
+	{
+		pgInicial = true;//decorator
+		return Action.SUCCESS;
+	}
 
 	public String verSolicitacoes() throws Exception
     {
@@ -294,5 +301,9 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
+	}
+
+	public boolean isPgInicial() {
+		return pgInicial;
 	}
 }

@@ -270,6 +270,7 @@
 				/captacao/candidatoSolicitacao/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO
 				/captacao/candidato/*/**=ROLE_CAD_CANDIDATO
 				/captacao/empresaBds/*/**=ROLE_CAD_BDS_EMPRESA
+				/captacao/solicitacao/agenda*/**=ROLE_SOLICITACAO_AGENDA
 				/captacao/solicitacao/*/**=ROLE_MOV_SOLICITACAO
 				/captacao/conhecimento/*/**=ROLE_CAD_CONHECIMENTO
 				/captacao/etapaSeletiva/*/**=ROLE_CAD_ETAPA
