@@ -47,7 +47,7 @@ import com.fortes.rh.util.ArquivoUtil;
 @SuppressWarnings({ "deprecation", "unchecked" })
 public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implements CandidatoDao
 {
-    public Candidato findByCPF(String cpf, Long empresaId, Long candidatoId)
+    public Candidato findByCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado)
     {
         Criteria criteria = getSession().createCriteria(Candidato.class, "c");
         
@@ -66,6 +66,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		if (empresaId != null )
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		if (contratado != null )
+			criteria.add(Expression.eq("c.contratado", contratado));
         
 		return (Candidato) criteria.uniqueResult();
     }

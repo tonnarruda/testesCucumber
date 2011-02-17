@@ -19,6 +19,7 @@ import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<HistoricoCandidato> implements HistoricoCandidatoDao
@@ -183,6 +184,8 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		p.add(Projections.property("hc.apto"), "apto");
 		p.add(Projections.property("hc.responsavel"), "responsavel");
 		p.add(Projections.property("hc.observacao"), "observacao");
+		p.add(Projections.property("hc.horaIni"), "horaIni");
+		p.add(Projections.property("hc.horaFim"), "horaFim");
 		p.add(Projections.property("es.id"), "etapaSeletivaId");
 		p.add(Projections.property("es.nome"), "etapaSeletivaNome");
 
@@ -194,5 +197,16 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoCandidato.class));
 
 		return (HistoricoCandidato) criteria.list().toArray()[0];
+	}
+
+	public String[] findResponsaveis() 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select distinct hc.responsavel ");
+		hql.append("from HistoricoCandidato as hc ");
+		hql.append("order by hc.responsavel ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		return StringUtil.converteCollectionToArrayString(query.list());
 	}
 }

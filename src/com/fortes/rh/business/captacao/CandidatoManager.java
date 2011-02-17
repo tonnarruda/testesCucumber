@@ -58,7 +58,7 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao);
 	public void validaQtdCadastros() throws Exception;
 	public Collection<Candidato> findByNomeCpfAllEmpresas(Candidato candidato);
-	public Candidato verifyCPF(String cpf, Long empresId, Long candidatoId) throws Exception;
+	public Candidato verifyCPF(String cpf, Long empresId, Long candidatoId, Boolean contratado) throws Exception;
 	public void ajustaSenha(Candidato candidato);
 	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);
 	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidade, String escolaridade, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idioma, Map ufs, Map cidades, Collection<Idioma> idiomas);

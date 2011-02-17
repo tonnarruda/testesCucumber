@@ -23,4 +23,6 @@ public interface HistoricoCandidatoDao extends GenericDao<HistoricoCandidato>
 	HistoricoCandidato findByIdProjection(Long historicoId);
 
 	Collection<HistoricoCandidato> findQtdParticipantes(String ano, Long cargoId, Long[] etapaIds);
+
+	String[] findResponsaveis();
 }

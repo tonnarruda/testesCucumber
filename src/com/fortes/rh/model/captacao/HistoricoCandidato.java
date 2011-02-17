@@ -44,7 +44,11 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	private Double qtdHistoricos;//usado no relatorio Processo Seletivo
 	@Transient
 	private Integer historicoMes;//usado no relatorio Processo Seletivo
-
+	@Column(length=5)
+	private String horaIni;
+	@Column(length=5)
+	private String horaFim;
+	
 	public HistoricoCandidato()
 	{
 
@@ -365,5 +369,21 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	public Integer getHistoricoMes()
 	{
 		return historicoMes;
+	}
+
+	public String getHoraIni() {
+		return horaIni;
+	}
+
+	public void setHoraIni(String horaIni) {
+		this.horaIni = horaIni;
+	}
+
+	public String getHoraFim() {
+		return horaFim;
+	}
+
+	public void setHoraFim(String horaFim) {
+		this.horaFim = horaFim;
 	}
 }

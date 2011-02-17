@@ -18,7 +18,7 @@ import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 
 public interface CandidatoDao extends GenericDao<Candidato>
 {
-    public Candidato findByCPF(String cpf, Long empresaId, Long candidatoId);
+    public Candidato findByCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado);
 	public Collection<Candidato> findBusca(Map parametros, Long empresa, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao) throws Exception;
 	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
 	public Integer getCount(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);

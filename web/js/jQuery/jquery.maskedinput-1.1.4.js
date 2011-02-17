@@ -251,6 +251,7 @@ $(".mascaraCpf").mask("999.999.999-99",{placeholder:" "});
 $(".mascaraCnpj").mask("99.999.999/9999-99",{placeholder:" "});
 $(".mascaraCep").mask("99999-999",{placeholder:" "});
 $(".somenteNumerosFour").mask("9999",{placeholder:" "});
+$(".mascaraHora").mask("99:99",{placeholder:" "});
 });
 
 jQuery(document).ready(function() {

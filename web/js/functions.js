@@ -197,6 +197,7 @@ function validaCampos(campos)
 	var valueCnpj = "  .   .   /    -  ";
 	var valueCpf = "   .   .   -  ";
 	var valueCep = "     -   ";
+	var valueHora = "  :  ";
 
 	var campoClass;
 
@@ -219,6 +220,8 @@ function validaCampos(campos)
 				validacao = validaCpfCnpj(campo.value);
 			else if(campoClass == "mascaraCep" && campo.value != valueCep)
 				validacao = true;
+			else if(campoClass == "mascaraHora" && campo.value != valueHora)
+				validacao = validaHora(campo.value);
 			else if(campoClass == "mascaraPis")
 				validacao = validaPIS(campo.value);
 			else if (campoClass == "mascaraEmail" && campo.value != "")
@@ -269,6 +272,7 @@ function validaCamposObrigatorios(campos, formulario)
 	var valueCnpj = "  .   .   /    -  ";
 	var valueCpf = "   .   .   -  ";
 	var valueCep = "     -   ";
+	var valueHora = "  :  ";
 
 	var campoClass;
 
@@ -287,6 +291,7 @@ function validaCamposObrigatorios(campos, formulario)
 
 		if(campo)
 		{
+
 			// valida campos
 			if(campoClass == "listCheckBox" && qtdeChecksSelected(document.getElementsByName(formulario)[0], nameCampoSemIdentificador) != 0)
 				validacao = true;
@@ -300,9 +305,11 @@ function validaCamposObrigatorios(campos, formulario)
 				validacao = true;
 			else if(campoClass == "mascaraCep" && campo.value != valueCep)
 				validacao = true;
+			else if(campoClass == "mascaraHora" && campo.value != valueHora)
+				validacao = true;
 			else if(campoClass == "pontuacao" && campo.value != '')
 				validacao = true;
-			else if((campoClass != "listCheckBox" && campoClass != "mascaraCnpj" && campoClass != "mascaraCep" && campoClass != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraDataMesAno" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
+			else if((campoClass != "listCheckBox" && campoClass != "mascaraHora" && campoClass != "mascaraCnpj" && campoClass != "mascaraCep" && campoClass != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraDataMesAno" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
 				validacao = true;
 
 			if(validacao)
@@ -671,6 +678,18 @@ function validaPIS(pis)
 
 	if (resto!=(numPIS.slice(10,11)))
 		return false;
+
+	return true;
+}
+
+function validaHora(hora)
+{
+	var times = hora.split(":");
+
+	if(times[0] > 23)
+	    return false;
+	if(times[1] > 59)
+	    return false;
 
 	return true;
 }

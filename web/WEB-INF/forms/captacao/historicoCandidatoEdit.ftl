@@ -18,10 +18,7 @@
 </#if>
 
 
-<#assign validarCampos="return validaFormulario('form', new Array('fase','data','resp'), new Array('data'))"/>
-<#if !candidatoSol?exists || !candidatoSol.id?exists>
-	<#assign validarCampos="enviaForm()"/>
-</#if>
+<#assign validarCampos="enviaForm()"/>
 
 <#if historicoCandidato?exists>
 		<#if historicoCandidato.data?exists>
@@ -30,13 +27,15 @@
 			<#assign data = ""/>
 		</#if>
 </#if>
-
+	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoCandidatoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
 	</style>
 		
 <#include "../ftl/mascarasImports.ftl" />
@@ -57,21 +56,29 @@
 		function liberarIndisp()
 		{
 			if(document.getElementById('apto').value == 'true')
-			{
 				document.getElementById('indisp').disabled = true;
-			}
 			else
-			{
 				document.getElementById('indisp').disabled = false;
-			}
 		}
 
 		function enviaForm()
 		{
-			if(validaCandidatos())
-			{
-				return validaFormulario('form', new Array('fase','data','resp'), new Array('data'));
-			}
+			<#if !candidatoSol?exists || !candidatoSol.id?exists>
+				validaCandidatos()
+			</#if>
+		
+				if(validaFormulario('form', new Array('fase','data','horaIni','horaFim','resp'), new Array('data','horaIni','horaFim'), true))
+				{
+					if(jQuery('#horaIni').val() <= jQuery('#horaFim').val())
+					{
+						document.form.submit();
+					}  
+					else
+					{
+						jQuery('#horaFim').css("background-color", "#FF6347");
+						jAlert("Hora Final menor que Hora Inicial.");
+					}
+				}
 		}
 
 		function validaCandidatos()
@@ -87,10 +94,14 @@
 
 		jQuery(document).ready(function($)
 		{
+		
 			<#if historicoCandidato.id?exists>
 				jQuery('#fase').val(${historicoCandidato.etapaSeletiva.id});
 			</#if>
+
+			jQuery("#resp").autocomplete(${responsaveis});
 		});
+		
 </script>
 </head>
 <body >
@@ -117,7 +128,7 @@
 			<li>
 				<@ww.div cssClass="divFiltro">
 					<ul>
-						<@ww.select label="Filtrar Candidatos por Etapa" name="etapaSeletivaIdFiltro" id="etapaSeletiva" list="etapas" onchange="javascript:getCandidatoAptoByEtapa(this.value, ${solicitacao.id})" listKey="id" listValue="nome"  headerKey="-1" headerValue=""/>
+						<@ww.select label="Filtrar Candidatos por Etapa" name="etapaSeletivaIdFiltro" id="etapaSeletiva" list="etapas" onchange="javascript:getCandidatoAptoByEtapa(this.value, ${solicitacao.id})" listKey="id" listValue="nome"  headerKey="-1" headerValue="" />
 						<@frt.checkListBox label="Candidatos" name="candidatosCheck" list="candidatosCheckList" id="candidatosCheck"/>
 					</ul>
 				</@ww.div>
@@ -130,7 +141,7 @@
 				<label class="desc" for="fase"> Etapa:<span class="req">* </span></label>
 			</div> 
 			<div class="wwctrl" id="wwctrl_fase">
-				<select style="width: 140px;" id="fase" name="historicoCandidato.etapaSeletiva.id">
+				<select style="width: 200px;" id="fase" name="historicoCandidato.etapaSeletiva.id">
 					<#list etapas as etapa >
 						<#assign mudaCor=""/>
 					
@@ -147,11 +158,13 @@
 		</li>
 		
 		<#--Veja complemento destes datepickers no final da página-->
-		<@ww.datepicker label="Data" name="historicoCandidato.data" id="data" required="true"  liClass="liLeft" cssClass="mascaraData" value = "${data}"/>
-		<@ww.textfield required="true" label="Responsável" name="historicoCandidato.responsavel" id="resp" liClass="liLeft" cssStyle="width: 200px;"/>
+		<@ww.datepicker label="Data" name="historicoCandidato.data" id="data" required="true"  liClass="liLeft" cssClass="mascaraData" value = "${data}" />
+		<@ww.textfield label="Início" required="true" name="historicoCandidato.horaIni" id="horaIni" cssStyle="width: 38px;" liClass="liLeft" cssClass="mascaraHora"/>
+		<@ww.textfield label="Fim" required="true" name="historicoCandidato.horaFim" id="horaFim" cssStyle="width: 38px;" cssClass="mascaraHora"/>
+		<@ww.textfield required="true" label="Responsável" name="historicoCandidato.responsavel" id="resp" liClass="liLeft" cssStyle="width: 260px;"/>
 		<@ww.select label="Apto" name="historicoCandidato.apto" id="apto" list=r"#{true:'Sim', false:'Não'}" liClass="liLeft" onchange="javascript:liberarIndisp()"/>
 		<@ww.select label="Indisponível" name="blacklist" id="indisp" list=r"#{true:'Sim', false:'Não'}"/>
-		<@ww.textarea label="Observação" name="historicoCandidato.observacao" cssStyle="width: 530px;"/>
+		<@ww.textarea label="Observação" name="historicoCandidato.observacao" cssStyle="width: 599px;"/>
 
 		<@ww.hidden name="candidatoSol.id"/>
 		<@ww.hidden name="solicitacao.id"/>

@@ -1102,18 +1102,18 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 //				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Candidatos");		
 	}
 
-	public Candidato verifyCPF(String cpf, Long empresaId, Long candidatoId) throws Exception 
+	public Candidato verifyCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado) throws Exception 
 	{
 		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
 		if(cpfSemMascara.equals(""))
 			return null;
 		else
-			return getDao().findByCPF(cpfSemMascara, empresaId, candidatoId);
+			return getDao().findByCPF(cpfSemMascara, empresaId, candidatoId, contratado);
 	}
 	
 	public Candidato findByCPF(String cpf, Long empresaId)
     {
-			return getDao().findByCPF(cpf, empresaId, null);
+			return getDao().findByCPF(cpf, empresaId, null, null);
     }
 
 	public void ajustaSenha(Candidato candidato) 

@@ -94,11 +94,11 @@ public class CandidatoDWR
 				Colaborador colaborador = colaboradorManager.findTodosColaboradorCpf(cpfSemMascara, empresaId, id); 
 				if (colaborador != null)
 					return "colaborador"; //link para colaborador existente
-			} catch (Exception e) {
+			} catch (NonUniqueResultException notUniqueResultException) {
 				return "colaborador";//link para colaborador existente	
 			}
 			try	{
-				Candidato candidato = candidatoManager.verifyCPF(cpfSemMascara, empresaId, id);
+				Candidato candidato = candidatoManager.verifyCPF(cpfSemMascara, empresaId, id, false);
 				if (candidato != null)
 					return "candidato"; //link para candidato existente
 			} catch (NonUniqueResultException notUniqueResultException) {

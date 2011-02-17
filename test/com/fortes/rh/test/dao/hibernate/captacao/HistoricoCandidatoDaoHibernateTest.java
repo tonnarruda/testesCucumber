@@ -135,6 +135,21 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 
 		assertEquals(1, historicos.size());
 	}
+	
+	public void testFindResponsaveis()
+	{
+		HistoricoCandidato historicoCandidato1 = new HistoricoCandidato();
+		historicoCandidato1.setResponsavel("Francisco");
+		historicoCandidatoDao.save(historicoCandidato1);
+		
+		HistoricoCandidato historicoCandidato2 = new HistoricoCandidato();
+		historicoCandidato2.setResponsavel("Francisco");
+		historicoCandidatoDao.save(historicoCandidato2);
+		
+		String[] resps = historicoCandidatoDao.findResponsaveis();
+		
+		assertTrue(resps.length >= 1);
+	}
 
 	public void testFindQtdParticipantes()
 	{

@@ -385,4 +385,9 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 		
 		return processosSeletivos;
 	}
+
+	public String[] findResponsaveis() 
+	{
+		return getDao().findResponsaveis();
+	}
 }

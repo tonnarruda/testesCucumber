@@ -244,7 +244,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidato.setId(2L);
     	candidato.setCpf("cpf");
 
-    	candidatoDao.expects(once()).method("findByCPF").with(eq("cpf"), ANYTHING, ANYTHING ).will(returnValue(candidato));
+    	candidatoDao.expects(once()).method("findByCPF").with(eq("cpf"), ANYTHING, ANYTHING, ANYTHING ).will(returnValue(candidato));
 
     	Candidato retorno = candidatoManager.findByCPF("cpf", null);
 
@@ -1584,7 +1584,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		
-		candidatoDao.expects(once()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+		candidatoDao.expects(once()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
 		candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new Candidato()));
 		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
 		assertEquals(1, candidatos.size());
@@ -1596,7 +1596,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		
-		candidatoDao.expects(once()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Candidato()));
+		candidatoDao.expects(once()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Candidato()));
 		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
 		assertEquals(1, candidatos.size());
 	}

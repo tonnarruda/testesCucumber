@@ -12,7 +12,7 @@ jQuery(document).ready(function() {
 	  timeFormat : "H:i",
       dateFormat : "d/m/Y",
       use24Hour : true,
-      buttons : true,
+      buttons : false,
 	  buttonText : {
 		today : "Hoje",
 		lastWeek : "&nbsp;&lt;&nbsp;",

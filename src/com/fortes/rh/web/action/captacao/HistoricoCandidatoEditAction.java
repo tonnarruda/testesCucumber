@@ -12,9 +12,8 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -47,6 +46,7 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 	private char visualizar;
 	private int page;
 	private String indicadoPor;
+	private String responsaveis = "";
 
 	public String execute() throws Exception
 	{
@@ -66,6 +66,10 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 
 		etapas = etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId());
 		etapaCargos = etapaSeletivaManager.findByCargo(solicitacao.getFaixaSalarial().getCargo().getId());
+		
+		String[] resps = historicoCandidatoManager.findResponsaveis();
+		if(resps != null)
+			responsaveis = StringUtil.toJSON(resps, null);
 	}
 	public String prepareInsert() throws Exception
 	{
@@ -289,5 +293,9 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 
 	public void setEtapaCargos(Collection<EtapaSeletiva> etapaCargos) {
 		this.etapaCargos = etapaCargos;
+	}
+
+	public String getResponsaveis() {
+		return responsaveis;
 	}
 }

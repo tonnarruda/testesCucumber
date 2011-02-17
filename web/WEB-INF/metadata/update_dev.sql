@@ -4,3 +4,8 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (500,
 alter sequence papel_sequence restart with 501;--.go
 
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=500 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+
+ALTER TABLE historicocandidato ADD COLUMN horaIni character varying(5);--.go
+ALTER TABLE historicocandidato ADD COLUMN horaFim character varying(5);--.go
+
+update historicocandidato set horaini='00:00', horafim='00:00';--.go

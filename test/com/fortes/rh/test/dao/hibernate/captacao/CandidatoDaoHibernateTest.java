@@ -135,10 +135,10 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		c3 = candidatoDao.save(c3);
 
-		Candidato candidato = candidatoDao.findByCPF("0000000000", null, null);
+		Candidato candidato = candidatoDao.findByCPF("0000000000", null, null, null);
 		assertEquals(c3.getId(), candidato.getId());
 
-		candidato = candidatoDao.findByCPF("00000", null, null);
+		candidato = candidatoDao.findByCPF("00000", null, null, null);
 		assertNull(candidato);
 	}
 	
