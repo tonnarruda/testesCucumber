@@ -66,6 +66,11 @@
 			}
 		}
 		
+		function desabilitaOutroCheck(esseCheck , outroCheck)
+		{
+			jQuery("#" + outroCheck).attr('disabled', jQuery("#" + esseCheck).attr("checked"));
+		}
+		
 		jQuery(document).ready(function($)
 		{
 			var empresa = jQuery('#empresa').val();
@@ -120,8 +125,8 @@
 		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="500" />
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
 		
-		<@ww.checkbox label="Exibir relatório resumido" name="relatorioResumido" labelPosition="left"/>
-		<@ww.checkbox label="Exibir Salario" name="exibirSalario" labelPosition="left"/>
+		<@ww.checkbox label="Exibir relatório resumido" name="relatorioResumido" id="resumido" labelPosition="left" onchange="desabilitaOutroCheck('resumido', 'exibirSalario')"/>
+		<@ww.checkbox label="Exibir Salario" name="exibirSalario" id="exibirSalario" labelPosition="left" onchange="desabilitaOutroCheck('exibirSalario', 'resumido')"/>
 	</@ww.form>
 
 	<div class="buttonGroup">
