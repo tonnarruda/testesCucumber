@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.captacao;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
@@ -25,4 +26,6 @@ public interface HistoricoCandidatoDao extends GenericDao<HistoricoCandidato>
 	Collection<HistoricoCandidato> findQtdParticipantes(String ano, Long cargoId, Long[] etapaIds);
 
 	String[] findResponsaveis();
+
+	boolean updateAgenda(Long id, Date data, String horaIni, String horaFim, String observacao);
 }

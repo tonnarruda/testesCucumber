@@ -22,6 +22,7 @@
 	</bean>
 	<bean id="historicoCandidatoDWR" class="com.fortes.rh.web.dwr.HistoricoCandidatoDWR">
 		<property name="candidatoSolicitacaoManager" ref="candidatoSolicitacaoManager"/>
+		<property name="historicoCandidatoManager" ref="historicoCandidatoManager"/>
 	</bean>
 	<bean id="funcaoDWR" class="com.fortes.rh.web.dwr.FuncaoDWR">
 		<property name="funcaoManager" ref="funcaoManager"/>

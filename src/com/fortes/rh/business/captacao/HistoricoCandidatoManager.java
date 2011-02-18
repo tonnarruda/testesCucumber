@@ -1,6 +1,7 @@
 package com.fortes.rh.business.captacao;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
@@ -24,4 +25,5 @@ public interface HistoricoCandidatoManager extends GenericManager<HistoricoCandi
 	HistoricoCandidato findByIdProjection(Long historicoId);
 	Collection<ProcessoSeletivoRelatorio> relatorioProcessoSeletivo(String ano, Long cargoId, Long[] etapaIds);
 	String[] findResponsaveis();
+	boolean updateAgenda(Long id, Date data, String horaIni, String horaFim, String observacao);
 }

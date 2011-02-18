@@ -260,6 +260,37 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(historicoCandidato.getId(), historicoCandidatoRetorno.getId());
 	}
 
+	public void testUpdateAgenda()
+	{
+		Date hoje = new Date(); 
+		
+		EtapaSeletiva etapaSeletiva = EtapaSeletivaFactory.getEntity();
+		etapaSeletiva = etapaSeletivaDao.save(etapaSeletiva);
+
+		HistoricoCandidato historicoCandidato = HistoricoCandidatoFactory.getEntity();
+		historicoCandidato.setEtapaSeletiva(etapaSeletiva);
+		historicoCandidato.setObservacao("");
+		historicoCandidato.setData(null);
+		historicoCandidato.setHoraIni("00:00");
+		historicoCandidato.setHoraFim("00:00");
+		historicoCandidatoDao.save(historicoCandidato);
+		
+		boolean retorno = historicoCandidatoDao.updateAgenda(historicoCandidato.getId(), hoje, "10:00", "10:30", "observacao");
+		
+		assertTrue(retorno);
+		
+		historicoCandidato = historicoCandidatoDao.findByIdProjection(historicoCandidato.getId());
+		
+		assertEquals(DateUtil.formataDataExtenso(hoje), DateUtil.formataDataExtenso(historicoCandidato.getData()));
+		assertEquals("10:00", historicoCandidato.getHoraIni());
+		assertEquals("10:30", historicoCandidato.getHoraFim());
+		assertEquals("observacao", historicoCandidato.getObservacao());
+
+		retorno = historicoCandidatoDao.updateAgenda(9898219201221L, hoje, "10:00", "10:30", "observacao");
+		
+		assertFalse(retorno);
+	}
+
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

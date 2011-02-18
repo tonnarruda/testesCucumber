@@ -52,7 +52,6 @@
 			addChecks('candidatosCheck',data)
 		}
 
-
 		function liberarIndisp()
 		{
 			if(document.getElementById('apto').value == 'true')

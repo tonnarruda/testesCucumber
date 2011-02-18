@@ -46,10 +46,15 @@ jQuery(document).ready(function() {
           jQuery('#calendar').weekCalendar("removeUnsavedEvents");
       },
       eventDrop : function(calEvent, $event) {
-		alert("TESTE drop: " + calEvent.start +" > "+ calEvent.end +" >> "+  calEvent.body);
+  				
+    	jQuery('#calendar').weekCalendar("removeUnsavedEvents");
+    	$calendar.weekCalendar("updateEvent", calEvent);
+    	      	  
+       	alert(calEvent.start);          
+		updateAgenda(calEvent.id, calEvent.start, calEvent.end, calEvent.body);
       },
       eventResize : function(calEvent, $event) {
-		alert("TESTE resiz: " + calEvent.start +" > "+ calEvent.end +" >> "+  calEvent.body);
+   		updateAgenda(calEvent.id, calEvent.start, calEvent.end, calEvent.body);
       },
       eventClick : function(calEvent, $event) {
 
@@ -80,10 +85,9 @@ jQuery(document).ready(function() {
                   calEvent.end = new Date(endField.val());
                   calEvent.body = bodyField.val();
 
-				  alert("TESTE gravar: " + calEvent.start +" > "+ calEvent.end +" >> "+  calEvent.body);
-				  
                   $calendar.weekCalendar("updateEvent", calEvent);
                   $dialogContent.dialog("close");
+				  updateAgenda(calEvent.id, calEvent.start, calEvent.end, calEvent.body);
                },
                "Cancelar" : function() {
                   $dialogContent.dialog("close");
@@ -101,6 +105,7 @@ jQuery(document).ready(function() {
       eventMouseover : function(calEvent, $event) {
       },
       eventMouseout : function(calEvent, $event) {
+    	  
       },
       noEvents : function() {
 

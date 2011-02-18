@@ -598,6 +598,19 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         }
     }
 	
+	public void testFindAprovadosReprovados()
+	{
+		Date dataIni = DateUtil.montaDataByString("01/01/2008");
+		Date dataFim = DateUtil.montaDataByString("01/01/2020");
+		
+		try {
+			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim);	
+			assertTrue(true);
+		} catch (Exception e) {
+			fail("Erro na consulta do SQL");
+		}
+	}
+	
 	public void testFindByColaboradorAndTurma2()
 	{
 		Curso curso = CursoFactory.getEntity();

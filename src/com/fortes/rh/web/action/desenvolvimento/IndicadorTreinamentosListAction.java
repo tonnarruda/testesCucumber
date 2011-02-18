@@ -23,6 +23,8 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.relatorio.GraficoIndicadorTreinamento;
 import com.fortes.rh.util.DateUtil;
@@ -156,6 +158,8 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	
 	private void prepareGraficoDesempenho()
 	{
+		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findAprovadosReprovados(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim());
+		
 		qtdAprovados = colaboradorTurmaManager.countAprovados(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId(), true);
 		qtdReprovados = colaboradorTurmaManager.countAprovados(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId(), false);
 

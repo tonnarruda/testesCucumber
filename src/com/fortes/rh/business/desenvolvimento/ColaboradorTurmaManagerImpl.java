@@ -1089,5 +1089,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim) 
+	{
+		return getDao().findAprovadosReprovados(dataIni, dataFim);
+	}
 	
 }

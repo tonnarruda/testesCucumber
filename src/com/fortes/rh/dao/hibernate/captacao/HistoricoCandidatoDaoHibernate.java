@@ -209,4 +209,20 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		Query query = getSession().createQuery(hql.toString());
 		return StringUtil.converteCollectionToArrayString(query.list());
 	}
+
+	public boolean updateAgenda(Long id, Date data, String horaIni, String horaFim, String observacao) 
+	{
+		String hql = "update  HistoricoCandidato hc set hc.data = :data, hc.horaIni = :horaIni,  " +
+				"hc.horaFim = :horaFim, hc.observacao = :observacao  where hc.id = :id  ";
+		
+		Query query = getSession().createQuery(hql);
+		
+		query.setLong("id", id);
+		query.setDate("data", data);
+		query.setString("horaIni", horaIni);
+		query.setString("horaFim", horaFim);
+		query.setString("observacao", observacao);
+		
+		return query.executeUpdate() == 1;
+	}
 }

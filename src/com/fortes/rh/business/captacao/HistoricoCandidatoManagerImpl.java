@@ -358,6 +358,11 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 		}
 
 	}
+	
+	public boolean updateAgenda(Long id, Date data, String horaIni, String horaFim, String observacao)
+	{
+		return getDao().updateAgenda(id, data, horaIni, horaFim, observacao);
+	}
 
 	public HistoricoCandidato findByIdProjection(Long historicoId)
 	{
