@@ -53,7 +53,6 @@ public class ReajusteDWR
 		retorno.put("areaOrganizacionalAtualNome", historicoColaborador.getAreaOrganizacional().getDescricao());
 		retorno.put("cargoAtualId", historicoColaborador.getFaixaSalarial().getCargo().getId());
 		retorno.put("cargoAtualNome", historicoColaborador.getFaixaSalarial().getDescricao());
-		retorno.put("salarioAtual", historicoColaborador.getSalarioCalculado().toString());
 		retorno.put("estabelecimentoAtualId", historicoColaborador.getEstabelecimento().getId());
 		retorno.put("estabelecimentoAtualNome", historicoColaborador.getEstabelecimento().getNome());
 		retorno.put("tipoSalarioDescricao", historicoColaboradorManager.montaTipoSalario(historicoColaborador.getQuantidadeIndice(), historicoColaborador.getTipoSalario(), historicoColaborador.getIndice().getNome()));
@@ -83,6 +82,13 @@ public class ReajusteDWR
 			retorno.put("ambienteAtualId", historicoColaborador.getAmbiente().getId());
 			retorno.put("ambienteAtualNome", historicoColaborador.getAmbiente().getNome());
 		}
+		
+		try {
+			retorno.put("salarioAtual", historicoColaborador.getSalarioCalculado().toString());			
+		} catch (Exception e) {
+			retorno.put("salarioAtual", "0.00");
+		}
+		
 
 		return retorno;
 	}
