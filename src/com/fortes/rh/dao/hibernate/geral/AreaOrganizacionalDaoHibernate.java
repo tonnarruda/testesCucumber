@@ -20,7 +20,6 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("unchecked")
 public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrganizacional> implements AreaOrganizacionalDao
@@ -134,22 +133,6 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 			criteria.add(Expression.eq("ao.empresa.id", empresaId));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-	}
-
-	public Collection<AreaOrganizacional> findAreasQueNaoPertencemAEmpresa(Collection<Long> areasOrganizacionais, Empresa empresa)
-	{
-		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"areaOrganizacional");
-
-		ProjectionList p = Projections.projectionList().create();
-
-		p.add(Projections.property("areaOrganizacional.id"), "id");
-		p.add(Projections.property("areaOrganizacional.nome"), "nome");
-
-		criteria.setProjection(p);
-		criteria.add(Expression.in("areaOrganizacional.id", areasOrganizacionais));
-		criteria.add(Expression.ne("areaOrganizacional.empresa", empresa));
-
-		return criteria.list();
 	}
 
 	public AreaOrganizacional findIdMaeById(long idArea)
@@ -335,6 +318,25 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
 		
 		
+		return criteria.list();
+	}
+
+	public Collection<AreaOrganizacional> findAreas(Long[] areaIds) 
+	{
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"a");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.nome"), "nome");
+
+		criteria.setProjection(p);
+		
+		if(areaIds != null && areaIds.length > 0)
+			criteria.add(Expression.in("a.id", areaIds));
+
+		criteria.addOrder(Order.asc("a.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
 		return criteria.list();
 	}
 }

@@ -102,8 +102,10 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.in("e.id", estabelecimentoIds));
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			criteria.add(Expression.in("e.id", estabelecimentoIds));
 		
+		criteria.addOrder(Order.asc("e.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Estabelecimento.class));
 		

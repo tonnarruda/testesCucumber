@@ -144,22 +144,6 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	assertEquals(areaOrganizacionalManager.findAllList(1, 15, "", 1L, AreaOrganizacional.TODAS), areas);
     }
 
-    public void testFindAreasQueNaoPertencemAEmpresa ()
-	{
-    	Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
-    	Collection<Long> ids = new ArrayList<Long>();
-    	Empresa empresa = new Empresa();
-
-		areaOrganizacionalDao.expects(atLeastOnce()).method("findAreasQueNaoPertencemAEmpresa").with(ANYTHING,ANYTHING).will(returnValue(areas));
-
-		assertFalse(areaOrganizacionalManager.findAreasQueNaoPertencemAEmpresa(ids, empresa));
-
-		AreaOrganizacional a1 = new AreaOrganizacional();
-		areas.add(a1);
-
-		assertTrue(areaOrganizacionalManager.findAreasQueNaoPertencemAEmpresa(ids, empresa));
-	}
-
     public void testPopulaCheckOrderDescricao()
 	{
 		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();

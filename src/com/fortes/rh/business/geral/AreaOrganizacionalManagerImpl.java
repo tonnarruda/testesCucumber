@@ -249,11 +249,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().getCount(nome, empresaId);
 	}
 
-	public boolean findAreasQueNaoPertencemAEmpresa(Collection<Long> areasOrganizacionais, Empresa empresa)
-	{
-		return getDao().findAreasQueNaoPertencemAEmpresa(areasOrganizacionais, empresa).size() > 0;
-	}
-
 	public Collection<CheckBox> populaCheckOrderDescricao(long empresaId)
 	{
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
@@ -578,6 +573,20 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 				}
 			}
 		}
+	}
+
+	public String nomeAreas(Long[] areaIds) 
+	{
+		Collection<AreaOrganizacional> areas = getDao().findAreas(areaIds);
+		String resultado = "";
+		
+		for (AreaOrganizacional area : areas) 
+			resultado += area.getNome() + ", ";
+		
+		if(!resultado.equals(""))
+			return resultado.substring(0, (resultado.length() - 2));
+		else
+			return resultado;
 	}
 	
 }

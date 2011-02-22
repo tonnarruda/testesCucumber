@@ -170,26 +170,6 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(1, areaOrganizacionals.size());
 	}
 
-	public void testFindAreasQueNaoPertencemAEmpresa()
-	{
-		Empresa empresa1 = EmpresaFactory.getEmpresa();
-		empresa1 = empresaDao.save(empresa1);
-
-		Empresa empresa2 = EmpresaFactory.getEmpresa();
-		empresa2 = empresaDao.save(empresa2);
-
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setEmpresa(empresa2);
-		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
-
-		Collection<Long> areaids = new ArrayList<Long>();
-		areaids.add(areaOrganizacional.getId());
-
-		Collection<AreaOrganizacional> retorno = areaOrganizacionalDao.findAreasQueNaoPertencemAEmpresa(areaids, empresa1);
-
-		assertEquals(1, retorno.size());
-	}
-
 	public void testFindIdMaeById()
 	{
 		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity();

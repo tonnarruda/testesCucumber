@@ -1,5 +1,7 @@
 package com.fortes.rh.model.relatorio;
 
+import com.fortes.rh.util.StringUtil;
+
 public class Cabecalho
 {
 	private String titulo;
@@ -30,7 +32,10 @@ public class Cabecalho
 
 	public String getFiltro()
 	{
-		return filtro;
+		if(filtro != null && filtro.length() > 213)
+			return StringUtil.subStr(filtro, 210) + "...";
+		else
+			return filtro;
 	}
 	public void setFiltro(String filtro)
 	{

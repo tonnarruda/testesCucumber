@@ -91,8 +91,11 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 		String resultado = "";
 		
 		for (Estabelecimento estabelecimento : estabelecimentos) 
-			resultado += estabelecimento.getNome() + "\n";
+			resultado += estabelecimento.getNome() + ", ";
 		
-		return resultado;
+		if(!resultado.equals(""))
+			return resultado.substring(0, (resultado.length() - 2));
+		else
+			return resultado;
 	}
 }

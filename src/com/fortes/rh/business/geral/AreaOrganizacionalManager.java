@@ -27,7 +27,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> findAllList(Long empresaId, Boolean ativo);
 	public Collection<AreaOrganizacional> findAllList(Long usuarioId, Long empresaId, Boolean ativo);
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, String nome, Long empresaId, Boolean ativo);
-	public boolean findAreasQueNaoPertencemAEmpresa(Collection<Long> areasOrganizacionais, Empresa empresa);
 	public Collection<CheckBox> populaCheckOrderDescricao(long empresaId);
 	public Collection<AreaOrganizacional> populaAreas(String[] areasCheck);
 	public AreaOrganizacional findAreaOrganizacionalCodigoAc(Long idAreaOrganizacional);
@@ -52,4 +51,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<CheckBox> populaCheckOrderDescricao(Long[] empresaIds);
 	public Collection<AreaOrganizacional> findAreasPossiveis(Collection<AreaOrganizacional> areas, Long id);
 	public Collection<AreaOrganizacional> getAncestrais(Collection<AreaOrganizacional> areas, Long id);
+	public String nomeAreas(Long[] areaIds);
 }

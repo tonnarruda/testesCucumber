@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -16,7 +18,6 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.Aspecto;
@@ -322,14 +323,6 @@ public class QuestionarioListAction extends MyActionSupportList
 	    	if (questionario.verificaTipo(TipoQuestionario.ENTREVISTA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA))
 	    		questionario.setAnonimo(!exibirNomesColaboradores);
 	
-	    	parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
-	    	parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);
-	    	parametros.put("EXIBIR_RESPOSTAS_SUBJETIVAS", exibirRespostas);
-	    	parametros.put("EXIBIR_COMENTARIOS", exibirComentarios);
-	    	parametros.put("EXIBIR_CABECALHO", exibirCabecalho);
-	    	parametros.put("QUESTIONARIO_ANONIMO", questionario.isAnonimo());
-	    	parametros.put("QUESTIONARIO_CABECALHO", questionario.getCabecalho());
-	    	
 	    	CollectionUtil<Pergunta> clu = new CollectionUtil<Pergunta>();
 	    	Long[] perguntasIds = clu.convertCollectionToArrayIds(perguntas);
 	    	Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
@@ -339,6 +332,23 @@ public class QuestionarioListAction extends MyActionSupportList
 	    	estabelecimentosIds = StringUtil.converteArrayToString(estabelecimentosCheck);
 
     		resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, periodoIni, periodoFim, turmaId, questionario);
+
+    		String estabelecimentos = estabelecimentoManager.nomeEstabelecimentos(estabelecimentoIds);
+    		String areas = areaOrganizacionalManager.nomeAreas(areaIds);
+    		String complementoFiltro = "";
+    		
+    		if(StringUtils.isNotBlank(estabelecimentos))
+    			complementoFiltro += "\nEstab.: " + estabelecimentos;
+    		if(StringUtils.isNotBlank(areas))
+    			complementoFiltro += "\nÁreas: " + areas;
+    		
+    		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro + complementoFiltro);
+    		parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);
+    		parametros.put("EXIBIR_RESPOSTAS_SUBJETIVAS", exibirRespostas);
+    		parametros.put("EXIBIR_COMENTARIOS", exibirComentarios);
+    		parametros.put("EXIBIR_CABECALHO", exibirCabecalho);
+    		parametros.put("QUESTIONARIO_ANONIMO", questionario.isAnonimo());
+    		parametros.put("QUESTIONARIO_CABECALHO", questionario.getCabecalho());
     		parametros.put("TOTAL_COLAB_RESP", questionario.getTotalColab());
 		}
 		catch (Exception e)

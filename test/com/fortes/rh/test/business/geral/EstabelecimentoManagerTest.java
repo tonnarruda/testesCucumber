@@ -101,6 +101,26 @@ public class EstabelecimentoManagerTest extends MockObjectTestCase
     	assertEquals(1, estabelecimentoManager.populaCheckBox(empresa.getId()).size());
     }
     
+    public void testNomeEstabelecimentos()
+    {
+    	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+    	estabelecimento.setNome("estabelecimento");
+
+    	Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity(2L);
+    	estabelecimento2.setNome("matriz");
+    	
+    	Collection<Estabelecimento> estabelecimentos = new ArrayList<Estabelecimento>();
+    	estabelecimentos.add(estabelecimento);
+    	estabelecimentos.add(estabelecimento2);
+    	
+    	estabelecimentoDao.expects(once()).method("findEstabelecimentos").with(ANYTHING).will(returnValue(estabelecimentos));
+    	
+    	assertEquals("estabelecimento, matriz", estabelecimentoManager.nomeEstabelecimentos(null));
+
+    	estabelecimentoDao.expects(once()).method("findEstabelecimentos").with(ANYTHING).will(returnValue(new ArrayList<Estabelecimento>()));
+    	assertEquals("", estabelecimentoManager.nomeEstabelecimentos(null));
+    }
+    
     public void testPopulaCheckBoxArrayEmpresa()
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
