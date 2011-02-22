@@ -32,6 +32,7 @@
 		<pattern>/gerarBD.action</pattern>
 		<pattern>/geral/codigoCBO/find.action*</pattern>
 		<pattern>/desenvolvimento/colaboradorTurma/findNotas.action*</pattern>
+		<pattern>/captacao/solicitacao/findEventos.action*</pattern>
 	</excludes>
 
 	<decorator name="login" page="login.ftl">

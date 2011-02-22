@@ -150,6 +150,37 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		
 		assertTrue(resps.length >= 1);
 	}
+	
+	public void testGetEventos()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacao.setEmpresa(empresa);
+		solicitacaoDao.save(solicitacao);
+
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidato.setNome("joao da silva");
+		candidatoDao.save(candidato);
+
+		CandidatoSolicitacao candidatoSolicitacao = new CandidatoSolicitacao();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		
+		HistoricoCandidato historicoCandidato1 = new HistoricoCandidato();
+		historicoCandidato1.setCandidatoSolicitacao(candidatoSolicitacao);
+		historicoCandidato1.setResponsavel("Francisco");
+		historicoCandidatoDao.save(historicoCandidato1);
+		
+		HistoricoCandidato historicoCandidato2 = new HistoricoCandidato();
+		historicoCandidato2.setCandidatoSolicitacao(candidatoSolicitacao);
+		historicoCandidato2.setResponsavel("Francis");
+		historicoCandidatoDao.save(historicoCandidato2);
+		
+		assertEquals(2, historicoCandidatoDao.getEventos("Fran", empresa.getId()).size());
+	}
 
 	public void testFindQtdParticipantes()
 	{

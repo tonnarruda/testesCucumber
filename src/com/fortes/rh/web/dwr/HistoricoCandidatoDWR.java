@@ -33,7 +33,7 @@ public class HistoricoCandidatoDWR
 			return false;
 		}
 	}
-
+	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
 	{
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -224,5 +225,37 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		query.setString("observacao", observacao);
 		
 		return query.executeUpdate() == 1;
+	}
+
+	public Collection<HistoricoCandidato> getEventos(String responsavel, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
+		criteria.createCriteria("hc.candidatoSolicitacao", "cs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cs.solicitacao", "s", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cs.candidato", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.etapaSeletiva", "es");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hc.id"), "id");
+		p.add(Projections.property("hc.data"), "data");
+		p.add(Projections.property("hc.observacao"), "observacao");
+		p.add(Projections.property("hc.responsavel"), "responsavel");
+		p.add(Projections.property("hc.horaIni"), "horaIni");
+		p.add(Projections.property("hc.horaFim"), "horaFim");
+		p.add(Projections.property("c.id"), "candidatoId");
+		p.add(Projections.property("c.nome"), "candidatoNome");
+		p.add(Projections.property("es.nome"), "etapaSeletivaNome");
+		
+		if(StringUtils.isNotBlank(responsavel))
+			criteria.add(Expression.like("hc.responsavel", "%" + responsavel + "%").ignoreCase());
+		if(empresaId != null)
+			criteria.add(Expression.eq("s.empresa.id", empresaId));
+		
+		criteria.setProjection(p);
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoCandidato.class));
+
+		return criteria.list();
 	}
 }

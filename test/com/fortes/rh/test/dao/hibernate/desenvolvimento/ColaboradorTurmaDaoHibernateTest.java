@@ -604,7 +604,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		Date dataFim = DateUtil.montaDataByString("01/01/2020");
 		
 		try {
-			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim);	
+			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim, null);	
 			assertTrue(true);
 		} catch (Exception e) {
 			fail("Erro na consulta do SQL");

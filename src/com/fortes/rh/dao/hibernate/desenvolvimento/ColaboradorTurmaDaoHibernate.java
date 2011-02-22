@@ -902,8 +902,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim) {
-
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long empresaId) 
+	{
 		StringBuilder sql = new StringBuilder();		
 		
 		sql.append("select ");
@@ -942,11 +942,17 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("on rct.colaboradorturma_id = ct.id ");
 		sql.append("where t.dataPrevIni >= :dataIni and t.dataPrevFim <= :dataFim and t.realizada = :realizada and t.id is not null ");
 		
+		if(empresaId != null)
+			sql.append("and c.empresa_id = :empresaId ");
+		
 		Query query = getSession().createSQLQuery(sql.toString());
 		
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setBoolean("realizada", true);
+		
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		
@@ -963,8 +969,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 				ct.setQtdPresenca(((BigInteger)res[1]).intValue());
 			if(res[2] != null)
 				ct.setTotalDias(((BigInteger)res[2]).intValue());
+			
+			ct.setCurso(new Curso());
 			if(res[3] != null)
-				ct.setPercentualMinimoFrequencia((Double)res[3]);
+				ct.getCurso().setPercentualMinimoFrequencia((Double)res[3]);
 			if(res[4] != null)
 				ct.setQtdAvaliacoesCurso(((BigInteger)res[4]).intValue());
 			if(res[5] != null)

@@ -11,17 +11,20 @@ import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.EventoAgenda;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -36,6 +39,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private CandidatoManager candidatoManager;
     private CargoManager cargoManager;
     private Anuncio anuncio;
+    private HistoricoCandidatoManager historicoCandidatoManager;
 
 	private Collection<Solicitacao> solicitacaos;
     private Collection<CheckBox> solicitacaosCheck;
@@ -51,6 +55,8 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     private Collection<Cargo> cargos;
     private Cargo cargo = new Cargo();
+    
+    private String json;
 
     @SuppressWarnings("unchecked")
 	public String list() throws Exception
@@ -89,6 +95,20 @@ public class SolicitacaoListAction extends MyActionSupportList
 	public String agenda() throws Exception
 	{
 		pgInicial = true;//decorator
+		
+//		Collection<EventoAgenda> eventos = historicoCandidatoManager.getEventos("", null);
+//		
+//		json = StringUtil.toJSON(eventos, null);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String findEventos() throws Exception
+	{
+		Collection<EventoAgenda> eventos = historicoCandidatoManager.getEventos("", null);
+		
+		json = StringUtil.toJSON(eventos, null);
+		
 		return Action.SUCCESS;
 	}
 
@@ -305,5 +325,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public boolean isPgInicial() {
 		return pgInicial;
+	}
+
+	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager) {
+		this.historicoCandidatoManager = historicoCandidatoManager;
+	}
+
+	public String getJson() {
+		return json;
 	}
 }

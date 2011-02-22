@@ -20,7 +20,7 @@
             <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1"/>
             <@ww.hidden name="turma.id"/>
             
-            <input type="submit" value="" class="btnPesquisar grayBGE" >
+            <input type="submit" value="" class="btnPesquisar" >
         </@ww.form>
     <#include "../util/bottomFiltro.ftl" />
     <br>

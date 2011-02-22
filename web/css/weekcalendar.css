@@ -76,3 +76,15 @@ ul.formatted li {
 ol.formatted li {
 	list-style-type: decimal;
 }
+.wc-nav a {
+	float: left;
+	margin: -3px;
+	width: 16px;
+	height: 16px;
+}
+.wc-nav .wc-prev { background: url(../imgs/ui-icons_222222_256x240.png) no-repeat -96px -16px; }
+.wc-nav .wc-today { background: url(../imgs/ui-icons_222222_256x240.png) no-repeat -32px -112px; }
+.wc-nav .wc-next { background: url(../imgs/ui-icons_222222_256x240.png) no-repeat -32px -16px; }
+.wc-day-column-header {
+	font-size: 11px;
+}

@@ -817,57 +817,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertEquals(1, colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresa.getId()).size());
 	}
 
-	public void testCountAprovados()
-	{
-		Long empresaId = 1L;
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		Turma turma1 = TurmaFactory.getEntity(1L);
-				
-		Collection<Long> turmaIds = new ArrayList<Long>();
-		turmaIds.add(turma1.getId());
-		
-		Collection<ColaboradorPresenca> colaboradorPresencas = new ArrayList<ColaboradorPresenca>();
-		colaboradorPresencas.add(new ColaboradorPresenca(colaborador.getId(), turma1.getId(), 20));
-		colaboradorPresencas.add(new ColaboradorPresenca(2L, turma1.getId(), 10));
-		
-		Collection<Turma> turmas = new ArrayList<Turma>();
-		turmas.add(new Turma(turma1.getId(), 11.1));
-		
-		Collection<Long> colaboradorIds = new ArrayList<Long>();
-		colaboradorIds.add(colaborador.getId());
-		
-		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		colaboradores.add(colaborador);
-		
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurma.setColaborador(colaborador);
-		colaboradorTurma.setTurma(turma1);
-
-		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
-		MockSpringUtil.mocks.put("turmaManager", turmaManager);
-		
-		Date hoje = new Date();
-		turmaManager.expects(once()).method("findByFiltro").with(eq(hoje), eq(hoje), eq('T'), eq(empresaId)).will(returnValue(turmas));
-		
-		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(true)).will(returnValue(colaboradorPresencas));
-		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(eq(turmaIds)).will(returnValue(turmas));
-		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds), eq(false)).will(returnValue(colaboradores));
-	
-		// aprovado
-		assertEquals(1, colaboradorTurmaManager.countAprovados(hoje, hoje, empresaId, true).intValue());
-
-		// reprovado
-		turmaManager.expects(once()).method("findByFiltro").with(eq(hoje), eq(hoje), eq('T'), eq(empresaId)).will(returnValue(turmas));
-		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(true)).will(returnValue(colaboradorPresencas));
-		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(eq(turmaIds)).will(returnValue(turmas));
-		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds), eq(false)).will(returnValue(colaboradores));
-		colaboradorManager.expects(once()).method("qtdColaboradoresByTurmas").with(eq(turmaIds)).will(returnValue(colaboradores.size()));
-		
-		assertEquals(0, colaboradorTurmaManager.countAprovados(hoje, hoje, empresaId, false).intValue());
-		
-	}
-	
 	public void testSaveColaboradorTurmaNota() throws Exception
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);

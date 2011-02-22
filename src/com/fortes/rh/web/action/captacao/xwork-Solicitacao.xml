@@ -133,6 +133,11 @@
 		<action name="agenda" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="agenda">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/agenda.ftl</result>
 		</action>
+		
+		<action name="findEventos" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="findEventos">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		    <param name="contentType">application/json</param>
+		</action>
 
 	</package>
 </xwork>

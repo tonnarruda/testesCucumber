@@ -2,6 +2,7 @@ package com.fortes.rh.business.desenvolvimento;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -54,7 +55,6 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<Colaborador> findAprovadosByTurma(Collection<Long> turmaId);
 	public Collection<Certificado> montaCertificados(Collection<Colaborador> colaboradores, Certificado certificado, Long empresaId);
 	public Collection<Colaborador> findAprovadosByCertificacao(Collection<Curso> cursos);
-	public Integer countAprovados(Date dataIni, Date dataFim, Long empresaId, boolean aprovado);
 	public Collection<ColaboradorCertificacaoRelatorio> montaRelatorioColaboradorCertificacao(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds) throws Exception;
 	public void saveColaboradorTurmaNota(Turma turma, Colaborador colaborador, Long[] avaliacaoCursoIds, String[] notas) throws Exception;
 	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Long colaboradorId, Date dataIni, Date dataFim) throws Exception;
@@ -62,5 +62,6 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Integer findQuantidade(Date dataIni, Date dataFim, Long empresaId);
 	public Double percentualFrequencia(Date dataIni, Date dataFim, Long empresaId);
 	public void carregaResultados(Collection<ColaboradorTurma> colaboradorTurmas);
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim);
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long empresaId);
+	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long empresaId);
 }

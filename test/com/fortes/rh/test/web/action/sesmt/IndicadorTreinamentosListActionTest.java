@@ -2,6 +2,7 @@ package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import mockit.Mockit;
 
@@ -94,8 +95,10 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		indicadorTreinamento.setDataFim(DateUtil.criarAnoMesDia(2011, 01, 23));
 		action.setIndicadorTreinamento(indicadorTreinamento);
 		
-		colaboradorTurmaManager.expects(once()).method("countAprovados").with(eq(indicadorTreinamento.getDataIni()), eq(indicadorTreinamento.getDataFim()), eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(2)));
-		colaboradorTurmaManager.expects(once()).method("countAprovados").with(eq(indicadorTreinamento.getDataIni()), eq(indicadorTreinamento.getDataFim()), eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(2)));
+		HashMap<String, Integer> resultados = new HashMap<String, Integer>();
+		resultados.put("qtdAprovados", 5);
+		resultados.put("qtdReprovados", 1);
+		colaboradorTurmaManager.expects(once()).method("getResultado").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(resultados));
 		assertEquals("success", action.graficoDesempenho());
 	}
 	
@@ -134,8 +137,11 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		turmaManager.expects(once()).method("quantidadeParticipantesPrevistos").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new Integer(2)));
 		cursoManager.expects(once()).method("countTreinamentos").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(3)));
 		cursoManager.expects(once()).method("countTreinamentos").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(2)));
-		colaboradorTurmaManager.expects(once()).method("countAprovados").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(2)));
-		colaboradorTurmaManager.expects(once()).method("countAprovados").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(2)));
+		
+		HashMap<String, Integer> resultados = new HashMap<String, Integer>();
+		resultados.put("qtdAprovados", 5);
+		resultados.put("qtdReprovados", 1);
+		colaboradorTurmaManager.expects(once()).method("getResultado").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(resultados));
 		
 		assertEquals("success", action.list());
 		
@@ -160,8 +166,10 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		cursoManager.expects(once()).method("countTreinamentos").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(3)));
 		cursoManager.expects(once()).method("countTreinamentos").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(2)));
 		
-		colaboradorTurmaManager.expects(once()).method("countAprovados").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(2)));
-		colaboradorTurmaManager.expects(once()).method("countAprovados").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(2)));
+		HashMap<String, Integer> resultados = new HashMap<String, Integer>();
+		resultados.put("qtdAprovados", 5);
+		resultados.put("qtdReprovados", 1);
+		colaboradorTurmaManager.expects(once()).method("getResultado").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(resultados));
 		
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 		

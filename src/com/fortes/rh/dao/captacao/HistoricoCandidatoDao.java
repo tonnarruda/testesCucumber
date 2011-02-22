@@ -28,4 +28,6 @@ public interface HistoricoCandidatoDao extends GenericDao<HistoricoCandidato>
 	String[] findResponsaveis();
 
 	boolean updateAgenda(Long id, Date data, String horaIni, String horaFim, String observacao);
+
+	Collection<HistoricoCandidato> getEventos(String responsavel, Long empresaId);
 }

@@ -835,31 +835,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTodos;
 	}
 	
-
-	public Integer countAprovados(Date dataIni, Date dataFim, Long empresaId, boolean aprovado)
-	{
-		Integer resultado = 0;
-
-		turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
-		Collection<Turma> turmas = turmaManager.findByFiltro(dataIni, dataFim, 'T', empresaId);
-		Collection<Long> turmaIds = LongUtil.collectionToCollectionLong(turmas);
-
-		if (aprovado)
-		{
-			resultado = findAprovadosByTurma(turmaIds).size();
-		}
-		else
-		{
-			Integer qtdtodosColaboradoresTurma = 0;
-			Integer qtdColaboradoresTurmaAprovados = 0;
-			qtdColaboradoresTurmaAprovados = findAprovadosByTurma(turmaIds).size();
-			qtdtodosColaboradoresTurma = colaboradorManager.qtdColaboradoresByTurmas(turmaIds);
-			resultado = qtdtodosColaboradoresTurma - qtdColaboradoresTurmaAprovados; 
-		}
-
-		return resultado;
-	}
-	
 	//TODO BACALHAU refatorar todo o metodo, tem varios metodos dependentes, criar teste
 	public Collection<ColaboradorCertificacaoRelatorio> montaRelatorioColaboradorCertificacao(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds) throws Exception
 	{
@@ -937,7 +912,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			if(ct.getQtdPresenca() != null && !ct.getQtdPresenca().equals(0))
 				presenca = calculaPresenca(ct);
 			
-			if(ct.getCurso().getPercentualMinimoFrequencia() != null && presenca < ct.getCurso().getPercentualMinimoFrequencia())
+			if(ct.getCurso() != null && ct.getCurso().getPercentualMinimoFrequencia() != null && presenca < ct.getCurso().getPercentualMinimoFrequencia())
 				aprovado = false;
 		}
 		
@@ -1089,9 +1064,34 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim) 
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long empresaId) 
 	{
-		return getDao().findAprovadosReprovados(dataIni, dataFim);
+		return getDao().findAprovadosReprovados(dataIni, dataFim, empresaId);
+	}
+
+	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		HashMap<String, Integer> resultados = new HashMap<String, Integer>();
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = findAprovadosReprovados(dataIni, dataFim, empresaId);
+		Integer qtdAprovados = new Integer(0);
+		Integer qtdReprovados = new Integer(0);
+
+		for (ColaboradorTurma ct : colaboradorTurmas) 
+		{
+			boolean aprovadoPresenca = verificaPresenca(ct);
+			boolean aprovadoNota = verificaNota(ct);
+			
+			if(aprovadoPresenca && aprovadoNota)
+				qtdAprovados++;
+			else
+				qtdReprovados++;
+		}
+		
+		resultados.put("qtdAprovados", qtdAprovados);
+		resultados.put("qtdReprovados", qtdReprovados);
+		
+		return resultados;
 	}
 	
 }

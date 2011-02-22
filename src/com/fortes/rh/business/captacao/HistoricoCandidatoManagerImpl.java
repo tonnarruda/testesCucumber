@@ -17,11 +17,13 @@ import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.model.captacao.EventoAgenda;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.ProcessoSeletivoRelatorio;
 import com.fortes.rh.model.captacao.relatorio.ProdutividadeRelatorio;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
 @SuppressWarnings({"deprecation","unchecked"})
@@ -394,5 +396,25 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 	public String[] findResponsaveis() 
 	{
 		return getDao().findResponsaveis();
+	}
+
+	public Collection<EventoAgenda> getEventos(String responsavel, Long empresaId) 
+	{
+		Collection<HistoricoCandidato> historicoCandidatos = getDao().getEventos(responsavel, empresaId);
+		Collection<EventoAgenda> eventos = new ArrayList<EventoAgenda>();
+		
+		for (HistoricoCandidato hc : historicoCandidatos)
+		{
+			String data = DateUtil.formataDate(hc.getData(), "yyyy-MM-dd");
+			eventos.add(new EventoAgenda(hc.getId(),
+					hc.getEtapaSeletiva().getNome() + "<br>Cand.: " 
+					+ "<a href=\"javascript:popup('../candidato/infoCandidato.action?candidato.id="+hc.getCandidatoSolicitacao().getCandidato().getId()+"', 580, 750)\">" + hc.getCandidatoSolicitacao().getCandidato().getNome() + "</a>" 
+					+ "<br>Resp.: " + hc.getResponsavel(),
+					hc.getObservacao(),
+					data + "T" + hc.getHoraIni(),
+					data + "T" + hc.getHoraFim()));
+		}
+		
+		return eventos;
 	}
 }

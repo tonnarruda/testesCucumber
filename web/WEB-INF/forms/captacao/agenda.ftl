@@ -1,8 +1,8 @@
 <html>
 <head>
 <@ww.head/>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.7.3.min.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.weekcalendar.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.weekcalendar.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.dateFormat-1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/weekcalendar.js"/>'></script>
 	
@@ -13,7 +13,7 @@
 	
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/weekCalendarReset.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/jquery-ui/jquery-ui-1.7.3.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/jquery.weekcalendar.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/weekcalendar.css"/>');
 	</style>
@@ -27,12 +27,14 @@
 
 		function verify(success)
 		{
+			if(!success)
+				jAlert("Erro ao gravar informações.");
 		}
-	
 		
 	</script>
 	
 	<title>Agenda</title>
+	
 </head>
 <body>
 	<div id='calendar'></div>

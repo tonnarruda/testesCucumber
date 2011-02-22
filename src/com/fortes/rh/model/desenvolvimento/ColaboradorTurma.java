@@ -60,9 +60,6 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private boolean respondeuAvaliacaoTurma;
 
 	@Transient
-	private Double percentualMinimoFrequencia;
-	
-	@Transient
 	private Double valorAvaliacao;
 
 	@Transient
@@ -696,13 +693,4 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	public void setQtdAvaliacoesCurso(Integer qtdAvaliacoesCurso) {
 		this.qtdAvaliacoesCurso = qtdAvaliacoesCurso;
 	}
-
-	public Double getPercentualMinimoFrequencia() {
-		return percentualMinimoFrequencia;
-	}
-
-	public void setPercentualMinimoFrequencia(Double percentualMinimoFrequencia) {
-		this.percentualMinimoFrequencia = percentualMinimoFrequencia;
-	}
-
 }
