@@ -96,10 +96,6 @@ public class SolicitacaoListAction extends MyActionSupportList
 	{
 		pgInicial = true;//decorator
 		
-//		Collection<EventoAgenda> eventos = historicoCandidatoManager.getEventos("", null);
-//		
-//		json = StringUtil.toJSON(eventos, null);
-		
 		return Action.SUCCESS;
 	}
 	
