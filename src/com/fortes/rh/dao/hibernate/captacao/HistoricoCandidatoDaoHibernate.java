@@ -227,7 +227,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		return query.executeUpdate() == 1;
 	}
 
-	public Collection<HistoricoCandidato> getEventos(String responsavel, Long empresaId) 
+	public Collection<HistoricoCandidato> getEventos(String responsavel, Long empresaId, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
 		criteria.createCriteria("hc.candidatoSolicitacao", "cs", Criteria.LEFT_JOIN);
@@ -250,6 +250,9 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 			criteria.add(Expression.like("hc.responsavel", "%" + responsavel + "%").ignoreCase());
 		if(empresaId != null)
 			criteria.add(Expression.eq("s.empresa.id", empresaId));
+		
+		if(dataIni != null && dataFim != null)
+			criteria.add(Expression.between("hc.data", dataIni, dataFim));
 		
 		criteria.setProjection(p);
 

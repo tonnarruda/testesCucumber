@@ -400,7 +400,8 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 
 	public Collection<EventoAgenda> getEventos(String responsavel, Long empresaId) 
 	{
-		Collection<HistoricoCandidato> historicoCandidatos = getDao().getEventos(responsavel, empresaId);
+		Date hoje = new Date();
+		Collection<HistoricoCandidato> historicoCandidatos = getDao().getEventos(responsavel, empresaId, DateUtil.retornaDataAnteriorQtdMeses(hoje, 1, false), DateUtil.setaMesPosterior(hoje));
 		Collection<EventoAgenda> eventos = new ArrayList<EventoAgenda>();
 		
 		for (HistoricoCandidato hc : historicoCandidatos)
