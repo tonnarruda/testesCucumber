@@ -153,7 +153,7 @@ public class TurmaListAction extends MyActionSupportList
 	{
 		try
 		{
-			dataSource = colaboradorTurmaManager.getColaboradoresAprovadoByTurma(turma.getId());
+			dataSource = colaboradorTurmaManager.findAprovadosByTurma(turma.getId());
 			parametros = colaboradorTurmaManager.getDadosTurma(dataSource, parametros);
 			parametros = turmaManager.getParametrosRelatorio(getEmpresaSistema(), parametros);
 		}

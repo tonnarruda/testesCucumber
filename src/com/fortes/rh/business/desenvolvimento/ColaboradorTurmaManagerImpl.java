@@ -388,26 +388,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return parametros;
 	}
 
-	public Collection<ColaboradorTurma> getColaboradoresAprovadoByTurma(Long turmaId)
-	{
-		Collection<ColaboradorTurma> colaboradorTurmas = null;
-		Integer qtdAvaliacoes = avaliacaoCursoManager.countAvaliacoes(turmaId, "T");
-		if(qtdAvaliacoes.equals(0))
-		{
-			Collection<Long> turmaIds = new ArrayList<Long>();
-			turmaIds.add(turmaId);
-			colaboradorTurmas = getDao().getColaboradoresByTurma(turmaIds);
-		}
-		else
-		{
-			Collection<Long> aprovadosIds = aproveitamentoAvaliacaoCursoManager.find(turmaId, qtdAvaliacoes, "T", true);
-			if(aprovadosIds != null && !aprovadosIds.isEmpty())
-				colaboradorTurmas = getDao().findByIdProjection(LongUtil.collectionStringToArrayLong(aprovadosIds));
-		}
-
-		return colaboradorTurmas;
-	}
-
 	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId)
 	{
 		return getDao().findByTurma(turmaId, empresaId);
@@ -466,7 +446,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, char aprovadoFiltro) throws Exception
 	{
 		Boolean aprovado = aprovadoFiltro == 'T' ? null : aprovadoFiltro == 'S';
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, null, null, curso.getId(), areaIds, estabelecimentoIds, " emp.nome, e.nome, a.nome, co.nome, c.nome ");
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, null, curso.getId(), areaIds, estabelecimentoIds, " emp.nome, e.nome, a.nome, co.nome, c.nome ");
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -522,10 +502,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		return getDao().findByTurmaSemPresenca(turmaId, diaTurmaId);
 	}
-	public Collection<ColaboradorTurma> findByIdProjection(Long[] ids)
-	{
-		return getDao().findByIdProjection(ids);
-	}
+
 	public String insereColaboradorTurmas(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Turma turma, DNT dnt, int filtrarPor, String[] selectPrioridades)
 	{
 		ColaboradorTurma colaboradorTurma = null;
@@ -634,42 +611,10 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTurmas;
 	}
 
-	public Collection<Colaborador> findAprovadosByTurma(Collection<Long> turmaIds)
-	{
-		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
-		turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
-		
-		Collection<ColaboradorPresenca> colaboradorPresencas = colaboradorPresencaManager.findColabPresencaAprovOuRepAvaliacao(turmaIds, true);
-		Collection<Turma> turmas = turmaManager.findTurmaPresencaMinima(turmaIds);
-		
-		Collection<Long> colaboradorIds = new ArrayList<Long>();
-		
-		for (ColaboradorPresenca colaboradorPresenca : colaboradorPresencas) 
-		{
-			for (Turma turma : turmas) 
-			{
-				if(colaboradorPresenca.getTurmaId().equals(turma.getId()))
-				{
-					if(colaboradorPresenca.getDiasPresente() >= turma.getDiasEstimadosParaAprovacao())
-						colaboradorIds.add(colaboradorPresenca.getColaboradorId());
-				}
-			}			
-		}
-		
-		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
-
-		if(!colaboradorIds.isEmpty())
-			colaboradors = colaboradorManager.findAllSelect(colaboradorIds, false);
-		else
-			colaboradors = new ArrayList<Colaborador>();
-
-		return colaboradors;
-	}
-	
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId)
 	{//BABAU
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, null, turmaId, null, null, null, " co.nome ");
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, turmaId, null, null, null, " co.nome ");
 		
 		//add colaboradores aprovados. Tem que ser dois for, primeiro os aprovados(é uma regra do multiSelectBox)
 		for (ColaboradorTurma ct : colaboradorTurmas) 
@@ -841,7 +786,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		certificacao.setNome(certificacaoManager.findById(certificacao.getId()).getNome());
 		Collection<Curso> cursos = cursoManager.findByCertificacao(certificacao.getId());
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresCertificacoes(empresaId, certificacao, null, null, areaIds, estabelecimentoIds, " e.nome, a.nome, co.nome, c.nome ");
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, null, null, areaIds, estabelecimentoIds, " e.nome, a.nome, co.nome, c.nome ");
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -1092,6 +1037,55 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		resultados.put("qtdReprovados", qtdReprovados);
 		
 		return resultados;
+	}
+
+	public Collection<Colaborador> findAprovadosByTurma(Collection<Long> turmaIds)
+	{
+		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
+		turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
+		
+		Collection<ColaboradorPresenca> colaboradorPresencas = colaboradorPresencaManager.findColabPresencaAprovOuRepAvaliacao(turmaIds, true);
+		Collection<Turma> turmas = turmaManager.findTurmaPresencaMinima(turmaIds);
+		
+		Collection<Long> colaboradorIds = new ArrayList<Long>();
+		
+		for (ColaboradorPresenca colaboradorPresenca : colaboradorPresencas) 
+		{
+			for (Turma turma : turmas) 
+			{
+				if(colaboradorPresenca.getTurmaId().equals(turma.getId()))
+				{
+					if(colaboradorPresenca.getDiasPresente() >= turma.getDiasEstimadosParaAprovacao())
+						colaboradorIds.add(colaboradorPresenca.getColaboradorId());
+				}
+			}			
+		}
+		
+		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+
+		if(!colaboradorIds.isEmpty())
+			colaboradors = colaboradorManager.findAllSelect(colaboradorIds, false);
+		else
+			colaboradors = new ArrayList<Colaborador>();
+
+		return colaboradors;
+	}
+
+	public Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId) 
+	{
+		Collection<ColaboradorTurma> aprovados = new ArrayList<ColaboradorTurma>();
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, null, turmaId, null, null, null, " co.nome ");
+
+		for (ColaboradorTurma ct : colaboradorTurmas) 
+		{
+			boolean aprovadoPresenca = verificaPresenca(ct);
+			boolean aprovadoNota = verificaNota(ct);
+			
+			if(aprovadoPresenca && aprovadoNota)
+				aprovados.add(ct);
+		}
+		
+		return aprovados;
 	}
 	
 }

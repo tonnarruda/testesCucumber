@@ -385,37 +385,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.executeUpdate();
 	}
 
-	public Collection<ColaboradorTurma> getColaboradoresByTurma(Collection<Long> turmaIds)
-	{
-		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
-		criteria.createCriteria("ct.turma", "t", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("ct.colaborador", "c", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("ct.curso","cur", CriteriaSpecification.LEFT_JOIN);
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ct.id"), "id");
-		p.add(Projections.property("c.id"), "colaboradorId");
-		p.add(Projections.property("c.nome"), "colaboradorNome");
-		p.add(Projections.property("cur.nome"), "cursoNome");
-		p.add(Projections.property("cur.cargaHoraria"), "projectionCursoCargaHoraria");
-		p.add(Projections.property("cur.conteudoProgramatico"), "projectionCursoConteudoProgramatico");
-		p.add(Projections.property("t.descricao"), "turmaDescricao");
-		p.add(Projections.property("t.horario"), "turmaHorario");
-		p.add(Projections.property("t.instrutor"), "instrutor");
-		p.add(Projections.property("t.dataPrevIni"), "projectionDataPrevIni");
-		p.add(Projections.property("t.dataPrevFim"), "projectionDataPrevFim");
-
-		criteria.setProjection(Projections.distinct(p));
-
-		if (turmaIds != null && turmaIds.size() >=1 )
-			criteria.add(Expression.in("t.id", turmaIds));
-
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
-
-		return criteria.list();
-	}
-
 	public List findCustoRateado()
 	{
 		String hql = " select t.id,(t.custo / count(ct.id)) from ColaboradorTurma ct inner join ct.turma t group by t.id,t.custo";
@@ -526,7 +495,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findColaboradoresCertificacoes(Long empresaId, Certificacao certificacao, Long turmaId, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy)
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long turmaId, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy)
 	{
 		StringBuilder sql = new StringBuilder();		
 		
@@ -551,7 +520,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("	ca.qtdavaliacoescurso, ");
 		sql.append("	rct.qtdavaliacoesaprovadaspornota, ");
 		sql.append("	rct.nota, ");
-		sql.append("	emp.nome ");
+		sql.append("	emp.nome, ");
+		sql.append("	c.cargaHoraria, ");
+		sql.append("	c.conteudoProgramatico, ");
+		sql.append("	t.horario, ");
+		sql.append("	t.instrutor ");
 		sql.append("from Colaboradorturma ct  ");
 		sql.append("left join colaborador co on co.id = ct.colaborador_id ");
 		sql.append("left join empresa emp on emp.id = co.empresa_id ");
@@ -706,6 +679,13 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			ct.getColaborador().setEmpresa(new Empresa());
 			ct.getColaborador().getEmpresa().setNome((String)res[20]);
 			
+			if(res[21] != null)
+				ct.getCurso().setCargaHoraria(((Integer)res[21]));
+			ct.getCurso().setConteudoProgramatico(((String)res[22]));
+			
+			ct.getTurma().setHorario((String)res[23]);
+			ct.getTurma().setInstrutor((String)res[24]);
+			
 			colaboradorTurmas.add(ct);
 		}
 		
@@ -723,36 +703,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.setLong("diaTurmaId", diaTurmaId);
 
 		return query.list();
-	}
-
-	public Collection<ColaboradorTurma> findByIdProjection(Long[] ids)
-	{
-		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
-		criteria.createCriteria("ct.turma", "t", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("ct.colaborador", "c", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("ct.curso","cur", CriteriaSpecification.LEFT_JOIN);
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ct.id"), "id");
-		p.add(Projections.property("c.id"), "colaboradorId");
-		p.add(Projections.property("c.nome"), "colaboradorNome");
-		p.add(Projections.property("cur.nome"), "cursoNome");
-		p.add(Projections.property("cur.cargaHoraria"), "projectionCursoCargaHoraria");
-		p.add(Projections.property("cur.conteudoProgramatico"), "projectionCursoConteudoProgramatico");
-		p.add(Projections.property("t.descricao"), "turmaDescricao");
-		p.add(Projections.property("t.horario"), "turmaHorario");
-		p.add(Projections.property("t.instrutor"), "instrutor");
-		p.add(Projections.property("t.dataPrevIni"), "projectionDataPrevIni");
-		p.add(Projections.property("t.dataPrevFim"), "projectionDataPrevFim");
-
-		criteria.setProjection(Projections.distinct(p));
-
-		criteria.add(Expression.in("ct.id", ids));
-
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
-
-		return criteria.list();
 	}
 
 	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Long colaboradorId, Date dataIni, Date dataFim)
@@ -796,25 +746,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			query.setDate("dataFim", dataFim);
 
 		return query.list();
-	}
-
-	public Collection<ColaboradorTurma> findAllSelect(Collection<Long> ids)
-	{
-		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
-		criteria.createCriteria("ct.colaborador", "c", CriteriaSpecification.LEFT_JOIN);
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ct.id"), "id");
-		p.add(Projections.property("c.id"), "colaboradorId");
-		p.add(Projections.property("c.nome"), "colaboradorNome");
-		criteria.setProjection(Projections.distinct(p));
-
-		criteria.add(Expression.in("ct.id", ids));
-
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
-
-		return criteria.list();
 	}
 
 	public Integer findQuantidade(Date dataIni, Date dataFim, Long empresaId)

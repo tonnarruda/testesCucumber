@@ -109,7 +109,7 @@ public class TurmaListActionTest extends MockObjectTestCase
     	Turma turma = TurmaFactory.getEntity(1L);
     	action.setTurma(turma);
 
-    	colaboradorTurmaManager.expects(once()).method("getColaboradoresAprovadoByTurma").with(eq(turma.getId())).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findAprovadosByTurma").with(eq(turma.getId())).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	colaboradorTurmaManager.expects(once()).method("getDadosTurma").with(ANYTHING, ANYTHING).will(returnValue(new HashMap<String, Object>()));
     	turmaManager.expects(once()).method("getParametrosRelatorio").with(ANYTHING, ANYTHING).will(returnValue(new HashMap<String, Object>()));
 

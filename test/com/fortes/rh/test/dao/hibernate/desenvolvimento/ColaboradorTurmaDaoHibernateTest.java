@@ -227,6 +227,22 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
          Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findByTurmaCurso(curso.getId());
          assertEquals(1, retorno.size());
     }
+
+    public void testGetCount()
+    {
+    	Turma turma = TurmaFactory.getEntity();
+    	turmaDao.save(turma);
+    	
+    	ColaboradorTurma colaboradorTurma1 = getEntity();
+    	colaboradorTurma1.setTurma(turma);
+    	colaboradorTurmaDao.save(colaboradorTurma1);
+
+    	ColaboradorTurma colaboradorTurma2 = getEntity();
+    	colaboradorTurma2.setTurma(turma);
+    	colaboradorTurmaDao.save(colaboradorTurma2);
+    	
+    	assertEquals(new Integer(2), colaboradorTurmaDao.getCount(turma.getId()));
+    }
     
     public void testFindColaboradorByTurma()
     {
@@ -540,30 +556,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         }
 
         assertNull(exception);
-    }
-
-    public void testGetColaboradoresAprovadoByTurma()
-    {
-        Curso curso = CursoFactory.getEntity();
-        curso.setCargaHoraria(1);
-        curso = cursoDao.save(curso);
-
-        Turma turma = TurmaFactory.getEntity();
-        turma.setCurso(curso);
-        turma = turmaDao.save(turma);
-        
-        Collection<Long> turmaIds = new ArrayList<Long>();
-        turmaIds.add(turma.getId());
-
-        Colaborador colaborador = ColaboradorFactory.getEntity();
-        colaborador = colaboradorDao.save(colaborador);
-
-        ColaboradorTurma colaboradorTurma1 = getEntity();
-        colaboradorTurma1.setTurma(turma);
-        colaboradorTurma1.setColaborador(colaborador);
-        colaboradorTurma1 = colaboradorTurmaDao.save(colaboradorTurma1);
-
-        assertEquals(1, colaboradorTurmaDao.getColaboradoresByTurma(turmaIds).size());
     }
 
 	public void testFindCustoRateado()
@@ -921,67 +913,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 	
 	public void testFindColaboradoresCertificacoes()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
-		avaliacaoCursoDao.save(avaliacaoCurso);
-
-		Curso curso = CursoFactory.getEntity();
-		curso.setAvaliacaoCursos(new ArrayList<AvaliacaoCurso>());
-		curso.getAvaliacaoCursos().add(avaliacaoCurso);
-		cursoDao.save(curso);
-
-		Collection<Curso> cursos = new ArrayList<Curso>();
-		cursos.add(curso);
-		
-		Certificacao certificacao = CertificacaoFactory.getEntity();
-		certificacao.setCursos(cursos);
-		certificacaoDao.save(certificacao);
-		
-		Turma turma = TurmaFactory.getEntity();
-		turma.setCurso(curso);
-		turmaDao.save(turma);
-		
-		DiaTurma diaTurma = new DiaTurma();
-		diaTurma.setTurma(turma);
-		diaTurmaDao.save(diaTurma);
-
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-    	estabelecimentoDao.save(estabelecimento);
-    	
-        AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-        areaOrganizacionalDao.save(areaOrganizacional);
-
-        Colaborador colaborador = ColaboradorFactory.getEntity();
-        colaborador.setEmpresa(empresa);
-        colaborador.setDesligado(false);
-        colaboradorDao.save(colaborador);
-
-        HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-        historicoColaborador.setColaborador(colaborador);
-        historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-        historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2001));
-        historicoColaborador.setAreaOrganizacional(areaOrganizacional);
-        historicoColaborador.setEstabelecimento(estabelecimento);
-        historicoColaboradorDao.save(historicoColaborador);
-        
-        ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-        colaboradorTurma.setCurso(curso);
-        colaboradorTurma.setTurma(turma);
-        colaboradorTurma.setColaborador(colaborador);
-        colaboradorTurmaDao.save(colaboradorTurma);
-        
-        AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
-        aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
-        aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
-		
-        ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
-    	colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
-    	colaboradorPresencaDao.save(colaboradorPresenca);
-    	
-    	//não podemos testar o SQL, o teste joga na transação
-		assertNotNull(colaboradorTurmaDao.findColaboradoresCertificacoes(empresa.getId(), certificacao, null, null, new Long[0], new Long[0], " e.nome, a.nome, co.nome, c.nome "));
+		assertNotNull(colaboradorTurmaDao.findAprovadosReprovados(1L, null, null, null, new Long[0], new Long[0], " e.nome, a.nome, co.nome, c.nome "));
 	}
 
 	public void testFindAllSelectQuantidade()		

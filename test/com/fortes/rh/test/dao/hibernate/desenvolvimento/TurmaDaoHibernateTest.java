@@ -113,6 +113,28 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		assertEquals(turmaRetorno, turma);
 	}
 
+	public void testFindTurmas()
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setCurso(curso);
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setCurso(curso);
+		turmaDao.save(turma2);
+		
+		Turma turma3 = TurmaFactory.getEntity();
+		turma3.setCurso(curso);
+		turmaDao.save(turma3);
+		
+		Collection<Turma> turmas = turmaDao.findTurmas(1, 2, curso.getId());
+		
+		assertEquals(2, turmas.size());
+	}
+
 	public void testFindByIdProjectionArray()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
