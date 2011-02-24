@@ -384,9 +384,9 @@
 				/avaliacao/avaliacaoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
 				/avaliacao/perguntaAvaliacao/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
 				
-				/avaliacao/desempenho/prepareResponderAvaliacaoDesempenho*=ROLE_RESPONDE_AVALIACAO,ROLE_MOV_AVALIACAO
-				/avaliacao/desempenho/responderAvaliacaoDesempenho*=ROLE_RESPONDE_AVALIACAO,ROLE_MOV_AVALIACAO
-				/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList*=ROLE_RESPONDE_AVALIACAO,ROLE_MOV_AVALIACAO
+				/avaliacao/desempenho/prepareResponderAvaliacaoDesempenho*=ROLE_USER
+				/avaliacao/desempenho/responderAvaliacaoDesempenho*=ROLE_USER
+				/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList*=ROLE_USER
 				/avaliacao/desempenho/*/**=ROLE_MOV_AVALIACAO
 				
 				/avaliacao/modelo/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
