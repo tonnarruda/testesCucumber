@@ -446,7 +446,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, char aprovadoFiltro) throws Exception
 	{
 		Boolean aprovado = aprovadoFiltro == 'T' ? null : aprovadoFiltro == 'S';
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, null, curso.getId(), areaIds, estabelecimentoIds, " emp.nome, e.nome, a.nome, co.nome, c.nome ");
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, curso.getId(), areaIds, estabelecimentoIds, " emp.nome, e.nome, a.nome, co.nome, c.nome ", null);
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -612,9 +612,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	}
 
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId)
-	{//BABAU
+	{
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, turmaId, null, null, null, " co.nome ");
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, null, null, null, " co.nome ", turmaId);
 		
 		//add colaboradores aprovados. Tem que ser dois for, primeiro os aprovados(é uma regra do multiSelectBox)
 		for (ColaboradorTurma ct : colaboradorTurmas) 
@@ -623,6 +623,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				colaboradores.add(ct.getColaborador());
 		}
 		
+		montaSelectBoxColaborador(colaboradores, colaboradorTurmas);
+
+		return colaboradores;
+	}
+	
+	private void montaSelectBoxColaborador(Collection<Colaborador> colaboradores, Collection<ColaboradorTurma> colaboradorTurmas) {
 		//add colaboradores reprovados. Tem que ser dois for, primeiro os aprovados(é uma regra do multiSelectBox)
 		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{
@@ -644,27 +650,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				colaboradores.add(ct.getColaborador());
 			}
 		}
-
-		return colaboradores;
 	}
-	
-	private Collection<Colaborador> colaboradorAprovOuRepAvaliacaos(Collection<Long> turmaIds, boolean aprovado)
-	{
-		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
-		Collection<ColaboradorPresenca> colaboradorPresencaAprovOuRepAvaliacaos = colaboradorPresencaManager.findColabPresencaAprovOuRepAvaliacao(turmaIds, aprovado);
 
-		// Id Colaboradores Aprovados
-		Collection<Long> colaboradorPresencaAprovAvaliacaoIds = new ArrayList<Long>();
-		for (ColaboradorPresenca colaboradorPresencaAprovRepAvaliacao : colaboradorPresencaAprovOuRepAvaliacaos)
-			colaboradorPresencaAprovAvaliacaoIds.add(colaboradorPresencaAprovRepAvaliacao.getColaboradorId());
-		
-		Collection<Colaborador> colaboradorAprovAvaliacaos = new ArrayList<Colaborador>();
-		if (!colaboradorPresencaAprovAvaliacaoIds.isEmpty())
-			colaboradorAprovAvaliacaos = colaboradorManager.findAllSelect(colaboradorPresencaAprovAvaliacaoIds, null);
-		
-		return colaboradorAprovAvaliacaos;
-	}
-	
 	public Double percentualFrequencia(Date dataIni, Date dataFim, Long empresaId)
 	{
 		double resultado = 0.0;
@@ -720,64 +707,54 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return certificados;
 	}
 
-	public Collection<Colaborador> findAprovadosByCertificacao(Collection<Curso> cursos)
+	public Collection<Colaborador> findAprovadosByCertificacao(Certificacao certificacao, int qtdCursos)
 	{
-		CollectionUtil<Curso> util = new CollectionUtil<Curso>();
-		Long[] cursoIds = util.convertCollectionToArrayIds(cursos);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, certificacao, null, null, null, " co.id ", null);
 		
-		turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
-		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		Collection<Colaborador> colaboradoresTemp = new ArrayList<Colaborador>();
-		Collection<Colaborador> colaboradorCertificados = new ArrayList<Colaborador>();
-		Collection<Long> todasTurmaIds = new ArrayList<Long>();
-		Boolean decisao = true;
+		Collection<Colaborador> aprovados = new ArrayList<Colaborador>();
+		Collection<Colaborador> reprovados = new ArrayList<Colaborador>();
 		
-		for (Long cursoId : cursoIds)
+		
+		HashMap<Long, Integer> qtdColabCursos = new HashMap<Long, Integer>();
+		
+		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{
-			Collection<Turma> turmas = turmaManager.getTurmaFinalizadas(cursoId);
-			Collection<Long> turmaIds = LongUtil.collectionToCollectionLong(turmas);
-			todasTurmaIds.addAll(turmaIds);
-			colaboradores.addAll(findAprovadosByTurma(turmaIds));
-
-			if (cursos.size() != 1){
-				if (decisao)
-					colaboradoresTemp.addAll(colaboradores);
-				else
-					for (Colaborador colaboradorTemp : colaboradoresTemp) 
-						for (Colaborador colaborador : colaboradores)
-							if (colaborador.getId().equals(colaboradorTemp.getId()))
-								colaboradorCertificados.add(colaborador);
-	
-				colaboradores.clear();
-				decisao = false;
-			}else
-				colaboradorCertificados.addAll(colaboradores);
+			Long colabId = ct.getColaborador().getId();
+			if(qtdColabCursos.get(colabId) != null)
+				qtdColabCursos.put(colabId, qtdColabCursos.get(colabId) + 1);
+			else
+				qtdColabCursos.put(colabId, 1);
 		}
-
-		Collection<Colaborador> colaboradorAprovAvaliacaos = colaboradorAprovOuRepAvaliacaos(todasTurmaIds, true);
-		Collection<Colaborador> colaboradorRepAvaliacaos = colaboradorAprovOuRepAvaliacaos(todasTurmaIds, false);
 		
-		Collection<Colaborador> colaboradorTodos = new ArrayList<Colaborador>();
-		colaboradorTodos.addAll(colaboradorAprovAvaliacaos);
-		colaboradorTodos.addAll(colaboradorRepAvaliacaos);
+		for (ColaboradorTurma ct : colaboradorTurmas) 
+		{
+			if(verificaAprovacao(ct) && qtdColabCursos.get(ct.getColaborador().getId()) == qtdCursos)
+				aprovados.add(ct.getColaborador());
+			else
+			{
+				ct.getColaborador().setNome("<span style='color: red;'>" + ct.getColaborador().getNome() + " (Não certificado)</span>");
+				reprovados.add(ct.getColaborador());
+			}
+		}
+				
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		
-		CollectionUtil<Colaborador> collectionUtil = new CollectionUtil<Colaborador>();
-		colaboradorCertificados = collectionUtil.distinctCollection(colaboradorCertificados);
-		colaboradorCertificados = collectionUtil.sortCollectionStringIgnoreCase(colaboradorCertificados, "nome");
+		CollectionUtil<Colaborador> util = new CollectionUtil<Colaborador>();
+		aprovados = util.distinctCollection(aprovados);
+		aprovados = util.sortCollectionStringIgnoreCase(aprovados, "nome");
+		reprovados = util.distinctCollection(reprovados);
+		reprovados = util.sortCollectionStringIgnoreCase(reprovados, "nome");
 		
-		Collection<Colaborador> colaboradorNaoCertificados = new ArrayList<Colaborador>();
-		colaboradorNaoCertificados = collectionUtil.distinctCollection(colaboradorTodos);
-		colaboradorNaoCertificados = collectionUtil.sortCollectionStringIgnoreCase(colaboradorNaoCertificados, "nome");
-		colaboradorNaoCertificados.removeAll(colaboradorCertificados);
+		colaboradores.addAll(aprovados);
+		for (Colaborador aprovado : aprovados) 
+		{
+			if(reprovados.contains(aprovado))
+				colaboradores.remove(aprovado);
+		}
 		
-		for (Colaborador colaboradorNaoCertificado : colaboradorNaoCertificados)
-			colaboradorNaoCertificado.setNome("<span style='color: red;'>" + colaboradorNaoCertificado.getNome() + " (Não certificado)</span>");
-
-		colaboradorTodos.clear();
-		colaboradorTodos.addAll(colaboradorCertificados);
-		colaboradorTodos.addAll(colaboradorNaoCertificados);
+		colaboradores.addAll(reprovados);
 		
-		return colaboradorTodos;
+		return colaboradores;
 	}
 	
 	//TODO BACALHAU refatorar todo o metodo, tem varios metodos dependentes, criar teste
@@ -786,7 +763,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		certificacao.setNome(certificacaoManager.findById(certificacao.getId()).getNome());
 		Collection<Curso> cursos = cursoManager.findByCertificacao(certificacao.getId());
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, null, null, areaIds, estabelecimentoIds, " e.nome, a.nome, co.nome, c.nome ");
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, null, areaIds, estabelecimentoIds, " e.nome, a.nome, co.nome, c.nome ", null);
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -823,12 +800,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public void carregaResultados(Collection<ColaboradorTurma> colaboradorTurmas) 
 	{
 		for (ColaboradorTurma ct : colaboradorTurmas) 
-		{
-			boolean aprovadoPresenca = verificaPresenca(ct);
-			boolean aprovadoNota = verificaNota(ct);
-			
-			ct.setAprovado(aprovadoPresenca && aprovadoNota);
-		}
+			ct.setAprovado(verificaAprovacao(ct));
 	}
 	
 	private boolean verificaNota(ColaboradorTurma ct)
@@ -930,10 +902,11 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		turmaIds.add(turmaId);
 		Collection<Colaborador> colaboradorAprovados = findAprovadosByTurma(turmaIds);
 		
-		for (Colaborador colab : colaboradorAprovados) {
+		for (Colaborador colab : colaboradorAprovados) 
+		{
 			if (colaboradorId.equals(colab.getId()))
 					return true;
-			}
+		}
 			
 		return false;
 	}
@@ -1024,10 +997,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{
-			boolean aprovadoPresenca = verificaPresenca(ct);
-			boolean aprovadoNota = verificaNota(ct);
-			
-			if(aprovadoPresenca && aprovadoNota)
+			if(verificaAprovacao(ct))
 				qtdAprovados++;
 			else
 				qtdReprovados++;
@@ -1041,32 +1011,18 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public Collection<Colaborador> findAprovadosByTurma(Collection<Long> turmaIds)
 	{
-		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
-		turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
-		
-		Collection<ColaboradorPresenca> colaboradorPresencas = colaboradorPresencaManager.findColabPresencaAprovOuRepAvaliacao(turmaIds, true);
-		Collection<Turma> turmas = turmaManager.findTurmaPresencaMinima(turmaIds);
-		
 		Collection<Long> colaboradorIds = new ArrayList<Long>();
 		
-		for (ColaboradorPresenca colaboradorPresenca : colaboradorPresencas) 
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, null, null, null, null, " co.nome ", LongUtil.collectionStringToArrayLong(turmaIds));
+		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{
-			for (Turma turma : turmas) 
-			{
-				if(colaboradorPresenca.getTurmaId().equals(turma.getId()))
-				{
-					if(colaboradorPresenca.getDiasPresente() >= turma.getDiasEstimadosParaAprovacao())
-						colaboradorIds.add(colaboradorPresenca.getColaboradorId());
-				}
-			}			
+			if(verificaAprovacao(ct))
+				colaboradorIds.add(ct.getColaborador().getId());
 		}
-		
-		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 
+		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		if(!colaboradorIds.isEmpty())
 			colaboradors = colaboradorManager.findAllSelect(colaboradorIds, false);
-		else
-			colaboradors = new ArrayList<Colaborador>();
 
 		return colaboradors;
 	}
@@ -1074,18 +1030,23 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId) 
 	{
 		Collection<ColaboradorTurma> aprovados = new ArrayList<ColaboradorTurma>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, null, turmaId, null, null, null, " co.nome ");
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, null, null, null, null, " co.nome ", turmaId);
 
 		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{
-			boolean aprovadoPresenca = verificaPresenca(ct);
-			boolean aprovadoNota = verificaNota(ct);
-			
-			if(aprovadoPresenca && aprovadoNota)
+			if(verificaAprovacao(ct))
 				aprovados.add(ct);
 		}
 		
 		return aprovados;
+	}
+
+	private boolean verificaAprovacao(ColaboradorTurma ct)
+	{
+		boolean aprovadoPresenca = verificaPresenca(ct);
+		boolean aprovadoNota = verificaNota(ct);
+		
+		return aprovadoPresenca && aprovadoNota;
 	}
 	
 }

@@ -445,30 +445,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         else
         	return valor;
 	  }
-	
-
-	public Collection<Turma> findTurmaPresencaMinima (Collection<Long> turmaIds)
-	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new Turma(t.id,(count(dt.id) * (c.percentualMinimoFrequencia / 100))) ");
-		hql.append("from DiaTurma dt ");
-		hql.append("join dt.turma t ");
-		hql.append("join t.curso c ");
 		
-		if (turmaIds != null && !turmaIds.isEmpty())
-			hql.append("where  t.id in (:turmaId) ");
-		
-		hql.append("group by t.id, c.percentualMinimoFrequencia ");
-		hql.append("order by t.id ");
-		
-		Query query = getSession().createQuery(hql.toString());
-		
-		if (turmaIds != null && !turmaIds.isEmpty())
-			query.setParameterList("turmaId", turmaIds, Hibernate.LONG);
-
-		return query.list();	
-	}
-	
 	public Collection<Turma> findByEmpresaOrderByCurso(Long empresaId){
 		
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");

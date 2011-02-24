@@ -495,10 +495,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long turmaId, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy)
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy, Long... turmaIds)
 	{
 		StringBuilder sql = new StringBuilder();		
-		
 		sql.append("select ");
 		sql.append("	co.id as colaborador, ");
 		sql.append("	co.nome as colaboradornome, ");
@@ -579,8 +578,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(certificacao != null)
 			sql.append("	and cc.certificacaos_id = :certificacaoId ");
 		
-		if(turmaId != null)
-			sql.append("	and t.id = :turmaId ");
+		if(turmaIds != null && turmaIds.length > 0)
+			sql.append("	and t.id in (:turmaId) ");
 
 		if(cursoId != null)
 			sql.append("	and c.id = :cursoId ");
@@ -612,8 +611,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(certificacao != null)
 			query.setLong("certificacaoId", certificacao.getId());
 		
-		if(turmaId != null)
-			query.setLong("turmaId", turmaId);
+		if(turmaIds != null && turmaIds.length > 0)
+			query.setParameterList("turmaId", turmaIds, Hibernate.LONG);
 		
 		if(cursoId != null)
 			query.setLong("cursoId", cursoId);
@@ -647,18 +646,31 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			ct.getColaborador().setAreaOrganizacional(new AreaOrganizacional());
 			ct.getColaborador().getAreaOrganizacional().setId(((BigInteger)res[5]).longValue());
 			
-			ct.setTurma(new Turma());
-			ct.getTurma().setId(((BigInteger)res[6]).longValue());
-			ct.getTurma().setDescricao((String)res[7]);
-			ct.getTurma().setDataPrevIni((Date)res[8]);
-			ct.getTurma().setDataPrevFim((Date)res[9]);
+			if(res[6] != null)
+			{
+				ct.setTurma(new Turma());
+				ct.getTurma().setId(((BigInteger)res[6]).longValue());
+				ct.getTurma().setDescricao((String)res[7]);
+				ct.getTurma().setDataPrevIni((Date)res[8]);
+				ct.getTurma().setDataPrevFim((Date)res[9]);
+				
+				ct.getTurma().setHorario((String)res[23]);
+				ct.getTurma().setInstrutor((String)res[24]);
+			}
 			
 			ct.setId(((BigInteger)res[10]).longValue());
 			ct.setAprovado((Boolean)res[11]);
 			
-			ct.setCurso(new Curso());
-			ct.getCurso().setId(((BigInteger)res[12]).longValue());
-			ct.getCurso().setNome((String)res[13]);
+			if(res[12] != null)
+			{
+				ct.setCurso(new Curso());
+				ct.getCurso().setId(((BigInteger)res[12]).longValue());
+				ct.getCurso().setNome((String)res[13]);
+				
+				if(res[21] != null)
+					ct.getCurso().setCargaHoraria(((Integer)res[21]));
+				ct.getCurso().setConteudoProgramatico(((String)res[22]));
+			}
 			
 			if(res[14] != null)
 				ct.getCurso().setPercentualMinimoFrequencia((Double)res[14]);
@@ -678,14 +690,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			
 			ct.getColaborador().setEmpresa(new Empresa());
 			ct.getColaborador().getEmpresa().setNome((String)res[20]);
-			
-			if(res[21] != null)
-				ct.getCurso().setCargaHoraria(((Integer)res[21]));
-			ct.getCurso().setConteudoProgramatico(((String)res[22]));
-			
-			ct.getTurma().setHorario((String)res[23]);
-			ct.getTurma().setInstrutor((String)res[24]);
-			
+
+			//ultimo do array é 24
 			colaboradorTurmas.add(ct);
 		}
 		

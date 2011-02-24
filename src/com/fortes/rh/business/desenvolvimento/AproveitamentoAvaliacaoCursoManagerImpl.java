@@ -139,12 +139,13 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 	}
 		/**
 	 * retorna ColaboradorTurma com id,nota */
-	public Collection<ColaboradorTurma> findColaboradorTurma(Long id, int qtdAvaliacao, String wherePor, Boolean aprovado) {
-		
+	public Collection<ColaboradorTurma> findColaboradorTurma(Long id, int qtdAvaliacao, String wherePor, Boolean aprovado) 
+	{
 		return getDao().findColaboradorTurma(id, qtdAvaliacao, wherePor, aprovado);
 	}
 
-	public Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId) {
+	public Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId) 
+	{
 		return getDao().findByColaboradorCurso(colaboradorId, cursoId);
 	}
 }

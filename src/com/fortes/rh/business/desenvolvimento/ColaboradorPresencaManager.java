@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
-import com.fortes.rh.model.desenvolvimento.Turma;
 
 public interface ColaboradorPresencaManager extends GenericManager<ColaboradorPresenca>
 {
@@ -18,5 +17,4 @@ public interface ColaboradorPresencaManager extends GenericManager<ColaboradorPr
 	public Collection<ColaboradorTurma> preparaLinhaEmBranco(Collection<ColaboradorTurma> colaboradorTurmas, int qtdMaxLinha);
 	public void removeByColaboradorTurma(Long[] colaboradorTurmaIds);
 	public Integer qtdDiaPresentesTurma(Long turmaId);
-	public Collection<ColaboradorPresenca> findColabPresencaAprovOuRepAvaliacao(Collection<Long> turmaIds, boolean aprovado);
 }

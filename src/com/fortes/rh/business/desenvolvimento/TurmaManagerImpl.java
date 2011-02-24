@@ -294,14 +294,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findByTurmasPeriodo(turmasCheck,  dataIni, dataFim, realizada);
 	}
 
-	public Collection<Turma> findTurmaPresencaMinima(Collection<Long> turmaIds) 
-	{
-		if (turmaIds != null && !turmaIds.isEmpty())
-			return getDao().findTurmaPresencaMinima(turmaIds);
-		else
-			return new ArrayList<Turma>();
-	}
-
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
 	}

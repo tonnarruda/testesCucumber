@@ -158,66 +158,6 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 		return colaboradorTurma;
 	}
 
-
-	public void testFindColaboradorAprovadosAvaliacao() 
-	{
-		Turma turma = TurmaFactory.getEntity();
-		turma.setRealizada(true);
-		turmaDao.save(turma);
-		
-        Collection<Long> turmaIds = new ArrayList<Long>();
-        turmaIds.add(turma.getId());
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador);
-		
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurma.setTurma(turma);
-		colaboradorTurma.setColaborador(colaborador);
-		colaboradorTurmaDao.save(colaboradorTurma);
-		
-		DiaTurma diaTurma1 = DiaTurmaFactory.getEntity();
-		diaTurmaDao.save(diaTurma1);
-
-		DiaTurma diaTurma2 = DiaTurmaFactory.getEntity();
-		diaTurmaDao.save(diaTurma2);
-		
-		DiaTurma diaTurma3 = DiaTurmaFactory.getEntity();
-		diaTurmaDao.save(diaTurma3);
-		
-		ColaboradorPresenca colaboradorPresenca1 = ColaboradorPresencaFactory.getEntity();
-		colaboradorPresenca1.setDiaTurma(diaTurma1);
-		colaboradorPresenca1.setColaboradorTurma(colaboradorTurma);
-		colaboradorPresencaDao.save(colaboradorPresenca1);
-
-		ColaboradorPresenca colaboradorPresenca2 = ColaboradorPresencaFactory.getEntity();
-		colaboradorPresenca2.setDiaTurma(diaTurma2);
-		colaboradorPresenca2.setColaboradorTurma(colaboradorTurma);
-		colaboradorPresencaDao.save(colaboradorPresenca2);
-		
-		ColaboradorPresenca colaboradorPresenca3 = ColaboradorPresencaFactory.getEntity();
-		colaboradorPresenca3.setDiaTurma(diaTurma3);
-		colaboradorPresenca3.setColaboradorTurma(colaboradorTurma);
-		colaboradorPresencaDao.save(colaboradorPresenca3);
-		
-		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
-		avaliacaoCurso.setMinimoAprovacao(8.0);
-		avaliacaoCursoDao.save(avaliacaoCurso);
-		
-		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
-		aproveitamentoAvaliacaoCurso.setAvaliacaoCurso(avaliacaoCurso);
-		aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
-		aproveitamentoAvaliacaoCurso.setValor(10.0);
-		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
-		
-		Collection<ColaboradorPresenca> colaboradorPresenca = colaboradorPresencaDao.findColaboradorPresencaAprovadoOuReprovadoAvaliacao(turmaIds, true);
-		assertEquals(1, colaboradorPresenca.size());
-
-		ColaboradorPresenca colaboradorPresencaRetorno = (ColaboradorPresenca) colaboradorPresenca.toArray()[0];
-		assertEquals(colaborador.getId(), colaboradorPresencaRetorno.getColaboradorId());
-		assertEquals(new Integer(3), colaboradorPresencaRetorno.getDiasPresente());
-	}
-
 	public void testqtdDiaPresentesTurma() 
 	{
 		Turma turma = TurmaFactory.getEntity();

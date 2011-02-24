@@ -913,7 +913,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 	
 	public void testFindColaboradoresCertificacoes()
 	{
-		assertNotNull(colaboradorTurmaDao.findAprovadosReprovados(1L, null, null, null, new Long[0], new Long[0], " e.nome, a.nome, co.nome, c.nome "));
+		assertNotNull(colaboradorTurmaDao.findAprovadosReprovados(1L, null, null, new Long[0], new Long[0], " e.nome, a.nome, co.nome, c.nome ", null));
 	}
 
 	public void testFindAllSelectQuantidade()		

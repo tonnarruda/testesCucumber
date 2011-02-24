@@ -1,10 +1,7 @@
 package com.fortes.rh.business.desenvolvimento;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Locale;
 
 import com.fortes.business.GenericManagerImpl;
@@ -12,7 +9,6 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
-import com.fortes.rh.model.desenvolvimento.Turma;
 
 public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<ColaboradorPresenca, ColaboradorPresencaDao> implements ColaboradorPresencaManager
 {
@@ -111,12 +107,4 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		getDao().removeByColaboradorTurma(colaboradorTurmaIds);
 	} 
 	
-	//TODO BACALHAU retirar metodo, trocar pelo SQL
-	public Collection<ColaboradorPresenca> findColabPresencaAprovOuRepAvaliacao(Collection<Long> turmaIds, boolean aprovado)
-	{
-		if(turmaIds != null && !turmaIds.isEmpty())
-			return getDao().findColaboradorPresencaAprovadoOuReprovadoAvaliacao(turmaIds, aprovado);
-		else
-			return new ArrayList<ColaboradorPresenca>();
-	}
 }

@@ -1,7 +1,7 @@
 package com.fortes.rh.dao.hibernate.desenvolvimento;
 
-import java.util.ArrayList;
 import java.util.Collection;
+
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -119,35 +119,6 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		q.setParameterList("colaboradorTurmaIds", colaboradorTurmaIds, Hibernate.LONG);
 		q.executeUpdate();
-	}
-
-	public Collection<ColaboradorPresenca> findColaboradorPresencaAprovadoOuReprovadoAvaliacao(Collection<Long> turmaIds, boolean aprovado)
-	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorPresenca(ct.colaborador.id, t.id, count(cp.id)) ");
-		hql.append("from ColaboradorPresenca as cp ");
-		hql.append("right join cp.colaboradorTurma ct ");
-		hql.append("join ct.turma t ");
-		hql.append("left join ct.aproveitamentoAvaliacaoCursos avc ");
-		hql.append("left join avc.avaliacaoCurso ac ");
-		
-		if (aprovado)
-			hql.append("where ((ac.minimoAprovacao is not null and avc.valor is not null and avc.valor >= ac.minimoAprovacao) or (ac.minimoAprovacao is null) ) ");
-		else
-			hql.append("where ((ac.minimoAprovacao is not null and avc.valor is null) or (ac.minimoAprovacao is not null and avc.valor is not null and avc.valor < ac.minimoAprovacao)) ");
-		
-		if (turmaIds != null && !turmaIds.isEmpty())
-			hql.append("and  t.id in (:turmaId) ");
-		
-		hql.append("group by ct.colaborador.id, t.id ");
-		hql.append("order by t.id");
-
-		Query query = getSession().createQuery(hql.toString());
-		
-		if (turmaIds != null && !turmaIds.isEmpty())
-			query.setParameterList("turmaId", turmaIds, Hibernate.LONG);
-
-		return query.list();
 	}
 	
 	public Integer qtdDiaPresentesTurma(Long turmaId)

@@ -515,38 +515,6 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 
 		assertEquals(new Integer (4), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, empresa.getId()));
 	}
-
-	public void testFindTurmaPresencaMinima() {
-		
-		Curso curso = CursoFactory.getEntity();
-		curso.setPercentualMinimoFrequencia(50.0);
-		cursoDao.save(curso);
-
-		Turma turma = TurmaFactory.getEntity();
-		turma.setCurso(curso);
-		turmaDao.save(turma);
-		
-		Collection<Long> turmaIds = new ArrayList<Long>();
-		turmaIds.add(turma.getId());
-		
-		DiaTurma diaTurma1 = DiaTurmaFactory.getEntity();
-		diaTurma1.setTurma(turma);
-		diaTurmaDao.save(diaTurma1);
-
-		DiaTurma diaTurma2 = DiaTurmaFactory.getEntity();
-		diaTurma2.setTurma(turma);
-		diaTurmaDao.save(diaTurma2);
-		
-		DiaTurma diaTurma3 = DiaTurmaFactory.getEntity();
-		diaTurma3.setTurma(turma);
-		diaTurmaDao.save(diaTurma3);
-		
-		Collection<Turma> turmas = turmaDao.findTurmaPresencaMinima(turmaIds);
-		assertEquals(1, turmas.size());
-		Turma turmaResultado = (Turma) turmas.toArray()[0];
-		assertEquals(1.5, turmaResultado.getDiasEstimadosParaAprovacao());
-		
-	}
 	
 	public void testiFindByEmpresa()
 	{

@@ -381,7 +381,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		else
 		{
 			cursos = cursoManager.findByCertificacao(certificacao.getId());
-			colaboradores = colaboradorTurmaManager.findAprovadosByCertificacao(cursos);
+			colaboradores = colaboradorTurmaManager.findAprovadosByCertificacao(certificacao, cursos == null?0:cursos.size());
 			certificacao = certificacaoManager.findByIdProjection(certificacao.getId());
 			certificado = new Certificado(cursos, certificacao, empresaManager.findCidade(getEmpresaSistema().getId()), true, true);
 		}

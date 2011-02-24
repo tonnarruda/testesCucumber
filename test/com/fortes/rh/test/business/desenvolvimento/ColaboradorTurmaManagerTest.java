@@ -46,6 +46,7 @@ import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.relatorio.ColaboradorOcorrenciaRelatorio;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -615,8 +616,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
 		MockSpringUtil.mocks.put("turmaManager", turmaManager);
 		
-		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(ANYTHING, ANYTHING).will(returnValue(colaboradorPresencas));
-		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(ANYTHING).will(returnValue(turmas));
+		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colaboradorTurmasAprovados));
 		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
 		
 
@@ -720,8 +720,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
 		MockSpringUtil.mocks.put("turmaManager", turmaManager);
 		
-		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(ANYTHING, ANYTHING).will(returnValue(colaboradorPresencas));
-		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(ANYTHING).will(returnValue(turmas));
+		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colaboradorTurmasAprovados));
 		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
 		
 		Collection<ColaboradorTurma> colaboradorTurmasResposta = new ArrayList<ColaboradorTurma>();		
@@ -811,66 +810,114 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 	public void testFindAprovadosByCertificacao()
 	{
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		
-		Collection<Curso> cursos = new ArrayList<Curso>();
-		Curso curso1 = new Curso(); curso1.setId(1L); cursos.add(curso1);
-		Curso curso2 = new Curso(); curso2.setId(2L); cursos.add(curso2);
-		Curso curso3 = new Curso(); curso3.setId(3L); cursos.add(curso3);
+		Curso cursoA = CursoFactory.getEntity();
+		cursoA.setPercentualMinimoFrequencia(100.0);
 
-		Collection<ColaboradorTurma> cursosInscrito = new ArrayList<ColaboradorTurma>();
-		
-		ColaboradorTurma colaboradorTurma1 = new ColaboradorTurma();
-		colaboradorTurma1.setColaboradorId(colaborador.getId());
-		colaboradorTurma1.setCursoId(1L);
-		
-		ColaboradorTurma colaboradorTurma2 = new ColaboradorTurma();
-		colaboradorTurma2.setColaboradorId(colaborador.getId());
-		colaboradorTurma2.setCursoId(2L);
-		
-		ColaboradorTurma colaboradorTurma3 = new ColaboradorTurma();
-		colaboradorTurma3.setColaboradorId(colaborador.getId());
-		colaboradorTurma3.setCursoId(3L);
-		
-		cursosInscrito.add(colaboradorTurma1);
-		cursosInscrito.add(colaboradorTurma2);
-		cursosInscrito.add(colaboradorTurma3);
-
-		Curso curso = CursoFactory.getEntity(1L);
-		curso.setPercentualMinimoFrequencia(0.0);
+		Curso cursoB = CursoFactory.getEntity();
+		cursoB.setPercentualMinimoFrequencia(100.0);
 		
 		Turma turma = TurmaFactory.getEntity(1L);
-		turma.setDiasEstimadosParaAprovacao(2.0);
-		turma.setRealizada(true);
-		turma.setCurso(curso);
 		
-		Collection<Turma> turmas = new ArrayList<Turma>();
-		turmas.add(turma);
-
-		Collection<Long> colaboradorIdsAprovados = new ArrayList<Long>();
-		colaboradorIdsAprovados.add(colaborador.getId());
+		Colaborador francisco = ColaboradorFactory.getEntity(1L);
+		francisco.setNome("Francisco");
 		
-		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		colaboradores.add(colaborador);
+		Colaborador maria = ColaboradorFactory.getEntity(2L);
+		maria.setNome("Maria");
+
+		Colaborador pedro = ColaboradorFactory.getEntity(3L);
+		pedro.setNome("Pedro");
+
+		Colaborador jose = ColaboradorFactory.getEntity(4L);
+		jose.setNome("Jose");
 		
-		ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
-		colaboradorPresenca.setDiasPresente(5);
-		colaboradorPresenca.setTurmaId(turma.getId());
-		colaboradorPresenca.setColaboradorTurma(colaboradorTurma3);
+		Colaborador joao = ColaboradorFactory.getEntity(5L);
+		joao.setNome("Joao");
 		
-		Collection<ColaboradorPresenca> colaboradorPresencas = new ArrayList<ColaboradorPresenca>();
-		colaboradorPresencas.add(colaboradorPresenca);
+		Collection<ColaboradorTurma> colabTurmas =  new ArrayList<ColaboradorTurma>();
 
-		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
-		MockSpringUtil.mocks.put("turmaManager", turmaManager);
+		ColaboradorTurma pedroAprovadoCursoA = ColaboradorTurmaFactory.getEntity();
+		pedroAprovadoCursoA.setColaborador(pedro);
+		pedroAprovadoCursoA.setQtdAvaliacoesAprovadasPorNota(1);
+		pedroAprovadoCursoA.setQtdAvaliacoesCurso(1);
+		pedroAprovadoCursoA.setTotalDias(2);
+		pedroAprovadoCursoA.setQtdPresenca(2);
+		pedroAprovadoCursoA.setTurma(turma);
+		pedroAprovadoCursoA.setCurso(cursoA);
+		colabTurmas.add(pedroAprovadoCursoA);
+		
+		ColaboradorTurma pedroAprovadoCursoB = ColaboradorTurmaFactory.getEntity();
+		pedroAprovadoCursoB.setColaborador(pedro);
+		pedroAprovadoCursoB.setQtdAvaliacoesAprovadasPorNota(1);
+		pedroAprovadoCursoB.setQtdAvaliacoesCurso(1);
+		pedroAprovadoCursoB.setTotalDias(2);
+		pedroAprovadoCursoB.setQtdPresenca(2);
+		pedroAprovadoCursoB.setTurma(turma);
+		pedroAprovadoCursoB.setCurso(cursoB);
+		colabTurmas.add(pedroAprovadoCursoB);
+		
+		ColaboradorTurma franciscoAprovadoSoNOCursoA = ColaboradorTurmaFactory.getEntity();
+		franciscoAprovadoSoNOCursoA.setColaborador(francisco);
+		franciscoAprovadoSoNOCursoA.setQtdAvaliacoesAprovadasPorNota(1);
+		franciscoAprovadoSoNOCursoA.setQtdAvaliacoesCurso(1);
+		franciscoAprovadoSoNOCursoA.setTotalDias(2);
+		franciscoAprovadoSoNOCursoA.setQtdPresenca(2);
+		franciscoAprovadoSoNOCursoA.setTurma(turma);
+		franciscoAprovadoSoNOCursoA.setCurso(cursoA);
+		colabTurmas.add(franciscoAprovadoSoNOCursoA);
 
-		turmaManager.expects(atLeastOnce()).method("getTurmaFinalizadas").with(ANYTHING).will(returnValue(turmas));
-		turmaManager.expects(atLeastOnce()).method("findTurmaPresencaMinima").with(ANYTHING).will(returnValue(turmas));
-		colaboradorManager.expects(atLeastOnce()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(colaboradores));
-		colaboradorPresencaManager.expects(atLeastOnce()).method("findColabPresencaAprovOuRepAvaliacao").with(ANYTHING, ANYTHING).will(returnValue(colaboradorPresencas));
+		ColaboradorTurma joaoReprovadoNotaSoNoCursoA = ColaboradorTurmaFactory.getEntity();
+		joaoReprovadoNotaSoNoCursoA.setColaborador(joao);
+		joaoReprovadoNotaSoNoCursoA.setQtdAvaliacoesAprovadasPorNota(0);
+		joaoReprovadoNotaSoNoCursoA.setQtdAvaliacoesCurso(1);
+		joaoReprovadoNotaSoNoCursoA.setTotalDias(2);
+		joaoReprovadoNotaSoNoCursoA.setQtdPresenca(2);
+		joaoReprovadoNotaSoNoCursoA.setTurma(turma);
+		joaoReprovadoNotaSoNoCursoA.setCurso(cursoA);
+		colabTurmas.add(joaoReprovadoNotaSoNoCursoA);
 
-		Collection<Colaborador> resultado = colaboradorTurmaManager.findAprovadosByCertificacao(cursos);
-		assertEquals(1, resultado.size());
+		ColaboradorTurma mariaReprovadoFaltaSoNoCursoA = ColaboradorTurmaFactory.getEntity();
+		mariaReprovadoFaltaSoNoCursoA.setColaborador(maria);
+		mariaReprovadoFaltaSoNoCursoA.setQtdAvaliacoesAprovadasPorNota(1);
+		mariaReprovadoFaltaSoNoCursoA.setQtdAvaliacoesCurso(1);
+		mariaReprovadoFaltaSoNoCursoA.setTotalDias(2);
+		mariaReprovadoFaltaSoNoCursoA.setQtdPresenca(1);
+		mariaReprovadoFaltaSoNoCursoA.setTurma(turma);
+		mariaReprovadoFaltaSoNoCursoA.setCurso(cursoA);
+		colabTurmas.add(mariaReprovadoFaltaSoNoCursoA);
+		
+		ColaboradorTurma joseAprovadoCursoA = ColaboradorTurmaFactory.getEntity();
+		joseAprovadoCursoA.setColaborador(jose);
+		joseAprovadoCursoA.setQtdAvaliacoesAprovadasPorNota(1);
+		joseAprovadoCursoA.setQtdAvaliacoesCurso(1);
+		joseAprovadoCursoA.setTotalDias(2);
+		joseAprovadoCursoA.setQtdPresenca(2);
+		joseAprovadoCursoA.setTurma(turma);
+		joseAprovadoCursoA.setCurso(cursoA);
+		colabTurmas.add(joseAprovadoCursoA);
+
+		ColaboradorTurma joseReprovadoCursoB = ColaboradorTurmaFactory.getEntity();
+		joseReprovadoCursoB.setColaborador(jose);
+		joseReprovadoCursoB.setQtdAvaliacoesAprovadasPorNota(0);
+		joseReprovadoCursoB.setQtdAvaliacoesCurso(1);
+		joseReprovadoCursoB.setTotalDias(2);
+		joseReprovadoCursoB.setQtdPresenca(2);
+		joseReprovadoCursoB.setTurma(turma);
+		joseReprovadoCursoB.setCurso(cursoB);
+		colabTurmas.add(joseReprovadoCursoB);
+		
+		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colabTurmas));
+
+		
+		Collection<Colaborador> colaboradores = colaboradorTurmaManager.findAprovadosByCertificacao(null, 2);
+		assertEquals(5, colaboradores.size());
+		
+		Colaborador[] colabs = colaboradores.toArray(new Colaborador[]{});
+
+		assertEquals("Pedro", colabs[0].getNome());
+		assertEquals("<span style='color: red;'>Francisco (Não certificado)</span>", colabs[1].getNome());
+		assertEquals("<span style='color: red;'>Joao (Não certificado)</span>", colabs[2].getNome());
+		assertEquals("<span style='color: red;'>Jose (Não certificado)</span>", colabs[3].getNome());
+		assertEquals("<span style='color: red;'>Maria (Não certificado)</span>", colabs[4].getNome());
 	}
 
 	public void testMontaRelatorioColaboradorCertificacaoColecaoVazia() throws Exception
@@ -976,25 +1023,22 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Collection<Long> turmaIds = new ArrayList<Long>();
 		turmaIds.add(turma1.getId());
 		
-		Collection<ColaboradorPresenca> colaboradorPresencas = new ArrayList<ColaboradorPresenca>();
-		colaboradorPresencas.add(new ColaboradorPresenca(colaborador.getId(), turma1.getId(), 20));
-		colaboradorPresencas.add(new ColaboradorPresenca(2L, turma1.getId(), 10));
+		Collection<ColaboradorTurma> colabTurmas = new ArrayList<ColaboradorTurma>();
 		
-		Collection<Turma> turmas = new ArrayList<Turma>();
-		turmas.add(new Turma(turma1.getId(), 11.1));
+		ColaboradorTurma colaboradorTurma1 = new ColaboradorTurma();
+		colaboradorTurma1.setColaboradorId(colaborador.getId());
 		
-		Collection<Long> colaboradorIds = new ArrayList<Long>();
-		colaboradorIds.add(colaborador.getId());
+		ColaboradorTurma colaboradorTurma2 = new ColaboradorTurma();
+		colaboradorTurma2.setColaboradorId(colaborador.getId());
+		
+		colabTurmas.add(colaboradorTurma1);
+		colabTurmas.add(colaboradorTurma2);
 		
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		colaboradores.add(colaborador);
 		
-		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
-		MockSpringUtil.mocks.put("turmaManager", turmaManager);
-		
-		colaboradorPresencaManager.expects(once()).method("findColabPresencaAprovOuRepAvaliacao").with(eq(turmaIds), eq(true)).will(returnValue(colaboradorPresencas));
-		turmaManager.expects(once()).method("findTurmaPresencaMinima").with(eq(turmaIds)).will(returnValue(turmas));
-		colaboradorManager.expects(once()).method("findAllSelect").with(eq(colaboradorIds), eq(false)).will(returnValue(colaboradores));
+		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colabTurmas));
+		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradores));
 		
 		Collection<Colaborador> retorno = colaboradorTurmaManager.findAprovadosByTurma(turmaIds);
 		assertEquals(1, retorno.size());
@@ -1041,7 +1085,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colabTurmas.add(reprovadoFalta);
 		colabTurmas.add(reprovadoNota);
 		
-		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").with(new Constraint[]{eq(null),eq(null),eq(turma.getId()),eq(null),eq(null),eq(null),eq(" co.nome ")}).will(returnValue(colabTurmas));
+		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colabTurmas));
 		
 		assertEquals(1, colaboradorTurmaManager.findAprovadosByTurma(turma.getId()).size() );
 	}
