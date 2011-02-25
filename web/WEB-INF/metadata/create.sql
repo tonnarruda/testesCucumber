@@ -849,7 +849,9 @@ CREATE TABLE historicocandidato (
     observacao text,
     apto boolean NOT NULL,
     etapaseletiva_id bigint,
-    candidatosolicitacao_id bigint
+    candidatosolicitacao_id bigint,
+    horaIni character varying(5),
+    horaFim character varying(5)
 );
 ALTER TABLE historicocandidato ADD CONSTRAINT historicocandidato_pkey PRIMARY KEY (id);
 ALTER TABLE historicocandidato ADD CONSTRAINT historicocandidato_candidatosolicitacao_fk FOREIGN KEY (candidatosolicitacao_id) REFERENCES candidatosolicitacao(id);

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.41.32" data="25/02/2011">
+		- Pesquisas > Movimentações > Incluir Colaboradores na pesquisa. Novo filtro por nome do colaborador.
+		- ReS > Movimentações > Agenda, painel para visualizar e editar Histórico dos Candidatos da Solicitação de Pessoal. 
+	</Versao>
 	<Versao id="1.1.40.31" data="17/02/2011">
 		- Pesquisas > Correção do gráfico de barras.
 		- CeS > Relatórios > Descrição de Cargos > Reformulação do relatório.
