@@ -76,6 +76,7 @@
 	<#else>
 		<#assign dateIni = ""/>
 	</#if>
+	
 	<#if dataFim?exists>
 		<#assign dateFim = dataFim?date/>
 	<#else>
@@ -89,6 +90,7 @@
 
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
+		
 		Período:<br>
 		<@ww.datepicker name="dataIni" id="dataIni"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData"/>
 		<@ww.label value="a" liClass="liLeft" />
@@ -99,9 +101,8 @@
 		<@ww.div id="divMatricula">
 			<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" cssStyle="width: 60px;"/>
 		</@ww.div>
-		<@ww.div id="divNome">
-			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
-		</@ww.div>
+		
+		<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 
 		<@ww.select label="Motivo do Atendimento" name="motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." />
 		

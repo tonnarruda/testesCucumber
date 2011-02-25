@@ -1,3 +1,4 @@
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <#assign i = 0/>
 
 <#assign aspectoAnterior="-1"/>
@@ -6,8 +7,10 @@
 
 	<#if pergunta.aspecto.nome?exists>
 		<#if pergunta.aspecto.nome != aspectoAnterior>
-			<div style="background-color: lightgray;color:black;margin-top: 5px;margin-bottom:5px;">${pergunta.aspecto.nome}</div>
-			<#assign aspectoAnterior="${pergunta.aspecto.nome}"/>
+			<@authz.authorize ifAllGranted="ROLE_MOV_AVALIACAO">
+				<div style="background-color: lightgray;color:black;margin-top: 5px;margin-bottom:5px;">${pergunta.aspecto.nome}</div>
+				<#assign aspectoAnterior="${pergunta.aspecto.nome}"/>
+			</@authz.authorize>
 		</#if>
 	<#else>
 		<#if aspectoAnterior != "Sem Aspecto">

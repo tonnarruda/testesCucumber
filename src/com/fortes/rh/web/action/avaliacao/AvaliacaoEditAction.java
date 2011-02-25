@@ -82,7 +82,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public String visualizar() throws Exception
 	{
 		avaliacao = avaliacaoManager.findById(avaliacao.getId());
-		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId());
+		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), true);
     	urlVoltar = "list.action?modeloAvaliacao=" + modeloAvaliacao;
     	
 		return Action.SUCCESS;

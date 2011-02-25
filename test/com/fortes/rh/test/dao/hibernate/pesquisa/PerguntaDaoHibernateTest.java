@@ -119,7 +119,7 @@ public class PerguntaDaoHibernateTest extends GenericDaoHibernateTest<Pergunta>
 		pesquisa.setQuestionario(questionario);
 		pesquisa = pesquisaDao.save(pesquisa);
 		
-		Collection<Pergunta> retorno = perguntaDao.findByQuestionarioAgrupadoPorAspecto(questionario.getId());
+		Collection<Pergunta> retorno = perguntaDao.findByQuestionarioAgrupadoPorAspecto(questionario.getId(), true);
 		
 		assertEquals(3, retorno.size());
 	}

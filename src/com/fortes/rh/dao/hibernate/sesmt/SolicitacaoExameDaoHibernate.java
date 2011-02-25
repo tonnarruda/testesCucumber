@@ -22,6 +22,7 @@ import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio;
+import com.fortes.rh.util.StringUtil;
 
 /**
  * @author Tiago Lopes
@@ -61,17 +62,18 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		{
 			case COLABORADOR:
 				hql.append("and co != null ");
-				hql.append(StringUtils.isNotBlank(matriculaBusca) ? "and lower(co.matricula) like :matricula " : "");
-				hql.append(StringUtils.isNotBlank(nomeBusca) ? "and lower(co.nome) like :nome " : "");
+				hql.append("and lower(co.matricula) like lower(:matricula) ");
+				hql.append("and lower(co.nome) like lower(:nome) ");
 				break;
 			case CANDIDATO:
 				hql.append("and ca != null ");
-				hql.append(StringUtils.isNotBlank(nomeBusca) ? "and lower(ca.nome) like :nome " : "");
+				hql.append("and lower(ca.nome) like lower(:nome) ");
 				break;
 			case TODOS:
+				hql.append("and (lower(co.nome) like lower(:nome) ");
+				hql.append("or lower(ca.nome) like lower(:nome)) ");
 				break;
 		}
-		
 		
 		if (resultadoExame != null)
 		{
@@ -97,22 +99,14 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 			query.setDate("dataIni", dataIni);
 			query.setDate("dataFim", dataFim);
 		}
-
+		
 		switch (vinculo)
 		{
 			case COLABORADOR:
-				if (StringUtils.isNotBlank(matriculaBusca))
-					query.setString("matricula", matriculaBusca.toLowerCase());
-				if (StringUtils.isNotBlank(nomeBusca))
-					query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
-				break;
-			case CANDIDATO:
-				if (StringUtils.isNotBlank(nomeBusca))
-					query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
-				break;
-			case TODOS:
-				break;
+				query.setString("matricula", "%" + StringUtil.lower(matriculaBusca) + "%");
 		}
+		
+		query.setString("nome", "%" + StringUtil.lower(nomeBusca) + "%");
 		
 		if (resultadoExame != null)
 			query.setString("resultado", resultadoExame.toString());

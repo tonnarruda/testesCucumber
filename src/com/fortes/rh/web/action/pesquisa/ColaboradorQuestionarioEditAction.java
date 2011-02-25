@@ -32,12 +32,14 @@ import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 {
@@ -98,6 +100,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private TipoQuestionario tipoQuestionario = new TipoQuestionario();
 	private Solicitacao solicitacao;
 	private Map<String, Object> parametros;
+	private boolean ordenarPorAspecto;
 
 	public String prepareInsert() throws Exception
 	{
@@ -261,7 +264,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private void montaPerguntasRespostas() {
 		
 		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null)
-			perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(colaboradorQuestionario.getAvaliacao().getId());
+			perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(colaboradorQuestionario.getAvaliacao().getId(), ordenarPorAspecto);
 		else
 			perguntas = new ArrayList<Pergunta>();
 		
@@ -635,5 +638,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+	public Boolean getOrdenarPorAspecto() {
+		return ordenarPorAspecto;
+	}
+
+	public void setOrdenarPorAspecto(Boolean ordenarPorAspecto) {
+		this.ordenarPorAspecto = ordenarPorAspecto;
 	}
 }
