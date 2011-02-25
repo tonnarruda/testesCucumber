@@ -22,5 +22,5 @@ public interface PerguntaDao extends GenericDao<Pergunta>
 	Collection<Long> findPerguntasDoQuestionario(Long questionarioId);
 	int getTotalPerguntas(Long questionarioId);
 	boolean existsOrdem(Long questionarioOrAvaliacaoId, Integer ordem);
-	public Collection<Pergunta> findByQuestionarioAgrupadoPorAspecto(Long questionarioId);
+	public Collection<Pergunta> findByQuestionarioAgrupadoPorAspecto(Long questionarioId, boolean ordenarPorAspecto);
 }

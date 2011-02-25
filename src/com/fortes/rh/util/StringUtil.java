@@ -443,4 +443,9 @@ public final class StringUtil
 	{
 		return value.replaceAll("'","`");
 	}
+
+	public static String lower(String nomeBusca) 
+	{
+		return nomeBusca!=null?nomeBusca.toLowerCase():"";
+	}
 }

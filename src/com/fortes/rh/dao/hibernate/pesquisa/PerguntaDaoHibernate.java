@@ -28,10 +28,13 @@ public class PerguntaDaoHibernate extends GenericDaoHibernate<Pergunta> implemen
 		return criteria.list();
 	}
 	
-	public Collection<Pergunta> findByQuestionarioAgrupadoPorAspecto(Long questionarioId)
+	public Collection<Pergunta> findByQuestionarioAgrupadoPorAspecto(Long questionarioId, boolean ordenarPorAspecto)
 	{
 		Criteria criteria = getCriteriaParaQuestionario(questionarioId);
-		criteria.addOrder(Order.asc("aspecto.nome"));
+		
+		if (ordenarPorAspecto)
+			criteria.addOrder(Order.asc("aspecto.nome"));
+		
 		criteria.addOrder(Order.asc("pergunta.ordem"));
 		
 		return criteria.list();

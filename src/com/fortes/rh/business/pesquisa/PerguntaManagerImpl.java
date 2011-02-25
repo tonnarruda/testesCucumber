@@ -626,9 +626,9 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 				pergunta.setTexto(perguntaTexto.replaceAll("#AVALIADO#", avaliadoNome));
 	}
 
-	public Collection<Pergunta> getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(Long questionarioId) {
+	public Collection<Pergunta> getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(Long questionarioId, boolean ordenarPorAspecto) {
 		
-		Collection<Pergunta> perguntas = getDao().findByQuestionarioAgrupadoPorAspecto(questionarioId);
+		Collection<Pergunta> perguntas = getDao().findByQuestionarioAgrupadoPorAspecto(questionarioId, ordenarPorAspecto);
 
 		return associarPerguntasRespostas(perguntas);
 	}

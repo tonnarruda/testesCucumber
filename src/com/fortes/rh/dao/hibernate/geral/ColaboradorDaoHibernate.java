@@ -113,7 +113,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("from HistoricoColaborador as hc2 ");
 		hql.append("where hc2.colaborador.id = co.id ");
-		hql.append("and hc2.data <= :hoje and hc2.status = :status) order by co.nomeComercial");
+		hql.append("and hc2.data <= :hoje and hc2.status = :status) order by co.nome");
 
 		Query query = getSession().createQuery(hql.toString());
 		
