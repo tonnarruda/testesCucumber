@@ -680,7 +680,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds)
 	{
-		return getDao().findByAreasOrganizacionaisEstabelecimentos(areasOrganizacionaisIds, estabelecimentoIds);
+		return getDao().findByAreasOrganizacionaisEstabelecimentos(areasOrganizacionaisIds, estabelecimentoIds, null);
 	}
 
 	public Colaborador findByCodigoAC(String codigo, Empresa empresa)
@@ -745,7 +745,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargosIds, Collection<Long> estabelecimentosIds)
 	{
-		return getDao().findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds);
+		return getDao().findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds, null);
 	}
 
 	public Collection<Colaborador> findByEstabelecimento(Long[] estabelecimentoIds)
@@ -923,17 +923,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	public Collection<Colaborador> getColaboradoresByEstabelecimentoAreaGrupo(char filtrarPor, Collection<Long> estabelecimentosIds, Collection<Long> areasIds,
-			Collection<Long> cargosIds)
+			Collection<Long> cargosIds, String colaboradorNome)
 	{
 		Collection<Colaborador> colaboradores = null;
 		if (filtrarPor == '1')// filtrar por Area Organizacional
-		{
-			colaboradores = getDao().findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds);
-		}
+			colaboradores = getDao().findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds, colaboradorNome);
 		else
-		{
-			colaboradores = getDao().findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds);
-		}
+			colaboradores = getDao().findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds, colaboradorNome);
 
 		return colaboradores;
 	}

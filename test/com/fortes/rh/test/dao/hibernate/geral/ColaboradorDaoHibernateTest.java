@@ -1480,10 +1480,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		empresa = empresaDao.save(empresa);
 
 		Colaborador colaborador = getColaborador();
+		colaborador.setNome("francisco");
 		colaborador.setEmpresa(empresa);
 		colaborador = colaboradorDao.save(colaborador);
 
 		Colaborador colaborador2 = getColaborador();
+		colaborador2.setNome("francisco");
 		colaborador2.setEmpresa(empresa);
 		colaborador2.setDesligado(true);
 		colaborador2 = colaboradorDao.save(colaborador2);
@@ -1531,7 +1533,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador2.setEstabelecimento(estabelecimentoAtual);
 		historicoColaborador2 = historicoColaboradorDao.save(historicoColaborador2);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds, "francisco");
 
 		assertEquals(1, colaboradores.size());
 
@@ -1550,6 +1552,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaborador = getColaborador();
 		colaborador.setEmpresa(empresa);
+		colaborador.setNome("francisco");
+		
 		colaborador = colaboradorDao.save(colaborador);
 
 		Cargo cargoAtual = CargoFactory.getEntity();
@@ -1594,7 +1598,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorFuturo.setEstabelecimento(estabelecimentoAntigo);
 		historicoColaboradorFuturo = historicoColaboradorDao.save(historicoColaboradorFuturo);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds, "franci");
 
 		assertEquals(1, colaboradores.size());
 

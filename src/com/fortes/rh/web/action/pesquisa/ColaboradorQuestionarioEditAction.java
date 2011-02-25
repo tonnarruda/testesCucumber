@@ -147,7 +147,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		Collection<Long> cargosIds = LongUtil.arrayStringToCollectionLong(cargosCheck);
 		Collection<Long> estabelecimentosIds = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 
-		colaboradores = colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo(filtrarPor, estabelecimentosIds, areasIds, cargosIds);
+		colaboradores = colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo(filtrarPor, estabelecimentosIds, areasIds, cargosIds, colaborador.getNome());
 
 		if(calcularPercentual)
 		{

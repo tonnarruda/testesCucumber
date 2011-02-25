@@ -833,7 +833,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds)
+	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds, String colaboradorNome)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome, faixa.id, faixa.nome) ");
@@ -842,9 +842,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.areaOrganizacional as a ");
 		hql.append("left join hc.faixaSalarial as faixa ");
 		hql.append("left join a.areaMae as am ");
-		hql.append("	where a.id in (:areaIds)  ");
-		hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
-		hql.append("	and co.desligado = :desligado ");
+		hql.append("	where co.desligado = :desligado ");
+		
+		if(StringUtils.isNotBlank(colaboradorNome))
+			hql.append(" and normalizar(upper(co.nome)) like normalizar(:colaboradorNome) ");
+		
+		if(areasOrganizacionaisIds != null && !areasOrganizacionaisIds.isEmpty())
+			hql.append("	and a.id in (:areaIds) ");
+		
+		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
+			hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
+		
 		hql.append("	and hc.data = (");
 		hql.append("		select max(hc2.data) ");
 		hql.append("		from HistoricoColaborador as hc2 ");
@@ -856,13 +864,19 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("hoje", new Date());
 		query.setBoolean("desligado", false);
-		query.setParameterList("areaIds", areasOrganizacionaisIds, Hibernate.LONG);
-		query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		
+		if(StringUtils.isNotBlank(colaboradorNome))
+			query.setString("colaboradorNome", "%" + colaboradorNome.toUpperCase() + "%");
+		
+		if(areasOrganizacionaisIds != null && !areasOrganizacionaisIds.isEmpty())
+			query.setParameterList("areaIds", areasOrganizacionaisIds, Hibernate.LONG);
+		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds)
+	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds, String colaboradorNome)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome) ");
@@ -872,8 +886,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join fs.cargo as ca ");
 		hql.append("left join hc.areaOrganizacional as a ");
 		hql.append("left join a.areaMae as am ");
-		hql.append("	where ca.id in (:cargoIds)  ");
-		hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
+		hql.append("	where co.desligado = :desligado ");
+		
+		if(StringUtils.isNotBlank(colaboradorNome))
+			hql.append(" and normalizar(upper(co.nome)) like normalizar(:colaboradorNome) ");
+		
+		if(cargoIds != null && !cargoIds.isEmpty())
+			hql.append("	and ca.id in (:cargoIds) ");
+		
+		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
+			hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
+		
 		hql.append("	and hc.data = (");
 		hql.append("		select max(hc2.data) ");
 		hql.append("		from HistoricoColaborador as hc2 ");
@@ -882,9 +905,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		) ");
 
 		Query query = getSession().createQuery(hql.toString());
+		query.setBoolean("desligado", false);
 		query.setDate("hoje", new Date());
-		query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
-		query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		
+		if(StringUtils.isNotBlank(colaboradorNome))
+			query.setString("colaboradorNome", "%" + colaboradorNome.toUpperCase() + "%");
+		
+		if(cargoIds != null && !cargoIds.isEmpty())
+			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 
 		return query.list();
 	}

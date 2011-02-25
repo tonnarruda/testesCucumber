@@ -32,8 +32,8 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findByCodigoAC(String codigo, Empresa empresa);
 	public Colaborador findColaboradorById(Long id);
 	public Collection<Colaborador> findByAreaEstabelecimento(Long areaOrganizacionalId, Long estabelecimentoId);
-	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds);
-	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds);
+	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds, String colaboradorNome);
+	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds, String colaboradorNome);
 	public Collection<Colaborador> findByGrupoOcupacionalIdsEstabelecimentoIds(Collection<Long> grupoOcupacionalIds, Collection<Long> estabelecimentoIds);
 	public Collection<Colaborador> findByEstabelecimento(Long[] estabelecimentoIds);
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId);

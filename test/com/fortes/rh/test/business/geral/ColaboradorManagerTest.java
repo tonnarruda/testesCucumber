@@ -210,7 +210,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
         colaboradores.add(new Colaborador());
 
-        colaboradorDao.expects(once()).method("findByAreasOrganizacionaisEstabelecimentos").with(eq(areasIds), eq(estabelecimentosIds)).will(returnValue(colaboradores));
+        colaboradorDao.expects(once()).method("findByAreasOrganizacionaisEstabelecimentos").with(eq(areasIds), eq(estabelecimentosIds), ANYTHING).will(returnValue(colaboradores));
 
         assertEquals(1, colaboradorManager.findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds).size());
     }
@@ -228,11 +228,11 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
         colaboradores.add(new Colaborador());
 
-        colaboradorDao.expects(once()).method("findByAreasOrganizacionaisEstabelecimentos").with(eq(areasIds), eq(estabelecimentosIds)).will(returnValue(colaboradores));
-        assertEquals(colaboradores, colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo('1', estabelecimentosIds, areasIds, null));
+        colaboradorDao.expects(once()).method("findByAreasOrganizacionaisEstabelecimentos").with(eq(areasIds), eq(estabelecimentosIds), ANYTHING).will(returnValue(colaboradores));
+        assertEquals(colaboradores, colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo('1', estabelecimentosIds, areasIds, null, null));
 
-        colaboradorDao.expects(once()).method("findByCargoIdsEstabelecimentoIds").with(ANYTHING, eq(estabelecimentosIds)).will(returnValue(colaboradores));
-        assertEquals(colaboradores, colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo('2', estabelecimentosIds, null, null));
+        colaboradorDao.expects(once()).method("findByCargoIdsEstabelecimentoIds").with(ANYTHING, eq(estabelecimentosIds), ANYTHING).will(returnValue(colaboradores));
+        assertEquals(colaboradores, colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo('2', estabelecimentosIds, null, null, null));
     }
 
     public void testFindByEstabelecimento()
@@ -273,7 +273,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
         colaboradores.add(new Colaborador());
 
-        colaboradorDao.expects(once()).method("findByCargoIdsEstabelecimentoIds").with(eq(cargosIds), eq(estabelecimentosIds)).will(returnValue(colaboradores));
+        colaboradorDao.expects(once()).method("findByCargoIdsEstabelecimentoIds").with(eq(cargosIds), eq(estabelecimentosIds), ANYTHING).will(returnValue(colaboradores));
 
         assertEquals(1, colaboradorManager.findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds).size());
     }

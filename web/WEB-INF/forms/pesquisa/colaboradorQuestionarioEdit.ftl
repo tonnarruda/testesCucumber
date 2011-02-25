@@ -100,27 +100,15 @@
 			var qtdPercentualValue = document.getElementById('qtdPercentual').value;
 			var calculaPercentualChecked = document.getElementById('calcularPercentual').checked;
 
-			var validaAreaCargo = '@areasCheck';
 			var validaPercentualQuantidade = 'percentual';
 
-			if(filtrarPorValue == "2")
-			{
-				validaAreaCargo = '@cargosCheck';
-			}
-
 			if(qtdPercentualValue == "2")
-			{
 				validaPercentualQuantidade = 'quantidade';
-			}
 
 			if(calculaPercentualChecked)
-			{
-				return validaFormulario('form', new Array('filtrarPor', '@estabelecimentosCheck',validaAreaCargo,validaPercentualQuantidade), null);
-			}
+				return validaFormulario('form', new Array('filtrarPor',validaPercentualQuantidade), null);
 			else
-			{
-				return validaFormulario('form', new Array('filtrarPor', '@estabelecimentosCheck',validaAreaCargo), null);
-			}
+				return validaFormulario('form', new Array('filtrarPor'), null);
 		}
 
 		function marcarDesmarcar(frm)
@@ -190,9 +178,9 @@
 	</#if>
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="listFiltro.action" onsubmit="validaForm();" method="POST">
-		
+			
 			<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" cssStyle="width: 147px;" listKey="id" listValue="nome" required="true" onchange="populaEstabelecimentosAreasGrupos(this.value)" />
-		
+			<@ww.textfield label="Colaborador" name="colaborador.nome" id="colaborador" cssStyle="width: 300px;"/>
 			<@ww.select id="filtrarPor" label="Filtrar Colaboradores por" name="filtrarPor" list=r"#{'1':'Área Organizacional', '2':'Grupo Ocupacional'}" onchange="filtrarOpt(this.value);"/>
 
 			<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
