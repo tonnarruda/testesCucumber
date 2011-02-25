@@ -23,7 +23,7 @@ jQuery(document).ready(function() {
 	  useShortDayNames: true,
 	  timeSeparator : " - ",
       businessHours :{start: 7, end: 20, limitDisplay: true },
-      daysToShow : 7,
+      daysToShow : 8,
       height : function($calendar) {
          return jQuery(window).height() - jQuery("h1").outerHeight() - 1;
       },
