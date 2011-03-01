@@ -42,7 +42,7 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" id="form" action="list.action" validate="true" method="POST">
 			<@ww.select label="Etapa" name="etapaSeletivaId" list="etapas" listKey="id" listValue="nome" headerKey="" headerValue="Todas" liClass="liLeft"/>
-			<@ww.select label="Situação" name="visualizar" list=r"#{'T':'Todas','A':'Aptos','N':'Não Aptos'}" />
+			<@ww.select label="Situação" name="visualizar" list=r"#{'T':'Todas','A':'Aptos/Indiferente','N':'Não Aptos'}" />
 			<@ww.textfield label="Nome" name="nomeBusca"/>
 			<@ww.textfield label="Indicado por" name="indicadoPor"/>
 			<@ww.textfield label="Observações do RH" name="observacaoRH"  cssStyle="width: 240px;"/>
@@ -58,7 +58,7 @@
 
 	<@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" class="dados" >
 	
-		<#if candidatoSolicitacao?exists && candidatoSolicitacao.apto>
+		<#if candidatoSolicitacao?exists && candidatoSolicitacao.aptoBoolean>
 			<#assign classe=""/>
 		<#else>
 			<#assign classe="apto"/>
@@ -95,6 +95,7 @@
 				<#else>
 					<img border="0" style="opacity:0.2;filter:alpha(opacity=20)" title="Este candidato já possui históricos. Não é possível removê-lo da seleção." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>">
 				</#if>
+				
 				<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" title="Documentos Anexos"><img border="0"  src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			</#if>
 			
@@ -163,7 +164,7 @@
 
 	<script>
 		var obj = document.getElementById("legendas");
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos";
+		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos/Indiferente";
 		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #F00;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aptos";
 		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados";
 	</script>

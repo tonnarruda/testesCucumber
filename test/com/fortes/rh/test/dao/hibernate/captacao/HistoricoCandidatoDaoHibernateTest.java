@@ -288,7 +288,7 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		EtapaSeletiva etapaSeletiva = EtapaSeletivaFactory.getEntity();
 		etapaSeletiva = etapaSeletivaDao.save(etapaSeletiva);
 
-		HistoricoCandidato historicoCandidato = new HistoricoCandidato();
+		HistoricoCandidato historicoCandidato = HistoricoCandidatoFactory.getEntity();
 		historicoCandidato.setEtapaSeletiva(etapaSeletiva);
 		historicoCandidato = historicoCandidatoDao.save(historicoCandidato);
 

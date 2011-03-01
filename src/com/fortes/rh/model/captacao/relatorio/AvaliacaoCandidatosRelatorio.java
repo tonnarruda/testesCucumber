@@ -3,6 +3,7 @@ package com.fortes.rh.model.captacao.relatorio;
 import java.io.Serializable;
 
 import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.util.MathUtil;
 
 public class AvaliacaoCandidatosRelatorio implements Serializable
@@ -26,16 +27,16 @@ public class AvaliacaoCandidatosRelatorio implements Serializable
 		this.qtdNaoAptos = qtdNaoAptos;
 	}
 
-	public AvaliacaoCandidatosRelatorio(int count, String etapaNome, boolean apto)
+	public AvaliacaoCandidatosRelatorio(int count, String etapaNome, Character apto)
 	{
 		if (this.etapaSeletiva == null)
 			this.etapaSeletiva = new EtapaSeletiva();
 
 		this.etapaSeletiva.setNome(etapaNome);
-		if (apto)
-			this.qtdAptos = count;
-		else
+		if (apto != null && apto == Apto.NAO)
 			this.qtdNaoAptos = count;
+		else
+			this.qtdAptos = count;
 
 	}
 

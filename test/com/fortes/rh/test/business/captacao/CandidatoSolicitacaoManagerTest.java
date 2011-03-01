@@ -20,6 +20,7 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -179,14 +180,6 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 		assertEquals(css, candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacao, idCandidatosComHistoricos));
     }
 
-    public void testFindNaoAptos(){
-
-    	Collection<CandidatoSolicitacao> css = new ArrayList<CandidatoSolicitacao>();
-    	candidatoSolicitacaoDao.expects(once()).method("findNaoAptos").with(eq(1L)).will(returnValue(css));
-
-    	assertEquals(css, candidatoSolicitacaoManager.findNaoAptos(1L));
-    }
-
     public void testEnviarEmailNaoApto() throws Exception{
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -201,7 +194,7 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 		Candidato candidato = CandidatoFactory.getCandidato();
 
 		CandidatoSolicitacao cs = new CandidatoSolicitacao();
-		cs.setApto(false);
+		cs.setApto(Apto.NAO);
 		cs.setCandidato(candidato);
 
 		Collection<CandidatoSolicitacao> candidatoSolicitacoes = new ArrayList<CandidatoSolicitacao>();
@@ -221,7 +214,7 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
     	candidato.setId(1L);
 
     	CandidatoSolicitacao cs = new CandidatoSolicitacao();
-		cs.setApto(false);
+		cs.setApto(Apto.NAO);
 		cs.setCandidato(candidato);
 
 		Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
@@ -265,7 +258,7 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
     	CandidatoSolicitacao cs1 = new CandidatoSolicitacao();
     	cs1.setId(1L);
     	cs1.setSolicitacao(solicitacao);
-    	cs1.setApto(true);
+    	cs1.setApto(Apto.SIM);
     	cs1.setEtapaSeletiva(etapaSeletiva);
     	cs1.setColaboradorId(1L);
 

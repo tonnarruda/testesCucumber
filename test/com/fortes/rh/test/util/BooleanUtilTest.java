@@ -11,12 +11,19 @@ public class BooleanUtilTest extends TestCase
 	{
 	}
 
-	public void testRemoveBreak()
+	public void testGetValueCombo()
 	{
 		assertNull(BooleanUtil.getValueCombo('T'));
 		assertTrue(BooleanUtil.getValueCombo('S'));
 		assertFalse(BooleanUtil.getValueCombo('N'));
 		assertTrue(BooleanUtil.getValueCombo('s'));
 		assertFalse(BooleanUtil.getValueCombo('n'));
+	}
+
+	public void testSetValueCombo()
+	{
+		assertEquals('S', BooleanUtil.setValueCombo(true));
+		assertEquals('N', BooleanUtil.setValueCombo(false));
+		assertEquals('T', BooleanUtil.setValueCombo(null));
 	}
 }

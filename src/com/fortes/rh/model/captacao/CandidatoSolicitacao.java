@@ -18,6 +18,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Contato;
@@ -44,7 +45,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	@Transient
 	private Long colaboradorId;
 	@Transient
-	private boolean apto = true;
+	private char apto = Apto.SIM;
 	@Transient
 	private EtapaSeletiva etapaSeletiva;
 	@Transient
@@ -68,7 +69,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	}
 
-	public CandidatoSolicitacao(Long csId, Long cId, String cNome, Boolean cContratado, String indicadoPor, Long eId, String eNome, String hResponsavel, Date hData, String hObservacao, Boolean hApto, Long colaboradorId)
+	public CandidatoSolicitacao(Long csId, Long cId, String cNome, Boolean cContratado, String indicadoPor, Long eId, String eNome, String hResponsavel, Date hData, String hObservacao, char hApto, Long colaboradorId)
 	{
 		setId(csId);
 		setCandidatoId(cId);
@@ -79,8 +80,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		setResponsavel(hResponsavel);
 		setData(hData);
 		setObservacao(hObservacao);
-		if(hApto != null)
-			setApto(hApto);
+		setApto(hApto);
 
 		setColaboradorId(colaboradorId);
 
@@ -90,7 +90,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		etapaSeletiva.setNome(eNome);
 	}
 
-	public CandidatoSolicitacao(Long csId, Long cId, String cNome, Boolean cContratado, Long eId, String eNome, String hResponsavel, Date hData, String hObservacao, Boolean hApto, Long colaboradorId)
+	public CandidatoSolicitacao(Long csId, Long cId, String cNome, Boolean cContratado, Long eId, String eNome, String hResponsavel, Date hData, String hObservacao, char hApto, Long colaboradorId)
 	{
 		setId(csId);
 		setCandidatoId(cId);
@@ -100,8 +100,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		setResponsavel(hResponsavel);
 		setData(hData);
 		setObservacao(hObservacao);
-		if(hApto != null)
-			setApto(hApto);
+		setApto(hApto);
 
 		setColaboradorId(colaboradorId);
 
@@ -367,19 +366,11 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	{
 		this.solicitacao = solicitacao;
 	}
-	public boolean isApto()
-	{
-		return apto;
-	}
-	public void setApto(boolean apto)
-	{
-		this.apto = apto;
-	}
 	
-	public void setProjectionApto(Boolean apto)
+	
+	public void setProjectionApto(Character apto)
 	{
-		if(apto != null)
-			this.apto = apto;
+		setApto(apto);
 	}
 	
 	public boolean isTriagem()
@@ -497,6 +488,22 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	public void setColaboradorQuestionarioId(Long colaboradorQuestionarioId) {
 		this.colaboradorQuestionarioId = colaboradorQuestionarioId;
+	}
+
+	public char getApto() {
+		return apto;
+	}
+	
+	public boolean getAptoBoolean() {
+		return this.apto != Apto.NAO;
+	}
+
+	public void setApto(Character apto) 
+	{
+		if(apto == null)
+			this.apto = Apto.INDIFERENTE;
+		else
+			this.apto = apto;
 	}
 
 }

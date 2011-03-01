@@ -19,6 +19,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.util.DateUtil;
@@ -39,7 +40,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	@Lob
 	private String observacao;
 
-	private boolean apto;
+	private char apto = Apto.INDIFERENTE;
 	@Transient
 	private Double qtdHistoricos;//usado no relatorio Processo Seletivo
 	@Transient
@@ -54,7 +55,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 
 	}
 	
-	public HistoricoCandidato(Long etapaId, String etapaNome, Integer qtdHistoricos, Integer historicoMes, boolean apto)
+	public HistoricoCandidato(Long etapaId, String etapaNome, Integer qtdHistoricos, Integer historicoMes, char apto)
 	{
 		if(this.etapaSeletiva == null)
 			this.etapaSeletiva = new EtapaSeletiva();
@@ -65,7 +66,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 		this.apto = apto;
 	}
 
-	public HistoricoCandidato(Date hcData, String hcResponsavel, String hcObservacao, boolean hcApto, Long esId, String esNome, Long caId,String caNome, boolean caContratado, String caEmail, Long csId, Long sId, Long colaboradorId)
+	public HistoricoCandidato(Date hcData, String hcResponsavel, String hcObservacao, char hcApto, Long esId, String esNome, Long caId,String caNome, boolean caContratado, String caEmail, Long csId, Long sId, Long colaboradorId)
 	{
 		this.setData(hcData);
 		this.setResponsavel(hcResponsavel);
@@ -124,7 +125,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 
 		candidatoSolicitacao.setId(candidatoSolicitacaoId);
 	}
-	public void setCandidatoSolicitacaoApto(boolean candidatoSolicitacaoApto)
+	public void setCandidatoSolicitacaoApto(char candidatoSolicitacaoApto)
 	{
 		if (candidatoSolicitacao == null)
 			candidatoSolicitacao = new CandidatoSolicitacao();
@@ -300,19 +301,10 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	{
 		this.responsavel = responsavel;
 	}
-	
-	public String getAptoFormatado() {
-		
-		return (apto ? "Sim" : "Não");
-		
+	public String getAptoFormatado() 
+	{
+		return Apto.getDescApto(apto);
 	}
-	public boolean isApto() {
-		return apto;
-	}
-	public void setApto(boolean apto) {
-		this.apto = apto;
-	}
-
 	@Override
 	public boolean equals(Object object)
 	{
@@ -385,5 +377,18 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 
 	public void setHoraFim(String horaFim) {
 		this.horaFim = horaFim;
+	}
+
+	public char getApto() {
+		return apto;
+	}
+
+	public void setApto(char apto) {
+		this.apto = apto;
+	}
+
+	public boolean getAptoBoolean() 
+	{
+		return this.apto != Apto.NAO;
 	}
 }

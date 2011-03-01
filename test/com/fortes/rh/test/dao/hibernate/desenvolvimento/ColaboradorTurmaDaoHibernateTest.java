@@ -599,6 +599,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim, null);	
 			assertTrue(true);
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Erro na consulta do SQL");
 		}
 	}

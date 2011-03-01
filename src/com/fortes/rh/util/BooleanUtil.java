@@ -13,4 +13,16 @@ public class BooleanUtil
 		
 		return value;
 	}
+
+	public static char setValueCombo(Boolean apto) 
+	{
+		if (apto == null)
+			return 'T';
+		
+		if (apto)
+			return 'S';
+		else
+			return 'N';
+	}
+
 }

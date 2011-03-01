@@ -48,6 +48,7 @@ import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -136,7 +137,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     {
     	boolean blackList = true;
     	HistoricoCandidato historicoCandidato = new HistoricoCandidato();
-    	historicoCandidato.setApto(false);
+    	historicoCandidato.setApto(Apto.NAO);
     	historicoCandidato.setObservacao("observacao");
 
     	Candidato candidato = new Candidato();
@@ -156,7 +157,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     {
     	boolean blackList = true;
     	HistoricoCandidato historicoCandidato = new HistoricoCandidato();
-    	historicoCandidato.setApto(false);
+    	historicoCandidato.setApto(Apto.NAO);
     	historicoCandidato.setObservacao("observacao");
 
     	Candidato candidato = new Candidato();
