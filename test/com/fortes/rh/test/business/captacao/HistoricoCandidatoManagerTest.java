@@ -23,6 +23,7 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.ProcessoSeletivoRelatorio;
 import com.fortes.rh.model.captacao.relatorio.ProdutividadeRelatorio;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
@@ -186,7 +187,7 @@ public class HistoricoCandidatoManagerTest extends MockObjectTestCase
 
     	boolean blackList = true;
     	HistoricoCandidato historicoCandidato = new HistoricoCandidato();
-    	historicoCandidato.setApto(false);
+    	historicoCandidato.setApto(Apto.NAO);
     	historicoCandidato.setObservacao("observacao");
 
     	Candidato candidato = new Candidato();

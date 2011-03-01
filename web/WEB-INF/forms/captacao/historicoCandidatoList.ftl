@@ -32,13 +32,7 @@
 		<@display.column property="etapaSeletiva.nome" title="Etapa" />
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="text-align: center;width: 90px;"/>
 		<@display.column property="responsavel" title="Responsável" />
-		<@display.column title="Apto" style="text-align: center;width: 50px">
-			<#if historicoCandidato.apto>
-				Sim
-			<#else>
-				Não
-			</#if>
-		</@display.column>
+		<@display.column property="aptoFormatado" title="Apto" style="text-align: center;width: 50px"/>
 		<@display.column title="Obs." style="text-align: center;width: 50px">
 			<#if historicoCandidato.observacao?exists && historicoCandidato.observacao?trim != "">
 				<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${historicoCandidato.observacao?j_string}');return false">...</span>

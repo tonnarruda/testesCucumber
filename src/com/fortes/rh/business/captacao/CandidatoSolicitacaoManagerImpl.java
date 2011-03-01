@@ -117,11 +117,6 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
         return getDao().getCandidatosBySolicitacao(solicitacao, idCandidatosComHistoricos);
     }
 
-    public Collection<CandidatoSolicitacao> findNaoAptos(Long solicitacaoId)
-    {
-        return getDao().findNaoAptos(solicitacaoId);
-    }
-
     public void enviarEmailNaoApto(Long solicitacaoId, Empresa empresa) throws Exception
     {
         ParametrosDoSistema parametrosDoSistema;

@@ -50,6 +50,7 @@ import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Vinculo;
@@ -714,7 +715,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void setBlackList(HistoricoCandidato historicoCandidato, Long candidatoSolicitacaoId, boolean blacklist)
 	{
-		if(!historicoCandidato.isApto())
+		if(historicoCandidato.getApto() == Apto.NAO)
 		{
 			CandidatoSolicitacao candidatoSol = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoId);
 
@@ -725,7 +726,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void setBlackList(HistoricoCandidato historicoCandidato, String[] candidatosCheck, boolean blacklist) throws Exception
 	{
-		if (!historicoCandidato.isApto())
+		if (historicoCandidato.getApto() == Apto.NAO)
 		{
 			if (blacklist)
 			{

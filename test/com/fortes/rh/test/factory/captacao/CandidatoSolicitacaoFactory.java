@@ -3,6 +3,7 @@ package com.fortes.rh.test.factory.captacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.Apto;
 
 public class CandidatoSolicitacaoFactory
 {
@@ -17,7 +18,7 @@ public class CandidatoSolicitacaoFactory
     	CandidatoSolicitacao candidatoSolicitacao = new CandidatoSolicitacao();
     	candidatoSolicitacao.setId(1L);
     	candidatoSolicitacao.setSolicitacao(solicitacao);
-    	candidatoSolicitacao.setApto(true);
+    	candidatoSolicitacao.setApto(Apto.SIM);
     	candidatoSolicitacao.setEtapaSeletiva(etapaSeletiva);
     	candidatoSolicitacao.setColaboradorId(1L);
     	candidatoSolicitacao.setCandidato(CandidatoFactory.getCandidato());

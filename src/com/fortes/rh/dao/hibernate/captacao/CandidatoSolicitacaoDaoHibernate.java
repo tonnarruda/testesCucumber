@@ -2,7 +2,6 @@ package com.fortes.rh.dao.hibernate.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -23,8 +22,7 @@ import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.dicionario.Apto;
 
 @SuppressWarnings("unchecked")
 public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<CandidatoSolicitacao> implements CandidatoSolicitacaoDao
@@ -85,7 +83,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 
         criteria.setProjection(p);
         criteria.add(Expression.eq("cs.solicitacao.id", solicitacaoId));
-        criteria.add(Expression.eq("h.apto", false));
+        criteria.add(Expression.eq("h.apto", Apto.NAO));
 
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
@@ -167,12 +165,24 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         	if(semHistorico)
         	{
                 Disjunction disjunction = Expression.disjunction();
-                disjunction.add(Expression.eq("h.apto", visualizar));
-                disjunction.add(Expression.isNull("h.apto"));
+                
+                if(visualizar)
+                {
+                	disjunction.add(Expression.ne("h.apto", Apto.NAO));
+                	disjunction.add(Expression.isNull("h.apto"));
+                }
+                else
+                	disjunction.add(Expression.eq("h.apto", Apto.NAO));
+                
                 criteria.add(disjunction);
         	}
         	else
-        		criteria.add(Expression.eq("h.apto", visualizar));
+        	{
+        		if(visualizar)
+        			criteria.add(Expression.ne("h.apto", Apto.NAO));
+        		else
+        			criteria.add(Expression.eq("h.apto", Apto.NAO));
+        	}
         }
 
         if(etapaSeletivaId != null)
@@ -368,7 +378,10 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         	criteria.add(Expression.eq("c.contratado", false));
 
         if(visualizar != null)
-        	criteria.add(Expression.eq("h.apto", visualizar));
+        {
+        	char apto = visualizar?Apto.SIM:Apto.NAO;
+        	criteria.add(Expression.eq("h.apto", apto));
+        }
 
         if(etapaSeletivaId != null)
         	criteria.add(Expression.eq("e.id", etapaSeletivaId));
@@ -419,7 +432,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("hc.apto", true));
+		criteria.add(Expression.eq("hc.apto", Apto.SIM ));
 		criteria.add(Expression.eq("s.encerrada", false));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		criteria.add(Expression.eq("ca.contratado", false));

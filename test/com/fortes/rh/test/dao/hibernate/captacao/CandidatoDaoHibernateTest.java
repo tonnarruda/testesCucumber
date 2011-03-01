@@ -38,6 +38,7 @@ import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
@@ -2009,21 +2010,21 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		historicoCandidato1.setCandidatoSolicitacao(candidatoSolicitacao);
 		historicoCandidato1.setData(dataDoisMesesAtras.getTime());
 		historicoCandidato1.setEtapaSeletiva(etapaSeletiva1);
-		historicoCandidato1.setApto(true);
+		historicoCandidato1.setApto(Apto.SIM);
 		historicoCandidatoDao.save(historicoCandidato1);
 
 		HistoricoCandidato historicoCandidato1_ = HistoricoCandidatoFactory.getEntity();
 		historicoCandidato1_.setCandidatoSolicitacao(candidatoSolicitacao);
 		historicoCandidato1_.setData(dataDoisMesesAtras.getTime());
 		historicoCandidato1_.setEtapaSeletiva(etapaSeletiva2);
-		historicoCandidato1_.setApto(false);
+		historicoCandidato1_.setApto(Apto.NAO);
 		historicoCandidatoDao.save(historicoCandidato1_);
 
 		HistoricoCandidato historicoCandidatoForaDaConsulta = HistoricoCandidatoFactory.getEntity();
 		historicoCandidatoForaDaConsulta.setCandidatoSolicitacao(candidatoSolicitacao2);
 		historicoCandidatoForaDaConsulta.setData(dataDoisMesesAtras.getTime());
 		historicoCandidatoForaDaConsulta.setEtapaSeletiva(etapaSeletiva2);
-		historicoCandidatoForaDaConsulta.setApto(false);
+		historicoCandidatoForaDaConsulta.setApto(Apto.NAO);
 		historicoCandidatoDao.save(historicoCandidatoForaDaConsulta);
 
 		Collection<AvaliacaoCandidatosRelatorio> resultados = candidatoDao.findRelatorioAvaliacaoCandidatos(dataDoisMesesAtras.getTime(), hoje, empresa.getId(), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo1.getId()});

@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -12,6 +13,8 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -47,6 +50,7 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 	private int page;
 	private String indicadoPor;
 	private String responsaveis = "";
+	private Map aptos;
 
 	public String execute() throws Exception
 	{
@@ -67,10 +71,13 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 		etapas = etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId());
 		etapaCargos = etapaSeletivaManager.findByCargo(solicitacao.getFaixaSalarial().getCargo().getId());
 		
+		aptos = new Apto();
+		
 		String[] resps = historicoCandidatoManager.findResponsaveis();
 		if(resps != null)
 			responsaveis = StringUtil.toJSON(resps, null);
 	}
+
 	public String prepareInsert() throws Exception
 	{
 		if(solicitacao != null && solicitacao.getId() != null)
@@ -82,7 +89,6 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 		}
 
 		prepare();
-		historicoCandidato.setApto(true);
 		return Action.SUCCESS;
 	}
 
@@ -287,15 +293,21 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 		this.indicadoPor = indicadoPor;
 	}
 
-	public Collection<EtapaSeletiva> getEtapaCargos() {
+	public Collection<EtapaSeletiva> getEtapaCargos() 
+	{
 		return etapaCargos;
 	}
-
-	public void setEtapaCargos(Collection<EtapaSeletiva> etapaCargos) {
+	public void setEtapaCargos(Collection<EtapaSeletiva> etapaCargos) 
+	{
 		this.etapaCargos = etapaCargos;
 	}
-
-	public String getResponsaveis() {
+	public String getResponsaveis() 
+	{
 		return responsaveis;
 	}
+
+	public Map getAptos() {
+		return aptos;
+	}
+	
 }

@@ -21,6 +21,7 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -100,14 +101,14 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		HistoricoCandidato historicoCandidatoEntrevista = new HistoricoCandidato();
 		historicoCandidatoEntrevista.setData(DateUtil.criarDataMesAno(01, 01, 2000));
 		historicoCandidatoEntrevista.setCandidatoSolicitacao(candidatoSolicitacao);
-		historicoCandidatoEntrevista.setApto(true);
+		historicoCandidatoEntrevista.setApto(Apto.SIM);
 		historicoCandidatoEntrevista.setEtapaSeletiva(entrevista);
 		historicoCandidatoDao.save(historicoCandidatoEntrevista);
 		
 		HistoricoCandidato historicoCandidatoRedacao = new HistoricoCandidato();
 		historicoCandidatoRedacao.setData(DateUtil.criarDataMesAno(02, 02, 2002));
 		historicoCandidatoRedacao.setCandidatoSolicitacao(candidatoSolicitacao);
-		historicoCandidatoRedacao.setApto(true);
+		historicoCandidatoRedacao.setApto(Apto.SIM);
 		historicoCandidatoRedacao.setEtapaSeletiva(redacao);
 		historicoCandidatoDao.save(historicoCandidatoRedacao);
 
@@ -153,7 +154,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 	{
 		candidatoSolicitacao = prepareFindCandidatoSolicitacao();
 		candidatoSolicitacao.setTriagem(false);
-		candidatoSolicitacao.setApto(true);
+		candidatoSolicitacao.setApto(Apto.SIM);
 		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
 
 		candidatoSolicitacaoDao.updateTriagem(candidatoSolicitacao.getId(), true);
@@ -343,7 +344,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 
 		HistoricoCandidato historicoCandidato = HistoricoCandidatoFactory.getEntity();
 		historicoCandidato.setCandidatoSolicitacao(candidatoSolicitacao);
-		historicoCandidato.setApto(false);
+		historicoCandidato.setApto(Apto.NAO);
 		historicoCandidato = historicoCandidatoDao.save(historicoCandidato);
 
 		Collection<CandidatoSolicitacao> candidatoNaoAptos = candidatoSolicitacaoDao.findNaoAptos(solicitacao.getId());

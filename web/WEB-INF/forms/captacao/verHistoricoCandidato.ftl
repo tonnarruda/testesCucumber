@@ -36,7 +36,7 @@
 					<td width='25%'><#if hist.etapaSeletiva?exists && hist.etapaSeletiva.nome?exists>${hist.etapaSeletiva.nome}</#if></td>
 					<td width='10%'><#if hist.data?exists>${hist.data?string("dd'/'MM'/'yyyy")}</#if></td>
 					<td width='10%'><#if hist.responsavel?exists>${hist.responsavel}<#else>&nbsp;</#if></td>
-					<td width='5%'><#if hist.apto?exists && hist.apto>Sim<#else>Não</#if></td>
+					<td width='5%'><#if hist.aptoBoolean?exists && hist.aptoBoolean>Sim<#else>Não</#if></td>
 					<td width='50%'><#if hist.observacao?exists && hist.observacao != "">${hist.observacao}<#else>&nbsp;</#if></td>
 				</tr>
 			</#list>

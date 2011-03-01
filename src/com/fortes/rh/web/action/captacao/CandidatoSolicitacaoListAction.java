@@ -52,7 +52,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		solicitacao = solicitacaoManager.getValor(solicitacao.getId());
 		
 		setTotalSize(candidatoSolicitacaoManager.getCount(solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, observacaoRH, nomeBusca));
-		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, false, observacaoRH, nomeBusca);
+		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, true, observacaoRH, nomeBusca);
 
 		candidatoSolicitacaoManager.setColaboradorQuestionarioId(candidatoSolicitacaos, solicitacao.getAvaliacao(), solicitacao.getId());
 		

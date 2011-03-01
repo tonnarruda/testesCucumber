@@ -119,10 +119,10 @@
 		<div class='grade_field'><strong>Cidade/Estado:</strong> ${colaborador.endereco.cidade.nome} / ${colaborador.endereco.uf.sigla}</div>
 	</#if>
 	<div class='grade_field'><strong>CEP:</strong> ${colaborador.endereco.cepFormatado}</div>
-	<#if colaborador.contato?exists && colaborador.contato.foneFixo?exists>
+	<#if colaborador.contato?exists && colaborador.contato.foneFixo?exists && colaborador.contato.ddd?exists>
 		<div class='grade_field'><strong>Telefone:</strong> (${colaborador.contato.ddd}) ${colaborador.contato.foneFixoFormatado}</div>
 	</#if>
-	<#if colaborador.contato?exists && colaborador.contato.foneCelular?exists>
+	<#if colaborador.contato?exists && colaborador.contato.foneCelular?exists && colaborador.contato.ddd?exists>
 		<div class='grade_field'><strong>Celular:</strong> (${colaborador.contato.ddd}) ${colaborador.contato.foneCelularFormatado}</div>
 	</#if>
 	<#if colaborador.pessoal?exists && colaborador.pessoal.conjuge?exists && colaborador.pessoal.conjuge != "">
