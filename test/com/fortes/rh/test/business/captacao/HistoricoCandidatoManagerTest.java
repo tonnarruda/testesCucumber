@@ -2,6 +2,7 @@ package com.fortes.rh.test.business.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 import mockit.Mockit;
@@ -17,11 +18,14 @@ import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.model.captacao.EventoAgenda;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.ProcessoSeletivoRelatorio;
 import com.fortes.rh.model.captacao.relatorio.ProdutividadeRelatorio;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.EtapaSeletivaFactory;
 import com.fortes.rh.test.factory.captacao.HistoricoCandidatoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
@@ -101,6 +105,50 @@ public class HistoricoCandidatoManagerTest extends MockObjectTestCase
 
     	assertEquals(historicoCandidatos, historicoCandidatoManager.findByPeriodo(new HashMap()));
 
+	}
+	
+	public void testUpdateAgenda()
+	{
+		historicoCandidatoDao.expects(once()).method("updateAgenda").withAnyArguments().will(returnValue(true));
+		assertTrue(historicoCandidatoManager.updateAgenda(null, null, null, null, null));
+	}
+	
+	public void testFindResponsaveis()
+	{
+		historicoCandidatoDao.expects(once()).method("findResponsaveis").will(returnValue(new String[]{}));
+		assertNotNull(historicoCandidatoManager.findResponsaveis());
+	}
+	
+	public void testGetEventos()
+	{
+		EtapaSeletiva etapaSeletiva = EtapaSeletivaFactory.getEntity();
+		etapaSeletiva.setNome("entrevista");
+		
+		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		candidato.setNome("Maria");
+		
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1L);
+		candidatoSolicitacao.setCandidato(candidato);
+		
+		HistoricoCandidato historicoCandidato = HistoricoCandidatoFactory.getEntity();
+		historicoCandidato.setData(new Date());
+		historicoCandidato.setResponsavel("Francisco");
+		historicoCandidato.setEtapaSeletiva(etapaSeletiva);
+		historicoCandidato.setCandidatoSolicitacao(candidatoSolicitacao);
+		historicoCandidato.setHoraIni("02:00");
+		historicoCandidato.setHoraFim("03:00");
+		
+		Collection<HistoricoCandidato> historicos = new ArrayList<HistoricoCandidato>();
+		historicos.add(historicoCandidato);
+		
+		historicoCandidatoDao.expects(once()).method("getEventos").withAnyArguments().will(returnValue(historicos));
+		Collection<EventoAgenda> eventos = historicoCandidatoManager.getEventos("Francisco", 1L);
+		assertEquals(1, eventos.size());
+		
+		EventoAgenda eventoAgenda = (EventoAgenda) eventos.toArray()[0];
+		assertEquals(new Long(1L), eventoAgenda.getId());
+		assertEquals("2011-02-26T02:00", eventoAgenda.getStart());
+		assertEquals("2011-02-26T03:00", eventoAgenda.getEnd());
 	}
 
 	public void testMontaMapaHistorico()
