@@ -910,7 +910,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			
 			ct.setCurso(new Curso());
 			if(res[3] != null)
-				ct.getCurso().setPercentualMinimoFrequencia(((BigDecimal)res[3]).doubleValue());
+				ct.getCurso().setPercentualMinimoFrequencia(((Double)res[3]));
 			if(res[4] != null)
 				ct.setQtdAvaliacoesCurso(((BigInteger)res[4]).intValue());
 			if(res[5] != null)

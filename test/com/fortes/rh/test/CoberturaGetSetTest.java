@@ -133,6 +133,7 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Gasto;
 import com.fortes.rh.model.geral.GastoEmpresa;
 import com.fortes.rh.model.geral.GastoEmpresaItem;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.GrupoGasto;
 import com.fortes.rh.model.geral.HistoricoBeneficio;
 import com.fortes.rh.model.geral.HistoricoColaboradorBeneficio;
@@ -366,6 +367,7 @@ import com.fortes.rh.web.action.geral.GastoEmpresaItemEditAction;
 import com.fortes.rh.web.action.geral.GastoEmpresaItemListAction;
 import com.fortes.rh.web.action.geral.GastoEmpresaListAction;
 import com.fortes.rh.web.action.geral.GastoListAction;
+import com.fortes.rh.web.action.geral.GrupoACEditAction;
 import com.fortes.rh.web.action.geral.GrupoGastoEditAction;
 import com.fortes.rh.web.action.geral.GrupoGastoListAction;
 import com.fortes.rh.web.action.geral.HistoricoBeneficioEditAction;
@@ -914,6 +916,8 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new TipoEPIListAction());
 		cobreGetSet(new ThumbnailAction());
 		cobreGetSet(new ConfiguracaoRelatorioDinamico());
+		cobreGetSet(new GrupoAC());
+		cobreGetSet(new GrupoACEditAction());
 
 	}
 	

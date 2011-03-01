@@ -13,7 +13,7 @@
 		<#assign accessKey="I"/>
 	</#if>
 
-	<#assign validarCampos2="return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj','acUsuario','acUrlSoap','acUrlWdsl', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'))"/>
+	<#assign validarCampos2="return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj','grupoAC','acUsuario','acUrlSoap','acUrlWdsl', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'))"/>
 	<#assign validarCampos="return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'))"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
@@ -61,7 +61,8 @@
 		function habilitaDesabilitaCamposAC()
 		{
 			if(document.getElementById("integra").checked)
-			{
+			{			
+				document.getElementById("grupoAC").disabled=false;
 				document.getElementById("acUsuario").disabled=false;
 				document.getElementById("acSenha").disabled=false;
 				document.getElementById("acUrlSoap").disabled=false;
@@ -69,6 +70,7 @@
 			}
 			else
 			{
+				document.getElementById("grupoAC").disabled=true;
 				document.getElementById("acUsuario").disabled=true;
 				document.getElementById("acSenha").disabled=true;
 				document.getElementById("acUrlSoap").disabled=true;
@@ -151,6 +153,8 @@
 					<div style="float:right;"><img id="btnTransferir" border="0" title="Testar Conexão com AC" onclick="testaConexaoAC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
 
 					<@ww.checkbox label="Integra com AC Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right" onclick="habilitaDesabilitaCamposAC();" />
+					
+					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao" />
 					<@ww.textfield label="Usuário AC" name="empresa.acUsuario" id="acUsuario" cssClass="inputNome" maxLength="50"/>
 					<@ww.password label="Senha AC" name="empresa.acSenha" id="acSenha" cssStyle="width:100px;" maxLength="15" after="*Para manter a senha, deixe o campo em branco."/>
 					<@ww.textfield label="URL WS" name="empresa.acUrlSoap" id="acUrlSoap" cssClass="inputNome" maxLength="100"/>
@@ -158,7 +162,7 @@
 				</ul>
 			</@ww.div>
 		</li>
-<a href="<@ww.url includeParams="none" value="/webservice"/>/RHService?wsdl">WebService</a>
+		<a href="<@ww.url includeParams="none" value="/webservice"/>/RHService?wsdl">WebService</a>
 
 		<@ww.hidden name="empresa.id" />
 		<@ww.hidden name="empresa.logoUrl" />

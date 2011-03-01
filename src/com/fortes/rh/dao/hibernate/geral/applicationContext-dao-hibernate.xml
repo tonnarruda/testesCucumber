@@ -182,7 +182,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="grupoACDaoTarget" class="com.fortes.rh.dao.hibernate.geral.GrupoACDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

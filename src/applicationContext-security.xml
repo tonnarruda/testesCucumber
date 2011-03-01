@@ -256,6 +256,8 @@
 				/geral/documentoAnexo/updateCandidato*/**=ROLE_CAD_CANDIDATO
 				/geral/areaFormacao/*/**=ROLE_AREAFORMACAO
 				/geral/configuracaoCampoExtra/*/**=ROLE_CAMPO_EXTRA
+				/geral/grupoAC/*/**=ROLE_CAD_GRUPOAC
+				
 
 				/captacao/motivoSolicitacao/*/**=ROLE_MOTIVO_SOLICITACAO
 				/captacao/areaInteresse/*/**=ROLE_CAD_AREA

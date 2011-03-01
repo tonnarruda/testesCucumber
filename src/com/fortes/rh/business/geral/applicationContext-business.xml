@@ -645,7 +645,21 @@
       <ref bean="codigoCBOManagerTarget" />
     </property>
   </bean>
+  <bean id="grupoACManagerTarget" class="com.fortes.rh.business.geral.GrupoACManagerImpl">
+    <property name="dao">
+      <ref bean="grupoACDao" />
+    </property>
+  </bean>
+  <bean id="grupoACManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.GrupoACManager</value>
+    </property>
+    <property name="target">
+      <ref bean="grupoACManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

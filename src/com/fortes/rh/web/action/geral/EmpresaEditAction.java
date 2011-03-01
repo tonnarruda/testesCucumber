@@ -16,10 +16,12 @@ import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
@@ -37,6 +39,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private EstadoManager estadoManager;
 	private CidadeManager cidadeManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private GrupoACManager grupoACManager;
 
 	private Collection<Estado> ufs = null;
 	private Collection<Cidade> cidades = new ArrayList<Cidade>();
@@ -51,6 +54,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private File logo;
 	private File logoCert;
 	private Collection<Empresa> empresas;
+	private Collection<GrupoAC> grupoACs;
 
 	public String execute() throws Exception
 	{
@@ -64,6 +68,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 		if (ufs == null)
 			ufs = estadoManager.findAll(new String[]{"sigla"});
+		
+		grupoACs = grupoACManager.findAll(new String[]{"codigo"});
 	}
 
 	public String sobre() throws Exception
@@ -293,5 +299,13 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public void setLogoCert(File logoCert) 
 	{
 		this.logoCert = logoCert;
+	}
+
+	public Collection<GrupoAC> getGrupoACs() {
+		return grupoACs;
+	}
+
+	public void setGrupoACManager(GrupoACManager grupoACManager) {
+		this.grupoACManager = grupoACManager;
 	}
 }

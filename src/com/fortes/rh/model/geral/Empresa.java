@@ -68,6 +68,8 @@ public class Empresa extends AbstractModel implements Serializable
     private String atividade;
     @Column(length=200)
     private String logoCertificadoUrl;
+    @Column(length=3)
+    private String grupoAC;
    
     @ManyToOne
 	private Estado uf;
@@ -366,5 +368,13 @@ public class Empresa extends AbstractModel implements Serializable
 	public String getLogoCertificadoUrl() 
 	{
 		return logoCertificadoUrl;
+	}
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
 	}
 }

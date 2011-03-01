@@ -132,7 +132,7 @@ public class HistoricoCandidatoManagerTest extends MockObjectTestCase
 		candidatoSolicitacao.setCandidato(candidato);
 		
 		HistoricoCandidato historicoCandidato = HistoricoCandidatoFactory.getEntity();
-		historicoCandidato.setData(new Date());
+		historicoCandidato.setData(DateUtil.montaDataByString("26/02/2011"));
 		historicoCandidato.setResponsavel("Francisco");
 		historicoCandidato.setEtapaSeletiva(etapaSeletiva);
 		historicoCandidato.setCandidatoSolicitacao(candidatoSolicitacao);

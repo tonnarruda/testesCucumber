@@ -204,6 +204,7 @@ import com.fortes.rh.test.dao.hibernate.geral.EstadoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.GastoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.GastoEmpresaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.GastoEmpresaItemDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.GrupoACDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.GrupoGastoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.HistoricoBeneficioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.HistoricoColaboradorBeneficioDaoHibernateTest;
@@ -408,6 +409,7 @@ import com.fortes.rh.test.web.action.geral.DocumentoAnexoListActionTest;
 import com.fortes.rh.test.web.action.geral.EstabelecimentoEditActionTest;
 import com.fortes.rh.test.web.action.geral.EstabelecimentoListActionTest;
 import com.fortes.rh.test.web.action.geral.GastoEmpresaEditActionTest;
+import com.fortes.rh.test.web.action.geral.GrupoACEditActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoBeneficioEditActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoBeneficioListActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoColaboradorBeneficioEditActionTest;
@@ -745,6 +747,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ConfiguracaoRelatorioDinamicoDaoHibernateTest.class);
         suite.addTestSuite(ConfiguracaoRelatorioDinamicoManagerTest.class);
         suite.addTestSuite(ConfiguracaoRelatorioDinamicoEditActionTest.class);
+        suite.addTestSuite(GrupoACDaoHibernateTest.class);
+        suite.addTestSuite(GrupoACEditActionTest.class);
 
         suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
 
