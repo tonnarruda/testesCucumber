@@ -71,14 +71,14 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		return getDao().findByIdProjection(indiceId);
 	}
 
-	public Indice findByCodigo(String codigo)
+	public Indice findByCodigo(String codigo, String grupoAC)
 	{
-		return getDao().findByCodigo(codigo);
+		return getDao().findByCodigo(codigo, grupoAC);
 	}
 
-	public boolean remove(String codigo)
+	public boolean remove(String codigo, String grupoAC)
 	{
-		return getDao().remove(codigo);
+		return getDao().remove(codigo, grupoAC);
 	}
 
 	public Indice findHistoricoAtual(Long indiceId)

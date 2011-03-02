@@ -3,8 +3,10 @@ package com.fortes.rh.test.dao.hibernate.cargosalario;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
@@ -13,6 +15,7 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 {
 	private IndiceDao indiceDao;
 	private IndiceHistoricoDao indiceHistoricoDao;
+	private GrupoACDao grupoACDao;
 
 	public Indice getEntity()
 	{
@@ -35,22 +38,30 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 
 	public void testFindByCodigo()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Indice indice = IndiceFactory.getEntity();
 		indice.setCodigoAC("0013254765");
+		indice.setGrupoAC(grupoAC.getCodigo());
 		indice = indiceDao.save(indice);
 
-		Indice indiceRetorno = indiceDao.findByCodigo("0013254765");
+		Indice indiceRetorno = indiceDao.findByCodigo("0013254765", "XXX");
 		assertEquals(indice, indiceRetorno);
 	}
 
 	public void testRemoveByCodigo()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Indice indice = IndiceFactory.getEntity();
 		indice.setCodigoAC("0013254765");
+		indice.setGrupoAC(grupoAC.getCodigo());
 		indice = indiceDao.save(indice);
 
-		assertTrue(indiceDao.remove("0013254765"));
-		assertNull(indiceDao.findByCodigo("0013254765"));
+		assertTrue(indiceDao.remove("0013254765", "XXX"));
+		assertNull(indiceDao.findByCodigo("0013254765", "XXX"));
 	}
 
 	public void testFindHistoricoAtual()
@@ -87,5 +98,9 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 	public void setIndiceHistoricoDao(IndiceHistoricoDao indiceHistoricoDao)
 	{
 		this.indiceHistoricoDao = indiceHistoricoDao;
+	}
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 }

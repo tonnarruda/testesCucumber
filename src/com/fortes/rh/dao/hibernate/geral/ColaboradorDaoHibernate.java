@@ -1830,18 +1830,19 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC)
+	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		StringBuilder hql = new StringBuilder();
 
 		hql.append("select c ");
 		hql.append("from Colaborador as c ");
 		hql.append("left join c.empresa as emp  ");
-		hql.append("	where c.codigoAC = :codigoAC and emp.codigoAC = :empresaCodigoAC ");
+		hql.append("	where c.codigoAC = :codigoAC and emp.codigoAC = :empresaCodigoAC and emp.grupoAC = :grupoAC ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setString("codigoAC", codigoAC);
 		query.setString("empresaCodigoAC", empresaCodigoAC);
+		query.setString("grupoAC", grupoAC);
 
 		return (Colaborador) query.uniqueResult();
 	}

@@ -263,7 +263,7 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	private String getLink(Long id) 
+	private String getLink(Long id)
 	{
 		return "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + id + "&voltarPara=../../index.action";
 	}
@@ -400,7 +400,7 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public boolean removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo, String grupoAC)//x
+	public boolean removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo, String grupoAC)
 	{
 		try
 		{
@@ -423,7 +423,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			HistoricoColaborador historico = historicoColaboradorManager.findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC());
+			HistoricoColaborador historico = historicoColaboradorManager.findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 			if(historico != null)
 				historicoColaboradorManager.removeHistoricoAndReajusteAC(historico);
 			return true;
@@ -457,7 +457,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			Estabelecimento estabelecimento = estabelecimentoManager.findByCodigo(testabelecimento.getCodigo(), testabelecimento.getCodigoEmpresa());
+			Estabelecimento estabelecimento = estabelecimentoManager.findByCodigo(testabelecimento.getCodigo(), testabelecimento.getCodigoEmpresa(), testabelecimento.getGrupoAC());
 			bindEstabelecimento(testabelecimento, estabelecimento);
 			estabelecimentoManager.update(estabelecimento);
 			return true;
@@ -469,7 +469,7 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean removerEstabelecimento(String codigo, String empCodigo, String grupoAC)//x
+	public boolean removerEstabelecimento(String codigo, String empCodigo, String grupoAC)
 	{
 		try
 		{
@@ -504,7 +504,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			Indice indice = indiceManager.findByCodigo(tindice.getCodigo());
+			Indice indice = indiceManager.findByCodigo(tindice.getCodigo(), tindice.getGrupoAC());
 			bindIndice(tindice, indice);
 			indiceManager.update(indice);
 
@@ -517,11 +517,11 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean removerIndice(String codigo, String grupoAC)//x
+	public boolean removerIndice(String codigo, String grupoAC)
 	{
 		try
 		{
-			return indiceManager.remove(codigo);
+			return indiceManager.remove(codigo, grupoAC);
 		}
 		catch (Exception e)
 		{
@@ -576,11 +576,11 @@ public class RHServiceImpl implements RHService
 			IndiceHistorico indiceHistorico = new IndiceHistorico();
 			bindIndiceHistorico(tindiceHistorico, indiceHistorico);
 
-			Indice indice = indiceManager.findByCodigo(tindiceHistorico.getIndiceCodigo());
+			Indice indice = indiceManager.findByCodigo(tindiceHistorico.getIndiceCodigo(), tindiceHistorico.getGrupoAC());
 			if (indice != null)
 				indiceHistorico.setIndice(indice);
 			else
-				throw new Exception("Não existe indice com este codigo: " + tindiceHistorico.getIndiceCodigo());
+				throw new Exception("Não existe indice com este codigo: " + tindiceHistorico.getIndiceCodigo() + " GrupoAC: " + tindiceHistorico.getGrupoAC());
 
 			String[] properties = new String[] { "data", "indice.id" };
 			Object[] value = new Object[] { indiceHistorico.getData(), indice.getId() };
@@ -599,9 +599,9 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean removerIndiceHistorico(String data, String indiceCodigo, String grupoAC)//x
+	public boolean removerIndiceHistorico(String data, String indiceCodigo, String grupoAC)
 	{
-		Indice indice = indiceManager.findByCodigo(indiceCodigo);
+		Indice indice = indiceManager.findByCodigo(indiceCodigo, grupoAC);
 
 		if (indice != null && indice.getId() != null)
 			return indiceHistoricoManager.remove(DateUtil.montaDataByString(data), indice.getId());
@@ -642,7 +642,7 @@ public class RHServiceImpl implements RHService
 		estabelecimento.setEndereco(endereco);
 	}
 
-	public boolean setStatusFaixaSalarialHistorico(Long faixaSalarialHistoricoId, Boolean aprovado, String mensagem, String empresaCodigoAC, String grupoAC)//x
+	public boolean setStatusFaixaSalarialHistorico(Long faixaSalarialHistoricoId, Boolean aprovado, String mensagem, String empresaCodigoAC, String grupoAC)
 	{
 		if (!aprovado)
 		{
@@ -958,7 +958,7 @@ public class RHServiceImpl implements RHService
 		return empresaManager.criarEmpresa(empresaAC);
 	}
 
-	public boolean removerEmpresa(String empresaCodigoAC, String grupoAC)//x
+	public boolean removerEmpresa(String empresaCodigoAC, String grupoAC)
 	{
 		return false;
 	}

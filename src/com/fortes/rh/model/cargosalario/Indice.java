@@ -24,6 +24,8 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 	private String codigoAC;
 	@OneToMany(mappedBy="indice",fetch=FetchType.LAZY)
 	private Collection<IndiceHistorico> indiceHistoricos;
+	@Column(length=3)
+    private String grupoAC;
 
 	@Transient
 	private IndiceHistorico indiceHistoricoAtual;
@@ -119,6 +121,14 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 		if (getIndiceHistoricoAtual() != null)
 			return this.getIndiceHistoricoAtual().getValor();
 		return new Double(0);
+	}
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
 	}
 	
 }

@@ -5,8 +5,10 @@ import java.util.Collection;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
@@ -15,6 +17,7 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 {
 	private EstabelecimentoDao estabelecimentoDao;
 	private EmpresaDao empresaDao;
+	private GrupoACDao grupoACDao;
 
 	public Estabelecimento getEntity()
 	{
@@ -38,7 +41,11 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 	public void testRemoveByCodigo()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa.setCodigoAC("001122");
 
 		Long idEmpresa = empresaDao.save(empresa).getId();
@@ -50,14 +57,18 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 		assertEquals(true, estabelecimentoDao.remove("123456", idEmpresa));
 
-		Estabelecimento est = estabelecimentoDao.findByCodigo("123456", "001122");
+		Estabelecimento est = estabelecimentoDao.findByCodigo("123456", "001122", "XXX");
 
 		assertNull(est);
 	}
 
 	public void testFindByCodigo()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa.setCodigoAC("001122");
 		empresa = empresaDao.save(empresa);
 
@@ -66,7 +77,7 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		estabelecimento.setCodigoAC("123456");
 		estabelecimento = estabelecimentoDao.save(estabelecimento);
 
-		Estabelecimento est = estabelecimentoDao.findByCodigo("123456", "001122");
+		Estabelecimento est = estabelecimentoDao.findByCodigo("123456", "001122", "XXX");
 
 		assertNotNull(est);
 		assertEquals("123456", est.getCodigoAC());
@@ -219,5 +230,9 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		assertEquals("Test 1", 4, estabelecimentos.size());
 		assertEquals("Test 2", estabelecimento1.getId(), ((Estabelecimento)(estabelecimentos.toArray()[0])).getId() );
 		assertEquals("Test 3", "empresa 01 - A", ((Estabelecimento)(estabelecimentos.toArray()[0])).getDescricaoComEmpresa() );
+	}
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 }

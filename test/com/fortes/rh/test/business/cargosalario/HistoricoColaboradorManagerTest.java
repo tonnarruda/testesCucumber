@@ -1212,7 +1212,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 		String mensagem = "Teste";
 
-		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
+		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
 		mensagemManager.expects(once()).method("formataMensagemCancelamentoHistoricoColaborador").with(eq(mensagem), eq(historicoColaborador)).will(returnValue(mensagem));
 		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(ANYTHING, ANYTHING).will(returnValue(usuarioEmpresas));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(ANYTHING,ANYTHING,ANYTHING,eq(usuarioEmpresas));
@@ -1685,13 +1685,10 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC("8674dsfaf");
 
 		Date dataFormatada = situacao.getDataFormatada();
-		historicoColaboradorDao.expects(once())
-			.method("findByAC")
-			.with(eq(dataFormatada), eq(situacao.getEmpregadoCodigoAC()), 
-					eq(situacao.getEmpresaCodigoAC()))
+		historicoColaboradorDao.expects(once()).method("findByAC").with(eq(dataFormatada), eq(situacao.getEmpregadoCodigoAC()),	eq(situacao.getEmpresaCodigoAC()), ANYTHING)
 			.will(returnValue(historicoColaborador));
 
-		assertEquals(historicoColaborador, historicoColaboradorManager.findByAC(dataFormatada, situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC()));
+		assertEquals(historicoColaborador, historicoColaboradorManager.findByAC(dataFormatada, situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), ""));
 	}
 
 	public void testAjustaAmbienteFuncao()

@@ -9,9 +9,9 @@ public interface IndiceDao extends GenericDao<Indice>
 {
 	Indice findByIdProjection(Long indiceId);
 
-	Indice findByCodigo(String codigo);
+	Indice findByCodigo(String codigo, String grupoAC);
 
-	boolean remove(String codigo);
+	boolean remove(String codigo, String grupoAC);
 
 	Indice findHistoricoAtual(Long indiceId, Date dataHistorico);
 

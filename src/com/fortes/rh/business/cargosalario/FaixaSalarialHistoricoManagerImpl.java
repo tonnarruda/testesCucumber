@@ -358,7 +358,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 			faixaSalarialHistorico.setQuantidade(tSituacaoCargo.getQuantidade());
 			faixaSalarialHistorico.setValor(null);
 			
-			Indice indice = indiceManager.findByCodigo(tSituacaoCargo.getIndiceCodigo());
+			Indice indice = indiceManager.findByCodigo(tSituacaoCargo.getIndiceCodigo(), tSituacaoCargo.getGrupoAC());
 			faixaSalarialHistorico.setIndice(indice);
 		}
 		

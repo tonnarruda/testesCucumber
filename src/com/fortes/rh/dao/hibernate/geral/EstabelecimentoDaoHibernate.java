@@ -38,12 +38,13 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 	 * @param codigo da Empresa no AC Pessoal
 	 * @since 11/06/2008
 	 */
-	public Estabelecimento findByCodigo(String codigo, String empCodigo)
+	public Estabelecimento findByCodigo(String codigo, String empCodigo, String grupoAC)
 	{
-		String hql = "select est from Estabelecimento est left join est.empresa emp where est.codigoAC = :codigo and emp.codigoAC = :empCodigo";
+		String hql = "select est from Estabelecimento est left join est.empresa emp where est.codigoAC = :codigo and emp.codigoAC = :empCodigo and emp.grupoAC = :grupoac";
 		Query query = getSession().createQuery(hql);
 		query.setString("codigo", codigo);
 		query.setString("empCodigo", empCodigo);
+		query.setString("grupoac", grupoAC);
 		return (Estabelecimento) query.uniqueResult();
 	}
 

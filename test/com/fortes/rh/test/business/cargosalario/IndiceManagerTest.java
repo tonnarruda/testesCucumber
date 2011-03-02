@@ -102,7 +102,7 @@ public class IndiceManagerTest extends MockObjectTestCase
 	{
 		indiceDao.expects(once()).method("findByCodigo").withAnyArguments().will(returnValue(null));
 
-		Indice retorno = indiceManager.findByCodigo(null);
+		Indice retorno = indiceManager.findByCodigo(null, "");
 
 		assertNull(retorno);
 	}
@@ -111,7 +111,7 @@ public class IndiceManagerTest extends MockObjectTestCase
 	{
 		indiceDao.expects(once()).method("remove").withAnyArguments().will(returnValue(true));
 
-		boolean retorno = indiceManager.remove("");
+		boolean retorno = indiceManager.remove("", "");
 
 		assertTrue(retorno);
 	}

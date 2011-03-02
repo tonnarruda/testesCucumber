@@ -658,7 +658,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return (HistoricoColaborador) criteria.uniqueResult();
 	}
 
-	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC)
+	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c");
@@ -667,6 +667,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.add(Expression.eq("hc.data", data));
 		criteria.add(Expression.eq("c.codigoAC", empregadoCodigoAC));
 		criteria.add(Expression.eq("e.codigoAC", empresaCodigoAC));
+		criteria.add(Expression.eq("e.grupoAC", grupoAC));
 
 		return (HistoricoColaborador)criteria.uniqueResult();
 	}

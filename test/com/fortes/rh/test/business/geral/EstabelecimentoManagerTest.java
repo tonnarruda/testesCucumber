@@ -37,9 +37,9 @@ public class EstabelecimentoManagerTest extends MockObjectTestCase
         Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
         estabelecimento.setId(EMP_ID);
 
-        estabelecimentoDao.expects(once()).method("findByCodigo").with(new Constraint[]{eq(CODIGO), eq(EMP_CODIGO)}).will(returnValue(estabelecimento));
+        estabelecimentoDao.expects(once()).method("findByCodigo").with(new Constraint[]{eq(CODIGO), eq(EMP_CODIGO), eq("XXX")}).will(returnValue(estabelecimento));
 
-        assertEquals(estabelecimento, estabelecimentoManager.findByCodigo(CODIGO, EMP_CODIGO));
+        assertEquals(estabelecimento, estabelecimentoManager.findByCodigo(CODIGO, EMP_CODIGO, "XXX"));
     }
 
     public void testRemove()

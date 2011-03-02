@@ -8,7 +8,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 public interface EstabelecimentoDao extends GenericDao<Estabelecimento>
 {
 	boolean remove(String codigo, Long id);
-	Estabelecimento findByCodigo(String codigo, String empCodigo);
+	Estabelecimento findByCodigo(String codigo, String empCodigo, String grupoAC);
 	Collection<Estabelecimento> findAllSelect(Long empresaId);
 	Estabelecimento findEstabelecimentoCodigoAc(Long estabelecimentoId);
 	boolean verificaCnpjExiste(String complemento, Long id, Long empresaId);

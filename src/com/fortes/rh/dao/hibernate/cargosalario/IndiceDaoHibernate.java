@@ -32,7 +32,7 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		return (Indice) criteria.uniqueResult();
 	}
 
-	public Indice findByCodigo(String codigo)
+	public Indice findByCodigo(String codigo, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "i");
 
@@ -44,17 +44,19 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("i.codigoAC", codigo));
+		criteria.add(Expression.eq("i.grupoAC", grupoAC));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return (Indice) criteria.uniqueResult();
 	}
 
-	public boolean remove(String codigo)
+	public boolean remove(String codigo, String grupoAC)
 	{
-		String hql = "delete from Indice i where i.codigoAC = :codigo";
-
+		String hql = "delete from Indice i where i.codigoAC = :codigo and i.grupoAC = :grupoac";
+		
 		Query query = getSession().createQuery(hql);
 		query.setString("codigo", codigo);
+		query.setString("grupoac", grupoAC);
 
 		int result = query.executeUpdate();
 

@@ -791,7 +791,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			cancelaSituacaoRhSep = true;
 		}
 		else
-			historicoColaborador = getDao().findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC());
+			historicoColaborador = getDao().findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 
 		String mensagemFinal = mensagemManager.formataMensagemCancelamentoHistoricoColaborador(mensagem, historicoColaborador);
 
@@ -926,7 +926,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if(situacao.getId() != null && situacao.getId() != 0)
 			historicoColaborador = getDao().findByIdProjectionHistorico(situacao.getId().longValue());
 		else
-			historicoColaborador = getDao().findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC());
+			historicoColaborador = getDao().findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 
 		historicoColaborador = bindSituacao(situacao, historicoColaborador);
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
@@ -1041,9 +1041,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return situacao;
 	}
 
-	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC)
+	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
-		return getDao().findByAC(data, empregadoCodigoAC, empresaCodigoAC);
+		return getDao().findByAC(data, empregadoCodigoAC, empresaCodigoAC, grupoAC);
 	}
 
 	public boolean verificaDataPrimeiroHistorico(Colaborador colaborador)

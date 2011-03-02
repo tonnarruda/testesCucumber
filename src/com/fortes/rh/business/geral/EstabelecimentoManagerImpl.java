@@ -17,9 +17,9 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 		return getDao().remove(codigo, idEmpresa);
 	}
 
-	public Estabelecimento findByCodigo(String codigo, String empCodigo)
+	public Estabelecimento findByCodigo(String codigo, String empCodigo, String grupoAC)
 	{
-		return getDao().findByCodigo(codigo, empCodigo);
+		return getDao().findByCodigo(codigo, empCodigo, grupoAC);
 	}
 
 	public Collection<Estabelecimento> findAllSelect(Long empresaId)

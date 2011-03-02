@@ -31,7 +31,10 @@ alter table empresa add column grupoac character(3);--.go
 ALTER TABLE ONLY empresa ADD CONSTRAINT empresa_grupoac_fk FOREIGN KEY (grupoac) REFERENCES grupoac(codigo); --.go
 
 -- CUIDADO, temos que ajustar a FORTES, pois ja trabalha com dois ACs
-INSERT INTO grupoac (id, codigo, descricao) VALUES (1,"001","AC Padrão");--.go
+INSERT INTO grupoac (id, codigo, descricao) VALUES (1,'001','AC Padrão');--.go
 alter sequence grupoac_sequence restart with 2;--.go
 
 update empresa set grupoac='001';--.go
+
+alter table indice add column grupoac character(3);--.go
+ALTER TABLE ONLY indice ADD CONSTRAINT indice_grupoac_fk FOREIGN KEY (grupoac) REFERENCES grupoac(codigo); --.go

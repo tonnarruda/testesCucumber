@@ -19,6 +19,7 @@ import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -40,6 +41,7 @@ import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -79,6 +81,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	private FuncaoDao funcaoDao;
 	private IndiceDao indiceDao;
 	private IndiceHistoricoDao indiceHistoricoDao;
+	private GrupoACDao grupoACDao;
 	
 	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
 
@@ -695,8 +698,12 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 
 	public void testFindByAC()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("333AA11");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -711,7 +718,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		hc.setData(data);
 		historicoColaboradorDao.save(hc);
 
-		assertEquals(hc, historicoColaboradorDao.findByAC(data, colaborador.getCodigoAC(), empresa.getCodigoAC()));
+		assertEquals(hc, historicoColaboradorDao.findByAC(data, colaborador.getCodigoAC(), empresa.getCodigoAC(), "XXX"));
 	}
 
 	public void testFindAtualByAC()
@@ -1390,5 +1397,9 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 
 	public void setIndiceHistoricoDao(IndiceHistoricoDao indiceHistoricoDao) {
 		this.indiceHistoricoDao = indiceHistoricoDao;
+	}
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 }

@@ -290,7 +290,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpregadoCodigoAC("55");
 		situacao.setEmpresaCodigoAC("77");
 
-		historicoColaboradorManager.expects(once()).method("findByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC())).will(returnValue(historicoColaborador));
+		historicoColaboradorManager.expects(once()).method("findByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), ANYTHING).will(returnValue(historicoColaborador));
 		historicoColaboradorManager.expects(once()).method("removeHistoricoAndReajusteAC").with(eq(historicoColaborador));
 		assertEquals(true, rHServiceManager.removerSituacao(situacao));
 	}
@@ -304,7 +304,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpregadoCodigoAC("fadf622");
 		situacao.setEmpresaCodigoAC("8674dsfaf");
 
-		historicoColaboradorManager.expects(once()).method("findByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC())).will(returnValue(historicoColaborador));
+		historicoColaboradorManager.expects(once()).method("findByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), ANYTHING).will(returnValue(historicoColaborador));
 		historicoColaboradorManager.expects(once()).method("removeHistoricoAndReajusteAC").with(eq(historicoColaborador)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		assertEquals(false, rHServiceManager.removerSituacao(situacao));
 	}
@@ -526,7 +526,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 
-		estabelecimentoManager.expects(once()).method("findByCodigo").with(eq(tEstabelecimento.getCodigo()), eq(tEstabelecimento.getCodigoEmpresa())).will(returnValue(estabelecimento));
+		estabelecimentoManager.expects(once()).method("findByCodigo").with(eq(tEstabelecimento.getCodigo()), eq(tEstabelecimento.getCodigoEmpresa()), ANYTHING).will(returnValue(estabelecimento));
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
 		estabelecimentoManager.expects(once()).method("update").with(eq(estabelecimento));
 
@@ -548,7 +548,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 
-		estabelecimentoManager.expects(once()).method("findByCodigo").with(eq(tEstabelecimento.getCodigo()), eq(tEstabelecimento.getCodigoEmpresa())).will(returnValue(estabelecimento));
+		estabelecimentoManager.expects(once()).method("findByCodigo").with(eq(tEstabelecimento.getCodigo()), eq(tEstabelecimento.getCodigoEmpresa()), ANYTHING).will(returnValue(estabelecimento));
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
 		estabelecimentoManager.expects(once()).method("update").with(eq(estabelecimento)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 
@@ -589,7 +589,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tIndice.setCodigo("123");
 		Indice indice = IndiceFactory.getEntity(1L);
 
-		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndice.getCodigo())).will(returnValue(indice));
+		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndice.getCodigo()), ANYTHING).will(returnValue(indice));
 		indiceManager.expects(once()).method("update");
 		assertEquals(true, rHServiceManager.atualizarIndice(tIndice));
 	}
@@ -600,7 +600,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tIndice.setCodigo("123");
 		Indice indice = IndiceFactory.getEntity(1L);
 
-		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndice.getCodigo())).will(returnValue(indice));
+		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndice.getCodigo()), ANYTHING).will(returnValue(indice));
 		indiceManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		assertEquals(false, rHServiceManager.atualizarIndice(tIndice));
 	}
@@ -608,7 +608,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	public void testRemoverIndice() throws Exception
 	{
 		String codigoIndice = "123";
-		indiceManager.expects(once()).method("remove").with(eq(codigoIndice)).will(returnValue(true));
+		indiceManager.expects(once()).method("remove").with(eq(codigoIndice), eq("XXX")).will(returnValue(true));
 		assertEquals(true, rHServiceManager.removerIndice(codigoIndice, "XXX"));
 	}
 
@@ -619,7 +619,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndiceHistorico tIndiceHistorico = new TIndiceHistorico();
 		tIndiceHistorico.setIndiceCodigo("123");
 
-		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo())).will(returnValue(indice));
+		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(indice));
 		indiceHistoricoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(false));
 		indiceHistoricoManager.expects(once()).method("save").with(ANYTHING);
 
@@ -631,7 +631,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndiceHistorico tIndiceHistorico = new TIndiceHistorico();
 		tIndiceHistorico.setIndiceCodigo("123");
 
-		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo())).will(returnValue(null));
+		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(null));
 
 		assertEquals(false, rHServiceManager.criarIndiceHistorico(tIndiceHistorico));
 	}
@@ -643,7 +643,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndiceHistorico tIndiceHistorico = new TIndiceHistorico();
 		tIndiceHistorico.setIndiceCodigo("123");
 
-		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo())).will(returnValue(indice));
+		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(indice));
 		indiceHistoricoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(true));
 		indiceHistoricoManager.expects(once()).method("updateValor").with(ANYTHING, ANYTHING, ANYTHING);
 
@@ -658,7 +658,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndiceHistorico tIndiceHistorico = new TIndiceHistorico();
 		tIndiceHistorico.setIndiceCodigo("123");
 
-		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo())).will(returnValue(indice));
+		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(indice));
 		indiceHistoricoManager.expects(once()).method("remove").with(ANYTHING, eq(indice.getId())).will(returnValue(true));
 
 		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX"));
@@ -669,7 +669,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndiceHistorico tIndiceHistorico = new TIndiceHistorico();
 		tIndiceHistorico.setIndiceCodigo("123");
 
-		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo())).will(returnValue(null));
+		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(null));
 
 		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX"));
 	}
