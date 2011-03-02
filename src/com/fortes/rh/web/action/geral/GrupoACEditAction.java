@@ -3,7 +3,6 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.geral.GrupoACManager;
@@ -88,10 +87,15 @@ public class GrupoACEditAction extends MyActionSupportList
 			grupoACManager.remove(grupoAC.getId());
 			addActionMessage("Grupo AC excluído com sucesso.");
 		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			addActionError("Não foi possível excluir este Grupo AC! Existe Empresa utilizando este grupo.");
+		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este grupo AC.");
+			addActionError("Não foi possível excluir este Grupo AC.");
 		}
 
 		return list();

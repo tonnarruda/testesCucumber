@@ -27,3 +27,5 @@ CREATE SEQUENCE grupoac_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINV
 alter table GRUPOAC add constraint grupoac_codigo_uk unique (codigo);--.go
 
 alter table empresa add column grupoac character(3);--.go
+
+ALTER TABLE ONLY empresa ADD CONSTRAINT empresa_grupoac_fk FOREIGN KEY (grupoac) REFERENCES grupoac(codigo); --.go

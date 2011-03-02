@@ -2,8 +2,11 @@ package com.fortes.rh.test.web.action.geral;
 
 import java.util.ArrayList;
 
+import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.model.geral.GrupoAC;
@@ -47,6 +50,15 @@ public class GrupoACEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("remove");
 		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<GrupoAC>()));
 		assertEquals("success", action.delete());
+		
+		//exception
+		manager.expects(once()).method("remove").with(eq(grupoAC.getId())).will(throwException(new DataIntegrityViolationException("Empresa utilizando")));
+		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<GrupoAC>()));
+		assertEquals("success", action.delete());
+
+		manager.expects(once()).method("remove").with(eq(grupoAC.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<GrupoAC>()));
+		assertEquals("success", action.delete());
 	}
 
 	public void testInsert() throws Exception
@@ -55,8 +67,16 @@ public class GrupoACEditActionTest extends MockObjectTestCase
 		action.setGrupoAC(grupoAC);
 
 		manager.expects(once()).method("save").with(eq(grupoAC)).will(returnValue(grupoAC));
-
 		assertEquals("success", action.insert());
+		
+		//exception
+		manager.expects(once()).method("save").with(eq(grupoAC)).will(throwException(new DataIntegrityViolationException("Empresa utilizando")));
+		manager.expects(once()).method("findById").will(returnValue(grupoAC));
+		assertEquals("input", action.insert());
+
+		manager.expects(once()).method("save").with(eq(grupoAC)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		manager.expects(once()).method("findById").will(returnValue(grupoAC));
+		assertEquals("input", action.insert());
 	}
 
 	public void testUpdate() throws Exception
@@ -65,8 +85,16 @@ public class GrupoACEditActionTest extends MockObjectTestCase
 		action.setGrupoAC(grupoAC);
 
 		manager.expects(once()).method("update").with(eq(grupoAC)).isVoid();
-
 		assertEquals("success", action.update());
+		
+		//exception
+		manager.expects(once()).method("update").with(eq(grupoAC)).will(throwException(new DataIntegrityViolationException("Empresa utilizando")));
+		manager.expects(once()).method("findById").will(returnValue(grupoAC));
+		assertEquals("input", action.update());
+
+		manager.expects(once()).method("update").with(eq(grupoAC)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		manager.expects(once()).method("findById").will(returnValue(grupoAC));
+		assertEquals("input", action.update());
 	}
 
 	public void testGetSet() throws Exception
