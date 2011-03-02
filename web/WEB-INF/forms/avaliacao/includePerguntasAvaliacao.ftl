@@ -5,20 +5,6 @@
 
 <#list perguntas as pergunta>
 
-	<#if pergunta.aspecto.nome?exists>
-		<#if pergunta.aspecto.nome != aspectoAnterior>
-			<@authz.authorize ifAllGranted="ROLE_MOV_AVALIACAO">
-				<div style="background-color: lightgray;color:black;margin-top: 5px;margin-bottom:5px;">${pergunta.aspecto.nome}</div>
-				<#assign aspectoAnterior="${pergunta.aspecto.nome}"/>
-			</@authz.authorize>
-		</#if>
-	<#else>
-		<#if aspectoAnterior != "Sem Aspecto">
-			<#assign aspectoAnterior="Sem Aspecto"/>
-			<div style="background-color: lightgray;color:black;margin-top: 5px;margin-bottom:5px;">Sem Aspecto</div>
-		</#if>
-	</#if>
-
 	<div id="perguntaResposta">
 		<p id="tituloPergunta" class="pergunta${pergunta.id}">${pergunta.ordem}) ${pergunta.texto}</p>
 		

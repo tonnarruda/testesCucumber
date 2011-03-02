@@ -129,7 +129,7 @@ public class Index extends ActionSupport
 
 	private void validaAvaliacoesDesempenho()
 	{
-		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(empresaId, true);
+		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(null, true);
 		
 		for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
 		{

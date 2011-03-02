@@ -198,6 +198,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	public String responderAvaliacaoDesempenho()
 	{
+		if(colaboradorQuestionario.getRespondidaEm() == null)
+			colaboradorQuestionario.setRespondidaEm(new Date());
+		
 		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		addActionMessage("Avaliação respondida com sucesso.");
 		

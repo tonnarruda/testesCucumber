@@ -17,18 +17,10 @@
 	<#if colaboradorQuestionario.avaliacao?exists && colaboradorQuestionario.avaliacao.cabecalho?exists>
 		<pre><h4>${colaboradorQuestionario.avaliacao.cabecalho}</h4></pre>
 	</#if>
-	<@authz.authorize ifAllGranted="ROLE_MOV_AVALIACAO">
-	<@ww.form id="form_ordenacao" name="form_ordenacao" action="prepareResponderAvaliacaoDesempenho.action"	method="GET">
-		<@ww.select label="Ordenar Por:" name="ordenarPorAspecto" list=r"#{true:'Aspecto',false:'Numeração'}" onchange="jQuery('#form_ordenacao').submit();"/>
-		<@ww.hidden name="colaboradorQuestionario.id" />
-	</@ww.form>
-	</@authz.authorize>
 	
 	<#if perguntas?exists && 0 < perguntas?size>
 		<@ww.form name="form" action="responderAvaliacaoDesempenho.action" method="POST">
 			<#include "includePerguntasAvaliacao.ftl" />
-			<@ww.hidden name="colaboradorQuestionario.id" />
-			<@ww.hidden name="colaboradorQuestionario.respondidaEm" />
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliador.id" />
 			<@ww.token/>

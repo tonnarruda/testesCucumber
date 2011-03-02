@@ -37,7 +37,8 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("emp.id", empresaId));
+		if(empresaId != null)
+			criteria.add(Expression.eq("emp.id", empresaId));
 
 		if(ativa != null)
 			criteria.add(Expression.eq("avaliacao.ativo", ativa));
