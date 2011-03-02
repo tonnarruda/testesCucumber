@@ -30,9 +30,10 @@
 				var acSenha = document.getElementById("acSenha").value;
 				var acUrlSoap = document.getElementById("acUrlSoap").value;
 				var codigoAC = document.getElementById("codigoAC").value;
+				var grupoAC = document.getElementById("grupoAC").value;
 
 				document.getElementById("btnTransferir").src="<@ww.url includeParams="none" value="/imgs/conectando.gif"/>";
-				UtilDWR.getToken(apresenta_Msg, acUsuario, acSenha, acUrlSoap, codigoAC);
+				UtilDWR.getToken(apresenta_Msg, acUsuario, acSenha, acUrlSoap, codigoAC, grupoAC);
 			}
 			else
 			{

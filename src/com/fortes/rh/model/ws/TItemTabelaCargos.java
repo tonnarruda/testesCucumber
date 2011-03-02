@@ -9,6 +9,15 @@ public class TItemTabelaCargos implements Serializable
 	private String data;
 	private Double valor;
 	private Integer rh_sca_id;
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
 
 	public String getCodigo()
 	{

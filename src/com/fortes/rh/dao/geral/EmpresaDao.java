@@ -10,7 +10,7 @@ import com.fortes.rh.model.geral.Empresa;
 
 public interface EmpresaDao extends GenericDao<Empresa>
 {
-	Empresa findByCodigo(String codigo);
+	Empresa findByCodigo(String codigo, String grupoAC);
 	boolean getIntegracaoAC(Long id);
 	boolean findExibirSalarioById(Long empresaId);
 	Collection<Empresa> verifyExistsCnpj(String cnpj);

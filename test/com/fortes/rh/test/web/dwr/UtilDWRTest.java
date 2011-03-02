@@ -45,13 +45,13 @@ public class UtilDWRTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCodigoAC("0003");
 
-		empresaManager.expects(once()).method("findByCodigoAC").with(ANYTHING).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(empresa));
 
 		String token = "";
 
 		acPessoalClient.expects(once()).method("getToken").with(ANYTHING).will(returnValue(token));
 
-		String retorno = utilDWR.getToken("", "", "", "");
+		String retorno = utilDWR.getToken("", "", "", "", null);
 	}
 
 	public void testGetTokenComAcSenha()
@@ -65,7 +65,7 @@ public class UtilDWRTest extends MockObjectTestCase
 
 		acPessoalClient.expects(once()).method("getToken").with(ANYTHING).will(returnValue(token));
 
-		String retorno = utilDWR.getToken("Admin", "senha", "", "");
+		String retorno = utilDWR.getToken("Admin", "senha", "", "", null);
 
 		assertNotNull(retorno);
 	}
@@ -79,7 +79,7 @@ public class UtilDWRTest extends MockObjectTestCase
 
 		acPessoalClient.expects(once()).method("getToken").with(ANYTHING).will(throwException(new ServiceException("Erro")));
 
-		String retorno = utilDWR.getToken("Admin", "senha", "", "");
+		String retorno = utilDWR.getToken("Admin", "senha", "", "", null);
 
 		assertNotNull(retorno);
 	}
@@ -93,7 +93,7 @@ public class UtilDWRTest extends MockObjectTestCase
 
 		acPessoalClient.expects(once()).method("getToken").with(ANYTHING).will(throwException(new ServiceException("Usuário Não Autenticado!")));
 
-		String retorno = utilDWR.getToken("Admin", "senha", "", "");
+		String retorno = utilDWR.getToken("Admin", "senha", "", "", null);
 
 		assertNotNull(retorno);
 	}

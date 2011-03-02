@@ -12,14 +12,14 @@ public class UtilDWR
 	private Mail mail;
 	private AcPessoalClient acPessoalClient;
 
-	public String getToken(String acUsuario, String acSenha, String acUrlSoap, String codigoAC)
+	public String getToken(String acUsuario, String acSenha, String acUrlSoap, String codigoAC, String grupoAC)
 	{
 		String token = "";
 		Empresa empresa = null;
 
 		if(acSenha.trim().equals(""))
 		{
-			empresa = empresaManager.findByCodigoAC(codigoAC);
+			empresa = empresaManager.findByCodigoAC(codigoAC, grupoAC);
 
 			empresa.setAcUsuario(acUsuario);
 			empresa.setAcUrlSoap(acUrlSoap);

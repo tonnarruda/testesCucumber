@@ -9,7 +9,16 @@ public class TEmpresa implements Serializable
 	private String codigoAC;
 	private String nome;
 	private String razaoSocial;
+	private String grupoAC;
 
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
+	
 	public TEmpresa()
 	{
 	}
@@ -54,4 +63,5 @@ public class TEmpresa implements Serializable
 	{
 		this.id = id;
 	}
+
 }

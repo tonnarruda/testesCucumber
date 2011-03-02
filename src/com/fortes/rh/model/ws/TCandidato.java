@@ -2,8 +2,6 @@ package com.fortes.rh.model.ws;
 
 import java.util.Date;
 
-import com.fortes.rh.util.DateUtil;
-
 
 public class TCandidato
 {

@@ -23,6 +23,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
@@ -46,6 +47,7 @@ import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.model.ws.TEstabelecimento;
+import com.fortes.rh.model.ws.TGrupo;
 import com.fortes.rh.model.ws.TIndice;
 import com.fortes.rh.model.ws.TIndiceHistorico;
 import com.fortes.rh.model.ws.TOcorrencia;
@@ -85,6 +87,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	private Mock cargoManager;
 	private Mock candidatoManager;
 	private Mock areaOrganizacionalManager;
+	private Mock grupoACManager;
 
 	protected void setUp() throws Exception
 	{
@@ -126,6 +129,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		rHServiceManager.setCandidatoManager((CandidatoManager)candidatoManager.proxy());
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		rHServiceManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		grupoACManager = new Mock(GrupoACManager.class);
+		rHServiceManager.setGrupoACManager((GrupoACManager) grupoACManager.proxy());
 	}
 
 	public void testEco() throws Exception
@@ -143,13 +148,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setNomeComercial("nomeComercial");
 
-		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC)).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), ANYTHING).will(returnValue(empresa));
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaboradorCodigoAC), eq(empresa)).will(returnValue(colaborador));
-		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC)).will(returnValue(new ArrayList<UsuarioEmpresa>()));
+		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC), eq("XXX")).will(returnValue(new ArrayList<UsuarioEmpresa>()));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING);
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresa), ANYTHING).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento));
+		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX"));
 	}
 
 	public void testReligarColaborador() throws Exception
@@ -158,7 +163,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		String colaboradorCodigoAC = "123123";
 
 		colaboradorManager.expects(once()).method("religaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC)).will(returnValue(true));
-		assertEquals(true, rHServiceManager.religarEmpregado(colaboradorCodigoAC, empresaCodigoAC));
+		assertEquals(true, rHServiceManager.religarEmpregado(colaboradorCodigoAC, empresaCodigoAC, "XXX"));
 	}
 
 	public void testAtualizarEmpregadoAndSituacao() throws Exception
@@ -394,7 +399,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
-		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC())).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("save").with(ANYTHING);
 		
@@ -409,7 +414,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
-		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC())).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
@@ -424,7 +429,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
-		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC())).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(AreaOrganizacionalFactory.getEntity(1L)));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("update").with(ANYTHING);
@@ -440,7 +445,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
-		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC())).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(AreaOrganizacionalFactory.getEntity(1L)));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
@@ -481,7 +486,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tEstabelecimento.setUf("uf");
 
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
-		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC())).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		estabelecimentoManager.expects(once()).method("save").with(ANYTHING);
 
 		assertEquals(true, rHServiceManager.criarEstabelecimento(tEstabelecimento));
@@ -500,7 +505,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tEstabelecimento.setUf("uf");
 
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
-		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC())).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		estabelecimentoManager.expects(once()).method("save").with(ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 
 		assertEquals(false, rHServiceManager.criarEstabelecimento(tEstabelecimento));
@@ -556,10 +561,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empresa.setCodigoAC("123123");
 
 		String codigoEstabelecimento = "12";
-		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC())).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		estabelecimentoManager.expects(once()).method("remove").with(eq(codigoEstabelecimento), eq(empresa.getId())).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.removerEstabelecimento(codigoEstabelecimento, empresa.getCodigoAC()));
+		assertEquals(true, rHServiceManager.removerEstabelecimento(codigoEstabelecimento, empresa.getCodigoAC(), "XXX"));
 	}
 
 	public void testCriarIndice() throws Exception
@@ -604,7 +609,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	{
 		String codigoIndice = "123";
 		indiceManager.expects(once()).method("remove").with(eq(codigoIndice)).will(returnValue(true));
-		assertEquals(true, rHServiceManager.removerIndice(codigoIndice));
+		assertEquals(true, rHServiceManager.removerIndice(codigoIndice, "XXX"));
 	}
 
 	public void testCriarIndiceHistorico() throws Exception
@@ -656,7 +661,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo())).will(returnValue(indice));
 		indiceHistoricoManager.expects(once()).method("remove").with(ANYTHING, eq(indice.getId())).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo()));
+		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX"));
 	}
 
 	public void testRemoverIndiceHistoricoSemIndice() throws Exception
@@ -666,7 +671,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo())).will(returnValue(null));
 
-		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo()));
+		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX"));
 	}
 
 //	public void testCancelaHistoricoColaborador() throws Exception
@@ -691,11 +696,11 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		faixaSalarialHistoricoManager.expects(once()).method("findByIdProjection").with(eq(faixaSalarialHistorico.getId())).will(returnValue(faixaSalarialHistorico));
 		mensagemManager.expects(once()).method("formataMensagemCancelamentoFaixaSalarialHistorico").with(eq(mensagem), eq(faixaSalarialHistorico)).will(returnValue(mensagemFinal));
-		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC)).will(returnValue(usuarioEmpresas));
+		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC), eq("XXX")).will(returnValue(usuarioEmpresas));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(eq(mensagemFinal), ANYTHING, eq(null), eq(usuarioEmpresas));
 		faixaSalarialHistoricoManager.expects(once()).method("setStatus").with(eq(faixaSalarialHistoricoId), eq(aprovado)).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.setStatusFaixaSalarialHistorico(faixaSalarialHistoricoId, aprovado, mensagem, empresaCodigoAC));
+		assertEquals(true, rHServiceManager.setStatusFaixaSalarialHistorico(faixaSalarialHistoricoId, aprovado, mensagem, empresaCodigoAC, "XXX"));
 	}
 
 	public void testCriarEmpresa() throws Exception
@@ -827,6 +832,12 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		Collection<Empresa> colecao = Arrays.asList(new Empresa[]{EmpresaFactory.getEmpresa(1L)});
 		empresaManager.expects(once()).method("findToList").will(returnValue(colecao));
 		assertEquals(1, rHServiceManager.getEmpresas().length);
+	}
+	public void testGetGrupos()
+	{
+		TGrupo[] tgrupos = new TGrupo[]{new TGrupo("aaa", "descricao")};
+		grupoACManager.expects(once()).method("findTGrupos").will(returnValue(tgrupos));
+		assertEquals(1, rHServiceManager.getGrupos().length);
 	}
 	public void testGetCidades()
 	{

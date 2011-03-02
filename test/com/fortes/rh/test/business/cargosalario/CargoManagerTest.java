@@ -136,9 +136,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		String codigo = "";
 		
 		// deveria chamar este método
-		cargoDao.expects(once()).method("findByEmpresaAC").with(eq(codigoDaEmpresa)).will(returnValue(Collections.EMPTY_LIST));
+		cargoDao.expects(once()).method("findByEmpresaAC").with(eq(codigoDaEmpresa), eq("XXX")).will(returnValue(Collections.EMPTY_LIST));
 		
-		cargoManager.findByEmpresaAC(codigoDaEmpresa, codigo);
+		cargoManager.findByEmpresaAC(codigoDaEmpresa, codigo, "XXX");
 		
 		cargoDao.verify();
 	}
@@ -149,9 +149,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		String codigo = "321";
 		
 		// deveria chamar este método
-		cargoDao.expects(once()).method("findByEmpresaAC").with(eq(codigoDaEmpresa), eq(codigo)).will(returnValue(Collections.EMPTY_LIST));
+		cargoDao.expects(once()).method("findByEmpresaAC").with(eq(codigoDaEmpresa), eq(codigo), eq("XXX")).will(returnValue(Collections.EMPTY_LIST));
 		
-		cargoManager.findByEmpresaAC(codigoDaEmpresa, codigo);
+		cargoManager.findByEmpresaAC(codigoDaEmpresa, codigo, "XXX");
 		
 		cargoDao.verify();
 	}
@@ -208,14 +208,14 @@ public class CargoManagerTest extends MockObjectTestCase
 		TCargo tCargo = new TCargo(); 
 		tCargo.setCargoId(2L);
 		
-		empresaManager.expects(once()).method("findByCodigoAC").with(ANYTHING).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(empresa));
 		cargoDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(cargo));
 		cargoDao.expects(once()).method("updateCBO").with(ANYTHING, ANYTHING);
 		assertEquals(cargo, cargoManager.preparaCargoDoAC(tCargo));
 		
 		//novo cargo
 		tCargo.setCargoId(0L);
-		empresaManager.expects(once()).method("findByCodigoAC").with(ANYTHING).will(returnValue(empresa));
+		empresaManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(empresa));
 		cargoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(cargo));
 		assertEquals(cargo, cargoManager.preparaCargoDoAC(tCargo));		
 	}

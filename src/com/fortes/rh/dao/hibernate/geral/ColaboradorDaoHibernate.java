@@ -753,7 +753,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("e.codigoAC"), "empresaCodigoAC");
 
 		criteria.setProjection(p);
-		criteria.add(Expression.eq("c.empresa", empresa));
+		criteria.add(Expression.eq("c.empresa", empresa));//tem que ser por ID, ta correto(CUIDADO: caso mude tem que verificar o grupoAC)
 		criteria.add(Expression.eq("c.codigoAC", codigo));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

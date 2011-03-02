@@ -12,6 +12,7 @@ import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -41,6 +43,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 	private ColaboradorDao colaboradorDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private SolicitacaoDao solicitacaoDao;
+	private GrupoACDao grupoACDao;
 
 	public Cargo getEntity()
 	{
@@ -147,23 +150,31 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 	
 	public void testFindByEmpresaAC()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("asdf21");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresaDao.save(empresa);
 		
 		Cargo cargo = CargoFactory.getEntity();
 		cargo.setEmpresa(empresa);
 		cargo = cargoDao.save(cargo);
 		
-		Collection<Cargo> retorno = cargoDao.findByEmpresaAC(empresa.getCodigoAC());
+		Collection<Cargo> retorno = cargoDao.findByEmpresaAC(empresa.getCodigoAC(), "XXX");
 		
 		assertEquals(1, retorno.size());
 	}
 	
 	public void testFindByEmpresaACCodigoFaixa()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("asdf21");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresaDao.save(empresa);
 		
 		Cargo cargo = CargoFactory.getEntity();
@@ -174,7 +185,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		faixaSalarialDao.save(faixaSalarial);
 		faixaSalarial.setCargo(cargo);
 
-		Collection<Cargo> retorno = cargoDao.findByEmpresaAC(empresa.getCodigoAC(), faixaSalarial.getCodigoAC());
+		Collection<Cargo> retorno = cargoDao.findByEmpresaAC(empresa.getCodigoAC(), faixaSalarial.getCodigoAC(), "XXX");
 		
 		assertEquals(1, retorno.size());
 	}
@@ -465,6 +476,10 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao)
 	{
 		this.solicitacaoDao = solicitacaoDao;
+	}
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 
 }

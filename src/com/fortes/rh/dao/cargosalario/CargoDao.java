@@ -28,8 +28,8 @@ public interface CargoDao extends GenericDao<Cargo>
 	public Collection<Cargo> findAllSelectDistinctNomeMercado();
 	public Collection<Cargo> findBySolicitacao(Long solicitacaoId);
 	public Collection<Cargo> findSincronizarCargos(Long empresaOrigemId);
-	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigoFaixa);
-	public Collection<Cargo> findByEmpresaAC(String empCodigo);
+	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigoFaixa, String grupoAC);
+	public Collection<Cargo> findByEmpresaAC(String empCodigo, String grupoAC);
 	public void updateCBO(Long id, TCargo tCargo);
 	public Collection<Cargo> findAllSelect(Long[] empresaIds);
 }

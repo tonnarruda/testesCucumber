@@ -13,6 +13,15 @@ public class TOcorrenciaEmpregado implements Serializable
 	private String codigoEmpregado;
 	private String data;
 	private String obs;
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
 
 	public String getCodigoEmpregado()
 	{

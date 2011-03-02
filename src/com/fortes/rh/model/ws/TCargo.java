@@ -12,6 +12,7 @@ public class TCargo implements Serializable
 	private String descricao;//faixa no rh
 	private String descricaoACPessoal;//ac cargo
 	private String cboCodigo;
+	private String grupoAC;
 
 	public TCargo()
 	{
@@ -24,7 +25,7 @@ public class TCargo implements Serializable
 		this.codigo = codigo;
 		this.descricao = descricao;
 	}
-
+	
 	public TCargo(Long id, String codigo, String descricao)
 	{
 		super();
@@ -32,13 +33,22 @@ public class TCargo implements Serializable
 		this.codigo = codigo;
 		this.descricao = descricao;
 	}
-
+	
 	public TCargo(Long idCargo, String nomeCargo)
 	{
 		super();
 		this.cargoId = idCargo;
 		this.cargoDescricao = nomeCargo;
 	}
+	
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
+
 
 	public Long getId()
 	{

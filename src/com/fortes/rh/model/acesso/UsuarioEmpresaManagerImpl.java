@@ -28,9 +28,9 @@ public class UsuarioEmpresaManagerImpl extends GenericManagerImpl<UsuarioEmpresa
 		return getDao().findAllBySelectUsuarioEmpresa(empresaId);
 	}
 
-	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC)
+	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC)
 	{
-		return getDao().findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, null);
+		return getDao().findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, grupoAC, null);
 	}
 	
 	/** 
@@ -38,7 +38,7 @@ public class UsuarioEmpresaManagerImpl extends GenericManagerImpl<UsuarioEmpresa
 	 * Obs. Utiliza o mesmo ROLE que recebe mensagens do AC Pessoal.  */
 	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleAvaliacaoExperiencia(Long empresaId)
 	{
-		return getDao().findUsuariosByEmpresaRoleSetorPessoal(null, empresaId);
+		return getDao().findUsuariosByEmpresaRoleSetorPessoal(null, null, empresaId);
 	}
 
 	public void save(Usuario usuario, String[] empresaIds, String[] selectPerfils)

@@ -9,11 +9,13 @@ import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -25,6 +27,7 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 	private UsuarioEmpresaDao usuarioEmpresaDao;
 	private PapelDao papelDao;
 	private PerfilDao perfilDao;
+	private GrupoACDao grupoACDao;
 
 	public UsuarioEmpresa getEntity()
 	{
@@ -94,6 +97,9 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 	
 	public void testFindUsuariosByEmpresaRoleSetorPessoal()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Papel papel1 = new Papel();
 		papel1.setCodigo("RECEBE_ALERTA_SETORPESSOAL");
 		papel1 = papelDao.save(papel1);
@@ -116,6 +122,7 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("01020304");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 		
 		Usuario usuario1 = UsuarioFactory.getEntity();
@@ -142,10 +149,10 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		usuarioEmpresa3= usuarioEmpresaDao.save(usuarioEmpresa3);
 		
 		// por codigoAC
-		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRoleSetorPessoal(empresa.getCodigoAC(), null).size());
+		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRoleSetorPessoal(empresa.getCodigoAC(), "XXX", null).size());
 		
 		// por empresaId
-		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRoleSetorPessoal(null, empresa.getId()).size());
+		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRoleSetorPessoal(null, null, empresa.getId()).size());
 	}
 
 	public GenericDao<UsuarioEmpresa> getGenericDao()
@@ -176,6 +183,10 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 	public void setPerfilDao(PerfilDao perfilDao)
 	{
 		this.perfilDao = perfilDao;
+	}
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 
 }

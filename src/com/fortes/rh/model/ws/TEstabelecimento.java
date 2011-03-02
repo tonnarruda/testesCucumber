@@ -15,6 +15,15 @@ public class TEstabelecimento implements Serializable
 	private String uf;
 	private String codigoCidade;
 	private String cep;
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
 
 	public String getBairro()
 	{

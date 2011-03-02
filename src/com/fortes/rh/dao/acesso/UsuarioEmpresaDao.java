@@ -12,7 +12,7 @@ public interface UsuarioEmpresaDao extends GenericDao<UsuarioEmpresa>
 
 	public void removeAllUsuario(Usuario usuario);
 
-	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, Long empresaId);
+	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC, Long empresaId);
 
 	public Collection<UsuarioEmpresa> findByUsuario(Long usuarioId);
 }

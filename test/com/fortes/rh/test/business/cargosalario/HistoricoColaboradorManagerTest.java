@@ -1175,7 +1175,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findByIdProjectionHistorico").with(ANYTHING).will(returnValue(historicoColaborador));
 		mensagemManager.expects(once()).method("formataMensagemCancelamentoHistoricoColaborador").with(eq(mensagem), eq(historicoColaborador)).will(returnValue(mensagem));
-		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(ANYTHING).will(returnValue(usuarioEmpresas));
+		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(ANYTHING, ANYTHING).will(returnValue(usuarioEmpresas));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(ANYTHING,ANYTHING,ANYTHING,eq(usuarioEmpresas));
 		historicoColaboradorDao.expects(once()).method("setStatus").with(eq(historicoColaborador.getId()), eq(false)).will(returnValue(true));
 
@@ -1214,7 +1214,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
 		mensagemManager.expects(once()).method("formataMensagemCancelamentoHistoricoColaborador").with(eq(mensagem), eq(historicoColaborador)).will(returnValue(mensagem));
-		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(ANYTHING).will(returnValue(usuarioEmpresas));
+		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(ANYTHING, ANYTHING).will(returnValue(usuarioEmpresas));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(ANYTHING,ANYTHING,ANYTHING,eq(usuarioEmpresas));
 		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(estabelecimento));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));

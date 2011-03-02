@@ -17,7 +17,7 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	String[] getEmpresasByUsuarioEmpresa(Long usuarioId);
 	Collection<UsuarioEmpresa> getPerfilEmpresasByUsuario(Long usuarioId);
 	void updateEmpresa(Empresa empresa);
-	Empresa findByCodigoAC(String codigo);
+	Empresa findByCodigoAC(String codigo, String grupoAC);
 	String saveLogo(File logo, String local) throws Exception;
 	Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado) throws Exception;
 	boolean findIntegracaoAC(Long id);

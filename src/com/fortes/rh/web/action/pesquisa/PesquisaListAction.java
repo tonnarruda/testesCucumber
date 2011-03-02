@@ -37,6 +37,7 @@ public class PesquisaListAction extends MyActionSupportList
 	private String empresaCodigo = "";
 	private String SESSION_CANDIDATO_NOME = "";
 	private String SESSION_EMPRESA = "";
+	private String grupoAC = null;
 
 	public String execute() throws Exception
     {
@@ -55,7 +56,7 @@ public class PesquisaListAction extends MyActionSupportList
     {   
     	try 
     	{			
-			Empresa empresa = empresaManager.findByCodigoAC(empresaCodigo);
+			Empresa empresa = empresaManager.findByCodigoAC(empresaCodigo, grupoAC);
 			colaborador = colaboradorManager.findByCodigoAC(matricula, empresa);
 			
 			SESSION_CANDIDATO_NOME = colaborador.getNome();

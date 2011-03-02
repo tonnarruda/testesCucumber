@@ -5,6 +5,7 @@ package com.fortes.rh.dao.hibernate.geral;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
@@ -24,10 +25,18 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 @SuppressWarnings("unchecked")
 public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements EmpresaDao
 {
-	public Empresa findByCodigo(String codigo)
+	public Empresa findByCodigo(String codigo, String grupoAC)
 	{
-		Query query = getSession().createQuery("from Empresa e where e.codigoAC = :codigo");
+		String hql = "from Empresa e where e.codigoAC = :codigo ";
+		if (StringUtils.isNotBlank(grupoAC))
+			hql += " and e.grupoAC = :grupoAC ";
+		
+		Query query = getSession().createQuery(hql);
 		query.setString("codigo", codigo);
+		
+		if (StringUtils.isNotBlank(grupoAC))
+			query.setString("grupoAC", grupoAC);
+		
 		return (Empresa) query.uniqueResult();
 	}
 

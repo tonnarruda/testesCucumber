@@ -10,6 +10,15 @@ public class TAreaOrganizacional implements Serializable
 	private String nome;
 	private String areaMaeCodigo;
 	private String empresaCodigo;
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
 	
 	public Long getId()
 	{

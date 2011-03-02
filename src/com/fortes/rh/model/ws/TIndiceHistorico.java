@@ -10,6 +10,15 @@ public class TIndiceHistorico implements Serializable
 	private String data;
 	private Double valor;
 	private String indiceCodigo;
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
 
 	public Date getDataFormatada()
 	{

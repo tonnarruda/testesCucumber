@@ -15,7 +15,16 @@ public class TSituacaoCargo implements Serializable
 	private String tipo;
 	private Double valor;
 	private Double quantidade;
-	
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
+
 	public Date getDataFormatada()
 	{
 		return DateUtil.montaDataByString(this.data);

@@ -14,7 +14,16 @@ public class TItemTabelaEmpregados
 	private String saltipo = "";
 	private String indcodigosalario = "";
 	private Double indqtde = 0D;
-	
+	private String grupoAC = "";
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
+
 	private String expAgenteNocivo;//GFIP
 
 	public String getCargo()

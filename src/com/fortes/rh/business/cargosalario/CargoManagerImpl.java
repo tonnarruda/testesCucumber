@@ -450,12 +450,12 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		this.conhecimentoManager = conhecimentoManager;
 	}
 
-	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigo)
+	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigo, String grupoAC)
 	{
 		if(StringUtils.isEmpty(codigo))
-			return getDao().findByEmpresaAC(empCodigo);
+			return getDao().findByEmpresaAC(empCodigo, grupoAC);
 		else
-			return getDao().findByEmpresaAC(empCodigo, codigo);
+			return getDao().findByEmpresaAC(empCodigo, codigo, grupoAC);
 	}
 	
 		
@@ -465,7 +465,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 
 	public Cargo preparaCargoDoAC(TCargo tCargo)
 	{
-		Empresa empresa = empresaManager.findByCodigoAC(tCargo.getEmpresaCodigoAC());
+		Empresa empresa = empresaManager.findByCodigoAC(tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
 		if(tCargo.getCargoId() == 0)//cadastra um novo cargo, foi inserido uma descrição no AC
 		{
 			Cargo cargo = new Cargo();

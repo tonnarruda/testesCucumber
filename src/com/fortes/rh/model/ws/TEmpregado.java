@@ -55,7 +55,16 @@ public class TEmpregado implements Serializable
 	private String ctpsDV;	
 	private String ctpsUFSigla;	
 	private String ctpsDataExpedicao;
-	
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
+
 	public String getBairro()
 	{
 		return bairro;

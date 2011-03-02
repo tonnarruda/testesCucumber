@@ -37,7 +37,7 @@ public class IndiceServiceTest
 		tindiceHistorico.setIndiceCodigo("001");
 		
 //		System.out.println(client.criarIndiceHistorico(tindiceHistorico));
-		System.out.println(client.removerIndiceHistorico("01/01/2000", "001"));
+		System.out.println(client.removerIndiceHistorico("01/01/2000", "001", "XXX"));
 		
 		
 //		

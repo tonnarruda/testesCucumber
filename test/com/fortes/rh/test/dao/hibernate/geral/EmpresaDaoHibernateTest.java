@@ -13,6 +13,7 @@ import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstadoDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.acesso.Papel;
@@ -23,6 +24,7 @@ import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
@@ -46,6 +48,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 	private UsuarioEmpresaDao usuarioEmpresaDao;
 	private PerfilDao perfilDao;
 	private PapelDao papelDao;
+	private GrupoACDao grupoACDao;
 
 	public Empresa getEntity()
 	{
@@ -71,12 +74,29 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 
 	public void testFindByCodigo()
 	{	
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("001122");
-		empresa = empresaDao.save(empresa);
+		empresa.setGrupoAC(grupoAC.getCodigo());
+		empresaDao.save(empresa);
 
-		Empresa emp = empresaDao.findByCodigo("001122");
+		Empresa emp = empresaDao.findByCodigo("001122", "XXX");
 
+		assertNotNull(emp);
+		assertEquals(emp.getCodigoAC(), "001122");
+	}
+	
+	public void testFindByCodigoBlank()
+	{	
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("001122");
+		empresa.setGrupoAC(null);
+		empresaDao.save(empresa);
+		
+		Empresa emp = empresaDao.findByCodigo("001122", null);
+		
 		assertNotNull(emp);
 		assertEquals(emp.getCodigoAC(), "001122");
 	}
@@ -269,5 +289,9 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 	public void setPapelDao(PapelDao papelDao)
 	{
 		this.papelDao = papelDao;
+	}
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 }

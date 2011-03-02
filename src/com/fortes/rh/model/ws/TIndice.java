@@ -6,7 +6,16 @@ public class TIndice implements Serializable
 {
 	private String codigo;
 	private String nome;
-	
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
+
 	public String getCodigo()
 	{
 		return codigo;

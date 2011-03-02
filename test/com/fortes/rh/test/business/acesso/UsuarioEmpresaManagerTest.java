@@ -57,15 +57,15 @@ public class UsuarioEmpresaManagerTest extends MockObjectTestCase
 	{
 		String codigoAC = "";
 		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(codigoAC), eq(null)).will(returnValue(usuarioEmpresas));
-		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoAC));
+		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(codigoAC), eq(""), eq(null)).will(returnValue(usuarioEmpresas));
+		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoAC, ""));
 	}
 	
 	public void testFindUsuariosByEmpresaRoleAvaliacaoExperiencia()
 	{
 		Long empresaId = 1L;
 		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(null),eq(empresaId)).will(returnValue(usuarioEmpresas));
+		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(null),eq(null),eq(empresaId)).will(returnValue(usuarioEmpresas));
 		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresaId));
 	}
 	

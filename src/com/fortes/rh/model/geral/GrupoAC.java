@@ -20,6 +20,17 @@ public class GrupoAC extends AbstractModel implements Serializable
 	@Column(length=3)
 	private String codigo;
 	
+	public GrupoAC(String codigo, String descricao) 
+	{
+		super();
+		this.descricao = descricao;
+		this.codigo = codigo;
+	}
+
+	public GrupoAC() 
+	{
+	}
+
 	public String getCodigoDescricao() {
 		return codigo + " - " + descricao;
 	}

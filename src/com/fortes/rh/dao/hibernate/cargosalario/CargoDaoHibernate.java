@@ -389,7 +389,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return criteria.list();
 	}
 
-	public Collection<Cargo> findByEmpresaAC(String empCodigo)
+	public Collection<Cargo> findByEmpresaAC(String empCodigo, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 		criteria.createCriteria("c.empresa", "e");
@@ -400,6 +400,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("e.codigoAC", empCodigo));
+		criteria.add(Expression.eq("e.grupoAC", grupoAC));
 
 		criteria.addOrder(Order.asc("c.nome"));
 		
@@ -409,7 +410,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return criteria.list();
 	}
 
-	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigoFaixa)
+	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigoFaixa, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
 		criteria.createCriteria("fs.cargo", "c");
@@ -422,6 +423,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("fs.codigoAC", codigoFaixa));
 		criteria.add(Expression.eq("e.codigoAC", empCodigo));
+		criteria.add(Expression.eq("e.grupoAC", grupoAC));
 		
 		criteria.addOrder(Order.asc("c.nome"));
 		

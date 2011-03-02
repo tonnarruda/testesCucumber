@@ -55,7 +55,7 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 	/**
 	 * Busca os usuários pelo codigoAC da empresa *OU* id da empresa
 	 */
-	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, Long empresaId)
+	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(UsuarioEmpresa.class, "ue");
 		criteria.createCriteria("ue.empresa", "emp");
@@ -71,7 +71,10 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		criteria.setProjection(p);
 
 		if (StringUtils.isNotBlank(empresaCodigoAC))
+		{
 			criteria.add(Expression.eq("emp.codigoAC", empresaCodigoAC));
+			criteria.add(Expression.eq("emp.grupoAC", grupoAC));
+		}
 		else if (empresaId != null)
 			criteria.add(Expression.eq("emp.id", empresaId));
 		

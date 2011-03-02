@@ -23,6 +23,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
@@ -53,6 +54,7 @@ import com.fortes.rh.model.ws.TCidade;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.model.ws.TEstabelecimento;
+import com.fortes.rh.model.ws.TGrupo;
 import com.fortes.rh.model.ws.TIndice;
 import com.fortes.rh.model.ws.TIndiceHistorico;
 import com.fortes.rh.model.ws.TOcorrencia;
@@ -83,6 +85,7 @@ public class RHServiceImpl implements RHService
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private FaixaSalarialManager faixaSalarialManager;
+	private GrupoACManager grupoACManager;
 
 	public String eco(String texto)
 	{
@@ -135,9 +138,9 @@ public class RHServiceImpl implements RHService
 		return cargosToArray(cargos, true);
 	}
 
-	public TCargo[] getCargosAC(String empCodigo, String codigo)
+	public TCargo[] getCargosAC(String empCodigo, String codigo, String grupoAC)
 	{
-		Collection<Cargo> cargos = cargoManager.findByEmpresaAC(empCodigo, codigo);
+		Collection<Cargo> cargos = cargoManager.findByEmpresaAC(empCodigo, codigo, grupoAC);
 		return cargosToArray(cargos, false);
 	}
 	
@@ -241,20 +244,15 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean desligarEmpregado(String codigo, String empCodigo, String dataDesligamento)
+	public boolean desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC)
 	{
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(empCodigo);
+			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
 			Colaborador colaborador = colaboradorManager.findByCodigoAC(codigo, empresa);
 
-			String mensagem = "O Colaborador " + colaborador.getNomeComercial()
-					+ " foi desligado no AC Pessoal.\n\n Para preencher a Entrevista de Desligamento, acesse a listagem de Colaboradores.";
-			
-			String link = "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + colaborador.getId() + "&voltarPara=../../index.action";
-
-			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empCodigo);
-			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem, "AC Pessoal", link, usuarioEmpresas);
+			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empCodigo, grupoAC);
+			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(getMensagem(colaborador.getNomeComercial()), "AC Pessoal", getLink(colaborador.getId()), usuarioEmpresas);
 
 			return colaboradorManager.desligaColaboradorAC(codigo, empresa, DateUtil.montaDataByString(dataDesligamento));
 		}
@@ -265,7 +263,17 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean religarEmpregado(String codigo, String empCodigo)
+	private String getLink(Long id) 
+	{
+		return "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + id + "&voltarPara=../../index.action";
+	}
+
+	private String getMensagem(String nomeComercial) 
+	{
+		return "O Colaborador " + nomeComercial + " foi desligado no AC Pessoal.\n\n Para preencher a Entrevista de Desligamento, acesse a listagem de Colaboradores.";
+	}
+
+	public boolean religarEmpregado(String codigo, String empCodigo, String grupoAC)
 	{
 		try
 		{
@@ -392,11 +400,11 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public boolean removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo)
+	public boolean removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo, String grupoAC)//x
 	{
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(empCodigo);
+			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
 			if(empresa == null || empresa.getId() == null)
 				return false;
 			
@@ -434,7 +442,7 @@ public class RHServiceImpl implements RHService
 		{
 			Estabelecimento estabelecimento = new Estabelecimento();
 			bindEstabelecimento(testabelecimento, estabelecimento);
-			estabelecimento.setEmpresa(empresaManager.findByCodigoAC(testabelecimento.getCodigoEmpresa()));
+			estabelecimento.setEmpresa(empresaManager.findByCodigoAC(testabelecimento.getCodigoEmpresa(), testabelecimento.getGrupoAC()));
 			estabelecimentoManager.save(estabelecimento);
 			return true;
 		}
@@ -461,11 +469,11 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean removerEstabelecimento(String codigo, String empCodigo)
+	public boolean removerEstabelecimento(String codigo, String empCodigo, String grupoAC)//x
 	{
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(empCodigo);
+			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
 			return estabelecimentoManager.remove(codigo, empresa.getId());
 		}
 		catch (Exception e)
@@ -509,7 +517,7 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean removerIndice(String codigo)
+	public boolean removerIndice(String codigo, String grupoAC)//x
 	{
 		try
 		{
@@ -591,7 +599,7 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean removerIndiceHistorico(String data, String indiceCodigo)
+	public boolean removerIndiceHistorico(String data, String indiceCodigo, String grupoAC)//x
 	{
 		Indice indice = indiceManager.findByCodigo(indiceCodigo);
 
@@ -634,7 +642,7 @@ public class RHServiceImpl implements RHService
 		estabelecimento.setEndereco(endereco);
 	}
 
-	public boolean setStatusFaixaSalarialHistorico(Long faixaSalarialHistoricoId, Boolean aprovado, String mensagem, String empresaCodigoAC)
+	public boolean setStatusFaixaSalarialHistorico(Long faixaSalarialHistoricoId, Boolean aprovado, String mensagem, String empresaCodigoAC, String grupoAC)//x
 	{
 		if (!aprovado)
 		{
@@ -642,7 +650,7 @@ public class RHServiceImpl implements RHService
 
 			String mensagemFinal = mensagemManager.formataMensagemCancelamentoFaixaSalarialHistorico(mensagem, faixaSalarialHistorico);
 
-			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC);
+			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, grupoAC);
 			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", null, usuarioEmpresas);
 		}
 
@@ -668,7 +676,7 @@ public class RHServiceImpl implements RHService
 		try
 		{
 			Ocorrencia ocorrencia = new Ocorrencia();
-			Empresa empresa = empresaManager.findByCodigoAC(tocorrencia.getEmpresa());
+			Empresa empresa = empresaManager.findByCodigoAC(tocorrencia.getEmpresa(), tocorrencia.getGrupoAC());
 
 			bindOcorrencia(tocorrencia, ocorrencia);
 			ocorrencia.setIntegraAC(true);
@@ -689,7 +697,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(tocorrencia.getEmpresa());
+			Empresa empresa = empresaManager.findByCodigoAC(tocorrencia.getEmpresa(), tocorrencia.getGrupoAC());
 			return ocorrenciaManager.removeByCodigoAC(tocorrencia.getCodigo(), empresa.getId());
 		}
 		catch (Exception e)
@@ -767,7 +775,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(areaOrganizacional.getEmpresaCodigo());
+			Empresa empresa = empresaManager.findByCodigoAC(areaOrganizacional.getEmpresaCodigo(), areaOrganizacional.getGrupoAC());
 			
 			AreaOrganizacional areaOrganizacionalTmp = new AreaOrganizacional();
 			areaOrganizacionalTmp.setEmpresa(empresa);
@@ -787,7 +795,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(areaOrganizacional.getEmpresaCodigo());
+			Empresa empresa = empresaManager.findByCodigoAC(areaOrganizacional.getEmpresaCodigo(), areaOrganizacional.getGrupoAC());
 			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(areaOrganizacional.getCodigo(), areaOrganizacional.getEmpresaCodigo());
 			areaOrganizacionalTmp.setEmpresa(empresa);
 			areaOrganizacionalManager.bind(areaOrganizacionalTmp, areaOrganizacional);
@@ -939,13 +947,18 @@ public class RHServiceImpl implements RHService
 			return false;
 		}
 	}
-
+	
+	public TGrupo[] getGrupos() 
+	{
+		return grupoACManager.findTGrupos();
+	}	
+	
 	public boolean criarEmpresa(TEmpresa empresaAC)
 	{
 		return empresaManager.criarEmpresa(empresaAC);
 	}
 
-	public boolean removerEmpresa(String empresaCodigoAC)
+	public boolean removerEmpresa(String empresaCodigoAC, String grupoAC)//x
 	{
 		return false;
 	}
@@ -1039,5 +1052,10 @@ public class RHServiceImpl implements RHService
 	{
 		this.faixaSalarialManager = faixaSalarialManager;
 	}
+
+	public void setGrupoACManager(GrupoACManager grupoACManager) {
+		this.grupoACManager = grupoACManager;
+	}
+
 
 }

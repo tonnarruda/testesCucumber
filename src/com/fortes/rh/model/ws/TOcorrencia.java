@@ -8,6 +8,15 @@ public class TOcorrencia implements Serializable
 	private String codigo;
 	private String empresa;
 	private String descricao;
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
 
 	public String getDescricao()
 	{

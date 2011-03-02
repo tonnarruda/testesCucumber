@@ -22,7 +22,16 @@ public class TSituacao implements Serializable
 	private String empregadoCodigoAC;
 	private String expAgenteNocivo;//GFIP
 	private Integer movimentoSalarialId;//usado pelo reajuste salarial em lote
-	
+	private String grupoAC;
+
+	public String getGrupoAC() {
+		return grupoAC;
+	}
+
+	public void setGrupoAC(String grupoAC) {
+		this.grupoAC = grupoAC;
+	}
+
 	public String getCargoCodigoAC()
 	{
 		return cargoCodigoAC;

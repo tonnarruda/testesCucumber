@@ -23,6 +23,6 @@ public class FaixaSalarialHistoricoServiceTest
 		String serviceUrl = "http://localhost/fortesrh/webservice/RHService";
 		RHService client = (RHService) factory.create(serviceModel, serviceUrl);
 
-		System.out.println(client.setStatusFaixaSalarialHistorico(11426L, false, "TESTE WS AC OK?", "0003"));
+		System.out.println(client.setStatusFaixaSalarialHistorico(11426L, false, "TESTE WS AC OK?", "0003", "XXX"));
 	}
 }
