@@ -98,7 +98,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 	public Candidato findByIdProjection(Long candidatoId)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
-		criteria = criteria.createCriteria("c.empresa", "e");
+		criteria = criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
 
