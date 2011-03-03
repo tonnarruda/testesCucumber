@@ -79,11 +79,12 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 			for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias)
 			{
 				String empresaCodigoAC = colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC();
+				String grupoAC = colaboradorOcorrencia.getOcorrencia().getEmpresa().getGrupoAC();
 
-				Ocorrencia ocorrencia = ocorrenciaManager.findByCodigoAC(colaboradorOcorrencia.getOcorrencia().getCodigoAC(), empresaCodigoAC);
+				Ocorrencia ocorrencia = ocorrenciaManager.findByCodigoAC(colaboradorOcorrencia.getOcorrencia().getCodigoAC(), empresaCodigoAC, grupoAC);
 				colaboradorOcorrencia.setOcorrencia(ocorrencia);
 
-				Colaborador colaborador = colaboradorManager.findByCodigoAC(colaboradorOcorrencia.getColaborador().getCodigoAC(), empresaCodigoAC);
+				Colaborador colaborador = colaboradorManager.findByCodigoAC(colaboradorOcorrencia.getColaborador().getCodigoAC(), empresaCodigoAC, grupoAC);
 				colaboradorOcorrencia.setColaborador(colaborador);
 
 				if (colaboradorOcorrenciaTmp != null)
@@ -112,7 +113,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		if (colaboradorOcorrencias.size() == 1)
 		{
 			ColaboradorOcorrencia colaboradorOcorrencia = (ColaboradorOcorrencia) colaboradorOcorrencias.toArray()[0];
-			colaboradorOcorrencia = getDao().findByDadosAC(colaboradorOcorrencia.getDataIni(), colaboradorOcorrencia.getOcorrencia().getCodigoAC(), colaboradorOcorrencia.getColaborador().getCodigoAC(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC());
+			colaboradorOcorrencia = getDao().findByDadosAC(colaboradorOcorrencia.getDataIni(), colaboradorOcorrencia.getOcorrencia().getCodigoAC(), colaboradorOcorrencia.getColaborador().getCodigoAC(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getGrupoAC());
 
 			return colaboradorOcorrencia != null ? colaboradorOcorrencia : null;
 		}
@@ -137,7 +138,8 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 						colaboradorOcorrencia.getDataIni(),
 						colaboradorOcorrencia.getOcorrencia().getCodigoAC(),
 						colaboradorOcorrencia.getColaborador().getCodigoAC(),
-						colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC());
+						colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC(), 
+						colaboradorOcorrencia.getOcorrencia().getEmpresa().getGrupoAC());
 
 				getDao().remove(tmp.getId());
 			}

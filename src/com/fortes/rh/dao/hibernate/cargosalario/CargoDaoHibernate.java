@@ -440,7 +440,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		Query query = getSession().createQuery(hql);
 		
 		query.setString("cbo", tCargo.getCboCodigo());
-		query.setLong("id", id);
+		query.setLong("id", id);//tem que ser por ID, ta correto(CUIDADO: caso mude tem que verificar o grupoAC)
 		
 		query.executeUpdate();
 	}

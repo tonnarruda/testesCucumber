@@ -39,7 +39,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public AreaOrganizacional getAreaOrganizacional(Collection<AreaOrganizacional> areaOrganizacionals, Long areaOrganizacionalId);
 	public Map<String, Object> getParametrosRelatorio(String nomeRelatorio, Empresa empresa, String filtro);
 	public Collection<AreaOrganizacional> getAreasByAreaInteresse(Long areaInteresseId);
-	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC);
+	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Collection<AreaOrganizacional> montaFamiliaOrdemDescricao(Long empresaId, Boolean ativo) throws Exception;
 	public Collection<AreaOrganizacional> findByConhecimento(Long conhecimentoId);
 	public AreaOrganizacional findByIdProjection(Long areaId);

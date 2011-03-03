@@ -15,7 +15,7 @@ public interface EstabelecimentoManager extends GenericManager<Estabelecimento>
 	boolean verificaCnpjExiste(String complemento, Long id, Long empresaId);
 	String calculaDV(String cnpj);
 	Collection<CheckBox> populaCheckBox(Long empresaId);
-	Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC);
+	Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC, String grupoAC);
 	Collection<Estabelecimento> findAllSelect(Long[] empresaIds);
 	Collection<CheckBox> populaCheckBox(Long[] empresaIds);
 	public String nomeEstabelecimentos(Long[] estabelecimentoIds);

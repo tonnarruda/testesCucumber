@@ -21,16 +21,18 @@ public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> impl
 		String hql = "delete from Ocorrencia o where o.codigoAC = :codigo and o.empresa.id = :id";
 		Query query = getSession().createQuery(hql);
 		query.setString("codigo", codigo);
-		query.setLong("id", empresaId);
+		query.setLong("id", empresaId);//tem que ser por ID, ta correto(CUIDADO: caso mude tem que verificar o grupoAC)
 		return query.executeUpdate() == 1;
 	}
 
-	public Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa)
+	public Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa, String grupoAC)
 	{
-		String hql = "select o from Ocorrencia o join o.empresa emp where o.codigoAC = :codigo and emp.codigoAC = :empCodigo";
+		String hql = "select o from Ocorrencia o join o.empresa emp where o.codigoAC = :codigo and emp.codigoAC = :empCodigo and emp.grupoAC = :grupoAC ";
 		Query query = getSession().createQuery(hql);
 		query.setString("codigo", codigo);
 		query.setString("empCodigo", codigoEmpresa);
+		query.setString("grupoAC", grupoAC);
+		
 		return (Ocorrencia) query.uniqueResult();
 	}
 	

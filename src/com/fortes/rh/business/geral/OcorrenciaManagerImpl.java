@@ -70,7 +70,7 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 	 */
 	public Ocorrencia saveFromAC(Ocorrencia ocorrencia) throws Exception
 	{
-		Ocorrencia ocorrenciaTmp = findByCodigoAC(ocorrencia.getCodigoAC(), ocorrencia.getEmpresa().getCodigoAC());
+		Ocorrencia ocorrenciaTmp = findByCodigoAC(ocorrencia.getCodigoAC(), ocorrencia.getEmpresa().getCodigoAC(), ocorrencia.getEmpresa().getGrupoAC());
 
 		if (ocorrenciaTmp != null)
 		{
@@ -100,9 +100,9 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 		return getDao().removeByCodigoAC(codigo, empresaId);
 	}
 
-	public Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa)
+	public Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa, String grupoAC)
 	{
-		return getDao().findByCodigoAC(codigo, codigoEmpresa);
+		return getDao().findByCodigoAC(codigo, codigoEmpresa, grupoAC);
 	}
 
 	public void setAcPessoalClientOcorrencia(AcPessoalClientOcorrencia acPessoalClientOcorrencia)

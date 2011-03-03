@@ -39,7 +39,7 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 	public void testFindByCodigoAC()
 	{
 		ocorrenciaDao.expects(once()).method("findByCodigoAC").will(returnValue(new Ocorrencia()));
-		ocorrenciaManager.findByCodigoAC("002", "001");
+		ocorrenciaManager.findByCodigoAC("002", "001", "XXX");
 	}
 
 	public void testSaveOrUpdate()

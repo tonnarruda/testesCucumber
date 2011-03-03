@@ -34,7 +34,7 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public Collection<HistoricoColaborador> findHistoricoAprovado(Long historicoColaboradorId, Long colaboradorId);
 	public HistoricoColaborador findByIdProjectionHistorico(Long historicoColaboradorId);
 	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
-	public HistoricoColaborador findAtualByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC);
+	public HistoricoColaborador findAtualByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 	public HistoricoColaborador getPrimeiroHistorico(Long colaboradorId);
 	public void removeColaborador(Long colaboradorId);
 	public HistoricoColaborador findHistoricoAdmissao(Long colaboradorId);

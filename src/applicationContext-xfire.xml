@@ -22,6 +22,7 @@
     <property name="colaboradorOcorrenciaManager" ref="colaboradorOcorrenciaManager" />
     <property name="areaOrganizacionalManager" ref="areaOrganizacionalManager" />
     <property name="faixaSalarialManager" ref="faixaSalarialManager" />
+    <property name="grupoACManager" ref="grupoACManager" />
   </bean>
 
   <bean id="rhWebService" class="org.codehaus.xfire.spring.remoting.XFireExporter">

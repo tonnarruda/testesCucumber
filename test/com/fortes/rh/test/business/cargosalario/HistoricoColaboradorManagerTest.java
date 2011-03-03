@@ -1216,9 +1216,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		mensagemManager.expects(once()).method("formataMensagemCancelamentoHistoricoColaborador").with(eq(mensagem), eq(historicoColaborador)).will(returnValue(mensagem));
 		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(ANYTHING, ANYTHING).will(returnValue(usuarioEmpresas));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(ANYTHING,ANYTHING,ANYTHING,eq(usuarioEmpresas));
-		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(estabelecimento));
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
+		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(estabelecimento));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		historicoColaboradorDao.expects(once()).method("update").with(ANYTHING);
 
 		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
@@ -1846,9 +1846,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 
 		historicoColaboradorDao.expects(once()).method("findByIdProjectionHistorico").with(ANYTHING).will(returnValue(historicoColaborador));
-		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(null));
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(null));
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(null));
+		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
 		historicoColaboradorDao.expects(once()).method("update").with(ANYTHING);
 
 		HistoricoColaborador retorno = historicoColaboradorManager.updateSituacao(situacao);
@@ -1868,10 +1868,10 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		HistoricoColaborador historicoColaboradorAnterior = HistoricoColaboradorFactory.getEntity(1L);
 
-		historicoColaboradorDao.expects(once()).method("findAtualByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC())).will(returnValue(historicoColaboradorAnterior));
-		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(null));
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(null));
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(null));
+		historicoColaboradorDao.expects(once()).method("findAtualByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), ANYTHING).will(returnValue(historicoColaboradorAnterior));
+		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
 
 		HistoricoColaborador historicoColaborador = historicoColaboradorManager.prepareSituacao(situacao);
 		assertEquals(historicoColaborador.getMotivo(), MotivoHistoricoColaborador.IMPORTADO);

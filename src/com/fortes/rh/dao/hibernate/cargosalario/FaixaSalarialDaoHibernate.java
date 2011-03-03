@@ -200,7 +200,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		return criteria.list().size() > 0;
 	}
 
-	public FaixaSalarial findFaixaSalarialByCodigoAc(String faixaCodigoAC, String empresaCodigoAC)
+	public FaixaSalarial findFaixaSalarialByCodigoAc(String faixaCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "f");
 		criteria.createCriteria("f.cargo", "car", Criteria.LEFT_JOIN);
@@ -213,6 +213,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 
 		criteria.add(Expression.eq("f.codigoAC", faixaCodigoAC));
 		criteria.add(Expression.eq("emp.codigoAC", empresaCodigoAC));
+		criteria.add(Expression.eq("emp.grupoAC", grupoAC));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
@@ -279,7 +280,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 
 		q.setString("faixaNome", tCargo.getDescricao());
 		q.setString("faixaNomeAC", tCargo.getDescricaoACPessoal());
-		q.setLong("id", tCargo.getId());
+		q.setLong("id", tCargo.getId());//tem que ser por ID, ta correto(CUIDADO: caso mude tem que verificar o grupoAC)
 
 		q.executeUpdate();		
 	}
@@ -294,6 +295,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		p.add(Projections.property("fs.nome"), "nome");
 		p.add(Projections.property("fs.codigoAC"), "codigoAC");
 		p.add(Projections.property("e.codigoAC"), "empresaCodigoAC");
+		p.add(Projections.property("e.grupoAC"), "empresaGrupoAC");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.ne("e.codigoAC", ""));
@@ -308,10 +310,9 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		Collection<FaixaSalarial> faixas = criteria.list();
 		TCargo[] tCargos = new TCargo[faixas.size()];
 		int i = 0;
+
 		for (FaixaSalarial faixa : faixas) 
-		{
-			tCargos[i++] = new TCargo(faixa.getEmpresaCodigoAC(), faixa.getCodigoAC(), faixa.getNome());
-		}
+			tCargos[i++] = new TCargo(faixa.getEmpresaCodigoAC(), faixa.getEmpresaGrupoAC(), faixa.getCodigoAC(), faixa.getNome());
 		
 		return tCargos;
 	}

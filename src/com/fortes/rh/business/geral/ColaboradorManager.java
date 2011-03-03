@@ -41,7 +41,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias);
 	public void enviarEmailCadastro(Colaborador colaborador, Empresa empresa) throws AddressException, MessagingException;
 	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
-	public boolean religaColaboradorAC(String codigoAC, String empCodigo);
+	public boolean religaColaboradorAC(String codigoAC, String empCodigo, String grupoAC);
 	public Colaborador findColaboradorUsuarioByCpf(String cpf,Long empresaId);
 	public void enviaEmailEsqueciMinhaSenha(Colaborador colaborador, Empresa empresa);
 	public String recuperaSenha(String cpf,Empresa empresa);
@@ -94,7 +94,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId);
 
 	public Colaborador updateEmpregado(TEmpregado empregado) throws Exception;
-	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC);
+	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Long findByUsuario(Long usuarioId);
 	public Integer getCountAtivos(Date dataIni, Date dataFim, Long empresaId);
 	public File getFoto(Long id) throws Exception;

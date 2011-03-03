@@ -1095,8 +1095,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void testFindByCodigoACEmpresaString()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("112233");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -1104,7 +1108,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setCodigoAC("12345678");
 		colaborador = colaboradorDao.save(colaborador);
 
-		assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa.getCodigoAC()));
+		assertEquals(colaborador, colaboradorDao.findByCodigoAC(colaborador.getCodigoAC(), empresa.getCodigoAC(), "XXX"));
 	}
 
 	public void testFindByFuncaoAmbiente()

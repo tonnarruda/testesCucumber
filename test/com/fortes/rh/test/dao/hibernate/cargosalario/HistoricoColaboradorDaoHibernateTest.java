@@ -723,8 +723,12 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 
 	public void testFindAtualByAC()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("333AA11");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -747,7 +751,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		situacao.setEmpregadoCodigoAC(colaborador.getCodigoAC());
 		situacao.setEmpresaCodigoAC(empresa.getCodigoAC());
 
-		assertEquals(hcAtual, historicoColaboradorDao.findAtualByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC()));
+		assertEquals(hcAtual, historicoColaboradorDao.findAtualByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), "XXX"));
 	}
 
 	public void testFindColaboradorCodigoAC()

@@ -204,7 +204,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return query.list();
 	}
 
-	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC)
+	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
 		criteria.createCriteria("ao.empresa", "emp", Criteria.LEFT_JOIN);
@@ -215,6 +215,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		criteria.add(Expression.eq("ao.codigoAC", areaCodigoAC));
 		criteria.add(Expression.eq("emp.codigoAC", empresaCodigoAC));
+		criteria.add(Expression.eq("emp.grupoAC", grupoAC));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));

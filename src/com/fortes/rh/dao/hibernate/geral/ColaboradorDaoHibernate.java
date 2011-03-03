@@ -1777,7 +1777,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.executeUpdate() == 1;
 	}
 
-	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC)
+	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("empresa", "e");
@@ -1788,6 +1788,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.codigoAC", empregadoCodigoAC));
 		criteria.add(Expression.eq("e.codigoAC", empresaCodigoAC));
+		criteria.add(Expression.eq("e.grupoAC", grupoAC));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));

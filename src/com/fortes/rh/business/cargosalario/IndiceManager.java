@@ -22,7 +22,7 @@ public interface IndiceManager extends GenericManager<Indice>
 
 	void removeIndice(Long indiceId) throws Exception;
 
-	Indice findIndiceByCodigoAc(String indiceCodigoAC);
+	Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC);
 
 	Indice findHistorico(Long indiceId, Date dataHistorico);
 }

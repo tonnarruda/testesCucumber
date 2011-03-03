@@ -940,7 +940,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 
-		HistoricoColaborador historicoColaboradorAnterior = getDao().findAtualByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC());
+		HistoricoColaborador historicoColaboradorAnterior = getDao().findAtualByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 		if(historicoColaboradorAnterior != null)
 		{
 			if(historicoColaboradorAnterior.getGfip() != null)
@@ -961,9 +961,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private HistoricoColaborador bindSituacao(TSituacao situacao, HistoricoColaborador historicoColaborador) throws Exception
 	{
 		historicoColaborador.setData(situacao.getDataFormatada());
-		historicoColaborador.setEstabelecimento(estabelecimentoManager.findEstabelecimentoByCodigoAc(situacao.getEstabelecimentoCodigoAC(), situacao.getEmpresaCodigoAC()));
-		historicoColaborador.setAreaOrganizacional(areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC()));
-		historicoColaborador.setFaixaSalarial(faixaSalarialManager.findFaixaSalarialByCodigoAc(situacao.getCargoCodigoAC(), situacao.getEmpresaCodigoAC()));
+		historicoColaborador.setEstabelecimento(estabelecimentoManager.findEstabelecimentoByCodigoAc(situacao.getEstabelecimentoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC()));
+		historicoColaborador.setAreaOrganizacional(areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC()));
+		historicoColaborador.setFaixaSalarial(faixaSalarialManager.findFaixaSalarialByCodigoAc(situacao.getCargoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC()));
 
 		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.getValor(situacao.getTipoSalario()));
 		historicoColaborador.setGfip(situacao.getExpAgenteNocivo());
@@ -983,7 +983,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 				historicoColaborador.setQuantidadeIndice(0.0);
 				break;
 			case TipoAplicacaoIndice.INDICE:
-				historicoColaborador.setIndice(indiceManager.findIndiceByCodigoAc(situacao.getIndiceCodigoAC()));
+				historicoColaborador.setIndice(indiceManager.findIndiceByCodigoAc(situacao.getIndiceCodigoAC(), situacao.getGrupoAC()));
 				historicoColaborador.setQuantidadeIndice(situacao.getIndiceQtd());
 				historicoColaborador.setSalario(null);
 				break;

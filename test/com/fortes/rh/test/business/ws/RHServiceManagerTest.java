@@ -38,6 +38,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
@@ -132,6 +133,47 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		grupoACManager = new Mock(GrupoACManager.class);
 		rHServiceManager.setGrupoACManager((GrupoACManager) grupoACManager.proxy());
 	}
+	
+	public void testBindColaboradorOcorrencias() throws Exception
+	{
+		TOcorrenciaEmpregado tOcorrenciaEmpregado = new TOcorrenciaEmpregado();
+		tOcorrenciaEmpregado.setCodigo("33333");
+		tOcorrenciaEmpregado.setEmpresa("11111");
+		tOcorrenciaEmpregado.setCodigoEmpregado("22222");
+		tOcorrenciaEmpregado.setData("01/01/2000");
+		tOcorrenciaEmpregado.setObs("obs");
+		tOcorrenciaEmpregado.setGrupoAC("XXX");
+		
+		TOcorrenciaEmpregado[] tcolaboradorOcorrencias = new TOcorrenciaEmpregado[]{tOcorrenciaEmpregado};
+		
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = rHServiceManager.bindColaboradorOcorrencias(tcolaboradorOcorrencias);
+		assertEquals(1, colaboradorOcorrencias.size());
+		
+		for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias) 
+		{
+			assertEquals("11111", colaboradorOcorrencia.getOcorrencia().getEmpresa().getCodigoAC());
+			assertEquals("XXX", colaboradorOcorrencia.getOcorrencia().getEmpresa().getGrupoAC());
+			assertEquals("22222", colaboradorOcorrencia.getColaborador().getCodigoAC());
+			assertEquals("01/01/2000", DateUtil.formataDate(colaboradorOcorrencia.getDataIni(), "dd/MM/yyyy"));
+			assertEquals("01/01/2000", DateUtil.formataDate(colaboradorOcorrencia.getDataFim(), "dd/MM/yyyy"));
+			assertEquals("obs", colaboradorOcorrencia.getObservacao());
+		}
+	}
+	
+	public void testBindIndice() throws Exception
+	{
+		TIndice tIndice = new TIndice();
+		tIndice.setCodigo("123");
+		tIndice.setGrupoAC("XXX");
+		tIndice.setNome("nome");
+		
+		Indice indice = IndiceFactory.getEntity(1L);
+		
+		rHServiceManager.bindIndice(tIndice, indice);
+		assertEquals("123", indice.getCodigoAC());
+		assertEquals("XXX", indice.getGrupoAC());
+		assertEquals("nome", indice.getNome());
+	}
 
 	public void testEco() throws Exception
 	{
@@ -162,7 +204,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		String empresaCodigoAC = "123456";
 		String colaboradorCodigoAC = "123123";
 
-		colaboradorManager.expects(once()).method("religaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC)).will(returnValue(true));
+		colaboradorManager.expects(once()).method("religaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq("XXX")).will(returnValue(true));
 		assertEquals(true, rHServiceManager.religarEmpregado(colaboradorCodigoAC, empresaCodigoAC, "XXX"));
 	}
 
@@ -245,7 +287,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 
 		historicoColaboradorManager.expects(once()).method("prepareSituacao").with(eq(situacao)).will(returnValue(historicoColaborador));
-		colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(colaborador));
+		colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("save").with(eq(historicoColaborador));
 
 		assertEquals(true, rHServiceManager.criarSituacao(situacao));
@@ -330,7 +372,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		
 		TCargo tCargo = new TCargo();
 		
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialManager.expects(once()).method("updateAC").with(eq(tCargo));
 		cargoManager.expects(once()).method("updateCBO").with(ANYTHING, ANYTHING);
 		
@@ -345,7 +387,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		
 		TCargo tCargo = new TCargo();
 		
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialManager.expects(once()).method("remove").with(ANYTHING);
 		faixaSalarialManager.expects(once()).method("findByCargo").with(ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
 		cargoManager.expects(once()).method("remove").with(ANYTHING);
@@ -358,7 +400,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		TSituacaoCargo tSituacaoCargo = new TSituacaoCargo();
 		
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialHistoricoManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		faixaSalarialHistoricoManager.expects(once()).method("findIdByDataFaixa").with(ANYTHING).will(returnValue(null));
 		faixaSalarialHistoricoManager.expects(once()).method("save").with(ANYTHING);
@@ -371,7 +413,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		TSituacaoCargo tSituacaoCargo = new TSituacaoCargo();
 		
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialHistoricoManager.expects(once()).method("bind").with(ANYTHING, ANYTHING).will(returnValue(new FaixaSalarialHistorico()));
 		faixaSalarialHistoricoManager.expects(once()).method("findIdByDataFaixa").with(ANYTHING).will(returnValue(1L));
 		faixaSalarialHistoricoManager.expects(once()).method("update").with(ANYTHING);
@@ -384,7 +426,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		TSituacaoCargo tSituacaoCargo = new TSituacaoCargo();
 		
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialHistoricoManager.expects(once()).method("findIdByDataFaixa").with(ANYTHING).will(returnValue(1L));
 		faixaSalarialHistoricoManager.expects(once()).method("remove").with(ANYTHING);
 		
@@ -430,7 +472,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(AreaOrganizacionalFactory.getEntity(1L)));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(AreaOrganizacionalFactory.getEntity(1L)));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("update").with(ANYTHING);
 		
@@ -446,7 +488,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING).will(returnValue(AreaOrganizacionalFactory.getEntity(1L)));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(AreaOrganizacionalFactory.getEntity(1L)));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
@@ -457,7 +499,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	{
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING);
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("remove").with(ANYTHING);
 		
 		assertEquals(true, rHServiceManager.removerAreaOrganizacional(area));
@@ -467,7 +509,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	{
 		TAreaOrganizacional area = new TAreaOrganizacional();
 		
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING);
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
 		assertEquals(false, rHServiceManager.removerAreaOrganizacional(area));
@@ -866,7 +908,6 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		Cidade cidade = CidadeFactory.getEntity(1L);
 		cidade.setUf(new Estado());
 
-		empresaManager.expects(once()).method("findById").will(returnValue(EmpresaFactory.getEmpresa(1L)));
 //		candidatoManager.expects(once()).method("findByCPF").will(returnValue(null));
 		cidadeManager.expects(once()).method("findById").will(returnValue(cidade));
 

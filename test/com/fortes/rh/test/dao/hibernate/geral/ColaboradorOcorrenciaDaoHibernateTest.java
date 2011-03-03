@@ -12,12 +12,14 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -36,6 +38,7 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 	private OcorrenciaDao ocorrenciaDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private EstabelecimentoDao estabelecimentoDao;
+	private GrupoACDao grupoACDao;
 
 	public ColaboradorOcorrencia getEntity()
 	{
@@ -179,8 +182,12 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 
 	public void testFindByDadosAC()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("3");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -198,7 +205,7 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		colaboradorOcorrencia.setOcorrencia(ocorrencia);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
 
-		assertEquals(colaboradorOcorrencia, colaboradorOcorrenciaDao.findByDadosAC(colaboradorOcorrencia.getDataIni(), "456", "123", "3"));
+		assertEquals(colaboradorOcorrencia, colaboradorOcorrenciaDao.findByDadosAC(colaboradorOcorrencia.getDataIni(), "456", "123", "3", "XXX"));
 	}
 
 	public void testVerifyExistsMesmaData()
@@ -266,6 +273,10 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
 	{
 		this.estabelecimentoDao = estabelecimentoDao;
+	}
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 
 }

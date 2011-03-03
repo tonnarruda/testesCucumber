@@ -57,9 +57,9 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 		return new ArrayList<CheckBox>();
 	}
 
-	public Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC)
+	public Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
-		return getDao().findEstabelecimentoByCodigoAc(estabelecimentoCodigoAC, empresaCodigoAC);
+		return getDao().findEstabelecimentoByCodigoAc(estabelecimentoCodigoAC, empresaCodigoAC, grupoAC);
 	}
 
 	public Collection<Estabelecimento> findAllSelect(Long[] empresaIds)

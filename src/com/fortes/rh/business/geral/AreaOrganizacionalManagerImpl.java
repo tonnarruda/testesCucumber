@@ -435,9 +435,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findAreaIdsByAreaInteresse(areaInteresseId);
 	}
 
-	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC)
+	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
-		return getDao().findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC);
+		return getDao().findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, grupoAC);
 	}
 
 	public Collection<AreaOrganizacional> montaFamiliaOrdemDescricao(Long empresaId, Boolean ativo) throws Exception
@@ -530,16 +530,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public void bind(AreaOrganizacional areaOrganizacional, TAreaOrganizacional lotacao)
 	{
-//		EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManager");
-		
 		areaOrganizacional.setCodigoAC(lotacao.getCodigo());
 		areaOrganizacional.setNome(lotacao.getNome());
-//		areaOrganizacional.setEmpresa(empresaManager.findByCodigoAC(lotacao.getEmpresaCodigo()));
 
 		if(lotacao.getAreaMaeCodigo().equals(""))
 			areaOrganizacional.setAreaMae(null);
 		else
-			areaOrganizacional.setAreaMae(getDao().findAreaOrganizacionalByCodigoAc(lotacao.getAreaMaeCodigo(), lotacao.getEmpresaCodigo()));
+			areaOrganizacional.setAreaMae(getDao().findAreaOrganizacionalByCodigoAc(lotacao.getAreaMaeCodigo(), lotacao.getEmpresaCodigo(), lotacao.getGrupoAC()));
 	}
 
 	public Collection<AreaOrganizacional> getAncestrais(Collection<AreaOrganizacional> areas, Long id) 

@@ -10,7 +10,7 @@ public interface OcorrenciaManager extends GenericManager<Ocorrencia>
 {
 	void saveOrUpdate(Ocorrencia ocorrencia, Empresa empresa) throws Exception;
 	boolean removeByCodigoAC(String codigo, Long empresaId);
-	Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa);
+	Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa, String grupoAC);
 	Ocorrencia saveFromAC(Ocorrencia ocorrencia) throws Exception;
 	void remove(Ocorrencia ocorrencia, Empresa empresa) throws Exception;
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId); 

@@ -13,6 +13,6 @@ public interface ColaboradorOcorrenciaDao extends GenericDao<ColaboradorOcorrenc
 	Collection<ColaboradorOcorrencia> filtrar(Long[] ocorrenciaCheckLong, Long[] colaboradorCheckLong, Long[] estabelecimentoCheckLong, Map parametros);
 	Collection<ColaboradorOcorrencia> findProjection(int page, int pagingSize, Long colaboradorId);
 	ColaboradorOcorrencia findByIdProjection(Long colaboradorOcorrenciaId);
-	ColaboradorOcorrencia findByDadosAC(Date dataIni, String ocorrenciaCodigoAC, String colaboradorCodigoAC, String empresaCodigoAC);
+	ColaboradorOcorrencia findByDadosAC(Date dataIni, String ocorrenciaCodigoAC, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC);
 	boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni);
 }

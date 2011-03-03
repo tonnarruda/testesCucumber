@@ -47,6 +47,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 
 	@Transient
 	private String empresaCodigoAC;
+	@Transient
+	private String empresaGrupoAC;
 
 	public FaixaSalarial()
 	{
@@ -315,6 +317,14 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 
 	public void setEmpresaCodigoAC(String empresaCodigoAC) {
 		this.empresaCodigoAC = empresaCodigoAC;
+	}
+
+	public String getEmpresaGrupoAC() {
+		return empresaGrupoAC;
+	}
+
+	public void setEmpresaGrupoAC(String empresaGrupoAC) {
+		this.empresaGrupoAC = empresaGrupoAC;
 	}
 	
 }

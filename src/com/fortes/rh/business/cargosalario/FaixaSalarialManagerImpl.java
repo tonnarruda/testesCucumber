@@ -238,11 +238,11 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		remove(faixaSalarialIds);
 	}
 
-	public FaixaSalarial findFaixaSalarialByCodigoAc(String faixaCodigoAC, String empresaCodigoAC) throws Exception
+	public FaixaSalarial findFaixaSalarialByCodigoAc(String faixaCodigoAC, String empresaCodigoAC, String grupoAC) throws Exception
 	{
-		FaixaSalarial faixaSalarial = getDao().findFaixaSalarialByCodigoAc(faixaCodigoAC, empresaCodigoAC);
+		FaixaSalarial faixaSalarial = getDao().findFaixaSalarialByCodigoAc(faixaCodigoAC, empresaCodigoAC, grupoAC);
 		if(faixaSalarial == null || faixaSalarial.getId() == null)
-			throw new Exception("Faixa não encontrada, codigoAC: " + faixaCodigoAC + " empresaCodigoAC: " + empresaCodigoAC);
+			throw new Exception("Faixa não encontrada, codigoAC: " + faixaCodigoAC + " empresaCodigoAC: " + empresaCodigoAC + " grupoAC: " + grupoAC);
 		
 		return faixaSalarial;
 

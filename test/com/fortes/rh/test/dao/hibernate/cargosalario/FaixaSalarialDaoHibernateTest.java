@@ -9,11 +9,13 @@ import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -28,7 +30,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
     private CargoDao cargoDao;
     private EmpresaDao empresaDao;
-
+    private GrupoACDao grupoACDao;
 
     public void setEmpresaDao(EmpresaDao empresaDao)
     {
@@ -89,8 +91,12 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     
     public void testGetFaixasAC()
     {
+    	GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresa.setCodigoAC("99999299");
+    	empresa.setGrupoAC(grupoAC.getCodigo());
     	empresaDao.save(empresa);
     	
     	Cargo cargo = CargoFactory.getEntity();
@@ -133,8 +139,12 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 
 	public void testFindFaixaSalarialByCodigoAc()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("432423223");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 
 		Cargo cargo = CargoFactory.getEntity();
@@ -146,7 +156,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		faixaSalarial.setCargo(cargo);
 		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
 
-		FaixaSalarial faixaSalarialRetorno = faixaSalarialDao.findFaixaSalarialByCodigoAc(faixaSalarial.getCodigoAC(), empresa.getCodigoAC());
+		FaixaSalarial faixaSalarialRetorno = faixaSalarialDao.findFaixaSalarialByCodigoAc(faixaSalarial.getCodigoAC(), empresa.getCodigoAC(), "XXX");
 
 		assertEquals(faixaSalarial, faixaSalarialRetorno);
 	}
@@ -382,4 +392,8 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     {
         this.faixaSalarialHistoricoDao = faixaSalarialHistoricoDao;
     }
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
+	}
 }

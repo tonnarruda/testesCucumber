@@ -96,8 +96,8 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		return getDao().findByIdProjection(indice.getId());
 	}
 
-	public Indice findIndiceByCodigoAc(String indiceCodigoAC)
+	public Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC)
 	{
-		return getDao().findIndiceByCodigoAc(indiceCodigoAC);
+		return getDao().findIndiceByCodigoAc(indiceCodigoAC, grupoAC);
 	}
 }

@@ -144,7 +144,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		return (ColaboradorOcorrencia) criteria.uniqueResult();
 	}
 
-	public ColaboradorOcorrencia findByDadosAC(Date dataIni, String ocorrenciaCodigoAC, String colaboradorCodigoAC, String empresaCodigoAC)
+	public ColaboradorOcorrencia findByDadosAC(Date dataIni, String ocorrenciaCodigoAC, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorOcorrencia.class, "co");
 		criteria.createCriteria("co.colaborador","colab");
@@ -160,6 +160,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		criteria.add(Expression.eq("oco.codigoAC", ocorrenciaCodigoAC));
 		criteria.add(Expression.eq("colab.codigoAC", colaboradorCodigoAC));
 		criteria.add(Expression.eq("e.codigoAC", empresaCodigoAC));
+		criteria.add(Expression.eq("e.grupoAC", grupoAC));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorOcorrencia.class));
 		return (ColaboradorOcorrencia) criteria.uniqueResult();

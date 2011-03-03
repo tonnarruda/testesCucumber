@@ -651,9 +651,9 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 
-		faixaSalarialDao.expects(once()).method("findFaixaSalarialByCodigoAc").with(eq(faixaCodigoAC), eq(empresaCodigoAC)).will(returnValue(faixaSalarial));
+		faixaSalarialDao.expects(once()).method("findFaixaSalarialByCodigoAc").with(eq(faixaCodigoAC), eq(empresaCodigoAC), eq("XXX")).will(returnValue(faixaSalarial));
 
-		FaixaSalarial retorno = faixaSalarialManager.findFaixaSalarialByCodigoAc(faixaCodigoAC, empresaCodigoAC);
+		FaixaSalarial retorno = faixaSalarialManager.findFaixaSalarialByCodigoAc(faixaCodigoAC, empresaCodigoAC, "XXX");
 
 		assertEquals(faixaSalarial.getId(), retorno.getId());
 	}

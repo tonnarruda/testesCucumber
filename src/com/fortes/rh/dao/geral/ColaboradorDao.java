@@ -59,7 +59,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findAllSelect(Long... empresaIds);
 	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado);
 	public void updateInfoPessoais(Colaborador colaborador);
-	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC);
+	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Long findByUsuario(Long usuarioId);
 	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC);
 	public Integer getCountAtivos(Date dataIni, Date dataFim, Long empresaId);

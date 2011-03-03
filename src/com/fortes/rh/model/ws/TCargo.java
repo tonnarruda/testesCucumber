@@ -18,10 +18,11 @@ public class TCargo implements Serializable
 	{
 	}
 	
-	public TCargo(String empresaCodigoAC, String codigo, String descricao)
+	public TCargo(String empresaCodigoAC, String grupoAC, String codigo, String descricao)
 	{
 		super();
 		this.empresaCodigoAC = empresaCodigoAC;
+		this.grupoAC = grupoAC;
 		this.codigo = codigo;
 		this.descricao = descricao;
 	}

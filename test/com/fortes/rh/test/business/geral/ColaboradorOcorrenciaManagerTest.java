@@ -98,8 +98,8 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = montaColaboradorOcorrencias(empresa, ocorrencia, colaborador);
 
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-		ocorrenciaManager.expects(atLeastOnce()).method("findByCodigoAC").with(ANYTHING,ANYTHING).will(returnValue(ocorrencia));
-		colaboradorManager.expects(atLeastOnce()).method("findByCodigoAC").with(ANYTHING,ANYTHING).will(returnValue(colaborador));
+		ocorrenciaManager.expects(atLeastOnce()).method("findByCodigoAC").with(ANYTHING,ANYTHING, ANYTHING).will(returnValue(ocorrencia));
+		colaboradorManager.expects(atLeastOnce()).method("findByCodigoAC").with(ANYTHING,ANYTHING, ANYTHING).will(returnValue(colaborador));
 		colaboradorOcorrenciaDao.expects(atLeastOnce()).method("save");
 		transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
@@ -125,8 +125,8 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = montaColaboradorOcorrencias(empresa, ocorrencia, colaborador);
 
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-		ocorrenciaManager.expects(atLeastOnce()).method("findByCodigoAC").with(ANYTHING,ANYTHING).will(returnValue(ocorrencia));
-		colaboradorManager.expects(atLeastOnce()).method("findByCodigoAC").with(ANYTHING,ANYTHING).will(returnValue(colaborador));
+		ocorrenciaManager.expects(atLeastOnce()).method("findByCodigoAC").with(ANYTHING,ANYTHING, ANYTHING).will(returnValue(ocorrencia));
+		colaboradorManager.expects(atLeastOnce()).method("findByCodigoAC").with(ANYTHING,ANYTHING, ANYTHING).will(returnValue(colaborador));
 		colaboradorOcorrenciaDao.expects(atLeastOnce()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		transactionManager.expects(atLeastOnce()).method("rollback").with(ANYTHING);
 
@@ -152,7 +152,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = montaColaboradorOcorrencias(empresa, ocorrencia, colaborador);
 
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-		colaboradorOcorrenciaDao.expects(atLeastOnce()).method("findByDadosAC").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(ColaboradorOcorrenciaFactory.getEntity(1L)));
+		colaboradorOcorrenciaDao.expects(atLeastOnce()).method("findByDadosAC").withAnyArguments().will(returnValue(ColaboradorOcorrenciaFactory.getEntity(1L)));
 		colaboradorOcorrenciaDao.expects(atLeastOnce()).method("remove").with(ANYTHING).isVoid();
 		transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
@@ -178,7 +178,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = montaColaboradorOcorrencias(empresa, ocorrencia, colaborador);
 
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-		colaboradorOcorrenciaDao.expects(atLeastOnce()).method("findByDadosAC").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(ColaboradorOcorrenciaFactory.getEntity(1L)));
+		colaboradorOcorrenciaDao.expects(atLeastOnce()).method("findByDadosAC").withAnyArguments().will(returnValue(ColaboradorOcorrenciaFactory.getEntity(1L)));
 		colaboradorOcorrenciaDao.expects(atLeastOnce()).method("remove").with(ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		transactionManager.expects(atLeastOnce()).method("rollback").with(ANYTHING);
 

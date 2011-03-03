@@ -109,8 +109,12 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 	public void testFindEstabelecimentoByCodigoAc()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("001122");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
@@ -118,7 +122,7 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		estabelecimento.setEmpresa(empresa);
 		estabelecimento = estabelecimentoDao.save(estabelecimento);
 
-		Estabelecimento estabelecimentoRetorno = estabelecimentoDao.findEstabelecimentoByCodigoAc(estabelecimento.getCodigoAC(), empresa.getCodigoAC());
+		Estabelecimento estabelecimentoRetorno = estabelecimentoDao.findEstabelecimentoByCodigoAc(estabelecimento.getCodigoAC(), empresa.getCodigoAC(), "XXX");
 
 		assertEquals(estabelecimento, estabelecimentoRetorno);
 	}

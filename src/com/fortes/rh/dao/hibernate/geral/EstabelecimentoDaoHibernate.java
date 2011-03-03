@@ -27,7 +27,7 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		String hql = "delete from Estabelecimento e where e.codigoAC = :codigo and e.empresa.id = :id";
 		Query query = getSession().createQuery(hql);
 		query.setString("codigo", codigo);
-		query.setLong("id", id);
+		query.setLong("id", id);//tem que ser por ID, ta correto(CUIDADO: caso mude tem que verificar o grupoAC)
 		int result = query.executeUpdate();
 		return result == 1;
 	}
@@ -135,7 +135,7 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 
 	}
 
-	public Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC)
+	public Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(Estabelecimento.class,"e");
 		criteria.createCriteria("e.empresa", "emp", Criteria.LEFT_JOIN);
@@ -146,6 +146,7 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("e.codigoAC", estabelecimentoCodigoAC));
 		criteria.add(Expression.eq("emp.codigoAC", empresaCodigoAC));
+		criteria.add(Expression.eq("emp.grupoAC", grupoAC));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Estabelecimento.class));

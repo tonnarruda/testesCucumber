@@ -23,12 +23,13 @@ public class TEmpresa implements Serializable
 	{
 	}
 
-	public TEmpresa(Long id, String nome, String razaoSocial, String codigoAC)
+	public TEmpresa(Long id, String nome, String razaoSocial, String codigoAC, String grupoAC)
 	{
 		this.id = id;
 		this.nome = nome;
 		this.razaoSocial = razaoSocial;
 		this.codigoAC = codigoAC;
+		this.grupoAC = grupoAC;
 	}
 
 	public String getCodigoAC()

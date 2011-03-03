@@ -19,7 +19,7 @@ public interface AreaOrganizacionalDao extends GenericDao<AreaOrganizacional>
 	public boolean verificaMaternidade(Long areaOrganizacionalId);
 	public Collection<AreaOrganizacional> findAreaIdsByAreaInteresse(Long areaInteresseId);
 	public AreaOrganizacional findByIdProjection(Long areaId);
-	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC);
+	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Collection<AreaOrganizacional> findByConhecimento(Long conhecimentoId);
 	public Collection<AreaOrganizacional> findQtdColaboradorPorArea(Long estabelecimentoId, Date dataIni);
 	public Collection<AreaOrganizacional> findByEmpresasIds(Long[] empresaIds, Boolean ativo);

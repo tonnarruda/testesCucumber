@@ -598,9 +598,9 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		areaOrganizacional.setCodigoAC(areaCodigoAC);
 
-		areaOrganizacionalDao.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(areaCodigoAC), eq(empresaCodigoAC)).will(returnValue(areaOrganizacional));
+		areaOrganizacionalDao.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(areaCodigoAC), eq(empresaCodigoAC), eq("XXX")).will(returnValue(areaOrganizacional));
 
-		AreaOrganizacional retorno = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC);
+		AreaOrganizacional retorno = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, "XXX");
 
 		assertEquals(areaCodigoAC, retorno.getCodigoAC());
 	}

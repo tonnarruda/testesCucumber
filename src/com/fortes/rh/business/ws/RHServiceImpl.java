@@ -94,7 +94,7 @@ public class RHServiceImpl implements RHService
 
 	public TEmpresa[] getEmpresas()
 	{
-		Collection<Empresa> empresas = empresaManager.findToList(new String[]{"id","nome","razaoSocial","codigoAC"}, new String[]{"id","nome","razaoSocial","codigoAC"}, new String[]{"nome"});
+		Collection<Empresa> empresas = empresaManager.findToList(new String[]{"id","nome","razaoSocial","codigoAC","grupoAC"}, new String[]{"id","nome","razaoSocial","codigoAC","grupoAC"}, new String[]{"nome"});
 		return empresasToArray(empresas);
 	}
 
@@ -105,7 +105,7 @@ public class RHServiceImpl implements RHService
 
 		for (Empresa empresa : empresas)
 		{
-			TEmpresa emp = new TEmpresa(empresa.getId(), empresa.getNome(), empresa.getRazaoSocial(), empresa.getCodigoAC());
+			TEmpresa emp = new TEmpresa(empresa.getId(), empresa.getNome(), empresa.getRazaoSocial(), empresa.getCodigoAC(), empresa.getGrupoAC());
 			resultado[pos++] = emp;
 		}
 
@@ -143,6 +143,25 @@ public class RHServiceImpl implements RHService
 		Collection<Cargo> cargos = cargoManager.findByEmpresaAC(empCodigo, codigo, grupoAC);
 		return cargosToArray(cargos, false);
 	}
+
+	private TCargo[] cargosToArray(Collection<Cargo> cargos, boolean setaDescricao)
+	{
+		TCargo[] resultado = new TCargo[cargos.size()];
+		int pos = 0;
+
+		for (Cargo cargo : cargos)
+		{
+			TCargo car = null;
+			if(setaDescricao)
+				car = new TCargo(cargo.getId(), "", cargo.getNome());
+			else
+				car = new TCargo(cargo.getId(), cargo.getNome());
+				
+			resultado[pos++] = car;
+		}
+
+		return resultado;
+	}
 	
 	public TCargo[] getFaixas() 
 	{
@@ -164,26 +183,8 @@ public class RHServiceImpl implements RHService
 			nomeHomonimos += " - " + candidato.getEmpresa().getNome()  + "\n";
 				
 		}
+		
 		return nomeHomonimos;
-	}
-
-	private TCargo[] cargosToArray(Collection<Cargo> cargos, boolean setaDescricao)
-	{
-		TCargo[] resultado = new TCargo[cargos.size()];
-		int pos = 0;
-
-		for (Cargo cargo : cargos)
-		{
-			TCargo car = null;
-			if(setaDescricao)
-				car = new TCargo(cargo.getId(), "", cargo.getNome());
-			else
-				car = new TCargo(cargo.getId(), cargo.getNome());
-				
-			resultado[pos++] = car;
-		}
-
-		return resultado;
 	}
 
 	public boolean cadastrarCandidato(TCandidato cand) throws Exception
@@ -191,7 +192,11 @@ public class RHServiceImpl implements RHService
 		prepareDataNascimento(cand);
 
 		Candidato candidato = new Candidato();
-		candidato.setEmpresa(empresaManager.findById(cand.getEmpresaId()));
+		
+		Empresa empresa = new Empresa();
+		empresa.setId(cand.getEmpresaId());
+		candidato.setEmpresa(empresa);
+
 		candidato.setNome(cand.getNome());
 		candidato.setPessoal(new Pessoal());
 		candidato.getPessoal().setDataNascimento(cand.getNascimento());
@@ -277,7 +282,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			return colaboradorManager.religaColaboradorAC(codigo, empCodigo);
+			return colaboradorManager.religaColaboradorAC(codigo, empCodigo, grupoAC);
 		}
 		catch (Exception e)
 		{
@@ -381,7 +386,7 @@ public class RHServiceImpl implements RHService
 	{
 		HistoricoColaborador historicoColaborador = historicoColaboradorManager.prepareSituacao(situacao);
 
-		Colaborador colaborador = colaboradorManager.findByCodigoAC(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC());
+		Colaborador colaborador = colaboradorManager.findByCodigoAC(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 		historicoColaborador.setColaborador(colaborador);
 		return historicoColaborador;
 	}
@@ -609,10 +614,11 @@ public class RHServiceImpl implements RHService
 			return true; // caso o índice com esse código não exista, ignora
 	}
 
-	private void bindIndice(TIndice tindice, Indice indice)
+	public void bindIndice(TIndice tindice, Indice indice)
 	{
 		indice.setNome(tindice.getNome());
 		indice.setCodigoAC(tindice.getCodigo());
+		indice.setGrupoAC(tindice.getGrupoAC());
 	}
 
 	private void bindIndiceHistorico(TIndiceHistorico tindiceHistorico, IndiceHistorico indiceHistorico) throws Exception
@@ -744,7 +750,7 @@ public class RHServiceImpl implements RHService
 		ocorrencia.setDescricao(tocorrencia.getDescricao());
 	}
 	
-	private Collection<ColaboradorOcorrencia> bindColaboradorOcorrencias(TOcorrenciaEmpregado[] tcolaboradorOcorrencias)
+	public Collection<ColaboradorOcorrencia> bindColaboradorOcorrencias(TOcorrenciaEmpregado[] tcolaboradorOcorrencias)
 	{
 		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = new ArrayList<ColaboradorOcorrencia>(tcolaboradorOcorrencias.length);
 		
@@ -752,8 +758,11 @@ public class RHServiceImpl implements RHService
 		{
 			Ocorrencia ocorrencia = new Ocorrencia();
 			ocorrencia.setCodigoAC(tcolaboradorOcorrencia.getCodigo());
+			
 			Empresa empresa = new Empresa();
 			empresa.setCodigoAC(tcolaboradorOcorrencia.getEmpresa());
+			empresa.setGrupoAC(tcolaboradorOcorrencia.getGrupoAC());
+			
 			ocorrencia.setEmpresa(empresa);
 			Colaborador colaborador = new Colaborador();
 			colaborador.setCodigoAC(tcolaboradorOcorrencia.getCodigoEmpregado());
@@ -791,14 +800,14 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean atualizarAreaOrganizacional(TAreaOrganizacional areaOrganizacional)
+	public boolean atualizarAreaOrganizacional(TAreaOrganizacional tAreaOrganizacional)
 	{
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(areaOrganizacional.getEmpresaCodigo(), areaOrganizacional.getGrupoAC());
-			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(areaOrganizacional.getCodigo(), areaOrganizacional.getEmpresaCodigo());
+			Empresa empresa = empresaManager.findByCodigoAC(tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());
+			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tAreaOrganizacional.getCodigo(), tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());
 			areaOrganizacionalTmp.setEmpresa(empresa);
-			areaOrganizacionalManager.bind(areaOrganizacionalTmp, areaOrganizacional);
+			areaOrganizacionalManager.bind(areaOrganizacionalTmp, tAreaOrganizacional);
 			
 			areaOrganizacionalManager.update(areaOrganizacionalTmp);
 			return true;
@@ -810,11 +819,11 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public boolean removerAreaOrganizacional(TAreaOrganizacional areaOrganizacional)
+	public boolean removerAreaOrganizacional(TAreaOrganizacional tAreaOrganizacional)
 	{
 		try
 		{
-			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(areaOrganizacional.getCodigo(), areaOrganizacional.getEmpresaCodigo());
+			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tAreaOrganizacional.getCodigo(), tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());
 			areaOrganizacionalManager.remove(areaOrganizacionalTmp);
 			return true;
 		}
@@ -829,7 +838,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC());
+			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC(), tSituacaoCargo.getGrupoAC());
 			FaixaSalarialHistorico faixaSalarialHistorico =  faixaSalarialHistoricoManager.bind(tSituacaoCargo, faixaSalarial);
 			
 			Long id = faixaSalarialHistoricoManager.findIdByDataFaixa(faixaSalarialHistorico);
@@ -854,7 +863,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC());
+			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC(), tSituacaoCargo.getGrupoAC());
 			FaixaSalarialHistorico faixaSalarialHistorico =  faixaSalarialHistoricoManager.bind(tSituacaoCargo, faixaSalarial);
 			faixaSalarialHistorico.setId(faixaSalarialHistoricoManager.findIdByDataFaixa(faixaSalarialHistorico));
 						
@@ -873,7 +882,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC());
+			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC(), tSituacaoCargo.getGrupoAC());
 			
 			FaixaSalarialHistorico faixaSalarialHistorico =  new FaixaSalarialHistorico();
 			faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
@@ -913,7 +922,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC());
+			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
 			
 			tCargo.setId(faixaSalarial.getId());
 			faixaSalarialManager.updateAC(tCargo);
@@ -932,7 +941,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC());
+			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
 			faixaSalarialManager.remove(faixaSalarial);
 			
 			Collection<FaixaSalarial> faixas = faixaSalarialManager.findByCargo(faixaSalarial.getCargo().getId());

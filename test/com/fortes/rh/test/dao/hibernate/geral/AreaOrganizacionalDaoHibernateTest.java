@@ -10,11 +10,13 @@ import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
@@ -30,6 +32,7 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 	private AreaInteresseDao areaInteresseDao;
 	private EmpresaDao empresaDao;
 	private ConhecimentoDao conhecimentoDao;
+	private GrupoACDao grupoACDao;
 
 	public AreaOrganizacional getEntity()
 	{
@@ -139,8 +142,12 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 	public void testFindAreaOrganizacionalByCodigoAc()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("24342333");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
@@ -148,7 +155,7 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		areaOrganizacional.setEmpresa(empresa);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
-		AreaOrganizacional areaOrganizacionalRetorno = areaOrganizacionalDao.findAreaOrganizacionalByCodigoAc(areaOrganizacional.getCodigoAC(), empresa.getCodigoAC());
+		AreaOrganizacional areaOrganizacionalRetorno = areaOrganizacionalDao.findAreaOrganizacionalByCodigoAc(areaOrganizacional.getCodigoAC(), empresa.getCodigoAC(), "XXX");
 
 		assertEquals(areaOrganizacional, areaOrganizacionalRetorno);
 	}
@@ -278,5 +285,9 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 	public void setConhecimentoDao(ConhecimentoDao conhecimentoDao)
 	{
 		this.conhecimentoDao = conhecimentoDao;
+	}
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 }

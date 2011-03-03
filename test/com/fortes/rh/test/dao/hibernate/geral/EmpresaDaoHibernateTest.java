@@ -86,6 +86,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 
 		assertNotNull(emp);
 		assertEquals(emp.getCodigoAC(), "001122");
+		assertEquals(emp.getGrupoAC(), "XXX");
 	}
 	
 	public void testFindByCodigoBlank()

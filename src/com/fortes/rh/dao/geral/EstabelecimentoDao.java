@@ -12,7 +12,7 @@ public interface EstabelecimentoDao extends GenericDao<Estabelecimento>
 	Collection<Estabelecimento> findAllSelect(Long empresaId);
 	Estabelecimento findEstabelecimentoCodigoAc(Long estabelecimentoId);
 	boolean verificaCnpjExiste(String complemento, Long id, Long empresaId);
-	Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC);
+	Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC, String grupoAC);
 	Collection<Estabelecimento> findAllSelect(Long[] empresaIds);
 	public Collection<Estabelecimento> findEstabelecimentos(Long[] estabelecimentoIds);
 }

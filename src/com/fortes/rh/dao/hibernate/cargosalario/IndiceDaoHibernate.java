@@ -40,6 +40,7 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		p.add(Projections.property("i.id"), "id");
 		p.add(Projections.property("i.nome"), "nome");
 		p.add(Projections.property("i.codigoAC"), "codigoAC");
+		p.add(Projections.property("i.grupoAC"), "grupoAC");
 
 		criteria.setProjection(p);
 
@@ -83,7 +84,7 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		return (Indice) query.uniqueResult();
 	}
 
-	public Indice findIndiceByCodigoAc(String indiceCodigoAC)
+	public Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC)
 	{
 		Criteria criteria = getSession().createCriteria(Indice.class, "i");
 
@@ -92,6 +93,7 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("i.codigoAC", indiceCodigoAC));
+		criteria.add(Expression.eq("i.grupoAC", grupoAC));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Indice.class));

@@ -15,5 +15,5 @@ public interface IndiceDao extends GenericDao<Indice>
 
 	Indice findHistoricoAtual(Long indiceId, Date dataHistorico);
 
-	Indice findIndiceByCodigoAc(String indiceCodigoAC);
+	Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC);
 }

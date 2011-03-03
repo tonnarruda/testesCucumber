@@ -189,9 +189,9 @@ public class IndiceManagerTest extends MockObjectTestCase
 		Indice indice = IndiceFactory.getEntity(1L);
 		indice.setCodigoAC("0025");
 
-		indiceDao.expects(once()).method("findIndiceByCodigoAc").with(ANYTHING).will(returnValue(indice));
+		indiceDao.expects(once()).method("findIndiceByCodigoAc").with(ANYTHING, eq("XXX")).will(returnValue(indice));
 
-		Indice retorno = indiceManager.findIndiceByCodigoAc(indice.getCodigoAC());
+		Indice retorno = indiceManager.findIndiceByCodigoAc(indice.getCodigoAC(), "XXX");
 
 		assertEquals(indice.getId(), retorno.getId());
 	}

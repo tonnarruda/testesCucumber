@@ -4,8 +4,10 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -15,6 +17,7 @@ public class OcorrenciaDaoHibernateTest extends GenericDaoHibernateTest<Ocorrenc
 {
 	private OcorrenciaDao ocorrenciaDao;
 	private EmpresaDao empresaDao;
+	private GrupoACDao grupoACDao;
 
 	public Ocorrencia getEntity()
 	{
@@ -44,15 +47,20 @@ public class OcorrenciaDaoHibernateTest extends GenericDaoHibernateTest<Ocorrenc
 
 	public void testFindByCodigoAC()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("1");
+		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresaDao.save(empresa);
+		
 		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
 		ocorrencia.setCodigoAC("123");
 		ocorrencia.setEmpresa(empresa);
 		ocorrenciaDao.save(ocorrencia);
 
-		Ocorrencia resultado =  ocorrenciaDao.findByCodigoAC(ocorrencia.getCodigoAC(), ocorrencia.getEmpresa().getCodigoAC());
+		Ocorrencia resultado =  ocorrenciaDao.findByCodigoAC(ocorrencia.getCodigoAC(), ocorrencia.getEmpresa().getCodigoAC(), "XXX");
 		assertEquals(ocorrencia,resultado);
 	}
 
@@ -95,5 +103,9 @@ public class OcorrenciaDaoHibernateTest extends GenericDaoHibernateTest<Ocorrenc
 		ocorrenciaDao.save(ocorrencia);
 
 		assertEquals(1, ocorrenciaDao.findAllSelect(new Long[]{vega.getId()}).size());
+	}
+
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 }

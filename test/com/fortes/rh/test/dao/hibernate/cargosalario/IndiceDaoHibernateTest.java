@@ -81,11 +81,15 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 
 	public void testFindIndiceByCodigoAc()
 	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
 		Indice indice = IndiceFactory.getEntity();
 		indice.setCodigoAC("010203");
+		indice.setGrupoAC(grupoAC.getCodigo());
 		indice = indiceDao.save(indice);
 		
-		Indice indiceRetorno = indiceDao.findIndiceByCodigoAc(indice.getCodigoAC());
+		Indice indiceRetorno = indiceDao.findIndiceByCodigoAc(indice.getCodigoAC(), "XXX");
 		
 		assertEquals(indice, indiceRetorno);
 	}
