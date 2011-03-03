@@ -1,6 +1,8 @@
 package com.fortes.rh.dao.hibernate.geral;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Expression;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.GrupoACDao;
@@ -20,5 +22,14 @@ public class GrupoACDaoHibernate extends GenericDaoHibernate<GrupoAC> implements
 		Query query = getSession().createQuery(hql.toString());
 
 		return (TGrupo[]) query.list().toArray(new TGrupo[]{});
+	}
+
+	public GrupoAC findByCodigo(String codigo) 
+	{
+		Criteria criteria = getSession().createCriteria(GrupoAC.class, "g");
+		criteria.add(Expression.eq("g.codigo", codigo));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (GrupoAC) criteria.uniqueResult();
 	}
 }

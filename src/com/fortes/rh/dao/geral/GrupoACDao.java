@@ -7,4 +7,6 @@ import com.fortes.rh.model.ws.TGrupo;
 public interface GrupoACDao extends GenericDao<GrupoAC> 
 {
 	TGrupo[] findTGrupos();
+
+	GrupoAC findByCodigo(String codigo);
 }

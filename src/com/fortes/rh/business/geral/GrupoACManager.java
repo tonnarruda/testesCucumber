@@ -7,4 +7,6 @@ import com.fortes.rh.model.ws.TGrupo;
 public interface GrupoACManager extends GenericManager<GrupoAC>
 {
 	TGrupo[] findTGrupos();
+
+	GrupoAC findByGrupo(String codigo);
 }

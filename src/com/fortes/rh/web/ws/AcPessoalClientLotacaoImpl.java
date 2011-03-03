@@ -5,17 +5,21 @@ import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
 
+import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 
 public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 {
 	private AcPessoalClient acPessoalClient;
+	private GrupoACManager grupoACManager;
 
 	public boolean deleteLotacao(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
 	{
 		try
 		{
+			GrupoAC grupoAC = grupoACManager.findByGrupo(empresa.getGrupoAC());
 			String token = acPessoalClient.getToken(empresa);
 
 			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "DelLotacao");
@@ -44,6 +48,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 	{
         try
         {
+        	
         	String token = acPessoalClient.getToken(empresa);
 
         	Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "SetLotacao");
@@ -86,5 +91,9 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
 	{
 		this.acPessoalClient = acPessoalClient;
+	}
+
+	public void setGrupoACManager(GrupoACManager grupoACManager) {
+		this.grupoACManager = grupoACManager;
 	}
 }

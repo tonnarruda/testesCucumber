@@ -79,6 +79,7 @@
   </bean>
   <bean id="acPessoalClientLotacao" class="com.fortes.rh.web.ws.AcPessoalClientLotacaoImpl">
     <property name="acPessoalClient" ref="acPessoalClient" />
+    <property name="grupoACManager" ref="grupoACManager" />
   </bean>
   <bean id="acPessoalClientTabelaReajuste" class="com.fortes.rh.web.ws.AcPessoalClientTabelaReajuste">
     <property name="acPessoalClient" ref="acPessoalClient" />

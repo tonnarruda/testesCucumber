@@ -38,3 +38,8 @@ update empresa set grupoac='001';--.go
 
 alter table indice add column grupoac character(3);--.go
 ALTER TABLE ONLY indice ADD CONSTRAINT indice_grupoac_fk FOREIGN KEY (grupoac) REFERENCES grupoac(codigo); --.go
+
+alter table grupoac add column acurlsoap character varying(120);--.go
+alter table grupoac add column acurlwsdl character varying(120);--.go
+alter table grupoac add column acusuario character varying(100);--.go
+alter table grupoac add column acsenha character varying(30);--.go

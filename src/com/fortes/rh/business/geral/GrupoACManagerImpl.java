@@ -12,4 +12,9 @@ public class GrupoACManagerImpl extends GenericManagerImpl<GrupoAC, GrupoACDao> 
 	{
 		return getDao().findTGrupos();
 	}
+
+	public GrupoAC findByGrupo(String codigo) 
+	{
+		return getDao().findByCodigo(codigo);
+	}
 }

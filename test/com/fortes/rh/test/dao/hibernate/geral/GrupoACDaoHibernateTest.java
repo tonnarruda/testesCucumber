@@ -47,4 +47,20 @@ public class GrupoACDaoHibernateTest extends GenericDaoHibernateTest<GrupoAC>
 		
 		assertEquals("XXX", grupos[size - 1].getCodigo());
 	}
+	
+	public void testFindByCodigo()
+	{
+		GrupoAC grupo1 = new GrupoAC();
+		grupo1.setDescricao("Lagoa");
+		grupo1.setCodigo("XXX");
+		grupoACDao.save(grupo1);
+		
+		GrupoAC grupo2 = new GrupoAC();
+		grupo2.setDescricao("Comete");
+		grupo2.setCodigo("KKK");
+		grupoACDao.save(grupo2);
+		
+		GrupoAC retorno = grupoACDao.findByCodigo("XXX");
+		assertEquals("XXX", retorno.getCodigo());
+	}
 }
