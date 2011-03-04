@@ -43,3 +43,16 @@ alter table grupoac add column acurlsoap character varying(120);--.go
 alter table grupoac add column acurlwsdl character varying(120);--.go
 alter table grupoac add column acusuario character varying(100);--.go
 alter table grupoac add column acsenha character varying(30);--.go
+alter table candidatosolicitacao add column status character(1); --.go
+
+update candidatosolicitacao set status = 'C' where id in (
+	select 
+	cs.id
+		from colaborador co
+		inner join candidato ca on ca.id = co.candidato_id
+		inner join candidatosolicitacao cs on cs.solicitacao_id = co.solicitacao_id and cs.candidato_id = co.candidato_id 
+	where 
+		co.solicitacao_id is not null
+);--.go
+
+update candidatosolicitacao set status = 'I' where status is null;--.go

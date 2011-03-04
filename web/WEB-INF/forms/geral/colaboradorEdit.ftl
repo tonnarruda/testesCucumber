@@ -531,6 +531,7 @@
 		<@ww.hidden name="colaborador.candidato.id"/>
 		<@ww.hidden name="colaborador.motivoDemissao.id"/>
 		<@ww.hidden name="colaborador.observacaoDemissao"/>
+		<@ww.hidden name="candidatoSolicitacaoId"/>
 
 		<@ww.hidden name="page" />
 		<#if candidato?exists>

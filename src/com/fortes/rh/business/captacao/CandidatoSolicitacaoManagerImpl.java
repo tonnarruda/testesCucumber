@@ -16,6 +16,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -81,6 +82,7 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
                 candidatoSol.setCandidato(candidato);
                 candidatoSol.setSolicitacao(solicitacao);
                 candidatoSol.setTriagem(false);
+                candidatoSol.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
 
                 save(candidatoSol);
             }
@@ -226,6 +228,13 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 				}
 			}
 		}
+	}
+	
+	public void setStatus(Long candidatoSolicitacaoId, char status)
+	{
+		CandidatoSolicitacao cs = getDao().findById(candidatoSolicitacaoId);
+		cs.setStatus(status);
+		getDao().update(cs);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.CodigoGFIP;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -42,6 +44,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private FaixaSalarialManager faixaSalarialManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ColaboradorManager colaboradorManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
@@ -64,7 +67,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private String colaboradorNome;
 	
 	private Candidato candidato;
-	
+	private Long candidatoSolicitacaoId;	
 	
 	public void prepare() throws Exception
 	{
@@ -110,6 +113,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			
 			historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
 			historicoColaboradorManager.insertHistorico(historicoColaborador, getEmpresaSistema());
+			if (candidatoSolicitacaoId != null)
+				candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.PROMOVIDO);
 			
 			return Action.SUCCESS;
 		}
@@ -362,4 +367,17 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	public void setCandidato(Candidato candidato) {
 		this.candidato = candidato;
 	}
+	
+	public void setCandidatoSolicitacaoId(Long candidatoSolicitacaoId) {
+		this.candidatoSolicitacaoId = candidatoSolicitacaoId;
+	}
+
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+
+	public Long getCandidatoSolicitacaoId() {
+		return candidatoSolicitacaoId;
+	}
+	
 }

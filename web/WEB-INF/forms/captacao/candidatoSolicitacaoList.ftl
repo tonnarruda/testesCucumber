@@ -65,16 +65,25 @@
 		</#if>
 
 		<#-- decide contratação (se é só candidato) ou promoção (se candidato já é colaborador) -->
-		<#assign titleContrata="Contratar o Candidato"/>
-		<#assign alertContrata="Deseja realmente contratar o candidato"/>
-		<#if candidatoSolicitacao?exists>
-			<#assign actionContrata="/geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}"/>
-		</#if>
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && candidatoSolicitacao.candidato.contratado>
 			<#assign titleContrata="Promover"/>
 			<#assign alertContrata="Deseja realmente promover o candidato"/>
+			<#assign actionContrata="/geral/colaborador/preparePromoverCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
+		<#else>
+			<#assign titleContrata="Contratar o Candidato"/>
+			<#assign alertContrata="Deseja realmente contratar o candidato"/>
+			<#assign actionContrata="/geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
+		</#if>
+		
+		<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'C')>
+			<#assign titleAceito="Candidato já contratado"/>
+		</#if>
+		<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P')>
+			<#assign titleAceito="Colaborador já promovido"/>
+		</#if>
+		
+		<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'C' || candidatoSolicitacao.status == 'P')>
 			<#assign classe="contratado"/>
-			<#assign actionContrata="/geral/colaborador/preparePromoverCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}"/>
 		</#if>
 		
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
@@ -88,7 +97,11 @@
 			<#if !solicitacao.encerrada>
 				<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
 				
-				<a href="javascript:newConfirm('${alertContrata} ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrata}"/>'});"><img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
+				<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'C' || candidatoSolicitacao.status == 'P')>
+					<img border="0" style="opacity:0.2;filter:alpha(opacity=20)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
+				<#else>
+					<a href="javascript:newConfirm('${alertContrata} ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrata}"/>'});"><img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
+				</#if>
 				
 				<#if (!candidatoSolicitacao.etapaSeletiva?exists || !candidatoSolicitacao.etapaSeletiva.id?exists) && (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && !candidatoSolicitacao.candidato.contratado)>
 					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
@@ -166,7 +179,7 @@
 		var obj = document.getElementById("legendas");
 		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos/Indiferente";
 		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #F00;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aptos";
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados";
+		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos";
 	</script>
 </body>
 </html>

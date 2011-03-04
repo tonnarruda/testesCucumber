@@ -122,7 +122,6 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     public String gravarSolicitacoesCandidato() throws Exception
     {
-
     	for(Long id : solicitacaosCheckIds)
     	{
 
@@ -132,7 +131,6 @@ public class SolicitacaoListAction extends MyActionSupportList
     		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao);
 
     	}
-
     	return Action.SUCCESS;
     }
 

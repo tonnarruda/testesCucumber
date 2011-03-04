@@ -12,6 +12,7 @@ import org.springframework.core.NestedRuntimeException;
 
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
@@ -58,6 +59,7 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.SexoCadastro;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -205,9 +207,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private TipoAplicacaoIndice tipoAplicacaoIndice = new TipoAplicacaoIndice();
 	private boolean updateDados = true;
 	private String configPerformanceBoxes;
+	private Long candidatoSolicitacaoId;
 
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+
+	
 	private void prepare() throws Exception
 	{
 		try
@@ -491,7 +497,12 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			{
 			// Transferindo solicitações médicas do candidato
 				solicitacaoExameManager.transferir(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
+				
+				if (candidatoSolicitacaoId != null)
+					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);				
+				
 				addActionMessage("Colaborador \"" + colaborador.getNome() + "\"  cadastrado com sucesso.");
+				
 				return Action.SUCCESS;
 			}
 			else
@@ -1501,4 +1512,17 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setConfiguracaoPerformanceManager(ConfiguracaoPerformanceManager configuracaoPerformanceManager) {
 		this.configuracaoPerformanceManager = configuracaoPerformanceManager;
 	}
+
+	public Long getCandidatoSolicitacaoId() {
+		return candidatoSolicitacaoId;
+	}
+
+	public void setCandidatoSolicitacaoId(Long candidatoSolicitacaoId) {
+		this.candidatoSolicitacaoId = candidatoSolicitacaoId;
+	}
+	
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+	
 }

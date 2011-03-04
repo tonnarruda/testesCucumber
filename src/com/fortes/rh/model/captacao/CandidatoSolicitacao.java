@@ -39,6 +39,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	private boolean triagem;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="candidatoSolicitacao")
 	private Collection<HistoricoCandidato> historicoCandidatos;
+	private char status;
 
 	/* Estes campos são utilizado para exibição dos candidatos da
 	 * solicitação na listagem da solicitação */
@@ -63,6 +64,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	private int qtdAptos;
 	@Transient
 	private Long colaboradorQuestionarioId;
+	
 
 	public CandidatoSolicitacao()
 	{
@@ -505,5 +507,14 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		else
 			this.apto = apto;
 	}
+
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
+	}
+
 
 }

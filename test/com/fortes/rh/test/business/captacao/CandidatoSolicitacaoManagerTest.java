@@ -18,9 +18,9 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
-import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -167,6 +167,18 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 		candidatoSolicitacaoDao.expects(once()).method("findHistoricoAptoByEtapaSolicitacao").with(eq(empresaId), ANYTHING).will(returnValue(candidatoSolicitacaos));
 
 		candidatoSolicitacaoManager.getCandidatosBySolicitacaoAberta(etapaCheck, empresaId);
+    }
+
+    public void testPromover()
+    {
+    	CandidatoSolicitacao cs1 = new CandidatoSolicitacao();
+    	cs1.setId(1L);
+    	cs1.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
+        	
+    	candidatoSolicitacaoDao.expects(once()).method("findById").with(eq(cs1.getId())).will(returnValue(cs1));
+    	candidatoSolicitacaoDao.expects(once()).method("update");
+    	
+    	candidatoSolicitacaoManager.setStatus(cs1.getId(), StatusCandidatoSolicitacao.CONTRATADO);
     }
 
     public void testGetCandidatosBySolicitacaoIdCandidatosComHistorico(){
