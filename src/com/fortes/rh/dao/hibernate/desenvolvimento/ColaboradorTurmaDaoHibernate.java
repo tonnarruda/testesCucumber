@@ -910,7 +910,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			
 			ct.setCurso(new Curso());
 			if(res[3] != null)
-				ct.getCurso().setPercentualMinimoFrequencia(((Double)res[3]));
+				ct.getCurso().setPercentualMinimoFrequencia(converteParaDouble(res[3]));
 			if(res[4] != null)
 				ct.setQtdAvaliacoesCurso(((BigInteger)res[4]).intValue());
 			if(res[5] != null)
@@ -920,6 +920,13 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		}
 		
 		return colaboradorTurmas;
+	}
+
+	private double converteParaDouble(Object valor) {
+		if (valor instanceof BigDecimal)
+			return ((BigDecimal) valor).doubleValue();
+		else
+			return (Double) valor;
 	}
 
 }
