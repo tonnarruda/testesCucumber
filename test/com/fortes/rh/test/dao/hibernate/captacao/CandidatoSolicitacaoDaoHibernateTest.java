@@ -146,6 +146,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		candidatoSolicitacao = new CandidatoSolicitacao();
 		candidatoSolicitacao.setCandidato(candidato);
 		candidatoSolicitacao.setSolicitacao(solicitacao);
+		
 
 		return candidatoSolicitacao;
 	}

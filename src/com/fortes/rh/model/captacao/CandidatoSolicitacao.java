@@ -19,6 +19,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Contato;
@@ -39,7 +40,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 	private boolean triagem;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="candidatoSolicitacao")
 	private Collection<HistoricoCandidato> historicoCandidatos;
-	private char status;
+	private char status = StatusCandidatoSolicitacao.INDIFERENTE;
 
 	/* Estes campos são utilizado para exibição dos candidatos da
 	 * solicitação na listagem da solicitação */
