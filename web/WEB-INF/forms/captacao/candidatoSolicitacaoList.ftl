@@ -65,24 +65,26 @@
 		</#if>
 
 		<#-- decide contratação (se é só candidato) ou promoção (se candidato já é colaborador) -->
-		<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && candidatoSolicitacao.candidato.contratado>
-			<#assign titleContrata="Promover"/>
-			<#assign alertContrata="Deseja realmente promover o candidato"/>
-			<#assign actionContrata="/geral/colaborador/preparePromoverCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
-		<#else>
-			<#assign titleContrata="Contratar o Candidato"/>
-			<#assign alertContrata="Deseja realmente contratar o candidato"/>
-			<#assign actionContrata="/geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
+		<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists >
+			<#if candidatoSolicitacao.candidato.contratado || candidatoSolicitacao.status == 'A'>
+				<#assign titleContrata="Promover"/>
+				<#assign alertContrata="Deseja realmente promover o candidato"/>
+				<#assign actionContrata="/geral/colaborador/preparePromoverCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
+			<#else>
+				<#assign titleContrata="Contratar o Candidato"/>
+				<#assign alertContrata="Deseja realmente contratar o candidato"/>
+				<#assign actionContrata="/geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
+			</#if>
 		</#if>
 		
-		<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'C')>
+		<#if candidatoSolicitacao?exists && candidatoSolicitacao.status == 'C'>
 			<#assign titleAceito="Candidato já contratado"/>
 		</#if>
-		<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P')>
+		<#if candidatoSolicitacao?exists && candidatoSolicitacao.status == 'P'>
 			<#assign titleAceito="Colaborador já promovido"/>
 		</#if>
 		
-		<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'C' || candidatoSolicitacao.status == 'P')>
+		<#if candidatoSolicitacao?exists && candidatoSolicitacao.status != 'I'>
 			<#assign classe="contratado"/>
 		</#if>
 		
@@ -97,7 +99,7 @@
 			<#if !solicitacao.encerrada>
 				<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
 				
-				<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'C' || candidatoSolicitacao.status == 'P')>
+				<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C')>
 					<img border="0" style="opacity:0.2;filter:alpha(opacity=20)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
 				<#else>
 					<a href="javascript:newConfirm('${alertContrata} ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrata}"/>'});"><img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>

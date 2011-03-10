@@ -50,6 +50,7 @@ import com.fortes.rh.model.dicionario.Estado;
 import com.fortes.rh.model.dicionario.NivelIdioma;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
@@ -506,7 +507,7 @@ public class CandidatoListAction extends MyActionSupportList
 					candidatosParaSolicitacaoIds[cont++] = Long.toString(candidato.getId());
 				
 				if(candidatosParaSolicitacaoIds != null && candidatosParaSolicitacaoIds.length > 0)
-					candidatoSolicitacaoManager.insertCandidatos(candidatosParaSolicitacaoIds, solicitacao);
+					candidatoSolicitacaoManager.insertCandidatos(candidatosParaSolicitacaoIds, solicitacao, StatusCandidatoSolicitacao.INDIFERENTE);
 			}
 		} catch (Exception e) {
 			addActionError("Não foi possível importar os Candidatos.");
@@ -518,7 +519,7 @@ public class CandidatoListAction extends MyActionSupportList
 	public String insertCandidatos() throws Exception
 	{
 		if(candidatosId != null && candidatosId.length > 0)
-			candidatoSolicitacaoManager.insertCandidatos(candidatosId, solicitacao);
+			candidatoSolicitacaoManager.insertCandidatos(candidatosId, solicitacao,StatusCandidatoSolicitacao.INDIFERENTE);
 
 		return Action.SUCCESS;
 	}

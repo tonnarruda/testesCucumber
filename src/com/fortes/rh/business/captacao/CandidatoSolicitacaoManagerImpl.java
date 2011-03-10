@@ -43,7 +43,7 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
         return getDao().findByCandidatoSolicitacao(cand);
     }
 
-    public void insertCandidatos(String[] candidatosId, Solicitacao solicitacao)
+    public void insertCandidatos(String[] candidatosId, Solicitacao solicitacao, char status)
     {
         String[] properties = new String[]{"id","candidato.id","solicitacao.id","triagem"};
         String[] sets = new String[]{"id","candidatoId","solicitacaoId","triagem"};
@@ -82,7 +82,7 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
                 candidatoSol.setCandidato(candidato);
                 candidatoSol.setSolicitacao(solicitacao);
                 candidatoSol.setTriagem(false);
-                candidatoSol.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
+               	candidatoSol.setStatus(status);
 
                 save(candidatoSol);
             }

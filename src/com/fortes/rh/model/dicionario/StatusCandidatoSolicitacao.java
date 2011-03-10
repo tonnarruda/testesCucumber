@@ -8,6 +8,7 @@ public class StatusCandidatoSolicitacao extends LinkedHashMap<Character, String>
 	
 	public static final char CONTRATADO = 'C';
 	public static final char PROMOVIDO = 'P';
+	public static final char APROMOVER = 'A';
 	public static final char INDIFERENTE = 'I';
 
 	public StatusCandidatoSolicitacao()
@@ -15,16 +16,6 @@ public class StatusCandidatoSolicitacao extends LinkedHashMap<Character, String>
 		put(INDIFERENTE, "Indiferente");
 		put(CONTRATADO, "Contratado");
 		put(PROMOVIDO, "Promovido");
-	}
-
-	public static String getDescStatusCandidatoSolicitacao(char statusCandidatoSolicitacao)
-	{
-		if (statusCandidatoSolicitacao == 'C')
-			return "Contratado";
-
-		if (statusCandidatoSolicitacao == 'P')
-			return "Promovido";
-		
-		return "Indiferente";
+		put(APROMOVER, "A ser promovido");
 	}
 }

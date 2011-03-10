@@ -113,7 +113,7 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
     	candidatoSolicitacaoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new CandidatoSolicitacao()));
     	candidatoSolicitacaoDao.expects(once()).method("update").with(ANYTHING);
 
-    	candidatoSolicitacaoManager.insertCandidatos(new String[]{"1", "2", "4"}, solicitacao);
+    	candidatoSolicitacaoManager.insertCandidatos(new String[]{"1", "2", "4"}, solicitacao, StatusCandidatoSolicitacao.INDIFERENTE);
     }
 
     public void testMoverCandidatos() throws ColecaoVaziaException{

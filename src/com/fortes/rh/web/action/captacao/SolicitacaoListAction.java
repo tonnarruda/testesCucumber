@@ -21,6 +21,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.EventoAgenda;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -128,7 +129,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     		Solicitacao solicitacao = new Solicitacao();
 	    	solicitacao.setId(id);
 
-    		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao);
+    		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao, StatusCandidatoSolicitacao.APROMOVER);
 
     	}
     	return Action.SUCCESS;

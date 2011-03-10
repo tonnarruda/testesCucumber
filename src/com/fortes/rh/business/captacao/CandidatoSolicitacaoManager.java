@@ -13,7 +13,7 @@ import com.fortes.rh.model.geral.Empresa;
 public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSolicitacao>
 {
 	CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand);
-	public void insertCandidatos(String[] candidatosId, Solicitacao solicitacao);
+	public void insertCandidatos(String[] candidatosId, Solicitacao solicitacao, char status);
 	public void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacao) throws ColecaoVaziaException;
 	public Collection<CandidatoSolicitacao> getCandidatosBySolicitacaoAberta(String[] etapaCheck, Long empresaId);
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos);
