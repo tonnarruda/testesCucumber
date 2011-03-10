@@ -165,7 +165,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 		action.setSolicitacaosCheckIds(solicitacaosCheckIds);
 		action.setCandidato(CandidatoFactory.getCandidato(2L));
 		
-		candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(eq(new String[]{"2"}),ANYTHING).isVoid();
+		candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(eq(new String[]{"2"}),ANYTHING,ANYTHING).isVoid();
 		
 		assertEquals("success",action.gravarSolicitacoesCandidato());
     }
