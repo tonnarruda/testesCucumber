@@ -13,7 +13,7 @@
 		<#assign accessKey="I"/>
 	</#if>
 
-	<#assign validarCampos2="return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj','grupoAC','acUsuario','acUrlSoap','acUrlWdsl', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'))"/>
+	<#assign validarCampos2="return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj','grupoAC', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'))"/>
 	<#assign validarCampos="return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'))"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
@@ -26,14 +26,10 @@
 		{
 			if(document.getElementById("integra").checked)
 			{
-				var acUsuario = document.getElementById("acUsuario").value;
-				var acSenha = document.getElementById("acSenha").value;
-				var acUrlSoap = document.getElementById("acUrlSoap").value;
-				var codigoAC = document.getElementById("codigoAC").value;
 				var grupoAC = document.getElementById("grupoAC").value;
 
 				document.getElementById("btnTransferir").src="<@ww.url includeParams="none" value="/imgs/conectando.gif"/>";
-				UtilDWR.getToken(apresenta_Msg, acUsuario, acSenha, acUrlSoap, codigoAC, grupoAC);
+				UtilDWR.getToken(apresenta_Msg, grupoAC);
 			}
 			else
 			{
@@ -62,21 +58,9 @@
 		function habilitaDesabilitaCamposAC()
 		{
 			if(document.getElementById("integra").checked)
-			{			
 				document.getElementById("grupoAC").disabled=false;
-				document.getElementById("acUsuario").disabled=false;
-				document.getElementById("acSenha").disabled=false;
-				document.getElementById("acUrlSoap").disabled=false;
-				document.getElementById("acUrlWdsl").disabled=false;
-			}
 			else
-			{
 				document.getElementById("grupoAC").disabled=true;
-				document.getElementById("acUsuario").disabled=true;
-				document.getElementById("acSenha").disabled=true;
-				document.getElementById("acUrlSoap").disabled=true;
-				document.getElementById("acUrlWdsl").disabled=true;
-			}
 		}
 		function enviaForm()
 		{
@@ -155,11 +139,7 @@
 
 					<@ww.checkbox label="Integra com AC Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right" onclick="habilitaDesabilitaCamposAC();" />
 					
-					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao" />
-					<@ww.textfield label="Usuário AC" name="empresa.acUsuario" id="acUsuario" cssClass="inputNome" maxLength="50"/>
-					<@ww.password label="Senha AC" name="empresa.acSenha" id="acSenha" cssStyle="width:100px;" maxLength="15" after="*Para manter a senha, deixe o campo em branco."/>
-					<@ww.textfield label="URL WS" name="empresa.acUrlSoap" id="acUrlSoap" cssClass="inputNome" maxLength="100"/>
-					<@ww.textfield label="URL WSDL" name="empresa.acUrlWsdl" id="acUrlWdsl" cssClass="inputNome" maxLength="100"/>
+					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao"  required="true" headerKey="" headerValue="Selecione..."/>
 				</ul>
 			</@ww.div>
 		</li>

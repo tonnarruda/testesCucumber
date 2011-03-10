@@ -68,6 +68,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 	
 	public void testContratarColaboradorACPorValor() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		tSituacao.setValor(5.5);
 		tSituacao.setTipoSalario(TipoAplicacaoIndice.VALOR + "");
 		tSituacao.setIndiceQtd(0.0);
@@ -91,6 +93,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 	
 	public void testContratarColaboradorACPorIndice() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		tSituacao.setValor(0.0);
 		tSituacao.setTipoSalario(TipoAplicacaoIndice.INDICE + "");
 		tSituacao.setIndiceQtd(2.0);
@@ -115,6 +119,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 	
 	public void testContratarColaboradorACPorCargo() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		tSituacao.setValor(0.0);
 		tSituacao.setIndiceQtd(0.0);
 		tSituacao.setValorAnterior(0.0);
@@ -139,6 +145,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 
 	public void testEditarColaboradorAC_CTT() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		tSituacao.setValor(6.7);
 		tSituacao.setIndiceQtd(0.0);
 		tSituacao.setValorAnterior(0.0);
@@ -172,6 +180,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 	
 	public void testEditarColaboradorAC_EPG() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		tEmpregado.setNome("JOAO BATISTA foi editado");
 		tEmpregado.setCodigoAC("000007");
 		tEmpregado.setEmpresaCodigoAC(empCodigo);
@@ -189,6 +199,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 	
 	public void testRemuneracaoVariavel() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		execute("insert into fol(emp_codigo, seq, folha, dtcalculo, encerrada) values('0006', 500, 2, '2010-01-31', 'S')");
 		execute("insert into fpg(emp_codigo, fol_seq, anomes, sequencial, dtinicial, dtfinal, tipo) values('0006', 500, '201001','01', '2010-01-01', '2010-01-31', 4)");
 		execute("insert into efo(emp_codigo, fol_seq, epg_codigo, sep_data) values('0006', 500, '000014', '2000-01-01')");
@@ -205,6 +217,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 	
 	public void testRemoverColaboradorAC_CTT() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		tSituacao.setValor(0.0);
 		tSituacao.setIndiceQtd(0.0);
 		tSituacao.setValorAnterior(0.0);
@@ -224,6 +238,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 	
 	public void testRemoverColaboradorAC_EPG() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empCodigo +"','991199','TESTE do RH')");
 		ResultSet result = query("select nome from epg where codigo = '991199' and emp_codigo = '" + empCodigo + "'");
 		if (!result.next())
@@ -241,6 +257,8 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 
 	public void testVerificaHistoricoNaFolhaAC() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		assertEquals(false, acPessoalClientColaboradorImpl.verificaHistoricoNaFolhaAC(1L, "99554", empresa));
 	}
 }

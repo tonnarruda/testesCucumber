@@ -43,6 +43,8 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 	
 	public void testInsertLotacaoAC() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		//mae
 		areaOrganizacional.setNome("Mamae");
 		String codigoACMae = acPessoalClientLotacaoImpl.criarLotacao(areaOrganizacional, empresa);
@@ -82,6 +84,8 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 
 	public void testEditarLotacaoAC() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		String codigoAC = acPessoalClientLotacaoImpl.criarLotacao(areaOrganizacional, empresa);
 		assertEquals(3, codigoAC.length());
 
@@ -102,6 +106,8 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 
 	public void testDeletarLotacaoAC() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		String codigoAC = acPessoalClientLotacaoImpl.criarLotacao(areaOrganizacional, empresa);
 		assertEquals("003", codigoAC);
 

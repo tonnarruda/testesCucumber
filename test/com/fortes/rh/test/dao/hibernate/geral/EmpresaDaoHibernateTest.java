@@ -190,7 +190,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 	
 	public void testRemoveEmpresaPadrao()
 	{
-		String[] sqls = new String[]{"INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,acurlsoap,acurlwsdl) VALUES (998855920,'EmpresaTesteDao','00000000','EmpresaTesteDao',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal');", 
+		String[] sqls = new String[]{"INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario) VALUES (998855920,'EmpresaTesteDao','00000000','EmpresaTesteDao',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true);", 
 									"INSERT INTO auditoria (id, empresa_id, dados) values(nextval('auditoria_sequence'), 998855920, 'TESTE teste da empresa');"};
 		JDBCConnection.executeQuery(sqls);
 		

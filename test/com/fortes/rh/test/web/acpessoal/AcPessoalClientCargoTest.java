@@ -22,7 +22,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 	private FaixaSalarial faixaSalarial;
 	private FaixaSalarialHistorico faixaSalarialHistorico;
 	private Date data = DateUtil.montaDataByString("01/01/2011");
-
+	
 	@Override
 	protected void setUp() throws Exception
 	{
@@ -68,6 +68,8 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 	
 	public void testInsertEdicaoDeleteCargoACPorValor() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		faixaSalarial.setNome("Motorista de Nave");
 		faixaSalarial.setNomeACPessoal("Motorista de Nave AC");
 		
@@ -147,6 +149,8 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 
 	public void testInsertEdicaoDeleteCargoACPorIndice() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		Indice indice = IndiceFactory.getEntity(1L);
 		indice.setCodigoAC("1000");//salario minimo no AC
 		

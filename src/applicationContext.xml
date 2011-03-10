@@ -66,6 +66,7 @@
   <bean id="service" class="org.apache.axis.client.Service" />
   <bean id="acPessoalClient" class="com.fortes.rh.web.ws.AcPessoalClientImpl">
     <property name="service" ref="service" />
+    <property name="grupoACManager" ref="grupoACManager" />
   </bean>
 
   <bean id="acPessoalClientCargo" class="com.fortes.rh.web.ws.AcPessoalClientCargo">
@@ -76,10 +77,10 @@
   </bean>
   <bean id="acPessoalClientSistema" class="com.fortes.rh.web.ws.AcPessoalClientSistemaImpl">
     <property name="acPessoalClient" ref="acPessoalClient" />
+    <property name="grupoACManager" ref="grupoACManager" />
   </bean>
   <bean id="acPessoalClientLotacao" class="com.fortes.rh.web.ws.AcPessoalClientLotacaoImpl">
     <property name="acPessoalClient" ref="acPessoalClient" />
-    <property name="grupoACManager" ref="grupoACManager" />
   </bean>
   <bean id="acPessoalClientTabelaReajuste" class="com.fortes.rh.web.ws.AcPessoalClientTabelaReajuste">
     <property name="acPessoalClient" ref="acPessoalClient" />

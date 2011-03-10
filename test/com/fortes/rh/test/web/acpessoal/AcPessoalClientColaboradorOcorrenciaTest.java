@@ -54,6 +54,8 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 	
 	public void testCriarColaboradorOcorrencia() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		tOcorrenciaEmpregado.setCodigo("001");
 		assertEquals(true, acPessoalClientColaboradorOcorrenciaImpl.criarColaboradorOcorrencia(tOcorrenciaEmpregado, empresa));
 
@@ -69,6 +71,8 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 	
 	public void testRemoverColaboradorOcorrencia() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		tOcorrenciaEmpregado.setCodigo("001");
 		acPessoalClientColaboradorOcorrenciaImpl.criarColaboradorOcorrencia(tOcorrenciaEmpregado, empresa);
 		

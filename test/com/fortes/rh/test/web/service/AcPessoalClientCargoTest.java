@@ -1,6 +1,5 @@
 package com.fortes.rh.test.web.service;
 
-import static com.fortes.rh.test.web.service.TipoRetornoMockCall.RETORNO_BOOLEAN;
 import static com.fortes.rh.test.web.service.TipoRetornoMockCall.RETORNO_STRING;
 
 import java.util.Date;
@@ -46,7 +45,6 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
     	String[] codigoACs = {"001","002"};
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_BOOLEAN));
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
 		assertTrue(acPessoalClientCargo.deleteCargo(codigoACs, empresa));
@@ -65,7 +63,6 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
     	faixaSalarialHistorico.setIndice(indice);
     	faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
 
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_STRING));
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	assertEquals(RETORNO_STRING, acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa));
@@ -79,7 +76,6 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCargo(cargo);
 
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_STRING));
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	assertEquals(RETORNO_STRING, acPessoalClientCargo.updateCargo(faixaSalarial, empresa));

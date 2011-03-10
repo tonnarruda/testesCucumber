@@ -4,20 +4,22 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.Call;
 import javax.xml.rpc.ParameterMode;
 
+import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 
 public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
 {
 	private AcPessoalClient acPessoalClient;
+	private GrupoACManager grupoACManager;
 
 	public String getVersaoWebServiceAC(Empresa empresa) throws Exception
 	{
         try
         {
-            Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "GetWebServiceVersion");
-
-            String token = acPessoalClient.getToken(empresa);
+        	StringBuilder token = new StringBuilder();
+        	Call call = acPessoalClient.createCall(empresa, token, null, "GetWebServiceVersion");
 
             QName xmlstring = new QName("xs:string");
 
@@ -26,7 +28,7 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
         	//Seta o tipo de resultado
         	call.setReturnType(xmlstring);
 
-        	Object[] param = new Object[]{token};
+        	Object[] param = new Object[]{token.toString()};
 
         	//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
             String versaoAC = (String) call.invoke(param);
@@ -50,7 +52,10 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
 		try
 		{
 			if(empresa.isAcIntegra())
-				acPessoalClient.getToken(empresa);
+			{
+				GrupoAC grupoAC = grupoACManager.findByCodigo(empresa.getGrupoAC());
+				acPessoalClient.getToken(grupoAC);
+			}
 		}
 		catch (Exception e)
 		{
@@ -66,9 +71,8 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
 	{
         try
         {
-        	Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "isRHIntegrado");
-
-        	String token = acPessoalClient.getToken(empresa);
+        	StringBuilder token = new StringBuilder();
+        	Call call = acPessoalClient.createCall(empresa, token, null, "isRHIntegrado");
 
             call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_BOOLEAN);
             QName xmlstring = new QName("xs:string");
@@ -76,7 +80,7 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
 			call.addParameter("Token",xmlstring,ParameterMode.IN);
 			call.addParameter("Empresa",xmlstring,ParameterMode.IN);
 
-        	Object[] param = new Object[]{token, empresa.getCodigoAC()};
+        	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC()};
 
             //return true; //(Boolean) call.invoke(param);
         	return (Boolean) call.invoke(param);
@@ -86,6 +90,10 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
             e.printStackTrace();
             throw e;
         }
+	}
+
+	public void setGrupoACManager(GrupoACManager grupoACManager) {
+		this.grupoACManager = grupoACManager;
 	}
 
 }

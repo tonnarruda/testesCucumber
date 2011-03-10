@@ -62,26 +62,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return usuarioEmpresaManager.findByUsuario(usuarioId);
 	}
 
-	public void updateEmpresa(Empresa empresa)
-	{
-		Empresa empresaAux = findById(empresa.getId());
-
-		if(!empresa.isAcIntegra())
-		{
-			empresa.setAcUsuario(empresaAux.getAcUsuario());
-			empresa.setAcSenha(empresaAux.getAcSenha());
-			empresa.setAcUrlSoap(empresaAux.getAcUrlSoap());
-			empresa.setAcUrlWsdl(empresaAux.getAcUrlWsdl());
-		}
-		else
-		{
-			if(empresa.getAcSenha().trim().equals(""))
-				empresa.setAcSenha(empresaAux.getAcSenha());
-		}
-
-		update(empresa);
-	}
-
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
 	{
 		this.usuarioEmpresaManager = usuarioEmpresaManager;

@@ -34,7 +34,6 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends MockObjectTestCase
     public void testCriarColaboradorOcorrencia() throws Exception
     {
     	TOcorrenciaEmpregado ocorrencia = new TOcorrenciaEmpregado();
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_BOOLEAN));
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -46,7 +45,6 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends MockObjectTestCase
     public void testCriarTipoColaboradorOcorrenciaException() throws Exception
     {
     	TOcorrenciaEmpregado ocorrencia = new TOcorrenciaEmpregado();
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_STRING));
     	acPessoalClient.expects(once()).method("createCall").will(throwException(new Exception("")));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -70,7 +68,6 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends MockObjectTestCase
     	TOcorrenciaEmpregado ocorrencia = new TOcorrenciaEmpregado();
     	ocorrencia.setCodigo("123");
 
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_BOOLEAN));
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -86,7 +83,6 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends MockObjectTestCase
     	TOcorrenciaEmpregado ocorrencia = new TOcorrenciaEmpregado();
     	ocorrencia.setCodigo("123");
 
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_BOOLEAN));
     	acPessoalClient.expects(once()).method("createCall").will(throwException(new Exception()));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();

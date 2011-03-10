@@ -41,47 +41,6 @@ public class EmpresaManagerTest extends MockObjectTestCase
 		Mockit.restoreAllOriginalDefinitions();
 	}
 
-    public void testUpdateEmpresa()
-	{
-    	Empresa empresaDoBanco = EmpresaFactory.getEmpresa();
-    	empresaDoBanco.setAcSenha("123");
-
-    	Empresa empresa = EmpresaFactory.getEmpresa();
-    	empresa.setId(1L);
-    	empresa.setAcSenha("");
-
-    	empresaDao.expects(once()).method("findById").with(eq(empresa.getId())).will(returnValue(empresaDoBanco));
-    	empresaDao.expects(once()).method("update").with(eq(empresa));
-    	empresaManager.updateEmpresa(empresa);
-
-    	assertEquals(empresaDoBanco.getAcSenha(), empresa.getAcSenha());
-
-    	empresa.setAcSenha("123456");
-
-    	empresaDao.expects(once()).method("findById").with(eq(empresa.getId())).will(returnValue(empresa));
-    	empresaDao.expects(once()).method("update").with(eq(empresa));
-    	empresaManager.updateEmpresa(empresa);
-
-    	assertEquals("123456", empresa.getAcSenha());
-	}
-
-    public void testUpdateEmpresaIntegradoAC()
-    {
-    	Empresa empresaDoBanco = EmpresaFactory.getEmpresa();
-    	empresaDoBanco.setAcSenha("123");
-
-    	Empresa empresa = EmpresaFactory.getEmpresa();
-    	empresa.setId(1L);
-    	empresa.setAcSenha("");
-    	empresa.setAcIntegra(true);
-
-    	empresaDao.expects(once()).method("findById").with(eq(empresa.getId())).will(returnValue(empresaDoBanco));
-    	empresaDao.expects(once()).method("update").with(eq(empresa));
-    	empresaManager.updateEmpresa(empresa);
-
-    	assertEquals(empresa.getAcSenha(), empresa.getAcSenha());
-    }
-    
     public void testAjustaCombo()
     {
     	assertNull(empresaManager.ajustaCombo(-1L, null));

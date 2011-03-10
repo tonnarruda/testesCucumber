@@ -13,6 +13,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TItemTabelaEmpregados;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.DateUtil;
@@ -39,11 +40,11 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 			if(salarioAntigo == null)
 				salarioAntigo = 0.0;
 
-			String token = acPessoalClient.getToken(empresa);
-			
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "SetTabelaRhEmpregados");
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetTabelaRhEmpregados");
 
-            QName qname = new QName(empresa.getAcUrlWsdl(),"TItemTabelaEmpregados");
+            QName qname = new QName(grupoAC.getAcUrlWsdl(),"TItemTabelaEmpregados");
             call.registerTypeMapping(TItemTabelaEmpregados.class, qname, new BeanSerializerFactory(TItemTabelaEmpregados.class, qname), new BeanDeserializerFactory(TItemTabelaEmpregados.class, qname));
 
 	        call.addParameter("Token",org.apache.axis.encoding.XMLType.XSD_STRING,ParameterMode.IN);
@@ -93,7 +94,7 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 	        	arrayReajuste[cont++] = item;
 			}
 
-	       	Object[] param = new Object[]{token, arrayReajuste};
+	       	Object[] param = new Object[]{token.toString(), arrayReajuste};
 
 	        boolean result = (Boolean) call.invoke(param);
 	        
@@ -111,13 +112,13 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 	{
 		try
 		{
-			String token = acPessoalClient.getToken(empresa);
-			
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "DelTabelaRhEmpregados");
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "DelTabelaRhEmpregados");
 
 			QName xmlstring = new QName("xs:string");
 
-			QName qname = new QName(empresa.getAcUrlWsdl(),"TSituacao");
+			QName qname = new QName(grupoAC.getAcUrlWsdl(),"TSituacao");
 			call.registerTypeMapping(TSituacao.class, qname, new BeanSerializerFactory(TSituacao.class, qname), new BeanDeserializerFactory(TSituacao.class, qname));
 
 			call.addParameter("token",xmlstring,ParameterMode.IN);
@@ -125,7 +126,7 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 
 			call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_BOOLEAN);
 
-			Object[] param = new Object[]{token, situacao};
+			Object[] param = new Object[]{token.toString(), situacao};
 			boolean result = (Boolean) call.invoke(param);
 
 			if (!result)

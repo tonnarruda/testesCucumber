@@ -1,7 +1,5 @@
 package com.fortes.rh.test.web.service;
 
-import static com.fortes.rh.test.web.service.TipoRetornoMockCall.RETORNO_BOOLEAN;
-import static com.fortes.rh.test.web.service.TipoRetornoMockCall.RETORNO_STRING;
 import mockit.Mockit;
 
 import org.apache.axis.client.Call;
@@ -34,7 +32,6 @@ public class AcPessoalClientOcorrenciaTest extends MockObjectTestCase
     public void testCriarTipoOcorrencia() throws Exception
     {
     	TOcorrencia ocorrencia = new TOcorrencia();
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_STRING));
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -48,7 +45,6 @@ public class AcPessoalClientOcorrenciaTest extends MockObjectTestCase
     public void testCriarTipoOcorrenciaException() throws Exception
     {
     	TOcorrencia ocorrencia = new TOcorrencia();
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_STRING));
     	acPessoalClient.expects(once()).method("createCall").will(throwException(new Exception("")));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -72,7 +68,6 @@ public class AcPessoalClientOcorrenciaTest extends MockObjectTestCase
     	TOcorrencia ocorrencia = new TOcorrencia();
     	ocorrencia.setCodigo("123");
 
-    	acPessoalClient.expects(once()).method("getToken").will(returnValue(RETORNO_BOOLEAN));
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();

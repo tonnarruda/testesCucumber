@@ -51,14 +51,6 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean exibirSalario;
 	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
-    @Column(length=120)
-    private String acUrlSoap;
-    @Column(length=120)
-    private String acUrlWsdl;
-    @Column(length=100)
-    private String acUsuario;
-    @Column(length=30)
-    private String acSenha;
     @Column(length=400)
 	private String mensagemModuloExterno;
     private int maxCandidataCargo;
@@ -93,46 +85,6 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setAcIntegra(boolean acIntegra)
 	{
 		this.acIntegra = acIntegra;
-	}
-
-	public String getAcSenha()
-	{
-		return acSenha;
-	}
-
-	public void setAcSenha(String acSenha)
-	{
-		this.acSenha = acSenha;
-	}
-
-	public String getAcUrlSoap()
-	{
-		return acUrlSoap;
-	}
-
-	public void setAcUrlSoap(String acUrlSoap)
-	{
-		this.acUrlSoap = acUrlSoap;
-	}
-
-	public String getAcUrlWsdl()
-	{
-		return acUrlWsdl;
-	}
-
-	public void setAcUrlWsdl(String acUrlWsdl)
-	{
-		this.acUrlWsdl = acUrlWsdl;
-	}
-
-	public String getAcUsuario()
-	{
-		return acUsuario;
-	}
-
-	public void setAcUsuario(String acUsuario)
-	{
-		this.acUsuario = acUsuario;
 	}
 
 	public String getEmailRemetente()
@@ -196,10 +148,6 @@ public class Empresa extends AbstractModel implements Serializable
 				.append("emailRespSetorPessoal",this.emailRespSetorPessoal)
 				.append("emailRespRH",this.emailRespRH)
 				.append("acIntegra", this.acIntegra)
-				.append("acUrlWsdl",this.acUrlWsdl)
-				.append("acUrlSoap", this.acUrlSoap)
-				.append("acUsuario", this.acUsuario)
-				.append("acSenha", this.acSenha)
 				.append("maxCandidataCargo", this.maxCandidataCargo)
 				.append("razaoSocial", this.razaoSocial).toString();
 	}

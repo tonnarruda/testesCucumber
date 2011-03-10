@@ -15,6 +15,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
 
 public class AcPessoalClientCargo
@@ -25,11 +26,11 @@ public class AcPessoalClientCargo
 	{
 		try
 		{
-			String token = acPessoalClient.getToken(empresa);
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "DelCargo");
 
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "DelCargo");
-
-			QName qname = new QName(empresa.getAcUrlWsdl(),"TCargo");
+			QName qname = new QName(grupoAC.getAcUrlWsdl(),"TCargo");
 	        call.registerTypeMapping(TCargo.class, qname, new BeanSerializerFactory(TCargo.class, qname), new BeanDeserializerFactory(TCargo.class, qname));
 
 			QName xmlstring = new QName("xs:string");
@@ -51,7 +52,7 @@ public class AcPessoalClientCargo
 				cargosAC[i++] = cargoAC;
 			}
 
-			Object[] param = new Object[]{token, empresa.getCodigoAC(), cargosAC};
+			Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), cargosAC};
 			boolean result = (Boolean) call.invoke(param);
 
 			return result;
@@ -67,9 +68,8 @@ public class AcPessoalClientCargo
 	{
         try
         {
-        	String token = acPessoalClient.getToken(empresa);
-
-        	Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "SetCargoComSituacao");
+        	StringBuilder token = new StringBuilder();
+        	Call call = acPessoalClient.createCall(empresa, token, null, "SetCargoComSituacao");
 
             QName xmlstring = new QName("xs:string");
             QName xmldouble = new QName("xs:double");
@@ -104,7 +104,7 @@ public class AcPessoalClientCargo
         	if(faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.VALOR)
         		valor = faixaSalarialHistorico.getValor();
 
-        	Object[] param = new Object[]{token, empresa.getCodigoAC(), "", faixaSalarial.getNome(),
+        	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),
         			formata.format(faixaSalarialHistorico.getData()),indiceCodicoAC, TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), faixaSalarial.getNomeACPessoal(), valor,
         			faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId()};
 
@@ -124,8 +124,8 @@ public class AcPessoalClientCargo
 	{
 		try
 		{
-			String token = acPessoalClient.getToken(empresa);
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "SetCargo");
+			StringBuilder token = new StringBuilder();
+			Call call = acPessoalClient.createCall(empresa, token, null, "SetCargo");
 
 			QName xmlstring = new QName("xs:string");
 
@@ -144,7 +144,7 @@ public class AcPessoalClientCargo
 				codigo = faixaSalarial.getCodigoAC();
 			
 			//Seta os valores e invoca o serviço não passa codigo para inserir
-			Object[] param = new Object[]{token, empresa.getCodigoAC(), codigo, faixaSalarial.getNome(), faixaSalarial.getNomeACPessoal()};
+			Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), codigo, faixaSalarial.getNome(), faixaSalarial.getNomeACPessoal()};
 
 			//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
 			String codigoRetorno = (String) call.invoke(param);
@@ -162,9 +162,8 @@ public class AcPessoalClientCargo
 	{
         try
         {
-        	String token = acPessoalClient.getToken(empresa);
-
-            Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "SetRhCargos");
+        	StringBuilder token = new StringBuilder();
+            Call call = acPessoalClient.createCall(empresa, token, null, "SetRhCargos");
 
             QName xmlstring = new QName("xs:string");
             QName xmldouble = new QName("xs:double");
@@ -197,7 +196,7 @@ public class AcPessoalClientCargo
         	if(faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.VALOR)
         		valor = faixaSalarialHistorico.getValor();
 
-        	Object[] param = new Object[]{token, empresa.getCodigoAC(), faixaSalarialHistorico.getFaixaSalarial().getCodigoAC(), formata.format(faixaSalarialHistorico.getData()),
+        	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), faixaSalarialHistorico.getFaixaSalarial().getCodigoAC(), formata.format(faixaSalarialHistorico.getData()),
         			indiceCodicoAC, TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), valor,
         			faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId()};
 
@@ -217,9 +216,8 @@ public class AcPessoalClientCargo
 	{
 		try
         {
-        	String token = acPessoalClient.getToken(empresa);
-
-            Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "DelRhCargos");
+			StringBuilder token = new StringBuilder();
+            Call call = acPessoalClient.createCall(empresa, token, null, "DelRhCargos");
 
             QName xmlstring = new QName("xs:string");
             QName xmlint = new QName("xs:int");
@@ -231,7 +229,7 @@ public class AcPessoalClientCargo
         	//Seta o tipo de resultado
         	call.setReturnType(xmlstring);
 
-        	Object[] param = new Object[]{token, faixaSalarialHistoricoId};
+        	Object[] param = new Object[]{token.toString(), faixaSalarialHistoricoId};
 
             if(!(Boolean)call.invoke(param))
             	throw new Exception("Erro ao deletar historico da faixa salarial no AC Pessoal");

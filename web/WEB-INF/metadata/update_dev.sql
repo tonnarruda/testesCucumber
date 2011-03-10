@@ -57,3 +57,7 @@ update candidatosolicitacao set status = 'C' where id in (
 		co.solicitacao_id is not null
 );--.go
 
+alter table empresa drop column acurlsoap;--.go
+alter table empresa drop column acurlwsdl;--.go
+alter table empresa drop column acusuario;--.go
+alter table empresa drop column acsenha;--.go

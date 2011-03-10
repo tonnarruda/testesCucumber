@@ -6,22 +6,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import junit.framework.TestCase;
-
 import org.apache.axis.client.Service;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.web.ws.AcPessoalClientImpl;
 
-public abstract class AcPessoalClientTest extends TestCase
+public abstract class AcPessoalClientTest extends MockObjectTestCase
 {
 	protected static final String baseAcUrl = "http://10.1.4.26:1024";
 
 	protected AcPessoalClientImpl acPessoalClientImpl;
 
 	protected Empresa empresa;
-
+	protected GrupoAC grupoAC;
+	private Mock grupoACManager;
+	
 	public Connection getConexaoAC() throws ClassNotFoundException, SQLException 
 	{
 		Class.forName("org.firebirdsql.jdbc.FBDriver");
@@ -41,11 +45,22 @@ public abstract class AcPessoalClientTest extends TestCase
 
 		empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCodigoAC("0006");
-		empresa.setAcUsuario("ADMIN");
-		empresa.setAcSenha("");
-		empresa.setAcUrlSoap(baseAcUrl + "/soap/IAcPessoal");
-		empresa.setAcUrlWsdl(baseAcUrl + "/wsdl/IAcPessoal");
 		empresa.setAcIntegra(true);
+		
+		grupoAC = new GrupoAC();
+		grupoAC.setAcUsuario("ADMIN");
+		grupoAC.setAcSenha("");
+		grupoAC.setAcUrlSoap(baseAcUrl + "/soap/IAcPessoal");
+		grupoAC.setAcUrlWsdl(baseAcUrl + "/wsdl/IAcPessoal");
+		
+		grupoACManager = mock(GrupoACManager.class);
+        acPessoalClientImpl.setGrupoACManager((GrupoACManager) grupoACManager.proxy());
+
+	}
+	
+	public void montaMockGrupoAC()
+	{
+		grupoACManager.expects(atLeastOnce()).method("findByCodigo").withAnyArguments().will(returnValue(grupoAC));		
 	}
 	
     public static ResultSet execQuery(Connection conn, String sql) throws Exception 
@@ -74,5 +89,9 @@ public abstract class AcPessoalClientTest extends TestCase
 
 	public Empresa getEmpresa() {
 		return empresa;
+	}
+
+	public GrupoAC getGrupoAC() {
+		return grupoAC;
 	}
 }

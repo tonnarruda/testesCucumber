@@ -125,7 +125,7 @@
 		<property name="transactionManager" ref="transactionManager"/>
 	</bean>
 	<bean id="utilDWR" class="com.fortes.rh.web.dwr.UtilDWR">
-		<property name="empresaManager" ref="empresaManager"/>
+		<property name="grupoACManager" ref="grupoACManager"/>
 		<property name="mail" ref="mail"/>
 		<property name="acPessoalClient" ref="acPessoalClient"/>
 	</bean>

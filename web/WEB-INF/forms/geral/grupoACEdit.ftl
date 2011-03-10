@@ -18,6 +18,11 @@
 			<@ww.textfield label="Descrição" name="grupoAC.descricao" id="descricao" required="true"  cssStyle="width: 150px;" maxLength="20"/>
 			<@ww.textfield label="Código" name="grupoAC.codigo" id="codigo" required="true" cssStyle="width: 25px;" maxLength="3"/>
 			
+			<@ww.textfield label="Usuário AC" name="grupoAC.acUsuario" id="acUsuario" cssClass="inputNome" maxLength="50"/>
+			<@ww.password show="true" label="Senha AC" name="grupoAC.acSenha" id="acSenha" cssStyle="width:100px;" maxLength="15" />
+			<@ww.textfield label="URL WS" name="grupoAC.acUrlSoap" id="acUrlSoap" cssClass="inputNome" maxLength="100"/>
+			<@ww.textfield label="URL WSDL" name="grupoAC.acUrlWsdl" id="acUrlWdsl" cssClass="inputNome" maxLength="100"/>
+			
 			<@ww.hidden name="grupoAC.id" />
 			<@ww.token/>
 		</@ww.form>

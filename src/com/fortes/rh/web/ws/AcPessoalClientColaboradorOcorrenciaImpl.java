@@ -10,6 +10,7 @@ import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 
 public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClientColaboradorOcorrencia
@@ -20,11 +21,11 @@ public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClient
 	{
 		try
 	    {
-	    	String token = acPessoalClient.getToken(empresa);
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+	        Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetOcorrenciaEmpregado");
 
-	        Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "SetOcorrenciaEmpregado");
-
-	        QName qnameOcorrencia = new QName(empresa.getAcUrlWsdl(), "TOcorrenciaEmpregado");
+	        QName qnameOcorrencia = new QName(grupoAC.getAcUrlWsdl(), "TOcorrenciaEmpregado");
 			call.registerTypeMapping(TOcorrenciaEmpregado.class, qnameOcorrencia, new BeanSerializerFactory(TOcorrenciaEmpregado.class, qnameOcorrencia), new BeanDeserializerFactory(TOcorrenciaEmpregado.class, qnameOcorrencia));
 
 			QName xmlstring = new QName("xs:string");
@@ -36,7 +37,7 @@ public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClient
 	    	call.setReturnType(XSD_BOOLEAN);
 
 	    	//Seta os valores e invoca o serviço não passa codigo para inserir
-	    	Object[] param = new Object[]{token, ocorrenciaEmpregado};
+	    	Object[] param = new Object[]{token.toString(), ocorrenciaEmpregado};
 
 	        return (Boolean) call.invoke(param);
 	    }
@@ -51,11 +52,11 @@ public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClient
 	{
 		try
 	    {
-	    	String token = acPessoalClient.getToken(empresa);
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+	        Call call = acPessoalClient.createCall(empresa, token, grupoAC, "DelOcorrenciaEmpregado");
 
-	        Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "DelOcorrenciaEmpregado");
-
-	        QName qnameOcorrencia = new QName(empresa.getAcUrlWsdl(), "TOcorrenciaEmpregado");
+	        QName qnameOcorrencia = new QName(grupoAC.getAcUrlWsdl(), "TOcorrenciaEmpregado");
 			call.registerTypeMapping(TOcorrenciaEmpregado.class, qnameOcorrencia, new BeanSerializerFactory(TOcorrenciaEmpregado.class, qnameOcorrencia), new BeanDeserializerFactory(TOcorrenciaEmpregado.class, qnameOcorrencia));
 
 			QName xmlstring = new QName("xs:string");
@@ -66,7 +67,7 @@ public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClient
 
 	    	call.setReturnType(XSD_BOOLEAN);
 
-	    	Object[] param = new Object[]{token, ocorrenciaEmpregado};
+	    	Object[] param = new Object[]{token.toString(), ocorrenciaEmpregado};
 
 	        return (Boolean) call.invoke(param);
 	    }

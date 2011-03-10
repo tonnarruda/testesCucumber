@@ -48,12 +48,16 @@ public class AcPessoalClientOcorrenciaTest extends AcPessoalClientTest
 	
 	public void testInsertOcorrenciaAC() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		String codigoAC = acPessoalClientOcorrenciaImpl.criarTipoOcorrencia(tocorrencia, empresa);
 		assertEquals("002", codigoAC);
 	}
 
 	public void testEditarOcorrenciaAC() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		String codigoAC = acPessoalClientOcorrenciaImpl.criarTipoOcorrencia(tocorrencia, empresa);
 		assertEquals("002", codigoAC);
 
@@ -70,6 +74,8 @@ public class AcPessoalClientOcorrenciaTest extends AcPessoalClientTest
 
 	public void testDeletarOcorrenciaAC() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		String codigoAC = acPessoalClientOcorrenciaImpl.criarTipoOcorrencia(tocorrencia, empresa);
 		tocorrencia.setCodigo(codigoAC);
 

@@ -109,7 +109,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public String update() throws Exception
 	{
 		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
-		empresaManager.updateEmpresa(empresa);
+		empresaManager.update(empresa);
 
 		if(empresa.equals(getEmpresaSistema()))
 		{

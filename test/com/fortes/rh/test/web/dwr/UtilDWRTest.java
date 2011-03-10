@@ -8,8 +8,9 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
-import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.web.dwr.UtilDWR;
@@ -20,7 +21,7 @@ public class UtilDWRTest extends MockObjectTestCase
 {
 	UtilDWR utilDWR;
 	Mock acPessoalClient = null;
-	Mock empresaManager;
+	Mock grupoACManager;
 	Mock service;
 	Mock mail;
 
@@ -30,70 +31,62 @@ public class UtilDWRTest extends MockObjectTestCase
 		utilDWR = new UtilDWR();
 
 		acPessoalClient = mock(AcPessoalClientImpl.class);
-		empresaManager = new Mock(EmpresaManager.class);
+		grupoACManager = new Mock(GrupoACManager.class);
 		service = mock(Service.class);
 		mail = mock(Mail.class);
 
 		utilDWR.setAcPessoalClient((AcPessoalClient) acPessoalClient.proxy());
-		utilDWR.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+		utilDWR.setGrupoACManager((GrupoACManager) grupoACManager.proxy());
 		utilDWR.setMail((Mail) mail.proxy());
 //		utilDWR.setService((Service) service.proxy());
 	}
 
 	public void testGetToken()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setCodigoAC("0003");
-
-		empresaManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(empresa));
+		GrupoAC grupoAC = new GrupoAC();
+		grupoACManager.expects(once()).method("findByCodigo").with(ANYTHING).will(returnValue(grupoAC));
 
 		String token = "";
 
 		acPessoalClient.expects(once()).method("getToken").with(ANYTHING).will(returnValue(token));
 
-		String retorno = utilDWR.getToken("", "", "", "", null);
+		String retorno = utilDWR.getToken("XXX");
 	}
 
 	public void testGetTokenComAcSenha()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setCodigoAC("0003");
-		empresa.setAcUsuario("Admin");
-		empresa.setAcSenha("senha");
-
 		String token = "";
 
+		GrupoAC grupoAC = new GrupoAC();
+		grupoACManager.expects(once()).method("findByCodigo").with(ANYTHING).will(returnValue(grupoAC));
+		
 		acPessoalClient.expects(once()).method("getToken").with(ANYTHING).will(returnValue(token));
 
-		String retorno = utilDWR.getToken("Admin", "senha", "", "", null);
+		String retorno = utilDWR.getToken("XXX");
 
 		assertNotNull(retorno);
 	}
 
 	public void testGetTokenComException()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setCodigoAC("0003");
-		empresa.setAcUsuario("Admin");
-		empresa.setAcSenha("senha");
-
+		GrupoAC grupoAC = new GrupoAC();
+		grupoACManager.expects(once()).method("findByCodigo").with(ANYTHING).will(returnValue(grupoAC));
+		
 		acPessoalClient.expects(once()).method("getToken").with(ANYTHING).will(throwException(new ServiceException("Erro")));
 
-		String retorno = utilDWR.getToken("Admin", "senha", "", "", null);
+		String retorno = utilDWR.getToken("XXX");
 
 		assertNotNull(retorno);
 	}
 
 	public void testGetTokenComExceptionNaoAutenticado()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setCodigoAC("0003");
-		empresa.setAcUsuario("Admin");
-		empresa.setAcSenha("senha");
-
+		GrupoAC grupoAC = new GrupoAC();
+		grupoACManager.expects(once()).method("findByCodigo").with(ANYTHING).will(returnValue(grupoAC));
+		
 		acPessoalClient.expects(once()).method("getToken").with(ANYTHING).will(throwException(new ServiceException("Usuário Não Autenticado!")));
 
-		String retorno = utilDWR.getToken("Admin", "senha", "", "", null);
+		String retorno = utilDWR.getToken("XXX");
 
 		assertNotNull(retorno);
 	}

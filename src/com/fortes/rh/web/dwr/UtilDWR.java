@@ -1,40 +1,28 @@
 package com.fortes.rh.web.dwr;
 
-import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.business.geral.GrupoACManager;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.web.ws.AcPessoalClient;
 
 
 public class UtilDWR
 {
-	private EmpresaManager empresaManager;
 	private Mail mail;
 	private AcPessoalClient acPessoalClient;
+	private GrupoACManager grupoACManager;
 
-	public String getToken(String acUsuario, String acSenha, String acUrlSoap, String codigoAC, String grupoAC)
-	{
+	public String getToken(String grupoAC)
+	{ 
 		String token = "";
-		Empresa empresa = null;
-
-		if(acSenha.trim().equals(""))
-		{
-			empresa = empresaManager.findByCodigoAC(codigoAC, grupoAC);
-
-			empresa.setAcUsuario(acUsuario);
-			empresa.setAcUrlSoap(acUrlSoap);
-		}
-		else
-		{
-			empresa = new Empresa();
-			empresa.setAcUsuario(acUsuario);
-			empresa.setAcSenha(acSenha);
-			empresa.setAcUrlSoap(acUrlSoap);
-		}
+		GrupoAC grupo = grupoACManager.findByCodigo(grupoAC);
+		
+		if(grupo == null)
+			return "Grupo AC não encontrado";
 
 		try
 		{
-			token = acPessoalClient.getToken(empresa);
+			token = acPessoalClient.getToken(grupo);
 			token = "Conexão efetuada com sucesso.";
 		}
 		catch (Exception e)
@@ -74,13 +62,12 @@ public class UtilDWR
 		this.acPessoalClient = acPessoalClient;
 	}
 
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
-	}
-
 	public void setMail(Mail mail)
 	{
 		this.mail = mail;
+	}
+
+	public void setGrupoACManager(GrupoACManager grupoACManager) {
+		this.grupoACManager = grupoACManager;
 	}
 }

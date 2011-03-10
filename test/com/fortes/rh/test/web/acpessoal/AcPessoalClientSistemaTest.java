@@ -1,11 +1,15 @@
 package com.fortes.rh.test.web.acpessoal;
 
+import org.jmock.Mock;
+
+import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.web.ws.AcPessoalClientSistemaImpl;
 
 public class AcPessoalClientSistemaTest extends AcPessoalClientTest
 {
 
 	private AcPessoalClientSistemaImpl acPessoalClientsistemaImpl;
+	private Mock grupoACManager;
 
 	@Override
 	protected void setUp() throws Exception
@@ -14,15 +18,22 @@ public class AcPessoalClientSistemaTest extends AcPessoalClientTest
 
 		acPessoalClientsistemaImpl = new AcPessoalClientSistemaImpl();
 		acPessoalClientsistemaImpl.setAcPessoalClient(acPessoalClientImpl);
+		
+		grupoACManager = mock(GrupoACManager.class);
+		acPessoalClientsistemaImpl.setGrupoACManager((GrupoACManager) grupoACManager.proxy());
 	}
 
 	public void testGetVersaoWebServiceAC() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		assertEquals("1.0.1.41", acPessoalClientsistemaImpl.getVersaoWebServiceAC(empresa));
 	}
 
 	public void testIdACIntegrado() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		assertTrue(acPessoalClientsistemaImpl.idACIntegrado(empresa));
 	}
 
@@ -30,6 +41,7 @@ public class AcPessoalClientSistemaTest extends AcPessoalClientTest
 	{
 		try
 		{
+			grupoACManager.expects(atLeastOnce()).method("findByCodigo").withAnyArguments().will(returnValue(grupoAC));
 			acPessoalClientsistemaImpl.verificaWebService(empresa);
 		} catch (Exception e)
 		{

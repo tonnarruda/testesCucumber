@@ -41,6 +41,8 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 	
 	public void testDeleteHistorico() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCodigoAC("220");
 		
@@ -95,6 +97,8 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 	
 	public void testDeleteHistoricoEmLote() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCodigoAC("220");
 		
@@ -170,6 +174,8 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 	}
 	public void testUpdateHistorico() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCodigoAC("220");
 		
@@ -232,6 +238,8 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 	
 	public void testInsertHistoricoEmLote() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCodigoAC("220");
 		

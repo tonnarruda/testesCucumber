@@ -53,7 +53,6 @@ public class GrupoACEditAction extends MyActionSupportList
 			addActionError("Erro ao gravar Grupo");
 			return Action.INPUT;
 		}
-		
 	}
 
 	public String update() throws Exception

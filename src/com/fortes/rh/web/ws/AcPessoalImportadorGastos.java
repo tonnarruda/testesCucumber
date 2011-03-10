@@ -23,9 +23,8 @@ public class AcPessoalImportadorGastos
 		String[] result = null;
 		try
 		{
-			String token = acPessoalClient.getToken(empresa);
-
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "GetCustosEmpregadoEventoMesAno2");
+			StringBuilder token = new StringBuilder();
+			Call call = acPessoalClient.createCall(empresa, token, null, "GetCustosEmpregadoEventoMesAno2");
 
             QName qnameAr = new QName("urn:AcPessoal","TCustosEmpregadoEventoMesAno");
             call.registerTypeMapping(String[].class, qnameAr, new ArraySerializerFactory(qnameAr), new ArrayDeserializerFactory(qnameAr));
@@ -41,7 +40,7 @@ public class AcPessoalImportadorGastos
 
 			call.setReturnType(qnameAr);
 
-			Object[] params = new Object[]{token, empresa.getCodigoAC(), "", data.getYear() + 1900, data.getMonth() + 1};
+			Object[] params = new Object[]{token.toString(), empresa.getCodigoAC(), "", data.getYear() + 1900, data.getMonth() + 1};
 
 			result = (String[]) call.invoke(params);
 		}

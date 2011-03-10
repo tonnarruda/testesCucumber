@@ -24,6 +24,8 @@ public class AcPessoalClientGastoTest extends AcPessoalClientTest
 	
 	public void testImportarGastos() throws Exception
 	{
+		montaMockGrupoAC();
+		
 		String[] gastos = acPessoalImportadorGastos.importarGastos(DateUtil.montaDataByString("01/02/2011"), empresa);
 		assertEquals(18, gastos.length);
 		assertEquals("000014|110|8208", gastos[0]);

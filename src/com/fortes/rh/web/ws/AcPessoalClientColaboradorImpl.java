@@ -12,6 +12,7 @@ import org.apache.axis.encoding.ser.BeanSerializerFactory;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
@@ -26,11 +27,11 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 	//atualiza apenas o epg
 	public void atualizar(TEmpregado empregado, Empresa empresa) throws Exception {
 		try {
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "atualizarEmpregado");
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "atualizarEmpregado");
 
-			String token = acPessoalClient.getToken(empresa);
-
-			QName qname = new QName(empresa.getAcUrlWsdl(), "TEmpregado");
+			QName qname = new QName(grupoAC.getAcUrlWsdl(), "TEmpregado");
 			call.registerTypeMapping(TEmpregado.class, qname, new BeanSerializerFactory(TEmpregado.class, qname), new BeanDeserializerFactory(TEmpregado.class, qname));
 
 			QName xmltype = new QName("xs:TEmpregado");
@@ -41,7 +42,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 			call.setReturnType(XSD_BOOLEAN);
 
-			Object[] param = new Object[] { token, empregado };
+			Object[] param = new Object[] { token.toString(), empregado };
 
 			if (!(Boolean) call.invoke(param))
 				throw new Exception();
@@ -54,12 +55,14 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 	public boolean contratar(TEmpregado empregado, TSituacao situacao, Empresa empresa) {
 		try {
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "contratar");
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "contratar");
 
-			QName qnameEmpregado = new QName(empresa.getAcUrlWsdl(), "TEmpregado");
+			QName qnameEmpregado = new QName(grupoAC.getAcUrlWsdl(), "TEmpregado");
 			call.registerTypeMapping(TEmpregado.class, qnameEmpregado, new BeanSerializerFactory(TEmpregado.class, qnameEmpregado), new BeanDeserializerFactory(TEmpregado.class, qnameEmpregado));
 
-			QName qnameSituacao = new QName(empresa.getAcUrlWsdl(), "TSituacao");
+			QName qnameSituacao = new QName(grupoAC.getAcUrlWsdl(), "TSituacao");
 			call.registerTypeMapping(TSituacao.class, qnameSituacao, new BeanSerializerFactory(TSituacao.class, qnameSituacao), new BeanDeserializerFactory(TSituacao.class, qnameSituacao));
 
 			QName xmltype = new QName("ns1:TEmpregado");
@@ -71,7 +74,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			call.addParameter("Situacao", xmltype2, ParameterMode.IN);
 
 			call.setReturnType(org.apache.axis.encoding.XMLType.XSD_BOOLEAN);
-			Object[] param = new Object[] { acPessoalClient.getToken(empresa), empregado, situacao };
+			Object[] param = new Object[] { token.toString(), empregado, situacao };
 
 			return (Boolean) call.invoke(param);
 		} catch (Exception e) {
@@ -82,9 +85,8 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 	public boolean verificaHistoricoNaFolhaAC(Long historicoColaboradorId, String colaboradorCodigoAC, Empresa empresa) {
 		try {
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "GetSepEfo");
-
-			String token = acPessoalClient.getToken(empresa);
+			StringBuilder token = new StringBuilder();
+			Call call = acPessoalClient.createCall(empresa, token, null, "GetSepEfo");
 
 			QName xmlstring = new QName("xs:string");
 			QName xmlint = new QName("xs:int");
@@ -96,7 +98,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 			call.setReturnType(XSD_BOOLEAN);
 
-			Object[] param = new Object[] { token, empresa.getCodigoAC(), colaboradorCodigoAC, historicoColaboradorId };
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradorCodigoAC, historicoColaboradorId };
 
 			return (Boolean) call.invoke(param);
 		} catch (Exception e) {
@@ -107,9 +109,8 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 	public boolean remove(Colaborador colaborador, Empresa empresa) {
 		try {
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "removerEmpregado");
-
-			String token = acPessoalClient.getToken(empresa);
+			StringBuilder token = new StringBuilder();
+			Call call = acPessoalClient.createCall(empresa, token, null, "removerEmpregado");
 
 			QName xmlstring = new QName("xs:string");
 			QName xmlint = new QName("xs:int");
@@ -121,7 +122,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 			call.setReturnType(XSD_BOOLEAN);
 
-			Object[] param = new Object[] { token, empresa.getCodigoAC(), colaborador.getCodigoAC(), colaborador.getId() };
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaborador.getCodigoAC(), colaborador.getId() };
 
 			return (Boolean) call.invoke(param);
 		} catch (Exception e) {
@@ -134,8 +135,8 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 	public TEmpregado getEmpregadoACAConfirmar(Integer colaboradorId, Empresa empresa) {
 		TEmpregado empregado = null;
 		try {
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "GetEmpregadoAConfirmar");
-			String token = acPessoalClient.getToken(empresa);
+			StringBuilder token = new StringBuilder();
+			Call call = acPessoalClient.createCall(empresa, token, null, "GetEmpregadoAConfirmar");
 
 			QName qname = new QName("urn:AcPessoal", "TEmpregado");
 			call.registerTypeMapping(TEmpregado.class, qname, new BeanSerializerFactory(TEmpregado.class, qname), new BeanDeserializerFactory(TEmpregado.class, qname));
@@ -149,7 +150,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 			call.setReturnType(qname);
 
-			Object[] param = new Object[] { token, empresa.getCodigoAC(), colaboradorId };
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradorId };
 			empregado = (TEmpregado) call.invoke(param);
 			call.clearHeaders();
 			call.clearOperation();
@@ -164,9 +165,8 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		
 		TRemuneracaoVariavel[] result = null;
 		try {
-			Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "GetRemuneracoesVariaveis");
-
-			String token = acPessoalClient.getToken(empresa);
+			StringBuilder token = new StringBuilder();
+			Call call = acPessoalClient.createCall(empresa, token, null, "GetRemuneracoesVariaveis");
 
 			QName qname = new QName("urn:AcPessoal", "TRemuneracaoVariavel");
 			QName qnameArr = new QName("urn:AcPessoal", "TRemuneracoesVariaveis");
@@ -187,7 +187,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 			call.setReturnType(qnameArr);
 
-			Object[] param = new Object[] { token, empresa.getCodigoAC(), colaboradoresIds, anoMesInicial, anoMesFinal };
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradoresIds, anoMesInicial, anoMesFinal };
 
 			result = (TRemuneracaoVariavel[]) call.invoke(param);
 

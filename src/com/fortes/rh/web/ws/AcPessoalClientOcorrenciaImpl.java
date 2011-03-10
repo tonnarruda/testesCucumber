@@ -10,6 +10,7 @@ import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TOcorrencia;
 
 public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
@@ -25,11 +26,11 @@ public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
 	{
 		try
 	    {
-	    	String token = acPessoalClient.getToken(empresa);
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+	    	Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetTipoOcorrencia");
 
-	    	Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "SetTipoOcorrencia");
-
-	    	QName qnameTipoOcorrencia = new QName(empresa.getAcUrlWsdl(), "TOcorrencia");
+	    	QName qnameTipoOcorrencia = new QName(grupoAC.getAcUrlWsdl(), "TOcorrencia");
 			call.registerTypeMapping(TOcorrencia.class, qnameTipoOcorrencia, new BeanSerializerFactory(TOcorrencia.class, qnameTipoOcorrencia), new BeanDeserializerFactory(TOcorrencia.class, qnameTipoOcorrencia));
 
 			QName xmltype = new QName("ns1:TOcorrencia");
@@ -39,7 +40,7 @@ public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
 	    	call.addParameter("Ocorrencia", xmltype, ParameterMode.IN);
 	    	call.setReturnType(xmlstring);
 
-	    	Object[] param = new Object[]{token,tocorrencia};
+	    	Object[] param = new Object[]{token.toString(),tocorrencia};
 
 	    	//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
 	        String codigoRetorno = (String) call.invoke(param);
@@ -55,11 +56,11 @@ public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
 
 	public boolean removerTipoOcorrencia(TOcorrencia tocorrencia, Empresa empresa) throws Exception
 	{
-		String token = acPessoalClient.getToken(empresa);
+		StringBuilder token = new StringBuilder();
+		GrupoAC grupoAC = new GrupoAC();
+		Call call = acPessoalClient.createCall(empresa, token, grupoAC, "DelTipoOcorrencia");
 
-		Call call = acPessoalClient.createCall(empresa.getAcUrlSoap(), "DelTipoOcorrencia");
-
-		QName qnameTipoOcorrencia = new QName(empresa.getAcUrlWsdl(), "TOcorrencia");
+		QName qnameTipoOcorrencia = new QName(grupoAC.getAcUrlWsdl(), "TOcorrencia");
 		call.registerTypeMapping(TOcorrencia.class, qnameTipoOcorrencia, new BeanSerializerFactory(TOcorrencia.class, qnameTipoOcorrencia), new BeanDeserializerFactory(TOcorrencia.class, qnameTipoOcorrencia));
 
 		QName xmltype = new QName("ns1:TOcorrencia");
@@ -70,7 +71,7 @@ public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
     	call.addParameter("Ocorrencia", xmltype, ParameterMode.IN);
     	call.setReturnType(XSD_BOOLEAN);
 
-    	Object[] param = new Object[]{token, tocorrencia};
+    	Object[] param = new Object[]{token.toString(), tocorrencia};
 
     	Boolean retorno = (Boolean) call.invoke(param);
 
