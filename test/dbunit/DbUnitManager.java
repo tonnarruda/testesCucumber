@@ -10,12 +10,14 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 
 public class DbUnitManager {
@@ -156,6 +158,7 @@ public class DbUnitManager {
 	 */
 	private IDatabaseConnection getDbUnitConnection() throws DatabaseUnitException {
 		IDatabaseConnection dbconn = new DatabaseConnection(this.getConnection());
+		dbconn.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new PostgresqlDataTypeFactory());
 		return dbconn;
 	}
 	
