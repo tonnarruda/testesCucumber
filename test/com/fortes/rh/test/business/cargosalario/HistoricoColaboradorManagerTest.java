@@ -297,10 +297,11 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		TRemuneracaoVariavel[] treRemuneracaoVariavels = new TRemuneracaoVariavel[]{tRemuneracaoVariavel1, tremRemuneracaoVariavel2}; 
 
-		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(new Date()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
+		Date hoje = new Date();
+		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(hoje), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
 		acPessoalClientColaborador.expects(once()).method("getRemuneracoesVariaveis").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(treRemuneracaoVariavels));
 		
-		Collection<HistoricoColaborador> resultado = historicoColaboradorManager.relatorioColaboradorCargo(empresa, new Date(), null, null, 2, '1', null, true, null);
+		Collection<HistoricoColaborador> resultado = historicoColaboradorManager.relatorioColaboradorCargo(empresa, hoje, null, null, 2, '1', null, true, null);
 
 		assertEquals(3, resultado.size());
 		
