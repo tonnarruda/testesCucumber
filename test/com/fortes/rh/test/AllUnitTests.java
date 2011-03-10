@@ -264,6 +264,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.RiscoMedicaoRiscoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoExameDaoHibernateTest;
+import com.fortes.rh.test.dicionario.AptoTest;
 import com.fortes.rh.test.dicionario.AreasFormacaoTest;
 import com.fortes.rh.test.dicionario.DeficienciaTest;
 import com.fortes.rh.test.dicionario.EstadoTest;
@@ -281,6 +282,7 @@ import com.fortes.rh.test.dicionario.SituacaoFormacaoTest;
 import com.fortes.rh.test.dicionario.SituacaoSolicitacaoTest;
 import com.fortes.rh.test.dicionario.StatusRetornoACTest;
 import com.fortes.rh.test.dicionario.TipoAplicacaoIndiceTest;
+import com.fortes.rh.test.dicionario.TipoAvaliacaoCursoTest;
 import com.fortes.rh.test.dicionario.TipoAvaliacaoTest;
 import com.fortes.rh.test.dicionario.TipoBuscaHistoricoColaboradorTest;
 import com.fortes.rh.test.dicionario.TipoDeExposicaoTest;
@@ -1087,6 +1089,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(TipoReajusteColaboradorTest.class);
         suite.addTestSuite(TipoExtintorTest.class);
         suite.addTestSuite(MotivoSolicitacaoExameTest.class);
+        suite.addTestSuite(AptoTest.class);
+        suite.addTestSuite(TipoAvaliacaoCursoTest.class);
 
         //EXCEPTIONS
         suite.addTestSuite(ColecaoVaziaExceptionTest.class);
