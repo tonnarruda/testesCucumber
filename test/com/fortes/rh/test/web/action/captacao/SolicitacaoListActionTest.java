@@ -17,7 +17,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -165,7 +165,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 		action.setSolicitacaosCheckIds(solicitacaosCheckIds);
 		action.setCandidato(CandidatoFactory.getCandidato(2L));
 		
-		candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(eq(new String[]{"2"}),ANYTHING,ANYTHING).isVoid();
+		candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(eq(new String[]{"2"}), ANYTHING, eq(StatusCandidatoSolicitacao.APROMOVER)).isVoid();
 		
 		assertEquals("success",action.gravarSolicitacoesCandidato());
     }
