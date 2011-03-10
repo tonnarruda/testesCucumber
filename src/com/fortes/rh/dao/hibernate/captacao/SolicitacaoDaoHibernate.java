@@ -451,7 +451,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		consulta.append("where ");
 		consulta.append("solicitacao.empresa.id = :empresaId ");
 		consulta.append("and solicitacao.data >= :dataDe ");
-		consulta.append("and solicitacao.dataEncerramento <= :dataAte ");
+		consulta.append("and (solicitacao.dataEncerramento <= :dataAte ");
+		consulta.append("or solicitacao.dataEncerramento is null) ");
 		
 		if (areasOrganizacionais != null && !areasOrganizacionais.isEmpty())
 			consulta.append("	and areaOrganizacional.id in (:areasOrganizacionais) ");
