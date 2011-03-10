@@ -34,6 +34,7 @@
 	<parameter name="QUESTIONARIO_CABECALHO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="EXIBIR_CABECALHO" isForPrompting="false" class="java.lang.Boolean"/>
 	<parameter name="TOTAL_COLAB_RESP" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="EXIBIR_RESPOSTAS_NAO_SUBJETIVAS" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="pergunta.id" class="java.lang.Long"/>
 	<field name="pergunta.texto" class="java.lang.String"/>
@@ -211,7 +212,7 @@
 						isPrintRepeatedValues="false"
 						isRemoveLineWhenBlank="true"
 						isPrintInFirstWholeBand="true">
-							<printWhenExpression><![CDATA[new Boolean(!$F{pergunta.tipo}.equals(new Integer(3))&& $P{EXIBIR_RESPOSTAS_SUBJETIVAS}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean(!$F{pergunta.tipo}.equals(new Integer(3))&& $P{EXIBIR_RESPOSTAS_SUBJETIVAS}.booleanValue()&&$P{EXIBIR_RESPOSTAS_NAO_SUBJETIVAS}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<subreportParameter  name="REPORT_DATA_SOURCE">
 						<subreportParameterExpression><![CDATA[$F{colabRespostasDistinct}]]></subreportParameterExpression>

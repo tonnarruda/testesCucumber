@@ -85,7 +85,8 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	    	parametros = RelatorioUtil.getParametrosRelatorio("Avaliação do Período de Experiência", getEmpresaSistema(), avaliacaoExperiencia.getTitulo());
 	    	parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);
 	    	parametros.put("EXIBIR_CABECALHO", exibirCabecalho);
-	    	parametros.put("EXIBIR_RESPOSTAS_SUBJETIVAS", exibirRespostas);
+	    	parametros.put("EXIBIR_RESPOSTAS_SUBJETIVAS", true);
+	    	parametros.put("EXIBIR_RESPOSTAS_NAO_SUBJETIVAS", exibirRespostas);
 	    	parametros.put("EXIBIR_COMENTARIOS", exibirComentarios);
 	    	parametros.put("QUESTIONARIO_ANONIMO", false);
 	    	parametros.put("QUESTIONARIO_CABECALHO", avaliacaoExperiencia.getCabecalho());
