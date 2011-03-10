@@ -6,6 +6,10 @@ import com.fortes.rh.dao.geral.CodigoCBODao;
 import com.fortes.rh.model.geral.CodigoCBO;
 import com.fortes.rh.test.dao.BaseDaoHibernateTest;
 
+/**
+ * Os códigos CBOs são inseridos na instalação do FortesRH desde a versão 1.1.37.27.<br/>
+ * Veja o arquivo update.sql para mais detalhes.
+ */
 public class CodigoCBODaoHibernateTest extends BaseDaoHibernateTest
 {
 	private CodigoCBODao codigoCBODao;
