@@ -196,6 +196,7 @@
 
 		<@ww.hidden name="historicoColaborador.id" />
 		<@ww.hidden name="historicoColaborador.colaborador.id" />
+		<@ww.hidden name="historicoColaborador.colaborador.naoIntegraAc" />
 		<@ww.hidden name="colaborador.id" />
 		<@ww.hidden name="candidatoSolicitacaoId" />
 	<@ww.token/>
