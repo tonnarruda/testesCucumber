@@ -195,6 +195,7 @@ import com.fortes.rh.test.dao.hibernate.geral.CodigoCBODaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorIdiomaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorOcorrenciaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoCampoExtraDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoPerformanceDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoRelatorioDinamicoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.DependenteDaoHibernateTest;
@@ -753,6 +754,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(GrupoACDaoHibernateTest.class);
         suite.addTestSuite(GrupoACEditActionTest.class);
         suite.addTestSuite(CodigoCBODaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoCampoExtraDaoHibernateTest.class);
 
         suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
 

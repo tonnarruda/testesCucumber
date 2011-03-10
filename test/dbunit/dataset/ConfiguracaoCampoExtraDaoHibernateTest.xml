@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<CONFIGURACAOCAMPOEXTRA id="9997" ativo="true" nome="CAMPO 1" titulo="CAMPO 1" ordem="1" posicao="1" tipo="texto" descricao="CAMPO 1" />
+	<CONFIGURACAOCAMPOEXTRA id="9998" ativo="true" nome="CAMPO 2" titulo="CAMPO 2" ordem="2" posicao="2" tipo="texto" descricao="CAMPO 2" />
+	<CONFIGURACAOCAMPOEXTRA id="9999" ativo="true" nome="CAMPO 3" titulo="CAMPO 3" ordem="3" posicao="3" tipo="texto" descricao="CAMPO 3" />
+	
+</dataset>
