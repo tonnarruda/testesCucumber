@@ -189,6 +189,18 @@ public class ColaboradorResposta extends AbstractModel implements Serializable
     	if(StringUtils.isEmpty(this.colaboradorQuestionario.getColaborador().getNomeComercial()))
     		this.colaboradorQuestionario.getColaborador().setNomeComercial(colaboradorNomeComercial);
     }
+
+    public void setProjectionColaboradorNome(String colaboradorNome)
+    {
+    	if(this.colaboradorQuestionario == null)
+    		this.colaboradorQuestionario = new ColaboradorQuestionario();
+    	
+    	if(this.colaboradorQuestionario.getColaborador() == null)
+    		this.colaboradorQuestionario.setColaborador(new Colaborador());
+    	
+    	if(StringUtils.isEmpty(this.colaboradorQuestionario.getColaborador().getNome()))
+    		this.colaboradorQuestionario.getColaborador().setNome(colaboradorNome);
+    }
     
     public void setProjectionAvaliadorNomeComercial(String avaliadorNomeComercial)
     {

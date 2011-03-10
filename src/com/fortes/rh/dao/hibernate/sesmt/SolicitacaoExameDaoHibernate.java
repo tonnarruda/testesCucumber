@@ -47,7 +47,8 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		hql.append("and (ca.id is not null or (hc.data = (select max(hc2.data) ");
 		hql.append("from HistoricoColaborador as hc2 ");
 		hql.append("where hc2.colaborador.id = co.id ");
-		hql.append("and hc2.data <= se.data and hc2.status = :status ))) ");
+		hql.append("and hc2.data <= se.data and hc2.status = :status )) ");
+		hql.append(" or hc.id is null ) ");
 		
 		if (exameIds != null && exameIds.length > 0)
 			hql.append("and ese.exame.id in (:exameIds) ");

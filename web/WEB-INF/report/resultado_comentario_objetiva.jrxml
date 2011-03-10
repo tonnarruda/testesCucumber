@@ -27,6 +27,7 @@
 
 	<field name="comentario" class="java.lang.String"/>
 	<field name="colaboradorQuestionario.colaborador.nomeComercial" class="java.lang.String"/>
+	<field name="colaboradorQuestionario.colaborador.nome" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -73,7 +74,7 @@
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{comentario} == null ? $F{colaboradorQuestionario.colaborador.nomeComercial} + ": " : $F{colaboradorQuestionario.colaborador.nomeComercial} + ": " +$F{comentario}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{comentario} == null ? ($F{colaboradorQuestionario.colaborador.nomeComercial} ==null?$F{colaboradorQuestionario.colaborador.nome}:$F{colaboradorQuestionario.colaborador.nomeComercial}) + ": " : ($F{colaboradorQuestionario.colaborador.nomeComercial} ==null?$F{colaboradorQuestionario.colaborador.nome}:$F{colaboradorQuestionario.colaborador.nomeComercial}) + ": " +$F{comentario}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
