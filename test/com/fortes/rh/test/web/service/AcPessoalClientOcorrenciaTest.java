@@ -26,7 +26,7 @@ public class AcPessoalClientOcorrenciaTest extends MockObjectTestCase
     	acPessoalClient = mock(AcPessoalClient.class);
     	acPessoalClientOcorrencia.setAcPessoalClient((AcPessoalClient)acPessoalClient.proxy());
 
-    	Mockit.redefineMethods(Call.class, MockCall.class);
+    	Mockit.redefineMethods(Call.class, new MockCall());
     }
 
     public void testCriarTipoOcorrencia() throws Exception

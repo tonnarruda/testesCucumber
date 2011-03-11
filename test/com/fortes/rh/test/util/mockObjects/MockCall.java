@@ -29,6 +29,8 @@ import org.apache.axis.soap.SOAPConstants;
 
 public class MockCall
 {
+	private boolean retornoEhDoTipoString;
+
 	public void addAttachmentPart(Object arg0)
 	{
 	}
@@ -222,12 +224,15 @@ public class MockCall
 	 */
 	public Object invoke(Object[] arg0) throws RemoteException
 	{
-		if (arg0 != null && arg0.length >= 1)
-		{
-			return arg0[0].toString().equals("1") ? "1" : true;
-		}
-
-		return null;
+		
+		return retornoEhDoTipoString ? "1" : true;
+		
+//		if (arg0 != null && arg0.length >= 1)
+//		{
+//			return arg0[0].toString().equals("1") ? "1" : true;
+//		}
+//
+//		return null;
 	}
 
 	public Object invoke(QName arg0, Object[] arg1) throws RemoteException
@@ -381,10 +386,13 @@ public class MockCall
 	{
 	}
 
-	public void setReturnType(QName arg0)
+	public void setReturnType(QName qname)
 	{
+		if (qname != null) {
+			retornoEhDoTipoString = qname.getLocalPart().endsWith("string");
+		}
 	}
-
+	
 	public void setReturnTypeAsHeader(QName arg0, Class arg1)
 	{
 	}

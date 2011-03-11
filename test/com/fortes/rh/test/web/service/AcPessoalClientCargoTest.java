@@ -37,7 +37,7 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
 
     	acPessoalClientCargo.setAcPessoalClient((AcPessoalClient)acPessoalClient.proxy());
 
-    	Mockit.redefineMethods(Call.class, MockCall.class);
+    	Mockit.redefineMethods(Call.class, new MockCall());
     }
 
     public void testDeleteCargo() throws Exception
