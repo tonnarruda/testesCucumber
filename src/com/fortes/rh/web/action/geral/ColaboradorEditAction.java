@@ -229,7 +229,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		if(habilitaCampoExtra)
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
 			
-		indices = indiceManager.findAll(new String[]{"nome"});
+		indices = indiceManager.findAll(getEmpresaSistema());
 		
 		codigosGFIP = CodigoGFIP.getInstance();
 		vinculos = new Vinculo();

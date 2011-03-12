@@ -308,7 +308,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	}
 	
 	private void dadoQueExistemIndicesCadastrados() {
-		indiceManager.expects(once()).method("findAll").with(eq(new String[]{"nome"})).will(returnValue(Collections.EMPTY_LIST));
+		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(Collections.EMPTY_LIST));
 	}
 
 	private void dadoQueExistemEstabelecimentosParaEmpresaDoSistema() {

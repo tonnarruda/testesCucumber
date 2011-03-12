@@ -66,7 +66,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 			faixaSalarialHistorico = (FaixaSalarialHistorico) faixaSalarialHistoricoManager.findByIdProjection(faixaSalarialHistorico.getId());
 
 		faixaSalarialAux = faixaSalarialManager.findByFaixaSalarialId(faixaSalarialAux.getId());
-		indices = indiceManager.findAll(new String[] { "nome" });
+		indices = indiceManager.findAll(getEmpresaSistema());
 
 		tipoAplicacaoIndices = new TipoAplicacaoIndice();
 		tipoAplicacaoIndices.remove(TipoAplicacaoIndice.CARGO);

@@ -21,6 +21,9 @@
 			</#if>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>	
+		<#if integradoAC>
+			<@display.column property="grupoAC" title="Grupo AC" style="width: 50px;"/>	
+		</#if>
 	</@display.table>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}' />
 	

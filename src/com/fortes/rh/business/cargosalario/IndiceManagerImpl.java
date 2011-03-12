@@ -12,6 +12,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
 
 public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> implements IndiceManager
@@ -99,5 +100,13 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 	public Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC)
 	{
 		return getDao().findIndiceByCodigoAc(indiceCodigoAC, grupoAC);
+	}
+
+	public Collection<Indice> findAll(Empresa empresa) 
+	{
+		if(empresa.isAcIntegra())
+			return find(new String[] {"grupoAC"}, new Object[] {empresa.getGrupoAC()}, new String[] {"nome"});
+		else
+			return findAll(new String[] {"nome"});
 	}
 }

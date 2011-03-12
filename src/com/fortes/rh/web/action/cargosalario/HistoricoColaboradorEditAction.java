@@ -72,7 +72,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	public void prepare() throws Exception
 	{
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		indices = indiceManager.findAll(new String[]{"nome"});
+		indices = indiceManager.findAll(getEmpresaSistema());
 		
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
 		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO), "cargo.nome");

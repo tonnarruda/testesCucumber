@@ -45,7 +45,7 @@ alter table grupoac add column acusuario character varying(100);--.go
 alter table grupoac add column acsenha character varying(30);--.go
 
 alter table candidatosolicitacao add column status character(1); --.go
-update candidatosolicitacao set status = 'I';
+update candidatosolicitacao set status = 'I';--.go
 
 update candidatosolicitacao set status = 'C' where id in (
 	select 

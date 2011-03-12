@@ -65,7 +65,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 		tipoAplicacaoIndices = new TipoAplicacaoIndice();
 		tipoAplicacaoIndices.remove(TipoAplicacaoIndice.CARGO);
 
-		indices = indiceManager.findAll(new String[]{"nome"});
+		indices = indiceManager.findAll(getEmpresaSistema());
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		
 		Collection<Certificacao> certificacaos = certificacaoManager.findAllSelect(getEmpresaSistema().getId());

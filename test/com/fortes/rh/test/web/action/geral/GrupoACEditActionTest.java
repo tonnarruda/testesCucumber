@@ -84,15 +84,15 @@ public class GrupoACEditActionTest extends MockObjectTestCase
 		GrupoAC grupoAC = GrupoACFactory.getEntity(1L);
 		action.setGrupoAC(grupoAC);
 
-		manager.expects(once()).method("update").with(eq(grupoAC)).isVoid();
+		manager.expects(once()).method("updateGrupo").with(eq(grupoAC)).isVoid();
 		assertEquals("success", action.update());
 		
 		//exception
-		manager.expects(once()).method("update").with(eq(grupoAC)).will(throwException(new DataIntegrityViolationException("Empresa utilizando")));
+		manager.expects(once()).method("updateGrupo").with(eq(grupoAC)).will(throwException(new DataIntegrityViolationException("Empresa utilizando")));
 		manager.expects(once()).method("findById").will(returnValue(grupoAC));
 		assertEquals("input", action.update());
 
-		manager.expects(once()).method("update").with(eq(grupoAC)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		manager.expects(once()).method("updateGrupo").with(eq(grupoAC)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		manager.expects(once()).method("findById").will(returnValue(grupoAC));
 		assertEquals("input", action.update());
 	}

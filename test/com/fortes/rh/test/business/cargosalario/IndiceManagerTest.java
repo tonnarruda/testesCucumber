@@ -15,6 +15,8 @@ import com.fortes.rh.business.cargosalario.IndiceManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.util.DateUtil;
@@ -123,6 +125,29 @@ public class IndiceManagerTest extends MockObjectTestCase
 		Indice retorno = indiceManager.findHistoricoAtual(null);
 
 		assertNull(retorno);
+	}
+	
+	public void testFindAllGrupoAC()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		
+		Indice indice1 = IndiceFactory.getEntity(1L);
+		Indice indice2 = IndiceFactory.getEntity(2L);
+		
+		Collection<Indice> indices = new ArrayList<Indice>();
+		indices.add(indice1);
+		indices.add(indice2);
+		
+		indiceDao.expects(once()).method("find").withAnyArguments().will(returnValue(indices));
+		
+		Collection<Indice> retorno = indiceManager.findAll(empresa);
+		assertEquals(2, retorno.size());
+
+		empresa.setAcIntegra(false);
+		indiceDao.expects(once()).method("findAll").withAnyArguments().will(returnValue(indices));
+		retorno = indiceManager.findAll(empresa);
+		assertEquals(2, retorno.size());
 	}
 
 	public void testGetCodigoAc()

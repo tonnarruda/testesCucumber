@@ -40,6 +40,7 @@ import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction;
 import com.opensymphony.xwork.ActionContext;
+import com.sun.xml.bind.v2.schemagen.xmlschema.Any;
 
 public class ReajusteColaboradorEditActionTest extends MockObjectTestCase 
 {
@@ -133,7 +134,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		areaOrganizacionalsPropostas.add(AreaOrganizacionalFactory.getEntity(1L));
 		areaOrganizacionalsPropostas.add(AreaOrganizacionalFactory.getEntity(2L));
 		
-		indiceManager.expects(once()).method("findAll").with(eq(new String[]{"nome"})).will(returnValue(new ArrayList<Indice>()));
+		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
 		
 		areaOrganizacionalManager.expects(once()).method("findAllList")
 		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.TODAS)).will(returnValue(new ArrayList<AreaOrganizacional>()));
@@ -177,7 +178,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		action.setReajusteColaborador(reajusteColaborador);
 		
 		manager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(reajusteColaborador));
-		indiceManager.expects(once()).method("findAll").with(eq(new String[]{"nome"})).will(returnValue(new ArrayList<Indice>()));
+		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
 		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
 		
 		Colaborador colaboradorLogado = ColaboradorFactory.getEntity(10L);
@@ -228,7 +229,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").will(returnValue(true));
 		
 		manager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(reajusteColaborador));
-		indiceManager.expects(once()).method("findAll").with(eq(new String[]{"nome"})).will(returnValue(new ArrayList<Indice>()));
+		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
 		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
 		
 		Colaborador colaboradorLogado = ColaboradorFactory.getEntity(10L);

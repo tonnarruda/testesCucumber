@@ -58,7 +58,7 @@ public class GrupoACEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		try {
-			grupoACManager.update(grupoAC);
+			grupoACManager.updateGrupo(grupoAC);
 			return Action.SUCCESS;
 		} catch (DataIntegrityViolationException e) {
 			e.printStackTrace();

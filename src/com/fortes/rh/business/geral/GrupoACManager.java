@@ -9,4 +9,6 @@ public interface GrupoACManager extends GenericManager<GrupoAC>
 	TGrupo[] findTGrupos();
 
 	GrupoAC findByCodigo(String codigo);
+
+	GrupoAC updateGrupo(GrupoAC grupoAC);
 }

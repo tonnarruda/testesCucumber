@@ -78,6 +78,7 @@ import com.fortes.rh.test.business.geral.EstabelecimentoManagerTest;
 import com.fortes.rh.test.business.geral.EstadoManagerTest;
 import com.fortes.rh.test.business.geral.GastoEmpresaManagerTest;
 import com.fortes.rh.test.business.geral.GastoManagerTest;
+import com.fortes.rh.test.business.geral.GrupoACManagerTest;
 import com.fortes.rh.test.business.geral.GrupoGastoManagerTest;
 import com.fortes.rh.test.business.geral.HistoricoBeneficioManagerTest;
 import com.fortes.rh.test.business.geral.HistoricoColaboradorBeneficioManagerTest;
@@ -753,6 +754,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ConfiguracaoRelatorioDinamicoEditActionTest.class);
         suite.addTestSuite(GrupoACDaoHibernateTest.class);
         suite.addTestSuite(GrupoACEditActionTest.class);
+        suite.addTestSuite(GrupoACManagerTest.class);
         suite.addTestSuite(CodigoCBODaoHibernateTest.class);
         suite.addTestSuite(ConfiguracaoCampoExtraDaoHibernateTest.class);
 

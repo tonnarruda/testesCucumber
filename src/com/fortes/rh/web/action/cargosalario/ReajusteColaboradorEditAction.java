@@ -132,7 +132,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	{
 		prepare();
 
-		indices = indiceManager.findAll(new String[]{"nome"});
+		indices = indiceManager.findAll(getEmpresaSistema());
 
 		CollectionUtil<AreaOrganizacional> areasOrganizacionaisUtil = new CollectionUtil<AreaOrganizacional>();
 
@@ -274,7 +274,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	{
 		exibeSalario = getEmpresaSistema().isExibirSalario();
 		
-		indices = indiceManager.findAll(new String[]{"nome"});
+		indices = indiceManager.findAll(getEmpresaSistema());
 
 		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 		Long empresaId = getEmpresaSistema().getId();
