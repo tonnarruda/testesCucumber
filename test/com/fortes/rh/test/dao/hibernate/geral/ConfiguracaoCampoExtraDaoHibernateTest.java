@@ -14,7 +14,7 @@ public class ConfiguracaoCampoExtraDaoHibernateTest extends GenericDaoHibernateT
 {
 	private ConfiguracaoCampoExtraDao configuracaoCampoExtraDao;
 	
-	private static final String dataSet = "/test/dbunit/dataset/ConfiguracaoCampoExtraDaoHibernateTest.xml";
+	private static final String dataSet = "test/dbunit/dataset/ConfiguracaoCampoExtraDaoHibernateTest.xml";
 	
 	DbUnitManager dbUnitManager;
 
