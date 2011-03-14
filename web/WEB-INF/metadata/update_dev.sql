@@ -57,7 +57,14 @@ update candidatosolicitacao set status = 'C' where id in (
 		co.solicitacao_id is not null
 );--.go
 
+update grupoac set acurlsoap = e.acurlsoap from grupoac g inner join empresa e on e.grupoac = g.codigo where e.acurlsoap != '' and e.acurlsoap is not null;--.go
+update grupoac set acurlwsdl = e.acurlwsdl from grupoac g inner join empresa e on e.grupoac = g.codigo where e.acurlwsdl != '' and e.acurlwsdl is not null;--.go
+update grupoac set acusuario = e.acusuario from grupoac g inner join empresa e on e.grupoac = g.codigo where e.acusuario != '' and e.acusuario is not null;--.go
+update grupoac set acsenha = e.acsenha from grupoac g inner join empresa e on e.grupoac = g.codigo where e.acsenha != '' and e.acsenha is not null;--.go
+
 alter table empresa drop column acurlsoap;--.go
 alter table empresa drop column acurlwsdl;--.go
 alter table empresa drop column acusuario;--.go
 alter table empresa drop column acsenha;--.go
+
+alter table empresa alter column exibirDadosAmbiente SET default false;--.go
