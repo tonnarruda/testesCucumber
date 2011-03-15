@@ -23,6 +23,8 @@
 			<@ww.textfield label="URL WS" name="grupoAC.acUrlSoap" id="acUrlSoap" cssClass="inputNome" maxLength="100"/>
 			<@ww.textfield label="URL WSDL" name="grupoAC.acUrlWsdl" id="acUrlWdsl" cssClass="inputNome" maxLength="100"/>
 			
+			<a href="<@ww.url includeParams="none" value="/webservice"/>/RHService?wsdl">WebService</a>
+			
 			<@ww.hidden name="grupoAC.id" />
 			<@ww.token/>
 		</@ww.form>

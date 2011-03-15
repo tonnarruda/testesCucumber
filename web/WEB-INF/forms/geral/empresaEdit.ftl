@@ -143,7 +143,7 @@
 				</ul>
 			</@ww.div>
 		</li>
-		<a href="<@ww.url includeParams="none" value="/webservice"/>/RHService?wsdl">WebService</a>
+		
 
 		<@ww.hidden name="empresa.id" />
 		<@ww.hidden name="empresa.logoUrl" />
