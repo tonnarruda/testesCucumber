@@ -530,17 +530,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().updateDataDesligamentoByCodigo(codigoAC, empresa, dataDesligamento);
 	}
 
-	public boolean religaColaboradorAC(String codigoAC, String empresaCodigo, String grupoAC)
+	public Long religaColaboradorAC(String codigoAC, String empresaCodigo, String grupoAC)
 	{
 		Long colaboradorId = getDao().findByCodigoAC(codigoAC, empresaCodigo, grupoAC).getId();
-		
-		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
-		usuarioManager.reativaAcessoSistema(colaboradorId);
 		
 		candidatoManager.reabilitaByColaborador(colaboradorId);
 		getDao().religaColaborador(colaboradorId);
 
-		return true;
+		return colaboradorId;
 	}
 
 	public Colaborador findColaboradorUsuarioByCpf(String cpf, Long empresaId)

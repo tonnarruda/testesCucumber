@@ -10,6 +10,7 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
@@ -89,6 +90,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	private Mock candidatoManager;
 	private Mock areaOrganizacionalManager;
 	private Mock grupoACManager;
+	private Mock usuarioManager;
 
 	protected void setUp() throws Exception
 	{
@@ -132,6 +134,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		rHServiceManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		grupoACManager = new Mock(GrupoACManager.class);
 		rHServiceManager.setGrupoACManager((GrupoACManager) grupoACManager.proxy());
+		usuarioManager = new Mock(UsuarioManager.class);
+		rHServiceManager.setUsuarioManager((UsuarioManager) usuarioManager.proxy());
 	}
 	
 	public void testBindColaboradorOcorrencias() throws Exception
@@ -204,7 +208,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		String empresaCodigoAC = "123456";
 		String colaboradorCodigoAC = "123123";
 
-		colaboradorManager.expects(once()).method("religaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq("XXX")).will(returnValue(true));
+		colaboradorManager.expects(once()).method("religaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq("XXX")).will(returnValue(1L));
+		usuarioManager.expects(once()).method("reativaAcessoSistema").withAnyArguments();
 		assertEquals(true, rHServiceManager.religarEmpregado(colaboradorCodigoAC, empresaCodigoAC, "XXX"));
 	}
 

@@ -10,6 +10,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
@@ -86,6 +87,7 @@ public class RHServiceImpl implements RHService
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private GrupoACManager grupoACManager;
+	private UsuarioManager usuarioManager;
 
 	public String eco(String texto)
 	{
@@ -282,7 +284,10 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
-			return colaboradorManager.religaColaboradorAC(codigo, empCodigo, grupoAC);
+			Long colaboradorId = colaboradorManager.religaColaboradorAC(codigo, empCodigo, grupoAC);
+			usuarioManager.reativaAcessoSistema(colaboradorId);
+			
+			return true;
 		}
 		catch (Exception e)
 		{
@@ -1064,6 +1069,10 @@ public class RHServiceImpl implements RHService
 
 	public void setGrupoACManager(GrupoACManager grupoACManager) {
 		this.grupoACManager = grupoACManager;
+	}
+
+	public void setUsuarioManager(UsuarioManager usuarioManager) {
+		this.usuarioManager = usuarioManager;
 	}
 
 

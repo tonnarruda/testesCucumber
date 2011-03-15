@@ -41,7 +41,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias);
 	public void enviarEmailCadastro(Colaborador colaborador, Empresa empresa) throws AddressException, MessagingException;
 	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
-	public boolean religaColaboradorAC(String codigoAC, String empCodigo, String grupoAC);
+	public Long religaColaboradorAC(String codigoAC, String empCodigo, String grupoAC);
 	public Colaborador findColaboradorUsuarioByCpf(String cpf,Long empresaId);
 	public void enviaEmailEsqueciMinhaSenha(Colaborador colaborador, Empresa empresa);
 	public String recuperaSenha(String cpf,Empresa empresa);
