@@ -4,7 +4,10 @@ values (1, 'Fortes', 'fortes', 'MTIzNA==', true);
 
 alter sequence usuario_sequence restart with 2;
 
-INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,acurlsoap,acurlwsdl) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal');
+INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acsenha) VALUES (1,'001','AC Padrão','http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal','ADMIN','');
+alter sequence grupoac_sequence restart with 2;
+
+INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,grupoac) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'001');
 alter sequence empresa_sequence restart with 2;
 
 INSERT INTO estabelecimento (id, nome, complementocnpj, empresa_id) values (1,'Estabelecimento Padrão','0000',1);
@@ -174,6 +177,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (18, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (393, 'ROLE_CAD_ESTABELECIMENTO', 'Estabelecimentos', '/geral/estabelecimento/list.action', 3, true, 390);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (19, 'ROLE_CAD_USUARIO', 'Usuários', '/acesso/usuario/list.action', 4, true, 390);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (394, 'ROLE_CAD_BAIRRO', 'Bairros', '/geral/bairro/list.action', 5, true, 390);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (501, 'ROLE_CAD_GRUPOAC', 'Grupos AC', '/geral/grupoAC/list.action', 6, true, 390);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (464, 'ROLE_IMPORTA_CADASTROS', 'Importar Cadastros', '/geral/empresa/prepareImportarCadastros.action', 8, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (38, 'ROLE_UTI_SENHA', 'Alterar Senha', '/acesso/usuario/prepareUpdateSenhaUsuario.action', 2, true, 37);
@@ -255,7 +259,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 501;
+alter sequence papel_sequence restart with 502;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -8531,6 +8535,6 @@ insert into codigoCBO (codigo, descricao) values ('514120','Zelador de edifício
 insert into codigoCBO (codigo, descricao) values ('223310','Zootecnista');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, campoextracolaborador)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.41.32', '', '25', false,false, 2, '1.0.1.41', 1, 3, false);
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.44.33', '', '25', false,false, 2, '1.0.1.41', 1, 3, false);
 
 alter sequence parametrosdosistema_sequence restart with 2;

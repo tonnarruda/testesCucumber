@@ -19,6 +19,19 @@ ALTER TABLE cidade ADD CONSTRAINT cidade_pkey PRIMARY KEY (id);
 ALTER TABLE cidade ADD CONSTRAINT cidade_estado_fk FOREIGN KEY (uf_id) REFERENCES estado(id);
 CREATE SEQUENCE cidade_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
+CREATE TABLE grupoac (
+    id bigint NOT NULL,
+    codigo character varying(3) NOT NULL,
+    descricao character varying(20) NOT NULL,
+    acurlsoap character varying(120),
+    acurlwsdl character varying(120),
+    acusuario character varying(100),
+    acsenha character varying(30)
+);
+ALTER TABLE grupoac ADD CONSTRAINT grupoac_pkey PRIMARY KEY (id);
+CREATE SEQUENCE grupoac_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+alter table GRUPOAC add constraint grupoac_codigo_uk unique (codigo); 
+
 CREATE TABLE empresa (
     id bigint NOT NULL,
     nome character varying(15),
@@ -35,10 +48,6 @@ CREATE TABLE empresa (
     horariotrabalho character varying(50),
     endereco character varying(100),
     acintegra boolean NOT NULL,
-    acurlsoap character varying(120),
-    acurlwsdl character varying(120),
-    acusuario character varying(100),
-    acsenha character varying(30),
     maxcandidatacargo integer NOT NULL,
     logourl character varying(200),
 	exibirsalario boolean NOT NULL,
@@ -47,11 +56,13 @@ CREATE TABLE empresa (
 	atividade character varying(200),
 	mensagemModuloExterno character varying(400),
 	exibirDadosAmbiente boolean default false,
-	logoCertificadoUrl varchar(200)
+	logoCertificadoUrl varchar(200),
+	grupoac character(3)
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_estado_fk FOREIGN KEY (uf_id) REFERENCES estado(id);
+ALTER TABLE empresa ADD CONSTRAINT empresa_grupoac_fk FOREIGN KEY (grupoac) REFERENCES grupoac(codigo);
 CREATE SEQUENCE empresa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE estabelecimento (
@@ -802,7 +813,8 @@ CREATE TABLE candidatosolicitacao (
     id bigint NOT NULL,
     triagem boolean NOT NULL,
     candidato_id bigint,
-    solicitacao_id bigint
+    solicitacao_id bigint,
+    status character(1)
 );
 ALTER TABLE candidatosolicitacao ADD CONSTRAINT candidatosolicitacao_pkey PRIMARY KEY (id);
 ALTER TABLE candidatosolicitacao ADD CONSTRAINT candidatosolicitacao_candidato_fk FOREIGN KEY (candidato_id) REFERENCES candidato(id);
@@ -847,11 +859,11 @@ CREATE TABLE historicocandidato (
     data date,
     responsavel character varying(100),
     observacao text,
-    apto boolean NOT NULL,
     etapaseletiva_id bigint,
     candidatosolicitacao_id bigint,
     horaIni character varying(5),
-    horaFim character varying(5)
+    horaFim character varying(5),
+    apto character(1)
 );
 ALTER TABLE historicocandidato ADD CONSTRAINT historicocandidato_pkey PRIMARY KEY (id);
 ALTER TABLE historicocandidato ADD CONSTRAINT historicocandidato_candidatosolicitacao_fk FOREIGN KEY (candidatosolicitacao_id) REFERENCES candidatosolicitacao(id);
@@ -1401,9 +1413,11 @@ CREATE SEQUENCE entrevista_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO M
 CREATE TABLE indice (
     id bigint NOT NULL,
     nome character varying(40) NOT NULL,
-    codigoac character varying(12)
+    codigoac character varying(12),
+    grupoac character(3)
 );
 ALTER TABLE indice ADD CONSTRAINT indice_pkey PRIMARY KEY (id);
+ALTER TABLE indice ADD CONSTRAINT indice_grupoac_fk FOREIGN KEY (grupoac) REFERENCES grupoac(codigo);
 CREATE SEQUENCE indice_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE indicehistorico (
@@ -2219,4 +2233,4 @@ codigo character varying(6) NOT NULL,
 descricao character varying(200)
 );
 
-alter table codigoCBO add constraint codigocbo_codigo_uk unique (codigo); 
+alter table codigoCBO add constraint codigocbo_codigo_uk unique (codigo);

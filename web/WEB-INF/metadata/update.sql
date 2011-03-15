@@ -5167,3 +5167,69 @@ ALTER TABLE historicocandidato ADD COLUMN horaFim character varying(5);--.go
 update historicocandidato set horaini='00:00', horafim='00:00';--.go
 
 update parametrosdosistema set appversao = '1.1.41.32';--.go
+
+-- versao 1.1.42.33
+
+alter table historicocandidato add column aptoTmp character(1);--.go
+update historicocandidato set aptoTmp='S' where apto=true;--.go
+update historicocandidato set aptoTmp='N' where apto=false;--.go
+
+alter table historicocandidato drop column apto;--.go
+alter table historicocandidato add column apto character(1);--.go
+update historicocandidato set apto=aptoTmp;--.go
+alter table historicocandidato drop column aptoTmp;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (501, 'ROLE_CAD_GRUPOAC', 'Grupos AC', '/geral/grupoAC/list.action', 6, true, 390);--.go
+
+alter sequence papel_sequence restart with 502;--.go
+
+CREATE TABLE grupoac (
+    id bigint NOT NULL,
+    codigo character varying(3) NOT NULL,
+    descricao character varying(20) NOT NULL,
+    acurlsoap character varying(120),
+    acurlwsdl character varying(120),
+    acusuario character varying(100),
+    acsenha character varying(30)
+);--.go
+ALTER TABLE grupoac ADD CONSTRAINT grupoac_pkey PRIMARY KEY (id);--.go
+CREATE SEQUENCE grupoac_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+alter table GRUPOAC add constraint grupoac_codigo_uk unique (codigo);--.go
+
+alter table empresa add column grupoac character(3);--.go
+ALTER TABLE ONLY empresa ADD CONSTRAINT empresa_grupoac_fk FOREIGN KEY (grupoac) REFERENCES grupoac(codigo);--.go
+
+alter table indice add column grupoac character(3);--.go
+ALTER TABLE ONLY indice ADD CONSTRAINT indice_grupoac_fk FOREIGN KEY (grupoac) REFERENCES grupoac(codigo);--.go
+
+INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acsenha) VALUES (1,'001','AC Padrão','http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal','ADMIN','');--.go
+alter sequence grupoac_sequence restart with 2;--.go
+
+update empresa set grupoac='001';--.go
+
+update grupoac set acurlsoap = e.acurlsoap from grupoac g inner join empresa e on e.grupoac = g.codigo where e.acurlsoap != '' and e.acurlsoap is not null;--.go
+update grupoac set acurlwsdl = e.acurlwsdl from grupoac g inner join empresa e on e.grupoac = g.codigo where e.acurlwsdl != '' and e.acurlwsdl is not null;--.go
+update grupoac set acusuario = e.acusuario from grupoac g inner join empresa e on e.grupoac = g.codigo where e.acusuario != '' and e.acusuario is not null;--.go
+update grupoac set acsenha = e.acsenha from grupoac g inner join empresa e on e.grupoac = g.codigo where e.acsenha != '' and e.acsenha is not null;--.go
+
+alter table empresa drop column acurlsoap;--.go
+alter table empresa drop column acurlwsdl;--.go
+alter table empresa drop column acusuario;--.go
+alter table empresa drop column acsenha;--.go
+
+alter table empresa alter column exibirDadosAmbiente SET default false;--.go
+
+alter table candidatosolicitacao add column status character(1);--.go
+update candidatosolicitacao set status = 'I';--.go
+
+update candidatosolicitacao set status = 'C' where id in (
+	select 
+	cs.id
+		from colaborador co
+		inner join candidato ca on ca.id = co.candidato_id
+		inner join candidatosolicitacao cs on cs.solicitacao_id = co.solicitacao_id and cs.candidato_id = co.candidato_id 
+	where 
+		co.solicitacao_id is not null
+);--.go
+
+update parametrosdosistema set appversao = '1.1.42.33';--.go
