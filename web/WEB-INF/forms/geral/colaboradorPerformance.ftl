@@ -494,7 +494,9 @@
 				<tr>
 					<td>
 						<strong>Observações:</strong><br>
-						${colaborador.observacao}
+						<#if colaborador?exists && colaborador.observacao?exists>
+							${colaborador.observacao}
+						</#if>
 					</td>
 				</tr>
 			</table>
