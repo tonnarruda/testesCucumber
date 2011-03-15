@@ -14,7 +14,7 @@
 		</div>
 		<div id="indiceDiv" style="display:none; _margin-top: 10px;">
 			<ul>
-				<@ww.select label="Índice"  name="${model}.indiceProposto.id" id="indice" list="indices" listKey="id" listValue="nome" required="true" headerValue="Selecione..." headerKey="" onchange="calculaSalario();"/>
+				<@ww.select label="Índice"  name="${model}.indiceProposto.id" id="indice" list="indices" listKey="id" listValue="nome" required="true" headerValue="Selecione..." headerKey="" onchange="calculaSalario();" liClass="liLeft" />
 				<@ww.textfield label="Quantidade" name="${model}.quantidadeIndiceProposto" id="quantidade" required="true" onkeypress = "return(somenteNumeros(event,'{,}'));" cssStyle="width: 40px;text-align:right;" maxLength="6" onchange="calculaSalario();"/>
 			</ul>
 		</div>
