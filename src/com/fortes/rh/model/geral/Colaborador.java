@@ -1456,22 +1456,32 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setEmpresaId(Long empresaId)
 	{
-		if (empresa == null)
-			empresa = new Empresa();
+		criarEmpresa();
 		empresa.setId(empresaId);
 	}
 
 	public void setEmpresaNome(String nome)
 	{
+		criarEmpresa();
+		empresa.setNome(nome);
+	}
+
+	public String getEmpresaNome()
+	{
+		if(empresa == null || empresa.getNome()==null)
+			return "";
+		
+		return empresa.getNome();
+	}
+
+	private void criarEmpresa() {
 		if (empresa == null)
 			empresa = new Empresa();
-		empresa.setNome(nome);
 	}
 
 	public void setEmpresaCodigoAC(String codigo)
 	{
-		if (empresa == null)
-			empresa = new Empresa();
+		criarEmpresa();
 		empresa.setCodigoAC(codigo);
 	}
 
