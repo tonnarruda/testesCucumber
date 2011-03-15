@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.jdt.internal.compiler.codegen.CharArrayCache;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -580,7 +581,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setCursos(colaborador.getCursos());
 		candidato.setEndereco(colaborador.getEndereco());
 		candidato.setNome(colaborador.getNome());
-		candidato.setColocacao(Vinculo.EMPREGO);
+		candidato.setColocacao(Vinculo.EMPREGO.toCharArray()[0]);
 		candidato.setPretencaoSalarial(null);
 		candidato.setDisponivel(true);
 		candidato.setBlackList(false);
@@ -1236,7 +1237,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setDataCadastro(new Date());
 		candidato.setDataAtualizacao(DateUtil.montaDataByString(curriculo.getUpdated_rh()));
 		
-		candidato.setColocacao(Vinculo.EMPREGO);
+		candidato.setColocacao(Vinculo.EMPREGO.toCharArray()[0]);
 		candidato.setPretencaoSalarial(null);
 		candidato.setDisponivel(true);
 		candidato.setBlackList(false);

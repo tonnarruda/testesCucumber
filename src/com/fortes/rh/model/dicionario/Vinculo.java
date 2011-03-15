@@ -4,10 +4,10 @@ import java.util.LinkedHashMap;
 
 public class Vinculo extends LinkedHashMap
 {
-	public static final char EMPREGO = 'E';
-	public static final char ESTAGIO = 'S';
-	public static final char APRENDIZ = 'A';
-	public static final char TEMPORARIO = 'T';
+	public static final String EMPREGO = "E";
+	public static final String ESTAGIO = "S";
+	public static final String APRENDIZ = "A";
+	public static final String TEMPORARIO = "T";
 
 	@SuppressWarnings("unchecked")
 	public Vinculo()
