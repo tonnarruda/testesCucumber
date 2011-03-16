@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.jdt.internal.compiler.codegen.CharArrayCache;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -1146,7 +1145,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		
 		nome = montaParametro(nome, "nome", "");
 		cpf = montaParametro(cpf, "cpf", "");
-		escolaridade = montaParametro(escolaridade, "escolaridade", new Escolaridade().getEscolaridadeF2rh(escolaridadeValue));
+		escolaridade = montaParametro(escolaridade, "escolaridade", Escolaridade.getEscolaridadeF2rh(escolaridadeValue));
 		idioma = montaParametro(idioma, "idioma", getIdioma(idiomas, idiomaValue));
 		data_cad_ini = montaParametro(data_cad_ini, "data_cad_ini", DateUtil.formataDate(dataCadIni, "yyyy-MM-dd"));
 		data_cad_fim = montaParametro(data_cad_fim, "data_cad_fim", DateUtil.formataDate(dataCadFim, "yyyy-MM-dd"));
