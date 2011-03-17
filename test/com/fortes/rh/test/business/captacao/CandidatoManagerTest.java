@@ -12,7 +12,9 @@ import java.util.zip.ZipOutputStream;
 
 import mockit.Mockit;
 
+import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.io.FileUtils;
 import org.hibernate.NonUniqueResultException;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
@@ -21,6 +23,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.User;
+import com.fortes.f2rh.test.MockHttpClient;
 import com.fortes.f2rh.test.MockHttpMethod;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.AnuncioManager;
@@ -63,6 +66,7 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
+import com.fortes.rh.test.MockFileUtils;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
@@ -1583,6 +1587,8 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	{
 		String[] curriculoIds = new String[]{"15"};
 		
+		Mockit.redefineMethods(FileUtils.class, MockFileUtils.class);
+		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		
 		candidatoDao.expects(once()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
@@ -1595,6 +1601,8 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	{
 		String[] curriculoIds = new String[]{"15"};
 		
+		Mockit.redefineMethods(FileUtils.class, MockFileUtils.class);
+		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		
 		candidatoDao.expects(once()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Candidato()));

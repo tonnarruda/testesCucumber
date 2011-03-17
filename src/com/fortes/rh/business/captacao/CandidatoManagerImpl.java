@@ -580,7 +580,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setCursos(colaborador.getCursos());
 		candidato.setEndereco(colaborador.getEndereco());
 		candidato.setNome(colaborador.getNome());
-		candidato.setColocacao(Vinculo.EMPREGO);
+		candidato.setColocacao(Vinculo.EMPREGO.toCharArray()[0]);
 		candidato.setPretencaoSalarial(null);
 		candidato.setDisponivel(true);
 		candidato.setBlackList(false);
@@ -1145,7 +1145,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		
 		nome = montaParametro(nome, "nome", "");
 		cpf = montaParametro(cpf, "cpf", "");
-		escolaridade = montaParametro(escolaridade, "escolaridade", new Escolaridade().getEscolaridadeF2rh(escolaridadeValue));
+		escolaridade = montaParametro(escolaridade, "escolaridade", Escolaridade.getEscolaridadeF2rh(escolaridadeValue));
 		idioma = montaParametro(idioma, "idioma", getIdioma(idiomas, idiomaValue));
 		data_cad_ini = montaParametro(data_cad_ini, "data_cad_ini", DateUtil.formataDate(dataCadIni, "yyyy-MM-dd"));
 		data_cad_fim = montaParametro(data_cad_fim, "data_cad_fim", DateUtil.formataDate(dataCadFim, "yyyy-MM-dd"));
@@ -1236,7 +1236,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setDataCadastro(new Date());
 		candidato.setDataAtualizacao(DateUtil.montaDataByString(curriculo.getUpdated_rh()));
 		
-		candidato.setColocacao(Vinculo.EMPREGO);
+		candidato.setColocacao(Vinculo.EMPREGO.toCharArray()[0]);
 		candidato.setPretencaoSalarial(null);
 		candidato.setDisponivel(true);
 		candidato.setBlackList(false);
