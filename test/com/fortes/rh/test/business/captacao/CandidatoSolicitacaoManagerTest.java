@@ -199,6 +199,7 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
 		parametrosDoSistema.setMailNaoAptos("mailNaoAptos");
+		parametrosDoSistema.setEmailCandidatoNaoApto(true);
 
 		Collection<ParametrosDoSistema> parametrosDoSistemas = new ArrayList<ParametrosDoSistema>();
 		parametrosDoSistemas.add(parametrosDoSistema);

@@ -88,7 +88,7 @@
 				<@ww.textfield label="Porta SMTP" name="parametrosDoSistema.emailPort" id="emailPort" size="40" maxLength="100" />
 				<@ww.textfield label="Usuário" name="parametrosDoSistema.emailUser" id="emailUser" size="40" maxLength="50" />
 				<@ww.password label="Senha" name="parametrosDoSistema.emailPass" id="emailPass" size="40" maxLength="50"  after="*Para manter a senha, deixe o campo em branco."/>
-				<@ww.checkbox label="Enviar e-mails de confirmação" id="enviarEmail" name="parametrosDoSistema.enviarEmail" liClass="liLeft" labelPosition="left"/>
+				<@ww.checkbox label="Enviar e-mails de confirmação" id="enviarEmail" name="parametrosDoSistema.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/>
 				<@ww.textarea label="Texto para email de candidatos não aptos" name="parametrosDoSistema.mailNaoAptos" id="mailNaoAptos" size="40"/>
 			</ul>
 		</@ww.div>
