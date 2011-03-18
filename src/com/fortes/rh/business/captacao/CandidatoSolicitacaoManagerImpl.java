@@ -128,13 +128,16 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
         String subject = "Solicitação de Candidatos";
         parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findAll().toArray()[0];
         String body = parametrosDoSistema.getMailNaoAptos();
-
-        if (candidatoSolicitacoes != null  && StringUtils.isNotBlank(body))
+        
+        if (parametrosDoSistema.getEmailCandidatoNaoApto())
         {
-        	for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacoes)
+	        if (candidatoSolicitacoes != null  && StringUtils.isNotBlank(body))
 	        {
-    			if (StringUtils.isNotBlank(candidatoSolicitacao.getCandidato().getContato().getEmail()))
-    				mail.send(empresa, subject, body, null, candidatoSolicitacao.getCandidato().getContato().getEmail());
+	        	for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacoes)
+		        {
+	    			if (StringUtils.isNotBlank(candidatoSolicitacao.getCandidato().getContato().getEmail()))
+	    				mail.send(empresa, subject, body, null, candidatoSolicitacao.getCandidato().getContato().getEmail());
+		        }
 	        }
         }
     }

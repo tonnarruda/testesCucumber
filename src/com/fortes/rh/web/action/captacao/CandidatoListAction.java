@@ -239,6 +239,7 @@ public class CandidatoListAction extends MyActionSupportList
 			empresaId = null;
 		
 		deficiencias = new Deficiencia();
+		deficiencias.put(100, "Qualquer Deficiência");
 		escolaridades = new Escolaridade();
 		nivels = new NivelIdioma();
 		sexos = new Sexo();

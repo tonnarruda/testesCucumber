@@ -351,8 +351,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		// Deficiencia
 		String deficiencia = ((String)parametros.get("deficiencia"));
 
-		if( isNotBlank(deficiencia) && !deficiencia.equals(Deficiencia.SEM_DEFICIENCIA))
+		if( isNotBlank(deficiencia) && !deficiencia.equals(Deficiencia.SEM_DEFICIENCIA) && !deficiencia.equals("100"))
 			criteria.add(Expression.eq("c.pessoal.deficiencia", deficiencia));
+		if( isNotBlank(deficiencia) && deficiencia.equals("100"))//PARA BUSCA DE QUALQUER DEFICIENCIA
+			criteria.add(Expression.ne("c.pessoal.deficiencia", Deficiencia.SEM_DEFICIENCIA));
 
 		// Faixa Etaria
 		String idadeMin = (String)parametros.get("idadeMin");

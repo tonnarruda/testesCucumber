@@ -77,7 +77,8 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
-	<!- Avisa Temporário -->	
+	<!-- Aviso comentado	
+		
 	<div class="waDivTituloX">Aviso!</div>
 	<div class="waDivFormularioX">
 
@@ -95,7 +96,7 @@
 	
 		</div>
 		<br>
-	
+	-->
 	<#if questionarios?exists || avaliacoesDesempenhoPendentes?exists>
 		<div class="waDivTituloX">Pesquisas/Avaliações Disponíveis</div>
 		<div class="waDivFormularioX">

@@ -62,6 +62,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String diasLembretePeriodoExperiencia;
     
     private Boolean enviarEmail = false;
+    private Boolean emailCandidatoNaoApto = false;
 
     private Boolean atualizadoSucesso;
 
@@ -304,6 +305,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setCodClienteSuporte(String codClienteSuporte) {
 		this.codClienteSuporte = codClienteSuporte;
 	}
+
 	public String getCamposCandidatoVisivel() {
 		return camposCandidatoVisivel;
 	}
@@ -323,4 +325,10 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 		this.camposCandidatoTabs = camposCandidatoTabs;
 	}
 
+	public Boolean getEmailCandidatoNaoApto() {
+		return emailCandidatoNaoApto;
+	}
+	public void setEmailCandidatoNaoApto(Boolean emailCandidatoNaoApto) {
+		this.emailCandidatoNaoApto = emailCandidatoNaoApto;
+	}
 }
