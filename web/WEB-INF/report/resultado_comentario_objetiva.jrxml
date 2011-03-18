@@ -65,22 +65,6 @@
 						x="14"
 						y="0"
 						width="515"
-						height="12"
-						key="textField"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(false)))]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{comentario} == null ? ($F{colaboradorQuestionario.colaborador.nomeComercial} ==null?$F{colaboradorQuestionario.colaborador.nome}:$F{colaboradorQuestionario.colaborador.nomeComercial}) + ": " : ($F{colaboradorQuestionario.colaborador.nomeComercial} ==null?$F{colaboradorQuestionario.colaborador.nome}:$F{colaboradorQuestionario.colaborador.nomeComercial}) + ": " +$F{comentario}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="14"
-						y="0"
-						width="515"
 						height="13"
 						key="textField-2"
 						isRemoveLineWhenBlank="true">
@@ -91,6 +75,38 @@
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{comentario}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="14"
+						y="0"
+						width="121"
+						height="13"
+						key="textField"
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(false)))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaboradorQuestionario.colaborador.nomeComercial} ==null?$F{colaboradorQuestionario.colaborador.nome}:$F{colaboradorQuestionario.colaborador.nomeComercial}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="135"
+						y="0"
+						width="393"
+						height="13"
+						key="textField-3"
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(false)))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{comentario} == null ? ": Sem Comentário" : ": " + $F{comentario}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
