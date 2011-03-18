@@ -328,6 +328,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	areaInteresseManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AreaInteresse>()));
     	conhecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Conhecimento>()));
     	empresaManager.expects(once()).method("findToList").will(returnValue(empresas));
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	
     	action.setCandidatoManager(null); 
     	
@@ -359,6 +360,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	formacaoManager.expects(once()).method("findByCandidato").will(returnValue(new ArrayList<Formacao>()));
     	candidatoIdiomaManager.expects(once()).method("findByCandidato").will(returnValue(new ArrayList<CandidatoIdioma>()));
     	experienciaManager.expects(once()).method("findByCandidato").will(returnValue(new ArrayList<Experiencia>()));
+    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	
     	assertEquals("success", action.prepareUpdate());
     }
