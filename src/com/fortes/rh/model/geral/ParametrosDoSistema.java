@@ -79,6 +79,9 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Exame exame; // Exame ASO
 
     private String emailDoSuporteTecnico;
+    private String camposCandidatoVisivel;
+    private String camposCandidatoObrigatorio;
+    private String camposCandidatoTabs;
     
 	public String getDiasLembretePesquisa()
 	{
@@ -301,4 +304,23 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setCodClienteSuporte(String codClienteSuporte) {
 		this.codClienteSuporte = codClienteSuporte;
 	}
+	public String getCamposCandidatoVisivel() {
+		return camposCandidatoVisivel;
+	}
+	public void setCamposCandidatoVisivel(String camposCandidatoVisivel) {
+		this.camposCandidatoVisivel = camposCandidatoVisivel;
+	}
+	public String getCamposCandidatoObrigatorio() {
+		return camposCandidatoObrigatorio;
+	}
+	public void setCamposCandidatoObrigatorio(String camposCandidatoObrigatorio) {
+		this.camposCandidatoObrigatorio = camposCandidatoObrigatorio;
+	}
+	public String getCamposCandidatoTabs() {
+		return camposCandidatoTabs;
+	}
+	public void setCamposCandidatoTabs(String camposCandidatoTabs) {
+		this.camposCandidatoTabs = camposCandidatoTabs;
+	}
+
 }

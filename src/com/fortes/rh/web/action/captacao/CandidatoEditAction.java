@@ -146,10 +146,12 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private Map estados;
 	
 	private String nomeImg;
+	private ParametrosDoSistema parametrosDoSistema;
 
 	private void prepare() throws Exception
 	{
 		Long empresaId;
+		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 	
 		if(!moduloExterno)
 		{
@@ -158,7 +160,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		}
 		else
 		{
-			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 			
 			if (parametrosDoSistema.getUpperCase() != null)
 				upperCase = parametrosDoSistema.getUpperCase();
@@ -1253,6 +1254,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public void setExibirAbaDocumentos(boolean exibirAbaDocumentos) {
 		this.exibirAbaDocumentos = exibirAbaDocumentos;
+	}
+
+	public ParametrosDoSistema getParametrosDoSistema() {
+		return parametrosDoSistema;
 	}
 
 }

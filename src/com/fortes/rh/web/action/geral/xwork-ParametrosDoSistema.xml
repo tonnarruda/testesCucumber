@@ -10,5 +10,11 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/parametrosDoSistemaEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/parametrosDoSistemaEdit.ftl</result>
 		</action>
+		<action name="listCamposCandidato" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="listCamposCandidato">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/listCamposCandidato.ftl</result>
+		</action>
+		<action name="updateCamposCandidato" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="updateCamposCandidato">
+			<result name="success" type="redirect">listCamposCandidato.action</result>
+		</action>
 	</package>
 </xwork>

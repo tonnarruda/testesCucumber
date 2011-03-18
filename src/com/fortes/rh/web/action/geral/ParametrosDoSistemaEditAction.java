@@ -11,6 +11,7 @@ import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
 
@@ -27,6 +28,9 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private Collection<Perfil> perfils;
 	private Collection<Exame> exames;
 
+	private String[] camposCandidatoObrigatorios;
+	private String[] camposCandidatoVisivels;
+	
 	public String prepareUpdate() throws Exception
 	{
 		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
@@ -56,6 +60,25 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		exames = exameManager.findAllSelect(getEmpresaSistema().getId());
 		addActionMessage("Configurações do Sistema atualizadas com sucesso!");
 
+		return Action.SUCCESS;
+	}
+	
+	public String listCamposCandidato() throws Exception
+	{
+		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+		return Action.SUCCESS;
+	}
+	
+	public String updateCamposCandidato() throws Exception
+	{
+		ParametrosDoSistema parametrosDoSistemaTmp = parametrosDoSistemaManager.findById(1L);
+		
+		parametrosDoSistemaTmp.setCamposCandidatoObrigatorio(StringUtil.converteArrayToString(camposCandidatoObrigatorios));
+		parametrosDoSistemaTmp.setCamposCandidatoVisivel(StringUtil.converteArrayToString(camposCandidatoVisivels));
+		parametrosDoSistemaTmp.setCamposCandidatoTabs(parametrosDoSistema.getCamposCandidatoTabs());
+		
+		parametrosDoSistemaManager.update(parametrosDoSistemaTmp);
+		
 		return Action.SUCCESS;
 	}
 
@@ -98,4 +121,21 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	public Collection<Exame> getExames() {
 		return exames;
 	}
+
+	public String[] getCamposCandidatoObrigatorios() {
+		return camposCandidatoObrigatorios;
+	}
+
+	public void setCamposCandidatoObrigatorios(String[] camposCandidatoObrigatorios) {
+		this.camposCandidatoObrigatorios = camposCandidatoObrigatorios;
+	}
+
+	public String[] getCamposCandidatoVisivels() {
+		return camposCandidatoVisivels;
+	}
+
+	public void setCamposCandidatoVisivels(String[] camposCandidatoVisivels) {
+		this.camposCandidatoVisivels = camposCandidatoVisivels;
+	}
+
 }
