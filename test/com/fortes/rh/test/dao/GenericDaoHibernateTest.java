@@ -8,7 +8,7 @@ import com.fortes.dao.GenericDao;
 public abstract class GenericDaoHibernateTest<T> extends BaseDaoHibernateTest
 {
 	
-	private static final Logger logger = Logger.getLogger(GenericDaoHibernateTest.class);
+	protected static final Logger logger = Logger.getLogger(GenericDaoHibernateTest.class);
 	
 	public abstract GenericDao<T> getGenericDao();
 

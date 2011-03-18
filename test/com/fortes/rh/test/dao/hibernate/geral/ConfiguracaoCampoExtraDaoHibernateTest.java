@@ -2,6 +2,8 @@ package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.Collection;
 
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.ConfiguracaoCampoExtraDao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
@@ -20,6 +22,25 @@ public class ConfiguracaoCampoExtraDaoHibernateTest extends GenericDaoHibernateT
 
 	public void setDbUnitManager(DbUnitManager dbUnitManager) {
 		this.dbUnitManager = dbUnitManager;
+	}
+	
+	@Override
+	public void testRemove() throws Exception {
+		dadoQueJaExistemTresRegistrosCadastradosNoBanco();
+		configuracaoCampoExtraDao.remove(-9997L);
+		assertQueEntidadeFoiRemovida();
+	}
+
+	private void assertQueEntidadeFoiRemovida() {
+		Exception ex = null;
+		try {
+			configuracaoCampoExtraDao.findById(-9997L);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			ex = e;
+		}
+		assertNotNull(ex);
+		assertTrue(ex instanceof HibernateObjectRetrievalFailureException);
 	}
 	
 	public void testFindAllSelect() {
