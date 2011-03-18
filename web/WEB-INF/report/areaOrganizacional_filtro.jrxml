@@ -33,6 +33,7 @@
 	<field name="estabelecimento.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.grupoOcupacional.nome" class="java.lang.String"/>
 	<field name="descricaoEmpresaEstabelecimentoAreaOrganizacional" class="java.lang.String"/>
+	<field name="nomeMaisNomeComercial" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="gruposAreas" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
@@ -187,7 +188,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nomeMaisNomeComercial}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

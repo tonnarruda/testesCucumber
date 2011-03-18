@@ -1907,6 +1907,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return descricao.toString();
 	}
 	
+	public String getNomeMaisNomeComercial()
+	{
+		String NomeMaisNomeComercial  = this.nome;
+		if (this.nomeComercial != null)
+			NomeMaisNomeComercial += " (" + this.nomeComercial + ")"; 
+			
+		return NomeMaisNomeComercial;
+	}
+	
 	public boolean isRespondeuEntrevista()
 	{
 		return respondeuEntrevista;
