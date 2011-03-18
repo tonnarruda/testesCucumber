@@ -1,11 +1,15 @@
 package com.fortes.rh.test.dao;
 
+import org.apache.log4j.Logger;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.dao.GenericDao;
 
 public abstract class GenericDaoHibernateTest<T> extends BaseDaoHibernateTest
 {
+	
+	private static final Logger logger = Logger.getLogger(GenericDaoHibernateTest.class);
+	
 	public abstract GenericDao<T> getGenericDao();
 
 	public abstract T getEntity();
@@ -29,27 +33,6 @@ public abstract class GenericDaoHibernateTest<T> extends BaseDaoHibernateTest
 
 		assertNotNull(entity);
 	}
-
-	/*public void testFind() throws Exception
-	{
-		T entity = getEntity();
-		entity = getGenericDao().save(entity);
-
-		Collection<T> entitys = getGenericDao().find(entity);
-
-		assertFalse(entitys.isEmpty());
-		//assertTrue(entitys.isEmpty());
-	}*/
-
-	/*public void testFindAll() throws Exception
-	{
-		T entity = getEntity();
-		entity = getGenericDao().save(entity);
-
-		Collection<T> entitys = getGenericDao().findAll();
-
-		assertFalse(entitys.isEmpty());
-	}*/
 
 	public void testUpdate() throws Exception
 	{
@@ -77,7 +60,7 @@ public abstract class GenericDaoHibernateTest<T> extends BaseDaoHibernateTest
 		try {
 			entity = getGenericDao().findById(id);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			ex = e;
 		}
 
