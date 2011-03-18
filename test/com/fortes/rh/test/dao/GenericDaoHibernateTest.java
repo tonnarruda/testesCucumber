@@ -1,5 +1,7 @@
 package com.fortes.rh.test.dao;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.apache.log4j.Logger;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
@@ -18,15 +20,20 @@ public abstract class GenericDaoHibernateTest<T> extends BaseDaoHibernateTest
 	{
 		T entity = getEntity();
 		entity = getGenericDao().save(entity);
-		Long id = (Long) (entity.getClass().getMethod("getId",new Class[]{}).invoke(entity, new Object[]{}));
+		Long id = getIdFrom(entity);
 		assertNotNull(id);
+	}
+
+	private Long getIdFrom(T entity) throws IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException {
+		return (Long) (entity.getClass().getMethod("getId",new Class[]{}).invoke(entity, new Object[]{}));
 	}
 
 	public void testFindById() throws Exception
 	{
 		T entity = getEntity();
 		entity = getGenericDao().save(entity);
-		Long id = (Long) (entity.getClass().getMethod("getId",new Class[]{}).invoke(entity, new Object[]{}));
+		Long id = getIdFrom(entity);
 
 		entity = null;
 		entity = getGenericDao().findById(id);
@@ -38,7 +45,7 @@ public abstract class GenericDaoHibernateTest<T> extends BaseDaoHibernateTest
 	{
 		T entity = getEntity();
 		entity = getGenericDao().save(entity);
-		Long id = (Long) (entity.getClass().getMethod("getId",new Class[]{}).invoke(entity, new Object[]{}));
+		Long id = getIdFrom(entity);
 
 		getGenericDao().update(entity);
 
@@ -51,7 +58,7 @@ public abstract class GenericDaoHibernateTest<T> extends BaseDaoHibernateTest
 	{
 		T entity = getEntity();
 		entity = getGenericDao().save(entity);
-		Long id = (Long) (entity.getClass().getMethod("getId",new Class[]{}).invoke(entity, new Object[]{}));
+		Long id = getIdFrom(entity);
 
 		getGenericDao().remove(id);
 
