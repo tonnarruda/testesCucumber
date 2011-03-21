@@ -57,219 +57,238 @@
   </style>
 	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
 	
-  <#if empresaId?exists>
-    <#assign idDaEmpresa=empresaId/>
-  <#else>
-    <#assign idDaEmpresa><@authz.authentication operation="empresaId"/></#assign>
-  </#if>
+	<#if empresaId?exists>
+		<#assign idDaEmpresa=empresaId/>
+	<#else>
+		<#assign idDaEmpresa><@authz.authentication operation="empresaId"/></#assign>
+	</#if>
 
-  <script type='text/javascript'>
-    function populaConhecimento(frm, nameCheck)
-    {
-      DWRUtil.useLoadingMessage('Carregando...');
-      var areasIds = getArrayCheckeds(frm, nameCheck);
-
-      CandidatoDWR.getConhecimentos(createListConhecimentos, areasIds, ${idDaEmpresa});
-    }
-
-   	function validarCamposCpf()
-    {
-		<#if moduloExterno?exists && moduloExterno>
-			return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
-	   	<#else> 
-	       	if (jQuery("#cpf").val() == "   .   .   -  ")
-	   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
-	   		else
-		   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
-		 </#if>
-    }
-
-    function createListConhecimentos(data)
-    {
-      addChecks('conhecimentosCheck',data)
-    }
-
-    function setaCampos()
-    {
-    	<#if moduloExterno?exists && moduloExterno && !candidato.id?exists>
-				if( !validarSenhaExterno())
-		  		return false;
-		<#else>
-			if( !validarSenhaInterno())
-		  		return false;
-		</#if>
-		
-		
-		<#if maxCandidataCargo?exists && 0 < maxCandidataCargo>
-		  if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') > ${maxCandidataCargo})
-		  {
-		    jAlert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
-		    return false;
-		  }
-		</#if>
-
-		document.getElementById('candidato.cursos').value = document.getElementById('desCursos').value;
-		document.getElementById('candidato.observacao').value = document.getElementById('obs').value;
-
-		if(document.getElementById('obsrh'))
-		  document.getElementById('candidato.observacaoRH').value = document.getElementById('obsrh').value;
-
-		return true;
-    }
-    
-	function validarSenhaInterno()
-	{ 
-		var senhaValue = document.getElementById('senha').value;
-		if(senhaValue != "" && senhaValue != document.getElementById('comfirmaSenha').value )
-		{
-			jAlert("Senha não confere");
-			return false;
-		}
-	
-		return true;
-	}
-    
-	function validarSenhaExterno()
-	{	
-		if(document.getElementById('senha').value == "" )
-		{
-			jAlert("Senha obrigatória para acesso ao modulo exteno.");
-			return false;
-		}
-	    
-		if((document.getElementById('senha').value != document.getElementById('comfirmaSenha').value) )
-		{
-			jAlert("Senha não confere.");
-			return false;
-		}
-	
-		return true;
-	}
-    
-
-    function setDescricao(data)
-    {
-      if(data == null)
-      {
-        jAlert("Código " + document.getElementById('codCbo').value + " não encontrado.");
-        document.getElementById('descricaoCargo').value = "";
-        document.getElementById('codCbo').value = "";
-        document.getElementById('funcaoId').value = "";
-        document.getElementById('codCbo').focus();
-      }
-      else
-      {
-        for (var prop in data)
-        {
-          DWRUtil.setValue("descricaoCargo",data[prop]);
-          DWRUtil.setValue("funcaoId",prop);
-        }
-      }
-    }
-
-    function habilitaPagaPensao()
-    {
-     var pagaPensao = document.getElementById('pagaPensaoId');
-     var quantidade = document.getElementById('quantidadeId');
-     var valor      = document.getElementById('valorId');
-
-     if(pagaPensao.value == "true")
-     {
-		quantidade.disabled=false;
-		valor.disabled=false;
-     }
-     else
-     {
-		quantidade.disabled=true;
-		valor.disabled=true;
-     }
-
-    }
-
-	jQuery(function($) {
-		$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
-		$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
-		$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${idDaEmpresa}"/>');
-		
-		addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
-		
+	<script type='text/javascript'>
+					
 		var camposCandidatoVisivel = "${parametrosDoSistema.camposCandidatoVisivel}";
 		var camposCandidatoObrigatorio = "${parametrosDoSistema.camposCandidatoObrigatorio}";
+
+		var abasVisiveis = "${parametrosDoSistema.camposCandidatoTabs}";
+		var arrayAbasVisiveis  = abasVisiveis.split(',');
+		var qtdAbas = arrayAbasVisiveis.length;
+		var arrayObrigatorios = new Array();
 		
-		jQuery('.campo').each(function (){
-			if (!camposCandidatoVisivel.split(',').contains(this.id.replace('wwgrp_', '')))
-				jQuery(this).hide();
+		jQuery(function($) {
+			<#assign qtdAbas>qtdAbas</#assign>
+			
+			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
+			
+			$('.campo').each(function (){
+				if (!camposCandidatoVisivel.split(',').contains(this.id.replace('wwgrp_', '')))
+					$(this).hide();
+			});
+			
+			camposCandidatoObrigatorio.split(',').each(function (idCampo){
+			    var lblAntigo = $('label[for='+idCampo+']');
+			    lblAntigo.text(lblAntigo.text().replace(/\s$/, '') + "*");
+			});
+			
+			if(camposCandidatoObrigatorio != "")
+				arrayObrigatorios = camposCandidatoObrigatorio.split(',');
+				
+			$('#abas div').each(function(){
+			        if(!arrayAbasVisiveis.contains($(this).attr('class')))
+			            $(this).hide();
+			});
+			
+			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
+			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
+			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${idDaEmpresa}"/>');
+			
+			if(qtdAbas == 1)
+				ajustaBotoes(1, 1);
 		});
-	});
-	
-	
-	function verificaCpf(data)
-    {
-    	 <#if moduloExterno?exists && moduloExterno>
-			<#if candidato.id?exists>
-				<#if idDaEmpresa?exists>
-					verificaCpfDuplicado(data, ${idDaEmpresa}, true, ${candidato.id}, true);
-				<#else>
-					verificaCpfDuplicado(data, null, true, ${candidato.id}, true);
-				</#if>
+
+		function populaConhecimento(frm, nameCheck)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			var areasIds = getArrayCheckeds(frm, nameCheck);
+		
+			CandidatoDWR.getConhecimentos(createListConhecimentos, areasIds, ${idDaEmpresa});
+		}
+		
+		function validarCamposCpf()
+		{
+			<#if moduloExterno?exists && moduloExterno>
+				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+		   	<#else>
+		       	if (jQuery("#cpf").val() == "   .   .   -  ")
+		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+		   		else
+			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+			 </#if>
+		}
+		
+		function createListConhecimentos(data)
+		{
+			addChecks('conhecimentosCheck',data)
+		}
+		
+		function setaCampos()
+		{
+			<#if moduloExterno?exists && moduloExterno && !candidato.id?exists>
+					if( !validarSenhaExterno())
+			  		return false;
 			<#else>
-				<#if idDaEmpresa?exists>
-					verificaCpfDuplicado(data, ${idDaEmpresa}, true, null, true);
-				<#else>
-					verificaCpfDuplicado(data, null, true, null, true);
-				</#if>
+				if( !validarSenhaInterno())
+			  		return false;
 			</#if>
-		<#else>
-			<#if candidato.id?exists>
-				verificaCpfDuplicado(data, ${idDaEmpresa}, null, ${candidato.id}, true);
+			
+			
+			<#if maxCandidataCargo?exists && 0 < maxCandidataCargo>
+				if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') > ${maxCandidataCargo})
+				{
+					jAlert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
+					return false;
+				}
+			</#if>
+		
+			document.getElementById('candidato.cursos').value = document.getElementById('desCursos').value;
+			document.getElementById('candidato.observacao').value = document.getElementById('obs').value;
+		
+			if(document.getElementById('obsrh'))
+				document.getElementById('candidato.observacaoRH').value = document.getElementById('obsrh').value;
+		
+			return true;
+		}
+		
+		function validarSenhaInterno()
+		{ 
+			var senhaValue = document.getElementById('senha').value;
+			if(senhaValue != "" && senhaValue != document.getElementById('comfirmaSenha').value )
+			{
+				jAlert("Senha não confere");
+				return false;
+			}
+		
+			return true;
+		}
+		
+		function validarSenhaExterno()
+		{	
+			if(document.getElementById('senha').value == "" )
+			{
+				jAlert("Senha obrigatória para acesso ao modulo exteno.");
+				return false;
+			}
+		    
+			if((document.getElementById('senha').value != document.getElementById('comfirmaSenha').value) )
+			{
+				jAlert("Senha não confere.");
+				return false;
+			}
+		
+			return true;
+		}
+		
+		
+		function setDescricao(data)
+		{
+		  if(data == null)
+		  {
+		    jAlert("Código " + document.getElementById('codCbo').value + " não encontrado.");
+		    document.getElementById('descricaoCargo').value = "";
+		    document.getElementById('codCbo').value = "";
+		    document.getElementById('funcaoId').value = "";
+		    document.getElementById('codCbo').focus();
+		  }
+		  else
+		  {
+		    for (var prop in data)
+		    {
+		      DWRUtil.setValue("descricaoCargo",data[prop]);
+		      DWRUtil.setValue("funcaoId",prop);
+		    }
+		  }
+		}
+		
+		function habilitaPagaPensao()
+		{
+			 var pagaPensao = document.getElementById('pagaPensaoId');
+			 var quantidade = document.getElementById('quantidadeId');
+			 var valor      = document.getElementById('valorId');
+			
+			 if(pagaPensao.value == "true")
+			 {
+				quantidade.disabled=false;
+				valor.disabled=false;
+			 }
+			 else
+			 {
+				quantidade.disabled=true;
+				valor.disabled=true;
+			 }
+		}
+		
+		function verificaCpf(data)
+		{
+			 <#if moduloExterno?exists && moduloExterno>
+				<#if candidato.id?exists>
+					<#if idDaEmpresa?exists>
+						verificaCpfDuplicado(data, ${idDaEmpresa}, true, ${candidato.id}, true);
+					<#else>
+						verificaCpfDuplicado(data, null, true, ${candidato.id}, true);
+					</#if>
+				<#else>
+					<#if idDaEmpresa?exists>
+						verificaCpfDuplicado(data, ${idDaEmpresa}, true, null, true);
+					<#else>
+						verificaCpfDuplicado(data, null, true, null, true);
+					</#if>
+				</#if>
 			<#else>
-				verificaCpfDuplicado(data, ${idDaEmpresa}, null, null, true);
-			</#if>			
-		</#if>
-    }
-	
+				<#if candidato.id?exists>
+					verificaCpfDuplicado(data, ${idDaEmpresa}, null, ${candidato.id}, true);
+				<#else>
+					verificaCpfDuplicado(data, ${idDaEmpresa}, null, null, true);
+				</#if>			
+			</#if>
+		}
 </script>
 
   <@ww.head />
-  
-  <#if moduloExterno?exists && moduloExterno>
+
+	<#if moduloExterno?exists && moduloExterno>
+		<#if upperCase?exists && upperCase>
+			<#assign capitalizar = "this.value = this.value.toUpperCase();" />
+		<#else>
+			<#assign capitalizar = "" />
+		</#if>
 		
-
-	<#if upperCase?exists && upperCase>
-	  <#assign capitalizar = "this.value = this.value.toUpperCase();" />
+		<#if candidato.id?exists>
+			<#assign actionCancelar="../externo/prepareListAnuncio.action?empresaId=${empresaId}"/>
+			<#assign formAction="../externo/update.action?moduloExterno=true"/>
+		<#else>
+			<#assign actionCancelar="../externo/prepareLogin.action?empresaId=${empresaId}"/>
+			<#assign formAction="../externo/insert.action?moduloExterno=true"/>
+		</#if>
 	<#else>
-	  <#assign capitalizar = "" />
+		<#assign capitalizar = "" />
+		<#assign actionCancelar="list.action"/>
+		
+		<#if candidato.id?exists>
+			<#assign formAction="update.action"/>
+		<#else>
+			<#assign formAction="insert.action"/>
+		</#if>
 	</#if>
-
-    <#if candidato.id?exists>
-      <#assign actionCancelar="../externo/prepareListAnuncio.action?empresaId=${empresaId}"/>
-      <#assign formAction="../externo/update.action?moduloExterno=true"/>
-    <#else>
-      <#assign actionCancelar="../externo/prepareLogin.action?empresaId=${empresaId}"/>
-      <#assign formAction="../externo/insert.action?moduloExterno=true"/>
-    </#if>
-  <#else>
-    <#assign capitalizar = "" />
-    <#assign actionCancelar="list.action"/>
-
-    <#if candidato.id?exists>
-      <#assign formAction="update.action"/>
-    <#else>
-      <#assign formAction="insert.action"/>
-    </#if>
-  </#if>
 
 	<#assign edit="true"/>
 
-  <#if candidato.id?exists>
-    <title>Editar Candidato</title>
-    <#assign accessKey="A"/>
-    <#assign edicao="true"/>
-  <#else>
-    <title>Inserir Candidato</title>
-    <#assign accessKey="G"/>
-    <#assign edicao="false"/>
-  </#if>
+	<#if candidato.id?exists>
+		<title>Editar Candidato</title>
+		<#assign accessKey="A"/>
+		<#assign edicao="true"/>
+	<#else>
+		<title>Inserir Candidato</title>
+		<#assign accessKey="G"/>
+		<#assign edicao="false"/>
+	</#if>
 
   <#if candidato?exists && candidato.id?exists>
     <#if candidato.pessoal?exists && candidato.pessoal.dataNascimento?exists>
@@ -314,40 +333,26 @@
 		<#assign cpfObrigatorio = "true"/>
 	</#if>
 
-	<#assign camposObrigatorio = "true"/>
-	<#if candidato.id?exists>
-			<#assign camposObrigatorio = "false"/>
-	</#if>
-
 </head>
 
 <body>
 <@ww.actionerror />
 
-	<#assign qtdAbas = 5/>
-	<#if !exibirAbaDocumentos>
-		<#assign qtdAbas = 4/>
-	</#if>
-
-    <div id="abas">
-	      <div id="aba1"><a href="javascript: abas(1, '',${edicao},${qtdAbas})">Dados Pessoais</a></div>
-	      
-	      <div id="aba2"><a href="javascript: abas(2, '',${edicao},${qtdAbas})">Formação Escolar</a></div>
-	      
-	      <div id="aba3"><a href="javascript: abas(3, '',${edicao},${qtdAbas})">Perfil Profissional</a></div>
-	      <div id="aba4"><a href="javascript: abas(4, '',${edicao},${qtdAbas})">Experiências</a></div>
-	    <#if exibirAbaDocumentos>
-	      <div id="aba5"><a href="javascript: abas(5, '',${edicao})">Documentos</a></div>
-	    </#if>
+	<div id="abas">
+    	<div id="aba1" class="abaDadosPessoais"><a href="javascript: abas(1, '',${edicao},${qtdAbas})">Dados Pessoais</a></div>
+		<div id="aba2" class="abaFormacaoEscolar"><a href="javascript: abas(2, '',${edicao},${qtdAbas})">Formação Escolar</a></div>
+		<div id="aba3" class="abaPerfilProfissional"><a href="javascript: abas(3, '',${edicao},${qtdAbas})">Perfil Profissional</a></div>
+		<div id="aba4" class="abaExperiencias"><a href="javascript: abas(4, '',${edicao},${qtdAbas})">Experiências</a></div>
+		<div id="aba5" class="abaDocumentos"><a href="javascript: abas(5, '',${edicao})">Documentos</a></div>
     </div>
 
-    <div id="content2" style="display:none; width:98%;">
+    <div id="content2" class="2" style="display:none; width:98%;">
 		<@ww.div  id="formacao"/>
 		<@ww.div  id="idioma"/>
 		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}"/>
     </div>
 
-	<div id="content4" style="display: none;">
+	<div id="content4" class="4" style="display: none;">
 		<@ww.div id="expProfissional"/>
 
 		<div id="infoAdicionais">
@@ -365,7 +370,7 @@
 
 
     <@ww.form name="form" action="${formAction}" validate="true" onsubmit="javascript:validarCamposCpf()" method="POST" enctype="multipart/form-data">
-		<div id="content1">
+		<div id="content1" class="1">
 			<#if candidato.foto?exists>
 				<input type="checkbox" name="exibirFoto" onclick="mostra();" id="exibeFoto"/><label for="exibeFoto">Exibir Foto</label>
 				<div id="fotoTbl" <#if candidato?exists && candidato.foto?exists>style="display:none;"</#if>>
@@ -394,14 +399,7 @@
 			</#if>
 
 			<hr style="border:0; border-top:1px solid #CCCCCC;">
-			
-			
-			<@ww.textfield label="Nome" name="candidato.nome" id="nome" required="true" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="${capitalizar}" onblur="getCandidatosHomonimos();"/>
-			
-			<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento" liClass="liLeft , campo" cssClass="mascaraData" value="${dataNas}"/>
-			<@ww.textfield label="Naturalidade" id="naturalidade" name="candidato.pessoal.naturalidade" cssStyle="width: 160px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>
-			<@ww.select label="Sexo" id="sexo" name="candidato.pessoal.sexo" list="sexos" liClass="liLeft , campo" />
-			
+						
 			<@ww.div id="homonimos" cssStyle="color:blue;display:none; ">
 				<#if moduloExterno?exists && moduloExterno>
 					<@ww.hidden id="nomesHomonimos"/>
@@ -411,19 +409,25 @@
 				</#if>
 			</@ww.div>
 			
+			<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>			
+			
+			<@ww.textfield label="Nome" name="candidato.nome" id="nome" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="${capitalizar}" onblur="getCandidatosHomonimos();"/>
+			
+			<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento" liClass="liLeft , campo" cssClass="mascaraData" value="${dataNas}"/>
+			<@ww.textfield label="Naturalidade" id="naturalidade" name="candidato.pessoal.naturalidade" cssStyle="width: 160px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>
+			<@ww.select label="Sexo" id="sexo" name="candidato.pessoal.sexo" list="sexos" liClass="liLeft , campo" />
 																																																							
-			<@ww.textfield label="CPF"  name="candidato.pessoal.cpf" id="cpf"  cssClass="mascaraCpf" liClass="liLeft" required="${cpfObrigatorio}" onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);"/>
-			<@ww.select label="Escolaridade" name="candidato.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 300px;"  required="true" headerKey="" headerValue="Selecione..." liClass="liLeft , campo" />
-			<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>
+			<@ww.textfield label="CPF"  name="candidato.pessoal.cpf" id="cpf"  cssClass="mascaraCpf" liClass="liLeft" onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);"/>
+			<@ww.select label="Escolaridade" name="candidato.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 300px;"  headerKey="" headerValue="Selecione..." liClass="liLeft , campo" />
 			
 			<div id="endereco"  class="campo">
 				<@ww.textfield label="CEP" name="candidato.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
-				<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" id="ende" required="${camposObrigatorio}" cssStyle="width: 300px;" maxLength="40" liClass="liLeft" onblur="${capitalizar}"/>
-				<@ww.textfield label="Nº" name="candidato.endereco.numero" id="num" required="${camposObrigatorio}" cssStyle="width:40px;" maxLength="8" liClass="liLeft" onblur="${capitalizar}"/>
-				<@ww.textfield label="Complemento" name="candidato.endereco.complemento" cssStyle="width: 250px;" maxLength="20" onblur="${capitalizar}" liClass="liLeft" />
+				<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" id="ende" cssStyle="width: 300px;" maxLength="40" liClass="liLeft" onblur="${capitalizar}"/>
+				<@ww.textfield label="Nº" name="candidato.endereco.numero" id="num" cssStyle="width:40px;" maxLength="8" liClass="liLeft" onblur="${capitalizar}"/>
+				<@ww.textfield label="Complemento" name="candidato.endereco.complemento" id="complemento" cssStyle="width: 250px;" maxLength="20" onblur="${capitalizar}" liClass="liLeft" />
 	
-				<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs" required="true" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
-				<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade" required="true" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" />
+				<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
+				<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" />
 				<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 300px;" maxLength="20" onblur="${capitalizar}" liClass="liLeft" />
 				<div id="bairroContainer"></div>
 			</div>
@@ -431,8 +435,8 @@
 			<@ww.textfield label="E-mail" name="candidato.contato.email" id="email" cssStyle="width: 300px;" maxLength="40" liClass="liLeft , campo"/>
 			
 			<div id="telefone"  class="campo">
-				<@ww.textfield label="DDD" name="candidato.contato.ddd" id="ddd" required="true" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
-				<@ww.textfield label="Telefone" name="candidato.contato.foneFixo" id="fone" required="true" onkeypress="return(somenteNumeros(event,''));"  cssStyle="width: 60px;" maxLength="8"  liClass="liLeft" />
+				<@ww.textfield label="DDD" name="candidato.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
+				<@ww.textfield label="Telefone" name="candidato.contato.foneFixo" id="fone" onkeypress="return(somenteNumeros(event,''));"  cssStyle="width: 60px;" maxLength="8"  liClass="liLeft" />
 			</div>
 			
 			<@ww.textfield label="Celular" id="celular" name="candidato.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 60px;" maxLength="8" liClass="liLeft , campo"/>
@@ -479,7 +483,7 @@
 			</#if>
       </div>
 
-      <div id="content3" style="display: none;">
+      <div id="content3" class="3" style="display: none;">
 		<div id="funcaoPretendida" class="campo">
 			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
 		</div>
@@ -495,7 +499,7 @@
 	    </div>
       </div>
 
-	  <div id="content5" style="display: none;">
+	  <div id="content5" class="5" style="display: none;">
 	  	<div id="identidade" class="campo">
 			<b><@ww.label label="Identidade" /></b>
 	    	<@ww.textfield label="Número" name="candidato.pessoal.rg" id="rg" cssStyle="width: 106px;" maxLength="15" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" />

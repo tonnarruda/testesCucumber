@@ -11,16 +11,30 @@ function abas(value, direcao, edicao, _qtdAbas)
 
 	if (value == -1)
 	{
+		var atual = jQuery('div [id^="content"]:visible').attr('class');
+
 		if (direcao == 'A')
 		{
-			link = 	Number(document.getElementById('aba').value) * 1 + 1;
-			document.getElementById('aba').value = link;
+			jQuery('#abas > div:visible').each(function(){
+			    var a = this.id.replace('aba','');
+			    link = a;
+			    if(a > atual)
+			        return false;
+			    
+			});
 		}
 		else
 		{
-			link = 	document.getElementById('aba').value * 1 - 1;
-			document.getElementById('aba').value = link;
+			jQuery('#abas > div:visible').each(function(){
+			    var a = this.id.replace('aba','');
+			    if(atual == a)
+			        return false;
+			    
+			    link = a;
+			});
 		}
+
+		document.getElementById('aba').value = link;
 	}
 	else
 	{
@@ -28,19 +42,28 @@ function abas(value, direcao, edicao, _qtdAbas)
 		link = value;
 	}
 
-	for(i = 1; i <= qtdAbas; i++)
-	{
+	var ultimaAba;
+	jQuery('#abas div:visible').each(function(){
+		var i = this.id.replace('aba','');
+		
 		document.getElementById('content' + i).style.display	= link == i ? "block"				: "none";
 		document.getElementById('aba' + i).style.background		= link == i ? "#F6F6F6"				: "#D9D9D9";
 		document.getElementById('aba' + i).style.borderBottom	= link == i ? "1px solid #F6F6F6"	: "1px solid #CCCCCC";
-	}
+		
+		ultimaAba = i;
+	});
 
-	document.getElementById('voltar').disabled		= link == 1;
-	document.getElementById('voltar').className		= link == 1 ? 'btnVoltarDesabilitado' : 'btnVoltar';
-
-	document.getElementById('avancar').disabled		= link == qtdAbas;
-	document.getElementById('avancar').className	= link == qtdAbas ? 'btnAvancarDesabilitado' : 'btnAvancar';
-
-	document.getElementById('gravarModuloExterno').disabled		= link != qtdAbas;
-	document.getElementById('gravarModuloExterno').className		= link == qtdAbas ? 'btnGravar': 'btnGravarDesabilitado';
+	ajustaBotoes(link, ultimaAba);
 }
+
+	function ajustaBotoes(link, ultimaAba)
+	{
+		document.getElementById('voltar').disabled		= link == 1;
+		document.getElementById('voltar').className		= link == 1 ? 'btnVoltarDesabilitado' : 'btnVoltar';
+	
+		document.getElementById('avancar').disabled		= link == ultimaAba;
+		document.getElementById('avancar').className	= link == ultimaAba ? 'btnAvancarDesabilitado' : 'btnAvancar';
+	
+		document.getElementById('gravarModuloExterno').disabled		= link != ultimaAba;
+		document.getElementById('gravarModuloExterno').className		= link == ultimaAba ? 'btnGravar': 'btnGravarDesabilitado';
+	}

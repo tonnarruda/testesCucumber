@@ -1,7 +1,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Editar Configurações Cadastro de Candidato(módulo externo)</title>
+	<title>Editar configurações dos campos do cadastro de Candidato(módulo externo)</title>
 </head>
 <body>
 	<style type="text/css">
@@ -21,6 +21,9 @@
 			width: 400px;
 			text-align: left;
 		}
+		.grupoObrigatorio{
+			padding-left: 25px !important;
+		}
 	</style>
 	<@ww.actionerror />
 	<@ww.actionmessage />
@@ -32,13 +35,26 @@
 		var camposCandidatoObrigatorio = '${parametrosDoSistema.camposCandidatoObrigatorio}';
 		
 		jQuery(function($) {
+			var $obrigatorios = $('.configCampos input[name=camposCandidatoObrigatorios]');
+			var $visiveis = $('.configCampos input[name=camposCandidatoVisivels]');
+			
 			camposCandidatoObrigatorio.split(',').each(function (campo){
-			    jQuery('.configCampos input[name=camposCandidatoObrigatorios][value=' + campo + ']').attr('checked', true);
-			});
-			camposCandidatoVisivel.split(',').each(function (campo){
-			    jQuery('.configCampos input[name=camposCandidatoVisivels][value=' + campo + ']').attr('checked', true);
+			    $('[value=' + campo + ']').attr('checked', true);
 			});
 			
+			camposCandidatoVisivel.split(',').each(function (campo){
+			    $visiveis.filter('[value=' + campo + ']').attr('checked', true);
+			});
+			
+			$visiveis.change(function(){
+                $obrigatorios.filter('[value=' + this.value + '][class!=desabilitado]').attr('disabled', !this.checked);
+                $obrigatorios.filter('[class=' + this.value + '][class!=desabilitado]').attr('disabled', !this.checked);
+            });
+
+			$visiveis.filter(':not(:checked)').each(function(){
+				$obrigatorios.filter('[value=' + this.value + ']').attr('disabled', true);
+				$obrigatorios.filter('[class=' + this.value + '][class!=desabilitado]').attr('disabled', true);
+			});
 		});
 		
 		function enviaForm()
@@ -56,7 +72,7 @@
 		<table id="abaDadosPessoais" cellspacing="0" class="configCampos">
 		    <thead>		
 			<tr>
-				<th>Dados Pessoais</th>
+				<th>Campos da aba Dados Pessoais</th>
 				<th>Exibir</th>
 				<th>Obrigatório</th>
 			</tr>
@@ -64,8 +80,11 @@
 			<tbody>
 			<tr>
 				<td>Nome</td>
-				<td><input type="checkbox" value="nome" name="camposCandidatoVisivels"  checked disabled/></td>
-				<td><input type="checkbox" value="nome" name="camposCandidatoObrigatorios"  checked disabled/></td>
+				<td><input type="checkbox" value="nome" name="camposCandidatoVisivels" checked disabled class="desabilitado"/></td>
+				<td><input type="checkbox" value="nome" name="camposCandidatoObrigatorios"  checked disabled class="desabilitado"/></td>
+				
+				<input type="hidden"  id="nomeObr" value="nome" name="camposCandidatoObrigatorios" />
+				<input type="hidden"  id="nomeVis" value="nome" name="camposCandidatoVisivels" />
 			</tr>
 			<tr>
 				<td>Nascimento</td>
@@ -75,7 +94,7 @@
 			<tr>
 				<td>Naturalidade</td>
 				<td><input type="checkbox" value="naturalidade" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="naturalidade" id="a" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="naturalidade" name="camposCandidatoObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>Sexo</td>
@@ -84,19 +103,47 @@
 			</tr>
 			<tr>
 				<td>CPF</td>
-				<td><input type="checkbox" value="cpf" name="camposCandidatoVisivels"  checked disabled/></td>
-				<td><input type="checkbox" value="cpf" name="camposCandidatoObrigatorios"  checked disabled/></td>
+				<td><input type="checkbox" value="cpf" name="camposCandidatoVisivels"  checked disabled  class="desabilitado"/></td>
+				<td><input type="checkbox" value="cpf" name="camposCandidatoObrigatorios"  checked disabled  class="desabilitado"/></td>
+				<input type="hidden"  id="cpfObr" value="cpf" name="camposCandidatoObrigatorios" />
+				<input type="hidden"  id="cpfVis_" value="cpf" name="camposCandidatoVisivels" />
 			</tr>
 			<tr>
 				<td>Escolaridade</td>
 				<td><input type="checkbox" value="escolaridade" name="camposCandidatoVisivels" /></td>
 				<td><input type="checkbox" value="escolaridade" name="camposCandidatoObrigatorios" /></td>
 			</tr>
+			
 			<tr>
 				<td>Endereço</td>
 				<td><input type="checkbox" value="endereco" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="endereco" name="camposCandidatoObrigatorios" /></td>
+				<td></td>
 			</tr>
+			<tr>
+				<td colspan="2" class="grupoObrigatorio">CEP</td>
+				<td><input type="checkbox" value="cep" name="camposCandidatoObrigatorios" class="endereco"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="grupoObrigatorio">Logradouro</td>
+				<td><input type="checkbox" value="ende" name="camposCandidatoObrigatorios"  class="endereco"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="grupoObrigatorio">Nº</td>
+				<td><input type="checkbox" value="num" name="camposCandidatoObrigatorios"  class="endereco"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="grupoObrigatorio">Complemento</td>
+				<td><input type="checkbox" value="complemento" name="camposCandidatoObrigatorios"  class="endereco"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="grupoObrigatorio">Estado/Cidade</td>
+				<td><input type="checkbox" value="cidade" name="camposCandidatoObrigatorios"  class="endereco"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="grupoObrigatorio">Bairro</td>
+				<td><input type="checkbox" value="bairroNome" name="camposCandidatoObrigatorios"  class="endereco"/></td>
+			</tr>
+
 			<tr>
 				<td>E-mail</td>
 				<td><input type="checkbox" value="email" name="camposCandidatoVisivels" /></td>
@@ -149,8 +196,8 @@
 			</tr>
 			<tr>
 				<td>Profissão do Pai</td>
-				<td><input type="checkbox" value="profConjuge" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="profConjuge" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="profPai" name="camposCandidatoVisivels" /></td>
+				<td><input type="checkbox" value="profPai" name="camposCandidatoObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>Nome da Mãe</td>
@@ -159,8 +206,8 @@
 			</tr>
 			<tr>
 				<td>Profissão da Mãe</td>
-				<td><input type="checkbox" value="profConjuge" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="profConjuge" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="profMae" name="camposCandidatoVisivels" /></td>
+				<td><input type="checkbox" value="profMae" name="camposCandidatoObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>Paga Pensão</td>
@@ -179,15 +226,15 @@
 			</tr>
 			<tr>
 				<td>Senha</td>
-				<td><input type="checkbox" value="senha" name="camposCandidatoVisivels" checked disabled/></td>
-				<td><input type="checkbox" value="senha" name="camposCandidatoObrigatorios" checked disabled/></td>
+				<td><input type="checkbox" value="senha" name="camposCandidatoVisivels" checked disabled class="desabilitado"/></td>
+				<td><input type="checkbox" value="senha" name="camposCandidatoObrigatorios" checked disabled class="desabilitado"/></td>
 			</tr>
 			</tbody>
 		</table>
 		<table id="abaFormacaoEscolar" cellspacing="0" class="configCampos">
 		    <thead>		
 			<tr>
-				<th>Formação Escolar</th>
+				<th>Campos da aba Formação Escolar</th>
 				<th>Exibir</th>
 				<th>Obrigatório</th>
 			</tr>
@@ -196,24 +243,24 @@
 			<tr>
 				<td>Formação Escolar</td>
 				<td><input type="checkbox" value="formacao" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="formacao" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="formacao" name="camposCandidatoObrigatorios" disabled class="desabilitado"/></td>
 			</tr>
 			<tr>
 				<td>Idiomas</td>
 				<td><input type="checkbox" value="idioma" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="idioma" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="idioma" name="camposCandidatoObrigatorios" disabled class="desabilitado"/></td>
 			</tr>
 			<tr>
 				<td>Outros Cursos</td>
 				<td><input type="checkbox" value="desCursos" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="desCursos" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="desCursos" name="camposCandidatoObrigatorios" disabled class="desabilitado"/></td>
 			</tr>
 		</table>
 		
 		<table id="abaPerfilProfissional" cellspacing="0" class="configCampos">
 		    <thead>		
 			<tr>
-				<th>Perfil Profissional</th>
+				<th>Campos da aba Perfil Profissional</th>
 				<th>Exibir</th>
 				<th>Obrigatório</th>
 			</tr>
@@ -221,28 +268,28 @@
 			<tr>
 				<td>Cargo / Função Pretendida</td>
 				<td><input type="checkbox" value="funcaoPretendida" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="funcaoPretendida" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="funcaoPretendida" name="camposCandidatoObrigatorios" disabled class="desabilitado"/></td>
 			</tr>
 			<tr>
 				<td>Áreas de Interesse</td>
 				<td><input type="checkbox" value="areasInteresse" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="areasInteresse" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="areasInteresse" name="camposCandidatoObrigatorios" disabled class="desabilitado"/></td>
 			</tr>
 			<tr>
 				<td>Conhecimentos</td>
 				<td><input type="checkbox" value="conhecimentos" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="conhecimentos" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="conhecimentos" name="camposCandidatoObrigatorios" disabled class="desabilitado"/></td>
 			</tr>
 			<tr>
 				<td>Colocação</td>
 				<td><input type="checkbox" value="colocacao" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="colocacao" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="colocacao" name="camposCandidatoObrigatorios" disabled  class="desabilitado"/></td>
 			</tr>
 		</table>
 		<table id="abaExperiencias" cellspacing="0" class="configCampos">
 		    <thead>		
 			<tr>
-				<th>Experiências</th>
+				<th>Campos da aba Experiências</th>
 				<th>Exibir</th>
 				<th>Obrigatório</th>
 			</tr>
@@ -250,25 +297,25 @@
 			<tr>
 				<td>Experiência Profissional</td>
 				<td><input type="checkbox" value="expProfissional" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="expProfissional" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="expProfissional" name="camposCandidatoObrigatorios" disabled  class="desabilitado"/></td>
 			</tr>
 			<tr>
 				<td>Informações Adicionais</td>
 				<td><input type="checkbox" value="infoAdicionais" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="infoAdicionais" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="infoAdicionais" name="camposCandidatoObrigatorios" disabled  class="desabilitado"/></td>
 			</tr>
 		</table>
 		<table id="abaDocumentos" cellspacing="0" class="configCampos">
 		    <thead>		
 			<tr>
-				<th>Documentos</th>
+				<th>Campos da aba Documentos</th>
 				<th>Exibir</th>
 				<th>Obrigatório</th>
 			</tr>
 			</thead>			
 			<tr>
 				<td>Identidade</td>
-				<td><input type="checkbox" value="identidade" name="camposCandidatoVisivels" /></td>
+				<td><input type="checkbox" value="identidade" name="camposCandidatoVisivels"/></td>
 				<td><input type="checkbox" value="identidade" name="camposCandidatoObrigatorios" /></td>
 			</tr>
 			<tr>

@@ -157,6 +157,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		{
 			empresaId = getEmpresaSistema().getId();
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado"), "getId", "getNomeMercado");
+			
+			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,telefone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps");
+			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,cpf,escolaridade,ende,num,cidade,telefone");
+			parametrosDoSistema.setCamposCandidatoTabs("abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais");
 		}
 		else
 		{
@@ -293,12 +297,9 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		Empresa empresa = new Empresa();
 
 		if(!moduloExterno)
-		{
 			empresa.setId(getEmpresaSistema().getId());
-		}else
-		{
+		else
 			empresa.setId(this.empresaId);
-		}
 		
 		try 
 		{
@@ -340,6 +341,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		candidato.setDataAtualizacao(new Date());
 		candidato.setSenha(StringUtil.encodeString(candidato.getSenha()));
 
+		ajustaCamposNulls(candidato);
+		
 		if(moduloExterno)
 		{
 			candidato.setOrigem(OrigemCandidato.EXTERNO);
@@ -366,6 +369,14 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		session.put("SESSION_EXPERIENCIA", null);
 
 		return Action.SUCCESS;
+	}
+
+	private void ajustaCamposNulls(Candidato candidatoAux) 
+	{
+		if(candidatoAux.getEndereco().getUf() == null || candidatoAux.getEndereco().getUf().getId() == null)
+			candidatoAux.getEndereco().setUf(null);
+		if(candidatoAux.getEndereco().getCidade() == null || candidatoAux.getEndereco().getCidade().getId() == null)
+			candidatoAux.getEndereco().setCidade(null);
 	}
 
 	private boolean fotoValida(com.fortes.model.type.File foto)
@@ -397,12 +408,9 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	{
 		Long empresaId;
 		if(!moduloExterno)
-		{
 			empresaId = getEmpresaSistema().getId();
-		}else
-		{
+		else
 			empresaId = this.empresaId;
-		}
 
 		if (!candidato.getEmpresa().getId().equals(empresaId))
 		{
@@ -447,6 +455,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		experiencias = (Collection<Experiencia>) session.get("SESSION_EXPERIENCIA");
 
 		candidato.setDataAtualizacao(new Date());
+		ajustaCamposNulls(candidato);
 
 		carregaChecksCandidato();
 

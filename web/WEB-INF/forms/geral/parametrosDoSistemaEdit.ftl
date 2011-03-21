@@ -79,6 +79,9 @@
 	<@ww.hidden name="parametrosDoSistema.id" />
 	<@ww.hidden name="parametrosDoSistema.appVersao" />
 	<@ww.hidden name="parametrosDoSistema.acVersaoWebServiceCompativel" />
+	<@ww.hidden name="parametrosDoSistema.camposCandidatoVisivel" />
+	<@ww.hidden name="parametrosDoSistema.camposCandidatoObrigatorio" />
+	<@ww.hidden name="parametrosDoSistema.camposCandidatoTabs" />
 	
 	<li>
 		<@ww.div cssClass="divInfo">
