@@ -347,12 +347,6 @@
 		<div id="aba5" class="abaDocumentos"><a href="javascript: abas(5, '',${edicao})">Documentos</a></div>
     </div>
 
-    <div id="content2" class="2" style="display:none; width:98%;">
-		<@ww.div  id="wwgrp_formacao" cssClass="campo"/>
-		<@ww.div  id="wwgrp_idioma" cssClass="campo"/>
-		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" cssClass="campo"/>
-    </div>
-
 	<div id="content4" class="4" style="display: none;">
 		<@ww.div id="wwgrp_expProfissional" />
 
@@ -499,6 +493,12 @@
 				<@ww.password label="Confirmar Senha" name="confirmaSenha" id="comfirmaSenha" cssStyle="width: 100px;" />
 			</#if>
       </div>
+
+    <div id="content2" class="2" style="display:none; width:98%;">
+		<@ww.div  id="wwgrp_formacao" cssClass="campo"/>
+		<@ww.div  id="wwgrp_idioma" cssClass="campo"/>
+		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" cssClass="liLeft , campo"/>
+    </div>
 
       <div id="content3" class="3" style="display: none;">
 		<li>
