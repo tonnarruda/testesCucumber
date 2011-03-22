@@ -115,7 +115,7 @@
 			<#if !colaborador.desligado>
 				<a href="javascript:window.location='prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=A'"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
 			<#else>
-				<img border="0" title="Colaborador desligado" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+				<a href="javascript:window.location='prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=I'"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
 			</#if>
 
 			<a href="../documentoAnexo/list.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}"><img border="0" title="Documentos do Colaborador" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>

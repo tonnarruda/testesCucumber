@@ -2678,8 +2678,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("hoje", new Date());
 		query.setLong("empresaId", empresaId);
 		
-	
-		
 		// Nome
 		if(nomeBusca != null && !nomeBusca.trim().equals(""))
 			query.setString("nomeBusca", "%" + nomeBusca.toUpperCase() + "%");
