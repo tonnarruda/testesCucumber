@@ -57,7 +57,13 @@
 			});
 			
 			$('#marcarTodos').click(function(e) {
-				jQuery(":checkbox[disabled='false']").attr('checked', $('#marcarTodos').attr('checked'));
+				var marcado = $('#marcarTodos').attr('checked');
+				jQuery(":checkbox[disabled='false']").attr('checked', marcado);
+				
+				if(marcado)
+					jQuery("#marcador").text("Desmarcar Todos")
+				else
+					jQuery("#marcador").text("Marcar Todos")
 			});
 		});
 		
@@ -71,11 +77,14 @@
 		}
 	
 	</script>	
-	<input type="checkbox" id="marcarTodos"/> Marcar
+	
 	<@ww.form name="form" action="updateCamposCandidato.action"  method="POST">
 		<@ww.hidden id="camposCandidatoTabs" name="parametrosDoSistema.camposCandidatoTabs"/>
 		<table id="abaDadosPessoais" cellspacing="0" class="configCampos">
-		    <thead>		
+		    <thead>
+		    <tr>
+		    	<td colspan="3" style="text-align: right;" ><span id="marcador">Marcar Todos</span> <input type="checkbox" id="marcarTodos"/></td>	
+		    </tr>	
 			<tr>
 				<th>Campos da aba Dados Pessoais</th>
 				<th>Exibir</th>

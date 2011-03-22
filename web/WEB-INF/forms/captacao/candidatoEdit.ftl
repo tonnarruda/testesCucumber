@@ -350,7 +350,7 @@
 	<div id="content4" class="4" style="display: none;">
 		<@ww.div id="wwgrp_expProfissional" />
 
-		<li id="wwgrp_infoAdicionais" cssClass="campo">
+		<li id="wwgrp_infoAdicionais" class="campo">
 			<@ww.div >
 				<ul>
 					Informações Adicionais:<br />
@@ -497,7 +497,7 @@
     <div id="content2" class="2" style="display:none; width:98%;">
 		<@ww.div  id="wwgrp_formacao" cssClass="campo"/>
 		<@ww.div  id="wwgrp_idioma" cssClass="campo"/>
-		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" cssClass="liLeft , campo"/>
+		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" liClass="liLeft , campo"/>
     </div>
 
       <div id="content3" class="3" style="display: none;">
@@ -585,7 +585,7 @@
 			</@ww.div>
 		</li>	
 		
-	  	<li id="wwgrp_ctps" cssClass="campo">
+	  	<li id="wwgrp_ctps" class="campo">
 			<@ww.div >
 				<ul>
 					<b><@ww.label label="CTPS - Carteira de Trabalho e Previdência Social" /></b>
