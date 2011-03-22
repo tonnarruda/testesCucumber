@@ -29,8 +29,4 @@ public class BackupJob extends QuartzJobBean implements StatefulJob {
 		this.service = service;
 	}
 
-	public static void main(String[] args) throws JobExecutionException {
-		new BackupJob().execute(null);
-	}
-
 }
