@@ -595,9 +595,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		Collection<ColaboradorTurma> colaboradorTurmas = findHistoricoTreinamentosByColaborador(empresaId, colaboradorId, dataIni, dataFim);
 
-		if(colaboradorTurmas == null || colaboradorTurmas.isEmpty())
-			throw new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.");
-
 		return colaboradorTurmas;
 	}
 	

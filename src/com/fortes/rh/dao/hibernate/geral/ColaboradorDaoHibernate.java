@@ -2852,6 +2852,5 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return query.list();
 	}
-	
 
 }

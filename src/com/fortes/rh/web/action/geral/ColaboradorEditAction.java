@@ -212,6 +212,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private char statusCandSol;
 
 	
 	private void prepare() throws Exception
@@ -1523,6 +1524,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+
+	public char getStatusCandSol() {
+		return statusCandSol;
+	}
+
+	public void setStatusCandSol(char statusCandSol) {
+		this.statusCandSol = statusCandSol;
 	}
 	
 }
