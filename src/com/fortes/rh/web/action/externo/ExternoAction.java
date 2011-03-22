@@ -34,6 +34,7 @@ public class ExternoAction extends MyActionSupport
 	private static final String MSG_SENHA_NAO_CONFIRMADA = "A senha não foi confirmada corretamente.";
 	private static final String MSG_SENHA_ALT_SUCCESS = "Sua senha foi alterada com sucesso.";
 	private static final String MSG_SENHA_VAZIA = "Campo \"Nova Senha\" vazio.";
+	private static final String MSG_SENHA_VAZIA_CPF = "Não existe senha para seu cadastro. Favor, entrar em contato com a Empresa.";
 	private static final String MSG_INF_LOGIN = "Dados cadastrados com sucesso.\\nInforme seu CPF e senha para ver as vagas disponívies.";
 
 	private String cpf;
@@ -78,6 +79,12 @@ public class ExternoAction extends MyActionSupport
 			return Action.INPUT;
 		}
 
+		if (candidato.getSenha() == null)
+		{
+			msg = MSG_SENHA_VAZIA_CPF;
+			return Action.INPUT;
+		}
+			
 		if (!candidato.getSenha().equals(StringUtil.encodeString(senha)))
 		{
 			msg = MSG_SENHA_NAO_CONF;
