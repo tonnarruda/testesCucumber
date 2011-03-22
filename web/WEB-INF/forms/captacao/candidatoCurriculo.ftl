@@ -48,7 +48,7 @@
 						</#if>
 					</li>
 					<li class="liLeft" ><span>Escolaridade:</span>
-						<#if candidato.pessoal?exists && candidato.pessoal.escolaridade?exists> ${candidato.pessoal.escolaridadeDescricao}</#if>
+						<#if candidato.pessoal?exists && candidato.pessoal.escolaridadeDescricao?exists> ${candidato.pessoal.escolaridadeDescricao}</#if>
 					</li>
 					<li class="liLeft" style="width: 400px;"><span>Parentes/Amigos:</span>
 						<#if candidato.pessoal?exists && candidato.pessoal.parentesAmigos?exists> ${candidato.pessoal.parentesAmigos}</#if>
