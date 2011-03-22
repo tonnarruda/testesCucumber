@@ -59,7 +59,7 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="13"  isSplitAllowed="true" >
+			<band height="27"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="14"
@@ -80,7 +80,7 @@
 					<reportElement
 						x="14"
 						y="0"
-						width="121"
+						width="227"
 						height="13"
 						key="textField"
 						isRemoveLineWhenBlank="true">
@@ -90,12 +90,12 @@
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaboradorQuestionario.colaborador.nomeComercial} ==null?$F{colaboradorQuestionario.colaborador.nome}:$F{colaboradorQuestionario.colaborador.nomeComercial}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaboradorQuestionario.colaborador.nomeComercial} ==null?$F{colaboradorQuestionario.colaborador.nome} + ":" :$F{colaboradorQuestionario.colaborador.nomeComercial} + ":"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="135"
-						y="0"
+						x="28"
+						y="13"
 						width="393"
 						height="13"
 						key="textField-3"
@@ -106,7 +106,7 @@
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{comentario} == null ? ": Sem Comentário" : ": " + $F{comentario}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{comentario} == null ? "Sem Comentário" : $F{comentario}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

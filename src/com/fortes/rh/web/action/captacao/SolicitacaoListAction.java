@@ -58,6 +58,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private Cargo cargo = new Cargo();
     
     private String json;
+    private char statusCandSol;
 
     @SuppressWarnings("unchecked")
 	public String list() throws Exception
@@ -129,7 +130,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     		Solicitacao solicitacao = new Solicitacao();
 	    	solicitacao.setId(id);
 
-    		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao, StatusCandidatoSolicitacao.APROMOVER);
+    		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
 
     	}
     	return Action.SUCCESS;
@@ -329,4 +330,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 	public String getJson() {
 		return json;
 	}
+
+	public char getStatusCandSol() {
+		return statusCandSol;
+	}
+
+	public void setStatusCandSol(char statusCandSol) {
+		this.statusCandSol = statusCandSol;
+	}
+
 }

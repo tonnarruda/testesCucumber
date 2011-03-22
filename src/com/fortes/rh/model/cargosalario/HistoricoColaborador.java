@@ -179,13 +179,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setDataAdmissao(dataAdmissao);
 	}
 	
-	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario, Boolean acIntegra, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico, Indice faixaIndice, IndiceHistorico faixaHistoricoIndice)
+	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario, Boolean acIntegra, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico, Indice faixaIndice, IndiceHistorico faixaHistoricoIndice)
 	{
 		this.setId(historicoId);
 		
 		this.colaborador = new Colaborador();
 		this.colaborador.setId(colaboradorId);
 		this.colaborador.setNome(colaboradorNome);
+		this.colaborador.setNomeComercial(colaboradorNomeComercial);
 		this.colaborador.setDataAdmissao(colaboradorDataAdmissao);
 		this.colaborador.setCodigoAC(colaboradorCodigoAC);
 		this.colaborador.getEmpresa().setAcIntegra(acIntegra);

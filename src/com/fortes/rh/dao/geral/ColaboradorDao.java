@@ -91,5 +91,4 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public void setCandidatoNull(Long idCandidato);
 	public Colaborador findByUsuarioProjection(Long usuarioId);
 	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel);
-
 }

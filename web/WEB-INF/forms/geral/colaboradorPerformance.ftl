@@ -129,8 +129,12 @@
 		<div class='grade_field'><strong>Cônjuge:</strong> ${colaborador.pessoal.conjuge}</div>
 		<div class='grade_field'><strong>Cônjuge Trabalha:</strong> <#if colaborador.pessoal.conjugeTrabalha>Sim<#else>Não</#if></div>
 	</#if>
+	
 	<div class='grade_field'><strong>Deficiência:</strong> ${colaborador.pessoal.deficienciaDescricao}</div>
-	<div class='grade_field'><strong>Vínculo:</strong> ${colaborador.vinculoDescricao}</div>
+	
+	<#if colaborador.vinculoDescricao?exists>
+		<div class='grade_field'><strong>Vínculo:</strong> ${colaborador.vinculoDescricao}</div>
+	</#if>
 	
 	<#assign i = 0/>
 	<#list configuracaoCampoExtras as configuracaoCampoExtra>
@@ -286,7 +290,7 @@
 	</li>
 	
 	<li  id="4" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Participação de Eventos Educativos na Empresa</a></h4>
+		<h4><a href="javascript:return false;"  class="linkBox">Participação em Cursos/Treinamentos</a></h4>
 		<ul id="box4" class="box">
 		<table class="grade">
 			<tr>

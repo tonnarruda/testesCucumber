@@ -9,9 +9,11 @@ import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
 import com.fortes.rh.config.backup.NotificadoDeBackupViaEmailImplTest;
 import com.fortes.rh.config.backup.RunAntScriptTest;
+import com.fortes.rh.security.spring.aop.AbstractModelJsonValueProcessorTest;
 import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
 import com.fortes.rh.security.spring.aop.AuditoriaGeralAdviceTest;
 import com.fortes.rh.security.spring.aop.AuditoriaPointcutTest;
+import com.fortes.rh.security.spring.aop.DateFormatJsonValueProcessorTest;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditadosTest;
 import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidadeTest;
 import com.fortes.rh.security.spring.aop.callback.crud.CrudAuditorCallbackImplTest;
@@ -356,6 +358,7 @@ import com.fortes.rh.test.web.action.avaliacao.AvaliacaoEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.AvaliacaoExperienciaEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.PerguntaAvaliacaoEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.PeriodoExperienciaEditActionTest;
+import com.fortes.rh.test.web.action.backup.BackupActionTest;
 import com.fortes.rh.test.web.action.captacao.AnuncioListActionTest;
 import com.fortes.rh.test.web.action.captacao.AtitudeEditActionTest;
 import com.fortes.rh.test.web.action.captacao.CandidatoEditActionTest;
@@ -510,6 +513,7 @@ import com.fortes.rh.test.web.dwr.ConfiguracaoPerformanceDWRTest;
 import com.fortes.rh.test.web.dwr.ConhecimentoDWRTest;
 import com.fortes.rh.test.web.dwr.DiaTurmaDWRTest;
 import com.fortes.rh.test.web.dwr.DntDWRTest;
+import com.fortes.rh.test.web.dwr.EnderecoDWRTest;
 import com.fortes.rh.test.web.dwr.EstabelecimentoDWRTest;
 import com.fortes.rh.test.web.dwr.ExtintorDWRTest;
 import com.fortes.rh.test.web.dwr.FaixaSalarialDWRTest;
@@ -694,6 +698,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CertificacaoListActionTest.class);
         suite.addTestSuite(CertificadoTest.class);
 
+        // Backup
+        suite.addTestSuite(BackupActionTest.class);
+        
         //GERAL
         suite.addTestSuite(AreaFormacaoManagerTest.class);
         suite.addTestSuite(AreaFormacaoDaoHibernateTest.class);
@@ -1132,6 +1139,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(TurmaDWRTest.class);
         suite.addTestSuite(UtilDWRTest.class);
         suite.addTestSuite(FaixaSalarialDWRTest.class);
+        suite.addTestSuite(EnderecoDWRTest.class);
 
         //MODEL
         suite.addTestSuite(HistoricoColaboradorTest.class);
@@ -1184,6 +1192,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(InsertAuditorCallbackImplTest.class);
         suite.addTestSuite(RemoveAuditorCallbackImplTest.class);
         suite.addTestSuite(UpdateAuditorCallbackImplTest.class);
+        suite.addTestSuite(DateFormatJsonValueProcessorTest.class);
+        suite.addTestSuite(AbstractModelJsonValueProcessorTest.class);
         
         suite.addTestSuite(F2rhFacadeTest.class);
         

@@ -640,7 +640,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setFaixaSalarialHistoricoIndiceHistoricoValorProjection(faixaSalarialHistoricoIndiceHistoricoValor);
 	}
 	
-	//usado por findByIdHistoricoAtual e findHistoricoByColaboradors
+	//usado por findHistoricoByColaboradors
 	public Colaborador(Long id, String nome, String nomeComercial, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome)
 	{
 		this.setId(id);
@@ -650,6 +650,19 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setAreaOrganizacionalNome(areaOrganizacionalNome);
 		this.setFaixaSalarialNomeProjection(faixaSalarialNome);
 		this.setCargoNomeProjection(cargoNome);
+	}
+	
+	//usado por findByIdHistoricoAtual 
+	public Colaborador(Long id, String nome, String nomeComercial, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, Date dataAdmissao)
+	{
+		this.setId(id);
+		this.nome = nome;
+		this.nomeComercial = nomeComercial;
+		this.setAreaOrganizacionalId(areaOrganizacionalId);
+		this.setAreaOrganizacionalNome(areaOrganizacionalNome);
+		this.setFaixaSalarialNomeProjection(faixaSalarialNome);
+		this.setCargoNomeProjection(cargoNome);
+		this.setDataAdmissao(dataAdmissao);
 	}
 
 	//Construtor usado pela consulta de aniversariantes
@@ -1678,7 +1691,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public String getVinculoDescricao()
 	{
 		if (StringUtils.isNotBlank(this.vinculo))
-			return new Vinculo().get(this.vinculo.charAt(0)).toString();
+		{
+			Vinculo vinculoAux = new Vinculo();
+			return vinculoAux.get(this.vinculo).toString();
+		}
 		else
 			return "";
 	}
@@ -1905,6 +1921,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		}
 		
 		return descricao.toString();
+	}
+	
+	public String getNomeMaisNomeComercial()
+	{
+		String NomeMaisNomeComercial  = this.nome;
+		if (this.nomeComercial != null)
+			NomeMaisNomeComercial += " (" + this.nomeComercial + ")"; 
+			
+		return NomeMaisNomeComercial;
 	}
 	
 	public boolean isRespondeuEntrevista()

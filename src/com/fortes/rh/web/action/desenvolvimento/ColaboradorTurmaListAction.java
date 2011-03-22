@@ -193,15 +193,26 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		{
 			colaboradorTurmas = colaboradorTurmaManager.findRelatorioHistoricoTreinamentos(getEmpresaSistema().getId(), colaborador.getId(), dataIni, dataFim);
 			parametros = RelatorioUtil.getParametrosRelatorio("Histórico de Treinamentos", getEmpresaSistema(), colaborador.getNome());
-					
-			Colaborador colaborador = ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador();
+			String[] faixaSalarialId = new String[]{};
+			
+			if(colaboradorTurmas != null && !colaboradorTurmas.isEmpty())
+			{
+				colaborador = ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador();
+				parametros.put("COLAB_CARGO", colaborador.getFaixaSalarial().getCargo().getNome());
+				parametros.put("COLAB_FAIXA", colaborador.getFaixaSalarial().getNome());
+				faixaSalarialId = new String[]{colaborador.getFaixaSalarial().getId().toString()};
+			}
+			else
+			{
+				colaborador = colaboradorManager.findByIdComHistorico(colaborador.getId());
+				parametros.put("COLAB_CARGO", colaborador.getHistoricoColaborador().getFaixaSalarial().getCargo().getNome());
+				parametros.put("COLAB_FAIXA", colaborador.getHistoricoColaborador().getFaixaSalarial().getNome());
+				faixaSalarialId = new String[]{colaborador.getHistoricoColaborador().getFaixaSalarial().getId().toString()};
+			}
+			
 			String colaboradorNome = colaborador.getNome();
 			parametros.put("COLAB_NOME", colaboradorNome);
-			parametros.put("COLAB_CARGO", colaborador.getFaixaSalarial().getCargo().getNome());
-			parametros.put("COLAB_FAIXA", colaborador.getFaixaSalarial().getNome());
 			parametros.put("IMPRIMIR_MATRIZ", imprimirMatriz);
-
-			String[] faixaSalarialId = {colaborador.getFaixaSalarial().getId().toString()};
 			parametros.put("COLECAO_MATRIZ", certificacaoManager.montaMatriz(imprimirMatriz, faixaSalarialId, colaboradorTurmas));
 
 			return SUCCESS;
