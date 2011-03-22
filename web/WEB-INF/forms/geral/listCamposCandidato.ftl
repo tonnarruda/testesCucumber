@@ -55,6 +55,10 @@
 				$obrigatorios.filter('[value=' + this.value + ']').attr('disabled', true);
 				$obrigatorios.filter('[class=' + this.value + '][class!=desabilitado]').attr('disabled', true);
 			});
+			
+			$('#marcarTodos').click(function(e) {
+				jQuery(":checkbox[disabled='false']").attr('checked', $('#marcarTodos').attr('checked'));
+			});
 		});
 		
 		function enviaForm()
@@ -67,6 +71,7 @@
 		}
 	
 	</script>	
+	<input type="checkbox" id="marcarTodos"/> Marcar
 	<@ww.form name="form" action="updateCamposCandidato.action"  method="POST">
 		<@ww.hidden id="camposCandidatoTabs" name="parametrosDoSistema.camposCandidatoTabs"/>
 		<table id="abaDadosPessoais" cellspacing="0" class="configCampos">
@@ -228,6 +233,10 @@
 				<td>Senha</td>
 				<td><input type="checkbox" value="senha" name="camposCandidatoVisivels" checked disabled class="desabilitado"/></td>
 				<td><input type="checkbox" value="senha" name="camposCandidatoObrigatorios" checked disabled class="desabilitado"/></td>
+				<input type="hidden"  id="comfirmaSenha_Vis_" value="comfirmaSenha" name="camposCandidatoVisivels" />
+				<input type="hidden"  id="comfirmaSenhaObr" value="comfirmaSenha" name="camposCandidatoObrigatorios" />
+				<input type="hidden"  id="senha_Obr" value="senha" name="camposCandidatoObrigatorios" />
+				<input type="hidden"  id="senhaVis_" value="senha" name="camposCandidatoVisivels" />
 			</tr>
 			</tbody>
 		</table>
