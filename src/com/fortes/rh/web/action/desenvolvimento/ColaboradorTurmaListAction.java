@@ -194,6 +194,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			colaboradorTurmas = colaboradorTurmaManager.findRelatorioHistoricoTreinamentos(getEmpresaSistema().getId(), colaborador.getId(), dataIni, dataFim);
 			parametros = RelatorioUtil.getParametrosRelatorio("Histórico de Treinamentos", getEmpresaSistema(), colaborador.getNome());
 			String[] faixaSalarialId = new String[]{};
+			
 			if(colaboradorTurmas != null && !colaboradorTurmas.isEmpty())
 			{
 				colaborador = ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador();
