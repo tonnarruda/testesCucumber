@@ -144,11 +144,29 @@
 		</columnHeader>
 		<detail>
 			<band height="42"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="15"
+						y="12"
+						width="518"
+						height="14"
+						key="textField-3"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"
+						isPrintInFirstWholeBand="true">
+							<printWhenExpression><![CDATA[new Boolean($F{pergunta.media} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Média: " + $F{pergunta.media}]]></textFieldExpression>
+				</textField>
 				<subreport  isUsingCache="true">
 					<reportElement
-						x="4"
+						x="16"
 						y="12"
-						width="529"
+						width="517"
 						height="6"
 						key="subreport-5"
 						positionType="Float"
@@ -183,9 +201,9 @@
 				</subreport>
 				<subreport  isUsingCache="true">
 					<reportElement
-						x="4"
+						x="17"
 						y="12"
-						width="529"
+						width="516"
 						height="6"
 						key="subreport-7"
 						positionType="Float"
@@ -203,9 +221,9 @@
 				</subreport>
 				<subreport  isUsingCache="false">
 					<reportElement
-						x="4"
+						x="16"
 						y="21"
-						width="529"
+						width="517"
 						height="6"
 						key="subreport-8"
 						positionType="Float"
@@ -222,29 +240,11 @@
 					</subreportParameter>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "resultado_respostas.jasper"]]></subreportExpression>
 				</subreport>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="4"
-						y="12"
-						width="529"
-						height="14"
-						key="textField-3"
-						positionType="Float"
-						isRemoveLineWhenBlank="true"
-						isPrintInFirstWholeBand="true">
-							<printWhenExpression><![CDATA[new Boolean($F{pergunta.media} != null)]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Média: " + $F{pergunta.media}]]></textFieldExpression>
-				</textField>
 				<subreport  isUsingCache="true">
 					<reportElement
-						x="4"
+						x="16"
 						y="12"
-						width="529"
+						width="517"
 						height="6"
 						key="subreport-9"
 						positionType="Float"
