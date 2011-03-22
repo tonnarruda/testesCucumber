@@ -1678,7 +1678,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public String getVinculoDescricao()
 	{
 		if (StringUtils.isNotBlank(this.vinculo))
-			return new Vinculo().get(this.vinculo.charAt(0)).toString();
+		{
+			Vinculo vinculoAux = new Vinculo();
+			return vinculoAux.get(this.vinculo).toString();
+		}
 		else
 			return "";
 	}
