@@ -103,7 +103,7 @@
 			<result name="success" type="redirect">list.action</result>
 		</action>
 		<action name="prepareColaboradorSolicitacao" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareColaboradorSolicitacao">
-			<result name="success" type="redirect"><![CDATA[/captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=A]]></result>
+			<result name="success" type="redirect"><![CDATA[/captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=${statusCandSol}]]></result>
 			<result name="input" type="redirect">list.action</result>
 		</action>
 		<action name="preparePerformanceFuncional" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="preparePerformanceFuncional">

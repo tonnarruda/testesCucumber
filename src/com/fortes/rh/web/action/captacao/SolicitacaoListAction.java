@@ -126,12 +126,10 @@ public class SolicitacaoListAction extends MyActionSupportList
     {
     	for(Long id : solicitacaosCheckIds)
     	{
-
     		Solicitacao solicitacao = new Solicitacao();
 	    	solicitacao.setId(id);
 
     		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
-
     	}
     	return Action.SUCCESS;
     }

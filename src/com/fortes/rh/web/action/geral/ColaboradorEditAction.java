@@ -694,9 +694,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public String prepareColaboradorSolicitacao() throws Exception
 	{
 		colaborador = (Colaborador) colaboradorManager.findByIdComHistoricoConfirmados(colaborador.getId());
-		if(colaborador.isDesligado())
-			return Action.INPUT;
-
+		
 		if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
 		{
 			colaborador.setColaboradorIdiomas(colaboradorIdiomaManager.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()}));

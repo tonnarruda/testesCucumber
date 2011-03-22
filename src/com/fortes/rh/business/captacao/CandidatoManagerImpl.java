@@ -587,6 +587,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setContratado(false);
 		candidato.setObservacao(colaborador.getObservacao());
 		candidato.setOrigem(OrigemCandidato.CADASTRADO);
+		candidato.setEmpresa(colaborador.getEmpresa());
 
 		Contato contato = new Contato();
 	   	contato.setDdd(colaborador.getContato().getDdd());
