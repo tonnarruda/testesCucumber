@@ -13,24 +13,38 @@ import com.fortes.rh.util.DateUtil;
 
 public class LogCleanerJob implements Job {
 
-	private static final int OLD_FILES_MAX_DAY = 15;
+	public static final int OLD_FILES_MAX_DAY = 15;
 	private static Logger logger = Logger.getLogger(LogCleanerJob.class);
+	
+	private final File loggingDir;
+	
+	public LogCleanerJob() {
+		this(new File(ArquivoUtil.getLoggingPath()));
+	}
+	
+	public LogCleanerJob(File loggingDir) {
+		this.loggingDir = loggingDir;
+	}
 	
 	/**
 	 * Deleta todos os arquivos de log antigos.
 	 */
 	public void execute(JobExecutionContext ctx) throws JobExecutionException {
 		Date today = new Date();
-		File loggingDir = new File(ArquivoUtil.getLoggingPath());
-		File[] files = loggingDir.listFiles();
-		for (File f : files) {
-			Date lastModified = new Date(f.lastModified());
-			boolean isOldLogFile = (DateUtil.diferencaEntreDatas(lastModified, today) >= OLD_FILES_MAX_DAY);
+		File[] logs = loggingDir.listFiles();
+		for (File log : logs) {
+			boolean isOldLogFile = isOldLogFile(today, log);
 			if (isOldLogFile) {
-				f.delete();
-				logger.info("Deletando arquivo de log antigo: " + f.getName());
+				logger.info("Deletando arquivo de log antigo: " + log.getName());
+				log.delete();
 			}
 		}
+	}
+
+	private boolean isOldLogFile(Date today, File f) {
+		Date lastModified = new Date(f.lastModified());
+		boolean isOldLogFile = (DateUtil.diferencaEntreDatas(lastModified, today) >= OLD_FILES_MAX_DAY);
+		return isOldLogFile;
 	}
 	
 }
