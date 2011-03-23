@@ -410,6 +410,7 @@ import com.fortes.rh.test.web.action.geral.BairroListActionTest;
 import com.fortes.rh.test.web.action.geral.BeneficioEditActionTest;
 import com.fortes.rh.test.web.action.geral.BeneficioListActionTest;
 import com.fortes.rh.test.web.action.geral.ClienteEditActionTest;
+import com.fortes.rh.test.web.action.geral.CodigoCBOEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorListActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorReportActionTest;
@@ -766,6 +767,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(GrupoACManagerTest.class);
         suite.addTestSuite(CodigoCBODaoHibernateTest.class);
         suite.addTestSuite(ConfiguracaoCampoExtraDaoHibernateTest.class);
+        suite.addTestSuite(CodigoCBOEditActionTest.class);
 
         suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
 

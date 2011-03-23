@@ -1,6 +1,5 @@
 package com.fortes.rh.web.action.geral;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.geral.CodigoCBOManager;
