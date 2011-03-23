@@ -4,6 +4,7 @@ package com.fortes.rh.test;
 import junit.framework.TestSuite;
 
 import com.fortes.f2rh.test.F2rhFacadeTest;
+import com.fortes.rh.config.Log4jInitListenerTest;
 import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
@@ -1174,6 +1175,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ClienteDaoHibernateTest.class);
         suite.addTestSuite(ClienteManagerTest.class);
         suite.addTestSuite(ClienteEditActionTest.class);
+        
+        // Config e Listener
+        suite.addTestSuite(Log4jInitListenerTest.class);
 
         // BACKUP e Ant Script
         suite.addTestSuite(BackupCleanerJobTest.class);

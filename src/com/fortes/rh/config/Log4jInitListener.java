@@ -1,6 +1,5 @@
 package com.fortes.rh.config;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -14,9 +13,9 @@ import com.fortes.rh.util.ArquivoUtil;
 
 public class Log4jInitListener implements ServletContextListener {
 
-	private static final String FORTESRH_LOGGING_DIR = "fortesrh.logging.dir";
+	public static final String FORTESRH_LOGGING_DIR = "fortesrh.logging.dir";
 	
-	String loggingDir = ArquivoUtil.getRhHome() + File.separatorChar + "logging";
+	String loggingDir = ArquivoUtil.getLoggingPath();
 	String log4jConfigPath = "log4j-init.properties";
 
 	public void contextInitialized(ServletContextEvent ctx) {

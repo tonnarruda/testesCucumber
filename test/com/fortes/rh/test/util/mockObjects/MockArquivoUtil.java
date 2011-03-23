@@ -23,4 +23,11 @@ public class MockArquivoUtil
 	{
 		return "UTF-8";
 	}
+	
+	public static final String DIRETORIO_DE_LOGS_DO_FORTESRH = "/diretorio/de/logs/do/fortesrh/";
+
+	public static String getLoggingPath() {
+		return DIRETORIO_DE_LOGS_DO_FORTESRH;
+	}
+	
 }
