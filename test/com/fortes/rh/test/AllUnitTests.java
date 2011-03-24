@@ -6,6 +6,7 @@ import junit.framework.TestSuite;
 import com.fortes.f2rh.test.F2rhFacadeTest;
 import com.fortes.rh.config.Log4jInitListenerTest;
 import com.fortes.rh.config.LogCleanerJobTest;
+import com.fortes.rh.config.ScriptReaderTest;
 import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
@@ -1182,6 +1183,7 @@ public class AllUnitTests extends TestSuite
         // Config e Listener
         suite.addTestSuite(Log4jInitListenerTest.class);
         suite.addTestSuite(LogCleanerJobTest.class);
+        suite.addTestSuite(ScriptReaderTest.class);
 
         // BACKUP e Ant Script
         suite.addTestSuite(BackupCleanerJobTest.class);
