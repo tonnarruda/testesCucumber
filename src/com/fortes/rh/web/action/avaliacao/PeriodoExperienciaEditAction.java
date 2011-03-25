@@ -2,14 +2,9 @@ package com.fortes.rh.web.action.avaliacao;
 
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
-
-import org.tigris.subversion.svnant.Add;
-
-import bsh.StringUtil;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
@@ -25,16 +20,11 @@ import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
-import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
 
 public class PeriodoExperienciaEditAction extends MyActionSupportList
 {
@@ -70,6 +60,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private Map<String, Object> parametros;
 	private Integer diasDeAcompanhamento;
+	private Integer tempoDeEmpresa;
 		
 	private void prepare() throws Exception
 	{
@@ -105,7 +96,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId());
+		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 		return Action.SUCCESS;
 	}
 
@@ -140,12 +131,14 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
     {
 		try {
 			dataReferencia = getDataReferencia();
-			colaboradores = colaboradorManager.findAdmitidosNoPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, diasDeAcompanhamento);
+			periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+			
+			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, null, periodoExperiencias);
 			
 			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiencia", getEmpresaSistema(), filtro);
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiência", getEmpresaSistema(), filtro);
 			
-			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(getEmpresaSistema().getId()); 
+			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(periodoExperiencias); 
 			parametros.put("rodapePeriodoExperiencia", rodape);
 		}
 		catch (Exception e)
@@ -353,5 +346,13 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 		public void setDiasDeAcompanhamento(Integer diasDeAcompanhamento) {
 			this.diasDeAcompanhamento = diasDeAcompanhamento;
+		}
+
+		public Integer getTempoDeEmpresa() {
+			return tempoDeEmpresa;
+		}
+
+		public void setTempoDeEmpresa(Integer tempoDeEmpresa) {
+			this.tempoDeEmpresa = tempoDeEmpresa;
 		}
 }

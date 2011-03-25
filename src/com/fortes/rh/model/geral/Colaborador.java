@@ -103,6 +103,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	@Transient
 	private Integer diasDeEmpresa;
+	@Transient
+	private Integer qtdDiasRespondeuAvExperiencia;
+	@Transient
+	private Long periodoExperienciaId;
 	
 	@Transient
 	private String sugestaoPeriodoAcompanhamentoExperiencia;
@@ -200,17 +204,24 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	}
 
-	public Colaborador(Long id, String nome, Date dataAdmissao, String responsavelDaArea, Date avaliacaoRespondidaEm, Long avaliacaoDesempenhoId)
+	public Colaborador(Long id, String nome, Date dataAdmissao, String responsavelDaArea, Integer diasDeEmpresa)
 	{
 		this.setId(id);
 		this.setNome(nome);
 		this.setDataAdmissao(dataAdmissao);
-		this.setAvaliacaoRespondidaEm(avaliacaoRespondidaEm);
 		
 		if(this.areaOrganizacional == null)
 			this.areaOrganizacional = new AreaOrganizacional();
 		this.areaOrganizacional.setResponsavelNome(responsavelDaArea);
-		this.avaliacaoDesempenhoId = avaliacaoDesempenhoId;
+		this.diasDeEmpresa = diasDeEmpresa;
+	}
+	
+	public Colaborador(Long id, Date avaliacaoRespondidaEm, Integer qtdDiasRespondeuAvExperiencia, Long periodoExperienciaId)
+	{
+		this.setId(id);
+		this.avaliacaoRespondidaEm = avaliacaoRespondidaEm;
+		this.qtdDiasRespondeuAvExperiencia = qtdDiasRespondeuAvExperiencia;
+		this.periodoExperienciaId = periodoExperienciaId;
 	}
 	
 	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Boolean desligado, Boolean naoIntegraAc, Double historicoSalario,
@@ -2150,6 +2161,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setObservacaoDemissao(String observacaoDemissao) {
 		this.observacaoDemissao = observacaoDemissao;
+	}
+
+	public Integer getQtdDiasRespondeuAvExperiencia() {
+		return qtdDiasRespondeuAvExperiencia;
+	}
+
+	public Long getPeriodoExperienciaId() {
+		return periodoExperienciaId;
 	}
 	
 }

@@ -8,9 +8,9 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 
 public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExperiencia, PeriodoExperienciaDao> implements PeriodoExperienciaManager
 {
-	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId)
+	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean orderDiasDesc)
 	{
-		return getDao().findAllSelect(empresaId);
+		return getDao().findAllSelect(empresaId, orderDiasDesc);
 	}
 
 	public Integer findPeriodoAnterior(Long empresaId, Integer dias) {
@@ -21,8 +21,7 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		return getDao().findPeriodoSugerido(empresaId, dias);
 	}
 
-	public String findRodapeDiasDoPeriodoDeExperiencia(Long empresaId) {
-		Collection<PeriodoExperiencia> periodoExperiencias = findAllSelect(empresaId); 
+	public String findRodapeDiasDoPeriodoDeExperiencia(Collection<PeriodoExperiencia> periodoExperiencias) {
 		String rodapeRelatorioPeriodoExperiencia = ""; 
 		boolean decisao = false;
 		

@@ -11,13 +11,17 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoExperiencia> implements PeriodoExperienciaDao
 {
 
-	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId)
+	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean ordenarDiasDesc)
 	{
 		StringBuilder hql = new StringBuilder();
 		
 		hql.append("select new PeriodoExperiencia(p.id, p.dias, p.empresa.id) ");
 		hql.append("from PeriodoExperiencia p ");
-		hql.append("where p.empresa.id = :empresaId order by p.dias");
+		hql.append("where p.empresa.id = :empresaId ");
+		hql.append("order by p.dias ");
+		
+		if(ordenarDiasDesc)
+			hql.append(" desc");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);

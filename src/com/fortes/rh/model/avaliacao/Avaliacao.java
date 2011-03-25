@@ -30,6 +30,8 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Empresa empresa;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private PeriodoExperiencia periodoExperiencia;
 	
 	@Transient
 	private int totalColab;
@@ -94,5 +96,13 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 
 	public void setTipoModeloAvaliacao(char tipoModeloAvaliacao) {
 		this.tipoModeloAvaliacao = tipoModeloAvaliacao;
+	}
+
+	public PeriodoExperiencia getPeriodoExperiencia() {
+		return periodoExperiencia;
+	}
+
+	public void setPeriodoExperiencia(PeriodoExperiencia periodoExperiencia) {
+		this.periodoExperiencia = periodoExperiencia;
 	}
 }

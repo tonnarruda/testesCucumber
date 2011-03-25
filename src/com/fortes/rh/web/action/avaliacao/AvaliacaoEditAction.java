@@ -5,8 +5,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -20,6 +22,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	private AvaliacaoManager avaliacaoManager;
 	private PerguntaManager perguntaManager;
+	private PeriodoExperienciaManager periodoExperienciaManager;
 	
 	private Avaliacao avaliacao;
 	
@@ -35,11 +38,14 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private boolean imprimirFormaEconomica = false;
 	private char modeloAvaliacao = 'D'; 
 	private TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
+	private Collection<PeriodoExperiencia> periodoExperiencias;
 	
 	private void prepare() throws Exception
 	{
 		if(avaliacao != null && avaliacao.getId() != null)
 			avaliacao = (Avaliacao) avaliacaoManager.findById(avaliacao.getId());
+		
+		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 	}
 	
 	public String clonar() throws Exception
@@ -186,5 +192,13 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public TipoModeloAvaliacao getTipoModeloAvaliacao() {
 		return tipoModeloAvaliacao;
+	}
+
+	public Collection<PeriodoExperiencia> getPeriodoExperiencias() {
+		return periodoExperiencias;
+	}
+
+	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager) {
+		this.periodoExperienciaManager = periodoExperienciaManager;
 	}
 }

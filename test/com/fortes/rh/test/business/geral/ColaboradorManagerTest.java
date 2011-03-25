@@ -34,6 +34,7 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
@@ -176,7 +177,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	colaboradorDao.expects(once()).method("findAdmitidosNoPeriodo").with(eq(dataReferencia), eq(empresa), eq(areasCheck), eq(estabelecimentoCheck)).will(returnValue(colaboradores));
     	
-    	assertEquals(1, colaboradorManager.findAdmitidosNoPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa).size());
+    	assertEquals(1, colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, null, new ArrayList<PeriodoExperiencia>()).size());
     }
     
     public void testFindByAreaEstabelecimento()

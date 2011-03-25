@@ -107,6 +107,9 @@
     <property name="camposExtrasManager">
       <ref bean="camposExtrasManager" />
     </property>
+    <property name="periodoExperienciaManager">
+      <ref bean="periodoExperienciaManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

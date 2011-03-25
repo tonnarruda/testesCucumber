@@ -12,6 +12,7 @@ import com.fortes.model.type.File;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
@@ -128,7 +129,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Integer getCountComHistoricoFuturoSQL(Map parametros);
 	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros);
 	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId, Long colaboradorId);
-	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresaSistema, String[] areasCheck, String[] estabelecimentoCheck, Integer diasDeAcompanhamento) throws Exception;
+	public Collection<Colaborador> getAvaliacoesExperienciaPendentes(Date dataReferencia, Empresa empresaSistema, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Integer diasDeAcompanhamento, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception;
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long id2, String[] areasCheck, String[] estabelecimentoCheck) throws Exception;
 	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas);
 	public Colaborador findByUsuarioProjection(Long usuarioId);

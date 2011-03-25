@@ -26,7 +26,7 @@ public class PeriodoExperienciaDaoHibernateTest extends GenericDaoHibernateTest<
 		periodoExperiencia.setEmpresa(empresa);
 		periodoExperiencia = periodoExperienciaDao.save(periodoExperiencia);
 
-		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaDao.findAllSelect(empresa.getId()); 
+		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaDao.findAllSelect(empresa.getId(), false); 
 		assertEquals(1, periodoExperiencias.size());
 	}
 	

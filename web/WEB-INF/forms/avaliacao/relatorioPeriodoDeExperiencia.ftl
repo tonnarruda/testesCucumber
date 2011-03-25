@@ -9,24 +9,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 	<#assign DataAtual = "${dataDoDia}"/>
-	<script type='text/javascript'>
-		function compl()
-		{
-			var compl = document.getElementById("complementares");
-			var img = document.getElementById("imgCompl");
-			if(compl.style.display == "none")
-			{
-				compl.style.display = "";
-				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_up.gif"/>"
-			}
-			else
-			{
-				compl.style.display = "none";
-				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"
-			}
-		}
-	</script>
-
+	<#assign validarCampos="return validaFormulario('form', new Array('data','tempoDeEmpresa'), new Array('data'))"/>
 </head>
 <body>
 	<@ww.actionerror />
@@ -34,22 +17,27 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
-		<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action" method="POST">
+		<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action" onsubmit="${validarCampos}" method="POST">
 		
-			<@ww.datepicker label="Data" name="dataReferencia" required="true" id="dataReferencia" value="${DataAtual}" cssClass="mascaraData"/>
+			<@ww.datepicker label="Data de Referência" id="data" name="dataReferencia" required="true" value="${DataAtual}" cssClass="mascaraData"/>
+
 			<br>
-			Desconsiderar colaboradores com mais de  
+			Considerar colaboradores com até  
+			<@ww.textfield theme="simple" name="tempoDeEmpresa" id="tempoDeEmpresa" cssStyle="width:60px; text-align:right;" maxLength="8" onkeypress = "return(somenteNumeros(event,''));"/> 
+			dias de empresa.*
+			<br>  
+			Considerar colaboradores com período de acompanhamento de experiência a vencer daqui a  
 			<@ww.textfield theme="simple" name="diasDeAcompanhamento" id="diasDeAcompanhamento" cssStyle="width:60px; text-align:right;" maxLength="8" onkeypress = "return(somenteNumeros(event,''));"/> 
-			dias de empresa.
+			dias.
 			<br><br>  
-			<!-- <@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas"/> -->
+
 			<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
 			
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button class="btnRelatorio" onclick='jQuery("#imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia").submit();'></button>
+			<button class="btnRelatorio" onclick="${validarCampos};" ></button>
 		</div>
 </body>
 </html>

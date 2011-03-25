@@ -71,6 +71,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -2746,6 +2747,69 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoColaborador);
     	
     	assertEquals(1, colaboradorDao.findAdmitidosHaDias(40, empresa).size());
+	}
+	
+	public void testFindAdmitidosNoPeriodo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Date data = DateUtil.criarDataMesAno(01, 05, 2010);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador.setDataAdmissao(data);
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(data);
+		historicoColaboradorDao.save(historicoColaborador);
+
+		Collection<Colaborador> colaboradores = colaboradorDao.findAdmitidosNoPeriodo(DateUtil.criarDataMesAno(01, 06, 2010), empresa, null, null, 200, 0);
+		assertEquals(1, colaboradores.size());
+		
+		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
+		assertEquals(new Integer(31), colaboradorTmp.getDiasDeEmpresa());
+	}
+	
+	public void testFindComAvaliacoesExperiencias()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Date data = DateUtil.criarDataMesAno(01, 05, 2010);
+		Date respondidaEm = DateUtil.criarDataMesAno(16, 05, 2010);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador.setDataAdmissao(data);
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(data);
+		historicoColaboradorDao.save(historicoColaborador);
+	
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorQuestionario colaboradorQuestionarioRespondeu = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioRespondeu.setColaborador(colaborador);
+		colaboradorQuestionarioRespondeu.setRespondidaEm(respondidaEm);
+		colaboradorQuestionarioRespondeu.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioRespondeu);
+
+		ColaboradorQuestionario colaboradorQuestionarioPesquisa = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioPesquisa.setColaborador(colaborador);
+		colaboradorQuestionarioPesquisa.setRespondidaEm(respondidaEm);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioPesquisa);
+		
+		Collection<Colaborador> colaboradores = colaboradorDao.findComAvaliacoesExperiencias(DateUtil.criarDataMesAno(01, 06, 2010), empresa, null, null, 200, 0);
+		assertEquals(1, colaboradores.size());
+		
+		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
+		assertEquals(new Integer(15), colaboradorTmp.getQtdDiasRespondeuAvExperiencia());
 	}
 	
 	public void testFindAdmitidos()

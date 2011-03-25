@@ -29,6 +29,6 @@ public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 		Collection<PeriodoExperiencia> periodoExperiencias = PeriodoExperienciaFactory.getCollection(1L);
 
 		periodoExperienciaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(periodoExperiencias));
-		assertEquals(periodoExperiencias, periodoExperienciaManager.findAllSelect(empresaId));
+		assertEquals(periodoExperiencias, periodoExperienciaManager.findAllSelect(empresaId, false));
 	}
 }

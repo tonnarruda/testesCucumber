@@ -22,6 +22,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.acesso.UsuarioManager;
+import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
@@ -33,6 +34,7 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.CertificadoMilitar;
@@ -102,7 +104,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private FaixaSalarialManager faixaSalarialManager;
 	private EstadoManager estadoManager;
 	private CamposExtrasManager camposExtrasManager;
-
+	private PeriodoExperienciaManager periodoExperienciaManager;
+	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
@@ -1581,61 +1584,46 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	}
 
-	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa) throws Exception 
+	public Collection<Colaborador> getAvaliacoesExperienciaPendentes(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Integer diasDeAcompanhamento, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception 
 	{
-		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck);
-		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
-		HashMap<Long, String> datasColab = new HashMap<Long, String>();
+		int menorPeriodo = 0;
+		if(!periodoExperiencias.isEmpty())
+			menorPeriodo = ((PeriodoExperiencia)periodoExperiencias.toArray()[0]).getDias();
 		
-		if (tempoDeEmpresa == null)
-			tempoDeEmpresa = 0;
+		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
+		Collection<Colaborador> colaboradoresComAvaliacoes = getDao().findComAvaliacoesExperiencias(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
 		
-		for (Colaborador colaborador : colaboradores) 
+		StringBuilder avaliacoes;
+		for (Colaborador colaborador : colaboradores)
 		{
-			String datas = new String();
-			Integer diasDeEmpresa = DateUtil.diferencaEntreDatas(colaborador.getDataAdmissao(), dataReferencia);
-			colaborador.setDiasDeEmpresa(diasDeEmpresa);
+			avaliacoes = new StringBuilder();
 			
-			if(colaborador.getAvaliacaoRespondidaEm() == null)
-				datas = "não respondida ";
-			else
-				datas = DateUtil.diferencaEntreDatas(colaborador.getDataAdmissao(), colaborador.getAvaliacaoRespondidaEm()) + " dia(s)";
-
-			if (colaborador.getAvaliacaoDesempenhoId() != null)
-				datas += "*";
-
-			datas += "\n";
-			
-			if(datasColab.get(colaborador.getId()) == null)
+			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
 			{
-				datasColab.put(colaborador.getId(), datas);
-			}
-			else
-			{
-				datasColab.put(colaborador.getId(), datasColab.get(colaborador.getId()) + datas);
-			}	
-		}
-		
-		Long idColab = 0L;
-		for (Colaborador colaborador : colaboradores) 
-		{
-			if (colaborador.getDiasDeEmpresa() <= tempoDeEmpresa)
-			{
-				if(colaborador.getId().equals(0L) || !colaborador.getId().equals(idColab))
+				String msg = periodoExperiencia.getDias() + " não respondida";
+				if(colaborador.getDiasDeEmpresa() >= periodoExperiencia.getDias())
 				{
-					String datasFormat = datasColab.get(colaborador.getId());
-					colaborador.setDatasDeAvaliacao(datasFormat.substring(0, (datasFormat.length() - 1)));
-					retorno.add(colaborador);
+					for (Colaborador colaboradorRespondidas : colaboradoresComAvaliacoes)
+					{
+						if(colaborador.getId().equals(colaboradorRespondidas.getId()))
+						{
+							if(periodoExperiencia.getId().equals(colaboradorRespondidas.getPeriodoExperienciaId()))
+								msg = periodoExperiencia.getDias() + " respondida (" + colaboradorRespondidas.getQtdDiasRespondeuAvExperiencia() + " dias)";
+						}
+					}
+
+					avaliacoes.append(msg + "\n");
 				}
-				
-				idColab = colaborador.getId();
 			}
+			
+			avaliacoes.replace(avaliacoes.length()-1, avaliacoes.length(), "");
+			colaborador.setDatasDeAvaliacao(avaliacoes.toString());
 		}
-		
-		if(retorno.isEmpty())
+			
+		if(colaboradores.isEmpty())
 			throw new Exception ("Não existe Colabarodores com os filtros selecionados" ); 
 		
-		return retorno;
+		return colaboradores;
 	}
 
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long id2, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
@@ -1676,5 +1664,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel)
 	{
 		return getDao().findEmailsByPapel(empresaId, codPapel);
+	}
+
+	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager) {
+		this.periodoExperienciaManager = periodoExperienciaManager;
 	}
 }

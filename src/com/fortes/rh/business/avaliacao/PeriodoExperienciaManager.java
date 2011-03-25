@@ -7,8 +7,8 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 
 public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperiencia> 
 {
-	Collection<PeriodoExperiencia> findAllSelect(Long empresaId);
+	Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean orderDiasDesc);
 	Integer findPeriodoAnterior(Long empresaId, Integer dias);
 	Integer findPeriodoSugerido(Long empresaId, Integer dias);
-	String findRodapeDiasDoPeriodoDeExperiencia(Long id);
+	String findRodapeDiasDoPeriodoDeExperiencia(Collection<PeriodoExperiencia> periodoExperiencias);
 }
