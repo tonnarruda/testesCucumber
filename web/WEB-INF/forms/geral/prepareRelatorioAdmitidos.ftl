@@ -87,7 +87,7 @@
 	<div class="buttonGroup">
 		<button onclick="jQuery('form[name=form]').attr('action', 'relatorioAdmitidos.action');${validarCampos};" class="btnRelatorio">
 		</button>
-		<button onclick="jQuery('form[name=form]').attr('action', 'relatorioAdmitidosXLS.action');${validarCampos};" class="btnRelatorio">
+		<button onclick="jQuery('form[name=form]').attr('action', 'relatorioAdmitidosXLS.action');${validarCampos};" class="btnRelatorioExportar">
 		</button>
 	</div>
 </body>

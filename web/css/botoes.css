@@ -240,6 +240,11 @@
 	background-image:url(../imgs/btnRelatorio.gif);
 	width: 90px !important;
 }
+.btnRelatorioExportar
+{
+	background-image:url(../imgs/btn_exportar.gif);
+	width: 90px !important;
+}
 .btnInserirInvestimento
 {
 	background-image:url(../imgs/btnInserirInvestimento.gif);
@@ -552,6 +557,7 @@
 .btnImportar,
 .btnAvancarDesabilitado,
 .btnRelatorio,
+.btnRelatorioExportar,
 .btnVoltarParaAListaDePesquisas,
 .btnVoltarParaAListaDeAvaliacoes,
 .btnAtualizarSistema,
