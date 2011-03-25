@@ -26,9 +26,11 @@ import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.geral.ColaboradorListAction;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorListActionTest extends MockObjectTestCase
@@ -61,6 +63,7 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
+		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 	}
 
 	protected void tearDown() throws Exception
@@ -177,6 +180,29 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 		
 		assertEquals("input",action.relatorioAdmitidos());
 		
+	}
+	
+	public void testRelatorioAdmitidosXLS()
+	{
+		action.setExibirSomenteAtivos(true);
+		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
+		colaboradorManager.expects(once()).method("findAdmitidos").will(returnValue(new ArrayList<Colaborador>()));
+		assertEquals("success",action.relatorioAdmitidosXLS());
+	}
+	public void testRelatorioAdmitidosXLSColecaoVaziaException()
+	{
+		colaboradorManager.expects(once()).method("findAdmitidos").will(throwException(new ColecaoVaziaException("Não existem dados para o filtro informado.")));
+		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
+		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		assertEquals("input",action.relatorioAdmitidosXLS());
+	}
+	public void testRelatorioAdmitidosXLSException()
+	{
+		colaboradorManager.expects(once()).method("findAdmitidos").will(throwException(new Exception()));
+		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
+		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		
+		assertEquals("input",action.relatorioAdmitidosXLS());
 	}
 	
 	public void testFormPrint() throws Exception

@@ -8,7 +8,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Header;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.Font;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
@@ -46,6 +57,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -375,6 +387,109 @@ public class ColaboradorListAction extends MyActionSupportList
 			e.printStackTrace();
 			prepareRelatorioAdmitidos();
 
+			return Action.INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	public String relatorioAdmitidosXLS()
+	{
+		try
+		{
+			empresaIds = empresaManager.selecionaEmpresa(empresa, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_ADMITIDOS");
+			colaboradors = colaboradorManager.findAdmitidos(empresaIds, dataIni, dataFim, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), exibirSomenteAtivos);
+			
+			HttpServletResponse response = ServletActionContext.getResponse();
+			
+			String nomedoRelatorio = "Relatório de Admitidos";
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.addHeader("Content-type", "application/vnd.ms-excel");
+			response.addHeader("Content-Transfer-Encoding", "binary");
+			response.addHeader("Content-Disposition:", "attachment; filename=\"" + nomedoRelatorio + ".xls\"");
+
+			Workbook wb = new HSSFWorkbook();
+		    Sheet sheet = wb.createSheet(nomedoRelatorio);
+
+		    Font fontBold = wb.createFont();
+		    fontBold.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		    
+		    CellStyle boldStyle = wb.createCellStyle();
+		    boldStyle.setFont(fontBold);
+
+		    CellStyle columnHeaderStyle = wb.createCellStyle();
+		    columnHeaderStyle.setFont(fontBold);
+		    columnHeaderStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		    columnHeaderStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		    
+		    String filtro = "Período : " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
+
+		    // Cabecalho
+		    Row row = sheet.createRow(0);		    
+		    Cell cell = row.createCell(0);
+		    cell.setCellStyle(boldStyle);
+		    cell.setCellValue(nomedoRelatorio);
+		    row = sheet.createRow(1);
+		    cell = row.createCell(0);
+		    cell.setCellStyle(boldStyle);
+		    cell.setCellValue(filtro);
+		    
+		    // Cabecalho das colunas
+		    row = sheet.createRow(3);
+		    
+		    cell = row.createCell(0);
+		    cell.setCellValue("Estabelecimento");
+		    cell.setCellStyle(columnHeaderStyle);
+		    
+		    cell = row.createCell(1);
+		    cell.setCellStyle(columnHeaderStyle);
+		    cell.setCellValue("Área Organizacional");
+		    
+		    cell = row.createCell(2);
+		    cell.setCellStyle(columnHeaderStyle);
+		    cell.setCellValue("Colaborador");		    
+
+		    cell = row.createCell(3);
+		    cell.setCellStyle(columnHeaderStyle);
+		    cell.setCellValue("Cargo - Faixa");		    
+		    
+		    cell = row.createCell(4);
+		    cell.setCellStyle(columnHeaderStyle);
+		    cell.setCellValue("Admissão");		    
+		    
+		    // Rows
+		    int rowIndex = 4;
+		    for (Colaborador colab : colaboradors) {
+		    	row = sheet.createRow(rowIndex);
+		    	row.createCell(0).setCellValue(colab.getEstabelecimento().getNome());
+		    	row.createCell(1).setCellValue(colab.getAreaOrganizacional().getNome());
+		    	row.createCell(2).setCellValue(colab.getNome());
+		    	row.createCell(3).setCellValue(colab.getFaixaSalarial().getNomesDeCargoEFaixa());
+		    	row.createCell(4).setCellValue(DateUtil.formataDiaMesAno(colab.getDataAdmissao()));
+				rowIndex++;
+			}
+		    sheet.autoSizeColumn(0);
+		    sheet.autoSizeColumn(1);
+		    sheet.autoSizeColumn(2);
+		    sheet.autoSizeColumn(3);
+		    sheet.autoSizeColumn(4);
+		    
+		    wb.write(response.getOutputStream());
+		}
+		catch (ColecaoVaziaException e)
+		{
+			addActionMessage(e.getMessage());
+			prepareRelatorioAdmitidos();
+			
+			return Action.INPUT;
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao gerar relatório");
+			e.printStackTrace();
+			prepareRelatorioAdmitidos();
+			
 			return Action.INPUT;
 		}
 		return SUCCESS;

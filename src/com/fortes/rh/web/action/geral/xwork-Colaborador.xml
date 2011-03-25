@@ -136,7 +136,10 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">admitidos.pdf</param>
 			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorPerformance.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/prepareRelatorioAdmitidos.ftl</result>
+		</action>
+		<action name="relatorioAdmitidosXLS" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioAdmitidosXLS">
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/prepareRelatorioAdmitidos.ftl</result>
 		</action>
 		
 		<action name="imprimirPerformanceFuncional" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="imprimirPerformanceFuncional">
