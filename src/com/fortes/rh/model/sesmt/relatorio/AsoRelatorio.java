@@ -27,6 +27,7 @@ public class AsoRelatorio
 	private String grpRiscoBiologico = "";
 	private String grpRiscoErgonomico = "";
 	private String grpRiscoAcidente = "";
+	private String grpRiscoOcupacional = "";
 
 	public AsoRelatorio(SolicitacaoExame solicitacaoExame, Empresa empresa)
 	{
@@ -115,6 +116,10 @@ public class AsoRelatorio
 	public String getGrpRiscoAcidente() {
 		return grpRiscoAcidente;
 	}
+
+	public String getGrpRiscoOcupacional() {
+		return grpRiscoOcupacional;
+	}
 	
 	public void setGrpRiscoFisico(String grpRiscoFisico) {
 		this.grpRiscoFisico = grpRiscoFisico;
@@ -164,6 +169,11 @@ public class AsoRelatorio
 			{
 				grpRiscoAcidente += grpRiscoAcidente.equals("")?"Acidentes: ":", ";
 				grpRiscoAcidente += risco.getDescricao();
+			}
+			else if(risco.getGrupoRisco().equals(GrupoRisco.OCUPACIONAL))
+			{
+				grpRiscoOcupacional += grpRiscoAcidente.equals("")?"Ocupacionais: ":", ";
+				grpRiscoOcupacional += risco.getDescricao();
 			}
 		}
 	}

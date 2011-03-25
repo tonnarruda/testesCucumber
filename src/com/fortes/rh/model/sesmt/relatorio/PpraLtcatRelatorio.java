@@ -65,6 +65,7 @@ public class PpraLtcatRelatorio
 		StringBuilder riscosBiologicos = new StringBuilder();
 		StringBuilder riscosErgonomicos = new StringBuilder();
 		StringBuilder riscosAcidentes = new StringBuilder();
+		StringBuilder riscosOcupacional = new StringBuilder();
 		
 		String styleTag = "<style isBold=\"true\" pdfFontName=\"Helvetica-Bold\">";
 		String styleTagClosing = "</style>";
@@ -102,6 +103,11 @@ public class PpraLtcatRelatorio
 				riscosAcidentes.append( riscosAcidentes.length()>0 ? quebraDeLinha : "" );
 				riscosAcidentes.append(riscoAtual);
 			}
+			if (riscoMedicao.getRisco().getGrupoRisco().equals(GrupoRisco.OCUPACIONAL))
+			{
+				riscosOcupacional.append( riscosOcupacional.length()>0 ? quebraDeLinha : "" );
+				riscosOcupacional.append(riscoAtual);
+			}
 		}
 		
 		ppra.setRiscosFisicos(riscosFisicos.toString());
@@ -109,6 +115,7 @@ public class PpraLtcatRelatorio
 		ppra.setRiscosBiologicos(riscosBiologicos.toString());
 		ppra.setRiscosErgonomicos(riscosErgonomicos.toString());
 		ppra.setRiscosQuimicos(riscosQuimicos.toString());
+		ppra.setRiscosOcupacionais(riscosOcupacional.toString());
 	}
 	
 	public void formataEpcs(Collection<Epc> epcsDoAmbiente) 

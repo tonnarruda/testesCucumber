@@ -11,6 +11,7 @@ public class Ppra
 	private String riscosBiologicos = "Inexistente.";
 	private String riscosErgonomicos = "Inexistente.";
 	private String riscosAcidentes = "Inexistente.";
+	private String riscosOcupacionais = "Inexistente.";
 	private String epcs = "";
 	private String epis = "";
 	private String tempoExposicao="";
@@ -44,7 +45,11 @@ public class Ppra
 		if (StringUtils.isNotBlank(riscosAcidentes))
 			this.riscosAcidentes = riscosAcidentes;
 	}
-
+	public void setRiscosOcupacionais(String riscosOcupacionais) 
+	{
+		if (StringUtils.isNotBlank(riscosOcupacionais))
+			this.riscosOcupacionais = riscosOcupacionais;
+	}
 	public String getRiscosQuimicos() {
 		return riscosQuimicos;
 	}
@@ -83,5 +88,9 @@ public class Ppra
 
 	public void setTempoExposicao(String tempoExposicao) {
 		this.tempoExposicao = tempoExposicao;
+	}
+
+	public String getRiscosOcupacionais() {
+		return riscosOcupacionais;
 	}
 }

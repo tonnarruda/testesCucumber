@@ -9,11 +9,17 @@ public class Ltcat
 	private String riscosBiologicos = "";
 	private String riscosErgonomicos = "";
 	private String riscosAcidentes = "";
+	private String riscosOcupacionais = "";
 
 	public String getRiscosFisicos() {
 		return riscosFisicos;
 	}
 
+	public void setRiscosOcupacionais(String riscosOcupacionais) {
+		if (StringUtils.isNotBlank(riscosOcupacionais))
+			this.riscosOcupacionais = riscosOcupacionais;
+	}
+	
 	public void setRiscosFisicos(String riscosFisicos) 
 	{
 		if (StringUtils.isNotBlank(riscosFisicos))
@@ -55,4 +61,9 @@ public class Ltcat
 	public String getRiscosAcidentes() {
 		return riscosAcidentes;
 	}
+
+	public String getRiscosOcupacionais() {
+		return riscosOcupacionais;
+	}
+
 }
