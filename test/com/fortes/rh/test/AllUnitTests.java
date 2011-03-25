@@ -4,6 +4,9 @@ package com.fortes.rh.test;
 import junit.framework.TestSuite;
 
 import com.fortes.f2rh.test.F2rhFacadeTest;
+import com.fortes.rh.config.Log4jInitListenerTest;
+import com.fortes.rh.config.LogCleanerJobTest;
+import com.fortes.rh.config.ScriptReaderTest;
 import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
@@ -408,6 +411,7 @@ import com.fortes.rh.test.web.action.geral.BairroListActionTest;
 import com.fortes.rh.test.web.action.geral.BeneficioEditActionTest;
 import com.fortes.rh.test.web.action.geral.BeneficioListActionTest;
 import com.fortes.rh.test.web.action.geral.ClienteEditActionTest;
+import com.fortes.rh.test.web.action.geral.CodigoCBOEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorListActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorReportActionTest;
@@ -764,6 +768,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(GrupoACManagerTest.class);
         suite.addTestSuite(CodigoCBODaoHibernateTest.class);
         suite.addTestSuite(ConfiguracaoCampoExtraDaoHibernateTest.class);
+        suite.addTestSuite(CodigoCBOEditActionTest.class);
 
         suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
 
@@ -1174,6 +1179,11 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ClienteDaoHibernateTest.class);
         suite.addTestSuite(ClienteManagerTest.class);
         suite.addTestSuite(ClienteEditActionTest.class);
+        
+        // Config e Listener
+        suite.addTestSuite(Log4jInitListenerTest.class);
+        suite.addTestSuite(LogCleanerJobTest.class);
+        suite.addTestSuite(ScriptReaderTest.class);
 
         // BACKUP e Ant Script
         suite.addTestSuite(BackupCleanerJobTest.class);

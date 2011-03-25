@@ -15,6 +15,13 @@ public class CodigoCBO implements Serializable
 	private String codigo;
 	@Column(length=200)
 	private String descricao;
+	
+	public CodigoCBO() {}
+	
+	public CodigoCBO(String codigo, String descricao) {
+		this.codigo = codigo;
+		this.descricao = descricao;
+	}
 
 	public String getdescricao() {
 		return descricao;
