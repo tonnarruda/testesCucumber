@@ -17,3 +17,7 @@ alter sequence papel_sequence restart with 504;--.go
 
 ALTER TABLE avaliacao ADD COLUMN periodoExperiencia_id bigint; --.go
 ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_periodoExperiencia_fk FOREIGN KEY (periodoExperiencia_id) REFERENCES periodoExperiencia(id);--.go
+
+update papel set papelmae_id=null, ordem=2 where id=487;--.go
+update papel set nome = 'Pode Responder Pesquisa Por Outro Usuário' where id=401;--.go
+update papel set nome = 'Pode Responder Avaliação Por Outro Usuário' where id=487;--go
