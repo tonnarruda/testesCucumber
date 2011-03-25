@@ -53,6 +53,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
+import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -160,24 +161,40 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	String[] areasCheck = new String[1];
     	String[] estabelecimentoCheck = new String[1];
 
-    	Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
-    	colaborador1.setNome("Samuel");
-    	colaborador1.setDataAdmissao(DateUtil.criarDataMesAno(05, 10, 2010));
-    	colaborador1.setAvaliacaoRespondidaEm(DateUtil.criarDataMesAno(05, 01, 2011));
-    	colaborador1.setAvaliacaoDesempenhoId(AvaliacaoDesempenhoFactory.getEntity(1L).getId());
-    	
-    	Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
-    	colaborador2.setNome("Bruno");
-    	colaborador2.setDataAdmissao(DateUtil.criarDataMesAno(05, 10, 2009));
-    	colaborador2.setAvaliacaoRespondidaEm(DateUtil.criarDataMesAno(05, 01, 2010));
+    	Colaborador colaborador1 = new Colaborador(1L, "joao", dataReferencia, "pedro", 40);
+    	Colaborador colaborador2 = new Colaborador(2L, "maria", dataReferencia, "pedro", 12);
     	
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	colaboradores.add(colaborador1);
     	colaboradores.add(colaborador2);
     	
-    	colaboradorDao.expects(once()).method("findAdmitidosNoPeriodo").with(eq(dataReferencia), eq(empresa), eq(areasCheck), eq(estabelecimentoCheck)).will(returnValue(colaboradores));
+    	Colaborador colaborador3 = new Colaborador(1L, dataReferencia, 12, 1L);
+    	Colaborador colaborador5 = new Colaborador(1L, dataReferencia, 33, 2L);
+    	Colaborador colaborador4 = new Colaborador(2L, dataReferencia, 12, 1L);
     	
-    	assertEquals(1, colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, null, new ArrayList<PeriodoExperiencia>()).size());
+    	Collection<Colaborador> colaboradoresComAvaliacoes = new ArrayList<Colaborador>();
+    	colaboradoresComAvaliacoes.add(colaborador3);
+    	colaboradoresComAvaliacoes.add(colaborador5);
+    	colaboradoresComAvaliacoes.add(colaborador4);
+    	
+    	Collection<PeriodoExperiencia> periodoExperiencias = new ArrayList<PeriodoExperiencia>();
+
+    	PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(1L);
+    	periodoExperiencia.setDias(10);
+
+    	PeriodoExperiencia periodoExperiencia2 = PeriodoExperienciaFactory.getEntity(2L);
+    	periodoExperiencia2.setDias(30);
+    	
+    	periodoExperiencias.add(periodoExperiencia);
+    	periodoExperiencias.add(periodoExperiencia2);
+    	
+    	colaboradorDao.expects(once()).method("findAdmitidosNoPeriodo").withAnyArguments().will(returnValue(colaboradores));
+    	colaboradorDao.expects(once()).method("findComAvaliacoesExperiencias").withAnyArguments().will(returnValue(colaboradoresComAvaliacoes));
+    	
+    	Collection<Colaborador> colabs = colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, null, periodoExperiencias);
+    	assertEquals(2, colabs.size());
+    	assertEquals("10 respondida (12 dias)\n30 respondida (33 dias)", ((Colaborador)colabs.toArray()[0]).getDatasDeAvaliacao());
+    	assertEquals("10 respondida (12 dias)", ((Colaborador)colabs.toArray()[1]).getDatasDeAvaliacao());
     }
     
     public void testFindByAreaEstabelecimento()

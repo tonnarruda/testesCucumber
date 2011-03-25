@@ -10,8 +10,10 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.security.SecurityUtil;
@@ -27,6 +29,7 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 	private AvaliacaoEditAction action;
 	private Mock manager;
 	private Mock perguntaManager;
+	private Mock periodoExperienciaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -37,6 +40,9 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 		
 		perguntaManager = mock(PerguntaManager.class);
 		action.setPerguntaManager((PerguntaManager) perguntaManager.proxy());
+		
+		periodoExperienciaManager = mock(PeriodoExperienciaManager.class);
+		action.setPeriodoExperienciaManager((PeriodoExperienciaManager) periodoExperienciaManager.proxy());
 		
 		action.setAvaliacao(new Avaliacao());
 		
@@ -85,6 +91,8 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 		avaliacao.setAtivo(false);
 		action.setAvaliacao(avaliacao);
 		
+		periodoExperienciaManager.expects(once()).method("findAllSelect").with(eq(1L), eq(false)).will(returnValue(new ArrayList<PeriodoExperiencia>()));
+		
 		assertEquals("success",action.prepareInsert());
 		assertTrue(action.getAvaliacao().isAtivo());
 	}
@@ -94,6 +102,7 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 		action.setAvaliacao(avaliacao);
 		
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacao));
+		periodoExperienciaManager.expects(once()).method("findAllSelect").with(eq(1L), eq(false)).will(returnValue(new ArrayList<PeriodoExperiencia>()));
 		
 		assertEquals("success",action.prepareUpdate());
 	}
