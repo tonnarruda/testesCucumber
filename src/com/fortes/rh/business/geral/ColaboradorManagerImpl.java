@@ -1586,13 +1586,20 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> getAvaliacoesExperienciaPendentes(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Integer diasDeAcompanhamento, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception 
 	{
+		int gordura = 0;
+		if(diasDeAcompanhamento != null)
+			gordura = diasDeAcompanhamento;
+		
 		int menorPeriodo = 0;
 		if(!periodoExperiencias.isEmpty())
 			menorPeriodo = ((PeriodoExperiencia)periodoExperiencias.toArray()[0]).getDias();
 		
+		menorPeriodo = menorPeriodo - gordura;
+		
 		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
 		Collection<Colaborador> colaboradoresComAvaliacoes = getDao().findComAvaliacoesExperiencias(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
 		
+		//autorizado essa ruma de forIf, aprovado
 		StringBuilder avaliacoes;
 		for (Colaborador colaborador : colaboradores)
 		{
@@ -1601,7 +1608,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
 			{
 				String msg = periodoExperiencia.getDias() + " não respondida";
-				if(colaborador.getDiasDeEmpresa() >= periodoExperiencia.getDias())
+				if(colaborador.getDiasDeEmpresa() >= (periodoExperiencia.getDias() - gordura))
 				{
 					for (Colaborador colaboradorRespondidas : colaboradoresComAvaliacoes)
 					{
