@@ -9,9 +9,7 @@ import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.geral.GrupoACManager;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
-import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.web.dwr.UtilDWR;
 import com.fortes.rh.web.ws.AcPessoalClient;
@@ -91,33 +89,22 @@ public class UtilDWRTest extends MockObjectTestCase
 		assertNotNull(retorno);
 	}
 
-	public void testEnviaEmail()
+	public void testEnviaEmail() throws Exception
 	{
 		String email="teste@teste.com";
 
-		mail.expects(once()).method("send").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
+		mail.expects(once()).method("testEnvio").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING});
 
 		String retorno = utilDWR.enviaEmail(email);
 
 		assertNotNull(retorno);
 	}
 
-	public void testEnviaEmailComException()
+	public void testEnviaEmailComExceptionSemMensagem() throws Exception
 	{
 		String email="teste@teste.com";
 
-		mail.expects(once()).method("send").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException("Erro.")));
-
-		String retorno = utilDWR.enviaEmail(email);
-
-		assertNotNull(retorno);
-	}
-
-	public void testEnviaEmailComExceptionSemMensagem()
-	{
-		String email="teste@teste.com";
-
-		mail.expects(once()).method("send").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException(null)));
+		mail.expects(once()).method("testEnvio").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException(null)));
 
 		String retorno = utilDWR.enviaEmail(email);
 

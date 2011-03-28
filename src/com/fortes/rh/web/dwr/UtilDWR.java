@@ -1,5 +1,7 @@
 package com.fortes.rh.web.dwr;
 
+import javax.mail.AuthenticationFailedException;
+
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.util.Mail;
@@ -37,24 +39,23 @@ public class UtilDWR
 		return token;
 	}
 
-	public String enviaEmail(String email)
+	public String enviaEmail(String email) throws Exception
 	{
-		String msg = "";
-
-		try
-		{
-			mail.send(null, "Teste do envio de email do Fortes RH", "Este email foi enviado de forma automática, não responda.", null, email);
-			msg = "Email enviado com sucesso.";
-		}
-		catch (Exception e)
-		{
+		try {
+			mail.testEnvio("Teste do envio de email do Fortes RH", "Este email foi enviado de forma automática, não responda.", email);
+		} catch (AuthenticationFailedException e) {
 			e.printStackTrace();
-			msg = e.getMessage();
-			if(msg == null)
-				msg = "Erro no login ou senha do usuário.";
+			if(e.getMessage() == null)
+				return "Erro ao tentar autenticar o usuário, verifique Usuário e Senha.";
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(e.getMessage() == null)
+				return "Erro desconhecido, entre em contato com o suporte.";
+			else
+				throw e;
 		}
 
-		return msg;
+		return "Email enviado com sucesso.";
 	}
 
 	public void setAcPessoalClient(AcPessoalClient acPessoalClient)

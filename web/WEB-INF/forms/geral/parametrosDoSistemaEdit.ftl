@@ -13,23 +13,28 @@
 	<script type="text/javascript">
 		function testaEmail()
 		{
-			if(document.getElementById('enviarEmail').checked)
+			var email = prompt("Enviar mensagem para o e-mail:", "");
+			if(email != null)
 			{
-				var email = prompt("Enviar mensagem para o e-mail:", "");
-				if(email != null)
+				if(email.trim() != "")
 				{
-					if(email.trim() != "")
-					{
-						UtilDWR.enviaEmail(apresentaMsg, email);
-					}
-					else
-						jAlert("Email Inválido!");
+					DWRUtil.useLoadingMessage('Enviando...');
+					DWREngine.setErrorHandler(error);				
+					UtilDWR.enviaEmail(apresentaMsg, email);
 				}
+				else
+					jAlert("Email Inválido!");
 			}
-			else
-			{
-						jAlert("Marque a opção Enviar e-mails de confirmação e grave as configurações");
-			}
+		}
+
+		function error(msg)
+  		{
+    		jAlert(msg);
+  		}
+  		
+		function apresentaMsg(data)
+		{
+			jAlert(data);
 		}
 	</script>
 </head>
@@ -62,6 +67,8 @@
 	<@ww.select label="Exame ASO" name="parametrosDoSistema.exame.id" id="exame" list="exames" cssStyle="width: 300px;" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." />
 	
 	<@ww.textfield label="E-mail do Suporte Técnico" name="parametrosDoSistema.emailDoSuportTecnico" id="emailDoSuporteTecnico" size="40" maxLength="39" required="true"/>
+	<@ww.checkbox label="Enviar e-mails de confirmação" id="enviarEmail" name="parametrosDoSistema.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/>
+	<@ww.textarea label="Texto para email de candidatos não aptos" name="parametrosDoSistema.mailNaoAptos" id="mailNaoAptos" size="40"/>
 
 	<br>
 	<div id="suporte">
@@ -78,6 +85,7 @@
 
 	<@ww.hidden name="parametrosDoSistema.id" />
 	<@ww.hidden name="parametrosDoSistema.appVersao" />
+	<@ww.hidden name="parametrosDoSistema.enviarEmail" />
 	<@ww.hidden name="parametrosDoSistema.acVersaoWebServiceCompativel" />
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoVisivel" />
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoObrigatorio" />
@@ -91,12 +99,9 @@
 				<@ww.textfield label="Porta SMTP" name="parametrosDoSistema.emailPort" id="emailPort" size="40" maxLength="100" />
 				<@ww.textfield label="Usuário" name="parametrosDoSistema.emailUser" id="emailUser" size="40" maxLength="50" />
 				<@ww.password label="Senha" name="parametrosDoSistema.emailPass" id="emailPass" size="40" maxLength="50"  after="*Para manter a senha, deixe o campo em branco."/>
-				<@ww.checkbox label="Enviar e-mails de confirmação" id="enviarEmail" name="parametrosDoSistema.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/>
-				<@ww.textarea label="Texto para email de candidatos não aptos" name="parametrosDoSistema.mailNaoAptos" id="mailNaoAptos" size="40"/>
 			</ul>
 		</@ww.div>
 	</li>
-	
 
 	
 </@ww.form>

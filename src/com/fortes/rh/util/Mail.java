@@ -257,4 +257,29 @@ public class Mail
 			return header + body + content + footer;
 		}
 	}
+
+	//utilizado pelo DWR, teste do email em configurações
+	public void testEnvio(String subject, String body, String email) throws Exception 
+	{
+		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
+		
+		if(!parametros.isEnvioDeEmailHabilitado())
+			throw new Exception("Envio de Email desabilitado, entre em contato com o suporte.");
+		
+		Message msg = prepareMessage(null, parametros, subject, body, null);
+		List<String> emails = new ArrayList<String>();
+
+		emails.add(email);
+
+		Address[] address = new Address[emails.size()];
+
+		for (int i = 0; i < emails.size(); i++)
+			address[i] = new InternetAddress(emails.get(i));
+
+		if (emails.size() > 0)
+		{
+			msg.setRecipients(RecipientType.TO, address);
+			Transport.send(msg);
+		}
+	}
 }
