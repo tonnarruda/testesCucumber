@@ -17,6 +17,12 @@
 			width: 100px;
 			text-align: center;
 		}
+		#endRight{
+			border-right: 0px;
+		}
+		#endLeft{
+			border-left: 0px;
+		}
 		.configCampos td:first-child {
 			width: 400px;
 			text-align: left;
@@ -130,11 +136,11 @@
 			
 			<tr>
 				<td>Endereço</td>
-				<td><input type="checkbox" value="endereco" name="camposCandidatoVisivels" /></td>
-				<td></td>
+				<td id="endRight"><input type="checkbox" value="endereco" name="camposCandidatoVisivels" /></td>
+				<td id="endLeft"></td>
 			</tr>
 			<tr>
-				<td colspan="2" class="grupoObrigatorio">CEP</td>
+				<td colspan="2" class="grupoObrigatorio" >CEP</td>
 				<td><input type="checkbox" value="cep" name="camposCandidatoObrigatorios" class="endereco"/></td>
 			</tr>
 			<tr>

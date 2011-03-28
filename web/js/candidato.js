@@ -64,6 +64,6 @@ function abas(value, direcao, edicao, _qtdAbas)
 		document.getElementById('avancar').disabled		= link == ultimaAba;
 		document.getElementById('avancar').className	= link == ultimaAba ? 'btnAvancarDesabilitado' : 'btnAvancar';
 	
-		document.getElementById('gravarModuloExterno').disabled		= link != ultimaAba;
-		document.getElementById('gravarModuloExterno').className		= link == ultimaAba ? 'btnGravar': 'btnGravarDesabilitado';
+		jQuery('#gravarModuloExterno').attr("disabled", link != ultimaAba); 
+		jQuery('#gravarModuloExterno').attr('class', link == ultimaAba ? 'btnGravar': 'btnGravarDesabilitado');
 	}

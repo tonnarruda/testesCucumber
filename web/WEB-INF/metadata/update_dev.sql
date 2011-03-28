@@ -4,6 +4,8 @@ ALTER TABLE parametrosdosistema ADD COLUMN camposCandidatoVisivel text;--.go
 ALTER TABLE parametrosdosistema ADD COLUMN camposCandidatoObrigatorio text;--.go
 ALTER TABLE parametrosdosistema ADD COLUMN camposCandidatoTabs text;--.go
 
+update parametrosdosistema set camposCandidatoVisivel='',camposCandidatoObrigatorio='',camposCandidatoTabs='';--.go  
+
 alter table parametrosdosistema add column emailCandidatoNaoApto boolean;--.go
 update parametrosdosistema set emailCandidatoNaoApto=enviaremail;--.go
 update parametrosdosistema set enviaremail=true;--.go

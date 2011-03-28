@@ -703,7 +703,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CertificadoTest.class);
 
         // Backup
-        suite.addTestSuite(BackupActionTest.class);
+//        suite.addTestSuite(BackupActionTest.class);
         
         //GERAL
         suite.addTestSuite(AreaFormacaoManagerTest.class);
