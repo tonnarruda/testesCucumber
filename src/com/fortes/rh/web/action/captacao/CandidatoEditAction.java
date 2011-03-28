@@ -136,7 +136,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	
 	// utilizados pelo módulo externo
 	private boolean upperCase = false; 
-	private boolean exibirAbaDocumentos = true; 
 
 	private com.fortes.model.type.File[] imagens = null;
 	private com.fortes.model.type.File ocrTexto;
@@ -168,8 +167,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			if (parametrosDoSistema.getUpperCase() != null)
 				upperCase = parametrosDoSistema.getUpperCase();
 			
-			exibirAbaDocumentos = parametrosDoSistema.getExibirAbaDocumentos();
-
 			empresaId = this.empresaId;
 			
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelectModuloExterno(empresaId, "nomeMercado"), "getId", "getNomeMercado");
@@ -1255,14 +1252,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	public String getBairros()
 	{
 		return bairros;
-	}
-
-	public boolean isExibirAbaDocumentos() {
-		return exibirAbaDocumentos;
-	}
-
-	public void setExibirAbaDocumentos(boolean exibirAbaDocumentos) {
-		this.exibirAbaDocumentos = exibirAbaDocumentos;
 	}
 
 	public ParametrosDoSistema getParametrosDoSistema() {

@@ -497,7 +497,7 @@
     <div id="content2" class="2" style="display:none; width:98%;">
 		<@ww.div  id="wwgrp_formacao" cssClass="campo"/>
 		<@ww.div  id="wwgrp_idioma" cssClass="campo"/>
-		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" liClass="liLeft , campo"/>
+		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" liClass="campo"/>
     </div>
 
       <div id="content3" class="3" style="display: none;">

@@ -368,8 +368,6 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     public void testGets() throws Exception
     {
 		action.getCandidato();
-		action.setExibirAbaDocumentos(false);
-		assertFalse(action.isExibirAbaDocumentos());
     }
 
 }

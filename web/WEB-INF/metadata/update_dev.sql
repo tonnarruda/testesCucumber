@@ -4,7 +4,7 @@ ALTER TABLE parametrosdosistema ADD COLUMN camposCandidatoVisivel text;--.go
 ALTER TABLE parametrosdosistema ADD COLUMN camposCandidatoObrigatorio text;--.go
 ALTER TABLE parametrosdosistema ADD COLUMN camposCandidatoTabs text;--.go
 
-update parametrosdosistema set camposCandidatoVisivel='',camposCandidatoObrigatorio='',camposCandidatoTabs='';--.go  
+update parametrosdosistema set camposCandidatoVisivel='nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,telefone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', camposCandidatoObrigatorio='nome,cpf,escolaridade,ende,num,cidade,telefone',camposCandidatoTabs='abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais';--.go  
 
 alter table parametrosdosistema add column emailCandidatoNaoApto boolean;--.go
 update parametrosdosistema set emailCandidatoNaoApto=enviaremail;--.go
@@ -23,3 +23,5 @@ ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_periodoExperiencia_fk FOREIGN KEY
 update papel set papelmae_id=null, ordem=2 where id=487;--.go
 update papel set nome = 'Pode Responder Pesquisa Por Outro Usuário' where id=401;--.go
 update papel set nome = 'Pode Responder Avaliação Por Outro Usuário' where id=487;--go
+
+alter table parametrosdosistema DROP COLUMN exibirAbaDocumentos;--go

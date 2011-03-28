@@ -69,9 +69,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     // Forçar caixa alta no módulo externo
     private Boolean upperCase = false;
     
-    // Exibir aba Documentos no módulo externo
-    private Boolean exibirAbaDocumentos = false;
-    
     private Long atualizaPapeisIdsAPartirDe;
 
 	@ManyToOne
@@ -269,12 +266,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setDiasLembretePeriodoExperiencia(String diasLembretePeriodoExperiencia) {
 		this.diasLembretePeriodoExperiencia = diasLembretePeriodoExperiencia;
 	}
-	public Boolean getExibirAbaDocumentos() {
-		return exibirAbaDocumentos;
-	}
-	public void setExibirAbaDocumentos(Boolean exibirAbaDocumentos) {
-		this.exibirAbaDocumentos = exibirAbaDocumentos;
-	}
+	
 	/**
 	 * Verifica se o envio de e-mail está habilitado na aplicação.
 	 */

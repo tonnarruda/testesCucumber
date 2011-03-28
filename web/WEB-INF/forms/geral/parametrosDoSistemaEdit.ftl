@@ -62,8 +62,6 @@
 	
 	<@ww.checkbox label="Forçar caixa alta nos campos do módulo externo" id="capitalizarCampos" name="parametrosDoSistema.upperCase" liClass="liLeft" labelPosition="left"/>
 	
-	<@ww.checkbox label="Exibir a aba Documentos no módulo externo" id="exibirAbaDocumentos" name="parametrosDoSistema.exibirAbaDocumentos" liClass="liLeft" labelPosition="left"/>
-	
 	<@ww.select label="Exame ASO" name="parametrosDoSistema.exame.id" id="exame" list="exames" cssStyle="width: 300px;" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." />
 	
 	<@ww.textfield label="E-mail do Suporte Técnico" name="parametrosDoSistema.emailDoSuportTecnico" id="emailDoSuporteTecnico" size="40" maxLength="39" required="true"/>
