@@ -703,7 +703,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CertificadoTest.class);
 
         // Backup
-//        suite.addTestSuite(BackupActionTest.class);
+//        suite.addTestSuite(BackupActionTest.class);//ponte
         
         //GERAL
         suite.addTestSuite(AreaFormacaoManagerTest.class);
@@ -1183,7 +1183,7 @@ public class AllUnitTests extends TestSuite
         // Config e Listener
         suite.addTestSuite(Log4jInitListenerTest.class);
         suite.addTestSuite(LogCleanerJobTest.class);
-//        suite.addTestSuite(ScriptReaderTest.class);
+//        suite.addTestSuite(ScriptReaderTest.class);//ponte
 
         // BACKUP e Ant Script
         suite.addTestSuite(BackupCleanerJobTest.class);
