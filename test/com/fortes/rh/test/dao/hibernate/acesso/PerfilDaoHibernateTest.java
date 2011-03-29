@@ -48,13 +48,35 @@ public class PerfilDaoHibernateTest extends GenericDaoHibernateTest<Perfil>
 		Collection<Papel> papeis = new ArrayList<Papel>();
 		papeis.add(papel);
 		
-		Perfil perfil = new Perfil();
-		perfil.setNome("Tst");
-		perfil.setPapeis(papeis);
-		perfilDao.save(perfil);
+		criaPerfil(papeis, 1L);
 		
 		assertEquals(1, perfilDao.findPerfisByCodigoPapel(codigo).size());
 		
+	}
+
+	public void testFindAll()
+	{
+		String codigo = "TESTE_PAPEL_FINDPERFIS";
+		
+		Papel papel = new Papel();
+		papel.setCodigo(codigo);
+		papelDao.save(papel);
+		
+		Collection<Papel> papeis = new ArrayList<Papel>();
+		papeis.add(papel);
+		
+		criaPerfil(papeis, 1L);
+		criaPerfil(papeis, 2L);
+		
+		assertEquals(2, perfilDao.findAll(0, 2).size());
+	}
+
+	private void criaPerfil(Collection<Papel> papeis, Long id) {
+		Perfil perfil = new Perfil();
+		perfil.setId(id);
+		perfil.setNome("Tst");
+		perfil.setPapeis(papeis);
+		perfilDao.save(perfil);
 	}
 
 	public void setPapelDao(PapelDao papelDao) {
