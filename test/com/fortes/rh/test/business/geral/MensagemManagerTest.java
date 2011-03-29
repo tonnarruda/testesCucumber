@@ -91,50 +91,42 @@ public class MensagemManagerTest extends MockObjectTestCase
 				"\r\nCargo: Cargo\r\nFaixa Salarial: Faixa Salarial\r\nData: 02/05/2010\r\nTipo: Índice\r\nÍndice: indice\r\nQuantidade: 22,00", retorno);
 	}
 	
-//	public void testFormataMensagemCancelamentoHistoricoColaborador() throws Exception
-//	{
-////		Indice indice = IndiceFactory.getEntity();
-////		indice.setNome("indice");
-////		
-////		Cargo cargo = CargoFactory.getEntity();
-////		cargo.setNome("Cargo");
-////		cargo.setNomeMercado("Cargão");
-////		
-////		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-////		faixaSalarial.setNome("Faixa Salarial");
-////		faixaSalarial.setCargo(cargo);
-//////		
-//////		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
-//////		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.INDICE);
-//////		faixaSalarialHistorico.setQuantidade(22.0);
-//////		faixaSalarialHistorico.setIndice(indice);
-//////		faixaSalarialHistorico.setData(DateUtil.criarDataMesAno(02, 05, 2010));
-//////		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
-////		
-////		
-////		Colaborador colaborador = ColaboradorFactory.getEntity();
-////		colaborador.setNomeComercial("nomeComercial");
-////		
-////		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-////		estabelecimento.setNome("estabelecimentão");
-////		
-////		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-////		areaOrganizacional.setDescricao("Area Organizacional");
-////		
-////		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-////		historicoColaborador.setData(DateUtil.criarDataMesAno(02, 05, 2010));
-////		historicoColaborador.setTipoSalario(0);
-////		historicoColaborador.setFaixaSalarial(faixaSalarial);
-////		historicoColaborador.setColaborador(colaborador);
-////		historicoColaborador.setEstabelecimento(estabelecimento);
-////		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
-////		historicoColaborador.setIndice(indice);
-////		
-////		String mensagem = "super mensagem";
-////		String retorno = mensagemManager.formataMensagemCancelamentoFaixaSalarialHistorico(mensagem, faixaSalarialHistorico);
-////		
-////		assertEquals("Cancelamento de Histórico da Faixa Salarial. \r\n\r\n<b>Motivo do Cancelamento:</b> \r\n" + mensagem +"\r\n\r\n<b>Dados do Histórico Cancelado:</b> " +
-////				"\r\nCargo: Cargo\r\nFaixa Salarial: Faixa Salarial\r\nData: 02/05/2010\r\nTipo: Índice\r\nÍndice: indice\r\nQuantidade: 22,00", retorno);
-////	}
-
+	public void testFormataMensagemCancelamentoHistoricoColaborador() throws Exception
+	{
+		Indice indice = IndiceFactory.getEntity();
+		indice.setNome("indice");
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("Cargo");
+		cargo.setNomeMercado("Cargão");
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setNome("Faixa Salarial");
+		faixaSalarial.setCargo(cargo);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNomeComercial("nomeComercial");
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setNome("estabelecimentão");
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setDescricao("Area Organizacional");
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(DateUtil.criarDataMesAno(02, 05, 2010));
+		historicoColaborador.setTipoSalario(0);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setIndice(indice);
+		
+		String mensagem = "super mensagem";
+		String retorno = mensagemManager.formataMensagemCancelamentoHistoricoColaborador(mensagem, historicoColaborador);
+		
+		assertEquals("Cancelamento de Situação do Colaborador. \r\n\r\n<b>Motivo do Cancelamento:</b> \r\nsuper mensagem\r\n\r\n<b>Dados da Situação Cancelada:</b> \r\n" +
+				"Nome: nomeComercial\r\nData: 02/05/2010\r\nEstabelecimento: estabelecimentão\r\nÁrea Organizacional: nome da area organizacional\r\nCargo: Cargão\r\n" +
+				"Faixa Salarial: Faixa Salarial\r\nTipo do Salário: \r\n", retorno);
+	}
 }
