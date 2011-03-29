@@ -49,7 +49,7 @@
 	</script>
 	
 
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataIni', 'dataFim', '@estabelecimentosCheck', '@areasCheck'), new Array('dataIni', 'dataFim'))"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataIni', 'dataFim'), new Array('dataIni', 'dataFim'))"/>
 
 	<#if dataIni?exists>
 		<#assign valueDataIni = dataIni?date/>

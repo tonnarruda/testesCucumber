@@ -242,8 +242,10 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if (dataFim != null)
 			criteria.add(Expression.le("hc.data", dataFim));
 
-		criteria.add(Expression.in("a.id", areaIds));
-		criteria.add(Expression.in("e.id", estabelecimentosIds));
+		if(areaIds != null && areaIds.length > 0)
+			criteria.add(Expression.in("a.id", areaIds));
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			criteria.add(Expression.in("e.id", estabelecimentosIds));
 
 		Junction juncao = Expression.disjunction();
 		juncao.add(Expression.eq("hc.motivo", MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL));
