@@ -16,8 +16,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/mooTools/mootools-1.2.4.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/MenuMatic_0.68.3.js"/>'></script>
 
 	<style type="text/css">
 		<#if pgInicial?exists && pgInicial>
@@ -29,43 +27,11 @@
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/MenuMatic.css"/>');
+		
 	</style>
-
 	
-
-	<!--[if IE]>
-	<style type="text/css" media="screen">
-	body
-	{
-		behavior: url(<@ww.url includeParams="none" value="/css/csshover2.htc"/>);
-	}
-	.smenuDiv
-	{
-		width: 100%;
-	}
-	#mainDiv
-	{
-
-	}
-
-	.liLeft
-	{
-		margin-right:0px;
-	}
-
-	span.botao
-	{
-		padding:2px 0 1px 0;
-	}
-	fieldset
-	{
-		padding: 10px;
-	}
-
-	</style>
-	<![endif]-->
-
 	${head}
+
 </head>
 <body>
 	<div id="topDiv">
@@ -88,7 +54,7 @@
 		</#if>
 		
 	</div>
-
+	
 	
 	<@authz.authentication operation="menuFormatado"/>
 	
@@ -109,12 +75,15 @@
 		<br><br>
 	</div>
 
-
 	<!-- Create a MenuMatic Instance -->
 	<script type="text/javascript" >
-		window.addEvent('domready', function() {			
-			var myMenu = new MenuMatic();
-		});		
+	
+	
+		jQuery(document).ready(function(){
+			jQuery("#menuDropDown ul li:has(ul)").addClass("subMenuArrow");
+		});
+	
+	
 	</script>
 
 </body>
