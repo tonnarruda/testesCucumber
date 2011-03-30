@@ -53,7 +53,7 @@
 		
 			<@ww.textfield label="Título" name="avaliacao.titulo" id="titulo" cssClass="inputNome" maxLength="100" required="true" />
 
-			<@ww.textarea label="Cabeçalho" name="avaliacao.cabecalho"/>
+			<@ww.textarea label="Observação" name="avaliacao.cabecalho"/>
 			
 			<@ww.select label="Ativa" name="avaliacao.ativo" id="ativo" list=r"#{true:'Sim',false:'Não'}"/>
 			

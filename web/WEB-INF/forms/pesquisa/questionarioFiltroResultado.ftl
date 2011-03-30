@@ -103,7 +103,7 @@
 			<@frt.checkListBox label="Exibir apenas as Perguntas" name="perguntasCheck" id="perguntasCheck" list="perguntasCheckList"/>
 
 			<#if questionario.tipo == tipoQuestionario.getPESQUISA()>
-				<@ww.checkbox label="Exibir cabeçalho" id="exibirCabecalho" name="exibirCabecalho" labelPosition="left"/>
+				<@ww.checkbox label="Exibir observação" id="exibirCabecalho" name="exibirCabecalho" labelPosition="left"/>
 			</#if>
 			
 			<@ww.checkbox label="Exibir todas as respostas" id="exibirRespostas" name="exibirRespostas" labelPosition="left"/>

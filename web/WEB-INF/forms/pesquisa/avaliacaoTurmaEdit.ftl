@@ -33,7 +33,7 @@
 	<@ww.actionerror />
 	<@ww.form name="form" id="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.textfield label="Título" name="avaliacaoTurma.questionario.titulo" id="titulo" cssClass="inputNome" maxLength="100" required="true" />
-		<@ww.textarea label="Cabeçalho" name="avaliacaoTurma.questionario.cabecalho" cssStyle="width:445px;height:60px"/>	
+		<@ww.textarea label="Observação" name="avaliacaoTurma.questionario.cabecalho" cssStyle="width:445px;height:60px"/>	
 		<@ww.select label="Ativa" name="avaliacaoTurma.ativa" id="liberado" list=r"#{true:'Sim',false:'Não'}"/>
 
 		<@ww.hidden name="avaliacaoTurma.id" />

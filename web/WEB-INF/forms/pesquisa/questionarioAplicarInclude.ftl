@@ -90,7 +90,7 @@
 		</#if>
 		<#if avaliacao?exists && avaliacao.id?exists>
 			<p>Título: ${avaliacao.titulo}</p>	
-			</br>Cabeçalho: <pre class="modelo_avaliacao_pre">${avaliacao.cabecalho}</pre></br>		
+			</br>Observação: <pre class="modelo_avaliacao_pre">${avaliacao.cabecalho}</pre></br>		
 		</#if>
 	</div>
 	

@@ -34,7 +34,7 @@
 	<@ww.form name="form" id="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.textfield label="Título" name="entrevista.questionario.titulo" id="titulo" cssClass="inputNome" maxLength="100" required="true" />
 		<@ww.select label="Ativa" name="entrevista.ativa" id="liberado" list=r"#{true:'Sim',false:'Não'}"/>
-		<@ww.textarea label="Cabeçalho" name="entrevista.questionario.cabecalho" cssStyle="width:445px;height:60px"/>
+		<@ww.textarea label="Observação" name="entrevista.questionario.cabecalho" cssStyle="width:445px;height:60px"/>
 
 		<@ww.hidden name="entrevista.id" />
 	    <@ww.hidden name="entrevista.questionario.id" />

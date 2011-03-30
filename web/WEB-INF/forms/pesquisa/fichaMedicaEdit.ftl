@@ -34,7 +34,7 @@
 	<@ww.form name="form" id="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.textfield label="Título" name="fichaMedica.questionario.titulo" id="titulo" cssClass="inputNome" maxLength="100" required="true" />
 
-		<@ww.textarea label="Cabeçalho" name="fichaMedica.questionario.cabecalho"/>
+		<@ww.textarea label="Observação" name="fichaMedica.questionario.cabecalho"/>
 		<@ww.textarea label="Rodapé" name="fichaMedica.rodape" />
 
 		<@ww.select label="Ativa" name="fichaMedica.ativa" id="liberado" list=r"#{true:'Sim',false:'Não'}"/>

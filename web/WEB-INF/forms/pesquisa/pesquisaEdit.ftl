@@ -44,7 +44,7 @@
 		<@ww.datepicker label="Início" value="${dataInicio}" name="pesquisa.questionario.dataInicio" id="dataInicio" required="true" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 		<@ww.datepicker label="Fim" value="${dataFim}" name="pesquisa.questionario.dataFim" id="dataFim" required="true" cssClass="mascaraData validaDataFim"/>
 
-		<@ww.textarea label="Cabeçalho" name="pesquisa.questionario.cabecalho" cssStyle="width:445px;height:300"/>
+		<@ww.textarea label="Observação" name="pesquisa.questionario.cabecalho" cssStyle="width:445px;height:300"/>
 
 		<#assign anonimoDisabled = "" />
 		<#assign anonimoTitle = "" />
