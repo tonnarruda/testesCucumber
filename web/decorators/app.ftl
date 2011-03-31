@@ -77,13 +77,12 @@
 
 	<!-- Create a MenuMatic Instance -->
 	<script type="text/javascript" >
-	
-	
+		/**
+		 * Adiciona setinhas aos submenus que possuem nodes filhos;
+		 */
 		jQuery(document).ready(function(){
 			jQuery("#menuDropDown ul li:has(ul)").addClass("subMenuArrow");
 		});
-	
-	
 	</script>
 
 </body>
