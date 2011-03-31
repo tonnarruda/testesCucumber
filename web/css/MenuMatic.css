@@ -7,6 +7,7 @@
 }
 #menuDropDown li {
 	float: left;
+	z-index: 2;
 }
 #menuDropDown ul {
 	z-index: 1;
@@ -53,7 +54,6 @@
 }
 
 #menuDropDown li ul {
-	position: absolute;
 	display: none;
 	white-space: nowrap;
 }
@@ -61,6 +61,7 @@
 	margin-top: 25px;
 }
 #menuDropDown li:hover > ul {
+	position: absolute;
 	display: block;
 	left: 0;
 }
