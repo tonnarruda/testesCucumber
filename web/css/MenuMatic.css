@@ -1,122 +1,122 @@
-#menuDropDown{
-	width: 100%;
-	list-style:none;
+#menuDropDown {
 	margin: 0;
-	z-index:5;
-	text-align: center;
-	background: url(../imgs/bgMenu2.gif);
 	height: 26px;
+	width: 100%;
+	list-style: none;
+	background: url(../imgs/bgMenu2.gif);
 }
-
-#subMenusContainer a{
+#menuDropDown li {
+	float: left;
+	z-index: 2;
+}
+#menuDropDown ul {
+	z-index: 1;
+	background: #FFF;
+	border: 1px solid #AAA;
+}
+#menuDropDown ul a {
 	color: #000;
 }
-#subMenusContainer{	display:block; 	position:absolute;	top:0;	left:0;	width:100%;	height:0;	overflow:visible;	z-index:1000000000; }
-
-#menuDropDown a, #subMenusContainer a{
-	text-decoration:none;
-	display:block;
-	padding: 5px 20px 5px 15px;
+#menuDropDown li li {
+	float: none;
 }
-
-#menuDropDown a {
-	color: #FFF;
+#menuDropDown li li a {
+	position: relative;
+	float: none;
 }
-
-#menuDropDown a{
-	margin:0;
-	float:left;	
+#menuDropDown > li {
+	position: relative;
 }
-
-#subMenusContainer a, #menuDropDown li li a{
-	display: block;
-	text-align:left;
+#menuDropDown > li > a {
+	height: 16px;
+	background: url(../imgs/menu_strip_down_arrow.gif) right center no-repeat;
 }
-
-#menuDropDown a:hover, #menuDropDown a:focus, #subMenusContainer a:hover, #subMenusContainer a:focus, #menuDropDown a.mainMenuParentBtnFocused, #subMenusContainer a.subMenuParentBtnFocused{
+#menuDropDown > li > a[accesskey="a"],
+#menuDropDown > li > a[title="Blog Fortes RH"] {
+	background: none;
+}
+#menuDropDown li:hover {
 	background-color: #5292C0;
 }
-
-#subMenusContainer a:hover, 
-#subMenusContainer a:focus, 
-#menuDropDown a.mainMenuParentBtnFocused, 
-#subMenusContainer a.subMenuParentBtnFocused,
-#menuDropDown li a:hover,
-#menuDropDown li a:focus{
-	background-color: #5292C0 ;
-	color:#FFF;
+#menuDropDown li:hover > a {
+	color: #FFF;
 }
-
-.subMenuParentBtn{ 
+#menuDropDown a {
+	display: block;
+	float: left;
+	margin: 0;
+	color: #FFF;
+	text-decoration: none;
+	padding: 5px 20px 5px 15px;
+}
+.subMenuArrow {
 	background: url(../imgs/menu-bar-right-arrow.gif) right center no-repeat;
 }
 
-.subMenuParentBtnFocused{ 
-	background: url(../imgs/menu-bar-right-arrow.gif) right center no-repeat;  
+#menuDropDown li ul {
+	display: none;
+	white-space: nowrap;
 }
-
-.mainMenuParentBtn{	
-	 background: url(../imgs/menu_strip_down_arrow.gif) right center no-repeat;
+#menuDropDown > li > ul {
+	margin-top: 25px;
 }
-
-.mainMenuParentBtnFocused{	 
+#menuDropDown li:hover > ul {
+	position: absolute;
+	display: block;
+	left: 0;
 }
-
-.smOW{ 
-	display:none; 
-	position: absolute; 
-	overflow:hidden; 
-	padding:0 2px;
-	margin:0 0 0 -2px;
+#menuDropDown li li:hover > ul {
+	margin-top: -26px;
+	left: 100%;
 }
-#menuDropDown, #menuDropDown ul, #menuDropDown ol, #subMenusContainer ul, #subMenusContainer ol { 
-	padding: 0;
-	margin: 0;
-	list-style: none;
-	line-height: 1em;
-}
-
-#menuDropDown ol, #menuDropDown ul, #subMenusContainer ul, #subMenusContainer ol {	
-	background:#fff;	
-	border:1px solid #AAA;
-	left:0;
-}
-
-
-#menuDropDown li { 
-	display:block;
-	list-style:none;
-	position:relative;
-	float:left;
-}
-
-#subMenusContainer li{
-	list-style: none;
-}
-
-#menuDropDown li li{	float:none; }
-
-#menuDropDown li li a{ /* Just submenu links*/	
-	position:relative;
-	float:none;
-}
-
+/*
 #menuDropDown li ul {
 	position: absolute;
-	width: 10em;
-	margin-left: -1000em;
-	margin-top:2.2em;
+	display: none;
+}
+#menuDropDown > li > ul {
+	margin-top: 25px;
+}
+#menuDropDown li:hover > ul {
+	display: block;
+}
+#menuDropDown li li:hover > ul {
+	position: absolute;
+	top: 0;
+}
+*/
+
+/*
+#menuDropDown li a:focus+ul {
+	margin-left: 0;
+	margin-top: 2.2em;
 }
 
-#menuDropDown li ul ul { margin: -1em 0 0 -1000em; }
-#menuDropDown li:hover ul ul {	margin-left: -1000em; }
+#menuDropDown li li a:focus+ul {
+	left: 0;
+	margin-left: 1010em;
+	margin-top: -2.2em;
+}
 
-#menuDropDown li:hover ul{	margin-left: 0; }
-#menuDropDown li li:hover ul {	margin-left: 10em; margin-top:-2.5em;}
+#menuDropDown li li a:focus {
+	left: 0;
+	margin-left: 1000em;
+	width: 10em;
+	margin-top: 0;
+}
 
-#menuDropDown li a:focus + ul {  margin-left: 0; margin-top:2.2em; }
-#menuDropDown li li a:focus + ul { left:0; margin-left: 1010em; margin-top:-2.2em;}
-#menuDropDown li li a:focus {left:0;  margin-left:1000em; width:10em;  margin-top:0;}
-#menuDropDown li li li a:focus {left:0; margin-left: 2010em; width: 10em;  margin-top:-1em;}
-#menuDropDown li:hover a:focus{ margin-left: 0; }
-#menuDropDown li li:hover a:focus + ul { margin-left: 10em; }
+#menuDropDown li li li a:focus {
+	left: 0;
+	margin-left: 2010em;
+	width: 10em;
+	margin-top: -1em;
+}
+
+#menuDropDown li:hover a:focus {
+	margin-left: 0;
+}
+
+#menuDropDown li li:hover a:focus+ul {
+	margin-left: 10em;
+}
+*/
