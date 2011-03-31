@@ -14,8 +14,6 @@
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 	<#assign requerido="false"/>
-
-	<#assign validarCampos="return validaFormulario('form', new Array('nome','login'), null)"/>
 <#else>
 	<title>Inserir Usuário</title>
 	<#assign formAction="insert.action"/>
@@ -27,8 +25,6 @@
 	<#else>
 		<#assign readonly="false"/>
 	</#if>
-
-	<#assign validarCampos="return validaFormulario('form', new Array('nome','login','senha','confNovaSenha'), null)"/>
 </#if>
 <script>
 	function marcarDesmarcar(frm)
@@ -120,13 +116,27 @@
 			}
 		}
 	}
+	
+	function enviaForm()
+	{
+		if(jQuery('#lista input[type=checkbox]:checked').size() > 0)
+		{
+			<#if usuario.id?exists>
+				return validaFormulario('form', new Array('nome','login'), null);
+			<#else>
+				return validaFormulario('form', new Array('nome','login','senha','confNovaSenha'), null);
+			</#if>
+		}
+		else
+			jAlert("Selecione pelo menos uma empresa.");
+	}
 </script>
 </head>
 <body>
 <@ww.actionerror />
 <@ww.actionmessage />
 
-<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
+<@ww.form name="form" action="${formAction}" onsubmit="enviaForm();" method="POST">
 	<@ww.textfield label="Nome" name="usuario.nome" id="nome" cssStyle="width:445px;" required="true" cssClass="inputNome" maxLength="100"/>
 	<@ww.textfield label="Login" name="usuario.login" cssClass="inputLogin" maxLength="25" id="login" required="true"/>
 	<@ww.select label="Colaborador" name="colaboradorId" list="colaboradores"  listKey="id" listValue="nome"  headerKey="" headerValue="Nenhum" />
@@ -201,7 +211,7 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}">
+		<button onclick="enviaForm();" class="btnGravar" accesskey="${accessKey}">
 		</button>
 		<#if origem == 'C'>
 			<button onclick="window.location='../../geral/colaborador/list.action'" class="btnCancelar" accesskey="V">
