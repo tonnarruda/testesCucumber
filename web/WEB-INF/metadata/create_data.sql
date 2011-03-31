@@ -85,7 +85,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (417,
 -- Modulo Pesquisas
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (355, 'ROLE_PES_MOV', 'Movimentações', '#', 1, true, 353);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (28, 'ROLE_MOV_QUESTIONARIO', 'Pesquisas', '/pesquisa/pesquisa/list.action', 1, true, 355);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (401, 'ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO', 'Pode Respoder Pesquisa Por Outro Usuário', '#', 4, false, 353);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (401, 'ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO', 'Pode Responder Pesquisa Por Outro Usuário', '#', 4, false, 353);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (59, 'ROLE_PESQUISA', 'Pode ver e responder Pesquisa', '#', 4, false, 353);
 -- Fim Pesquisas
 -- Modulo Aval. Desempenho
@@ -99,7 +99,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (484,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (55, 'ROLE_MOV_AVALIACAO', 'Avaliações de Desempenho', '/avaliacao/desempenho/list.action', 1, true, 384);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (483, 'ROLE_MOV_AVALIACAO', 'Responder Avaliações de Desempenho', '/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList.action', 2, true, 384);
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (487, 'ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO', 'Pode Respoder Avaliação Por Outro Usuário', '#', 0, false, 384);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (487, 'ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO', 'Pode Responder Avaliação Por Outro Usuário', '#', 2, false, null);
 -- Fim Aval. Desempenho
 -- Modulo T&D
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (366, 'ROLE_T&D_CAD', 'Cadastros', '#', 1, true, 365);
@@ -181,8 +181,12 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (501,
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (464, 'ROLE_IMPORTA_CADASTROS', 'Importar Cadastros', '/geral/empresa/prepareImportarCadastros.action', 8, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (38, 'ROLE_UTI_SENHA', 'Alterar Senha', '/acesso/usuario/prepareUpdateSenhaUsuario.action', 2, true, 37);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (485, 'ROLE_CAMPO_EXTRA', 'Campos Extras', '/geral/configuracaoCampoExtra/prepareUpdate.action', 4, true, 37);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (41, 'ROLE_UTI_CONFIGURACAO', 'Configurações', '/geral/parametrosDoSistema/prepareUpdate.action', 3, true, 37);
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (41, 'ROLE_CONFIGURACAO', 'Configurações', '#', 3, true, 37);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (485, 'ROLE_CAMPO_EXTRA', 'Campos Extras', '/geral/configuracaoCampoExtra/prepareUpdate.action', 2, true, 41);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (502, 'ROLE_UTI_CONFIGURACAO', 'Sistema', '/geral/parametrosDoSistema/prepareUpdate.action', 1, true, 41);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (503, 'ROLE_CONFIG_CANDIDATO_EXT', 'Cadastro de Candidato (externo)', '/geral/parametrosDoSistema/listCamposCandidato.action', 3, true, 41);
+
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (39, 'ROLE_UTI_AUDITORIA', 'Auditoria', '/security/auditoria/prepareList.action', 5, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (44, 'ROLE_UTI_HISTORICO_VERSAO', 'Histórico de Versões', '/geral/documentoVersao/list.action', 6, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (409, 'ROLE_UTI', 'Enviar Mensagem', '/geral/usuarioMensagem/prepareUpdate.action', 7, true, 37);
@@ -259,7 +263,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 502;
+alter sequence papel_sequence restart with 504;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -8534,7 +8538,11 @@ insert into codigoCBO (codigo, descricao) values ('841745','Xaropeiro');
 insert into codigoCBO (codigo, descricao) values ('514120','Zelador de edifício');
 insert into codigoCBO (codigo, descricao) values ('223310','Zootecnista');
 
-insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, campoextracolaborador)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.44.33', '', '25', false,false, 2, '1.0.1.41', 1, 3, false);
+insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, campoextracolaborador, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.43.34', '', '25', false,false, 2, '1.0.1.41', 1, 3, false, 
+'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,telefone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
+'nome,cpf,escolaridade,ende,num,cidade,telefone',
+'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais'
+);
 
 alter sequence parametrosdosistema_sequence restart with 2;

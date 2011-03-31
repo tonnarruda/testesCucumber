@@ -642,17 +642,29 @@ ALTER TABLE historicofuncao ADD CONSTRAINT historicofuncao_pkey PRIMARY KEY (id)
 ALTER TABLE historicofuncao ADD CONSTRAINT historicofuncao_funcao_fk FOREIGN KEY (funcao_id) REFERENCES funcao(id);
 CREATE SEQUENCE historicofuncao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
+CREATE TABLE periodoExperiencia (
+	id bigint NOT NULL,
+	dias int,
+	empresa_id bigint
+);
+
+ALTER TABLE periodoExperiencia ADD CONSTRAINT periodoExperiencia_pkey PRIMARY KEY(id);
+ALTER TABLE periodoExperiencia ADD CONSTRAINT periodoExperiencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE periodoExperiencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
 CREATE TABLE avaliacao (
 	id bigint NOT NULL,
 	titulo character varying(100),
 	cabecalho text,
 	ativo boolean,
 	empresa_id bigint,
-	tipoModeloAvaliacao character(1) NOT NULL
+	tipoModeloAvaliacao character(1) NOT NULL,
+	periodoExperiencia_id bigint
 );
 
 ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_pkey PRIMARY KEY(id);
 ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_periodoExperiencia_fk FOREIGN KEY (periodoExperiencia_id) REFERENCES periodoExperiencia(id);
 --nao tem sequence, ta ok.
 
 CREATE TABLE solicitacao (
@@ -2109,24 +2121,17 @@ CREATE TABLE parametrosdosistema (
     diasLembretePeriodoExperiencia character varying(20),
     emaildosuportetecnico character varying(40),
     campoExtraColaborador boolean,
-    exibirAbaDocumentos boolean DEFAULT true,
     codEmpresaSuporte character varying(10),
-    codClienteSuporte character varying(10)
+    codClienteSuporte character varying(10),
+    camposCandidatoVisivel text,
+    camposCandidatoObrigatorio text,
+    camposCandidatoTabs text,
+    emailCandidatoNaoApto boolean
 );
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_pkey PRIMARY KEY (id);
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_perfil_fk FOREIGN KEY (perfilpadrao_id) REFERENCES perfil(id);
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_exame_fk FOREIGN KEY (exame_id) REFERENCES exame(id);
 CREATE SEQUENCE parametrosdosistema_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
-
-CREATE TABLE periodoExperiencia (
-	id bigint NOT NULL,
-	dias int,
-	empresa_id bigint
-);
-
-ALTER TABLE periodoExperiencia ADD CONSTRAINT periodoExperiencia_pkey PRIMARY KEY(id);
-ALTER TABLE periodoExperiencia ADD CONSTRAINT periodoExperiencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
-CREATE SEQUENCE periodoExperiencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE cliente (
 	id bigint not null,

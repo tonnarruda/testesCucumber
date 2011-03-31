@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.43.34" data="30/03/2011">
+		- Nova funcionalidade - Utilitários > Configurações > Cadastro de Candidato (externo): Configuração da visualização e obrigatoriedade dos campos do cadastro de Candidato do módulo externo.
+		- Nova funcionalidade - Info. Funcionais > Relatórios > Admitidos: Exportar relatório para o Excel(.xls).
+		- Avaliação de Desempenho > Relatório > Acompanhamento do Período de Experiência: reformulação do relatório, novo campo "Considerar colaboradores com período de acompanhamento de experiência a vencer daqui a X dias".
+		- Avaliação de Desempenho > Cadastros > Avaliação de Desempenho/Acompanhamento do Per. de Experiência: Novo campo quando o tipo de avaliação for "Acompanhamento do Per. de Experiência", Períodos de Acompanhamento de Experiência. 
+	</Versao>
 	<Versao id="1.1.42.33" data="15/03/2011">
 		- Integração com múltiplos AC Pessoal. 
 	</Versao>
