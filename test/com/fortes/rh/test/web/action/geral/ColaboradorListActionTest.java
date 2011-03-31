@@ -182,29 +182,6 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 		
 	}
 	
-	public void testRelatorioAdmitidosXLS()
-	{
-		action.setExibirSomenteAtivos(true);
-		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
-		colaboradorManager.expects(once()).method("findAdmitidos").will(returnValue(new ArrayList<Colaborador>()));
-		assertEquals("success",action.relatorioAdmitidosXLS());
-	}
-	public void testRelatorioAdmitidosXLSColecaoVaziaException()
-	{
-		colaboradorManager.expects(once()).method("findAdmitidos").will(throwException(new ColecaoVaziaException("Não existem dados para o filtro informado.")));
-		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
-		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
-		assertEquals("input",action.relatorioAdmitidosXLS());
-	}
-	public void testRelatorioAdmitidosXLSException()
-	{
-		colaboradorManager.expects(once()).method("findAdmitidos").will(throwException(new Exception()));
-		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
-		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
-		
-		assertEquals("input",action.relatorioAdmitidosXLS());
-	}
-	
 	public void testFormPrint() throws Exception
 	{
 		assertEquals("success",action.formPrint());

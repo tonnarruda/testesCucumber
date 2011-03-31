@@ -138,7 +138,16 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/prepareRelatorioAdmitidos.ftl</result>
 		</action>
-		<action name="relatorioAdmitidosXLS" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioAdmitidosXLS">
+		<action name="relatorioAdmitidosXLS" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioAdmitidos">
+			<result name="success" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">relatorio_de_admitidos.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Estabelecimento,Área Organizacional,Colaborador,Cargo/Faixa,Admissão</param>
+				<param name="properties">estabelecimento.nome,areaOrganizacional.nome,nome,faixaSalarial.nomesDeCargoEFaixa,dataAdmissaoFormatada</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>		
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/prepareRelatorioAdmitidos.ftl</result>
 		</action>
 		
