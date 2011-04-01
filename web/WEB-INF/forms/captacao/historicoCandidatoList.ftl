@@ -43,6 +43,7 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action?candidatoSol.id=${candidatoSolicitacao.id}'" accesskey="I"></button>
 		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${candidatoSolicitacao.solicitacao.id}'" class="btnVoltar" accesskey="V"></button>
+		<button class="btnImprimirPdf" onclick="window.location='imprimirHistorico.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}'">
 	</div>
 </body>
 </html>

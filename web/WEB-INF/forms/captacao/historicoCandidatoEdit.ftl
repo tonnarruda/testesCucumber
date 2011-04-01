@@ -160,7 +160,7 @@
 		<@ww.datepicker label="Data" name="historicoCandidato.data" id="data" required="true"  liClass="liLeft" cssClass="mascaraData" value = "${data}" />
 		<@ww.textfield label="Início" required="true" name="historicoCandidato.horaIni" id="horaIni" cssStyle="width: 38px;" liClass="liLeft" cssClass="mascaraHora"/>
 		<@ww.textfield label="Fim" required="true" name="historicoCandidato.horaFim" id="horaFim" cssStyle="width: 38px;" cssClass="mascaraHora"/>
-		<@ww.textfield required="true" label="Responsável" name="historicoCandidato.responsavel" id="resp" liClass="liLeft" cssStyle="width: 260px;"/>
+		<@ww.textfield required="true" label="Responsável" name="historicoCandidato.responsavel" id="resp" liClass="liLeft" cssStyle="width: 260px;" maxLength="100" />
 		<@ww.select label="Apto" name="historicoCandidato.apto" id="apto"  list="aptos" liClass="liLeft" onchange="javascript:liberarIndisp()"/>
 		<@ww.select label="Indisponível" name="blacklist" id="indisp" list=r"#{true:'Sim', false:'Não'}"/>
 		<@ww.textarea label="Observação" name="historicoCandidato.observacao" cssStyle="width: 599px;"/>

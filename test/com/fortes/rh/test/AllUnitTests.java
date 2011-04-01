@@ -306,6 +306,7 @@ import com.fortes.rh.test.exception.FaixaJaCadastradaExceptionTest;
 import com.fortes.rh.test.exception.IntegraACExceptionTest;
 import com.fortes.rh.test.model.acesso.UsuarioTest;
 import com.fortes.rh.test.model.captacao.CandidatoIdiomaTest;
+import com.fortes.rh.test.model.captacao.CandidatoSolicitacaoTest;
 import com.fortes.rh.test.model.captacao.CandidatoTest;
 import com.fortes.rh.test.model.captacao.CtpsTest;
 import com.fortes.rh.test.model.captacao.ExperienciaTest;
@@ -607,6 +608,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CandidatoCurriculoManagerTest.class);
         suite.addTestSuite(ExperienciaTest.class);
         suite.addTestSuite(FormacaoTest.class);
+        suite.addTestSuite(CandidatoSolicitacaoTest.class);
 
         suite.addTestSuite(CtpsTest.class);
 

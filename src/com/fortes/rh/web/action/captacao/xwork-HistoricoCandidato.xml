@@ -6,6 +6,13 @@
 		<action name="list" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/historicoCandidatoList.ftl</result>
 		</action>
+		<action name="imprimirHistorico" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoListAction" method="imprimirHistorico">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/historicoCandidatoSolicitacao.jasper</param>
+				<param name="dataSource">historicoCandidatos</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+		</action>
 		<action name="delete" class="com.fortes.rh.web.action.captacao.HistoricoCandidatoListAction" method="delete">
 			<result name="success" type="redirect"><![CDATA[list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}]]></result>
 		</action>

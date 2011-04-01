@@ -517,5 +517,32 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		this.status = status;
 	}
 
+	public String getNomeArea() 
+	{
+		try {
+			return this.solicitacao.getAreaOrganizacional().getNome();
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+	public String getNomeCargo() 
+	{
+		try {
+			return this.solicitacao.getFaixaSalarial().getCargo().getNome();
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
+	public String getNomeSolicitante() 
+	{
+		try {
+			return this.solicitacao.getSolicitante().getNome();
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
 
 }

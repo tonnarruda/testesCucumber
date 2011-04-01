@@ -1,11 +1,13 @@
 package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -22,6 +24,7 @@ public class HistoricoCandidatoListAction extends MyActionSupportList
 	private Long etapaSeletivaId;
 	private char visualizar;
 	private String indicadoPor;
+	private Map<String, Object> parametros;
 
 	public String execute() throws Exception
 	{
@@ -33,6 +36,19 @@ public class HistoricoCandidatoListAction extends MyActionSupportList
 		candidatoSolicitacao = candidatoSolicitacaoManager.findByCandidatoSolicitacao(candidatoSolicitacao);
 		historicoCandidatos = historicoCandidatoManager.findList(candidatoSolicitacao);
 
+		return Action.SUCCESS;
+	}
+
+	public String imprimirHistorico() throws Exception
+	{
+		list();
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Histórico do Candidato na Solicitação", getEmpresaSistema(), 
+				"Área: " + candidatoSolicitacao.getNomeArea()+ 
+				"\nCargo: " + candidatoSolicitacao.getNomeCargo() + 
+				"\nSolicitante: " + candidatoSolicitacao.getNomeSolicitante()+ 
+				"\nCandidato: " + candidatoSolicitacao.getCandidato().getNome());
+		
 		return Action.SUCCESS;
 	}
 
@@ -109,5 +125,9 @@ public class HistoricoCandidatoListAction extends MyActionSupportList
 	public void setIndicadoPor(String indicadoPor)
 	{
 		this.indicadoPor = indicadoPor;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }
