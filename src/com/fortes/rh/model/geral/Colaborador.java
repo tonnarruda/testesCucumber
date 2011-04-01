@@ -2176,5 +2176,21 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return DateUtil.formataDate(this.respondidaEm, "dd/MM/yyyy");
 	}
 	
+	public String getCargoFaixa()
+	{
+		return faixaSalarial.getCargo().getNome() + " " + faixaSalarial.getNome();
+	}
+	
+	public String getTipoSalarioDescricao()
+	{
+		return com.fortes.rh.model.dicionario.TipoAplicacaoIndice.getDescricao(historicoColaborador.getTipoSalario());
+	}
+	
+	public String getSalarioHistoricoFormatado() 
+	{
+		NumberFormat formata = new DecimalFormat("#,##0.00");
+		return formata.format(historicoColaborador.getSalarioCalculado()).toString(); 
+	}
+
 	
 }

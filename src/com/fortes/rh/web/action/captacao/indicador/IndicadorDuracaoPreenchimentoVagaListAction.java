@@ -1,5 +1,6 @@
 package com.fortes.rh.web.action.captacao.indicador;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -44,6 +45,9 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private Collection<IndicadorDuracaoPreenchimentoVaga> indicador;
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 
+	private String reportFilter;
+	private String reportTitle;
+	
 	public String prepare() throws Exception
 	{
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
@@ -67,8 +71,11 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		try
 		{
 			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId());
-			
-			parametros = getParametrosRelatorio("Indicador de Duração para preenchimento de Vagas");
+
+			reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataDe) + " a " + DateUtil.formataDiaMesAno(dataAte);
+			reportTitle = "Indicador de Duração para preenchimento de Vagas";
+
+			parametros = getParametrosRelatorio(reportTitle, reportFilter);
 
 			return Action.SUCCESS;
 		}
@@ -99,7 +106,10 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		try
 		{
 			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId());
-			parametros = getParametrosRelatorio("Indicador - Estatísticas de Vagas por Motivo");
+			
+			reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataDe) + " a " + DateUtil.formataDiaMesAno(dataAte);
+			
+			parametros = getParametrosRelatorio("Indicador - Estatísticas de Vagas por Motivo", reportFilter);
 			
 			return Action.SUCCESS;
 		} 
@@ -111,10 +121,8 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		}
 	}
 
-	private Map<String, Object> getParametrosRelatorio(String titulo)
+	private Map<String, Object> getParametrosRelatorio(String titulo, String filtro)
 	{
-		String filtro = "Período: " + DateUtil.formataDiaMesAno(dataDe) + " a " + DateUtil.formataDiaMesAno(dataAte);
-
 		return RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
 	}
 
@@ -244,4 +252,12 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		this.parametros = parametros;
 	}
 
+	public String getReportFilter() {
+		return reportFilter;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
+	}
+	
 }

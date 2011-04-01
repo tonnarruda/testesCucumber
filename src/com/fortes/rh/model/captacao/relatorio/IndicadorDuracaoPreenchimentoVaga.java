@@ -1,6 +1,8 @@
 package com.fortes.rh.model.captacao.relatorio;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -85,6 +87,13 @@ public class IndicadorDuracaoPreenchimentoVaga implements Serializable
 	{
 		return mediaDias;
 	}
+	
+	public String getMediaDiasFormatada()
+	{
+		NumberFormat formata = new DecimalFormat("##0.00");
+		return formata.format(mediaDias); 		
+	}
+	
 	public Integer getQtdCandidatos() {
 		return qtdCandidatos;
 	}

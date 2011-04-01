@@ -85,10 +85,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="jQuery('form[name=form]').attr('action', 'relatorioAdmitidos.action');${validarCampos};" class="btnRelatorio">
-		</button>
-		<button onclick="jQuery('form[name=form]').attr('action', 'relatorioAdmitidosXLS.action');${validarCampos};" class="btnRelatorioExportar">
-		</button>
+		<button class="btnRelatorio" onclick="jQuery('form[name=form]').attr('action', 'relatorioAdmitidos.action');${validarCampos};"></button>
+		<button class="btnRelatorioExportar" onclick="jQuery('form[name=form]').attr('action', 'relatorioAdmitidosXLS.action');${validarCampos};"></button>
 	</div>
 </body>
 </html>

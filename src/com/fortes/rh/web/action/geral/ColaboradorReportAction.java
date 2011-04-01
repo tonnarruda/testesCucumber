@@ -3,6 +3,7 @@
  * Requisito: RFA005 */
 package com.fortes.rh.web.action.geral;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -22,6 +23,7 @@ import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupport;
@@ -64,6 +66,9 @@ public class ColaboradorReportAction extends MyActionSupport
 	private String[] cargosCheck;
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 
+	private String reportFilter;
+	private String reportTitle;
+	
 	@SuppressWarnings("unchecked")
 	public String execute()
 	{
@@ -108,7 +113,10 @@ public class ColaboradorReportAction extends MyActionSupport
 				throw new Exception(msg);
 			}
 
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Projeção Salarial", getEmpresaSistema(), null);
+			//reportFilter = "???;
+			reportTitle = "Relatório de Projeção Salarial";
+			
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), null);
 			parametros.put("FILTRAR_POR", filtro);
 			parametros.put("TABELA_REAJUSTE_NOME", tabelaReajusteColaborador.getNome());
 			parametros.put("INTEGRA_AC", getEmpresaSistema().isAcIntegra());
@@ -327,5 +335,12 @@ public class ColaboradorReportAction extends MyActionSupport
 		this.tabelaReajusteColaborador = tabelaReajusteColaborador;
 	}
 
+	public String getReportFilter() {
+		return reportFilter;
+	}
+	
+	public String getReportTitle() {
+		return reportTitle;
+	}
 
 }

@@ -99,6 +99,18 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/projecaoSalarialRelatorioFiltro.ftl</result>
 		</action>
+		<action name="gerarRelatorioProjecaoSalarialXLS" class="com.fortes.rh.web.action.geral.ColaboradorReportAction" method="gerarRelatorioProjecaoSalarial">
+			<result name="success" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">projecao_salarial.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Estabelecimento - Área Organizacional,Colaborador,Cargo/Faixa,Tipo Salário,Salário</param>
+				<param name="properties">descricaoEstabelecimentoAreaOrganizacional,nome,cargoFaixa,tipoSalarioDescricao,salarioHistoricoFormatado</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>					
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/projecaoSalarialRelatorioFiltro.ftl</result>
+		</action>
 		<action name="emailColaboradorSemUsuario" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="emailColaboradorSemUsuario">
 			<result name="success" type="redirect">list.action</result>
 		</action>

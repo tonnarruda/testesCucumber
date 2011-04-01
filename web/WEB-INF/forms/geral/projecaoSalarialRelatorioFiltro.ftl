@@ -83,8 +83,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnRelatorio" onclick="validaCamposProjecaoSalarial();" accesskey="${accessKey}">
-		</button>
+		<button class="btnRelatorio" onclick="jQuery('form[name=form]').attr('action', 'gerarRelatorioProjecaoSalarial.action');validaCamposProjecaoSalarial();" accesskey="${accessKey}"></button>
+		<button class="btnRelatorioExportar" onclick="jQuery('form[name=form]').attr('action', 'gerarRelatorioProjecaoSalarialXLS.action');validaCamposProjecaoSalarial();"></button>		
 	</div>
 </body>
 </html>

@@ -81,8 +81,12 @@ public class XlsResult extends WebWorkResultSupport {
 		    {
 		    	row = sheet.createRow(rowIndex++);
 		    	
-			    for (int i = 0; i < propertiesArray.length; i++) 
-			    	row.createCell(i).setCellValue(BeanUtils.getValue(obj, propertiesArray[i]).toString());		    	
+		    	Object prop;
+			    for (int i = 0; i < propertiesArray.length; i++)
+			    {
+			    	prop = BeanUtils.getValue(obj, propertiesArray[i]);
+			    	row.createCell(i).setCellValue((prop != null)?prop.toString():"");		    	
+			    }
 			}
 	
 		    for (int i = 0; i < propertiesArray.length; i++) 
