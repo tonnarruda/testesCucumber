@@ -1,7 +1,5 @@
 package com.fortes.rh.business.geral;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
@@ -10,6 +8,8 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Mensagem;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.MathUtil;
 
 public class MensagemManagerImpl extends GenericManagerImpl<Mensagem, MensagemDao> implements MensagemManager
 {
@@ -35,24 +35,28 @@ public class MensagemManagerImpl extends GenericManagerImpl<Mensagem, MensagemDa
 		mensagemFinal.append("\r\n");
 		mensagemFinal.append("Faixa Salarial: "+faixaSalarialHistorico.getFaixaSalarial().getNome());
 		mensagemFinal.append("\r\n");
-		mensagemFinal.append("Data: "+SimpleDateFormat.getDateInstance().format(faixaSalarialHistorico.getData()));
+		mensagemFinal.append("Data: "+formataData(faixaSalarialHistorico.getData()));
 		mensagemFinal.append("\r\n");
 		mensagemFinal.append("Tipo: "+TipoAplicacaoIndice.getDescricao(faixaSalarialHistorico.getTipo()));
 		mensagemFinal.append("\r\n");
 
-		DecimalFormat valor = new DecimalFormat("###,##0.00#");
 		if(faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.INDICE)
 		{
 			mensagemFinal.append("Índice: "+faixaSalarialHistorico.getIndice().getNome());
 			mensagemFinal.append("\r\n");
-			mensagemFinal.append("Quantidade: "+valor.format(faixaSalarialHistorico.getQuantidade()));
+			mensagemFinal.append("Quantidade: " + MathUtil.formataValor(faixaSalarialHistorico.getQuantidade()));
 		}
 		else
 		{
-			mensagemFinal.append("Valor : "+valor.format(faixaSalarialHistorico.getValor()));
+			mensagemFinal.append("Valor : " + MathUtil.formataValor(faixaSalarialHistorico.getValor()));
 		}
 
 		return mensagemFinal.toString();
+	}
+
+	private String formataData(Date data) {
+		String dataFormatada = DateUtil.formataDate(data, "dd/MM/yyyy");
+		return dataFormatada;
 	}
 
 	public String formataMensagemCancelamentoHistoricoColaborador(String mensagem, HistoricoColaborador historicoColaborador)
@@ -68,7 +72,7 @@ public class MensagemManagerImpl extends GenericManagerImpl<Mensagem, MensagemDa
 		mensagemFinal.append("\r\n");
 		mensagemFinal.append("Nome: "+historicoColaborador.getColaborador().getNomeComercial());
 		mensagemFinal.append("\r\n");
-		mensagemFinal.append("Data: "+SimpleDateFormat.getDateInstance().format(historicoColaborador.getData()));
+		mensagemFinal.append("Data: "+formataData(historicoColaborador.getData()));
 		mensagemFinal.append("\r\n");
 		mensagemFinal.append("Estabelecimento: "+historicoColaborador.getEstabelecimento().getNome());
 		mensagemFinal.append("\r\n");
@@ -81,18 +85,16 @@ public class MensagemManagerImpl extends GenericManagerImpl<Mensagem, MensagemDa
 		mensagemFinal.append("Tipo do Salário: "+TipoAplicacaoIndice.getDescricao(historicoColaborador.getTipoSalario()));
 		mensagemFinal.append("\r\n");
 
-		DecimalFormat valor = new DecimalFormat("###,##0.00#");
-
 		switch (historicoColaborador.getTipoSalario())
 		{
 			case TipoAplicacaoIndice.INDICE:
 				mensagemFinal.append("Índice: "+historicoColaborador.getIndice().getNome());
 				mensagemFinal.append("\r\n");
-				mensagemFinal.append("Quantidade: "+valor.format(historicoColaborador.getQuantidadeIndice()));
+				mensagemFinal.append("Quantidade: " + MathUtil.formataValor(historicoColaborador.getQuantidadeIndice()));
 				break;
 
 			case TipoAplicacaoIndice.VALOR:
-				mensagemFinal.append("Valor : "+valor.format(historicoColaborador.getSalario()));
+				mensagemFinal.append("Valor : " + MathUtil.formataValor(historicoColaborador.getSalario()));
 				break;
 		}
 
