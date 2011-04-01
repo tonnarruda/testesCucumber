@@ -2171,4 +2171,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return periodoExperienciaId;
 	}
 	
+	public String getRespondidaEmFormatada()
+	{
+		return DateUtil.formataDate(this.respondidaEm, "dd/MM/yyyy");
+	}
+	
+	
 }

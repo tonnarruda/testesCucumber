@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.avaliacao;
 
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -61,6 +62,8 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Map<String, Object> parametros;
 	private Integer diasDeAcompanhamento;
 	private Integer tempoDeEmpresa;
+	private String reportFilter;
+	private String reportTitle;
 		
 	private void prepare() throws Exception
 	{
@@ -157,10 +160,13 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		try 
 		{
 			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, modeloAvaliacao.getId(), areasCheck, estabelecimentoCheck);
-			Avaliacao modelo = avaliacaoManager.findById(modeloAvaliacao.getId());
-			String filtroCabecalho = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + "Modelo de Avaliação: " + modelo.getTitulo(); 
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ranking de Performace de Avaliação de Desempenho", getEmpresaSistema(), filtroCabecalho);
 			
+			Avaliacao modelo = avaliacaoManager.findById(modeloAvaliacao.getId());
+
+			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + "Modelo de Avaliação: " + modelo.getTitulo();
+			reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
+			
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
 		}
 		catch (Exception e)
 		{
@@ -355,4 +361,13 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		public void setTempoDeEmpresa(Integer tempoDeEmpresa) {
 			this.tempoDeEmpresa = tempoDeEmpresa;
 		}
+		
+		public String getReportFilter() {
+			return reportFilter;
+		}
+
+		public String getReportTitle() {
+			return reportTitle;
+		}
+		
 }
