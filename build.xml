@@ -114,6 +114,7 @@
 					<include name="**/*.js"/>
 					<include name="**/*.gif"/>
 					<include name="**/*.sql"/>
+					<include name="**/*.test"/>
 				</patternset>
 			</fileset>
 		</copy>
