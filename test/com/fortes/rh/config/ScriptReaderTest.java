@@ -8,6 +8,8 @@ import org.junit.Assert;
 
 public class ScriptReaderTest extends TestCase {
 
+	private static final String SCRIPT_UPDATE_TEST_SQL = "script_update_test.sql";
+	
 	ScriptReader reader;
 	private File arquivoUpdateSql;
 	
@@ -27,7 +29,7 @@ public class ScriptReaderTest extends TestCase {
 	
 	private File getSqlScript() {
 		String path = this.getClass()
-					.getResource("script_update_test.sql").getFile()
+					.getResource(SCRIPT_UPDATE_TEST_SQL).getFile()
 						.replace("\\", "/").replace("%20", " ");
 		return new File(path);
 	}
