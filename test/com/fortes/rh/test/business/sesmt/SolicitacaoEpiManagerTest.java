@@ -207,62 +207,28 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 	public void testFindRelatorioEntregaEpi() throws Exception
 	{
 		Date hoje = new Date();
-		Date dataFrente = DateUtil.incrementa(hoje, 7, 0);
+		Date data = DateUtil.criarDataMesAno(01, 02, 2011);
 		Long empresaId = 1L;
-		
-		Calendar dataSeisMesesParaFrente = Calendar.getInstance();
-		dataSeisMesesParaFrente.add(Calendar.MONTH, 6);
-		
-		Calendar dataOitoMesesParaFrente = Calendar.getInstance();
-		dataOitoMesesParaFrente.add(Calendar.MONTH, 8);
-
-		Calendar dataSeteMesesAntes = Calendar.getInstance();
-		dataSeteMesesAntes.add(Calendar.MONTH, -1);
-		
-		Integer validadeUso = 6;
+		Integer validadeUso = 30;
 		
 		Epi epi = EpiFactory.getEntity(1L);
+		epi.setNome("EpiNome");
 		Colaborador colaborador = ColaboradorFactory.getEntity(100L);
 		
-		SolicitacaoEpi solicitacaoEpi =
-			new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",
-					dataSeisMesesParaFrente.getTime(), validadeUso, 1);
+		SolicitacaoEpi solicitacaoEpi =	new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",	data, validadeUso, 1);
 		
-		SolicitacaoEpi solicitacaoEpiAnteriorFora =
-			new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",
-					dataSeteMesesAntes.getTime(), validadeUso, 1);
+		Collection<SolicitacaoEpi> solicitacaoEpisRetorno = new ArrayList<SolicitacaoEpi>();
+		solicitacaoEpisRetorno.add(solicitacaoEpi);
+		
+		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(eq(empresaId),ANYTHING, ANYTHING, ANYTHING).will(returnValue(solicitacaoEpisRetorno));
+		
+		assertEquals(1, solicitacaoEpiManager.findRelatorioEntregaEpi(empresaId, hoje, null, null).size());
 
-		SolicitacaoEpi solicitacaoEpiPosteriorFora =
-			new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",
-					dataSeteMesesAntes.getTime(), validadeUso, 1);
-		
-		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
-		colecao.add(solicitacaoEpiAnteriorFora);
-		colecao.add(solicitacaoEpiPosteriorFora);
-		colecao.add(solicitacaoEpi);
-		
-		Collection<SolicitacaoEpi> resultado = null;
-		
-		String[] epiCheck = {"1","2"};
-		Long[] epiCheckLong = LongUtil.arrayStringToArrayLong(epiCheck);
-		
-		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(eq(empresaId),eq(epiCheckLong)).will(returnValue(colecao));
-		
-		resultado = solicitacaoEpiManager. findRelatorioEntregaEpi(empresaId, hoje, dataFrente, epiCheck);
-		
-		assertEquals(1, resultado.size());
-		
-		assertEquals(solicitacaoEpi, ((SolicitacaoEpi)resultado.toArray()[0]));
-		
-		//sem resultado
-		colecao.clear();
-		colecao.add(solicitacaoEpiAnteriorFora);
-		colecao.add(solicitacaoEpiPosteriorFora);
-		
-		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(eq(empresaId),eq(epiCheckLong)).will(returnValue(colecao));
+		Collection<SolicitacaoEpi> solicitacaoEpisRetorno2 = new ArrayList<SolicitacaoEpi>();
+		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(eq(empresaId),ANYTHING, ANYTHING, ANYTHING).will(returnValue(solicitacaoEpisRetorno2));
 		
 		try {
-			resultado = solicitacaoEpiManager. findRelatorioEntregaEpi(empresaId, hoje, dataFrente, epiCheck);
+			solicitacaoEpiManager.findRelatorioEntregaEpi(empresaId, hoje, null, null);
 		} catch (Exception e) {
 			assertEquals("Não existem EPIs a serem listados para os filtros informados.", e.getMessage());
 		}

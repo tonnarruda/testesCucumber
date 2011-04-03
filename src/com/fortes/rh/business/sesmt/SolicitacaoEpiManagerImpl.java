@@ -155,33 +155,12 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	@SuppressWarnings("unchecked")
 	public Collection<SolicitacaoEpi> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck) throws ColecaoVaziaException
 	{
-		Collection<SolicitacaoEpi> solicitacoesEpiAVencer = null;
-		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findEntregaEpi(empresaId, LongUtil.arrayStringToArrayLong(epiCheck));
-		Collection<SolicitacaoEpi> solicitacaoEpisResult = new ArrayList<SolicitacaoEpi>();
+		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findEntregaEpi(empresaId, LongUtil.arrayStringToArrayLong(epiCheck), dataIni, dataFim);
 		
-		for (SolicitacaoEpi solicitacaoEpi : solicitacaoEpis) 
-		{
-			Date data = DateUtil.incrementa(solicitacaoEpi.getData(), solicitacaoEpi.getEpiHistorico().getValidadeUso(), 2);			
-			
-			if (dataFim != null) 
-			{
-				if (data.after(dataIni) &&  data.before(dataFim))
-					solicitacaoEpisResult.add(solicitacaoEpi);
-			}else
-			{
-				if (data.after(dataIni))
-					solicitacaoEpisResult.add(solicitacaoEpi);
-			}
-		}
-		
-		if (solicitacaoEpisResult == null || solicitacaoEpisResult.isEmpty())
+		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			throw new ColecaoVaziaException("Não existem EPIs a serem listados para os filtros informados.");
 		
-		solicitacoesEpiAVencer = prepareUltimosEpisVencidos(solicitacaoEpisResult);
-
-		Collections.sort((List) solicitacoesEpiAVencer, new BeanComparator("epi.nome", new ComparatorString()));
-			
-		return solicitacoesEpiAVencer;
+		return solicitacaoEpis;
 	}
 
 	/*

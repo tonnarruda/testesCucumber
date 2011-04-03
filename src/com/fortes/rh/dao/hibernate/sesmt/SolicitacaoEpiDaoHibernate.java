@@ -162,10 +162,10 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return query.list();
 	}
 
-	public Collection<SolicitacaoEpi> findEntregaEpi(Long empresaId, Long[] epiIds)
+	public Collection<SolicitacaoEpi> findEntregaEpi(Long empresaId, Long[] epiIds, Date dataIni, Date dataFim)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new SolicitacaoEpi(e.id,co.id,e.nome,co.nome,ca.nome,eh.data,eh.validadeUso,item.qtdEntregue) ");
+		hql.append("select new SolicitacaoEpi(e.id,co.id,e.nome,co.nome,ca.nome,se.data,eh.validadeUso,item.qtdEntregue) ");
 		hql.append("from Epi e ");
 		hql.append("join e.solicitacaoEpiItems item ");
 		hql.append("join item.solicitacaoEpi se ");
@@ -174,6 +174,9 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		hql.append("left join e.epiHistoricos eh ");
 		hql.append("where se.entregue = true ");
 		
+		if (dataIni != null && dataFim != null)
+			hql.append("and se.data between :dataIni and :dataFim ");
+		
 		if(epiIds != null && epiIds.length != 0)
 			hql.append("and e.id in (:epiCheck) ");
 		
@@ -181,11 +184,16 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		hql.append("order by co.id,e.id,eh.data ");
 		
 		Query query = getSession().createQuery(hql.toString());
-		
 		query.setLong("empresaId", empresaId);
 		
 		if(epiIds != null && epiIds.length != 0)
 			query.setParameterList("epiCheck", epiIds, Hibernate.LONG);
+
+		if (dataIni != null && dataFim != null)
+		{
+			query.setDate("dataIni", dataIni);
+			query.setDate("dataFim", dataFim);
+		}
 		
 		return query.list();
 	}

@@ -806,14 +806,14 @@ jQuery.fn.insertAtCaret = function (tagName) {
     });
 
     jQuery(".currency").keypress(function(event) {
-      var char = String.fromCharCode(event.which);
+      var charI = String.fromCharCode(event.which);
 
-      if (char.match(/[0-9]/) || !(event.keyCode == 0)) 
+      if (charI.match(/[0-9]/) || !(event.keyCode == 0)) 
         return;
 
       event.preventDefault();
       
-      if (char.match(/[\.,]/) && (jQuery(this).val().indexOf(',') < 0))
+      if (charI.match(/[\.,]/) && (jQuery(this).val().indexOf(',') < 0))
         jQuery(this).insertAtCaret(',');
     });
 

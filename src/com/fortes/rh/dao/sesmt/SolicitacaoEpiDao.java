@@ -16,5 +16,5 @@ public interface SolicitacaoEpiDao extends GenericDao<SolicitacaoEpi>
 	Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, Boolean entregue);
 	SolicitacaoEpi findByIdProjection(Long solicitacaoEpiId);
 	Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds, Long[] areasIds, Long[] estabelecimentoIds);
-	public Collection<SolicitacaoEpi> findEntregaEpi(Long empresaId, Long[] epiCheck);
+	public Collection<SolicitacaoEpi> findEntregaEpi(Long empresaId, Long[] epiCheck, Date dataIni, Date dataFim);
 }

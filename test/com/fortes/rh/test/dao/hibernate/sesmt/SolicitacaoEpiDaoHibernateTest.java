@@ -175,6 +175,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setCargo(cargo);
 		solicitacaoEpi.setEntregue(true);
+		solicitacaoEpi.setData(DateUtil.criarDataMesAno(01, 02, 2011));
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
 		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
@@ -204,7 +205,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		
 		Long[] epiCheck = {1L};
 		
-		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(1L, epiCheck);
+		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(1L, epiCheck, DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2011));
 		
 		assertEquals(0,colecao.size());
 	}
