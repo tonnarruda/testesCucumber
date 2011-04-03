@@ -34,6 +34,7 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
@@ -2920,7 +2921,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
-		hql.append("c.pessoal.sexo, count(c.pessoal.sexo) ");
+		hql.append("c.pessoal.sexo, count(c.id) ");
 		hql.append("from Colaborador c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId and (c.pessoal.sexo = :masc or c.pessoal.sexo = :fem) ");
 		hql.append("group by c.pessoal.sexo order by c.pessoal.sexo ");
@@ -2961,7 +2962,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
-		hql.append("c.pessoal.estadoCivil, count(c.pessoal.estadoCivil) ");
+		hql.append("c.pessoal.estadoCivil, count(c.id) ");
 		hql.append("from Colaborador c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
 		hql.append("group by c.pessoal.estadoCivil order by c.pessoal.estadoCivil ");
@@ -3010,7 +3011,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
-		hql.append("c.pessoal.escolaridade, count(c.pessoal.escolaridade) ");
+		hql.append("c.pessoal.escolaridade, count(c.id) ");
 		hql.append("from Colaborador c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
 		hql.append("group by c.pessoal.escolaridade order by c.pessoal.escolaridade ");
@@ -3026,34 +3027,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		List resultado = query.list();
 		
 		Escolaridade escolaridadeMap = new Escolaridade();
-		int qtdFundamental5ano = 0;
-		int qtdFundamental9ano = 0;
-		int qtdMedio = 0;
-		int qtdSuperior = 0;
-		int qtdEspecializacao = 0;
-		
+
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
 			String escolaridade = (String) res[0];
 			int qtd = (Integer) res[1];
-			
-			if(Escolaridade.PRIMARIO_COMPLETO.equals(escolaridade) || Escolaridade.GINASIO_INCOMPLETO.equals(escolaridade))
-				qtdFundamental5ano += qtd; 
-			else if(Escolaridade.GINASIO_COMPLETO.equals(escolaridade) || Escolaridade.COLEGIAL_INCOMPLETO.equals(escolaridade))
-				qtdFundamental9ano += qtd; 
-			else if(Escolaridade.COLEGIAL_COMPLETO.equals(escolaridade) || Escolaridade.SUPERIOR_INCOMPLETO.equals(escolaridade))
-				qtdMedio += qtd; 
-			else if(Escolaridade.SUPERIOR_COMPLETO.equals(escolaridade))
-				qtdSuperior += qtd;
-			else if(Escolaridade.ESPECIALIZACAO.equals(escolaridade))
-				qtdEspecializacao += qtd;
+			dataGraficos.add(new DataGrafico(escolaridadeMap.get(escolaridade), qtd));
 		}
-		dataGraficos.add(new DataGrafico("Fund.(até 5ºano)", qtdFundamental5ano));
-		dataGraficos.add(new DataGrafico("Fund.(até 9ºano)", qtdFundamental9ano));
-		dataGraficos.add(new DataGrafico("Médio", qtdMedio));
-		dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.SUPERIOR_COMPLETO), qtdSuperior));
-		dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.ESPECIALIZACAO), 1));
 		
 		return dataGraficos;
 	}
@@ -3118,7 +3099,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
-		hql.append("c.pessoal.deficiencia, count(c.pessoal.deficiencia) ");
+		hql.append("c.pessoal.deficiencia, count(c.id) ");
 		hql.append("from Colaborador c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
 		hql.append("group by c.pessoal.deficiencia order by c.pessoal.deficiencia ");
@@ -3163,7 +3144,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
-		hql.append("m.motivo, count(m.motivo) ");
+		hql.append("m.motivo, count(m.id) ");
 		hql.append("from Colaborador c ");
 		hql.append("join c.motivoDemissao m ");
 		hql.append("where c.dataDesligamento between :dataIni and :dataFim  and c.empresa.id = :empresaId ");
@@ -3184,6 +3165,38 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			dataGraficos.add(new DataGrafico((String)res[0], (Integer) res[1]));
 		}
 		
+		return dataGraficos;
+	}
+
+	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();		
+		
+		hql.append("select ");
+		hql.append("c.vinculo, count(c.id) ");
+		hql.append("from Colaborador c ");
+		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
+		hql.append("group by c.vinculo order by count(c.id) desc");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setDate("data", dataBase);
+		query.setBoolean("desligado", false);
+		query.setLong("empresaId", empresaId);
+		
+		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
+		List resultado = query.list();
+		Vinculo vinculoMap = new Vinculo();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			String vinculo = (String) res[0];
+			if(vinculo == null)
+				dataGraficos.add(new DataGrafico("Importado do AC", (Integer) res[1]));
+			else
+				dataGraficos.add(new DataGrafico((String)vinculoMap.get((String) res[0]), (Integer) res[1]));
+		}
 		return dataGraficos;
 	}
 

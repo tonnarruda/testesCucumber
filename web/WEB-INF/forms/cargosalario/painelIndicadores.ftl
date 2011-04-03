@@ -73,6 +73,29 @@
 			.fieldGraph.bigger div.legend > table {
 				left: 540px;
 			}
+
+			.fieldGraph.medium{
+				width: 600px !important;
+			}
+			.fieldGraph.medium h1 {
+				width: 592px;
+			}
+			.fieldGraph.medium div.legend > table , .fieldGraph.medium div.legend > div{
+				left: 240px;
+				width: 360px !important;
+			}
+
+			.fieldGraph.small{
+				width: 354px !important;
+			}
+			.fieldGraph.small h1 {
+				width: 346px;
+			}
+			.fieldGraph.small div.legend > table , .fieldGraph.small div.legend > div{
+				left: 190px;
+				width: 160px !important;
+			}
+			
 		</style>
 		<script type="text/javascript">
 			$(function () {
@@ -82,8 +105,9 @@
 				montaPie(${grfSexo}, "#sexo", 1, 0, -120);
 				montaPie(${grfEstadoCivil}, "#estadoCivil", 1, 0.02, -120);
 				montaPie(${grfDeficiencia}, "#deficiencia", 1, 0.03, -120);
-				montaPie(${grfDesligamento}, "#desligamento", 0.9, 0.02, -190);
+				montaPie(${grfColocacao}, "#colocacao", 1, 0.02, -120);
 				
+				montaPie(${grfDesligamento}, "#desligamento", 0.9, 0.02, -190);
 				
 				//$("#interactive").bind("plotclick", pieClick);
 			});
@@ -180,16 +204,8 @@
 		<#include "../util/bottomFiltro.ftl" />
 		
 		<div class="fieldGraph">
-			<h1>Formação Escolar</h1>
-		    <div id="formacaoEscolar" class="graph" ></div>
-		</div>
-		<div class="fieldGraph">
 			<h1>Faixa Etária</h1>
 		    <div id="faixaEtaria" class="graph"></div>
-	    </div>
-   		<div class="fieldGraph">
-			<h1>Sexo</h1>
-	    	<div id="sexo" class="graph"></div>
 	    </div>
 		<div class="fieldGraph">
 			<h1>Estado Civil</h1>
@@ -198,6 +214,18 @@
 	    <div class="fieldGraph">
 			<h1>Deficiência</h1>
 	    	<div id="deficiencia" class="graph"></div>
+	    </div>
+	    <div class="fieldGraph">
+			<h1>Colocação</h1>
+	    	<div id="colocacao" class="graph"></div>
+	    </div>
+		<div class="fieldGraph medium">
+			<h1>Formação Escolar</h1>
+		    <div id="formacaoEscolar" class="graph" ></div>
+		</div>
+   		<div class="fieldGraph small">
+			<h1>Sexo</h1>
+	    	<div id="sexo" class="graph"></div>
 	    </div>
 	    
 		<div style="clear: both"></div>

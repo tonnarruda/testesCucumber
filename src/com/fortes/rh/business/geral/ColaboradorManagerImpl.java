@@ -1706,4 +1706,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaId);
 	}
+
+	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId) 
+	{
+		return getDao().countColocacao(dataBase, empresaId);
+	}
 }

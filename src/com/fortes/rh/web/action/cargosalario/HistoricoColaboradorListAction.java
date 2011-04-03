@@ -79,6 +79,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfEstadoCivil = "";
 	private String grfDeficiencia = "";
 	private String grfDesligamento = "";
+
+	private String grfColocacao = "";
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -96,6 +98,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, getEmpresaSistema().getId());
 
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
 		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);
@@ -103,6 +106,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfEstadoCivil = StringUtil.toJSON(graficoEstadoCivil, null);
 		grfDeficiencia = StringUtil.toJSON(graficoDeficiencia, null);
 		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
+		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
 		
 		return Action.SUCCESS;
 	}
@@ -459,4 +463,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		this.dataBase = dataBase;
 	}
 
+	public String getGrfColocacao() {
+		return grfColocacao;
+	}	
 }
