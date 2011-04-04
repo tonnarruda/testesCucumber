@@ -26,6 +26,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -33,6 +34,7 @@ import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -70,6 +72,36 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Collection<Empresa> empresas;
 	private Long[] empresaIds;//repassado para o DWR
 	private Empresa empresa;
+	private String grfFormacaoEscolars = "";
+	private String grfFaixaEtarias = "";
+	private String grfSexo = "";
+	private String grfEstadoCivil = "";
+	private String grfDeficiencia = "";
+	private String grfDesligamento = "";
+	
+	public String painelIndicadores() throws Exception
+	{
+		Date date = new Date();
+		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(date, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficofaixaEtaria = new ArrayList<DataGrafico>();
+		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(date, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(date, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoDeficiencia = new ArrayList<DataGrafico>();
+		Collection<DataGrafico> graficoDesligamento = new ArrayList<DataGrafico>();
+		
+		graficofaixaEtaria.add(new DataGrafico("Até 19", 2));
+		graficofaixaEtaria.add(new DataGrafico("20 a 29", 30));
+		graficofaixaEtaria.add(new DataGrafico("30 a 39", 10));
+		graficofaixaEtaria.add(new DataGrafico("40 a 49", 90));
+		graficofaixaEtaria.add(new DataGrafico("50 a 59", 40));
+		graficofaixaEtaria.add(new DataGrafico("Acima de 60", 3));
+
+		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
+		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);
+		grfSexo = StringUtil.toJSON(graficoSexo, null);
+		grfEstadoCivil = StringUtil.toJSON(graficoEstadoCivil, null);
+		return Action.SUCCESS;
+	}
 
 	public String prepareRelatorioPromocoes() throws Exception
 	{
@@ -390,4 +422,29 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	{
 		return empresas;
 	}
+
+	public String getGrfFormacaoEscolars() {
+		return grfFormacaoEscolars;
+	}
+
+	public String getGrfFaixaEtarias() {
+		return grfFaixaEtarias;
+	}
+
+	public String getGrfSexo() {
+		return grfSexo;
+	}
+
+	public String getGrfEstadoCivil() {
+		return grfEstadoCivil;
+	}
+
+	public String getGrfDeficiencia() {
+		return grfDeficiencia;
+	}
+
+	public String getGrfDesligamento() {
+		return grfDesligamento;
+	}
+
 }

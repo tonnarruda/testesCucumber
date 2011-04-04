@@ -6,18 +6,18 @@ import java.util.LinkedHashMap;
 public class Escolaridade extends LinkedHashMap<String, String> {
 	private static final long serialVersionUID = -8052661735365734073L;
 
-	private static final String ANALFABETO = "01";
-	private static final String PRIMARIO_INCOMPLETO = "02";
-	private static final String PRIMARIO_COMPLETO = "03";
-	private static final String GINASIO_INCOMPLETO = "04";
-	private static final String GINASIO_COMPLETO = "05";
-	private static final String COLEGIAL_INCOMPLETO = "06";
-	private static final String COLEGIAL_COMPLETO = "07";
-	private static final String SUPERIOR_INCOMPLETO = "08";
-	private static final String SUPERIOR_COMPLETO = "09";
-	private static final String MESTRADO = "10";
-	private static final String DOUTORADO = "11";
-	private static final String ESPECIALIZACAO = "12";
+	public static final String ANALFABETO = "01";
+	public  static final String PRIMARIO_INCOMPLETO = "02";
+	public  static final String PRIMARIO_COMPLETO = "03";
+	public  static final String GINASIO_INCOMPLETO = "04";
+	public  static final String GINASIO_COMPLETO = "05";
+	public  static final String COLEGIAL_INCOMPLETO = "06";
+	public  static final String COLEGIAL_COMPLETO = "07";
+	public  static final String SUPERIOR_INCOMPLETO = "08";
+	public  static final String SUPERIOR_COMPLETO = "09";
+	public  static final String MESTRADO = "10";
+	public  static final String DOUTORADO = "11";
+	public  static final String ESPECIALIZACAO = "12";
 
 	public Escolaridade() {
 		put(ANALFABETO, "Sem escolaridade");

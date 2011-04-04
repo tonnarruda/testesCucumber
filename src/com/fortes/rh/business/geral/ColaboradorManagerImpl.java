@@ -65,6 +65,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -1675,5 +1676,18 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager) {
 		this.periodoExperienciaManager = periodoExperienciaManager;
+	}
+
+	public Collection<DataGrafico> countSexo(Date data, Long empresaId) 
+	{
+		return getDao().countSexo(data, empresaId);
+	}
+
+	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId) {
+		return getDao().countEstadoCivil(data, empresaId);
+	}
+
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId) {
+		return  getDao().countFormacaoEscolar(data, empresaId);
 	}
 }

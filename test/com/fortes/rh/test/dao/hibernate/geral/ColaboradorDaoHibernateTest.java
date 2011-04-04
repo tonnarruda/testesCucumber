@@ -49,6 +49,7 @@ import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
@@ -66,6 +67,7 @@ import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
@@ -908,6 +910,89 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		colaborador.setDependentes(null);
 		return colaborador;
+	}
+	
+	public void testCountSexo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Empresa outraEmpresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(outraEmpresa);
+		
+		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, "01");
+		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(02, 02, 2010), empresa, "01");//data superior
+		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01");
+		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, "01");
+		saveColaboradorSexo('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01");//desligado
+		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(02, 03, 2005), outraEmpresa, "01");//outra empresa
+		
+		Collection<DataGrafico> data = colaboradorDao.countSexo(DateUtil.criarDataMesAno(01, 02, 2008), empresa.getId());
+		assertEquals(2, data.size());
+		
+		DataGrafico fem = (DataGrafico) data.toArray()[0];
+		DataGrafico mas = (DataGrafico) data.toArray()[1];
+		
+		assertEquals("Feminino", fem.getLabel());
+		assertEquals(2, fem.getData());
+
+		assertEquals("Masculino", mas.getLabel());
+		assertEquals(1, mas.getData());
+	}
+	
+	public void testCountEstadoCivil()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Empresa outraEmpresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(outraEmpresa);
+		
+		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL);
+		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_UNIVERSAL);
+		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2004), empresa, EstadoCivil.CASADO_REGIME_MISTO_ESPECIAL);
+		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2006), empresa, EstadoCivil.CASADO_REGIME_TOTAL);
+		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.CASADO_SEPARACAO_DE_BENS);
+		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(02, 02, 2007), empresa, EstadoCivil.SOLTEIRO);
+		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.UNIAO_ESTAVEL);
+		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, EstadoCivil.DIVORCIADO);
+		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.SEPARADO_JUDIALMENTE);
+		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(02, 03, 2005), empresa, EstadoCivil.VIUVO);
+		
+		Collection<DataGrafico> data = colaboradorDao.countEstadoCivil(DateUtil.criarDataMesAno(01, 02, 2008), empresa.getId());
+		assertEquals(4, data.size());
+		
+		DataGrafico casado= (DataGrafico) data.toArray()[0];
+		DataGrafico divorciado = (DataGrafico) data.toArray()[1];
+		DataGrafico solteiro = (DataGrafico) data.toArray()[2];
+		DataGrafico viuvo = (DataGrafico) data.toArray()[3];
+		
+		assertEquals("Casado", casado.getLabel());
+		assertEquals(5, casado.getData());
+		
+		assertEquals("Divorciado", divorciado.getLabel());
+		assertEquals(2, divorciado.getData());
+
+		assertEquals("Solteiro", solteiro.getLabel());
+		assertEquals(2, solteiro.getData());
+		
+		assertEquals("Viúvo", viuvo.getLabel());
+		assertEquals(1, viuvo.getData());
+	}
+
+	private void saveColaboradorSexo(char sexo, boolean desligado, Date data, Empresa empresa, String estadoCivil)
+	{
+		Pessoal pessoal	= new Pessoal();
+		pessoal.setEstadoCivil(estadoCivil);
+		pessoal.setSexo(sexo);
+
+		Colaborador colab = new Colaborador();
+		colab.setDesligado(desligado);
+		colab.setDataAdmissao(data);
+		colab.setEmpresa(empresa);
+		colab.setPessoal(pessoal);
+		colaboradorDao.save(colab);
+		
 	}
 
 	public void testFindByIdSobrescrito()

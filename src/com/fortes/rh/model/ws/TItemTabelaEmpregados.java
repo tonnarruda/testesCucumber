@@ -130,4 +130,5 @@ public class TItemTabelaEmpregados
 	{
 		this.expAgenteNocivo = expAgenteNocivo;
 	}
+
 }

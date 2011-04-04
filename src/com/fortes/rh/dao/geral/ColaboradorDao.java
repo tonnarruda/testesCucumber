@@ -11,6 +11,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.relatorio.DataGrafico;
 
 @SuppressWarnings("unchecked")
 public interface ColaboradorDao extends GenericDao<Colaborador>
@@ -92,4 +93,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findByUsuarioProjection(Long usuarioId);
 	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel);
 	public Collection<Colaborador> findComAvaliacoesExperiencias(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer diasDeAcompanhamento, int menorPeriodo);
+	public Collection<DataGrafico> countSexo(Date data, Long empresaId);
+	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId);
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId);
 }

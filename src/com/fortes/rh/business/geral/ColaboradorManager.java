@@ -25,6 +25,7 @@ import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.web.tags.CheckBox;
 
@@ -134,4 +135,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas);
 	public Colaborador findByUsuarioProjection(Long usuarioId);
 	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel);
+	public Collection<DataGrafico> countSexo(Date data, Long empresaId);
+	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId);
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId);
 }

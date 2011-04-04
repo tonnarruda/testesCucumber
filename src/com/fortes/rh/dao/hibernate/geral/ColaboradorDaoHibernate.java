@@ -1,5 +1,6 @@
 package com.fortes.rh.dao.hibernate.geral;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -28,6 +29,8 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.dicionario.Escolaridade;
+import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -36,6 +39,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
@@ -2908,6 +2912,152 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("estabelecimentoCheck", StringUtil.stringToLong(estabelecimentoCheck));
 
 		return query.list();
+	}
+
+	public Collection<DataGrafico> countSexo(Date data, Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();		
+		
+		hql.append("select ");
+		hql.append("c.pessoal.sexo, count(c.pessoal.sexo) ");
+		hql.append("from Colaborador c ");
+		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId and (c.pessoal.sexo = :masc or c.pessoal.sexo = :fem) ");
+		hql.append("group by c.pessoal.sexo order by c.pessoal.sexo ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setDate("data", data);
+		query.setBoolean("desligado", false);
+		query.setLong("empresaId", empresaId);
+		query.setString("masc", "M");
+		query.setString("fem", "F");
+		
+		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
+		
+		List resultado = query.list();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			char sex = (Character) res[0];
+			int qtd = (Integer) res[1];
+
+			DataGrafico dataGrafico = null;
+			
+			if(sex == 'F')
+				dataGrafico = new DataGrafico("Feminino", qtd);
+			else if(sex == 'M')
+				dataGrafico = new DataGrafico("Masculino", qtd);
+			
+			dataGraficos.add(dataGrafico);
+		}
+		
+		return dataGraficos;
+	}
+
+	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();		
+		
+		hql.append("select ");
+		hql.append("c.pessoal.estadoCivil, count(c.pessoal.estadoCivil) ");
+		hql.append("from Colaborador c ");
+		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
+		hql.append("group by c.pessoal.estadoCivil order by c.pessoal.estadoCivil ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setDate("data", data);
+		query.setBoolean("desligado", false);
+		query.setLong("empresaId", empresaId);
+		
+		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
+		
+		List resultado = query.list();
+		
+		int qtdCasado = 0;
+		int qtdDivorciado = 0;
+		int qtdSolteiro = 0;
+		int qtdViuvo = 0;
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			String estadoCivil = (String) res[0];
+			int qtd = (Integer) res[1];
+
+			if(estadoCivil.equalsIgnoreCase(EstadoCivil.DIVORCIADO) || estadoCivil.equalsIgnoreCase(EstadoCivil.SEPARADO_JUDIALMENTE))
+				qtdDivorciado += qtd;
+			else if(estadoCivil.equalsIgnoreCase(EstadoCivil.SOLTEIRO) || estadoCivil.equalsIgnoreCase(EstadoCivil.UNIAO_ESTAVEL))
+				qtdSolteiro += qtd;
+			else if(estadoCivil.equalsIgnoreCase(EstadoCivil.VIUVO))
+				qtdViuvo += qtd;
+			else if(estadoCivil.equalsIgnoreCase(EstadoCivil.CASADO_COMUNHAO_PARCIAL) || estadoCivil.equalsIgnoreCase(EstadoCivil.CASADO_COMUNHAO_UNIVERSAL) || estadoCivil.equalsIgnoreCase(EstadoCivil.CASADO_REGIME_MISTO_ESPECIAL) || estadoCivil.equalsIgnoreCase(EstadoCivil.CASADO_REGIME_TOTAL) || estadoCivil.equalsIgnoreCase(EstadoCivil.CASADO_SEPARACAO_DE_BENS))
+				qtdCasado += qtd;
+		}
+
+		dataGraficos.add(new DataGrafico("Casado", qtdCasado));
+		dataGraficos.add(new DataGrafico("Divorciado", qtdDivorciado));
+		dataGraficos.add(new DataGrafico("Solteiro", qtdSolteiro));
+		dataGraficos.add(new DataGrafico("Viúvo", qtdViuvo));
+		
+		return dataGraficos;
+	}
+
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId) {
+		
+		StringBuilder hql = new StringBuilder();		
+		
+		hql.append("select ");
+		hql.append("c.pessoal.escolaridade, count(c.pessoal.escolaridade) ");
+		hql.append("from Colaborador c ");
+		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
+		hql.append("group by c.pessoal.escolaridade order by c.pessoal.escolaridade ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setDate("data", data);
+		query.setBoolean("desligado", false);
+		query.setLong("empresaId", empresaId);
+		
+		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
+		
+		List resultado = query.list();
+		
+		Escolaridade escolaridadeMap = new Escolaridade();
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			String escolaridade = (String) res[0];
+			int qtd = (Integer) res[1];
+			
+			if(Escolaridade.ANALFABETO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico("Sem escolaridade", qtd));
+			else if(Escolaridade.PRIMARIO_INCOMPLETO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico("Fund. Incompleto(até 5ºano)", qtd));
+			else if(Escolaridade.PRIMARIO_COMPLETO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico("Fund. Completo(até 5ºano)", qtd));
+			else if(Escolaridade.GINASIO_INCOMPLETO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico("Fund. Incompleto(até 9ºano)", qtd));
+			else if(Escolaridade.GINASIO_COMPLETO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico("Fund. Completo(até 9ºano)", qtd));
+			else if(Escolaridade.COLEGIAL_INCOMPLETO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico("Médio Incompleto", qtd));
+			else if(Escolaridade.COLEGIAL_COMPLETO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico("Médio Completo", qtd));
+			else if(Escolaridade.SUPERIOR_INCOMPLETO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.SUPERIOR_INCOMPLETO), qtd));
+			else if(Escolaridade.SUPERIOR_COMPLETO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.SUPERIOR_COMPLETO), qtd));
+			else if(Escolaridade.ESPECIALIZACAO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.ESPECIALIZACAO), qtd));
+			else if(Escolaridade.MESTRADO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.MESTRADO), qtd));
+			else if(Escolaridade.DOUTORADO.equals(escolaridade))
+				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.DOUTORADO), qtd));
+		}
+		
+		return dataGraficos;
 	}
 
 }
