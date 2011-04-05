@@ -108,13 +108,12 @@
 		<copy todir="${build.dir}" includeEmptyDirs="no">
 			<fileset dir="${src.dir}">
 				<patternset>
-					<include name="**/*.properties"/>
-					<include name="**/*.xml"/>
-					<include name="**/*.css"/>
-					<include name="**/*.js"/>
-					<include name="**/*.gif"/>
-					<include name="**/*.sql"/>
-					<include name="**/*.test"/>
+					<exclude name="**/*.java"/>
+				</patternset>
+			</fileset>
+			<fileset dir="${srcTeste.dir}">
+				<patternset>
+					<exclude name="**/*.java"/>
 				</patternset>
 			</fileset>
 		</copy>
