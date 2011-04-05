@@ -59,7 +59,7 @@
 		<copy todir="${build.dir}" includeEmptyDirs="no">
 			<fileset dir="${srcTeste.dir}">
 				<patternset>
-					<include name="**/*.xml"/>
+					<exclude name="**/*.java"/>
 				</patternset>
 			</fileset>
 		</copy>
