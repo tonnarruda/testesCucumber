@@ -113,10 +113,7 @@ public class ColaboradorReportAction extends MyActionSupport
 				throw new Exception(msg);
 			}
 
-			//reportFilter = "???;
-			reportTitle = "Relatório de Projeção Salarial";
-			
-			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), null);
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Projeção Salarial", getEmpresaSistema(), "Data da Projeção: " + DateUtil.formataDiaMesAno(data));			
 			parametros.put("FILTRAR_POR", filtro);
 			parametros.put("TABELA_REAJUSTE_NOME", tabelaReajusteColaborador.getNome());
 			parametros.put("INTEGRA_AC", getEmpresaSistema().isAcIntegra());

@@ -105,7 +105,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalSalarioArea}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalSalarioArea} != null ? $V{totalSalarioArea}:new Double(0.0)]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
