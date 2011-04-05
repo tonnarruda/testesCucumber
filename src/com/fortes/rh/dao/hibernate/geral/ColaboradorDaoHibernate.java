@@ -29,6 +29,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -3025,38 +3026,135 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		List resultado = query.list();
 		
 		Escolaridade escolaridadeMap = new Escolaridade();
+		int qtdFundamental5ano = 0;
+		int qtdFundamental9ano = 0;
+		int qtdMedio = 0;
+		int qtdSuperior = 0;
+		int qtdEspecializacao = 0;
+		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
 			String escolaridade = (String) res[0];
 			int qtd = (Integer) res[1];
 			
-			if(Escolaridade.ANALFABETO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico("Sem escolaridade", qtd));
-			else if(Escolaridade.PRIMARIO_INCOMPLETO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico("Fund. Incompleto(até 5ºano)", qtd));
-			else if(Escolaridade.PRIMARIO_COMPLETO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico("Fund. Completo(até 5ºano)", qtd));
-			else if(Escolaridade.GINASIO_INCOMPLETO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico("Fund. Incompleto(até 9ºano)", qtd));
-			else if(Escolaridade.GINASIO_COMPLETO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico("Fund. Completo(até 9ºano)", qtd));
-			else if(Escolaridade.COLEGIAL_INCOMPLETO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico("Médio Incompleto", qtd));
-			else if(Escolaridade.COLEGIAL_COMPLETO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico("Médio Completo", qtd));
-			else if(Escolaridade.SUPERIOR_INCOMPLETO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.SUPERIOR_INCOMPLETO), qtd));
+			if(Escolaridade.PRIMARIO_COMPLETO.equals(escolaridade) || Escolaridade.GINASIO_INCOMPLETO.equals(escolaridade))
+				qtdFundamental5ano += qtd; 
+			else if(Escolaridade.GINASIO_COMPLETO.equals(escolaridade) || Escolaridade.COLEGIAL_INCOMPLETO.equals(escolaridade))
+				qtdFundamental9ano += qtd; 
+			else if(Escolaridade.COLEGIAL_COMPLETO.equals(escolaridade) || Escolaridade.SUPERIOR_INCOMPLETO.equals(escolaridade))
+				qtdMedio += qtd; 
 			else if(Escolaridade.SUPERIOR_COMPLETO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.SUPERIOR_COMPLETO), qtd));
+				qtdSuperior += qtd;
 			else if(Escolaridade.ESPECIALIZACAO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.ESPECIALIZACAO), qtd));
-			else if(Escolaridade.MESTRADO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.MESTRADO), qtd));
-			else if(Escolaridade.DOUTORADO.equals(escolaridade))
-				dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.DOUTORADO), qtd));
+				qtdEspecializacao += qtd;
+		}
+		dataGraficos.add(new DataGrafico("Fundamental(até 5ºano)", qtdFundamental5ano));
+		dataGraficos.add(new DataGrafico("Fundamental(até 9ºano)", qtdFundamental9ano));
+		dataGraficos.add(new DataGrafico("Médio", qtdMedio));
+		dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.SUPERIOR_COMPLETO), qtdSuperior));
+		dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.ESPECIALIZACAO), 1));
+		
+		return dataGraficos;
+	}
+	
+	public Collection<DataGrafico> countFaixaEtaria(Date data, Long empresaId)
+	{
+		StringBuilder hql = new StringBuilder();		
+		
+		hql.append("select ");
+		hql.append("c.pessoal.dataNascimento ");
+		hql.append("from Colaborador c ");
+		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setDate("data", data);
+		query.setBoolean("desligado", false);
+		query.setLong("empresaId", empresaId);
+		
+		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
+		
+		List resultado = query.list();
+		
+		int qtdFaixa1 = 0;
+		int qtdFaixa2 = 0;
+		int qtdFaixa3 = 0;
+		int qtdFaixa4 = 0;
+		int qtdFaixa5 = 0;
+		int qtdFaixa6 = 0;
+		
+		for (Iterator<Object> it = resultado.iterator(); it.hasNext();)
+		{
+			Date dataNasc = (Date) it.next();
+
+			int idade = DateUtil.calcularIdade(dataNasc, data);
+			if(idade < 20)
+				qtdFaixa1++;
+			else if(idade >= 20 && idade < 30)
+				qtdFaixa2++;
+			else if(idade >= 30 && idade < 40)
+				qtdFaixa3++;
+			else if(idade >= 40 && idade < 50)
+				qtdFaixa4++;
+			else if(idade >= 50 && idade < 60)
+				qtdFaixa5++;
+			else if(idade >= 60)
+				qtdFaixa6++;
 		}
 		
+		dataGraficos.add(new DataGrafico("Até 19", qtdFaixa1));
+		dataGraficos.add(new DataGrafico("20 a 29", qtdFaixa2));
+		dataGraficos.add(new DataGrafico("30 a 39", qtdFaixa3));
+		dataGraficos.add(new DataGrafico("40 a 49", qtdFaixa4));
+		dataGraficos.add(new DataGrafico("50 a 59", qtdFaixa5));
+		dataGraficos.add(new DataGrafico("Acima de 60", qtdFaixa6));
+		
+		return dataGraficos;
+	}
+
+	public Collection<DataGrafico> countDeficiencia(Date data, Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();		
+		
+		hql.append("select ");
+		hql.append("c.pessoal.deficiencia, count(c.pessoal.deficiencia) ");
+		hql.append("from Colaborador c ");
+		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
+		hql.append("group by c.pessoal.deficiencia order by c.pessoal.deficiencia ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setDate("data", data);
+		query.setBoolean("desligado", false);
+		query.setLong("empresaId", empresaId);
+		
+		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
+		List resultado = query.list();
+		Deficiencia deficienciaMap = new Deficiencia();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			char deficiencia = (Character) res[0];
+			int qtd = (Integer) res[1];
+		
+			
+			if(Deficiencia.SEM_DEFICIENCIA == deficiencia)
+				dataGraficos.add(new DataGrafico(deficienciaMap.get(Deficiencia.SEM_DEFICIENCIA).toString(),qtd));
+			else if(Deficiencia.AUDITIVA == deficiencia)
+				dataGraficos.add(new DataGrafico(deficienciaMap.get(Deficiencia.AUDITIVA).toString(),qtd));
+			else if(Deficiencia.FISICA == deficiencia)
+				dataGraficos.add(new DataGrafico(deficienciaMap.get(Deficiencia.FISICA).toString(),qtd));
+			else if(Deficiencia.MENTAL == deficiencia)
+				dataGraficos.add(new DataGrafico(deficienciaMap.get(Deficiencia.MENTAL).toString(),qtd));
+			else if(Deficiencia.VISUAL == deficiencia)
+				dataGraficos.add(new DataGrafico(deficienciaMap.get(Deficiencia.VISUAL).toString(),qtd));
+			else if(Deficiencia.MULTIPLA == deficiencia)
+				dataGraficos.add(new DataGrafico(deficienciaMap.get(Deficiencia.MULTIPLA).toString(),qtd));
+			else if(Deficiencia.REABILITADO == deficiencia)
+				dataGraficos.add(new DataGrafico(deficienciaMap.get(Deficiencia.REABILITADO).toString(),qtd));
+		}
 		return dataGraficos;
 	}
 

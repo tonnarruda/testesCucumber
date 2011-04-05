@@ -26,11 +26,11 @@
 <script type="text/javascript">
 $(function () {
 
-	montaPie(${grfFormacaoEscolars}, "#formacaoEscolar2", 0);
-	montaPie(${grfFormacaoEscolars}, "#formacaoEscolar", 0.05);
+	montaPie(${grfFormacaoEscolars}, "#formacaoEscolar", 0);
 	montaPie(${grfFaixaEtarias}, "#faixaEtaria", 0);
 	montaPie(${grfSexo}, "#sexo", 0);
 	montaPie(${grfEstadoCivil}, "#estadoCivil", 0);
+	montaPie(${grfDeficiencia}, "#deficiencia", 0.05);
 	
 	
 	//$("#interactive").bind("plotclick", pieClick);
@@ -112,12 +112,18 @@ $(function () {
 	    <div id="hover"></div>
 		<br><br>
 	
+	
+		<div class="gogDivFormularioX">
 	    <div id="formacaoEscolar" class="graph" ></div>
-	    <div id="formacaoEscolar2" class="graph" ></div>
-	    
 	    <div id="faixaEtaria" class="graph"></div>
+	    </div>
+   		<div class="gogDivFormularioX">
 	    <div id="sexo" class="graph"></div>
 	    <div id="estadoCivil" class="graph"></div>
+	    </div>
+	    <div class="gogDivFormularioX">
+	    <div id="deficiencia" class="graph"></div>
+	    </div>
 
 	</@ww.form>
 </body>

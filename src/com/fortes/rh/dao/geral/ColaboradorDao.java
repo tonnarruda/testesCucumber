@@ -96,4 +96,6 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<DataGrafico> countSexo(Date data, Long empresaId);
 	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId);
 	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId);
+	public Collection<DataGrafico> countFaixaEtaria(Date data, Long empresaId);
+	public Collection<DataGrafico> countDeficiencia(Date data, Long empresaId);
 }

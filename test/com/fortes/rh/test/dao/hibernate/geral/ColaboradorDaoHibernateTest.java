@@ -49,6 +49,7 @@ import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
@@ -920,12 +921,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa outraEmpresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(outraEmpresa);
 		
-		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, "01");
-		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(02, 02, 2010), empresa, "01");//data superior
-		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01");
-		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, "01");
-		saveColaboradorSexo('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01");//desligado
-		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(02, 03, 2005), outraEmpresa, "01");//outra empresa
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(02, 02, 2010), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA);//data superior
+		saveColaborador('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA);//desligado
+		saveColaborador('F', false, DateUtil.criarDataMesAno(02, 03, 2005), outraEmpresa, "01", null, Deficiencia.SEM_DEFICIENCIA);//outra empresa
 		
 		Collection<DataGrafico> data = colaboradorDao.countSexo(DateUtil.criarDataMesAno(01, 02, 2008), empresa.getId());
 		assertEquals(2, data.size());
@@ -948,16 +949,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa outraEmpresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(outraEmpresa);
 		
-		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL);
-		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_UNIVERSAL);
-		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2004), empresa, EstadoCivil.CASADO_REGIME_MISTO_ESPECIAL);
-		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2006), empresa, EstadoCivil.CASADO_REGIME_TOTAL);
-		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.CASADO_SEPARACAO_DE_BENS);
-		saveColaboradorSexo('M', false, DateUtil.criarDataMesAno(02, 02, 2007), empresa, EstadoCivil.SOLTEIRO);
-		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.UNIAO_ESTAVEL);
-		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, EstadoCivil.DIVORCIADO);
-		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.SEPARADO_JUDIALMENTE);
-		saveColaboradorSexo('F', false, DateUtil.criarDataMesAno(02, 03, 2005), empresa, EstadoCivil.VIUVO);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_UNIVERSAL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2004), empresa, EstadoCivil.CASADO_REGIME_MISTO_ESPECIAL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2006), empresa, EstadoCivil.CASADO_REGIME_TOTAL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.CASADO_SEPARACAO_DE_BENS, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(02, 02, 2007), empresa, EstadoCivil.SOLTEIRO, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.UNIAO_ESTAVEL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, EstadoCivil.DIVORCIADO, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.SEPARADO_JUDIALMENTE, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(02, 03, 2005), empresa, EstadoCivil.VIUVO, null, Deficiencia.SEM_DEFICIENCIA);
 		
 		Collection<DataGrafico> data = colaboradorDao.countEstadoCivil(DateUtil.criarDataMesAno(01, 02, 2008), empresa.getId());
 		assertEquals(4, data.size());
@@ -980,11 +981,105 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, viuvo.getData());
 	}
 
-	private void saveColaboradorSexo(char sexo, boolean desligado, Date data, Empresa empresa, String estadoCivil)
+	public void testCountDeficiencia()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Empresa outraEmpresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(outraEmpresa);
+		
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_UNIVERSAL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2004), empresa, EstadoCivil.CASADO_REGIME_MISTO_ESPECIAL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2006), empresa, EstadoCivil.CASADO_REGIME_TOTAL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.CASADO_SEPARACAO_DE_BENS, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(02, 02, 2007), empresa, EstadoCivil.SOLTEIRO, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.UNIAO_ESTAVEL, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, EstadoCivil.DIVORCIADO, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.SEPARADO_JUDIALMENTE, null, Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(02, 03, 2005), empresa, EstadoCivil.VIUVO, null, Deficiencia.SEM_DEFICIENCIA);
+		
+		Collection<DataGrafico> data = colaboradorDao.countEstadoCivil(DateUtil.criarDataMesAno(01, 02, 2008), empresa.getId());
+		assertEquals(4, data.size());
+		
+		DataGrafico casado= (DataGrafico) data.toArray()[0];
+		DataGrafico divorciado = (DataGrafico) data.toArray()[1];
+		DataGrafico solteiro = (DataGrafico) data.toArray()[2];
+		DataGrafico viuvo = (DataGrafico) data.toArray()[3];
+		
+		assertEquals("Casado", casado.getLabel());
+		assertEquals(5, casado.getData());
+		
+		assertEquals("Divorciado", divorciado.getLabel());
+		assertEquals(2, divorciado.getData());
+		
+		assertEquals("Solteiro", solteiro.getLabel());
+		assertEquals(2, solteiro.getData());
+		
+		assertEquals("Viúvo", viuvo.getLabel());
+		assertEquals(1, viuvo.getData());
+	}
+	
+	public void testCountFaixaEtaria()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Empresa outraEmpresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(outraEmpresa);
+		
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, DateUtil.criarDataMesAno(31, 01, 1989), Deficiencia.SEM_DEFICIENCIA);
+		
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_UNIVERSAL, DateUtil.criarDataMesAno(31, 01, 1988), Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2004), empresa, EstadoCivil.CASADO_REGIME_MISTO_ESPECIAL, DateUtil.criarDataMesAno(31, 01, 1986), Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(02, 03, 2005), empresa, EstadoCivil.VIUVO, DateUtil.criarDataMesAno(23, 02, 1978), Deficiencia.SEM_DEFICIENCIA);
+		
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2006), empresa, EstadoCivil.CASADO_REGIME_TOTAL, DateUtil.criarDataMesAno(18, 12, 1977), Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.CASADO_SEPARACAO_DE_BENS, DateUtil.criarDataMesAno(18, 12, 1975), Deficiencia.SEM_DEFICIENCIA);
+		
+		saveColaborador('M', false, DateUtil.criarDataMesAno(02, 02, 2007), empresa, EstadoCivil.SOLTEIRO, DateUtil.criarDataMesAno(01, 02, 1968), Deficiencia.SEM_DEFICIENCIA);
+		saveColaborador('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.UNIAO_ESTAVEL, DateUtil.criarDataMesAno(31, 12, 1960), Deficiencia.SEM_DEFICIENCIA);
+		
+		saveColaborador('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, EstadoCivil.DIVORCIADO, DateUtil.criarDataMesAno(31, 01, 1950), Deficiencia.SEM_DEFICIENCIA);
+		
+		saveColaborador('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, EstadoCivil.SEPARADO_JUDIALMENTE, DateUtil.criarDataMesAno(18, 12, 1947), Deficiencia.SEM_DEFICIENCIA);
+		
+		Collection<DataGrafico> data = colaboradorDao.countFaixaEtaria(DateUtil.criarDataMesAno(01, 02, 2008), empresa.getId());
+
+		DataGrafico faixa1 = (DataGrafico) data.toArray()[0];
+		DataGrafico faixa2 = (DataGrafico) data.toArray()[1];
+		DataGrafico faixa3 = (DataGrafico) data.toArray()[2];
+		DataGrafico faixa4 = (DataGrafico) data.toArray()[3];
+		DataGrafico faixa5 = (DataGrafico) data.toArray()[4];
+		DataGrafico faixa6 = (DataGrafico) data.toArray()[5];
+		
+		assertEquals("Até 19", faixa1.getLabel());
+		assertEquals(1, faixa1.getData());
+		
+		assertEquals("20 a 29", faixa2.getLabel());
+		assertEquals(3, faixa2.getData());
+
+		assertEquals("30 a 39", faixa3.getLabel());
+		assertEquals(2, faixa3.getData());
+		
+		assertEquals("40 a 49", faixa4.getLabel());
+		assertEquals(2, faixa4.getData());
+		
+		assertEquals("50 a 59", faixa5.getLabel());
+		assertEquals(1, faixa5.getData());
+		
+		assertEquals("Acima de 60", faixa6.getLabel());
+		assertEquals(1, faixa6.getData());
+	}
+	
+	private void saveColaborador(char sexo, boolean desligado, Date data, Empresa empresa, String estadoCivil, Date dataNascimento, char deficiencia)
 	{
 		Pessoal pessoal	= new Pessoal();
 		pessoal.setEstadoCivil(estadoCivil);
 		pessoal.setSexo(sexo);
+		pessoal.setDataNascimento(dataNascimento);
+		pessoal.setDeficiencia(deficiencia);
 
 		Colaborador colab = new Colaborador();
 		colab.setDesligado(desligado);

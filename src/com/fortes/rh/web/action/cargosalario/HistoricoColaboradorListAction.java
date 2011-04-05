@@ -83,23 +83,17 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	{
 		Date date = new Date();
 		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(date, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficofaixaEtaria = new ArrayList<DataGrafico>();
+		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(date, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(date, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(date, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoDeficiencia = new ArrayList<DataGrafico>();
+		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(date, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoDesligamento = new ArrayList<DataGrafico>();
 		
-		graficofaixaEtaria.add(new DataGrafico("Até 19", 2));
-		graficofaixaEtaria.add(new DataGrafico("20 a 29", 30));
-		graficofaixaEtaria.add(new DataGrafico("30 a 39", 10));
-		graficofaixaEtaria.add(new DataGrafico("40 a 49", 90));
-		graficofaixaEtaria.add(new DataGrafico("50 a 59", 40));
-		graficofaixaEtaria.add(new DataGrafico("Acima de 60", 3));
-
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
 		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);
 		grfSexo = StringUtil.toJSON(graficoSexo, null);
 		grfEstadoCivil = StringUtil.toJSON(graficoEstadoCivil, null);
+		grfDeficiencia = StringUtil.toJSON(graficoDeficiencia, null);
 		return Action.SUCCESS;
 	}
 
