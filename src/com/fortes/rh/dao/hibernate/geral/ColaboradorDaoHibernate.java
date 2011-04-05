@@ -3049,8 +3049,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			else if(Escolaridade.ESPECIALIZACAO.equals(escolaridade))
 				qtdEspecializacao += qtd;
 		}
-		dataGraficos.add(new DataGrafico("Fundamental(até 5ºano)", qtdFundamental5ano));
-		dataGraficos.add(new DataGrafico("Fundamental(até 9ºano)", qtdFundamental9ano));
+		dataGraficos.add(new DataGrafico("Fund.(até 5ºano)", qtdFundamental5ano));
+		dataGraficos.add(new DataGrafico("Fund.(até 9ºano)", qtdFundamental9ano));
 		dataGraficos.add(new DataGrafico("Médio", qtdMedio));
 		dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.SUPERIOR_COMPLETO), qtdSuperior));
 		dataGraficos.add(new DataGrafico(escolaridadeMap.get(Escolaridade.ESPECIALIZACAO), 1));
@@ -3155,6 +3155,35 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			else if(Deficiencia.REABILITADO == deficiencia)
 				dataGraficos.add(new DataGrafico(deficienciaMap.get(Deficiencia.REABILITADO).toString(),qtd));
 		}
+		return dataGraficos;
+	}
+
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();		
+		
+		hql.append("select ");
+		hql.append("m.motivo, count(m.motivo) ");
+		hql.append("from Colaborador c ");
+		hql.append("join c.motivoDemissao m ");
+		hql.append("where c.dataDesligamento between :dataIni and :dataFim  and c.empresa.id = :empresaId ");
+		hql.append("group by m.motivo order by count(m.motivo) desc ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		query.setLong("empresaId", empresaId);
+		
+		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
+		List resultado = query.list();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			dataGraficos.add(new DataGrafico((String)res[0], (Integer) res[1]));
+		}
+		
 		return dataGraficos;
 	}
 

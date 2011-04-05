@@ -59,6 +59,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] areasCheck;
+	private Date dataBase;
 	private Date dataIni;
 	private Date dataFim;
 	
@@ -81,19 +82,28 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public String painelIndicadores() throws Exception
 	{
-		Date date = new Date();
-		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(date, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(date, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(date, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(date, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(date, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoDesligamento = new ArrayList<DataGrafico>();
-		
+		Date hoje = new Date();
+		if (dataBase == null)
+			dataBase = hoje;
+		if (dataFim == null)
+			dataFim = hoje;
+		if (dataIni == null)
+			dataIni = DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true);
+			
+		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId());
+
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
 		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);
 		grfSexo = StringUtil.toJSON(graficoSexo, null);
 		grfEstadoCivil = StringUtil.toJSON(graficoEstadoCivil, null);
 		grfDeficiencia = StringUtil.toJSON(graficoDeficiencia, null);
+		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
+		
 		return Action.SUCCESS;
 	}
 
@@ -439,6 +449,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public String getGrfDesligamento() {
 		return grfDesligamento;
+	}
+
+	public Date getDataBase() {
+		return dataBase;
+	}
+
+	public void setDataBase(Date dataBase) {
+		this.dataBase = dataBase;
 	}
 
 }
