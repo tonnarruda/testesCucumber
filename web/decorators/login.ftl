@@ -18,10 +18,10 @@ ${body}
 
 
 <script type="text/javascript" >
-	jQuery(function($){
+	$(function(){
 		var versaoNavegador = $.browser.version;
 
-		if (jQuery.browser.msie && versaoNavegador < "7.0") 
+		if ($.browser.msie && versaoNavegador < "7.0") 
 		{
 			$('body').prepend("<div id=\"asn-warning\" style=\"position:absolute; display:none; left: 0px; border-bottom: solid 1px #DFDDCB; top:0px; margin: 0px; padding: 5px 0px; width: 100%; color: #4F4D3B; background: #FFFCDF; text-align: center;\">Você está usando um navegador em uma versão não homologada para o Fortes RH. Sugerimos o uso do Mozilla Firefox 3 ou superior.<a href=\"javascript://\" id=\"asn-close\" style=\"color: #4F4D3B; text-decoration: underline; font: normal 8pt/14px 'Trebuchet MS', Arial, Helvetica;\">[x]</a></div>");
 			$('#asn-warning').fadeIn(1000);
