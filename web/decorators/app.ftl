@@ -26,7 +26,7 @@
 		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/MenuMatic.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/menu.css"/>');
 		
 	</style>
 	
@@ -80,8 +80,8 @@
 		/**
 		 * Adiciona setinhas aos submenus que possuem nodes filhos;
 		 */
-		jQuery(document).ready(function(){
-			jQuery("#menuDropDown ul li:has(ul)").addClass("subMenuArrow");
+		$(document).ready(function(){
+			$("#menuDropDown ul li:has(ul)").addClass("subMenuArrow");
 		});
 	</script>
 
