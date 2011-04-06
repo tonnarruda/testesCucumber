@@ -71,7 +71,7 @@
 				width: 955px;
 			}
 			.fieldGraph.bigger div.legend > table {
-				left: inherit;
+				left: 540px;
 			}
 		</style>
 		<script type="text/javascript">
@@ -88,9 +88,9 @@
 				//$("#interactive").bind("plotclick", pieClick);
 			});
 		
-			function montaPie(data, class, radiusLabel, percentMin, pieLeft)
+			function montaPie(data, clazz, radiusLabel, percentMin, pieLeft)
 			{
-			    $.plot($(class), data, 
+			    $.plot($(clazz), data, 
 				{
 			        series: {
 			            pie: {
@@ -180,23 +180,23 @@
 		<#include "../util/bottomFiltro.ftl" />
 		
 		<div class="fieldGraph">
-			<h1>Formação escolar</h1>
+			<h1>Formação Escolar</h1>
 		    <div id="formacaoEscolar" class="graph" ></div>
 		</div>
 		<div class="fieldGraph">
-			<h1>Formação escolar</h1>
+			<h1>Faixa Etária</h1>
 		    <div id="faixaEtaria" class="graph"></div>
 	    </div>
    		<div class="fieldGraph">
-			<h1>Formação escolar</h1>
+			<h1>Sexo</h1>
 	    	<div id="sexo" class="graph"></div>
 	    </div>
 		<div class="fieldGraph">
-			<h1>Formação escolar</h1>
+			<h1>Estado Civil</h1>
 	    	<div id="estadoCivil" class="graph"></div>
 	    </div>
 	    <div class="fieldGraph">
-			<h1>Formação escolar</h1>
+			<h1>Deficiência</h1>
 	    	<div id="deficiencia" class="graph"></div>
 	    </div>
 	    
@@ -208,7 +208,7 @@
 				<a href="javascript:exibeFiltro('${urlImgs}','divFiltroForm2');" id="linkFiltro"><img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
 			</div>
 			<div id="divFiltroForm2" class="divFiltroForm ${classHidden}">
-			<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action" method="POST">
+			<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action#pagebottom" method="POST">
 				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
@@ -219,9 +219,10 @@
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 			<div class="fieldGraph bigger">
-			<h1>Formação escolar</h1>
+			<h1>Desligamentos (Motivo)</h1>
 		   		<div id="desligamento" class="graph2"></div>
 		    </div>
 		    <div style="clear: both"></div>
+			<a name="pagebottom"></a>
 	</body>
 </html>
