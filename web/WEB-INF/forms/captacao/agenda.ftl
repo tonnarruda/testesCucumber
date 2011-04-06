@@ -22,7 +22,7 @@
 		function updateAgenda(id, dataIni, dataFim, observacao)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			HistoricoCandidatoDWR.updateAgenda(verify, id, dataIni, jQuery.format.date(dataIni, "HH:mm"), jQuery.format.date(dataFim, "HH:mm"), observacao);
+			HistoricoCandidatoDWR.updateAgenda(verify, id, dataIni, $.format.date(dataIni, "HH:mm"), $.format.date(dataFim, "HH:mm"), observacao);
 		}
 
 		function verify(success)

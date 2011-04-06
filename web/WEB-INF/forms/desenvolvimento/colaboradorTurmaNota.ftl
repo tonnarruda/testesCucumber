@@ -35,13 +35,13 @@
 			
 			var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/colaboradorTurma/findNotas.action"/>";
 			
-			jQuery.getJSON(urlFind,
+			$.getJSON(urlFind,
 			{
 	    		cursoId:"${turma.curso.id}",
 	    		colaboradorId:colaboradorId
 	  		},
 	  		function(data) {
-		  		jQuery.each(data, function(i,item){
+		  		$.each(data, function(i,item){
 	            	$("#nota_" + item.avaliacaoCurso.id).val(item.valor);
 	          	});
 	  		});

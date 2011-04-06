@@ -159,7 +159,7 @@
 					.attr("selected", false)
 					.attr("disabled", true)
 				
-				if (jQuery.fn.obviouslyDisabled)
+				if ($.fn.obviouslyDisabled)
 		     		$("#"+from).obviouslyDisabled({textColor: ieColor, bgColor: ieBg});
 			}
 			else
@@ -267,8 +267,8 @@
     			return $(this).val();
 			});
 			
-			var campos = jQuery.makeArray(values).join(',');
-			jQuery.get('<@ww.url value="/geral/configuracaoRelatorioDinamico/update.action?campos="/>' + campos + '&titulo=' + $('#titulo').val(), function(data) {
+			var campos = $.makeArray(values).join(',');
+			$.get('<@ww.url value="/geral/configuracaoRelatorioDinamico/update.action?campos="/>' + campos + '&titulo=' + $('#titulo').val(), function(data) {
 				if(data == "OK")
 					jAlert("Layout do relatório salvo com sucesso.");
 				else

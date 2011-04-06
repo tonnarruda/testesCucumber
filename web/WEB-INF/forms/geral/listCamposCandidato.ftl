@@ -76,7 +76,7 @@
 		function enviaForm()
 		{
 			var abas = $('input[name=camposCandidatoVisivels]:checked').parents('table');
-			var abasStr = jQuery.map(abas, function (t){ return t.id; }).join(',');
+			var abasStr = $.map(abas, function (t){ return t.id; }).join(',');
 			
 			$('#camposCandidatoTabs').val(abasStr);
 			document.form.submit();		

@@ -68,7 +68,7 @@
 			
 			$("#codigoCBO").autocomplete({
 				source: function( request, response ) {
-					jQuery.ajax({
+					$.ajax({
 						url: urlFind,
 						dataType: "json",
 						data: {
@@ -76,12 +76,12 @@
 							codigo: request.term
 						},
 						success: function( data ) {
-							response( jQuery.map( data, function( item ) {
+							response( $.map( data, function( item ) {
 								return {
 									label: item.codigo.replace(
 										new RegExp(
 											"(?![^&;]+;)(?!<[^<>]*)(" +
-											jQuery.ui.autocomplete.escapeRegex(request.term) +
+											$.ui.autocomplete.escapeRegex(request.term) +
 											")(?![^<>]*>)(?![^&;]+;)", "gi"
 										), "<strong>$1</strong>" ) + " - " + item.descricao ,
 									value: item.codigo,
@@ -104,7 +104,7 @@
 			
 			$("#descricaoCBO").autocomplete({
 				source: function( request, response ) {
-					jQuery.ajax({
+					$.ajax({
 						url: urlFind,
 						dataType: "json",
 						data: {
@@ -112,12 +112,12 @@
 							codigo: ''
 						},
 						success: function( data ) {
-							response( jQuery.map( data, function( item ) {
+							response( $.map( data, function( item ) {
 								return {
 									label: item.descricao.replace(
 											new RegExp(
 												"(?![^&;]+;)(?!<[^<>]*)(" +
-												jQuery.ui.autocomplete.escapeRegex(request.term) +
+												$.ui.autocomplete.escapeRegex(request.term) +
 												")(?![^<>]*>)(?![^&;]+;)", "gi"
 											), "<strong>$1</strong>" ) + " - " + item.codigo ,
 									
