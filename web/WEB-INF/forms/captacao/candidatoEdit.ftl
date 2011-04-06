@@ -79,12 +79,15 @@
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 			
 			$(".campo").each(function(){
-			    if (!camposCandidatoVisivel.split(',').contains(this.id.replace('wwgrp_', '')))
+				var campos = camposCandidatoVisivel.split(',');
+				var id = this.id.replace('wwgrp_', '');
+				var idNaoEncontrado = ($.inArray(id, campos) == -1);
+			    if (idNaoEncontrado)
 					$(this).hide();
 			});
 			
 
-			camposCandidatoObrigatorio.split(',').each(function (idCampo){
+			$.each(camposCandidatoObrigatorio.split(','), function (index, idCampo) {
 			    var lblAntigo = $('label[for='+idCampo+']');
 			    lblAntigo.text(lblAntigo.text().replace(/\s$/, '') + "*");
 			});
@@ -93,7 +96,8 @@
 				arrayObrigatorios = camposCandidatoObrigatorio.split(',');
 				
 			$('#abas div').each(function(){
-			        if(!arrayAbasVisiveis.contains($(this).attr('class')))
+					var abaNaoEncontrada = ($.inArray($(this).attr('class'), arrayAbasVisiveis) == -1);
+			        if (abaNaoEncontrada)
 			            $(this).hide();
 			});
 			
@@ -118,7 +122,7 @@
 			<#if moduloExterno?exists && moduloExterno>
 				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
 		   	<#else>
-		       	if (jQuery("#cpf").val() == "   .   .   -  ")
+		       	if ($("#cpf").val() == "   .   .   -  ")
 		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
 		   		else
 			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
