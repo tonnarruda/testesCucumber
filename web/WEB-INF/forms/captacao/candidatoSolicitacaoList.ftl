@@ -88,14 +88,18 @@
 			<#assign classe="contratado"/>
 		</#if>
 		
-		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 		<@display.column title="Ações" media="html" class="acao" style="width: 120px;">
+		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 			<#if !solicitacao.encerrada>
 				<a href="../historicoCandidato/list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}"><img border="0" title="Histórico" src="<@ww.url includeParams="none" value="/imgs/page_user.gif"/>"></a>
 			<#else>
 				<img border="0" title="Esta Solicitação já foi encerrada" src="<@ww.url includeParams="none" value="/imgs/page_user.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
+		</@authz.authorize>
+
 	        <a href="javascript:popup('../candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
+
+		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 			<#if !solicitacao.encerrada>
 				<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
 				
@@ -122,8 +126,8 @@
 					<a href="prepareInsertAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacao.avaliacao.id}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Responder Avaliação" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
 				</#if>
 			</#if>
-		</@display.column>
 		</@authz.authorize>
+		</@display.column>
 
 		<@display.column title="Nome" class="${classe}">
 			${candidatoSolicitacao.candidato.nome}
