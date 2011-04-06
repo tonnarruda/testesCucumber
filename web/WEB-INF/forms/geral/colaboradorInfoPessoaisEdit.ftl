@@ -87,7 +87,7 @@
 			}
 		}
 		
-		jQuery(function($) {
+		$(function() {
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');			
 		});
 		

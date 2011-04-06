@@ -18,9 +18,9 @@
 	var posArrayValida = 0;
 	var valida = new Array();
 	
-	jQuery(document).ready(function($)
+	$(document).ready(function($)
 	{
-		jQuery("input:checkbox[id^='ativo']").each(function()
+		$("input:checkbox[id^='ativo']").each(function()
 		{
 				var titulo = $("#titulo" + i);
 				var ordem = $("#ordem" + i);
@@ -43,8 +43,8 @@
 	
 	function habilitaTexto(checkBox, linha)
 	{
-		var titulo = jQuery("#titulo" + linha);
-		var ordem = jQuery("#ordem" + linha);
+		var titulo = $("#titulo" + linha);
+		var ordem = $("#ordem" + linha);
 		
 		if(checkBox.checked)
 		{
@@ -66,9 +66,9 @@
 		posArrayValida = 0;
 		valida = new Array();
 		
-		jQuery("input:checkbox[id^='ativo']").each(function()
+		$("input:checkbox[id^='ativo']").each(function()
 		{
-			if(jQuery(this).is(":checked") == true)
+			if($(this).is(":checked") == true)
 			{
 				valida[posArrayValida] = "titulo" + j;
 				posArrayValida = posArrayValida + 1;
@@ -80,7 +80,7 @@
 	
 	function validaDinamico()
 	{
-		jQuery("input[type='text']").css("background-color", "#FFF");
+		$("input[type='text']").css("background-color", "#FFF");
 		validaFormulario('form', valida);
 	}
 </script>

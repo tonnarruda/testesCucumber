@@ -91,9 +91,9 @@
 		var msgLimiteLargura = "Os campos selecionados não podem ser adicionados ao relatório.\nMotivo: Largura máxima excedida.";
 		var colunasInfo = ${colunasJson};
 
-		jQuery(document).ready(function($)
+		$(document).ready(function($)
 		{
-			var empresa = jQuery('#empresa').val();
+			var empresa = $('#empresa').val();
 			
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
@@ -146,21 +146,21 @@
 				var from = 'from_colunas';
 				var to = 'colunas';
 				
-				var dest = jQuery("#"+to)[0];
+				var dest = $("#"+to)[0];
 
-				jQuery("#"+from+" option:selected").clone().each(function() {
+				$("#"+from+" option:selected").clone().each(function() {
 					if (this.disabled == true) return
-					jQuery(this)
+					$(this)
 					.appendTo(dest)
 					.attr("selected", false);
 				});
 				
-				jQuery("#"+from+" option:selected")
+				$("#"+from+" option:selected")
 					.attr("selected", false)
 					.attr("disabled", true)
 				
 				if (jQuery.fn.obviouslyDisabled)
-		     		jQuery("#"+from).obviouslyDisabled({textColor: ieColor, bgColor: ieBg});
+		     		$("#"+from).obviouslyDisabled({textColor: ieColor, bgColor: ieBg});
 			}
 			else
 			{				 
@@ -204,20 +204,20 @@
 	
 		function validarCampos()
 		{
-			if(jQuery('#colunas option').length < 1)
+			if($('#colunas option').length < 1)
 			{
 				alterBackground('#FFEEC2');
 				jAlert("Por favor selecione os campos para impressão.");
 			}
 			else
 			{
-				var firstOption = jQuery('#colunas option:first');
-				var fromOption = jQuery('#from_colunas option[value=' + firstOption.val() + ']');
-				var index = jQuery('#from_colunas option').index(fromOption)
+				var firstOption = $('#colunas option:first');
+				var fromOption = $('#from_colunas option[value=' + firstOption.val() + ']');
+				var index = $('#from_colunas option').index(fromOption)
 				var order = colunasInfo[index].orderField;
-				jQuery('#orderField').val(order);
+				$('#orderField').val(order);
 				
-				jQuery('#colunas option').attr('selected', true);
+				$('#colunas option').attr('selected', true);
 				return validaFormulario('form', new Array(), new Array('naoApague' ${validaDataCamposExtras}));
 			}
 		}
@@ -227,15 +227,15 @@
 		function sizeOk()
 		{	
 			var totalSize = 0;
-			jQuery("#from_colunas option:selected").each(function() 
+			$("#from_colunas option:selected").each(function() 
 			{
-			    totalSize += colunasSizes[jQuery('#from_colunas option').index(jQuery(this))] + espace;
+			    totalSize += colunasSizes[$('#from_colunas option').index($(this))] + espace;
 			});
 			
-			jQuery("#colunas option").each(function() 
+			$("#colunas option").each(function() 
 			{
-			    var option = jQuery('#from_colunas option[value=' + jQuery(this).val() + ']');
-			    totalSize += colunasSizes[jQuery('#from_colunas option').index(option)] + espace;
+			    var option = $('#from_colunas option[value=' + $(this).val() + ']');
+			    totalSize += colunasSizes[$('#from_colunas option').index(option)] + espace;
 			});
 
 			return (totalSize <= maxSize);
@@ -243,32 +243,32 @@
 		
 		function next()
 		{
-			var sels = jQuery("#colunas option:selected");
-			var next = jQuery(sels[sels.length-1]).next('option');
+			var sels = $("#colunas option:selected");
+			var next = $(sels[sels.length-1]).next('option');
 			sels.insertAfter(next);
 		}
 		
 		function prev()	
 		{
-			var sels = jQuery("#colunas option:selected");
-			var prev = jQuery(sels[0]).prev('option');
+			var sels = $("#colunas option:selected");
+			var prev = $(sels[0]).prev('option');
 			sels.insertBefore(prev);
 		}
 		
 		function alterBackground(cor)	
 		{
-			jQuery('#colunas').css({background: cor});
-			jQuery('#from_colunas').css({background: cor});
+			$('#colunas').css({background: cor});
+			$('#from_colunas').css({background: cor});
 		}
 		
 		function salvarLayout()	
 		{
-			var values = jQuery('#colunas option').map(function () {
-    			return jQuery(this).val();
+			var values = $('#colunas option').map(function () {
+    			return $(this).val();
 			});
 			
 			var campos = jQuery.makeArray(values).join(',');
-			jQuery.get('<@ww.url value="/geral/configuracaoRelatorioDinamico/update.action?campos="/>' + campos + '&titulo=' + jQuery('#titulo').val(), function(data) {
+			jQuery.get('<@ww.url value="/geral/configuracaoRelatorioDinamico/update.action?campos="/>' + campos + '&titulo=' + $('#titulo').val(), function(data) {
 				if(data == "OK")
 					jAlert("Layout do relatório salvo com sucesso.");
 				else

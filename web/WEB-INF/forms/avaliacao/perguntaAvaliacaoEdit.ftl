@@ -19,7 +19,7 @@
 	<script type="text/javascript">
 		var aspectos = [${aspectos}];
 		
-		jQuery(function($) {
+		$(function() {
 			$("#aspecto").autocomplete(aspectos);
 			
 			$('#criterioTooltipHelp').qtip({
@@ -61,7 +61,7 @@
 		
 		function setAspecto(nome)
 		{
-			jQuery("#aspecto").val(nome);
+			$("#aspecto").val(nome);
 		}
 		
 		function validaForm()
@@ -78,48 +78,48 @@
 			
 		function exibePorTipo()
 		{
-			var tipoPergunta = jQuery("#tipo").val();
+			var tipoPergunta = $("#tipo").val();
 		
 			if(tipoPergunta == ${tipoPerguntas.getObjetiva()})
 			{
-				jQuery("#opcaoComentario").css('display','');
-				jQuery("#divRespostas").css('display','');
-				jQuery("#notas").css('display','none');
-				jQuery("#divMultiplasRespostas").css('display','none');
+				$("#opcaoComentario").css('display','');
+				$("#divRespostas").css('display','');
+				$("#notas").css('display','none');
+				$("#divMultiplasRespostas").css('display','none');
 				
 				<#if !pergunta.id?exists && !pergunta.respostas?exists>
-					jQuery("#respostaInsert").css('display','');
+					$("#respostaInsert").css('display','');
 				</#if>
 			}
 			else if(tipoPergunta == ${tipoPerguntas.getNota()})
 			{
-				jQuery("#opcaoComentario").css('display','');
-				jQuery("#notas").css('display','');
-				jQuery("#divRespostas").css('display','none');
-				jQuery("#divMultiplasRespostas").css('display','none');
+				$("#opcaoComentario").css('display','');
+				$("#notas").css('display','');
+				$("#divRespostas").css('display','none');
+				$("#divMultiplasRespostas").css('display','none');
 				
-				jQuery("#respostaInsert").css('display','none');
+				$("#respostaInsert").css('display','none');
 				
 			}
 			else if(tipoPergunta == ${tipoPerguntas.getSubjetiva()})
 			{
 				document.getElementById("respostasSugeridas").style.display = "none";
 			
-				jQuery("#opcaoComentario").css('display','none');
-				jQuery("#divRespostas").css('display','none');
-				jQuery("#divMultiplasRespostas").css('display','none');
-				jQuery("#notas").css('display','none');
+				$("#opcaoComentario").css('display','none');
+				$("#divRespostas").css('display','none');
+				$("#divMultiplasRespostas").css('display','none');
+				$("#notas").css('display','none');
 				
-				jQuery("#respostaInsert").css('display','none');
+				$("#respostaInsert").css('display','none');
 			}
 			else if (tipoPergunta == ${tipoPerguntas.getMultiplaEscolha()})
 			{
-				jQuery("#opcaoComentario").css('display','');
-				jQuery("#divMultiplasRespostas").css('display','');
-				jQuery("#divRespostas").css('display','none');
-				jQuery("#notas").css('display','none');
+				$("#opcaoComentario").css('display','');
+				$("#divMultiplasRespostas").css('display','');
+				$("#divRespostas").css('display','none');
+				$("#notas").css('display','none');
 				<#if !pergunta.id?exists && !pergunta.respostas?exists>
-					jQuery("#respostaInsert").css('display','');
+					$("#respostaInsert").css('display','');
 				</#if>
 			}
 		}
@@ -139,15 +139,15 @@
 		{
 			if (valor) 
 			{
-				jQuery("#respostaInsert").css('display','none');
-				jQuery("#respostasSugeridas").css('display','block');
-				jQuery("#respostaSugerida").val(1);
+				$("#respostaInsert").css('display','none');
+				$("#respostasSugeridas").css('display','block');
+				$("#respostaSugerida").val(1);
 			}
 			else 
 			{
-				jQuery("#respostaInsert").css('display','block');
-				jQuery("#respostasSugeridas").css('display','none');
-				jQuery("#respostaSugerida").val(0);
+				$("#respostaInsert").css('display','block');
+				$("#respostasSugeridas").css('display','none');
+				$("#respostaSugerida").val(0);
 			}
 		}
 		
@@ -160,33 +160,33 @@
 		{
 		 	pesoSugerido++;
 		 	
-	       	var d = jQuery("<div>").attr("id", "d" + idInputObjetiva);
-			jQuery("<input type='input' id='ro_"+idInputObjetiva+"' name='respostaObjetiva' style='width: 355px'>").appendTo(d);
-			jQuery(document.createTextNode(" Peso: ")).appendTo(d);
-			jQuery("<input name='pesoRespostaObjetiva' id='pesoRespostaObjetiva' value='" + pesoSugerido + "' onkeypress=\"return(somenteNumeros(event,''));\" style='width:30px;text-align:right;'>").appendTo(d);
+	       	var d = $("<div>").attr("id", "d" + idInputObjetiva);
+			$("<input type='input' id='ro_"+idInputObjetiva+"' name='respostaObjetiva' style='width: 355px'>").appendTo(d);
+			$(document.createTextNode(" Peso: ")).appendTo(d);
+			$("<input name='pesoRespostaObjetiva' id='pesoRespostaObjetiva' value='" + pesoSugerido + "' onkeypress=\"return(somenteNumeros(event,''));\" style='width:30px;text-align:right;'>").appendTo(d);
 
 			var str = "d" + idInputObjetiva;
-			jQuery("<span> </span> ").appendTo(d); // espaco em branco
-			jQuery("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=remResposta('"+ str +"'); style='cursor: pointer'>").appendTo(d);
+			$("<span> </span> ").appendTo(d); // espaco em branco
+			$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=remResposta('"+ str +"'); style='cursor: pointer'>").appendTo(d);
 	
-		 	jQuery("#maisRespostas").append(d);
-		 	jQuery('#ro_'+idInputObjetiva).focus();
+		 	$("#maisRespostas").append(d);
+		 	$('#ro_'+idInputObjetiva).focus();
 		 	idInputObjetiva++;
 		}
 		
 		function addMultiplaRespostas()
 		{
-		 	var d = jQuery("<div>").attr("id", "d" + idInputObjetivaMultipla);
-		 	jQuery("<input type='input' id='multiplaResposta_"+idInputObjetivaMultipla+"' name='multiplaResposta' style='width: 355px'>").appendTo(d);
-		 	jQuery(document.createTextNode(" Peso: ")).appendTo(d);
-		 	jQuery("<input name='pesoRespostaMultipla' id='pesoRespostaMultipla' value='" + pesoSugeridoMultipla + "' onkeypress=\"return(somenteNumeros(event,''));\" style='width:30px;text-align:right;'> ").appendTo(d);
+		 	var d = $("<div>").attr("id", "d" + idInputObjetivaMultipla);
+		 	$("<input type='input' id='multiplaResposta_"+idInputObjetivaMultipla+"' name='multiplaResposta' style='width: 355px'>").appendTo(d);
+		 	$(document.createTextNode(" Peso: ")).appendTo(d);
+		 	$("<input name='pesoRespostaMultipla' id='pesoRespostaMultipla' value='" + pesoSugeridoMultipla + "' onkeypress=\"return(somenteNumeros(event,''));\" style='width:30px;text-align:right;'> ").appendTo(d);
 		 	
 		 	var str = "d" + idInputObjetivaMultipla;
-		 	jQuery("<span> </span> ").appendTo(d); // espaco em branco
-		 	jQuery("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=remMultiplaResposta('"+ str +"'); style='cursor: pointer'>").appendTo(d);
+		 	$("<span> </span> ").appendTo(d); // espaco em branco
+		 	$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=remMultiplaResposta('"+ str +"'); style='cursor: pointer'>").appendTo(d);
 		 	
-		 	jQuery("#maisMultiplasRespostas").append(d);
-		 	jQuery('#multiplaResposta_'+idInputObjetivaMultipla).focus();
+		 	$("#maisMultiplasRespostas").append(d);
+		 	$('#multiplaResposta_'+idInputObjetivaMultipla).focus();
 		 	
 		 	idInputObjetivaMultipla++;
 		}

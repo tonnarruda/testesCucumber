@@ -36,8 +36,8 @@
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button class="btnRelatorio" onclick="jQuery('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperiencia.action');${validarCampos};"></button>
-			<button class="btnRelatorioExportar" onclick="jQuery('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperienciaXLS.action');${validarCampos};"></button>
+			<button class="btnRelatorio" onclick="$('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperiencia.action');${validarCampos};"></button>
+			<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperienciaXLS.action');${validarCampos};"></button>
 		</div>
 </body>
 </html>

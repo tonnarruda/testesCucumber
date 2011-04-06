@@ -73,7 +73,7 @@
 		var qtdAbas = arrayAbasVisiveis.length;
 		var arrayObrigatorios = new Array();
 		
-		jQuery(function($) {
+		$(function() {
 			<#assign qtdAbas>qtdAbas</#assign>
 			
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');

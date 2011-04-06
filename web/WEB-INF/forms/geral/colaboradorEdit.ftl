@@ -132,7 +132,7 @@
 				document.getElementById('dt_hist').value = document.getElementById('dt_admissao').value;
 		}
 
-		jQuery(function($) {
+		$(function() {
 			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
 			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
 			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');

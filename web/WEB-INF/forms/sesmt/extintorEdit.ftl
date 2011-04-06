@@ -17,10 +17,10 @@
 		var fabribantes = [${fabribantes}];
 		var localizacoes = [${localizacoes}];
 
-		jQuery(function($) {
+		$(function() {
 			$("#fabricante").autocomplete(fabribantes);
 		});
-		jQuery(function($) {
+		$(function() {
 			$("#localizacao").autocomplete(localizacoes);
 		});
 	</script>

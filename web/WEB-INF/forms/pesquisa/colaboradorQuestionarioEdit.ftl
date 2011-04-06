@@ -46,7 +46,7 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var gruposIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByGrupo(createListCargos, gruposIds, jQuery('#empresaSelect').val());
+			CargoDWR.getCargoByGrupo(createListCargos, gruposIds, $('#empresaSelect').val());
 		}
 
 		function createListCargos(data)

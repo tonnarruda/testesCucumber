@@ -5,7 +5,7 @@
 <script type='text/javascript'>
     function voltarIdioma()
     {
-    	jQuery("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
+    	$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
     }
 </script>
 

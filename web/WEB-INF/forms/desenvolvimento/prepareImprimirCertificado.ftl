@@ -113,24 +113,24 @@
 			}
 		}
 
-		jQuery(document).ready(function() {
+		$(document).ready(function() {
 
-			jQuery('#certificadoDe').change(function(){
-				filtrarOpt(jQuery(this).val(), true);
+			$('#certificadoDe').change(function(){
+				filtrarOpt($(this).val(), true);
 			});
-			jQuery('#certificadoTamanho').change(function(){
-				filtrarOpt(jQuery(this).val());
+			$('#certificadoTamanho').change(function(){
+				filtrarOpt($(this).val());
 			});
 
-			jQuery('#curso').change(function(){
+			$('#curso').change(function(){
 				DWRUtil.useLoadingMessage('Carregando...');
 				TurmaDWR.getTurmasFinalizadas(function(data) {
 					DWRUtil.removeAllOptions("turma");
 					DWRUtil.addOptions("turma", data);
-				}, jQuery(this).val());
+				}, $(this).val());
 			});
 		
-			jQuery('#help_conteudo').qtip({
+			$('#help_conteudo').qtip({
 				content: 'Utilize a expressão #NOMECOLABORADOR# <br/>no local onde deve aparecer o nome do colaborador.'
 				, style: { width: '100px' }
 			});

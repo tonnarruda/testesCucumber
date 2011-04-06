@@ -19,19 +19,19 @@
 		function populaColaborador()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.find(createListColaborador, jQuery('#nome').val(), "", jQuery('#matricula').val(), jQuery('#empresaId').val(), true);
+			ColaboradorDWR.find(createListColaborador, $('#nome').val(), "", $('#matricula').val(), $('#empresaId').val(), true);
 		}
 		
 		function createListColaborador(data)
 		{
 			DWRUtil.removeAllOptions('colaborador');
-			jQuery('#colaborador').append('<option value=\"\">Selecione...</option>');
+			$('#colaborador').append('<option value=\"\">Selecione...</option>');
 			DWRUtil.addOptions("colaborador", data);
 		}
 		
 		function populaNotas(colaboradorId)
 		{
-			jQuery('input[id^="nota_"]').val('');
+			$('input[id^="nota_"]').val('');
 			
 			var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/colaboradorTurma/findNotas.action"/>";
 			
@@ -42,7 +42,7 @@
 	  		},
 	  		function(data) {
 		  		jQuery.each(data, function(i,item){
-	            	jQuery("#nota_" + item.avaliacaoCurso.id).val(item.valor);
+	            	$("#nota_" + item.avaliacaoCurso.id).val(item.valor);
 	          	});
 	  		});
 		}

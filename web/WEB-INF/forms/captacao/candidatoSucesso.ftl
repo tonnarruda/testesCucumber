@@ -28,7 +28,7 @@
 	</style>
 
 	<script type='text/javascript'>
-		jQuery(function($) {
+		$(function() {
 			$("#cv").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculo.action?candidato.id=${candidato.id}"/>');
 		});
 	</script>

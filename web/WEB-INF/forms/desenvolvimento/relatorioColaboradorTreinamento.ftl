@@ -44,9 +44,9 @@
 			addChecks('areasCheck',data);
 		}
 		
-		jQuery(document).ready(function($)
+		$(document).ready(function($)
 		{
-			var empresaValue = jQuery('#empresaId').val();
+			var empresaValue = $('#empresaId').val();
 			
 			populaArea(empresaValue);
 			populaEstabelecimento(empresaValue);

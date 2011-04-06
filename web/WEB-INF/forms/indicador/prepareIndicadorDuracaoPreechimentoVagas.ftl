@@ -36,8 +36,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnRelatorio" onclick="jQuery('form[name=form]').attr('action', 'list.action');${validarCampos};" accesskey="I"></button>
-		<button class="btnRelatorioExportar" onclick="jQuery('form[name=form]').attr('action', 'listXLS.action');${validarCampos};"></button>
+		<button class="btnRelatorio" onclick="$('form[name=form]').attr('action', 'list.action');${validarCampos};" accesskey="I"></button>
+		<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'listXLS.action');${validarCampos};"></button>
 	</div>
 </body>
 </html>

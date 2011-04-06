@@ -61,9 +61,9 @@
 			return validaFormulario('form', new Array(), new Array('naoApague' ${validaDataCamposExtras}));
 		}
 	
-		jQuery(document).ready(function($)
+		$(document).ready(function($)
 		{
-			var empresa = jQuery('#empresa').val();
+			var empresa = $('#empresa').val();
 			
 			populaArea(empresa);
 			populaEstabelecimento(empresa);

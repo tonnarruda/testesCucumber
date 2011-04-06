@@ -15,7 +15,7 @@
 		function validaForm(imprima)
 		{
 
-			jQuery('#imprimaRelatorio').val(imprima);
+			$('#imprimaRelatorio').val(imprima);
 			return validaFormularioEPeriodo('form', new Array(), new Array('inscricaoCandidatoIni','inscricaoCandidatoFim','votacaoIni','votacaoFim','apuracao'));
 			
 		}

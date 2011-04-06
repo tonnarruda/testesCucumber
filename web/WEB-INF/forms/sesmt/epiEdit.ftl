@@ -43,9 +43,9 @@
 		}
 	}
 	
-	jQuery(document).ready(function() {
+	$(document).ready(function() {
 
-			jQuery('#help_fardamento').qtip({
+			$('#help_fardamento').qtip({
 				content: 'Caso esta opção seja marcada, não é <br/>obrigatório o preenchimento dos campos <br/>Número do CA e Vencimento do CA.'
 				, style: { width: '100px' }
 			});

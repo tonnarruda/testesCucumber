@@ -5,15 +5,15 @@
 	<script type='text/javascript'>
 	    function removeFormacao(id)
 	    {
-			jQuery("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/delete.action?formacao.id="/>' + id, function (){
-				jQuery("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>'); 
+			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/delete.action?formacao.id="/>' + id, function (){
+				$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>'); 
 	    	});
 	    }
 	    
 	    function prepareUpdateFormacao(id)
 	    {
-			jQuery("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/prepareUpdate.action?formacao.id="/>' + id, function (){
-			    jQuery("#frmFormacao").ajaxForm({
+			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/prepareUpdate.action?formacao.id="/>' + id, function (){
+			    $("#frmFormacao").ajaxForm({
 			    	beforeSubmit: function() { 
 	    	   	    	return validaFormulario('frmFormacao', new Array('formacaoArea','formacaoCurso','formacaoLocal','formacaoSituacao'), null, true); 
 			    	},
@@ -24,8 +24,8 @@
 	    
 	    function prepareInsertFormacao()
 	    {
-	    	jQuery("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/prepareInsert.action"/>', function (){
-			    jQuery("#frmFormacao").ajaxForm({
+	    	$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/prepareInsert.action"/>', function (){
+			    $("#frmFormacao").ajaxForm({
 			    	beforeSubmit: function() { 
 	    	   	    	return validaFormulario('frmFormacao', new Array('formacaoArea','formacaoCurso','formacaoLocal','formacaoSituacao'), null, true); 
 			    	},

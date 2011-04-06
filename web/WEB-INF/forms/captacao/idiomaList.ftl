@@ -5,15 +5,15 @@
 <script type='text/javascript'>
     function removeIdioma(id)
     {
-		jQuery("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/delete.action?candidatoIdioma.id="/>' + id, function (){
+		$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/delete.action?candidatoIdioma.id="/>' + id, function (){
 			target: "#idioma" 
     	});
     }
     
     function prepareUpdateIdioma(id)
     {
-		jQuery("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/prepareUpdate.action?candidatoIdioma.id="/>' + id, function (){
-		    jQuery("#frmIdioma").ajaxForm({ 
+		$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/prepareUpdate.action?candidatoIdioma.id="/>' + id, function (){
+		    $("#frmIdioma").ajaxForm({ 
     	   	    target: "#idioma" 
 		    }); 
     	});
@@ -21,8 +21,8 @@
     
     function prepareInsertIdioma()
     {
-    	jQuery("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/prepareInsert.action"/>', function (){
-		    jQuery("#frmIdioma").ajaxForm({ 
+    	$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/prepareInsert.action"/>', function (){
+		    $("#frmIdioma").ajaxForm({ 
     	   	    target: "#idioma" 
 		    }); 
     	});

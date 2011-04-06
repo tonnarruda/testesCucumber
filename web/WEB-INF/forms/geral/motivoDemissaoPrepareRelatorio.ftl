@@ -48,7 +48,7 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
-			var empresaId = jQuery('#empresa').val();
+			var empresaId = $('#empresa').val();
 			
 			if(areasIds.length == 0)
 			{
@@ -87,10 +87,10 @@
 			elementAgrupar.style.display = display;
 		}
 		
-		jQuery(document).ready(function($)
+		$(document).ready(function($)
 		{
 			getAgruparPorMotivo();	
-			var empresa = jQuery('#empresa').val();
+			var empresa = $('#empresa').val();
 			
 			populaArea(empresa);
 			populaEstabelecimento(empresa);

@@ -17,8 +17,8 @@
   
   <script type="text/javascript">
 
-	jQuery(document).ready(function() {
-		jQuery('#help_ata').qtip({
+	$(document).ready(function() {
+		$('#help_ata').qtip({
 			content: 'Utilize a expressão #NOMEPRESIDENTE# <br/>onde deve aparecer o nome do Presidente da Comissão;<br/> Utilize a expressão #NOMEVICEPRESIDENTE#<br/> onde deve aparecer o nome do Vice-Presidente.'
 			, style: { width: '100px' }
 		});

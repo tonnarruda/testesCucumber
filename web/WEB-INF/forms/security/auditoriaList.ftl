@@ -54,7 +54,7 @@
 					<td>
 						<@ww.select id="modulo" name="entidade" list="entidades" cssStyle="width: 250px;" theme="simple" />
 						<script type="text/javascript">
-							jQuery(function($) {
+							$(function() {
 								// Ajax Loading Message
 								$("#loading").ajaxStart(function(){
 									$(this).show();

@@ -68,12 +68,12 @@
 		
 		function desabilitaOutroCheck(esseCheck , outroCheck)
 		{
-			jQuery("#" + outroCheck).attr('disabled', jQuery("#" + esseCheck).attr("checked"));
+			$("#" + outroCheck).attr('disabled', $("#" + esseCheck).attr("checked"));
 		}
 		
-		jQuery(document).ready(function($)
+		$(document).ready(function($)
 		{
-			var empresa = jQuery('#empresa').val();
+			var empresa = $('#empresa').val();
 			
 			populaArea(empresa);
 			populaCargo(empresa);

@@ -13,7 +13,7 @@
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 	<script type="text/javascript">
-		jQuery(function($) {
+		$(function() {
 			$('#help_exibeExterno').qtip({
 				content: '<strong>Módulo externo</strong><br />Esse campo filtrara apenas os currículos que foram cadastrados através do site, pelo link Trabalhe Conosco.'
 				, style: { width: '100px' }

@@ -33,9 +33,9 @@
 		</#if>
 
 		var marcarExtintor = function() {
-			jQuery("#extintor option").each(function(i, item){
+			$("#extintor option").each(function(i, item){
 				 if(typeof extintor != "undefined" && item.value == extintor){
-				   jQuery(item).attr("selected",true);
+				   $(item).attr("selected",true);
 				 }
 			})
 		}
@@ -55,16 +55,16 @@
 	      marcarExtintor();
 	    }
 	    
-		jQuery(document).ready(function(){
+		$(document).ready(function(){
 		
 		populaExtintores();
 		
-		    jQuery("#btnListaDeInspecaoExtintores").click(function(){
-			    var estabelecimento = jQuery("#estabelecimento").val();
-			    var extintor = jQuery("#extintor").val();
-			    var regularidade = jQuery("#form_regularidade").val();
-				var inicio = jQuery("#inicio").val();
-				var fim = jQuery("#fim").val();
+		    $("#btnListaDeInspecaoExtintores").click(function(){
+			    var estabelecimento = $("#estabelecimento").val();
+			    var extintor = $("#extintor").val();
+			    var regularidade = $("#form_regularidade").val();
+				var inicio = $("#inicio").val();
+				var fim = $("#fim").val();
 				if(!validaDate({value:inicio})) {
 					inicio = limpaCamposMascaraData(inicio);
 				}
@@ -76,7 +76,7 @@
 			});
 		});
 		
-		jQuery(function($) {
+		$(function() {
 						
 			$('#relatorioTooltipHelp').qtip({
 				content: '<strong>Listagem de Inspeção de Extintores</strong><br />Será listado no relatório somente informações presentes no filtro.'

@@ -103,9 +103,9 @@
 			addChecks('areaCheck', data, "populaColaboradores(" + empresaId + ");");
 		}
 		
-		jQuery(document).ready(function($)
+		$(document).ready(function($)
 		{
-			var empresa = jQuery('#empresa').val();
+			var empresa = $('#empresa').val();
 			populaChecks(empresa);
 		});
 		
@@ -131,7 +131,7 @@
 		<@ww.datepicker name="dataFim" id="dataPrevFim" value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
 		
 		<@frt.checkListBox name="estabelecimentoCheck" label="Estabelecimento*" list="estabelecimentoCheckList" width="400" height="120" />
-		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="400" height="120" onClick="populaColaboradores(jQuery('#empresa').val());"/>
+		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="400" height="120" onClick="populaColaboradores($('#empresa').val());"/>
 		<@frt.checkListBox name="colaboradorCheck" label="Colaborador*" list="colaboradorCheckList" width="400" height="120"/>
 		<@frt.checkListBox name="ocorrenciaCheck" label="Ocorrência*" list="ocorrenciaCheckList" width="400" height="120"/>
 

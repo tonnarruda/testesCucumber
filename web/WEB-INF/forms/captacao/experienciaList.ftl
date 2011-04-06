@@ -7,15 +7,15 @@
 	<script type='text/javascript'>
 	    function removeExperiencia(id)
 	    {
-			jQuery("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/delete.action?experiencia.id="/>' + id + '&empresaId=${empresaIdTmp}', function (){
+			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/delete.action?experiencia.id="/>' + id + '&empresaId=${empresaIdTmp}', function (){
 				target: "#expProfissional" 
 	    	});
 	    }
 
 	    function prepareUpdateExperiencia(id)
 	    {
-			jQuery("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/prepareUpdate.action?experiencia.id="/>' + id + '&empresaId=${empresaIdTmp}', function (){
-			    jQuery("#frmExperiencia").ajaxForm({ 
+			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/prepareUpdate.action?experiencia.id="/>' + id + '&empresaId=${empresaIdTmp}', function (){
+			    $("#frmExperiencia").ajaxForm({ 
 	    	   	    beforeSubmit: function() { 
 	    	   	    	return validarFormExperiencia(); 
 			    	},
@@ -26,8 +26,8 @@
 	    
 	    function prepareInsertExperiencia()
 	    {
-	    	jQuery("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/prepareInsert.action?empresaId=${empresaIdTmp}"/>', function (){
-			    jQuery("#frmExperiencia").ajaxForm({ 
+	    	$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/prepareInsert.action?empresaId=${empresaIdTmp}"/>', function (){
+			    $("#frmExperiencia").ajaxForm({ 
 	    	   	   	beforeSubmit: function() { 
 	    	   	    	return validarFormExperiencia(); 
 			    	},

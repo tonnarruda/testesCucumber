@@ -12,7 +12,7 @@
 	<script type='text/javascript'>
 		function voltarFormacao()
 	    {
-	    	jQuery("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
+	    	$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
 	    }
 	</script>
 	

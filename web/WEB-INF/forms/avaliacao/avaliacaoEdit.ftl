@@ -18,7 +18,7 @@
 		
 	<script type='text/javascript'>
 
-		jQuery(function($) {
+		$(function() {
 		
 			<#if avaliacao.tipoModeloAvaliacao != 'S'>
 				$('#tipoModeloAvaliacao').change(function() {
@@ -37,11 +37,11 @@
 		
 		function enviaForm()
 		{
-			if(jQuery('#tipoModeloAvaliacao').val() == 'A')
+			if($('#tipoModeloAvaliacao').val() == 'A')
 				return validaFormulario('form', new Array('titulo','ativo', 'periodoExperiencia'));
 			else 		
 			{
-				jQuery('#periodoExperiencia').val('');
+				$('#periodoExperiencia').val('');
 				return validaFormulario('form', new Array('titulo','ativo'));
 			}
 		}

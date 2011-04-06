@@ -119,7 +119,7 @@
 	
 	function enviaForm()
 	{
-		if(jQuery('#lista input[type=checkbox]:checked').size() > 0)
+		if($('#lista input[type=checkbox]:checked').size() > 0)
 		{
 			<#if usuario.id?exists>
 				return validaFormulario('form', new Array('nome','login'), null);

@@ -68,13 +68,13 @@
 		
 				if(validaFormulario('form', new Array('fase','data','horaIni','horaFim','resp'), new Array('data','horaIni','horaFim'), true))
 				{
-					if(jQuery('#horaIni').val() <= jQuery('#horaFim').val())
+					if($('#horaIni').val() <= $('#horaFim').val())
 					{
 						document.form.submit();
 					}  
 					else
 					{
-						jQuery('#horaFim').css("background-color", "#FF6347");
+						$('#horaFim').css("background-color", "#FF6347");
 						jAlert("Hora Final menor que Hora Inicial.");
 					}
 				}
@@ -91,14 +91,14 @@
 			return true;
 		}
 
-		jQuery(document).ready(function($)
+		$(document).ready(function($)
 		{
 		
 			<#if historicoCandidato.id?exists>
-				jQuery('#fase').val(${historicoCandidato.etapaSeletiva.id});
+				$('#fase').val(${historicoCandidato.etapaSeletiva.id});
 			</#if>
 
-			jQuery("#resp").autocomplete(${responsaveis});
+			$("#resp").autocomplete(${responsaveis});
 		});
 		
 </script>

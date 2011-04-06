@@ -213,8 +213,8 @@
 <br>
 <div class="painelConfiguracao">
 	<a href="javascript:gravarConfiguracao(${usuarioId});" class="salvar"> Gravar layout das seções</a>
-	<a href="javascript:jQuery('.cabecalhoBox').showBox()" class="exibir"> Expandir todas as seções</a>
-	<a href="javascript:jQuery('.cabecalhoBox').hideBox()" class="ocultar"> Ocultar todas as seções</a>
+	<a href="javascript:$('.cabecalhoBox').showBox()" class="exibir"> Expandir todas as seções</a>
+	<a href="javascript:$('.cabecalhoBox').hideBox()" class="ocultar"> Ocultar todas as seções</a>
 </div>
 
 <ul id="sortable">

@@ -60,13 +60,13 @@
 		function limpar(data)
 		{
 			if(data == '' || data.length < 6)
-				jQuery("#descricaoCBO").val('');
+				$("#descricaoCBO").val('');
 		}
 	
-		jQuery(document).ready(function() {
+		$(document).ready(function() {
 			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
 			
-			jQuery("#codigoCBO").autocomplete({
+			$("#codigoCBO").autocomplete({
 				source: function( request, response ) {
 					jQuery.ajax({
 						url: urlFind,
@@ -93,16 +93,16 @@
 				},
 				minLength: 2,
 				select: function( event, ui ) {
-					jQuery("#descricaoCBO").val(ui.item.descricao);
+					$("#descricaoCBO").val(ui.item.descricao);
 				}
 			}).data( "autocomplete" )._renderItem = function( ul, item ) {
-					return jQuery( "<li></li>" )
+					return $( "<li></li>" )
 						.data( "item.autocomplete", item )
 						.append( "<a>" + item.label + "</a>" )
 						.appendTo( ul );
 			};
 			
-			jQuery("#descricaoCBO").autocomplete({
+			$("#descricaoCBO").autocomplete({
 				source: function( request, response ) {
 					jQuery.ajax({
 						url: urlFind,
@@ -130,13 +130,13 @@
 				},
 				minLength: 2,
 				select: function( event, ui ) {
-					jQuery("#codigoCBO").val(ui.item.codigo);
+					$("#codigoCBO").val(ui.item.codigo);
 				},
 				change: function(){
 					alet()
 				} 
 			}).data( "autocomplete" )._renderItem = function( ul, item ) {
-					return jQuery( "<li></li>" )
+					return $( "<li></li>" )
 						.data( "item.autocomplete", item )
 						.append( "<a>" + item.label + "</a>" )
 						.appendTo( ul );

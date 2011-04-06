@@ -50,7 +50,7 @@
 	<script type='text/javascript'>
 	    function voltarExperiencia()
 	    {
-	    	jQuery("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${empresaIdTmp}"/>');
+	    	$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${empresaIdTmp}"/>');
 	    }
 	    
 	    function validarFormExperiencia()
@@ -125,7 +125,7 @@
 	</@ww.form>
 </div>
 <script type="text/javascript">
-	jQuery(function($){
+	$(function(){
 		$("#dt_admissao").mask("99/99/9999",{placeholder:" "});
 		$("#dt_desligamento").mask("99/99/9999",{placeholder:" "});
 	});

@@ -36,7 +36,7 @@
 
 	<script type="text/javascript">
 		var empresasResponsaveis = [${empresasResponsaveis}];
-		jQuery(function($) {
+		$(function() {
 			$("#empresaResponsavel").autocomplete(empresasResponsaveis);
 		});
 

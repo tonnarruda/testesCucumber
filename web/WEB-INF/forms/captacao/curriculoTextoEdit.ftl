@@ -76,7 +76,7 @@
 		}
 
 		var bairros = [${bairros}];
-		jQuery(function($) {
+		$(function() {
 			$("#bairroNome").autocomplete(bairros);
 		});
 	</script>

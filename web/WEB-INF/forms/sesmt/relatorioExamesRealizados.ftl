@@ -33,8 +33,8 @@
 
 		function filtrarOpcaoRelatorioResumido()
 		{
-			jQuery('#divRelatResumido').toggle();
-			jQuery('#divRelatResumidoResultado').toggle();
+			$('#divRelatResumido').toggle();
+			$('#divRelatResumidoResultado').toggle();
 		}
 	</script>
 

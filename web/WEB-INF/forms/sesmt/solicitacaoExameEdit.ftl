@@ -134,7 +134,7 @@
 			}
 			
 			if (elementCheck.checked == true)
-				SolicitacaoExameDWR.verificaColaboradorExameDentroDoPrazo(alertaExameDentroDoPrazo, jQuery("#colaborador").val(), jQuery("#Candidato").val(), jQuery("#solicitacaoId").val(), elementCheck.value);		
+				SolicitacaoExameDWR.verificaColaboradorExameDentroDoPrazo(alertaExameDentroDoPrazo, $("#colaborador").val(), $("#Candidato").val(), $("#solicitacaoId").val(), elementCheck.value);		
 		}
 		
 		function alertaExameDentroDoPrazo(data)

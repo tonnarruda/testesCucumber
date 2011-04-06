@@ -40,7 +40,7 @@
 		var camposCandidatoVisivel = '${parametrosDoSistema.camposCandidatoVisivel}';
 		var camposCandidatoObrigatorio = '${parametrosDoSistema.camposCandidatoObrigatorio}';
 		
-		jQuery(function($) {
+		$(function() {
 			var $obrigatorios = $('.configCampos input[name=camposCandidatoObrigatorios]');
 			var $visiveis = $('.configCampos input[name=camposCandidatoVisivels]');
 			
@@ -64,21 +64,21 @@
 			
 			$('#marcarTodos').click(function(e) {
 				var marcado = $('#marcarTodos').attr('checked');
-				jQuery(":checkbox[disabled='false']").attr('checked', marcado);
+				$(":checkbox[disabled='false']").attr('checked', marcado);
 				
 				if(marcado)
-					jQuery("#marcador").text("Desmarcar Todos")
+					$("#marcador").text("Desmarcar Todos")
 				else
-					jQuery("#marcador").text("Marcar Todos")
+					$("#marcador").text("Marcar Todos")
 			});
 		});
 		
 		function enviaForm()
 		{
-			var abas = jQuery('input[name=camposCandidatoVisivels]:checked').parents('table');
+			var abas = $('input[name=camposCandidatoVisivels]:checked').parents('table');
 			var abasStr = jQuery.map(abas, function (t){ return t.id; }).join(',');
 			
-			jQuery('#camposCandidatoTabs').val(abasStr);
+			$('#camposCandidatoTabs').val(abasStr);
 			document.form.submit();		
 		}
 	

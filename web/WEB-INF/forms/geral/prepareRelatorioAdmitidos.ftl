@@ -44,9 +44,9 @@
 			addChecks('areasCheck',data);
 		}
 				
-		jQuery(document).ready(function($)
+		$(document).ready(function($)
 		{
-			var empresa = jQuery('#empresa').val();
+			var empresa = $('#empresa').val();
 			
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
@@ -85,8 +85,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnRelatorio" onclick="jQuery('form[name=form]').attr('action', 'relatorioAdmitidos.action');${validarCampos};"></button>
-		<button class="btnRelatorioExportar" onclick="jQuery('form[name=form]').attr('action', 'relatorioAdmitidosXLS.action');${validarCampos};"></button>
+		<button class="btnRelatorio" onclick="$('form[name=form]').attr('action', 'relatorioAdmitidos.action');${validarCampos};"></button>
+		<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'relatorioAdmitidosXLS.action');${validarCampos};"></button>
 	</div>
 </body>
 </html>

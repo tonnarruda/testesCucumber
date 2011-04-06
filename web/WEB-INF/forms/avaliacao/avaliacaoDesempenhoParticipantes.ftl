@@ -40,8 +40,8 @@
 		<script type="text/javascript">
 		function pesquisar()
 		{
-			var nome = jQuery("#nomeBusca").val();
-			var empresaId = jQuery("#empresa").val();
+			var nome = $("#nomeBusca").val();
+			var empresaId = $("#empresa").val();
 			var areasIds = getArrayCheckeds(document.getElementById('formPesquisa'), 'areasCheck');
 
 			DWRUtil.useLoadingMessage('Carregando...');

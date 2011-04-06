@@ -10,13 +10,13 @@
 		function filtrarOpt(opcao)
 		{
 			if (opcao == 'avaliador')
-				jQuery('#opcoesDoRelatorio').hide();
+				$('#opcoesDoRelatorio').hide();
 			else
-				jQuery('#opcoesDoRelatorio').show();
+				$('#opcoesDoRelatorio').show();
 		}
 		
-		jQuery(document).ready(function($){
-			var opcaoResultado = jQuery('#opcaoResultado');
+		$(document).ready(function($){
+			var opcaoResultado = $('#opcaoResultado');
 			filtrarOpt(opcaoResultado.val());
 		});
 	</script>
