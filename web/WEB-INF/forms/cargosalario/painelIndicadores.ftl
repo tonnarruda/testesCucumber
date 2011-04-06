@@ -1,38 +1,77 @@
 <html>
+<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<head>
 	<@ww.head/>
+	
+	<style type="text/css">
+	@import url('<@ww.url value="/css/displaytag.css"/>');
+</style>
+	
 		<style type="text/css">
 			@import url('<@ww.url includeParams="none" value="/css/painelIndicadoresTreinamentos.css"/>');
 		</style>
-		
+
+		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
+		
+		<#include "../ftl/showFilterImports.ftl" />
 		
 		<title>Painel de Indicadores de Info. Funcionais</title>
 	
 		<style type="text/css">
 			div.graph
 			{
-				width: 460px;
+				width: 466px !important;
 				height: 180px;
 				float: left;
 			}
 			div.graph2
 			{
-				width: 860px;
+				width: 959px;
 				height: 380px;
 				float: left;
 			}
 			.label
 			{
 				color: #5C5C5A !important;
-				font-size:5px;
 				text-align:center;
+				font-size: 10px !important;
 			}
 			.legend
 			{
 				color: #5C5C5A !important;
-				font-size:5px !important;
+			}
+			
+			.fieldGraph {
+				display: inline;
+				float: left;
+				margin-top: 5px;
+				margin-right: 5px;
+				border: 1px solid #7E9DB9;
+				width: 477px !important;
+			}
+			.fieldGraph h1 {
+			    display: block;
+			    margin: 0;
+			    padding: 3px 4px;
+			    width: 468px;
+			    font-size: 13px;
+			    font-weight: normal;
+				background: #EBECF1;
+			    border-bottom: 1px solid #7E9DB9;
+			}
+			.fieldGraph div.legend > table {
+				left: 240px;
+			}
+			.fieldGraph.bigger{
+				width: 963px !important;
+			}
+			.fieldGraph.bigger h1 {
+				width: 955px;
+			}
+			.fieldGraph.bigger div.legend > table {
+				left: inherit;
 			}
 		</style>
 		<script type="text/javascript">
@@ -65,7 +104,6 @@
 							    width: 1
 							},
 			            	tilt: 0.8,
-			            	innerRadius: 0.5,
 			                radius: 0.8,
 				                combine: {
 				                    color: '#999',
@@ -131,41 +169,59 @@
 	
 	</head>
 	<body>
-		<@ww.form name="formBusca" id="formBusca1" action="painelIndicadores.action" method="POST">
-			<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
-			
-			<@ww.hidden name="dataIni"/>	
-			<@ww.hidden name="dataFim"/>
-			
-			<button onclick="return enviaForm1();" class="btnPesquisar"></button>
+		<#include "../util/topFiltro.ftl" />
+			<@ww.form name="formBusca1" id="formBusca1" action="painelIndicadores.action" method="POST">
+				<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
+				
+				<@ww.hidden name="dataIni"/>	
+				<@ww.hidden name="dataFim"/>
+				<button onclick="return enviaForm1();" class="btnPesquisar grayBGE"></button>
+			</@ww.form>
+		<#include "../util/bottomFiltro.ftl" />
 		
-			<div class="gogDivFormularioX">
-			    <div id="formacaoEscolar" class="graph" ></div>
-			    <div id="faixaEtaria" class="graph"></div>
-		    </div>
-	   		<div class="gogDivFormularioX">
-		    	<div id="sexo" class="graph"></div>
-		    	<div id="estadoCivil" class="graph"></div>
-		    </div>
-		    <div class="gogDivFormularioX">
-		    	<div id="deficiencia" class="graph"></div>
-		    </div>
-		</@ww.form>
+		<div class="fieldGraph">
+			<h1>Formação escolar</h1>
+		    <div id="formacaoEscolar" class="graph" ></div>
+		</div>
+		<div class="fieldGraph">
+			<h1>Formação escolar</h1>
+		    <div id="faixaEtaria" class="graph"></div>
+	    </div>
+   		<div class="fieldGraph">
+			<h1>Formação escolar</h1>
+	    	<div id="sexo" class="graph"></div>
+	    </div>
+		<div class="fieldGraph">
+			<h1>Formação escolar</h1>
+	    	<div id="estadoCivil" class="graph"></div>
+	    </div>
+	    <div class="fieldGraph">
+			<h1>Formação escolar</h1>
+	    	<div id="deficiencia" class="graph"></div>
+	    </div>
+	    
+		<div style="clear: both"></div>
+		<br><br>
 		
-		<br>
-		
-		<@ww.form name="formBusca" id="formBusca2" action="painelIndicadores.action" method="POST">
-			<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-			<@ww.label value="a" liClass="liLeft" />
-			<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-			
-			<@ww.hidden name="dataBase"/>
-			
-			<button onclick="return enviaForm2();" class="btnPesquisar"></button>
-		
-		    <div class="gogDivFormularioX">
-		    	<div id="desligamento" class="graph2"></div>
+		<div class="divFiltro">
+			<div class="divFiltroLink">
+				<a href="javascript:exibeFiltro('${urlImgs}','divFiltroForm2');" id="linkFiltro"><img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
+			</div>
+			<div id="divFiltroForm2" class="divFiltroForm ${classHidden}">
+			<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action" method="POST">
+				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+				<@ww.label value="a" liClass="liLeft" />
+				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
+				
+				<@ww.hidden name="dataBase"/>
+				
+				<button onclick="return enviaForm2();" class="btnPesquisar grayBGE"></button>
+			</@ww.form>
+		<#include "../util/bottomFiltro.ftl" />
+			<div class="fieldGraph bigger">
+			<h1>Formação escolar</h1>
+		   		<div id="desligamento" class="graph2"></div>
 		    </div>
-		</@ww.form>
+		    <div style="clear: both"></div>
 	</body>
 </html>
