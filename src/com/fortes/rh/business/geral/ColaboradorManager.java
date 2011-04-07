@@ -142,4 +142,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<DataGrafico> countDeficiencia(Date data, Long empresaId);
 	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId);
 	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId);
+	public int getCountAtivos(Date dataBase, Long empresaId);
 }

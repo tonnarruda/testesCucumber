@@ -1711,4 +1711,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().countColocacao(dataBase, empresaId);
 	}
+
+	public int getCountAtivos(Date dataBase, Long empresaId) {
+		return getDao().getCountAtivos(dataBase, empresaId);
+	}
 }

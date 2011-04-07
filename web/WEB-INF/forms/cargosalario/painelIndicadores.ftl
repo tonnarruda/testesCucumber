@@ -62,6 +62,7 @@
 			    border-bottom: 1px solid #7E9DB9;
 			}
 			.fieldGraph div.legend > table {
+				border-spacing: 0px !important;
 				left: 240px;
 			}
 			.fieldGraph.bigger{
@@ -71,29 +72,37 @@
 				width: 955px;
 			}
 			.fieldGraph.bigger div.legend > table {
+				border-spacing: 0px !important;
 				left: 540px;
 			}
 
 			.fieldGraph.medium{
-				width: 600px !important;
+				width: 610px !important;
 			}
 			.fieldGraph.medium h1 {
-				width: 592px;
+				width: 602px;
 			}
 			.fieldGraph.medium div.legend > table , .fieldGraph.medium div.legend > div{
+				border-spacing: 0px !important;
+				width: 370px !important;
 				left: 240px;
-				width: 360px !important;
 			}
 
 			.fieldGraph.small{
-				width: 354px !important;
+				width: 344px !important;
 			}
 			.fieldGraph.small h1 {
-				width: 346px;
+				width: 336px;
 			}
 			.fieldGraph.small div.legend > table , .fieldGraph.small div.legend > div{
 				left: 190px;
-				width: 160px !important;
+				width: 150px !important;
+				border-spacing: 0px !important;
+			}
+			
+			.legendTotal{
+				width: 960px;
+				text-align: right;
 			}
 			
 		</style>
@@ -229,7 +238,8 @@
 	    </div>
 	    
 		<div style="clear: both"></div>
-		<br><br>
+		<div class="legendTotal">Total de Colaboradores: ${qtdColaborador}</div>
+		<br>
 		
 		<div class="divFiltro">
 			<div class="divFiltroLink">
@@ -247,7 +257,7 @@
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 			<div class="fieldGraph bigger">
-			<h1>Desligamentos (Motivo)</h1>
+			<h1>Motivos de Desligamentos</h1>
 		   		<div id="desligamento" class="graph2"></div>
 		    </div>
 		    <div style="clear: both"></div>

@@ -266,32 +266,33 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(2, historicoColaboradores.size());
 	}
 
-	public void testGetPromocoes()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa = empresaDao.save(empresa);
-
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
-		colaborador = colaboradorDao.save(colaborador);
-
-		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional1 = areaOrganizacionalDao.save(areaOrganizacional1);
-
-		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
-		estabelecimento1 = estabelecimentoDao.save(estabelecimento1);
-
-		HistoricoColaborador historicoColaborador = montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2007, 03, 1), colaborador, estabelecimento1, areaOrganizacional1, null, TipoAplicacaoIndice.VALOR);
-		HistoricoColaborador historicoColaboradorAnterior = montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2006, 03, 1), colaborador, estabelecimento1, areaOrganizacional1, null, TipoAplicacaoIndice.VALOR);
-
-		historicoColaborador.setHistoricoAnterior(historicoColaboradorAnterior);
-		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL);
-		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
-
-		Collection<HistoricoColaborador> historicoColaboradores = historicoColaboradorDao.getPromocoes(new Long[]{areaOrganizacional1.getId()}, new Long[]{estabelecimento1.getId()}, DateUtil.criarDataMesAno(01, 02, 2007), DateUtil.criarDataMesAno(01, 02, 2008));
-
-		assertEquals(1, historicoColaboradores.size());
-	}
+//TODO NÃO APAGAR RELATORIO DE PROMOÇ~ES EM ESTUDO
+//	public void testGetPromocoes()
+//	{
+//		Empresa empresa = EmpresaFactory.getEmpresa();
+//		empresa = empresaDao.save(empresa);
+//
+//		Colaborador colaborador = ColaboradorFactory.getEntity();
+//		colaborador.setEmpresa(empresa);
+//		colaborador = colaboradorDao.save(colaborador);
+//
+//		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+//		areaOrganizacional1 = areaOrganizacionalDao.save(areaOrganizacional1);
+//
+//		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+//		estabelecimento1 = estabelecimentoDao.save(estabelecimento1);
+//
+//		HistoricoColaborador historicoColaborador = montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2007, 03, 1), colaborador, estabelecimento1, areaOrganizacional1, null, TipoAplicacaoIndice.VALOR);
+//		HistoricoColaborador historicoColaboradorAnterior = montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2006, 03, 1), colaborador, estabelecimento1, areaOrganizacional1, null, TipoAplicacaoIndice.VALOR);
+//
+//		historicoColaborador.setHistoricoAnterior(historicoColaboradorAnterior);
+//		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL);
+//		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
+//
+//		Collection<HistoricoColaborador> historicoColaboradores = historicoColaboradorDao.getPromocoes(new Long[]{areaOrganizacional1.getId()}, new Long[]{estabelecimento1.getId()}, DateUtil.criarDataMesAno(01, 02, 2007), DateUtil.criarDataMesAno(01, 02, 2008));
+//
+//		assertEquals(1, historicoColaboradores.size());
+//	}
 
 	public void testGetHistoricoAtual()
 	{

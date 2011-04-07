@@ -28,8 +28,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public Collection<Colaborador> findByCargosIds(int page, int pagingSize, Long[] longs, Colaborador colaborador, Long empresaId);
 
-	public Collection<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim);
-
 	public Collection<RelatorioPromocoes> montaRelatorio(Collection<HistoricoColaborador> historicoColaboradors, Collection<HistoricoColaborador> historicoColaboradorsTodos);
 
 	public Collection<HistoricoColaborador> inserirPeriodos(Collection<HistoricoColaborador> historicos);
