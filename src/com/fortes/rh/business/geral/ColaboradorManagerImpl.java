@@ -1702,9 +1702,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().countDeficiencia(data, empresaId);
 	}
 
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId) 
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens) 
 	{
-		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaId);
+		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaId, qtdItens);
 	}
 
 	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId) 
@@ -1714,5 +1714,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public int getCountAtivos(Date dataBase, Long empresaId) {
 		return getDao().getCountAtivos(dataBase, empresaId);
+	}
+
+	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		return getDao().countAdmitidos(dataIni, dataFim, empresaId);
+	}
+
+	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		return getDao().countDemitidos(dataIni, dataFim, empresaId);
 	}
 }

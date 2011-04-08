@@ -1941,6 +1941,36 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return (Integer) query.uniqueResult();
 	}
+
+	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId)
+	{
+		StringBuilder hql = new StringBuilder("select count(id) from Colaborador c ");
+		hql.append("where c.empresa.id = :empresaId ");
+		hql.append("and c.dataAdmissao between :dataIni and :dataFim ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+
+		return (Integer) query.uniqueResult();
+	}
+	
+	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId)
+	{
+		StringBuilder hql = new StringBuilder("select count(id) from Colaborador c ");
+		hql.append("where c.empresa.id = :empresaId ");
+		hql.append("and c.dataDesligamento between :dataIni and :dataFim ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		
+		return (Integer) query.uniqueResult();
+	}
 	
 	public int getCountAtivos(Date dataBase, Long empresaId) 
 	{
@@ -3153,7 +3183,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId) 
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens) 
 	{
 		StringBuilder hql = new StringBuilder();		
 		
@@ -3162,9 +3192,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("from Colaborador c ");
 		hql.append("join c.motivoDemissao m ");
 		hql.append("where c.dataDesligamento between :dataIni and :dataFim  and c.empresa.id = :empresaId ");
-		hql.append("group by m.motivo order by count(m.motivo) desc ");
+		hql.append("group by m.motivo order by count(m.motivo) desc");
 		
 		Query query = getSession().createQuery(hql.toString());
+		query.setMaxResults(qtdItens);
 		
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);

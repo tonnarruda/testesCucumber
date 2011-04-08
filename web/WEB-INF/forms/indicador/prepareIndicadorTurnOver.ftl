@@ -29,7 +29,7 @@
 
 <@ww.div >
 O <i>turnover</i> é um indicador que representa a rotatividade de funcionários dentro da empresa. <br/>
-Ele é calculado pela fórmula [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos] * 100
+Ele é calculado pela fórmula [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos no início do mês] * 100
 </@ww.div>
 <br/>
 

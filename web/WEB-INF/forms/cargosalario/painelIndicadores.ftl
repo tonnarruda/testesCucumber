@@ -184,6 +184,7 @@
 	
 		<#include "../ftl/mascarasImports.ftl" />
 	
+		
 		<#if dataBase?exists>
 		  <#assign dateBase = dataBase?date/>
 		<#else>
@@ -249,10 +250,11 @@
 			<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action#pagebottom" method="POST">
 				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 				<@ww.label value="a" liClass="liLeft" />
-				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-				
+				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
+				&nbsp&nbsp&nbsp&nbsp&nbsp;Exibir os
+				<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
+				itens de maior percentual.<br>
 				<@ww.hidden name="dataBase"/>
-				
 				<button onclick="return enviaForm2();" class="btnPesquisar grayBGE"></button>
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
@@ -260,7 +262,36 @@
 			<h1>Motivos de Desligamentos</h1>
 		   		<div id="desligamento" class="graph2"></div>
 		    </div>
+	
+				<div id="gogDiv">			
+					<dt>Admitidos</dt>
+					<dd>${countAdmitidos}</dd>
+			    </div>
+
+
+		    
+				<div id="gogDiv">			
+						<div class="gogDivEsq">
+							<div class="gogDivFormularioX">
+								<dl>
+									<dt>Admitidos</dt>
+									<dd>${countAdmitidos}</dd>
+									<dt>Demitidos</dt>
+									<dd>${countDemitidos}</dd>
+									<dt>Turnover</dt>
+									<dd>${turnover}</dd>
+								</dl>	
+						</div>
+		    
+		
+		
+		
 		    <div style="clear: both"></div>
 			<a name="pagebottom"></a>
+			
+			
+			
+			
+			
 	</body>
 </html>

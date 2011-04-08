@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.cargosalario;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,6 +28,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -80,8 +83,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfDeficiencia = "";
 	private String grfDesligamento = "";
 	private int qtdColaborador = 0;
-
+	private int qtdItensDesligamento = 20;
 	private String grfColocacao = "";
+	private Integer countAdmitidos;
+	private Integer countDemitidos;
+	private Double turnover;
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -92,16 +98,17 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			dataFim = hoje;
 		if (dataIni == null)
 			dataIni = DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true);
-			
+		
 		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId(), qtdItensDesligamento);
 		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, getEmpresaSistema().getId());
+		countAdmitidos = colaboradorManager.countAdmitidos(dataIni, dataFim, getEmpresaSistema().getId());
+		countDemitidos = colaboradorManager.countDemitidos(dataIni, dataFim, getEmpresaSistema().getId());
 		
-
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
 		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);
 		grfSexo = StringUtil.toJSON(graficoSexo, null);
@@ -110,6 +117,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
 		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
 		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, getEmpresaSistema().getId());
+		
+		Map<String, Object> parametrosConsulta = new HashMap<String, Object>();
+		parametrosConsulta.put("empresaId", getEmpresaSistema().getId());
+		parametrosConsulta.put("filtrarPor", 1);
+		TurnOverCollection turnOverCollection = new TurnOverCollection();
+		turnOverCollection.setTurnOvers(colaboradorManager.getTurnOver(DateUtil.formataMesAno(dataIni), DateUtil.formataMesAno(dataFim), parametrosConsulta));
+		turnover = turnOverCollection.getMedia();
 		
 		return Action.SUCCESS;
 	}
@@ -473,5 +487,26 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public int getQtdColaborador() {
 		return qtdColaborador;
-	}	
+	}
+
+	public int getQtdItensDesligamento() {
+		return qtdItensDesligamento;
+	}
+
+	public void setQtdItensDesligamento(int qtdItensDesligamento) {
+		this.qtdItensDesligamento = qtdItensDesligamento;
+	}
+
+	public Integer getCountAdmitidos() {
+		return countAdmitidos;
+	}
+
+	public Integer getCountDemitidos() {
+		return countDemitidos;
+	}
+
+	public String getTurnover() {
+		NumberFormat formata = new DecimalFormat("##0.00");
+		return formata.format(turnover); 
+	}
 }
