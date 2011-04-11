@@ -2,7 +2,6 @@ package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.Collection;
 
-import com.ctc.wstx.util.DataUtil;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -23,7 +22,6 @@ import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
-import com.fortes.rh.test.factory.sesmt.RealizacaoExameFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
 import com.fortes.rh.util.DateUtil;
 

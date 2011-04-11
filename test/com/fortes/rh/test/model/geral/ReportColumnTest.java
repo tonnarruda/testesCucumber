@@ -3,9 +3,9 @@ package com.fortes.rh.test.model.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fortes.rh.model.geral.ReportColumn;
-
 import junit.framework.TestCase;
+
+import com.fortes.rh.model.geral.ReportColumn;
 
 public class ReportColumnTest extends TestCase {
 

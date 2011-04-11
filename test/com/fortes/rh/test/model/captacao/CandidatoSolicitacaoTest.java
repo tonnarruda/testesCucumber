@@ -3,7 +3,6 @@ package com.fortes.rh.test.model.captacao;
 import junit.framework.TestCase;
 
 import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -15,7 +14,6 @@ import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
-import com.fortes.rh.test.factory.geral.CandidatoIdiomaFactory;
 
 public class CandidatoSolicitacaoTest extends TestCase
 {

@@ -7,8 +7,6 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.exception.IntegraACException;
-import com.fortes.rh.model.geral.AreaInteresse;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TOcorrencia;

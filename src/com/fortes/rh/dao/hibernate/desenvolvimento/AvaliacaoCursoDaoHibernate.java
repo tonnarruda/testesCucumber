@@ -1,7 +1,6 @@
 package com.fortes.rh.dao.hibernate.desenvolvimento;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;

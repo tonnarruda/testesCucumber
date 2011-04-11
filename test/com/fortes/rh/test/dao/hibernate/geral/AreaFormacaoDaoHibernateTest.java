@@ -8,10 +8,7 @@ import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.geral.AreaFormacaoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaFormacao;
-import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
-import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.geral.AreaFormacaoFactory;
 

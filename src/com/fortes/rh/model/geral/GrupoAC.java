@@ -2,8 +2,6 @@ package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
 
-import com.fortes.rh.model.geral.GrupoAC;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;

@@ -3,18 +3,15 @@ package com.fortes.rh.model.geral;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fortes.rh.model.geral.CamposExtras;
-import com.fortes.rh.util.DateUtil;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.print.DocFlavor.STRING;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity

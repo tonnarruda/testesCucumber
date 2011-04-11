@@ -12,10 +12,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
-import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
-import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 

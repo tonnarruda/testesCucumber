@@ -1,6 +1,5 @@
 package com.fortes.rh.test.web.action.sesmt;
 
-import java.awt.Checkbox;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;

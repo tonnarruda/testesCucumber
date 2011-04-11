@@ -2,21 +2,16 @@ package com.fortes.rh.dao.hibernate.acesso;
 
 import java.util.Collection;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.model.desenvolvimento.Curso;
 
 @SuppressWarnings("unchecked")
 public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements

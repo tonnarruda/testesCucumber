@@ -7,15 +7,10 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.captacao.AtitudeManagerImpl;
-import com.fortes.rh.business.captacao.ConhecimentoManagerImpl;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.AtitudeDao;
-import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.model.captacao.Atitude;
-import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.web.tags.CheckBox;
 

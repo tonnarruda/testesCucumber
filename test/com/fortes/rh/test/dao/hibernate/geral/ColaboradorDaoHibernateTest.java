@@ -68,6 +68,7 @@ import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
+import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Ambiente;
@@ -2130,207 +2131,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradors.size());
 	}
 
-	public void testFindAdmitidosByPeriodo()
-	{
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
-
-		Colaborador responsavel = getEntity();
-		responsavel = colaboradorDao.save(responsavel);
-
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setResponsavel(responsavel);
-		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
-
-		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
-		grupoOcupacional =  grupoOcupacionalDao.save(grupoOcupacional);
-
-		Cargo cargo = CargoFactory.getEntity();
-		cargo.setGrupoOcupacional(grupoOcupacional);
-		cargo = cargoDao.save(cargo);
-
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
-
-		Colaborador colaborador = getEntity();
-		colaborador = colaboradorDao.save(colaborador);
-
-		Colaborador c1 = ColaboradorFactory.getEntity();
-		c1.setDataAdmissao(DateUtil.criarDataMesAno(01, 01, 1945));
-		c1 = colaboradorDao.save(c1);
-
-		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
-		hc1.setColaborador(c1);
-		hc1.setFaixaSalarial(faixaSalarial);
-		hc1.setEstabelecimento(estabelecimento);
-		hc1 = historicoColaboradorDao.save(hc1);
-
-		Colaborador c2 = ColaboradorFactory.getEntity();
-		c2.setDataAdmissao(DateUtil.criarDataMesAno(01, 02, 1945));
-		c2 = colaboradorDao.save(c2);
-
-		HistoricoColaborador hc2 = HistoricoColaboradorFactory.getEntity();
-		hc2.setColaborador(c2);
-		hc2.setEstabelecimento(estabelecimento);
-		hc2 = historicoColaboradorDao.save(hc2);
-
-		Date dataIni = DateUtil.criarDataMesAno(01, 01, 1945);
-		Date dataFim = DateUtil.criarDataMesAno(30, 01, 1945);
-
-		Map<String, Object> parametros = new HashMap<String, Object>();
-		parametros.put("cargos", new String[]{cargo.getId().toString()});
-		parametros.put("estabelecimentos", new String[]{estabelecimento.getId().toString()});
-		parametros.put("filtrarPor", CARGO);
-		parametros.put("dataIni", dataIni);
-		parametros.put("dataFim", dataFim);
-		parametros.put("opcao", ADMITIDOS);
-
-		Collection<Colaborador> retorno = colaboradorDao.findColaborador(parametros);
-
-		assertEquals(1, retorno.size());
-	}
-
-	public void testFindDemitidosByPeriodo()
-	{
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
-
-		Colaborador responsavel = getEntity();
-		responsavel = colaboradorDao.save(responsavel);
-
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setResponsavel(responsavel);
-		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
-
-		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
-		grupoOcupacional =  grupoOcupacionalDao.save(grupoOcupacional);
-
-		Cargo cargo = CargoFactory.getEntity();
-		cargo.setGrupoOcupacional(grupoOcupacional);
-		cargo = cargoDao.save(cargo);
-
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
-
-		Colaborador colaborador = getEntity();
-		colaborador = colaboradorDao.save(colaborador);
-
-		Colaborador c1 = ColaboradorFactory.getEntity();
-		c1.setDataDesligamento(DateUtil.criarDataMesAno(01, 01, 1945));
-		c1 = colaboradorDao.save(c1);
-
-		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
-		hc1.setColaborador(c1);
-		hc1.setAreaOrganizacional(areaOrganizacional);
-		hc1.setEstabelecimento(estabelecimento);
-		hc1.setFaixaSalarial(faixaSalarial);
-		hc1 = historicoColaboradorDao.save(hc1);
-
-		Colaborador c2 = ColaboradorFactory.getEntity();
-		c2.setDataDesligamento(DateUtil.criarDataMesAno(01, 02, 1945));
-		c2 = colaboradorDao.save(c2);
-
-		HistoricoColaborador hc2 = HistoricoColaboradorFactory.getEntity();
-		hc2.setColaborador(c2);
-		hc2.setAreaOrganizacional(areaOrganizacional);
-		hc2.setEstabelecimento(estabelecimento);
-		hc2.setFaixaSalarial(faixaSalarial);
-		hc2 = historicoColaboradorDao.save(hc2);
-
-		Date dataIni = DateUtil.criarDataMesAno(01, 01, 1945);
-		Date dataFim = DateUtil.criarDataMesAno(30, 01, 1945);
-
-		Map<String, Object> parametros = new HashMap<String, Object>();
-		parametros.put("areas", new String[]{areaOrganizacional.getId().toString()});
-		parametros.put("estabelecimentos", new String[]{estabelecimento.getId().toString()});
-		parametros.put("filtrarPor", AREA_ORGANIZACIONAL);
-		parametros.put("dataIni", dataIni);
-		parametros.put("dataFim", dataFim);
-		parametros.put("opcao", DEMITIDOS);
-
-		Collection<Colaborador> retorno = colaboradorDao.findColaborador(parametros);
-
-		assertEquals(1, retorno.size());
-	}
-
-	public void testFindColaboradorInData()
-	{
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("estabelecimento");
-		estabelecimento = estabelecimentoDao.save(estabelecimento);
-
-		Colaborador responsavel = getEntity();
-		responsavel = colaboradorDao.save(responsavel);
-
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setResponsavel(responsavel);
-		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
-
-		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
-		grupoOcupacional =  grupoOcupacionalDao.save(grupoOcupacional);
-
-		Cargo cargo = CargoFactory.getEntity();
-		cargo.setGrupoOcupacional(grupoOcupacional);
-		cargo = cargoDao.save(cargo);
-
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
-
-		Colaborador colaborador = getEntity();
-		colaborador = colaboradorDao.save(colaborador);
-
-		Colaborador c1 = ColaboradorFactory.getEntity();
-		c1.setDataAdmissao(DateUtil.criarDataMesAno(01, 02, 1945));
-		c1.setDataDesligamento(null);
-		c1 = colaboradorDao.save(c1);
-
-		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
-		hc1.setColaborador(c1);
-		hc1.setEstabelecimento(estabelecimento);
-		hc1.setFaixaSalarial(faixaSalarial);
-		hc1 = historicoColaboradorDao.save(hc1);
-
-		Colaborador c2 = ColaboradorFactory.getEntity();
-		c2.setDataAdmissao(DateUtil.criarDataMesAno(01, 02, 1945));
-		c2.setDataDesligamento(DateUtil.criarDataMesAno(01, 06, 1945));
-		c2 = colaboradorDao.save(c2);
-
-		HistoricoColaborador hc2 = HistoricoColaboradorFactory.getEntity();
-		hc2.setColaborador(c2);
-		hc2.setEstabelecimento(estabelecimento);
-		hc2.setFaixaSalarial(faixaSalarial);
-		hc2 = historicoColaboradorDao.save(hc2);
-
-		Colaborador c3 = ColaboradorFactory.getEntity();
-		c3.setDataAdmissao(DateUtil.criarDataMesAno(01, 01, 1945));
-		c3.setDataDesligamento(DateUtil.criarDataMesAno(20, 02, 1945));
-		c3 = colaboradorDao.save(c3);
-
-		HistoricoColaborador hc3 = HistoricoColaboradorFactory.getEntity();
-		hc3.setColaborador(c3);
-		hc3.setEstabelecimento(estabelecimento);
-		hc3.setFaixaSalarial(faixaSalarial);
-		hc3 = historicoColaboradorDao.save(hc3);
-
-		Date dataFim = DateUtil.criarDataMesAno(30, 02, 1945);
-
-		Map<String, Object> parametros = new HashMap<String, Object>();
-		parametros.put("cargos", new String[]{cargo.getId().toString()});
-		parametros.put("estabelecimentos", new String[]{estabelecimento.getId().toString()});
-		parametros.put("filtrarPor", CARGO);
-		parametros.put("dataFim", dataFim);
-		parametros.put("opcao", NO_MES);
-
-		Collection<Colaborador> retorno = colaboradorDao.findColaborador(parametros);
-
-		assertEquals(2, retorno.size());
-	}
-
 	public void testFindColaboradoresMotivoDemissao()
 	{
 		prepareFindColaboradoresMotivo();
@@ -3073,6 +2873,29 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
 		assertEquals(new Integer(31), colaboradorTmp.getDiasDeEmpresa());
+	}
+	
+	public void testCountDesligados()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Collection<Long> longs = new ArrayList<Long>();
+		longs.add(1L);
+		
+		Collection<TurnOver> colaboradores = colaboradorDao.countDemitidosPeriodo(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa.getId(), longs, longs, longs);
+		assertEquals(0, colaboradores.size());
+	}
+	
+	public void testCountAdmitidosPeriodo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Collection<Long> longs = new ArrayList<Long>();
+		longs.add(1L);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosPeriodo(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa.getId(), longs, longs, longs);
+		assertEquals(0, colaboradores.size());
 	}
 	
 	public void testFindComAvaliacoesExperiencias()

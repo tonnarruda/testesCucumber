@@ -3,7 +3,6 @@ package com.fortes.rh.dao.geral;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.AreaFormacao;
 
 public interface AreaFormacaoDao extends GenericDao<AreaFormacao>

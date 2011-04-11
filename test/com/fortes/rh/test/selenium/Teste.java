@@ -2,7 +2,6 @@ package com.fortes.rh.test.selenium;
 
 import junit.framework.TestCase;
 
-import com.fortes.rh.test.AllAceptTests;
 import com.thoughtworks.selenium.DefaultSelenium;
 
 public class Teste extends TestCase

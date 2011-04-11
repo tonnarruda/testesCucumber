@@ -13,7 +13,6 @@ import com.fortes.rh.business.sesmt.ProntuarioManagerImpl;
 import com.fortes.rh.business.sesmt.RealizacaoExameManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.sesmt.ProntuarioDao;
-import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;

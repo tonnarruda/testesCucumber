@@ -1,7 +1,5 @@
 package com.fortes.rh.web.action.sesmt;
 
-import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -15,12 +13,9 @@ import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
-import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;

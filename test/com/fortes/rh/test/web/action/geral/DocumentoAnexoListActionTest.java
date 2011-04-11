@@ -7,7 +7,6 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;

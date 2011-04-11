@@ -1,7 +1,5 @@
 package com.fortes.rh.test.web.action.geral;
 
-import java.util.ArrayList;
-
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

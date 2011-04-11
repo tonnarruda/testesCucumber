@@ -15,11 +15,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RealizacaoExameDao;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
-import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
 
 @SuppressWarnings("unchecked")

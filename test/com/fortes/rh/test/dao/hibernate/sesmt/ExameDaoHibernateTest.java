@@ -41,7 +41,6 @@ import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.test.factory.sesmt.RealizacaoExameFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 
 public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 {

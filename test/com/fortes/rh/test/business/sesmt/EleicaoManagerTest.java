@@ -32,7 +32,6 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.CandidatoEleicaoFactory;
 import com.fortes.rh.test.factory.sesmt.EleicaoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 

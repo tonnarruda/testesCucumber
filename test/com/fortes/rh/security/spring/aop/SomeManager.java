@@ -1,7 +1,5 @@
 package com.fortes.rh.security.spring.aop;
 
-import java.util.Collection;
-
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.sesmt.Evento;
 import com.fortes.security.auditoria.Audita;

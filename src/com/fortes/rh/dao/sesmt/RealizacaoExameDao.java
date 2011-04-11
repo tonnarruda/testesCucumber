@@ -4,10 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.sesmt.Ambiente;
-import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
 
 public interface RealizacaoExameDao extends GenericDao<RealizacaoExame>

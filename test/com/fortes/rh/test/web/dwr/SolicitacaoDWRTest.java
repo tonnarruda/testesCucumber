@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.commons.digester.WithDefaultsRulesWrapper;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
@@ -14,9 +13,8 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
-import com.fortes.rh.web.dwr.SolicitacaoDWR;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.web.dwr.SolicitacaoDWR;
 
 public class SolicitacaoDWRTest extends MockObjectTestCase
 {

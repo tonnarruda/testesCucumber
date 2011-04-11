@@ -8,7 +8,6 @@ import com.fortes.rh.config.SetupListener;
 import com.fortes.rh.config.backup.RunAntScript;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;

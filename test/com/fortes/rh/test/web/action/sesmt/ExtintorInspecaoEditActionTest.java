@@ -1,19 +1,16 @@
 package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoItemManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
@@ -22,7 +19,6 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorInspecaoFactory;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction;
 
 public class ExtintorInspecaoEditActionTest extends MockObjectTestCase

@@ -13,9 +13,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.jfree.data.DataUtilities;
 
-import com.ctc.wstx.util.DataUtil;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
 import com.fortes.rh.model.geral.Colaborador;

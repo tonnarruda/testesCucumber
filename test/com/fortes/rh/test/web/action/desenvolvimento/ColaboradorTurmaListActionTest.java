@@ -59,7 +59,6 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction;
-import com.fortes.web.tags.CheckBox;
 
 
 public class ColaboradorTurmaListActionTest extends MockObjectTestCase

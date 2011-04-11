@@ -10,26 +10,15 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
-import com.fortes.rh.business.geral.EstabelecimentoManager;
-import com.fortes.rh.business.sesmt.AgendaManager;
-import com.fortes.rh.business.sesmt.EventoManager;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.sesmt.Agenda;
-import com.fortes.rh.model.sesmt.Evento;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
-import com.fortes.rh.test.factory.sesmt.AgendaFactory;
-import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction;
-import com.fortes.rh.web.action.sesmt.AgendaEditAction;
-import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
-import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
-import com.fortes.rh.util.CheckListBoxUtil;
 
 public class CertificacaoEditActionTest extends MockObjectTestCase
 {

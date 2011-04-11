@@ -85,13 +85,9 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setDataDe("01/2008");
     	action.setDataAte("12/2008");
 
-//		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
-//		parametrosDoSistema.setAppVersao("1.01.1");
-		
     	Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
     	turnOvers.add(new TurnOver());
-    	colaboradorManager.expects(once()).method("getTurnOver").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(turnOvers));
-//    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
+    	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(returnValue(turnOvers));
     	
     	assertEquals("success", action.list());
     }
@@ -102,7 +98,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setDataAte("12/2008");
 
     	ColecaoVaziaException colecaoVaziaException = new ColecaoVaziaException();
-		colaboradorManager.expects(once()).method("getTurnOver").with(ANYTHING,ANYTHING,ANYTHING).will(throwException(colecaoVaziaException));
+    	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(throwException(colecaoVaziaException));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));

@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hibernate.criterion.Projections;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;

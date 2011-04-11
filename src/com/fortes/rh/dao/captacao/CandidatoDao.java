@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.model.type.File;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 

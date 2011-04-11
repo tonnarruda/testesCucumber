@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.dbunit.dataset.datatype.IntegerDataType;
-
 import junit.framework.TestCase;
 
 import com.fortes.rh.util.DateUtil;

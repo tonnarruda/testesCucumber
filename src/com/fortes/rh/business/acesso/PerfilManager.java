@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.model.desenvolvimento.Curso;
 
 public interface PerfilManager extends GenericManager<Perfil>
 {

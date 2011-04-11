@@ -31,9 +31,7 @@ import com.fortes.rh.business.geral.ColaboradorManagerImpl;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
-import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
@@ -52,7 +50,6 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -375,149 +372,103 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         return parametros;
     }
 
-    public void testFindAdmitidosByPeriodo()
+    public void testMontaTurnOver() throws Exception
     {
-        Date ini = DateUtil.criarDataMesAno(01, 01, 2001);
-        Date fim = DateUtil.criarDataMesAno(30, 01, 2001);
+    	Long empresaId = 333L;
+    	Date dataIni = DateUtil.criarDataMesAno(01, 01, 2010);
+    	Date dataFim = DateUtil.criarDataMesAno(28, 12, 2010);
+    	
+    	Collection<TurnOver> admitidos = new ArrayList<TurnOver>();
+    	admitidos.add(montaAdmitido(1, 2010, 21));
+    	admitidos.add(montaAdmitido(2, 2010, 45));
+    	admitidos.add(montaAdmitido(3, 2010, 31));
+    	admitidos.add(montaAdmitido(4, 2010, 17));
+    	admitidos.add(montaAdmitido(5, 2010, 13));
+    	admitidos.add(montaAdmitido(6, 2010, 27));
+    	admitidos.add(montaAdmitido(7, 2010, 51));
+    	admitidos.add(montaAdmitido(8, 2010, 25));
+    	admitidos.add(montaAdmitido(9, 2010, 23));
+    	admitidos.add(montaAdmitido(10, 2010, 26));
+    	admitidos.add(montaAdmitido(11, 2010, 23));
+    	admitidos.add(montaAdmitido(12, 2010, 41));
+    	
+    	Collection<TurnOver> demitidos = new ArrayList<TurnOver>();
+    	demitidos.add(montaDemitido(1, 2010, 25));
+    	demitidos.add(montaDemitido(2, 2010, 15));
+    	demitidos.add(montaDemitido(3, 2010, 26));
+    	demitidos.add(montaDemitido(4, 2010, 23));
+    	demitidos.add(montaDemitido(5, 2010, 28));
+    	demitidos.add(montaDemitido(6, 2010, 6));
+    	demitidos.add(montaDemitido(7, 2010, 14));
+    	demitidos.add(montaDemitido(8, 2010, 40));
+    	demitidos.add(montaDemitido(9, 2010, 20));
+    	demitidos.add(montaDemitido(10, 2010, 20));
+    	demitidos.add(montaDemitido(11, 2010, 19));
+    	demitidos.add(montaDemitido(12, 2010, 10));
 
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(ColaboradorFactory.getCollection()));
-
-        assertEquals(1, colaboradorManager.findAdmitidosByPeriodo(ini, fim, getParametros()).size());
+    	colaboradorDao.expects(once()).method("countAdmitidosPeriodo").withAnyArguments().will(returnValue(admitidos));
+    	colaboradorDao.expects(once()).method("countDemitidosPeriodo").withAnyArguments().will(returnValue(demitidos));
+    	colaboradorDao.expects(once()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(973));
+    	
+    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresaId, null, null, null, 1);
+  
+    	TurnOver[] turnOverArray = (TurnOver[]) turnOvers.toArray(new TurnOver[12]);
+    	
+    	TurnOver mes1 = turnOverArray[0];
+    	assertEquals("01/01/2010" , DateUtil.formataDiaMesAno(mes1.getMesAno()));
+    	assertEquals(2.36 , mes1.getTurnOver());
+    	
+    	TurnOver mes2 = turnOverArray[1];
+    	assertEquals("01/02/2010" , DateUtil.formataDiaMesAno(mes2.getMesAno()));
+    	assertEquals(3.10 , mes2.getTurnOver());
+    	
+    	TurnOver mes3 = turnOverArray[2];
+    	assertEquals("01/03/2010" , DateUtil.formataDiaMesAno(mes3.getMesAno()));
+    	assertEquals(2.85 , mes3.getTurnOver());
+    	
+    	TurnOver mes4 = turnOverArray[3];
+    	assertEquals("01/04/2010" , DateUtil.formataDiaMesAno(mes4.getMesAno()));
+    	assertEquals(1.99 , mes4.getTurnOver());
+    	
+    	TurnOver mes5 = turnOverArray[4];
+    	assertEquals("01/05/2010" , DateUtil.formataDiaMesAno(mes5.getMesAno()));
+    	assertEquals(2.05 , mes5.getTurnOver());
+    	
+    	TurnOver mes6 = turnOverArray[5];
+    	assertEquals("01/06/2010" , DateUtil.formataDiaMesAno(mes6.getMesAno()));
+    	assertEquals(1.68 , mes6.getTurnOver());
+    	
+    	TurnOver mes12 = turnOverArray[11];
+    	assertEquals("01/12/2010" , DateUtil.formataDiaMesAno(mes12.getMesAno()));
+    	assertEquals(2.45 , mes12.getTurnOver());
     }
 
-    public void testFindDemitidosByPeriodo()
-    {
-        Date ini = DateUtil.criarDataMesAno(01, 01, 2001);
-        Date fim = DateUtil.criarDataMesAno(30, 01, 2001);
+	private TurnOver montaAdmitido(int mes, int ano, double qtdAdmitidos) 
+	{
+		TurnOver admitido = new TurnOver();
+		Date dataMesAno = DateUtil.criarDataMesAno(01, mes, ano);
+    	admitido.setMesAnoQtdAdmitidos(dataMesAno, qtdAdmitidos);
+    	
+		return admitido;
+	}
+	
+	private TurnOver montaDemitido(int mes, int ano, double qtdDemitidos) 
+	{
+		TurnOver demitido = new TurnOver();
+		Date dataMesAno = DateUtil.criarDataMesAno(01, mes, ano);
+		demitido.setMesAnoQtdDemitidos(dataMesAno, qtdDemitidos);
+		
+		return demitido;
+	}
 
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(ColaboradorFactory.getCollection()));
-
-        assertEquals(1, colaboradorManager.findDemitidosByPeriodo(ini, fim, getParametros()).size());
-    }
-
-    public void testFindColaboradoresInData()
-    {
-        Date data = DateUtil.criarDataMesAno(30, 01, 1945);
-
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(ColaboradorFactory.getCollection()));
-
-        assertEquals(1, colaboradorManager.findColaboradorInData(data, getParametros()).size());
-    }
-
-    public void testGetTurnOverByMes()
-    {
-        Date data = DateUtil.criarDataMesAno("02/1945");
-
-        Collection<Colaborador> colMesAnterior = new ArrayList<Colaborador>();
-        colMesAnterior.add(ColaboradorFactory.getEntity());
-        colMesAnterior.add(ColaboradorFactory.getEntity());
-        colMesAnterior.add(ColaboradorFactory.getEntity());
-        colMesAnterior.add(ColaboradorFactory.getEntity());
-        colMesAnterior.add(ColaboradorFactory.getEntity());
-
-        Collection<Colaborador> colAdmitidosMes = new ArrayList<Colaborador>();
-        colAdmitidosMes.add(ColaboradorFactory.getEntity());
-        colAdmitidosMes.add(ColaboradorFactory.getEntity());
-
-        Collection<Colaborador> colDemitidosMes = new ArrayList<Colaborador>();
-        colDemitidosMes.add(ColaboradorFactory.getEntity());
-
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(colMesAnterior));
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(colDemitidosMes));
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(colAdmitidosMes));
-
-        TurnOver turnOver = colaboradorManager.getTurnOverByMes(data, getParametros());
-        assertEquals(30.00, turnOver.getTurnOver());
-        assertEquals(2.0, turnOver.getQtdAdmitidos());
-        assertEquals(1.0, turnOver.getQtdDemitidos());
-        assertEquals(5.0, turnOver.getQtdAtivos());
-    }
-
-    public void testGetTurnOver() throws ColecaoVaziaException
-    {
-        String de = "01/1945";
-        String ate = "03/1945";
-
-        Colaborador c1 = ColaboradorFactory.getEntity();
-        c1.setId(1L);
-        c1.setDataAdmissao(DateUtil.criarDataMesAno("01/1940"));
-        Colaborador c2 = ColaboradorFactory.getEntity();
-        c2.setId(2L);
-        c2.setDataAdmissao(DateUtil.criarDataMesAno("01/1940"));
-        Colaborador c3 = ColaboradorFactory.getEntity();
-        c3.setId(3L);
-        c3.setDataAdmissao(DateUtil.criarDataMesAno("01/1940"));
-        Colaborador c4 = ColaboradorFactory.getEntity();
-        c4.setId(4L);
-        c4.setDataAdmissao(DateUtil.criarDataMesAno("01/1940"));
-        c4.setDataDesligamento(DateUtil.criarDataMesAno("02/1945"));
-        Colaborador c5 = ColaboradorFactory.getEntity();
-        c5.setId(5L);
-        c5.setDataAdmissao(DateUtil.criarDataMesAno("01/1940"));
-        c5.setDataDesligamento(DateUtil.criarDataMesAno("02/1945"));
-
-        Collection<Colaborador> colMesAnterior = new ArrayList<Colaborador>();
-        colMesAnterior.add(c1);
-        colMesAnterior.add(c2);
-        colMesAnterior.add(c3);
-        colMesAnterior.add(c4);
-        colMesAnterior.add(c5);
-
-        Collection<Colaborador> colDemitidosMesFev = new ArrayList<Colaborador>();
-        colDemitidosMesFev.add(c4);
-        colDemitidosMesFev.add(c5);
-
-        Colaborador c6 = ColaboradorFactory.getEntity();
-        c6.setId(6L);
-        c6.setDataAdmissao(DateUtil.criarDataMesAno("03/1945"));
-
-        Colaborador c7 = ColaboradorFactory.getEntity();
-        c7.setId(7L);
-        c7.setDataAdmissao(DateUtil.criarDataMesAno("03/1945"));
-
-        Colaborador c8 = ColaboradorFactory.getEntity();
-        c8.setId(8L);
-        c8.setDataAdmissao(DateUtil.criarDataMesAno("03/1945"));
-
-        Collection<Colaborador> colAdmitidosMesMar = new ArrayList<Colaborador>();
-        colAdmitidosMesMar.add(c6);
-        colAdmitidosMesMar.add(c7);
-
-        Collection<Colaborador> colDez = new ArrayList<Colaborador>();
-        colDez.addAll(colMesAnterior);
-        Collection<Colaborador> colJan = new ArrayList<Colaborador>();
-        colJan.addAll(colDez);
-        Collection<Colaborador> colFev = new ArrayList<Colaborador>();
-        colFev.addAll(colJan);
-        colFev.remove(c4);
-        colFev.remove(c5);
-
-        Map parametros = getParametros();
-
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(colFev));
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(colAdmitidosMesMar));
-
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(colJan));
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(colDemitidosMesFev));
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
-
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(colDez));
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
-        colaboradorDao.expects(once()).method("findColaborador").with(ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
-
-        Collection<TurnOver> retorno = colaboradorManager.getTurnOver(de, ate, parametros);
-        assertEquals(3, retorno.size());
-        TurnOver toJan = (TurnOver) retorno.toArray()[0];
-        assertEquals(0.0, toJan.getTurnOver());
-        assertEquals(DateUtil.criarDataMesAno(01, 01, 1945), toJan.getMesAno());
-        TurnOver toFev = (TurnOver) retorno.toArray()[1];
-        assertEquals(20.0, toFev.getTurnOver());
-        assertEquals(DateUtil.criarDataMesAno(01, 02, 1945), toFev.getMesAno());
-        TurnOver toMar = (TurnOver) retorno.toArray()[2];
-        assertEquals(33.33333333333333, toMar.getTurnOver());
-        assertEquals(DateUtil.criarDataMesAno(01, 03, 1945), toMar.getMesAno());
-    }
+	private TurnOver montaAtivo(int mes, int ano, double qtdAtivos) 
+	{
+		TurnOver ativos = new TurnOver();
+		Date dataMesAno = DateUtil.criarDataMesAno(01, mes, ano);
+		ativos.setMesAnoQtdAtivos(dataMesAno, qtdAtivos);
+		
+		return ativos;
+	}
 
     public void testFindColaboradoresMotivoDemissao() throws Exception
     {

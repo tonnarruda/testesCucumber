@@ -40,7 +40,6 @@ import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction;
 import com.opensymphony.xwork.ActionContext;
-import com.sun.xml.bind.v2.schemagen.xmlschema.Any;
 
 public class ReajusteColaboradorEditActionTest extends MockObjectTestCase 
 {

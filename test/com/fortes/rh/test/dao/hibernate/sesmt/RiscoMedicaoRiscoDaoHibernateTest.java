@@ -1,7 +1,5 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
@@ -13,12 +11,10 @@ import com.fortes.rh.dao.sesmt.RiscoMedicaoRiscoDao;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.Risco;
-import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.MedicaoRiscoFactory;
-import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoMedicaoRiscoFactory;
 import com.ibm.icu.util.Calendar;

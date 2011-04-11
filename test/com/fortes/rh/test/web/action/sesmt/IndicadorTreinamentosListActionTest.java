@@ -1,13 +1,9 @@
 package com.fortes.rh.test.web.action.sesmt;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import mockit.Mockit;
 
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.general.DefaultPieDataset;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
@@ -15,23 +11,14 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
-import com.fortes.rh.business.geral.EstabelecimentoManager;
-import com.fortes.rh.business.sesmt.AgendaManager;
-import com.fortes.rh.business.sesmt.EventoManager;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.sesmt.Agenda;
-import com.fortes.rh.model.sesmt.Evento;
-import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.sesmt.AgendaFactory;
-import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.web.action.desenvolvimento.IndicadorTreinamentosListAction;
-import com.fortes.rh.web.action.sesmt.AgendaEditAction;
-import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
-import com.opensymphony.webwork.ServletActionContext;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
+import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.web.action.desenvolvimento.IndicadorTreinamentosListAction;
+import com.opensymphony.webwork.ServletActionContext;
 
 public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 {

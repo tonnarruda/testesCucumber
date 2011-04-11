@@ -23,7 +23,6 @@ import com.fortes.rh.business.pesquisa.FichaMedicaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.Aspecto;

@@ -3,7 +3,6 @@ package com.fortes.rh.web.action.geral;
 import java.util.Collection;
 
 import com.fortes.rh.business.geral.AreaFormacaoManager;
-import com.fortes.rh.model.dicionario.AreasFormacao;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;

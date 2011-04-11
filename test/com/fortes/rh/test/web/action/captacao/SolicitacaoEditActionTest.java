@@ -1,50 +1,23 @@
 package com.fortes.rh.test.web.action.captacao;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 
-import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.cargosalario.Indice;
-import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
-import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
-import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
-import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
-import com.fortes.rh.test.factory.captacao.CandidatoFactory;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
-import com.fortes.rh.test.factory.cargosalario.CargoFactory;
-import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
-import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
-import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
-import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtilVerifyRole;
 import com.fortes.rh.web.action.captacao.SolicitacaoEditAction;
-import com.fortes.web.tags.CheckBox;
 
 public class SolicitacaoEditActionTest extends MockObjectTestCase
 {

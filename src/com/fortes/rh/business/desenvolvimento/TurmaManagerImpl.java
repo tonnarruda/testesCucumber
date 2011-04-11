@@ -1,9 +1,7 @@
 package com.fortes.rh.business.desenvolvimento;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +20,6 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 
 public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implements TurmaManager

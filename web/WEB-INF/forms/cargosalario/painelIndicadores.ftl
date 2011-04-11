@@ -7,9 +7,6 @@
 	@import url('<@ww.url value="/css/displaytag.css"/>');
 </style>
 	
-		<style type="text/css">
-			@import url('<@ww.url includeParams="none" value="/css/painelIndicadoresTreinamentos.css"/>');
-		</style>
 
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
@@ -68,6 +65,17 @@
 			.fieldGraph.bigger{
 				width: 963px !important;
 			}
+			.fieldDados{
+				height: 18px;
+				width: 953px !important;
+				border: 1px solid #7E9DB9;
+				padding: 5px;
+			}
+			.fieldDados div {
+				float: left;
+				width: 310px !important;
+			}
+			
 			.fieldGraph.bigger h1 {
 				width: 955px;
 			}
@@ -101,7 +109,7 @@
 			}
 			
 			.legendTotal{
-				width: 960px;
+				width: 965px;
 				text-align: right;
 			}
 			
@@ -213,6 +221,8 @@
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 		
+		<div class="legendTotal">Total de Colaboradores: ${qtdColaborador}</div>
+		
 		<div class="fieldGraph">
 			<h1>Faixa Etária</h1>
 		    <div id="faixaEtaria" class="graph"></div>
@@ -239,7 +249,7 @@
 	    </div>
 	    
 		<div style="clear: both"></div>
-		<div class="legendTotal">Total de Colaboradores: ${qtdColaborador}</div>
+		
 		<br>
 		
 		<div class="divFiltro">
@@ -262,36 +272,16 @@
 			<h1>Motivos de Desligamentos</h1>
 		   		<div id="desligamento" class="graph2"></div>
 		    </div>
-	
-				<div id="gogDiv">			
-					<dt>Admitidos</dt>
-					<dd>${countAdmitidos}</dd>
-			    </div>
+			<div style="clear: both"></div>
+			<br>
+			<div class="fieldDados">
+				<div>Admitidos: ${countAdmitidos}</div>
+				<div>Demitidos: ${countDemitidos}</div>
+				<div>Turnover: ${turnover}</div>
+			</div>
 
-
-		    
-				<div id="gogDiv">			
-						<div class="gogDivEsq">
-							<div class="gogDivFormularioX">
-								<dl>
-									<dt>Admitidos</dt>
-									<dd>${countAdmitidos}</dd>
-									<dt>Demitidos</dt>
-									<dd>${countDemitidos}</dd>
-									<dt>Turnover</dt>
-									<dd>${turnover}</dd>
-								</dl>	
-						</div>
-		    
-		
-		
-		
 		    <div style="clear: both"></div>
 			<a name="pagebottom"></a>
-			
-			
-			
-			
 			
 	</body>
 </html>

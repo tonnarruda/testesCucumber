@@ -11,7 +11,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
-import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.TipoEPI;
 

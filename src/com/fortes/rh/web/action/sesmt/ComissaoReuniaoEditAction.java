@@ -6,10 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import sun.util.calendar.BaseCalendar.Date;
-
 import com.fortes.rh.business.sesmt.ComissaoManager;
-import com.fortes.rh.business.sesmt.ComissaoManagerImpl;
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -23,7 +20,6 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
-import com.opensymphony.util.Data;
 
 public class ComissaoReuniaoEditAction extends MyActionSupportList
 {

@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +21,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.acesso.UsuarioManager;
-import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
@@ -82,10 +80,6 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("unchecked")
 public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, ColaboradorDao> implements ColaboradorManager
 {
-	private static final int NO_MES = 0;
-	private static final int ADMITIDOS = 1;
-	private static final int DEMITIDOS = 2;
-
 	private FormacaoManager formacaoManager;
 	private ExperienciaManager experienciaManager;
 	private ColaboradorIdiomaManager colaboradorIdiomaManager;
@@ -105,7 +99,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private FaixaSalarialManager faixaSalarialManager;
 	private EstadoManager estadoManager;
 	private CamposExtrasManager camposExtrasManager;
-	private PeriodoExperienciaManager periodoExperienciaManager;
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
@@ -813,79 +806,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId)
 	{
 		return getDao().findByIdProjectionEmpresa(colaboradorId);
-	}
-
-	public Collection<Colaborador> findAdmitidosByPeriodo(Date dataIni, Date dataFim, Map parametros)
-	{
-		parametros.put("dataIni", dataIni);
-		parametros.put("dataFim", dataFim);
-		parametros.put("opcao", ADMITIDOS);
-
-		return getDao().findColaborador(parametros);
-	}
-
-	public Collection<Colaborador> findDemitidosByPeriodo(Date dataIni, Date dataFim, Map parametros)
-	{
-		parametros.put("dataIni", dataIni);
-		parametros.put("dataFim", dataFim);
-		parametros.put("opcao", DEMITIDOS);
-
-		return getDao().findColaborador(parametros);
-	}
-
-	public Collection<Colaborador> findColaboradorInData(Date data, Map parametros)
-	{
-		parametros.put("dataFim", data);
-		parametros.put("opcao", NO_MES);
-
-		return getDao().findColaborador(parametros);
-	}
-
-	public TurnOver getTurnOverByMes(Date data, Map parametros)
-	{
-		Date dataIni = DateUtil.getInicioMesData(data);
-		Date dataFim = DateUtil.getUltimoDiaMes(data);
-		
-		Date dataFimMesAnterior = DateUtil.retornaDataAnteriorQtdMeses(dataFim, 1, true);
-		dataFimMesAnterior = DateUtil.getUltimoDiaMes(dataFimMesAnterior);
-
-		double colaboradoresAdmitidos = findAdmitidosByPeriodo(dataIni, dataFim, parametros).size();
-		double colaboradoresDemitidos = findDemitidosByPeriodo(dataIni, dataFim, parametros).size();
-		double colaboradorMesAnterior = findColaboradorInData(dataFimMesAnterior, parametros).size();
-
-		Double calculo = (((colaboradoresAdmitidos + colaboradoresDemitidos) / 2) / colaboradorMesAnterior) * 100;
-		
-		TurnOver turnOverTmp = new TurnOver();
-		turnOverTmp.setTurnOver(calculo);
-		turnOverTmp.setQtdAdmitidos(colaboradoresAdmitidos);
-		turnOverTmp.setQtdDemitidos(colaboradoresDemitidos);
-		turnOverTmp.setQtdAtivos(colaboradorMesAnterior);
-		
-		return turnOverTmp;
-	}
-
-	public Collection<TurnOver> getTurnOver(String dataDe, String dataAte, Map parametros) throws ColecaoVaziaException
-	{
-		Collection<TurnOver> turnOvers = new LinkedList<TurnOver>();
-
-		Date dataIni = DateUtil.criarDataMesAno(dataDe);
-		Date dataFim = DateUtil.criarDataMesAno(dataAte);
-		int ate = DateUtil.mesesEntreDatas(dataIni, dataFim);
-		Date data = dataIni;
-
-		for (int i = 0; i <= ate; i++)
-		{
-			TurnOver turnOverTmp = getTurnOverByMes(data, parametros);
-			data = DateUtil.getInicioMesData(data);
-			turnOverTmp.setMesAno(data);
-			turnOvers.add(turnOverTmp);
-			data = DateUtil.setaMesPosterior(data);
-		}
-		
-		if (turnOvers == null || turnOvers.isEmpty())
-			throw new ColecaoVaziaException();
-
-		return turnOvers;
 	}
 
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)
@@ -1674,10 +1594,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findEmailsByPapel(empresaId, codPapel);
 	}
 
-	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager) {
-		this.periodoExperienciaManager = periodoExperienciaManager;
-	}
-
 	public Collection<DataGrafico> countSexo(Date data, Long empresaId) 
 	{
 		return getDao().countSexo(data, empresaId);
@@ -1724,5 +1640,57 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId) 
 	{
 		return getDao().countDemitidos(dataIni, dataFim, empresaId);
+	}
+
+	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception 
+	{
+		if(filtrarPor == 1)
+			cargosIds = null;
+		else
+			areasIds = null;
+		
+		Collection<TurnOver> admitidos = getDao().countAdmitidosPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds, cargosIds);
+		Collection<TurnOver> demitidos = getDao().countDemitidosPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds, cargosIds);
+
+		int ate = DateUtil.mesesEntreDatas(dataIni, dataFim);
+		Date dataTmp = DateUtil.getInicioMesData(dataIni);
+
+		Collection<TurnOver> turnOvers = new LinkedList<TurnOver>();
+		double qtdAtivos = getDao().countAtivosPeriodo(dataIni, empresaId, estabelecimentosIds, areasIds, cargosIds);
+
+		for (int i = 0; i <= ate; i++)
+		{
+			double qtdAdmitidos = 0;
+			double qtdDemitidos = 0;
+			
+			for (TurnOver admitido : admitidos)
+			{
+				if(dataTmp.equals(admitido.getMesAno()))
+					qtdAdmitidos = admitido.getQtdAdmitidos();
+			}
+			
+			for (TurnOver demitido : demitidos)
+			{
+				if(dataTmp.equals(demitido.getMesAno()))
+					qtdDemitidos = demitido.getQtdDemitidos();
+			}
+		
+			TurnOver turnOverTmp = new TurnOver();
+			turnOverTmp.setMesAno(dataTmp);
+			turnOverTmp.setQtdAdmitidos(qtdAdmitidos);
+			turnOverTmp.setQtdDemitidos(qtdDemitidos);
+			turnOverTmp.setQtdAtivos(qtdAtivos);
+			
+			turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / qtdAtivos) * 100);
+			turnOvers.add(turnOverTmp);
+
+			qtdAtivos = qtdAtivos + (qtdAdmitidos - qtdDemitidos);
+			dataTmp = DateUtil.setaMesPosterior(dataTmp);
+		}
+		
+		if (turnOvers == null || turnOvers.isEmpty())
+			throw new ColecaoVaziaException();
+		
+		return turnOvers;
 	}
 }

@@ -2,15 +2,13 @@ package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
 
-import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.geral.ConfiguracaoPerformance;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.acesso.Usuario;
 
 @SuppressWarnings("serial")
 @Entity

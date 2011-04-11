@@ -14,12 +14,10 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.ctc.wstx.util.DataUtil;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
@@ -30,7 +28,6 @@ import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 
 public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 {

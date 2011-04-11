@@ -1,7 +1,6 @@
 package com.fortes.rh.test.business.avaliacao;
 
 import java.util.Collection;
-import java.util.Date;
 
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;

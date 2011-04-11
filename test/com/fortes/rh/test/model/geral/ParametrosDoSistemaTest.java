@@ -1,8 +1,8 @@
 package com.fortes.rh.test.model.geral;
 
-import com.fortes.rh.model.geral.ParametrosDoSistema;
-
 import junit.framework.TestCase;
+
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 
 public class ParametrosDoSistemaTest extends TestCase {
 

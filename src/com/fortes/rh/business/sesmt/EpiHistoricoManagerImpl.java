@@ -7,11 +7,9 @@ import java.util.HashSet;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.EpiHistoricoDao;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.relatorio.PppFatorRisco;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
-import com.fortes.rh.model.sesmt.TipoEPI;
 
 public class EpiHistoricoManagerImpl extends GenericManagerImpl<EpiHistorico, EpiHistoricoDao> implements EpiHistoricoManager
 {

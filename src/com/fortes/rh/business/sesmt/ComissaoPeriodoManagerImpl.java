@@ -12,8 +12,6 @@ import com.fortes.rh.model.sesmt.CandidatoEleicao;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.ComissaoPeriodo;
-import com.fortes.rh.model.sesmt.ComissaoReuniao;
-
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 

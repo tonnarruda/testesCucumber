@@ -6,7 +6,6 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.dao.geral.DocumentoAnexoDao;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.util.ArquivoUtil;
 

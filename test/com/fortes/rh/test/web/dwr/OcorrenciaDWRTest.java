@@ -2,24 +2,16 @@ package com.fortes.rh.test.web.dwr;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.OcorrenciaManager;
-import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.cargosalario.GrupoOcupacional;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
-import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.cargosalario.CargoFactory;
-import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
-import com.fortes.rh.web.dwr.CargoDWR;
 import com.fortes.rh.web.dwr.OcorrenciaDWR;
 
 @SuppressWarnings("unchecked")

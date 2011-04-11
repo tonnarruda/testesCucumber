@@ -1,16 +1,12 @@
 package com.fortes.rh.security;
 
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.springframework.dao.DataAccessException;
 
-import com.ctc.wstx.util.DataUtil;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.acesso.Usuario;

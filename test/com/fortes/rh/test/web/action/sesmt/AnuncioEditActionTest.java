@@ -1,8 +1,5 @@
 package com.fortes.rh.test.web.action.sesmt;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import mockit.Mockit;
 
 import org.jmock.Mock;
@@ -10,30 +7,13 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
-import com.fortes.rh.business.geral.EstabelecimentoManager;
-import com.fortes.rh.business.sesmt.AgendaManager;
-import com.fortes.rh.business.sesmt.EventoManager;
 import com.fortes.rh.model.captacao.Anuncio;
-import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.sesmt.Agenda;
-import com.fortes.rh.model.sesmt.Evento;
-import com.fortes.rh.test.factory.captacao.AtitudeFactory;
-import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.sesmt.AgendaFactory;
-import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.web.action.captacao.AnuncioEditAction;
-import com.fortes.rh.web.action.sesmt.AgendaEditAction;
-import com.opensymphony.webwork.ServletActionContext;
-import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
-import com.opensymphony.webwork.ServletActionContext;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.security.SecurityUtil;
-import java.io.FileOutputStream;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
+import com.fortes.rh.web.action.captacao.AnuncioEditAction;
+import com.opensymphony.webwork.ServletActionContext;
 
 public class AnuncioEditActionTest extends MockObjectTestCase
 {

@@ -1,7 +1,6 @@
 package com.fortes.rh.test.web.action.captacao;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

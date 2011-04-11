@@ -14,7 +14,6 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
-import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.ComissaoManagerImpl;
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.business.sesmt.ComissaoPeriodoManager;
@@ -31,7 +30,6 @@ import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 import com.fortes.rh.model.sesmt.Eleicao;
-import com.fortes.rh.model.sesmt.relatorio.AtaPosseRelatorio;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.CandidatoEleicaoFactory;
 import com.fortes.rh.test.factory.sesmt.ComissaoFactory;
@@ -41,7 +39,6 @@ import com.fortes.rh.test.factory.sesmt.EleicaoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
-import com.mchange.v2.coalesce.CoalescerFactory;
 
 public class ComissaoManagerTest extends MockObjectTestCase
 {

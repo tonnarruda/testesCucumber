@@ -17,7 +17,6 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.model.sesmt.relatorio.ComissaoReuniaoPresencaMatriz;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 
 public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuniao, ComissaoReuniaoDao> implements ComissaoReuniaoManager
 {

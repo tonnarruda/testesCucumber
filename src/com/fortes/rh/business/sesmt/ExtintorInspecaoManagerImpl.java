@@ -3,7 +3,6 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
-
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;

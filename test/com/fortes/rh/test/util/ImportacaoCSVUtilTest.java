@@ -1,14 +1,7 @@
 package com.fortes.rh.test.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-
 import junit.framework.TestCase;
 
-import com.fortes.rh.model.dicionario.OpcaoImportacao;
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 
 @SuppressWarnings("unused")

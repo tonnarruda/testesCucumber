@@ -15,7 +15,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Cat;
-import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.util.DateUtil;

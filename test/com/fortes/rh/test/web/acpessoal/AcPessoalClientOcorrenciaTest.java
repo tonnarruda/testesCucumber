@@ -3,7 +3,6 @@ package com.fortes.rh.test.web.acpessoal;
 import java.sql.ResultSet;
 
 import com.fortes.rh.model.ws.TOcorrencia;
-import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrenciaImpl;
 
 public class AcPessoalClientOcorrenciaTest extends AcPessoalClientTest

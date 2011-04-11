@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;

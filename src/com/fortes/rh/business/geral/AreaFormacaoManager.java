@@ -3,7 +3,6 @@ package com.fortes.rh.business.geral;
 import java.util.Collection;
 
 import com.fortes.business.GenericManager;
-import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.web.tags.CheckBox;
 

@@ -3,6 +3,7 @@ package com.fortes.rh.security.spring.aop.callback.crud;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 
+import junit.framework.TestCase;
 import net.vidageek.mirror.dsl.Mirror;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -13,12 +14,9 @@ import com.fortes.rh.model.sesmt.Evento;
 import com.fortes.rh.security.spring.aop.SomeManager;
 import com.fortes.rh.security.spring.aop.SomeManagerImpl;
 import com.fortes.rh.security.spring.aop.callback.MetodoInterceptadoImpl;
-import com.fortes.rh.security.spring.aop.callback.crud.CrudAuditorCallbackImpl;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
-
-import junit.framework.TestCase;
 
 public class CrudAuditorCallbackImplTest extends TestCase {
 

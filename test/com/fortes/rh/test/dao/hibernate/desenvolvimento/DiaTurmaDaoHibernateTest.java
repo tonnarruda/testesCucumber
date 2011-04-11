@@ -1,10 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-
-import sun.beans.editors.IntEditor;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;

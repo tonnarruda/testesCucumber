@@ -4,15 +4,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
-import org.apache.commons.beanutils.BeanComparator;
 import org.springframework.core.NestedRuntimeException;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -28,12 +23,8 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
-import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -41,7 +32,6 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
 
 public class HistoricoColaboradorListAction extends MyActionSupportList
 {
@@ -106,8 +96,10 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId(), qtdItensDesligamento);
 		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, getEmpresaSistema().getId());
+		
 		countAdmitidos = colaboradorManager.countAdmitidos(dataIni, dataFim, getEmpresaSistema().getId());
 		countDemitidos = colaboradorManager.countDemitidos(dataIni, dataFim, getEmpresaSistema().getId());
+		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, getEmpresaSistema().getId());
 		
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
 		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);
@@ -116,14 +108,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfDeficiencia = StringUtil.toJSON(graficoDeficiencia, null);
 		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
 		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
-		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, getEmpresaSistema().getId());
 		
-		Map<String, Object> parametrosConsulta = new HashMap<String, Object>();
-		parametrosConsulta.put("empresaId", getEmpresaSistema().getId());
-		parametrosConsulta.put("filtrarPor", 1);
-		TurnOverCollection turnOverCollection = new TurnOverCollection();
-		turnOverCollection.setTurnOvers(colaboradorManager.getTurnOver(DateUtil.formataMesAno(dataIni), DateUtil.formataMesAno(dataFim), parametrosConsulta));
-		turnover = turnOverCollection.getMedia();
+//		Map<String, Object> parametrosConsulta = new HashMap<String, Object>();
+//		parametrosConsulta.put("empresaId", getEmpresaSistema().getId());
+//		parametrosConsulta.put("filtrarPor", 1);
+//		TurnOverCollection turnOverCollection = new TurnOverCollection();
+//		turnOverCollection.setTurnOvers(colaboradorManager.getTurnOver(DateUtil.formataMesAno(dataIni), DateUtil.formataMesAno(dataFim), parametrosConsulta));
+		turnover = 10.0;//turnOverCollection.getMedia();
 		
 		return Action.SUCCESS;
 	}

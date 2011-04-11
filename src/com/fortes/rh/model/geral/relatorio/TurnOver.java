@@ -1,5 +1,6 @@
 package com.fortes.rh.model.geral.relatorio;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import com.fortes.rh.util.DateUtil;
@@ -11,6 +12,29 @@ public class TurnOver
 	private Double qtdAdmitidos;
 	private Double qtdDemitidos;
 	private Double qtdAtivos;
+	
+	public TurnOver() 
+	{
+		super();
+	}
+
+	public void setMesAnoQtdDemitidos(Date mesAno, Double qtdDemitidos) 
+	{
+		this.setMesAno(mesAno);
+		this.setQtdDemitidos(qtdDemitidos);
+	}
+	
+	public void setMesAnoQtdAdmitidos(Date mesAno, Double qtdAdmitidos) 
+	{
+		this.setMesAno(mesAno);
+		this.setQtdAdmitidos(qtdAdmitidos);
+	}
+
+	public void setMesAnoQtdAtivos(Date dataMesAno, double qtdAtivos) 
+	{
+		this.setMesAno(mesAno);
+		this.setQtdAtivos(qtdAtivos);
+	}
 
 	public String getMesAnoFormatado()
 	{
@@ -27,7 +51,8 @@ public class TurnOver
 	}
 	public Double getTurnOver()
 	{
-		return turnOver;
+		DecimalFormat df = new DecimalFormat("0.00");
+		return Double.parseDouble(df.format(turnOver).replace(",", "."));
 	}
 	public void setTurnOver(Double turnOver)
 	{
@@ -57,4 +82,6 @@ public class TurnOver
 	public void setQtdAtivos(Double qtdAtivos) {
 		this.qtdAtivos = qtdAtivos;
 	}
+
+	
 }

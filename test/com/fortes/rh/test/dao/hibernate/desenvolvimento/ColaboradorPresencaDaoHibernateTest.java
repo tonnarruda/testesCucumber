@@ -1,6 +1,5 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
@@ -11,8 +10,6 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
-import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
-import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
@@ -20,9 +17,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
-import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
-import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 

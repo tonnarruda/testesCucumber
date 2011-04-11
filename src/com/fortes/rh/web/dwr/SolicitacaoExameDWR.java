@@ -9,7 +9,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.ctc.wstx.util.DataUtil;
 import com.fortes.rh.business.sesmt.ExameSolicitacaoExameManager;
 import com.fortes.rh.business.sesmt.RealizacaoExameManager;
 import com.fortes.rh.model.dicionario.ResultadoExame;
@@ -17,7 +16,6 @@ import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class SolicitacaoExameDWR 
 {

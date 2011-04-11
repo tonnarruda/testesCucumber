@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;

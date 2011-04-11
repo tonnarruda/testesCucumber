@@ -1,7 +1,5 @@
 package com.fortes.rh.test.web.service;
 
-import static com.fortes.rh.test.web.service.TipoRetornoMockCall.RETORNO_BOOLEAN;
-import static com.fortes.rh.test.web.service.TipoRetornoMockCall.RETORNO_STRING;
 import mockit.Mockit;
 
 import org.apache.axis.client.Call;

@@ -66,11 +66,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
 	void atualizarUsuario(Long colaboradorId, Long usuarioId) throws Exception;
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);
-	Collection<Colaborador> findAdmitidosByPeriodo(Date dataIni, Date dataFim, Map parametros);
-	Collection<Colaborador> findDemitidosByPeriodo(Date dataIni, Date dataFim, Map parametros);
-	Collection<Colaborador> findColaboradorInData(Date data, Map parametros);
-	TurnOver getTurnOverByMes(Date data, Map parametros);
-	Collection<TurnOver> getTurnOver(String de, String ate, Map parametros) throws ColecaoVaziaException;
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)throws Exception;
 	public Collection<MotivoDemissaoQuantidade> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)throws Exception;
 	public Collection<Colaborador> getColaboradoresByEstabelecimentoAreaGrupo(char filtrarPor, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, String colaboradorNome);
@@ -145,4 +140,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public int getCountAtivos(Date dataBase, Long empresaId);
 	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId);
 	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId);
+	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception;
 }

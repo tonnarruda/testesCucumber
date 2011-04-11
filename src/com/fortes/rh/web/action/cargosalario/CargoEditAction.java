@@ -26,7 +26,6 @@ import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.CodigoCBO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;

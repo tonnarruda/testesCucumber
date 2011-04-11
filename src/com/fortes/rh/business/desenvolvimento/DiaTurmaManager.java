@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManager;
-import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 

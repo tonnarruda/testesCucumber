@@ -15,7 +15,6 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.CandidatoEleicaoManagerImpl;
 import com.fortes.rh.business.sesmt.EleicaoManager;
 import com.fortes.rh.dao.sesmt.CandidatoEleicaoDao;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.AreaOrganizacional;

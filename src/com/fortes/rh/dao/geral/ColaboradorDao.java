@@ -11,6 +11,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 
 @SuppressWarnings("unchecked")
@@ -42,7 +43,6 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
 	public boolean atualizarUsuario(Long colaboradorId, Long usuarioId);
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);
-	Collection<Colaborador> findColaborador(Map parametros);
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
 	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
 
@@ -103,4 +103,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public int getCountAtivos(Date dataBase, Long empresaId);
 	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId);
 	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId);	
+	public Collection<TurnOver> countDemitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
+	public Collection<TurnOver> countAdmitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
+	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
 }

@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.captacao.indicador;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -56,25 +58,20 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	public String list() throws Exception 
 	{
-		if(DateUtil.mesesEntreDatas(DateUtil.criarDataMesAno(dataDe), DateUtil.criarDataMesAno(dataAte)) >= 12)
+		Date dataIni = DateUtil.criarDataMesAno(dataDe);
+		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataAte));
+		
+		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)
 		{
 			addActionMessage("Não é permitido um período maior do 12 meses para a geração deste relatório");
 			prepare();
 			return Action.INPUT;
 		}
-
-		Map<String, Object> parametrosConsulta = new HashMap<String, Object>();
-		parametrosConsulta.put("areas", areasCheck);
-		parametrosConsulta.put("cargos", cargosCheck);
-		parametrosConsulta.put("estabelecimentos", estabelecimentosCheck);
-		parametrosConsulta.put("filtrarPor", filtrarPor);
-		parametrosConsulta.put("empresaId", getEmpresaSistema().getId());
-
-		TurnOverCollection turnOverCollection = new TurnOverCollection();
 		
 		try 
 		{
-			turnOverCollection.setTurnOvers(colaboradorManager.getTurnOver(dataDe, dataAte, parametrosConsulta));
+			TurnOverCollection turnOverCollection = new TurnOverCollection();
+			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema().getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
 			dataSource = Arrays.asList(turnOverCollection);
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;

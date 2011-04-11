@@ -7,7 +7,6 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.model.geral.AreaFormacao;

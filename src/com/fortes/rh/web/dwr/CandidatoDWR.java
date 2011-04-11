@@ -1,9 +1,6 @@
 package com.fortes.rh.web.dwr;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 
 import org.hibernate.NonUniqueResultException;
@@ -17,7 +14,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
-import com.opensymphony.xwork.Action;
 
 @SuppressWarnings("unchecked")
 public class CandidatoDWR

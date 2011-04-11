@@ -5,7 +5,6 @@ import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;

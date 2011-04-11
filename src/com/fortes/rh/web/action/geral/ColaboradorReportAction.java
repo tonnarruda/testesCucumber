@@ -3,7 +3,6 @@
  * Requisito: RFA005 */
 package com.fortes.rh.web.action.geral;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;

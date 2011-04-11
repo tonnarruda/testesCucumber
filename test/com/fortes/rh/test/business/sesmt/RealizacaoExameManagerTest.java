@@ -6,7 +6,6 @@ import java.util.Date;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.sesmt.RealizacaoExameManagerImpl;
 import com.fortes.rh.dao.sesmt.RealizacaoExameDao;

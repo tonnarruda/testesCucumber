@@ -40,10 +40,10 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
@@ -1240,104 +1240,163 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return (Colaborador) criteria.uniqueResult();
 	}
-
-	public Collection<Colaborador> findColaborador(Map parametros)
+	
+	public Collection<TurnOver> countDemitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds)
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nomeComercial) ");
-		hql.append("from HistoricoColaborador as hc1 ");
-		hql.append("left join hc1.areaOrganizacional as ao ");
-		hql.append("left join hc1.estabelecimento as es ");
-		hql.append("left join hc1.colaborador as co ");
-		hql.append("left join hc1.faixaSalarial as fs ");
-		hql.append("left join fs.cargo as cg ");
-		hql.append("where ");
-		hql.append("	( ");
-		hql.append("		hc1.data = (");
-		hql.append("			select max(hc2.data) ");
-		hql.append("			from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje");
-		hql.append("		) ");
-		hql.append("	 	or hc1.data is null ");
-		hql.append("	) ");
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("select cast(date_part('month', c.dataDesligamento) as int) as mes, cast(date_part('year', c.dataDesligamento) as int) as ano, cast(count(c.id) as double precision) as qtdDesligados from historicoColaborador as hc ");
+		sql.append("join colaborador c on hc.colaborador_id = c.id ");
+		sql.append("join faixaSalarial fs on hc.faixasalarial_id = fs.id ");
+		
+		sql.append("where c.dataDesligamento between :dataIni and :dataFim "); 
+		sql.append("and c.empresa_id= :empresaId ");
+		sql.append("and hc.status = :status ");
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		if(areasIds != null && areasIds.size() > 0)
+			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
+		if(cargosIds != null && cargosIds.size() > 0)
+			sql.append("and fs.cargo_id in (:cargosIds) ");
+		
+		sql.append("and hc.data = (select max(hc2.data) from historicoColaborador as hc2 ");
+		sql.append("where hc2.data <= :dataFim ");
+		sql.append("and c.id=hc2.colaborador_id and hc2.status = :status ) ");
+		
+		sql.append("group by date_part('year', c.dataDesligamento), date_part('month', c.dataDesligamento) ");
+		sql.append("order by date_part('year', c.dataDesligamento), date_part('month', c.dataDesligamento) ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		query.setLong("empresaId", empresaId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		if(areasIds != null && areasIds.size() > 0)
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		if(cargosIds != null && cargosIds.size() > 0)
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		
+		List resultado = query.list();
+		
+		Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			Date dataMesAno = DateUtil.criarDataMesAno(01, (Integer)res[0], (Integer)res[1]);
+			
+			TurnOver demitidos = new TurnOver();
+			demitidos.setMesAnoQtdDemitidos(dataMesAno, (Double)res[2]);
+			
+			turnOvers.add(demitidos);
+		}
 
-		Query query = filtroFindColaborador(hql, parametros);
+		return turnOvers;
+	}
+	
+	public Collection<TurnOver> countAdmitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds)
+	{
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("select cast(date_part('month', c.dataadmissao) as int) as mes, cast(date_part('year', c.dataadmissao) as int) as ano, cast(count(c.id) as double precision) as qtdAdmitidos from HistoricoColaborador as hc ");
+		sql.append("join colaborador c on hc.colaborador_id = c.id ");
+		sql.append("join faixaSalarial fs on hc.faixasalarial_id = fs.id ");
+		
+		sql.append("where c.dataAdmissao between :dataIni and :dataFim "); 
+		sql.append("and c.empresa_id= :empresaId ");
+		sql.append("and hc.status = :status ");
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		if(areasIds != null && areasIds.size() > 0)
+			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
+		if(cargosIds != null && cargosIds.size() > 0)
+			sql.append("and fs.cargo_id in (:cargosIds) ");
+		
+		sql.append("and hc.data = (select max(hc2.data) from historicoColaborador as hc2 ");
+		sql.append("where hc2.data <= :dataFim ");
+		sql.append("and c.id=hc2.colaborador_id and hc2.status = :status ) ");
+		
+		sql.append("group by date_part('year', c.dataadmissao), date_part('month', c.dataadmissao) ");
+		sql.append("order by date_part('year', c.dataadmissao), date_part('month', c.dataadmissao) ");
 
-		return query.list();
+		Query query = getSession().createSQLQuery(sql.toString());
+		
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		query.setLong("empresaId", empresaId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		if(areasIds != null && areasIds.size() > 0)
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		if(cargosIds != null && cargosIds.size() > 0)
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		
+		List resultado = query.list();
+		
+		Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			Date dataMesAno = DateUtil.criarDataMesAno(01, (Integer)res[0], (Integer)res[1]);
+			
+			TurnOver admitido = new TurnOver();
+			admitido.setMesAnoQtdAdmitidos(dataMesAno, (Double)res[2]);
+			turnOvers.add(admitido);
+		}
+
+		return turnOvers;
 	}
 
-	private Query filtroFindColaborador(StringBuilder hql, Map parametros)
+	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds) 
 	{
-		Date dataIni = (Date) parametros.get("dataIni");
-		Date dataFim = (Date) parametros.get("dataFim");
+		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
+		hql.append("left join co.historicoColaboradors as hc ");
+		hql.append("left join hc.faixaSalarial as fs ");
+		
+		hql.append("	where co.dataAdmissao < :data ");
+		hql.append("	and co.empresa.id = :empresaId ");
+		hql.append("	and ( co.dataDesligamento is null ");
+		hql.append("          or co.dataDesligamento > :data ) ");
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
+			hql.append("	and hc.estabelecimento.id in (:estabelecimentosIds) ");
+		if(areasIds != null && areasIds.size() > 0)
+			hql.append("	and hc.areaOrganizacional.id in (:areasIds) ");
+		if(cargosIds != null && cargosIds.size() > 0)
+			hql.append("	and fs.cargo.id in (:cargosIds) ");
+		
+		hql.append("	and hc.status = :status ");
+		hql.append("	and hc.data = (");
+		hql.append("		select max(hc2.data) ");
+		hql.append("		from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = co.id ");
+		hql.append("			and hc2.data <= :data and hc2.status = :status ");
+		hql.append("		) ");
 
-		Collection<Long> areasOrganizacionais = LongUtil.arrayStringToCollectionLong((String[]) parametros.get("areas"));
-		Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong((String[]) parametros.get("estabelecimentos"));
-		Collection<Long> cargos = LongUtil.arrayStringToCollectionLong((String[]) parametros.get("cargos"));
-
-		Long empresaId = (Long) parametros.get("empresaId");
-
-		int filtrarPor = (Integer) parametros.get("filtrarPor");
-		int opcao = (Integer) parametros.get("opcao");
-
-		if(opcao == NO_MES)
-		{
-			hql.append("	and	co.dataAdmissao <= :data ");
-			hql.append("	and ( co.dataDesligamento is null ");
-			hql.append("          or co.dataDesligamento > :data ) ");
-		}
-
-		if(opcao == ADMITIDOS)
-		{
-			hql.append("	and	co.dataAdmissao <= :dataFim ");
-			hql.append("	and	co.dataAdmissao >= :dataIni ");
-		}
-
-		if(opcao == DEMITIDOS)
-		{
-			hql.append("	and	co.dataDesligamento <= :dataFim ");
-			hql.append("	and	co.dataDesligamento >= :dataIni ");
-		}
-
-		if(empresaId != null)
-			hql.append(" and co.empresa.id = :empresaId ");
-
-		if(estabelecimentos != null && !estabelecimentos.isEmpty())
-			hql.append(" and hc1.estabelecimento.id in (:estabelecimentoIds) ");
-
-		if(filtrarPor == AREA_ORGANIZACIONAL && areasOrganizacionais.size() > 0)
-			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
-		else if(filtrarPor == CARGO && cargos.size() > 0)
-			hql.append(" and cg.id in (:cargoIds) ");
-
-		// Ordenação
-		hql.append(" order by es.nome, ao.nome, co.nome ");
-
+		
+		
 		Query query = getSession().createQuery(hql.toString());
+		query.setDate("data", dataIni);
+		query.setLong("empresaId", empresaId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		if(areasIds != null && areasIds.size() > 0)
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		if(cargosIds != null && cargosIds.size() > 0)
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 
-		// Parâmetros
-		query.setDate("hoje", new Date());
-
-		if(opcao == NO_MES)
-			query.setDate("data", dataFim);
-		else
-		{
-			query.setDate("dataIni", dataIni);
-			query.setDate("dataFim", dataFim);
-		}
-
-		if(estabelecimentos != null && !estabelecimentos.isEmpty())
-			query.setParameterList("estabelecimentoIds", estabelecimentos, Hibernate.LONG);
-		if(empresaId != null)
-			query.setLong("empresaId", empresaId);
-
-		if(filtrarPor == AREA_ORGANIZACIONAL && areasOrganizacionais.size() > 0)
-			query.setParameterList("areaOrganizacionalIds", areasOrganizacionais, Hibernate.LONG);
-		else if(filtrarPor == CARGO && cargos.size() > 0)
-			query.setParameterList("cargoIds", cargos, Hibernate.LONG);
-
-		return query;
+		return (Integer) query.uniqueResult();
 	}
 
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)

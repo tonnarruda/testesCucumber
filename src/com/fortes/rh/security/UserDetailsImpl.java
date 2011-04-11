@@ -1,7 +1,5 @@
 package com.fortes.rh.security;
 
-import java.util.Date;
-
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.UserDetails;
 
