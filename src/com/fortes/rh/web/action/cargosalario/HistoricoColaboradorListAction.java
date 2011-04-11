@@ -23,6 +23,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
@@ -109,12 +110,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
 		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
 		
-//		Map<String, Object> parametrosConsulta = new HashMap<String, Object>();
-//		parametrosConsulta.put("empresaId", getEmpresaSistema().getId());
-//		parametrosConsulta.put("filtrarPor", 1);
-//		TurnOverCollection turnOverCollection = new TurnOverCollection();
-//		turnOverCollection.setTurnOvers(colaboradorManager.getTurnOver(DateUtil.formataMesAno(dataIni), DateUtil.formataMesAno(dataFim), parametrosConsulta));
-		turnover = 10.0;//turnOverCollection.getMedia();
+		TurnOverCollection turnOverCollection = new TurnOverCollection();
+		turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema().getId(), null, null, null, 0));
+		turnover = turnOverCollection.getMedia();
 		
 		return Action.SUCCESS;
 	}
