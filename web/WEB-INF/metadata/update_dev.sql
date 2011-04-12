@@ -9,3 +9,6 @@ update papel set papelmae_id=377,ordem=7 where id=398;--.go
 update papel set papelmae_id=463,ordem=6 where id=70;--.go
 delete from perfil_papel where papeis_id=462;--.go
 delete from papel where id=462;--go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (505, 'ROLE_C&S_PAINEL_IND', 'Painel de Indicadores', '/cargosalario/historicoColaborador/painelIndicadoresCargoSalario.action', 4, true, 361);--.go
+alter sequence papel_sequence restart with 506;--.go
