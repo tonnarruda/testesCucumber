@@ -213,6 +213,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private char statusCandSol;
+	private String obsACPessoal;
 
 	
 	private void prepare() throws Exception
@@ -556,6 +557,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		historicoColaborador.setTipoSalario(salarioPropostoPor);
 		historicoColaborador.setIndice(indice);
 		historicoColaborador.setQuantidadeIndice(quantidadeIndice);
+		historicoColaborador.setObsACPessoal(obsACPessoal);
 
 		colaborador.setHistoricoColaborador(historicoColaborador);
 	}
@@ -1530,6 +1532,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setStatusCandSol(char statusCandSol) {
 		this.statusCandSol = statusCandSol;
+	}
+
+	public void setObsACPessoal(String obsACPessoal) {
+		this.obsACPessoal = obsACPessoal;
 	}
 	
 }

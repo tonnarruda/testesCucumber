@@ -15,6 +15,7 @@ public class TItemTabelaEmpregados
 	private String indcodigosalario = "";
 	private Double indqtde = 0D;
 	private String grupoAC = "";
+	private String obs = "";
 
 	public String getGrupoAC() {
 		return grupoAC;
@@ -129,6 +130,14 @@ public class TItemTabelaEmpregados
 	public void setExpAgenteNocivo(String expAgenteNocivo)
 	{
 		this.expAgenteNocivo = expAgenteNocivo;
+	}
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String obs) {
+		this.obs = obs;
 	}
 
 }

@@ -67,6 +67,7 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 	        	item.setValor_alt(salarioAntigo); // Este valor só é utilizado no update de um único histórico.
 	        	item.setEstabelecimento(historico.getEstabelecimento().getCodigoAC());
 	        	item.setSaltipo(String.valueOf(TipoAplicacaoIndice.getCodigoAC(historico.getTipoSalario())));
+	        	item.setObs(historico.getObsACPessoal());
 	        	
 	        	item.setExpAgenteNocivo(historico.getGfip());
 

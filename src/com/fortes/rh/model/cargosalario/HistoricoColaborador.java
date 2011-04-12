@@ -83,6 +83,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	@Transient private Collection<Funcao> funcoes;
 	
 	@Transient private Double salarioVariavel;
+	@Transient private String obsACPessoal;
 	
 	public HistoricoColaborador(String colaborador, String areaOrganizacional) {
 		
@@ -989,5 +990,17 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 	public void setSalarioVariavel(Double salarioVariavel) {
 		this.salarioVariavel = salarioVariavel;
+	}
+
+	public String getObsACPessoal() 
+	{
+		if(obsACPessoal == null)
+			return "";
+
+		return obsACPessoal;
+	}
+
+	public void setObsACPessoal(String obsACPessoal) {
+		this.obsACPessoal = obsACPessoal;
 	}
 }

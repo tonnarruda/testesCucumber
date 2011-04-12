@@ -67,10 +67,13 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private String colaboradorNome;
 	
 	private Candidato candidato;
-	private Long candidatoSolicitacaoId;	
+	private Long candidatoSolicitacaoId;
+
+	private boolean integraAc;	
 	
 	public void prepare() throws Exception
 	{
+		integraAc = getEmpresaSistema().isAcIntegra();
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		indices = indiceManager.findAll(getEmpresaSistema());
 		
@@ -378,6 +381,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public Long getCandidatoSolicitacaoId() {
 		return candidatoSolicitacaoId;
+	}
+
+	public boolean isIntegraAc() {
+		return integraAc;
 	}
 	
 }

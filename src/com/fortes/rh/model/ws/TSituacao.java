@@ -23,6 +23,7 @@ public class TSituacao implements Serializable
 	private String expAgenteNocivo;//GFIP
 	private Integer movimentoSalarialId;//usado pelo reajuste salarial em lote
 	private String grupoAC;
+	private String obs;
 
 	public String getGrupoAC() {
 		return grupoAC;
@@ -148,5 +149,13 @@ public class TSituacao implements Serializable
 	public void setMovimentoSalarialId(Integer movimentoSalarialId)
 	{
 		this.movimentoSalarialId = movimentoSalarialId;
+	}
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String obs) {
+		this.obs = obs;
 	}
 }

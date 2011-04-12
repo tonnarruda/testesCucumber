@@ -193,6 +193,10 @@
 				<@ww.textfield label="Valor" name="salarioProcessado" id="salarioCalculado" cssStyle="width:85px; text-align:right;" disabled= "true" disabled="true"/>
 			</ul>
 		</div>
+		
+		<#if integraAc && !historicoColaborador.colaborador.naoIntegraAc>
+			<@ww.textfield label="Observação para o Setor Pessoal" name="historicoColaborador.obsACPessoal" id="obsACPessoal" cssStyle="width:355px;" maxLength="100"/>
+		</#if>
 
 		<@ww.hidden name="historicoColaborador.id" />
 		<@ww.hidden name="historicoColaborador.colaborador.id" />

@@ -656,6 +656,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc() && atualizaDados && alterouDadosIntegradoAC)
 		{
 			Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>(1);
+			historicoColaboradorTmp.setObsACPessoal(historicoColaborador.getObsACPessoal());
 			historicoColaboradors.add(historicoColaboradorTmp);
 			
 			acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicoColaboradors, empresa, salarioAntigo, false);
@@ -1007,6 +1008,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public TSituacao bindSituacao(HistoricoColaborador historicoColaborador, String empresaCodigoAC)
 	{
 		TSituacao situacao = new TSituacao();
+		situacao.setObs(historicoColaborador.getObsACPessoal());
 
 		if(historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getCodigoAC() != null)
 			situacao.setEmpregadoCodigoAC(historicoColaborador.getColaborador().getCodigoAC());

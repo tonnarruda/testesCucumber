@@ -305,7 +305,7 @@
 
 			<#if integraAc>
 				<#if !colaborador.id?exists>
-					<@ww.checkbox label="Não enviar este colaborador para o AC Pessoal" id="naoIntegraAc" name="colaborador.naoIntegraAc" liClass="liLeft" labelPosition="left"/>
+					<@ww.checkbox label="Não enviar este colaborador para o AC Pessoal" id="naoIntegraAc" name="colaborador.naoIntegraAc" liClass="liLeft" labelPosition="left" onchange="$('#wwgrp_obsACPessoal').toggle(!this.checked)"/>
 				<#else>
 					<@ww.hidden id="naoIntegraAc" name="colaborador.naoIntegraAc"/>
 					<#if colaborador.naoIntegraAc>
@@ -447,6 +447,10 @@
 								<@ww.textfield label="Valor" name="valorCalculado" id="salarioCalculado" cssStyle="width:85px; text-align:right;" disabled= "true" cssClass="currency" onchange="window.jAlert(this)" />
 							</ul>
 						</div>
+						
+						<#if integraAc>
+							<@ww.textfield label="Observação para o Setor Pessoal" name="obsACPessoal" id="obsACPessoal" cssStyle="width:355px;" maxLength="100"/>
+						</#if>
 					</ul>
 				</@ww.div>
 			</li>

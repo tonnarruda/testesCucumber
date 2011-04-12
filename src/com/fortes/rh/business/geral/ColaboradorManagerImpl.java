@@ -329,6 +329,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	private void setDadosHistoricoColaborador(HistoricoColaborador historico, Colaborador colaborador)
 	{
+		historico.setObsACPessoal(colaborador.getHistoricoColaborador().getObsACPessoal());
 		historico.setData(colaborador.getHistoricoColaborador().getData());
 		historico.setAreaOrganizacional(colaborador.getHistoricoColaborador().getAreaOrganizacional());
 		historico.setFaixaSalarial(colaborador.getHistoricoColaborador().getFaixaSalarial());
