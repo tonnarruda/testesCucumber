@@ -1,0 +1,104 @@
+div.graph {
+	width: 466px !important;
+	height: 180px;
+	float: left;
+}
+
+div.graph2 {
+	width: 959px;
+	height: 380px;
+	float: left;
+}
+
+.label {
+	color: #5C5C5A !important;
+	text-align: center;
+	font-size: 10px !important;
+}
+
+.legend {
+	color: #5C5C5A !important;
+}
+
+.fieldGraph {
+	display: inline;
+	float: left;
+	margin-top: 5px;
+	margin-right: 5px;
+	border: 1px solid #7E9DB9;
+	width: 477px !important;
+}
+
+.fieldGraph h1 {
+	display: block;
+	margin: 0;
+	padding: 3px 4px;
+	width: 468px;
+	font-size: 13px;
+	font-weight: normal;
+	background: #EBECF1;
+	border-bottom: 1px solid #7E9DB9;
+}
+
+.fieldGraph div.legend>table {
+	border-spacing: 0px !important;
+	left: 240px;
+}
+
+.fieldGraph.bigger {
+	width: 963px !important;
+}
+
+.fieldDados {
+	height: 18px;
+	width: 953px !important;
+	border: 1px solid #7E9DB9;
+	padding: 5px;
+}
+
+.fieldDados div {
+	float: left;
+	width: 310px !important;
+}
+
+.fieldGraph.bigger h1 {
+	width: 955px;
+}
+
+.fieldGraph.bigger div.legend>table {
+	border-spacing: 0px !important;
+	left: 540px;
+}
+
+.fieldGraph.medium {
+	width: 610px !important;
+}
+
+.fieldGraph.medium h1 {
+	width: 602px;
+}
+
+.fieldGraph.medium div.legend>table,.fieldGraph.medium div.legend>div {
+	border-spacing: 0px !important;
+	width: 370px !important;
+	left: 240px;
+}
+
+.fieldGraph.small {
+	width: 344px !important;
+}
+
+.fieldGraph.small h1 {
+	width: 336px;
+}
+
+.fieldGraph.small div.legend>table,.fieldGraph.small div.legend>div {
+	left: 190px;
+	width: 150px !important;
+	border-spacing: 0px !important;
+}
+
+.legendTotal {
+	width: 965px;
+	text-align: right;
+}

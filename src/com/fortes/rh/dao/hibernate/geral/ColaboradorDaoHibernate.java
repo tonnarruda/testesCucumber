@@ -1537,8 +1537,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as ca ");
 		hql.append("left join ca.grupoOcupacional as go ");
-		hql
-				.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh3.data) from FaixaSalarialHistorico fsh3 where fsh3.faixaSalarial.id = fs.id and fsh3.data <= :data and fsh3.status <> :statusCancelado) ");
+		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh3.data) from FaixaSalarialHistorico fsh3 where fsh3.faixaSalarial.id = fs.id and fsh3.data <= :data and fsh3.status <> :statusCancelado) ");
 		hql.append("left join fsh.indice as fshi ");
 		hql.append("left join fshi.indiceHistoricos as fshih with fshih.data = (select max(ih4.data) from IndiceHistorico ih4 where ih4.indice.id = fshi.id and ih4.data <= :data) ");
 		hql.append("	where ");

@@ -116,6 +116,25 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	}
+	
+	public String painelIndicadoresCS() throws Exception
+	{
+		Date hoje = new Date();
+		if (dataBase == null)
+			dataBase = hoje;
+		if (dataFim == null)
+			dataFim = hoje;
+		if (dataIni == null)
+			dataIni = DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true);
+		
+		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId(), qtdItensDesligamento);
+		
+		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
+		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
+		
+		return Action.SUCCESS;
+	}
 
 //TODO NÃO APAGAR RELATORIO DE PROMOÇ~ES EM ESTUDO
 //	public String prepareRelatorioPromocoes() throws Exception

@@ -16,21 +16,13 @@
 		
 		<#include "../ftl/showFilterImports.ftl" />
 		
-		<title>Painel de Indicadores de Info. Funcionais</title>
+		<title>Painel de Indicadores de C&S</title>
 
 		<script type="text/javascript">
 			$(function () {
 			
 				montaPie(${grfFormacaoEscolars}, "#formacaoEscolar", 1, 0.05, -120);
-				montaPie(${grfFaixaEtarias}, "#faixaEtaria", 1, 0.05, -120);
-				montaPie(${grfSexo}, "#sexo", 1, 0, -120);
-				montaPie(${grfEstadoCivil}, "#estadoCivil", 1, 0.02, -120);
-				montaPie(${grfDeficiencia}, "#deficiencia", 1, 0.03, -120);
-				montaPie(${grfColocacao}, "#colocacao", 1, 0.02, -120);
-				
-				montaPie(${grfDesligamento}, "#desligamento", 0.9, 0.02, -190);
-				
-				//$("#interactive").bind("plotclick", pieClick);
+				montaPie(${grfDesligamento}, "#desligamento", 1, 0.03, -120);
 			});
 			
 			function enviaForm1()
@@ -76,33 +68,11 @@
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 		
-		<div class="legendTotal">Total de Colaboradores: ${qtdColaborador}</div>
-		
-		<div class="fieldGraph">
-			<h1>Faixa Etária</h1>
-		    <div id="faixaEtaria" class="graph"></div>
-	    </div>
-		<div class="fieldGraph">
-			<h1>Estado Civil</h1>
-	    	<div id="estadoCivil" class="graph"></div>
-	    </div>
-	    <div class="fieldGraph">
-			<h1>Deficiência</h1>
-	    	<div id="deficiencia" class="graph"></div>
-	    </div>
-	    <div class="fieldGraph">
-			<h1>Colocação</h1>
-	    	<div id="colocacao" class="graph"></div>
-	    </div>
 		<div class="fieldGraph medium">
-			<h1>Formação Escolar</h1>
+			<h1>Salário por Área Organizacional</h1>
 		    <div id="formacaoEscolar" class="graph" ></div>
 		</div>
-   		<div class="fieldGraph small">
-			<h1>Sexo</h1>
-	    	<div id="sexo" class="graph"></div>
-	    </div>
-	    
+		
 		<div style="clear: both"></div>
 		
 		<br>
@@ -115,25 +85,18 @@
 			<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action#pagebottom" method="POST">
 				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 				<@ww.label value="a" liClass="liLeft" />
-				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
-				&nbsp&nbsp&nbsp&nbsp&nbsp;Exibir os
-				<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
-				itens de maior percentual.<br>
+				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim"/>
 				<@ww.hidden name="dataBase"/>
+
 				<button onclick="return enviaForm2();" class="btnPesquisar grayBGE"></button>
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 			<div class="fieldGraph bigger">
-			<h1>Motivos de Desligamentos</h1>
+			<h1>Evolução da Folha</h1>
 		   		<div id="desligamento" class="graph2"></div>
 		    </div>
 			<div style="clear: both"></div>
-			<br>
-			<div class="fieldDados">
-				<div>Admitidos: ${countAdmitidos}</div>
-				<div>Demitidos: ${countDemitidos}</div>
-				<div>Turnover: ${turnover}</div>
-			</div>
+
 
 		    <div style="clear: both"></div>
 			<a name="pagebottom"></a>

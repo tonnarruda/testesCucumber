@@ -75,7 +75,7 @@
 		<action name="painelIndicadores" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="painelIndicadores">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/painelIndicadores.ftl</result>
 		</action>
-		<action name="painelIndicadoresCargoSalario" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="painelIndicadores">
+		<action name="painelIndicadoresCargoSalario" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="painelIndicadoresCS">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/painelIndicadoresCargoSalario.ftl</result>
 		</action>
 	</package>
