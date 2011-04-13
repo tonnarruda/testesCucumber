@@ -5,7 +5,46 @@
 	
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		@import url('<@ww.url value="/css/indicadores.css"/>');
+		
+		div.graph {
+			width: 800px !important;
+			height: 380px;
+			float: left;
+		}		
+		.fieldGraph {
+			display: inline;
+			float: left;
+			margin-top: 5px;
+			margin-right: 5px;
+			border: 1px solid #7E9DB9;
+		}
+		#salarioAreasLegenda{
+			width: 600px !important;
+		}
+		
+		.label {
+			color: #5C5C5A !important;
+			text-align: center;
+			font-size: 10px !important;
+		}
+		
+		.legend {
+			color: #5C5C5A !important;
+		}
+		
+		.fieldGraph h1 {
+			display: block;
+			margin: 0;
+			padding: 3px 4px;
+			width: 958px;
+			font-size: 13px;
+			font-weight: normal;
+			background: #EBECF1;
+			border-bottom: 1px solid #7E9DB9;
+		}
+
+
+
 	</style>
 	
 
@@ -21,8 +60,8 @@
 		<script type="text/javascript">
 			$(function () {
 			
-				montaPie(${grfFormacaoEscolars}, "#formacaoEscolar", 1, 0.05, -120);
-				montaPie(${grfDesligamento}, "#desligamento", 1, 0.03, -120);
+				montaPie(${grfSalarioAreas}, "#salarioAreas", 0.5, 0.2, 0.05, 0, 2);
+				montaPie(${grfDesligamento}, "#desligamento", 0.8, 1, 0.03, -120, 1);
 			});
 			
 			function enviaForm1()
@@ -68,38 +107,14 @@
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 		
-		<div class="fieldGraph medium">
+		    <div id="salarioAreasLegenda"></div>
+		<div class="fieldGraph">
 			<h1>Salário por Área Organizacional</h1>
-		    <div id="formacaoEscolar" class="graph" ></div>
+		    <div id="salarioAreas" class="graph"></div>
 		</div>
 		
 		<div style="clear: both"></div>
-		
-		<br>
-		
-		<div class="divFiltro">
-			<div class="divFiltroLink">
-				<a href="javascript:exibeFiltro('${urlImgs}','divFiltroForm2');" id="linkFiltro"><img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
-			</div>
-			<div id="divFiltroForm2" class="divFiltroForm ${classHidden}">
-			<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action#pagebottom" method="POST">
-				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-				<@ww.label value="a" liClass="liLeft" />
-				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim"/>
-				<@ww.hidden name="dataBase"/>
 
-				<button onclick="return enviaForm2();" class="btnPesquisar grayBGE"></button>
-			</@ww.form>
-		<#include "../util/bottomFiltro.ftl" />
-			<div class="fieldGraph bigger">
-			<h1>Evolução da Folha</h1>
-		   		<div id="desligamento" class="graph2"></div>
-		    </div>
-			<div style="clear: both"></div>
-
-
-		    <div style="clear: both"></div>
-			<a name="pagebottom"></a>
 			
 	</body>
 </html>

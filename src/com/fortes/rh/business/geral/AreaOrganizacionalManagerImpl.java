@@ -5,6 +5,7 @@
 
 package com.fortes.rh.business.geral;
 
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -585,5 +586,24 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		else
 			return resultado;
 	}
-	
+
+
+	public AreaOrganizacional getMatriarca(Collection<AreaOrganizacional> areas, AreaOrganizacional area) 
+	{
+		AreaOrganizacional matriarca = area;
+		if(area.getAreaMae() != null && area.getAreaMae().getId() != null)
+		{
+			for (AreaOrganizacional areaTmp : areas) 
+			{
+				if(areaTmp.getId().equals(area.getAreaMae().getId()))
+					matriarca = getMatriarca(areas, area.getAreaMae());
+			}
+		}
+
+		return matriarca;
+	}
+
+	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId) {
+		return getDao().findByEmpresa(empresaId);
+	}
 }

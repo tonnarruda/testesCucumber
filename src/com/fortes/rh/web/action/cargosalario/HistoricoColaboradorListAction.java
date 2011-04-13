@@ -79,6 +79,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Integer countAdmitidos;
 	private Integer countDemitidos;
 	private Double turnover;
+
+	private String grfSalarioAreas;
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -127,10 +129,10 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataIni == null)
 			dataIni = DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true);
 		
-		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoSalarioArea = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId(), qtdItensDesligamento);
 		
-		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
+		grfSalarioAreas = StringUtil.toJSON(graficoSalarioArea, null);
 		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
 		
 		return Action.SUCCESS;
@@ -516,5 +518,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public String getTurnover() {
 		NumberFormat formata = new DecimalFormat("##0.00");
 		return formata.format(turnover); 
+	}
+
+	public String getGrfSalarioAreas() {
+		return grfSalarioAreas;
 	}
 }

@@ -296,6 +296,29 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		
 		return criteria.list();
 	}
+	
+	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"ao");
+		criteria.createCriteria("ao.empresa", "e");
+		criteria.createCriteria("ao.areaMae", "am", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ao.id"), "id");
+		p.add(Projections.property("ao.nome"), "nome");
+		p.add(Projections.property("am.id"), "idAreaMae");
+		p.add(Projections.property("am.nome"), "nomeAreaMae");
+
+		criteria.setProjection(p);
+
+		if(empresaId != null)
+			criteria.add(Expression.eq("ao.empresa.id", empresaId));
+
+		criteria.addOrder(Order.asc("ao.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		
+		return criteria.list();
+	}
 
 	public Collection<AreaOrganizacional> findSincronizarAreas(Long empresaOrigemId) {
 		
@@ -340,4 +363,5 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
 		return criteria.list();
 	}
+
 }

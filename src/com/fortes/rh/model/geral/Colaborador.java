@@ -79,6 +79,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private AreaOrganizacional areaOrganizacional;
 	@Transient
+	private AreaOrganizacional areaOrganizacionalMatriarca;
+	@Transient
 	private FaixaSalarial faixaSalarial;
 	@Transient
 	private Double salario;
@@ -2190,6 +2192,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		NumberFormat formata = new DecimalFormat("#,##0.00");
 		return formata.format(historicoColaborador.getSalarioCalculado()).toString(); 
+	}
+
+	public AreaOrganizacional getAreaOrganizacionalMatriarca() {
+		return areaOrganizacionalMatriarca;
+	}
+
+	public void setAreaOrganizacionalMatriarca(AreaOrganizacional areaOrganizacionalMatriarca) {
+		this.areaOrganizacionalMatriarca = areaOrganizacionalMatriarca;
 	}
 
 	

@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -1693,5 +1695,29 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			throw new ColecaoVaziaException();
 		
 		return turnOvers;
+	}
+
+	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId) 
+	{
+		Collection<Colaborador> colaboradores = getDao().findProjecaoSalarialByHistoricoColaborador(dataBase, null, null, null, null, "99", empresaId);
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByEmpresa(empresaId);
+		
+		HashMap<AreaOrganizacional, Double> areaSalario = new HashMap<AreaOrganizacional, Double>();
+		
+		for (Colaborador colaborador : colaboradores) 
+		{
+			AreaOrganizacional matriarca = areaOrganizacionalManager.getMatriarca(areas, colaborador.getAreaOrganizacional());
+			if (!areaSalario.containsKey(matriarca))
+				areaSalario.put(matriarca, 0.0);
+			
+			areaSalario.put(matriarca, areaSalario.get(matriarca) + colaborador.getSalarioCalculado());
+				
+		}
+		
+		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
+		for (AreaOrganizacional area : areaSalario.keySet()) 
+			dados.add(new DataGrafico(area.getNome(), areaSalario.get(area)));			
+		
+		return dados;
 	}
 }

@@ -1,4 +1,4 @@
-function montaPie(data, clazz, radiusLabel, percentMin, pieLeft) {
+function montaPie(data, clazz, radius, radiusLabel, percentMin, pieLeft, noColumns) {
 	$.plot($(clazz), data, {
 		series : {
 			pie : {
@@ -12,7 +12,7 @@ function montaPie(data, clazz, radiusLabel, percentMin, pieLeft) {
 					width : 1
 				},
 				tilt : 0.8,
-				radius : 0.8,
+				radius : radius,
 				combine : {
 					color : '#999',
 					threshold : 0,
@@ -35,7 +35,9 @@ function montaPie(data, clazz, radiusLabel, percentMin, pieLeft) {
 		colors : [ "#edc240", "#afd8f8", "#cb4b4b", "#4da74d", "#9440ed" ],//"#D7ECFC","#DECD99","#226FA5","#8080FF"
 		legend : {
 			margin : 2,
+			noColumns: noColumns,
 			labelBoxBorderColor : '#FFF',
+			container: '#salarioAreasLegenda',
 			labelFormatter : function(label, series) {
 				return '<span class="legend">' + label + ' &#x2013; '
 						+ series.percent.toFixed(2) + '% ('

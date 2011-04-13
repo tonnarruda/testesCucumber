@@ -9,6 +9,11 @@ div.graph2 {
 	height: 380px;
 	float: left;
 }
+div.graph3 {
+	width: 959px;
+	height: 380px;
+	float: left;
+}
 
 .label {
 	color: #5C5C5A !important;
@@ -45,7 +50,7 @@ div.graph2 {
 	left: 240px;
 }
 
-.fieldGraph.bigger {
+.fieldGraph.bigger, .fieldGraph.bigger3  {
 	width: 963px !important;
 }
 
@@ -61,13 +66,18 @@ div.graph2 {
 	width: 310px !important;
 }
 
-.fieldGraph.bigger h1 {
+.fieldGraph.bigger h1, .fieldGraph.bigger3 h1 {
 	width: 955px;
 }
 
 .fieldGraph.bigger div.legend>table {
 	border-spacing: 0px !important;
 	left: 540px;
+}
+
+.fieldGraph.bigger3 div.legend>table {
+	border-spacing: 0px !important;
+	left: 300px;
 }
 
 .fieldGraph.medium {

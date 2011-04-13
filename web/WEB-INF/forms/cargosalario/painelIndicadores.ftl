@@ -21,14 +21,14 @@
 		<script type="text/javascript">
 			$(function () {
 			
-				montaPie(${grfFormacaoEscolars}, "#formacaoEscolar", 1, 0.05, -120);
-				montaPie(${grfFaixaEtarias}, "#faixaEtaria", 1, 0.05, -120);
-				montaPie(${grfSexo}, "#sexo", 1, 0, -120);
-				montaPie(${grfEstadoCivil}, "#estadoCivil", 1, 0.02, -120);
-				montaPie(${grfDeficiencia}, "#deficiencia", 1, 0.03, -120);
-				montaPie(${grfColocacao}, "#colocacao", 1, 0.02, -120);
+				montaPie(${grfFormacaoEscolars}, "#formacaoEscolar", 0.8, 1, 0.05, -120, 1);
+				montaPie(${grfFaixaEtarias}, "#faixaEtaria", 0.8, 1, 0.05, -120, 1);
+				montaPie(${grfSexo}, "#sexo", 0.8, 1, 0, -120, 1);
+				montaPie(${grfEstadoCivil}, "#estadoCivil", 0.8, 1, 0.02, -120, 1);
+				montaPie(${grfDeficiencia}, "#deficiencia", 0.8, 1, 0.03, -120, 1);
+				montaPie(${grfColocacao}, "#colocacao", 0.8, 1, 0.02, -120, 1);
 				
-				montaPie(${grfDesligamento}, "#desligamento", 0.9, 0.02, -190);
+				montaPie(${grfDesligamento}, "#desligamento", 0.8, 0.9, 0.02, -190, 1);
 				
 				//$("#interactive").bind("plotclick", pieClick);
 			});

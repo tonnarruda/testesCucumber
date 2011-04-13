@@ -52,4 +52,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> findAreasPossiveis(Collection<AreaOrganizacional> areas, Long id);
 	public Collection<AreaOrganizacional> getAncestrais(Collection<AreaOrganizacional> areas, Long id);
 	public String nomeAreas(Long[] areaIds);
+	public AreaOrganizacional getMatriarca(Collection<AreaOrganizacional> areas, AreaOrganizacional area);
+	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId);
 }
