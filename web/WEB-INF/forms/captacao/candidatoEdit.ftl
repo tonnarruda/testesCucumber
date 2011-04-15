@@ -101,9 +101,9 @@
 			            $(this).hide();
 			});
 			
-			$("#wwgrp_idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
-			$("#wwgrp_formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
-			$("#wwgrp_expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${idDaEmpresa}"/>');
+			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
+			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
+			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action?empresaId=${idDaEmpresa}"/>');
 			
 			if(qtdAbas == 1)
 				ajustaBotoes(1, 1);
@@ -352,7 +352,7 @@
     </div>
 
 	<div id="content4" class="4" style="display: none;">
-		<@ww.div id="wwgrp_expProfissional" />
+		<@ww.div id="expProfissional" />
 
 		<li id="wwgrp_infoAdicionais" class="campo">
 			<@ww.div >
@@ -370,6 +370,12 @@
 			</#if>	
 		</@authz.authorize>
 	</div>
+	
+	<div id="content2" class="2" style="display:none; width:98%;">
+		<@ww.div  id="formacao" cssClass="campo"/>
+		<@ww.div  id="idioma" cssClass="campo"/>
+		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" liClass="campo"/>
+    </div>
 
 
     <@ww.form name="form" action="${formAction}" validate="true" onsubmit="javascript:validarCamposCpf()" method="POST" enctype="multipart/form-data">
@@ -498,11 +504,7 @@
 			</#if>
       </div>
 
-    <div id="content2" class="2" style="display:none; width:98%;">
-		<@ww.div  id="wwgrp_formacao" cssClass="campo"/>
-		<@ww.div  id="wwgrp_idioma" cssClass="campo"/>
-		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" liClass="campo"/>
-    </div>
+
 
       <div id="content3" class="3" style="display: none;">
 		<li>
