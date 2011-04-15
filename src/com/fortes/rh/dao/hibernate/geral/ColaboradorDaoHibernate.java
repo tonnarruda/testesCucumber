@@ -1549,9 +1549,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("					and hc2.data <= :data ");
 		hql.append("					and hc2.status <> :statusCancelado");
 		hql.append("			) ");
-		hql.append("	 		or hc.data is null ");
+//		hql.append("	 		or hc.data is null ");
 		hql.append("	   ) ");
-		hql.append("	and co.desligado = false ");
+		//hql.append("	and co.desligado = false ");
 		hql.append("	and co.empresa.id = :empresaId ");
 
 		Query query = montaSelectProjecaoSalarial(hql, data, estabelecimentoIds, areaIds, grupoIds, cargoIds, filtro, empresaId);

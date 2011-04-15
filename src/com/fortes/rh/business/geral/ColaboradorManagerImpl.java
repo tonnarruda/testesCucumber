@@ -1703,15 +1703,16 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByEmpresa(empresaId);
 		
 		HashMap<AreaOrganizacional, Double> areaSalario = new HashMap<AreaOrganizacional, Double>();
-		
+		Double contador = 0.0;
 		for (Colaborador colaborador : colaboradores) 
 		{
 			AreaOrganizacional matriarca = areaOrganizacionalManager.getMatriarca(areas, colaborador.getAreaOrganizacional());
 			if (!areaSalario.containsKey(matriarca))
 				areaSalario.put(matriarca, 0.0);
 			
-			areaSalario.put(matriarca, areaSalario.get(matriarca) + colaborador.getSalarioCalculado());
-				
+			
+			areaSalario.put(matriarca, areaSalario.get(matriarca) + (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado()));
+			contador += (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado());
 		}
 		
 		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
