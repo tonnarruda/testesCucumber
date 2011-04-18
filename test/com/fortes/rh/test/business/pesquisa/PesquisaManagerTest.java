@@ -170,9 +170,9 @@ public class PesquisaManagerTest extends MockObjectTestCase
 
     	Collection<Pesquisa> pesquisas = PesquisaFactory.getCollection();
 
-    	pesquisaDao.expects(once()).method("findToList").with(eq(empresa.getId()), eq(1), eq(10)).will(returnValue(pesquisas));
+    	pesquisaDao.expects(once()).method("findToList").with(eq(empresa.getId()), eq(1), eq(10), ANYTHING).will(returnValue(pesquisas));
 
-    	assertEquals(pesquisas, pesquisaManager.findToListByEmpresa(empresa.getId(), 1, 10));
+    	assertEquals(pesquisas, pesquisaManager.findToListByEmpresa(empresa.getId(), 1, 10, ""));
     }
 
     public void testFindByQuestionario()
@@ -468,9 +468,9 @@ public class PesquisaManagerTest extends MockObjectTestCase
 
     public void testGetCount()
     {
-    	pesquisaDao.expects(once()).method("getCount").with(ANYTHING).will(returnValue(1));
+    	pesquisaDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(1));
 
-    	pesquisaManager.getCount(1L);
+    	pesquisaManager.getCount(1L, null);
     }
 
 }

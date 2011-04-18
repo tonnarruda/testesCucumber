@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.core.NestedRuntimeException;
@@ -79,6 +80,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Integer countAdmitidos;
 	private Integer countDemitidos;
 	private Double turnover;
+	private Double valorTotalFolha = 0.0;
 
 	private String grfSalarioAreas;
 	
@@ -131,6 +133,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		Collection<DataGrafico> graficoSalarioArea = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId(), qtdItensDesligamento);
+		Collection<DataGrafico> graficoEvolucaoFolha= colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, getEmpresaSistema().getId());
 		
 		grfSalarioAreas = StringUtil.toJSON(graficoSalarioArea, null);
 		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
@@ -522,5 +525,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public String getGrfSalarioAreas() {
 		return grfSalarioAreas;
+	}
+	
+	public String getValorTotalFolha() {
+		DecimalFormat formata = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt", "BR"));
+		formata.applyPattern("#0.00");
+		return formata.format(valorTotalFolha * 100);
 	}
 }

@@ -1,18 +1,31 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+
 <html>
 <head>
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
+	
+	<#include "../ftl/showFilterImports.ftl" />
+	<#assign validarCampos="return validaFormulario('formBusca', null, null, true)"/>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<title>Pesquisas</title>
 </head>
 <body>
 	<@ww.actionerror />
-	<@ww.actionmessage />
+	<@ww.actionmessage />  
 
+	<#include "../util/topFiltro.ftl" />
+		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST" id="formBusca">
+			<@ww.textfield label="Título" name="questionarioTitulo" cssStyle="width: 350px;"/>
+			<@ww.hidden id="pagina" name="page"/>
+			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+		</@ww.form>
+	<#include "../util/bottomFiltro.ftl" />
+	<br>
 	<@display.table name="pesquisas" id="pesquisa" class="dados">
 		<@display.column title="Ações" style="width:210px">
 			<#if !pesquisa.questionario.liberado>

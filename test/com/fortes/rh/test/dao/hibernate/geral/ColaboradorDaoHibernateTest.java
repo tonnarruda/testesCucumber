@@ -937,10 +937,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		DataGrafico mas = (DataGrafico) data.toArray()[1];
 		
 		assertEquals("Feminino", fem.getLabel());
-		assertEquals(2, fem.getData());
+		assertEquals(2.0, fem.getData());
 
 		assertEquals("Masculino", mas.getLabel());
-		assertEquals(1, mas.getData());
+		assertEquals(1.0, mas.getData());
 	}
 	
 	public void testCountVinculo()
@@ -965,8 +965,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		DataGrafico empregado = (DataGrafico) data.toArray()[0];
 		DataGrafico aprendiz = (DataGrafico) data.toArray()[1];
 		
-		assertEquals(2, empregado.getData());
-		assertEquals(1, aprendiz.getData());
+		assertEquals(2.0, empregado.getData());
+		assertEquals(1.0, aprendiz.getData());
+	}
+
+	public void testMontaGraficoEvolucaoFolha()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		//assertNotNull(colaboradorDao.montaGraficoEvolucaoFolha(DateUtil.criarDataMesAno(01, 02, 2008), DateUtil.criarDataMesAno(01, 02, 2009), empresa.getId()));
 	}
 	
 	public void testCountEstadoCivil()
@@ -997,16 +1005,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		DataGrafico viuvo = (DataGrafico) data.toArray()[3];
 		
 		assertEquals("Casado", casado.getLabel());
-		assertEquals(5, casado.getData());
+		assertEquals(5.0, casado.getData());
 		
 		assertEquals("Divorciado", divorciado.getLabel());
-		assertEquals(2, divorciado.getData());
+		assertEquals(2.0, divorciado.getData());
 
 		assertEquals("Solteiro", solteiro.getLabel());
-		assertEquals(2, solteiro.getData());
+		assertEquals(2.0, solteiro.getData());
 		
 		assertEquals("Viúvo", viuvo.getLabel());
-		assertEquals(1, viuvo.getData());
+		assertEquals(1.0, viuvo.getData());
 	}
 
 	public void testCountDeficiencia()
@@ -1037,16 +1045,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		DataGrafico viuvo = (DataGrafico) data.toArray()[3];
 		
 		assertEquals("Casado", casado.getLabel());
-		assertEquals(5, casado.getData());
+		assertEquals(5.0, casado.getData());
 		
 		assertEquals("Divorciado", divorciado.getLabel());
-		assertEquals(2, divorciado.getData());
+		assertEquals(2.0, divorciado.getData());
 		
 		assertEquals("Solteiro", solteiro.getLabel());
-		assertEquals(2, solteiro.getData());
+		assertEquals(2.0, solteiro.getData());
 		
 		assertEquals("Viúvo", viuvo.getLabel());
-		assertEquals(1, viuvo.getData());
+		assertEquals(1.0, viuvo.getData());
 	}
 	
 	public void testCountFaixaEtaria()
@@ -1083,22 +1091,22 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		DataGrafico faixa6 = (DataGrafico) data.toArray()[5];
 		
 		assertEquals("Até 19", faixa1.getLabel());
-		assertEquals(1, faixa1.getData());
+		assertEquals(1.0, faixa1.getData());
 		
 		assertEquals("20 a 29", faixa2.getLabel());
-		assertEquals(3, faixa2.getData());
+		assertEquals(3.0, faixa2.getData());
 
 		assertEquals("30 a 39", faixa3.getLabel());
-		assertEquals(2, faixa3.getData());
+		assertEquals(2.0, faixa3.getData());
 		
 		assertEquals("40 a 49", faixa4.getLabel());
-		assertEquals(2, faixa4.getData());
+		assertEquals(2.0, faixa4.getData());
 		
 		assertEquals("50 a 59", faixa5.getLabel());
-		assertEquals(1, faixa5.getData());
+		assertEquals(1.0, faixa5.getData());
 		
 		assertEquals("Acima de 60", faixa6.getLabel());
-		assertEquals(1, faixa6.getData());
+		assertEquals(1.0, faixa6.getData());
 	}
 	
 	public void testCountMotivoDemissao()
@@ -1133,10 +1141,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		DataGrafico motivo2 = (DataGrafico) motivos.toArray()[1];
 		
 		assertEquals("Falta", motivo1.getLabel());
-		assertEquals(2, motivo1.getData());
+		assertEquals(2.0, motivo1.getData());
 
 		assertEquals("Pediu pra Sair", motivo2.getLabel());
-		assertEquals(1, motivo2.getData());
+		assertEquals(1.0, motivo2.getData());
 	}
 	
 	public void testCountAdmitidos()

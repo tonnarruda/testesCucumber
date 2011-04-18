@@ -39,7 +39,7 @@
 		<#if !funcao.id?exists>
 			<@ww.textarea label="Descrição das Atividades Executadas pela Função" name="historicoFuncao.descricao" id="descricao" cssClass="inputNome"  required="true"/>
 			<@frt.checkListBox label="Exames Obrigatórios (SESMT)" name="examesChecked" id="exame" list="examesCheckList" />
-			<@frt.checkListBox label="EPIs (PCMSO)" name="episChecked" id="epi" list="episCheckList" />
+			<@frt.checkListBox label="EPIs (PPRA)" name="episChecked" id="epi" list="episCheckList" />
 		</#if>
 
 

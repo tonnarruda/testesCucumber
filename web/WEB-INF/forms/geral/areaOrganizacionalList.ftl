@@ -1,8 +1,3 @@
-<!--
-  Autor: Bruno Bachiega
-  Data: 7/06/2006
-  Requisito: RFA0026
- -->
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>

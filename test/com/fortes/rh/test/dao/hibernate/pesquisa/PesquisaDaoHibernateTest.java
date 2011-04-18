@@ -96,7 +96,7 @@ public class PesquisaDaoHibernateTest extends GenericDaoHibernateTest<Pesquisa>
 		pesquisa.setQuestionario(questionario);
 		pesquisa = pesquisaDao.save(pesquisa);
 
-		assertTrue(pesquisaDao.findToList(empresa.getId(), 1, 10).size() > 0);
+		assertTrue(pesquisaDao.findToList(empresa.getId(), 1, 10, "").size() > 0);
 	}
 
 	public void testRemoverPesquisaDoQuestionario()
@@ -124,7 +124,7 @@ public class PesquisaDaoHibernateTest extends GenericDaoHibernateTest<Pesquisa>
 		pesquisa.setQuestionario(questionario);
 		pesquisa = pesquisaDao.save(pesquisa);
 
-		assertEquals(new Integer(1), pesquisaDao.getCount(empresa.getId()));
+		assertEquals(new Integer(1), pesquisaDao.getCount(empresa.getId(), null));
 	}
 
 	public GenericDao<Pesquisa> getGenericDao()

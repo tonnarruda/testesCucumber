@@ -9,10 +9,10 @@ public interface PesquisaDao extends GenericDao<Pesquisa>
 {
 	Pesquisa findByIdProjection(Long pesquisaId) throws Exception;
 	Pesquisa findByQuestionario(Long questionarioId);
-	Collection<Pesquisa> findToList(Long empresaId, int page, int pagingSize);
+	Collection<Pesquisa> findToList(Long empresaId, int page, int pagingSize, String questionarioTitulo);
 	Long getIdByQuestionario(Long questionarioId);
 	boolean verificaEmpresaDoQuestionario(Long pesquisaId, Long empresaId);
-	Integer getCount(Long empresaId);
+	Integer getCount(Long empresaId, String questionarioTitulo);
 	void removerPesquisaDoQuestionario(Long questionarioId);
 
 }

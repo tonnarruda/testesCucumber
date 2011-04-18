@@ -23,7 +23,7 @@ public class PesquisaListAction extends MyActionSupportList
     private EmpresaManager empresaManager;
     private QuestionarioManager questionarioManager;
 
-    private Pesquisa pesquisa;
+    private Pesquisa pesquisa = new Pesquisa();;
     private Colaborador colaborador;
 
     private Collection<Pesquisa> pesquisas = new ArrayList<Pesquisa>();
@@ -38,6 +38,7 @@ public class PesquisaListAction extends MyActionSupportList
 	private String SESSION_CANDIDATO_NOME = "";
 	private String SESSION_EMPRESA = "";
 	private String grupoAC = null;
+	private String questionarioTitulo = null;
 
 	public String execute() throws Exception
     {
@@ -46,8 +47,8 @@ public class PesquisaListAction extends MyActionSupportList
 
     public String list() throws Exception
     {
-   		this.setTotalSize(pesquisaManager.getCount(getEmpresaSistema().getId()));
-   		pesquisas = pesquisaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize());
+   		this.setTotalSize(pesquisaManager.getCount(getEmpresaSistema().getId(), questionarioTitulo));
+   		pesquisas = pesquisaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize(), questionarioTitulo);
 
         return Action.SUCCESS;
     }
@@ -154,6 +155,14 @@ public class PesquisaListAction extends MyActionSupportList
 
 	public String getEmpresaCodigo() {
 		return empresaCodigo;
+	}
+
+	public String getQuestionarioTitulo() {
+		return questionarioTitulo;
+	}
+
+	public void setQuestionarioTitulo(String questionarioTitulo) {
+		this.questionarioTitulo = questionarioTitulo;
 	}
 
 }

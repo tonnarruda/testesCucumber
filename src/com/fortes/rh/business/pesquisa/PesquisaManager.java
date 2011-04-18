@@ -9,7 +9,7 @@ import com.fortes.rh.model.pesquisa.Questionario;
 
 public interface PesquisaManager extends GenericManager<Pesquisa>
 {
-	Collection<Pesquisa> findToListByEmpresa(Long empresaId, int page, int pagingSize);
+	Collection<Pesquisa> findToListByEmpresa(Long empresaId, int page, int pagingSize, String questionarioTitulo);
 	void delete(Long pesquisaId, Long empresaId) throws Exception;
 	Pesquisa findByIdProjection(Long pesquisaId);
 	void verificarEmpresaValida(Long pesquisaId, Long empresaId) throws Exception;
@@ -19,5 +19,5 @@ public interface PesquisaManager extends GenericManager<Pesquisa>
 	Pesquisa findByQuestionario(Long questionarioId);
 	Pesquisa clonarPesquisa(Long pesquisaId) throws Exception;
 	Long getIdByQuestionario(Long questionarioId);
-	Integer getCount(Long empresaId);
+	Integer getCount(Long empresaId, String questionarioTitulo);
 }

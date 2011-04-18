@@ -1,6 +1,7 @@
 package com.fortes.rh.business.geral;
 
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -101,6 +103,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private FaixaSalarialManager faixaSalarialManager;
 	private EstadoManager estadoManager;
 	private CamposExtrasManager camposExtrasManager;
+	private Double valorTotal = 0.0;
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
@@ -1703,7 +1706,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByEmpresa(empresaId);
 		
 		HashMap<AreaOrganizacional, Double> areaSalario = new HashMap<AreaOrganizacional, Double>();
-		Double contador = 0.0;
 		for (Colaborador colaborador : colaboradores) 
 		{
 			AreaOrganizacional matriarca = areaOrganizacionalManager.getMatriarca(areas, colaborador.getAreaOrganizacional());
@@ -1712,7 +1714,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			
 			areaSalario.put(matriarca, areaSalario.get(matriarca) + (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado()));
-			contador += (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado());
+			this.valorTotal += (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado());
 		}
 		
 		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
@@ -1721,4 +1723,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		return dados;
 	}
+
+	public Collection<DataGrafico> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId) {
+		
+		return getDao().montaGraficoEvolucaoFolha(dataIni, dataFim, empresaId);
+	}
+
+
 }

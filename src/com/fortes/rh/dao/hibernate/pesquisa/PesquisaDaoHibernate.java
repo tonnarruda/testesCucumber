@@ -3,10 +3,12 @@ package com.fortes.rh.dao.hibernate.pesquisa;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -75,7 +77,7 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 		return (Pesquisa) criteria.uniqueResult();
 	}
 
-	public Collection<Pesquisa> findToList(Long empresaId, int page, int pagingSize)
+	public Collection<Pesquisa> findToList(Long empresaId, int page, int pagingSize, String questionarioTitulo)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "p");
 		criteria.createCriteria("p.questionario", "q", Criteria.LEFT_JOIN);
@@ -96,15 +98,24 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("e.id", empresaId));
+		
+		if(questionarioTitulo != null &&!questionarioTitulo.equals(""))
+			criteria.add(Restrictions.sqlRestriction("normalizar(q1_.titulo) ilike  normalizar(?)", "%" + questionarioTitulo.trim() + "%", Hibernate.STRING));
 
-		criteria.setFirstResult(((page - 1) * pagingSize));
-		criteria.setMaxResults(pagingSize);
+		if(pagingSize > 0)
+		{
+			criteria.setFirstResult(((page - 1) * pagingSize));
+			criteria.setMaxResults(pagingSize);
+		}
 
 		criteria.addOrder(Order.desc("q.dataInicio"));
 		criteria.addOrder(Order.asc("q.titulo"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		// Se page e pagingSize = 0, chamada do método sobrecarregado sem paginação
+
 
 		return criteria.list();
 	}
@@ -145,7 +156,7 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 		return id != null;
 	}
 
-	public Integer getCount(Long empresaId)
+	public Integer getCount(Long empresaId, String questionarioTitulo)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"p");
 		criteria.createCriteria("p.questionario", "q");
@@ -154,6 +165,9 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 		criteria.setProjection(Projections.rowCount());
 
 		criteria.add(Expression.eq("e.id", empresaId));
+		
+		if(questionarioTitulo != null &&!questionarioTitulo.equals(""))
+			criteria.add(Restrictions.sqlRestriction("normalizar(q1_.titulo) ilike  normalizar(?)", "%" + questionarioTitulo.trim() + "%", Hibernate.STRING));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
