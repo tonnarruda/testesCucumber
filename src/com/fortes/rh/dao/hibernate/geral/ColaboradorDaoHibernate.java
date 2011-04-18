@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -1551,7 +1552,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("			) ");
 		hql.append("	 		or hc.data is null ");
 		hql.append("	   ) ");
-		hql.append("	and co.desligado = false ");
+		//hql.append("	and ( co.dataDesligamento >= :data or co.dataDesligamento is null) ");
+		hql.append("	and ( date_trunc('month', co.dataDesligamento) >= date_trunc('month', cast(:data as date)) or co.dataDesligamento is null) ");
+		hql.append("	and co.dataAdmissao <= :data");
 		hql.append("	and co.empresa.id = :empresaId ");
 
 		Query query = montaSelectProjecaoSalarial(hql, data, estabelecimentoIds, areaIds, grupoIds, cargoIds, filtro, empresaId);
@@ -3303,82 +3306,4 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		}
 		return dataGraficos;
 	}
-
-	public Collection<DataGrafico> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId)
-	{
-		StringBuilder sql = new StringBuilder();
-		sql.append("select cast(sum(salario) as double precision), data   ");
-		sql.append("from ( ");
-		sql.append("	select colaborador_id, data as data, max(datacalc), cast(last(salariocalc) as double precision) as salario ");
-		sql.append("	from ( ");
-		sql.append("		select datas.data as data, salarios.colaborador_id as colaborador_id, salarios.dataCalculada as datacalc, cast(salarios.salarioCalculado as double precision) as salariocalc from ( ");
-		sql.append("			select '2008-01-01' as \"data\" union ");
-		sql.append("			select '2008-02-01' as \"data\" union ");
-		sql.append("			select '2008-03-01' as \"data\" union ");
-		sql.append("			select '2008-04-01' as \"data\" union ");
-		sql.append("			select '2008-05-01' as \"data\" union ");
-		sql.append("			select '2008-06-01' as \"data\" union ");
-		sql.append("			select '2008-07-01' as \"data\" union ");
-		sql.append("			select '2008-08-01' as \"data\" union ");
-		sql.append("			select '2008-09-01' as \"data\" union ");
-		sql.append("			select '2008-10-01' as \"data\" union ");
-		sql.append("			select '2008-11-01' as \"data\" union ");
-		sql.append("			select '2008-12-01' as \"data\"  ");
-		sql.append("		) as datas ");
-		sql.append("		left join ( ");
-		sql.append("			select ");
-		sql.append("				colaborador_id,  ");
-		sql.append("				hc.data,  ");
-		sql.append("				ihc.valor*hc.quantidadeindice as salarioPorIndiceColab, ");
-		sql.append("				ihcf.valor*fsh.quantidade as salarioPorIndiceFaixa, ");
-		sql.append("				COALESCE( ");
-		sql.append("					CASE tiposalario WHEN 3 THEN hc.data ELSE null END,  ");
-		sql.append("					CASE fsh.tipo WHEN 3 THEN fsh.data ELSE null END, ");
-		sql.append("					ihc.data,  ");
-		sql.append("					ihcf.data ");
-		sql.append("				) as dataCalculada,	 ");
-		sql.append("				cast(COALESCE( ");
-		sql.append("					CASE tiposalario WHEN 3 THEN salario ELSE null END,  ");
-		sql.append("					CASE fsh.tipo WHEN 3 THEN fsh.valor ELSE null END, ");
-		sql.append("					ihc.valor*hc.quantidadeindice,  ");
-		sql.append("					ihcf.valor*fsh.quantidade,  ");
-		sql.append("					0 ");
-		sql.append("				) as double precision) as salarioCalculado ");
-		sql.append("				from historicocolaborador hc ");
-		sql.append("				left join colaborador c on c.id = hc.colaborador_id ");
-		sql.append("				left join faixasalarialhistorico fsh on fsh.faixasalarial_id = hc.faixasalarial_id and tiposalario = 1 ");
-		sql.append("				left join indicehistorico ihc on ihc.indice_id = hc.indice_id and tiposalario = 2 ");
-		sql.append("				left join indicehistorico ihcf on ihcf.indice_id = fsh.indice_id and fsh.tipo = 2 ");
-		sql.append("			where ");
-		sql.append("				c.empresa_id = :empresaId and ");
-		sql.append("				(hc.status <> 3 or hc.status is null) and ");
-		sql.append("				(fsh.status <> 3 or fsh.status is null) and ");
-		sql.append("				hc.data < '2008-12-01' ");
-		sql.append("			order by  ");
-		sql.append("				dataCalculada, colaborador_id ");
-		sql.append("		) as salarios on salarios.data < cast(datas.data as date) ");
-		sql.append("		order by salarios.colaborador_id, data, dataCalculada ");
-		sql.append("	) as salariosMax ");
-		sql.append("	group by colaborador_id, data ");
-		sql.append("	order by colaborador_id, data ");
-		sql.append(") as salarioSoma ");
-		sql.append("group by data ");
-		sql.append("order by data ");
-		
-		Query query = getSession().createSQLQuery(sql.toString());
-		query.setLong("empresaId", empresaId);
-		
-		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
-		List resultado = query.list();
-		
-		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
-		{
-			Object[] res = it.next();
-			double label = (Double) res[0]; 
-//			double data = (Double) res[1]; 
-//			dataGraficos.add(new DataGrafico(label, data));
-		}
-		return dataGraficos;
-	}
-
 }

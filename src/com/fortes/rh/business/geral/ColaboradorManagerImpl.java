@@ -103,7 +103,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private FaixaSalarialManager faixaSalarialManager;
 	private EstadoManager estadoManager;
 	private CamposExtrasManager camposExtrasManager;
-	private Double valorTotal = 0.0;
+
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
@@ -1712,9 +1712,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			if (!areaSalario.containsKey(matriarca))
 				areaSalario.put(matriarca, 0.0);
 			
-			
 			areaSalario.put(matriarca, areaSalario.get(matriarca) + (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado()));
-			this.valorTotal += (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado());
 		}
 		
 		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
@@ -1724,10 +1722,29 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return dados;
 	}
 
-	public Collection<DataGrafico> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId) {
+	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		Collection<Object[]>  graficoEvolucaoFolha = new ArrayList<Object[]>();
+		dataFim = DateUtil.getUltimoDiaMes(dataFim);
+		while (!dataIni.after(dataFim))
+		{
+			dataIni = DateUtil.getUltimoDiaMes(dataIni);
+			double valor = totalFolhaDia (dataIni, empresaId);
+			graficoEvolucaoFolha.add(new Object[]{dataIni.getTime(), valor}); 
+			dataIni = DateUtil.incrementaMes(dataIni, 1);
+		}
 		
-		return getDao().montaGraficoEvolucaoFolha(dataIni, dataFim, empresaId);
+		return graficoEvolucaoFolha;
 	}
-
+	
+	private Double totalFolhaDia (Date dataBase, Long empresaId)
+	{
+		Collection<Colaborador> colaboradores = getDao().findProjecaoSalarialByHistoricoColaborador(dataBase, null, null, null, null, "99", empresaId);
+		double valor = 0.0;
+		for (Colaborador colaborador : colaboradores) 
+			valor += (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado());
+		
+		return valor;
+	}
 
 }

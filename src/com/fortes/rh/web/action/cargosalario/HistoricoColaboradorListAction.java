@@ -74,6 +74,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfEstadoCivil = "";
 	private String grfDeficiencia = "";
 	private String grfDesligamento = "";
+	private String grfEvolucaoFolha = "";
 	private int qtdColaborador = 0;
 	private int qtdItensDesligamento = 20;
 	private String grfColocacao = "";
@@ -131,12 +132,17 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataIni == null)
 			dataIni = DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true);
 		
-		Collection<DataGrafico> graficoSalarioArea = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId(), qtdItensDesligamento);
-		Collection<DataGrafico> graficoEvolucaoFolha= colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, getEmpresaSistema().getId());
+		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, getEmpresaSistema().getId());
 		
-		grfSalarioAreas = StringUtil.toJSON(graficoSalarioArea, null);
-		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
+		grfSalarioAreas  = StringUtil.toJSON(graficoSalarioArea, null);
+		grfDesligamento  = StringUtil.toJSON(graficoDesligamento, null);
+		grfEvolucaoFolha = StringUtil.toJSON(graficoEvolucaoFolha, null);
+
+		valorTotalFolha  = 0.0;
+		for (DataGrafico dataGrafico : graficoSalarioArea) 
+			valorTotalFolha += dataGrafico.getData();
 		
 		return Action.SUCCESS;
 	}
@@ -529,7 +535,12 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public String getValorTotalFolha() {
 		DecimalFormat formata = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt", "BR"));
-		formata.applyPattern("#0.00");
-		return formata.format(valorTotalFolha * 100);
+		formata.applyPattern("###,##0.00");
+		return "R$ " + formata.format(valorTotalFolha);
 	}
+	
+	public String getGrfEvolucaoFolha() {
+		return grfEvolucaoFolha;
+	}
+	
 }

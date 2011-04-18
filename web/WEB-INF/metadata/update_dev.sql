@@ -14,19 +14,3 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (505,
 alter sequence papel_sequence restart with 506;--.go
 
 update papel set nome = 'Análise das Etapas Seletivas' where id=48;--.go
-
-
-
-
-//talvez
-CREATE OR REPLACE FUNCTION public.last_agg ( anyelement, anyelement )
-RETURNS anyelement AS $$
-        SELECT $2;
-$$ LANGUAGE SQL STABLE;
-
-CREATE AGGREGATE public.last (
-        sfunc    = public.last_agg,
-        basetype = anyelement,
-        stype    = anyelement
-);--.go
-

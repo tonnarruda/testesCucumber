@@ -969,14 +969,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1.0, aprendiz.getData());
 	}
 
-	public void testMontaGraficoEvolucaoFolha()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		//assertNotNull(colaboradorDao.montaGraficoEvolucaoFolha(DateUtil.criarDataMesAno(01, 02, 2008), DateUtil.criarDataMesAno(01, 02, 2009), empresa.getId()));
-	}
-	
 	public void testCountEstadoCivil()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
