@@ -44,12 +44,12 @@
 			var $obrigatorios = $('.configCampos input[name=camposCandidatoObrigatorios]');
 			var $visiveis = $('.configCampos input[name=camposCandidatoVisivels]');
 			
-			camposCandidatoObrigatorio.split(',').each(function (campo){
-			    $('[value=' + campo + ']').attr('checked', true);
+			$(camposCandidatoObrigatorio.split(',')).each(function (){
+			    $('[value=' + this + ']').attr('checked', true);
 			});
 			
-			camposCandidatoVisivel.split(',').each(function (campo){
-			    $visiveis.filter('[value=' + campo + ']').attr('checked', true);
+			$(camposCandidatoVisivel.split(',')).each(function (){
+			    $visiveis.filter('[value=' + this + ']').attr('checked', true);
 			});
 			
 			$visiveis.change(function(){
@@ -171,8 +171,8 @@
 			</tr>
 			<tr>
 				<td>Telefone</td>
-				<td><input type="checkbox" value="telefone" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="telefone" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="fone" name="camposCandidatoVisivels" /></td>
+				<td><input type="checkbox" value="fone" name="camposCandidatoObrigatorios" /></td>
 			</tr>
 			<tr>
 				<td>Celular</td>

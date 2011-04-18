@@ -120,12 +120,18 @@
 		function validarCamposCpf()
 		{
 			<#if moduloExterno?exists && moduloExterno>
-				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+				<#if candidato.id?exists>
+					arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
+						return value != 'senha' && value != 'comfirmaSenha';
+					});
+				</#if>
+				
+				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
 		   	<#else>
 		       	if ($("#cpf").val() == "   .   .   -  ")
-		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
 		   		else
-			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
 			 </#if>
 		}
 		
@@ -448,7 +454,7 @@
 			<@ww.textfield label="E-mail" name="candidato.contato.email" id="email" cssStyle="width: 270px;" maxLength="40" liClass="liLeft , campo"/>
 			
 			<li>
-				<@ww.div id="wwgrp_telefone"  cssClass="campo">
+				<@ww.div id="wwgrp_fone"  cssClass="campo">
 					<ul>
 						<@ww.textfield label="DDD" name="candidato.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
 						<@ww.textfield label="Telefone" name="candidato.contato.foneFixo" id="fone" onkeypress="return(somenteNumeros(event,''));"  cssStyle="width: 60px;" maxLength="8"  liClass="liLeft" />
@@ -497,10 +503,15 @@
 			<#else>
 				<hr style="border:0; border-top:1px solid #CCCCCC;">
 				<#if candidato?exists && candidato.id?exists && !moduloExterno>
-				<B>(Deixe em branco para manter a senha atual)</B><br><br>
+					<B>(Deixe em branco para manter a senha atual)</B><br><br>
+				</#if>
+				
+				<#if moduloExterno>
+					<div style="font-weight: bold;">Prezado Candidato, esta senha deverá ser utilizada por você para acessos futuros ao seu currículo e a visualização de vagas.</div>
 				</#if>
 				<@ww.password label="Senha" name="candidato.senha" id="senha" cssStyle="width: 100px;" liClass="liLeft"/>
-				<@ww.password label="Confirmar Senha" name="confirmaSenha" id="comfirmaSenha" cssStyle="width: 100px;" />
+				<@ww.password label="Confirmar Senha" name="confirmaSenha" id="comfirmaSenha" cssStyle="width: 100px;"/>
+				
 			</#if>
       </div>
 

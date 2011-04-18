@@ -27,7 +27,7 @@ public class AcPessoalClientSistemaTest extends AcPessoalClientTest
 	{
 		montaMockGrupoAC();
 		
-		assertEquals("1.0.1.41", acPessoalClientsistemaImpl.getVersaoWebServiceAC(empresa));
+		assertEquals("1.0.1.44", acPessoalClientsistemaImpl.getVersaoWebServiceAC(empresa));
 	}
 
 	public void testIdACIntegrado() throws Exception

@@ -31,8 +31,7 @@
 			<@ww.hidden label="Id" name="formacao.id"  theme="css_xhtml"/>
 	
 			<@ww.submit value=" "  cssClass="btnGravar grayBG" cssStyle="float:left; display:block;" />
-			<input type="input" class="btnCancelar grayBG" onclick="voltarFormacao()" />
-	
+			<input type="button" class="btnCancelar grayBG" onclick="voltarFormacao();" />
 		</@ww.form>
 	</div>
 	<br>

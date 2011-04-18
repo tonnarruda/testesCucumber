@@ -5263,3 +5263,23 @@ update papel set nome = 'Pode Responder Avaliação Por Outro Usuário' where id
 
 alter table parametrosdosistema DROP COLUMN exibirAbaDocumentos;--.go
 update parametrosdosistema set appversao = '1.1.43.34';--.go
+
+-- versao 1.1.43.35
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (504, 'ROLE_INFO_PAINEL_IND', 'Painel de Indicadores', '/cargosalario/historicoColaborador/painelIndicadores.action', 3, true, 373);--.go
+
+update papel set papelmae_id=377,ordem=7 where id=398;--.go
+update papel set papelmae_id=463,ordem=6 where id=70;--.go
+delete from perfil_papel where papeis_id=462;--.go
+delete from papel where id=462;--.go
+
+alter sequence papel_sequence restart with 505;--.go
+
+update papel set nome = 'Análise das Etapas Seletivas' where id=48;--.go
+
+update parametrosdosistema set acversaowebservicecompativel = '1.0.1.44';--.go
+
+update parametrosdosistema set camposcandidatovisivel=replace(camposcandidatovisivel,'telefone','fone');--.go
+update parametrosdosistema set camposcandidatoobrigatorio=replace(camposcandidatoobrigatorio,'telefone','fone');--.go
+
+update parametrosdosistema set appversao = '1.1.43.35';--.go

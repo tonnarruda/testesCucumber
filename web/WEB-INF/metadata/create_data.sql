@@ -45,7 +45,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (50, 
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (360, 'ROLE_R&S_REL', 'Relatórios', '#', 3, true, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (46, 'ROLE_REL_SOLICITACAO', 'Solicitações Abertas', '/captacao/solicitacao/prepareRelatorio.action', 1, true, 360);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (48, 'ROLE_REL_PROCESSO_SELETIVO', 'Processos Seletivos', '/captacao/solicitacao/prepareRelatorioProcessoSeletivo.action', 2, true, 360);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (48, 'ROLE_REL_PROCESSO_SELETIVO', 'Análise das Etapas Seletivas', '/captacao/solicitacao/prepareRelatorioProcessoSeletivo.action', 2, true, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (424, 'ROLE_REL_AVALIACAO_CANDIDATOS', 'Avaliações de Candidatos', '/captacao/candidato/prepareRelatorioAvaliacaoCandidatos.action', 3, true, 360);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (56, 'ROLE_LIBERA_SOLICITACAO', 'Liberador de Solicitação', '#', 4, false, 357);
@@ -54,7 +54,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (22, 
 -- Fim R&S
 
 -- Modulo C&S
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (462, 'ROLE_C&S_IND', 'Indicadores', '#', 4, true, 373);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (362, 'ROLE_C&S_CAD', 'Cadastros', '#', 1, true, 361);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (9, 'ROLE_CAD_AREA', 'Áreas Organizacionais', '/geral/areaOrganizacional/list.action', 1, true, 362);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (10, 'ROLE_CAD_GRUPO', 'Grupos Ocupacionais', '/cargosalario/grupoOcupacional/list.action', 2, true, 362);
@@ -166,8 +165,9 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (491,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (73, 'ROLE_IND', 'Estatísticas de Vagas por Motivo', '/indicador/duracaoPreenchimentoVaga/prepareMotivo.action', 1, true, 461);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (69, 'ROLE_IND', 'Duração para Preenchimento de Vagas', '/indicador/duracaoPreenchimentoVaga/prepare.action', 2, true, 461);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (47, 'ROLE_REL_PRODUTIVIDADE', 'Análise das Etapas Seletivas', '/captacao/produtividade/prepareProdutividade.action', 3, true, 461);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (70, 'ROLE_REL_PROMOCAO', 'Promoções', '/cargosalario/historicoColaborador/prepareRelatorioPromocoes.action', 1, true, 462);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (398, 'ROLE_REL_TURNOVER', 'Turnover (rotatividade)', '/indicador/indicadorTurnOver/prepare.action', 2, true, 462);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (70, 'ROLE_REL_PROMOCAO', 'Promoções', '/cargosalario/historicoColaborador/prepareRelatorioPromocoes.action', 6, true, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (398, 'ROLE_REL_TURNOVER', 'Turnover (rotatividade)', '/indicador/indicadorTurnOver/prepare.action', 7, true, 377);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (504, 'ROLE_INFO_PAINEL_IND', 'Painel de Indicadores', '/cargosalario/historicoColaborador/painelIndicadores.action', 3, true, 373);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (36, 'ROLE_REL_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/prepareImprimir.action', 6, true, 463);
 -- Fim Indicadores
 -- Modulo Utilitarios
@@ -263,7 +263,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 504;
+alter sequence papel_sequence restart with 505;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -413,7 +413,6 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 458);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 459);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 460);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 461);
-insert into perfil_papel(perfil_id, papeis_id) values(1, 462);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 464);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 465);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 466);
@@ -6101,13 +6100,13 @@ insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) 
 insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (7,'f','valor1','Campo de Valor 1', 1,'valor',14);
 insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (8,'f','valor2','Campo de Valor 2', 1,'valor',15);
 insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (9,'f','numero1','Campo de Numero', 1,'numero',16);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (10,'f','texto4','Campo de Texto 4', 1,'texto',4);--.go
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (11,'f','texto5','Campo de Texto 5', 1,'texto',5);--.go
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (12,'f','texto6','Campo de Texto 6', 1,'texto',6);--.go
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (13,'f','texto7','Campo de Texto 7', 1,'texto',7);--.go
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (14,'f','texto8','Campo de Texto 8', 1,'texto',8);--.go
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (15,'f','texto9','Campo de Texto 9', 1,'texto',9);--.go
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (16,'f','texto10','Campo de Texto 10', 1,'texto',10);--.go
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (10,'f','texto4','Campo de Texto 4', 1,'texto',4);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (11,'f','texto5','Campo de Texto 5', 1,'texto',5);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (12,'f','texto6','Campo de Texto 6', 1,'texto',6);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (13,'f','texto7','Campo de Texto 7', 1,'texto',7);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (14,'f','texto8','Campo de Texto 8', 1,'texto',8);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (15,'f','texto9','Campo de Texto 9', 1,'texto',9);
+insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (16,'f','texto10','Campo de Texto 10', 1,'texto',10);
 
 alter sequence configuracaocampoextra_sequence restart with 10;
 
@@ -8539,9 +8538,9 @@ insert into codigoCBO (codigo, descricao) values ('514120','Zelador de edifício
 insert into codigoCBO (codigo, descricao) values ('223310','Zootecnista');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, campoextracolaborador, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.43.34', '', '25', false,false, 2, '1.0.1.41', 1, 3, false, 
-'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,telefone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
-'nome,cpf,escolaridade,ende,num,cidade,telefone',
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.43.35', '', '25', false,false, 2, '1.0.1.44', 1, 3, false, 
+'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
+'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais'
 );
 

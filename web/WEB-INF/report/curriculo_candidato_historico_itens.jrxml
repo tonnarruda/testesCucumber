@@ -28,7 +28,7 @@
 	<field name="responsavel" class="java.lang.String"/>
 	<field name="etapaSeletiva.nome" class="java.lang.String"/>
 	<field name="observacao" class="java.lang.String"/>
-	<field name="apto" class="java.lang.Boolean"/>
+	<field name="aptoFormatado" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -192,7 +192,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{apto}.booleanValue()==true?"Sim":"Não"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{aptoFormatado}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

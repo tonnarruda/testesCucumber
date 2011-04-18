@@ -157,8 +157,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			empresaId = getEmpresaSistema().getId();
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado"), "getId", "getNomeMercado");
 			
-			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,telefone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps");
-			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,cpf,escolaridade,ende,num,cidade,telefone");
+			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps");
+			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,cpf,escolaridade,ende,num,cidade,ddd,fone");
 			parametrosDoSistema.setCamposCandidatoTabs("abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais");
 		}
 		else

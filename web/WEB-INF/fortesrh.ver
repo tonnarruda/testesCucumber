@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.43.35" data="18/04/2011">
+		- Pesquisas > Movimentações > Pesquisas: Novo filtro por [Título] da pesquisa.
+		- Cadastro de Colaborador e Situação do Colaborador: Novo campo [Observação para o Setor Pessoal] quando o sistema estiver integrado com o AC Pessoal.
+		- Info. Funcionais > Indicadores > Turnover(rotatividade): Relatório reformulado.
+		- ReS > Movimentações > Candidatos da Seleção: Liberação da visualização dos candidatos para usuário que tem a permissão: Recrutador(a).
+		- Info. Funcionais > Painel de Indicadores: Novos gráficos: Faixa Etária, Estado Civil, Deficiência, Colocação, Formação Escolar, Sexo e Motivos de Desligamentos.
+		- ReS > Movimentações > Candidatos da Seleção > Histórico do Candidato: Nova opção para impressão da listagem de históricos do candidato.
+		- Avaliação de Desempenho > Relatório > Ranking de Performace das Avaliações de Desempenho: Nova opção para exportar relatório para Excel.  
+		- CeS > Relatório > Relatório de Projeção Salarial: Nova opção para exportar relatório para Excel.  
+		- ReS > Indicadores > Recrutamento e Seleção Duração para Preenchimento de Vaga: Nova opção para exportar relatório para Excel.  
+	</Versao>
 	<Versao id="1.1.43.34" data="30/03/2011">
 		- Nova funcionalidade - Utilitários > Configurações > Cadastro de Candidato (externo): Configuração da visualização e obrigatoriedade dos campos do cadastro de Candidato do módulo externo.
 		- Nova funcionalidade - Info. Funcionais > Relatórios > Admitidos: Exportar relatório para o Excel(.xls).
