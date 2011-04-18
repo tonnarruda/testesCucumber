@@ -120,6 +120,12 @@
 		function validarCamposCpf()
 		{
 			<#if moduloExterno?exists && moduloExterno>
+				<#if candidato.id?exists>
+					arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
+						return value != 'senha' && value != 'comfirmaSenha';
+					});
+				</#if>
+				
 				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
 		   	<#else>
 		       	if ($("#cpf").val() == "   .   .   -  ")
@@ -497,10 +503,15 @@
 			<#else>
 				<hr style="border:0; border-top:1px solid #CCCCCC;">
 				<#if candidato?exists && candidato.id?exists && !moduloExterno>
-				<B>(Deixe em branco para manter a senha atual)</B><br><br>
+					<B>(Deixe em branco para manter a senha atual)</B><br><br>
+				</#if>
+				
+				<#if moduloExterno>
+					<div style="font-weight: bold;">Prezado Candidato, esta senha deverá ser utilizada por você para acessos futuros ao seu currículo e a visualização de vagas.</div>
 				</#if>
 				<@ww.password label="Senha" name="candidato.senha" id="senha" cssStyle="width: 100px;" liClass="liLeft"/>
-				<@ww.password label="Confirmar Senha" name="confirmaSenha" id="comfirmaSenha" cssStyle="width: 100px;" />
+				<@ww.password label="Confirmar Senha" name="confirmaSenha" id="comfirmaSenha" cssStyle="width: 100px;"/>
+				
 			</#if>
       </div>
 
