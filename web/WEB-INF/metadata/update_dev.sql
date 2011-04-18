@@ -30,3 +30,6 @@ CREATE AGGREGATE public.last (
         stype    = anyelement
 );--.go
 
+update parametrosdosistema set camposcandidatovisivel=replace(camposcandidatovisivel,'telefone','fone');--.go
+
+update parametrosdosistema set camposcandidatoobrigatorio=replace(camposcandidatoobrigatorio,'telefone','fone');--.go

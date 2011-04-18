@@ -120,12 +120,12 @@
 		function validarCamposCpf()
 		{
 			<#if moduloExterno?exists && moduloExterno>
-				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
 		   	<#else>
 		       	if ($("#cpf").val() == "   .   .   -  ")
-		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
 		   		else
-			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
 			 </#if>
 		}
 		
@@ -448,7 +448,7 @@
 			<@ww.textfield label="E-mail" name="candidato.contato.email" id="email" cssStyle="width: 270px;" maxLength="40" liClass="liLeft , campo"/>
 			
 			<li>
-				<@ww.div id="wwgrp_telefone"  cssClass="campo">
+				<@ww.div id="wwgrp_fone"  cssClass="campo">
 					<ul>
 						<@ww.textfield label="DDD" name="candidato.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
 						<@ww.textfield label="Telefone" name="candidato.contato.foneFixo" id="fone" onkeypress="return(somenteNumeros(event,''));"  cssStyle="width: 60px;" maxLength="8"  liClass="liLeft" />
