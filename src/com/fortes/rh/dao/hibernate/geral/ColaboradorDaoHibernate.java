@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -1552,7 +1551,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("			) ");
 		hql.append("	 		or hc.data is null ");
 		hql.append("	   ) ");
-		//hql.append("	and ( co.dataDesligamento >= :data or co.dataDesligamento is null) ");
 		hql.append("	and ( date_trunc('month', co.dataDesligamento) >= date_trunc('month', cast(:data as date)) or co.dataDesligamento is null) ");
 		hql.append("	and co.dataAdmissao <= :data");
 		hql.append("	and co.empresa.id = :empresaId ");

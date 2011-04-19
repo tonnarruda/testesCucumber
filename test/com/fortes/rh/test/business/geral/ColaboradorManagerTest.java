@@ -14,6 +14,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
+import org.mozilla.javascript.ObjArray;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -37,8 +38,14 @@ import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
@@ -56,6 +63,11 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.ExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.FormacaoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
+import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CandidatoIdiomaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
@@ -971,6 +983,77 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		}
 		
 		assertEquals("Não existem dados para o filtro informado.",exception.getMessage());
+    }
+    
+    public void testMontaGraficoEvolucaoFolha() 
+    {
+    	HistoricoColaborador histJoao = HistoricoColaboradorFactory.getEntity();
+    	histJoao.setTipoSalario(TipoAplicacaoIndice.VALOR);
+    	histJoao.setSalario(200.00);
+    	Colaborador joao = ColaboradorFactory.getEntity();
+    	joao.setHistoricoColaborador(histJoao);
+
+    	HistoricoColaborador histMaria = HistoricoColaboradorFactory.getEntity();
+    	histMaria.setTipoSalario(TipoAplicacaoIndice.VALOR);
+    	histMaria.setSalario(250.00);
+    	Colaborador maria = ColaboradorFactory.getEntity();
+    	maria.setHistoricoColaborador(histMaria);
+    	
+    	IndiceHistorico indiceHistPedro = IndiceHistoricoFactory.getEntity();
+    	indiceHistPedro.setValor(100.00);
+    	Indice indicePedro = IndiceFactory.getEntity();
+    	indicePedro.setIndiceHistoricoAtual(indiceHistPedro);
+    	HistoricoColaborador histPedro = HistoricoColaboradorFactory.getEntity();
+    	histPedro.setTipoSalario(TipoAplicacaoIndice.INDICE);
+    	histPedro.setIndice(indicePedro);
+    	histPedro.setQuantidadeIndice(2.0);
+    	Colaborador pedro = ColaboradorFactory.getEntity();
+    	pedro.setHistoricoColaborador(histPedro);
+    	
+    	Collection<Colaborador> colaboradorsPrimeiraIteracao = new ArrayList<Colaborador>();
+    	colaboradorsPrimeiraIteracao.add(pedro);
+    	colaboradorsPrimeiraIteracao.add(joao);
+    	colaboradorsPrimeiraIteracao.add(maria);
+    	
+    	FaixaSalarialHistorico faixaSalarialHistoricoRaimundo = FaixaSalarialHistoricoFactory.getEntity();
+    	faixaSalarialHistoricoRaimundo.setValor(355.0);
+    	faixaSalarialHistoricoRaimundo.setTipo(TipoAplicacaoIndice.VALOR);
+    	FaixaSalarial faixaSalarialRaimundo = FaixaSalarialFactory.getEntity();
+    	faixaSalarialRaimundo.setFaixaSalarialHistoricoAtual(faixaSalarialHistoricoRaimundo);
+    	HistoricoColaborador histRaimundo = HistoricoColaboradorFactory.getEntity();
+    	histRaimundo.setTipoSalario(TipoAplicacaoIndice.CARGO);
+    	histRaimundo.setFaixaSalarial(faixaSalarialRaimundo);
+    	Colaborador raimundo = ColaboradorFactory.getEntity();
+    	raimundo.setHistoricoColaborador(histRaimundo);
+    	
+    	HistoricoColaborador histRodrigo = HistoricoColaboradorFactory.getEntity();
+    	histRodrigo.setTipoSalario(TipoAplicacaoIndice.VALOR);
+    	histRodrigo.setSalario(250.05);
+    	Colaborador rodrigo = ColaboradorFactory.getEntity();
+    	rodrigo.setHistoricoColaborador(histRodrigo);
+
+    	Collection<Colaborador> colaboradorsSegundaIteracao = new ArrayList<Colaborador>();
+    	colaboradorsSegundaIteracao.add(raimundo);
+    	colaboradorsSegundaIteracao.add(rodrigo);
+    	
+    	colaboradorDao.expects(once()).method("findProjecaoSalarialByHistoricoColaborador").will(returnValue(colaboradorsSegundaIteracao));
+    	colaboradorDao.expects(once()).method("findProjecaoSalarialByHistoricoColaborador").will(returnValue(colaboradorsPrimeiraIteracao));
+    	
+    	Date dataIni = DateUtil.criarDataMesAno(01, 02, 2000);
+    	Date dataFim = DateUtil.criarDataMesAno(01, 03, 2000);
+    	
+    	Collection<Object[]> dados = colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, 1L);
+    	assertEquals(2, dados.size());
+    	
+    	Object[] result = (Object[]) dados.toArray()[0];
+    	dataIni = DateUtil.getUltimoDiaMes(dataIni);
+    	assertEquals((Long) dataIni.getTime(), (Long) result[0]);
+    	assertEquals(650.0, (Double) result[1]);
+
+    	Object[] result2 = (Object[]) dados.toArray()[1];
+    	dataFim = DateUtil.getUltimoDiaMes(dataFim);
+    	assertEquals((Long) dataFim.getTime(), (Long) result2[0]);
+    	assertEquals(605.05, (Double) result2[1]);
     }
     
     public void testVerificaColaboradorLogadoVerAreas() 

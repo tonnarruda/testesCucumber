@@ -1741,9 +1741,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		Collection<Colaborador> colaboradores = getDao().findProjecaoSalarialByHistoricoColaborador(dataBase, null, null, null, null, "99", empresaId);
 		double valor = 0.0;
-		for (Colaborador colaborador : colaboradores) 
-			valor += (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado());
-		
+		for (Colaborador colaborador : colaboradores)
+		{
+			Double salarioCalculadoTmp = colaborador.getSalarioCalculado();
+			valor += (salarioCalculadoTmp == null ? 0 : salarioCalculadoTmp);
+		}
 		return valor;
 	}
 
