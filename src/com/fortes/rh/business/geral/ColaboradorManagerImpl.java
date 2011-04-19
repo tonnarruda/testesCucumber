@@ -1700,7 +1700,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return turnOvers;
 	}
 
-	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId) 
+	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, Long areaId) 
 	{
 		Collection<Colaborador> colaboradores = getDao().findProjecaoSalarialByHistoricoColaborador(dataBase, null, null, null, null, "99", empresaId);
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByEmpresa(empresaId);
@@ -1708,16 +1708,31 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		HashMap<AreaOrganizacional, Double> areaSalario = new HashMap<AreaOrganizacional, Double>();
 		for (Colaborador colaborador : colaboradores) 
 		{
-			AreaOrganizacional matriarca = areaOrganizacionalManager.getMatriarca(areas, colaborador.getAreaOrganizacional());
-			if (!areaSalario.containsKey(matriarca))
-				areaSalario.put(matriarca, 0.0);
+			AreaOrganizacional matriarca = areaOrganizacionalManager.getMatriarca(areas, colaborador.getAreaOrganizacional(), areaId);
 			
-			areaSalario.put(matriarca, areaSalario.get(matriarca) + (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado()));
+			if(areaId != null)
+			{
+				if(matriarca.getId().equals(areaId))
+				{
+					if (!areaSalario.containsKey(matriarca))
+						areaSalario.put(matriarca, 0.0);
+					
+					areaSalario.put(matriarca, areaSalario.get(matriarca) + (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado()));				
+					
+				}
+			}
+			else
+			{
+				if (!areaSalario.containsKey(matriarca))
+					areaSalario.put(matriarca, 0.0);
+				
+				areaSalario.put(matriarca, areaSalario.get(matriarca) + (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado()));				
+			}
 		}
 		
 		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
 		for (AreaOrganizacional area : areaSalario.keySet()) 
-			dados.add(new DataGrafico(area.getNome(), areaSalario.get(area)));			
+			dados.add(new DataGrafico(area.getId(), area.getNome(), areaSalario.get(area)));			
 		
 		return dados;
 	}

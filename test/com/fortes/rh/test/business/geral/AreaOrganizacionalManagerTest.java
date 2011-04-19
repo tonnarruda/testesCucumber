@@ -667,9 +667,45 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areas.add(areaVizim);
 		areas.add(areaSolitaria);
 		
-		assertEquals(areaVo.getId(), areaOrganizacionalManager.getMatriarca(areas, area).getId());
-		assertEquals(areaPaiVizim.getId(), areaOrganizacionalManager.getMatriarca(areas, areaVizim).getId());
-		assertEquals(areaSolitaria.getId(), areaOrganizacionalManager.getMatriarca(areas, areaSolitaria).getId());
+		assertEquals(areaVo.getId(), areaOrganizacionalManager.getMatriarca(areas, area, null).getId());
+		assertEquals(areaPaiVizim.getId(), areaOrganizacionalManager.getMatriarca(areas, areaVizim, null).getId());
+		assertEquals(areaSolitaria.getId(), areaOrganizacionalManager.getMatriarca(areas, areaSolitaria, null).getId());
+	}
+	
+	public void testSetMatriarca2()
+	{
+		AreaOrganizacional areaVo = AreaOrganizacionalFactory.getEntity(1L);
+		areaVo.setNome("areaVo");
+		AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity(2L);
+		areaMae.setNome("areaMae");
+		AreaOrganizacional areaTia = AreaOrganizacionalFactory.getEntity(3L);
+		areaTia.setNome("areaTia");
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity(4L);
+		area.setNome("area");
+		AreaOrganizacional areaPaiVizim = AreaOrganizacionalFactory.getEntity(5L);
+		areaPaiVizim.setNome("areaPaiVizim");
+		AreaOrganizacional areaVizim = AreaOrganizacionalFactory.getEntity(6L);
+		areaVizim.setNome("areaVizim");
+		AreaOrganizacional areaSolitaria = AreaOrganizacionalFactory.getEntity(7L);
+		areaSolitaria.setNome("areaSolitaria");
+		
+		areaMae.setAreaMae(areaVo);
+		areaTia.setAreaMae(areaVo);
+		area.setAreaMae(areaMae);
+		areaVizim.setAreaMae(areaPaiVizim);
+		
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+		areas.add(areaVo);
+		areas.add(areaMae);
+		areas.add(areaTia);
+		areas.add(area);
+		areas.add(areaPaiVizim);
+		areas.add(areaVizim);
+		areas.add(areaSolitaria);
+		
+		assertEquals(areaMae.getId(), areaOrganizacionalManager.getMatriarca(areas, area, areaVo.getId()).getId());
+		assertEquals(areaTia.getId(), areaOrganizacionalManager.getMatriarca(areas, areaTia, areaVo.getId()).getId());
+		assertEquals(areaSolitaria.getId(), areaOrganizacionalManager.getMatriarca(areas, areaSolitaria, areaVo.getId()).getId());
 	}
 
 	public void testEditarLotacaoAC() throws Exception

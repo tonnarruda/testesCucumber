@@ -6,6 +6,8 @@ function montaPie(data, clazz, options) {
         pieLeft: -120, 
         noColumns: 1,
         container: undefined,
+    	hoverable: false,
+        clickable: false,
         legendLabelFormatter: function(label, series) {
 			return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ series.datapoints.points[1] + ')</span>';
 		}
@@ -43,8 +45,8 @@ function montaPie(data, clazz, options) {
 			}
 		},
 		grid : {
-		//hoverable: true
-		//clickable: true
+			hoverable: config.hoverable,
+            clickable: config.clickable
 		},
 		colors : [ "#edc240", "#afd8f8", "#cb4b4b", "#4da74d", "#9440ed" ],//"#D7ECFC","#DECD99","#226FA5","#8080FF"
 		legend : {

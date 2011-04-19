@@ -57,6 +57,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Date dataBase;
 	private Date dataIni;
 	private Date dataFim;
+	private String dataMesAnoIni;
+	private String dataMesAnoFim;
 	
 	private String origemSituacao = "T";
 	
@@ -82,8 +84,10 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Integer countDemitidos;
 	private Double turnover;
 	private Double valorTotalFolha = 0.0;
+	private Long areaId;
 
 	private String grfSalarioAreas;
+	private String json;
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -127,22 +131,29 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Date hoje = new Date();
 		if (dataBase == null)
 			dataBase = hoje;
-		if (dataFim == null)
-			dataFim = hoje;
-		if (dataIni == null)
-			dataIni = DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true);
+		if (dataMesAnoIni == null || dataMesAnoIni.equals("  /    ") || dataMesAnoIni.equals(""))
+			dataMesAnoIni = DateUtil.formataMesAno(DateUtil.retornaDataAnteriorQtdMeses(hoje, 9, true));
+		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
+			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
 		
-		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId(), qtdItensDesligamento);
-		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId(), null);
+		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(DateUtil.criarDataMesAno(dataMesAnoIni), DateUtil.criarDataMesAno(dataMesAnoFim), getEmpresaSistema().getId());
 		
 		grfSalarioAreas  = StringUtil.toJSON(graficoSalarioArea, null);
-		grfDesligamento  = StringUtil.toJSON(graficoDesligamento, null);
 		grfEvolucaoFolha = StringUtil.toJSON(graficoEvolucaoFolha, null);
+		grfEvolucaoFolha = StringUtil.toJSON(null, null);
 
 		valorTotalFolha  = 0.0;
 		for (DataGrafico dataGrafico : graficoSalarioArea) 
 			valorTotalFolha += dataGrafico.getData();
+		
+		return Action.SUCCESS;
+	}
+	
+	public String grfSalarioAreasFilhas() throws Exception
+	{
+		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId(), areaId);
+		json = StringUtil.toJSON(graficoSalarioArea, null);
 		
 		return Action.SUCCESS;
 	}
@@ -541,6 +552,30 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public String getGrfEvolucaoFolha() {
 		return grfEvolucaoFolha;
+	}
+
+	public String getDataMesAnoIni() {
+		return dataMesAnoIni;
+	}
+
+	public void setDataMesAnoIni(String dataMesAnoIni) {
+		this.dataMesAnoIni = dataMesAnoIni;
+	}
+
+	public String getDataMesAnoFim() {
+		return dataMesAnoFim;
+	}
+
+	public void setDataMesAnoFim(String dataMesAnoFim) {
+		this.dataMesAnoFim = dataMesAnoFim;
+	}
+
+	public String getJson() {
+		return json;
+	}
+
+	public void setAreaId(Long areaId) {
+		this.areaId = areaId;
 	}
 	
 }

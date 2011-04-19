@@ -33,6 +33,7 @@
 		<pattern>/geral/codigoCBO/find.action*</pattern>
 		<pattern>/desenvolvimento/colaboradorTurma/findNotas.action*</pattern>
 		<pattern>/captacao/solicitacao/findEventos.action*</pattern>
+		<pattern>/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action*</pattern>		
 	</excludes>
 
 	<decorator name="login" page="login.ftl">
