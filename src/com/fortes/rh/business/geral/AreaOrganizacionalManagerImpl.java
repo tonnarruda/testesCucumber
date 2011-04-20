@@ -597,12 +597,12 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			{
 				if(filhaDeId != null)
 				{
-					if(matriarca.getAreaMae().getId().equals(filhaDeId))
+					if(matriarca.getAreaMae() != null && matriarca.getAreaMae().getId() != null && matriarca.getAreaMae().getId().equals(filhaDeId))
 						return matriarca;
 				}
 				
 				if(areaTmp.getId().equals(area.getAreaMae().getId()))
-					matriarca = getMatriarca(areas, area.getAreaMae(), filhaDeId);
+					matriarca = getMatriarca(areas, areaTmp, filhaDeId);
 			}
 		}
 

@@ -1712,13 +1712,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			if(areaId != null)
 			{
-				if(matriarca.getId().equals(areaId))
+				if(matriarca != null && matriarca.getAreaMae() != null && matriarca.getAreaMae().getId() != null && matriarca.getAreaMae().getId().equals(areaId))
 				{
 					if (!areaSalario.containsKey(matriarca))
 						areaSalario.put(matriarca, 0.0);
 					
-					areaSalario.put(matriarca, areaSalario.get(matriarca) + (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado()));				
-					
+					areaSalario.put(matriarca, areaSalario.get(matriarca) + (colaborador.getSalarioCalculado()== null?0:colaborador.getSalarioCalculado()));																		
 				}
 			}
 			else
@@ -1731,8 +1730,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 		
 		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
-		for (AreaOrganizacional area : areaSalario.keySet()) 
-			dados.add(new DataGrafico(area.getId(), area.getNome(), areaSalario.get(area)));			
+		if(!areaSalario.isEmpty())
+		{
+			for (AreaOrganizacional area : areaSalario.keySet()) 
+				dados.add(new DataGrafico(area.getId(), area.getNome(), areaSalario.get(area)));			
+		}
 		
 		return dados;
 	}

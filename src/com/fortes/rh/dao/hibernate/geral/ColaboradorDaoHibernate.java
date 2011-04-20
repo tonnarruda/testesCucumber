@@ -1527,7 +1527,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();
 
 		hql.append("select new Colaborador(co.id, co.nome, es.nome, ao.id, ao.nome, fs.nome, ca.nome, hc.tipoSalario, hc.salario, ");
-		hql.append("                       hc.quantidadeIndice, hc.status, hcih.valor, fsh.tipo, fsh.valor, fsh.quantidade, fsh.status, fshih.valor) ");
+		hql.append("                       hc.quantidadeIndice, hc.status, hcih.valor, fsh.tipo, fsh.valor, fsh.quantidade, fsh.status, fshih.valor, ao.areaMae.id) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.estabelecimento as es ");
@@ -1573,7 +1573,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();
 
 		hql.append("select new Colaborador(co.id, co.nome, es.nome, ao.id, ao.nome, fs.nome, ca.nome, rc.tipoSalarioProposto, rc.salarioProposto, ");
-		hql.append("                       rc.quantidadeIndiceProposto, -1, ih.valor, fsh.tipo, fsh.valor, fsh.quantidade, fsh.status, fshih.valor) ");
+		hql.append("                       rc.quantidadeIndiceProposto, -1, ih.valor, fsh.tipo, fsh.valor, fsh.quantidade, fsh.status, fshih.valor, ao.areaMae.id) ");
 		hql.append("from TabelaReajusteColaborador as trc ");
 		hql.append("left join trc.reajusteColaboradors as rc ");
 		hql.append("left join rc.estabelecimentoProposto as es ");
