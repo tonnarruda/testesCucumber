@@ -2,9 +2,10 @@
 
 Funcionalidade: Cadastrar Area Organizacional
  
-  @dev 
+  @dev
   Cenário: Cadastro de Organizacional
     Dado que eu esteja logado
+    #Quando eu aperto "OK"
     Quando eu acesso o menu "C&S > Cadastros > Áreas Organizacionais"
     Então eu devo ver o título "Áreas Organizacionais"
     Quando eu clico no botão "Inserir"

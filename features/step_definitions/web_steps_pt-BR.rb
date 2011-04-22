@@ -18,13 +18,11 @@ end
 
 Quando /^eu acesso o menu "([^"]*)"$/ do |menu_path|
     items = menu_path.strip.split(/\s*>\s*/)
-
-    find("#menuDropDown > li > a:contains('" + items.shift + "')").click
-
+    link = find("#menuDropDown > li > a:contains('" + items.shift + "')")
+    link.click
     items.each do |item|
-      all(".smOW > ul > li > a:contains('" + item + "')").each do |element|
-        element.click if element.visible?
-      end
+       link = link.find(:xpath, "../ul/li/a[text()='" + item + "']")
+	   link.click
     end
 end
 
@@ -33,6 +31,7 @@ Quando /^eu clico em "Entrar"?$/ do
 end
 
 Quando /^eu clico no botão "([^"]*)"$/ do |text|
+	debugger
     find('.btn' + text).click
 end
 
