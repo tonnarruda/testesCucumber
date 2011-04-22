@@ -11,7 +11,7 @@ module NavigationHelpers
     when /the home\s?page/
       '/'
     when /pagina de login/
-      'http://localhost:8080/fortesrhcomercial/'
+      'http://10.1.3.48:8080/fortesrhcomercial/'
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
