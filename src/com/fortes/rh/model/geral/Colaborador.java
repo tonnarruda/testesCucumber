@@ -632,13 +632,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public Colaborador(Long id, String nome, String estabelecimentoNome, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome,
 			           Integer historicoColaboradorTipoSalario, Double historicoColaboradorSalario, Double historicoColaboradorQuantidadeIndice, Integer historicoColaboradorStatus,
 			           Double historicoColaboradorIndiceHistoricoValor, Integer faixaSalarialHistoricoTipo, Double faixaSalarialHistoricoValor,
-			           Double faixaSalarialHistoricoQuantidade, Integer faixaSalarialHistoricoStatus, Double faixaSalarialHistoricoIndiceHistoricoValor)
+			           Double faixaSalarialHistoricoQuantidade, Integer faixaSalarialHistoricoStatus, Double faixaSalarialHistoricoIndiceHistoricoValor, Long areaMaeId)
 	{
 		this.setId(id);
 		this.setNome(nome);
 		this.setEstabelecimentoNomeProjection(estabelecimentoNome);
 		this.setAreaOrganizacionalId(areaOrganizacionalId);
 		this.setAreaOrganizacionalNome(areaOrganizacionalNome);
+		this.areaOrganizacional.setAreaMaeId(areaMaeId);
 		this.setFaixaSalarialNomeProjection(faixaSalarialNome);
 		this.setCargoNomeProjection(cargoNome);
 		this.setHistoricoColaboradorTipoSalarioProjection(historicoColaboradorTipoSalario);

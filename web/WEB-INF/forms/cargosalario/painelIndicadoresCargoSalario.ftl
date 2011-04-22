@@ -45,6 +45,10 @@
 			width: 400px;
 			height: 250px;
 		}
+		#box a{
+			color: #85B5D9 !important;
+			text-decoration: none;
+		}
 		#pieBox{
 			float: left;
 			width: 150px;
@@ -111,7 +115,7 @@
 				
 				$("#salarioAreas").bind("plotclick", pieClick);
 				
-			var folha = ${grfEvolucaoFolha};
+							var folha = ${grfEvolucaoFolha};
 			    var options = {
 				    series: {
 	                   lines: { show: true },
@@ -150,10 +154,6 @@
 
 				
 			});
-			
-
-			
-			
 
 			function pieClick(event, pos, obj)
 			{
@@ -172,53 +172,42 @@
 					  async: false,
 					  data: {areaId: areaId_, dataBase: dataBase_},
 					  success: function(data){
-							salarioAreasOrderedBox = data.sort(function (a, b){
-				   					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
-							});
-
-					  		if (!obj)
-								return;
-					
-							var percent = parseFloat(obj.series.percent).toFixed(2);
-							
-							montaPie(salarioAreasOrderedBox, "#pieBox", {
-								radiusLabel:0.8,
-								radius: 0.6,  
-								percentMin: 0.02, 
-								noColumns: 1, 
-								hoverable: true,
-			        			clickable: true,
-			        			container: '#pieLegendBox',
-								legendLabelFormatter: function(label, series) {
-									return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
+					  		if(data.length > 0)
+					  		{
+								salarioAreasOrderedBox = data.sort(function (a, b){
+					   					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
+								});
+	
+						  		if (!obj)
+									return;
+						
+								var percent = parseFloat(obj.series.percent).toFixed(2);
+								
+								montaPie(salarioAreasOrderedBox, "#pieBox", {
+									radiusLabel:0.8,
+									radius: 0.6,  
+									percentMin: 0.02, 
+									noColumns: 1, 
+									hoverable: true,
+				        			clickable: true,
+				        			container: '#pieLegendBox',
+									legendLabelFormatter: function(label, series) {
+										return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
+									}
+								});
+								
+								$("#box").dialog( "option" , { zIndex: 9999, title: obj.series.label + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', minWidth: 400, minHeight: 250 });
+	
+								if(!$("#box").dialog("isOpen"))
+								{
+									$("#box").dialog("open");
+									$("#pieBox").bind("plotclick", pieClick);
 								}
-							});
-							
-							$("#box").dialog( "option" , { zIndex: 9999, title: obj.series.label + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', minWidth: 400, minHeight: 250 });
-
-							if(!$("#box").dialog("isOpen"))
-							{
-								$("#box").dialog("open");
-								$("#pieBox").bind("plotclick", pieClick);
-							}
+							}else
+								jAlert("Área Organizacional não possui área filha.");
 					  }
 					});
-			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			}		
 			
 			function showTooltip(x, y, contents) 
 			{
@@ -248,7 +237,7 @@
 			{
 				return 'R$' + $('<span>' + value + '</span>').format({}).text().replace(/,/g,'#').replace(/\./g,',').replace(/#/g,'.');
 			}
-			
+
 		</script>
 	
 		<#include "../ftl/mascarasImports.ftl" />
@@ -303,6 +292,7 @@
 		
 		
 		<div id="box">
+			<!--<a href="#" style="float: right;" tabIndex="-1" onclick="voltar()">&lt;&lt; Voltar</a>-->
 			<div id="pieBox"></div>
 			<div id="pieLegendBox"/>
 			<div style="clear: both"></div>

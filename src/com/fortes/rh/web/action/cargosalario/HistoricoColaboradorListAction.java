@@ -141,7 +141,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		grfSalarioAreas  = StringUtil.toJSON(graficoSalarioArea, null);
 		grfEvolucaoFolha = StringUtil.toJSON(graficoEvolucaoFolha, null);
-		grfEvolucaoFolha = StringUtil.toJSON(null, null);
 
 		valorTotalFolha  = 0.0;
 		for (DataGrafico dataGrafico : graficoSalarioArea) 
