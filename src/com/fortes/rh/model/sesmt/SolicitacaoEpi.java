@@ -41,6 +41,8 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	private Epi epi;
 	@Transient
 	private Integer qtdEpiEntregue = 0;
+	@Transient
+	private Date dataEpiEntrega;
 	
 	@Transient
 	private Date vencimentoCA;
@@ -48,13 +50,14 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	public Date getDataVencimentoEpi()
 	{
 		Date dataVencimento = null;
-		if (epiHistorico != null && epiHistorico.getValidadeUso() != null)
+		if (epiHistorico != null && epiHistorico.getValidadeUso() != null && dataEpiEntrega != null)
 		{
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(data);
+			calendar.setTime(dataEpiEntrega);
 			calendar.add(Calendar.DAY_OF_YEAR, +epiHistorico.getValidadeUso());
 			dataVencimento = calendar.getTime();
 		}
+		
 		return dataVencimento;
 	}
 
@@ -73,7 +76,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		setCargoNome(cargoNome);
 	}
 
-	public SolicitacaoEpi(Long epiId, Long colaboradorId, String epiNome, String colaboradorNome, String cargoNome, Date data, Integer validadeUso, Integer qtdEpiEntregue)
+	public SolicitacaoEpi(Long epiId, Long colaboradorId, String epiNome, String colaboradorNome, String cargoNome, Date data, Integer validadeUso, Date dataEntrega, Integer qtdEpiEntregue, Date vencimentoCA)
 	{
 		epi = new Epi();
 		epi.setId(epiId);
@@ -85,11 +88,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		epiHistorico.setValidadeUso(validadeUso);
 		this.data = data;
 		this.qtdEpiEntregue = qtdEpiEntregue;
-	}
-
-	public SolicitacaoEpi(Long epiId, Long colaboradorId, String epiNome, String colaboradorNome, String cargoNome, Date data, Integer validadeUso, Integer qtdEpiEntregue, Date vencimentoCA)
-	{
-		this(epiId, colaboradorId, epiNome, colaboradorNome, cargoNome, data, validadeUso, qtdEpiEntregue);
+		this.dataEpiEntrega = dataEntrega;
 		this.vencimentoCA = vencimentoCA;
 	}
 
@@ -186,6 +185,10 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	public Date getVencimentoCA() {
 		return vencimentoCA;
+	}
+
+	public Date getDataEpiEntrega() {
+		return dataEpiEntrega;
 	}
 
 }

@@ -115,7 +115,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 	public Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds, Long[] areasIds, Long[] estabelecimentoIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select distinct new SolicitacaoEpi(e.id,co.id,e.nome,co.nome,ca.nome,se.data,eh.validadeUso,item.qtdEntregue, eh.vencimentoCA) ");
+		hql.append("select distinct new SolicitacaoEpi(e.id,co.id,e.nome,co.nome,ca.nome,se.data,eh.validadeUso, item.dataEntrega, item.qtdEntregue, eh.vencimentoCA) ");
 		hql.append("from Epi e ");
 		hql.append("join e.solicitacaoEpiItems item ");
 		hql.append("join item.solicitacaoEpi se ");
@@ -165,7 +165,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 	public Collection<SolicitacaoEpi> findEntregaEpi(Long empresaId, Long[] epiIds, Date dataIni, Date dataFim)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new SolicitacaoEpi(e.id,co.id,e.nome,co.nome,ca.nome,se.data,eh.validadeUso,item.qtdEntregue) ");
+		hql.append("select new SolicitacaoEpi(e.id,co.id,e.nome,co.nome,ca.nome,se.data,eh.validadeUso, item.dataEntrega, item.qtdEntregue, eh.vencimentoCA) ");
 		hql.append("from Epi e ");
 		hql.append("join e.solicitacaoEpiItems item ");
 		hql.append("join item.solicitacaoEpi se ");
@@ -175,7 +175,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		hql.append("where se.entregue = true ");
 		
 		if (dataIni != null && dataFim != null)
-			hql.append("and se.data between :dataIni and :dataFim ");
+			hql.append("and item.dataEntrega between :dataIni and :dataFim ");
 		
 		if(epiIds != null && epiIds.length != 0)
 			hql.append("and e.id in (:epiCheck) ");

@@ -31,7 +31,7 @@
 	<field name="dataVencimentoEpi" class="java.util.Date"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="qtdEpiEntregue" class="java.lang.Integer"/>
-	<field name="data" class="java.util.Date"/>
+	<field name="dataEpiEntrega" class="java.util.Date"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{epi.nome}]]></variableExpression>
@@ -276,7 +276,7 @@
 					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{data}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataEpiEntrega}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

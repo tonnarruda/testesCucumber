@@ -180,11 +180,11 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		SolicitacaoEpi solicitacaoEpi =
 			new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",
-					dataSeisMesesAtras.getTime(), validadeUso, 1);
+					dataSeisMesesAtras.getTime(), validadeUso, null, 1, null);
 
 		SolicitacaoEpi solicitacaoEpiAnteriorFora =
 			new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",
-					dataSeteMesesAtras.getTime(), validadeUso, 1);
+					dataSeteMesesAtras.getTime(), validadeUso, null, 1, null);
 
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
 		colecao.add(solicitacaoEpiAnteriorFora);
@@ -212,7 +212,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		epi.setNome("EpiNome");
 		Colaborador colaborador = ColaboradorFactory.getEntity(100L);
 		
-		SolicitacaoEpi solicitacaoEpi =	new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",	data, validadeUso, 1);
+		SolicitacaoEpi solicitacaoEpi =	new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",	data, validadeUso, null, 1, null);
 		
 		Collection<SolicitacaoEpi> solicitacaoEpisRetorno = new ArrayList<SolicitacaoEpi>();
 		solicitacaoEpisRetorno.add(solicitacaoEpi);

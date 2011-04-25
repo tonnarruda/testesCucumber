@@ -158,37 +158,26 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 	public void testFindEntregaEpi()
 	{
 		Date hoje = new Date();
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setDesligado(false);
 		colaborador.setNome("nometeste");
 		colaboradorDao.save(colaborador);
 		
-		Cargo cargo = CargoFactory.getEntity(1L);
+		Cargo cargo = CargoFactory.getEntity();
 		cargo.setNome("cargo");
 		cargoDao.save(cargo);
 		
-		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
+		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi.setData(hoje);
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setCargo(cargo);
 		solicitacaoEpi.setEntregue(true);
-		solicitacaoEpi.setData(DateUtil.criarDataMesAno(01, 02, 2011));
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
-		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
-		solicitacaoEpiItem.setId(1L);
-		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
-		//set epi
-		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
-		
-		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = new ArrayList<SolicitacaoEpiItem>();
-		solicitacaoEpiItems.add(solicitacaoEpiItem);
-		
 		EpiHistorico epiHistorico = new EpiHistorico();
-		epiHistorico.setId(1L);
 		epiHistorico.setValidadeUso(6);
 		epiHistorico.setData(hoje);
 		epiHistoricoDao.save(epiHistorico);
@@ -196,18 +185,23 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Collection<EpiHistorico> epiHistoricos = new ArrayList<EpiHistorico>();
 		epiHistoricos.add(epiHistorico);
 		
-		Epi epi = EpiFactory.getEntity(1L);
+		Epi epi = EpiFactory.getEntity();
 		epi.setEmpresa(empresa);
 		epi.setNome("teste");
 		epi.setEpiHistoricos(epiHistoricos);
-		epi.setSolicitacaoEpiItems(solicitacaoEpiItems);
 		epiDao.save(epi);
 		
-		Long[] epiCheck = {1L};
+		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
+		solicitacaoEpiItem.setDataEntrega(hoje);
+		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
+		solicitacaoEpiItem.setEpi(epi);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
 		
-		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(1L, epiCheck, DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2011));
+		Long[] epiCheck = {epi.getId()};
 		
-		assertEquals(0,colecao.size());
+		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), epiCheck, DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020));
+		
+		assertEquals(1, colecao.size());
 	}
 	
 	public void testGetCount()
