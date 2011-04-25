@@ -75,7 +75,6 @@
 		
 		<title>Painel de Indicadores de C&S</title>
 
-		
 		<#if dataBase?exists>
 		  <#assign dateBase = dataBase?date/>
 		<#else>
@@ -164,7 +163,7 @@
 				else
 					var areaId_ = salarioAreasOrderedBox[obj.seriesIndex].id;
 
-				dataBase_ = '19/04/2011';
+				dataBase_ = '${dateBase}';
 
 				$.ajax({
 					  url: urlFind,
@@ -204,7 +203,9 @@
 									$("#pieBox").bind("plotclick", pieClick);
 								}
 							}else
+							{
 								jAlert("Área Organizacional não possui área filha.");
+							}
 					  }
 					});
 			}		
@@ -230,7 +231,7 @@
 			}
 			function enviaForm2()
 			{
-				return validaFormularioEPeriodo('formBusca2', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'));
+				return validaFormularioEPeriodo('formBusca2', new Array('mesAnoIni','mesAnoFim'), new Array('mesAnoIni','mesAnoFim'));
 			}
 			
 			function formataNumero(value)
