@@ -12,5 +12,5 @@ public interface SolicitacaoEpiItemManager extends GenericManager<SolicitacaoEpi
 	void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado);
 	void removeAllBySolicitacaoEpi(Long solicitacaoEpiId);
 	Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long[] solicitacaoEpiIds);
-	void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado);
+	void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectDataSolicitado);
 }

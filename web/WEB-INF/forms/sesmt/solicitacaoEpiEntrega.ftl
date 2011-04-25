@@ -5,6 +5,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
+
 	<#include "../ftl/mascarasImports.ftl" />
 	<title>Entrega de EPIs</title>
 
@@ -78,6 +79,11 @@
 					</#list>
 				</select>
 			</@display.column>
+
+			<@display.column title="Data de entrega">
+				<@ww.datepicker id="selectDataSolicitado_${lista[0].id}" name="selectDataSolicitado" cssClass="mascaraData" value="${lista[1].dataEntrega?string('dd/MM/yyyy')}"/>			
+			</@display.column>
+
 		</@display.table>
 
 		<@ww.hidden name="solicitacaoEpi.id" />

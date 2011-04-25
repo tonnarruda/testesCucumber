@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -25,6 +26,7 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 
 	private Integer qtdSolicitado=0;
 	private Integer qtdEntregue=0;
+	private Date dataEntrega = null;
 
 	public void setProjectionSolicitacaoEpiId(Long id)
 	{
@@ -89,6 +91,17 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 	public void setSolicitacaoEpi(SolicitacaoEpi solicitacaoEpi)
 	{
 		this.solicitacaoEpi = solicitacaoEpi;
+	}
+
+	public Date getDataEntrega() {
+		if (dataEntrega == null || dataEntrega.before(DateUtil.criarAnoMesDia(01, 01, 1900)))
+			return new Date();
+			
+		return dataEntrega;
+	}
+
+	public void setDataEntrega(Date dataEntrega) {
+		this.dataEntrega = dataEntrega;
 	}
 
 }

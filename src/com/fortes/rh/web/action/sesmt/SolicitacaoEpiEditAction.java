@@ -31,6 +31,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	private Object[][] listaEpis;
 	private String[] selectQtdSolicitado;
+	private String[] selectDataSolicitado;
 	private String[] selectQtdEntregue;
 	private String[] epiIds;
 
@@ -124,7 +125,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado);
+			solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, selectDataSolicitado);
 		}
 		catch (Exception e)
 		{
@@ -251,5 +252,13 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager)
 	{
 		this.solicitacaoEpiItemManager = solicitacaoEpiItemManager;
+	}
+
+	public String[] getSelectDataSolicitado() {
+		return selectDataSolicitado;
+	}
+
+	public void setSelectDataSolicitado(String[] selectDataSolicitado) {
+		this.selectDataSolicitado = selectDataSolicitado;
 	}
 }

@@ -10,6 +10,7 @@ import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<SolicitacaoEpiItem, SolicitacaoEpiItemDao> implements SolicitacaoEpiItemManager
 {
@@ -45,14 +46,15 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		}
 	}
 
-	public void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado)
+	public void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectDataSolicitado)
 	{
-		if (epiIds != null && selectQtdSolicitado != null)
+		if (epiIds != null && selectQtdSolicitado != null && selectDataSolicitado != null)
 		{
 			for (int i=0; i < epiIds.length; i++)
 			{
 				SolicitacaoEpiItem solicitacaoEpiItem = getDao().findBySolicitacaoEpiAndEpi(solicitacaoEpi.getId(), Long.valueOf(epiIds[i]));
 				solicitacaoEpiItem.setQtdEntregue(Integer.valueOf(selectQtdSolicitado[i]));
+				solicitacaoEpiItem.setDataEntrega(DateUtil.montaDataByString(selectDataSolicitado[i]));
 				getDao().update(solicitacaoEpiItem);
 			}
 		}

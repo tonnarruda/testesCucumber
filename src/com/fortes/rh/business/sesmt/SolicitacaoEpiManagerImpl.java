@@ -73,11 +73,11 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		}
 	}
 
-	public void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado) throws Exception
+	public void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectDataSolicitado) throws Exception
 	{
 		try
 		{
-			solicitacaoEpiItemManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado);
+			solicitacaoEpiItemManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, selectDataSolicitado);
 			solicitacaoEpi = findById(solicitacaoEpi.getId());
 			Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId());
 

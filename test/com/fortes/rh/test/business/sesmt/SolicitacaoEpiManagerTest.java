@@ -270,13 +270,13 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		solicitacaoEpiItems.add(item);
 
 		solicitacaoEpiItemManager.expects(once()).method("entrega")
-					.with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado));
+					.with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING);
 		solicitacaoEpiDao.expects(once()).method("findById").will(returnValue(solicitacaoEpi));
 		solicitacaoEpiItemManager.expects(once()).method("findBySolicitacaoEpi")
 					.with(eq(solicitacaoEpi.getId())).will(returnValue(solicitacaoEpiItems));
 		solicitacaoEpiDao.expects(once()).method("update").with(eq(solicitacaoEpi)).isVoid();
 
-		solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado);
+		solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
 
 		assertTrue(solicitacaoEpi.isEntregue());
 	}
@@ -297,13 +297,13 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		solicitacaoEpiItems.add(item);
 
 		solicitacaoEpiItemManager.expects(once()).method("entrega")
-					.with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado));
+					.with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING);
 		solicitacaoEpiDao.expects(once()).method("findById").will(returnValue(solicitacaoEpi));
 		solicitacaoEpiItemManager.expects(once()).method("findBySolicitacaoEpi")
 					.with(eq(solicitacaoEpi.getId())).will(returnValue(solicitacaoEpiItems));
 		solicitacaoEpiDao.expects(once()).method("update").with(eq(solicitacaoEpi)).isVoid();
 
-		solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado);
+		solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
 
 		assertFalse(solicitacaoEpi.isEntregue());
 	}
@@ -321,7 +321,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado);
+			solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
 		}
 		catch (Exception e)
 		{

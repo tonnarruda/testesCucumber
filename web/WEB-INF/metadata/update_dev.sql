@@ -9,3 +9,5 @@ update papel set nome = 'Análise das Etapas Seletivas' where id=48;--.go
 update parametrosdosistema set camposcandidatovisivel=replace(camposcandidatovisivel,'telefone','fone');--.go
 
 update parametrosdosistema set camposcandidatoobrigatorio=replace(camposcandidatoobrigatorio,'telefone','fone');--.go
+
+alter table solicitacaoepi_item	 add column dataEntrega date;--.go
