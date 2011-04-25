@@ -319,7 +319,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				String body = "<br>O candidato <b>" + colaborador.getNome() + "</b> foi contratado e seus dados "
 						+ "estão disponíveis no <b>AC Pessoal</b> para complemento de suas informações.<br><br>";
 
-				mail.send(empresa, "[Fortes RH] Contratação de candidato", body, null, empresa.getEmailRespSetorPessoal());
+				mail.send(empresa, "[RH] Contratação de candidato", body, null, empresa.getEmailRespSetorPessoal());
 			}
 			catch (Exception e)
 			{
@@ -475,11 +475,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 			String link = parametros.getAppUrl() + "/acesso/usuario/prepareCriarUsuario.action";
 
-			String corpo = "Bem Vindo!<br>Você foi cadastrado no Fortes RH com sucesso.<br>";
+			String corpo = "Bem Vindo!<br>Você foi cadastrado no RH com sucesso.<br>";
 			corpo += "Segue abaixo link para criação da conta de usuário para acesso ao sistema.<br><br>";
 			corpo += "<a href='" + link + "?colaborador.id=" + colaborador.getId() + "'>Clique aqui para ser direcionado para a tela de criação do usuário</a>";
 
-			mail.send(empresa, "[Fortes RH] Criar Conta de Usuário", corpo, null, colaborador.getContato().getEmail());
+			mail.send(empresa, "[RH] Criar Conta de Usuário", corpo, null, colaborador.getContato().getEmail());
 		}
 	}
 
@@ -569,8 +569,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		StringBuilder body = new StringBuilder();
 		body.append("Sr(a) " + nomeUsuario + ", <br>");
 		body.append("sua senha do sistema Fortesrh é : " + senha + "<br>");
-		body.append("Acesse o Fortes RH em:<br>");
-		body.append("<a href='" + link + "'>Fortes RH</a>");
+		body.append("Acesse o RH em:<br>");
+		body.append("<a href='" + link + "'>RH</a>");
 
 		try
 		{

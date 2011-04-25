@@ -1,7 +1,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Erro na configuração do Fortes RH</title>
+	<title>Erro na configuração do RH</title>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');

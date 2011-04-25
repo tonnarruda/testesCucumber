@@ -50,7 +50,7 @@ public class NotificadorDeBackupViaEmailImpl implements NotificadorDeBackup {
 	private String getCorpo(String backupFile, String appUrl) {
 		String link = getLink(appUrl, getNomeDoArquivo(backupFile)); 
 		return new StringBuilder()
-				.append("O FortesRH fez um backup automático do banco de dados.")
+				.append("O RH fez um backup automático do banco de dados.")
 				.append("<br /><br />")
 				.append("O arquivo foi salvo no diretório ")
 				.append("<b>'").append(backupFile).append("'</b>.")

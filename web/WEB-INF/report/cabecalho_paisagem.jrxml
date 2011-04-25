@@ -127,7 +127,7 @@
 					<textElement textAlignment="Right">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CABECALHO}.getVersaoSistema() ==null ? "Fortes RH " : "Fortes RH - versão " + $P{CABECALHO}.getVersaoSistema()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CABECALHO}.getVersaoSistema() ==null ? "RH " : "RH - versão " + $P{CABECALHO}.getVersaoSistema()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

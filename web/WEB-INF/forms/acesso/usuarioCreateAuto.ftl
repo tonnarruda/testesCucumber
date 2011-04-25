@@ -9,7 +9,7 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	<@ww.div cssStyle="background-color: #EEEEEE; padding:5px;">
-		Esta funcionalidade cria automaticamente usuários para colaboradores que ainda não tem acesso ao Fortes RH.<br>
+		Esta funcionalidade cria automaticamente usuários para colaboradores que ainda não tem acesso ao RH.<br>
 		O login do usuário será o CPF do Colaborador.<br>
 		Os usuários serão criados com o perfil <b>${perfil.nome}</b> e a senha informada abaixo.<br>
 	</@ww.div>

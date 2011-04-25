@@ -124,7 +124,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 			
 			String link = "avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action?colaborador.id=" + colaborador.getId();
 			
-			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "Fortes RH", link, usuarioEmpresas);
+			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", link, usuarioEmpresas);
 		}
 	}
 	

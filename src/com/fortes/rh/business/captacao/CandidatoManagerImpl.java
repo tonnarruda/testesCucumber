@@ -664,8 +664,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		StringBuilder body = new StringBuilder();
 		body.append("Sr(a) " + nomeUsuario + ", <br>");
 		body.append("sua senha do sistema Fortesrh é : " + senha + "<br>");
-		body.append("Acesse o Fortes RH em:<br>");
-		body.append("<a href='" + link + "'>Fortes RH</a>");
+		body.append("Acesse o RH em:<br>");
+		body.append("<a href='" + link + "'>RH</a>");
 
 		try
 		{

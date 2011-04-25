@@ -2,7 +2,7 @@
 <head>
 <@ww.head/>
 
-	<title>Sobre o Fortes RH</title>
+	<title>Sobre o RH</title>
 
 <style>
 	.sobre

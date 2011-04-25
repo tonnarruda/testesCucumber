@@ -190,8 +190,8 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			body.append("<br>Motivo: " + solicitacao.getMotivoSolicitacao().getDescricao());
 			body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
 			body.append("<br>Solicitante: " + nomeSolicitante);
-			body.append("<br>Acesse o FortesRH para mais detalhes:<br>");
-			body.append("<a href='" + link + "'>Fortes RH</a>");
+			body.append("<br>Acesse o RH para mais detalhes:<br>");
+			body.append("<a href='" + link + "'>RH</a>");
 			
 			mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emails));
 		}
