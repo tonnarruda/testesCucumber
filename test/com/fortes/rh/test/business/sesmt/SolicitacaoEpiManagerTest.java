@@ -83,12 +83,12 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
 
 		solicitacaoEpiDao.expects(once()).method("save").with(eq(solicitacaoEpi)).isVoid();
-		solicitacaoEpiItemManager.expects(once()).method("save").with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado)).isVoid();
+		solicitacaoEpiItemManager.expects(once()).method("save").with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING).isVoid();
 
 		Exception exception = null;
 		try
 		{
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado);
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
 		}
 		catch (Exception e)
 		{
@@ -106,7 +106,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			solicitacaoEpiManager.save(solicitacaoEpi, null, null);
+			solicitacaoEpiManager.save(solicitacaoEpi, null, null, null);
 		}
 		catch (Exception e)
 		{
@@ -123,7 +123,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		solicitacaoEpiDao.expects(once()).method("update").with(eq(solicitacaoEpi)).isVoid();
 		solicitacaoEpiItemManager.expects(once()).method("removeAllBySolicitacaoEpi").with(eq(solicitacaoEpi.getId())).isVoid();
-		solicitacaoEpiItemManager.expects(once()).method("save").with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado)).isVoid();
+		solicitacaoEpiItemManager.expects(once()).method("save").with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING).isVoid();
 
 		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado);
 	}

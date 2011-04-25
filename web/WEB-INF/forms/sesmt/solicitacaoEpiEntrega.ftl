@@ -4,44 +4,44 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
+		input {
+			border: 1px solid #7E9DB9 !important;
+		}
 	</style>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<title>Entrega de EPIs</title>
+	
+	<!-- Não apague, da um erro que nem o babau achou, e ainda mais nem sempre acontece, logo não apague (erro no stack.setValue("#datepicker_js_included", true)) -->
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/" encode='false'/>calendar.js"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/lang/" encode='false'/>calendar-${parameters.language?default("en")}.js"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/" encode='false'/>calendar-setup.js"></script>
+	<!-- Não apague, da um erro que nem o babau achou, e ainda mais nem sempre acontece, logo não apague (erro no stack.setValue("#datepicker_js_included", true)) -->
 
-	<script>
-	function mudarQtd(elementCheck)
-	{
-		var id = "selectQtdSolicitado_" + elementCheck.value;
-		var elementSelect = document.getElementById(id);
-
-		if(elementSelect.disabled)
-			elementSelect.disabled = false;
-		else
-			elementSelect.disabled = true;
-	}
-
-	function marcarDesmarcar(frm)
-	{
-		var vMarcar;
-
-		if (document.getElementById('md').checked)
-			vMarcar = true;
-		else
-			vMarcar = false;
-
-		with(frm)
-		{
-			for(i = 0; i < elements.length; i++)
-			{
-				if(elements[i].name == 'epiIds' && elements[i].type == 'checkbox')
-				{
-					elements[i].checked = vMarcar;
-					document.getElementById("selectQtdSolicitado_" + elements[i].value).disabled = !vMarcar;
-				}
-			}
-		}
-	}
+	<script type='text/javascript'>
+		$(function() {
+			$('.mascaraData').attr('disabled', true);
+			$('.qtdSolicitacao').attr('disabled', true);
+			$('a[id^="selectDataSolicitado_"]').hide();
+			
+			$('.checkItem').change(function() {
+				$(this).parent().parent().find('.mascaraData , .qtdSolicitacao').attr('disabled', !$(this).attr('checked'));
+				$(this).parent().parent().find('a').toggle();
+			});
+	
+			$('#md').change(function() {
+				var valueCheck = $(this).attr('checked')
+				$('.checkItem').attr('checked', valueCheck);
+				
+				$('.mascaraData').attr('disabled', !valueCheck);
+				$('.qtdSolicitacao').attr('disabled', !valueCheck);
+				
+				if(valueCheck)
+					$('a[id^="selectDataSolicitado_"]').show();
+				else
+					$('a[id^="selectDataSolicitado_"]').hide();
+			});
+		});
 	</script>
 </head>
 <body>
@@ -56,36 +56,36 @@
 		<#assign i = 0/>
 		<@display.table name="listaEpis" id="lista" class="dados" defaultsort=2 sort="list">
 
-			<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(form);' />" style="width: 30px; text-align: center;">
-				<input type="checkbox" value="${lista[0].id}" name="epiIds" onclick="mudarQtd(this);"/>
+			<@display.column title="<input type='checkbox' id='md' />" style="width: 30px; text-align: center;">
+				<input type="checkbox" value="${lista[0].id}" name="epiIds" class="checkItem" id="${lista[0].id}"/>
 			</@display.column>
 
 			<@display.column title="EPI" style="width:500px;">
 				${lista[0].nome}
 			</@display.column>
 
-			<@display.column title="Quantidade">
+			<@display.column title="Quantidade" style="width:50px;">
 				${lista[1].qtdSolicitado?string}
 			</@display.column>
 
-			<@display.column title="Entregue">
-				<select name="selectQtdSolicitado" id="selectQtdSolicitado_${lista[0].id}" disabled/>
+			<@display.column title="Entregue" style="width:50px;">
+				<select name="selectQtdSolicitado" id="selectQtdSolicitado_${lista[0].id}" class="qtdSolicitacao"/>
 					<#list 0..lista[1].qtdSolicitado as i>
 					  <#if i == lista[1].qtdEntregue>
-					  <option value="${i}" selected>${i}</option>
+					  	<option value="${i}" selected>${i}</option>
 					  <#else>
-					  <option value="${i}">${i}</option>
+					 	 <option value="${i}">${i}</option>
 					  </#if>
 					</#list>
 				</select>
 			</@display.column>
 
-			<@display.column title="Data de entrega">
+			<@display.column title="Data da entrega" style="width:80px;">
 				<@ww.datepicker id="selectDataSolicitado_${lista[0].id}" name="selectDataSolicitado" cssClass="mascaraData" value="${lista[1].dataEntrega?string('dd/MM/yyyy')}"/>			
 			</@display.column>
-
+			
 		</@display.table>
-
+		
 		<@ww.hidden name="solicitacaoEpi.id" />
 		<@ww.hidden name="solicitacaoEpi.empresa.id" />
 		<@ww.hidden name="solicitacaoEpi.data" />
@@ -95,10 +95,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="document.forms[0].submit();" class="btnGravar">
-		</button>
-		<button onclick="window.location='list.action'" class="btnVoltar" accesskey="V">
-		</button>
+		<button onclick="document.forms[0].submit();" class="btnGravar"></button>
+		<button onclick="window.location='list.action'" class="btnVoltar"></button>
 	</div>
 </body>
 </html>

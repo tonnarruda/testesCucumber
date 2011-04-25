@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.sesmt;
 
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -31,10 +32,11 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	private Object[][] listaEpis;
 	private String[] selectQtdSolicitado;
-	private String[] selectDataSolicitado;
+	private Date[] selectDataSolicitado;
 	private String[] selectQtdEntregue;
 	private String[] epiIds;
 
+	private Date dataEntrega;
 
 	public String execute() throws Exception
 	{
@@ -147,7 +149,10 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			solicitacaoEpi.setCargo(colaborador.getFaixaSalarial().getCargo());
 			solicitacaoEpi.setEmpresa(getEmpresaSistema());
 
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado);
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega);
+			
+			addActionMessage("Solicitação gravada com sucesso.");
+			return SUCCESS;
 		}
 		catch (Exception e)
 		{
@@ -156,9 +161,6 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			prepare();
 			return INPUT;
 		}
-
-		addActionMessage("Solicitação gravada com sucesso.");
-		return SUCCESS;
 	}
 
 	public String update() throws Exception
@@ -254,11 +256,17 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		this.solicitacaoEpiItemManager = solicitacaoEpiItemManager;
 	}
 
-	public String[] getSelectDataSolicitado() {
+
+
+	public void setDataEntrega(Date dataEntrega) {
+		this.dataEntrega = dataEntrega;
+	}
+
+	public Date[] getSelectDataSolicitado() {
 		return selectDataSolicitado;
 	}
 
-	public void setSelectDataSolicitado(String[] selectDataSolicitado) {
+	public void setSelectDataSolicitado(Date[] selectDataSolicitado) {
 		this.selectDataSolicitado = selectDataSolicitado;
 	}
 }

@@ -24,13 +24,31 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 <script>
+	$(function() {
+		$('#dataEntrega').attr('disabled', true);
+		$('#dataEntrega_button').hide();
+
+		$('#entregue').change(function() {
+			$('#dataEntrega').attr('disabled', $(this).val() == 'false');
+			$('#dataEntrega_button').toggle();
+		});
+	});
+	
 	function enviaForm()
 	{
 		check = validaCheck(document.forms[1], 'epiIds', "Selecione pelo menos um EPI.");
 		if (check)
 		{
 			idsQtdSolicitado = getIdsInputQtdSolicitado(document.forms[1]);
-			validaForm = validaFormulario('form', idsQtdSolicitado, new Array('data'));
+			validaDatas = new Array('data');
+						
+			if($('#entregue').val() == 'true')
+			{
+				idsQtdSolicitado.push('dataEntrega');
+				validaDatas.push('dataEntrega');				
+			}
+
+			validaForm = validaFormulario('form', idsQtdSolicitado, validaDatas);
 		}
 
 		return check && validaForm;
@@ -143,7 +161,6 @@
 	<#assign data = ""/>
 </#if>
 
-<#include "../ftl/mascarasImports.ftl" />
 </head>
 <body>
 <@ww.actionmessage />
@@ -154,10 +171,8 @@
 		<@ww.textfield label="Nome" name="colaborador.nome" id="nome" cssClass="inputNome" maxLength="100" cssStyle="width: 400px;"/>
 		<@ww.textfield label="CPF" id="cpf" name="colaborador.pessoal.cpf" liClass="liLeft" maxLength="11" cssClass="mascaraCpf" onkeypress="return(somenteNumeros(event,''));" />
 		<@ww.textfield label="Matrícula" id="matricula" name="colaborador.matricula" cssStyle="width:60px;"  maxLength="20"/>
-		<button onclick="validaFormulario('formFiltro', null, null);" class="btnPesquisar grayBGE">
-		</button>
-		<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE">
-		</button>
+		<button onclick="validaFormulario('formFiltro', null, null);" class="btnPesquisar grayBGE"></button>
+		<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE"></button>
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br/>
@@ -176,7 +191,7 @@
 			<div>EPIs:</div>
 
 			<#assign i = 0/>
-			<@display.table name="listaEpis" id="lista" class="dados" sort="list" style="width:440px;">
+			<@display.table name="listaEpis" id="lista" class="dados" sort="list" style="width:450px;">
 
 				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.forms[1]);' />" style="width: 30px; text-align: center;">
 					<#assign checked=""/>
@@ -200,7 +215,7 @@
 					<#else>
 						<#assign qtdSolicitado = "" />
 					</#if>
-					<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 120px;border:1px solid #7E9DB9;"/>
+					<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 130px;border:1px solid #7E9DB9;"/>
 				</@display.column>
 			</@display.table>
 
@@ -211,17 +226,24 @@
 			<#if solicitacaoEpi.id?exists>
 				<@ww.hidden name="solicitacaoEpi.entregue" />
 			<#else>
-				<@ww.select label="Considerar os EPIs acima como entregues" name="solicitacaoEpi.entregue" list=r"#{true:'Sim',false:'Não'}"/>
+				<li>
+					<fieldset class="fieldsetPadrao">
+						<ul>
+							<legend>Considerar os EPIs acima como entregues:</legend>
+							<@ww.select label="Entregues" name="solicitacaoEpi.entregue" id="entregue" list=r"#{true:'Sim',false:'Não'}" liClass="liLeft" />
+							<@ww.datepicker label="Data" id="dataEntrega" name="dataEntrega" required="true" cssClass="mascaraData" value="${data}"/>
+						</ul>
+					</fieldset>
+				</li>
+							
 			</#if>
 			
 			<@ww.token/>
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button onclick="return enviaForm();" class="btnGravar">
-			</button>
-			<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar" accesskey="V">
-			</button>
+			<button onclick="return enviaForm();" class="btnGravar"></button>
+			<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar" ></button>
 		</div>
 	</#if>
 

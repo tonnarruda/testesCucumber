@@ -2,6 +2,7 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -10,7 +11,6 @@ import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
-import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<SolicitacaoEpiItem, SolicitacaoEpiItemDao> implements SolicitacaoEpiItemManager
 {
@@ -19,7 +19,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		return getDao().findBySolicitacaoEpi(solicitacaoEpiId);
 	}
 
-	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado)
+	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, Date dataEntrega)
 	{
 		if (epiIds != null && selectQtdSolicitado != null)
 		{
@@ -40,13 +40,14 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 				
 				solicitacaoEpiItem.setEpi(epiTmp);
 				solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
+				solicitacaoEpiItem.setDataEntrega(dataEntrega);
 
 				getDao().save(solicitacaoEpiItem);
 			}
 		}
 	}
 
-	public void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectDataSolicitado)
+	public void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, Date[] selectDataSolicitado)
 	{
 		if (epiIds != null && selectQtdSolicitado != null && selectDataSolicitado != null)
 		{
@@ -54,7 +55,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 			{
 				SolicitacaoEpiItem solicitacaoEpiItem = getDao().findBySolicitacaoEpiAndEpi(solicitacaoEpi.getId(), Long.valueOf(epiIds[i]));
 				solicitacaoEpiItem.setQtdEntregue(Integer.valueOf(selectQtdSolicitado[i]));
-				solicitacaoEpiItem.setDataEntrega(DateUtil.montaDataByString(selectDataSolicitado[i]));
+				solicitacaoEpiItem.setDataEntrega(selectDataSolicitado[i]);
 				getDao().update(solicitacaoEpiItem);
 			}
 		}

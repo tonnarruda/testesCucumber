@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.util.DateUtil;
@@ -26,6 +28,8 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 
 	private Integer qtdSolicitado=0;
 	private Integer qtdEntregue=0;
+	
+	@Temporal(TemporalType.DATE)
 	private Date dataEntrega = null;
 
 	public void setProjectionSolicitacaoEpiId(Long id)
