@@ -5,10 +5,12 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
-
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
 Dado /^que eu esteja logado$/ do
+  # Evita problema quando o firefox eh instanciado com a janela menor do que o necessario 
+  page.driver.browser.execute_script("window.resizeTo(screen.width, screen.height);window.moveTo(0,0);window.focus()")
+    
   Dado %{que eu esteja na pagina de login}
   E %{eu preencho "username" com "fortes"}
   E %{eu preencho "password" com "1234"}
@@ -31,7 +33,6 @@ Quando /^eu clico em "Entrar"?$/ do
 end
 
 Quando /^eu clico no botão "([^"]*)"$/ do |text|
-	debugger
     find('.btn' + text).click
 end
 

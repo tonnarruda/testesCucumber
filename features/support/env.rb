@@ -12,6 +12,9 @@ Capybara.default_driver = :selenium
 Capybara.default_wait_time = 5
 
 # This way we are using Selenium-RC
+
+#VER!!!! http://selenium.googlecode.com/svn/trunk/docs/api/rb/Selenium/WebDriver/Firefox/Profile.html
+
 Capybara.register_driver :selenium do |app|
   Capybara::Driver::Selenium.new(app,
     :browser => :remote,
