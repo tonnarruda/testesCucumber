@@ -307,7 +307,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     {
         processoSeletivoRelatorios = historicoCandidatoManager.relatorioProcessoSeletivo(ano, cargoId, StringUtil.stringToLong(etapaCheck));
 
-		String filtro = "Cargo: " + cargoManager.findByIdProjection(cargoId).getNome();
+		String nomeCargo = cargoId==null? "Todos" : cargoManager.findByIdProjection(cargoId).getNome();
+		String filtro = "Cargo: " + nomeCargo;
+
 		parametros = RelatorioUtil.getParametrosRelatorio("Relatório Processo Seletivo - " + ano, getEmpresaSistema(), filtro);
 
 		return Action.SUCCESS;

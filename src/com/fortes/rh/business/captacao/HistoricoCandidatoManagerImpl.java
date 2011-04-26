@@ -222,6 +222,7 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 	{
 		Collection<ProcessoSeletivoRelatorio> processosSeletivos = etapaSeletivaManager.montaProcessosSeletivos(etapaIds);
 		Collection<HistoricoCandidato> historicoCandidatos = getDao().findQtdParticipantes(ano, cargoId, etapaIds);
+		// consulta acima em ordem ligado a regra deste manager.
 		
 		for (ProcessoSeletivoRelatorio processoSeletivoRelatorio : processosSeletivos)
 		{

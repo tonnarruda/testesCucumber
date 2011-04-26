@@ -151,25 +151,32 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 //		order by e.ordem, date_part('month', hc.data),hc.apto
 
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new HistoricoCandidato(e.id, e.nome, count(hc.id), month(hc.data), hc.apto) ");
+		hql.append("select new HistoricoCandidato(e.id, e.nome, count(hc.id), month(hc.data), coalesce(hc.apto, 'N')) ");
 		hql.append("from HistoricoCandidato as hc ");
 		hql.append("left join hc.etapaSeletiva as e ");
 		hql.append("left join hc.candidatoSolicitacao as cs ");
 		hql.append("left join cs.solicitacao as s ");
 		hql.append("left join s.faixaSalarial as fs ");
 
-		hql.append("where fs.cargo.id = :cargoId ");
-		hql.append("and  date_part('year', hc.data) = :ano ");
-		hql.append("and  e.id in ( :etapaIds ) ");
+		hql.append("where date_part('year', hc.data) = :ano ");
 		
-		hql.append("group by e.id, e.ordem, e.nome, month(hc.data), hc.apto ");
-		hql.append("order by e.ordem, month(hc.data), hc.apto ");
+		if(cargoId != null)
+			hql.append("and fs.cargo.id = :cargoId ");
 		
+		if(etapaIds != null && etapaIds.length != 0)
+			hql.append("and  e.id in ( :etapaIds ) ");
+		
+		hql.append("group by e.id, e.ordem, e.nome, month(hc.data), coalesce(hc.apto, 'N') ");
+		hql.append("order by e.ordem, month(hc.data), coalesce(hc.apto, 'N') ");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setLong("cargoId", cargoId);
 		query.setDouble("ano", Double.parseDouble(ano));
-		query.setParameterList("etapaIds", etapaIds, Hibernate.LONG);
+
+		if(cargoId != null)
+			query.setLong("cargoId", cargoId);
+		
+		if(etapaIds != null && etapaIds.length != 0)
+			query.setParameterList("etapaIds", etapaIds, Hibernate.LONG);
 
 		return query.list();
 	}

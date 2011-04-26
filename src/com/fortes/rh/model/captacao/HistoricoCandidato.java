@@ -40,7 +40,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 	@Lob
 	private String observacao;
 
-	private char apto = Apto.INDIFERENTE;
+	private Character apto = Apto.INDIFERENTE;
 	@Transient
 	private Double qtdHistoricos;//usado no relatorio Processo Seletivo
 	@Transient
@@ -55,7 +55,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 
 	}
 	
-	public HistoricoCandidato(Long etapaId, String etapaNome, Integer qtdHistoricos, Integer historicoMes, char apto)
+	public HistoricoCandidato(Long etapaId, String etapaNome, Integer qtdHistoricos, Integer historicoMes, Character apto)
 	{
 		if(this.etapaSeletiva == null)
 			this.etapaSeletiva = new EtapaSeletiva();
@@ -66,7 +66,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 		this.apto = apto;
 	}
 
-	public HistoricoCandidato(Date hcData, String hcResponsavel, String hcObservacao, char hcApto, Long esId, String esNome, Long caId,String caNome, boolean caContratado, String caEmail, Long csId, Long sId, Long colaboradorId)
+	public HistoricoCandidato(Date hcData, String hcResponsavel, String hcObservacao, Character hcApto, Long esId, String esNome, Long caId,String caNome, boolean caContratado, String caEmail, Long csId, Long sId, Long colaboradorId)
 	{
 		this.setData(hcData);
 		this.setResponsavel(hcResponsavel);
@@ -125,7 +125,7 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 
 		candidatoSolicitacao.setId(candidatoSolicitacaoId);
 	}
-	public void setCandidatoSolicitacaoApto(char candidatoSolicitacaoApto)
+	public void setCandidatoSolicitacaoApto(Character candidatoSolicitacaoApto)
 	{
 		if (candidatoSolicitacao == null)
 			candidatoSolicitacao = new CandidatoSolicitacao();
@@ -379,16 +379,19 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 		this.horaFim = horaFim;
 	}
 
-	public char getApto() {
+	public Character getApto() {
 		return apto;
 	}
 
-	public void setApto(char apto) {
+	public void setApto(Character apto) {
 		this.apto = apto;
 	}
 
 	public boolean getAptoBoolean() 
 	{
+		if (this.apto == null)
+			return false;
+		
 		return this.apto != Apto.NAO;
 	}
 }

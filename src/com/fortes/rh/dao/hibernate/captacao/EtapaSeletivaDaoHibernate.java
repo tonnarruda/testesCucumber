@@ -124,7 +124,8 @@ public class EtapaSeletivaDaoHibernate extends GenericDaoHibernate<EtapaSeletiva
 
 		criteria.addOrder(Order.asc("es.ordem"));
 
-		criteria.add(Expression.in("es.id", etapaIds));
+		if(etapaIds != null && etapaIds.length != 0)
+			criteria.add(Expression.in("es.id", etapaIds));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(EtapaSeletiva.class));

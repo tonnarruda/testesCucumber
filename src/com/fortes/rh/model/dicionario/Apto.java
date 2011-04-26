@@ -17,9 +17,9 @@ public class Apto extends LinkedHashMap<Character, String>
 		put(NAO, "Não");
 	}
 
-	public static String getDescApto(char apto)
+	public static String getDescApto(Character apto)
 	{
-		if (apto == 'I')
+		if (apto == null || apto == 'I' )
 			return "-";
 
 		if (apto == 'S')

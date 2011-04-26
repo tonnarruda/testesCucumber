@@ -675,23 +675,21 @@
 						key="line-12"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="40"
+						width="780"
+						height="0"
+						forecolor="#CCCCCC"
+						key="line-13"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
 			</band>
 		</columnHeader>
 		<detail>
 			<band height="25"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						x="1"
-						y="0"
-						width="781"
-						height="25"
-						forecolor="#000000"
-						backcolor="#EEEEEE"
-						key="rectangle-1">
-							<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
-						</reportElement>
-					<graphicElement stretchType="NoStretch" pen="None"/>
-				</rectangle>
+				<printWhenExpression><![CDATA[new Boolean(($F{qtdJan}.doubleValue()+$F{qtdFev}.doubleValue()+$F{qtdMar}.doubleValue()+$F{qtdAbr}.doubleValue()+$F{qtdMai}.doubleValue()+$F{qtdJun}.doubleValue()+$F{qtdJul}.doubleValue()+$F{qtdAgo}.doubleValue()+$F{qtdSet}.doubleValue()+$F{qtdOut}.doubleValue()+$F{qtdNov}.doubleValue()+$F{qtdDez}.doubleValue())!=0.0)]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="540"
@@ -1017,6 +1015,16 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{qtdAprovNov}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="24"
+						width="780"
+						height="0"
+						forecolor="#CCCCCC"
+						key="line-14"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
