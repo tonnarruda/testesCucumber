@@ -11,5 +11,5 @@ update parametrosdosistema set camposcandidatovisivel=replace(camposcandidatovis
 update parametrosdosistema set camposcandidatoobrigatorio=replace(camposcandidatoobrigatorio,'telefone','fone');--.go
 
 alter table solicitacaoepi_item	add column dataEntrega date;--.go
-update solicitacaoepi_item set dataentrega = (select se.data from solicitacaoepi se WHERE se.id=solicitacaoepi_id and se.entregue=true)
+update solicitacaoepi_item set dataentrega = (select se.data from solicitacaoepi se WHERE se.id=solicitacaoepi_id and se.entregue=true);--.go
 update papel set nome = 'Análise das Etapas Seletivas' where id = 48;--.go
