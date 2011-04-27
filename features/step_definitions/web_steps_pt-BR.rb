@@ -19,12 +19,21 @@ Dado /^que eu esteja logado$/ do
 end
 
 Quando /^eu acesso o menu "([^"]*)"$/ do |menu_path|
+	#page.execute_script("$('ul').show()")
+
     items = menu_path.strip.split(/\s*>\s*/)
-    link = find("#menuDropDown > li > a:contains('" + items.shift + "')")
+    menu_master = items.shift; 
+
+    link = find("#menuDropDown > li > a:contains('" + menu_master + "')")
+    page.execute_script("$(\"a:contains('" + menu_master + "') ~ ul\").show()")
     link.click
+    
     items.each do |item|
+
        link = link.find(:xpath, "../ul/li/a[text()='" + item + "']")
+       page.execute_script("$(\"a:contains('" + menu_master + "') ~ ul\").find(\"a:contains('" + item + "') ~ ul\").show()")
 	   link.click
+
     end
 end
 
@@ -37,6 +46,7 @@ Quando /^eu clico no botão "([^"]*)"$/ do |text|
 end
 
 Quando /^eu clico em excluir "([^"]*)"$/ do |text|
+  debugger
   find(:xpath, "//td[text()='#{text}']/../td/a/img[@title='Excluir']").click
 end
 
