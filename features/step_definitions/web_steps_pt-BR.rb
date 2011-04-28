@@ -51,10 +51,6 @@ Então /^eu devo ver o título "([^"]*)"$/ do |text|
   Then %{I should see "#{text}" within "#waDivTitulo"}
 end
 
-
-#-----------------------------------------
-
-
 Dado /^que eu esteja na (.+)$/ do |page_name|
   Given %{I am on #{page_name}}
 end
