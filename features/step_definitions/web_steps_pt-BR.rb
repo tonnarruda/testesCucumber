@@ -22,6 +22,7 @@ Quando /^eu acesso o menu "([^"]*)"$/ do |menu_path|
     items = menu_path.strip.split(/\s*>\s*/)
     link = find("#menuDropDown > li > a:contains('" + items.shift + "')")
     link.click
+    breakpoint
     items.each do |item|
        link = link.find(:xpath, "../ul/li/a[text()='" + item + "']")
 	   link.click
