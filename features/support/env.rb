@@ -1,19 +1,31 @@
 require 'selenium-webdriver'
 require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
-#require 'cucumber/web/tableish'
-require 'capybara/cucumber'
+require 'capybara'
+require 'capybara/dsl'
 require 'capybara/session'
-#require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
 require 'ruby-debug'
-#set autoeval on
 
-#Selenium::WebDriver.for :firefox
+######################################################################################################################
+# require 'capybara/cucumber' foi substituido pelo codigo abaixo. Motivo: nao matar a sessao entre
+# os cenarios. O original se encontra em C:\Ruby192\lib\ruby\gems\1.9.1\gems\capybara-0.4.1.2\lib\capybara\cucumber.rb
+
+World(Capybara)
+
+Before('@javascript') do
+  Capybara.current_driver = Capybara.javascript_driver
+end
+
+Before('@selenium') do
+  Capybara.current_driver = :selenium
+end
+
+After do
+  Capybara.use_default_driver
+end
+######################################################################################################################
+
 Capybara.default_driver = :selenium
 Capybara.default_wait_time = 5
-
-# This way we are using Selenium-RC
-
-#VER!!!! http://selenium.googlecode.com/svn/trunk/docs/api/rb/Selenium/WebDriver/Firefox/Profile.html
 
 Capybara.register_driver :selenium do |app|
   Capybara::Driver::Selenium.new(app,

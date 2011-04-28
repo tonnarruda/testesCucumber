@@ -1,8 +1,7 @@
 # language: pt
 
 Funcionalidade: Cadastrar Grupo Ocupacional
- 
-  @dev
+
   Cenário: Cadastro de Grupo Ocupacional
     Dado que eu esteja logado
     Quando eu acesso o menu "C&S > Cadastros > Grupos Ocupacionais"

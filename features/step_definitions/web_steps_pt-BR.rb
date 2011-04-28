@@ -8,32 +8,29 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
 Dado /^que eu esteja logado$/ do
-  # Evita problema quando o firefox eh instanciado com a janela menor do que o necessario 
-  page.driver.browser.execute_script("window.resizeTo(screen.width, screen.height);window.moveTo(0,0);window.focus()")
-    
-  Dado %{que eu esteja na pagina de login}
-  E %{eu preencho "username" com "fortes"}
-  E %{eu preencho "password" com "1234"}
-  E %{eu clico em "Entrar"}
-  Então %{eu devo ver "Bem-vindo(a)"}
+  unless page.has_selector?('.saudacao')
+    # Evita problema quando o firefox eh instanciado com a janela menor do que o necessario
+    page.execute_script("window.resizeTo(screen.width, screen.height);window.moveTo(0,0);window.focus()")
+    Dado %{que eu esteja na pagina de login}
+    E %{eu preencho "username" com "fortes"}
+    E %{eu preencho "password" com "1234"}
+    E %{eu clico em "Entrar"}
+    Então %{eu devo ver "Bem-vindo(a)"}
+  end
 end
 
 Quando /^eu acesso o menu "([^"]*)"$/ do |menu_path|
-	#page.execute_script("$('ul').show()")
-
     items = menu_path.strip.split(/\s*>\s*/)
-    menu_master = items.shift; 
+    menu_master = items.shift;
 
     link = find("#menuDropDown > li > a:contains('" + menu_master + "')")
     page.execute_script("$(\"a:contains('" + menu_master + "') ~ ul\").show()")
     link.click
     
     items.each do |item|
-
        link = link.find(:xpath, "../ul/li/a[text()='" + item + "']")
        page.execute_script("$(\"a:contains('" + menu_master + "') ~ ul\").find(\"a:contains('" + item + "') ~ ul\").show()")
-	   link.click
-
+	     link.click
     end
 end
 
@@ -46,8 +43,8 @@ Quando /^eu clico no botão "([^"]*)"$/ do |text|
 end
 
 Quando /^eu clico em excluir "([^"]*)"$/ do |text|
-  debugger
-  find(:xpath, "//td[text()='#{text}']/../td/a/img[@title='Excluir']").click
+  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Excluir']").click
+  #find(:xpath, "//td[text()='#{text}']/../td")
 end
 
 Então /^eu devo ver o título "([^"]*)"$/ do |text|
@@ -79,6 +76,7 @@ Quando /^eu clico "([^"]*)" dentro de "([^"]*)"$/ do |link, parent|
 end
 
 Quando /^eu preencho "([^"]*)" com "([^"]*)"$/ do |field, value|
+  field = get_field(field)
   When %{I fill in "#{field}" with "#{value}"}
 end
 
@@ -91,6 +89,7 @@ Quando /^eu preencho o seguinte:$/ do |fields|
 end
 
 Quando /^eu seleciono "([^"]*)" de "([^"]*)"$/ do |value, field|
+  field = get_field(field)
   When %{I select "#{value}" from "#{field}"}
 end
 
@@ -192,4 +191,10 @@ end
 
 Então /^mostre-me a página$/ do
   Then %{show me the page}
+end
+
+def get_field field
+  label = all(:xpath, "//label[contains(text(), '#{field}')]").select{|e| e.text.match("^\s*#{field}\:?")}.first
+  field = label[:for] unless label.nil?
+  field
 end
