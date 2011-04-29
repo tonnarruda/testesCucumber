@@ -13,3 +13,7 @@ update parametrosdosistema set camposcandidatoobrigatorio=replace(camposcandidat
 alter table solicitacaoepi_item	add column dataEntrega date;--.go
 update solicitacaoepi_item set dataentrega = (select se.data from solicitacaoepi se WHERE se.id=solicitacaoepi_id and se.entregue=true);--.go
 update papel set nome = 'Análise das Etapas Seletivas' where id = 48;--.go
+
+update papel set ordem=6 where id=398;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (506, 'ROLE_REL_LISTA_COLAB', 'Listagem de Colaboradores', '/geral/colaborador/prepareRelatorioDinamico.action', 7, true, 377);--.go
+alter sequence papel_sequence restart with 507;--.go

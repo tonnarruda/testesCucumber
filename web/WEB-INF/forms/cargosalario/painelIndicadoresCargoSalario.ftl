@@ -124,7 +124,8 @@
 			        xaxis: { 
 			        	mode: "time",
 			        	ticks: folha.map(function (item){return item[0]}),
-			        	timeformat: '%m/%y'
+			        	timeformat: '%b/%y ',
+			        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
 			        },
 			        yaxis: { 
 			        	 tickFormatter: function (v) {return formataNumero(v);}
@@ -282,7 +283,7 @@
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 		<div class="fieldGraph bigger">
-		<h1>Evolução da Folha</h1>
+		<h1>Evolução Salarial</h1>
 	   		<div id="evolucaoFolha" style="margin: 25px;height:300px;"></div>
 	    </div>
 

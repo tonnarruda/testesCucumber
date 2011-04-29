@@ -33,9 +33,10 @@
 }
 #menuDropDown > li > a[accesskey="a"],
 #menuDropDown > li > a[title="Blog Fortes RH"],
-#menuDropDown > li > a[title="Suporte"] {
+#menuDropDown > li > a[title="Suporte"]{
 	background: none;
 }
+
 #menuDropDown li:hover {
 	background-color: #5292C0;
 }

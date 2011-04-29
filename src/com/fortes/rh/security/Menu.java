@@ -43,10 +43,12 @@ public abstract class Menu
 		}
 
 		menu.append("<li><a href='" + contexto + "/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
-			
+
+		menu.append("<li style='float: right; line-height: 0.8em;'><a href='" + contexto + "/geral/documentoVersao/list.action' class='versao'> Versão: "  +  parametros.getAppVersao() +"</a></li>\n");
+		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
 				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes RH'>" +
-				"<img src='"+ contexto + "/imgs/blog.png' style='vertical-align: middle;'></a>");
+				"<img src='"+ contexto + "/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		
 		
 		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
@@ -55,11 +57,8 @@ public abstract class Menu
 					+ "codEmpresa=" + parametros.getCodEmpresaSuporte()
 					+ "&codCliente=" + parametros.getCodClienteSuporte()
 					+ "&token=sistema' target='_blank' title='Suporte'>" 
-					+ "<img src='" + contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;'></a>");
+					+ "<img src='" + contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
 		
-		
-		menu.append("</li>\n");
-
 		menu.append("</ul>\n\n");
 
 		return menu.toString();
