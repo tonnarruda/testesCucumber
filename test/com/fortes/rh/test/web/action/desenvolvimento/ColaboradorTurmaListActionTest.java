@@ -59,6 +59,7 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction;
+import com.fortes.web.tags.CheckBox;
 
 
 public class ColaboradorTurmaListActionTest extends MockObjectTestCase
@@ -308,6 +309,8 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioSemIndicacaoTreinamento").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+    	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
     	
     	assertEquals("input", action.relatorioColaboradorSemIndicacaoTreinamento());
     }
@@ -317,6 +320,9 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+    	
+    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+    	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
     	
     	assertEquals("success", action.prepareRelatorioColaboradorSemIndicacao());
     }

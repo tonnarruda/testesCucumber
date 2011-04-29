@@ -349,7 +349,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		} catch (ColecaoVaziaException e)
 		{
 			addActionMessage(e.getMessage());
-			prepareRelatorioColaborador();
+			prepareRelatorioColaboradorSemIndicacao();
 
 			return Action.INPUT;
 		}
@@ -357,7 +357,12 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public String prepareRelatorioColaboradorSemIndicacao()
 	{
-		return prepareRelatorioColaborador();
+		prepareRelatorioColaborador();
+		
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		
+		return Action.SUCCESS;
 	}
 	
 	public String prepareRelatorioColaboradorCertificacao()

@@ -3,7 +3,7 @@
 <head>
 <@ww.head/>
 	<title>Relatório de Colaboradores Sem Indicação de Treinamento</title>
-	<#assign validarCampos="return validaFormulario('form', new Array('meses','@estabelecimentosCheck','@areasCheck'), null)"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('meses'), null)"/>
 </head>
 <body>
 <@ww.actionmessage />

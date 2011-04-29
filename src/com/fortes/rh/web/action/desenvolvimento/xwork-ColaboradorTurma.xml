@@ -100,6 +100,7 @@
 
 		<action name="prepareRelatorioColaboradorSemIndicacao" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="prepareRelatorioColaboradorSemIndicacao">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorSemIndicacaoTreinamento.ftl</result>
+			<result name="input" type="redirect">prepareRelatorioColaboradorSemIndicacao.action</result>
 		</action>
 
 		<action name="relatorioColaboradorSemIndicacaoTreinamento" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="relatorioColaboradorSemIndicacaoTreinamento">
