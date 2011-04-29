@@ -224,6 +224,7 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 		Collection<HistoricoCandidato> historicoCandidatos = getDao().findQtdParticipantes(ano, cargoId, etapaIds);
 		// consulta acima em ordem ligado a regra deste manager.
 		
+		int countExibirTarja = 1;
 		for (ProcessoSeletivoRelatorio processoSeletivoRelatorio : processosSeletivos)
 		{
 			for (HistoricoCandidato historicoCandidato : historicoCandidatos)
@@ -231,8 +232,10 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 				if(processoSeletivoRelatorio.getEtapa().equals(historicoCandidato.getEtapaSeletiva()))
 					processoSeletivoRelatorio.addQtdParticipantes(historicoCandidato.getHistoricoMes(), historicoCandidato.getQtdHistoricos(), historicoCandidato.getAptoBoolean());
 			}
+			if((processoSeletivoRelatorio.getQtdJan() + processoSeletivoRelatorio.getQtdFev() + processoSeletivoRelatorio.getQtdMar()+ processoSeletivoRelatorio.getQtdAbr() + processoSeletivoRelatorio.getQtdMai() + processoSeletivoRelatorio.getQtdJun()
+				+ processoSeletivoRelatorio.getQtdJul() + processoSeletivoRelatorio.getQtdAgo() + processoSeletivoRelatorio.getQtdSet()	+ processoSeletivoRelatorio.getQtdOut() + processoSeletivoRelatorio.getQtdNov() + processoSeletivoRelatorio.getQtdDez()) > 0.0)
+						processoSeletivoRelatorio.setNumExibirTarjaRelatorio(countExibirTarja++);
 		}
-		
 		return processosSeletivos;
 	}
 

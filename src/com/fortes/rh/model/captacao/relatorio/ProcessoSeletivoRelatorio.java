@@ -35,6 +35,8 @@ public class ProcessoSeletivoRelatorio implements Serializable
 	private double qtdAprovOut;
 	private double qtdAprovNov;
 	private double qtdAprovDez;
+	
+	private int exibirTarjaRelatorio = 0;
 
 	public EtapaSeletiva getEtapa()
 	{
@@ -213,5 +215,10 @@ public class ProcessoSeletivoRelatorio implements Serializable
 	{
 		return qtdDez;
 	}
-	
+	public int getExibirTarjaRelatorio() {
+		return exibirTarjaRelatorio;
+	}
+	public void setNumExibirTarjaRelatorio(int exibirTarjaRelatorio) {
+		this.exibirTarjaRelatorio = exibirTarjaRelatorio;
+	}
 }

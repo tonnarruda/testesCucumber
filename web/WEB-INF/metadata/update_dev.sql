@@ -17,3 +17,4 @@ update papel set nome = 'Análise das Etapas Seletivas' where id = 48;--.go
 update papel set ordem=6 where id=398;--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (506, 'ROLE_REL_LISTA_COLAB', 'Listagem de Colaboradores', '/geral/colaborador/prepareRelatorioDinamico.action', 7, true, 377);--.go
 alter sequence papel_sequence restart with 507;--.go
+update papel set papelmae_id=463  where id = 47;--.go
