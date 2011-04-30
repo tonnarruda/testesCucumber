@@ -1689,7 +1689,8 @@ CREATE TABLE solicitacaoepi_item (
 	epi_id bigint,
 	solicitacaoepi_id bigint,
 	qtdSolicitado integer NOT NULL,
-	qtdEntregue integer NOT NULL
+	qtdEntregue integer NOT NULL,
+	dataEntrega date
 );
 ALTER TABLE solicitacaoepi_item ADD CONSTRAINT solicitacaoepi_item_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacaoepi_item ADD CONSTRAINT solicitacaoepi_item_solicitacaoepi_fk FOREIGN KEY (solicitacaoepi_id) REFERENCES solicitacaoepi(id);

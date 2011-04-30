@@ -51,8 +51,12 @@ public class TurnOver
 	}
 	public Double getTurnOver()
 	{
-		DecimalFormat df = new DecimalFormat("0.00");
-		return Double.parseDouble(df.format(turnOver).replace(",", "."));
+		try {
+			DecimalFormat df = new DecimalFormat("0.00");
+			return Double.parseDouble(df.format(turnOver).replace(",", "."));
+		} catch (Exception e) {
+			return 0.0;
+		}
 	}
 	public void setTurnOver(Double turnOver)
 	{

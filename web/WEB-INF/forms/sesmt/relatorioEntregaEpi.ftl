@@ -28,7 +28,7 @@
 		<@ww.datepicker label="Início" name="dataIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${dataIni}" required="true"/>
 		<@ww.datepicker label="Fim" name="dataFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${dataFim}"/>
 		
-		<@frt.checkListBox name="epiCheck" label="EPIs:" list="epiCheckList" />
+		<@frt.checkListBox name="epiCheck" label="EPIs" list="epiCheckList" />
 	</@ww.form>
 
 	<div class="buttonGroup">

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.44.36" data="30/04/2011">
+		- CeS > Painel de Indicadores: Salário por Área Organizacional e Evolução Salarial.
+		- Menu: Nova informação Versão do sistema no canto superior direito, link para a página: Histórico de Versões.
+		- SESMT > Movimentações > Entrega de EPIs: Novo campo [Data da entrega].
+		- SESMT > Relatórios > EPIs Entregues: Ajuste no relatório, consulta considerando [Data da entrega]. 
+	</Versao>
 	<Versao id="1.1.43.35" data="18/04/2011">
 		- Pesquisas > Movimentações > Pesquisas: Novo filtro por [Título] da pesquisa.
 		- Cadastro de Colaborador e Situação do Colaborador: Novo campo [Observação para o Setor Pessoal] quando o sistema estiver integrado com o AC Pessoal.
