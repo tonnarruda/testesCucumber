@@ -42,8 +42,8 @@
 		}
 		
 		#box{
-			width: 400px;
-			height: 250px;
+			width: 450px;
+			height: 300px;
 		}
 		#box a{
 			color: #85B5D9 !important;
@@ -51,8 +51,8 @@
 		}
 		#pieBox{
 			float: left;
-			width: 150px;
-			height: 250px;
+			width: 200px;
+			height: 300px;
 		}
 		#pieLegendBox{
 			float: left;
@@ -114,7 +114,7 @@
 				
 				$("#salarioAreas").bind("plotclick", pieClick);
 				
-							var folha = ${grfEvolucaoFolha};
+				var folha = ${grfEvolucaoFolha};
 			    var options = {
 				    series: {
 	                   lines: { show: true },
@@ -155,61 +155,63 @@
 				
 			});
 
+			//CUIDADO com o tamanho do grafico(bug da sombra)http://code.google.com/p/flot/issues/detail?id=5#c110
+
+			var urlFind = "<@ww.url includeParams="none" value="/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action"/>";
+			var dataBase_ = '${dateBase}';
+			
 			function pieClick(event, pos, obj)
 			{
-				var urlFind = "<@ww.url includeParams="none" value="/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action"/>";
-				
 				if(event.currentTarget.id == "salarioAreas")
 					var areaId_ = salarioAreasOrdered[obj.seriesIndex].id;
 				else
 					var areaId_ = salarioAreasOrderedBox[obj.seriesIndex].id;
-
-				dataBase_ = '${dateBase}';
-
+				
 				$.ajax({
-					  url: urlFind,
-					  dataType: "json",
-					  async: false,
-					  data: {areaId: areaId_, dataBase: dataBase_},
-					  success: function(data){
-					  		if(data.length > 0)
-					  		{
-								salarioAreasOrderedBox = data.sort(function (a, b){
-					   					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
-								});
-	
-						  		if (!obj)
-									return;
+					url: urlFind,
+					dataType: "json",
+					async: false,
+					data: {areaId: areaId_, dataBase: dataBase_},
+					success: function(data){
+						if(data.length == 0)
+						{
+							jAlert("Área Organizacional não possui área filha.");
+							return false;
+						}
 						
-								var percent = parseFloat(obj.series.percent).toFixed(2);
-								
-								montaPie(salarioAreasOrderedBox, "#pieBox", {
-									radiusLabel:0.8,
-									radius: 0.6,  
-									percentMin: 0.02, 
-									noColumns: 1, 
-									hoverable: true,
-				        			clickable: true,
-				        			container: '#pieLegendBox',
-									legendLabelFormatter: function(label, series) {
-										return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
-									}
-								});
-								
-								$("#box").dialog( "option" , { zIndex: 9999, title: obj.series.label + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', minWidth: 400, minHeight: 250 });
-	
-								if(!$("#box").dialog("isOpen"))
-								{
-									$("#box").dialog("open");
-									$("#pieBox").bind("plotclick", pieClick);
-								}
-							}else
-							{
-								jAlert("Área Organizacional não possui área filha.");
+						$('#pieBox').remove();
+						$('#box').prepend("<div id='pieBox'></div>");
+						
+						salarioAreasOrderedBox = data.sort(function (a, b){
+			   					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
+						});
+						
+						montaPie(salarioAreasOrderedBox, "#pieBox", {
+							radiusLabel:0.9,
+							radius: 0.6,  
+							percentMin: 0.02, 
+							noColumns: 1, 
+							hoverable: true,
+		        			clickable: true,
+		        			container: '#pieLegendBox',
+							legendLabelFormatter: function(label, series) {
+								return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
 							}
-					  }
-					});
+						});
+
+						var percent = parseFloat(obj.series.percent).toFixed(2);
+						$("#box").dialog( "option" , { zIndex: 9999, title: obj.series.label + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', minWidth: 450, minHeight: 300 });
+						$("#box").dialog("open");
+						$("#pieBox").bind("plotclick", pieClick);
+					}
+				});
+				
 			}		
+			
+			function bla()
+			{
+				alert('fdsafsdafsdafs fçlk fldsk fçl');
+			}
 			
 			function showTooltip(x, y, contents) 
 			{
@@ -295,7 +297,6 @@
 		
 		<div id="box">
 			<!--<a href="#" style="float: right;" tabIndex="-1" onclick="voltar()">&lt;&lt; Voltar</a>-->
-			<div id="pieBox"></div>
 			<div id="pieLegendBox"/>
 			<div style="clear: both"></div>
 		</div>
