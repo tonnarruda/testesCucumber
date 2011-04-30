@@ -24,55 +24,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="manage_ces_cadastro_candidato.feature" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/manage_ces_cadastro_candidato.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="1" selection-start="61" selection-end="92" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="env.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/support/env.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="20" selection-start="572" selection-end="572" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manage_ces_cadastro_grupo.feature" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/manage_ces_cadastro_grupo.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="0" selection-start="60" selection-end="60" vertical-scroll-proportion="0.06174334">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manage_ces_cadastro_area.feature" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/manage_ces_cadastro_area.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="0" selection-start="109" selection-end="817" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="web_steps_pt-BR.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/step_definitions/web_steps_pt-BR.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manage_login.feature" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/manage_login.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="28" selection-start="266" selection-end="274" vertical-scroll-proportion="0.0">
+            <state line="123" column="11" selection-start="3935" selection-end="3942" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -81,7 +36,16 @@
       <file leaf-file-name="web_steps.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/step_definitions/web_steps.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="11" selection-start="1128" selection-end="1135" vertical-scroll-proportion="0.0">
+            <state line="150" column="4" selection-start="4105" selection-end="4105" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="res_cadastro_area_interesse.feature" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/res_cadastro_area_interesse.feature">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="29" selection-start="937" selection-end="937" vertical-scroll-proportion="0.48341233">
               <folding />
             </state>
           </provider>
@@ -98,10 +62,14 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/manage_ces_cadastro_candidato.feature" />
-        <option value="$PROJECT_DIR$/step_definitions/web_steps_pt-BR.rb" />
         <option value="$PROJECT_DIR$/support/env.rb" />
         <option value="$PROJECT_DIR$/manage_ces_cadastro_grupo.feature" />
         <option value="$PROJECT_DIR$/manage_ces_cadastro_etapa.feature" />
+        <option value="$PROJECT_DIR$/ReS/cadastro_etapa_seletiva.feature" />
+        <option value="$PROJECT_DIR$/step_definitions/web_steps.rb" />
+        <option value="$PROJECT_DIR$/step_definitions/web_steps_pt-BR.rb" />
+        <option value="$PROJECT_DIR$/res_cadastro_etapa_seletiva.feature" />
+        <option value="$PROJECT_DIR$/res_cadastro_area_interesse.feature" />
       </list>
     </option>
   </component>
@@ -131,8 +99,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -181,6 +147,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Favorites" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -189,6 +157,7 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\workspace-myeclipse\FortesRH\features" />
+      <recent name="D:\workspace-myeclipse\FortesRH\features\ReS" />
     </key>
   </component>
   <component name="RunManager" selected="Cucumber.Cadastro de Candidato">
@@ -218,6 +187,30 @@
       <CUCUMBER_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_RUNNER" VALUE="false" />
       <RunnerSettings RunnerId="RubyRunner" />
       <ConfigurationWrapper RunnerId="RubyRunner" />
+      <method />
+    </configuration>
+    <configuration default="true" type="RSpecRunConfigurationType" factoryName="RSpec">
+      <predefined_log_file id="RUBY_RSPEC" enabled="true" />
+      <module name="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="-e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift)" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs />
+      <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="false" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" enabled="false" track_test_folders="true" runner="rcov" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
       <method />
     </configuration>
     <configuration default="true" type="CucumberRunConfigurationType" factoryName="Cucumber">
@@ -328,51 +321,57 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/manage_ces_cadastro_candidato.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="1" selection-start="61" selection-end="92" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/support/env.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="20" selection-start="572" selection-end="572" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/manage_ces_cadastro_area.feature">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="109" selection-end="817" vertical-scroll-proportion="0.0">
+        <state line="6" column="0" selection-start="109" selection-end="817" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manage_login.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="28" selection-start="266" selection-end="274" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manage_ces_cadastro_grupo.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="25" selection-start="692" selection-end="692" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res_cadastro_etapa_seletiva.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="4" selection-start="888" selection-end="888" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/step_definitions/web_steps_pt-BR.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/manage_login.feature">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="28" selection-start="266" selection-end="274" vertical-scroll-proportion="0.0">
+        <state line="123" column="11" selection-start="3935" selection-end="3942" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/step_definitions/web_steps.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="11" selection-start="1128" selection-end="1135" vertical-scroll-proportion="0.0">
+        <state line="150" column="4" selection-start="4105" selection-end="4105" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/manage_ces_cadastro_candidato.feature">
+    <entry file="file://$PROJECT_DIR$/res_cadastro_area_interesse.feature">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="1" selection-start="61" selection-end="92" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/support/env.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="20" selection-start="572" selection-end="572" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/manage_ces_cadastro_grupo.feature">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="60" selection-end="60" vertical-scroll-proportion="0.06174334">
+        <state line="24" column="29" selection-start="937" selection-end="937" vertical-scroll-proportion="0.48341233">
           <folding />
         </state>
       </provider>

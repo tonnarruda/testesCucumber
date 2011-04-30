@@ -47,6 +47,10 @@ Quando /^eu clico em excluir "([^"]*)"$/ do |text|
   #find(:xpath, "//td[text()='#{text}']/../td")
 end
 
+Quando /^eu clico em editar "([^"]*)"$/ do |text|
+  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Editar']").click
+end
+
 Então /^eu devo ver o título "([^"]*)"$/ do |text|
   Then %{I should see "#{text}" within "#waDivTitulo"}
 end
