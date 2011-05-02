@@ -9,14 +9,15 @@
 			<#assign formAction="insert.action"/>
 		</#if>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('dias'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('descricao','dias'))"/>
 	</head>
-	<body>
 		<@ww.actionerror />
+	<body>
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.hidden name="periodoExperiencia.id" />
 			<@ww.token/>
 			
+			<@ww.textfield label="Descrição" id="descricao" name="periodoExperiencia.descricao" maxLength="40" required="true" cssStyle="width:290px;;"/>
 			<@ww.textfield label="Quantidade de Dias" id="dias" name="periodoExperiencia.dias" maxLength="4" required="true" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:40px; text-align:right;"/>
 			
 			<@ww.hidden name="periodoExperiencia.empresa.id" />

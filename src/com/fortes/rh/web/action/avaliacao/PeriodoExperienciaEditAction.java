@@ -63,6 +63,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Integer tempoDeEmpresa;
 	private String reportFilter;
 	private String reportTitle;
+	private Long periodoExperienciaId;
 		
 	private void prepare() throws Exception
 	{
@@ -113,6 +114,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	public String prepareRelatorioAcopanhamentoExperiencia() throws Exception{
 		prepare();
 		
+		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
     	
@@ -133,6 +135,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
     {
 		try {
 			dataReferencia = getDataReferencia();
+			//TODO tem uma ruma de coisa pra passar pro filtro periodoExperienciaID
 			periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 			
 			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, diasDeAcompanhamento, periodoExperiencias);
@@ -367,6 +370,14 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 		public String getReportTitle() {
 			return reportTitle;
+		}
+
+		public Long getPeriodoExperienciaId() {
+			return periodoExperienciaId;
+		}
+
+		public void setPeriodoExperienciaId(Long periodoExperienciaId) {
+			this.periodoExperienciaId = periodoExperienciaId;
 		}
 		
 }
