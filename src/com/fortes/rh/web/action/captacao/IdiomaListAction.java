@@ -7,7 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
+import com.fortes.rh.business.captacao.IdiomaManager;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
+import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -17,9 +19,11 @@ import com.opensymphony.xwork.ActionContext;
 public class IdiomaListAction extends MyActionSupportList
 {
 	private CandidatoIdiomaManager candidatoIdiomaManager;
+	private IdiomaManager idiomaManager;
 	private Collection<CandidatoIdioma> idiomasCandidato;
 	private CandidatoIdioma candidatoIdioma;
 	private Long candidatoId;
+	private Collection<Idioma> idiomas;
 
 	public String execute() throws Exception
 	{
@@ -45,6 +49,8 @@ public class IdiomaListAction extends MyActionSupportList
         	idiomasCandidato = new ArrayList<CandidatoIdioma>();
 
         session.put("SESSION_IDIOMA",idiomasCandidato);
+        
+        idiomas = idiomaManager.findAll(new String[]{"nome"});
 
         return Action.SUCCESS;
 	}
@@ -110,5 +116,13 @@ public class IdiomaListAction extends MyActionSupportList
 	public void setCandidatoId(Long candidatoId)
 	{
 		this.candidatoId = candidatoId;
+	}
+
+	public void setIdiomaManager(IdiomaManager idiomaManager) {
+		this.idiomaManager = idiomaManager;
+	}
+
+	public Collection<Idioma> getIdiomas() {
+		return idiomas;
 	}
 }

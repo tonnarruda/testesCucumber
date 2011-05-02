@@ -33,6 +33,13 @@ public class IdiomaEditAction extends MyActionSupportEdit implements ModelDriven
         response.addHeader("Cache-Control", "no-cache, no-store");
 
 		idiomas = idiomaManager.findAll(new String[]{"nome"});
+		
+		Map session = ActionContext.getContext().getSession();
+		Collection<CandidatoIdioma> lista = (Collection<CandidatoIdioma>) session.get("SESSION_IDIOMA");
+		
+		for (CandidatoIdioma candidatoIdioma : lista) {
+			idiomas.remove(candidatoIdioma.getIdioma());
+		}
 		nivelIdioma = new NivelIdioma();
 	}
 

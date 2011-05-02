@@ -46,6 +46,9 @@
 	<#if !nomeBusca?exists>
 		<#assign nomeBusca="">
 	</#if>
+	<#if !nomeComercialBusca?exists>
+		<#assign nomeComercialBusca="">
+	</#if>
 	<#if !cpfBusca?exists>
 		<#assign cpfBusca="">
 	</#if>
@@ -58,6 +61,7 @@
 			<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width: 243px;"/>
 			<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" cssClass="mascaraCpf"/>
 			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 353px;"/>
+			<@ww.textfield label="Nome Comercial" name="nomeComercialBusca" id="nomeComercialBusca" cssStyle="width: 353px;"/>
 			
 			<#if integraAc>
 				<@ww.select label="Situação" name="situacao" id="situacao" list="situacaosIntegraAC" cssStyle="width: 355px;"/>
@@ -141,6 +145,7 @@
 
 		<@display.column property="matricula" title="Matrícula" style='${style}'/>
 		<@display.column property="nome" title="Nome" style='${style}'/>
+		<@display.column property="nomeComercial" title="Nome Comercial" style='${style}'/>
 		<@display.column property="pessoal.cpf" title="CPF" style='${style}'/>
 		<@display.column property="dataAdmissao" title="Data de Admissão" format="{0,date,dd/MM/yyyy}" style='${style}'/>
 	</@display.table>

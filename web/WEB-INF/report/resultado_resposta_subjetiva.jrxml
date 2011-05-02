@@ -37,7 +37,7 @@
 			<groupHeader>
 			<band height="25"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(false)))]]></printWhenExpression>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="15"
 						y="1"
@@ -67,7 +67,7 @@
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{comentario} == null ? "" : $F{comentario}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{comentario} == null ? "" : "- " + $F{comentario}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>

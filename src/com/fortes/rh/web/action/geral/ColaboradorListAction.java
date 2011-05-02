@@ -66,6 +66,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Collection<Colaborador> colaboradors = null;
 	private Colaborador colaborador;
 	private String nomeBusca;
+	private String nomeComercialBusca;
 	private String cpfBusca;
 	private String matriculaBusca;
 	private Collection<Colaborador> colaboradores;
@@ -144,6 +145,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 		Map parametros = new HashMap();
 		parametros.put("nomeBusca", nomeBusca);
+		parametros.put("nomeComercialBusca", nomeComercialBusca);
 		parametros.put("cpfBusca", cpfBusca);
 		parametros.put("matriculaBusca", matriculaBusca);
 		parametros.put("empresaId", getEmpresaSistema().getId());
@@ -791,6 +793,14 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public String getReportTitle() {
 		return reportTitle;
+	}
+
+	public String getNomeComercialBusca() {
+		return nomeComercialBusca;
+	}
+
+	public void setNomeComercialBusca(String nomeComercialBusca) {
+		this.nomeComercialBusca = nomeComercialBusca;
 	}
 
 	

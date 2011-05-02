@@ -2673,6 +2673,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page)
 	{
 		String nomeBusca = (String) parametros.get("nomeBusca");
+		String nomeComercialBusca = (String) parametros.get("nomeComercialBusca");
 		String matriculaBusca = (String) parametros.get("matriculaBusca");
 		Long empresaId = (Long) parametros.get("empresaId");
 		Long areaBuscaId = (Long) parametros.get("areaId");
@@ -2764,6 +2765,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		// Nome
 		if(nomeBusca != null && !nomeBusca.trim().equals(""))
 			sql.append("and normalizar(upper(colab_.nome)) like normalizar(:nomeBusca) ");
+		//NomeComercial
+		if(nomeComercialBusca != null && !nomeComercialBusca.trim().equals(""))
+			sql.append("and normalizar(upper(colab_.nomeComercial)) like normalizar(:nomeComercialBusca) ");
 		// Matricula
 		if(matriculaBusca != null && !matriculaBusca.trim().equals(""))
 			sql.append("and upper(colab_.matricula) like :matriculaBusca ");
@@ -2790,6 +2794,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		// Nome
 		if(nomeBusca != null && !nomeBusca.trim().equals(""))
 			query.setString("nomeBusca", "%" + nomeBusca.toUpperCase() + "%");
+		// NomeComercial
+		if(nomeComercialBusca != null && !nomeComercialBusca.trim().equals(""))
+			query.setString("nomeComercialBusca", "%" + nomeComercialBusca.toUpperCase() + "%");
 		// Matricula
 		if(matriculaBusca != null && !matriculaBusca.trim().equals(""))
 			query.setString("matriculaBusca", "%" + matriculaBusca.toUpperCase() + "%");

@@ -23,7 +23,13 @@
 	<h3 style="padding:10px;">${labelIdioma}</h3>
 	<@ww.form id="frmIdioma" name="frmIdioma" action="/captacao/idioma/${formActionIdioma}" method="POST" cssStyle="width:99%; padding:5px;">
 
-		<@ww.select label="Idioma" name="candidatoIdioma.idioma.id" id="idiomaSelec" list="idiomas" listKey="id" listValue="nome" required="true" theme="css_xhtml" liClass="liLeft" />
+		<#if candidatoIdioma.id?exists>
+			<@ww.hidden name="candidatoIdioma.idioma.id" value="${candidatoIdioma.idioma.id}"/>
+			<@ww.textfield label="Idioma" value="${candidatoIdioma.idioma.nome}" disabled="true" theme="css_xhtml" liClass="liLeft"/>
+		<#else>
+			<@ww.select label="Idioma" name="candidatoIdioma.idioma.id" id="idiomaSelec" list="idiomas" listKey="id" listValue="nome" required="true" theme="css_xhtml" liClass="liLeft" />
+		</#if>
+
 
 		<@ww.select label="Nível" name="candidatoIdioma.nivel" id="nivelSelec" list="nivelIdioma" theme="css_xhtml" required="true" />
 

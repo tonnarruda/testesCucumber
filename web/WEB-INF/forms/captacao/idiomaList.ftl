@@ -49,8 +49,11 @@
 	</@display.table>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir grayBG" onclick="prepareInsertIdioma()" accesskey="I">
-		</button>
+		<#if (idiomasCandidato?size >= idiomas?size)> 
+			<button class="btnInserirDesabilitado grayBG" disabled></button>
+		<#else>
+			<button class="btnInserir grayBG" onclick="prepareInsertIdioma()" accesskey="I"></button>
+		</#if>
 	</div>
 
 <br>
