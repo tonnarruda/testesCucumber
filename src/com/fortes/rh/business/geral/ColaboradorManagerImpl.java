@@ -1102,7 +1102,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		colaborador.setCodigoAC(empregado.getCodigoAC());
 		colaborador.setNome(empregado.getNome());
-		colaborador.setNomeComercial(empregado.getNomeComercial());
+		if(empregado.getNomeComercial() != null && !empregado.getNomeComercial().equals(""))
+			colaborador.setNomeComercial(empregado.getNomeComercial());
+		
 		colaborador.setDataAdmissao(empregado.getDataAdmissaoFormatada());
 
 		if (StringUtils.isNotBlank(empregado.getMatricula()))
