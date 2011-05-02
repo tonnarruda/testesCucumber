@@ -27,7 +27,7 @@
 
 		<@ww.form name="form" action="imprimeRelatorioRankingPerformancePeriodoDeExperiencia.action" onsubmit="${validarCampos}" method="POST">
 			
-			<@ww.datepicker label="Período" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
+			<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 			<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
 			<@ww.select label="Modelo de Avaliação" required="true" name="modeloAvaliacao.id" id="modeloAvaliacao" list="modeloAvaliacaos" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);"/>
 			<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
