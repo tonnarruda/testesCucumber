@@ -3051,9 +3051,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			DataGrafico dataGrafico = null;
 			
 			if(sex == 'F')
-				dataGrafico = new DataGrafico(null, "Feminino", qtd);
+				dataGrafico = new DataGrafico(null, "Feminino", qtd, "");
 			else if(sex == 'M')
-				dataGrafico = new DataGrafico(null, "Masculino", qtd);
+				dataGrafico = new DataGrafico(null, "Masculino", qtd, "");
 			
 			dataGraficos.add(dataGrafico);
 		}
@@ -3102,10 +3102,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				qtdCasado += qtd;
 		}
 
-		dataGraficos.add(new DataGrafico(null, "Casado", qtdCasado));
-		dataGraficos.add(new DataGrafico(null, "Divorciado", qtdDivorciado));
-		dataGraficos.add(new DataGrafico(null, "Solteiro", qtdSolteiro));
-		dataGraficos.add(new DataGrafico(null, "Viúvo", qtdViuvo));
+		dataGraficos.add(new DataGrafico(null, "Casado", qtdCasado, ""));
+		dataGraficos.add(new DataGrafico(null, "Divorciado", qtdDivorciado, ""));
+		dataGraficos.add(new DataGrafico(null, "Solteiro", qtdSolteiro, ""));
+		dataGraficos.add(new DataGrafico(null, "Viúvo", qtdViuvo, ""));
 		
 		return dataGraficos;
 	}
@@ -3137,7 +3137,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			Object[] res = it.next();
 			String escolaridade = (String) res[0];
 			int qtd = (Integer) res[1];
-			dataGraficos.add(new DataGrafico(null, escolaridadeMap.get(escolaridade), qtd));
+			dataGraficos.add(new DataGrafico(null, escolaridadeMap.get(escolaridade), qtd, ""));
 		}
 		
 		return dataGraficos;
@@ -3188,12 +3188,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				qtdFaixa6++;
 		}
 		
-		dataGraficos.add(new DataGrafico(null, "Até 19", qtdFaixa1));
-		dataGraficos.add(new DataGrafico(null, "20 a 29", qtdFaixa2));
-		dataGraficos.add(new DataGrafico(null, "30 a 39", qtdFaixa3));
-		dataGraficos.add(new DataGrafico(null, "40 a 49", qtdFaixa4));
-		dataGraficos.add(new DataGrafico(null, "50 a 59", qtdFaixa5));
-		dataGraficos.add(new DataGrafico(null, "Acima de 60", qtdFaixa6));
+		dataGraficos.add(new DataGrafico(null, "Até 19", qtdFaixa1, ""));
+		dataGraficos.add(new DataGrafico(null, "20 a 29", qtdFaixa2, ""));
+		dataGraficos.add(new DataGrafico(null, "30 a 39", qtdFaixa3, ""));
+		dataGraficos.add(new DataGrafico(null, "40 a 49", qtdFaixa4, ""));
+		dataGraficos.add(new DataGrafico(null, "50 a 59", qtdFaixa5, ""));
+		dataGraficos.add(new DataGrafico(null, "Acima de 60", qtdFaixa6, ""));
 		
 		return dataGraficos;
 	}
@@ -3226,19 +3226,19 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 			
 			if(Deficiencia.SEM_DEFICIENCIA == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.SEM_DEFICIENCIA).toString(), qtd));
+				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.SEM_DEFICIENCIA).toString(), qtd, ""));
 			else if(Deficiencia.AUDITIVA == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.AUDITIVA).toString(), qtd));
+				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.AUDITIVA).toString(), qtd, ""));
 			else if(Deficiencia.FISICA == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.FISICA).toString(), qtd));
+				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.FISICA).toString(), qtd, ""));
 			else if(Deficiencia.MENTAL == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.MENTAL).toString(), qtd));
+				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.MENTAL).toString(), qtd, ""));
 			else if(Deficiencia.VISUAL == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.VISUAL).toString(), qtd));
+				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.VISUAL).toString(), qtd, ""));
 			else if(Deficiencia.MULTIPLA == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.MULTIPLA).toString(), qtd));
+				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.MULTIPLA).toString(), qtd, ""));
 			else if(Deficiencia.REABILITADO == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.REABILITADO).toString(), qtd));
+				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.REABILITADO).toString(), qtd, ""));
 		}
 		return dataGraficos;
 	}
@@ -3267,7 +3267,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			dataGraficos.add(new DataGrafico(null, (String)res[0], (Integer) res[1]));
+			dataGraficos.add(new DataGrafico(null, (String)res[0], (Integer) res[1], ""));
 		}
 		
 		return dataGraficos;
@@ -3298,10 +3298,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			Object[] res = it.next();
 			String vinculo = (String) res[0];
 			if(vinculo == null)
-				dataGraficos.add(new DataGrafico(null, "Importado do AC", (Integer) res[1]));
+				dataGraficos.add(new DataGrafico(null, "Importado do AC", (Integer) res[1], ""));
 			else
-				dataGraficos.add(new DataGrafico(null, (String)vinculoMap.get((String) res[0]), (Integer) res[1]));
+				dataGraficos.add(new DataGrafico(null, (String)vinculoMap.get((String) res[0]), (Integer) res[1], ""));
 		}
+		
 		return dataGraficos;
 	}
 }

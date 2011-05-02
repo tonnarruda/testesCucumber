@@ -325,7 +325,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	{
 		for (AreaOrganizacional areaTmp : areas)
 		{
-			if(area.getAreaMae().equals(areaTmp))
+			if(area.getAreaMae() != null && area.getAreaMae().equals(areaTmp))
 			{
 				area.setAreaMae(areaTmp);
 				break;
