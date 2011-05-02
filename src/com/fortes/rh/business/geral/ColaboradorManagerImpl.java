@@ -1,7 +1,6 @@
 package com.fortes.rh.business.geral;
 
 import java.math.BigInteger;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -9,13 +8,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -1700,7 +1697,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return turnOvers;
 	}
 
-	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, Long areaId) 
+	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional areaOrganizacional) 
 	{
 		Collection<Colaborador> colaboradores = getDao().findProjecaoSalarialByHistoricoColaborador(dataBase, null, null, null, null, "99", empresaId);
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByEmpresa(empresaId);
@@ -1708,11 +1705,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		HashMap<AreaOrganizacional, Double> areaSalario = new HashMap<AreaOrganizacional, Double>();
 		for (Colaborador colaborador : colaboradores) 
 		{
-			AreaOrganizacional matriarca = areaOrganizacionalManager.getMatriarca(areas, colaborador.getAreaOrganizacional(), areaId);
+			AreaOrganizacional matriarca = areaOrganizacionalManager.getMatriarca(areas, colaborador.getAreaOrganizacional(), areaOrganizacional.getId());
 			
-			if(areaId != null)
+			if(areaOrganizacional.getId() != null)
 			{
-				if(matriarca != null && matriarca.getAreaMae() != null && matriarca.getAreaMae().getId() != null && matriarca.getAreaMae().getId().equals(areaId))
+				if(matriarca != null && matriarca.getAreaMae() != null && matriarca.getAreaMae().getId() != null && matriarca.getAreaMae().getId().equals(areaOrganizacional.getId()))
 				{
 					if (!areaSalario.containsKey(matriarca))
 						areaSalario.put(matriarca, 0.0);
@@ -1733,7 +1730,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if(!areaSalario.isEmpty())
 		{
 			for (AreaOrganizacional area : areaSalario.keySet()) 
-				dados.add(new DataGrafico(area.getId(), area.getNome(), areaSalario.get(area)));			
+				dados.add(new DataGrafico(area.getId(), area.getNome(), areaSalario.get(area), areaOrganizacional.getDescricao()));			
 		}
 		
 		return dados;

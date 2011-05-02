@@ -5,12 +5,14 @@ public class DataGrafico {
 	private Long id;
 	private String label;
 	private double data;
+	private String descricao;
 	
-	public DataGrafico(Long id, String label, double data) {
+	public DataGrafico(Long id, String label, double data, String descricao) {
 		super();
 		this.id = id;
 		this.label = label;
 		this.data = data;
+		this.descricao = descricao;
 	}
 	
 	public String getLabel() {
@@ -34,6 +36,14 @@ public class DataGrafico {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
 

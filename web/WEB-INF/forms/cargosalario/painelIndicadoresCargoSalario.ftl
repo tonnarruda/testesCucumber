@@ -200,7 +200,9 @@
 						});
 
 						var percent = parseFloat(obj.series.percent).toFixed(2);
-						$("#box").dialog( "option" , { zIndex: 9999, title: obj.series.label + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', minWidth: 450, minHeight: 300 });
+						var descricaoArea = data[0].descricao;
+						
+						$("#box").dialog( "option" , { zIndex: 9999, title: descricaoArea + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', minWidth: 450, minHeight: 300 });
 						$("#box").dialog("open");
 						$("#pieBox").bind("plotclick", pieClick);
 					}
@@ -300,6 +302,7 @@
 			<div id="pieLegendBox"/>
 			<div style="clear: both"></div>
 		</div>
+		<div id="aviso"></div>
 		
 		
 	</body>

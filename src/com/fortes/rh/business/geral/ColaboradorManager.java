@@ -141,6 +141,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId);
 	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId);
 	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception;
-	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, Long areaId);
+	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional area);
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId);
 }
