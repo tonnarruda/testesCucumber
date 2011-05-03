@@ -112,6 +112,7 @@
 					}
 				});
 				
+				$("#salarioAreas").bind("plothover", plotPieHover);
 				$("#salarioAreas").bind("plotclick", pieClick);
 				
 				var folha = ${grfEvolucaoFolha};
@@ -204,15 +205,22 @@
 						
 						$("#box").dialog( "option" , { zIndex: 9999, title: descricaoArea + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', minWidth: 450, minHeight: 300 });
 						$("#box").dialog("open");
+						$("#pieBox").bind("plothover", plotPieHover);
 						$("#pieBox").bind("plotclick", pieClick);
 					}
 				});
 				
 			}		
 			
-			function bla()
-			{
-				alert('fdsafsdafsdafs fçlk fldsk fçl');
+			function plotPieHover(event, pos, item) {
+	            if (item) 
+	            {
+            		previousIndex = item.dataIndex;
+                    $("#tooltip").remove();
+                    showTooltip(pos.pageX, pos.pageY, "Clique para exibir áreas filhas");
+	            }
+				else 
+                	$("#tooltip").remove();
 			}
 			
 			function showTooltip(x, y, contents) 
@@ -225,8 +233,9 @@
 		            border: '1px solid #fdd',
 		            padding: '2px',
 		            'background-color': '#fee',
-		            opacity: 0.80
-		        }).appendTo("body").fadeIn(200);
+		            opacity: 0.80,
+		            'z-index': 20000
+		        }).appendTo("body").fadeIn(0);
 		    }
 
 			
@@ -303,7 +312,6 @@
 			<div style="clear: both"></div>
 		</div>
 		<div id="aviso"></div>
-		
 		
 	</body>
 </html>
