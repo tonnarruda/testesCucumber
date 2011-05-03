@@ -1,11 +1,13 @@
 package com.fortes.rh.web.action.pesquisa;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Locale;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -74,6 +76,9 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private Long empresaId = null;
 	private char respondida;
 	private Long[] colaboradorQuestionarioIds;
+
+	private String totalRespondidas;
+	private String totalNaoRespondidas;
 	
 	public String list() throws Exception
 	{
@@ -83,7 +88,9 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionario.getId(), BooleanUtil.getValueCombo(respondida), empresaId);
 
 		urlVoltar = TipoQuestionario.getUrlVoltarList(questionario.getTipo(), null);
-
+		
+		calcularTotalRespondidas();
+		
 		return Action.SUCCESS;
 	}
 
@@ -178,6 +185,21 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		}
 		return colaboradorQuestionario;
 	}
+	
+	private void calcularTotalRespondidas()
+	{
+		double total = colaboradorQuestionarios.size();
+		double totalResp=0.0;		
+		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
+			if (colaboradorQuestionario.getRespondida()) 
+				totalResp += 1.0;
+		double totalNaoResp=total - totalResp;
+		DecimalFormat formata = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt", "BR"));
+		formata.applyPattern("#0.00 %");
+		totalRespondidas = totalResp + " (" + formata.format(totalResp/total) + ")";
+		totalNaoRespondidas = totalNaoResp + " (" + formata.format(totalNaoResp/total) + ")";
+	}
+
 
 	//feito pelo Samuel
 //	public String prepareRelatorioRankingPerformancePeriodoDeExperiencia(){
@@ -411,6 +433,14 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public void setColaboradorQuestionarioIds(Long[] colaboradorQuestionarioIds) {
 		this.colaboradorQuestionarioIds = colaboradorQuestionarioIds;
+	}
+
+	public String getTotalRespondidas() {
+		return totalRespondidas;
+	}
+
+	public String getTotalNaoRespondidas() {
+		return totalNaoRespondidas;
 	}
 	
 }

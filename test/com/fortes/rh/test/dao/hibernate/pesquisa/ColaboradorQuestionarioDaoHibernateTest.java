@@ -14,6 +14,7 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
@@ -29,6 +30,7 @@ import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -44,6 +46,7 @@ import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
@@ -65,6 +68,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	private FaixaSalarialDao faixaSalarialDao;
 	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
 	private SolicitacaoDao solicitacaoDao;
+	private EstabelecimentoDao estabelecimentoDao ;
 
 	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
 	{
@@ -229,6 +233,46 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findColaboradorHistoricoByQuestionario(questionario.getId(), true, empresa.getId());
 
+		assertEquals(1, retorno.size());
+	}
+	
+	public void testFindByQuestionarioEmpresaRespondida() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionarioDao.save(questionario);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario.setRespondida(true);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabeleciemento =  EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabeleciemento);
+		
+		HistoricoColaborador historicoColaboradorAtual1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAtual1.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorAtual1.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaboradorAtual1.setColaborador(colaborador);
+		historicoColaboradorAtual1.setEstabelecimento(estabeleciemento);
+		
+		historicoColaboradorDao.save(historicoColaboradorAtual1);
+		
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByQuestionarioEmpresaRespondida(questionario.getId(), true, empresa.getId());
+		
 		assertEquals(1, retorno.size());
 	}
 
@@ -753,5 +797,9 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao) {
 		this.solicitacaoDao = solicitacaoDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
 	}
 }

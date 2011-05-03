@@ -66,11 +66,24 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioOrAvaliacaoId, Boolean respondida, Long empresaId)
 	{
+		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
+        ProjectionList pSub = Projections.projectionList().create();
+
+        pSub.add(Projections.max("hc2.data"));
+        subQuery.setProjection(pSub);
+
+        subQuery.add(Restrictions.sqlRestriction("this0__.colaborador_id=c3_.id"));
+        subQuery.add(Expression.le("hc2.data", new Date()));
+        subQuery.add(Expression.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+        
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 		criteria.createCriteria("cq.questionario", "q", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("cq.avaliacao", "avaliacao", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "c");
 		criteria.createCriteria("c.empresa", "emp");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.areaOrganizacional", "ao", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("hc.estabelecimento", "e", CriteriaSpecification.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		
@@ -83,12 +96,15 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("c.contato.email"), "projectionColaboradorContatoEmail");
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("ao.nome"), "projectionAreaOrganizacionalNome");
+		p.add(Projections.property("e.nome"), "estabelecimentoNomeProjection");
 		
 		Disjunction disjunction = Expression.disjunction();
 		disjunction.add(Expression.eq("q.id", questionarioOrAvaliacaoId));
 		disjunction.add(Expression.eq("avaliacao.id", questionarioOrAvaliacaoId));
 		criteria.add(disjunction);
 		
+		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
 		criteria.setProjection(Projections.distinct(p));
 		
 		if(empresaId != null && !empresaId.equals(-1L))
@@ -420,6 +436,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		criteria.createCriteria("cq.colaborador", "c");
 		criteria.createCriteria("c.empresa", "emp");
 		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.estabelecimento", "es", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo", "ca", Criteria.LEFT_JOIN);
@@ -439,6 +456,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("ao.nome"), "projectionAreaOrganizacionalNome");
 		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
 		p.add(Projections.property("ca.nome"), "projectionCargoNome");
+		p.add(Projections.property("es.nome"), "estabelecimentoNomeProjection");
 
 		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
 		criteria.add(Expression.eq("q.id", questionarioId));

@@ -33,6 +33,7 @@
 	<field name="colaborador.faixaSalarial.cargo.nome" class="java.lang.String"/>
 	<field name="colaborador.areaOrganizacional.nome" class="java.lang.String"/>
 	<field name="respondida" class="java.lang.Boolean"/>
+	<field name="colaborador.estabelecimento.nome" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.empresa.nome}]]></variableExpression>
@@ -167,7 +168,7 @@
 					<reportElement
 						x="245"
 						y="15"
-						width="148"
+						width="94"
 						height="12"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -178,9 +179,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="397"
+						x="430"
 						y="15"
-						width="109"
+						width="76"
 						height="12"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -201,6 +202,19 @@
 						<font pdfFontName="Helvetica-Bold" size="8" isUnderline="false"/>
 					</textElement>
 				<text><![CDATA[Resp.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="345"
+						y="15"
+						width="80"
+						height="12"
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Estabelecimento]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -226,7 +240,7 @@
 					<reportElement
 						x="245"
 						y="3"
-						width="148"
+						width="94"
 						height="12"
 						key="textField"
 						stretchType="RelativeToTallestObject"
@@ -240,9 +254,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="397"
+						x="430"
 						y="3"
-						width="108"
+						width="75"
 						height="12"
 						key="textField"
 						stretchType="RelativeToTallestObject"
@@ -266,6 +280,22 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{respondida}.booleanValue() ? "Sim" : "Não"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="345"
+						y="3"
+						width="80"
+						height="12"
+						key="textField-8"
+						stretchType="RelativeToTallestObject"
+						positionType="Float"
+						isPrintWhenDetailOverflows="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.estabelecimento.nome}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
