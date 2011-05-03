@@ -10,63 +10,93 @@
 <title>RH</title>
 <head>
 	<style>
-	div.odd
-	{
-		background-color: #FFF;
-		font-family: Arial, Helvetica, sans-serif;
-		font-size:13px;
-		padding: 10px;
-	}
-	div.even
-	{
-		background-color: #E4F0FE;
-		font-family: Arial, Helvetica, sans-serif;
-		font-size:13px;
-		padding: 10px;
-	}
-	div.even a, div.odd a
-	{
-		font-weight: bold;
-		text-decoration: none;
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		div.odd
+		{
+			background-color: #FFF;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size:13px;
+			padding: 10px;
+		}
+		div.even
+		{
+			background-color: #E4F0FE;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size:13px;
+			padding: 10px;
+		}
+		div.even a, div.odd a
+		{
+			font-weight: bold;
+			text-decoration: none;
+			color: #454C54;
+		}
+		
+		a, a:visited {
+		text-decoration:none;
 		color: #454C54;
-	}
-	
-	a, a:visited {
-	text-decoration:none;
-	color: #454C54;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size:13px;
-	}
-	
-	a:link {text-decoration: none}
-	a:visited {text-decoration: none}
-	a:hover {text-decoration: underline; 
-	color: #2471A7;
-	}
-	a:active {text-decoration: none}
-
+		font-family: Arial, Helvetica, sans-serif;
+		font-size:13px;
+		}
+		
+		a:link {text-decoration: none}
+		a:visited {text-decoration: none}
+		a:hover {text-decoration: underline; 
+		color: #2471A7;
+		}
+		a:active {text-decoration: none}
+		
+		#splash{
+			width: 462px;
+			height: 572px;
+			padding: 0;
+		}
+		#splash img{
+			border: 0;
+		}
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.cookie.js"/>'></script>
 	
 	<script type='text/javascript'>
-
-	function marcarMensagemLida(usuarioMensagemId)
-	{
-		DWREngine.setErrorHandler(errorUsuarioMensagem);
-
-		UsuarioMensagemDWR.gravarMensagemLida(retorno, usuarioMensagemId, ${empresaId}, true);
-	}
-
-	function retorno()
-	{
-		window.opener.location.reload();
-	}
-
-	function errorUsuarioMensagem(){
-	}
+		$(function () {
+			$( "#splash" ).dialog({
+				autoOpen: false,
+				modal: true,
+				zIndex: 9999,
+				title: 'Ente Tecnologia',
+				minWidth: 462,
+				minHeight: 572,
+			  	close: function() { 
+			  		
+			  	}
+			});
+			
+			if($.cookie("pgInicialSplashEnte") != 'false')
+			{
+				$("#splash").dialog("open");
+				$.cookie("pgInicialSplashEnte", false, { expires: 30 });
+			}
+		});
+		
+		function marcarMensagemLida(usuarioMensagemId)
+		{
+			DWREngine.setErrorHandler(errorUsuarioMensagem);
+	
+			UsuarioMensagemDWR.gravarMensagemLida(retorno, usuarioMensagemId, ${empresaId}, true);
+		}
+	
+		function retorno()
+		{
+			window.opener.location.reload();
+		}
+	
+		function errorUsuarioMensagem(){
+		}
 
 	</script>
 
@@ -204,6 +234,12 @@
 			</div>
 		</#if>
 	</@authz.authorize>
+
+	<div id="splash">
+		<a href="http://www.entetecnologia.com.br/" target="_blank" >
+			<img border="0" title="Acesse o novo site"  src="<@ww.url includeParams="none" value="/imgs/splashEnte.jpg"/>">
+		</a>
+	</div>
 
 	<script type="text/javascript">
 		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
