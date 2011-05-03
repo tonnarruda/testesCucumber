@@ -63,6 +63,7 @@
 
 			<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="dias" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
 		
+			<@ww.hidden name="telaInicial" />
 			<@ww.hidden name="avaliacao.id" />
 			<@ww.hidden name="avaliacao.tipoModeloAvaliacao" />
 			<@ww.hidden name="avaliacao.empresa.id" />
@@ -72,7 +73,12 @@
 	
 		<div class="buttonGroup">
 			<button onclick="enviaForm();" class="${btnClass}"></button>
-			<button onclick="window.location='list.action?modeloAvaliacao=${modeloAvaliacao}'" class="btnVoltar"></button>
+			
+			<#if telaInicial?exists>
+				<button onclick="window.location='list.action?modeloAvaliacao=${modeloAvaliacao}'" class="btnVoltar"></button>
+			<#else>
+				<button onclick="window.location='../../index.action'" class="btnVoltar"></button>
+			</#if>
 		</div>
 	</body>
 </html>

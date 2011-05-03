@@ -39,6 +39,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private char modeloAvaliacao = 'D'; 
 	private TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
 	private Collection<PeriodoExperiencia> periodoExperiencias;
+	private boolean telaInicial;
 	
 	private void prepare() throws Exception
 	{
@@ -84,7 +85,11 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		avaliacaoManager.update(avaliacao);
-		return Action.SUCCESS;
+		
+		if(telaInicial)
+			return "TELA_INICIAL";
+		else
+			return Action.SUCCESS;
 	}
 
 	public String visualizar() throws Exception
@@ -202,5 +207,13 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager) {
 		this.periodoExperienciaManager = periodoExperienciaManager;
+	}
+
+	public boolean isTelaInicial() {
+		return telaInicial;
+	}
+
+	public void setTelaInicial(boolean telaInicial) {
+		this.telaInicial = telaInicial;
 	}
 }

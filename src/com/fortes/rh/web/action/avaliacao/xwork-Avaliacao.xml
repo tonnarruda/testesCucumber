@@ -41,6 +41,7 @@
 			<interceptor-ref name="tokenWebStack" />
 			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
+			<result name="TELA_INICIAL" type="redirect">../../index.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoEdit.ftl</result>
 		</action>
 		
