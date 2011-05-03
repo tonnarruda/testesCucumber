@@ -107,10 +107,10 @@ function agrupaPerguntaseRespostas(formulario)
 			perguntasRespostas += "RN"+elemento.value+"_";
 		}
 		else if(elemento.name.substring(0,2) == "RS" && elemento.value.trim().length > 0){
-			perguntasRespostas += "RS"+elemento.value+"_";
+			perguntasRespostas += "RS"+elemento.value.trim()+"_";
 		}
 		else if(elemento.name.substring(0,2) == "RC" && elemento.value.trim().length > 0){
-			perguntasRespostas += "RC"+elemento.value+"_";
+			perguntasRespostas += "RC"+elemento.value.trim()+"_";
 		}
 	}
 

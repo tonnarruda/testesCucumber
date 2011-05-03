@@ -25,6 +25,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.NaoAudita;
@@ -290,6 +291,14 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	if(this.colaborador.getAreaOrganizacional() == null)
     		this.colaborador.setAreaOrganizacional(new AreaOrganizacional());
     	this.colaborador.getAreaOrganizacional().setNome(projectionAreaOrganizacionalNome);
+    }
+
+    public void setEstabelecimentoNomeProjection(String estabelecimentoNome)
+	{
+    	newColaborador();
+		if(this.colaborador.getEstabelecimento() == null)
+			this.colaborador.setEstabelecimento(new Estabelecimento());
+		this.colaborador.getEstabelecimento().setNome(estabelecimentoNome);
     }
     
     public void setProjectionAvaliadorAreaOrganizacionalNome(String areaOrganizacionalNome)

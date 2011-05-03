@@ -81,12 +81,14 @@
 					</#if>
 				</@display.column>
 				<@display.column property="colaborador.nomeComercial" title="Colaborador"/>
-				<@display.column property="colaborador.contato.email" title="E-mail"/>
+				<@display.column property="colaborador.areaOrganizacional.nome" title="Área Organizacional"/>
+				<@display.column property="colaborador.estabelecimento.nome" title="Estabelecimento"/>
 				<@display.column property="colaborador.empresa.nome" title="Empresa" style="width:200px;"/>
 			</@display.table>
 		</@ww.form>
 
-		${colaboradorQuestionarios?size} registro(s) encontrado(s).
+		<span style="float:right;">${colaboradorQuestionarios?size} colaboradores/registros. Respondeu Pesquisa: ${totalRespondidas}. Não Respondeu: ${totalNaoRespondidas}</span>
+		<div style="clear:both;"></div>
 		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 		
 	</#if>
