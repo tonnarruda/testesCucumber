@@ -15,7 +15,7 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 	{
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new PeriodoExperiencia(p.id, p.dias, p.empresa.id) ");
+		hql.append("select new PeriodoExperiencia(p.id, p.dias, p.descricao, p.empresa.id) ");
 		hql.append("from PeriodoExperiencia p ");
 		hql.append("where p.empresa.id = :empresaId ");
 		hql.append("order by p.dias ");
@@ -32,7 +32,7 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 	public Integer findPeriodoAnterior(Long empresaId, Integer dias) {
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new PeriodoExperiencia(p.id, p.dias, p.empresa.id) ");
+		hql.append("select new PeriodoExperiencia(p.id, p.dias, p.descricao, p.empresa.id) ");
 		hql.append("from PeriodoExperiencia p ");
 		hql.append("where p.empresa.id = :empresaId ");
 		hql.append("and p.dias < :dias ");
@@ -52,7 +52,7 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 	public Integer findPeriodoSugerido(Long empresaId, Integer dias) {
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new PeriodoExperiencia(p.id, p.dias, p.empresa.id) ");
+		hql.append("select new PeriodoExperiencia(p.id, p.dias, p.descricao, p.empresa.id) ");
 		hql.append("from PeriodoExperiencia p ");
 		hql.append("where p.empresa.id = :empresaId ");
 		hql.append("and p.dias > :dias ");

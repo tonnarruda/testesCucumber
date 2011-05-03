@@ -53,10 +53,13 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 	public void testInsert() throws Exception
 	{
 		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(1L);
+		periodoExperiencia.setDescricao("Noventa Dias");
+		periodoExperiencia.setDias(90);
 		action.setPeriodoExperiencia(periodoExperiencia);
 
 		manager.expects(once()).method("save").with(eq(periodoExperiencia)).will(returnValue(periodoExperiencia));
-
+		
+		assertEquals("(90 dias) Noventa Dias", periodoExperiencia.getDiasDescricao());
 		assertEquals("success", action.insert());
 	}
 

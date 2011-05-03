@@ -420,7 +420,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if(faixaSalarial.getFaixaSalarialHistoricoAtual() != null && faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo() == TipoAplicacaoIndice.INDICE)
 		{
 			historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().setIndice(indiceFaixaSalarial);
-			historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().getIndice().setIndiceHistoricoAtual(indiceHistoricoFaixaSalarial);
+			if(historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().getIndice() != null)
+				historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().getIndice().setIndiceHistoricoAtual(indiceHistoricoFaixaSalarial);
 		}
 
 		this.historicoColaborador = historicoColaborador;

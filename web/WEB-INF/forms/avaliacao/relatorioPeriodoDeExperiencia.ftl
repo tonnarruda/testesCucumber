@@ -29,7 +29,9 @@
 			Considerar colaboradores com período de acompanhamento de experiência a vencer daqui a  
 			<@ww.textfield theme="simple" name="diasDeAcompanhamento" id="diasDeAcompanhamento" cssStyle="width:60px; text-align:right;" maxLength="8" onkeypress = "return(somenteNumeros(event,''));"/> 
 			dias.
-			<br><br>  
+			<br><br>
+			
+			<@ww.select label="Período de Acompanhamento" name="periodoExperiencia.id" id="periodoExperiencia" list="periodoExperiencias" listKey="id" listValue="diasDescricao" headerKey="" headerValue="Todos" />  
 
 			<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>

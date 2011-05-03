@@ -113,6 +113,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	public String prepareRelatorioAcopanhamentoExperiencia() throws Exception{
 		prepare();
 		
+		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
     	
@@ -133,7 +134,13 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
     {
 		try {
 			dataReferencia = getDataReferencia();
-			periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+			if(periodoExperiencia == null || periodoExperiencia.getId() == null)
+				periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+			else
+			{
+				periodoExperiencias = new ArrayList<PeriodoExperiencia>();
+				periodoExperiencias.add(periodoExperienciaManager.findById(periodoExperiencia.getId()));
+			}
 			
 			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, diasDeAcompanhamento, periodoExperiencias);
 			
