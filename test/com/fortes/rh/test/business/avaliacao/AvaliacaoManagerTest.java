@@ -92,6 +92,16 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 		assertEquals(avaliacaos, avaliacaoManager.findAllSelect(empresaId, null, TipoModeloAvaliacao.DESEMPENHO));
 	}
 	
+	public void testFindPeriodoExperienciaIsNull()
+	{
+		Long empresaId = 1L;
+		
+		Collection<Avaliacao> avaliacaos = AvaliacaoFactory.getCollection(1L);
+		
+		avaliacaoDao.expects(once()).method("findPeriodoExperienciaIsNull").with(eq(TipoModeloAvaliacao.DESEMPENHO), eq(empresaId)).will(returnValue(avaliacaos));
+		assertEquals(avaliacaos, avaliacaoManager.findPeriodoExperienciaIsNull(TipoModeloAvaliacao.DESEMPENHO, empresaId));
+	}
+	
 	public void testGetQuestionarioRelatorio()
     {
     	Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);

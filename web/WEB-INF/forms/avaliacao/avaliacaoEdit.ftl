@@ -58,10 +58,10 @@
 			<@ww.select label="Ativa" name="avaliacao.ativo" id="ativo" list=r"#{true:'Sim',false:'Não'}"/>
 
 			<#if avaliacao.tipoModeloAvaliacao != 'S'>
-				<@ww.select label="Tipo de Avaliação" name="avaliacao.tipoModeloAvaliacao" 
-				id="tipoModeloAvaliacao" list=r"#{'D':'Avaliação de Desempenho','A':'Acompanhamento do Período de Experiência'}"/>
-				<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="dias" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
+				<@ww.select label="Tipo de Avaliação" name="avaliacao.tipoModeloAvaliacao" id="tipoModeloAvaliacao" list=r"#{'D':'Avaliação de Desempenho','A':'Acompanhamento do Período de Experiência'}"/>
 			</#if>			
+
+			<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="dias" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
 		
 			<@ww.hidden name="avaliacao.id" />
 			<@ww.hidden name="avaliacao.tipoModeloAvaliacao" />

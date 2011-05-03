@@ -6,10 +6,14 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 
@@ -87,5 +91,30 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		Integer pontuacaoMaxima = pontuacaoMaximaPorNota + pontuacaoMaximaPorObjetiva + pontuacaoMaximaPorMultiplaEscolha;
 		
 		return pontuacaoMaxima;
+	}
+
+	public Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "a");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.titulo"), "titulo");
+		p.add(Projections.property("a.tipoModeloAvaliacao"), "tipoModeloAvaliacao");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("a.tipoModeloAvaliacao", acompanhamentoExperiencia));
+		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		criteria.add(Expression.eq("a.ativo", true));
+		criteria.add(Expression.isNull("a.periodoExperiencia"));
+		
+		criteria.addOrder(Order.asc("a.titulo"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
 	}
 }

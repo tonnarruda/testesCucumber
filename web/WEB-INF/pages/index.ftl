@@ -75,28 +75,24 @@
 	<#assign usuarioId><@authz.authentication operation="id"/></#assign>
 
 	<@ww.actionmessage />
-	<@ww.actionerror />
-
-	<!-- Aviso comentado	
+	<@ww.actionerror />	
 		
-	<div class="waDivTituloX">Aviso!</div>
-	<div class="waDivFormularioX">
-
-		<p>
-		<strong><i>Caro cliente,</strong></i><br>
-			Foi criada uma classificação no cadastro de modelos de avaliação para 
-			definir se um modelo é de avaliação de desempenho ou de acompanhamento 
-			do período de experiência.
-			Por padrão, o sistema configurou todos os modelos como acompanhamento do 
-			período de experiência. Portanto, caso o cliente possua modelos de 
-			avaliação de desempenho, é necessário que entre no cadastro de modelos 
-			de avalição/acomp. de período de experiência, no módulo de treinamento 
-			de desenvolvimento e configure a referida opção.
-		</p>
-	
+		
+	<#if avaliacaos?exists && 0 < avaliacaos?size>
+		<div class="waDivTituloX">Aviso!</div>
+		<div class="waDivFormularioX">
+			<p>
+				<strong>Caro cliente,</strong><br>
+				Existe uma inconsistência no cadastro de Modelo de Avaliação, foi criado um novo vínculo entre o "Modelo de Avaliação" e "Períodos de Acompanhamento de Experiência".<br>
+				Clique nos "Modelo de Avaliação" abaixo e edite o campo "Períodos de Acompanhamento de Experiência":<br><br>
+			<#list avaliacaos as avaliacao>
+				<a href="avaliacao/modelo/prepareUpdate.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${avaliacao.tipoModeloAvaliacao}">${avaliacao.titulo}</a><br>
+			</#list>
+			</p>
 		</div>
 		<br>
-	-->
+	</#if>
+
 	<#if questionarios?exists || avaliacoesDesempenhoPendentes?exists>
 		<div class="waDivTituloX">Pesquisas/Avaliações Disponíveis</div>
 		<div class="waDivFormularioX">

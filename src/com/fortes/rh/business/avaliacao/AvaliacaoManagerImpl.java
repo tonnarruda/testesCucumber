@@ -198,4 +198,9 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		
 		perguntaManager.clonarPergunta(id, null, avaliacao);
 	}
+
+	public Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId) 
+	{
+		return getDao().findPeriodoExperienciaIsNull(acompanhamentoExperiencia, empresaId);
+	}
 }

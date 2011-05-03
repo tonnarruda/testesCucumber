@@ -9,4 +9,5 @@ public interface AvaliacaoDao extends GenericDao<Avaliacao>
 {
 	Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo, char modeloAvaliacao);
 	Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId);
+	Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId);
 }
