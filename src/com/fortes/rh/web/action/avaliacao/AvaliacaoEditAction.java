@@ -74,6 +74,8 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
+		//TODO ajustar ta tudo BUGADO
+		avaliacao.setPeriodoExperiencia(null);
 		avaliacao.setEmpresa(getEmpresaSistema());
 		avaliacaoManager.save(avaliacao);
 		return Action.SUCCESS;

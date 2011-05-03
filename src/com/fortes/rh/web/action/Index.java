@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
@@ -18,9 +19,11 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.PendenciaAC;
@@ -48,6 +51,7 @@ public class Index extends ActionSupport
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	private AvaliacaoManager avaliacaoManager;
 
 	private Collection<Pesquisa> pesquisasAtrasadas;
 
@@ -56,6 +60,7 @@ public class Index extends ActionSupport
 	private Collection<UsuarioMensagem> mensagems;
 	private Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 	private Collection<ColaboradorQuestionario> avaliacoesDesempenhoPendentes = new ArrayList<ColaboradorQuestionario>();
+	private Collection<Avaliacao> avaliacaos;
 
 	private Long usuarioId;
 	private Colaborador colaborador;
@@ -114,6 +119,9 @@ public class Index extends ActionSupport
 				solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, false, null);
 				candidatoSolicitacaos = candidatoSolicitacaoManager.findByFiltroSolicitacaoTriagem(true);
 			}
+			
+			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_PERIODOEXPERIENCIA"}) )
+				avaliacaos = avaliacaoManager.findPeriodoExperienciaIsNull(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, empresaId);
 			
 			if (StringUtils.isNotBlank(actionMsg))
 				addActionMessage(actionMsg);
@@ -369,6 +377,14 @@ public class Index extends ActionSupport
 
 	public boolean isIdiomaIncorreto() {
 		return idiomaIncorreto;
+	}
+
+	public Collection<Avaliacao> getAvaliacaos() {
+		return avaliacaos;
+	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
 	}
 
 }

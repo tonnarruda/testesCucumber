@@ -17,4 +17,5 @@ public interface AvaliacaoManager extends GenericManager<Avaliacao>
 	Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId);
 	Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] areaIds, Date periodoIni, Date periodoFim, Avaliacao avaliacao) throws Exception;
 	void clonar(Long id);
+	Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId);
 }
