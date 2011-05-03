@@ -31,7 +31,7 @@
 			dias.
 			<br><br>
 			
-			<@ww.select label="Períodos de Acompanhamento" name="periodoExperienciaId" id="periodoExperiencia" list="periodoExperiencias" listKey="id" listValue="diasDescricao" headerKey="" headerValue="Todos" />  
+			<@ww.select label="Período de Acompanhamento" name="periodoExperiencia.id" id="periodoExperiencia" list="periodoExperiencias" listKey="id" listValue="diasDescricao" headerKey="" headerValue="Todos" />  
 
 			<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>

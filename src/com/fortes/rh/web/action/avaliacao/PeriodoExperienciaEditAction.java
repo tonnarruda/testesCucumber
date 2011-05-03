@@ -63,7 +63,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Integer tempoDeEmpresa;
 	private String reportFilter;
 	private String reportTitle;
-	private Long periodoExperienciaId;
 		
 	private void prepare() throws Exception
 	{
@@ -135,8 +134,13 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
     {
 		try {
 			dataReferencia = getDataReferencia();
-			//TODO tem uma ruma de coisa pra passar pro filtro periodoExperienciaID
-			periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+			if(periodoExperiencia == null || periodoExperiencia.getId() == null)
+				periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+			else
+			{
+				periodoExperiencias = new ArrayList<PeriodoExperiencia>();
+				periodoExperiencias.add(periodoExperienciaManager.findById(periodoExperiencia.getId()));
+			}
 			
 			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, diasDeAcompanhamento, periodoExperiencias);
 			
@@ -370,14 +374,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 		public String getReportTitle() {
 			return reportTitle;
-		}
-
-		public Long getPeriodoExperienciaId() {
-			return periodoExperienciaId;
-		}
-
-		public void setPeriodoExperienciaId(Long periodoExperienciaId) {
-			this.periodoExperienciaId = periodoExperienciaId;
 		}
 		
 }
