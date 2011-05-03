@@ -26,9 +26,11 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.relatorio.GraficoIndicadorTreinamento;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -55,6 +57,10 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private Double percentualFrequencia = 0.0;
 	private Map<String, Object> parametros;
 	private Collection<String> colecao = new ArrayList<String>();
+
+	private String grfTreinamento="";
+	private String grfFrequencia="";
+	private String grfDesempenho="";
 
 	public String list() throws Exception
 	{
@@ -90,79 +96,16 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		}
 	}
 
-//	private void prepareGraficoFrequencia()
-//	{
-//		qtdParticipantes = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-//		qtdPrevistos = cursoManager.findSomaColaboradoresPrevistosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-//		qtdVagasOciosas = qtdPrevistos - qtdParticipantes;
-//
-//		if (qtdVagasOciosas > 0)
-//		{
-//			indicadorTreinamento.setGraficoQtdParticipantes(qtdParticipantes);
-//			indicadorTreinamento.setGraficoQtdVagasOciosas(qtdVagasOciosas);
-//		}
-//	}
-//
-//	public String graficoFrequencia() throws Exception
-//	{
-//		prepareGraficoFrequencia();
-//
-//		DefaultPieDataset dataSet = new DefaultPieDataset();
-//
-//		qtdParticipantes = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-//		qtdPrevistos = cursoManager.findSomaColaboradoresPrevistosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-//		qtdVagasOciosas = qtdPrevistos - qtdParticipantes;
-//
-//		if (qtdVagasOciosas > 0)
-//		{
-//			dataSet.setValue("Participantes", qtdParticipantes);
-//			dataSet.setValue("Vagas ociosas", qtdVagasOciosas);
-//		}
-//
-//		return this.geraGrafico(dataSet);
-//	}
-
-	public String graficoCumprimentoPlanoTreinamento() throws Exception
-	{
-		DefaultPieDataset dataSet = new DefaultPieDataset();
-
-		prepareGraficoCumprimentoPlanoTreinamento();
-		dataSet.setValue("Treinamentos\n Realizados", qtdTreinamentosRealizados);
-		dataSet.setValue("Treinamentos\n não Realizados", qtdTreinamentosNaoRealizados);
-
-		return this.geraGrafico(dataSet);
-	}
-
-	public String graficoDesempenho() throws Exception
-	{
-		DefaultPieDataset dataSet = new DefaultPieDataset();
-
-		prepareGraficoDesempenho();
-		dataSet.setValue("Alunos\n Aprovados", qtdAprovados);
-		dataSet.setValue("Alunos\n Reprovados", qtdReprovados);
-
-		return this.geraGrafico(dataSet);
-	}
-
-	public String graficoVagasPorInscrito() throws Exception
-	{
-		DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-
-		prepareGraficoFrequencia();
-		dataSet.addValue(qtdParticipantesPrevistos, "Vagas",  "");
-		dataSet.addValue(qtdTotalInscritosTurmas,"Inscritos", "");
-		
-		return this.geraGraficoBarras(dataSet);
-	}
-	
 	private void prepareGraficoDesempenho()
 	{
 		HashMap<String, Integer> resultados = colaboradorTurmaManager.getResultado(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 		qtdAprovados = resultados.get("qtdAprovados");
 		qtdReprovados = resultados.get("qtdReprovados");
 
-		indicadorTreinamento.setGraficoQtdAprovados(qtdAprovados);
-		indicadorTreinamento.setGraficoQtdReprovados(qtdReprovados);
+		Collection<DataGrafico> graficoDesempenho = new ArrayList<DataGrafico>();
+		graficoDesempenho.add(new DataGrafico(null, "Aprovados", qtdAprovados, ""));
+		graficoDesempenho.add(new DataGrafico(null, "Reprovados", qtdReprovados, ""));
+		grfDesempenho = StringUtil.toJSON(graficoDesempenho, null);
 	}
 
 	private void prepareGraficoFrequencia()
@@ -170,8 +113,10 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		this.qtdTotalInscritosTurmas = colaboradorTurmaManager.findQuantidade(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 		this.qtdParticipantesPrevistos = turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 		
-		indicadorTreinamento.setGraficoQtdAprovados(qtdParticipantesPrevistos);
-		indicadorTreinamento.setGraficoQtdReprovados(qtdTotalInscritosTurmas);
+		Collection<DataGrafico> graficoFrequencia = new ArrayList<DataGrafico>();
+		graficoFrequencia.add(new DataGrafico(null, "Vagas", this.qtdParticipantesPrevistos, ""));
+		graficoFrequencia.add(new DataGrafico(null, "Inscritos", this.qtdTotalInscritosTurmas, ""));
+		grfFrequencia = StringUtil.toJSON(graficoFrequencia, null);
 	}
 
 	private void prepareGraficoCumprimentoPlanoTreinamento()
@@ -179,75 +124,12 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		this.qtdTreinamentosRealizados = cursoManager.countTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId(), true);
 		this.qtdTreinamentosNaoRealizados = cursoManager.countTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId(), false);
 
-		indicadorTreinamento.setGraficoQtdTreinamentosRealizados(qtdTreinamentosRealizados);
-		indicadorTreinamento.setGraficoQtdTreinamentosNaoRealizados(qtdTreinamentosNaoRealizados);
-	}
-	
-	private String geraGrafico(DefaultPieDataset dataSet) throws Exception
-	{
-		//primeiro boolean = legendas
-		chart = ChartFactory.createPieChart3D("",dataSet,false,false,false);
-		
-        final PiePlot3D plot = (PiePlot3D) chart.getPlot();
-        plot.setBackgroundPaint(new Color(255, 255, 255));
-        plot.setCircular(false);
-        
-        plot.setForegroundAlpha(0.5f);
-        plot.setNoDataMessage("Sem dados para gerar o gráfico.");
-        plot.setIgnoreNullValues(true);
-        plot.setIgnoreZeroValues(true);
-        NumberFormat nf = new DecimalFormat("###,##%0.00");
-        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{2}", NumberFormat.getNumberInstance(), nf));
-		return SUCCESS;
-	}
-	
-	private String geraGraficoBarras(DefaultCategoryDataset dataset) throws Exception
-	{
-		chart = ChartFactory.createBarChart3D("", "", "", dataset, PlotOrientation.VERTICAL, true, true, true);
-		chart.setBackgroundPaint(new Color(255, 255, 255));
-		CategoryPlot p = chart.getCategoryPlot();
-		p.setBackgroundPaint(Color.white);
-		p.setRangeGridlinePaint(Color.GRAY);
-		
-		return SUCCESS;
+		Collection<DataGrafico> grfCumprimentoPlanoTreinamento = new ArrayList<DataGrafico>();
+		grfCumprimentoPlanoTreinamento.add(new DataGrafico(null, "Realizados", this.qtdTreinamentosRealizados, ""));
+		grfCumprimentoPlanoTreinamento.add(new DataGrafico(null, "Não Realizados", this.qtdTreinamentosNaoRealizados, ""));
+		grfTreinamento = StringUtil.toJSON(grfCumprimentoPlanoTreinamento, null);
 	}
 
-	public String imprimir() throws Exception
-	{
-		parametros = RelatorioUtil.getParametrosRelatorio("Painel de Indicadores de T&D", getEmpresaSistema(), "Período: "+ DateUtil.formataDiaMesAno(indicadorTreinamento.getDataIni()) + " a " + DateUtil.formataDiaMesAno(indicadorTreinamento.getDataFim()));
-		colecao.add("");//para o ireport exibir as bands
-
-		cursoManager.findCustoMedioHora(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-		cursoManager.findCustoPerCapita(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-		cursoManager.findHorasPerCapita(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-		
-		prepareGraficoFrequencia();
-		prepareGraficoCumprimentoPlanoTreinamento();
-		prepareGraficoDesempenho();
-
-		Collection<GraficoIndicadorTreinamento> graficoFrequencia = new ArrayList<GraficoIndicadorTreinamento>();
-		Collection<GraficoIndicadorTreinamento> graficoCumprimento = new ArrayList<GraficoIndicadorTreinamento>();
-		Collection<GraficoIndicadorTreinamento> graficoDesempenho = new ArrayList<GraficoIndicadorTreinamento>();
-		
-		graficoFrequencia.add(new GraficoIndicadorTreinamento("Participantes", indicadorTreinamento.getGraficoQtdParticipantes(), MathUtil.calculaPorcentagem(indicadorTreinamento.getGraficoQtdParticipantes(), indicadorTreinamento.getGraficoQtdVagasOciosas())));
-		graficoFrequencia.add(new GraficoIndicadorTreinamento("Vagas ociosas", indicadorTreinamento.getGraficoQtdVagasOciosas(), MathUtil.calculaPorcentagem(indicadorTreinamento.getGraficoQtdVagasOciosas(), indicadorTreinamento.getGraficoQtdParticipantes())));
-		
-		graficoCumprimento.add(new GraficoIndicadorTreinamento("Realizados", indicadorTreinamento.getGraficoQtdTreinamentosRealizados(), MathUtil.calculaPorcentagem(indicadorTreinamento.getGraficoQtdTreinamentosRealizados(), indicadorTreinamento.getGraficoQtdTreinamentosNaoRealizados())));
-		graficoCumprimento.add(new GraficoIndicadorTreinamento("Não realizados", indicadorTreinamento.getGraficoQtdTreinamentosNaoRealizados(), MathUtil.calculaPorcentagem(indicadorTreinamento.getGraficoQtdTreinamentosNaoRealizados(), indicadorTreinamento.getGraficoQtdTreinamentosRealizados())));
-		
-		graficoDesempenho.add(new GraficoIndicadorTreinamento("Aprovados", indicadorTreinamento.getGraficoQtdAprovados(), MathUtil.calculaPorcentagem(indicadorTreinamento.getGraficoQtdAprovados(),indicadorTreinamento.getGraficoQtdReprovados())));
-		graficoDesempenho.add(new GraficoIndicadorTreinamento("Reprovados", indicadorTreinamento.getGraficoQtdReprovados(), MathUtil.calculaPorcentagem(indicadorTreinamento.getGraficoQtdReprovados(), indicadorTreinamento.getGraficoQtdAprovados())));
-		
-		parametros.put("GRAFICO_FREQUENCIA", graficoFrequencia);
-		parametros.put("GRAFICO_CUMPRIMENTO", graficoCumprimento);
-		parametros.put("GRAFICO_DESEMPENHO", graficoDesempenho);
-		parametros.put("CUSTO_MEDIO_HORA", indicadorTreinamento.getCustoMedioHoraFmt());
-		parametros.put("CUSTO_PER_CAPITA", indicadorTreinamento.getCustoPerCapitaFmt());
-		parametros.put("HORAS_PER_CAPITA", indicadorTreinamento.getHorasPerCapitaFmt());
-		parametros.put("CUSTO_TOTAL", indicadorTreinamento.getCustoTotalFmt());
-		
-		return Action.SUCCESS;
-	}
 	
 	public void setCursoManager(CursoManager cursoManager)
 	{
@@ -315,6 +197,18 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	public Double getPercentualFrequencia() 
 	{
 		return colaboradorTurmaManager.percentualFrequencia(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+	}
+
+	public String getGrfTreinamento() {
+		return grfTreinamento;
+	}
+
+	public String getGrfFrequencia() {
+		return grfFrequencia;
+	}
+
+	public String getGrfDesempenho() {
+		return grfDesempenho;
 	}
 
 }

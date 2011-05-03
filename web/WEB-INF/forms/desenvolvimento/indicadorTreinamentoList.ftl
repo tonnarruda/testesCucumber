@@ -1,13 +1,23 @@
 <html>
+<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 <head>
 <@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/painelIndicadoresTreinamentos.css"/>');
+		@import url('<@ww.url value="/css/indicadores.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
 
 	<title>Painel de Indicadores de T&D</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
+	<#include "../ftl/showFilterImports.ftl" />
+	
+	<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
+	
 	<script type="text/javascript">
 		function enviaForm(opcao)
 		{
@@ -22,6 +32,14 @@
 
 			return validaFormularioEPeriodo('formBusca', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'));
 		}
+		
+		$(function () {
+			montaPie(${grfTreinamento}, "#treinamento", {combinePercentMin: -1, percentMin: 0} );
+			montaPie(${grfFrequencia}, "#frequencia", {combinePercentMin: -1, percentMin: 0} );
+			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
+		});
+		
+		
 	</script>
 
 	<#if indicadorTreinamento?exists && indicadorTreinamento.dataIni?exists>
@@ -38,15 +56,16 @@
 	<#assign parametrosDatas = "?indicadorTreinamento.dataIni=${indicadorTreinamento.dataIni?date}&indicadorTreinamento.dataFim=${indicadorTreinamento.dataFim?date}" />
 </head>
 <body>
-	<@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
-		Período:<br>
-		<@ww.datepicker name="indicadorTreinamento.dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-		<@ww.label value="a" liClass="liLeft" />
-		<@ww.datepicker name="indicadorTreinamento.dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-
-		<button onclick="return enviaForm(1);" class="btnPesquisar"></button>
-		<button onclick="return enviaForm(2);" class="btnImprimirPdf"></button>
-
+	<#include "../util/topFiltro.ftl" />
+		<@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
+			Período:<br>
+			<@ww.datepicker name="indicadorTreinamento.dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+			<@ww.label value="a" liClass="liLeft" />
+			<@ww.datepicker name="indicadorTreinamento.dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
+	
+			<button onclick="return enviaForm(1);" class="btnPesquisar grayBGE"></button>
+		</@ww.form>
+	<#include "../util/bottomFiltro.ftl" />
 		</div><br>
 			<@ww.div>
 					<div id="gogDiv">
@@ -69,33 +88,24 @@
 						<br />
 						<div class="gogDivTituloX">Cumprimento do Plano de Treinamento</div>
 						<div class="gogDivFormularioX">
-							<img src="graficoCumprimentoPlanoTreinamento.action${parametrosDatas}" class="grafico"/>
-							<span><div class="quadradinho" style="background: #ff8080"></div>&nbsp;Realizados (${indicadorTreinamento.graficoQtdTreinamentosRealizados}) </span><br /><br />
-							<span><div class="quadradinho" style="background: #8080ff"></div>&nbsp;Não realizados (${indicadorTreinamento.graficoQtdTreinamentosNaoRealizados})</span><br /><br />
-							<div style="clear: both"></div>
+							<div id="treinamento" class="graph" ></div>
 						</div>
 						<br />
 					</div>
 					<div class="gogDivDir">
 						<div class="gogDivTituloX">Vagas x Inscritos</div>
 						<div class="gogDivFormularioX">
-							<img src="graficoVagasPorInscrito.action${parametrosDatas}" class="grafico"/>
-							<span><div class="quadradinho" style="background: #ff8080"></div>&nbsp;Vagas (${qtdParticipantesPrevistos})</span><br /><br />
-							<span><div class="quadradinho" style="background: #8080ff"></div>&nbsp;Inscritos (${qtdTotalInscritosTurmas})</span><br /><br />
-							<div style="clear: both"></div>
+							<div id="frequencia" class="graph" ></div>
 						</div>
 						<br />
 						<div class="gogDivTituloX">Aproveitamento dos Treinamentos</div>
 						<div class="gogDivFormularioX">
-							<img src="graficoDesempenho.action${parametrosDatas}" class="grafico"/>
-							<span><div class="quadradinho" style="background: #ff8080"></div>&nbsp;Aprovados (${indicadorTreinamento.graficoQtdAprovados})</span><br /><br />
-							<span><div class="quadradinho" style="background: #8080ff"></div>&nbsp;Reprovados (${indicadorTreinamento.graficoQtdReprovados})</span><br /><br />
-							<div style="clear: both"></div>
+							<div id="desempenho" class="graph" ></div>
 						</div>
 						<br />
 					</div>
 				
 			</@ww.div>
-	</@ww.form>
+	
 </body>
 </html>

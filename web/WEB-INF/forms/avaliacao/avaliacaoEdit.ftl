@@ -22,14 +22,21 @@
 		
 			<#if avaliacao.tipoModeloAvaliacao != 'S'>
 				$('#tipoModeloAvaliacao').change(function() {
-					if($(this).val() == 'A')
+					if ($(this).val() == 'A')
+					{
 						$('#wwgrp_periodoExperiencia').show();
+						$('#wwgrp_periodoExperiencia select').removeAttr('disabled');
+					}
 					else
+					{
 						$('#wwgrp_periodoExperiencia').hide();
+						$('#wwgrp_periodoExperiencia select').attr("disabled", true);
+					}
 				});
 				
 				<#if avaliacao.tipoModeloAvaliacao != 'A'>
 					$('#wwgrp_periodoExperiencia').hide();
+					$('#wwgrp_periodoExperiencia select').attr("disabled", true);
 				</#if>
 			</#if>
 
@@ -59,9 +66,9 @@
 
 			<#if avaliacao.tipoModeloAvaliacao != 'S'>
 				<@ww.select label="Tipo de Avaliação" name="avaliacao.tipoModeloAvaliacao" id="tipoModeloAvaliacao" list=r"#{'D':'Avaliação de Desempenho','A':'Acompanhamento do Período de Experiência'}"/>
+				<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="dias" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
 			</#if>			
 
-			<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="dias" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
 		
 			<@ww.hidden name="telaInicial" />
 			<@ww.hidden name="avaliacao.id" />
