@@ -56,7 +56,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		avaliacaoDesempenho.setAvaliacao(avaliacao);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
-		assertEquals(1,avaliacaoDesempenhoDao.findAllSelect(empresa.getId(), null).size());
+		assertEquals(1,avaliacaoDesempenhoDao.findAllSelect(empresa.getId(), null, null).size());
 		
 	}
 	

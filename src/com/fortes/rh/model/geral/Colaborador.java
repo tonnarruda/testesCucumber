@@ -96,6 +96,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Double performance;
 	@Transient
 	private String titulo;
+	@Transient
+	private String nomeAvaliador;
 	
 	@Lob
 	private String observacaoDemissao;
@@ -727,6 +729,19 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.respondidaEm = respondidaEm;
 		this.performance = performance;
 		this.titulo = titulo;
+	}
+
+	public Colaborador(String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, boolean anonima)
+	{
+		this.nome = nome;
+		this.nomeComercial = nomeComercial;
+		if(anonima)
+			this.nomeAvaliador = " - ";
+		else
+			this.nomeAvaliador = nomeAvaliador;
+		
+		this.respondidaEm = respondidaEm;
+		this.performance = performance;
 	}
 	
 	
@@ -2202,6 +2217,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setAreaOrganizacionalMatriarca(AreaOrganizacional areaOrganizacionalMatriarca) {
 		this.areaOrganizacionalMatriarca = areaOrganizacionalMatriarca;
+	}
+
+	public String getNomeAvaliador() {
+		return nomeAvaliador;
 	}
 
 	

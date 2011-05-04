@@ -18,7 +18,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<AvaliacaoDesempenho> implements AvaliacaoDesempenhoDao
 {
 	@SuppressWarnings("unchecked")
-	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa) {
+	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) {
 		
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
 		criteria.createCriteria("a.avaliacao", "avaliacao");
@@ -37,6 +37,9 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 
 		criteria.setProjection(p);
 
+		if(tipoModeloAvaliacao != null)
+			criteria.add(Expression.eq("avaliacao.tipoModeloAvaliacao", tipoModeloAvaliacao));			
+	
 		if(empresaId != null)
 			criteria.add(Expression.eq("emp.id", empresaId));
 

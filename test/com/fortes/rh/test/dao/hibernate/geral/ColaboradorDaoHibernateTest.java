@@ -3184,6 +3184,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setDesligado(false);
 		colaborador.setEmpresa(empresa);
 		colaboradorDao.save(colaborador);
+
+		Colaborador avaliador = ColaboradorFactory.getEntity();
+		avaliador.setNome("Augusto ");
+		avaliador.setDesligado(false);
+		avaliador.setEmpresa(empresa);
+		colaboradorDao.save(avaliador);
     	
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
     	estabelecimentoDao.save(estabelecimento);
@@ -3204,6 +3210,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		avaliacao.setEmpresa(empresa);
 		avaliacao.setTitulo("avaliacao");
 		avaliacaoDao.save(avaliacao);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setTitulo("titulo");
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 				
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario.setPerformance(0.35);
@@ -3211,6 +3221,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionario.setAvaliacao(avaliacao);
 		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionario.setRespondidaEm(DateUtil.montaDataByString("15/10/2010"));
+		colaboradorQuestionario.setAvaliador(avaliador);
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 		
 	   	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
@@ -3220,7 +3232,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Date periodoFim = DateUtil.montaDataByString("16/12/2010");
 		
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
-		colaboradors = colaboradorDao.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacao.getId(), areaIds, estabelecimentoIds);
+		colaboradors = colaboradorDao.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoDesempenho.getId(), areaIds, estabelecimentoIds);
 
 		assertEquals(1, colaboradors.size());
 	}

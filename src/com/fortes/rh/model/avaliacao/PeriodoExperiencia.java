@@ -54,7 +54,7 @@ public class PeriodoExperiencia extends AbstractModel implements Serializable
 	}
 	
 	public String getDiasDescricao() {
-		return "(" + dias + " dias) " + descricao;
+		return dias.toString() + " dias" + (descricao.equals("")?"":" (" + descricao  + ")");
 	}
 
 	public void setDescricao(String descricao) {

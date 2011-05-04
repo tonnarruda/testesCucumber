@@ -37,8 +37,8 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private Mail mail;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
-	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa) {
-		return getDao().findAllSelect(empresaId, ativa);
+	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) {
+		return getDao().findAllSelect(empresaId, ativa, tipoModeloAvaliacao);
 	}
 
 	public void clonar(Long avaliacaoDesempenhoId) throws Exception 

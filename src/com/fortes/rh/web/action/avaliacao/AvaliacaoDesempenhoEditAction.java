@@ -290,7 +290,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(getEmpresaSistema().getId(), null);
+		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(getEmpresaSistema().getId(), null, null);
 		return Action.SUCCESS;
 	}
 

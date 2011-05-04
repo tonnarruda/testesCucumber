@@ -6,7 +6,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 
 public interface AvaliacaoDesempenhoDao extends GenericDao<AvaliacaoDesempenho> {
-	Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa);
+	Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao);
 
 	public AvaliacaoDesempenho findByIdProjection(Long id);
 

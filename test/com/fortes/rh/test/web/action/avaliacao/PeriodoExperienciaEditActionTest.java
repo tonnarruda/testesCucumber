@@ -59,7 +59,12 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 
 		manager.expects(once()).method("save").with(eq(periodoExperiencia)).will(returnValue(periodoExperiencia));
 		
-		assertEquals("(90 dias) Noventa Dias", periodoExperiencia.getDiasDescricao());
+		assertEquals("90 dias (Noventa Dias)", periodoExperiencia.getDiasDescricao());
+		
+		periodoExperiencia.setDescricao("");
+		action.setPeriodoExperiencia(periodoExperiencia);
+		
+		assertEquals("90 dias", periodoExperiencia.getDiasDescricao());
 		assertEquals("success", action.insert());
 	}
 

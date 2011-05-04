@@ -186,6 +186,14 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	this.avaliacaoDesempenho.setFim(projectionAvaliacaoDesempenhoFim); 	
     }
     
+    public void setProjectionAvaliacaoDesempenhoAnonima(Boolean anonima)
+    {
+    	if (avaliacaoDesempenho == null)
+    		avaliacaoDesempenho = new AvaliacaoDesempenho();
+    	
+    	this.avaliacaoDesempenho.setAnonima(anonima == null ? false : anonima); 	
+    }
+    
     public void setProjectionAvaliadorId(Long projectionAvaliadorId)
     {
     	if (projectionAvaliadorId != null)

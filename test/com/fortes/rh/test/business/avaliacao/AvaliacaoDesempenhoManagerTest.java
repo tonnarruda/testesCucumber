@@ -82,8 +82,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = AvaliacaoDesempenhoFactory.getCollection(1L);
 
-		avaliacaoDesempenhoDao.expects(once()).method("findAllSelect").with(eq(empresaId),ANYTHING).will(returnValue(avaliacaoDesempenhos));
-		assertEquals(avaliacaoDesempenhos, avaliacaoDesempenhoManager.findAllSelect(empresaId, null));
+		avaliacaoDesempenhoDao.expects(once()).method("findAllSelect").with(eq(empresaId),ANYTHING,ANYTHING).will(returnValue(avaliacaoDesempenhos));
+		assertEquals(avaliacaoDesempenhos, avaliacaoDesempenhoManager.findAllSelect(empresaId, null, null));
 	}
 	
 	public void testClonar() throws Exception

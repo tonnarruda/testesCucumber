@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -36,10 +37,9 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 	private EstabelecimentoManager estabelecimentoManager;
-	private Avaliacao modeloAvaliacao;
-	private AvaliacaoManager avaliacaoManager;
-	private Collection<Avaliacao> modeloAvaliacaos;
+
 	private Pergunta pergunta;
 	private Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
 	private PerguntaManager perguntaManager;
@@ -124,7 +124,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 				
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-    	modeloAvaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, TipoModeloAvaliacao.AVALIACAO_DESEMPENHO);
+    	avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO);
     	
 		return Action.SUCCESS;
 		
@@ -165,13 +165,16 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, modeloAvaliacao.getId(), areasCheck, estabelecimentoCheck);
-			
-			Avaliacao modelo = avaliacaoManager.findById(modeloAvaliacao.getId());
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, avaliacaoDesempenho.getId(), areasCheck, estabelecimentoCheck);
+			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 
-			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + "Modelo de Avaliação: " + modelo.getTitulo();
-			reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
+			String avalAnonima = "";
+			if(avaliacaoDesempenho.isAnonima())
+				avalAnonima = " (Anônima)";
 			
+			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + "Avaliação: " + avaliacaoDesempenho.getTitulo() + avalAnonima;
+			reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
+
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
 		}
 		catch (Exception e)
@@ -251,129 +254,120 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
-		public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
 		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
-		public Pergunta getPergunta() {
-			return pergunta;
-		}
-
-		public PerguntaManager getPerguntaManager() {
-			return perguntaManager;
-		}
-
-		public Collection<Pergunta> getPerguntas() {
-			return perguntas;
-		}
-
-		public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-			this.colaboradorManager = colaboradorManager;
-		}
-
-		public Collection<Colaborador> getColaboradores() {
-			return colaboradores;
-		}
-
-		public Map<String, Object> getParametros() {
-			return parametros;
-		}
-
-		public void setPeriodoExperiencias(Collection<PeriodoExperiencia> periodoExperiencias) {
-			this.periodoExperiencias = periodoExperiencias;
-		}
-
-		public PeriodoExperienciaManager getPeriodoExperienciaManager() {
-			return periodoExperienciaManager;
-		}
-
-		public String[] getAreasCheck() {
-			return areasCheck;
-		}
-
-		public void setAreasCheck(String[] areasCheck) {
-			this.areasCheck = areasCheck;
-		}
-
-		public String[] getEstabelecimentoCheck() {
-			return estabelecimentoCheck;
-		}
-
-		public void setEstabelecimentoCheck(String[] estabelecimentoCheck) {
-			this.estabelecimentoCheck = estabelecimentoCheck;
-		}
-
-		public String getDataDoDia() 
-		{
-			return DateUtil.formataDiaMesAno(new Date());
-		}
-
-		public Date getDataReferencia() {
-			return dataReferencia;
-		}
-
-		public void setDataReferencia(Date dataReferencia) {
-			this.dataReferencia = dataReferencia;
-		}
-
-		public Collection<Empresa> getEmpresas() {
-			return empresas;
-		}
-
-		public void setEmpresas(Collection<Empresa> empresas) {
-			this.empresas = empresas;
-		}
-
-		public EmpresaManager getEmpresaManager() {
-			return empresaManager;
-		}
-
-		public void setEmpresaManager(EmpresaManager empresaManager) {
-			this.empresaManager = empresaManager;
-		}
-
-		public ColaboradorManager getColaboradorManager() {
-			return colaboradorManager;
-		}
-
-		public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-			this.avaliacaoManager = avaliacaoManager;
-		}
-
-		public Collection<Avaliacao> getModeloAvaliacaos() {
-			return modeloAvaliacaos;
-		}
-
-		public void setModeloAvaliacaos(Collection<Avaliacao> modeloAvaliacaos) {
-			this.modeloAvaliacaos = modeloAvaliacaos;
-		}
-
-		public void setModeloAvaliacao(Avaliacao modeloAvaliacao) {
-			this.modeloAvaliacao = modeloAvaliacao;
-		}
-
-		public Integer getDiasDeAcompanhamento() {
-			return diasDeAcompanhamento;
-		}
-
-		public void setDiasDeAcompanhamento(Integer diasDeAcompanhamento) {
-			this.diasDeAcompanhamento = diasDeAcompanhamento;
-		}
-
-		public Integer getTempoDeEmpresa() {
-			return tempoDeEmpresa;
-		}
-
-		public void setTempoDeEmpresa(Integer tempoDeEmpresa) {
-			this.tempoDeEmpresa = tempoDeEmpresa;
-		}
-		
-		public String getReportFilter() {
-			return reportFilter;
-		}
-
-		public String getReportTitle() {
-			return reportTitle;
-		}
-		
+	public Pergunta getPergunta() {
+		return pergunta;
+	}
+	
+	public PerguntaManager getPerguntaManager() {
+		return perguntaManager;
+	}
+	
+	public Collection<Pergunta> getPerguntas() {
+		return perguntas;
+	}
+	
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
+	}
+	
+	public Collection<Colaborador> getColaboradores() {
+		return colaboradores;
+	}
+	
+	public Map<String, Object> getParametros() {
+		return parametros;
+	}
+	
+	public void setPeriodoExperiencias(Collection<PeriodoExperiencia> periodoExperiencias) {
+		this.periodoExperiencias = periodoExperiencias;
+	}
+	
+	public PeriodoExperienciaManager getPeriodoExperienciaManager() {
+		return periodoExperienciaManager;
+	}
+	
+	public String[] getAreasCheck() {
+		return areasCheck;
+	}
+	
+	public void setAreasCheck(String[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+	
+	public String[] getEstabelecimentoCheck() {
+		return estabelecimentoCheck;
+	}
+	
+	public void setEstabelecimentoCheck(String[] estabelecimentoCheck) {
+		this.estabelecimentoCheck = estabelecimentoCheck;
+	}
+	
+	public String getDataDoDia() 
+	{
+		return DateUtil.formataDiaMesAno(new Date());
+	}
+	
+	public Date getDataReferencia() {
+		return dataReferencia;
+	}
+	
+	public void setDataReferencia(Date dataReferencia) {
+		this.dataReferencia = dataReferencia;
+	}
+	
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+	
+	public void setEmpresas(Collection<Empresa> empresas) {
+		this.empresas = empresas;
+	}
+	
+	public EmpresaManager getEmpresaManager() {
+		return empresaManager;
+	}
+	
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+	
+	public ColaboradorManager getColaboradorManager() {
+		return colaboradorManager;
+	}
+	
+	public Integer getDiasDeAcompanhamento() {
+		return diasDeAcompanhamento;
+	}
+	
+	public void setDiasDeAcompanhamento(Integer diasDeAcompanhamento) {
+		this.diasDeAcompanhamento = diasDeAcompanhamento;
+	}
+	
+	public Integer getTempoDeEmpresa() {
+		return tempoDeEmpresa;
+	}
+	
+	public void setTempoDeEmpresa(Integer tempoDeEmpresa) {
+		this.tempoDeEmpresa = tempoDeEmpresa;
+	}
+	
+	public String getReportFilter() {
+		return reportFilter;
+	}
+	
+	public String getReportTitle() {
+		return reportTitle;
+	}
+	
+	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
+		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
+	}
+	
+	public void setAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho) {
+		this.avaliacaoDesempenho = avaliacaoDesempenho;
+	}
 }

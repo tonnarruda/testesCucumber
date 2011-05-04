@@ -11,7 +11,7 @@ import com.fortes.rh.model.geral.Empresa;
 public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDesempenho>
 {
 	AvaliacaoDesempenho findByIdProjection(Long id);
-	Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa);
+	Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao);
 	void clonar(Long avaliacaoDesempenhoId) throws Exception;
 	void liberar(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception;
 	void bloquear(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception;

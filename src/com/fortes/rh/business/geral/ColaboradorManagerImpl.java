@@ -1559,10 +1559,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
-	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long id2, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
+	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long avaliacaoId, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
 	{
 		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
-		 	retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, id2, StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck));
+		 	retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, avaliacaoId, StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck));
 		
 		 if(retorno.isEmpty())
 			throw new Exception("Não existe informações para os filtros selecionados");
