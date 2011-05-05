@@ -13,8 +13,6 @@
 		<#assign accessKey="I"/>
 	</#if>
 
-	<#assign validarCampos2="return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj','grupoAC', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'))"/>
-	<#assign validarCampos="return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'))"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
@@ -55,13 +53,6 @@
 			jAlert(msg);
 		}
 
-		function habilitaDesabilitaCamposAC()
-		{
-			if(document.getElementById("integra").checked)
-				document.getElementById("grupoAC").disabled=false;
-			else
-				document.getElementById("grupoAC").disabled=true;
-		}
 		function enviaForm()
 		{
 			if(document.getElementById('mensagemModuloExterno').value.length > 400)
@@ -71,12 +62,7 @@
 			}
 						
 			if(document.getElementById('cnpj').value.length == 8)
-			{			
-				if(document.getElementById('integra').checked)
-					${validarCampos2};
-			 	else 
-			 		${validarCampos};
-			}
+		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'));
 			else
 				jAlert("Base CNPJ deve ter 8 dígitos.");
 		}
@@ -137,9 +123,9 @@
 				<ul>
 					<div style="float:right;"><img id="btnTransferir" border="0" title="Testar Conexão com AC" onclick="testaConexaoAC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
 
-					<@ww.checkbox label="Integra com AC Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right" onclick="habilitaDesabilitaCamposAC();" />
+					<@ww.checkbox label="Integra com AC Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right"  />
 					
-					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao"  required="true" headerKey="" headerValue="Selecione..."/>
+					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao" headerKey="" headerValue="Selecione..."/>
 				</ul>
 			</@ww.div>
 		</li>
@@ -159,9 +145,5 @@
 		<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V">
 		</button>
 	</div>
-
-	<script type="text/javascript">
-		habilitaDesabilitaCamposAC();
-	</script>
 </body>
 </html>
