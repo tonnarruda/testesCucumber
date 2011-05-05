@@ -90,7 +90,7 @@ public class IndicadorDuracaoPreenchimentoVaga implements Serializable
 	
 	public String getMediaDiasFormatada()
 	{
-		NumberFormat formata = new DecimalFormat("##0.00");
+		NumberFormat formata = new DecimalFormat("##0");
 		return formata.format(mediaDias); 		
 	}
 	
