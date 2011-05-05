@@ -5301,3 +5301,9 @@ update papel set papelmae_id=463  where id = 47;--.go
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=504 WHERE atualizaPapeisIdsAPartirDe is null;--.go
 
 update parametrosdosistema set appversao = '1.1.44.36';--.go
+
+-- versao 1.1.45.37
+alter table PeriodoExperiencia add column descricao character varying(40);--.go
+update PeriodoExperiencia set descricao='';--.go
+update papel set nome = 'Acompanhamento do Período de Experiência' where id = 470;--.go
+update parametrosdosistema set appversao = '1.1.45.37';--.go

@@ -645,7 +645,8 @@ CREATE SEQUENCE historicofuncao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE
 CREATE TABLE periodoExperiencia (
 	id bigint NOT NULL,
 	dias int,
-	empresa_id bigint
+	empresa_id bigint,
+	descricao character varying(40)
 );
 
 ALTER TABLE periodoExperiencia ADD CONSTRAINT periodoExperiencia_pkey PRIMARY KEY(id);

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.45.37" data="05/05/2011">
+		- Info. Funcionais > Cadastros > Colaboradores: Novo campo no filtro para efetuar busca pelo nome comercial.
+		- TeD > Painel de Indicadores: Aplicação do novo layout na exibição dos graficos.
+		- Pesquisas > Movimentações > Pesquisas > Colaboradores: Novas colunas na listagem [Área Organizacional] e [Estabelecimento]. 
+		- Avaliação de Desempenho > Cadastros > Dias do Acompanhamento do Período de Experiência: Novo campo [descrição].
+		- Avaliação de Desempenho > Relatório > Acompanhamento do Período de Experiência: Novo campo [Período de Acompanhamento].
+		- Avaliação de Desempenho > Relatório > Ranking de Performace das Avaliações de Desempenho: Mudança do campo [Modelo de Avaliação] para [Avaliação] e nova informação no relatório, média da performance.
+ 		- ReS > Indicadores > Recrutamento e Seleção Duração para Preenchimento de Vaga: Novas informações, quantidade geral de participantes e exibe solicitações mesmo que não tenha contratados.
+	</Versao>
 	<Versao id="1.1.44.36" data="30/04/2011">
 		- CeS > Painel de Indicadores: Salário por Área Organizacional e Evolução Salarial.
 		- Menu: Nova informação Versão do sistema no canto superior direito, link para a página: Histórico de Versões.
