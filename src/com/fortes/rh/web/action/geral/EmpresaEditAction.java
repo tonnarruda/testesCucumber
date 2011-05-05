@@ -96,6 +96,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String insert() throws Exception
 	{
+		if(empresa.getGrupoAC().equals(""))
+			empresa.setGrupoAC(null);
+		
 		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
 		
 		if(StringUtils.isEmpty(empresa.getLogoUrl()))
@@ -108,6 +111,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String update() throws Exception
 	{
+		if(empresa.getGrupoAC().equals(""))
+			empresa.setGrupoAC(null);
+		
 		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
 		empresaManager.update(empresa);
 
