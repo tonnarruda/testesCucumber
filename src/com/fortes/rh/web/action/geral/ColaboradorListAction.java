@@ -216,6 +216,13 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private void montaColunas() {
 		colunas = ReportColumn.getColumns();
+
+		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COMPROU_SESMT"}) )
+		{
+			colunas.add(new ReportColumn("Função", "funcaoNome", "fun.nome", 100, false));
+			colunas.add(new ReportColumn("Ambiente", "ambienteNome", "amb.nome", 100, false));
+		}
+		
 		if(habilitaCampoExtra)
 		{
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
@@ -230,6 +237,7 @@ public class ColaboradorListAction extends MyActionSupportList
 				colunas.add(new ReportColumn(configuracaoCampoExtra.getTitulo(), nomeExtra, orderField, configuracaoCampoExtra.getSize(), false));
 			}
 		}
+		
 	}
 
 	public String relatorioDinamico() throws Exception

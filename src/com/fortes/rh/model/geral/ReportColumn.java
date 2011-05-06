@@ -40,7 +40,7 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Estado Civil", "pessoal.estadoCivilDic", "co.pessoal.estadoCivil", 120, false));
 		columns.add(new ReportColumn("Nome da Mãe", "pessoal.mae", "co.pessoal.mae", 150, true));
 		columns.add(new ReportColumn("Nome do Pai", "pessoal.pai", "co.pessoal.pai", 150, true));
-		columns.add(new ReportColumn("Data de Desligamento", "dataDesligamentoFormatada", "co.dataDesligamento", 50, false));
+		columns.add(new ReportColumn("Escolaridade", "pessoal.escolaridadeDic", "co.pessoal.escolaridade", 170, false));
 		columns.add(new ReportColumn("Vinculo", "vinculoDescricao", "co.vinculo", 60, false));
 		columns.add(new ReportColumn("Cpf", "pessoal.cpfFormatado", "co.pessoal.cpf", 60, false));
 		columns.add(new ReportColumn("Pis", "pessoal.pis", "co.pessoal.pis", 60, false));
