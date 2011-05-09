@@ -4,6 +4,17 @@
 <@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		.apto
+		{
+			color: #F00 !important;
+		}
+		.contratado
+		{
+			color: #008000 !important;
+		}
+		.btnTriagem, .btnInserirEtapasEmGrupo, .btnResultadoAvaliacao, .btnVoltar{
+			margin: 5px 5px 0px 0px;
+		}
 	</style>
 
 	<script>
@@ -81,18 +92,29 @@
 	</table>
 
 	<br/>
-
 	<@ww.form name="formCand" action="mover.action" method="POST" >
+		<div id="legendas" align="right"></div>
 		<@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" class="dados" defaultsort=2>
+		
+			<#if candidatoSolicitacao.aptoBoolean>
+				<#assign classe=""/>
+			<#else>
+				<#assign classe="apto"/>
+			</#if>
+				
+			<#if candidatoSolicitacao.status != 'I'>
+				<#assign classe="contratado"/>
+			</#if>
+		
 			<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;">
 				<input type="checkbox" value="${candidatoSolicitacao.id}" name="candidatosId" />
 			</@display.column>
-			<@display.column property="candidato.nome" title="Nome" />
-			<@display.column property="etapaSeletiva.nome" title="Etapa" />
-			<@display.column property="responsavel" title="Responsável" />
-			<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}"  style="text-align: center;"/>
-			<@display.column title="Obs."  style="text-align: center;">
-				<#if candidatoSolicitacao.observacao?exists>
+			<@display.column property="candidato.nome" title="Nome" class="${classe}"/>
+			<@display.column property="etapaSeletiva.nome" title="Etapa" class="${classe}"/>
+			<@display.column property="responsavel" title="Responsável" class="${classe}"/>
+			<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}"  style="text-align: center;" class="${classe}"/>
+			<@display.column title="Obs."  style="text-align: center;" class="${classe}">
+				<#if candidatoSolicitacao.observacao?exists && candidatoSolicitacao.observacao?trim != "">
 					<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${candidatoSolicitacao.observacao?j_string}');return false">...</span>
 				</#if>
 			</@display.column>
@@ -119,5 +141,12 @@
 		<button onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'" class="btnVoltar" accesskey="V">
 		</button>
 	</div>
+	
+	<script>
+		var obj = document.getElementById("legendas");
+		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos/Indiferente";
+		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #F00;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aptos";
+		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos";
+	</script>
 </body>
 </html>

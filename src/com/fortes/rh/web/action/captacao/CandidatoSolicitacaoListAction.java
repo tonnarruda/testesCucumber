@@ -131,7 +131,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	{
 		solicitacao = solicitacaoManager.getValor(solicitacao.getId());
 
-		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, true, true, true, observacaoRH, null);
+		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, null, false, true, observacaoRH, null);
 
 		solicitacaos = solicitacaoManager.findSolicitacaoList(null, false, null, false);
 		solicitacaos.remove(solicitacao);

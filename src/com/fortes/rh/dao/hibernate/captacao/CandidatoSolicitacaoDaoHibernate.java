@@ -133,6 +133,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         return (CandidatoSolicitacao) criteria.list().toArray()[0];
     }
 
+    //TODO BACALHAU, ajustar parametros. Ex.: o contratado passa true e usa false
     public Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca)
     {
         Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
