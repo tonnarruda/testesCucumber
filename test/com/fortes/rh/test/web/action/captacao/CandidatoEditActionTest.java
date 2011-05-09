@@ -195,6 +195,9 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	Collection<Empresa> empresas = new ArrayList<Empresa>();
     	empresas.add(empresa);
 
+    	manager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(new Candidato()));
+    	manager.expects(once()).method("findCargosByCandidatoId").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+
     	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
@@ -215,14 +218,16 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	Collection<Empresa> empresas = new ArrayList<Empresa>();
     	empresas.add(empresa);
 
+    	manager.expects(once()).method("validaQtdCadastros").isVoid();
+    	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	manager.expects(once()).method("saveCandidatoCurriculo").with(ANYTHING,ANYTHING,ANYTHING);
-    	manager.expects(once()).method("validaQtdCadastros").isVoid();
     	assertEquals("success", action.insertCurriculo());
 
     	candidato.setId(1L);
     	action.setCandidato(candidato);
     	manager.expects(once()).method("validaQtdCadastros").isVoid();
+    	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	manager.expects(once()).method("saveCandidatoCurriculo").with(ANYTHING,ANYTHING,ANYTHING).will(throwException(new Exception()));
 
     	assertEquals("input", action.insertCurriculo());

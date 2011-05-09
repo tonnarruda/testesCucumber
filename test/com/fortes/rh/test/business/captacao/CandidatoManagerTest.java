@@ -1387,9 +1387,6 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		File[] imagemEscaneada = new File[]{new File()};
 		File ocrTexto = null;
 
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		transactionManager.expects(once()).method("rollback").with(ANYTHING);
-		
 		candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(candidatoComId));
 		candidatoCurriculoManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<CandidatoCurriculo>()));
 		candidatoCurriculoManager.expects(once()).method("save").with(ANYTHING).will(returnValue(throwException(new Exception())));
@@ -1425,10 +1422,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 		Candidato candidatoComId = CandidatoFactory.getCandidato(1L);
 		
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		candidatoDao.expects(once()).method("save").with(eq(candidato)).will(returnValue(candidatoComId));
-		candidatoDao.expects(once()).method("atualizaTextoOcr").with(ANYTHING);
 		candidatoCurriculoManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(ccCol));
 		candidatoCurriculoManager.expects(once()).method("remove").with(ANYTHING);
 		candidatoCurriculoManager.expects(once()).method("save").with(ANYTHING);

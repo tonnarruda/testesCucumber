@@ -483,10 +483,22 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public String prepareInsertCurriculoPlus() throws Exception
 	{
+		if(candidato != null && candidato.getId() != null)
+		{
+			candidato = candidatoManager.findByIdProjection(candidato.getId());
+			candidato.setCargos(candidatoManager.findCargosByCandidatoId(candidato.getId()));			
+		}
+		
 		Empresa empresa = (Empresa) empresaManager.findToList(new String[]{"maxCandidataCargo"}, new String[]{"maxCandidataCargo"}, new String[]{"id"}, new Object[]{getEmpresaSistema().getId()}).toArray()[0];
 		maxCandidataCargo = empresa.getMaxCandidataCargo();
 		ufs = estadoManager.findAll(new String[]{"sigla"});
+		
+		if(candidato != null && candidato.getEndereco() != null && candidato.getEndereco().getUf() != null && candidato.getEndereco().getUf().getId() != null)
+			cidades = cidadeManager.find(new String[]{"uf"}, new Object[]{candidato.getEndereco().getUf()}, new String[]{"nome"});
+		
 		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado"), "getId", "getNomeMercado");
+		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, candidato.getCargos(), "getId");
+		
 		sexos = new SexoCadastro();
 
 		return Action.SUCCESS;
@@ -521,10 +533,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	
 		try
 		{
-
 			if (candidato.getId() == null)
 				prepareCandidato();
 
+			candidato.setCargos(cargoManager.populaCargos(cargosCheck));
 			candidato = candidatoManager.saveCandidatoCurriculo(candidato, imagens, ocrTexto);
 			return Action.SUCCESS;
 		}
@@ -536,6 +548,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 
 			addActionError("Não foi possível inserir currículo escaneado.");
+			e.printStackTrace();
 			return Action.INPUT;
 		}
 	}
@@ -580,8 +593,11 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		candidato.setBlackList(false);
 		candidato.setContratado(false);
 		candidato.setDisponivel(true);
-		candidato.setDataCadastro(new Date());
-		candidato.setDataAtualizacao(new Date());
+		
+		Date hoje = new Date();
+		candidato.setDataCadastro(hoje);
+		candidato.setDataAtualizacao(hoje);
+		
 		candidato.setCargos(cargoManager.populaCargos(cargosCheck));
 		candidato.setOrigem(OrigemCandidato.CADASTRADO);
 		candidato.setSocioEconomica(new SocioEconomica());

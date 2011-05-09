@@ -813,7 +813,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Candidato candidato = new Candidato();
 		candidato.setId(null);
 		candidato.setAreasInteresse(null);
-		candidato.setColocacao('1');
+		candidato.setColocacao("1");
 		candidato.setConhecimentos(null);
 
 		Contato contato = new Contato();

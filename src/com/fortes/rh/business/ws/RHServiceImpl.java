@@ -205,7 +205,7 @@ public class RHServiceImpl implements RHService
 		candidato.getPessoal().setSexo(cand.getSexo().charAt(0));
 		candidato.getPessoal().setCpf(StringUtil.removeMascara(cand.getCpf()));
 		candidato.getPessoal().setIndicadoPor(cand.getIndicadoPor());
-		candidato.setColocacao(cand.getColocacao().charAt(0));
+		candidato.setColocacao(cand.getColocacao());
 		candidato.setEndereco(new Endereco());
 		candidato.getEndereco().setBairro(cand.getBairro());
 

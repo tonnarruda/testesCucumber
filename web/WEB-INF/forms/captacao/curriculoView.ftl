@@ -76,16 +76,9 @@
 		<@ww.hidden id="aba" name="aba" value="1"/>
 
 	<div class="buttonGroup">
-		<button onclick="window.location='prepareInsertCurriculo.action?candidato.id=${candidato.id}&candidato.nome=${candidato.nome}'" class="btnSubstituirEsseCurriculoEscaneado">
-		</button>
-		<button onclick="window.location='prepareUpdate.action?candidato.id=${candidato.id}'" class="btnEditarOCadastroDesseCandidato">
-		</button>
-		<button onclick="window.location='list.action'" class="btnConcluir">
-		</button>
-		<button onclick="window.location='prepareInsertCurriculoPlus.action'" class="btnInserirNovoCurriculoEscaneado">
-		</button> &nbsp;&nbsp;
-		<button onclick="window.location='prepareInsert.action'" class="btnInserirNovoCandidato">
-		</button>
+		<button onclick="window.location='prepareInsertCurriculoPlus.action?candidato.id=${candidato.id}'" class="btnEditar"></button>		
+		<button onclick="window.location='prepareInsertCurriculoPlus.action'" class="btnInserir"></button> &nbsp;&nbsp;
+		<button onclick="window.location='list.action'" class="btnConcluir"></button>
 	</div>
 
 </body>

@@ -3,17 +3,35 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Escanear Currículo</title>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+			
+	<#if candidato?exists && candidato.id?exists>
+		<#assign avisoAnexo = "Caso deseje substituir os arquivos existentes, selecione os arquivos novamente.<br>"/>
+		<#assign obrigacaoAnexo = ""/>
+		<#assign validaAnexo = "'nome'"/>
+		<#assign titulo = "Editar Currículo"/>
+	<#else>
+		<#assign avisoAnexo = ""/>
+		<#assign obrigacaoAnexo = "*"/>
+		<#assign validaAnexo = "'nome','ocrTexto'"/>
+		<#assign titulo = "Escanear Currículo"/>
+	</#if>
+	
+	<title>${titulo}</title>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js"/>"></script>
 
-
+	<#if candidato?exists && candidato.pessoal.dataNascimento?exists>
+		<#assign data = candidato.pessoal.dataNascimento?date/>
+	<#else>
+		<#assign data = ""/>
+	</#if>
+	
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/candidato.css"/>" media="screen" type="text/css">
@@ -27,26 +45,13 @@
 	<script type="text/javascript">
 		function validaForm()
 		{
-			/*
-			Cliente Marpe solicitaou que a imagem não fosse obrigatoria.
-			if(document.getElementById("imagemEscaneada").value == "")
-			{
-				jAlert("O campo 'Imagem da página 1' é obrigatório");
-				return false;
-			}
-			*/
-
-			/*
-			var compl = document.getElementById("complementares");
-			*/
-
-		<#if maxCandidataCargo?exists && 0 < maxCandidataCargo>
-			if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') > ${maxCandidataCargo})
-			{
-				jAlert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
-				return false;
-			}
-		</#if>
+			<#if maxCandidataCargo?exists && 0 < maxCandidataCargo>
+				if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') > ${maxCandidataCargo})
+				{
+					jAlert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
+					return false;
+				}
+			</#if>
 
 			if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') == 0 )
 			{
@@ -54,7 +59,7 @@
 				return false;
 			}
 
-			validaFormulario('form', new Array('nome','ocrTexto'), new Array('nascimento','cpf'));
+			validaFormulario('form', new Array(${validaAnexo}), new Array('nascimento','cpf'));
 		}
 
 
@@ -114,27 +119,30 @@
 		<li>
 			<@ww.div id="complementares" cssStyle="display:none;" cssClass="divInfo">
 				<ul>
-					<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento"  liClass="liLeft" cssClass="mascaraData"/>
+					<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento"  liClass="liLeft" cssClass="mascaraData" value="${data}"/>
 					<@ww.textfield label="CPF"  name="candidato.pessoal.cpf" id="cpf" liClass="liLeft" cssClass="mascaraCpf" onchange="verificaCpfDuplicado(this.value,${empresaId},false);" onblur="verificaCpfDuplicado(this.value,${empresaId},false);"/>
 					<@ww.select label="Colocação" name="candidato.colocacao" list="colocacaoList"/>
 					<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>
 					<br>
 					<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs"  liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
-					<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade"  list="cidades" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" />
+					<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade"  list="cidades" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue=""  liClass="liLeft"/>
 					<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 300px;"  maxLength="20"/>
 					<@ww.div id="bairroContainer"/>
 				</ul>
 			</@ww.div>
 		</li>
-
+		<br>
 		<b>Escaneamento</b>
 		<br>
 		Escaneie o currículo gerando os arquivos de imagem e o arquivo com o texto <br> correspondente (OCR).
 		<br><br>
 		<b>Seleção de Arquivos</b>
 		<br>
+
+		${avisoAnexo}
+		
 		<br>
-		Arquivo de texto gerado via OCR*:
+		Arquivo de texto gerado via OCR:${obrigacaoAnexo}
 		<@ww.file name="ocrTexto" id="ocrTexto" accept="text/*"/>
 		<br>
 		<@ww.div liClass="liLeft">Imagem da página 1:</@ww.div>
@@ -144,6 +152,7 @@
 		<br>
 		
 		<@ww.hidden name="candidato.empresa.id" />
+		<@ww.hidden name="candidato.id" />
 		
 	</@ww.form>
 

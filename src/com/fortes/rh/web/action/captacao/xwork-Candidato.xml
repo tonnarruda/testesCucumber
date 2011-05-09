@@ -127,7 +127,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoBusca.ftl</result>
 		</action>
 		<action name="prepareInsertCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="prepareInsertCurriculo">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoEdit.ftl</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoPlusEdit.ftl</result>
 		</action>
 		<action name="prepareInsertCurriculoPlus" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="prepareInsertCurriculoPlus">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoPlusEdit.ftl</result>

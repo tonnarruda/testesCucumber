@@ -68,7 +68,8 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private SocioEconomica socioEconomica = new SocioEconomica();
 	@Embedded
 	private Habilitacao habilitacao = new Habilitacao();
-	private char colocacao = 'E';
+	@Column(length=1)
+	private String colocacao = "E";
 	private Double pretencaoSalarial = 0.0;
 	private boolean disponivel = true;
 	@NaoAudita
@@ -152,7 +153,7 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	public String getColocacaoDic()
 	{
 		Vinculo vinculoMap = new Vinculo();
-		return (String) vinculoMap.get(((Character)this.colocacao).toString());
+		return (String) vinculoMap.get(this.colocacao);
 	}
 
 	@NaoAudita
@@ -669,16 +670,6 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	{
 		this.areasInteresse = areasInteresse;
 	}
-
-	public char getColocacao()
-	{
-		return colocacao;
-	}
-
-	public void setColocacao(char colocacao)
-	{
-		this.colocacao = colocacao;
-	}
 	
 	public String getConhecimentosDescricao()
 	{
@@ -1092,6 +1083,14 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setIdF2RH(Integer idF2RH) {
 		this.idF2RH = idF2RH;
+	}
+
+	public String getColocacao() {
+		return colocacao;
+	}
+
+	public void setColocacao(String colocacao) {
+		this.colocacao = colocacao;
 	}
 
 

@@ -580,7 +580,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setCursos(colaborador.getCursos());
 		candidato.setEndereco(colaborador.getEndereco());
 		candidato.setNome(colaborador.getNome());
-		candidato.setColocacao(Vinculo.EMPREGO.toCharArray()[0]);
+		candidato.setColocacao(Vinculo.EMPREGO);
 		candidato.setPretencaoSalarial(null);
 		candidato.setDisponivel(true);
 		candidato.setBlackList(false);
@@ -859,63 +859,67 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public Candidato saveCandidatoCurriculo(Candidato candidato, File[] imagemEscaneada, File ocrTexto) throws Exception
 	{
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
-		try
+		if (StringUtils.isNotBlank(getTextoCurriculo(ocrTexto)))
+			candidato.setOcrTexto(ArquivoUtil.convertToLatin1Compatible(ocrTexto.getBytes()));
+		
+		if (candidato.getId() == null)
+			getDao().save(candidato);
+		else
 		{
-			String resultado = getTextoCurriculo(ocrTexto);
+			//TODO cuidado ta usando findById, até o dia 10/05/2011 a consulta era pequena, falou
+			Candidato candTemp = getDao().findById(candidato.getId());
+			candTemp.setDataAtualizacao(new Date());
+			candTemp.setNome(candidato.getNome());
+			candTemp.setCargos(candidato.getCargos());
+			candTemp.setColocacao(candidato.getColocacao());
+			candTemp.getPessoal().setIndicadoPor(candidato.getPessoal().getIndicadoPor());
+			candTemp.getPessoal().setDataNascimento(candidato.getPessoal().getDataNascimento());
+			candTemp.getPessoal().setCpf(candidato.getPessoal().getCpf());
+			candTemp.getPessoal().setSexo(candidato.getPessoal().getSexo());
 			
-			if (candidato.getId() == null)
-			{
-				getDao().save(candidato);
-			}
-
-			if (StringUtils.isNotBlank(resultado))
-			{
-				candidato.setOcrTexto(resultado);
-				getDao().atualizaTextoOcr(candidato);
-			}
-
-			java.io.File fileTmp[] = null;
-
-			if (imagemEscaneada != null)
-			{
+			if(candidato.getEndereco().getCidade() == null || candidato.getEndereco().getCidade().getId() == null || candidato.getEndereco().getCidade().getId().equals(-1L))
+				candTemp.getEndereco().setCidade(null);
+			else
+				candTemp.getEndereco().setCidade(candidato.getEndereco().getCidade());
+			
+			if(candidato.getEndereco().getUf() == null || candidato.getEndereco().getUf().getId() == null)
+				candTemp.getEndereco().setUf(null);
+			else
+				candTemp.getEndereco().setUf(candidato.getEndereco().getUf());
 				
-				Collection<CandidatoCurriculo> candidatoCurriculos;
-				candidatoCurriculos = candidatoCurriculoManager.findToList(new String[]{"id","curriculo"}, new String[]{"id","curriculo"}, new String[]{"candidato.id"}, new Object[]{candidato.getId()});
-
-				if(candidatoCurriculos != null && candidatoCurriculos.size() > 0)
-				{
-					CollectionUtil<CandidatoCurriculo> clu = new CollectionUtil<CandidatoCurriculo>();
-					ArquivoUtil.deletaArquivos("curriculos", clu.convertCollectionToArrayString(candidatoCurriculos, "getCurriculo"));
-					candidatoCurriculoManager.remove(clu.convertCollectionToArrayIds(candidatoCurriculos));
-				}
-				
-				fileTmp = new java.io.File[imagemEscaneada.length];
-
-				for(int i=0; i<imagemEscaneada.length; i++)
-				{
-					fileTmp[i] = ArquivoUtil.salvaArquivo("curriculos", imagemEscaneada[i], true);
-
-					CandidatoCurriculo candidatoCurriculo = new CandidatoCurriculo();
-					candidatoCurriculo.setCandidato(candidato);
-					candidatoCurriculo.setCurriculo(fileTmp[i].getName());
-					candidatoCurriculo = candidatoCurriculoManager.save(candidatoCurriculo);
-					candidatoCurriculos.add(candidatoCurriculo);
-				}
-
-				candidato.setCandidatoCurriculos(candidatoCurriculos);
-			}
-
-			transactionManager.commit(status);
-
+			candTemp.getEndereco().setBairro(candidato.getEndereco().getBairro());
+			if(StringUtils.isNotBlank(candidato.getOcrTexto()))
+				candTemp.setOcrTexto(candidato.getOcrTexto());
+			
+			getDao().update(candTemp);
 		}
-		catch(Exception e)
+
+		if (imagemEscaneada != null)
 		{
-			transactionManager.rollback(status);
-			throw e;
+			Collection<CandidatoCurriculo> candidatoCurriculos;
+			candidatoCurriculos = candidatoCurriculoManager.findToList(new String[]{"id","curriculo"}, new String[]{"id","curriculo"}, new String[]{"candidato.id"}, new Object[]{candidato.getId()});
+
+			if(candidatoCurriculos != null && candidatoCurriculos.size() > 0)
+			{
+				CollectionUtil<CandidatoCurriculo> clu = new CollectionUtil<CandidatoCurriculo>();
+				ArquivoUtil.deletaArquivos("curriculos", clu.convertCollectionToArrayString(candidatoCurriculos, "getCurriculo"));
+				candidatoCurriculoManager.remove(clu.convertCollectionToArrayIds(candidatoCurriculos));
+			}
+			
+			java.io.File fileTmp[] = new java.io.File[imagemEscaneada.length];
+
+			for(int i=0; i<imagemEscaneada.length; i++)
+			{
+				fileTmp[i] = ArquivoUtil.salvaArquivo("curriculos", imagemEscaneada[i], true);
+
+				CandidatoCurriculo candidatoCurriculo = new CandidatoCurriculo();
+				candidatoCurriculo.setCandidato(candidato);
+				candidatoCurriculo.setCurriculo(fileTmp[i].getName());
+				candidatoCurriculo = candidatoCurriculoManager.save(candidatoCurriculo);
+				candidatoCurriculos.add(candidatoCurriculo);
+			}
+
+			candidato.setCandidatoCurriculos(candidatoCurriculos);
 		}
 
 		return candidato;
@@ -1238,7 +1242,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setDataCadastro(new Date());
 		candidato.setDataAtualizacao(DateUtil.montaDataByString(curriculo.getUpdated_rh()));
 		
-		candidato.setColocacao(Vinculo.EMPREGO.toCharArray()[0]);
+		candidato.setColocacao(Vinculo.EMPREGO);
 		candidato.setPretencaoSalarial(null);
 		candidato.setDisponivel(true);
 		candidato.setBlackList(false);

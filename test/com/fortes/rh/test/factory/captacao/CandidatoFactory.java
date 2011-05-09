@@ -17,7 +17,7 @@ public class CandidatoFactory
 
 		candidato.setId(null);
 		candidato.setAreasInteresse(null);
-		candidato.setColocacao('1');
+		candidato.setColocacao("1");
 		candidato.setConhecimentos(null);
 
 		SocioEconomica socioEconomica = new SocioEconomica();
