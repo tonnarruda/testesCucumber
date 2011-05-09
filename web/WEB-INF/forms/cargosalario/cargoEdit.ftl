@@ -175,9 +175,10 @@
 			<ul>
 				<legend>Conhecimento, Habilidades e Atitudes (CHA)</legend>
 				<@frt.checkListBox name="conhecimentosCheck" id="conhecimentosCheck" label="Conhecimentos" list="conhecimentosCheckList" />
+				<@ww.textarea label="Complemento dos Conhecimentos" name="cargo.complementoConhecimento" cssStyle="width:500px;height:45px;"/>
 				
 				<@frt.checkListBox name="habilidadesCheck" id="habilidadesCheck" label="Habilidades" list="habilidadesCheckList" />
-				<@ww.textarea label="Complemento das Habilidades" name="cargo.competencias" cssStyle="width:500px;height:30px;"/>
+				<@ww.textarea label="Complemento das Habilidades" name="cargo.competencias" cssStyle="width:500px;height:45px;"/>
 				
 				<@frt.checkListBox name="atitudesCheck" id="atitudesCheck" label="Atitudes" list="atitudesCheckList" />
 				<@ww.textarea label="Complemento das Atitudes" name="cargo.atitude" cssStyle="width:500px;height:45px;"/>

@@ -163,6 +163,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.observacao"), "observacao");
 		p.add(Projections.property("c.cboCodigo"), "cboCodigo");
 		p.add(Projections.property("c.atitude"), "atitude");
+		p.add(Projections.property("c.complementoConhecimento"), "complementoConhecimento");
 		p.add(Projections.property("go.nome"), "grupoNome");
 		
 		criteria.setProjection(p);
@@ -237,6 +238,8 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
 		p.add(Projections.property("c.missao"), "missao");
 		p.add(Projections.property("c.competencias"), "competencias");
+		p.add(Projections.property("c.conhecimentos"), "conhecimentos");
+		p.add(Projections.property("c.complementoConhecimento"), "complementoConhecimento");
 		p.add(Projections.property("c.responsabilidades"), "responsabilidades");
 		p.add(Projections.property("c.escolaridade"), "escolaridade");
 		p.add(Projections.property("c.experiencia"), "experiencia");

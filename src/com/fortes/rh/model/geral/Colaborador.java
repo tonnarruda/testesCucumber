@@ -47,6 +47,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -88,6 +89,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Date dataAtualizacao = new Date();
 	@Transient
 	private Funcao funcao;
+	@Transient
+	private Ambiente ambiente;
 	@Transient
 	private String avaliacaoTitulo;
 	@Transient
@@ -481,7 +484,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String numeroHab, Date emissao, 
 						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
-						String bairro, String cep, String email, String foneCelular, String foneFixo, 
+						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  
 						String texto1,  String texto2,  String texto3,  String texto4,  String texto5,  String texto6,  String texto7,  String texto8,  String texto9,  String texto10,
 						Date data1,  Date data2,  Date data3,  Double valor1,  Double valor2,  Integer numero1  
 					   ) 
@@ -571,7 +574,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String numeroHab, Date emissao, 
 			Date vencimento, String categoria, String logradouro, String complemento, String numero, 
-			String bairro, String cep, String email, String foneCelular, String foneFixo 
+			String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome 
 			) 
 	{
 		this.setEstabelecimentoNomeProjection(esNome);
@@ -582,6 +585,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setFaixaSalarialNomeProjection(fsNome);
 		this.setCargoNomeProjection(cgNome);
 		this.setEmpresaNome(empresaNome);
+		
+		if (this.funcao == null)
+			this.funcao =  new Funcao();
+		this.funcao.setNome(funcaoNome);
+
+		if (this.ambiente == null)
+			this.ambiente =  new Ambiente();
+		this.ambiente.setNome(ambienteNome);
 		
 		this.nomeComercial = nomeComercial;
 		this.matricula = matricula;
@@ -2056,6 +2067,22 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 				this.getHistoricoColaborador().getSalario());
 	}
 
+	public String getFuncaoNome()
+	{
+		if(funcao != null && funcao.getNome() != null)
+			return funcao.getNome();
+		
+		return "";
+	}
+	
+	public String getAmbienteNome()
+	{
+		if(ambiente != null && ambiente.getNome() != null)
+			return ambiente.getNome();
+		
+		return "";
+	}
+	
 	public Solicitacao getSolicitacao() {
 		return solicitacao;
 	}
@@ -2221,6 +2248,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public String getNomeAvaliador() {
 		return nomeAvaliador;
+	}
+
+	public Ambiente getAmbiente() {
+		return ambiente;
 	}
 
 	

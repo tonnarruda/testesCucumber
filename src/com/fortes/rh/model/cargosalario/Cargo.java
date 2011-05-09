@@ -63,6 +63,8 @@ public class Cargo extends AbstractModel implements Serializable
 	@Lob
 	private String atitude;
 	@Lob
+	private String complementoConhecimento;
+	@Lob
 	private String observacao;
 	@ManyToOne
 	private GrupoOcupacional grupoOcupacional;
@@ -381,6 +383,9 @@ public class Cargo extends AbstractModel implements Serializable
 				descricao.append(conhecimento.getNome() + "\n");
 			}
 
+		if (this.complementoConhecimento != null)
+			descricao.append(this.complementoConhecimento);
+		
 		return descricao.toString();
 	}
 
@@ -481,5 +486,13 @@ public class Cargo extends AbstractModel implements Serializable
 
 	public void setAtitudes(Collection<Atitude> atitudes) {
 		this.atitudes = atitudes;
+	}
+
+	public String getComplementoConhecimento() {
+		return complementoConhecimento;
+	}
+
+	public void setComplementoConhecimento(String complementoConhecimento) {
+		this.complementoConhecimento = complementoConhecimento;
 	}
 }
