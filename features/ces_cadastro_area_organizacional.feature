@@ -1,0 +1,33 @@
+# language: pt
+
+Funcionalidade: Cadastrar Áreas Organizacionais
+
+  Cenário: Cadastro de Áreas Organizacionais
+    Dado que eu esteja logado
+    Quando eu acesso o menu "C&S > Cadastros > Áreas Organizacionais"
+    Então eu devo ver o título "Áreas Organizacionais"
+    E eu clico no botão "Inserir"
+    Então eu devo ver o título "Inserir Área Organizacional"
+    E eu clico no botão "Gravar"
+    Então eu devo ver o alert do valida campos e clico no ok
+    E eu clico no botão "Cancelar"
+    Então eu devo ver o título "Áreas Organizacionais"
+
+    Então eu clico no botão "Inserir"
+    E eu devo ver o título "Inserir Área Organizacional"
+    E eu preencho "Nome" com "Area Mãe"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Áreas Organizacionais"
+    E eu devo ver "Area Mãe"
+
+    Entao eu clico em editar "Area Mãe"
+    E eu devo ver o título "Editar Área Organizacional"
+    E o campo "Descrição" deve conter "Area Mãe"
+    E eu preencho "Descrição" com "falta de mão de obra 2"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Area Mãe"
+
+    Então eu clico em excluir "falta de mão de obra 2"
+    E eu devo ver o alert do confirmar exclusão e clico no ok
+    Então eu devo ver "Motivo de Solicitação excluído com sucesso."
+    E eu não devo ver "falta de mão de obra 2"

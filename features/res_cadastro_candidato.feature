@@ -8,7 +8,13 @@ Funcionalidade: Cadastrar Candidato
 
     Quando eu acesso o menu "R&S > Cadastros > Candidatos"
     Então eu devo ver o título "Candidatos"
-
+    Quando eu clico no botão "Inserir"
+    Então eu devo ver o título "Inserir Candidato"
+    E eu clico no botão "Gravar"
+    Quando eu aperto "OK"
+    E eu clico no botão "Cancelar"
+    Quando eu aperto "OK"
+    Então eu devo ver o título "Candidatos"
     Quando eu clico no botão "Inserir"
     Então eu devo ver o título "Inserir Candidato"
     Quando eu preencho "nome" com "Pedro do Teste"
@@ -33,15 +39,20 @@ Funcionalidade: Cadastrar Candidato
     E eu preencho "senha" com "1234"
     E eu preencho "comfirmaSenha" com "1234"
     E eu clico no botão "Gravar"
-
     Então eu devo ver "Operação Efetuada com Sucesso!"
     E eu devo ver "Pedro do Teste"
     Quando eu clico no botão "Voltar"
     Então eu devo ver "Candidatos"
     E eu devo ver "Pedro do Teste"
 
-    Quando eu clico em excluir "Pedro do Teste"
+    Quando eu clico em editar "Pedro do Teste"
+    E o campo "nome" deve conter "Pedro do Teste"
+    E eu preencho "nome" com "Pedro do Teste 2"
+    E eu clico no botão "Gravar"
+    E eu devo ver "Pedro do Teste 2"
+
+    Quando eu clico em excluir "Pedro do Teste 2"
     Então eu devo ver "Confirma exclusão?"
     Quando eu aperto "OK"
     Então eu devo ver "Candidato excluído com sucesso!"
-
+    E eu não devo ver "Pedro do Teste 2"

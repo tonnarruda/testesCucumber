@@ -16,6 +16,7 @@ Dado /^que eu esteja logado$/ do
     E %{eu preencho "password" com "1234"}
     E %{eu clico em "Entrar"}
     Então %{eu devo ver "Bem-vindo(a)"}
+    page.execute_script("$('#splash').dialog('close');")
   end
 end
 
@@ -49,6 +50,10 @@ end
 
 Quando /^eu clico em editar "([^"]*)"$/ do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Editar']").click
+end
+
+Quando /^eu clico na linha "([^"]*)" da imagem "([^"]*)"$/ do |desc, img|
+  find(:xpath, "//td[contains(text(), '#{desc}')]/../td/a/img[@title='#{img}']").click
 end
 
 Então /^eu devo ver o título "([^"]*)"$/ do |text|
@@ -193,8 +198,19 @@ Então /^mostre-me a página$/ do
   Then %{show me the page}
 end
 
+Então /^eu devo ver o alert do valida campos e clico no ok/ do
+  Then %{I should see "Preencha os campos indicados."}
+  When %{I press "OK"}
+end
+
+Então /^eu devo ver o alert do confirmar exclusão e clico no ok/ do
+  Then %{I should see "Confirma exclusão?"}
+  When %{I press "OK"}
+end
+
 def get_field field
   label = all(:xpath, "//label[contains(text(), '#{field}')]").select{|e| e.text.match("^\s*#{field}\:?")}.first
   field = label[:for] unless label.nil?
   field
 end
+
