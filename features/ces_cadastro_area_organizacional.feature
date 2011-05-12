@@ -22,12 +22,12 @@ Funcionalidade: Cadastrar Áreas Organizacionais
 
     Entao eu clico em editar "Area Mãe"
     E eu devo ver o título "Editar Área Organizacional"
-    E o campo "Descrição" deve conter "Area Mãe"
-    E eu preencho "Descrição" com "falta de mão de obra 2"
+    E o campo "Nome" deve conter "Area Mãe"
+    E eu preencho "Nome" com "Área Mãe 2"
     E eu clico no botão "Gravar"
-    E eu devo ver o título "Area Mãe"
+    E eu devo ver o título "Áreas Organizacionais"
 
-    Então eu clico em excluir "falta de mão de obra 2"
+    Então eu clico em excluir "Área Mãe 2"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Motivo de Solicitação excluído com sucesso."
-    E eu não devo ver "falta de mão de obra 2"
+    Então eu devo ver "Área Organizacional excluída com sucesso."
+    E eu não devo ver "Área Mãe 2"
