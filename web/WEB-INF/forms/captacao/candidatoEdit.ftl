@@ -354,7 +354,8 @@
 		<div id="aba2" class="abaFormacaoEscolar"><a href="javascript: abas(2, '',${edicao},${qtdAbas})">Formação Escolar</a></div>
 		<div id="aba3" class="abaPerfilProfissional"><a href="javascript: abas(3, '',${edicao},${qtdAbas})">Perfil Profissional</a></div>
 		<div id="aba4" class="abaExperiencias"><a href="javascript: abas(4, '',${edicao},${qtdAbas})">Experiências</a></div>
-		<div id="aba5" class="abaDocumentos"><a href="javascript: abas(5, '',${edicao})">Documentos</a></div>
+		<div id="aba5" class="abaDocumentos"><a href="javascript: abas(5, '',${edicao},${qtdAbas})">Documentos</a></div>
+		<div id="aba6" class="abaCurriculo"><a href="javascript: abas(6, '',${edicao})">Currículo</a></div>
     </div>
 
 	<div id="content4" class="4" style="display: none;">
@@ -382,7 +383,6 @@
 		<@ww.div  id="idioma" cssClass="campo"/>
 		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" liClass="campo"/>
     </div>
-
 
     <@ww.form name="form" action="${formAction}" validate="true" onsubmit="javascript:validarCamposCpf()" method="POST" enctype="multipart/form-data">
 		<div id="content1" class="1">
@@ -615,7 +615,12 @@
 			</@ww.div>
 		</li>	
       </div>
-
+      
+      <div id="content6" class="6" style="display:none; width:98%;">
+		<@ww.label label="Descrição do Currículo" />
+		<@ww.textarea name="candidato.ocrTexto" cssStyle="width: 720px;height: 500px"/>
+	  </div>
+      
       <@ww.hidden name="candidato.dataCadastro" />
       <@ww.hidden name="candidato.empresa.id" />
       <@ww.hidden name="candidato.blackList" />
