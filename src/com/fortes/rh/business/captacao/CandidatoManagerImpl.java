@@ -1351,4 +1351,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return getDao().findQtdCadastradosByOrigem(date, date2);
 	}
 
+	public String getComoFicouSabendoVagas() 
+	{
+		Collection<String> comoFicouSabendoVagas = getDao().getComoFicouSabendoVagas();
+		if(comoFicouSabendoVagas.isEmpty())
+			return "";
+		else
+			return StringUtil.converteCollectionToStringComAspas(comoFicouSabendoVagas);
+	}
+
 }

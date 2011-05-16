@@ -182,6 +182,17 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Candidato candidato = candidatoDao.findByCandidatoId(c3.getId());
 		assertEquals(c3.getId(), candidato.getId());
 	}
+	
+	public void testGetComoFicouSabendoVagas()
+	{
+		Candidato c1 = getCandidato();
+		c1.setComoFicouSabendoVaga("site");
+		
+		c1 = candidatoDao.save(c1);
+		
+		Collection<String> vagas = candidatoDao.getComoFicouSabendoVagas();
+		assertTrue(vagas.size() > 0);
+	}
 
 	public void testFind()
 	{

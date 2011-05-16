@@ -146,9 +146,11 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	
 	private String nomeImg;
 	private ParametrosDoSistema parametrosDoSistema;
+	private String sabendoVagasArray;
 
 	private void prepare() throws Exception
 	{
+		sabendoVagasArray = candidatoManager.getComoFicouSabendoVagas();
 		Long empresaId;
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 	
@@ -157,7 +159,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			empresaId = getEmpresaSistema().getId();
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado"), "getId", "getNomeMercado");
 			
-			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps");
+			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps,comoFicouSabendoVaga");
 			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,cpf,escolaridade,ende,num,cidade,ddd,fone");
 			parametrosDoSistema.setCamposCandidatoTabs("abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais");
 		}
@@ -1273,6 +1275,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public ParametrosDoSistema getParametrosDoSistema() {
 		return parametrosDoSistema;
+	}
+
+	public String getSabendoVagasArray() {
+		return sabendoVagasArray;
 	}
 
 }

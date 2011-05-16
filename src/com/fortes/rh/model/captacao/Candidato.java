@@ -115,7 +115,9 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private String observacaoRH;
 	
 	private Integer idF2RH;
-
+	@Column(length=30)
+	private String comoFicouSabendoVaga;
+	
 	@Transient
 	private int qtdCurriculosCadastrados;
 	
@@ -1091,6 +1093,14 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setColocacao(String colocacao) {
 		this.colocacao = colocacao;
+	}
+
+	public String getComoFicouSabendoVaga() {
+		return comoFicouSabendoVaga;
+	}
+
+	public void setComoFicouSabendoVaga(String comoFicouSabendoVaga) {
+		this.comoFicouSabendoVaga = comoFicouSabendoVaga;
 	}
 
 

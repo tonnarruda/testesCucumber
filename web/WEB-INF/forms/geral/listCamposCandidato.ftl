@@ -245,6 +245,11 @@
 				<td><input type="checkbox" value="deficiencia" name="camposCandidatoObrigatorios" /></td>
 			</tr>
 			<tr>
+				<td>Como ficou sabendo da vaga</td>
+				<td><input type="checkbox" value="comoFicouSabendoVaga" name="camposCandidatoVisivels" /></td>
+				<td><input type="checkbox" value="comoFicouSabendoVaga" name="camposCandidatoObrigatorios" /></td>
+			</tr>
+			<tr>
 				<td>Senha</td>
 				<td><input type="checkbox" value="senha" name="camposCandidatoVisivels" checked disabled class="desabilitado"/></td>
 				<td><input type="checkbox" value="senha" name="camposCandidatoObrigatorios" checked disabled class="desabilitado"/></td>

@@ -478,6 +478,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("c.cursos"),"cursos");
 		p.add(Projections.property("c.dataAtualizacao"),"dataAtualizacao");
 		p.add(Projections.property("c.dataCadastro"), "dataCadastro");
+		p.add(Projections.property("c.ocrTexto"), "ocrTexto");
+		p.add(Projections.property("c.comoFicouSabendoVaga"), "comoFicouSabendoVaga");
 
 		p.add(Projections.property("c.endereco.logradouro"),"enderecoLogradouro");
 		p.add(Projections.property("c.endereco.numero"),"enderecoNumero");
@@ -1080,5 +1082,18 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.setDate("dataFim", dataFim);
 
 		return query.list();
+	}
+
+	public Collection<String> getComoFicouSabendoVagas() 
+	{
+        Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+        
+        ProjectionList p = Projections.projectionList().create();
+        p.add(Projections.property("c.comoFicouSabendoVaga"),"comoFicouSabendoVaga");
+        criteria.setProjection(p);
+        
+        criteria.add(Expression.isNotNull("c.comoFicouSabendoVaga"));
+
+        return criteria.list();
 	}
 }

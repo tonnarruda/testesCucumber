@@ -66,4 +66,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public void habilitaByColaborador(Long colaboradorId);
 	public void reabilitaByColaborador(Long colaboradorId);
 	public String enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas);
+	public String getComoFicouSabendoVagas();
 }
