@@ -38,3 +38,8 @@ end
 # prefer to use XPath just remove this line and adjust any selectors in your
 # steps to use the XPath syntax.
 Capybara.default_selector = :css
+
+Before do
+  #puts "Criando banco de dados"
+  #system "psql -U postgres fortesrh_inicial < features/data/dumpInicial_com_clean.sql"
+end
