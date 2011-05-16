@@ -208,6 +208,21 @@ Então /^eu devo ver o alert do confirmar exclusão e clico no ok/ do
   When %{I press "OK"}
 end
 
+Quando /^eu espero (\d+) segundos$/ do |segundos|
+  sleep segundos.to_i
+end
+
+Quando /^eu saio do campo "([^"]*)"$/ do |field|
+   page.execute_script("$('##{field}').blur()")
+end
+
+Então /^o campo "([^"]*)" deve ter "([^"]*)" selecionado$/ do |field, value|
+  field = find_field(field)
+  option = field.find(:xpath, "//option[contains(text(), '#{value}')]")
+  value=option.value
+  Então %{o campo "#{field[:id]}" deve conter "#{value}"}
+end
+
 def get_field field
   label = all(:xpath, "//label[contains(text(), '#{field}')]").select{|e| e.text.match("^\s*#{field}\:?")}.first
   field = label[:for] unless label.nil?

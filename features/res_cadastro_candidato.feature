@@ -22,7 +22,6 @@ Funcionalidade: Cadastrar Candidato
     E eu preencho "naturalidade" com "fortaleza"
     E eu preencho "cpf" com "881.028.771-11"
     E eu seleciono "Sem escolaridade" de "Escolaridade"
-    E eu preencho "cep" com "60320-100"
     E eu preencho "Logradouro" com "Eretides"
     E eu preencho "num" com "11"
     E eu preencho "complemento" com "apto"
@@ -48,6 +47,13 @@ Funcionalidade: Cadastrar Candidato
     Quando eu clico em editar "Pedro do Teste"
     E o campo "nome" deve conter "Pedro do Teste"
     E eu preencho "nome" com "Pedro do Teste 2"
+    E eu preencho "cep" com "60320-100"
+    E eu saio do campo "cep"
+    E eu espero 6 segundos
+    E o campo "Logradouro" deve conter "Rua Haroldo Torres"
+    E o campo "Estado" deve ter "CE" selecionado
+    E o campo "cidade" deve ter "Fortaleza" selecionado
+    E o campo "bairroNome" deve conter "São Gerardo"
     E eu clico no botão "Gravar"
     E eu devo ver "Pedro do Teste 2"
 

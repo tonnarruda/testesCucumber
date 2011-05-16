@@ -363,6 +363,21 @@
 				<td><input type="checkbox" value="ctps" name="camposCandidatoObrigatorios" /></td>
 			</tr>
 		</table>
+		
+		<table id="abaCurriculo" cellspacing="0" class="configCampos">
+		   <thead>		
+			<tr>
+				<th>Campo da aba Curriculo</th>
+				<th>Exibir</th>
+				<th>Obrigatório</th>
+			</tr>
+		    </thead>		
+			<tr>
+				<td>Descrição do Currículo</td>
+				<td><input type="checkbox" value="ocrTexto" name="camposCandidatoVisivels" /></td>
+				<td><input type="checkbox" value="ocrTexto" name="camposCandidatoObrigatorios" disabled  class="desabilitado"/></td>
+			</tr>
+		</table>
 	</@ww.form>
 	<div class="buttonGroup">
 		<button onclick="enviaForm()" class="btnGravar" ></button>

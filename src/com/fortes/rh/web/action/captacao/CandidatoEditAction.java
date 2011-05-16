@@ -457,10 +457,11 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		carregaChecksCandidato();
 
 		candidato.getPessoal().setCpf(StringUtil.removeMascara(candidato.getPessoal().getCpf()));
-		candidato.setOcrTexto(candidatoManager.getOcrTextoById(candidato.getId()));
 		candidatoManager.ajustaSenha(candidato);
 		candidatoManager.update(candidato);
 		
+		if(!moduloExterno)
+			candidato.setOcrTexto(candidatoManager.getOcrTextoById(candidato.getId()));
 
 		formacaoManager.removeCandidato(candidato);
 		candidatoIdiomaManager.removeCandidato(candidato);
