@@ -9,3 +9,5 @@ ALTER TABLE candidato ALTER COLUMN bairro TYPE character varying(85);--.go
 ALTER TABLE colaborador ALTER COLUMN bairro TYPE character varying(85);--.go
 ALTER TABLE bairro ALTER COLUMN nome TYPE character varying(85);--.go
 ALTER TABLE estabelecimento ALTER COLUMN bairro TYPE character varying(85);--.go
+
+update papel set nome = 'Acompanhamento do Período de Experiência' where id=490;--.go
