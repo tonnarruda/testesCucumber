@@ -155,7 +155,7 @@
 				<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""  required="true"/>
 				<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 237px;" headerKey="" headerValue="" required="true" />
 					
-				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" cssStyle="width: 350px;"  maxLength="20"/>
+				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" cssStyle="width: 350px;"  maxLength="85"/>
 				<@ww.div id="bairroContainer"/>
 					
 				<@ww.textfield label="E-mail"    name="colaborador.contato.email" id="email" cssStyle="width: 300px;" maxLength="40" liClass="liLeft"/>

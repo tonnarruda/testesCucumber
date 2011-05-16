@@ -36,7 +36,7 @@
 		<@ww.select label="Estado" name="estado.id" id="uf" list="estados" listKey="id" listValue="nome" liClass="liLeft" cssStyle="width: 150px;" headerKey="" headerValue="Selecione..." />
 		<@ww.select label="Cidade" name="bairro.cidade.id" id="cidade" list="cidades" required="true" listKey="id" listValue="nome" cssStyle="width: 250px;" headerKey="" headerValue="" />
 
-		<@ww.textfield label="Nome" name="bairro.nome" id="bairroNome" cssClass="inputNome" maxLength="20" required="true"/>
+		<@ww.textfield label="Nome" name="bairro.nome" id="bairroNome" cssClass="inputNome" maxLength="85" required="true"/>
 		<@ww.div id="bairroContainer"/>
 
 		<@ww.hidden name="bairro.id" />

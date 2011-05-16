@@ -105,7 +105,7 @@
 			
 			<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs"  liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
 			<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade"  list="cidades" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" liClass="liLeft"/>
-			<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 197px;"  maxLength="20"/>
+			<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 197px;"  maxLength="85"/>
 	
 			<@ww.textarea label="Currículo" name="candidato.ocrTexto" id="ocrTexto" required="true" cssStyle="width: 758px;height: 300px"/>
 		</@ww.form>

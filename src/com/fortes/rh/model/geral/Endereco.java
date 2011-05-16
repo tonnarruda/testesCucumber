@@ -23,7 +23,7 @@ public class Endereco implements Serializable
 	private String numero;
 	@Column(length=20)
 	private String complemento;
-	@Column(length=20)
+	@Column(length=85)
  	private String bairro;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Estado uf;

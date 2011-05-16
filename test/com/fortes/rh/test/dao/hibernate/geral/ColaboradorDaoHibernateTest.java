@@ -151,7 +151,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		endereco.setLogradouro("logradouro");
 		endereco.setNumero("00");
 		endereco.setComplemento("complemento");
-		endereco.setBairro("bairro");
+		endereco.setBairro("123456789012345678901");
 		endereco.setCidade(null);
 		endereco.setUf(null);
 		endereco.setCep("0000000");

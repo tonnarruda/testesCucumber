@@ -213,7 +213,8 @@ Quando /^eu espero (\d+) segundos$/ do |segundos|
 end
 
 Quando /^eu saio do campo "([^"]*)"$/ do |field|
-   page.execute_script("$('##{field}').blur()")
+  field = find_field(field)
+  page.execute_script("$('##{field[:id]}').blur()")
 end
 
 Então /^o campo "([^"]*)" deve ter "([^"]*)" selecionado$/ do |field, value|

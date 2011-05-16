@@ -123,7 +123,7 @@
 		<@ww.textfield label="Complemento" name="estabelecimento.endereco.complemento" cssStyle="width: 252px;" maxLength="20" disabled="${desabilita}"/>
 		<@ww.select label="Estado" name="estabelecimento.endereco.uf.id" id="uf" list="ufs" required="true" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="-1" headerValue="" disabled="${desabilita}"/>
 		<@ww.select label="Cidade" name="estabelecimento.endereco.cidade.id" id="cidade" required="true" list="cidades"  listKey="id" listValue="nome" cssStyle="width: 300px;" headerKey="" headerValue="" disabled="${desabilita}" liClass="liLeft"/>
-		<@ww.textfield label="Bairro" name="estabelecimento.endereco.bairro" id="bairroNome" cssStyle="width: 307px;" maxLength="20" required="true"  disabled="${desabilita}"/>
+		<@ww.textfield label="Bairro" name="estabelecimento.endereco.bairro" id="bairroNome" cssStyle="width: 307px;" maxLength="85" required="true"  disabled="${desabilita}"/>
 		<@ww.div id="bairroContainer"/>
 
 		<@ww.hidden name="estabelecimento.id" />

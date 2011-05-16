@@ -126,7 +126,7 @@
 					<br>
 					<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs"  liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 					<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade"  list="cidades" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue=""  liClass="liLeft"/>
-					<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 300px;"  maxLength="20"/>
+					<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 300px;"  maxLength="85"/>
 					<@ww.div id="bairroContainer"/>
 				</ul>
 			</@ww.div>

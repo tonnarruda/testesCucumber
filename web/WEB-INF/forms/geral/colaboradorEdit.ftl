@@ -362,7 +362,7 @@
 			<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" cssStyle="width: 205px;" maxLength="20"/>
 			<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
 			<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" required="true" />
-				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" cssStyle="width: 325px;" maxLength="20"/>
+				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" cssStyle="width: 325px;" maxLength="85"/>
 				<@ww.div id="bairroContainer"/>
 			<@ww.textfield label="E-mail"    name="colaborador.contato.email" id="email" cssClass="mascaraEmail" maxLength="40" liClass="liLeft"/>
 			<@ww.textfield label="DDD" name="colaborador.contato.ddd" required="true" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" maxLength="2" cssStyle="width:25px;"/>
