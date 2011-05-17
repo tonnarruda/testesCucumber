@@ -33,6 +33,7 @@ import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -115,11 +116,12 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private String observacaoRH;
 	
 	private Integer idF2RH;
-	@Column(length=30)
-	private String comoFicouSabendoVaga;
 	
 	@Transient
 	private int qtdCurriculosCadastrados;
+
+	@ManyToOne
+	private ComoFicouSabendoVaga comoFicouSabendoVaga;
 	
 	public Candidato() {}
 	
@@ -1095,13 +1097,12 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 		this.colocacao = colocacao;
 	}
 
-	public String getComoFicouSabendoVaga() {
+	public ComoFicouSabendoVaga getComoFicouSabendoVaga() {
 		return comoFicouSabendoVaga;
 	}
 
-	public void setComoFicouSabendoVaga(String comoFicouSabendoVaga) {
+	public void setComoFicouSabendoVaga(ComoFicouSabendoVaga comoFicouSabendoVaga) {
 		this.comoFicouSabendoVaga = comoFicouSabendoVaga;
 	}
-
 
 }

@@ -24,11 +24,9 @@ public class ComoFicouSabendoVagaManagerTest extends MockObjectTestCase
 
 	public void testFindAllSelect()
 	{
-		Long empresaId = 1L;
-		
 		Collection<ComoFicouSabendoVaga> comoFicouSabendoVagas = ComoFicouSabendoVagaFactory.getCollection(1L);
 
-		comoFicouSabendoVagaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(comoFicouSabendoVagas));
-		assertEquals(comoFicouSabendoVagas, comoFicouSabendoVagaManager.findAllSelect(empresaId));
+		comoFicouSabendoVagaDao.expects(once()).method("findAll").will(returnValue(comoFicouSabendoVagas));
+		assertEquals(comoFicouSabendoVagas, comoFicouSabendoVagaManager.findAll());
 	}
 }

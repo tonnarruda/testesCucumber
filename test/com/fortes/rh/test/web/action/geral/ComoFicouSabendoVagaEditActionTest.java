@@ -57,6 +57,7 @@ public class ComoFicouSabendoVagaEditActionTest extends MockObjectTestCase
 		action.setComoFicouSabendoVaga(comoFicouSabendoVaga);
 		
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<ComoFicouSabendoVaga>()));
 		assertEquals("success", action.delete());
 	}
 

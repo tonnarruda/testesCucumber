@@ -36,19 +36,31 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
-		comoFicouSabendoVagaManager.save(comoFicouSabendoVaga);
-		return Action.SUCCESS;
+		try {
+			comoFicouSabendoVagaManager.save(comoFicouSabendoVaga);
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			prepareInsert();
+			return Action.INPUT;
+		}
 	}
 
 	public String update() throws Exception
 	{
-		comoFicouSabendoVagaManager.update(comoFicouSabendoVaga);
-		return Action.SUCCESS;
+		try 
+		{
+			comoFicouSabendoVagaManager.update(comoFicouSabendoVaga);
+			return Action.SUCCESS;
+			
+		} catch (Exception e) {
+			prepareUpdate();
+			return Action.INPUT;
+		}
 	}
 
 	public String list() throws Exception
 	{
-		implementar
+		comoFicouSabendoVagas = comoFicouSabendoVagaManager.findAllSemOutros();
 		return Action.SUCCESS;
 	}
 
@@ -57,12 +69,12 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 		try
 		{
 			comoFicouSabendoVagaManager.remove(comoFicouSabendoVaga.getId());
-			addActionMessage("ComoFicouSabendoVaga excluído com sucesso.");verificar msg
+			addActionMessage("Item excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este comoFicouSabendoVaga.");verificar msg
+			addActionError("Não foi possível excluir este item.");
 		}
 
 		return list();

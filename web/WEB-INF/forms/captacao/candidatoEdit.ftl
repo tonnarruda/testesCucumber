@@ -108,13 +108,6 @@
 			if(qtdAbas == 1)
 				ajustaBotoes(1, 1);
 			
-			var sabendoVagasArray = new Array();	
-			sabendoVagasArray.push('babau');
-			sabendoVagasArray.push('palestra');
-			sabendoVagasArray.push('bala');
-			
-			var sabendoVagasArray = [${sabendoVagasArray}];
-			$("#comoFicouSabendoVaga").autocomplete(sabendoVagasArray);
 		});
 
 		function populaConhecimento(frm, nameCheck)
@@ -489,7 +482,7 @@
 
 			<@ww.textfield label="Nome da Mãe" id="nomeMae" name="candidato.pessoal.mae" cssStyle="width: 300px;" maxLength="60" liClass="liLeft , campo" onblur="${capitalizar}"/>
 			<@ww.textfield label="Profissão da Mãe" id="profMae" name="candidato.pessoal.profissaoMae" cssStyle="width: 300px;" maxLength="100" onblur="${capitalizar}" liClass="liLeft , campo"/>
-			<@ww.textfield label="Como ficou sabendo da vaga" id="comoFicouSabendoVaga" name="candidato.comoFicouSabendoVaga" cssStyle="width: 200px;" maxLength="30" onblur="${capitalizar}" liClass="liLeft , campo"/>
+			<@ww.select label="Como Ficou Sabendo da Vaga" id="comoFicouSabendoVaga" name="candidato.comoFicouSabendoVaga.id" list="comoFicouSabendoVagas" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 200px;" liClass="liLeft"/>
 
 			<li>
 				<@ww.div id="wwgrp_pensao" cssClass="campo">

@@ -12,4 +12,14 @@ ALTER TABLE estabelecimento ALTER COLUMN bairro TYPE character varying(85);--.go
 
 update papel set nome = 'Acompanhamento do Período de Experiência' where id=490;--.go
 
-ALTER TABLE candidato add COLUMN comoFicouSabendoVaga character varying(30);--.go
+ALTER TABLE candidato add COLUMN comoFicouSabendoVaga_id bigint;--.go
+ALTER TABLE candidato ADD CONSTRAINT candidato_comoFicouSabendoVaga_fk FOREIGN KEY (comoFicouSabendoVaga_id) REFERENCES comoFicouSabendoVaga(id); --.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (507, 'ROLE_COMO_FICOU_SABENDO_VAGA', 'Como Ficou Sabendo da Vaga', '/geral/comoFicouSabendoVaga/list.action', 8, true, 358);--.go
+alter sequence papel_sequence restart with 508;--.go
+
+create table comoFicouSabendoVaga (id bigint not null, nome character varying(100));--.go
+ALTER TABLE ONLY comoFicouSabendoVaga ADD CONSTRAINT comoFicouSabendoVaga_pkey PRIMARY KEY (id); --.go
+CREATE SEQUENCE comoFicouSabendoVaga_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1; --.go
+
+insert into comoFicouSabendoVaga (id, nome) values (1, 'Outros');--.go

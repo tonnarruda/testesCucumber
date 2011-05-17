@@ -11,6 +11,7 @@ public class ComoFicouSabendoVagaFactory
 	{
 		ComoFicouSabendoVaga comoFicouSabendoVaga = new ComoFicouSabendoVaga();
 		comoFicouSabendoVaga.setId(null);
+		comoFicouSabendoVaga.setNome("F2RH");
 		return comoFicouSabendoVaga;
 	}
 
@@ -18,6 +19,7 @@ public class ComoFicouSabendoVagaFactory
 	{
 		ComoFicouSabendoVaga comoFicouSabendoVaga = getEntity();
 		comoFicouSabendoVaga.setId(id);
+		comoFicouSabendoVaga.setNome("F2RH");
 
 		return comoFicouSabendoVaga;
 	}

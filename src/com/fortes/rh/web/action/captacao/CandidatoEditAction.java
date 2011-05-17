@@ -27,6 +27,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.ComoFicouSabendoVagaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -44,6 +45,7 @@ import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -79,6 +81,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private BairroManager bairroManager;
 	private CandidatoCurriculoManager candidatoCurriculoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private ComoFicouSabendoVagaManager comoFicouSabendoVagaManager;
 
 	private Candidato candidato = new Candidato();
 
@@ -129,6 +132,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private Collection<CandidatoIdioma> idiomas;
 	private Collection<Experiencia> experiencias;
 
+	private Collection<ComoFicouSabendoVaga> comoFicouSabendoVagas; 
+
 	private int page = 1;
 	private boolean moduloExterno;
 	private String msgAlert;
@@ -146,11 +151,12 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	
 	private String nomeImg;
 	private ParametrosDoSistema parametrosDoSistema;
-	private String sabendoVagasArray;
 
 	private void prepare() throws Exception
 	{
-		sabendoVagasArray = candidatoManager.getComoFicouSabendoVagas();
+		comoFicouSabendoVagas = comoFicouSabendoVagaManager.findAllSemOutros();
+		comoFicouSabendoVagas.add(comoFicouSabendoVagaManager.findById(1L));
+
 		Long empresaId;
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 	
@@ -460,6 +466,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 		candidato.getPessoal().setCpf(StringUtil.removeMascara(candidato.getPessoal().getCpf()));
 		candidatoManager.ajustaSenha(candidato);
+		
+		if (candidato.getComoFicouSabendoVaga()!=null && candidato.getComoFicouSabendoVaga().getId()==null)
+			candidato.setComoFicouSabendoVaga(null);
+		
 		candidatoManager.update(candidato);
 		
 		if(!moduloExterno)
@@ -1277,10 +1287,16 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		return parametrosDoSistema;
 	}
 
-	public String getSabendoVagasArray() {
-		return sabendoVagasArray;
+	public void setComoFicouSabendoVagaManager(
+			ComoFicouSabendoVagaManager comoFicouSabendoVagaManager) {
+		this.comoFicouSabendoVagaManager = comoFicouSabendoVagaManager;
 	}
 
+	public Collection<ComoFicouSabendoVaga> getComoFicouSabendoVagas() {
+		return comoFicouSabendoVagas;
+	}
+
+	
 }
 
 @SuppressWarnings("unchecked")
