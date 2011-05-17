@@ -524,15 +524,15 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public String insertCurriculo() throws Exception
 	{		
-		try
-		{
-			candidatoManager.validaQtdCadastros();			
-		} catch (Exception e)
-		{
-			addActionMessage(e.getMessage());
-			prepare();
-			return Action.INPUT;
-		}
+//		try
+//		{
+//			candidatoManager.validaQtdCadastros();			
+//		} catch (Exception e)
+//		{
+//			addActionMessage(e.getMessage());
+//			prepare();
+//			return Action.INPUT;
+//		}
 	
 		try
 		{

@@ -218,7 +218,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	Collection<Empresa> empresas = new ArrayList<Empresa>();
     	empresas.add(empresa);
 
-    	manager.expects(once()).method("validaQtdCadastros").isVoid();
+    	//manager.expects(once()).method("validaQtdCadastros").isVoid();
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	manager.expects(once()).method("saveCandidatoCurriculo").with(ANYTHING,ANYTHING,ANYTHING);
@@ -226,7 +226,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
 
     	candidato.setId(1L);
     	action.setCandidato(candidato);
-    	manager.expects(once()).method("validaQtdCadastros").isVoid();
+    	//manager.expects(once()).method("validaQtdCadastros").isVoid();
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	manager.expects(once()).method("saveCandidatoCurriculo").with(ANYTHING,ANYTHING,ANYTHING).will(throwException(new Exception()));
 
@@ -234,7 +234,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
 
     	candidato.setId(null);
     	action.setCandidato(candidato);
-    	manager.expects(once()).method("validaQtdCadastros").isVoid();
+    	//manager.expects(once()).method("validaQtdCadastros").isVoid();
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
@@ -257,7 +257,6 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	Collection<Empresa> empresas = new ArrayList<Empresa>();
     	empresas.add(empresa);
 
-    	manager.expects(once()).method("validaQtdCadastros").isVoid();
     	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
@@ -308,6 +307,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
     	parametrosDoSistema.setUpperCase(true);
     	
+    	manager.expects(once()).method("getComoFicouSabendoVagas").will(returnValue("pelo site"));
     	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	empresaManager.expects(once()).method("findToList").will(returnValue(empresas));
@@ -328,11 +328,10 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
     	parametrosDoSistema.setUpperCase(true);
     	
+    	cargoManager.expects(once()).method("populaCargos").will(returnValue(new ArrayList<Cargo>()));
     	cargoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Cargo>()));
-    	areaInteresseManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AreaInteresse>()));
-    	conhecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Conhecimento>()));
+    	estadoManager.expects(once()).method("findAll");
     	empresaManager.expects(once()).method("findToList").will(returnValue(empresas));
-    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	
     	action.setCandidatoManager(null); 
     	
@@ -351,6 +350,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
     	parametrosDoSistema.setUpperCase(true);
     	
+    	manager.expects(once()).method("getComoFicouSabendoVagas").will(returnValue("pelo site"));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	manager.expects(once()).method("findByIdProjection").with(eq(candidato.getId())).will(returnValue(candidato));
     	manager.expects(once()).method("getFoto").with(eq(candidato.getId()));
