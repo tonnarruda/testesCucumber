@@ -146,7 +146,9 @@
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico" />
     <mapping class="com.fortes.rh.model.geral.CodigoCBO" />
       <mapping class="com.fortes.rh.model.geral.GrupoAC" />
+      <mapping class="com.fortes.rh.model.geral.ComoFicouSabendoVaga" />
   </session-factory>
+
 
 
 

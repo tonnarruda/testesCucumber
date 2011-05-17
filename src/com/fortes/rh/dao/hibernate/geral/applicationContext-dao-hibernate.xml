@@ -187,7 +187,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="comoFicouSabendoVagaDaoTarget" class="com.fortes.rh.dao.hibernate.geral.ComoFicouSabendoVagaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

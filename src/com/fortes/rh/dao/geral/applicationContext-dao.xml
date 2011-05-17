@@ -298,7 +298,16 @@
       <ref bean="grupoACDaoTarget" />
     </property>
   </bean>
+  <bean id="comoFicouSabendoVagaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.ComoFicouSabendoVagaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="comoFicouSabendoVagaDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
