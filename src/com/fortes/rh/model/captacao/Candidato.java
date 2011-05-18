@@ -123,6 +123,8 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	@ManyToOne
 	private ComoFicouSabendoVaga comoFicouSabendoVaga;
 	
+	private String comoFicouSabendoVagaQual;
+	
 	public Candidato() {}
 	
 	public Candidato(String empresaNome, char origem, int qtdPorOrigem) 
@@ -1103,6 +1105,14 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setComoFicouSabendoVaga(ComoFicouSabendoVaga comoFicouSabendoVaga) {
 		this.comoFicouSabendoVaga = comoFicouSabendoVaga;
+	}
+
+	public String getComoFicouSabendoVagaQual() {
+		return comoFicouSabendoVagaQual;
+	}
+
+	public void setComoFicouSabendoVagaQual(String comoFicouSabendoVagaQual) {
+		this.comoFicouSabendoVagaQual = comoFicouSabendoVagaQual;
 	}
 
 }

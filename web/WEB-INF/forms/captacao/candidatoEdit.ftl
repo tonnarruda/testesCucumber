@@ -85,7 +85,8 @@
 			    if (idNaoEncontrado)
 					$(this).hide();
 			});
-			
+
+			$('#wwgrp_comoFicouSabendoVagaQual').toggle($('#selectComoFicouSabendoVaga').val()==1);			
 
 			$.each(camposCandidatoObrigatorio.split(','), function (index, idCampo) {
 			    var lblAntigo = $('label[for='+idCampo+']');
@@ -260,6 +261,17 @@
 					verificaCpfDuplicado(data, ${idDaEmpresa}, null, null, true);
 				</#if>			
 			</#if>
+		}
+		
+		function comoFicouSabendoVagaChange(select)
+		{
+			if ($(select).val()==1)
+				$('#wwgrp_comoFicouSabendoVagaQual').show();
+			else
+			{
+				$('#comoFicouSabendoVagaQual').val('')
+				$('#wwgrp_comoFicouSabendoVagaQual').hide();
+			}
 		}
 </script>
 
@@ -482,7 +494,14 @@
 
 			<@ww.textfield label="Nome da Mãe" id="nomeMae" name="candidato.pessoal.mae" cssStyle="width: 300px;" maxLength="60" liClass="liLeft , campo" onblur="${capitalizar}"/>
 			<@ww.textfield label="Profissão da Mãe" id="profMae" name="candidato.pessoal.profissaoMae" cssStyle="width: 300px;" maxLength="100" onblur="${capitalizar}" liClass="liLeft , campo"/>
-			<@ww.select label="Como Ficou Sabendo da Vaga" id="comoFicouSabendoVaga" name="candidato.comoFicouSabendoVaga.id" list="comoFicouSabendoVagas" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 200px;" liClass="liLeft"/>
+			<li>
+				<@ww.div id="wwgrp_comoFicouSabendoVaga" cssClass="campo">
+					<ul>
+						<@ww.select label="Como Ficou Sabendo da Vaga" id="selectComoFicouSabendoVaga" name="candidato.comoFicouSabendoVaga.id" list="comoFicouSabendoVagas" listKey="id" listValue="nome" onchange="comoFicouSabendoVagaChange(this)" headerKey="" headerValue="Selecione..." cssStyle="width: 200px;" liClass="liLeft"/>
+						<@ww.textfield label="Qual?" id="comoFicouSabendoVagaQual" name="candidato.comoFicouSabendoVagaQual" cssStyle="width: 300px;" maxLength="100" liClass="liLeft"/>
+					</ul>
+				</@ww.div>
+			</li>
 
 			<li>
 				<@ww.div id="wwgrp_pensao" cssClass="campo">

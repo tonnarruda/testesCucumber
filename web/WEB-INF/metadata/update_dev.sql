@@ -20,6 +20,8 @@ alter sequence papel_sequence restart with 508;--.go
 
 create table comoFicouSabendoVaga (id bigint not null, nome character varying(100));--.go
 ALTER TABLE ONLY comoFicouSabendoVaga ADD CONSTRAINT comoFicouSabendoVaga_pkey PRIMARY KEY (id); --.go
-CREATE SEQUENCE comoFicouSabendoVaga_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1; --.go
+CREATE SEQUENCE comoFicouSabendoVaga_sequence START WITH 2 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1; --.go
 
-insert into comoFicouSabendoVaga (id, nome) values (1, 'Outros');--.go
+insert into comoFicouSabendoVaga (id, nome) values (1, 'Outro');--.go
+
+ALTER TABLE candidato add COLUMN comoFicouSabendoVagaQual character varying(100);--.go
