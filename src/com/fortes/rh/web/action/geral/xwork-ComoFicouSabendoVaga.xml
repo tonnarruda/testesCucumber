@@ -27,5 +27,17 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/comoFicouSabendoVagaEdit.ftl</result>
 		</action>
+		<action name="prepareRelatorioComoFicouSabendoVaga" class="com.fortes.rh.web.action.geral.ComoFicouSabendoVagaEditAction" method="prepareRelatorioComoFicouSabendoVaga">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/relatorioComoFicouSabendoVaga.ftl</result>
+		</action>
+		<action name="imprimirRelatorioComoFicouSabendoVaga" class="com.fortes.rh.web.action.sesmt.EtapaProcessoEleitoralEditAction" method="imprimirRelatorioComoFicouSabendoVaga">
+			<result name="success" type="jasper">
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="location">WEB-INF/report/comoFicouSabendoVaga.jasper</param>
+				<param name="documentName">comoFicouSabendoVaga.pdf</param>
+			</result>
+		</action>
+		
 	</package>
 </xwork>

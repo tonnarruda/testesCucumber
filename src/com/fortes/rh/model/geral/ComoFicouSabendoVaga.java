@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 
@@ -14,6 +15,8 @@ import com.fortes.model.AbstractModel;
 public class ComoFicouSabendoVaga extends AbstractModel implements Serializable
 {
 	private String nome;
+	@Transient
+	private double percentual;
 
 	public ComoFicouSabendoVaga() 
 	{
@@ -25,6 +28,12 @@ public class ComoFicouSabendoVaga extends AbstractModel implements Serializable
 		this.nome = nome;
 	}
 	
+	public ComoFicouSabendoVaga(String nome, double percentual)
+	{
+		this.nome = nome;
+		this.percentual = percentual;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -32,5 +41,12 @@ public class ComoFicouSabendoVaga extends AbstractModel implements Serializable
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+
+	public double getPercentual() {
+		return percentual;
+	}
+
+	public void setPercentual(double percentual) {
+		this.percentual = percentual;
+	}
 }

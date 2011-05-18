@@ -1,6 +1,7 @@
 package com.fortes.rh.business.geral;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.business.GenericManagerImpl;
@@ -14,5 +15,8 @@ public class ComoFicouSabendoVagaManagerImpl extends GenericManagerImpl<ComoFico
 		
 		return getDao().findAllSemOutros();
 	}
-	
+
+	public Collection<ComoFicouSabendoVaga> findCandidatosComoFicouSabendoVaga(Date dataIni, Date dataFim) {
+		return getDao().findCandidatosComoFicouSabendoVaga(dataIni, dataFim, null);
+	}
 }
