@@ -32,10 +32,10 @@ public class ComoFicouSabendoVagaDaoHibernate extends GenericDaoHibernate<ComoFi
 
 	@SuppressWarnings("unchecked")
 	public Collection<ComoFicouSabendoVaga> findCandidatosComoFicouSabendoVaga(Date dataIni, Date dataFim, Long empresaId) {
-		String sql = "select como.nome, coalesce (cl.percentual,0) " +
+		String sql = "select como.id, como.nome, cast(coalesce(cl.qtd, 0)as Integer) as qtd, cast(coalesce (cl.percentual,0) as double precision) as percentual " +
 						"from comoficousabendovaga como left join ( " +
-							"select cf.id as id, cf.nome as nome, " +
-										"(count(*) * 100 / ( " +
+							"select cf.id as id, cf.nome as nome, count(*) as qtd, " +
+										"(cast(count(*) as double precision) / ( " +
 											"select count(*) from candidato " +
 											"where comoficousabendovaga_id is not null " +
 											"and dataAtualizacao between :dataIni and :dataFim " +
@@ -46,7 +46,7 @@ public class ComoFicouSabendoVagaDaoHibernate extends GenericDaoHibernate<ComoFi
 								"and c.dataAtualizacao between :dataIni and :dataFim " +
 								"and c.empresa_id = :empresaId " +
 							"group by cf.id, cf.nome " +
-						") as cl on como.id=cl.id ";
+						") as cl on como.id=cl.id order by como.nome";
 
 		Query query = getSession().createSQLQuery(sql);
 		query.setDate("dataIni", dataIni);
@@ -59,8 +59,10 @@ public class ComoFicouSabendoVagaDaoHibernate extends GenericDaoHibernate<ComoFi
 		{
 			Object[] array = it.next();
 			ComoFicouSabendoVaga comoFicouSabendoVaga = new ComoFicouSabendoVaga();
-			comoFicouSabendoVaga.setNome((String) array[0]);
-			comoFicouSabendoVaga.setPercentual(Double.parseDouble(array[1].toString()));
+			comoFicouSabendoVaga.setId(Long.parseLong(array[0].toString()));
+			comoFicouSabendoVaga.setNome((String) array[1]);
+			comoFicouSabendoVaga.setQtd((Integer) array[2]);
+			comoFicouSabendoVaga.setPercentual((Double) array[3]);
 			comoFicouSabendoVagas.add(comoFicouSabendoVaga);
 		}
 		

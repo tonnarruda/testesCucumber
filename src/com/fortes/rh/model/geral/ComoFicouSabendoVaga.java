@@ -16,7 +16,7 @@ public class ComoFicouSabendoVaga extends AbstractModel implements Serializable
 {
 	private String nome;
 	@Transient
-	private double qtd;
+	private Integer qtd;
 	@Transient
 	private double percentual;
 
@@ -52,11 +52,11 @@ public class ComoFicouSabendoVaga extends AbstractModel implements Serializable
 		this.percentual = percentual;
 	}
 
-	public double getQtd() {
+	public Integer getQtd() {
 		return qtd;
 	}
 
-	public void setQtd(double qtd) {
+	public void setQtd(Integer qtd) {
 		this.qtd = qtd;
 	}
 }

@@ -10,6 +10,7 @@ import com.fortes.rh.business.geral.ComoFicouSabendoVagaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -100,7 +101,7 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
     {
 		try{
 			dataSource = comoFicouSabendoVagaManager.findCandidatosComoFicouSabendoVaga(dataIni, dataFim, getEmpresaSistema().getId());
-	    	parametros = RelatorioUtil.getParametrosRelatorio("Como Ficou Sabendo da Vaga", getEmpresaSistema(), null);
+	    	parametros = RelatorioUtil.getParametrosRelatorio("Como Ficou Sabendo da Vaga", getEmpresaSistema(), "Período: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim));
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -148,5 +149,9 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+	public Collection<ComoFicouSabendoVaga> getDataSource() {
+		return dataSource;
 	}
 }
