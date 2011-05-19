@@ -51,9 +51,7 @@ public class ComoFicouSabendoVagaDaoHibernate extends GenericDaoHibernate<ComoFi
 		Query query = getSession().createSQLQuery(sql);
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
-		
-		if(empresaId != null)
-			query.setLong("empresaId", empresaId);
+		query.setLong("empresaId", empresaId);
 
 		List<Object[]> objetos = query.list();
 		Collection<ComoFicouSabendoVaga> comoFicouSabendoVagas = new ArrayList<ComoFicouSabendoVaga>();

@@ -11,5 +11,5 @@ public interface ComoFicouSabendoVagaManager extends GenericManager<ComoFicouSab
 
 	Collection<ComoFicouSabendoVaga> findAllSemOutros();
 
-	Collection<ComoFicouSabendoVaga> findCandidatosComoFicouSabendoVaga(Date dataIni, Date dataFim);
+	Collection<ComoFicouSabendoVaga> findCandidatosComoFicouSabendoVaga(Date dataIni, Date dataFim, Long empresaId);
 }

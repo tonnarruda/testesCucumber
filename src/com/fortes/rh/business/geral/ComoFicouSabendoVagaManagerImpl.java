@@ -16,7 +16,7 @@ public class ComoFicouSabendoVagaManagerImpl extends GenericManagerImpl<ComoFico
 		return getDao().findAllSemOutros();
 	}
 
-	public Collection<ComoFicouSabendoVaga> findCandidatosComoFicouSabendoVaga(Date dataIni, Date dataFim) {
-		return getDao().findCandidatosComoFicouSabendoVaga(dataIni, dataFim, null);
+	public Collection<ComoFicouSabendoVaga> findCandidatosComoFicouSabendoVaga(Date dataIni, Date dataFim, Long empresaId) {
+		return getDao().findCandidatosComoFicouSabendoVaga(dataIni, dataFim, empresaId);
 	}
 }

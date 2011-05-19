@@ -3,8 +3,11 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.geral.ComoFicouSabendoVagaManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.RelatorioUtil;
@@ -17,7 +20,8 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 	private ComoFicouSabendoVagaManager comoFicouSabendoVagaManager;
 	private ComoFicouSabendoVaga comoFicouSabendoVaga;
 	private Collection<ComoFicouSabendoVaga> comoFicouSabendoVagas;
-	private Collection<Candidato> dataSource;
+	private Collection<ComoFicouSabendoVaga> dataSource;
+	private Map<String,Object> parametros = new HashMap<String, Object>();
 	
 	private Date dataIni;
 	private Date dataFim;
@@ -94,14 +98,14 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 	
 	public String imprimirRelatorioComoFicouSabendoVaga()
     {
-//    	dataSource = comoFicouSabendoVagaManager.findCandidatosComoFicouSabendoVaga(dataIni, dataFim);
-
-//   	   	String titulo = "Avaliação";
-//   	   	String filtro = avaliacao.getTitulo();
-//   	   	
-//    	parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
-//    	parametros.put("FORMA_ECONOMICA", imprimirFormaEconomica );
-    	
+		try{
+			dataSource = comoFicouSabendoVagaManager.findCandidatosComoFicouSabendoVaga(dataIni, dataFim, getEmpresaSistema().getId());
+	    	parametros = RelatorioUtil.getParametrosRelatorio("Como Ficou Sabendo da Vaga", getEmpresaSistema(), null);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Erro ao gerar relatorio.");
+		}
     	return Action.SUCCESS;
     }
 	
@@ -126,11 +130,6 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 	{
 		return comoFicouSabendoVagas;
 	}
-
-	public Collection<Candidato> getDataSource() {
-		return dataSource;
-	}
-
 	public Date getDataIni() {
 		return dataIni;
 	}
@@ -145,5 +144,9 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 
 	public void setDataFim(Date dataFim) {
 		this.dataFim = dataFim;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }
