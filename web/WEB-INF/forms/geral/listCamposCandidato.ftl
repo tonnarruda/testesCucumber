@@ -247,7 +247,7 @@
 			<tr>
 				<td>Como ficou sabendo da vaga</td>
 				<td><input type="checkbox" value="comoFicouSabendoVaga" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="comoFicouSabendoVaga" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="comoFicouSabendoVaga" name="camposCandidatoObrigatorios"  disabled  class="desabilitado"/></td>
 			</tr>
 			<tr>
 				<td>Senha</td>
