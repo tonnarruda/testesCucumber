@@ -11,11 +11,11 @@ public class CamposExtrasManagerImpl extends GenericManagerImpl<CamposExtras, Ca
 {
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	
-	public CamposExtras update(CamposExtras camposExtras, Long camposExtrasId)
+	public CamposExtras update(CamposExtras camposExtras, Long camposExtrasId, Long empresaId)
 	{
 		if(camposExtrasId != null)
 		{
-			Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
+			Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo", "empresa.id"}, new Object[]{true, empresaId}, new String[]{"ordem"});
 			CamposExtras camposExtrasTemp = findById(camposExtrasId);
 
 			for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras)

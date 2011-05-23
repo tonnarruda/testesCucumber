@@ -87,10 +87,16 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa(null);
     	
     	empresaDao.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
-    	assertEquals(0, empresaManager.selecionaEmpresa(empresa, 1L, "ROLE_REL_ANIVERSARIANTES").length);
+    	assertEquals(0, empresaManager.selecionaEmpresa(empresa, 2L, "ROLE_REL_ANIVERSARIANTES").length);
+    	
+    	Collection<Empresa> empresas = new ArrayList<Empresa>();
+    	empresas.add(empresa);
+    	empresaDao.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(empresas));
+    	assertEquals(1, empresaManager.selecionaEmpresa(empresa, 1L, "ROLE_REL_ANIVERSARIANTES").length);
     	
     	empresa.setId(1L);
-    	assertEquals(1, empresaManager.selecionaEmpresa(empresa, 1L, "ROLE_REL_ANIVERSARIANTES").length);
+    	assertEquals(1, empresaManager.selecionaEmpresa(empresa, 2L, "ROLE_REL_ANIVERSARIANTES").length);
+
     }
     
     public void testCriarEmpresa() throws Exception

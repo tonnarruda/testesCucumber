@@ -307,7 +307,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtra) 
 	{
-		if(empresa.getId() == null || empresa.getId().equals(-1L))
+		if(empresa.getId() == null || empresa.getId().equals(-1L))//quanto for para aplicar para todas as empresa
 			configuracaoCampoExtraManager.removeAllNotModelo();
 			
 		for (ConfiguracaoCampoExtra campoExtra : configuracaoCampoExtras)
@@ -320,7 +320,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			
 			if(empresa.getId() == null || empresa.getId().equals(-1L))
 			{
-				Collection<Empresa> empresas = findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_CAMPO_EXTRA");
+				Collection<Empresa> empresas = getDao().findTodasEmpresas();
 				for (Empresa empresaTmp : empresas) 
 				{
 					ConfiguracaoCampoExtra campoExtraTmp = new ConfiguracaoCampoExtra();
@@ -339,5 +339,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
+	}
+
+	public Collection<Empresa> findTodasEmpresas() {
+		return getDao().findTodasEmpresas();
 	}
 }

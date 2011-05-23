@@ -99,7 +99,7 @@ public class CamposExtrasManagerTest extends MockObjectTestCase
 		camposExtrasDao.expects(once()).method("findById").with(ANYTHING).will(returnValue(camposExtrasBanco));
 		camposExtrasDao.expects(once()).method("update").with(ANYTHING);
 		
-		CamposExtras camposExtrasTemp = camposExtrasManager.update(camposExtras, 2L);
+		CamposExtras camposExtrasTemp = camposExtrasManager.update(camposExtras, 2L, null);
 		assertEquals("t1", camposExtrasTemp.getTexto1());
 		assertEquals("t2", camposExtrasTemp.getTexto2());
 		assertEquals("t3", camposExtrasTemp.getTexto3());
@@ -118,6 +118,6 @@ public class CamposExtrasManagerTest extends MockObjectTestCase
 		assertEquals(new Integer(1), camposExtrasTemp.getNumero1());
 		
 		camposExtrasDao.expects(once()).method("save").with(ANYTHING);
-		camposExtrasTemp = camposExtrasManager.update(camposExtras, null);
+		camposExtrasTemp = camposExtrasManager.update(camposExtras, null, null);
 	}
 }

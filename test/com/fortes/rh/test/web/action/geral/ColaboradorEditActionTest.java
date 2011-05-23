@@ -158,7 +158,9 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 		configuracaoCampoExtras.add(configuracaoCampoExtra);
 	
-		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		empresa.setCampoExtraColaborador(true);
+		action.setEmpresaSistema(empresa);
 		
 		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
 		
@@ -174,8 +176,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		experienciaManager.expects(once()).method("findByColaborador").with(ANYTHING);
 		formacaoManager.expects(once()).method("findByColaborador").with(ANYTHING);
 
-		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").will(returnValue(parametrosDoSistema));
-		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativo"}),eq(new Object[]{true}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
+		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativo", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
 		camposExtrasManager.expects(once()).method("findById").with(eq(colaborador.getCamposExtras().getId())).will(returnValue(camposExtras));
 		
 		assertEquals("success", action.prepareUpdateInfoPessoais());
@@ -184,6 +185,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	public void testPreparePerformanceFuncional()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setCampoExtraColaborador(true);
 		action.setEmpresaSistema(empresa);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
@@ -245,11 +247,8 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 		configuracaoCampoExtras.add(configuracaoCampoExtra);
 	
-		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-		
-		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").will(returnValue(parametrosDoSistema));
 		colaboradorManager.expects(once()).method("getFoto").with(eq(colaborador.getId())).will(returnValue(null));
-		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativo"}),eq(new Object[]{true}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
+		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativo", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
 		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
 		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoByColaborador").with(eq(colaborador.getId()), eq(false)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoByColaborador").with(eq(colaborador.getId()), eq(true)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
