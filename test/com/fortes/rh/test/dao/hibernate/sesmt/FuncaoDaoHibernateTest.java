@@ -227,10 +227,24 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 		colaboradorDao.save(colaborador2);
 		
 		HistoricoColaborador historicoColaborador2Fora = criaHistoricoColaborador(colaborador2, tresMesesAntes.getTime(), null, null, estabelecimento1);
+
+		Colaborador colaborador3 = ColaboradorFactory.getEntity();
+		colaborador3.setNome("teste3");
+		colaborador3.setDataDesligamento(hoje);
+		colaboradorDao.save(colaborador3);
+		
+		HistoricoColaborador historicoColaborador3DentroComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador3, tresMesesAntes.getTime(), null, null, estabelecimento1);
+
+		Colaborador colaborador4 = ColaboradorFactory.getEntity();
+		colaborador4.setNome("teste3");
+		colaborador4.setDataDesligamento(tresMesesAntes.getTime());
+		colaboradorDao.save(colaborador4);
+		
+		HistoricoColaborador historicoColaborador4ForaComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador4, tresMesesAntes.getTime(), null, null, estabelecimento1);
 		
 		Collection<String> nomes = funcaoDao.findColaboradoresSemFuncao(hoje, estabelecimento1.getId());
 		
-		assertEquals(1, nomes.size());
+		assertEquals(2, nomes.size());
 	}
 	
 	public void testFindFuncaoAtualDosColaboradores()

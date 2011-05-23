@@ -174,6 +174,7 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		hql.append("                from HistoricoColaborador as hc2 ");
 		hql.append("                where hc2.colaborador.id = co.id ");
 		hql.append("                and hc2.data <= :data and hc2.status = :status ) ");
+		hql.append("and (co.dataDesligamento >= :data or co.dataDesligamento is null)  ");
 		hql.append("group by co.nome ");
 		
 		Query query = getSession().createQuery(hql.toString());
