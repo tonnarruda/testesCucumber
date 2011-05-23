@@ -21,6 +21,9 @@
     <property name="ocorrenciaManager">
       <ref bean="ocorrenciaManager" />
     </property>
+    <property name="configuracaoCampoExtraManager">
+      <ref bean="configuracaoCampoExtraManager" />
+    </property>
   </bean>
   <bean id="empresaManager" parent="parentManager">
     <property name="proxyInterfaces">

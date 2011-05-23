@@ -50,8 +50,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String acVersaoWebServiceCompativel;
     @Lob
     private String modulos;
-    private boolean campoExtraColaborador;
-    
 
     // dias antes da pesquisa em que será enviado lembrete para quem ainda não respondeu
     @Column(length=20)
@@ -279,12 +277,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setEmailDoSuporteTecnico(String emailDoSuporteTecnico) {
 		this.emailDoSuporteTecnico = emailDoSuporteTecnico;
 	}
-	public boolean isCampoExtraColaborador() {
-		return campoExtraColaborador;
-	}
-	public void setCampoExtraColaborador(boolean campoExtraColaborador) {
-		this.campoExtraColaborador = campoExtraColaborador;
-	}
+	
 	public String getCodEmpresaSuporte() {
 		return codEmpresaSuporte;
 	}

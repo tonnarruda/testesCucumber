@@ -70,7 +70,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		
 		empresa = getEmpresaSistema();
 		
-		habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
+		habilitaCampoExtra = empresa.isCampoExtraColaborador();
 		if(habilitaCampoExtra)
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
 		

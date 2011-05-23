@@ -22,12 +22,15 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.dicionario.TipoEntidade;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TEmpresa;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.xwork.ActionContext;
 
 public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> implements EmpresaManager
 {
@@ -38,6 +41,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private CargoManager cargoManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private EpiManager epiManager;
+	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -251,7 +255,10 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String... roles)
 	{
-		return getDao().findByUsuarioPermissao(usuarioId, roles);
+		if(usuarioId.equals(1L))
+			return getDao().findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"}); 
+		else
+			return getDao().findByUsuarioPermissao(usuarioId, roles);
 	}
 
 	public Long[] selecionaEmpresa(Empresa empresa, Long usuarioId, String role)
@@ -296,5 +303,41 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			return null;
 		else
 			return empresaId;
+	}
+
+	public void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtra) 
+	{
+		if(empresa.getId() == null || empresa.getId().equals(-1L))
+			configuracaoCampoExtraManager.removeAllNotModelo();
+			
+		for (ConfiguracaoCampoExtra campoExtra : configuracaoCampoExtras)
+		{
+			if(campoExtra.getEmpresa().getId() == null)
+			{
+				campoExtra.setEmpresa(empresa);
+				campoExtra.setId(null);
+			}
+			
+			if(empresa.getId() == null || empresa.getId().equals(-1L))
+			{
+				Collection<Empresa> empresas = findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_CAMPO_EXTRA");
+				for (Empresa empresaTmp : empresas) 
+				{
+					ConfiguracaoCampoExtra campoExtraTmp = new ConfiguracaoCampoExtra();
+					campoExtraTmp = (ConfiguracaoCampoExtra) campoExtra.clone();
+					campoExtraTmp.setEmpresa(empresaTmp);
+					campoExtraTmp.setId(null);
+					configuracaoCampoExtraManager.save(campoExtraTmp);
+				}
+			}
+			else
+				configuracaoCampoExtraManager.update(campoExtra);
+		}
+
+		getDao().updateCampoExtra(habilitaCampoExtra, empresa.getId());
+	}
+
+	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
+		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
 	}
 }

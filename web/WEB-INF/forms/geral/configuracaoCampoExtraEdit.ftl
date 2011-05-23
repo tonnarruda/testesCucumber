@@ -80,6 +80,14 @@
 	
 	function validaDinamico()
 	{
+		if($('#empresa').val() == "")
+			newConfirm('Essas configurações serão aplicadas para dodas as empresas que você tem permissão de acesso!', function(){submtDinamico()});
+		else			
+			submtDinamico();
+	}
+
+	function submtDinamico()
+	{
 		$("input[type='text']").css("background-color", "#FFF");
 		validaFormulario('form', valida);
 	}
@@ -93,6 +101,8 @@
 		<@ww.form name="form" action="update.action" onsubmit="${validarCampos}" method="POST">
 			<#assign i = 0 />
 			
+			<@ww.select label="Aplicar na empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" headerKey="" headerValue="Todas" onchange="window.location='?empresa.id=' + this.value"/>
+			
 			<@ww.checkbox label="Habilitar campos extras no cadastro de colaboradores" name="habilitaCampoExtra" labelPosition="left"/><br>
 			
 			<@display.table name="configuracaoCampoExtras" id="configuracaoCampoExtra" class="dados">
@@ -101,17 +111,18 @@
 					<@ww.checkbox theme="simple" id="ativo${i}" name="configuracaoCampoExtras[${i}].ativo" onchange="habilitaTexto(this, ${i});" labelPosition="left"/>
 				</@display.column>
 							
-				<@display.column title="Descrição" style="vertical-align:top; text-align: center; width:120px;">
+				<@display.column title="Descrição" style="vertical-align:middle; width:120px;">
 					${configuracaoCampoExtra.descricao}
 				</@display.column>
 				
 				<@display.column title="Titulo" style="text-align: center;width:400px;">
 					<@ww.textfield theme="simple" id="titulo${i}" name="configuracaoCampoExtras[${i}].titulo" maxLength="60" cssStyle="width: 500px;border:1px solid #7E9DB9;"/>
 				</@display.column>
-				<@display.column title="Ordem" style="vertical-align:top; text-align: center; width:30px;">
+				<@display.column title="Ordem" style="vertical-align:middle; text-align: center; width:30px;">
 					<@ww.select id="ordem${i}" name="configuracaoCampoExtras[${i}].ordem" list="ordens"/>
 
 					<@ww.hidden name="configuracaoCampoExtras[${i}].id" />				
+					<@ww.hidden name="configuracaoCampoExtras[${i}].empresa.id" />				
 					<@ww.hidden name="configuracaoCampoExtras[${i}].descricao" />				
 					<@ww.hidden name="configuracaoCampoExtras[${i}].nome" />				
 					<@ww.hidden name="configuracaoCampoExtras[${i}].tipo" />				

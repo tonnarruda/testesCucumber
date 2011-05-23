@@ -159,7 +159,6 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		configuracaoCampoExtras.add(configuracaoCampoExtra);
 	
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-		parametrosDoSistema.setCampoExtraColaborador(true);
 		
 		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
 		
@@ -247,7 +246,6 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		configuracaoCampoExtras.add(configuracaoCampoExtra);
 	
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-		parametrosDoSistema.setCampoExtraColaborador(true);
 		
 		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").will(returnValue(parametrosDoSistema));
 		colaboradorManager.expects(once()).method("getFoto").with(eq(colaborador.getId())).will(returnValue(null));

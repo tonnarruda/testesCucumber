@@ -202,7 +202,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		
 		empresa = getEmpresaSistema();
 		
-		habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
+		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 		
 		configuracaoRelatorioDinamico = configuracaoRelatorioDinamicoManager.findByUsuario(usuarioId);
 		if(configuracaoRelatorioDinamico == null)

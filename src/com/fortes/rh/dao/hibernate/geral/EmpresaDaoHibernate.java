@@ -110,6 +110,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
 		p.add(Projections.property("e.acIntegra"), "acIntegra");
+		p.add(Projections.property("e.campoExtraColaborador"), "campoExtraColaborador");
 		p.add(Projections.property("e.mensagemModuloExterno"), "mensagemModuloExterno");
 		criteria.setProjection(p);
 
@@ -139,9 +140,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 	        Disjunction disjunction = Expression.disjunction();
 
 	        for (String role : roles) 
-	        {
 	        	disjunction.add(Expression.eq("papel.codigo", role));
-			}
 	        
 	        criteria.add(disjunction);
 		}
@@ -170,6 +169,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from cargo_conhecimento where cargo_id in (select id from cargo where empresa_id = " + id + ");",
 				"delete from candidato_cargo where cargos_id in (select id from cargo where empresa_id = " + id + ");",
 				"delete from cargo where empresa_id = " + id + ";",
+				"delete from ConfiguracaoCampoExtra where empresa_id = " + id + ";",
 				"delete from conhecimento_areaorganizacional where conhecimentos_id in (select id from conhecimento where empresa_id = " + id + ");",
 				"delete from conhecimento where empresa_id = " + id + ";",
 				"delete from epihistorico where epi_id in (select id from epi where empresa_id = " + id + ");",
@@ -286,6 +286,22 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 							" and table_catalog='fortesrh' group by table_name;";
 
 		return execTrigger;
+	}
+
+	public void updateCampoExtra(boolean habilitaCampoExtra, Long id) 
+	{
+		String whereId = " where e.id = :empresaId ";
+		if(id == null || id.equals(-1L))
+			whereId = "";
+		
+		String hql = "update Empresa e set e.campoExtraColaborador = :campoExtraColaborador " + whereId;
+		Query query = getSession().createQuery(hql);
+		query.setBoolean("campoExtraColaborador", habilitaCampoExtra);
+
+		if(id != null && !id.equals(-1L))
+			query.setLong("empresaId", id);
+		
+		query.executeUpdate();
 	}
 	
 	
