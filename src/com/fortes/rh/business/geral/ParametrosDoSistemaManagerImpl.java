@@ -124,11 +124,6 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 		return param.getEmailDoSuporteTecnico();
 	}
 
-	public void updateCampoExtra(boolean campoExtraColaborador) {
-		getDao().updateCampoExtra(campoExtraColaborador);
-		
-	}
-
 	public Boolean isIdiomaCorreto() 
 	{
 		Locale pt_BR = new Locale("pt", "BR");

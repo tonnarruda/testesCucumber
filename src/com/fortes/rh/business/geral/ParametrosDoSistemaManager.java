@@ -21,6 +21,5 @@ public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoS
 	public void disablePapeisIds();
 	public String getUrlDaAplicacao();
 	public String getEmailDoSuporteTecnico();
-	public void updateCampoExtra(boolean campoExtraColaborador);
 	public Boolean isIdiomaCorreto();
 }

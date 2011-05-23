@@ -67,7 +67,8 @@ public class Empresa extends AbstractModel implements Serializable
 	private Estado uf;
 	@ManyToOne
 	private Cidade cidade;
-
+	private boolean campoExtraColaborador;
+	
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
 	{
@@ -324,5 +325,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setGrupoAC(String grupoAC) {
 		this.grupoAC = grupoAC;
+	}
+
+	public boolean isCampoExtraColaborador() {
+		return campoExtraColaborador;
+	}
+
+	public void setCampoExtraColaborador(boolean campoExtraColaborador) {
+		this.campoExtraColaborador = campoExtraColaborador;
 	}
 }

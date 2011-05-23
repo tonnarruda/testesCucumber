@@ -29,7 +29,6 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.acVersaoWebServiceCompativel"), "acVersaoWebServiceCompativel");
 		p.add(Projections.property("ps.upperCase"), "upperCase");
 		p.add(Projections.property("ps.atualizaPapeisIdsAPartirDe"), "atualizaPapeisIdsAPartirDe");
-		p.add(Projections.property("ps.campoExtraColaborador"), "campoExtraColaborador");
 		p.add(Projections.property("ps.codEmpresaSuporte"), "codEmpresaSuporte");
 		p.add(Projections.property("ps.codClienteSuporte"), "codClienteSuporte");
 		p.add(Projections.property("ps.camposCandidatoVisivel"), "camposCandidatoVisivel");
@@ -75,14 +74,6 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		String hql = "update ParametrosDoSistema p set p.atualizaPapeisIdsAPartirDe = null";
 		Query query = getSession().createQuery(hql);
 		
-		query.executeUpdate();
-	}
-
-	public void updateCampoExtra(boolean campoExtraColaborador) {
-		
-		String hql = "update ParametrosDoSistema p set p.campoExtraColaborador = :campoExtraColaborador";
-		Query query = getSession().createQuery(hql);
-		query.setBoolean("campoExtraColaborador", campoExtraColaborador);
 		query.executeUpdate();
 	}
 }

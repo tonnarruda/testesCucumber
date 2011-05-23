@@ -8,6 +8,7 @@ import java.util.Collection;
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.web.tags.CheckBox;
@@ -33,4 +34,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	void removeEmpresaPadrao(long id);
 	Collection<Empresa> findEmailsEmpresa();
 	Long ajustaCombo(Long empresaId, Long empresaDoSistemaId);
+	void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtra);
 }

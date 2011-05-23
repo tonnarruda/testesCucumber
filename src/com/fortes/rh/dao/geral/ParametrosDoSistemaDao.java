@@ -9,5 +9,4 @@ public interface ParametrosDoSistemaDao extends GenericDao<ParametrosDoSistema>
 	String findModulos(Long id);
 	void updateModulos(String papeis);
 	void disablePapeisIds();
-	void updateCampoExtra(boolean campoExtraColaborador);
 }

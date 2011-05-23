@@ -6,8 +6,11 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.ConfiguracaoCampoExtraDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoCampoExtraFactory;
 
 import dbunit.DbUnitManager;
@@ -15,6 +18,7 @@ import dbunit.DbUnitManager;
 public class ConfiguracaoCampoExtraDaoHibernateTest extends GenericDaoHibernateTest<ConfiguracaoCampoExtra>
 {
 	private ConfiguracaoCampoExtraDao configuracaoCampoExtraDao;
+	private EmpresaDao empresaDao;
 	
 	private static final String dataSet = "test/dbunit/dataset/ConfiguracaoCampoExtraDaoHibernateTest.xml";
 	
@@ -47,9 +51,29 @@ public class ConfiguracaoCampoExtraDaoHibernateTest extends GenericDaoHibernateT
 		// dado que
 		dadoQueJaExistemTresRegistrosCadastradosNoBanco();
 		// quando
-		Collection<ConfiguracaoCampoExtra> campos = configuracaoCampoExtraDao.findAllSelect();
+		Collection<ConfiguracaoCampoExtra> campos = configuracaoCampoExtraDao.findAllSelect(null);
 		// entao
 		assertEquals("total de registros encontrados", 3, campos.size());
+	}
+	
+	public void testFindDistinctTodosIguais() 
+	{
+		Collection<ConfiguracaoCampoExtra> campos = configuracaoCampoExtraDao.findDistinct();
+		assertEquals(32, campos.size());
+	}
+
+	public void testFindDistinctComEmpresaDiferente() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		ConfiguracaoCampoExtra configuracaoCampoExtra = ConfiguracaoCampoExtraFactory.getEntity();
+		configuracaoCampoExtra.setTitulo("babau");
+		configuracaoCampoExtra.setEmpresa(empresa);
+		configuracaoCampoExtraDao.save(configuracaoCampoExtra);
+		
+		Collection<ConfiguracaoCampoExtra> campos = configuracaoCampoExtraDao.findDistinct();
+		assertEquals(33, campos.size());
 	}
 
 	private void dadoQueJaExistemTresRegistrosCadastradosNoBanco() {
@@ -71,6 +95,10 @@ public class ConfiguracaoCampoExtraDaoHibernateTest extends GenericDaoHibernateT
 	public void setConfiguracaoCampoExtraDao(ConfiguracaoCampoExtraDao configuracaoCampoExtraDao)
 	{
 		this.configuracaoCampoExtraDao = configuracaoCampoExtraDao;
+	}
+
+	public void setEmpresaDao(EmpresaDao empresaDao) {
+		this.empresaDao = empresaDao;
 	}
 	
 }

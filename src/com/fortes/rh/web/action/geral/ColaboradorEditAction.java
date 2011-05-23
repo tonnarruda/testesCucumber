@@ -227,7 +227,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			addActionError(e.getMessage());
 		}
 
-		habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
+		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 		if(habilitaCampoExtra)
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
 			
@@ -310,7 +310,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			cidades = cidadeManager.find(new String[]{"uf.id"}, new Object[]{colaborador.getEndereco().getUf().getId()}, new String[]{"nome"});
 			estados = estadoManager.findAll(new String[]{"sigla"});
 			
-			habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
+			habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 			if(habilitaCampoExtra)
 				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
 			
@@ -726,7 +726,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 			colaborador.setFoto(colaboradorManager.getFoto(colaborador.getId()));
-			habilitaCampoExtra = parametrosDoSistemaManager.findByIdProjection(1L).isCampoExtraColaborador();
+			habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 			
 			if(habilitaCampoExtra)
 				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});

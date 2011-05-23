@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
@@ -11,18 +13,40 @@ import com.fortes.model.AbstractModel;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="configuracaoCampoExtra_sequence", allocationSize=1)
-public class ConfiguracaoCampoExtra extends AbstractModel implements Serializable
+public class ConfiguracaoCampoExtra extends AbstractModel implements Serializable, Cloneable
 {
-	private boolean ativo;
+	private Boolean ativo = false;
 	@Column(length=15)
 	private String nome;
 	@Column(length=60)
 	private String titulo;
-	private int ordem;
-	private int posicao;
+	private Integer ordem = 0;
+	private Integer posicao = 0;
 	private String tipo;
 	@Column(length=30)
 	private String descricao;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Empresa empresa;
+
+	@Override
+	public Object clone()
+	{
+	   try
+	   {
+	      return super.clone();
+	   }
+	   catch (CloneNotSupportedException e)
+	   {
+	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
+	   }
+	}
+
+	public void setEmpresaId(Long empresaId)
+	{
+		if(empresa == null)
+			empresa = new Empresa();
+		empresa.setId(empresaId);
+	}
 	
 	public int getSize()
 	{
@@ -32,24 +56,14 @@ public class ConfiguracaoCampoExtra extends AbstractModel implements Serializabl
 			return 50;// data, valor ou numero
 	}
 	
-	public boolean isAtivo() {
-		return ativo;
-	}
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
+
 	public String getTitulo() {
 		return titulo;
 	}
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-	public int getOrdem() {
-		return ordem;
-	}
-	public void setOrdem(int ordem) {
-		this.ordem = ordem;
-	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -68,10 +82,42 @@ public class ConfiguracaoCampoExtra extends AbstractModel implements Serializabl
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public int getPosicao() {
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+
+	public Integer getOrdem() {
+		return ordem;
+	}
+
+
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
+	}
+
+
+	public Integer getPosicao() {
 		return posicao;
 	}
-	public void setPosicao(int posicao) {
+
+
+	public void setPosicao(Integer posicao) {
 		this.posicao = posicao;
 	}
 
