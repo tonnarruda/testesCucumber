@@ -84,7 +84,7 @@
 			<#assign titleAceito="Colaborador já promovido"/>
 		</#if>
 		
-		<#if candidatoSolicitacao?exists && candidatoSolicitacao.status != 'I'>
+		<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C')>
 			<#assign classe="contratado"/>
 		</#if>
 		
