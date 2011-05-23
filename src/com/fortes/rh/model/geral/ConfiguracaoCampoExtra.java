@@ -15,7 +15,8 @@ import com.fortes.model.AbstractModel;
 @SequenceGenerator(name="sequence", sequenceName="configuracaoCampoExtra_sequence", allocationSize=1)
 public class ConfiguracaoCampoExtra extends AbstractModel implements Serializable, Cloneable
 {
-	private Boolean ativo = false;
+	private Boolean ativoColaborador = false;
+	private Boolean ativoCandidato = false;
 	@Column(length=15)
 	private String nome;
 	@Column(length=60)
@@ -92,13 +93,13 @@ public class ConfiguracaoCampoExtra extends AbstractModel implements Serializabl
 	}
 
 
-	public Boolean getAtivo() {
-		return ativo;
+	public Boolean getAtivoColaborador() {
+		return ativoColaborador;
 	}
 
 
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
+	public void setAtivoColaborador(Boolean ativoColaborador) {
+		this.ativoColaborador = ativoColaborador;
 	}
 
 
@@ -119,6 +120,14 @@ public class ConfiguracaoCampoExtra extends AbstractModel implements Serializabl
 
 	public void setPosicao(Integer posicao) {
 		this.posicao = posicao;
+	}
+
+	public Boolean getAtivoCandidato() {
+		return ativoCandidato;
+	}
+
+	public void setAtivoCandidato(Boolean ativoCandidato) {
+		this.ativoCandidato = ativoCandidato;
 	}
 
 }

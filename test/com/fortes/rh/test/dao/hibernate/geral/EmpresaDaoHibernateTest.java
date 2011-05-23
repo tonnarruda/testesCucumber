@@ -108,11 +108,15 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		empresa.setCampoExtraColaborador(true);
 		empresaDao.save(empresa);
 		
-		empresaDao.updateCampoExtra(false, empresa.getId());
-		assertEquals(false, empresaDao.findByIdProjection(empresa.getId()).isCampoExtraColaborador());
+		empresaDao.updateCampoExtra(empresa.getId(), false, true);
+		Empresa emp = empresaDao.findByIdProjection(empresa.getId());
+		assertEquals(false, emp.isCampoExtraColaborador());
+		assertEquals(true, emp.isCampoExtraCandidato());
 
-		empresaDao.updateCampoExtra(true, empresa.getId());
-		assertEquals(true, empresaDao.findByIdProjection(empresa.getId()).isCampoExtraColaborador());
+		empresaDao.updateCampoExtra(empresa.getId(), true, false);
+		emp = empresaDao.findByIdProjection(empresa.getId());
+		assertEquals(true, emp.isCampoExtraColaborador());
+		assertEquals(false, emp.isCampoExtraCandidato());
 	}
 	
 	public void testVerifyExistsCnpj()

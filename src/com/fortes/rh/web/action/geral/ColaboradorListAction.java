@@ -225,7 +225,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		
 		if(habilitaCampoExtra)
 		{
-			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
 			
 			for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras)
 			{

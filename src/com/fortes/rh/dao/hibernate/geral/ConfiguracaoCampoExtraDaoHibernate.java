@@ -23,7 +23,7 @@ public class ConfiguracaoCampoExtraDaoHibernate extends GenericDaoHibernate<Conf
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
-		p.add(Projections.property("c.ativo"), "ativo");
+		p.add(Projections.property("c.ativoColaborador"), "ativoColaborador");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.descricao"), "descricao");
 		p.add(Projections.property("c.titulo"), "titulo");
@@ -51,7 +51,7 @@ public class ConfiguracaoCampoExtraDaoHibernate extends GenericDaoHibernate<Conf
 		criteria.createCriteria("c.empresa", "e", Criteria.FULL_JOIN);
 		ProjectionList p = Projections.projectionList().create();
 
-		p.add(Projections.property("c.ativo"), "ativo");
+		p.add(Projections.property("c.ativoColaborador"), "ativoColaborador");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.descricao"), "descricao");
 		p.add(Projections.property("c.titulo"), "titulo");

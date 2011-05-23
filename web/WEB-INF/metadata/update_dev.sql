@@ -46,3 +46,7 @@ ALTER TABLE ConfiguracaoCampoExtra ALTER COLUMN id drop DEFAULT;--.go
 
 INSERT INTO extintorInspecaoItem (id, descricao) VALUES (11, 'Outro'); --.go
 alter table extintorInspecao add column outroMotivo character(50);--.go
+
+ALTER TABLE ConfiguracaoCampoExtra RENAME COLUMN ativo TO ativoColaborador;--.go
+ALTER TABLE ConfiguracaoCampoExtra ADD COLUMN ativoCandidato boolean default false;--.go
+ALTER TABLE empresa ADD COLUMN campoextracandidato boolean default false;--.go

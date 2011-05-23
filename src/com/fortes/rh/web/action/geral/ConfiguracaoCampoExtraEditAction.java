@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
@@ -22,14 +21,19 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 	
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras;
 	private int[] ordens = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,16};
-	private boolean habilitaCampoExtra;
+	private boolean habilitaCampoExtraColaborador;
+	private boolean habilitaCampoExtraCandidato;
 	private Collection<Empresa> empresas;
 	private Empresa empresa;
 		
 	public String prepareUpdate() throws Exception
 	{
 		Long empresaId = getEmpresaSistema().getId();
-		habilitaCampoExtra = empresaManager.findByIdProjection(getEmpresaSistema().getId()).isCampoExtraColaborador();//tem que pegar do banco, pois pode ter mudado
+		
+		Empresa emp = empresaManager.findByIdProjection(empresaId);//tem que pegar do banco, pois pode ter mudado
+		habilitaCampoExtraColaborador = emp.isCampoExtraColaborador();
+		habilitaCampoExtraCandidato = emp.isCampoExtraCandidato();
+		
 		boolean atualizaTodas = configuracaoCampoExtraManager.atualizaTodas();
 		
 		if(empresa == null)//veio do menu
@@ -47,13 +51,16 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 				if(!atualizaTodas)
 				{
 					empresaId = -1L;
-					habilitaCampoExtra = false;
+					habilitaCampoExtraColaborador = false;
+					habilitaCampoExtraCandidato = false;
 				}
 			}
 			else
 			{
 				empresaId = empresa.getId();
-				habilitaCampoExtra = empresaManager.findById(empresaId).isCampoExtraColaborador();
+				emp = empresaManager.findByIdProjection(empresaId);
+				habilitaCampoExtraColaborador = emp.isCampoExtraColaborador();
+				habilitaCampoExtraCandidato = emp.isCampoExtraCandidato();
 			}
 		}
 		
@@ -69,8 +76,8 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		try {
-			empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtra);
-			SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(empresa.getId()));
+			empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+			SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(getEmpresaSistema().getId()));
 
 			addActionMessage("Configurações gravadas com sucesso!");
 			return Action.SUCCESS;
@@ -106,12 +113,12 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 		this.ordens = ordens;
 	}
 
-	public boolean isHabilitaCampoExtra() {
-		return habilitaCampoExtra;
+	public boolean isHabilitaCampoExtraColaborador() {
+		return habilitaCampoExtraColaborador;
 	}
 
-	public void setHabilitaCampoExtra(boolean habilitaCampoExtra) {
-		this.habilitaCampoExtra = habilitaCampoExtra;
+	public void setHabilitaCampoExtraColaborador(boolean habilitaCampoExtra) {
+		this.habilitaCampoExtraColaborador = habilitaCampoExtra;
 	}
 
 	public Collection<Empresa> getEmpresas() {
@@ -128,5 +135,13 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public boolean isHabilitaCampoExtraCandidato() {
+		return habilitaCampoExtraCandidato;
+	}
+
+	public void setHabilitaCampoExtraCandidato(boolean habilitaCampoExtraCandidato) {
+		this.habilitaCampoExtraCandidato = habilitaCampoExtraCandidato;
 	}
 }

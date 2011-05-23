@@ -12,70 +12,24 @@
 	<#assign validarCampos="return validaDinamico();"/>
 	
 <script type="text/javascript">
-	var i = 0;
-	var desabilita = "true"
 	
-	var posArrayValida = 0;
-	var valida = new Array();
+	function setDisabled($tr)
+	{
+		var desabilita = $tr.find('input:checkbox:checked').length == 0;
+		$tr.find('input:text').attr("disabled", desabilita);
+		$tr.find('select').attr("disabled", desabilita);
+	}
 	
 	$(document).ready(function($)
 	{
-		$("input:checkbox[id^='ativo']").each(function()
-		{
-				var titulo = $("#titulo" + i);
-				var ordem = $("#ordem" + i);
-				 	
-				if($(this).is(":checked") == false)
-				{
-					titulo.attr("disabled", true);
-					ordem.attr("disabled", true);
-				}
-				else
-				{
-					valida[posArrayValida] = "titulo" + i;
-					posArrayValida = posArrayValida + 1;
-				}
-
-				i = i + 1;
-			});
+		$('#configuracaoCampoExtra tbody tr').each(function(){
+			setDisabled($(this));
+		});
 	});
 	
-	
-	function habilitaTexto(checkBox, linha)
+	function habilitaTexto(checkbox)
 	{
-		var titulo = $("#titulo" + linha);
-		var ordem = $("#ordem" + linha);
-		
-		if(checkBox.checked)
-		{
-			titulo.removeAttr("disabled");
-			ordem.removeAttr("disabled");
-		}	
-		else
-		{
-			titulo.attr("disabled", true);
-			ordem.attr("disabled", true);
-		}	
-
-		ajustaValida();			
-	}
-
-	function ajustaValida()
-	{
-		var j = 0;
-		posArrayValida = 0;
-		valida = new Array();
-		
-		$("input:checkbox[id^='ativo']").each(function()
-		{
-			if($(this).is(":checked") == true)
-			{
-				valida[posArrayValida] = "titulo" + j;
-				posArrayValida = posArrayValida + 1;
-			}
-
-			j = j + 1;
-		});
+		setDisabled($(checkbox).parents('tr'));
 	}
 	
 	function validaDinamico()
@@ -89,6 +43,9 @@
 	function submtDinamico()
 	{
 		$("input[type='text']").css("background-color", "#FFF");
+		var valida = $('#configuracaoCampoExtra tbody input:text[disabled=false]').map(function (){
+    		return this.id;
+		});
 		validaFormulario('form', valida);
 	}
 </script>
@@ -103,12 +60,16 @@
 			
 			<@ww.select label="Aplicar na empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" headerKey="" headerValue="Todas" onchange="window.location='?empresa.id=' + this.value"/>
 			
-			<@ww.checkbox label="Habilitar campos extras no cadastro de colaboradores" name="habilitaCampoExtra" labelPosition="left"/><br>
+			<@ww.checkbox label="Habilitar campos extras no cadastro de Colaboradores" name="habilitaCampoExtraColaborador" labelPosition="left"/>
+			<@ww.checkbox label="Habilitar campos extras no cadastro de Candidato" name="habilitaCampoExtraCandidato" labelPosition="left"/><br>
 			
 			<@display.table name="configuracaoCampoExtras" id="configuracaoCampoExtra" class="dados">
 			
-				<@display.column title="Ativo" style="text-align: center; width:20px;">
-					<@ww.checkbox theme="simple" id="ativo${i}" name="configuracaoCampoExtras[${i}].ativo" onchange="habilitaTexto(this, ${i});" labelPosition="left"/>
+				<@display.column title="Colaborador" style="text-align: center; width:40px;">
+					<@ww.checkbox theme="simple" id="ativo${i}" name="configuracaoCampoExtras[${i}].ativoColaborador" onchange="habilitaTexto(this);" labelPosition="left"/>
+				</@display.column>
+				<@display.column title="Candidato" style="text-align: center; width:40px;">
+					<@ww.checkbox theme="simple" id="ativo${i}" name="configuracaoCampoExtras[${i}].ativoCandidato" onchange="habilitaTexto(this);" labelPosition="left"/>
 				</@display.column>
 							
 				<@display.column title="Descrição" style="vertical-align:middle; width:120px;">
