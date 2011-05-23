@@ -5,5 +5,5 @@ import com.fortes.rh.model.geral.CamposExtras;
 
 public interface CamposExtrasManager extends GenericManager<CamposExtras>
 {
-	CamposExtras update(CamposExtras camposExtras, Long camposExtrasId);
+	CamposExtras update(CamposExtras camposExtras, Long camposExtrasId, Long empresaId);
 }

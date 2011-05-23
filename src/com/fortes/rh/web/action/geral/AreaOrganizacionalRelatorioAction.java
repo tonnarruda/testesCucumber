@@ -72,7 +72,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		
 		habilitaCampoExtra = empresa.isCampoExtraColaborador();
 		if(habilitaCampoExtra)
-			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo"}, new Object[]{true}, new String[]{"ordem"});
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo", "empresa.id"}, new Object[]{true, empresa.getId()}, new String[]{"ordem"});
 		
 		return Action.SUCCESS;
 	}

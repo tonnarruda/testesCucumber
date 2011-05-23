@@ -61,7 +61,7 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 		if(configuracaoCampoExtras.isEmpty())//empresa ainda não configurada
 			configuracaoCampoExtras = configuracaoCampoExtraManager.findAllSelect(null);
 			
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_CAMPO_EXTRA");
+		empresas = empresaManager.findTodasEmpresas();
 		
 		return Action.SUCCESS;
 	}

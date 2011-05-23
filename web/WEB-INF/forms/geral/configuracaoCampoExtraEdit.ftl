@@ -81,7 +81,7 @@
 	function validaDinamico()
 	{
 		if($('#empresa').val() == "")
-			newConfirm('Essas configurações serão aplicadas para dodas as empresas que você tem permissão de acesso!', function(){submtDinamico()});
+			newConfirm('Essas configurações serão aplicadas para dodas as empresas!', function(){submtDinamico()});
 		else			
 			submtDinamico();
 	}

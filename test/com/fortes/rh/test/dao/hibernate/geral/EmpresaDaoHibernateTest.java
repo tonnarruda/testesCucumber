@@ -214,7 +214,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		
 		String qtdTabelasComEmpresa = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'empresa_id';");
 		//se esse quebrar, provavelmente tem que inserir uma linha de delete com removeEmpresaPadrao
-		assertEquals("45", qtdTabelasComEmpresa);
+		assertEquals("46", qtdTabelasComEmpresa);
 	}
 	
 	public void testFindCidade()
