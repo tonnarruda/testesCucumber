@@ -70,6 +70,8 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 	{
 		try {
 			empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtra);
+			SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(empresa.getId()));
+
 			addActionMessage("Configurações gravadas com sucesso!");
 			return Action.SUCCESS;
 		} catch (Exception e) {
