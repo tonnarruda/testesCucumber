@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
@@ -8,12 +9,18 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.sesmt.ExtintorInspecaoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
+import com.fortes.rh.business.sesmt.ExtintorManutencaoManager;
 import com.fortes.rh.model.dicionario.TipoExtintor;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
+import com.fortes.rh.model.sesmt.ExtintorInspecao;
+import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
+import com.fortes.rh.test.factory.sesmt.ExtintorInspecaoFactory;
+import com.fortes.rh.test.factory.sesmt.ExtintorManutencaoFactory;
 import com.fortes.rh.web.action.sesmt.ExtintorEditAction;
 
 public class ExtintorEditActionTest extends MockObjectTestCase
@@ -21,7 +28,9 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 	private ExtintorEditAction action;
 	private Mock manager;
 	private Mock estabelecimentoManager;
-
+	private Mock extintorInspecaoManager;
+	private Mock extintorManutencaoManager;
+	
 	protected void setUp() throws Exception
 	{
 		super.setUp();
@@ -31,6 +40,12 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 
 		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
 		action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+
+		extintorInspecaoManager = new Mock(ExtintorInspecaoManager.class);
+		action.setExtintorInspecaoManager((ExtintorInspecaoManager) extintorInspecaoManager.proxy());
+		
+		extintorManutencaoManager = new Mock(ExtintorManutencaoManager.class);
+		action.setExtintorManutencaoManager((ExtintorManutencaoManager) extintorManutencaoManager.proxy());
 
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		action.setExtintor(new Extintor());
@@ -88,6 +103,29 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		assertEquals("success", action.insert());
 	}
 
+	public void testInsertComInspecaoEMovimetacao() throws Exception
+	{
+		Date hoje = new Date();
+		
+		ExtintorInspecao extintorInspecao = ExtintorInspecaoFactory.getEntity();
+		extintorInspecao.setData(hoje);
+		
+		Extintor extintor = ExtintorFactory.getEntity(1L);
+		action.setExtintor(extintor);
+		action.setAtivo('S');
+		action.setExtintorInspecao(extintorInspecao);
+		action.setDataHidro(hoje);
+		
+		extintorInspecaoManager.expects(once()).method("saveOrUpdate").with(ANYTHING, ANYTHING);
+		extintorManutencaoManager.expects(once()).method("save").with(ANYTHING, ANYTHING);
+		manager.expects(once()).method("save").with(eq(extintor)).will(returnValue(extintor));
+		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
+		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
+		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
+		
+		assertEquals("success", action.insert());
+	}
+
 	public void testInsertException() throws Exception
 	{
 		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
@@ -138,5 +176,13 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		action.setTipoBusca(TipoExtintor.AGUA_GAS);
 		assertEquals(action.getTipoBusca(), TipoExtintor.AGUA_GAS);
 
+	}
+
+	public void setExtintorInspecaoManager(Mock extintorInspecaoManager) {
+		this.extintorInspecaoManager = extintorInspecaoManager;
+	}
+
+	public void setExtintorManutencaoManager(Mock extintorManutencaoManager) {
+		this.extintorManutencaoManager = extintorManutencaoManager;
 	}
 }

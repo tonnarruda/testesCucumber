@@ -43,3 +43,6 @@ ALTER TABLE ConfiguracaoCampoExtra ALTER COLUMN id drop DEFAULT;--.go
 
 --ALTERAR inserts do ConfiguracaoCampoExtra, precisamos passar empresaPadrão 1
 --colocar no papocs empresaPadrão
+
+INSERT INTO extintorInspecaoItem (id, descricao) VALUES (11, 'Outro'); --.go
+alter table extintorInspecao add column outroMotivo character(50);--.go

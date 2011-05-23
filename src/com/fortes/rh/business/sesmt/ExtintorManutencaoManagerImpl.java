@@ -35,6 +35,16 @@ public class ExtintorManutencaoManagerImpl extends GenericManagerImpl<ExtintorMa
 
 		return extintorManutencao;
 	}
+	
+	public void save(ExtintorManutencao extintorManutencao, String[] servicoChecks) throws Exception
+	{
+		CollectionUtil<ExtintorManutencaoServico> collectionUtil = new CollectionUtil<ExtintorManutencaoServico>();
+		Collection<ExtintorManutencaoServico> servicos = collectionUtil.convertArrayStringToCollection(ExtintorManutencaoServico.class, servicoChecks);
+
+		extintorManutencao.setServicos(servicos);
+
+		this.save(extintorManutencao);
+	}
 
 	public Collection<ExtintorManutencao> findManutencaoVencida(Long estabelecimentoId, Date dataVencimento, String motivo)
 	{

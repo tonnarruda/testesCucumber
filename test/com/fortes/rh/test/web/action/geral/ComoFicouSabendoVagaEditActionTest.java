@@ -36,7 +36,7 @@ public class ComoFicouSabendoVagaEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<ComoFicouSabendoVaga>()));
+		manager.expects(once()).method("findAllSemOutros").will(returnValue(new ArrayList<ComoFicouSabendoVaga>()));
 		assertEquals("success", action.list());
 		assertNotNull(action.getComoFicouSabendoVagas());
 	}
@@ -47,7 +47,7 @@ public class ComoFicouSabendoVagaEditActionTest extends MockObjectTestCase
 		action.setComoFicouSabendoVaga(comoFicouSabendoVaga);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<ComoFicouSabendoVaga>()));
+		manager.expects(once()).method("findAllSemOutros").will(returnValue(new ArrayList<ComoFicouSabendoVaga>()));
 		assertEquals("success", action.delete());
 	}
 	
@@ -57,7 +57,7 @@ public class ComoFicouSabendoVagaEditActionTest extends MockObjectTestCase
 		action.setComoFicouSabendoVaga(comoFicouSabendoVaga);
 		
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<ComoFicouSabendoVaga>()));
+		manager.expects(once()).method("findAllSemOutros").will(returnValue(new ArrayList<ComoFicouSabendoVaga>()));
 		assertEquals("success", action.delete());
 	}
 

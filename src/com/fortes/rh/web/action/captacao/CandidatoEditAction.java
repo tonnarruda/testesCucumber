@@ -365,6 +365,9 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if(candidato.getPessoal().getRgUf().getId() == null)
 			candidato.getPessoal().setRgUf(null);
 
+		if (candidato.getComoFicouSabendoVaga()!=null && candidato.getComoFicouSabendoVaga().getId()==null)
+			candidato.setComoFicouSabendoVaga(null);
+		
 		candidatoManager.save(candidato);
 
 		saveDetalhes();

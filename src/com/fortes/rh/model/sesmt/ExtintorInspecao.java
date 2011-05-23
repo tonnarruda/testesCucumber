@@ -31,6 +31,9 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 	@Column(length=50)
 	private String empresaResponsavel;
 
+	@Column(length=50)
+	private String outroMotivo;
+
 	@Lob
 	private String observacao;
 
@@ -148,5 +151,13 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 
 	public void setItensRelatorio(String itensRelatorio) {
 		this.itensRelatorio = itensRelatorio;
+	}
+
+	public String getOutroMotivo() {
+		return outroMotivo;
+	}
+
+	public void setOutroMotivo(String outroMotivo) {
+		this.outroMotivo = outroMotivo;
 	}
 }
