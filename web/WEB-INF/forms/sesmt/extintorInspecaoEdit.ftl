@@ -38,6 +38,12 @@
 		var empresasResponsaveis = [${empresasResponsaveis}];
 		$(function() {
 			$("#empresaResponsavel").autocomplete(empresasResponsaveis);
+			
+			$("#check11").change(function() {
+				$('#outroMotivo').toggle($(this).is(':checked'));
+			});
+			
+			$('#outroMotivo').toggle($('#check11').is(':checked'));
 		});
 
 		function populaExtintores()
@@ -103,8 +109,10 @@
 				<label for="check${item.id}">${item.descricao}</label>
 			</div>
 		</#list>
-
 		</div>
+
+		<@ww.textfield  name="extintorInspecao.outroMotivo" id="outroMotivo" cssStyle="display:none;" maxLength="50"/>
+
 		<div style="clear:both;">
 			<br><@ww.textarea label="Observações" name="extintorInspecao.observacao" cssStyle="height:70px; width:340px; " />
 		</div>

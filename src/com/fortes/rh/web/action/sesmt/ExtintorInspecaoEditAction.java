@@ -330,5 +330,4 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 	public Map<String, Object> getParametros() {
 		return parametros;
 	}
-
 }
