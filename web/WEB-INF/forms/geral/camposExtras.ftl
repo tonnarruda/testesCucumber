@@ -1,5 +1,4 @@
 <#list configuracaoCampoExtras as configuracaoCampoExtra>
-	
 	<#assign data = ""/>
 	
 	<#if camposExtras?exists>
