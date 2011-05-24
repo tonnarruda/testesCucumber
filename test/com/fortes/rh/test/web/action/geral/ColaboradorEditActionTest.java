@@ -154,7 +154,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	{
 		ConfiguracaoCampoExtra configuracaoCampoExtra = new ConfiguracaoCampoExtra();
 		configuracaoCampoExtra.setId(1L);
-		configuracaoCampoExtra.setAtivo(true);
+		configuracaoCampoExtra.setAtivoColaborador(true);
 		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 		configuracaoCampoExtras.add(configuracaoCampoExtra);
 	
@@ -176,7 +176,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		experienciaManager.expects(once()).method("findByColaborador").with(ANYTHING);
 		formacaoManager.expects(once()).method("findByColaborador").with(ANYTHING);
 
-		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativo", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
+		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoColaborador", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
 		camposExtrasManager.expects(once()).method("findById").with(eq(colaborador.getCamposExtras().getId())).will(returnValue(camposExtras));
 		
 		assertEquals("success", action.prepareUpdateInfoPessoais());
@@ -243,12 +243,12 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		
 		ConfiguracaoCampoExtra configuracaoCampoExtra = new ConfiguracaoCampoExtra();
 		configuracaoCampoExtra.setId(1L);
-		configuracaoCampoExtra.setAtivo(true);
+		configuracaoCampoExtra.setAtivoColaborador(true);
 		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 		configuracaoCampoExtras.add(configuracaoCampoExtra);
 	
 		colaboradorManager.expects(once()).method("getFoto").with(eq(colaborador.getId())).will(returnValue(null));
-		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativo", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
+		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoColaborador", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
 		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
 		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoByColaborador").with(eq(colaborador.getId()), eq(false)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoByColaborador").with(eq(colaborador.getId()), eq(true)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));

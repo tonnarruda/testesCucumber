@@ -111,6 +111,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.id"), "id");
 		p.add(Projections.property("e.acIntegra"), "acIntegra");
 		p.add(Projections.property("e.campoExtraColaborador"), "campoExtraColaborador");
+		p.add(Projections.property("e.campoExtraCandidato"), "campoExtraCandidato");
 		p.add(Projections.property("e.mensagemModuloExterno"), "mensagemModuloExterno");
 		criteria.setProjection(p);
 
@@ -288,15 +289,16 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		return execTrigger;
 	}
 
-	public void updateCampoExtra(boolean habilitaCampoExtra, Long id) 
+	public void updateCampoExtra(Long id, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato) 
 	{
 		String whereId = " where e.id = :empresaId ";
 		if(id == null || id.equals(-1L))
 			whereId = "";
 		
-		String hql = "update Empresa e set e.campoExtraColaborador = :campoExtraColaborador " + whereId;
+		String hql = "update Empresa e set e.campoExtraColaborador = :campoExtraColaborador, e.campoExtraCandidato = :campoExtraCandidato " + whereId;
 		Query query = getSession().createQuery(hql);
-		query.setBoolean("campoExtraColaborador", habilitaCampoExtra);
+		query.setBoolean("campoExtraColaborador", habilitaCampoExtraColaborador);
+		query.setBoolean("campoExtraCandidato", habilitaCampoExtraCandidato);
 
 		if(id != null && !id.equals(-1L))
 			query.setLong("empresaId", id);

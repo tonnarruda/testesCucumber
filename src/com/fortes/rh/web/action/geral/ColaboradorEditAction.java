@@ -229,7 +229,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 		if(habilitaCampoExtra)
-			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
 			
 		indices = indiceManager.findAll(getEmpresaSistema());
 		
@@ -312,7 +312,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 			if(habilitaCampoExtra)
-				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
 			
 			if(habilitaCampoExtra && colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
 				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
@@ -729,7 +729,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 			
 			if(habilitaCampoExtra)
-				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativo", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
 			
 			avaliacaoDesempenhos = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), true);
 			
