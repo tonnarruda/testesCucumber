@@ -31,6 +31,21 @@
 	      DWRUtil.removeAllOptions("extintor");
 	      DWRUtil.addOptions("extintor", data);
 	    }
+	    
+	    $(function() {
+		    $("#btnPesquisar").click(function(){
+		    	//validaFormularioEPeriodo('form', new Array('inicio','fim'), false));
+			    document.getElementById('pagina').value = 1;
+			    document.form.action = "list.action";
+			    document.form.submit();
+			});
+			
+			$("#btnListaDeManutencaoExtintores").click(function(){alert('oi');
+		    	//validaFormularioEPeriodo('form', new Array('inicio','fim'), false));
+			    document.form.action = "imprimirListaManutencaoDeExtintores.action";
+			    document.form.submit();
+			});
+	    });
     </script>
 
     <#if inicio?exists >
@@ -44,10 +59,12 @@
 		<#assign dateFim = ""/>
 	</#if>
 
-	<#assign validarCampos="return validaFormulario('form', null, new Array('inicio','fim'), true)"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('inicio','fim'), false)"/>
 </head>
 <body>
-
+	<@ww.actionerror />
+	<@ww.actionmessage />
+	
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
 
@@ -55,14 +72,14 @@
 		<@ww.select label="Extintor" id="extintor" name="extintorId" list="extintors" listKey="id" listValue="descricao" headerValue="Todos" headerKey="" cssStyle="width:240px;"/>
 
 		Período:<br>
-		<@ww.datepicker name="inicio" id="inicio"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData"/>
+		<@ww.datepicker name="inicio" id="inicio"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft" />
-		<@ww.datepicker name="fim" id="fim" value="${dateFim}" cssClass="mascaraData" />
+		<@ww.datepicker name="fim" id="fim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
 
 		<@ww.checkbox label="Exibir apenas extintores sem data de retorno" name="somenteSemRetorno" labelPosition="left"/>
 
 		<@ww.hidden id="pagina" name="page"/>
-		<input type="submit" value="" onclick="document.getElementById('pagina').value = 1;" class="btnPesquisar grayBGE" />
+		<input id="btnPesquisar" type="button" value="" class="btnPesquisar grayBGE" />
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br/>
@@ -82,6 +99,9 @@
 
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>
+		
+		<button class="btnListaDeManutencaoExtintores" id="btnListaDeManutencaoExtintores" ></button>
+		<img id="relatorioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" style="margin-left: -25px" width="16" height="16" /><br>
 	</div>
 </body>
 </html>

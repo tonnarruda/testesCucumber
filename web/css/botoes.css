@@ -606,6 +606,7 @@
 .btnRelatorioPorCriterio,
 .btnRelatorioPorAvaliador,
 .btnListaDeInspecaoExtintores,
+.btnListaDeManutencaoExtintores,
 .btnListaFrequenciaVotacao,
 .btnResultadoAvaliacao,
 .btnTriagemF2RH,
@@ -700,4 +701,8 @@
 	width: 270px !important;
 }
 
-
+.btnListaDeManutencaoExtintores
+{
+	background-image:url(../imgs/btnListaDeManutencaoExtintores.gif);
+	width: 290px !important;
+}

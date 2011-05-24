@@ -36,5 +36,15 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorManutencaoEdit.ftl</result>
 		</action>
+		
+		<action name="imprimirListaManutencaoDeExtintores" class="com.fortes.rh.web.action.sesmt.ExtintorManutencaoEditAction" method="imprimirListaManutencaoDeExtintores">
+			<result name="success" type="jasper">
+				<param name="dataSource">extintorManutencaos</param>
+				<param name="location">WEB-INF/report/lista_manutencao_extintores.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">lista_manutencao_extintores.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorManutencaoList.ftl</result>
+		</action>
 	</package>
 </xwork>

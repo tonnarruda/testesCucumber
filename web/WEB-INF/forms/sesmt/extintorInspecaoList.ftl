@@ -115,6 +115,7 @@
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
+	
 	<#include "../util/topFiltro.ftl" />
 	
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">

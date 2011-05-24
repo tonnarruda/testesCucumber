@@ -13,7 +13,10 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.model.sesmt.ExtintorManutencaoServico;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.opensymphony.xwork.Action;
 
 public class ExtintorManutencaoEditAction extends MyActionSupportList
 {
@@ -23,6 +26,7 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 	private EstabelecimentoManager estabelecimentoManager;
 	private ExtintorManager extintorManager;
 
+	private Extintor extintor;
 	private ExtintorManutencao extintorManutencao;
 	private Estabelecimento estabelecimento;
 
@@ -35,6 +39,7 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 	private String[] servicoChecks;
 
 	private Map motivos = new MotivoExtintorManutencao();
+	private Map parametros;
 
 	// Filtro da listagem
 	private Long estabelecimentoId;
@@ -112,7 +117,7 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 		}
 	}
 
-	public String list() throws Exception
+	public String list()
 	{
 		if (extintorId != null && extintorId == -1L)
 			extintorId = null;
@@ -131,6 +136,54 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 		return SUCCESS;
 	}
 
+	public String imprimirListaManutencaoDeExtintores() {
+
+		try {
+		
+			list();
+
+			if(extintorManutencaos.isEmpty()){
+				throw new Exception ("Não existe informações com os filtros selecionados para geração do relatório");
+			}
+						
+			String nomeEstabelecimento = "Todos";
+			String nomeExtintor = "Todos";
+			String periodo = "";
+			
+			if(estabelecimentoId != null){
+				estabelecimento = estabelecimentoManager.findById(estabelecimentoId);
+				nomeEstabelecimento = estabelecimento.getNome();
+			}
+				
+			if(extintorId != null){
+				extintor = extintorManager.findById(extintorId);
+				nomeExtintor = extintor.getDescricao();
+			}
+		
+			if (inicio != null && fim != null){
+				periodo = "Período: " + DateUtil.formataDiaMesAno(inicio) + " à " + DateUtil.formataDiaMesAno(fim);
+			}
+						
+			String filtro = "Estabelecimento: " + nomeEstabelecimento +
+			"\n" + "Extintor: " + nomeExtintor +
+			"\n" + periodo;
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Manutenções de Extintores", getEmpresaSistema(), filtro);
+			
+		}
+		
+		catch (Exception e)
+			{
+				addActionMessage(e.getMessage());
+				e.printStackTrace();
+				list();
+				return Action.INPUT;
+			}
+		
+		return Action.SUCCESS;
+
+	}
+	
 	public ExtintorManutencao getExtintorManutencao()
 	{
 		if(extintorManutencao == null)
@@ -260,5 +313,13 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 	public Map getMotivos()
 	{
 		return motivos;
+	}
+
+	public void setExtintor(Extintor extintor) {
+		this.extintor = extintor;
+	}
+
+	public Map getParametros() {
+		return parametros;
 	}
 }
