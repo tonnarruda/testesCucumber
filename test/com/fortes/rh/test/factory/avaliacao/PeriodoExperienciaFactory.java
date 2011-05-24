@@ -11,6 +11,7 @@ public class PeriodoExperienciaFactory
 	{
 		PeriodoExperiencia periodoExperiencia = new PeriodoExperiencia();
 		periodoExperiencia.setId(null);
+		periodoExperiencia.setDescricao("");
 		return periodoExperiencia;
 	}
 

@@ -44,7 +44,7 @@ public class ExtintorManutencaoManagerTest extends MockObjectTestCase
 		colecao.add(ExtintorManutencaoFactory.getEntity(1L));
 
 		extintorManutencaoDao.expects(once()).method("findAllSelect").will(returnValue(colecao ));
-		assertEquals(colecao, extintorManutencaoManager.findAllSelect(0, 0, empresaId, estabelecimentoId, extintorId, inicio, fim,false));
+		assertEquals(colecao, extintorManutencaoManager.findAllSelect(0, 0, empresaId, estabelecimentoId, extintorId, inicio, fim,false, null));
 	}
 
 	public void testSaveOrUpdate() throws Exception

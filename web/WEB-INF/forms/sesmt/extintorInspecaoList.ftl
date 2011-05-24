@@ -122,6 +122,7 @@
 
 		<@ww.select label="Estabelecimento" id="estabelecimento" name="estabelecimentoId" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Todos" headerKey="" onchange="javascript:populaExtintores();" cssStyle="width:240px;"/>
 		<@ww.select label="Extintor" id="extintor" name="extintorId" list="extintors" listKey="id" listValue="descricao" headerValue="Todos" headerKey="" cssStyle="width:240px;"/>
+		<@ww.textfield label="Localização" name="localizacao" id="localizacao" maxLength="50" cssStyle="width:240px;"/>
 		<@ww.select label="Regularidade" name="regularidade" list=r"#{'0':'Todos','1':'Regulares','2':'Irregulares'}"/>		
 	
 		Período:<br>

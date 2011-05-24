@@ -44,6 +44,7 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 	// Filtro da listagem
 	private Long estabelecimentoId;
 	private Long extintorId;
+	private String localizacao;
 	private Date inicio;
 	private Date fim;
 	private boolean somenteSemRetorno;
@@ -126,7 +127,7 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 			extintors = extintorManager.findByEstabelecimento(estabelecimentoId, true);
 		
 		setTotalSize(extintorManutencaoManager.getCount(getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno));
-		extintorManutencaos = extintorManutencaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno);
+		extintorManutencaos = extintorManutencaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno, localizacao);
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
 		return SUCCESS;
@@ -332,5 +333,13 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 
 	public Extintor getExtintor() {
 		return extintor;
+	}
+
+	public String getLocalizacao() {
+		return localizacao;
+	}
+
+	public void setLocalizacao(String localizacao) {
+		this.localizacao = localizacao;
 	}
 }

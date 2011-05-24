@@ -134,6 +134,7 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		Extintor extintor2 = ExtintorFactory.getEntity();
 		extintor2.setEmpresa(empresa);
 		extintor2.setEstabelecimento(estabelecimento);
+		extintor2.setLocalizacao("Local teste");
 		extintorDao.save(extintor2);
 
 		ExtintorInspecaoItem extintorInspecaoItem = new ExtintorInspecaoItem();
@@ -161,15 +162,16 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintorInspecaoDao.save(extintorInspecaoFora);
 
 		assertEquals(1, extintorInspecaoDao.
-				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '2').size());
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '2', null).size());
 	
 		assertEquals(1, extintorInspecaoDao.
-				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '1').size());
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '1', null).size());
 
-		int numeroDeRegistrosEncontrados = extintorInspecaoDao.
-				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '0').size();
+		assertEquals(2, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), '0', null).size());
 		
-		assertEquals(2, numeroDeRegistrosEncontrados);
+		assertEquals(1, extintorInspecaoDao.
+				findAllSelect(1, 15, empresa.getId(), estabelecimento.getId(), extintor2.getId(), ontem.getTime(), amanha.getTime(), '0', "Local").size());
 	}
 
 	public void testFindEmpresasResponsaveisDistinct()

@@ -12,9 +12,9 @@ import com.fortes.rh.util.StringUtil;
 
 public class ExtintorInspecaoManagerImpl extends GenericManagerImpl<ExtintorInspecao, ExtintorInspecaoDao> implements ExtintorInspecaoManager
 {
-	public Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade)
+	public Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade, String localizacao)
 	{
-		Collection<ExtintorInspecao> consultaExtintorInpecao = getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId,  extintorId, inicio, fim, regularidade); 
+		Collection<ExtintorInspecao> consultaExtintorInpecao = getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId,  extintorId, inicio, fim, regularidade, localizacao); 
 		
 		for (ExtintorInspecao consultaExtintorInspecao : consultaExtintorInpecao)
 		{

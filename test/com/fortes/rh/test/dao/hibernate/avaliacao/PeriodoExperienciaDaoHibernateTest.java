@@ -24,6 +24,7 @@ public class PeriodoExperienciaDaoHibernateTest extends GenericDaoHibernateTest<
 
 		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
 		periodoExperiencia.setEmpresa(empresa);
+		periodoExperiencia.setDescricao("");
 		periodoExperiencia = periodoExperienciaDao.save(periodoExperiencia);
 
 		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaDao.findAllSelect(empresa.getId(), false); 
@@ -40,11 +41,13 @@ public class PeriodoExperienciaDaoHibernateTest extends GenericDaoHibernateTest<
 		PeriodoExperiencia periodoExperiencia = new PeriodoExperiencia();
 		periodoExperiencia.setEmpresa(empresa);
 		periodoExperiencia.setDias(60);
+		periodoExperiencia.setDescricao("");
 		periodoExperiencia = periodoExperienciaDao.save(periodoExperiencia);
 		
 		PeriodoExperiencia periodoExperiencia2 = PeriodoExperienciaFactory.getEntity();
 		periodoExperiencia2.setEmpresa(empresa);
 		periodoExperiencia2.setDias(30);
+		periodoExperiencia2.setDescricao("");
 		periodoExperiencia2 = periodoExperienciaDao.save(periodoExperiencia2);
 		
 		Integer dias = periodoExperienciaDao.findPeriodoAnterior(empresa.getId(), 60); 
@@ -60,26 +63,24 @@ public class PeriodoExperienciaDaoHibernateTest extends GenericDaoHibernateTest<
 		PeriodoExperiencia periodoExperiencia = new PeriodoExperiencia();
 		periodoExperiencia.setEmpresa(empresa);
 		periodoExperiencia.setDias(60);
+		periodoExperiencia.setDescricao("");
 		periodoExperiencia = periodoExperienciaDao.save(periodoExperiencia);
 		
 		PeriodoExperiencia periodoExperiencia2 = PeriodoExperienciaFactory.getEntity();
 		periodoExperiencia2.setEmpresa(empresa);
 		periodoExperiencia2.setDias(30);
+		periodoExperiencia2.setDescricao("");
 		periodoExperiencia2 = periodoExperienciaDao.save(periodoExperiencia2);
 		
 		Integer dias = periodoExperienciaDao.findPeriodoSugerido(empresa.getId(), 30); 
 		assertEquals(60, dias.intValue());
 	}
 	
-	
-	
-	@Override
 	public PeriodoExperiencia getEntity()
 	{
 		return PeriodoExperienciaFactory.getEntity();
 	}
 
-	@Override
 	public GenericDao<PeriodoExperiencia> getGenericDao()
 	{
 		return periodoExperienciaDao;
@@ -89,8 +90,6 @@ public class PeriodoExperienciaDaoHibernateTest extends GenericDaoHibernateTest<
 	{
 		this.periodoExperienciaDao = periodoExperienciaDao;
 	}
-
-
 
 	public void setEmpresaDao(EmpresaDao empresaDao) {
 		this.empresaDao = empresaDao;
