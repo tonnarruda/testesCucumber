@@ -122,6 +122,9 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 		if (extintorId != null && extintorId == -1L)
 			extintorId = null;
 
+		if(estabelecimentoId != null)
+			extintors = extintorManager.findByEstabelecimento(estabelecimentoId, true);
+		
 		setTotalSize(extintorManutencaoManager.getCount(getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno));
 		extintorManutencaos = extintorManutencaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno);
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
@@ -321,5 +324,13 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 
 	public Map getParametros() {
 		return parametros;
+	}
+
+	public EstabelecimentoManager getEstabelecimentoManager() {
+		return estabelecimentoManager;
+	}
+
+	public Extintor getExtintor() {
+		return extintor;
 	}
 }

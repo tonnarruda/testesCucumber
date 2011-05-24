@@ -23,6 +23,7 @@
 	    {
 	      var estabelecimentoId = document.getElementById("estabelecimento").value;
 
+		  DWRUtil.useLoadingMessage('Carregando...');
 	      ExtintorDWR.getExtintorByEstabelecimento(createListExtintores, estabelecimentoId, "Todos");
 	    }
 
@@ -34,16 +35,14 @@
 	    
 	    $(function() {
 		    $("#btnPesquisar").click(function(){
-		    	//validaFormularioEPeriodo('form', new Array('inicio','fim'), false));
-			    document.getElementById('pagina').value = 1;
+		    	document.getElementById('pagina').value = 1;
 			    document.form.action = "list.action";
-			    document.form.submit();
+		    	validaFormularioEPeriodo('form', null, new Array('inicio','fim'), false);
 			});
 			
-			$("#btnListaDeManutencaoExtintores").click(function(){alert('oi');
-		    	//validaFormularioEPeriodo('form', new Array('inicio','fim'), false));
-			    document.form.action = "imprimirListaManutencaoDeExtintores.action";
-			    document.form.submit();
+			$("#btnListaDeManutencaoExtintores").click(function(){
+		    	document.form.action = "imprimirListaManutencaoDeExtintores.action";
+		    	validaFormularioEPeriodo('form', null, new Array('inicio','fim'), false);
 			});
 	    });
     </script>
@@ -58,15 +57,13 @@
 	<#else>
 		<#assign dateFim = ""/>
 	</#if>
-
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('inicio','fim'), false)"/>
 </head>
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	
 	<#include "../util/topFiltro.ftl" />
-	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
+	<@ww.form name="form" id="form" action="list.action" method="POST">
 
 		<@ww.select label="Estabelecimento" id="estabelecimento" name="estabelecimentoId" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Todos" headerKey="" onchange="javascript:populaExtintores();" cssStyle="width:240px;"/>
 		<@ww.select label="Extintor" id="extintor" name="extintorId" list="extintors" listKey="id" listValue="descricao" headerValue="Todos" headerKey="" cssStyle="width:240px;"/>
