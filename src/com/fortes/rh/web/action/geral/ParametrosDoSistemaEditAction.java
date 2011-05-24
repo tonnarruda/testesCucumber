@@ -1,14 +1,17 @@
 package com.fortes.rh.web.action.geral;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.acesso.PerfilManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.util.StringUtil;
@@ -30,6 +33,10 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	private String[] camposCandidatoObrigatorios;
 	private String[] camposCandidatoVisivels;
+	
+	private boolean habilitaCampoExtra;
+	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	
 	public String prepareUpdate() throws Exception
 	{
@@ -65,6 +72,10 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public String listCamposCandidato() throws Exception
 	{
+		habilitaCampoExtra = getEmpresaSistema().isCampoExtraCandidato();
+		if(habilitaCampoExtra)
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});		
+				
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		return Action.SUCCESS;
 	}
@@ -136,6 +147,18 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public void setCamposCandidatoVisivels(String[] camposCandidatoVisivels) {
 		this.camposCandidatoVisivels = camposCandidatoVisivels;
+	}
+
+	public boolean isHabilitaCampoExtra() {
+		return habilitaCampoExtra;
+	}
+
+	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
+		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
+	}
+
+	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras() {
+		return configuracaoCampoExtras;
 	}
 
 }

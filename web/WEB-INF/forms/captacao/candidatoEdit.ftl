@@ -408,7 +408,7 @@
 	<div id="content2" class="2" style="display:none; width:98%;">
 		<@ww.div  id="formacao" cssClass="campo"/>
 		<@ww.div  id="idioma" cssClass="campo"/>
-		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" liClass="campo"/>
+		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:783px;" onblur="${capitalizar}" liClass="campo"/>
     </div>
 
     <@ww.form name="form" action="${formAction}" validate="true" onsubmit="javascript:validarCamposCpf()" method="POST" enctype="multipart/form-data">
@@ -653,7 +653,7 @@
       
       <div id="content6" class="6" style="display:none;">
 		<@ww.label label="Descrição do Currículo" />
-		<@ww.textarea name="candidato.ocrTexto" cssStyle="width: 720px;height: 500px"/>
+		<@ww.textarea name="candidato.ocrTexto" cssStyle="width: 777px;height: 500px"/>
 	  </div>
       
 		<#if habilitaCampoExtra>

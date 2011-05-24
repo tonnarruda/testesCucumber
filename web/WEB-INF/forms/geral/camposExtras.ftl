@@ -13,18 +13,27 @@
 		</#if>
 	</#if>
 	
-	<#if configuracaoCampoExtra.tipo == "texto">
-		<@ww.textfield label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssStyle="width: 400px;" maxLength="250" />
-	</#if>
-	<#if configuracaoCampoExtra.tipo == "data">
-		<@ww.datepicker label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" value="${data}" id="${configuracaoCampoExtra.nome}" cssClass="mascaraData" />
-	</#if>
-	<#if configuracaoCampoExtra.tipo == "valor">
-		<@ww.textfield label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssClass="currency" cssStyle="width:85px; text-align:right;" />
-	</#if>
-	<#if configuracaoCampoExtra.tipo == "numero">
-		<@ww.textfield label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,''));" maxLength="250" />
-	</#if>
+		<#if moduloExterno>
+			<#assign externoCampo = "campo"/>
+		<#else>
+			<#assign externoCampo = ""/>
+		</#if>
+		
+		<@ww.div id="wwgrp_${configuracaoCampoExtra.nome}" cssClass="${externoCampo}">
+			<#if configuracaoCampoExtra.tipo == "texto">
+					<@ww.textfield id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssStyle="width: 400px;" maxLength="250" />
+			</#if>
+			<#if configuracaoCampoExtra.tipo == "data">
+				<@ww.datepicker id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" value="${data}" cssClass="mascaraData" />
+			</#if>
+			<#if configuracaoCampoExtra.tipo == "valor">
+				<@ww.textfield id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssClass="currency" cssStyle="width:85px; text-align:right;" />
+			</#if>
+			<#if configuracaoCampoExtra.tipo == "numero">
+				<@ww.textfield id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,''));" maxLength="250" />
+			</#if>
+			</@ww.div>
+	
 </#list>
 
 <@ww.hidden name="habilitaCampoExtra"/>

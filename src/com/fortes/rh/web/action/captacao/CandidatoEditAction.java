@@ -496,8 +496,11 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if (candidato.getComoFicouSabendoVaga()!=null && candidato.getComoFicouSabendoVaga().getId()==null)
 			candidato.setComoFicouSabendoVaga(null);
 		
-		candidatoManager.update(candidato);
+		if(habilitaCampoExtra && camposExtras != null)
+			candidato.setCamposExtras(camposExtrasManager.save(camposExtras));		
 		
+		candidatoManager.update(candidato);
+				
 		if(!moduloExterno)
 			candidato.setOcrTexto(candidatoManager.getOcrTextoById(candidato.getId()));
 

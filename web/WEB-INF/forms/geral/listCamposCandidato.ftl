@@ -383,6 +383,25 @@
 				<td><input type="checkbox" value="ocrTexto" name="camposCandidatoObrigatorios" disabled  class="desabilitado"/></td>
 			</tr>
 		</table>
+
+		<#if habilitaCampoExtra && configuracaoCampoExtras?exists && configuracaoCampoExtras?size != 0>
+		<table id="abaExtra" cellspacing="0" class="configCampos">
+		   <thead>		
+			<tr>
+				<th>Campos da aba Extra</th>
+				<th>Exibir</th>
+				<th>Obrigatório</th>
+			</tr>
+		    </thead>		
+		    <#list configuracaoCampoExtras as campoExtra>
+			<tr>
+				<td>${campoExtra.titulo}</td>
+				<td><input type="checkbox" value="${campoExtra.nome}" name="camposCandidatoVisivels"/></td>
+				<td><input type="checkbox" value="${campoExtra.nome}" name="camposCandidatoObrigatorios"/></td>
+			</tr>
+			</#list>
+		</table>
+		</#if>
 	</@ww.form>
 	<div class="buttonGroup">
 		<button onclick="enviaForm()" class="btnGravar" ></button>
