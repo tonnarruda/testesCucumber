@@ -1,7 +1,9 @@
 package com.fortes.rh.test.business.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 import org.jmock.Mock;
@@ -144,6 +146,17 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
     {
     	parametrosDoSistemaDao.expects(once()).method("findModulos").will(returnValue(""));
     	assertEquals(0, parametrosDoSistemaManager.getModulosDecodificados().length);
+    }
+
+    public void testAjustaCamposExtras()
+    {
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+    	parametrosDoSistema.setCamposCandidatoVisivel("nome,cep,texto1,data2");
+    	parametrosDoSistema.setCamposCandidatoObrigatorio("nome,texto1,data2");
+    	
+    	parametrosDoSistemaManager.ajustaCamposExtras(parametrosDoSistema, new String[]{"texto1", "data2"});
+    	assertEquals("nome,cep", parametrosDoSistema.getCamposCandidatoVisivel());
+    	assertEquals("nome", parametrosDoSistema.getCamposCandidatoObrigatorio());
     }
 
     public void testIsIdiomaCorreto()

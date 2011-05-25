@@ -397,6 +397,12 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 		if(updateDados)
 		{
+			if(candidato.getCamposExtras() != null && candidato.getCamposExtras().getId() != null)
+			{
+				camposExtras = camposExtrasManager.findById(candidato.getCamposExtras().getId());
+				colaborador.setCamposExtras(camposExtras);
+			}
+			
 			colaborador.setNome(candidato.getNome());
 			// OBS: não sugerimos mais o nome Comercial, porque pode quebrar o insert (limitação do AC)
 			colaborador.setContato(candidato.getContato());

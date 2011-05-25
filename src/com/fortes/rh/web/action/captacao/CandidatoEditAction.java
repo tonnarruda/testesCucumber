@@ -165,8 +165,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	{
 		String abaExtra = "";
 		habilitaCampoExtra = getEmpresaSistema().isCampoExtraCandidato();
-		if(habilitaCampoExtra)
-			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
 		
 		comoFicouSabendoVagas = comoFicouSabendoVagaManager.findAllSemOutros();
 		comoFicouSabendoVagas.add(comoFicouSabendoVagaManager.findById(1L));
@@ -183,7 +181,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado"), "getId", "getNomeMercado");
 			
 			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps,comoFicouSabendoVaga");
-			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,cpf,escolaridade,ende,num,cidade,ddd,fone");
+			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,escolaridade,ende,num,cidade,ddd,fone");
 			parametrosDoSistema.setCamposCandidatoTabs("abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais" + abaExtra);
 		}
 		else
@@ -196,6 +194,11 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelectModuloExterno(empresaId, "nomeMercado"), "getId", "getNomeMercado");
 		}
+
+		if(habilitaCampoExtra)
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+		else
+			parametrosDoSistemaManager.ajustaCamposExtras(parametrosDoSistema, configuracaoCampoExtraManager.findAllNomes());
 
 		sexos = new SexoCadastro();
 		deficiencias = new Deficiencia();

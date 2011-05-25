@@ -20,6 +20,7 @@ import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ComoFicouSabendoVagaManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -55,6 +56,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
 	private Mock estadoManager;
 	private Mock cargoManager;
 	private Mock parametrosDoSistemaManager;
+	private Mock configuracaoCampoExtraManager;
 	private Mock cidadeManager;
 	private Mock areaInteresseManager;
 	private Mock conhecimentoManager;
@@ -86,6 +88,9 @@ public class CandidatoEditActionTest extends MockObjectTestCase
         
         parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
         action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+        
+        configuracaoCampoExtraManager = mock(ConfiguracaoCampoExtraManager.class);
+        action.setConfiguracaoCampoExtraManager((ConfiguracaoCampoExtraManager) configuracaoCampoExtraManager.proxy());
         
         cidadeManager = mock(CidadeManager.class);
         action.setCidadeManager((CidadeManager) cidadeManager.proxy());
@@ -312,6 +317,8 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	parametrosDoSistema.setUpperCase(true);
     	
     	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
+    	parametrosDoSistemaManager.expects(once()).method("ajustaCamposExtras").with(ANYTHING, ANYTHING);
+    	configuracaoCampoExtraManager.expects(once()).method("findAllNomes").will(returnValue(new String[]{}));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	empresaManager.expects(once()).method("findToList").will(returnValue(empresas));
     	cargoManager.expects(once()).method("findAllSelectModuloExterno").will(returnValue(new ArrayList<Cargo>()));
@@ -370,7 +377,10 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	experienciaManager.expects(once()).method("findByCandidato").will(returnValue(new ArrayList<Experiencia>()));
     	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	comoFicouSabendoVagaManager.expects(once()).method("findAllSemOutros").will(returnValue(new ArrayList<ComoFicouSabendoVagaManager>()));
-    	comoFicouSabendoVagaManager.expects(once()).method("findById").will(returnValue(new ComoFicouSabendoVaga()));
+    	comoFicouSabendoVagaManager.expects(once()).method("findById").will(returnValue(new ComoFicouSabendoVaga()));    	
+    	parametrosDoSistemaManager.expects(once()).method("ajustaCamposExtras").with(ANYTHING, ANYTHING);
+    	configuracaoCampoExtraManager.expects(once()).method("findAllNomes").will(returnValue(new String[]{}));
+
     	
     	assertEquals("success", action.prepareUpdate());
     }

@@ -12,5 +12,7 @@ public interface ConfiguracaoCampoExtraDao extends GenericDao<ConfiguracaoCampoE
 	Collection<ConfiguracaoCampoExtra> findDistinct();
 
 	void removeAllNotModelo();
+
+	String[] findAllNomes();
 	
 }

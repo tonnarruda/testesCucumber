@@ -13,7 +13,7 @@
 		</#if>
 	</#if>
 	
-		<#if moduloExterno>
+		<#if moduloExterno?exists && moduloExterno>
 			<#assign externoCampo = "campo"/>
 		<#else>
 			<#assign externoCampo = ""/>

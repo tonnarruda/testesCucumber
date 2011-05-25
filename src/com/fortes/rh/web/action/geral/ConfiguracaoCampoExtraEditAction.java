@@ -8,7 +8,6 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -39,7 +38,10 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 		if(empresa == null)//veio do menu
 		{
 			if (atualizaTodas)
-				empresa = EmpresaFactory.getEmpresa(-1L);
+			{
+				empresa = new Empresa();
+				empresa.setId(-1L);
+			}
 			else
 				empresa = getEmpresaSistema();
 		}
@@ -47,7 +49,8 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 		{
 			if(empresa.getId() == null || empresa.getId().equals(-1))
 			{
-				empresa = EmpresaFactory.getEmpresa(-1L);
+				empresa = new Empresa();
+				empresa.setId(-1L);
 				if(!atualizaTodas)
 				{
 					empresaId = -1L;
