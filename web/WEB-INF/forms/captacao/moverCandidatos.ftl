@@ -102,7 +102,7 @@
 				<#assign classe="apto"/>
 			</#if>
 				
-			<#if candidatoSolicitacao.status != 'I'>
+			<#if candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C'>
 				<#assign classe="contratado"/>
 			</#if>
 		
