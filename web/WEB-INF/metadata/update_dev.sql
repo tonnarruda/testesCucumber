@@ -25,7 +25,7 @@ ALTER TABLE candidato ADD CONSTRAINT candidato_comoFicouSabendoVaga_fk FOREIGN K
 ALTER TABLE candidato add COLUMN comoFicouSabendoVagaQual character varying(100);--.go
 insert into comoFicouSabendoVaga (id, nome) values (1, 'Outro');--.go
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (508, 'ROLE_COMO_FICOU_SABENDO_VAGA', 'Como Ficou Sabendo da Vaga', '/geral/comoFicouSabendoVaga/prepareRelatorioComoFicouSabendoVaga.action', 4, true, 360);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (508, 'ROLE_COMO_FICOU_SABENDO_VAGA', 'Estatística de Divulgação da Vaga', '/geral/comoFicouSabendoVaga/prepareRelatorioComoFicouSabendoVaga.action', 4, true, 360);--.go
 alter sequence papel_sequence restart with 509;--.go
 
 ALTER TABLE empresa ADD COLUMN campoExtraColaborador boolean;--.go
@@ -50,3 +50,5 @@ alter table extintorInspecao add column outroMotivo character(50);--.go
 ALTER TABLE ConfiguracaoCampoExtra RENAME COLUMN ativo TO ativoColaborador;--.go
 ALTER TABLE ConfiguracaoCampoExtra ADD COLUMN ativoCandidato boolean default false;--.go
 ALTER TABLE empresa ADD COLUMN campoextracandidato boolean default false;--.go
+
+update papel set nome = 'Estatística de Divulgação da Vaga' where id = 508;--.go
