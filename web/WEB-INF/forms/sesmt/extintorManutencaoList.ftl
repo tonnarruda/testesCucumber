@@ -16,6 +16,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/qtip.js"/>'></script>
 
 	<script type="text/javascript">
 
@@ -34,6 +35,14 @@
 	    }
 	    
 	    $(function() {
+	    	$('#relatorioTooltipHelp').qtip({
+				content: '<strong>Listagem de Manutenção de Extintores</strong><br />Será listado no relatório somente informações presentes no filtro.'
+				,
+				style: {
+		        	 width: '100px'
+		        }
+			});
+	    
 		    $("#btnPesquisar").click(function(){
 		    	document.getElementById('pagina').value = 1;
 			    document.form.action = "list.action";
