@@ -12,7 +12,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ConfiguracaoCampoExtraDao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
-import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
 public class ConfiguracaoCampoExtraDaoHibernate extends GenericDaoHibernate<ConfiguracaoCampoExtra> implements ConfiguracaoCampoExtraDao
 {
@@ -71,6 +70,20 @@ public class ConfiguracaoCampoExtraDaoHibernate extends GenericDaoHibernate<Conf
 		String queryHQL = "delete from ConfiguracaoCampoExtra where empresa.id is not null";
 
 		getSession().createQuery(queryHQL).executeUpdate();
+	}
+
+	public String[] findAllNomes() 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("c.nome"), "nome");
+		
+		criteria.setProjection(Projections.distinct(p));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
+		return (String[]) criteria.list().toArray(new String[]{});
 	}
 
 }

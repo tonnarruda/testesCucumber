@@ -10,5 +10,6 @@ public interface ConfiguracaoCampoExtraManager extends GenericManager<Configurac
 	Collection<ConfiguracaoCampoExtra> findAllSelect(Long empresaId);
 	boolean atualizaTodas();
 	void removeAllNotModelo();
+	String[] findAllNomes();
 
 }

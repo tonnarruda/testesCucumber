@@ -1,7 +1,9 @@
 package com.fortes.rh.business.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
@@ -128,5 +130,17 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 	{
 		Locale pt_BR = new Locale("pt", "BR");
 		return pt_BR.equals(Locale.getDefault());
+	}
+
+	public void ajustaCamposExtras(ParametrosDoSistema parametrosDoSistema, String[] camposExtras) 
+	{
+		List<String> visiveis = new ArrayList<String>(Arrays.asList(parametrosDoSistema.getCamposCandidatoVisivel().split(",")));
+		List<String> obrigatorios = new ArrayList<String>(Arrays.asList(parametrosDoSistema.getCamposCandidatoObrigatorio().split(",")));
+		
+		visiveis.removeAll(Arrays.asList(camposExtras));
+		parametrosDoSistema.setCamposCandidatoVisivel(StringUtils.join(visiveis.iterator(), ","));
+		
+		obrigatorios.removeAll(Arrays.asList(camposExtras));
+		parametrosDoSistema.setCamposCandidatoObrigatorio(StringUtils.join(obrigatorios.iterator(), ","));
 	}
 }

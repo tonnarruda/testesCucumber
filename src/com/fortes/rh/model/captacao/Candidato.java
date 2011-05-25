@@ -16,6 +16,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
+import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.geral.Contato;
@@ -124,6 +126,9 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private ComoFicouSabendoVaga comoFicouSabendoVaga;
 	
 	private String comoFicouSabendoVagaQual;
+	
+	@OneToOne(fetch=FetchType.LAZY)
+	private CamposExtras camposExtras;
 	
 	public Candidato() {}
 	
@@ -1113,6 +1118,14 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setComoFicouSabendoVagaQual(String comoFicouSabendoVagaQual) {
 		this.comoFicouSabendoVagaQual = comoFicouSabendoVagaQual;
+	}
+
+	public CamposExtras getCamposExtras() {
+		return camposExtras;
+	}
+
+	public void setCamposExtras(CamposExtras camposExtras) {
+		this.camposExtras = camposExtras;
 	}
 
 }

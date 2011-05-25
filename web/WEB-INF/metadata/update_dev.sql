@@ -51,5 +51,9 @@ ALTER TABLE ConfiguracaoCampoExtra RENAME COLUMN ativo TO ativoColaborador;--.go
 ALTER TABLE ConfiguracaoCampoExtra ADD COLUMN ativoCandidato boolean default false;--.go
 ALTER TABLE empresa ADD COLUMN campoextracandidato boolean default false;--.go
 
-update papel set nome = 'Estatística de Divulgação da Vaga' where id = 508;--.go
 ALTER TABLE periodoexperiencia ALTER COLUMN descricao SET NOT NULL;--.go
+
+alter table candidato add COLUMN camposextras_id bigint;--.go
+ALTER TABLE candidato ADD CONSTRAINT candidato_camposextras_fk FOREIGN KEY (camposextras_id) REFERENCES camposextras(id);--.go
+
+update papel set nome = 'Estatística de Divulgação da Vaga' where id = 508;--.go

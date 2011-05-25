@@ -70,12 +70,10 @@
 
 		var abasVisiveis = "${parametrosDoSistema.camposCandidatoTabs}";
 		var arrayAbasVisiveis  = abasVisiveis.split(',');
-		var qtdAbas = arrayAbasVisiveis.length;
+		qtdAbas = arrayAbasVisiveis.length;
 		var arrayObrigatorios = new Array();
 		
 		$(function() {
-			<#assign qtdAbas>qtdAbas</#assign>
-			
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 			
 			$(".campo").each(function(){
@@ -128,12 +126,12 @@
 					});
 				</#if>
 				
-				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
 		   	<#else>
 		       	if ($("#cpf").val() == "   .   .   -  ")
-		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
 		   		else
-			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao'));
+			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
 			 </#if>
 		}
 		
@@ -357,18 +355,34 @@
 		<#assign cpfObrigatorio = "true"/>
 	</#if>
 
+	<#assign validaDataCamposExtras = ""/>
+	<#if habilitaCampoExtra>
+		<#list configuracaoCampoExtras as configuracaoCampoExtra>				
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data1">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data1'"/>
+			</#if>
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data2">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data2'"/>
+			</#if>
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data3">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data3'"/>
+			</#if>
+		</#list>
+	</#if>
 </head>
 
 <body>
 <@ww.actionerror />
-
 	<div id="abas">
-    	<div id="aba1" class="abaDadosPessoais"><a href="javascript: abas(1, '',${edicao},${qtdAbas})">Dados Pessoais</a></div>
-		<div id="aba2" class="abaFormacaoEscolar"><a href="javascript: abas(2, '',${edicao},${qtdAbas})">Formação Escolar</a></div>
-		<div id="aba3" class="abaPerfilProfissional"><a href="javascript: abas(3, '',${edicao},${qtdAbas})">Perfil Profissional</a></div>
-		<div id="aba4" class="abaExperiencias"><a href="javascript: abas(4, '',${edicao},${qtdAbas})">Experiências</a></div>
-		<div id="aba5" class="abaDocumentos"><a href="javascript: abas(5, '',${edicao},${qtdAbas})">Documentos</a></div>
-		<div id="aba6" class="abaCurriculo"><a href="javascript: abas(6, '',${edicao})">Currículo</a></div>
+    	<div id="aba1" class="abaDadosPessoais"><a href="javascript: abas(1, '',${edicao}, qtdAbas)">Dados Pessoais</a></div>
+		<div id="aba2" class="abaFormacaoEscolar"><a href="javascript: abas(2, '',${edicao}, qtdAbas)">Formação Escolar</a></div>
+		<div id="aba3" class="abaPerfilProfissional"><a href="javascript: abas(3, '',${edicao}, qtdAbas)">Perfil Profissional</a></div>
+		<div id="aba4" class="abaExperiencias"><a href="javascript: abas(4, '',${edicao}, qtdAbas)">Experiências</a></div>
+		<div id="aba5" class="abaDocumentos"><a href="javascript: abas(5, '',${edicao}, qtdAbas)">Documentos</a></div>
+		<div id="aba6" class="abaCurriculo"><a href="javascript: abas(6, '',${edicao}, qtdAbas)">Currículo</a></div>
+		<#if habilitaCampoExtra>
+			<div id="aba7" class="abaExtra"><a href="javascript: abas(7, '', ${edicao}, qtdAbas)">Extra</a></div>
+		</#if>
     </div>
 
 	<div id="content4" class="4" style="display: none;">
@@ -394,7 +408,7 @@
 	<div id="content2" class="2" style="display:none; width:98%;">
 		<@ww.div  id="formacao" cssClass="campo"/>
 		<@ww.div  id="idioma" cssClass="campo"/>
-		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:705px;" onblur="${capitalizar}" liClass="campo"/>
+		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:783px;" onblur="${capitalizar}" liClass="campo"/>
     </div>
 
     <@ww.form name="form" action="${formAction}" validate="true" onsubmit="javascript:validarCamposCpf()" method="POST" enctype="multipart/form-data">
@@ -637,10 +651,16 @@
 		</li>	
       </div>
       
-      <div id="content6" class="6" style="display:none; width:98%;">
+      <div id="content6" class="6" style="display:none;">
 		<@ww.label label="Descrição do Currículo" />
-		<@ww.textarea name="candidato.ocrTexto" cssStyle="width: 720px;height: 500px"/>
+		<@ww.textarea name="candidato.ocrTexto" cssStyle="width: 777px;height: 500px"/>
 	  </div>
+      
+		<#if habilitaCampoExtra>
+	      <div id="content7" class="7" style="display:none;">
+			<#include "../geral/camposExtras.ftl" />
+		  </div>
+		</#if>
       
       <@ww.hidden name="candidato.dataCadastro" />
       <@ww.hidden name="candidato.empresa.id" />
@@ -678,9 +698,9 @@
         </button>
     </div>
     <div class="buttonGroup" style="width:50%; float:right; text-align:right;">
-        <button class="btnVoltarDesabilitado" id='voltar' disabled="disabled" onclick="abas(-1, 'V',${edicao},${qtdAbas});" accesskey="V">
+        <button class="btnVoltarDesabilitado" id='voltar' disabled="disabled" onclick="abas(-1, 'V',${edicao}, qtdAbas);" accesskey="V">
         </button>
-        <button id='avancar' onclick="abas(-1, 'A',${edicao},${qtdAbas});" class="btnAvancar" accesskey="A">
+        <button id='avancar' onclick="abas(-1, 'A',${edicao}, qtdAbas);" class="btnAvancar" accesskey="A">
         </button>
     </div>
     <br clear="all">

@@ -23,5 +23,9 @@ public class ConfiguracaoCampoExtraManagerImpl extends GenericManagerImpl<Config
 	{
 		getDao().removeAllNotModelo();
 	}
+
+	public String[] findAllNomes() {
+		return getDao().findAllNomes();
+	}
 		
 }

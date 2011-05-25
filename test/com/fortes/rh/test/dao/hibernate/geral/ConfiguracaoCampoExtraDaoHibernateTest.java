@@ -56,6 +56,12 @@ public class ConfiguracaoCampoExtraDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals("total de registros encontrados", 3, campos.size());
 	}
 	
+	public void testFindAllNomes()
+	{
+		String[] nomes = configuracaoCampoExtraDao.findAllNomes();
+		assertEquals(16, nomes.length);
+	}
+	
 	//TODO BACALHAU: Tá imundo. O teste depende do banco. Refatorar!! 
 //	public void testFindDistinctTodosIguais() 
 //	{

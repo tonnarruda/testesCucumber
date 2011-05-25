@@ -26,8 +26,10 @@ import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.BairroManager;
+import com.fortes.rh.business.geral.CamposExtrasManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ComoFicouSabendoVagaManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -44,8 +46,10 @@ import com.fortes.rh.model.dicionario.SexoCadastro;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
+import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -151,9 +155,17 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	
 	private String nomeImg;
 	private ParametrosDoSistema parametrosDoSistema;
+	private boolean habilitaCampoExtra;
+	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private CamposExtrasManager camposExtrasManager;
+	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+	private CamposExtras camposExtras;
 
 	private void prepare() throws Exception
 	{
+		String abaExtra = "";
+		habilitaCampoExtra = getEmpresaSistema().isCampoExtraCandidato();
+		
 		comoFicouSabendoVagas = comoFicouSabendoVagaManager.findAllSemOutros();
 		comoFicouSabendoVagas.add(comoFicouSabendoVagaManager.findById(1L));
 
@@ -162,12 +174,15 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	
 		if(!moduloExterno)
 		{
+			if(habilitaCampoExtra)
+				abaExtra = ",abaExtra";
+
 			empresaId = getEmpresaSistema().getId();
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado"), "getId", "getNomeMercado");
 			
 			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps,comoFicouSabendoVaga");
-			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,cpf,escolaridade,ende,num,cidade,ddd,fone");
-			parametrosDoSistema.setCamposCandidatoTabs("abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais");
+			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,escolaridade,ende,num,cidade,ddd,fone");
+			parametrosDoSistema.setCamposCandidatoTabs("abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais" + abaExtra);
 		}
 		else
 		{
@@ -179,6 +194,11 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelectModuloExterno(empresaId, "nomeMercado"), "getId", "getNomeMercado");
 		}
+
+		if(habilitaCampoExtra)
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+		else
+			parametrosDoSistemaManager.ajustaCamposExtras(parametrosDoSistema, configuracaoCampoExtraManager.findAllNomes());
 
 		sexos = new SexoCadastro();
 		deficiencias = new Deficiencia();
@@ -209,6 +229,9 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		areasCheckList = CheckListBoxUtil.populaCheckListBox(areaInteresseManager.findAllSelect(empresaId), "getId", "getNome");
 		conhecimentosCheckList = CheckListBoxUtil.populaCheckListBox(conhecimentoManager.findAllSelect(empresaId), "getId", "getNome");
 
+		if(habilitaCampoExtra && candidato.getCamposExtras() != null && candidato.getCamposExtras().getId() != null)
+			camposExtras = camposExtrasManager.findById(candidato.getCamposExtras().getId());
+		
 		maxCandidataCargo = empresaManager.findToList(new String[]{"maxCandidataCargo"}, new String[]{"maxCandidataCargo"}, new String[]{"id"}, new Object[]{empresaId}).toArray(new Empresa[]{})[0].getMaxCandidataCargo();
 	}
 
@@ -368,6 +391,9 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if (candidato.getComoFicouSabendoVaga()!=null && candidato.getComoFicouSabendoVaga().getId()==null)
 			candidato.setComoFicouSabendoVaga(null);
 		
+		if(habilitaCampoExtra && camposExtras != null)
+			candidato.setCamposExtras(camposExtrasManager.save(camposExtras));
+		
 		candidatoManager.save(candidato);
 
 		saveDetalhes();
@@ -473,8 +499,11 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if (candidato.getComoFicouSabendoVaga()!=null && candidato.getComoFicouSabendoVaga().getId()==null)
 			candidato.setComoFicouSabendoVaga(null);
 		
-		candidatoManager.update(candidato);
+		if(habilitaCampoExtra && camposExtras != null)
+			candidato.setCamposExtras(camposExtrasManager.save(camposExtras));		
 		
+		candidatoManager.update(candidato);
+				
 		if(!moduloExterno)
 			candidato.setOcrTexto(candidatoManager.getOcrTextoById(candidato.getId()));
 
@@ -1297,6 +1326,34 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public Collection<ComoFicouSabendoVaga> getComoFicouSabendoVagas() {
 		return comoFicouSabendoVagas;
+	}
+
+	public boolean isHabilitaCampoExtra() {
+		return habilitaCampoExtra;
+	}
+
+	public void setHabilitaCampoExtra(boolean habilitaCampoExtra) {
+		this.habilitaCampoExtra = habilitaCampoExtra;
+	}
+
+	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras() {
+		return configuracaoCampoExtras;
+	}
+
+	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
+		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
+	}
+
+	public CamposExtras getCamposExtras() {
+		return camposExtras;
+	}
+
+	public void setCamposExtras(CamposExtras camposExtras) {
+		this.camposExtras = camposExtras;
+	}
+
+	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager) {
+		this.camposExtrasManager = camposExtrasManager;
 	}
 
 	
