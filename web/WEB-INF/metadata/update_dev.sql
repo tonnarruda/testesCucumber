@@ -52,3 +52,4 @@ ALTER TABLE ConfiguracaoCampoExtra ADD COLUMN ativoCandidato boolean default fal
 ALTER TABLE empresa ADD COLUMN campoextracandidato boolean default false;--.go
 
 update papel set nome = 'Estatística de Divulgação da Vaga' where id = 508;--.go
+ALTER TABLE periodoexperiencia ALTER COLUMN descricao SET NOT NULL;--.go

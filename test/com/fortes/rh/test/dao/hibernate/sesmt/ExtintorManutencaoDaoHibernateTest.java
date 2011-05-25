@@ -102,6 +102,7 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 		Extintor extintor = ExtintorFactory.getEntity();
 		extintor.setEmpresa(empresa);
 		extintor.setEstabelecimento(estabelecimento);
+		extintor.setLocalizacao("Local teste");
 		extintorDao.save(extintor);
 
 		Extintor extintor2 = ExtintorFactory.getEntity();
@@ -125,7 +126,13 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 		extintorManutencaoDao.save(extintorManutencaoFora);
 
 		assertEquals(2, extintorManutencaoDao.
-				findAllSelect(0, 0, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), false).size());
+				findAllSelect(0, 0, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), false, null).size());
+		
+		assertEquals(2, extintorManutencaoDao.
+				findAllSelect(0, 0, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), false, "Local").size());
+		
+		assertEquals(0, extintorManutencaoDao.
+				findAllSelect(0, 0, empresa.getId(), estabelecimento.getId(), extintor.getId(), ontem.getTime(), amanha.getTime(), false, "Locais").size());
 	}
 
 	public void testFindManutencaoRecargaVencidas()

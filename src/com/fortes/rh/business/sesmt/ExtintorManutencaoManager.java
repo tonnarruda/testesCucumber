@@ -8,7 +8,7 @@ import com.fortes.rh.model.sesmt.ExtintorManutencao;
 
 public interface ExtintorManutencaoManager extends GenericManager<ExtintorManutencao>
 {
-	Collection<ExtintorManutencao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean somenteSemRetorno);
+	Collection<ExtintorManutencao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean somenteSemRetorno, String localizacao);
 	Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean somenteSemRetorno);
 	ExtintorManutencao saveOrUpdate(ExtintorManutencao extintorManutencao, String[] servicoChecks)throws Exception;
 	Collection<ExtintorManutencao> findManutencaoVencida(Long estabelecimentoId, Date dataVencimento, String motivo);

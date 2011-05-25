@@ -84,10 +84,10 @@ public class Extintor extends AbstractModel implements Serializable
 		if (this.descricao != null)
 			return this.descricao;
 		
-		String descricao = getTipoDicAbreviado() + " - " + localizacao + " - ";
+		String descricao = getTipoDicAbreviado() + " - " + localizacao;
 		
 		if (numeroCilindro != null)
-			descricao += numeroCilindro;
+			descricao += " - " + numeroCilindro;
 		
 		return descricao;
 	}

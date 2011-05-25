@@ -18,9 +18,9 @@ import com.fortes.rh.model.sesmt.ExtintorManutencao;
 @SuppressWarnings("unchecked")
 public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<ExtintorManutencao> implements ExtintorManutencaoDao
 {
-	public Collection<ExtintorManutencao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno)
+	public Collection<ExtintorManutencao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno, String localizacao)
 	{
-		Criteria criteria = montaConsultaFind(false, empresaId, estabelecimentoId, extintorId, inicio, fim, semRetorno);
+		Criteria criteria = montaConsultaFind(false, empresaId, estabelecimentoId, extintorId, inicio, fim, semRetorno, localizacao);
 
 		if(pagingSize != 0)
         {
@@ -33,12 +33,12 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 
 	public Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno)
 	{
-		Criteria criteria = montaConsultaFind(true, empresaId, estabelecimentoId, extintorId, inicio, fim, semRetorno);
+		Criteria criteria = montaConsultaFind(true, empresaId, estabelecimentoId, extintorId, inicio, fim, semRetorno, null);
 
 		return (Integer)criteria.uniqueResult();
 	}
 
-	private Criteria montaConsultaFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno)
+	private Criteria montaConsultaFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno, String localizacao)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "manutencao");
 		criteria.createCriteria("manutencao.extintor", "extintor");
@@ -58,6 +58,9 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 
 		if (extintorId != null)
 			criteria.add(Expression.eq("extintor.id", extintorId));
+		
+		if (localizacao != null)
+			criteria.add(Expression.like("extintor.localizacao", "%" + localizacao + "%").ignoreCase());
 
 		if (inicio != null)
 		{

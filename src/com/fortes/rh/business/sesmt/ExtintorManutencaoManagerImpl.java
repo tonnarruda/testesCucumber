@@ -11,9 +11,9 @@ import com.fortes.rh.util.CollectionUtil;
 
 public class ExtintorManutencaoManagerImpl extends GenericManagerImpl<ExtintorManutencao, ExtintorManutencaoDao> implements ExtintorManutencaoManager
 {
-	public Collection<ExtintorManutencao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean somenteSemRetorno)
+	public Collection<ExtintorManutencao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean somenteSemRetorno, String localizacao)
 	{
-		return getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId,  extintorId, inicio, fim, somenteSemRetorno);
+		return getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId,  extintorId, inicio, fim, somenteSemRetorno, localizacao);
 	}
 
 	public Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean somenteSemRetorno)
