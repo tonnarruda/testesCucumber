@@ -2,10 +2,10 @@
 	<head>
 		<@ww.head/>
 		<#if comoFicouSabendoVaga.id?exists>
-			<title>Editar ComoFicouSabendoVaga</title>
+			<title>Editar Como Ficou Sabendo da Vaga</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Inserir ComoFicouSabendoVaga</title>
+			<title>Inserir Como Ficou Sabendo da Vaga</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 	

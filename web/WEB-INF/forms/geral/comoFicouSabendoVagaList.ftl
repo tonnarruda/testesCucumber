@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>ComoFicouSabendoVaga</title>
+	<title>Como Ficou Sabendo da Vaga</title>
 </head>
 <body>
 	<@ww.actionmessage />
