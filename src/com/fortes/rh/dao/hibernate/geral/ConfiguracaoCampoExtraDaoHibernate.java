@@ -23,6 +23,7 @@ public class ConfiguracaoCampoExtraDaoHibernate extends GenericDaoHibernate<Conf
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.ativoColaborador"), "ativoColaborador");
+		p.add(Projections.property("c.ativoCandidato"), "ativoCandidato");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.descricao"), "descricao");
 		p.add(Projections.property("c.titulo"), "titulo");
@@ -51,6 +52,7 @@ public class ConfiguracaoCampoExtraDaoHibernate extends GenericDaoHibernate<Conf
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("c.ativoColaborador"), "ativoColaborador");
+		p.add(Projections.property("c.ativoCandidato"), "ativoCandidato");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.descricao"), "descricao");
 		p.add(Projections.property("c.titulo"), "titulo");
@@ -59,10 +61,10 @@ public class ConfiguracaoCampoExtraDaoHibernate extends GenericDaoHibernate<Conf
 		p.add(Projections.property("c.posicao"), "posicao");
 		
 		criteria.setProjection(Projections.distinct(p));
+		criteria.add(Expression.isNotNull("c.empresa.id"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-		
 		return criteria.list();
 	}
 

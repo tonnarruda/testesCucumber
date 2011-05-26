@@ -164,7 +164,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private void prepare() throws Exception
 	{
 		String abaExtra = "";
-		habilitaCampoExtra = getEmpresaSistema().isCampoExtraCandidato();
 		
 		comoFicouSabendoVagas = comoFicouSabendoVagaManager.findAllSemOutros();
 		comoFicouSabendoVagas.add(comoFicouSabendoVagaManager.findById(1L));
@@ -172,8 +171,9 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		Long empresaId;
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 	
-		if(!moduloExterno)
+		if(!moduloExterno)			
 		{
+			habilitaCampoExtra = getEmpresaSistema().isCampoExtraCandidato();
 			if(habilitaCampoExtra)
 				abaExtra = ",abaExtra";
 
@@ -186,17 +186,17 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		}
 		else
 		{
-			
 			if (parametrosDoSistema.getUpperCase() != null)
 				upperCase = parametrosDoSistema.getUpperCase();
 			
 			empresaId = this.empresaId;
+			habilitaCampoExtra = empresaManager.findById(empresaId).isCampoExtraCandidato();
 			
 			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelectModuloExterno(empresaId, "nomeMercado"), "getId", "getNomeMercado");
 		}
 
 		if(habilitaCampoExtra)
-			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "empresa.id"}, new Object[]{true, empresaId}, new String[]{"ordem"});
 		else
 			parametrosDoSistemaManager.ajustaCamposExtras(parametrosDoSistema, configuracaoCampoExtraManager.findAllNomes());
 

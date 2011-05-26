@@ -16,7 +16,7 @@ public class ConfiguracaoCampoExtraManagerImpl extends GenericManagerImpl<Config
 	public boolean atualizaTodas() 
 	{
 		Collection<ConfiguracaoCampoExtra> campos = getDao().findDistinct();
-		return campos.size() == 32;
+		return campos.size() == 16;
 	}
 
 	public void removeAllNotModelo() 
