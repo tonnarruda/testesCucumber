@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.46.38" data="26/05/2011">
+		- Utilitários > Configurações > Campos Extras: Configuração por Candidato e Colaborador.
+		- Utilitários > Configurações > Campos Extras: Configuração por empresa.
+		- SESMT > Movimentações > Extintores > Manutenção: Novo relatório, Listagem de Manutenção de Extintores.  
+		- SESMT > Cadastros > Extintores: Novos campos [Data da 1ª inspeção], [Data de saída da recarga], [Data de saída do teste hidrostático]. 
+		- ReS > Relatório > Estatística de Divulgação da Vaga: Novo relatório.
+		- ReS > Cadastros > Como Ficou Sabendo da Vaga: Novo cadastro.
+		- Módulo Externo: Nova aba campos Extras.
+		- Módulo Externo: Nova aba Currículo com o campo [Descrição do Currículo].
+		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Transf. Candidatos: Listagem agora exibe todos os candidatos. 
+		- Info. Funcionais > Cadastros > Colaboradores > Listagem de Colaboradores: Relatório dinâmico, novos campos escolaridade, função, ambiente e área organizacional.
+		- CeS > Cadastros > Cargos/Faixas: Novo campo [Complemento dos Conhecimentos].
+	</Versao>
 	<Versao id="1.1.45.37" data="05/05/2011">
 		- Info. Funcionais > Cadastros > Colaboradores: Novo campo no filtro para efetuar busca pelo nome comercial.
 		- TeD > Painel de Indicadores: Aplicação do novo layout na exibição dos graficos.

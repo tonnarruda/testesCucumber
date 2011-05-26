@@ -1,6 +1,10 @@
 CREATE PROCEDURAL LANGUAGE plpgsql;
 ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
 
+create table comoFicouSabendoVaga (id bigint not null, nome character varying(100));
+ALTER TABLE ONLY comoFicouSabendoVaga ADD CONSTRAINT comoFicouSabendoVaga_pkey PRIMARY KEY (id);
+CREATE SEQUENCE comoFicouSabendoVaga_sequence START WITH 2 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
 CREATE TABLE estado (
     id bigint NOT NULL,
     sigla character varying(2) NOT NULL,
@@ -57,7 +61,9 @@ CREATE TABLE empresa (
 	mensagemModuloExterno character varying(400),
 	exibirDadosAmbiente boolean default false,
 	logoCertificadoUrl varchar(200),
-	grupoac character(3)
+	grupoac character(3),
+	campoExtraColaborador boolean default false,
+	campoextracandidato boolean default false
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
@@ -71,7 +77,7 @@ CREATE TABLE estabelecimento (
     logradouro character varying(40),
     numero character varying(10),
     complemento character varying(20),
-    bairro character varying(20),
+    bairro character varying(85),
     cep character varying(10),
     complementocnpj character varying(10),
     codigoac character varying(12),
@@ -158,6 +164,28 @@ ALTER TABLE auditoria ADD CONSTRAINT auditoria_empresa_fk FOREIGN KEY (empresa_i
 ALTER TABLE auditoria ADD CONSTRAINT auditoria_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);
 CREATE SEQUENCE auditoria_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
+CREATE TABLE camposExtras (
+	id bigint NOT NULL,
+	texto1 character varying(250),
+	texto2 character varying(250),
+	texto3 character varying(250),
+	data1 date,
+	data2 date,
+	data3 date,
+	valor1 double precision,
+	valor2 double precision,
+	numero1 Integer,
+	texto4 character varying(250),
+	texto5 character varying(250),
+	texto6 character varying(250),
+	texto7 character varying(250),
+	texto8 character varying(250),
+	texto9 character varying(250),
+	texto10 character varying(250)
+);
+ALTER TABLE camposExtras ADD CONSTRAINT camposExtras_pkey PRIMARY KEY(id);
+CREATE SEQUENCE camposExtras_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
 CREATE TABLE candidato (
     id bigint NOT NULL,
     nome character varying(60),
@@ -169,7 +197,7 @@ CREATE TABLE candidato (
     logradouro character varying(40),
     numero character varying(10),
     complemento character varying(20),
-    bairro character varying(20),
+    bairro character varying(85),
     cep character varying(10),
     ddd character varying(5),
     fonefixo character varying(10),
@@ -201,7 +229,7 @@ CREATE TABLE candidato (
     emissao date,
     vencimento date,
     categoria character varying(3),
-    colocacao character(1) NOT NULL,
+    colocacao character varying(1),
     pretencaosalarial double precision,
     disponivel boolean NOT NULL,
     blacklist boolean NOT NULL,
@@ -234,12 +262,17 @@ CREATE TABLE candidato (
     indicadopor character varying(100),
     nomecontato character varying(30),
     datacadastro date,
-    idF2RH int
+    idF2RH int,
+    comoFicouSabendoVaga_id bigint,
+    comoFicouSabendoVagaQual character varying(100),
+    camposextras_id bigint
 );
 ALTER TABLE candidato ADD CONSTRAINT candidato_pkey PRIMARY KEY (id);
 ALTER TABLE candidato ADD CONSTRAINT candidato_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
 ALTER TABLE candidato ADD CONSTRAINT candidato_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 ALTER TABLE candidato ADD CONSTRAINT candidato_estado_fk FOREIGN KEY (uf_id) REFERENCES estado(id);
+ALTER TABLE candidato ADD CONSTRAINT candidato_comoFicouSabendoVaga_fk FOREIGN KEY (comoFicouSabendoVaga_id) REFERENCES comoFicouSabendoVaga(id);
+ALTER TABLE candidato ADD CONSTRAINT candidato_camposextras_fk FOREIGN KEY (camposextras_id) REFERENCES camposextras(id);
 CREATE SEQUENCE candidato_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 
@@ -254,40 +287,20 @@ CREATE SEQUENCE motivodemissao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE 
 
 CREATE TABLE configuracaocampoextra (
 	id bigint NOT NULL,
-	ativo boolean,
+	ativoColaborador boolean default false,
+	ativoCandidato boolean default false,
 	nome character varying(15),
 	descricao character varying(30),
 	titulo character varying(60),
 	ordem integer not null,
 	tipo character varying(60),
-	posicao Integer
+	posicao Integer,
+	empresa_id bigint
 );
 
 ALTER TABLE configuracaocampoextra ADD CONSTRAINT configuracaocampoextra_pkey PRIMARY KEY (id);
+ALTER TABLE ConfiguracaoCampoExtra ADD CONSTRAINT ConfiguracaoCampoExtra_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE configuracaocampoextra_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
-
-CREATE TABLE camposExtras (
-	id bigint NOT NULL,
-	texto1 character varying(250),
-	texto2 character varying(250),
-	texto3 character varying(250),
-	data1 date,
-	data2 date,
-	data3 date,
-	valor1 double precision,
-	valor2 double precision,
-	numero1 Integer,
-	texto4 character varying(250),
-	texto5 character varying(250),
-	texto6 character varying(250),
-	texto7 character varying(250),
-	texto8 character varying(250),
-	texto9 character varying(250),
-	texto10 character varying(250)
-);
-
-ALTER TABLE camposExtras ADD CONSTRAINT camposExtras_pkey PRIMARY KEY(id);
-CREATE SEQUENCE camposExtras_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE colaborador (
     id bigint NOT NULL,
@@ -301,7 +314,7 @@ CREATE TABLE colaborador (
     logradouro character varying(40),
     numero character varying(10),
     complemento character varying(20),
-    bairro character varying(20),
+    bairro character varying(85),
     cep character varying(10),
     cpf character varying(11),
     pis character varying(11),
@@ -433,7 +446,7 @@ ALTER TABLE candidato_areainteresse ADD CONSTRAINT candidato_areainteresse_candi
 
 CREATE TABLE bairro (
     id bigint NOT NULL,
-    nome character varying(20),
+    nome character varying(85),
     cidade_id bigint
 );
 ALTER TABLE bairro ADD CONSTRAINT bairro_pkey PRIMARY KEY (id);
@@ -510,7 +523,8 @@ CREATE TABLE cargo (
     empresa_id bigint,
     ativo boolean default true,
     exibirModuloExterno boolean,
-    atitude text
+    atitude text,
+    complementoConhecimento character varying(120)
 );
 ALTER TABLE cargo ADD CONSTRAINT cargo_pkey PRIMARY KEY (id);
 ALTER TABLE cargo ADD CONSTRAINT cargo_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
@@ -646,7 +660,7 @@ CREATE TABLE periodoExperiencia (
 	id bigint NOT NULL,
 	dias int,
 	empresa_id bigint,
-	descricao character varying(40)
+	descricao character varying(40) NOT NULL
 );
 
 ALTER TABLE periodoExperiencia ADD CONSTRAINT periodoExperiencia_pkey PRIMARY KEY(id);
@@ -1952,7 +1966,8 @@ CREATE TABLE extintorinspecao (
 	data date,
 	empresaResponsavel character varying(50),
 	observacao text,
-	extintor_id bigint
+	extintor_id bigint,
+	outroMotivo character varying(50)
 );
 
 ALTER TABLE extintorinspecao ADD CONSTRAINT extintorinspecao_pkey PRIMARY KEY(id);
@@ -2122,7 +2137,6 @@ CREATE TABLE parametrosdosistema (
     atualizaPapeisIdsAPartirDe bigint DEFAULT null,
     diasLembretePeriodoExperiencia character varying(20),
     emaildosuportetecnico character varying(40),
-    campoExtraColaborador boolean,
     codEmpresaSuporte character varying(10),
     codClienteSuporte character varying(10),
     camposCandidatoVisivel text,

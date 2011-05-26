@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
@@ -134,13 +137,10 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 
 	public void ajustaCamposExtras(ParametrosDoSistema parametrosDoSistema, String[] camposExtras) 
 	{
-		List<String> visiveis = new ArrayList<String>(Arrays.asList(parametrosDoSistema.getCamposCandidatoVisivel().split(",")));
-		List<String> obrigatorios = new ArrayList<String>(Arrays.asList(parametrosDoSistema.getCamposCandidatoObrigatorio().split(",")));
-		
-		visiveis.removeAll(Arrays.asList(camposExtras));
+		Collection<String> visiveis = CollectionUtils.subtract(Arrays.asList(parametrosDoSistema.getCamposCandidatoVisivel().split(",")) , Arrays.asList(camposExtras));
 		parametrosDoSistema.setCamposCandidatoVisivel(StringUtils.join(visiveis.iterator(), ","));
-		
-		obrigatorios.removeAll(Arrays.asList(camposExtras));
+
+		Collection<String> obrigatorios = CollectionUtils.subtract(Arrays.asList(parametrosDoSistema.getCamposCandidatoObrigatorio().split(",")) , Arrays.asList(camposExtras));
 		parametrosDoSistema.setCamposCandidatoObrigatorio(StringUtils.join(obrigatorios.iterator(), ","));
 	}
 }

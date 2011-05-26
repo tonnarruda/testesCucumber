@@ -7,7 +7,7 @@ alter sequence usuario_sequence restart with 2;
 INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acsenha) VALUES (1,'001','AC Padrão','http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal','ADMIN','');
 alter sequence grupoac_sequence restart with 2;
 
-INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,grupoac) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'001');
+INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,grupoac, campoextracolaborador) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'001',false);
 alter sequence empresa_sequence restart with 2;
 
 INSERT INTO estabelecimento (id, nome, complementocnpj, empresa_id) values (1,'Estabelecimento Padrão','0000',1);
@@ -37,6 +37,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (4, '
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (397, 'ROLE_AREAFORMACAO', 'Áreas de Formação', '/geral/areaFormacao/list.action', 5, true, 358);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (57, 'ROLE_MOTIVO_SOLICITACAO', 'Motivos de Solicitação de Pessoal', '/captacao/motivoSolicitacao/list.action', 6, true, 358);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (492, 'ROLE_MOV_SOLICITACAO', 'Modelos de Avaliação do Candidato', '/avaliacao/modeloCandidato/list.action?modeloAvaliacao=S', 7, true, 358);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (507, 'ROLE_COMO_FICOU_SABENDO_VAGA', 'Como Ficou Sabendo da Vaga', '/geral/comoFicouSabendoVaga/list.action', 8, true, 358);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (359, 'ROLE_R&S_MOV', 'Movimentações', '#', 2, true, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (21, 'ROLE_MOV_SOLICITACAO', 'Solicitação de Pessoal', '/captacao/solicitacao/list.action', 1, true, 359);
@@ -47,6 +48,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (360,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (46, 'ROLE_REL_SOLICITACAO', 'Solicitações Abertas', '/captacao/solicitacao/prepareRelatorio.action', 1, true, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (48, 'ROLE_REL_PROCESSO_SELETIVO', 'Análise das Etapas Seletivas', '/captacao/solicitacao/prepareRelatorioProcessoSeletivo.action', 2, true, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (424, 'ROLE_REL_AVALIACAO_CANDIDATOS', 'Avaliações de Candidatos', '/captacao/candidato/prepareRelatorioAvaliacaoCandidatos.action', 3, true, 360);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (508, 'ROLE_COMO_FICOU_SABENDO_VAGA', 'Estatística de Divulgação da Vaga', '/geral/comoFicouSabendoVaga/prepareRelatorioComoFicouSabendoVaga.action', 4, true, 360);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (56, 'ROLE_LIBERA_SOLICITACAO', 'Liberador de Solicitação', '#', 4, false, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (45, 'ROLE_MOV_SOLICITACAO_SELECAO', 'Recrutador(a)', '#', 4, false, 357);
@@ -265,7 +267,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 507;
+alter sequence papel_sequence restart with 509;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -6078,6 +6080,7 @@ INSERT INTO extintorinspecaoitem VALUES(7, 'Localização');
 INSERT INTO extintorinspecaoitem VALUES(8, 'Alça');
 INSERT INTO extintorinspecaoitem VALUES(9, 'Gatilho');
 INSERT INTO extintorinspecaoitem VALUES(10, 'Mangueira');
+INSERT INTO extintorInspecaoItem (id, descricao) VALUES (11, 'Outro');
 
 INSERT INTO extintormanutencaoservico VALUES(1, 'Recarga');
 INSERT INTO extintormanutencaoservico VALUES(2, 'Pintura');
@@ -6093,24 +6096,41 @@ INSERT INTO extintormanutencaoservico VALUES(10, 'Válvula Cilindro Adicional');
 insert into exame (id, nome, periodicidade, periodico, empresa_id) values (1, 'ASO', 0, false, 1);
 alter sequence exame_sequence restart with 2;
 
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (1,'f','texto1','Campo de Texto 1', 1,'texto',1);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (2,'f','texto2','Campo de Texto 2', 1,'texto',2);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (3,'f','texto3','Campo de Texto 3', 1,'texto',3);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (4,'f','data1','Campo de Data 1', 1,'data',11);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (5,'f','data2','Campo de Data 2', 1,'data',12);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (6,'f','data3','Campo de Data 3', 1,'data',13);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (7,'f','valor1','Campo de Valor 1', 1,'valor',14);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (8,'f','valor2','Campo de Valor 2', 1,'valor',15);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (9,'f','numero1','Campo de Numero', 1,'numero',16);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (10,'f','texto4','Campo de Texto 4', 1,'texto',4);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (11,'f','texto5','Campo de Texto 5', 1,'texto',5);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (12,'f','texto6','Campo de Texto 6', 1,'texto',6);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (13,'f','texto7','Campo de Texto 7', 1,'texto',7);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (14,'f','texto8','Campo de Texto 8', 1,'texto',8);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (15,'f','texto9','Campo de Texto 9', 1,'texto',9);
-insert into configuracaocampoextra (id,ativo,nome,descricao,ordem,tipo,posicao) values (16,'f','texto10','Campo de Texto 10', 1,'texto',10);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (1,'f','f','texto1','Campo de Texto 1', 1,'texto',1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (2,'f','f','texto2','Campo de Texto 2', 1,'texto',2);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (3,'f','f','texto3','Campo de Texto 3', 1,'texto',3);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (4,'f','f','data1','Campo de Data 1', 1,'data',11);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (5,'f','f','data2','Campo de Data 2', 1,'data',12);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (6,'f','f','data3','Campo de Data 3', 1,'data',13);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (7,'f','f','valor1','Campo de Valor 1', 1,'valor',14);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (8,'f','f','valor2','Campo de Valor 2', 1,'valor',15);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (9,'f','f','numero1','Campo de Numero', 1,'numero',16);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (10,'f','f','texto4','Campo de Texto 4', 1,'texto',4);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (11,'f','f','texto5','Campo de Texto 5', 1,'texto',5);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (12,'f','f','texto6','Campo de Texto 6', 1,'texto',6);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (13,'f','f','texto7','Campo de Texto 7', 1,'texto',7);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (14,'f','f','texto8','Campo de Texto 8', 1,'texto',8);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (15,'f','f','texto9','Campo de Texto 9', 1,'texto',9);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (16,'f','f','texto10','Campo de Texto 10', 1,'texto',10);
 
-alter sequence configuracaocampoextra_sequence restart with 10;
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (17,'f','f','texto1','Campo de Texto 1', 1,'texto',1, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (18,'f','f','texto2','Campo de Texto 2', 1,'texto',2, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (19,'f','f','texto3','Campo de Texto 3', 1,'texto',3, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (20,'f','f','data1','Campo de Data 1', 1,'data',11, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (21,'f','f','data2','Campo de Data 2', 1,'data',12, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (22,'f','f','data3','Campo de Data 3', 1,'data',13, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (23,'f','f','valor1','Campo de Valor 1', 1,'valor',14, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (24,'f','f','valor2','Campo de Valor 2', 1,'valor',15, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (25,'f','f','numero1','Campo de Numero', 1,'numero',16, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (26,'f','f','texto4','Campo de Texto 4', 1,'texto',4, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (27,'f','f','texto5','Campo de Texto 5', 1,'texto',5, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (28,'f','f','texto6','Campo de Texto 6', 1,'texto',6, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (29,'f','f','texto7','Campo de Texto 7', 1,'texto',7, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (30,'f','f','texto8','Campo de Texto 8', 1,'texto',8, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (31,'f','f','texto9','Campo de Texto 9', 1,'texto',9, 1);
+insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao, empresa_id) values (32,'f','f','texto10','Campo de Texto 10', 1,'texto',10, 1);
+
+alter sequence configuracaocampoextra_sequence restart with 33;
 
 insert into codigoCBO (codigo, descricao) values ('848505','Abatedor');
 insert into codigoCBO (codigo, descricao) values ('764305','Acabador de calçados');
@@ -8539,11 +8559,13 @@ insert into codigoCBO (codigo, descricao) values ('841745','Xaropeiro');
 insert into codigoCBO (codigo, descricao) values ('514120','Zelador de edifício');
 insert into codigoCBO (codigo, descricao) values ('223310','Zootecnista');
 
-insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, campoextracolaborador, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.45.37', '', '25', false,false, 2, '1.0.1.44', 1, 3, false, 
+insert into comoFicouSabendoVaga (id, nome) values (1, 'Outro');
+
+insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, exame_id, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.46.38', '', '25', false,false, 2, '1.0.1.44', 1, 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
-'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais'
+'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'
 );
 
 alter sequence parametrosdosistema_sequence restart with 2;
