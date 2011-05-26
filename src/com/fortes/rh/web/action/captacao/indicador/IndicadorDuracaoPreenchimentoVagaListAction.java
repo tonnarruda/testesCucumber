@@ -50,7 +50,6 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	public String prepare() throws Exception
 	{
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 
 		return Action.SUCCESS;

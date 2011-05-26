@@ -236,6 +236,8 @@
 				/geral/colaborador/updateInfoPessoais.action* = ROLE_CAD_INFO_PESSOAL
 				/geral/colaborador/*/**=ROLE_CAD_COLABORADOR
 				/geral/historicoColaboradorBeneficio/*/**=ROLE_CAD_COLABORADOR
+				/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
+				/geral/colaboradorOcorrencia/relatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
 				/geral/colaboradorOcorrencia/*/**=ROLE_CAD_COLABORADOR, ROLE_CAD_OCORRENCIA
 				/geral/gastoEmpresa/*/**=ROLE_MOV_GASTO_GASTOEMPRESA
 				/geral/areaInteresse/*/**=ROLE_CAD_AREA

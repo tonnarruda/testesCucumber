@@ -1,18 +1,24 @@
 package com.fortes.rh.web.action.geral;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 @SuppressWarnings({"serial"})
@@ -22,6 +28,8 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private ColaboradorOcorrencia colaboradorOcorrencia;
 	private Colaborador colaborador;
@@ -31,6 +39,11 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	private Collection<ColaboradorOcorrencia> colaboradorOcorrencias;
 	private Collection<Colaborador> colaboradors;
+	
+	private String[] areasCheck;
+	private String[] estabelecimentosCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 
 	public String prepare() throws Exception
 	{
@@ -166,6 +179,47 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			colaboradorOcorrencia = new ColaboradorOcorrencia();
 		return colaboradorOcorrencia;
 	}
+	
+	
+	public String prepareRelatorioAbsenteismo() throws Exception
+	{
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());		
+//		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+
+		return Action.SUCCESS;
+	}
+
+//	public String relatorioAbsenteismo() throws Exception 
+//	{
+//		Date dataIni = DateUtil.criarDataMesAno(dataDe);
+//		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataAte));
+//		
+//		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)
+//		{
+//			addActionMessage("Não é permitido um período maior do 12 meses para a geração deste relatório");
+//			prepare();
+//			return Action.INPUT;
+//		}
+//		
+//		try 
+//		{
+//			TurnOverCollection turnOverCollection = new TurnOverCollection();
+//			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema().getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
+//			dataSource = Arrays.asList(turnOverCollection);
+//			
+//			String filtro =  "Período: " + dataDe + " a " + dataAte;
+//			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", getEmpresaSistema(), filtro);
+//			
+//			return Action.SUCCESS;
+//		
+//		} catch (ColecaoVaziaException e) {
+//
+//			addActionMessage(e.getMessage());
+//			prepare();
+//			return Action.INPUT;
+//		}
+//	}
 
 	public void setColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia)
 	{
@@ -234,5 +288,29 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	public Collection<Colaborador> getColaboradors() {
 		return colaboradors;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setAreasCheck(String[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public void setEstabelecimentosCheck(String[] estabelecimentosCheck) {
+		this.estabelecimentosCheck = estabelecimentosCheck;
+	}
+
+	public Collection<CheckBox> getAreasCheckList() {
+		return areasCheckList;
+	}
+
+	public Collection<CheckBox> getEstabelecimentosCheckList() {
+		return estabelecimentosCheckList;
 	}
 }

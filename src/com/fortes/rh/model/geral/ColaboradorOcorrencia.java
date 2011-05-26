@@ -30,6 +30,7 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
     private Colaborador colaborador;
 	@ManyToOne(fetch=FetchType.LAZY)
     private Ocorrencia ocorrencia;
+	private boolean absenteismo;
 
     public void setProjectionDescricao(String projectionDescricao)
     {
@@ -192,5 +193,13 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 	public void setObservacao(String observacao)
 	{
 		this.observacao = observacao;
+	}
+
+	public boolean isAbsenteismo() {
+		return absenteismo;
+	}
+
+	public void setAbsenteismo(boolean absenteismo) {
+		this.absenteismo = absenteismo;
 	}
 }

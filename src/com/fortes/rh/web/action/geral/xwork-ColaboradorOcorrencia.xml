@@ -31,5 +31,17 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorOcorrenciaEdit.ftl</result>
 			<result name="invalid.token" type="redirect">list.action</result>
 		</action>
+		<action name="prepareRelatorioAbsenteismo" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="prepareRelatorioAbsenteismo">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/relatorioAbsenteismo.ftl</result>
+		</action>
+		<action name="relatorioAbsenteismo" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="relatorioAbsenteismo">
+			<result name="success" type="jasper">
+				<param name="location">/WEB-INF/report/absenteismo.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">absenteismo.pdf</param>
+			</result>
+			<result name="input" type="redirect">prepareRelatorioAbsenteismo.action</result>
+		</action>
 	</package>
 </xwork>
