@@ -321,6 +321,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	configuracaoCampoExtraManager.expects(once()).method("findAllNomes").will(returnValue(new String[]{}));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	empresaManager.expects(once()).method("findToList").will(returnValue(empresas));
+    	empresaManager.expects(once()).method("findById").will(returnValue(EmpresaFactory.getEmpresa(1L)));
     	cargoManager.expects(once()).method("findAllSelectModuloExterno").will(returnValue(new ArrayList<Cargo>()));
     	areaInteresseManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AreaInteresse>()));
     	conhecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Conhecimento>()));
