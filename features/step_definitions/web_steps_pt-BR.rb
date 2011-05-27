@@ -157,7 +157,7 @@ Então /^eu não devo ver "([^"]*)"$/ do |text|
   Then %{I should not see "#{text}"}
 end
 
-Então /^eu não devo na listagem "([^"]*)"$/ do |text|
+Então /^eu não devo ver na listagem "([^"]*)"$/ do |text|
   Then %{I should not see "#{text}" within ".dados"}
 end
 

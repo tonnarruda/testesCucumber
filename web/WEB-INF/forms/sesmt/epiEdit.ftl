@@ -133,7 +133,7 @@
 		<button onclick="window.location='../epiHistorico/prepareInsert.action?epi.id=${epi.id}'" class="btnInserir_Historico" accesskey="I">
 		</button>
 	</#if>
-		<button onclick="window.location='list.action'" class="btnVoltar" accesskey="V">
+		<button onclick="window.location='list.action'" class="btnCancelar">
 		</button>
 	</div>
 </body>
