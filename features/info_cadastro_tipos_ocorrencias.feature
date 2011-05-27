@@ -33,7 +33,7 @@ Funcionalidade: Tipos de Ocorrências
     Então eu clico em excluir "Acidente"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     E eu devo ver "Ocorrência excluída com sucesso."
-    Então eu não devo na listagem "Acidente"
+    Então eu não devo ver na listagem "Acidente"
 
 
 
