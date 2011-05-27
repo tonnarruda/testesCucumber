@@ -33,7 +33,7 @@ Funcionalidade: Cadastrar Estabelecimento
     E eu preencho "Nome" com "_Estabelecimento de Teste 2"
     E eu preencho "CEP" com "60320-100"
     E eu saio do campo "CEP"
-    E eu espero o campo "Logradouro" ficar abilitado
+    E eu espero o campo "Logradouro" ficar habilitado
     E o campo "Logradouro" deve conter "Rua Haroldo Torres"
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "Cidade" deve ter "Fortaleza" selecionado
