@@ -211,7 +211,7 @@ Quando /^eu espero (\d+) segundos$/ do |segundos|
   sleep segundos.to_i
 end
 
-Quando /^eu espero o campo "([^"]*)" ficar abilitado$/ do |field|
+Quando /^eu espero o campo "([^"]*)" ficar habilitado$/ do |field|
   field = find_field(field)
   1.upto(100) do
     break if (field[:disabled] == "false")
@@ -223,6 +223,18 @@ end
 Quando /^eu saio do campo "([^"]*)"$/ do |field|
   field = find_field(field)
   page.execute_script("$('##{field[:id]}').blur()")
+end
+
+Então /^eu não devo ver a aba "([^"]*)"$/ do |titulo_aba|
+  page.should_not have_xpath("//div[@id='abas']/div/a", :text => /#{titulo_aba}/i)
+end
+
+Então /^eu devo ver a aba "([^"]*)"$/ do |titulo_aba|
+  page.should have_xpath("//div[@id='abas']/div/a", :text => /#{titulo_aba}/i)
+end
+
+Quando /^eu clico na aba "([^"]*)"$/ do |text|
+   find(:xpath, "//div[@id='abas']/div/a", :text => /#{text}/i).click
 end
 
 Então /^o campo "([^"]*)" deve ter "([^"]*)" selecionado$/ do |field, value|
