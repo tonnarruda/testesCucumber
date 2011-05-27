@@ -47,17 +47,17 @@ Funcionalidade: Cadastrar Colaborador
     E eu devo ver "_Zé da Silva"
 
     Quando eu clico em editar "_Zé da Silva"
-    E o campo "Nome" deve conter "_Zé da Silva"
-    E eu preencho "Nome" com "_Zé da Silva Barbosa"
+    Entao o campo "Nome" deve conter "_Zé da Silva"
+    Quando eu preencho "Nome" com "_Zé da Silva Barbosa"
     E eu preencho "CEP" com "60320-100"
     E eu saio do campo "CEP"
-    E eu espero 4 segundos
-    E o campo "Logradouro" deve conter "Rua Haroldo Torres"
+    E eu espero o campo "Logradouro" ficar abilitado
+    Então o campo "Logradouro" deve conter "Rua Haroldo Torres"
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "cidade" deve ter "Fortaleza" selecionado
     E o campo "bairroNome" deve conter "São Gerardo"
-    E eu clico no botão "Gravar"
-    E eu devo ver "_Zé da Silva Barbosa"
+    Quando eu clico no botão "Gravar"
+    Entao eu devo ver "_Zé da Silva Barbosa"
 
     Quando eu clico em excluir "_Zé da Silva Barbosa"
     Então eu devo ver "Confirma exclusão?"

@@ -21,18 +21,13 @@ Dado /^que eu esteja logado$/ do
 end
 
 Quando /^eu acesso o menu "([^"]*)"$/ do |menu_path|
-    items = menu_path.strip.split(/\s*>\s*/)
-    menu_master = items.shift;
-
-    link = find("#menuDropDown > li > a:contains('" + menu_master + "')")
-    page.execute_script("$(\"a:contains('" + menu_master + "') ~ ul\").show()")
-    link.click
-    
-    items.each do |item|
-       link = link.find(:xpath, "../ul/li/a[text()='" + item + "']")
-       page.execute_script("$(\"a:contains('" + menu_master + "') ~ ul\").find(\"a:contains('" + item + "') ~ ul\").show()")
-	     link.click
-    end
+  items = menu_path.strip.split(/\s*>\s*/)
+  menu_master = items.shift;
+  link = find("#menuDropDown > li > a:contains('" + menu_master + "')")
+  items.each do |item|
+     link = link.find(:xpath, "../ul/li/a[text()='" + item + "']")
+  end
+  page.execute_script("window.location = '#{link[:href]}'")
 end
 
 Quando /^eu clico em "Entrar"?$/ do
@@ -210,6 +205,15 @@ end
 
 Quando /^eu espero (\d+) segundos$/ do |segundos|
   sleep segundos.to_i
+end
+
+Quando /^eu espero o campo "([^"]*)" ficar abilitado$/ do |field|
+  field = find_field(field)
+  1.upto(100) do
+    break if (field[:disabled] == "false")
+    sleep 0.1
+  end
+  field[:disabled].should == "false"
 end
 
 Quando /^eu saio do campo "([^"]*)"$/ do |field|
