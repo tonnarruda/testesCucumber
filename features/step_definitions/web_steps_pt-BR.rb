@@ -162,6 +162,10 @@ Então /^eu não devo ver "([^"]*)"$/ do |text|
   Then %{I should not see "#{text}"}
 end
 
+Então /^eu não devo na listagem "([^"]*)"$/ do |text|
+  Then %{I should not see "#{text}" within ".dados"}
+end
+
 Então /^eu não devo ver "([^"]*)" dentro de "([^"]*)"$/ do |text, selector|
   Then %{I should not see "#{text}" within "#{selector}"}
 end
