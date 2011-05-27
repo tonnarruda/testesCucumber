@@ -80,6 +80,11 @@ Quando /^eu preencho "([^"]*)" com "([^"]*)"$/ do |field, value|
   When %{I fill in "#{field}" with "#{value}"}
 end
 
+Quando /^eu preencho a data "([^"]*)" com "([^"]*)"$/ do |field, value|
+  field = get_field(field)
+  page.execute_script("$('##{field}').val('#{value}')")
+end
+
 Quando /^eu preencho "([^"]*)" para "([^"]*)"$/ do |value, field|
   When %{I fill in "#{value}" for "#{field}"}
 end
