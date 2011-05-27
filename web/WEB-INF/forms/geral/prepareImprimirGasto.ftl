@@ -60,9 +60,9 @@
 <@ww.form name="form" action="gerarRelatorioInvestimentos.action"  onsubmit="${validarCampos}" validate="true" method="POST">
 	<div>Período (Mês/Ano)*</div>
 
-	<@ww.textfield name="dataIni" id="dataIni" required="true" liClass="liLeft" cssClass="mascaraDataMesAno validaDataIni"/>
+	<@ww.textfield name="dataIni" id="dataIni" required="true" liClass="liLeft" cssClass="mascaraMesAnoData validaDataIni"/>
 	<@ww.label value="a" liClass="liLeft"/>
-	<@ww.textfield name="dataFim" id="dataFim" required="true" cssClass="mascaraDataMesAno validaDataFim"/>
+	<@ww.textfield name="dataFim" id="dataFim" required="true" cssClass="mascaraMesAnoData validaDataFim"/>
 	<br>
 	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" onClick="populaColaborador();"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" onClick="populaColaborador();" />

@@ -29,7 +29,7 @@
 <@ww.actionerror />
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}"  validate="true" method="POST">
     <@ww.label label="Colaborador" name="colaborador.nomeComercial" />
-	<@ww.textfield label="A partir de (Mês/Ano)" name="historicoColaboradorBeneficio.dataMesAno" id="data" required="true" value="${data}" cssClass="mascaraDataMesAno"/>
+	<@ww.textfield label="A partir de (Mês/Ano)" name="historicoColaboradorBeneficio.dataMesAno" id="data" required="true" value="${data}" cssClass="mascaraMesAnoData"/>
 	<@frt.checkListBox label="Benefícios" name="beneficiosCheck" list="beneficiosCheckList" />
 	<font color="blue">* Os benefícios selecionados foram sugeridos de acordo com o último histórico</font>
 	<@ww.hidden label="Id" name="historicoColaboradorBeneficio.id" />

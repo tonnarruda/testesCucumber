@@ -1,19 +1,34 @@
 package com.fortes.rh.dao.hibernate.geral;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
+import sun.util.calendar.Gregorian;
+
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
+import com.fortes.rh.model.geral.relatorio.Absenteismo;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<ColaboradorOcorrencia> implements ColaboradorOcorrenciaDao
@@ -185,5 +200,64 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 
 		boolean exists = ((Integer)criteria.uniqueResult()) > 0;
 		return exists;
+	}
+
+	public String montaDiasDoPeriodo(Date dataIni, Date dataFim) 
+	{
+		StringBuilder diasDoPeriodo = new StringBuilder();
+		
+		int qtdDias = DateUtil.diferencaEntreDatas(dataIni, dataFim);
+		for (int i = 0; i < qtdDias; i++) 
+			diasDoPeriodo.append("select cast('" + DateUtil.formataDiaMesAno(DateUtil.incrementaDias(dataIni, i)) + "' as date) as dia union ");
+
+		diasDoPeriodo.append("select cast('" + DateUtil.formataDiaMesAno(DateUtil.incrementaDias(dataIni, qtdDias)) + "' as date) as dia ");
+		
+		return diasDoPeriodo.toString();
+	}
+	
+	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds) 
+	{
+		String diasDoPeriodo = montaDiasDoPeriodo(dataIni, dataFim);
+
+		//zigs quando a ocorrencia terminar fora do periodo
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(co.dataini) as total from ");
+		sql.append(" ( " + diasDoPeriodo + " ) as datasDoPeriodo  ");
+		sql.append("left join ColaboradorOcorrencia co on ");
+		sql.append("	datasDoPeriodo.dia between :dataIni and :dataFim ");
+		sql.append("	and datasDoPeriodo.dia between co.dataini and co.datafim ");
+		sql.append("	and co.absenteismo = true ");
+		sql.append("left join Colaborador c on c.id = co.colaborador_id ");
+		sql.append("	and c.empresa_id = :empresaId ");
+		sql.append("left join HistoricoColaborador hc on hc.colaborador_id = c.id ");
+		sql.append("	and hc.status = :status ");
+		sql.append("	and hc.data = ( ");
+		sql.append("		select max(hc2.data) ");
+		sql.append("		from HistoricoColaborador as hc2 ");
+		sql.append("		where hc2.colaborador_id = c.id ");
+		sql.append("			and hc2.data <= :hoje and hc2.status = :status ");
+		sql.append("	)");
+		sql.append("group by date_part('year',dia), date_part('month',dia) ");
+		sql.append("order by date_part('month',dia), date_part('year',dia) ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+
+		query.setDate("hoje", new Date());
+		query.setDate("dataIni", new Date());
+		query.setDate("dataFim", new Date());
+		query.setLong("empresaId", 4L);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();
+		Collection lista = query.list();
+
+		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
+		{
+			Object[] array = it.next();
+			absenteismos.add(new Absenteismo(((Double)array[0]).toString(), ((Double)array[1]).toString(), ((BigInteger)array[2]).intValue()));
+		}
+
+		return absenteismos;
 	}
 }

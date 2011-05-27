@@ -96,7 +96,7 @@
 			<br>
 		</li>
 		<@ww.select label="Colaborador" name="gastoEmpresa.colaborador.id" id="colab" list="colaboradors" listKey="id" listValue="nomeComercial" headerValue="Selecione..." headerKey="" required="true"/>
-		<@ww.textfield label="Mês/Ano" name="dataMesAno" id="mesAno" cssClass="mascaraDataMesAno"/>
+		<@ww.textfield label="Mês/Ano" name="dataMesAno" id="mesAno" cssClass="mascaraMesAnoData"/>
 
 		<@ww.hidden name="gastoEmpresa.id" />
 

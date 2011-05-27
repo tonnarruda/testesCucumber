@@ -21,6 +21,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -239,6 +240,27 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 
 		assertTrue(colaboradorOcorrenciaDao.verifyExistsMesmaData(colaboradorOcorrencia.getId(), colaborador.getId(), ocorrencia.getId(), empresa.getId(), hoje));
 
+	}
+	
+	public void testCountFaltasByPeriodo()
+	{
+		Collection<Absenteismo> absenteismo = colaboradorOcorrenciaDao.countFaltasByPeriodo(DateUtil.criarDataMesAno(27, 01, 2011), DateUtil.criarDataMesAno(28, 05, 2011), null, null, null);
+		assertEquals(5, absenteismo.size());
+	}
+	
+	public void testMontaDiasDoPeriodo()
+	{
+		assertEquals("select cast('27/02/2011' as date) as dia union " +
+				"select cast('28/02/2011' as date) as dia union " +
+				"select cast('01/03/2011' as date) as dia union " +
+				"select cast('02/03/2011' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("27/02/2011"), DateUtil.montaDataByString("02/03/2011")));
+		
+		assertEquals("select cast('02/03/2011' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("02/03/2011"), DateUtil.montaDataByString("02/03/2011")));
+
+		assertEquals("select cast('30/12/2011' as date) as dia union " +
+				"select cast('31/12/2011' as date) as dia union " +
+				"select cast('01/01/2012' as date) as dia union " +
+				"select cast('02/01/2012' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("30/12/2011"), DateUtil.montaDataByString("02/01/2012")));
 	}
 
 	public GenericDao<ColaboradorOcorrencia> getGenericDao()

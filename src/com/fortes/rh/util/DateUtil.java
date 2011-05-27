@@ -651,4 +651,24 @@ public class DateUtil
 		return (data.compareTo(inicio) >= 0 && data.compareTo(fim) <= 0);
 	}
 
+	public static int contaDiasUteisMes(Date data){  
+	    
+		Date dataInicial = getInicioMesData(data);
+		Date dataFinal = getUltimoDiaMes(data);
+		
+	    int diasUteis = 0;
+	    int totalDias = diferencaEntreDatas( dataInicial, dataFinal ) + 1;  
+	      
+	    Calendar calendar = new GregorianCalendar( dataFinal.getYear(), dataFinal.getMonth(), dataFinal.getDay() );  
+  
+	    for( int i = 0; i <= totalDias; i++ ) {  
+	          
+	        if( !( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ) && !( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ) ) {  
+	        	diasUteis++;  
+	        }  
+	        calendar.add( Calendar.DATE, 1 );  
+	    }
+	      
+	    return diasUteis;
+	} 
 }

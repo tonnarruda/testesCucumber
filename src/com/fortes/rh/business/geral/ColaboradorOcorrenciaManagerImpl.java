@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.springframework.transaction.PlatformTransactionManager;
@@ -13,11 +14,13 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
@@ -26,6 +29,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 {
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
+	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia;
 
@@ -220,6 +224,29 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return getDao().verifyExistsMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni);
 	}
 
+	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds) throws Exception 
+	{
+		double qtdTotalFaltas;
+		int qtdDiasTrabMes;
+		
+		int ate = DateUtil.mesesEntreDatas(dataIni, dataFim);
+		Date dataTmp = DateUtil.getInicioMesData(dataIni);
+
+		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();
+		absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds);
+		
+		
+		
+		int qtdAtivos = colaboradorManager.countAtivosPeriodo(dataIni, empresaId, estabelecimentosIds, areasIds);
+
+		
+		
+		if (absenteismos == null || absenteismos.isEmpty())
+			throw new ColecaoVaziaException();
+		
+		return absenteismos;
+	}
+	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
@@ -236,5 +263,9 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	public void setAcPessoalClientColaboradorOcorrencia(AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia)
 	{
 		this.acPessoalClientColaboradorOcorrencia = acPessoalClientColaboradorOcorrencia;
+	}
+
+	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
+		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
 	}
 }

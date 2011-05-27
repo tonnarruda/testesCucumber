@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
+import com.fortes.rh.model.geral.relatorio.Absenteismo;
 
 public interface ColaboradorOcorrenciaDao extends GenericDao<ColaboradorOcorrencia>
 {
@@ -15,4 +16,6 @@ public interface ColaboradorOcorrenciaDao extends GenericDao<ColaboradorOcorrenc
 	ColaboradorOcorrencia findByIdProjection(Long colaboradorOcorrenciaId);
 	ColaboradorOcorrencia findByDadosAC(Date dataIni, String ocorrenciaCodigoAC, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC);
 	boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni);
+	Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds);
+	String montaDiasDoPeriodo(Date dataIni, Date dataFim);
 }

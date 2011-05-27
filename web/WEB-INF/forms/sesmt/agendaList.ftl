@@ -17,8 +17,8 @@
 	<@ww.actionerror />
 		<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" id="formBusca" action="list.action" validate="true" method="POST">
-			<@ww.textfield label="Mês/Ano inicial" name="dataMesAnoIni" cssClass="mascaraDataMesAno" liClass="liLeft"/>
-			<@ww.textfield label="Mês/Ano final" name="dataMesAnoFim" cssClass="mascaraDataMesAno"/>
+			<@ww.textfield label="Mês/Ano inicial" name="dataMesAnoIni" cssClass="mascaraMesAnoData" liClass="liLeft"/>
+			<@ww.textfield label="Mês/Ano final" name="dataMesAnoFim" cssClass="mascaraMesAnoData"/>
 			<@ww.select label="Estabelecimento" name="estabelecimento.id" id="estabelecimento" list="estabelecimentos" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 300px;"  />
 			
 			<input type="submit" value="" class="btnPesquisar grayBGE">

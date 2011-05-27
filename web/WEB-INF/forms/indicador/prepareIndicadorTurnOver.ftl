@@ -35,9 +35,9 @@ Ele é calculado pela fórmula [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Col
 
 <@ww.form name="form" action="list.action" validate="true" method="POST">
 	<div>Período (Mês/Ano)*:</div>
-	<@ww.textfield name="dataDe" id="dataDe" required="true"  cssClass="mascaraDataMesAno validaDataIni" liClass="liLeft"/>
+	<@ww.textfield name="dataDe" id="dataDe" required="true"  cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
 	<@ww.label value="a" liClass="liLeft"/>
-	<@ww.textfield name="dataAte" id="dataAte" required="true" cssClass="mascaraDataMesAno validaDataFim"/>
+	<@ww.textfield name="dataAte" id="dataAte" required="true" cssClass="mascaraMesAnoData validaDataFim"/>
 	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
 
 	<@ww.select id="optFiltro" label="Filtrar Por" name="filtro" list=r"#{'1':'Área Organizacional', '2':'Cargo'}" onchange="filtrarOpt();"/>

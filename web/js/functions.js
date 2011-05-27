@@ -210,7 +210,7 @@ function validaCampos(campos)
 		{
 			campoClass = campo.className;
 			// valida campos
-			if(campoClass.substring(0, 17) == "mascaraDataMesAno" && campo.value != valueDataMesAno)
+			if(campoClass.substring(0, 17) == "mascaraMesAnoData" && campo.value != valueDataMesAno)
 				validacao = validaDateMesAno(campo);
 			else if(campoClass.substring(0, 11) == "mascaraData" && campo.value != valueData && campo.value != "")
 				validacao = validaDate(campo);
@@ -295,7 +295,7 @@ function validaCamposObrigatorios(campos, formulario)
 			// valida campos
 			if(campoClass == "listCheckBox" && qtdeChecksSelected(document.getElementsByName(formulario)[0], nameCampoSemIdentificador) != 0)
 				validacao = true;
-			else if(campoClass.substring(0, 17) == "mascaraDataMesAno" && campo.value != valueDataMesAno)
+			else if(campoClass.substring(0, 17) == "mascaraMesAnoData" && campo.value != valueDataMesAno)
 				validacao = true;
 			else if(campoClass.substring(0, 11) == "mascaraData" && campo.value != valueData)
 				validacao = true;
@@ -309,7 +309,7 @@ function validaCamposObrigatorios(campos, formulario)
 				validacao = true;
 			else if(campoClass == "pontuacao" && campo.value != '')
 				validacao = true;
-			else if((campoClass != "listCheckBox" && campoClass != "mascaraHora" && campoClass != "mascaraCnpj" && campoClass != "mascaraCep" && campoClass != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraDataMesAno" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
+			else if((campoClass != "listCheckBox" && campoClass != "mascaraHora" && campoClass != "mascaraCnpj" && campoClass != "mascaraCep" && campoClass != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraMesAnoData" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
 				validacao = true;
 
 			if(validacao)
@@ -356,7 +356,7 @@ function limpaMascaras(campos)
 			{
 				campoClass = campo.className;
 	
-				if(campoClass.substring(0, 17) == "mascaraDataMesAno" && campo.value == valueDataMesAno)
+				if(campoClass.substring(0, 17) == "mascaraMesAnoData" && campo.value == valueDataMesAno)
 					campo.value = limpaCamposMascaraDataMesAno(campo.value);
 				else if(campoClass.substring(0, 11) == "mascaraData" && campo.value == valueData)
 					campo.value = limpaCamposMascaraData(campo.value);
@@ -387,7 +387,7 @@ function resetFormulario(campos)
 			campo.style.background="#FFF";
 			campoClass = campo.className;
 
-			if(campoClass.substring(0, 17) == "mascaraDataMesAno")
+			if(campoClass.substring(0, 17) == "mascaraMesAnoData")
 				campo.value = valueDataMesAno;
 			else if(campoClass.substring(0, 11) == "mascaraData")
 				campo.value = valueData;

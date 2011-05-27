@@ -246,7 +246,7 @@
 
 jQuery(function($){
 $(".mascaraData").mask("99/99/9999",{placeholder:" "});
-$(".mascaraDataMesAno").mask("99/9999",{placeholder:" "});
+$(".mascaraMesAnoData").mask("99/9999",{placeholder:" "});
 $(".mascaraCpf").mask("999.999.999-99",{placeholder:" "});
 $(".mascaraCnpj").mask("99.999.999/9999-99",{placeholder:" "});
 $(".mascaraCep").mask("99999-999",{placeholder:" "});

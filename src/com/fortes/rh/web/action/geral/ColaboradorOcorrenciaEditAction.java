@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -15,8 +17,10 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -44,6 +48,9 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	
+	private Map<String, Object> parametros = new HashMap<String, Object>();
+	private Collection<TurnOverCollection> dataSource;
 
 	public String prepare() throws Exception
 	{
@@ -185,7 +192,9 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	{
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());		
+
 //		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+//		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
 		return Action.SUCCESS;
 	}

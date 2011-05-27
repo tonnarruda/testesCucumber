@@ -35,7 +35,7 @@
 		<@ww.actionmessage />
 		
 		<@ww.form name="form" action="${formAction}" method="POST">
-			<@ww.textfield label="Mês/Ano" name="dataMesAno" id="mesAno" cssClass="mascaraDataMesAno"/>
+			<@ww.textfield label="Mês/Ano" name="dataMesAno" id="mesAno" cssClass="mascaraMesAnoData"/>
 			<@ww.select label="Estabelecimento" name="agenda.estabelecimento.id" id="estabelecimento" list="estabelecimentos" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 300px;"  required="true" />
 			<@ww.select label="Evento" name="agenda.evento.id" id="evento" list="eventos" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 300px;"  required="true" />
 			<@ww.hidden name="agenda.id" />

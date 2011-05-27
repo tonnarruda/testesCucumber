@@ -25,7 +25,7 @@
 
 	<@ww.actionerror />
 	<@ww.form name="form" action="clonar.action" onsubmit="${validarCampos}" method="POST">
-		<@ww.textfield label="Clonar para (Mês/Ano)" name="dataClone" id="dataClone" cssClass="mascaraDataMesAno"/>
+		<@ww.textfield label="Clonar para (Mês/Ano)" name="dataClone" id="dataClone" cssClass="mascaraMesAnoData"/>
 
 		<@ww.label label="Mês/Ano" name="dataMesAno"/>
 		<@ww.label label="Colaborador" name="gastoEmpresa.colaborador.nome" />

@@ -376,4 +376,9 @@ public class DateUtilTest extends TestCase
 		assertFalse(DateUtil.between(data1, dataInicio, dataFim));
 	}
 	
+	public void testContaDiasUteis()
+	{
+		Date data = DateUtil.montaDataByString("26/02/2011");
+		assertEquals(20, DateUtil.contaDiasUteisMes(data));
+	}
 }

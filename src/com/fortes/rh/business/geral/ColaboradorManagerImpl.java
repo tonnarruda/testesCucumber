@@ -1765,4 +1765,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return valor;
 	}
 
+	public int countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds) {
+		return getDao().countAtivosPeriodo(dataIni, empresaId, estabelecimentosIds, areasIds, null);
+	}
+
 }

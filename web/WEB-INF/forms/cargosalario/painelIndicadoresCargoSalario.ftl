@@ -286,9 +286,9 @@
 			</div>
 			<div id="divFiltroForm2" class="divFiltroForm ${classHidden}">
 			<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadoresCargoSalario.action#pagebottom" method="POST">
-				<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="mesAnoIni" cssClass="mascaraDataMesAno" liClass="liLeft"/>
+				<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="mesAnoIni" cssClass="mascaraMesAnoData" liClass="liLeft"/>
 				<@ww.label value="a" liClass="liLeft" />
-				<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="mesAnoFim" cssClass="mascaraDataMesAno"/>
+				<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="mesAnoFim" cssClass="mascaraMesAnoData"/>
 				
 				<@ww.hidden name="dataBase"/>
 
