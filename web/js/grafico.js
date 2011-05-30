@@ -1,3 +1,43 @@
+function montaLine(data, idGrafico) {
+    var options = {
+	    series: {
+           lines: { show: true },
+           points: { show: true }
+        },
+        grid: { hoverable: true },
+        xaxis: { 
+        	mode: "time",
+        	ticks: data.map(function (item){return item[0]}),
+        	timeformat: '%b/%y ',
+        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+        },
+        yaxis: { 
+        	 tickFormatter: function (v) {return v;}
+        }
+    };			
+        
+    var plot = $.plot($(idGrafico), [data], options);
+
+	var previousPoint = null;				
+	$(idGrafico).bind("plothover", function (event, pos, item) {
+        if (item) 
+        {
+        	if (previousPoint != item.dataIndex) 
+        	{
+        		previousPoint = item.dataIndex;
+                $("#tooltip").remove();
+                var y = item.datapoint[1].toFixed(4);		                    
+                showTooltip(item.pageX, item.pageY, y);
+            }
+        }
+		else 
+		{
+        	$("#tooltip").remove();
+        	previousPoint = null;            
+        }
+	});
+}
+
 function montaPie(data, clazz, options) {
 	var config = {
         radius: 0.8,

@@ -144,4 +144,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional area);
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId);
 	public int countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds);
+	public Collection<Object[]> montaGraficoTurnover(Collection<TurnOver> turnOvers);
 }

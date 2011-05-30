@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 
 import org.springframework.transaction.PlatformTransactionManager;
@@ -263,5 +262,27 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 
 	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
 		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
+	}
+
+	public Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Long empresaId) 
+	{
+		Collection<Object[]>  graficoEvolucaoAbsenteismo = new ArrayList<Object[]>();
+		Date dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
+		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataMesAnoFim));
+
+		try {
+			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaId, null, null);
+			
+			for (Absenteismo absenteismo : absenteismos) 
+			{
+				Date ultimoDiaMes = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(absenteismo.getMes() + "/" + absenteismo.getAno()));
+				graficoEvolucaoAbsenteismo.add(new Object[]{ultimoDiaMes.getTime(), absenteismo.getAbsenteismo()});	
+			}
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return graficoEvolucaoAbsenteismo;
 	}
 }

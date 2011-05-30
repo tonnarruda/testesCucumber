@@ -1769,4 +1769,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().countAtivosPeriodo(dataIni, empresaId, estabelecimentosIds, areasIds, null);
 	}
 
+	public Collection<Object[]> montaGraficoTurnover(Collection<TurnOver> turnOvers) 
+	{
+		Collection<Object[]>  graficoEvolucaoTurnover = new ArrayList<Object[]>();
+		for (TurnOver turnOver : turnOvers) 
+			graficoEvolucaoTurnover.add(new Object[]{DateUtil.getUltimoDiaMes(turnOver.getMesAno()).getTime(), turnOver.getTurnOver()});
+		
+		return graficoEvolucaoTurnover;
+	}
+
 }

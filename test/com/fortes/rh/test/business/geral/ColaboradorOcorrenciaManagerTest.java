@@ -414,6 +414,26 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		assertNotNull(exception);
 	}
 	
+	public void testMontaGraficoAbsenteismo() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Collection<Absenteismo> retornoBD = new ArrayList<Absenteismo>();
+		retornoBD.add(new Absenteismo("2011", "01", 0));
+		retornoBD.add(new Absenteismo("2011", "02", 2));
+		retornoBD.add(new Absenteismo("2011", "03", 0));
+		retornoBD.add(new Absenteismo("2011", "04", 15));
+		retornoBD.add(new Absenteismo("2011", "05", 19));
+		
+		colaboradorOcorrenciaDao.expects(once()).method("countFaltasByPeriodo").will(returnValue(retornoBD));
+		colaboradorManager.expects(atLeastOnce()).method("countAtivosPeriodo").will(returnValue(10));
+		
+		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", empresa.getId());
+		assertEquals(5, absenteismos.size());
+		assertEquals(0.0, ((Object[])absenteismos.toArray()[0])[1]);
+		assertEquals(0.01, ((Object[])absenteismos.toArray()[1])[1]);
+		assertEquals(0.0714, ((Object[])absenteismos.toArray()[3])[1]);
+	}
+	
 	public void testMontaAbsenteismo() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);

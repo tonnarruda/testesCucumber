@@ -29,8 +29,36 @@
 				montaPie(${grfColocacao}, "#colocacao", {percentMin: 0.02});
 				montaPie(${grfDesligamento}, "#desligamento", {radiusLabel:0.9, percentMin: 0.02, pieLeft:-190});
 				
-				//$("#interactive").bind("plotclick", pieClick);
+				
+				var absenteismo = ${grfEvolucaoAbsenteismo};
+				var turnover = ${grfEvolucaoTurnover};
+				
+				var somaAbsenteismo = 0;
+				$.each(absenteismo, function (){
+				    somaAbsenteismo = this[1] + somaAbsenteismo;
+				})
+				
+				$('#mediaAbsenteismo').text('Absenteísmo: ' + (somaAbsenteismo / absenteismo.length).toFixed(4));
+				
+				montaLine(absenteismo, "#evolucaoAbsenteismo");
+				montaLine(turnover, "#evolucaoTurnover");
+				
 			});
+							
+			function showTooltip(x, y, contents) 
+			{
+		        $('<div id="tooltip">' + contents + '</div>').css( {
+		            position: 'absolute',
+		            display: 'none',
+		            top: y - 30,
+		            left: x + 5,
+		            border: '1px solid #fdd',
+		            padding: '2px',
+		            'background-color': '#fee',
+		            opacity: 0.80,
+		            'z-index': 20000
+		        }).appendTo("body").fadeIn(0);
+		    }
 			
 			function enviaForm1()
 			{
@@ -40,8 +68,10 @@
 			{
 				return validaFormularioEPeriodo('formBusca2', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'));
 			}
-			
-			
+			function enviaForm3()
+			{
+				return validaFormularioEPeriodoMesAno('formBusca3', new Array('dataMesAnoIni','dataMesAnoFim'), new Array('dataMesAnoIni','dataMesAnoFim'));
+			}
 		</script>
 	
 		<#include "../ftl/mascarasImports.ftl" />
@@ -71,6 +101,8 @@
 				
 				<@ww.hidden name="dataIni"/>	
 				<@ww.hidden name="dataFim"/>
+				<@ww.hidden name="dataMesAnoIni"/>
+				<@ww.hidden name="dataMesAnoFim"/>
 				<button onclick="return enviaForm1();" class="btnPesquisar grayBGE"></button>
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
@@ -119,6 +151,8 @@
 				<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
 				itens de maior percentual.<br>
 				<@ww.hidden name="dataBase"/>
+				<@ww.hidden name="dataMesAnoIni"/>
+				<@ww.hidden name="dataMesAnoFim"/>
 				<button onclick="return enviaForm2();" class="btnPesquisar grayBGE"></button>
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
@@ -126,6 +160,12 @@
 			<h1>Motivos de Desligamentos</h1>
 		   		<div id="desligamento" class="graph2"></div>
 		    </div>
+		    
+			<div class="fieldGraph bigger">
+				<h1>Turnover</h1>
+		   		<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
+		    </div>
+		    
 			<div style="clear: both"></div>
 			<br>
 			<div class="fieldDados">
@@ -136,6 +176,36 @@
 
 		    <div style="clear: both"></div>
 			<a name="pagebottom"></a>
+					<br>
+		
+			<div class="divFiltro">
+				<div class="divFiltroLink">
+					<a href="javascript:exibeFiltro('${urlImgs}','divFiltroForm3');" id="linkFiltro"><img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
+				</div>
+				<div id="divFiltroForm3" class="divFiltroForm ${classHidden}">
+				<@ww.form name="formBusca3" id="formBusca3" action="painelIndicadores.action#pagebottom" method="POST">
+					<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="dataMesAnoIni" cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
+					<@ww.label value="a" liClass="liLeft" />
+					<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="dataMesAnoFim" cssClass="mascaraMesAnoData validaDataFim"/>
+					
+					<@ww.hidden name="dataBase"/>
+					<@ww.hidden name="dataIni"/>	
+					<@ww.hidden name="dataFim"/>
+	
+					<button onclick="enviaForm3();" class="btnPesquisar grayBGE"></button>
+				</@ww.form>
+			<#include "../util/bottomFiltro.ftl" />
+			<div class="fieldGraph bigger">
+				<h1>Absenteísmo</h1>
+		   		<div id="evolucaoAbsenteismo" style="margin: 25px;height:300px;"></div>
+		    </div>
+			<div style="clear: both"></div>
+			<br>
+			<div class="fieldDados">
+		   		<div id="mediaAbsenteismo"></div>
+			</div>
+	
+			<div style="clear: both"></div>
 			
 	</body>
 </html>

@@ -14,6 +14,7 @@ import org.springframework.core.NestedRuntimeException;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -24,6 +25,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -44,6 +46,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private EstabelecimentoManager estabelecimentoManager;
 	private ColaboradorManager colaboradorManager;
 	private EmpresaManager empresaManager;
+	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 
 	private Collection<HistoricoColaborador> historicoColaboradors;
 
@@ -77,6 +80,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfDeficiencia = "";
 	private String grfDesligamento = "";
 	private String grfEvolucaoFolha = "";
+	private String grfEvolucaoAbsenteismo = "";
+	private String grfEvolucaoTurnover = "";
 	private int qtdColaborador = 0;
 	private int qtdItensDesligamento = 20;
 	private String grfColocacao = "";
@@ -98,6 +103,10 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			dataFim = hoje;
 		if (dataIni == null)
 			dataIni = DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true);
+		if (dataMesAnoIni == null || dataMesAnoIni.equals("  /    ") || dataMesAnoIni.equals(""))
+			dataMesAnoIni = DateUtil.formataMesAno(DateUtil.retornaDataAnteriorQtdMeses(hoje, 9, true));
+		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
+			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
 		
 		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, getEmpresaSistema().getId());
@@ -106,6 +115,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId(), qtdItensDesligamento);
 		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, getEmpresaSistema().getId());
 		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, getEmpresaSistema().getId());
+		
+		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, getEmpresaSistema().getId());
+		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
 		countAdmitidos = colaboradorManager.countAdmitidos(dataIni, dataFim, getEmpresaSistema().getId());
 		countDemitidos = colaboradorManager.countDemitidos(dataIni, dataFim, getEmpresaSistema().getId());
@@ -120,8 +132,12 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
 		
 		TurnOverCollection turnOverCollection = new TurnOverCollection();
-		turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema().getId(), null, null, null, 0));
+		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema().getId(), null, null, null, 0);
+		turnOverCollection.setTurnOvers(turnOvers);
 		turnover = turnOverCollection.getMedia();
+		
+		Collection<Object[]> graficoEvolucaoTurnover = colaboradorManager.montaGraficoTurnover(turnOvers);
+		grfEvolucaoTurnover = StringUtil.toJSON(graficoEvolucaoTurnover, null);
 		
 		return Action.SUCCESS;
 	}
@@ -579,6 +595,18 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setAreaId(Long areaId) {
 		this.areaId = areaId;
+	}
+
+	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
+		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
+	}
+
+	public String getGrfEvolucaoAbsenteismo() {
+		return grfEvolucaoAbsenteismo;
+	}
+
+	public String getGrfEvolucaoTurnover() {
+		return grfEvolucaoTurnover;
 	}
 	
 }
