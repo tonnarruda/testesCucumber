@@ -7,3 +7,5 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (509,
 alter sequence papel_sequence restart with 510;--.go
 
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=509 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+
+ALTER TABLE empresa ALTER COLUMN grupoac TYPE character varying(3);--.go
