@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,14 +13,16 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Ocorrencia;
-import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
+import com.fortes.rh.model.geral.relatorio.AbsenteismoCollection;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -50,7 +53,9 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	
 	private Map<String, Object> parametros = new HashMap<String, Object>();
-	private Collection<TurnOverCollection> dataSource;
+	private Collection<AbsenteismoCollection> dataSource = new ArrayList<AbsenteismoCollection>();
+	private String dataDe;
+	private String dataAte;
 
 	public String prepare() throws Exception
 	{
@@ -193,42 +198,41 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());		
 
-//		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
-//		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
 		return Action.SUCCESS;
 	}
 
-//	public String relatorioAbsenteismo() throws Exception 
-//	{
-//		Date dataIni = DateUtil.criarDataMesAno(dataDe);
-//		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataAte));
-//		
-//		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)
-//		{
-//			addActionMessage("Não é permitido um período maior do 12 meses para a geração deste relatório");
-//			prepare();
-//			return Action.INPUT;
-//		}
-//		
-//		try 
-//		{
-//			TurnOverCollection turnOverCollection = new TurnOverCollection();
-//			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema().getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
-//			dataSource = Arrays.asList(turnOverCollection);
-//			
-//			String filtro =  "Período: " + dataDe + " a " + dataAte;
-//			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", getEmpresaSistema(), filtro);
-//			
-//			return Action.SUCCESS;
-//		
-//		} catch (ColecaoVaziaException e) {
-//
-//			addActionMessage(e.getMessage());
-//			prepare();
-//			return Action.INPUT;
-//		}
-//	}
+	public String relatorioAbsenteismo() throws Exception 
+	{
+		Date dataIni = DateUtil.criarDataMesAno(dataDe);
+		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataAte));
+		
+		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)
+		{
+			addActionMessage("Não é permitido um período maior do 12 meses para a geração deste relatório");
+			prepareRelatorioAbsenteismo();
+			return Action.INPUT;
+		}
+		
+		try 
+		{
+			AbsenteismoCollection absenteismoCollection = new AbsenteismoCollection();
+			absenteismoCollection.setAbsenteismos(colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, getEmpresaSistema().getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck)));
+			dataSource = Arrays.asList(absenteismoCollection);
+			
+			String filtro =  "Período: " + dataDe + " a " + dataAte;
+			parametros = RelatorioUtil.getParametrosRelatorio("Absenteísmo", getEmpresaSistema(), filtro);
+			
+			return Action.SUCCESS;
+		} catch (ColecaoVaziaException e) {
+
+			addActionMessage(e.getMessage());
+			prepareRelatorioAbsenteismo();
+			return Action.INPUT;
+		}
+	}
 
 	public void setColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia)
 	{
@@ -321,5 +325,29 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	public Collection<CheckBox> getEstabelecimentosCheckList() {
 		return estabelecimentosCheckList;
+	}
+
+	public String getDataDe() {
+		return dataDe;
+	}
+
+	public void setDataDe(String dataDe) {
+		this.dataDe = dataDe;
+	}
+
+	public String getDataAte() {
+		return dataAte;
+	}
+
+	public void setDataAte(String dataAte) {
+		this.dataAte = dataAte;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
+	}
+
+	public Collection<AbsenteismoCollection> getDataSource() {
+		return dataSource;
 	}
 }

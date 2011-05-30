@@ -1,17 +1,15 @@
 package com.fortes.rh.dao.hibernate.geral;
 
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -19,16 +17,12 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import sun.util.calendar.Gregorian;
-
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<ColaboradorOcorrencia> implements ColaboradorOcorrenciaDao
@@ -219,19 +213,22 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 	{
 		String diasDoPeriodo = montaDiasDoPeriodo(dataIni, dataFim);
 
-		//zigs quando a ocorrencia terminar fora do periodo
-		
 		StringBuilder sql = new StringBuilder();
-		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(co.dataini) as total from ");
+		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(hc.id) as total from ");
 		sql.append(" ( " + diasDoPeriodo + " ) as datasDoPeriodo  ");
 		sql.append("left join ColaboradorOcorrencia co on ");
-		sql.append("	datasDoPeriodo.dia between :dataIni and :dataFim ");
-		sql.append("	and datasDoPeriodo.dia between co.dataini and co.datafim ");
+		sql.append("	datasDoPeriodo.dia between co.dataini and co.datafim ");
 		sql.append("	and co.absenteismo = true ");
 		sql.append("left join Colaborador c on c.id = co.colaborador_id ");
 		sql.append("	and c.empresa_id = :empresaId ");
 		sql.append("left join HistoricoColaborador hc on hc.colaborador_id = c.id ");
 		sql.append("	and hc.status = :status ");
+		
+		if(areasIds != null && !areasIds.isEmpty())
+			sql.append("	and hc.areaorganizacional_id in (:areaIds) ");
+		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
+			sql.append("	and hc.estabelecimento_id in (:estabelecimentoIds) ");
+		
 		sql.append("	and hc.data = ( ");
 		sql.append("		select max(hc2.data) ");
 		sql.append("		from HistoricoColaborador as hc2 ");
@@ -239,23 +236,27 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		sql.append("			and hc2.data <= :hoje and hc2.status = :status ");
 		sql.append("	)");
 		sql.append("group by date_part('year',dia), date_part('month',dia) ");
-		sql.append("order by date_part('month',dia), date_part('year',dia) ");
+		sql.append("order by date_part('year',dia), date_part('month',dia) ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 
 		query.setDate("hoje", new Date());
-		query.setDate("dataIni", new Date());
-		query.setDate("dataFim", new Date());
-		query.setLong("empresaId", 4L);
+		query.setLong("empresaId", empresaId);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
-		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();
+		if(areasIds != null && !areasIds.isEmpty())
+			query.setParameterList("areaIds", areasIds, Hibernate.LONG);
+		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
+			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
+		
 		Collection lista = query.list();
+		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();
 
+		DecimalFormat df = new DecimalFormat("00");
 		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
 		{
 			Object[] array = it.next();
-			absenteismos.add(new Absenteismo(((Double)array[0]).toString(), ((Double)array[1]).toString(), ((BigInteger)array[2]).intValue()));
+			absenteismos.add(new Absenteismo(df.format((Double)array[0]), df.format((Double)array[1]), ((BigInteger)array[2]).intValue()));
 		}
 
 		return absenteismos;

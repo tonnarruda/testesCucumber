@@ -36,12 +36,12 @@
 		</action>
 		<action name="relatorioAbsenteismo" class="com.fortes.rh.web.action.geral.ColaboradorOcorrenciaEditAction" method="relatorioAbsenteismo">
 			<result name="success" type="jasper">
-				<param name="location">/WEB-INF/report/absenteismo.jasper</param>
+				<param name="location">/WEB-INF/report/indicadorAbsenteismo.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">absenteismo.pdf</param>
 			</result>
-			<result name="input" type="redirect">prepareRelatorioAbsenteismo.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioAbsenteismo.ftl</result>
 		</action>
 	</package>
 </xwork>
