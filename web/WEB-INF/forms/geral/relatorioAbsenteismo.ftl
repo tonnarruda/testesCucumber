@@ -17,11 +17,11 @@
 	
 	<@ww.div >
 	O <i>absenteísmo</i> é usado para designar as ausências dos trabalhadores no processo de trabalho, seja por falta ou atraso, devido a algum motivo interveniente.
-	Ele é calculado pela fórmula [Total de faltas / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]
+	Ele é calculado pela fórmula [Total de faltas do mês / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]
 	</@ww.div>
 	<br/>
 	
-	<@ww.form name="form" action="list.action" validate="true" method="POST">
+	<@ww.form name="form" action="relatorioAbsenteismo.action" validate="true" method="POST">
 		<div>Período (Mês/Ano)*:</div>
 		<@ww.textfield name="dataDe" id="dataDe" required="true"  cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
 		<@ww.label value="a" liClass="liLeft"/>

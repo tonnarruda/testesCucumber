@@ -3,16 +3,14 @@ package com.fortes.rh.model.geral.relatorio;
 import java.text.DecimalFormat;
 import java.util.Date;
 
-import com.fortes.rh.util.DateUtil;
-
 public class Absenteismo
 {
 	private String mes;
 	private String ano;
-	private Double absenteismo;
-	private Integer qtdTotalFaltas;
-	private Integer qtdDiasTrabalhados;
-	private Integer qtdAtivos;
+	private Double absenteismo = 0.0;
+	private Integer qtdTotalFaltas = 0;
+	private Integer qtdDiasTrabalhados = 0;
+	private Integer qtdAtivos = 0;
 	
 	public Absenteismo(String ano, String mes, Integer qtdTotalFaltas)
 	{
@@ -22,11 +20,16 @@ public class Absenteismo
 		this.qtdTotalFaltas = qtdTotalFaltas;
 	}
 
-
 	public Absenteismo()
 	{
 		super();
 	}
+
+	public String getMesAnoFormatado()
+	{
+		return mes + "/" + ano;
+	}
+
 	
 
 	public void setMesAnoQtdAtivos(Date dataMesAno, Integer qtdAtivos) 
@@ -58,8 +61,8 @@ public class Absenteismo
 	public Double getAbsenteismo()
 	{
 		try {
-			DecimalFormat df = new DecimalFormat("0.00");
-			return Double.parseDouble(df.format(absenteismo).replace(",", "."));
+			DecimalFormat df = new DecimalFormat("0.0000");
+			return Double.parseDouble(df.format(this.absenteismo).replace(",", "."));
 		} catch (Exception e) {
 			return 0.0;
 		}

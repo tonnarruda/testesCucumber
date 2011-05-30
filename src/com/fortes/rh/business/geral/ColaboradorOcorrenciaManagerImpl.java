@@ -226,23 +226,19 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 
 	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds) throws Exception 
 	{
-		double qtdTotalFaltas;
-		int qtdDiasTrabMes;
-		
-		int ate = DateUtil.mesesEntreDatas(dataIni, dataFim);
-		Date dataTmp = DateUtil.getInicioMesData(dataIni);
-
-		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();
-		absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds);
-		
-		
-		
-		int qtdAtivos = colaboradorManager.countAtivosPeriodo(dataIni, empresaId, estabelecimentosIds, areasIds);
-
-		
-		
+		Collection<Absenteismo> absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds);
 		if (absenteismos == null || absenteismos.isEmpty())
 			throw new ColecaoVaziaException();
+		
+		for (Absenteismo absenteismo : absenteismos) 
+		{
+			Date inicioDoMes = DateUtil.criarDataMesAno(1, Integer.parseInt(absenteismo.getMes()), Integer.parseInt(absenteismo.getAno()));
+			absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(inicioDoMes, empresaId, estabelecimentosIds, areasIds));
+			absenteismo.setQtdDiasTrabalhados(DateUtil.contaDiasUteisMes(inicioDoMes));
+
+			if(!absenteismo.getQtdTotalFaltas().equals(0))
+				absenteismo.setAbsenteismo( new Double(absenteismo.getQtdTotalFaltas()) / (absenteismo.getQtdAtivos() * absenteismo.getQtdDiasTrabalhados()));
+		}
 		
 		return absenteismos;
 	}
