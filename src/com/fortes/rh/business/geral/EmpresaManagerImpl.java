@@ -344,4 +344,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public Collection<Empresa> findTodasEmpresas() {
 		return getDao().findTodasEmpresas();
 	}
+
+	public boolean checkEmpresaCodACGrupoAC(Empresa empresa) {
+		if (empresa.getCodigoAC() == null || empresa.getGrupoAC() == null)
+			return false;
+		
+		return getDao().checkEmpresaCodACGrupoAC(empresa);
+	}
 }

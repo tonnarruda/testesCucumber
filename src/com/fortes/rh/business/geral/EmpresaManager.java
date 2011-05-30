@@ -36,4 +36,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Long ajustaCombo(Long empresaId, Long empresaDoSistemaId);
 	void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato);
 	Collection<Empresa> findTodasEmpresas();
+	boolean checkEmpresaCodACGrupoAC(Empresa empresa);
 }

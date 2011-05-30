@@ -21,4 +21,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	void removeEmpresaPadrao(long id);
 	Collection<Empresa> findTodasEmpresas();
 	void updateCampoExtra(Long id, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato);
+	boolean checkEmpresaCodACGrupoAC(Empresa empresa);
 }
