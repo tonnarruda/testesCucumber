@@ -306,6 +306,15 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		query.executeUpdate();
 	}
-	
-	
+
+	public boolean checkEmpresaCodACGrupoAC(Empresa empresa) {
+		String hql = "select emp from Empresa emp where codigoac = :codAC and grupoac = :grupoAC";
+		Query query = getSession().createQuery(hql);
+		query.setString("codAC", empresa.getCodigoAC());
+		query.setString("grupoAC", empresa.getGrupoAC());
+		
+		Collection<Empresa> empresas = query.list();
+		
+		return empresas.size() > 0;
+	}
 }

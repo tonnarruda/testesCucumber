@@ -115,6 +115,11 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			empresa.setGrupoAC(null);
 		
 		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
+		
+		if (empresaManager.checkEmpresaCodACGrupoAC(empresa)){
+			throw new Exception("Já existe uma empresa com o mesmo código AC no grupo AC especificado");
+		}
+		
 		empresaManager.update(empresa);
 
 		if(empresa.equals(getEmpresaSistema()))
