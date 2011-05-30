@@ -324,7 +324,7 @@
 				
 				/pesquisa/pesquisa/preview.action*= ROLE_USER
 				/pesquisa/pesquisa/*/**= ROLE_MOV_QUESTIONARIO
-				/pesquisa/entrevista/*/**= ROLE_MOV_QUESTIONARIO
+				/pesquisa/entrevista/*/**= ROLE_MOV_QUESTIONARIO, ROLE_CAD_COLABORADOR
 				/pesquisa/pergunta/*/**= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
 				
 				/pesquisa/questionario/aplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
@@ -340,7 +340,7 @@
 				/pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario*/**=ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO,ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO
 				/pesquisa/colaboradorResposta/prepareResponderQuestionario.action*=ROLE_USER
 				/pesquisa/colaboradorResposta/salvaQuestionarioRespondido.action*=ROLE_USER
-				/pesquisa/colaboradorResposta/*/**=ROLE_MOV_QUESTIONARIO
+				/pesquisa/colaboradorResposta/*/**=ROLE_MOV_QUESTIONARIO, ROLE_CAD_COLABORADOR
 
 				/sesmt/fichaMedica/*/**= ROLE_CAD_FICHAMEDICA
 				/sesmt/funcao/*/**=ROLE_FUNCAO
