@@ -190,8 +190,8 @@
 				/validaCodigoResposta.action*=ROLE_ANONYMOUS,ROLE_USER
 				/*=ROLE_USER
 
-				/dwr/exec/CargoDWR.getCargoByGrupo*/**=ROLE_CAD_CARGO
-				/dwr/exec/CargoDWR.getCargoByArea*/**=ROLE_CAD_CARGO
+				/dwr/exec/CargoDWR.getCargoByGrupo*/**=ROLE_CAD_CARGO, ROLE_REL_CARGO
+				/dwr/exec/CargoDWR.getCargoByArea*/**=ROLE_CAD_CARGO, ROLE_REL_CARGO
 				/dwr/exec/CargoDWR.getCargo*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO,ROLE_MOV_QUESTIONARIO,ROLE_OCORRENCIA
 				/dwr/exec/ColaboradorDWR.getSalarioFaixa*/**=ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_CAD_COLABORADOR
 				/dwr/exec/ListaPresencaDWR.insereDias*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO
@@ -285,6 +285,8 @@
 				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO
 				/cargosalario/reajusteColaborador/aplicarDissidio*/**=ROLE_DISSIDIO
 				/cargosalario/tabelaReajusteColaborador/*/**=ROLE_MOV_SIMULACAOREAJUSTE
+				/cargosalario/cargo/prepareRelatorioCargo.action*=ROLE_REL_CARGO
+				/cargosalario/cargo/relatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/prepareRelatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
 				/cargosalario/cargo/relatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
 				/cargosalario/cargo/*/**=ROLE_CAD_CARGO
