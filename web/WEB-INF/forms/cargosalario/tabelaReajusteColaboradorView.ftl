@@ -249,7 +249,7 @@
 		</button>
 		<#if tabelaReajusteColaborador.id?exists && reajustes?exists && 0 < reajustes?size>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button onclick="newConfirm('Deseja realmente aplicar o reajuste?', function(){window.location='aplicar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});" class="btnAplicar" accesskey="P">
+			<button onclick="newConfirm('Deseja realmente aplicar o reajuste?', function(){window.location='aplicar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.dissidio=${tabelaReajusteColaborador.dissidio?string}'});" class="btnAplicar" accesskey="P">
 			</button>
 		</#if>
 	</div>

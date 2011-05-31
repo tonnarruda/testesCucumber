@@ -12,6 +12,7 @@ public class MotivoHistoricoColaborador extends LinkedHashMap<String, String>
 	public static final String TRANSFERENCIA = "T";
 	public static final String IMPORTADO = "I";
 	public static final String MUDANCA_FUNCAO = "F";
+	public static final String DISSIDIO = "D";
 
 
 	@SuppressWarnings("unchecked")

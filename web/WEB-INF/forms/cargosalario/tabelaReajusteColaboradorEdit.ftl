@@ -29,6 +29,7 @@
 		<@ww.textfield label="Título" name="tabelaReajusteColaborador.nome" id="titulo" required="true" cssClass="inputNome" maxLength="100"/>
 		<@ww.datepicker label="Data de Aplicação" name="tabelaReajusteColaborador.data" id="data"  value="${data}" cssClass="mascaraData" required="true"/>
 		<@ww.textarea label="Observação" name="tabelaReajusteColaborador.observacao"/>
+		<@ww.checkbox label="Dissídio" name="tabelaReajusteColaborador.dissidio" labelPosition="left"/>
 
 		<@ww.hidden name="tabelaReajusteColaborador.id" />
 		<@ww.hidden name="tabelaReajusteColaborador.aprovada" />

@@ -18,7 +18,6 @@ public class HistoricoColaboradorFactory
 		historicoColaborador.setSalario(1D);
 		historicoColaborador.setColaborador(null);
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-		
 
 		return historicoColaborador;
 	}

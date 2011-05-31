@@ -9,3 +9,5 @@ alter sequence papel_sequence restart with 510;--.go
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=509 WHERE atualizaPapeisIdsAPartirDe is null;--.go
 
 ALTER TABLE empresa ALTER COLUMN grupoac TYPE character varying(3);--.go
+
+alter table tabelareajustecolaborador add column dissidio boolean not null default false;--.go

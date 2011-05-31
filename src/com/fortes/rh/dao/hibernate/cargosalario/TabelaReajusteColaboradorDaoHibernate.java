@@ -21,7 +21,7 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 	@Override
 	public void update(TabelaReajusteColaborador tabelaReajusteColaborador)
 	{		
-		String queryHQL = "update TabelaReajusteColaborador t set t.nome = :nome, t.data = :data, t.observacao = :obs, t.aprovada = :aprovada, t.empresa.id = :empresaId where t.id = :tabelaReajusteColaboradorId";
+		String queryHQL = "update TabelaReajusteColaborador t set t.nome = :nome, t.data = :data, t.observacao = :obs, t.aprovada = :aprovada, t.empresa.id = :empresaId, t.dissidio = :dissidio where t.id = :tabelaReajusteColaboradorId";
 
 		Session session = getSession();
 		Query query = session.createQuery(queryHQL);
@@ -30,6 +30,7 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 		query.setDate("data", tabelaReajusteColaborador.getData());
 		query.setString("obs", tabelaReajusteColaborador.getObservacao());
 		query.setBoolean("aprovada", tabelaReajusteColaborador.isAprovada());
+		query.setBoolean("dissidio", tabelaReajusteColaborador.isDissidio());
 		
 		if(tabelaReajusteColaborador.getEmpresa() != null && tabelaReajusteColaborador.getEmpresa().getId() != null)
 			query.setLong("empresaId", tabelaReajusteColaborador.getEmpresa().getId());
@@ -118,6 +119,7 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 		p.add(Projections.property("trc.observacao"), "observacao");
 		p.add(Projections.property("trc.data"), "data");
 		p.add(Projections.property("trc.aprovada"), "aprovada");
+		p.add(Projections.property("trc.dissidio"), "dissidio");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("trc.id", tabelaReajusteColaboradorId));

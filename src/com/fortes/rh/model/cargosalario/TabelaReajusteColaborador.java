@@ -39,6 +39,8 @@ public class TabelaReajusteColaborador extends AbstractModel implements Serializ
     private boolean aprovada;
     @ManyToOne
     private Empresa empresa;
+    
+    private boolean dissidio;
 
     //TODO CUIDADO ao alterar os atributos desse classe verificar o update na action(foi feito na mão por causa do EAGER)
     
@@ -111,5 +113,11 @@ public class TabelaReajusteColaborador extends AbstractModel implements Serializ
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
+	}
+	public boolean isDissidio() {
+		return dissidio;
+	}
+	public void setDissidio(boolean dissidio) {
+		this.dissidio = dissidio;
 	}
 }

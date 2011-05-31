@@ -15,6 +15,7 @@ public class TabelaReajusteColaboradorFactory
 		tabelaReajusteColaborador.setNome("tabelareajuste");
 		tabelaReajusteColaborador.setReajusteColaboradors(null);
 		tabelaReajusteColaborador.setEmpresa(null);
+		tabelaReajusteColaborador.setDissidio(false);
 
 		return tabelaReajusteColaborador;
 	}

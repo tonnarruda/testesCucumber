@@ -94,6 +94,7 @@ public class TabelaReajusteColaboradorDaoHibernateTest extends GenericDaoHiberna
 		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity();
 		tabelaReajusteColaborador.setAprovada(false);
 		tabelaReajusteColaborador.setEmpresa(empresa);
+		tabelaReajusteColaborador.setDissidio(true);
 		tabelaReajusteColaborador = tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador);
 
 		tabelaReajusteColaboradorDao.updateSetAprovada(tabelaReajusteColaborador.getId(), true);

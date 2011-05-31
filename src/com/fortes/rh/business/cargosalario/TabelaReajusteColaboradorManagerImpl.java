@@ -12,6 +12,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TSituacao;
@@ -105,7 +106,10 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 				historicoColaborador.setFuncao(reajuste.getFuncaoProposta());
 
 			historicoColaborador.setHistoricoAnterior(historicoAtual);
-			historicoColaborador.setMotivo(HistoricoColaboradorUtil.getMotivoReajuste(reajuste, historicoColaborador));
+			if (tabelaReajusteColaborador.isDissidio())
+				historicoColaborador.setMotivo(MotivoHistoricoColaborador.DISSIDIO);
+			else
+				historicoColaborador.setMotivo(HistoricoColaboradorUtil.getMotivoReajuste(reajuste, historicoColaborador));
 
 			if(empresa.isAcIntegra() && !reajuste.getColaborador().isNaoIntegraAc())
 				historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
