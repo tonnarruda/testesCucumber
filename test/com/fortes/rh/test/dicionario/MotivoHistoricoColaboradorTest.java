@@ -10,6 +10,6 @@ public class MotivoHistoricoColaboradorTest extends TestCase
 	{
 		MotivoHistoricoColaborador motivos = new MotivoHistoricoColaborador();
 	
-		assertEquals(7, motivos.size());
+		assertEquals(8, motivos.size());
 	}
 }
