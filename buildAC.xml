@@ -13,7 +13,7 @@
 			url="jdbc:postgresql://localhost:5432/template1"
 			userid="postgres"
 			password="123456"
-			classpath="${lib.dir}/postgresql-8.1-405.jdbc3.jar"
+			classpath="${lib.dir}/postgresql-9.0-801.jdbc3.jar"
 			autocommit="true">
 			<transaction>
 				drop database if exists ${bancoRH};
