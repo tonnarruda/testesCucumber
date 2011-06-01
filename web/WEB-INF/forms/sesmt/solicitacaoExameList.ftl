@@ -153,7 +153,7 @@
 
 		<@display.column style="width: 290px;" title="Nome" style="vertical-align: top;">
 			<#if solicitacaoExame.colaborador?exists>
-				${solicitacaoExame.colaborador.nome}
+				${solicitacaoExame.colaborador.nomeDesligado}
 			</#if>
 			<#if solicitacaoExame.candidato?exists>
 				${solicitacaoExame.candidato.nome}

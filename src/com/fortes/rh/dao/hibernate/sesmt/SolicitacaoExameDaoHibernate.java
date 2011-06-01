@@ -33,7 +33,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 {
 	public Collection<SolicitacaoExame> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, Long[] exameIds, ResultadoExame resultadoExame)
 	{
-		StringBuilder hql = new StringBuilder("select distinct new SolicitacaoExame(se.id, se.data, se.motivo, se.medicoCoordenador.nome, co.nome, ca.nome, cg.nome) ");		
+		StringBuilder hql = new StringBuilder("select distinct new SolicitacaoExame(se.id, se.data, se.motivo, se.medicoCoordenador.nome, co.nome, ca.nome, cg.nome, co.desligado) ");		
 		hql.append("from SolicitacaoExame se ");
 		hql.append("left join se.colaborador co ");
 		hql.append("left join se.candidato ca ");

@@ -248,7 +248,7 @@
 				<@ww.hidden name="solicitacaoExame.candidato.id" />
 			</#if>
 			<#if solicitacaoExame.colaborador?exists && solicitacaoExame.colaborador.id?exists>
-				<h4> Colaborador: ${solicitacaoExame.colaborador.nome} </h4>
+				<h4> Colaborador: ${solicitacaoExame.colaborador.nomeDesligado} </h4>
 				<@ww.hidden name="solicitacaoExame.colaborador.id" />
 			</#if>
 			<@ww.hidden name="solicitacaoExame.empresa.id" />

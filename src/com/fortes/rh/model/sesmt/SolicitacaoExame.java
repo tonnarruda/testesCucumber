@@ -60,12 +60,15 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
     public SolicitacaoExame()	{ }
 
     //usado na consulta da listagem
-    public SolicitacaoExame(Long id, Date data, String motivo, String medicoCoordenadorNome, String colaboradorNome, String candidatoNome, String cargoNome)
+    public SolicitacaoExame(Long id, Date data, String motivo, String medicoCoordenadorNome, String colaboradorNome, String candidatoNome, String cargoNome, Boolean colaboradorDesligado)
     {
         setId(id);
         this.data = data;
         this.motivo = motivo;
         setColaboradorNome(colaboradorNome);
+        if(colaboradorDesligado != null)
+        	this.colaborador.setDesligado(colaboradorDesligado);
+        
         setCandidatoNome(candidatoNome);
         setMedicoCoordenadorNome(medicoCoordenadorNome);
         this.cargoNome = cargoNome; 
