@@ -28,6 +28,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -72,6 +73,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	private Collection<Empresa> empresas;
 	private Long[] empresaIds;//repassado para o DWR
+	private Long[] historicoColaboradorIds;
 	private Empresa empresa;
 	private String grfFormacaoEscolars = "";
 	private String grfFaixaEtarias = "";
@@ -91,6 +93,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Double valorTotalFolha = 0.0;
 	private Long areaId;
 
+	private Double percentualDissidio;
 	private String grfSalarioAreas;
 	private String json;
 	
@@ -324,6 +327,20 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		}
 		
 		return Action.SUCCESS;
+	}
+	
+	public String prepareAjusteDissidio() 
+	{
+		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String setDissidio() 
+	{
+		historicoColaboradorManager.setMotivoDissidio(historicoColaboradorIds);
+		
+		return prepareAjusteDissidio();
 	}
 
 	public String[] getAreasCheck()
@@ -607,6 +624,22 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public String getGrfEvolucaoTurnover() {
 		return grfEvolucaoTurnover;
+	}
+
+	public Double getPercentualDissidio() {
+		return percentualDissidio;
+	}
+
+	public void setPercentualDissidio(Double percentualDissidio) {
+		this.percentualDissidio = percentualDissidio;
+	}
+
+	public void setHistoricoColaboradorIds(Long[] historicoIds) {
+		this.historicoColaboradorIds = historicoIds;
+	}
+
+	public Long[] getHistoricoColaboradorIds() {
+		return historicoColaboradorIds;
 	}
 	
 }

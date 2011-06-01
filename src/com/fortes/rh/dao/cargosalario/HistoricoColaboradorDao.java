@@ -45,4 +45,6 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public Collection<HistoricoColaborador> findHistoricoAdmitidos(Long empresaId, Date data);
 	public void deleteSituacaoByMovimentoSalarial(Long movimentoSalarialId, Long idEmpresa);
 	public Collection<HistoricoColaborador> findImprimirListaFrequencia(Estabelecimento estabelecimento, Date votacaoIni, Date votacaoFim);
+	public void setMotivoDissidio(Long[] historicoColaboradorIds);
+	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio);
 }
