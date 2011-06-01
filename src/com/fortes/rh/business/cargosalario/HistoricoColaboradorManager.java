@@ -124,4 +124,8 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public void deleteSituacaoByMovimentoSalarial(Long movimentoSalarialId, Long empresaId);
 
 	public Collection<HistoricoColaborador> findImprimirListaFrequencia(Estabelecimento estabelecimento, Date votacaoIni, Date votacaoFim);
+
+	public void setMotivoDissidio(Long[] historicoColaboradorIds);
+
+	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio);
 }

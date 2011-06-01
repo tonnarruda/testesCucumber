@@ -308,10 +308,11 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 	}
 
 	public boolean checkEmpresaCodACGrupoAC(Empresa empresa) {
-		String hql = "select emp from Empresa emp where codigoac = :codAC and grupoac = :grupoAC";
+		String hql = "select emp from Empresa emp where codigoac = :codAC and grupoac = :grupoAC and id <> :id";
 		Query query = getSession().createQuery(hql);
 		query.setString("codAC", empresa.getCodigoAC());
 		query.setString("grupoAC", empresa.getGrupoAC());
+		query.setLong("id", empresa.getId());
 		
 		Collection<Empresa> empresas = query.list();
 		

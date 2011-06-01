@@ -1059,5 +1059,39 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setLong("idEmpresa", empresaId);
 
 		query.executeUpdate();		
+	}
+
+	public void setMotivoDissidio(Long[] historicoColaboradorIds) 
+	{
+		Query query = getSession().createQuery("update HistoricoColaborador set motivo = 'D' where id in (:historicoColaboradorIds)");
+		query.setParameterList("historicoColaboradorIds", historicoColaboradorIds);
+		query.executeUpdate();	
+	}
+
+	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio) 
+	{
+//		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+//		criteria.setFetchMode("hc.colaborador", FetchMode.DEFAULT);
+//
+//		criteria.add(Expression.ge("hc.data", dataBase));
+//		criteria.add(Expression.ne("hc.motivo", MotivoHistoricoColaborador.DISSIDIO));
+//		criteria.addOrder(Order.asc("hc.data"));
+//		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
+		StringBuilder hql = new StringBuilder();
+
+		montaSelectConstrutor(hql);
+		montaFromAndJoin(hql);
+
+		hql.append("where hc.data >= :data ");
+		hql.append("order by co.nome, hc.data");
+
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setDate("data", dataBase);
+		query.setInteger("status", StatusRetornoAC.CANCELADO);
+
+		return query.list();
+
 	}	
 }

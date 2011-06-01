@@ -25,5 +25,6 @@ public class MotivoHistoricoColaborador extends LinkedHashMap<String, String>
 		put(TRANSFERENCIA, "Transferência");
 		put(IMPORTADO, "Importado do AC Pessoal");
 		put(MUDANCA_FUNCAO, "Mudança de Função");
+		put(DISSIDIO, "Dissídio");
 	}
 }
