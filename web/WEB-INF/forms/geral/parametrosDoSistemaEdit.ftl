@@ -62,11 +62,7 @@
 	
 	<@ww.checkbox label="Forçar caixa alta nos campos do módulo externo" id="capitalizarCampos" name="parametrosDoSistema.upperCase" liClass="liLeft" labelPosition="left"/>
 	
-	<@ww.select label="Exame ASO" name="parametrosDoSistema.exame.id" id="exame" list="exames" cssStyle="width: 300px;" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." />
-	
 	<@ww.textfield label="E-mail do Suporte Técnico" name="parametrosDoSistema.emailDoSuportTecnico" id="emailDoSuporteTecnico" size="40" maxLength="39" required="true"/>
-	<@ww.checkbox label="Enviar e-mails de confirmação" id="enviarEmail" name="parametrosDoSistema.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/>
-	<@ww.textarea label="Texto para email de candidatos não aptos" name="parametrosDoSistema.mailNaoAptos" id="mailNaoAptos" size="40"/>
 
 	<br>
 	<div id="suporte">

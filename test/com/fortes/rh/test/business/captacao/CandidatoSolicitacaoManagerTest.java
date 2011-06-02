@@ -195,14 +195,9 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
     public void testEnviarEmailNaoApto() throws Exception{
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setEmailCandidatoNaoApto(true);
+    	empresa.setMailNaoAptos("mailNaoAptos");
 		Long solicitacaoId = 1L;
-
-		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
-		parametrosDoSistema.setMailNaoAptos("mailNaoAptos");
-		parametrosDoSistema.setEmailCandidatoNaoApto(true);
-
-		Collection<ParametrosDoSistema> parametrosDoSistemas = new ArrayList<ParametrosDoSistema>();
-		parametrosDoSistemas.add(parametrosDoSistema);
 
 		Candidato candidato = CandidatoFactory.getCandidato();
 
@@ -214,7 +209,6 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 		candidatoSolicitacoes.add(cs);
 
 	    candidatoSolicitacaoDao.expects(once()).method("findNaoAptos").with(eq(solicitacaoId)).will(returnValue(candidatoSolicitacoes));
-	    parametrosDoSistemaManager.expects(once()).method("findAll").will(returnValue(parametrosDoSistemas));
 	    mail.expects(once()).method("send").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
 
 	    candidatoSolicitacaoManager.enviarEmailNaoApto(solicitacaoId, empresa);

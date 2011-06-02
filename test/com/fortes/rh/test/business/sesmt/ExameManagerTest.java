@@ -20,14 +20,11 @@ import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
-import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
@@ -284,16 +281,6 @@ public class ExameManagerTest extends MockObjectTestCase
     	}
     	
     	assertNotNull(exception);
-    }
-    
-    public void testGetExameAso()
-    {
-    	ParametrosDoSistema parametrosDoSistema= ParametrosDoSistemaFactory.getEntity(1L);
-    	parametrosDoSistema.setExame(ExameFactory.getEntity(33L));
-		
-    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
-		
-		assertEquals(33L, exameManager.getExameAso().getId().longValue());
     }
     
     public void testEnviaLembreteExamesPrevistos() throws Exception

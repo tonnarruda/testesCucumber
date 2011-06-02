@@ -14,7 +14,6 @@ import com.fortes.web.tags.CheckBox;
 
 public interface ExameManager extends GenericManager<Exame>
 {
-	Exame getExameAso();
 	Exame findByIdProjection(Long exameId);
 	Collection<Exame> findAllSelect(Long empresaId);
 	Collection<Exame> findByHistoricoFuncao(Long historicoFuncaoId);

@@ -18,11 +18,13 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -40,6 +42,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private CidadeManager cidadeManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private GrupoACManager grupoACManager;
+	private ExameManager exameManager;
 
 	private Collection<Estado> ufs = null;
 	private Collection<Cidade> cidades = new ArrayList<Cidade>();
@@ -55,6 +58,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private File logoCert;
 	private Collection<Empresa> empresas;
 	private Collection<GrupoAC> grupoACs;
+	private Collection<Exame> exames;
 
 	public String execute() throws Exception
 	{
@@ -87,6 +91,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
+		exames = exameManager.findAllSelect(empresa.getId());
 
 		if (empresa != null && empresa.getUf() != null && empresa.getUf().getId() != null)
 			cidades = cidadeManager.find(new String[]{"uf.id"}, new Object[]{empresa.getUf().getId()}, new String[]{"nome"});
@@ -104,6 +109,10 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		if(StringUtils.isEmpty(empresa.getLogoUrl()))
 			empresa.setLogoUrl("fortes.gif");
 		
+		//evitando problema de vir instância sem o id (TransientObjectException) 
+		if (empresa.getExame() != null && empresa.getExame().getId() == null)
+			empresa.setExame(null);
+		
 		empresaManager.save(empresa);
 
 		return Action.SUCCESS;
@@ -119,6 +128,11 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		if (empresaManager.checkEmpresaCodACGrupoAC(empresa)){
 			throw new Exception("Já existe uma empresa com o mesmo código AC no grupo AC especificado");
 		}
+		
+		
+		//evitando problema de vir instância sem o id (TransientObjectException) 
+		if (empresa.getExame() != null && empresa.getExame().getId() == null)
+			empresa.setExame(null);
 		
 		empresaManager.update(empresa);
 
@@ -318,5 +332,13 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setGrupoACManager(GrupoACManager grupoACManager) {
 		this.grupoACManager = grupoACManager;
+	}
+
+	public Collection<Exame> getExames() {
+		return exames;
+	}
+
+	public void setExameManager(ExameManager exameManager) {
+		this.exameManager = exameManager;
 	}
 }

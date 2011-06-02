@@ -9,11 +9,9 @@ import org.apache.commons.lang.StringUtils;
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
@@ -24,12 +22,10 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private PerfilManager perfilManager;
-	private ExameManager exameManager;
 
 	private ParametrosDoSistema parametrosDoSistema;
 
 	private Collection<Perfil> perfils;
-	private Collection<Exame> exames;
 
 	private String[] camposCandidatoObrigatorios;
 	private String[] camposCandidatoVisivels;
@@ -42,7 +38,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	{
 		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		perfils = perfilManager.findAll();
-		exames = exameManager.findAllSelect(getEmpresaSistema().getId());
 		
 		return Action.SUCCESS;
 	}
@@ -56,15 +51,10 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 		if (parametrosDoSistemaAux.getModulos() != null)
 			parametrosDoSistema.setModulos(parametrosDoSistemaAux.getModulos());
-		
-		//evitando problema de vir instância sem o id (TransientObjectException) 
-		if (parametrosDoSistema.getExame() != null && parametrosDoSistema.getExame().getId() == null)
-			parametrosDoSistema.setExame(null);
 
 		parametrosDoSistemaManager.update(parametrosDoSistema);
 		
 		perfils = perfilManager.findAll();
-		exames = exameManager.findAllSelect(getEmpresaSistema().getId());
 		addActionMessage("Configurações do Sistema atualizadas com sucesso!");
 
 		return Action.SUCCESS;
@@ -123,14 +113,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	public void setPerfils(Collection<Perfil> perfils)
 	{
 		this.perfils = perfils;
-	}
-
-	public void setExameManager(ExameManager exameManager) {
-		this.exameManager = exameManager;
-	}
-
-	public Collection<Exame> getExames() {
-		return exames;
 	}
 
 	public String[] getCamposCandidatoObrigatorios() {

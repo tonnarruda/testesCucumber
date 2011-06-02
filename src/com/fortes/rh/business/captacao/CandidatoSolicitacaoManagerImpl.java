@@ -17,7 +17,6 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
@@ -120,15 +119,13 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 
     public void enviarEmailNaoApto(Long solicitacaoId, Empresa empresa) throws Exception
     {
-        ParametrosDoSistema parametrosDoSistema;
         Collection<CandidatoSolicitacao> candidatoSolicitacoes = new ArrayList<CandidatoSolicitacao>();
         candidatoSolicitacoes = getDao().findNaoAptos(solicitacaoId);
 
         String subject = "Solicitação de Candidatos";
-        parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findAll().toArray()[0];
-        String body = parametrosDoSistema.getMailNaoAptos();
+        String body = empresa.getMailNaoAptos();
         
-        if (parametrosDoSistema.getEmailCandidatoNaoApto())
+        if (empresa.getEmailCandidatoNaoApto())
         {
 	        if (candidatoSolicitacoes != null  && StringUtils.isNotBlank(body))
 	        {

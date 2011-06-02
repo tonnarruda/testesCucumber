@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
@@ -15,7 +14,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.model.sesmt.Exame;
 
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="parametrosDoSistema_sequence", allocationSize=1)
@@ -23,8 +21,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 {
 	@Transient private static final long serialVersionUID = 7274995467895468424L;
 	
-	@Lob
-    private String mailNaoAptos;
+
     @Column(length=150)
     private String appUrl;
     @Column(length=100)
@@ -60,7 +57,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String diasLembretePeriodoExperiencia;
     
     private Boolean enviarEmail = false;
-    private Boolean emailCandidatoNaoApto = false;
+   
 
     private Boolean atualizadoSucesso;
 
@@ -71,8 +68,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 
 	@ManyToOne
     private Perfil perfilPadrao;
-    @OneToOne
-    private Exame exame; // Exame ASO
 
     private String emailDoSuporteTecnico;
     private String camposCandidatoVisivel;
@@ -173,16 +168,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 				.append("appVersao",this.appVersao)
 				.append("appContext", this.appContext)
 				.append("servidorRemprot", this.servidorRemprot)
-				.append("mailNaoAptos", this.mailNaoAptos)
 				.append("atualizadorPath", this.atualizadorPath).toString();
-	}
-	public String getMailNaoAptos()
-	{
-		return mailNaoAptos;
-	}
-	public void setMailNaoAptos(String mailNaoAptos)
-	{
-		this.mailNaoAptos = mailNaoAptos;
 	}
 	public Perfil getPerfilPadrao()
 	{
@@ -246,12 +232,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	{
 		this.modulos = modulos;
 	}
-	public Exame getExame() {
-		return exame;
-	}
-	public void setExame(Exame exame) {
-		this.exame = exame;
-	}
+
 	public Long getAtualizaPapeisIdsAPartirDe() {
 		return atualizaPapeisIdsAPartirDe;
 	}
@@ -308,12 +289,5 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setCamposCandidatoTabs(String camposCandidatoTabs) {
 		this.camposCandidatoTabs = camposCandidatoTabs;
-	}
-
-	public Boolean getEmailCandidatoNaoApto() {
-		return emailCandidatoNaoApto;
-	}
-	public void setEmailCandidatoNaoApto(Boolean emailCandidatoNaoApto) {
-		this.emailCandidatoNaoApto = emailCandidatoNaoApto;
 	}
 }

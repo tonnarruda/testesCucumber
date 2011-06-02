@@ -7,13 +7,16 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.sesmt.Exame;
 
 @SuppressWarnings("serial")
 @Entity
@@ -69,6 +72,11 @@ public class Empresa extends AbstractModel implements Serializable
 	private Cidade cidade;
 	private boolean campoExtraColaborador;
 	private boolean campoExtraCandidato;
+	private Boolean emailCandidatoNaoApto = false;
+	@Lob
+    private String mailNaoAptos;
+    @OneToOne
+    private Exame exame; // Exame ASO
 	
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -342,5 +350,29 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setCampoExtraCandidato(boolean campoExtraCandidato) {
 		this.campoExtraCandidato = campoExtraCandidato;
+	}
+
+	public Boolean getEmailCandidatoNaoApto() {
+		return emailCandidatoNaoApto;
+	}
+
+	public void setEmailCandidatoNaoApto(Boolean emailCandidatoNaoApto) {
+		this.emailCandidatoNaoApto = emailCandidatoNaoApto;
+	}
+
+	public String getMailNaoAptos() {
+		return mailNaoAptos;
+	}
+
+	public void setMailNaoAptos(String mailNaoAptos) {
+		this.mailNaoAptos = mailNaoAptos;
+	}
+
+	public Exame getExame() {
+		return exame;
+	}
+
+	public void setExame(Exame exame) {
+		this.exame = exame;
 	}
 }

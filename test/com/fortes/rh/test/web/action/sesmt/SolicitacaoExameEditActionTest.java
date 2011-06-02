@@ -82,10 +82,13 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 	
 	public void testPrepareInsert() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setExame(ExameFactory.getEntity(1L));
+		action.setEmpresaSistema(empresa);
+		
 		medicoCoordenadorManager.expects(once()).method("findByEmpresa").will(returnValue(new ArrayList<MedicoCoordenador>()));
-		exameManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Exame>()));
 		clinicaAutorizadaManager.expects(once()).method("findClinicasAtivasByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
-		exameManager.expects(once()).method("getExameAso").will(returnValue(ExameFactory.getEntity(3L)));
+		exameManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Exame>()));
 		
 		assertEquals("success",action.prepareInsert());
 	}

@@ -1,4 +1,5 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -202,12 +203,13 @@
 <@ww.actionmessage />
 
 <#if !exameAso?exists>
-	<a style="font-size:13px; text-decoration: underline;" href="<@ww.url includeParams="none" value="/geral/parametrosDoSistema/prepareUpdate.action"/>">
-	Clique aqui para acessar as Configurações do Sistema.
+	<#assign idDaEmpresa><@authz.authentication operation="empresaId"/></#assign>
+	<a style="font-size:13px; text-decoration: underline;" href="<@ww.url includeParams="none" value="/geral/empresa/prepareUpdate.action?empresa.id=${idDaEmpresa}"/>">
+	Clique aqui para acessar o Cadastro da empresa e configurar o campo [Exame ASO].
 	</a>
 	
 	<div class="buttonGroup">
-		<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE"> </button>
+		<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar"> </button>
 	</div>
 <#else>
 

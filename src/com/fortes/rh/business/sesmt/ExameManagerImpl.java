@@ -220,12 +220,6 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return colecaoResultado;
 	}
 
-	public Exame getExameAso()
-	{
-		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
-		return parametrosDoSistema.getExame();
-	}
-
 	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String motivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, String vinculo) throws ColecaoVaziaException
 	{
 		Collection<ExamesRealizadosRelatorio> examesRealizados = getDao().findExamesRealizados(empresaId, nomeBusca, inicio, fim, motivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds, vinculo);

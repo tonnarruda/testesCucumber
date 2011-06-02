@@ -119,7 +119,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	private void prepare() throws Exception
 	{
-		this.exameAso = exameManager.getExameAso();
+		this.exameAso = getEmpresaSistema().getExame();
 		
 		if (exameAso == null)
 		{
