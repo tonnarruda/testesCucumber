@@ -21,7 +21,10 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST" id="formBusca">
 			<@ww.textfield label="Nome" name="areaOrganizacional.nome" cssStyle="width: 350px;"/>
+			
+			<@ww.checkbox label="Ativas" name="areaOrganizacional.ativo" labelPosition="left"/>
 			<@ww.hidden id="pagina" name="page"/>
+			
 			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />

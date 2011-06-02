@@ -193,9 +193,9 @@ public class CargoManagerTest extends MockObjectTestCase
 	{
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 
-		cargoDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos.size()));
+		cargoDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos.size()));
 
-		int retorno = cargoManager.getCount(1L, null, null);
+		int retorno = cargoManager.getCount(1L, null, null, null);
 
 		assertEquals(retorno, cargos.size());
 	}
@@ -238,9 +238,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		Long empresaId = 1L;
 
-		cargoDao.expects(once()).method("findCargos").with(new Constraint[] { eq(1), eq(15), eq(empresaId), ANYTHING, ANYTHING }).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findCargos").with(new Constraint[] { eq(1), eq(15), eq(empresaId), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(cargos));
 
-		assertEquals(cargos, cargoManager.findCargos(1, 15, empresaId, null, null));
+		assertEquals(cargos, cargoManager.findCargos(1, 15, empresaId, null, null, null));
 	}
 
 	public void testUpdateCargoAC() throws Exception

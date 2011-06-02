@@ -91,10 +91,10 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		cargo2.setEmpresa(empresa);
 		cargo2 = cargoDao.save(cargo2);
 
-		int retorno1 = cargoDao.getCount(empresa.getId(), null, null);
-		int retorno2 = cargoDao.getCount(empresa.getId(), areaOrganizacional.getId(), null);
-		int retorno3 = cargoDao.getCount(empresa.getId(), areaOrganizacional.getId(), "CARGO1");
-		int retorno4 = cargoDao.getCount(empresa.getId(), areaOrganizacional.getId(), "CARGO2");
+		int retorno1 = cargoDao.getCount(empresa.getId(), null, null, null);
+		int retorno2 = cargoDao.getCount(empresa.getId(), areaOrganizacional.getId(), null, null);
+		int retorno3 = cargoDao.getCount(empresa.getId(), areaOrganizacional.getId(), "CARGO1", null);
+		int retorno4 = cargoDao.getCount(empresa.getId(), areaOrganizacional.getId(), "CARGO2", null);
 
 		assertEquals("Por empresa", 2, retorno1);
 		assertEquals("Por empresa e área organizacional", 1, retorno2);
@@ -123,10 +123,10 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		cargo2.setEmpresa(empresa);
 		cargo2 = cargoDao.save(cargo2);
 
-		Collection<Cargo> retorno1 = cargoDao.findCargos(0, 0, empresa.getId(), null, null);
-		Collection<Cargo> retorno2 = cargoDao.findCargos(0, 0, empresa.getId(), areaOrganizacional.getId(), null);
-		Collection<Cargo> retorno3 = cargoDao.findCargos(0, 0, empresa.getId(), areaOrganizacional.getId(), "CARGO1");
-		Collection<Cargo> retorno4 = cargoDao.findCargos(1, 15, empresa.getId(), areaOrganizacional.getId(), "CARGO2");
+		Collection<Cargo> retorno1 = cargoDao.findCargos(0, 0, empresa.getId(), null, null, null);
+		Collection<Cargo> retorno2 = cargoDao.findCargos(0, 0, empresa.getId(), areaOrganizacional.getId(), null, null);
+		Collection<Cargo> retorno3 = cargoDao.findCargos(0, 0, empresa.getId(), areaOrganizacional.getId(), "CARGO1", null);
+		Collection<Cargo> retorno4 = cargoDao.findCargos(1, 15, empresa.getId(), areaOrganizacional.getId(), "CARGO2", null);
 
 		assertEquals("Por empresa", 2, retorno1.size());
 		assertEquals("Por empresa e área organizacional", 1, retorno2.size());

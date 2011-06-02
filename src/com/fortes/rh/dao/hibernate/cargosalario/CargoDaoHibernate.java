@@ -28,7 +28,7 @@ import com.fortes.rh.model.ws.TCargo;
 @SuppressWarnings("unchecked")
 public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements CargoDao
 {
-	public Integer getCount(Long empresaId, Long areaId, String cargoNome)
+	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class,"c");
 
@@ -36,7 +36,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.id"), "id");
 		criteria.setProjection(p);
 
-		montaConsulta(criteria, empresaId, areaId, cargoNome);
+		montaConsulta(criteria, empresaId, areaId, cargoNome, ativo);
 
 		criteria.setProjection(Projections.distinct(p));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cargo.class));
@@ -49,11 +49,11 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 			return cargos.size();
 	}
 
-	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome)
+	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 
-		montaConsulta(criteria, empresaId, areaId, cargoNome);
+		montaConsulta(criteria, empresaId, areaId, cargoNome, ativo);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
@@ -78,7 +78,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, Long empresaId, Long areaId, String cargoNome)
+	private void montaConsulta(Criteria criteria, Long empresaId, Long areaId, String cargoNome, Boolean ativo)
 	{
 		criteria = criteria.createCriteria("c.grupoOcupacional", "go", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.areasOrganizacionais", "a", Criteria.LEFT_JOIN);
@@ -90,6 +90,9 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		if(cargoNome != null && !cargoNome.equals(""))
 			criteria.add(Expression.ilike("c.nomeMercado","%"+ cargoNome +"%"));
+
+		if(ativo != null)
+			criteria.add(Expression.eq("c.ativo", ativo));
 
 	}
 

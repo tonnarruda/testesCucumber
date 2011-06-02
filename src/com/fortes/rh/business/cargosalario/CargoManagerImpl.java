@@ -49,14 +49,14 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	private FaixaSalarialManager faixaSalarialManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
 
-	public Integer getCount(Long empresaId, Long areaId, String cargoNome)
+	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo)
 	{
-		return getDao().getCount(empresaId, areaId, cargoNome);
+		return getDao().getCount(empresaId, areaId, cargoNome, ativo);
 	}
 
-	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome)
+	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo)
 	{
-		return getDao().findCargos(page, pagingSize, empresaId, areaId, cargoNome);
+		return getDao().findCargos(page, pagingSize, empresaId, areaId, cargoNome, ativo);
 	}
 
 	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId)

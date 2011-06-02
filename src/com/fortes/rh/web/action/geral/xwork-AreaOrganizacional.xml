@@ -5,7 +5,7 @@
 	<package name="areaOrganizacional" extends="default" namespace="/geral/areaOrganizacional">
 		<action name="list" class="com.fortes.rh.web.action.geral.AreaOrganizacionalListAction" method="list">
 	    	<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">areaOrganizacional.nome</param>
+	    		<param name="scope.session">areaOrganizacional.nome,areaOrganizacional.ativo</param>
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalList.ftl</result>
 		</action>

@@ -22,6 +22,7 @@
 		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST" id="formBusca">
 			<@ww.textfield label="Nomenclatura Mercado" name="cargo.nomeMercado" cssStyle="width: 350px;"/>
 			<@ww.select label="Área Organizacional" name="areaOrganizacional.id" list="areas" listKey="id" listValue="descricao" headerValue="" headerKey="-1" cssStyle="width:445px;"/>
+			<@ww.checkbox label="Ativos" name="cargo.ativo" labelPosition="left"/>
 			<@ww.hidden id="pagina" name="page"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>
 			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">

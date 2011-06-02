@@ -25,7 +25,7 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		//foi retirado a paginação pois não dava para ordenar(Francisco, 03/06/09)
-		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
+		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), areaOrganizacional.isAtivo());
 
 		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllList(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
 		areasTmp = areaOrganizacionalManager.montaFamilia(areasTmp);
