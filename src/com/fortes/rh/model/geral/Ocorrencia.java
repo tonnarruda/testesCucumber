@@ -25,6 +25,7 @@ public class Ocorrencia extends AbstractModel implements Serializable
 	private String codigoAC;
 
 	private boolean integraAC;
+	private boolean absenteismo;
 	
 	public String getDescricaoComEmpresa()
 	{
@@ -96,5 +97,13 @@ public class Ocorrencia extends AbstractModel implements Serializable
 			this.empresa = new Empresa();
 		
 		this.empresa.setId(empresaId);
+	}
+
+	public boolean isAbsenteismo() {
+		return absenteismo;
+	}
+
+	public void setAbsenteismo(boolean absenteismo) {
+		this.absenteismo = absenteismo;
 	}
 }

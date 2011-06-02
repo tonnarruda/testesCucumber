@@ -218,7 +218,9 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		sql.append(" ( " + diasDoPeriodo + " ) as datasDoPeriodo  ");
 		sql.append("left join ColaboradorOcorrencia co on ");
 		sql.append("	datasDoPeriodo.dia between co.dataini and co.datafim ");
-		sql.append("	and co.absenteismo = true ");
+		sql.append("left join Ocorrencia o on ");
+		sql.append("	o.id = co.ocorrencia_id ");
+		sql.append("	and o.absenteismo = true ");
 		sql.append("left join Colaborador c on c.id = co.colaborador_id ");
 		sql.append("	and c.empresa_id = :empresaId ");
 		sql.append("left join HistoricoColaborador hc on hc.colaborador_id = c.id ");

@@ -50,10 +50,6 @@
 
 		<@ww.textarea label="Observações" name="colaboradorOcorrencia.observacao" />
 
-		<@ww.checkbox theme="simple" name="colaboradorOcorrencia.absenteismo" />
-		Considerar esta ocorrência como absenteísmo
-		<img id="relatorioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" style="margin-left: -5px" width="16" height="16" /><br>
-		
 		<@ww.hidden name="colaboradorOcorrencia.id" />
 		<@ww.hidden name="colaborador.id" />
 		<@ww.hidden name="colaborador.codigoAC" />

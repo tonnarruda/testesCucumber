@@ -30,6 +30,8 @@
 				<@ww.checkbox label="Enviar para o AC Pessoal" id="integraAC" name="ocorrencia.integraAC" labelPosition="left"/>
 			</#if>
 		</#if>
+		
+		<@ww.checkbox label="Considerar como absenteísmo" name="ocorrencia.absenteismo"  labelPosition="left"/>
 
 		<@ww.hidden label="Id" name="ocorrencia.id" />
 		<@ww.hidden name="ocorrencia.codigoAC" />

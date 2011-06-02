@@ -62,8 +62,7 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		colaboradorOcorrencia.setDataIni(new Date());
 		colaboradorOcorrencia.setObservacao("as");
 		colaboradorOcorrencia.setOcorrencia(ocorrencia);
-		colaboradorOcorrencia.setAbsenteismo(true);
-
+		
 		return colaboradorOcorrencia;
 	}
 
