@@ -12,7 +12,6 @@ import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
 import com.fortes.rh.config.backup.NotificadoDeBackupViaEmailImplTest;
 import com.fortes.rh.config.backup.RunAntScriptTest;
-import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.security.spring.aop.AbstractModelJsonValueProcessorTest;
 import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
 import com.fortes.rh.security.spring.aop.AuditoriaGeralAdviceTest;

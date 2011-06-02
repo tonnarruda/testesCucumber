@@ -61,9 +61,12 @@ CREATE TABLE empresa (
 	mensagemModuloExterno character varying(400),
 	exibirDadosAmbiente boolean default false,
 	logoCertificadoUrl varchar(200),
-	grupoac character(3),
+	grupoac character varying(3),
 	campoExtraColaborador boolean default false,
-	campoextracandidato boolean default false
+	campoextracandidato boolean default false,
+	emailCandidatoNaoApto boolean,
+	mailnaoaptos text,
+	exame_id bigint
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
@@ -960,7 +963,8 @@ CREATE TABLE ocorrencia (
     pontuacao integer NOT NULL,
     codigoac character varying(3),
     integraac boolean,
-    empresa_id bigint
+    empresa_id bigint,
+    absenteismo boolean not null default false
 );
 ALTER TABLE ocorrencia ADD CONSTRAINT ocorrencia_pkey PRIMARY KEY (id);
 ALTER TABLE ocorrencia ADD CONSTRAINT ocorrencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
@@ -1065,7 +1069,8 @@ CREATE TABLE tabelareajustecolaborador (
     data date,
     observacao text,
     aprovada boolean NOT NULL,
-    empresa_id bigint
+    empresa_id bigint,
+    dissidio boolean not null default false
 );
 ALTER TABLE tabelareajustecolaborador ADD CONSTRAINT tabelareajustecolaborador_pkey PRIMARY KEY (id);
 ALTER TABLE tabelareajustecolaborador ADD CONSTRAINT tabelareajustecolaborador_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
@@ -1198,6 +1203,8 @@ CREATE TABLE exame (
 ALTER TABLE exame ADD CONSTRAINT exame_pkey PRIMARY KEY (id);
 ALTER TABLE exame ADD CONSTRAINT exame_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE exame_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+ALTER TABLE empresa ADD CONSTRAINT empresa_exame_fk FOREIGN KEY (exame_id) REFERENCES exame(id);
 
 
 CREATE TABLE historicofuncao_exame (
@@ -2116,7 +2123,6 @@ CREATE SEQUENCE configuracaoImpressaoCurriculo_sequence START WITH 1 INCREMENT B
 
 CREATE TABLE parametrosdosistema (
     id bigint NOT NULL,
-    mailnaoaptos text,
     appurl character varying(150),
     appcontext character varying(100),
     appversao character varying(20),
@@ -2130,7 +2136,6 @@ CREATE TABLE parametrosdosistema (
     enviaremail boolean,
     atualizadosucesso boolean,
     perfilpadrao_id bigint,
-    exame_id bigint,
     acversaowebservicecompativel character varying(20),
     uppercase boolean DEFAULT false,
     modulos text,
@@ -2141,12 +2146,10 @@ CREATE TABLE parametrosdosistema (
     codClienteSuporte character varying(10),
     camposCandidatoVisivel text,
     camposCandidatoObrigatorio text,
-    camposCandidatoTabs text,
-    emailCandidatoNaoApto boolean
+    camposCandidatoTabs text
 );
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_pkey PRIMARY KEY (id);
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_perfil_fk FOREIGN KEY (perfilpadrao_id) REFERENCES perfil(id);
-ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_exame_fk FOREIGN KEY (exame_id) REFERENCES exame(id);
 CREATE SEQUENCE parametrosdosistema_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE cliente (

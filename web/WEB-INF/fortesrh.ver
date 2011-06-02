@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.47.39" data="02/06/2011">
+		- Info. Funcionais > Cadastros > Tipos de Ocorrência: Novo campo [Considerar como absenteísmo].
+		- Info. Funcionais > Relatórios > Absenteísmo: Novo relatório.
+		- Info. Funcionais > Painel de Indicadores: Novo gráfico Absenteísmo.
+		- Info. Funcionais > Painel de Indicadores: Novo gráfico Turnover.
+		- Utilitários > Configurações > Sistema: Retirada dos campos [Exame ASO], [Enviar e-mails de confirmação], [Texto para email de candidatos não aptos].
+		- Utilitários > Cadastros > Empresa: Novos campos [Exame ASO], [Enviar e-mails de confirmação], [Texto para email de candidatos não aptos].
+		- CeS > Cadastros > Cargos/Faixas: Novo campo [Ativos] no filtro da listagem.
+		- CeS > Cadastros > Áreas Organizacionais: Novo campo [Ativas] no filtro da listagem.
+		- SESMT > Movimentações > Extintores > Inspeção: Novo campo [Localização] no filtro da listagem.
+		- SESMT > Movimentações > Extintores > Manutenção: Novo campo [Localização] no filtro da listagem.
+		- CeS > Movimentações > Planejamentos de Realinhamentos > Inserir Planejamento de Realinhamentos: Novo campo [Dissídio]. 
+		- Mudança na nomenclatura da escolaridade de:
+		 [nl_s]"Ensino Fundamental incompleto (até 5ºano)" para "Ensino Fundamental em andamento (até 5ºano)",
+		 [nl_s]"Ensino Fundamental incompleto (até 9ºano)" para "Ensino Fundamental em andamento (até 9ºano)",
+		 [nl_s]"Ensino Médio incompleto" para "Ensino Médio em andamento",
+		 [nl_s]"Superior incompleto" para "Superior em andamento".
+	</Versao>
 	<Versao id="1.1.46.38" data="26/05/2011">
 		- Utilitários > Configurações > Campos Extras: Configuração por Candidato e Colaborador.
 		- Utilitários > Configurações > Campos Extras: Configuração por empresa.

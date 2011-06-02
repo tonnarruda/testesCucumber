@@ -38,7 +38,7 @@ public class DocumentoVersaoManagerImpl implements DocumentoVersaoManager
 				textoXml += "<tr class=\""+cssClassLinha+"\">";
 				textoXml +=	"<td class=\"tamanho100\">" + elementNode.getAttributeValue("data") + "</td>";
 				textoXml += "<td class=\"tamanho100\">" + elementNode.getAttributeValue("id") + "</td>";
-				textoXml += "<td>" + elementNode.getValue().replace("- ", "<br>- ") + "</td><tr>";
+				textoXml += "<td>" + elementNode.getValue().replace("- ", "<br>- ").replace("[nl_s]", "<br>&nbsp &nbsp ") + "</td><tr>";
 				linha++;
 			}
 
