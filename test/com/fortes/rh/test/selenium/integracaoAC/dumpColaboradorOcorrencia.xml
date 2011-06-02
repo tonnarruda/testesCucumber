@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<dataset>
-
-	<colaborador id="1" nome="Teste" nomecomercial="Teste Comercial" desligado="false" conjugetrabalha="false" qtdfilhos="0" sexo="M" naointegraac="true" deficiencia="N" respondeuentrevista="false" empresa_id="1" codigoac="000010"/>
-	<historicocolaborador id="1" data="2008-01-01" colaborador_id="1"/>
-	<ocorrencia id="1" descricao="ATRASO" pontuacao="1" empresa_id="1" codigoac="001" integraac="true"/>
-
-</dataset>
