@@ -16,7 +16,7 @@ Funcionalidade: Médicos Coordenadores
     E eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Médico Coordenador"
     E eu preencho "Nome" com "pererinha"
-    E eu preencho a data "Início do contrato" com "23/02/2011"
+    E eu preencho o campo (JS) "Início do contrato" com "23/02/2011"
     E eu preencho "CRM" com "1122"
     E eu clico no botão "Gravar"
 

@@ -11,7 +11,7 @@ Funcionalidade: Funções
     E eu clico no botão "Inserir"
     Entao eu devo ver o título "Inserir Função - Analista"
 
-    E eu preencho a data "A partir de" com "02/02/2011"
+    E eu preencho o campo (JS) "A partir de" com "02/02/2011"
     E eu preencho "Nome da Função" com "carregador"
     E eu preencho "Descrição das Atividades Executadas pela Função" com "descricao"
     E eu clico no botão "Gravar"

@@ -17,7 +17,7 @@ Funcionalidade: Clínicas e Médicos Autorizados
     E eu devo ver o título "Inserir Clínica ou Médico Autorizado"
     E eu preencho "Nome" com "marina"
     E eu seleciono "Médico" de "Tipo"
-    E eu preencho a data "Início do contrato" com "23/02/2011"
+    E eu preencho o campo (JS) "Início do contrato" com "23/02/2011"
     E eu clico no botão "Gravar"
 
     Então eu devo ver o título "Clínicas e Médicos Autorizados"

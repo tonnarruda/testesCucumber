@@ -40,6 +40,24 @@ end
 Capybara.default_selector = :css
 
 Before do
-  #puts "Criando banco de dados"
-  #system "psql -U postgres fortesrh_inicial < features/data/dumpInicial_com_clean.sql"
+  puts "Limpando Banco de Dados, apagando todos os registros"
+  db = "fortesrh"
+
+  `echo select alter_trigger(table_name, 'DISABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name; | psql -U postgres #{db}`
+
+  tables = `echo select table_name FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name; | psql -U postgres #{db}`
+  delete_tables = tables.split("\n")[2...-1].map{|t| "delete from #{t};"}.join()
+
+  `echo #{delete_tables} | psql -U postgres #{db}`
+  `echo select alter_trigger(table_name, 'ENABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name; | psql -U postgres #{db}`
+
+  puts "Populando Banco de Dados, dados iniciais..."
+  `psql -U postgres #{db} < features/data/dataInicial.sql`
+  puts "Banco de Dados populado com sucesso."
+
 end
+
+def exec_sql sql
+  `echo #{sql} | psql -U postgres fortesrh`
+end
+

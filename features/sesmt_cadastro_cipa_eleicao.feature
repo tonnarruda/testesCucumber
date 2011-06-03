@@ -16,7 +16,7 @@ Funcionalidade: Eleição
     E eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Eleição"
     E eu preencho "Descrição" com "cipa 2011"
-    E eu preencho a data "Posse" com "20/02/2011"
+    E eu preencho o campo (JS) "Posse" com "20/02/2011"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu clico no botão "Gravar"
 

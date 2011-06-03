@@ -15,5 +15,5 @@ Funcionalidade: Comissões
 
     E eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Comissão"
-    E eu preencho a data "dataIni" com "01/02/2011"
-    E eu preencho a data "dataFim" com "01/03/2011"
+    E eu preencho o campo (JS) "dataIni" com "01/02/2011"
+    E eu preencho o campo (JS) "dataFim" com "01/03/2011"
