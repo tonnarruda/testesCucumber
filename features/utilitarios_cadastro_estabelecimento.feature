@@ -31,7 +31,7 @@ Funcionalidade: Cadastrar Estabelecimento
     Quando eu clico em editar "_Estabelecimento de Teste"
     E o campo "Nome" deve conter "_Estabelecimento de Teste"
     E eu preencho "Nome" com "_Estabelecimento de Teste 2"
-    E eu preencho "CEP" com "60320-100"
+    E eu preencho o campo (JS) "CEP" com "60320-100"
     E eu saio do campo "CEP"
     E eu espero o campo "Logradouro" ficar habilitado
     E o campo "Logradouro" deve conter "Rua Haroldo Torres"
