@@ -22,7 +22,7 @@ Funcionalidade: Cadastrar Etapa Seletiva
 
     Entao eu clico em editar "entrevista com chefia"
     E eu devo ver o título "Editar Etapa Seletiva"
-    E o campo "ordem" deve conter "2"
+    E o campo "ordem" deve conter "1"
     E o campo "nome" deve conter "entrevista com chefia"
     E eu preencho "nome" com "entrevista com chefia 2"
     E eu clico no botão "Gravar"

@@ -4,10 +4,11 @@ Funcionalidade: Cadastrar Colaborador
 
   @dev
   Cenário: Cadastro de Colaborador
-    Dado que eu esteja logado
     Dado que exista a área organizacional "Financeiro"
     Dado que exista o cargo "Contador"
     Dado que exista a faixa salarial "I" no cargo "Contador"
+
+    Dado que eu esteja logado
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
     Então eu devo ver o título "Colaboradores"

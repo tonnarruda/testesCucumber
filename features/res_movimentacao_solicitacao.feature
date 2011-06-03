@@ -3,6 +3,10 @@
 Funcionalidade: Movimentação Solicitações de Pessoal
 
   Cenário: Movimentação de Solicitações de Pessoal
+    Dado que exista a área organizacional "Financeiro"
+    Dado que exista o cargo "Contador"
+    Dado que exista a faixa salarial "I" no cargo "Contador"
+
     Dado que eu esteja logado
     Quando eu acesso o menu "R&S > Movimentações > Solicitação de Pessoal"
     Então eu devo ver o título "Solicitações de Pessoal"
@@ -17,8 +21,8 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu devo ver o título "Inserir Solicitação de Pessoal"
     E eu preencho "Descrição" com "Vaga java"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
-    E eu seleciono "Administração > Desenvolvimento" de "Área Organizacional"
-    E eu seleciono "Analista Senior" de "Cargo/Faixa"
+    E eu seleciono "Financeiro" de "Área Organizacional"
+    E eu seleciono "Contador I" de "Cargo/Faixa"
     E eu seleciono "Aumento de quadro" de "Motivo da Solicitação"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Solicitações de Pessoal"

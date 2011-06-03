@@ -4,6 +4,10 @@ Funcionalidade: Campos Extras para Colaborador
 
   @dev
   Cenário: Campos Extras para Colaborador
+    Dado que exista a área organizacional "Financeiro"
+    Dado que exista o cargo "Contador"
+    Dado que exista a faixa salarial "I" no cargo "Contador"
+
     Dado que eu esteja logado
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
@@ -23,8 +27,8 @@ Funcionalidade: Campos Extras para Colaborador
     Quando eu clico no botão "Inserir"
     Quando eu preencho "Nome" com "_Zé da Silva"
     E eu preencho "Nome Comercial" com "Zé"
-    E eu preencho "Nascimento" com "01/01/1987"
-    E eu preencho "CPF" com "123.213.623-91"
+    E eu preencho o campo (JS) "Nascimento" com "01/01/1987"
+    E eu preencho o campo (JS) "CPF" com "123.213.623-91"
     E eu preencho "Logradouro" com "Eretides"
     E eu preencho "num" com "11"
     E eu seleciono "CE" de "Estado"
@@ -33,11 +37,11 @@ Funcionalidade: Campos Extras para Colaborador
     E eu preencho "Telefone" com "88438383"
     E eu seleciono "Sem escolaridade" de "Escolaridade"
     E eu clico na aba "DADOS FUNCIONAIS"
-    E eu preencho "Admissão" com "21/12/2010"
-    E eu preencho "Data" com "21/12/2010"
+    E eu preencho o campo (JS) "Admissão" com "21/12/2010"
+    E eu preencho o campo (JS) "Data" com "21/12/2010"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
-    E eu seleciono "Administração > Desenvolvimento" de "Área Organizacional"
-    E eu seleciono "Analista Senior" de "Cargo/Faixa"
+    E eu seleciono "Financeiro" de "Área Organizacional"
+    E eu seleciono "Contador I" de "Cargo/Faixa"
     E eu seleciono "Por valor" de "Salário Proposto"
     E eu preencho "Valor" com "100"
     Quando eu clico na aba "EXTRA"
