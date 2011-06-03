@@ -80,7 +80,7 @@ Quando /^eu preencho "([^"]*)" com "([^"]*)"$/ do |field, value|
   When %{I fill in "#{field}" with "#{value}"}
 end
 
-Quando /^eu preencho a data "([^"]*)" com "([^"]*)"$/ do |field, value|
+Quando /^eu preencho o campo \(JS\) "([^"]*)" com "([^"]*)"$/ do |field, value|
   field = get_field(field)
   page.execute_script("$('##{field}').val('#{value}')")
 end
@@ -249,9 +249,24 @@ Então /^o campo "([^"]*)" deve ter "([^"]*)" selecionado$/ do |field, value|
   Então %{o campo "#{field[:id]}" deve conter "#{value}"}
 end
 
+Dado /^que exista o evento "([^"]*)"$/ do |nome|
+   exec_sql "insert into evento (id,nome) values(nextval('evento_sequence'),'#{nome}');"
+end
+
+Dado /^que exista a área organizacional "([^"]*)"$/ do |nome|
+   exec_sql "insert into areaorganizacional (id,nome,empresa_id) values(nextval('areaorganizacional_sequence'),'#{nome}',1);"
+end
+
+Dado /^que exista o cargo "([^"]*)"$/ do |nome|
+   exec_sql "insert into cargo (id,nome,nomemercado,empresa_id) values(nextval('cargo_sequence'),'#{nome}','#{nome}',1);"
+end
+
+Dado /^que exista a faixa salarial "([^"]*)" no cargo "([^"]*)"$/ do |faixa_nome, cargo_nome|
+   exec_sql "insert into faixasalarial (id,nome,cargo_id) values(nextval('faixasalarial_sequence'),'#{faixa_nome}', (select id from cargo where nome = '#{cargo_nome}'));"
+end
+
 def get_field field
   label = all(:xpath, "//label[contains(text(), '#{field}')]").select{|e| e.text.match("^\s*#{field}\:?")}.first
   field = label[:for] unless label.nil?
   field
 end
-

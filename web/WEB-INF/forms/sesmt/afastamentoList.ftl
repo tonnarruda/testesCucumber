@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>Motivos de Afastamento</title>
+	<title>Motivos de Afastamentos</title>
 </head>
 <body>
 	<@ww.actionmessage />

@@ -17,7 +17,7 @@ Funcionalidade: Ambientes
     Então eu devo ver o título "Inserir Ambiente"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu preencho "Nome" com "garagem"
-    E eu preencho a data "A partir de" com "01/01/2011"
+    E eu preencho o campo (JS) "A partir de" com "01/01/2011"
     E eu preencho "Descrição do Ambiente" com "teste"
     E eu clico no botão "Gravar"
     Então eu devo ver o título "Ambientes"

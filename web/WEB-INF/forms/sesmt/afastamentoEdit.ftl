@@ -2,10 +2,10 @@
 	<head>
 		<@ww.head/>
 		<#if afastamento.id?exists>
-			<title>Editar Tipo de Afastamento</title>
+			<title>Editar Motivo de Afastamento</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Inserir Tipo de Afastamento</title>
+			<title>Inserir Motivo de Afastamento</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 	
