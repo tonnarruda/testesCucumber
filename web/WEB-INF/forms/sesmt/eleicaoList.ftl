@@ -5,7 +5,7 @@
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
 </style>
-<title>Eleicões</title>
+<title>Eleições</title>
 </head>
 <body>
 	<@ww.actionmessage />

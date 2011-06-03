@@ -26,7 +26,7 @@
 	}
 </script>
 
-<#assign validaForm="return validaFormulario('form',new Array('nome','prazo'),null);">
+<#assign validaForm="return validaFormulario('form',new Array('nome','_prazo'),null);">
 
 </head>
 <body>
@@ -36,7 +36,7 @@
 	<@ww.textfield label="Prazo Legal" id="prazoLegal" name="etapaProcessoEleitoral.prazoLegal" cssStyle="width:400px;"/>
 	Prazo:*
 	<br/>
-	<@ww.textfield name="etapaProcessoEleitoral.prazo" id="prazo" required="true" onblur="desabilitaAntesOuDepois(this.value);" maxlength="3" onkeypress="return(somenteNumeros(event,''));" liClass="liLeft" cssStyle="width:25px;text-align:right;"/>
+	<@ww.textfield name="etapaProcessoEleitoral.prazo" id="_prazo" required="true" onblur="desabilitaAntesOuDepois(this.value);" maxlength="3" onkeypress="return(somenteNumeros(event,''));" liClass="liLeft" cssStyle="width:25px;text-align:right;"/>
 	<li id="dias" class="liLeft">
 	<div>dia(s)</div></li> <@ww.select name="antesOuDepois" id="antesOuDepois" disabled="${desabilitado}" list=r"#{'antes':'antes','depois':'depois'}" liClass="liLeft" /> da posse
 	<br/><br/>

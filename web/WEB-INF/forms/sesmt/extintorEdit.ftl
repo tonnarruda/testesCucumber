@@ -16,7 +16,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<script type="text/javascript">
-		var K = [${fabricantes}];
+		var fabricantes = [${fabricantes}];
 		var localizacoes = [${localizacoes}];
 
 		$(function() {
@@ -92,7 +92,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos}" class="btnGravar"></button>
-		<button onclick="window.location='list.action'" class="btnVoltar"></button>
+		<button onclick="window.location='list.action'" class="btnCancelar"></button>
 	</div>
 </body>
 </html>
