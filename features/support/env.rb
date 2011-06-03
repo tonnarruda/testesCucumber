@@ -4,6 +4,7 @@ require 'capybara'
 require 'capybara/dsl'
 require 'capybara/session'
 require 'ruby-debug'
+require 'pg'
 
 ######################################################################################################################
 # require 'capybara/cucumber' foi substituido pelo codigo abaixo. Motivo: nao matar a sessao entre
@@ -43,13 +44,18 @@ Before do
   puts "Limpando Banco de Dados, apagando todos os registros"
   db = "fortesrh"
 
-  `echo select alter_trigger(table_name, 'DISABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name; | psql -U postgres #{db}`
+  begin
+    conn = PGconn.connect( :dbname => db, :user => 'postgres')
+    conn.exec("select alter_trigger(table_name, 'DISABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name;")
 
-  tables = `echo select table_name FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name; | psql -U postgres #{db}`
-  delete_tables = tables.split("\n")[2...-1].map{|t| "delete from #{t};"}.join()
+    tables = conn.exec("select table_name FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name;")
+    delete_tables = tables.map {|table| "delete from #{table['table_name']};"}.join()
 
-  `echo #{delete_tables} | psql -U postgres #{db}`
-  `echo select alter_trigger(table_name, 'ENABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name; | psql -U postgres #{db}`
+    conn.exec delete_tables
+    conn.exec("select alter_trigger(table_name, 'ENABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name;")
+  ensure
+    conn.finish if conn
+  end
 
   puts "Populando Banco de Dados, dados iniciais..."
   `psql -U postgres #{db} < features/data/dataInicial.sql`
@@ -60,4 +66,3 @@ end
 def exec_sql sql
   `echo #{sql} | psql -U postgres fortesrh`
 end
-
