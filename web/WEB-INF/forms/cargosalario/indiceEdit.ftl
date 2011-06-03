@@ -10,7 +10,7 @@
 		<#assign edicao=true/>
 		<#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
 	<#else>
-		<title>Novo Índice</title>
+		<title>Inserir Índice</title>
 		<#assign formAction="insert.action"/>
 		<#assign edicao=false/>
 		<#assign validarCampos="return validaFormulario('form', new Array('nome','dataHist','valor'), new Array('dataHist'))"/>
@@ -70,7 +70,7 @@
 		<#if indiceAux.id?exists && !integradoAC>
 			<button onclick="window.location='../indiceHistorico/prepareInsert.action?indiceAux.id=${indiceAux.id}'" class="btnInserir"></button>
 		</#if>
-		<button onclick="window.location='list.action'" class="btnVoltar"></button>
+		<button onclick="window.location='list.action'" class="btnCancelar"></button>
 	</div>
 </body>
 </html>

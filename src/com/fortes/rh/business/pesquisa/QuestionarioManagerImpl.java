@@ -315,6 +315,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         this.aspectoManager = aspectoManager;
     }
 
+    //TODO Refatorar consultas grandes como banco da vega esta exibindo "could not execute query" quando marcamos áreas organizacionais 
     public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario) throws Exception
     {
         ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");

@@ -32,7 +32,8 @@ public class ResultadoQuestionario implements Serializable
 	{
 		return colabRespostasDistinct;
 	}
-
+	
+//TODO Refatorar 
 	public void montaColabRespostasDistinct()
 	{
 		this.colabRespostasDistinct = new ArrayList<ColaboradorResposta>();
@@ -49,11 +50,13 @@ public class ResultadoQuestionario implements Serializable
 				if (colaboradorResposta.getColaboradorQuestionario().getId() == null)
 					colaboradorResposta.getColaboradorQuestionario().setId(0L);
 			
-				if(this.pergunta.getTipo().equals(TipoPergunta.MULTIPLA_ESCOLHA) || this.pergunta.getTipo().equals(TipoPergunta.OBJETIVA))
+				if(this.pergunta.getTipo().equals(TipoPergunta.MULTIPLA_ESCOLHA) || this.pergunta.getTipo().equals(TipoPergunta.OBJETIVA) || this.pergunta.getTipo().equals(TipoPergunta.NOTA))
 					colaboradorResposta.setRespostasObjetivas(getRespostasObjetivas(colabRespostas, colaboradorResposta.getPergunta().getId(), colaboradorResposta.getColaboradorQuestionario().getId()));
-				if(this.pergunta.getTipo().equals(TipoPergunta.NOTA))
-					if(colaboradorResposta.getValor() != null)
-						colaboradorResposta.setRespostasObjetivas("" + colaboradorResposta.getValor());
+
+// Removido deste if e colocado no de cima pois nao estava trazendo os comentarios quando era por nota.				
+//				if(this.pergunta.getTipo().equals(TipoPergunta.NOTA))
+//					if(colaboradorResposta.getValor() != null)
+//						colaboradorResposta.setRespostasObjetivas("" + colaboradorResposta.getValor());
 				
 				this.colabRespostasDistinct.add(colaboradorResposta);
 			}
