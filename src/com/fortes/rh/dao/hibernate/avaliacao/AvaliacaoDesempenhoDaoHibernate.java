@@ -55,10 +55,11 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada)
+	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		criteria.createCriteria("cq.avaliacaoDesempenho", "ad");
+		criteria.createCriteria("cq.avaliacao", "a");
 
 		ProjectionList p = Projections.projectionList().create();
 
@@ -74,6 +75,9 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		
 		if(liberada != null)
 			criteria.add(Expression.eq("ad.liberada", liberada));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("a.empresa.id", empresaId));
 
 		criteria.addOrder(Order.asc("ad.titulo"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

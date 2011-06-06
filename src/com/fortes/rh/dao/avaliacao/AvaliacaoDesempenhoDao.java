@@ -12,5 +12,5 @@ public interface AvaliacaoDesempenhoDao extends GenericDao<AvaliacaoDesempenho> 
 
 	void liberarOrBloquear(Long id, boolean liberar);
 
-	Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada);
+	Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long empresaId);
 }

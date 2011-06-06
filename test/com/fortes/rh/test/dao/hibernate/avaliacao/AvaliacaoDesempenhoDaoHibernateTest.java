@@ -88,7 +88,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorQuestionario3.setAvaliador(colaborador);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
 		
-		assertEquals(1, avaliacaoDesempenhoDao.findByAvaliador(colaborador.getId(), true).size());
+		assertEquals(1, avaliacaoDesempenhoDao.findByAvaliador(colaborador.getId(), true, empresaId).size());
 	}
 	
 	public void testLiberarOrBloquear()

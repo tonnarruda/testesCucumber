@@ -74,9 +74,9 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		getDao().liberarOrBloquear(avaliacaoDesempenho.getId(), false);
 	}
 
-	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada)
+	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long empresaId)
 	{
-		return getDao().findByAvaliador(avaliadorId, liberada);
+		return getDao().findByAvaliador(avaliadorId, liberada, empresaId);
 	}
 	
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {

@@ -133,7 +133,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	{
 		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = AvaliacaoDesempenhoFactory.getCollection(1L);
 		avaliacaoDesempenhoDao.expects(once()).method("findByAvaliador").with(eq(1L),eq(true)).will(returnValue(avaliacaoDesempenhos));
-		assertNotNull(avaliacaoDesempenhoManager.findByAvaliador(1L, true));
+		assertNotNull(avaliacaoDesempenhoManager.findByAvaliador(1L, true, null));
 	}
 
 	public void testEnviarLembrete()

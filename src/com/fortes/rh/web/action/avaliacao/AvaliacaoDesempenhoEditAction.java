@@ -351,9 +351,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 		
 		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO"}) )
-			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(null, true);//pega todas liberadas
+			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(null, true, getEmpresaSistema().getId());//pega todas liberadas
 		else
-			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(avaliador.getId(), true);
+			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(avaliador.getId(), true, getEmpresaSistema().getId());
 		
 		if(avaliacaoDesempenho == null && ! avaliacaoDesempenhos.isEmpty())
 			avaliacaoDesempenho = (AvaliacaoDesempenho) avaliacaoDesempenhos.toArray()[0];
