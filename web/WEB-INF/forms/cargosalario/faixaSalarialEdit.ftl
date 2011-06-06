@@ -29,6 +29,15 @@
 				}
 			</#if>
 		}
+		
+		$(function() {
+			var $imgs = $('.acao a img[title=Excluir]');
+			if ($imgs.length==1)
+			    $imgs.addClass('disabledImg').
+			    	attr('title', 'Não é possível excluir o último histórico.').
+			    	parent().removeAttr('onclick'); 
+		});
+			
 	</script>
 
 	<#include "faixaSalarialHistoricoCadastroHeadInclude.ftl" />
@@ -70,11 +79,7 @@
 			<@display.column title="Ações" class="acao">
 				<#if (faixaSalarialHistoricoVO.editavel)>
 					<a href="../faixaSalarialHistorico/prepareUpdate.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-					<#if 1 < faixaSalarialHistoricoVOs?size >
-						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../faixaSalarialHistorico/delete.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-					<#else>
-						<img border="0" title="Não é possível excluir o último histórico." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-					</#if>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../faixaSalarialHistorico/delete.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<span title="Essa evolução do histórico da faixa foi devido ao reajuste do índice">(Índice)</span>
 				</#if>

@@ -148,9 +148,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 	
 	public Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId)
 	{
-		Collection<FaixaSalarialHistoricoVO> faixaSalarialHistoricos = getDao().findAllComHistoricoIndice(faixaSalarialId);
-
-		return faixaSalarialHistoricos;
+		return getDao().findAllComHistoricoIndice(faixaSalarialId);
 	}
 
 	public FaixaSalarialHistorico findByIdProjection(Long faixaSalarialHistoricoId)
