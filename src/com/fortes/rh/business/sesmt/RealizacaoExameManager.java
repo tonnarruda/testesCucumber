@@ -13,9 +13,9 @@ public interface RealizacaoExameManager extends GenericManager<RealizacaoExame>
 {
 	Collection<ExameAnualRelatorio> getRelatorioAnual(Long estabelecimentoId, Date data);
 	Collection<RealizacaoExame> findRealizadosByColaborador(Long empresaId, Long colaboradorId);
-	void save(SolicitacaoExame solicitacaoExame, String[] selectResultados, String[] observacoes);
+	void save(SolicitacaoExame solicitacaoExame, String[] selectResultados, String[] observacoes, Date[] datasRealizacaoExames);
+	void save(ExameSolicitacaoExame exameSolicitacaoExame, Date solicitacaoExameData, String resultadoExame, String observacao);
 	Collection<Long> findIdsBySolicitacaoExame(long solicitacaoExameId);
 	void remove(Long[] realizacaoExameIds);
 	void marcarResultadoComoNormal(Collection<Long> realizacaoExameIds);
-	void save(ExameSolicitacaoExame exameSolicitacaoExame, Date solicitacaoExameData, String resultadoExame, String string);
 }

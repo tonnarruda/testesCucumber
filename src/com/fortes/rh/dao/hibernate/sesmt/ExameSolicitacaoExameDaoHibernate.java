@@ -49,6 +49,7 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 		p.add(Projections.property("re.id"), "projectionRealizacaoExameId");
 		p.add(Projections.property("re.resultado"), "projectionRealizacaoExameResultado");
 		p.add(Projections.property("re.observacao"), "projectionRealizacaoExameObservacao");
+		p.add(Projections.property("re.data"), "projectionRealizacaoExameData");
 		p.add(Projections.property("cli.id"), "projectionClinicaId");
 
 		criteria.setProjection(p);

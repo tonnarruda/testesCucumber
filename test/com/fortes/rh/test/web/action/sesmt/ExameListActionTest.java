@@ -111,8 +111,8 @@ public class ExameListActionTest extends MockObjectTestCase
 	{
 		Collection<Exame> epcs = new ArrayList<Exame>();
 
-		exameManager.expects(once()).method("getCount").with(ANYTHING,ANYTHING).will(returnValue(epcs.size()));
-		exameManager.expects(once()).method("find").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(epcs));
+		exameManager.expects(once()).method("count").with(ANYTHING,ANYTHING).will(returnValue(epcs.size()));
+		exameManager.expects(once()).method("find").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(epcs));
 	}
 
 	public void testDelete() throws Exception

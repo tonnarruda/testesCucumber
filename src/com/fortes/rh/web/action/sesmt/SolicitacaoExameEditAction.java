@@ -77,6 +77,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	private Object[][] listaExamesResultados;
 	private String[] observacoes;
 	private String[] selectResultados;
+	private Date[] datasRealizacaoExames;
 
 	private boolean gravarEImprimir = false;
 
@@ -338,6 +339,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 					exameSolicitacaoExame.getRealizacaoExame().setResultado(ResultadoExame.NAO_REALIZADO.toString());
 				if (exameSolicitacaoExame.getRealizacaoExame().getObservacao() == null)
 					exameSolicitacaoExame.getRealizacaoExame().setObservacao("");
+				if (exameSolicitacaoExame.getRealizacaoExame().getData() == null)
+					exameSolicitacaoExame.getRealizacaoExame().setData(solicitacaoExame.getData() == null ? new Date() : solicitacaoExame.getData());
 
 				listaExamesResultados[i][0] = exameSolicitacaoExame.getExame();
 				listaExamesResultados[i][1] = exameSolicitacaoExame.getRealizacaoExame(); // resultado e observação
@@ -357,7 +360,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		try {
 			solicitacaoExame.setData(solicitacaoExameData);
-			realizacaoExameManager.save(solicitacaoExame, selectResultados, observacoes);
+			realizacaoExameManager.save(solicitacaoExame, selectResultados, observacoes, datasRealizacaoExames);
 			prepareResultados();
 		}
 		catch (Exception e)
@@ -640,5 +643,13 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	public void setMotivosCheck(String[] motivosCheck)
 	{
 		this.motivosCheck = motivosCheck;
+	}
+
+	public Date[] getDatasRealizacaoExames() {
+		return datasRealizacaoExames;
+	}
+
+	public void setDatasRealizacaoExames(Date[] datasRealizacaoExames) {
+		this.datasRealizacaoExames = datasRealizacaoExames;
 	}
 }

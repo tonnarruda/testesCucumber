@@ -99,7 +99,7 @@ public class RealizacaoExameManagerImpl extends GenericManagerImpl<RealizacaoExa
 		return getDao().findRealizadosByColaborador(empresaId, colaboradorId);
 	}
 
-	public void save(SolicitacaoExame solicitacaoExame, String[] selectResultados, String[] observacoes)
+	public void save(SolicitacaoExame solicitacaoExame, String[] selectResultados, String[] observacoes, Date[] datasRealizacaoExames)
 	{
 		Collection<ExameSolicitacaoExame> exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId());
 
@@ -107,7 +107,7 @@ public class RealizacaoExameManagerImpl extends GenericManagerImpl<RealizacaoExa
 		for (ExameSolicitacaoExame exameSolicitacaoExame : exameSolicitacaoExames)
 		{
 			RealizacaoExame realizacaoExame = new RealizacaoExame();
-			realizacaoExame.setData(solicitacaoExame.getData());
+			realizacaoExame.setData(datasRealizacaoExames[i]);
 			realizacaoExame.setResultado(selectResultados[i]);
 			realizacaoExame.setObservacao(observacoes[i]);
 
