@@ -350,5 +350,14 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	public void setParametros(Map<String, Object> parametros) {
 		this.parametros = parametros;
 	}
+
+	public Integer count(Long empresaId, Exame exame) {
+		return getDao().getCount(empresaId, exame);
+	}
+
+	public Collection<Exame> find(Integer page, Integer pagingSize, Long empresaId, Exame exame) 
+	{
+		return getDao().find(page, pagingSize, empresaId, exame);
+	}
 	
 }

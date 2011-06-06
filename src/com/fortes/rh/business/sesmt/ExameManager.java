@@ -24,4 +24,6 @@ public interface ExameManager extends GenericManager<Exame>
 	Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String motivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, String vinculo) throws ColecaoVaziaException;
 	void enviaLembreteExamesPrevistos(Collection<Empresa> empresas);
 	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizadosResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds) throws ColecaoVaziaException;
+	Integer count(Long empresaId, Exame exame);
+	Collection<Exame> find(Integer page, Integer pagingSize, Long empresaId, Exame exame);
 }

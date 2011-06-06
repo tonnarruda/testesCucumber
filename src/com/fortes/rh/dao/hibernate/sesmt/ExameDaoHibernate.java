@@ -13,9 +13,11 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExameDao;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
@@ -263,5 +265,46 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		query.setString("resultado", exameResultado);
 		
 		return query.list();
+	}
+	
+	private void montaQuery(Long empresaId, Exame exame, Criteria criteria) {
+		if(empresaId != null)
+			criteria.add(Expression.eq("e.empresa.id", empresaId));
+		
+		if (exame != null && isNotBlank(exame.getNome()))
+			criteria.add(Expression.sqlRestriction("normalizar({alias}.nome) ilike normalizar(?)", "%" + exame.getNome() + "%", Hibernate.STRING));
+	}
+
+	public Integer getCount(Long empresaId, Exame exame) {
+
+		Criteria criteria = getSession().createCriteria(Exame.class, "e");
+
+		montaQuery(empresaId, exame, criteria);
+
+		criteria.setProjection(Projections.rowCount());
+
+		return (Integer) criteria.uniqueResult();
+	}
+
+	public Collection<Exame> find(Integer page, Integer pagingSize, Long empresaId, Exame exame) 
+	{
+		Criteria criteria = getSession().createCriteria(Exame.class, "e");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"), "nome");
+		p.add(Projections.property("e.periodico"), "periodico");
+		p.add(Projections.property("e.periodicidade"), "periodicidade");
+
+		criteria.setProjection(p);
+		criteria.setFirstResult(((page - 1) * pagingSize));
+		criteria.setMaxResults(pagingSize);
+		
+		montaQuery(empresaId, exame, criteria);
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Exame.class));
+
+		return criteria.list();
 	}
 }

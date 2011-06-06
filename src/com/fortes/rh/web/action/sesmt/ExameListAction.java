@@ -99,12 +99,8 @@ public class ExameListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		String[] keys = new String[]{"empresa.id"};
-		Object[] values = new Object[]{getEmpresaSistema().getId()};
-		String[] orders = new String[]{"nome"};
-
-		setTotalSize(exameManager.getCount(keys, values));
-		exames = exameManager.find(getPage(), getPagingSize(), keys, values, orders);
+		setTotalSize(exameManager.count(getEmpresaSistema().getId(), exame));
+		exames = exameManager.find(getPage(), getPagingSize(), getEmpresaSistema().getId(), exame);
 
 		return Action.SUCCESS;
 	}

@@ -31,20 +31,11 @@
 		{
 			value = document.getElementById('vinculo').value;
 			if (value == 'CANDIDATO')
-			{
 				document.getElementById('divMatricula').style.display = 'none';
-				document.getElementById('divNome').style.display = '';
-			}
 			else if (value == 'COLABORADOR')
-			{
 				document.getElementById('divMatricula').style.display = '';
-				document.getElementById('divNome').style.display = '';
-			}
 			else if (value == 'TODOS')
-			{
 				document.getElementById('divMatricula').style.display = 'none';
-				document.getElementById('divNome').style.display = 'none';
-			}
 		}
 		
 		function marcarComoNormal(solicitacaoExameId)

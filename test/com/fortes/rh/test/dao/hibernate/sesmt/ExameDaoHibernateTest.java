@@ -489,6 +489,61 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 
 		assertEquals(2, exameDao.findExamesRealizados(empresa.getId(), null, dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.NAO_REALIZADO.toString(), null, null, null, "").size());
 	}
+	
+	public void testGetCount()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Exame auditivo = new Exame();
+		auditivo.setNome("audítivo");
+		auditivo.setEmpresa(empresa);
+		exameDao.save(auditivo);
+
+		Exame visual = new Exame();
+		visual.setNome("visual");
+		visual.setEmpresa(empresa);
+		exameDao.save(visual);
+
+		Exame audiovisual = new Exame();
+		audiovisual.setNome("audiovisual");
+		audiovisual.setEmpresa(empresa);
+		exameDao.save(audiovisual);
+
+		Exame exame = ExameFactory.getEntity();
+		exame.setNome("audi");
+		Integer qtdExames = exameDao.getCount(empresa.getId(), exame);
+
+		assertEquals(new Integer(2), qtdExames);
+	}
+	
+	public void testFindByNome()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Exame auditivo = new Exame();
+		auditivo.setNome("audítivo");
+		auditivo.setEmpresa(empresa);
+		exameDao.save(auditivo);
+		
+		Exame visual = new Exame();
+		visual.setNome("visual");
+		visual.setEmpresa(empresa);
+		exameDao.save(visual);
+		
+		Exame audiovisual = new Exame();
+		audiovisual.setNome("audiovisual");
+		audiovisual.setEmpresa(empresa);
+		exameDao.save(audiovisual);
+		
+		Exame exame = ExameFactory.getEntity();
+		exame.setNome("audi");
+		Collection<Exame> exames = exameDao.find(0, 10, empresa.getId(), exame);
+		
+		assertEquals(2, exames.size());
+	}
+	
 	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
 	{
 		this.historicoFuncaoDao = historicoFuncaoDao;
