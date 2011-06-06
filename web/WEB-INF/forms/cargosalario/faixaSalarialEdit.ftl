@@ -66,27 +66,28 @@
 	<#if edicao>
 		</div>
 		<br>
-		<@display.table name="faixaSalarialsHistoricos" id="faixaSalarialHistorico" class="dados" style="width: 800px;">
+		<@display.table name="faixaSalarialHistoricoVOs" id="faixaSalarialHistoricoVO" class="dados" style="width: 800px;">
 			<@display.column title="Ações" class="acao">
-				<a href="../faixaSalarialHistorico/prepareUpdate.action?faixaSalarialHistorico.id=${faixaSalarialHistorico.id}&faixaSalarialAux.id=${faixaSalarialAux.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-				<#if (faixaSalarialsHistoricos?size > 1)>
-					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../faixaSalarialHistorico/delete.action?faixaSalarialHistorico.id=${faixaSalarialHistorico.id}&faixaSalarialAux.id=${faixaSalarialAux.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<#if (faixaSalarialHistoricoVO.editavel)>
+					<a href="../faixaSalarialHistorico/prepareUpdate.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+					<#if 1 < faixaSalarialHistoricoVOs?size >
+						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../faixaSalarialHistorico/delete.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<#else>
+						<img border="0" title="Não é possível excluir o último histórico." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+					</#if>
 				<#else>
-					<img border="0" title="Não é possível excluir o último histórico." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+					<span title="Essa evolução do histórico da faixa foi devido ao reajuste do índice">(Índice)</span>
 				</#if>
 			</@display.column>
 			<@display.column title="A partir de" style="width: 70px;text-align: center;">
-				${faixaSalarialHistorico.data?date}
+				${faixaSalarialHistoricoVO.dataFaixa?date}
 			</@display.column>
 			<@display.column title="Tipo" style="width: 600px;">
-				Por ${tipoAplicacaoIndice.getDescricao(faixaSalarialHistorico.tipo)}
-				<#if faixaSalarialHistorico.tipo == 2>
-					(${faixaSalarialHistorico.quantidade} X ${faixaSalarialHistorico.indice.nome})
-				</#if>
+				Por ${faixaSalarialHistoricoVO.nomeIndice}
 			</@display.column>
 			<@display.column title="Valor" style="width: 80px;text-align: right;">
-				<#if faixaSalarialHistorico.valor?exists>
-					${faixaSalarialHistorico.valor?string(",##0.00")}
+				<#if faixaSalarialHistoricoVO.valorFaixa?exists>
+					${faixaSalarialHistoricoVO.valorFaixa?string(",##0.00")}
 				<#else>
 					-
 				</#if>
@@ -94,7 +95,7 @@
 			<#if integradoAC>
 				<@display.column title="Status no AC" style="width: 50px;text-align: center;">
 					<img border="0" title="${statusRetornoAC.getDescricao(faixaSalarialHistorico.status)}"
-					src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(faixaSalarialHistorico.status)}">
+					src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(faixaSalarialHistoricoVO.status)}">
 				</@display.column>
 			</#if>
 		</@display.table>

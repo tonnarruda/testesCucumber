@@ -13,6 +13,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -38,6 +39,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 
 	private Collection<Indice> indices = new ArrayList<Indice>();
 	private Collection<FaixaSalarialHistorico> faixaSalarialsHistoricos = new ArrayList<FaixaSalarialHistorico>();
+	private Collection<FaixaSalarialHistoricoVO> faixaSalarialHistoricoVOs = new ArrayList<FaixaSalarialHistoricoVO>();
 
 	private Map tipoAplicacaoIndices;
 	private TipoAplicacaoIndice tipoAplicacaoIndice = new TipoAplicacaoIndice();
@@ -86,7 +88,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 	{
 		prepare();
 		certificacaosCheckList = CheckListBoxUtil.marcaCheckListBox(certificacaosCheckList, certificacaoManager.findByFaixa(faixaSalarialAux.getId()), "getId");
-		faixaSalarialsHistoricos = faixaSalarialHistoricoManager.findAllSelect(faixaSalarialAux.getId());
+		faixaSalarialHistoricoVOs = faixaSalarialHistoricoManager.findAllComHistoricoIndice(faixaSalarialAux.getId());
 		
 		return Action.SUCCESS;
 	}
@@ -279,5 +281,14 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 	public void setCertificacaosCheck(String[] certificacaosCheck)
 	{
 		this.certificacaosCheck = certificacaosCheck;
+	}
+
+	public void setFaixaSalarialHistoricoVOs(
+			Collection<FaixaSalarialHistoricoVO> faixaSalarialHistoricoVOs) {
+		this.faixaSalarialHistoricoVOs = faixaSalarialHistoricoVOs;
+	}
+
+	public Collection<FaixaSalarialHistoricoVO> getFaixaSalarialHistoricoVOs() {
+		return faixaSalarialHistoricoVOs;
 	}
 }

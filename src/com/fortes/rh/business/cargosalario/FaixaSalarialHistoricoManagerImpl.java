@@ -16,6 +16,7 @@ import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -141,6 +142,13 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 			FaixaSalarialHistorico faixaSalarialHistorico = (FaixaSalarialHistorico)(faixaSalarialHistoricos.toArray())[faixaSalarialHistoricos.size()-1];
 			faixaSalarialHistorico.getIndice().getIndiceHistoricoAtual().setValor(faixaSalarialHistorico.getIndice().getIndiceHistoricoAtual().getValorAtual());
 		}
+
+		return faixaSalarialHistoricos;
+	}
+	
+	public Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId)
+	{
+		Collection<FaixaSalarialHistoricoVO> faixaSalarialHistoricos = getDao().findAllComHistoricoIndice(faixaSalarialId);
 
 		return faixaSalarialHistoricos;
 	}

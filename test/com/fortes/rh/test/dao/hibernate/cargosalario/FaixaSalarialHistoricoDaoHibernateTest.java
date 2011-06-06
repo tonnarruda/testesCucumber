@@ -15,6 +15,7 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -63,6 +64,21 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoDao.findAllSelect(faixaSalarial.getId());
 
 		assertEquals(1, faixaSalarialHistoricos.size());
+	}
+	
+	public void testFindAllComHistoricoIndice()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+
+		Collection<FaixaSalarialHistoricoVO> faixaSalarialHistoricoVOs = faixaSalarialHistoricoDao.findAllComHistoricoIndice(faixaSalarialHistorico.getFaixaSalarial().getId());
+
+		// como a consulta utiliza SQLQuery (sessão diferente), o teste verifica somente quanto ao lançamento de exceções
+		assertTrue(faixaSalarialHistoricoVOs.size() >= 0);
 	}
 	
 	public void testFindIdByDataFaixa()

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 
 public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHistorico>
 {
@@ -19,4 +20,5 @@ public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHisto
 	Collection<FaixaSalarialHistorico> findPendenciasByFaixaSalarialHistorico(Long empresaId);
 	Collection<FaixaSalarialHistorico> findHistoricosByFaixaSalarialId(Long faixaSalarialId);
 	Long findIdByDataFaixa(FaixaSalarialHistorico faixaSalarialHistorico);
+	Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId);
 }

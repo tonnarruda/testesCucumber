@@ -1,7 +1,10 @@
 package com.fortes.rh.dao.hibernate.cargosalario;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -15,7 +18,9 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unchecked")
 public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<FaixaSalarialHistorico> implements FaixaSalarialHistoricoDao
@@ -45,6 +50,71 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		query.setDate("data", new Date());
 
 		return query.list();
+	}
+	
+	public Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId)
+	{
+		StringBuilder hql = new StringBuilder();
+
+		hql.append("select faixas.* ");
+		hql.append("from ");
+		hql.append("	(select ");
+		hql.append("		fsh.id, ");
+		hql.append("		fsh.tipo, ");
+		hql.append("   		fsh.quantidade, ");
+		hql.append("   		fsh.status, ");
+		hql.append("		fsh.data as datafaixa, ");
+		hql.append("   		fsh.valor as valorfaixa, ");
+		hql.append("		i.nome as nomeindice, ");
+		hql.append("        ih.data as dataindice, ");
+		hql.append("        (fsh.quantidade * ih.valor) as valorindice, ");
+		hql.append("        (select data from faixasalarialhistorico where data > fsh.data and faixasalarial_id = fsh.faixasalarial_id order by data limit 1) as proximadatafaixa, ");
+		hql.append("		(select data from indicehistorico where data <= fsh.data and indice_id = fsh.indice_id order by data desc limit 1) as dataindiceanterior ");
+		hql.append("    from faixasalarialhistorico fsh ");
+		hql.append("    	left join indicehistorico ih on fsh.indice_id = ih.indice_id ");
+		hql.append("    	left join indice i on fsh.indice_id = i.id ");
+		hql.append("    where fsh.faixasalarial_id = :faixaId ");
+		hql.append("    	and fsh.data <= current_date ");
+		hql.append("    	and (ih.data is null or ih.data <= current_date) ");
+		hql.append("    order by fsh.data, ih.data) as faixas ");
+		hql.append("where faixas.dataindice is null or (faixas.dataindice >= faixas.dataindiceanterior and ((faixas.dataindice < faixas.proximadatafaixa) or faixas.proximadatafaixa is null)) ");
+
+		Query query = getSession().createSQLQuery(hql.toString());
+		query.setLong("faixaId", faixaSalarialId);
+
+		List<Object[]> objetos = query.list();
+		Collection<FaixaSalarialHistoricoVO> faixas = new ArrayList<FaixaSalarialHistoricoVO>();
+		
+		FaixaSalarialHistoricoVO vo;
+		Object[] array;
+		
+		for (Iterator<Object[]> it = objetos.iterator(); it.hasNext();)
+		{
+			array = it.next();
+			vo = new FaixaSalarialHistoricoVO();
+			vo.setId(Long.parseLong(array[0].toString()));
+			vo.setTipo((Integer) array[1]);
+			vo.setQtdeIndice((Double) array[2]);
+			vo.setStatus((Integer) array[3]);
+			vo.setDataFaixa(new Date(((java.sql.Date)array[4]).getTime()));
+			vo.setValorFaixa((Double) array[5]);
+			vo.setNomeIndice((String) array[6]);
+			
+			if (array[7] != null)
+				vo.setDataIndice(new Date(((java.sql.Date) array[7]).getTime()));
+			
+			vo.setValorIndice((Double) array[8]);
+			
+			if (array[9] != null)
+				vo.setProximaDataFaixa(new Date(((java.sql.Date) array[9]).getTime()));
+			
+			if (array[10] != null)
+				vo.setDataIndiceAnterior(new Date(((java.sql.Date) array[10]).getTime()));
+			
+			faixas.add(vo);
+		}
+		
+		return faixas;
 	}
 
 	public FaixaSalarialHistorico findByIdProjection(Long faixaSalarialHistoricoId)
