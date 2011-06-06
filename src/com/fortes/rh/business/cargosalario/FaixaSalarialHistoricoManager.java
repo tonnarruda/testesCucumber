@@ -7,6 +7,7 @@ import java.util.Map;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.ws.TSituacaoCargo;
@@ -30,4 +31,5 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	void sincronizar(Map<Long, Long> faixaSalarialIds);
 	FaixaSalarialHistorico bind(TSituacaoCargo tSituacaoCargo, FaixaSalarial faixaSalarial);
 	Long findIdByDataFaixa(FaixaSalarialHistorico faixaSalarialHistorico);
+	Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId);
 }
