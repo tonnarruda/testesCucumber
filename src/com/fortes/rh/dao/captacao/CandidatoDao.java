@@ -48,4 +48,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long colaboradorId);
 	public Collection<Candidato> findQtdCadastradosByOrigem(Date dataIni, Date dataFim);
 	public Collection<String> getComoFicouSabendoVagas();
+	public void updateExamePalografico(Candidato candidato);
 }

@@ -857,6 +857,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return "";
 	}
 
+	public String getTextoExamePalografico(File ocrTexto) throws Exception
+	{
+		return getTextoCurriculo(ocrTexto);
+	}
+
 	public Candidato saveCandidatoCurriculo(Candidato candidato, File[] imagemEscaneada, File ocrTexto) throws Exception
 	{
 		if (StringUtils.isNotBlank(getTextoCurriculo(ocrTexto)))
@@ -1358,6 +1363,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			return "";
 		else
 			return StringUtil.converteCollectionToStringComAspas(comoFicouSabendoVagas);
+	}
+
+	public void updateExamePalografico(Candidato candidato) 
+	{
+			getDao().updateExamePalografico(candidato);
 	}
 
 }

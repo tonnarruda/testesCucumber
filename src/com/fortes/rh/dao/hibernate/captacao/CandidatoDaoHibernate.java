@@ -114,6 +114,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("c.origem"),"origem");
 		p.add(Projections.property("c.senha"),"senha");
 		p.add(Projections.property("c.comoFicouSabendoVagaQual"), "comoFicouSabendoVagaQual");
+		p.add(Projections.property("c.examePalografico"), "examePalografico");
+		p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
 		p.add(Projections.property("e.id"), "empresaId");
 
 		criteria.setProjection(p);
@@ -139,6 +141,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("c.dataCadastro"), "dataCadastro");
 		p.add(Projections.property("dataAtualizacao"), "dataAtualizacao");
 		p.add(Projections.property("c.pessoal.indicadoPor"),"pessoalIndicadoPor");
+		p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
 		p.add(Projections.property("e.id"), "empresaId");
 		criteria.setProjection(p);
 		
@@ -1097,5 +1100,18 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
         criteria.add(Expression.isNotNull("c.comoFicouSabendoVaga"));
 
         return criteria.list();
+	}
+
+	public void updateExamePalografico(Candidato candidato) 
+	{
+		String queryHQL = "update Candidato c set c.examePalografico = :examePalografico where c.id = :candidatoId";
+
+		Session session = getSession();
+		Query query = session.createQuery(queryHQL);
+		
+		query.setLong("candidatoId",candidato.getId());
+		query.setString("examePalografico",candidato.getExamePalografico());
+		
+		query.executeUpdate();
 	}
 }

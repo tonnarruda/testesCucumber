@@ -274,6 +274,22 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	
     	assertEquals("input", action.insertCurriculo());
     }
+    
+    public void testPrepareUpdateExamePalografico() throws Exception
+    {
+    	Candidato candidato = CandidatoFactory.getCandidato();
+    	candidato.setId(1L);
+    	candidato.setPessoal(new Pessoal());
+    	candidato.getPessoal().setCpf("123");
+    	candidato.setExamePalografico("///_|/-\\\\-||||");
+    	action.setCandidato(candidato);
+    	
+    	manager.expects(once()).method("findByIdProjection").with(eq(candidato.getId())).will(returnValue(candidato));
+
+    	action.prepareUpdateExamePalografico();
+    	    	   	
+    	assertEquals("||||", action.getPartesExamePalografico()[3]);
+    }
 
     public void testPrepareUpdateCurriculo() throws Exception
     {

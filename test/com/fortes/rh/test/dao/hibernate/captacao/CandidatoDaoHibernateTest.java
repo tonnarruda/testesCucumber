@@ -1721,12 +1721,14 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Candidato c1 = getCandidato();
 		c1.setEmpresa(empresa);
+		c1.setExamePalografico("?????--%%%á#%**&¨%$#@!");
 
 		c1 = candidatoDao.save(c1);
 
 		Candidato candidatoRetorno = candidatoDao.findByIdProjection(c1.getId());
 
 		assertEquals(c1.getId(), candidatoRetorno.getId());
+		assertEquals(c1.getExamePalografico(), candidatoRetorno.getExamePalografico());
 	}
 
 
