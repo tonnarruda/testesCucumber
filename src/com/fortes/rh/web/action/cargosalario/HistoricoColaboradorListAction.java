@@ -95,6 +95,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Double percentualDissidio;
 	private String grfSalarioAreas;
 	private String json;
+
+	private boolean sugerir = true;
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -338,8 +340,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public String setDissidio() 
 	{
 		historicoColaboradorManager.setMotivoDissidio(historicoColaboradorIds);
-		
-		return prepareAjusteDissidio();
+		sugerir = false;
+		return Action.SUCCESS;
 	}
 
 	public String[] getAreasCheck()
@@ -639,6 +641,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public Long[] getHistoricoColaboradorIds() {
 		return historicoColaboradorIds;
+	}
+
+	public boolean isSugerir() {
+		return sugerir;
+	}
+
+	public void setSugerir(boolean sugerir) {
+		this.sugerir = sugerir;
 	}
 	
 }

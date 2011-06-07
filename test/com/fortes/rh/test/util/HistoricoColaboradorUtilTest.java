@@ -72,7 +72,7 @@ public class HistoricoColaboradorUtilTest extends TestCase
 
 		String motivo = HistoricoColaboradorUtil.getMotivoReajuste(reajuste, historicoColaborador);
 
-		assertEquals("Test 1", MotivoHistoricoColaborador.PROMOCAO_VERTICAL, motivo);
+		assertEquals("Test 1", MotivoHistoricoColaborador.PROMOCAO, motivo);
 
 		reajuste.setSalarioAtual(20.00);
 		motivo = HistoricoColaboradorUtil.getMotivoReajuste(reajuste, historicoColaborador);

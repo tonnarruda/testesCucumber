@@ -47,6 +47,10 @@ public abstract class Menu
 		menu.append("<li style='float: right; line-height: 0.8em;'><a href='" + contexto + "/geral/documentoVersao/list.action' class='versao'> Versão: "  +  parametros.getAppVersao() +"</a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
+				"<a href='http://twitter.com/#!/entetecnologia' target='_blank' title='Twitter Fortes RH'>" +
+				"<img src='"+ contexto + "/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
+		
+		menu.append("<li style='float: right; line-height: 0.8em'>" +
 				"<a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes RH'>" +
 				"<img src='"+ contexto + "/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		

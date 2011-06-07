@@ -189,6 +189,9 @@ button[disabled="disabled"] {
 	color: #C0C0C0;
 }
 */
+input[type="checkbox"][disabled]{
+	opacity:0.4;
+}
 .wwgrp {
 	padding: 0px 5px 5px 0px;
 }

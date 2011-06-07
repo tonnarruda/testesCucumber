@@ -4,6 +4,7 @@
 package com.fortes.rh.model.cargosalario;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -83,6 +84,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	@Transient private Collection<Funcao> funcoes;
 	
 	@Transient private Double salarioVariavel;
+	@Transient private Double diferencaSalarialEmPorcentam;
 	@Transient private String obsACPessoal;
 	
 	public HistoricoColaborador(String colaborador, String areaOrganizacional) {
@@ -1002,5 +1004,19 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 	public void setObsACPessoal(String obsACPessoal) {
 		this.obsACPessoal = obsACPessoal;
+	}
+
+	public Double getDiferencaSalarialEmPorcentam() {
+		if(diferencaSalarialEmPorcentam != null)
+		{
+			DecimalFormat df = new DecimalFormat("0.00");
+			return Double.parseDouble(df.format(diferencaSalarialEmPorcentam).replace(",", "."));
+		}
+		
+		return diferencaSalarialEmPorcentam;
+	}
+
+	public void setDiferencaSalarialEmPorcentam(Double diferencaSalarialEmPorcentam) {
+		this.diferencaSalarialEmPorcentam = diferencaSalarialEmPorcentam;
 	}
 }

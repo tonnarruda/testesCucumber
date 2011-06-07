@@ -33,6 +33,7 @@ public class MenuTest extends TestCase
 		menu.append("</li>\n");
 		menu.append("<li><a href='localhost/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em;'><a href='localhost/geral/documentoVersao/list.action' class='versao'> Versão: 1</a></li>\n");
+		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://twitter.com/#!/entetecnologia' target='_blank' title='Twitter Fortes RH'><img src='localhost/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes RH'><img src='localhost/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=0002&codCliente=000006&token=sistema' target='_blank' title='Suporte'><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
 		menu.append("</ul>\n");
@@ -89,6 +90,7 @@ public class MenuTest extends TestCase
 		menu.append("</li>\n");
 		menu.append("<li><a href='localhost/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em;'><a href='localhost/geral/documentoVersao/list.action' class='versao'> Versão: 1</a></li>\n");
+		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://twitter.com/#!/entetecnologia' target='_blank' title='Twitter Fortes RH'><img src='localhost/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://fortesrh.blogspot.com' target='_blank' title='Blog Fortes RH'><img src='localhost/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/forteschat/cliente.jsp?codEmpresa=0002&codCliente=000006&token=sistema' target='_blank' title='Suporte'><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
 		menu.append("</ul>\n");

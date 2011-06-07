@@ -465,7 +465,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		histColab4.setAreaOrganizacional(area2);
 		histColab4.setColaborador(colab1);
 		histColab4.setData(new Date());
-		histColab4.setMotivo(MotivoHistoricoColaborador.PROMOCAO_VERTICAL);
+		histColab4.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 
 		historicoColaboradors.add(histColab1);
 		historicoColaboradors.add(histColab2);
@@ -477,7 +477,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		histColab5.setAreaOrganizacional(area1);
 		histColab5.setColaborador(colab1);
 		histColab5.setData(new Date());
-		histColab5.setMotivo(MotivoHistoricoColaborador.PROMOCAO_VERTICAL);
+		histColab5.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 
 		Collection<HistoricoColaborador> histColaboradorTodos = new ArrayList<HistoricoColaborador>();
 		histColaboradorTodos.add(histColab5);

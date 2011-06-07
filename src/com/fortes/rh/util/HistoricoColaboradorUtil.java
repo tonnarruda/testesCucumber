@@ -17,7 +17,7 @@ public class HistoricoColaboradorUtil
 	public static String getMotivoReajuste(ReajusteColaborador reajuste, HistoricoColaborador historicoColaborador)
 	{
 		if(!reajuste.getSalarioAtual().equals(reajuste.getSalarioProposto()))
-			return MotivoHistoricoColaborador.PROMOCAO_VERTICAL;
+			return MotivoHistoricoColaborador.PROMOCAO;
 		else
 			if(reajuste.getFaixaSalarialAtual().getCargo().getId() != reajuste.getFaixaSalarialProposta().getCargo().getId() ||
 			reajuste.getFaixaSalarialAtual().getId() != reajuste.getFaixaSalarialProposta().getId())

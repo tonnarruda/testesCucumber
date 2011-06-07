@@ -259,7 +259,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 					subTotal = ((Integer) promocaoHorizontal.get(area)) + 1;
 				promocaoHorizontal.put(area, subTotal);
 			}
-			else if (histColaborador.getMotivo().equals(MotivoHistoricoColaborador.PROMOCAO_VERTICAL))
+			else if (histColaborador.getMotivo().equals(MotivoHistoricoColaborador.PROMOCAO))
 			{
 
 				area = extraiAreaHistoricoAnterior(histColaborador, historicoColaboradorsTodos);
@@ -1298,7 +1298,26 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().setMotivoDissidio(historicoColaboradorIds);
 	}
 
-	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio) {
-		return getDao().findSemDissidioByDataPercentual(dataBase, percentualDissidio);
+	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio)
+	{
+		Collection<HistoricoColaborador> historicos = getDao().findSemDissidioByDataPercentual(dataBase, percentualDissidio);
+		
+		Long idColaborador = 0L;
+		Double salarioAnterior = 0.0;
+		for (HistoricoColaborador historico : historicos) 
+		{
+			historico.setSalario(historico.getSalarioCalculado());
+			
+			if(idColaborador.equals(historico.getColaborador().getId()))
+				historico.setSalarioVariavel(salarioAnterior);
+			
+			idColaborador = historico.getColaborador().getId();
+			salarioAnterior = historico.getSalario();
+			
+			if(historico.getSalario() != null && historico.getSalarioVariavel() != null && !historico.getSalarioVariavel().equals(0.0))
+				historico.setDiferencaSalarialEmPorcentam(((historico.getSalario() - historico.getSalarioVariavel()) / historico.getSalarioVariavel()) * 100);
+		}
+		
+		return historicos;
 	}
 }

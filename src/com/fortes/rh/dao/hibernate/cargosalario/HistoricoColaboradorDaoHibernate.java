@@ -1084,6 +1084,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		montaFromAndJoin(hql);
 
 		hql.append("where hc.data >= :data ");
+		hql.append("and co.dataDesligamento is null ");
 		hql.append("order by co.nome, hc.data");
 
 		Query query = getSession().createQuery(hql.toString());
