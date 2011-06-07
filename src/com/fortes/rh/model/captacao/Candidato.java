@@ -116,6 +116,8 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private String ocrTexto;
 	@Lob
 	private String observacaoRH;
+	@Lob
+	private String examePalografico;
 	
 	private Integer idF2RH;
 	
@@ -1126,6 +1128,14 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setCamposExtras(CamposExtras camposExtras) {
 		this.camposExtras = camposExtras;
+	}
+
+	public void setExamePalografico(String examePalografico) {
+		this.examePalografico = examePalografico;
+	}
+
+	public String getExamePalografico() {
+		return examePalografico;
 	}
 
 }

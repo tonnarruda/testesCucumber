@@ -160,6 +160,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private CamposExtrasManager camposExtrasManager;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	private CamposExtras camposExtras;
+	
+	private String[] partesExamePalografico;
 
 	private void prepare() throws Exception
 	{
@@ -446,7 +448,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		else
 			empresaId = this.empresaId;
 
-		if (!candidato.getEmpresa().getId().equals(empresaId))
+		if (candidato.getEmpresa() != null && !candidato.getEmpresa().getId().equals(empresaId))
 		{
 			msgAlert = "O candidato solicitado não existe na empresa .";
 			return Action.ERROR;
@@ -803,7 +805,50 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			}
 		}
 	}
-
+	
+	public String prepareUpdateExamePalografico() throws Exception
+	{
+		String textoExame = null;
+		
+		candidato = candidatoManager.findByIdProjection(candidato.getId());
+		
+		if (candidato != null)
+		{
+			if (ocrTexto != null)
+				textoExame = candidatoManager.getTextoExamePalografico(ocrTexto);
+			else if (candidato.getExamePalografico() != null)
+				textoExame = candidato.getExamePalografico();
+			
+			if (textoExame != null)
+			{
+				partesExamePalografico = textoExame.replaceAll("[\n\r]","").replaceAll("[iI]","|").split("[-_]");
+				candidato.setExamePalografico(textoExame.replaceAll("[iI]","|").replaceAll("_","-"));
+			}
+		}
+		else if (candidato == null)
+		{
+			msgAlert = "Candidato não encontrado";
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	
+	public String updateExamePalografico() throws Exception 
+	{
+		try
+		{
+			candidatoManager.updateExamePalografico(candidato);
+			msgAlert = "Exame Palográfico do candidato \"" + candidato.getNome() + "\" editado com sucesso.";
+		}
+		catch (Exception e)
+		{
+			addActionMessage("Erro ao editar o Exame Palográfico");
+			return prepareUpdateExamePalografico();
+		}
+		return Action.SUCCESS;
+	}
+	
 	public Candidato getCandidato()
 	{
 		if (candidato == null)
@@ -1354,6 +1399,14 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager) {
 		this.camposExtrasManager = camposExtrasManager;
+	}
+
+	public void setPartesExamePalografico(String[] partesExamePalografico) {
+		this.partesExamePalografico = partesExamePalografico;
+	}
+
+	public String[] getPartesExamePalografico() {
+		return partesExamePalografico;
 	}
 
 	

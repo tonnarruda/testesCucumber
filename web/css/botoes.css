@@ -141,6 +141,11 @@
 	background-image:url(../imgs/btnListagemColaborador.gif);
 	width: 220px !important;
 }
+.btnCarregar
+{
+	background-image:url(../imgs/btnCarregar.gif);
+	width: 100px !important;
+}
 .btnFechar
 {
 	background-image:url(../imgs/btnFechar.gif);
@@ -610,7 +615,8 @@
 .btnListaFrequenciaVotacao,
 .btnResultadoAvaliacao,
 .btnTriagemF2RH,
-.btnListagemColaborador
+.btnListagemColaborador,
+.btnCarregar
 {
 	border: 0;
 	background-repeat: no-repeat;
