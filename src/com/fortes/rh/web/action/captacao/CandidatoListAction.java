@@ -201,7 +201,7 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	private Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
 	private Curriculo curriculo;
-	
+
 	public String list() throws Exception
 	{
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
@@ -608,6 +608,13 @@ public class CandidatoListAction extends MyActionSupportList
 
 		return Action.SUCCESS;
 	}
+	
+	public String verExamePalografico()
+	{
+		candidato = candidatoManager.findByIdProjection(candidato.getId());
+		
+		return Action.SUCCESS;
+	}
 
 	public String verCurriculo() throws Exception
 	{
@@ -634,6 +641,8 @@ public class CandidatoListAction extends MyActionSupportList
 
 		dataSource = new ArrayList<CurriculoCandidatoRelatorio>();
 		dataSource.add(curriculo);
+		
+		parametros.put("NOME", candidato.getNome());
 
 		parametros = RelatorioUtil.getParametrosRelatorio("", getEmpresaSistema(), "");
 		configuracaoImpressaoCurriculo.populaParametros(parametros);

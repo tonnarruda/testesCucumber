@@ -288,7 +288,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
 
     	action.prepareUpdateExamePalografico();
     	    	   	
-    	assertEquals("||||", action.getPartesExamePalografico()[3]);
+    	assertEquals(candidato.getExamePalografico(), action.getCandidato().getExamePalografico());
     }
 
     public void testPrepareUpdateCurriculo() throws Exception

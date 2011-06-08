@@ -160,6 +160,9 @@
 		<action name="verCurriculoTextoOcr" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verCurriculoTextoOcr">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoTextoOcr.ftl</result>
 		</action>
+		<action name="verExamePalografico" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="verExamePalografico">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/examePalograficoView.ftl</result>
+		</action>
 
 		<action name="showCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="showCurriculo" />
 

@@ -33,11 +33,9 @@
 			<@ww.hidden name="candidato.nome" />
 		</@ww.form>
 		
-		<#if partesExamePalografico?exists>
+		<#if candidato.examePalografico?exists>
 			<strong>Resultado:</strong><br />
-			<#list partesExamePalografico as parte>
-	  			${parte_index + 1}ª sequência: ${parte.length()} caracteres &nbsp;&nbsp;&nbsp;&nbsp; ${parte} <br />
-			</#list>
+			<pre>${candidato.resultadoExamePalografico}</pre>
 		</#if>
 
 		<div class="buttonGroup">

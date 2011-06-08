@@ -1131,6 +1131,9 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	}
 
 	public void setExamePalografico(String examePalografico) {
+		if (examePalografico != null)
+			examePalografico = examePalografico.replaceAll("[iI]","|").replaceAll("[-_~¯ˉ˗─]","-");
+		
 		this.examePalografico = examePalografico;
 	}
 
@@ -1138,4 +1141,21 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 		return examePalografico;
 	}
 
+	public String getResultadoExamePalografico() {
+		if (examePalografico != null)
+		{
+			StringBuffer buffer = new StringBuffer();
+			
+			String[] partes =  examePalografico.replaceAll("[\n\r]","").replaceAll("[iI]","|").split("[-_~¯ˉ˗─]");
+			
+			for (int i = 0; i < partes.length; i++)
+			{
+				buffer.append((i+1) + "ª sequência: " + partes[i].length() + " caracteres - " + partes[i] + "\n");
+			}
+			
+			return buffer.toString().trim();
+		}
+		
+		return null;
+	}
 }

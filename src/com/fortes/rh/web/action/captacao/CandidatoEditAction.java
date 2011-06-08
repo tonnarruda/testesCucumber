@@ -161,8 +161,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	private CamposExtras camposExtras;
 	
-	private String[] partesExamePalografico;
-
 	private void prepare() throws Exception
 	{
 		String abaExtra = "";
@@ -821,11 +819,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			
 			if (textoExame != null)
 			{
-				partesExamePalografico = textoExame.replaceAll("[\n\r]","").replaceAll("[iI]","|").split("[-_]");
-				candidato.setExamePalografico(textoExame.replaceAll("[iI]","|").replaceAll("_","-"));
+				candidato.setExamePalografico(textoExame);
 			}
 		}
-		else if (candidato == null)
+		else
 		{
 			msgAlert = "Candidato não encontrado";
 		}
@@ -1400,15 +1397,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager) {
 		this.camposExtrasManager = camposExtrasManager;
 	}
-
-	public void setPartesExamePalografico(String[] partesExamePalografico) {
-		this.partesExamePalografico = partesExamePalografico;
-	}
-
-	public String[] getPartesExamePalografico() {
-		return partesExamePalografico;
-	}
-
 	
 }
 

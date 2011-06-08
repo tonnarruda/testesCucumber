@@ -8,3 +8,5 @@ alter table candidato add column examepalografico text;--.go
 update historicocolaborador h1 set motivo='C' where h1.data = (select min(h2.data) from historicocolaborador h2 where h1.colaborador_id=h2.colaborador_id);--.go
 
 update historicocolaborador set motivo='P' where motivo='I';--.go
+
+alter table configuracaoimpressaocurriculo add column exibirexamepalografico boolean default false;--.go

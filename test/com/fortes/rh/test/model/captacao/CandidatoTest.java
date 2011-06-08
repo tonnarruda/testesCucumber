@@ -36,5 +36,14 @@ public class CandidatoTest extends TestCase
     	candidato.setConhecimentos(null);
     	assertEquals("", candidato.getConhecimentosDescricao());
     }
-
+    
+    public void testGetResultadoExamePalografico()
+    {
+    	Candidato candidato = CandidatoFactory.getCandidato();
+    	candidato.setExamePalografico("||-|||||-//-||");
+    	assertEquals("1ª sequência: 2 caracteres - ||\n" +
+    				"2ª sequência: 5 caracteres - |||||\n" +
+    				"3ª sequência: 2 caracteres - //\n" +
+    				"4ª sequência: 2 caracteres - ||", candidato.getResultadoExamePalografico());
+    }
 }

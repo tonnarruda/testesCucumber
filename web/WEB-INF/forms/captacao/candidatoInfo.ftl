@@ -57,7 +57,7 @@
 	<script language="javascript">
 		function mudaAba(id)
 		{
-			for(i = 1; i <= 4; i++)
+			for(i = 1; i <= 5; i++)
 			{
 				document.getElementById('content' + i).style.display = id == i ? "block" : "none";
 				document.getElementById('aba' + i).style.background  = id == i ? "#FFF" : "#CCC";
@@ -84,6 +84,7 @@
 			$("#historico").load('<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/verHistoricoCandidato.action"/>', {'candidato.id':'${candidato.id}'});
 			$("#imagens").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoEscaneado.action"/>', {'candidato.id':'${candidato.id}'});
 			$("#textoOcr").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoTextoOcr.action"/>', {'candidato.id':'${candidato.id}',palavras:'${palavras}',forma:'${forma}'});
+			$("#examePalografico").load('<@ww.url includeParams="none" value="/captacao/candidato/verExamePalografico.action"/>', {'candidato.id':'${candidato.id}'});
 		});
 	</script>
 	<@ww.head/>
@@ -107,6 +108,10 @@
 		<div id="aba4">
 			<a href="javascript:mudaAba(4)">TEXTO DIGITALIZADO</a>
 		</div>
+		
+		<div id="aba5">
+			<a href="javascript:mudaAba(5)">EXAME PALOGRÁFICO</a>
+		</div>
 	</div>
 
 	<div id="content1">
@@ -123,6 +128,10 @@
 
 	<div id="content4" style="display: none;">
 		<@ww.div id="textoOcr"/>
+	</div>
+	
+	<div id="content5" style="display: none;">
+		<@ww.div id="examePalografico"/>
 	</div>
 
 	<@ww.hidden id="palavras" name="palavras"/>
@@ -161,6 +170,7 @@
 						<@ww.checkbox label="Informações Adicionais" name="configuracaoImpressaoCurriculo.exibirInformacao" labelPosition="left"/>
 						<@ww.checkbox label="Observações do RH" name="configuracaoImpressaoCurriculo.exibirObservacao" labelPosition="left"/>
 						<@ww.checkbox label="Histórico" name="configuracaoImpressaoCurriculo.exibirHistorico" labelPosition="left"/>
+						<@ww.checkbox label="Exame Palográfico" name="configuracaoImpressaoCurriculo.exibirExamePalografico" labelPosition="left"/>
 			
 						<br>
 						<@ww.checkbox label="Campo para aprovação 1" name="configuracaoImpressaoCurriculo.exibirAssinatura1" labelPosition="left" onclick="habilitarCampo(this, 'ass1');"/>
@@ -196,7 +206,8 @@
 	#content1 th,
 	#content2 th,
 	#content3 th,
-	#content4 th {
+	#content4 th,
+	#content5 th {
 		background-color:#23516B;
 		color:#FFCB03;
 		font-weight:bold;
@@ -205,14 +216,16 @@
 	#content1,
 	#content2,
 	#content3,
-	#content4 {
+	#content4,
+	#content5 {
 		background: #FFF;
 		border: 1px solid #7E9DB9;
 	}
 	#abas #aba1,
 	#abas #aba2,
 	#abas #aba3,
-	#abas #aba4 {
+	#abas #aba4,
+	#abas #aba5 {
 		background: #CCC;
 		border: 1px solid #7E9DB9;
 	}
