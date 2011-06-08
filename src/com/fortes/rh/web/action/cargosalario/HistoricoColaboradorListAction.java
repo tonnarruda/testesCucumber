@@ -95,6 +95,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Double percentualDissidio;
 	private String grfSalarioAreas;
 	private String json;
+	private Long[] retiraDissidioIds;
 
 	private boolean sugerir = true;
 	
@@ -339,8 +340,10 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public String setDissidio() 
 	{
-		historicoColaboradorManager.setMotivoDissidio(historicoColaboradorIds);
+		historicoColaboradorManager.setMotivo(historicoColaboradorIds, "D");
+		historicoColaboradorManager.setMotivo(retiraDissidioIds, "P");
 		sugerir = false;
+		
 		return Action.SUCCESS;
 	}
 
@@ -649,6 +652,10 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setSugerir(boolean sugerir) {
 		this.sugerir = sugerir;
+	}
+
+	public void setRetiraDissidioIds(Long[] retiraDissidioIds) {
+		this.retiraDissidioIds = retiraDissidioIds;
 	}
 	
 }

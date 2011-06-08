@@ -1294,8 +1294,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findImprimirListaFrequencia(estabelecimento, votacaoIni, votacaoFim);
 	}
 
-	public void setMotivoDissidio(Long[] historicoColaboradorIds) {
-		getDao().setMotivoDissidio(historicoColaboradorIds);
+	public void setMotivo(Long[] historicoColaboradorIds, String tipo) {
+		getDao().setMotivo(historicoColaboradorIds, tipo);
 	}
 
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio)
