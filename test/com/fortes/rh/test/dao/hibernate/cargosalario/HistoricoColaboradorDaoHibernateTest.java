@@ -147,6 +147,21 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(1, historicoColaboradorDao.findByColaboradorProjection(colaborador.getId()).size());
 	}
 	
+	public void testSetMotivo()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity();
+		historico.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		historico.setColaborador(colaborador);
+		historicoColaboradorDao.save(historico);
+
+		historicoColaboradorDao.setMotivo(new Long[]{historico.getId()}, MotivoHistoricoColaborador.DISSIDIO);	
+		
+		assertEquals(MotivoHistoricoColaborador.DISSIDIO ,historicoColaboradorDao.findByIdProjectionHistorico(historico.getId()).getMotivo());
+	}
+	
 	public void testDeleteSituacaoByMovimentoSalarial()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

@@ -1061,11 +1061,16 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.executeUpdate();		
 	}
 
-	public void setMotivoDissidio(Long[] historicoColaboradorIds) 
+	public void setMotivo(Long[] historicoColaboradorIds, String tipo) 
 	{
-		Query query = getSession().createQuery("update HistoricoColaborador set motivo = 'D' where id in (:historicoColaboradorIds)");
-		query.setParameterList("historicoColaboradorIds", historicoColaboradorIds);
-		query.executeUpdate();	
+		if(historicoColaboradorIds != null && historicoColaboradorIds.length > 0)
+		{
+			Query query = getSession().createQuery("update HistoricoColaborador set motivo = :tipo where id in (:historicoColaboradorIds)");
+			query.setString("tipo", tipo);
+			query.setParameterList("historicoColaboradorIds", historicoColaboradorIds);
+			
+			query.executeUpdate();	
+		}
 	}
 
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio) 

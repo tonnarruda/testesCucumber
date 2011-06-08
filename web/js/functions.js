@@ -1070,3 +1070,16 @@ jQuery(function() {
 		  jAlert(msg);
 	});
 });
+
+
+function arrayDiff(ara1, ara2) {
+   var aRes = new Array() ;
+   for(var i=0;i<ara1.length;i++) {
+	   	if($.inArray(ara1[i], ara2) == -1)
+     	{
+    	 	aRes.push(ara1[i]);
+    	}
+	}
+	return aRes ;
+}	   
+	   

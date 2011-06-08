@@ -22,6 +22,12 @@
 			$('.pagelinks a').each(function(){
 				$(this).attr('href', $(this).attr('href').replace('?sugerir=false&','?'))
 			});
+			
+			idsCheckedsInicial = $("tbody input:checkbox:checked:enabled").map(function(){
+			    return parseInt($(this).val());
+			});
+
+
 		});
 		
 		function prepareEnviarForm() {
@@ -30,8 +36,18 @@
 				pagina = window.location.toString().replace(/.+action/g,'').replace(/.+-p=/g,'').replace('#fim','');
 				if(pagina == "")
 					pagina = 1;
-					
+				
+				idsCheckedsFinal = $("tbody input:checkbox:checked:enabled").map(function(){
+			    	return parseInt($(this).val());
+				});
+				
 				$("#formHistoricos").append('<input type="hidden" name="page" value='+ pagina +'>');
+				
+				retiraDissidioIds = arrayDiff(idsCheckedsInicial, idsCheckedsFinal)
+				$(retiraDissidioIds).each(function(i, value){
+					$("#formHistoricos").append('<input type="hidden" name="retiraDissidioIds" value='+ value +'>');
+				});
+				
 				$("#formHistoricos").submit();
 			}
 			else
@@ -78,9 +94,11 @@
 			<@ww.hidden name="sugerir"/>
 			
 			<@display.table name="historicoColaboradors" id="historicoColaborador" class="dados" pagesize=30 >
+				
 				<#assign destacar = ""/>
 				<#assign checked=""/>
 				<#assign disabled=""/>
+				
 				<#if sugerir && historicoColaborador.diferencaSalarialEmPorcentam?exists &&  historicoColaborador.diferencaSalarialEmPorcentam != 0 && historicoColaborador.diferencaSalarialEmPorcentam <= percentualDissidio>
 					<#assign destacar = "destacar"/>
 					<#assign checked="checked"/>
