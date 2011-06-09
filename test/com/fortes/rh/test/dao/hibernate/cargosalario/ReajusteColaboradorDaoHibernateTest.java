@@ -79,16 +79,6 @@ public class ReajusteColaboradorDaoHibernateTest extends GenericDaoHibernateTest
         Colaborador colaborador = ColaboradorFactory.getEntity();
         colaboradorDao.save(colaborador);
         
-        Colaborador colaboradorDesligadoAntes = ColaboradorFactory.getEntity();
-        colaboradorDesligadoAntes.setDesligado(true);
-        colaboradorDesligadoAntes.setDataDesligamento(DateUtil.criarDataMesAno(10, 6, 2009));
-        colaboradorDao.save(colaboradorDesligadoAntes);
-        
-        Colaborador colaboradorDesligadoDepois = ColaboradorFactory.getEntity();
-        colaboradorDesligadoDepois.setDesligado(true);
-        colaboradorDesligadoDepois.setDataDesligamento(DateUtil.criarDataMesAno(25, 6, 2009));
-        colaboradorDao.save(colaboradorDesligadoDepois);
-
         Cargo cargoAtual = CargoFactory.getEntity();
         cargoDao.save(cargoAtual);
 
@@ -135,26 +125,6 @@ public class ReajusteColaboradorDaoHibernateTest extends GenericDaoHibernateTest
         reajusteColaborador.setEstabelecimentoAtual(estabelecimentoAtual);
         reajusteColaborador.setEstabelecimentoProposto(estabelecimentoProposto);
         reajusteColaboradorDao.save(reajusteColaborador);
-
-        ReajusteColaborador reajusteColaboradorDesligadoAntes = ReajusteColaboradorFactory.getReajusteColaborador();
-        reajusteColaboradorDesligadoAntes.setAreaOrganizacionalProposta(areaOrganizacionalProposto);
-        reajusteColaboradorDesligadoAntes.setColaborador(colaboradorDesligadoAntes);
-        reajusteColaboradorDesligadoAntes.setFaixaSalarialAtual(faixaSalarialAtual);
-        reajusteColaboradorDesligadoAntes.setFaixaSalarialProposta(faixaSalarialProposto);
-        reajusteColaboradorDesligadoAntes.setTabelaReajusteColaborador(tabelaReajusteColaborador);
-        reajusteColaboradorDesligadoAntes.setEstabelecimentoAtual(estabelecimentoAtual);
-        reajusteColaboradorDesligadoAntes.setEstabelecimentoProposto(estabelecimentoProposto);
-        reajusteColaboradorDao.save(reajusteColaboradorDesligadoAntes);
-        
-        ReajusteColaborador reajusteColaboradorDesligadoDepois = ReajusteColaboradorFactory.getReajusteColaborador();
-        reajusteColaboradorDesligadoDepois.setAreaOrganizacionalProposta(areaOrganizacionalProposto);
-        reajusteColaboradorDesligadoDepois.setColaborador(colaboradorDesligadoDepois);
-        reajusteColaboradorDesligadoDepois.setFaixaSalarialAtual(faixaSalarialAtual);
-        reajusteColaboradorDesligadoDepois.setFaixaSalarialProposta(faixaSalarialProposto);
-        reajusteColaboradorDesligadoDepois.setTabelaReajusteColaborador(tabelaReajusteColaborador);
-        reajusteColaboradorDesligadoDepois.setEstabelecimentoAtual(estabelecimentoAtual);
-        reajusteColaboradorDesligadoDepois.setEstabelecimentoProposto(estabelecimentoProposto);
-        reajusteColaboradorDao.save(reajusteColaboradorDesligadoDepois);
         
         Collection<Long> estabelecimentosIds = new ArrayList<Long>();
         estabelecimentosIds.add(estabelecimentoProposto.getId());
@@ -163,10 +133,10 @@ public class ReajusteColaboradorDaoHibernateTest extends GenericDaoHibernateTest
         areasIds.add(areaOrganizacionalProposto.getId());
         
         Collection<ReajusteColaborador> reajusteColaboradors = reajusteColaboradorDao.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), estabelecimentosIds, areasIds, grupoIds, 2);
-        assertEquals(2, reajusteColaboradors.size());
+        assertEquals(1, reajusteColaboradors.size());
 
         Collection<ReajusteColaborador> reajusteColaboradorsAreas = reajusteColaboradorDao.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), estabelecimentosIds, areasIds, grupoIds, 1);
-        assertEquals(2, reajusteColaboradorsAreas.size());
+        assertEquals(1, reajusteColaboradorsAreas.size());
     }
 
     public void testDeleteByColaboradoresTabelaReajuste()
