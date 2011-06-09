@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.47.39" data="09/06/2011">
+	<Versao id="1.1.48.40" data="09/06/2011">
+		- Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações: Novo campo [Motivo do reajuste].
+		- Pesquisas > Movimentações > Pesquisas > Resultado da Pesquisa: Ajuste no relatório, exibição dos comentários por nota.
+		- SESMT > Cadastros > Exames: Novo filtro com campo [Nome].
+		- CeS > Cadastros > Cargos/Faixas > Faixas Salariais: Ajuste na listagem do histórico, exibindo evoluçao do histórico do índice.
+		- SESMT > Movimentos > Solicitações/Atendimentos Médicos > Resultados: Novo campo [Data Realização]
+		- Página Inicial: Link do Twitter(http://twitter.com/#!/entetecnologia). 
 	</Versao>
 	<Versao id="1.1.47.39" data="02/06/2011">
 		- Info. Funcionais > Cadastros > Tipos de Ocorrência: Novo campo [Considerar como absenteísmo].

@@ -268,7 +268,8 @@ CREATE TABLE candidato (
     idF2RH int,
     comoFicouSabendoVaga_id bigint,
     comoFicouSabendoVagaQual character varying(100),
-    camposextras_id bigint
+    camposextras_id bigint,
+    examepalografico text
 );
 ALTER TABLE candidato ADD CONSTRAINT candidato_pkey PRIMARY KEY (id);
 ALTER TABLE candidato ADD CONSTRAINT candidato_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
@@ -2113,7 +2114,8 @@ CREATE TABLE configuracaoImpressaoCurriculo (
 	exibirAssinatura3 boolean default false, 
 	assinatura3 character varying(50),
 	usuario_id bigint,
-	empresa_id bigint
+	empresa_id bigint,
+	exibirexamepalografico boolean default false
 );       
 
 ALTER TABLE configuracaoImpressaoCurriculo ADD CONSTRAINT configuracaoImpressaoCurriculo_pkey PRIMARY KEY(id);
