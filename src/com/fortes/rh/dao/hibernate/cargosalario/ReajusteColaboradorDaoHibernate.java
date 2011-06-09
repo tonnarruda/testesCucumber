@@ -66,6 +66,7 @@ public class ReajusteColaboradorDaoHibernate extends GenericDaoHibernate<Reajust
 		hql.append("left join ifshp.indiceHistoricos as ihfshp with ihfshp.data = (select max(ih4.data) from IndiceHistorico ih4 where ih4.indice.id = ifshp.id and ih4.data <= :hoje) ");
 
 		hql.append("where trc.id = :tabelaReajusteColaboradorId ");
+		hql.append("and c.dataDesligamento is null or c.dataDesligamento > trc.data ");
 
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			hql.append("  and ep.id in(:estabelecimentoIds) ");
