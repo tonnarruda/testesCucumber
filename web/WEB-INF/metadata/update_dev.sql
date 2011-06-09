@@ -10,3 +10,5 @@ update historicocolaborador h1 set motivo='C' where h1.data = (select min(h2.dat
 update historicocolaborador set motivo='P' where motivo='I';--.go
 
 alter table configuracaoimpressaocurriculo add column exibirexamepalografico boolean default false;--.go
+
+update papel set papelmae_id = 463 where id=510;--.go

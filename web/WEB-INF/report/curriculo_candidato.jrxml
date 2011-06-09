@@ -719,6 +719,7 @@
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
 			<band height="53"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{exibirExamePalografico}]]></printWhenExpression>
 				<staticText>
 					<reportElement
 						x="0"

@@ -642,8 +642,6 @@ public class CandidatoListAction extends MyActionSupportList
 		dataSource = new ArrayList<CurriculoCandidatoRelatorio>();
 		dataSource.add(curriculo);
 		
-		parametros.put("NOME", candidato.getNome());
-
 		parametros = RelatorioUtil.getParametrosRelatorio("", getEmpresaSistema(), "");
 		configuracaoImpressaoCurriculo.populaParametros(parametros);
 

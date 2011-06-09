@@ -109,9 +109,11 @@
 			<a href="javascript:mudaAba(4)">TEXTO DIGITALIZADO</a>
 		</div>
 		
+		<!-- Exame Palografico removido ate segunda ordem do Denis
 		<div id="aba5">
 			<a href="javascript:mudaAba(5)">EXAME PALOGRÁFICO</a>
 		</div>
+		-->
 	</div>
 
 	<div id="content1">
@@ -170,7 +172,7 @@
 						<@ww.checkbox label="Informações Adicionais" name="configuracaoImpressaoCurriculo.exibirInformacao" labelPosition="left"/>
 						<@ww.checkbox label="Observações do RH" name="configuracaoImpressaoCurriculo.exibirObservacao" labelPosition="left"/>
 						<@ww.checkbox label="Histórico" name="configuracaoImpressaoCurriculo.exibirHistorico" labelPosition="left"/>
-						<@ww.checkbox label="Exame Palográfico" name="configuracaoImpressaoCurriculo.exibirExamePalografico" labelPosition="left"/>
+						<!--<@ww.checkbox label="Exame Palográfico" name="configuracaoImpressaoCurriculo.exibirExamePalografico" labelPosition="left"/>-->
 			
 						<br>
 						<@ww.checkbox label="Campo para aprovação 1" name="configuracaoImpressaoCurriculo.exibirAssinatura1" labelPosition="left" onclick="habilitarCampo(this, 'ass1');"/>
