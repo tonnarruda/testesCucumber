@@ -19,6 +19,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -157,7 +158,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	}
 	
 	public void testInsertQuandoNaoExisteHistoricoNaData() throws Exception {
-		
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		dadoQueNaoExisteHistoricoNaData();
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueNaoOcorreErroAoInserirHistoricoDeColaborador();
@@ -196,7 +197,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	}
 	
 	public void testInsertQuandoOcorrerErroInternoQualquer() throws Exception {
-		
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		dadoQueNaoExisteHistoricoNaData();
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador();
@@ -214,7 +215,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	}
 
 	public void testInsertQuandoOcorrerErroDeIntegraACException() throws Exception {
-		
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		dadoQueNaoExisteHistoricoNaData();
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueOcorreErroDeIntegracaoACAoInserirHistoricoDeColaborador();
@@ -272,8 +273,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 
 	private void dadoQueExisteHistoricoAtualParaColaborador() {
 		action.setColaborador(ColaboradorFactory.getEntity(1L));
-		historicoColaboradorManager.expects(once()).method("getHistoricoAtual")
-			.with(eq(1L)).will(returnValue(historicoColaborador));
+		historicoColaboradorManager.expects(once()).method("getPrimeiroHistorico").with(eq(1L)).will(returnValue(historicoColaborador));
+		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(1L)).will(returnValue(historicoColaborador));
 	}
 
 	private void dadoQueExistemAmbientesCadastrados() {

@@ -438,6 +438,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 		try
 		{
+			
 			if(historicoColaborador.getData().before(colaborador.getDataAdmissao()))
 			{
 				addActionError("Data do primeiro histórico não pode ser anterior à data de admissão.");

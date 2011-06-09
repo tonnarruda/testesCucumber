@@ -1111,6 +1111,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(once()).method("updateHistoricoAnterior").with(eq(historicoColaborador.getId()));
 		historicoColaboradorDao.expects(once()).method("findReajusteByHistoricoColaborador").with(eq(historicoColaborador.getId())).will(returnValue(1L));
 		historicoColaboradorDao.expects(once()).method("remove").with(eq(historicoColaborador.getId()));
+		historicoColaboradorDao.expects(once()).method("setaContratadoNoPrimeiroHistorico").with(eq(colaborador.getId()));
 		historicoColaboradorDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		reajusteColaboradorManager.expects(once()).method("remove").with(ANYTHING);
 		acPessoalClientTabelaReajuste.expects(once()).method("deleteHistoricoColaboradorAC").with(ANYTHING, ANYTHING);

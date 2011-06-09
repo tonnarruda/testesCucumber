@@ -19,6 +19,12 @@
 <#if parameters.singleclick?exists>
         singleclick    :    ${parameters.singleclick},
 </#if>
+<#if parameters.eventOnUpdate?exists>
+        onUpdate	:    ${parameters.eventOnUpdate},
+</#if>
+<#if parameters.eventOnSelect?exists>
+        onSelect    :    ${parameters.eventOnSelect},
+</#if>
         step           :    1
     });
 </script>

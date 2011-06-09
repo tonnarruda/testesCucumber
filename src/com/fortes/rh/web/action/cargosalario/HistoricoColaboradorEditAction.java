@@ -21,6 +21,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.CodigoGFIP;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -69,7 +70,9 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private Candidato candidato;
 	private Long candidatoSolicitacaoId;
 
-	private boolean integraAc;	
+	private boolean integraAc;
+
+	private Date dataPrimeiroHist;	
 	
 	public void prepare() throws Exception
 	{
@@ -82,20 +85,35 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		
 		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
 		
-		if(historicoColaborador.getFaixaSalarial() != null && historicoColaborador.getFaixaSalarial().getCargo() != null && historicoColaborador.getFaixaSalarial().getCargo().getId() != null)
-			funcaos = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
-		
-		if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
-			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
-		
-		salarioProcessado = historicoColaborador.getSalarioCalculado();
+		if(historicoColaborador != null)
+		{
+			if(historicoColaborador.getFaixaSalarial() != null && historicoColaborador.getFaixaSalarial().getCargo() != null && historicoColaborador.getFaixaSalarial().getCargo().getId() != null)
+				funcaos = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
+			
+			if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
+				ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
+			
+			salarioProcessado = historicoColaborador.getSalarioCalculado();			
+		}
+		else
+		{
+			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
+			historicoColaborador.setId(null);
+			historicoColaborador.setData(new Date());
+		}
 	}
 	
 	public String prepareInsert() throws Exception
 	{
+		dataPrimeiroHist = historicoColaboradorManager.getPrimeiroHistorico(colaborador.getId()).getData();
+		
 		historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
-		historicoColaborador.setData(new Date());
-		historicoColaborador.setId(null);
+		if(historicoColaborador != null)
+		{
+			historicoColaborador.setData(new Date());
+			historicoColaborador.setId(null);
+			historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		}
 		
 		prepare();
 		
@@ -110,9 +128,11 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			{
 				addActionMessage("Já existe uma Situação nessa data.");
 				prepareInsert();
-
 				return Action.INPUT;				
 			}
+			
+			if(historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO))
+				historicoColaboradorManager.ajustaMotivoContratado(historicoColaborador.getColaborador().getId());
 			
 			historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
 			historicoColaboradorManager.insertHistorico(historicoColaborador, getEmpresaSistema());
@@ -385,6 +405,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public boolean isIntegraAc() {
 		return integraAc;
+	}
+
+	public Date getDataPrimeiroHist() {
+		return dataPrimeiroHist;
 	}
 	
 }

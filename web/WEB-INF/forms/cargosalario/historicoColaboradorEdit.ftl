@@ -135,6 +135,51 @@
 				}
 			</#if>
 		}
+			
+		$(document).ready(function($)
+		{
+			<#if historicoColaborador.motivo?exists && historicoColaborador.motivo == "C">
+				$("#motivo option[value!='C']").attr("disabled","disabled");
+				$("#motivo option[value!='C']").css("background-color", "#DEDEDE");
+			<#else>
+				$("#motivo option[value='C']").attr("disabled","disabled");
+				$("#motivo option[value='C']").css("background-color", "#DEDEDE");
+			</#if>
+			
+			$('#data').blur(function(){validaDataPrimeiroHist()});
+			
+		});
+		
+		function strToDate(str)
+		{
+			var arr = str.match(/(\d\d)\/(\d\d)\/(\d\d\d\d)/);
+			if (arr)
+			    return new Date(arr[3], arr[2]-1, arr[1]);
+			else
+			    return undefined;		
+		}
+		
+		<#if dataPrimeiroHist?exists>
+			function validaDataPrimeiroHist()
+			{
+				if(strToDate($('#data').val()) <= strToDate('${dataPrimeiroHist}'))
+				{
+					$("#motivo option[value='C']").removeAttr("disabled");
+					$("#motivo option[value='C']").css("background-color", "#FFF");
+					$("#motivo option[value!='C']").attr("disabled","disabled");
+					$("#motivo option[value!='C']").css("background-color", "#DEDEDE");
+					$("#motivo").val('C');
+				}
+				else
+				{
+					$("#motivo option[value!='C']").removeAttr("disabled");
+					$("#motivo option[value!='C']").css("background-color", "#FFF");
+					$("#motivo option[value='C']").attr("disabled","disabled");
+					$("#motivo option[value='C']").css("background-color", "#DEDEDE");
+					$("#motivo").val('P');			
+				}
+			}
+		</#if>			
 	</script>
 
 	<#if folhaProcessada>
@@ -153,7 +198,7 @@
 		<#if historicoColaborador?exists && historicoColaborador.id?exists>
 			<@ww.hidden name="historicoColaborador.data" id="data" value="${historicoColaborador.data}"/>
 		<#else>
-			<@ww.datepicker label="Data" id="data" name="historicoColaborador.data" required="true" cssClass="mascaraData" value="${data}"/>
+			<@ww.datepicker label="Data" id="data" name="historicoColaborador.data" required="true" cssClass="mascaraData" value="${data}" eventOnUpdate="function(){validaDataPrimeiroHist()}"/>
 		</#if>
 
 		<#assign funcaoEstabelecimento="populaAmbiente(this.value);"/>
@@ -193,6 +238,8 @@
 				<@ww.textfield label="Valor" name="salarioProcessado" id="salarioCalculado" cssStyle="width:85px; text-align:right;" disabled= "true" disabled="true"/>
 			</ul>
 		</div>
+		
+		<@ww.select label="Motivo do reajuste" name="historicoColaborador.motivo" id="motivo" list=r'#{"C":"Contratado", "D":"Dissídio", "P":"Promoção"}'/>
 		
 		<#if integraAc && !historicoColaborador.colaborador.naoIntegraAc>
 			<@ww.textfield label="Observação para o Setor Pessoal" name="historicoColaborador.obsACPessoal" id="obsACPessoal" cssStyle="width:355px;" maxLength="100"/>

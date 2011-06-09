@@ -47,4 +47,6 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public Collection<HistoricoColaborador> findImprimirListaFrequencia(Estabelecimento estabelecimento, Date votacaoIni, Date votacaoFim);
 	public void setMotivo(Long[] historicoColaboradorIds, String tipo);
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio);
+	public void ajustaMotivoContratado(Long colaboradorId);
+	public void setaContratadoNoPrimeiroHistorico(Long colaboradorId);
 }

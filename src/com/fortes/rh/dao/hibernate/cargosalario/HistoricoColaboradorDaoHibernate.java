@@ -81,7 +81,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("     hc.data <= :hoje and hc.status = :statusHistColab ");
 
 		if(tipoBuscaHistoricoColaborador == TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO)
-			hql.append(" or (select count(*) from HistoricoColaborador as hc3 where hc3.colaborador.id=co.id) = 1 ");
+			hql.append(" or hc.data = (select min(hc3.data) from HistoricoColaborador as hc3 where hc3.colaborador.id=co.id and hc3.data > :hoje ) ");
 
 		hql.append("   ) ");
 
@@ -1099,5 +1099,26 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		return query.list();
 
+	}
+
+	public void ajustaMotivoContratado(Long colaboradorId) 
+	{
+		Query query = getSession().createQuery("update HistoricoColaborador set motivo = :promocao where colaborador.id = :colaboradorId and motivo = :contratado ");
+		query.setString("promocao", MotivoHistoricoColaborador.PROMOCAO);
+		query.setString("contratado", MotivoHistoricoColaborador.CONTRATADO);
+		query.setLong("colaboradorId", colaboradorId);
+		
+		query.executeUpdate();
+	}
+
+	public void setaContratadoNoPrimeiroHistorico(Long colaboradorId) 
+	{
+		Query query = getSession().createQuery("update HistoricoColaborador set motivo = :contratado where data=(select min(data) from HistoricoColaborador where colaborador.id=:colaboradorId) " +
+											  " and motivo <> :contratado and colaborador.id=:colaboradorId");
+
+		query.setString("contratado", MotivoHistoricoColaborador.CONTRATADO);
+		query.setLong("colaboradorId", colaboradorId);
+		
+		query.executeUpdate();
 	}	
 }

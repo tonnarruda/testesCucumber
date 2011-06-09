@@ -597,6 +597,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void updateHistorico(HistoricoColaborador historicoColaborador, Empresa empresa) throws Exception
 	{
 		HistoricoColaborador historicoColaboradorTmp = findByIdProjection(historicoColaborador.getId());
+		historicoColaboradorTmp.setMotivo(historicoColaborador.getMotivo());
 		Double salarioAntigo = historicoColaboradorTmp.getSalario();
 
 		historicoColaboradorTmp.setAmbiente(historicoColaborador.getAmbiente());
@@ -713,7 +714,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		this.transactionManager = transactionManager;
 	}
 
-	// TODO Mensagem de erro usando HTML... achar solução para o problema
+	// TODO Mensagem de erro usando HTML... achar solução para o problema, chorarrrr
 	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa) throws Exception
 	{
 		HistoricoColaborador historicoColaboradorTmp = findByIdProjection(historicoColaboradorId);
@@ -736,6 +737,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		Long reajusteColaboradorId = getDao().findReajusteByHistoricoColaborador(historicoColaboradorId);
 		
 		remove(historicoColaboradorId);
+		getDao().setaContratadoNoPrimeiroHistorico(colaboradorId);
 		
 		if(reajusteColaboradorId != null)
 			reajusteColaboradorManager.remove(reajusteColaboradorId);
@@ -1088,7 +1090,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void insertHistorico(HistoricoColaborador historicoColaborador, Empresa empresa) throws Exception
 	{
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaborador.setMotivo("");
 		
 		if(empresa.isAcIntegra() && !historicoColaborador.getColaborador().isNaoIntegraAc())
 		{
@@ -1319,5 +1320,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		}
 		
 		return historicos;
+	}
+
+	public void ajustaMotivoContratado(Long colaboradorId) 
+	{
+		getDao().ajustaMotivoContratado(colaboradorId);
 	}
 }

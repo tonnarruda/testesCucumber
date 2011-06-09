@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.47.39" data="09/06/2011">
+	</Versao>
 	<Versao id="1.1.47.39" data="02/06/2011">
 		- Info. Funcionais > Cadastros > Tipos de Ocorrência: Novo campo [Considerar como absenteísmo].
 		- Info. Funcionais > Relatórios > Absenteísmo: Novo relatório.

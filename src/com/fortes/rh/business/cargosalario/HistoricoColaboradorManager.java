@@ -128,4 +128,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public void setMotivo(Long[] historicoColaboradorIds, String tipoMotivo);
 
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio);
+
+	public void ajustaMotivoContratado(Long colaboradorId);
 }

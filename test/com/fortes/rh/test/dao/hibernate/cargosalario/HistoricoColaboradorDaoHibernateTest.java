@@ -162,6 +162,57 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(MotivoHistoricoColaborador.DISSIDIO ,historicoColaboradorDao.findByIdProjectionHistorico(historico.getId()).getMotivo());
 	}
 	
+	public void testSetaContratadoNoPrimeiroHistorico()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador primeiro = HistoricoColaboradorFactory.getEntity();
+		primeiro.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		primeiro.setColaborador(colaborador);
+		primeiro.setData(DateUtil.criarDataMesAno(01, 02, 1999));
+		historicoColaboradorDao.save(primeiro);
+		
+		HistoricoColaborador segundo = HistoricoColaboradorFactory.getEntity();
+		segundo.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		segundo.setColaborador(colaborador);
+		segundo.setData(DateUtil.criarDataMesAno(02, 05, 2001));
+		historicoColaboradorDao.save(segundo);
+		
+		HistoricoColaborador terceiro = HistoricoColaboradorFactory.getEntity();
+		terceiro.setMotivo(MotivoHistoricoColaborador.DISSIDIO);
+		terceiro.setColaborador(colaborador);
+		terceiro.setData(DateUtil.criarDataMesAno(02, 05, 2005));
+		historicoColaboradorDao.save(terceiro);
+		
+		historicoColaboradorDao.setaContratadoNoPrimeiroHistorico(colaborador.getId());	
+		
+		assertEquals(MotivoHistoricoColaborador.CONTRATADO ,historicoColaboradorDao.findByIdProjectionHistorico(primeiro.getId()).getMotivo());
+		assertEquals(MotivoHistoricoColaborador.PROMOCAO ,historicoColaboradorDao.findByIdProjectionHistorico(segundo.getId()).getMotivo());
+		assertEquals(MotivoHistoricoColaborador.DISSIDIO ,historicoColaboradorDao.findByIdProjectionHistorico(terceiro.getId()).getMotivo());
+	}
+	
+	public void testAjustaMotivoContratado()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoContratado = HistoricoColaboradorFactory.getEntity();
+		historicoContratado.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+		historicoContratado.setColaborador(colaborador);
+		historicoColaboradorDao.save(historicoContratado);
+		
+		HistoricoColaborador historicoDissidio = HistoricoColaboradorFactory.getEntity();
+		historicoDissidio.setMotivo(MotivoHistoricoColaborador.DISSIDIO);
+		historicoDissidio.setColaborador(colaborador);
+		historicoColaboradorDao.save(historicoDissidio);
+		
+		historicoColaboradorDao.ajustaMotivoContratado(colaborador.getId());	
+		
+		assertEquals(MotivoHistoricoColaborador.PROMOCAO ,historicoColaboradorDao.findByIdProjectionHistorico(historicoContratado.getId()).getMotivo());
+		assertEquals(MotivoHistoricoColaborador.DISSIDIO ,historicoColaboradorDao.findByIdProjectionHistorico(historicoDissidio.getId()).getMotivo());
+	}
+	
 	public void testDeleteSituacaoByMovimentoSalarial()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
