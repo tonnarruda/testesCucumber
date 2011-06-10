@@ -71,5 +71,10 @@ Before do
 end
 
 def exec_sql sql
-  `echo #{sql} | psql -U postgres fortesrh`
+  begin
+    conn = PGconn.connect( :dbname => db, :user => 'postgres')
+    conn.exec(sql)
+  ensure
+    conn.finish if conn
+  end
 end
