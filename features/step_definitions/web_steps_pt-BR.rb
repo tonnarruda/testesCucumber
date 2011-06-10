@@ -253,9 +253,9 @@ Dado /^que exista o evento "([^"]*)"$/ do |nome|
    exec_sql "insert into evento (id,nome) values(nextval('evento_sequence'),'#{nome}');"
 end
 
-Dado /^que exista a área organizacional "([^"]*)"$/ do |nome|
+Dado /^que exista a área organizacional "([^"]*)"$/ do |nomeArea|
    insert :areaorganizacional do
-     self.nome nome
+     nome nomeArea
      empresa :id => 1
    end
 end
