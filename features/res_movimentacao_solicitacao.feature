@@ -6,6 +6,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista a área organizacional "Financeiro"
     Dado que exista o cargo "Contador"
     Dado que exista a faixa salarial "I" no cargo "Contador"
+    Dado que exista um historico para a faixa salarial "I" na data "2011-06-01"
     Dado que exista o motivo da solicitacao "Aumento de quadro"
 
     Dado que eu esteja logado
@@ -20,6 +21,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Então eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Solicitação de Pessoal"
+    E eu preencho o campo (JS) "Data" com "10/06/2011"
     E eu preencho "Descrição" com "Vaga java"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu seleciono "Financeiro" de "Área Organizacional"

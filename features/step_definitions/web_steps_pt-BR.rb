@@ -277,6 +277,15 @@ Dado /^que exista a faixa salarial "([^"]*)" no cargo "([^"]*)"$/ do |faixa_nome
    end
 end
 
+Dado /^que exista um historico para a faixa salarial "([^"]*)" na data "([^"]*)"$/ do |faixa_nome, faixa_data|
+   insert :faixasalarialhistorico do
+     data faixa_data
+     tipo 3
+     valor 500
+     faixasalarial :nome => faixa_nome
+   end
+end
+
 Dado /^que exista a etapa seletiva "([^"]*)"$/ do |etapaseletiva_nome|
    exec_sql "insert into etapaseletiva (id,nome,ordem,empresa_id) values(nextval('etapaseletiva_sequence'),'#{etapaseletiva_nome}', 1,  1);"
 end
