@@ -4,6 +4,10 @@ Funcionalidade: Cadastrar Cargos e Faixas
 
   Cenário: Cadastro de Cargos e Faixas
     Dado que eu esteja logado
+    Dado que exista a área organizacional "Administração"
+    Dado que exista a área organizacional "Administração > Desenvolvimento"
+    Dado que exista a etapa seletiva "Entrevista com RH"
+
     Quando eu acesso o menu "C&S > Cadastros > Cargos e Faixas"
     Então eu devo ver o título "Cargos"
     E eu clico no botão "Inserir"
@@ -25,14 +29,14 @@ Funcionalidade: Cadastrar Cargos e Faixas
     E eu preencho "Fontes de Recrutamento" com "Teste"
     E eu marco "Entrevista com RH"
     E eu preencho "Responsabilidades Correlatas" com "Regras de negócio"
-    E eu marco "Java"
+    #E eu marco "Java"
     E eu preencho "Complemento dos Conhecimentos" com "Testes"
-    E eu marco "Programar"
+    #E eu marco "Programar"
     E eu preencho "Complemento das Habilidades" com "Testes"
-    E eu marco "Pro ativo"
+    #E eu marco "Pro ativo"
     E eu preencho "Complemento das Atitudes" com "Testes"
     E eu seleciono "Especialização" de "Escolaridade"
-    E eu marco "Administrativa"
+    #E eu marco "Administrativa"
     E eu preencho "Experiência Desejada" com "Testes"
     E eu preencho "Observações" com "Testes"
     E eu clico no botão "Gravar"

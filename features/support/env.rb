@@ -72,7 +72,7 @@ end
 
 def exec_sql sql
   begin
-    conn = PGconn.connect( :dbname => db, :user => 'postgres')
+    conn = PGconn.connect( :dbname => 'fortesrh', :user => 'postgres')
     conn.exec(sql)
   ensure
     conn.finish if conn
