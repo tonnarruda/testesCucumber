@@ -255,6 +255,10 @@ end
 
 Dado /^que exista a área organizacional "([^"]*)"$/ do |nome|
    exec_sql "insert into areaorganizacional (id,nome,empresa_id) values(nextval('areaorganizacional_sequence'),'#{nome}',1);"
+   insert :areaorganizacional do
+     self.nome nome
+     empresa :id => 1
+   end
 end
 
 Dado /^que exista o cargo "([^"]*)"$/ do |nome|

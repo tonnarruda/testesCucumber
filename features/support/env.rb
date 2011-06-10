@@ -40,19 +40,19 @@ end
 # steps to use the XPath syntax.
 Capybara.default_selector = :css
 
+$db_name = "fortesrh"
 Before do
   puts "Limpando Banco de Dados, apagando todos os registros"
-  db = "fortesrh"
 
   begin
-	conn = PGconn.connect( :dbname => db, :user => 'postgres')
-    conn.exec("select alter_trigger(table_name, 'DISABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name;")
+	conn = PGconn.connect( :dbname => $db_name, :user => 'postgres')
+    conn.exec("select alter_trigger(table_name, 'DISABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{$db_name}' group by table_name;")
 
-    tables = conn.exec("select table_name FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name;")
+    tables = conn.exec("select table_name FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{$db_name}' group by table_name;")
     delete_tables = tables.map {|table| "delete from #{table['table_name']};"}.join()
 
     conn.exec delete_tables
-    conn.exec("select alter_trigger(table_name, 'ENABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name;")
+    conn.exec("select alter_trigger(table_name, 'ENABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{$db_name}' group by table_name;")
     
     puts "Populando Banco de Dados, dados iniciais..."
     
@@ -64,17 +64,63 @@ Before do
     file.close if file
   end
 
-  #puts "Populando Banco de Dados, dados iniciais..."
-  #`psql -U postgres #{db} < features/data/dataInicial.sql`
-  #puts "Banco de Dados populado com sucesso."
-
 end
 
 def exec_sql sql
   begin
-    conn = PGconn.connect( :dbname => db, :user => 'postgres')
+    conn = PGconn.connect( :dbname => $db_name, :user => 'postgres')
     conn.exec(sql)
   ensure
     conn.finish if conn
   end
+end
+
+class Insert
+	instance_methods.each { |m| undef_method m unless m =~ /^__|instance_eval/ }
+
+	def initialize(table, options)
+		@table = table
+		@columns = []
+		@values = []
+
+		if options[:serial]
+      @columns.push "id"
+			@values.push "nextval('#{@table}_sequence')"
+		end
+	end
+
+	def method_missing(method, *args, &block)
+    value = args[0]
+    column = method
+    if (value.class == Hash)
+			k, v = value.each_pair.first
+      value = "select id from #{method} where #{k} = #{v.to_sql_param}"
+      column = "#{column}_id"
+    else
+			value = value.to_sql_param
+		end
+    @columns.push column
+    @values.push value
+	end
+
+  def to_sql
+    "insert into #{@table}(" + @columns.join(', ') + ") values (" + @values.join(', ') + ")"
+  end
+
+end
+
+def insert(table, options={:serial=>true}, &block)
+	ins = Insert.new(table, options)
+	ins.instance_eval(&block)
+  exec_sql ins.to_sql
+end
+
+class Object
+	def to_sql_param
+		if (self.is_a? String)
+      "'#{self}'"
+		else
+			to_s
+		end
+	end
 end
