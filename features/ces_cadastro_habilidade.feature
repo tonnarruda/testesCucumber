@@ -4,6 +4,9 @@ Funcionalidade: Cadastrar Habilidades
 
   Cenário: Cadastro de Habilidades
     Dado que eu esteja logado
+    Dado que exista a área organizacional "Administração"
+    Dado que exista a área organizacional "Administração > Desenvolvimento"
+
     Quando eu acesso o menu "C&S > Cadastros > Habilidades"
     Então eu devo ver o título "Habilidades"
     E eu clico no botão "Inserir"

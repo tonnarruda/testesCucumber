@@ -6,6 +6,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista a área organizacional "Financeiro"
     Dado que exista o cargo "Contador"
     Dado que exista a faixa salarial "I" no cargo "Contador"
+    Dado que exista o motivo da solicitacao "Aumento de quadro"
 
     Dado que eu esteja logado
     Quando eu acesso o menu "R&S > Movimentações > Solicitação de Pessoal"

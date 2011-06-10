@@ -4,6 +4,8 @@ Funcionalidade: Cadastrar Áreas Organizacionais
 
   Cenário: Cadastro de Áreas Organizacionais
     Dado que eu esteja logado
+
+
     Quando eu acesso o menu "C&S > Cadastros > Áreas Organizacionais"
     Então eu devo ver o título "Áreas Organizacionais"
     E eu clico no botão "Inserir"

@@ -269,6 +269,10 @@ Dado /^que exista a etapa seletiva "([^"]*)"$/ do |etapaseletiva_nome|
    exec_sql "insert into etapaseletiva (id,nome,ordem,empresa_id) values(nextval('etapaseletiva_sequence'),'#{etapaseletiva_nome}', 1,  1);"
 end
 
+Dado /^que exista o motivo da solicitacao "([^"]*)"$/ do |motivosolicitacao_descricao|
+   exec_sql "insert into motivosolicitacao (id,descricao) values(nextval('motivosolicitacao_sequence'),'#{motivosolicitacao_descricao}');"
+end
+
 def get_field field
   label = all(:xpath, "//label[contains(text(), '#{field}')]").select{|e| e.text.match("^\s*#{field}\:?")}.first
   field = label[:for] unless label.nil?

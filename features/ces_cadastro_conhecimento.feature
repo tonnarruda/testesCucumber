@@ -4,6 +4,9 @@ Funcionalidade: Cadastrar Conhecimentos
 
   Cenário: Cadastro de Conhecimentos
     Dado que eu esteja logado
+    Dado que exista a área organizacional "Administração"
+    Dado que exista a área organizacional "Administração > Desenvolvimento"
+
     Quando eu acesso o menu "C&S > Cadastros > Conhecimentos"
     Então eu devo ver o título "Conhecimentos"
     E eu clico no botão "Inserir"
