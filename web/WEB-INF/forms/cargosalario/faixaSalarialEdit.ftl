@@ -99,7 +99,7 @@
 			</@display.column>
 			<#if integradoAC>
 				<@display.column title="Status no AC" style="width: 50px;text-align: center;">
-					<img border="0" title="${statusRetornoAC.getDescricao(faixaSalarialHistorico.status)}"
+					<img border="0" title="${statusRetornoAC.getDescricao(faixaSalarialHistoricoVO.status)}"
 					src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(faixaSalarialHistoricoVO.status)}">
 				</@display.column>
 			</#if>
