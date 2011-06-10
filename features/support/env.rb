@@ -43,7 +43,7 @@ Capybara.default_selector = :css
 $db_name = "fortesrh"
 Before do
   puts "Limpando Banco de Dados, apagando todos os registros"
-
+	puts "fd"
   begin
 	conn = PGconn.connect( :dbname => $db_name, :user => 'postgres')
     conn.exec("select alter_trigger(table_name, 'DISABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{$db_name}' group by table_name;")
@@ -94,7 +94,7 @@ class Insert
     column = method
     if (value.class == Hash)
 			k, v = value.each_pair.first
-      value = "select id from #{method} where #{k} = #{v.to_sql_param}"
+      value = "(select id from #{method} where #{k} = #{v.to_sql_param})"
       column = "#{column}_id"
     else
 			value = value.to_sql_param
