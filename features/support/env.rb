@@ -45,7 +45,7 @@ Before do
   db = "fortesrh"
 
   begin
-    conn = PGconn.connect( :dbname => db, :user => 'postgres')
+	conn = PGconn.connect( :dbname => db, :user => 'postgres')
     conn.exec("select alter_trigger(table_name, 'DISABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name;")
 
     tables = conn.exec("select table_name FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name;")
@@ -53,13 +53,20 @@ Before do
 
     conn.exec delete_tables
     conn.exec("select alter_trigger(table_name, 'ENABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{db}' group by table_name;")
+    
+    puts "Populando Banco de Dados, dados iniciais..."
+    
+    file = File.open('features/data/dataInicial.sql', 'r')
+    conn.exec(file.read)
+    puts "Banco de Dados populado com sucesso."
   ensure
     conn.finish if conn
+    file.close if file
   end
 
-  puts "Populando Banco de Dados, dados iniciais..."
-  `psql -U postgres #{db} < features/data/dataInicial.sql`
-  puts "Banco de Dados populado com sucesso."
+  #puts "Populando Banco de Dados, dados iniciais..."
+  #`psql -U postgres #{db} < features/data/dataInicial.sql`
+  #puts "Banco de Dados populado com sucesso."
 
 end
 
