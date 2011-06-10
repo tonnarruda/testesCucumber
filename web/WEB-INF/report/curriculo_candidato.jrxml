@@ -41,6 +41,7 @@
 	<parameter name="exibirInformacaoSocioEconomica" isForPrompting="false" class="java.lang.Boolean"/>
 	<parameter name="exibirFormacao" isForPrompting="false" class="java.lang.Boolean"/>
 	<parameter name="exibirIdioma" isForPrompting="false" class="java.lang.Boolean"/>
+	<parameter name="exibirExamePalografico" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="candidato.nome" class="java.lang.String"/>
 	<field name="candidato.colocacaoDic" class="java.lang.String"/>
@@ -708,6 +709,60 @@
 					</subreportParameter>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "curriculo_candidato_historico.jasper"]]></subreportExpression>
 				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="examePalograficoGroup" >
+			<groupExpression><![CDATA[]]></groupExpression>
+			<groupHeader>
+			<band height="53"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{exibirExamePalografico}]]></printWhenExpression>
+				<staticText>
+					<reportElement
+						x="0"
+						y="2"
+						width="535"
+						height="15"
+						key="staticText-65"/>
+					<box topBorder="1Point" topBorderColor="#000000" leftBorder="1Point" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[EXAME PALOGRÁFICO]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="17"
+						width="535"
+						height="18"
+						key="textField-46"
+						stretchType="RelativeToTallestObject"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="1Point" leftBorderColor="#000000" leftPadding="5" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{candidato.examePalografico}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="35"
+						width="535"
+						height="18"
+						key="textField-47"
+						stretchType="RelativeToTallestObject"
+						isPrintWhenDetailOverflows="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="1Point" leftBorderColor="#000000" leftPadding="5" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{candidato.resultadoExamePalografico}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
