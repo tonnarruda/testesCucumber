@@ -249,23 +249,32 @@ Então /^o campo "([^"]*)" deve ter "([^"]*)" selecionado$/ do |field, value|
   Então %{o campo "#{field[:id]}" deve conter "#{value}"}
 end
 
-Dado /^que exista o evento "([^"]*)"$/ do |nome|
-   exec_sql "insert into evento (id,nome) values(nextval('evento_sequence'),'#{nome}');"
+Dado /^que exista o evento "([^"]*)"$/ do |nome_evento|
+   insert :evento do
+     nome nome_evento
+   end
 end
 
-Dado /^que exista a área organizacional "([^"]*)"$/ do |nomeArea|
+Dado /^que exista a área organizacional "([^"]*)"$/ do |nome_area|
    insert :areaorganizacional do
-     nome nomeArea
+     nome nome_area
      empresa :id => 1
    end
 end
 
-Dado /^que exista o cargo "([^"]*)"$/ do |nome|
-   exec_sql "insert into cargo (id,nome,nomemercado,empresa_id) values(nextval('cargo_sequence'),'#{nome}','#{nome}',1);"
+Dado /^que exista o cargo "([^"]*)"$/ do |nome_cargo|
+   insert :cargo do
+     nome nome_cargo
+     nomemercado nome_cargo
+     empresa :id => 1
+   end
 end
 
 Dado /^que exista a faixa salarial "([^"]*)" no cargo "([^"]*)"$/ do |faixa_nome, cargo_nome|
-   exec_sql "insert into faixasalarial (id,nome,cargo_id) values(nextval('faixasalarial_sequence'),'#{faixa_nome}', (select id from cargo where nome = '#{cargo_nome}'));"
+   insert :faixasalarial do
+     nome faixa_nome
+     cargo :nome => cargo_nome
+   end
 end
 
 def get_field field
