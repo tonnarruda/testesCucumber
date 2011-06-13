@@ -41,7 +41,7 @@ Funcionalidade: Cadastrar Cargos e Faixas
 
     E eu devo ver o título "Inserir Faixa Salarial"
     E eu preencho "Faixa" com "Faixa I"
-    E eu preencho "A partir de" com "03/06/2011"
+    E eu preencho o campo (JS) "A partir de" com "03/06/2011"
     E eu seleciono "Por valor" de "Tipo"
     E eu preencho "Valor" com "2000"
     E eu clico no botão "Gravar"

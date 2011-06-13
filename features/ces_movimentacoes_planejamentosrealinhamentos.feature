@@ -16,7 +16,7 @@ Funcionalidade: Cadastrar Planejamentos de Realinhamentos
     Então eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Planejamento de Realinhamentos"
     E eu preencho "Título" com "_Aumento Geral"
-    E eu preencho "Data de Aplicação" com "01/01/2011"
+    E eu preencho o campo (JS) "Data de Aplicação" com "01/01/2011"
     E eu preencho "Observação" com "Testando..."
     E eu clico no botão "Gravar"
 
@@ -25,7 +25,7 @@ Funcionalidade: Cadastrar Planejamentos de Realinhamentos
     E eu devo ver o título "Editar Planejamento de Realinhamentos"
     E o campo "Título" deve conter "_Aumento Geral"
     E eu preencho "Título" com "_Dissídio 2011"
-    E eu preencho "Data de Aplicação" com "01/06/2011"
+    E eu preencho o campo (JS) "Data de Aplicação" com "01/06/2011"
     E eu preencho "Observação" com "Testando alteração..."
     E eu clico no botão "Gravar"
 

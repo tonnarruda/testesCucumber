@@ -16,7 +16,7 @@ Funcionalidade: Cadastrar Índices
     Então eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Índice"
     E eu preencho "Nome" com "_Diretor"
-    E eu preencho "A partir de" com "01/01/2011"
+    E eu preencho o campo (JS) "A partir de" com "01/01/2011"
     E eu preencho "Valor" com "17000"
     E eu clico no botão "Gravar"
 
@@ -44,7 +44,7 @@ Funcionalidade: Cadastrar Índices
     Então eu clico no botão "Inserir"
 
     Então eu devo ver o título "Novo Histórico do Índice"
-    E eu preencho "A partir de" com "01/03/2011"
+    E eu preencho o campo (JS) "A partir de" com "01/03/2011"
     E eu preencho "Valor" com "25000"
     Então eu clico no botão "Gravar"
 
