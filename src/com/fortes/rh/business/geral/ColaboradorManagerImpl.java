@@ -45,6 +45,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
@@ -978,6 +979,25 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaboradoresSemCodigoAC = colaboradoresSemCodigoAC.replace(colaboradoresSemCodigoAC.length() - 2, colaboradoresSemCodigoAC.length(), ".");
 			throw new ColecaoVaziaException("O reajuste não pode ser aplicado enquanto os cadastros destes colaboradores não for concluído no AC Pessoal:<br>"
 					+ colaboradoresSemCodigoAC);
+		}
+	}
+	
+	public void verificaColaboradoresDesligados(Collection<ReajusteColaborador> reajustes) throws Exception
+	{
+		StringBuilder colaboradoresDesligados = new StringBuilder();
+
+		for (ReajusteColaborador reajusteColaborador : reajustes)
+		{
+			if (reajusteColaborador.getColaborador().getDataDesligamento() != null && reajusteColaborador.getColaborador().getDataDesligamento().before(reajusteColaborador.getTabelaReajusteColaborador().getData()))
+			{
+				colaboradoresDesligados.append(reajusteColaborador.getColaborador().getNomeComercial() + ", ");
+			}
+		}
+
+		if (colaboradoresDesligados.length() > 0)
+		{
+			colaboradoresDesligados = colaboradoresDesligados.replace(colaboradoresDesligados.length() - 2, colaboradoresDesligados.length(), ".");
+			throw new ColecaoVaziaException("O reajuste não pode ser aplicado pois os seguintes colaboradores estão desligados da empresa:<br>" + colaboradoresDesligados);
 		}
 	}
 

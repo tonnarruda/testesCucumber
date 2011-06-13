@@ -292,6 +292,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		empresa.setAcIntegra(true);
 		
 		colaboradorManager.expects(once()).method("verificaColaboradoresSemCodigoAC").isVoid();
+		colaboradorManager.expects(once()).method("verificaColaboradoresDesligados").isVoid();
 
 		historicoColaboradorManager.expects(atLeastOnce()).method("getHistoricoAtual").with(eq(22L)).will(returnValue(historicoAtualDoAbreu));
 		historicoColaboradorManager.expects(atLeastOnce()).method("getHistoricoAtual").with(eq(11L)).will(returnValue(historicoAtualDoMario));

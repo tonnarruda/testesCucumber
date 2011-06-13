@@ -29,6 +29,17 @@
 
 			}
 		}
+		
+		function aplicar(existemDesligados)
+		{
+			if (existemDesligados)
+			{
+				jAlert('Colaboradores desligados não podem receber reajuste\nFavor ajustar antes de aplicar');
+				return false;
+			}
+			
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){window.location='aplicar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.dissidio=${tabelaReajusteColaborador.dissidio?string}'});
+		}
 	</script>
 
 <#include "../ftl/showFilterImports.ftl" />
@@ -76,12 +87,16 @@
 
 	<#if reajustes?exists && 0 < reajustes?size>
 		<br>
+		<p>
+			<span style="background-color: #454C54;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Ativos&nbsp;&nbsp;<span style="background-color: #F00;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Desligados, não podem receber reajustes
+		</P>
 		<table class="dados">
 			<#assign zebrar=true/>
 			<#assign subTotalSalarioAtual    = 0/>
 			<#assign subTotalSalarioProposto = 0/>
 			<#assign totalSalarioAtual       = 0/>
 			<#assign totalSalarioProposto    = 0/>
+			<#assign existemDesligados    	 = false/>
 
 			<#list reajustes as reajusteColaborador>
 				<#if reajusteColaborador.tipoSalarioProposto == tipoAplicacaoIndice.getCargo() && reajusteColaborador.faixaSalarialProposta?exists && reajusteColaborador.faixaSalarialProposta.faixaSalarialHistoricoAtual?exists && reajusteColaborador.faixaSalarialProposta.faixaSalarialHistoricoAtual.tipo?exists && reajusteColaborador.faixaSalarialProposta.faixaSalarialHistoricoAtual.tipo == tipoAplicacaoIndice.getIndice()>
@@ -167,25 +182,34 @@
 					<#assign class="odd"/>
 				</#if>
 
+				<#if reajusteColaborador.colaborador.dataDesligamento?exists && reajusteColaborador.colaborador.dataDesligamento < tabelaReajusteColaborador.data>
+					<#assign existemDesligados=true/>
+					<#assign nomeColaborador="${reajusteColaborador.colaborador.nomeComercial} (Desligado)"/>
+					<#assign color="#F00"/>
+				<#else>
+					<#assign nomeColaborador=reajusteColaborador.colaborador.nomeComercial/>
+					<#assign color="#454C54"/>
+				</#if>
+
 				<tr class=${class}>
 				  	<td>
 						<a href="../reajusteColaborador/prepareUpdate.action?reajusteColaborador.id=${reajusteColaborador.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}" ><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif" border="0"/>"></a>
 						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../reajusteColaborador/delete.action?reajusteColaborador.id=${reajusteColaborador.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url includeParams="none" value="/imgs/delete.gif" border="0"/>"></a>
 					</td>
-				  	<td> ${reajusteColaborador.colaborador.nomeComercial}</td>
-				  	<td> ${reajusteColaborador.faixaSalarialAtual.descricao}</td>
-				  	<td> ${reajusteColaborador.descricaoTipoSalarioAtual}</td>
-				  	<td align="right"> ${salarioAtual?string(",##0.00")}</td>
-				  	<td> ${reajusteColaborador.faixaSalarialProposta.descricao}</td>
-				  	<td> ${reajusteColaborador.descricaoTipoSalarioProposto}</td>
-				  	<td align="right"> ${salarioProposto?string(",##0.00")}</td>
-				  	<td align="center">
+				  	<td style="color: ${color}">${nomeColaborador}</td>
+				  	<td style="color: ${color}"> ${reajusteColaborador.faixaSalarialAtual.descricao}</td>
+				  	<td style="color: ${color}"> ${reajusteColaborador.descricaoTipoSalarioAtual}</td>
+				  	<td style="color: ${color}" align="right"> ${salarioAtual?string(",##0.00")}</td>
+				  	<td style="color: ${color}"> ${reajusteColaborador.faixaSalarialProposta.descricao}</td>
+				  	<td style="color: ${color}"> ${reajusteColaborador.descricaoTipoSalarioProposto}</td>
+				  	<td style="color: ${color}" align="right"> ${salarioProposto?string(",##0.00")}</td>
+				  	<td style="color: ${color}" align="center">
 						<#if reajusteColaborador.observacao?exists>
 							<span href=# style="cursor: default;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Obs.: ' + '${reajusteColaborador.observacao}');return false">...</span>
 						</#if>
 				  	</td>
-				  	<td align="right"> ${(salarioProposto - salarioAtual)?string(",##0.00")}</td>
-					<td align="right">
+				  	<td style="color: ${color}" align="right"> ${(salarioProposto - salarioAtual)?string(",##0.00")}</td>
+					<td style="color: ${color}" align="right">
 						<#if (salarioAtual > 0) >
 							${((((salarioProposto - salarioAtual) / salarioAtual)) * 100)?string(",##0.00")}%
 						<#else>
@@ -249,7 +273,7 @@
 		</button>
 		<#if tabelaReajusteColaborador.id?exists && reajustes?exists && 0 < reajustes?size>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button onclick="newConfirm('Deseja realmente aplicar o reajuste?', function(){window.location='aplicar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.dissidio=${tabelaReajusteColaborador.dissidio?string}'});" class="btnAplicar" accesskey="P">
+			<button onclick="aplicar(${existemDesligados?string})" class="btnAplicar" accesskey="P">
 			</button>
 		</#if>
 	</div>

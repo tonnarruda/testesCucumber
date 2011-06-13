@@ -18,6 +18,7 @@ import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
@@ -75,6 +76,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 
 	Collection<Colaborador> ordenaPorEstabelecimentoArea(Long empresaId, Collection<Colaborador> colaboradors) throws Exception;
 	public void verificaColaboradoresSemCodigoAC(Collection<ReajusteColaborador> reajustes) throws Exception;
+	void verificaColaboradoresDesligados(Collection<ReajusteColaborador> reajustes) throws Exception;
 
 	void respondeuEntrevista(Long colaboradorId);
 	public boolean setMatriculaColaborador(Long empresaId, String codigoAC, String matricula);

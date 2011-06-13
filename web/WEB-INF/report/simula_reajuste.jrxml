@@ -46,6 +46,8 @@
 	<field name="descricaoTipoSalarioAtual" class="java.lang.String"/>
 	<field name="descricaoTipoSalarioProposto" class="java.lang.String"/>
 	<field name="descricaoEstabelecimentoAreaOrganizacionalPropostos" class="java.lang.String"/>
+	<field name="colaborador.dataDesligamento" class="java.util.Date"/>
+	<field name="tabelaReajusteColaborador.data" class="java.util.Date"/>
 
 	<variable name="totalProposto" class="java.lang.Double" resetType="Group" resetGroup="gruposAreas" calculation="Sum">
 		<variableExpression><![CDATA[$F{salarioProposto}]]></variableExpression>
@@ -670,7 +672,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataDesligamento} != null && $F{colaborador.dataDesligamento}.before( $F{tabelaReajusteColaborador.data} ) ? $F{colaborador.nome} + " (Desligado)*" : $F{colaborador.nome}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -801,7 +803,7 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="54"  isSplitAllowed="true" >
+			<band height="55"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="1"
@@ -986,6 +988,19 @@
 						<font size="7"/>
 					</textElement>
 				<text><![CDATA[%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="1"
+						y="46"
+						width="246"
+						height="9"
+						key="staticText-28"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[*Colaboradores desligados não poderão receber reajustes]]></text>
 				</staticText>
 			</band>
 		</summary>
