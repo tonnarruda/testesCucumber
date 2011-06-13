@@ -334,7 +334,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public String prepareAjusteDissidio() 
 	{
-		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio);
+		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, getEmpresaSistema().getId());
 		
 		return Action.SUCCESS;
 	}

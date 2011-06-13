@@ -1073,7 +1073,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		}
 	}
 
-	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio) 
+	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio, Long empresaId) 
 	{
 //		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 //		criteria.setFetchMode("hc.colaborador", FetchMode.DEFAULT);
@@ -1089,12 +1089,14 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		montaFromAndJoin(hql);
 
 		hql.append("where hc.data >= :data ");
+		hql.append("and co.empresa.id = :empresaId ");
 		hql.append("and co.dataDesligamento is null ");
 		hql.append("order by co.nome, hc.data");
 
 		Query query = getSession().createQuery(hql.toString());
 
 		query.setDate("data", dataBase);
+		query.setLong("empresaId", empresaId);
 		query.setInteger("status", StatusRetornoAC.CANCELADO);
 
 		return query.list();

@@ -1299,9 +1299,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().setMotivo(historicoColaboradorIds, tipo);
 	}
 
-	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio)
+	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio, Long empresaId)
 	{
-		Collection<HistoricoColaborador> historicos = getDao().findSemDissidioByDataPercentual(dataBase, percentualDissidio);
+		Collection<HistoricoColaborador> historicos = getDao().findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresaId);
 		
 		Long idColaborador = 0L;
 		Double salarioAnterior = 0.0;
