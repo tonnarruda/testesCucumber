@@ -79,7 +79,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public ReajusteColaborador(Long id, Long areaAtualId, String faixaSalarialAtualNome, String cargoAtualNome, Long faixaSalarialPropostaId, String faixaSalarialPropostaNome,
 			String faixaSalarialPropostaCodigoAC, String cargoPropostoNome, Integer tipoSalarioAtual, Integer tipoSalarioProposto, Double salarioAtual, Double salarioProposto, String observacao,
-			Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorCodigoAC, boolean colaboradorNaoIntegraAC, Long areaColaboradorId, Long areaPropostaId, String areaPropostaNome,
+			Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorCodigoAC, boolean colaboradorNaoIntegraAC, boolean colaboradorDesligado, Date colaboradorDataDesligamento, Long areaColaboradorId, Long areaPropostaId, String areaPropostaNome,
 			String areaPropostaCodigoAC, Long tabelaReajusteColaboradorId, Date tabelaReajusteColaboradorData, Double faixaSalarialHistoricoAtualValor, Integer faixaSalarialHistoricoAtualTipo,
 			Double faixaSalarialHistoricoAtualQuantidade, Double faixaSalarialHistoricoPropostoValor, Integer faixaSalarialHistoricoPropostoTipo, Double faixaSalarialHistoricoPropostoQuantidade,
 			Double indiceHistoricoAtualValor, Double quantidadeIndiceAtual, Double indiceHistoricoPropostoValor, Double quantidadeIndiceProposto,
@@ -103,6 +103,8 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 		this.setNomeComercialProjection(colaboradorNomeComercial);
 		this.setColaboradorCodigoACProjection(colaboradorCodigoAC);
 		this.setProjectionColaboradorNaoIntegraAC(colaboradorNaoIntegraAC);
+		this.setProjectionColaboradorDesligado(colaboradorDesligado);
+		this.setProjectionColaboradorDataDesligamento(colaboradorDataDesligamento);
 		this.setAreaOrganizacionalId(areaColaboradorId);
 		this.setProjectionAreaAtualId(areaAtualId);
 		this.setProjectionFaixaSalarialAtualNome(faixaSalarialAtualNome);
@@ -301,6 +303,18 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 	{
 		initColaborador();
 		colaborador.setNaoIntegraAc(colaboradorNaoIntegraAC);
+	}
+	
+	public void setProjectionColaboradorDesligado(boolean colaboradorDesligado)
+	{
+		initColaborador();
+		colaborador.setDesligado(colaboradorDesligado);
+	}
+	
+	public void setProjectionColaboradorDataDesligamento(Date colaboradorDataDesligamento)
+	{
+		initColaborador();
+		colaborador.setDataDesligamento(colaboradorDataDesligamento);
 	}
 
 	public void setIdColaborador(Long id)

@@ -74,6 +74,9 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	{
 		if(tabelaReajusteColaborador != null && (reajustes == null || reajustes.size() == 0))
 			throw new ColecaoVaziaException("Nenhum Colaborador no Reajuste");
+		
+		//Verifica se existem colaboradores desligados antes da data de aplicação do reajuste
+		colaboradorManager.verificaColaboradoresDesligados(reajustes);
 
 		//Se a empresa estiver integrada com ac todos os colaboradores precisam do código ac, caso tenha colaborador sem codigoAC throws
 		if(empresa.isAcIntegra())
