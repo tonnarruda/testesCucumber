@@ -57,9 +57,20 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public String desliga() throws Exception
 	{
-		colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId());
-
-		addActionMessage("Colaborador desligado com sucesso.");
+		try {
+			if (dataDesligamento.before(colaborador.getDataAdmissao()))
+				throw new Exception("Data de desligamento anterior à data de admissão");
+			
+			colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId());
+	
+			addActionMessage("Colaborador desligado com sucesso.");
+		
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			prepareUpdate();
+			return Action.INPUT;
+		}
+		
 		return Action.SUCCESS;
 	}
 

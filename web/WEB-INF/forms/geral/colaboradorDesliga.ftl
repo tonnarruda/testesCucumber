@@ -25,7 +25,13 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	<script type="text/javascript">
 		function enviarForm(acao)
-		{
+		{ 
+			if (!validaDatasPeriodo("${colaborador.dataAdmissao?string}", document.form.dataDesligamento.value)) 
+			{
+				jAlert("A data de desligamento não pode ser anterior à data de admissão\nData de admissão: ${colaborador.dataAdmissao?string}");
+				return false;
+			}
+		
 			if (acao.id == 'religa')
 			{
 				document.form.action = 'religa.action';
@@ -62,6 +68,7 @@
 	
 		<@ww.hidden name="nomeBusca" />
 		<@ww.hidden name="cpfBusca" />
+		<@ww.hidden name="colaborador.dataAdmissao" />
 	</@ww.form>
 	
 	

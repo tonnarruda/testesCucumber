@@ -823,6 +823,26 @@ jQuery.fn.insertAtCaret = function (tagName) {
     
   });
 
+// VALIDA DATA POSTERIOR A OUTRA
+ function validaDatasPeriodo(dataIni, dataFim) 
+ {
+	if(dataIni != "" && dataFim != "")
+	{
+		dt1 = dataIni.split( "/" )[2].toString() + dataIni.split( "/" )[1].toString() + dataIni.split( "/" )[0].toString();
+		dt2 = dataFim.split( "/" )[2].toString() + dataFim.split( "/" )[1].toString() + dataFim.split( "/" )[0].toString();
+
+
+		if( parseInt(dt2) > parseInt(dt1) )
+			return true;
+		else
+			return false;
+	}
+	else
+	{
+		return false;
+	}
+}
+  
 // VALIDAÇÃO DE FORMS COM PERÍODOS (2 CAMPOS DATA)
 // LEMBRAR DE ADICIONAR AS CLASSES validaDataIni E validaDataFim NOS CAMPOS.
   function validaFormularioEPeriodo(formulario, camposObrigatorios, camposValidos, noSubmit) 
