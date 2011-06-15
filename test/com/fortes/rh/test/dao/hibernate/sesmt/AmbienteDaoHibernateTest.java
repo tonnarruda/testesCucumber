@@ -30,6 +30,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 
 public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 {
@@ -165,8 +166,13 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		Calendar tresMesesAntes = Calendar.getInstance();
 		tresMesesAntes.add(Calendar.MONTH, -3);
 		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setNome("Estabelecimento");
+		estabelecimentoDao.save(estabelecimento);
+		
 		Ambiente ambiente1 = new Ambiente();
 		ambiente1.setNome("ZZZZ");
+		ambiente1.setEstabelecimento(estabelecimento);
 		ambienteDao.save(ambiente1);
 		
 		HistoricoAmbiente historicoAmbiente1 = new HistoricoAmbiente();
@@ -181,6 +187,7 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		historicoAmbienteDao.save(historicoAmbiente1Atual);
 		
 		Ambiente ambiente2 = new Ambiente();
+		ambiente2.setEstabelecimento(estabelecimento);
 		ambienteDao.save(ambiente2);
 		
 		HistoricoAmbiente historicoAmbiente2 = new HistoricoAmbiente();
@@ -190,6 +197,7 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		historicoAmbienteDao.save(historicoAmbiente2);
 		
 		Ambiente ambiente3 = new Ambiente();
+		ambiente3.setEstabelecimento(estabelecimento);
 		ambienteDao.save(ambiente3);
 		
 		HistoricoAmbiente historicoAmbiente3 = new HistoricoAmbiente();
@@ -210,7 +218,7 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		ambienteIds.add(ambiente2.getId());
 		ambienteIds.add(ambiente3.getId());
 		
-		Collection<Ambiente> colecao = ambienteDao.findByIds(ambienteIds, data);
+		Collection<Ambiente> colecao = ambienteDao.findByIds(ambienteIds, data, estabelecimento.getId());
 		Object[] array = colecao.toArray();
 		
 		assertEquals("Descrição do Ambiente1",((Ambiente)array[0]).getHistoricoAtual().getDescricao());

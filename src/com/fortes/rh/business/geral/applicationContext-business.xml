@@ -12,6 +12,12 @@
     <property name="conhecimentoManager">
       <ref bean="conhecimentoManager" />
     </property>
+    <property name="habilidadeManager">
+      <ref bean="habilidadeManager" />
+    </property>
+    <property name="atitudeManager">
+      <ref bean="atitudeManager" />
+    </property>
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
     </property>
@@ -20,6 +26,9 @@
     </property>
     <property name="ocorrenciaManager">
       <ref bean="ocorrenciaManager" />
+    </property>
+    <property name="motivoDemissaoManager">
+      <ref bean="motivoDemissaoManager" />
     </property>
     <property name="configuracaoCampoExtraManager">
       <ref bean="configuracaoCampoExtraManager" />

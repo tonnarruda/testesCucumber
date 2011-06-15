@@ -14,7 +14,9 @@ import org.apache.commons.lang.ArrayUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
+import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
+import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -25,23 +27,24 @@ import com.fortes.rh.model.dicionario.TipoEntidade;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TEmpresa;
-import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
-import com.opensymphony.xwork.ActionContext;
 
 public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> implements EmpresaManager
 {
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private ConhecimentoManager conhecimentoManager;
+	private HabilidadeManager habilidadeManager;
+	private AtitudeManager atitudeManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private AreaInteresseManager areaInteresseManager;
 	private CargoManager cargoManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private EpiManager epiManager;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private MotivoDemissaoManager motivoDemissaoManager;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -187,6 +190,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	{
 		Map<Long, Long> areaIds = new  HashMap<Long, Long>();
 		Map<Long, Long> conhecimentoIds = new  HashMap<Long, Long>();
+		Map<Long, Long> habilidadeIds = new  HashMap<Long, Long>();
+		Map<Long, Long> atitudeIds = new  HashMap<Long, Long>();
 		Map<Long, Long> areaInteresseIds = new  HashMap<Long, Long>();
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AREAS))
@@ -199,6 +204,16 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			conhecimentoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, conhecimentoIds);
 		}
 		
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.HABILIDADES))
+		{
+			habilidadeManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, habilidadeIds);
+		}
+		
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.ATITUDES))
+		{
+			atitudeManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, atitudeIds);
+		}
+		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AREAS_INTERESSE))
 		{
 			areaInteresseManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds);
@@ -207,7 +222,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CARGOS))
 		{
 			cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
-			cargoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds, conhecimentoIds);
+			cargoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds);
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.TIPOS_OCORRENCIA))
@@ -227,6 +242,10 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			turmaManager.sincronizar(empresaOrigemId, empresaDestinoId);
 		}
 		
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.MOTIVOS_DESLIGAMENTO))
+		{
+			motivoDemissaoManager.sincronizar(empresaOrigemId, empresaDestinoId);
+		}
 	}
 	
 	public Collection<Empresa> findEmailsEmpresa()
@@ -337,9 +356,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		getDao().updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
 	}
 
-	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
-		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
-	}
 
 	public Collection<Empresa> findTodasEmpresas() {
 		return getDao().findTodasEmpresas();
@@ -350,5 +366,21 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			return false;
 		
 		return getDao().checkEmpresaCodACGrupoAC(empresa);
+	}
+
+	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
+		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
+	}
+
+	public void setHabilidadeManager(HabilidadeManager habilidadeManager) {
+		this.habilidadeManager = habilidadeManager;
+	}
+
+	public void setAtitudeManager(AtitudeManager atitudeManager) {
+		this.atitudeManager = atitudeManager;
+	}
+
+	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager) {
+		this.motivoDemissaoManager = motivoDemissaoManager;
 	}
 }

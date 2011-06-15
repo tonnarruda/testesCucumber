@@ -110,6 +110,20 @@ public class ConhecimentoDaoHibernateTest extends GenericDaoHibernateTest<Conhec
 		conhecimentos = conhecimentoDao.findByAreaOrganizacionalIds(areasIds, empresa.getId());
 		assertTrue(conhecimentos.isEmpty());
 	}
+
+	public void testFindSincronizarConhecimentos()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setNome("Conhecimento");
+		conhecimento.setEmpresa(empresa);
+		conhecimento.setObservacao("Observ");
+		conhecimentoDao.save(conhecimento);
+
+		assertEquals(1, conhecimentoDao.findSincronizarConhecimentos(empresa.getId()).size());
+	}
 	
 	public void testFindByCandidato()
 	{

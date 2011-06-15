@@ -72,4 +72,22 @@ public class HabilidadeDaoHibernate extends GenericDaoHibernate<Habilidade> impl
 		return criteria.list();
 	}
 
+	public Collection<Habilidade> findSincronizarHabilidades(Long empresaOrigemId)
+	{
+		Criteria criteria = getSession().createCriteria(Habilidade.class, "h");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("h.id"), "id");
+		p.add(Projections.property("h.nome"), "nome");
+		p.add(Projections.property("h.observacao"), "observacao");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("h.empresa.id", empresaOrigemId));
+
+		criteria.addOrder(Order.asc("h.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Habilidade.class));
+
+		return criteria.list();
+	}
 }

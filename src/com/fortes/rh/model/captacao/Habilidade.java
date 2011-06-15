@@ -66,6 +66,14 @@ public class Habilidade extends AbstractModel implements Serializable
 		this.observacao = observacao;
 	}
 
+	public void setEmpresaId(Long empresaId)
+	{
+		if (this.empresa == null)
+			this.empresa = new Empresa();
+		
+		this.empresa.setId(empresaId);
+	}
+	
 	public Collection<AreaOrganizacional> getAreaOrganizacionals() {
 		return areaOrganizacionals;
 	}

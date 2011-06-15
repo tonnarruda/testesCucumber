@@ -8,12 +8,14 @@ import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
@@ -56,6 +58,20 @@ public class HabilidadeDaoHibernateTest extends GenericDaoHibernateTest<Habilida
 		retorno = habilidadeDao.findAllSelect(empresa2.getId());
 		assertEquals("teste2", 1, retorno.size());
 		assertEquals("teste3", ai3.getId(), retorno.toArray(new Habilidade[]{})[0].getId());
+	}
+	
+	public void testFindSincronizarConhecimentos()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Habilidade habilidade = HabilidadeFactory.getEntity();
+		habilidade.setNome("Conhecimento");
+		habilidade.setEmpresa(empresa);
+		habilidade.setObservacao("Observ");
+		habilidadeDao.save(habilidade);
+
+		assertEquals(1, habilidadeDao.findSincronizarHabilidades(empresa.getId()).size());
 	}
 	
 	public void testFindByCargo()

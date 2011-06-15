@@ -35,7 +35,7 @@
 	    	}
 	    	else
 	    	{
-	    	 	return validaFormulario('form', new Array('data','estabelecimento','@ambienteCheck'), new Array('data'));
+	    	 	return validaFormulario('form', new Array('data','estabelecimento'), new Array('data'));
 	    	 }
 	    }
 	</script>

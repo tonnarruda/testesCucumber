@@ -289,6 +289,9 @@
     </property>
   </bean>
   <bean id="habilidadeManagerTarget" class="com.fortes.rh.business.captacao.HabilidadeManagerImpl">
+    <property name="areaOrganizacionalManager">
+      <ref bean="areaOrganizacionalManager" />
+    </property>
     <property name="dao">
       <ref bean="habilidadeDao" />
     </property>
@@ -302,6 +305,9 @@
     </property>
   </bean>
   <bean id="atitudeManagerTarget" class="com.fortes.rh.business.captacao.AtitudeManagerImpl">
+    <property name="areaOrganizacionalManager">
+      <ref bean="areaOrganizacionalManager" />
+    </property>
     <property name="dao">
       <ref bean="atitudeDao" />
     </property>

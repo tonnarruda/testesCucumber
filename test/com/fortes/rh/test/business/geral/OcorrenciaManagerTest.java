@@ -1,5 +1,8 @@
 package com.fortes.rh.test.business.geral;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
@@ -160,6 +163,23 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 		catch (Exception e) { exception = e; }
 
 		assertNull(exception);
+	}
+
+	public void testSincronizar() throws Exception
+	{
+		Empresa empresaOrigem = EmpresaFactory.getEmpresa(1L);
+		Empresa empresaDestino = EmpresaFactory.getEmpresa(2L);
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		Collection<Ocorrencia> ocorrencias = new ArrayList<Ocorrencia>();
+		ocorrencias.add(ocorrencia);
+		
+		ocorrenciaDao.expects(once()).method("findSincronizarOcorrenciaInteresse").with(eq(empresaOrigem.getId())).will(returnValue(ocorrencias));
+		ocorrenciaDao.expects(once()).method("save");
+		ocorrenciaDao.expects(once()).method("update");
+		
+		ocorrenciaManager.sincronizar(empresaOrigem.getId(), empresaDestino.getId());
+		
+		assertEquals(empresaDestino.getId(), ocorrencia.getEmpresa().getId() );
 	}
 
 	private void setDadosOcorrencia(Ocorrencia ocorrencia, Empresa empresa)

@@ -257,19 +257,6 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		assertEquals(1, ambienteManager.getQtdColaboradorByAmbiente(1L, new Date(), "masculino"));
 	}
 	
-	public void testFindByIds()
-	{
-		Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
-		ambientes.add(AmbienteFactory.getEntity(1L));
-		Collection<Long> ambienteIds = new ArrayList<Long>();
-		ambienteIds.add(1L);
-		Date data = new Date();
-		
-		ambienteDao.expects(once()).method("findByIds").with(eq(ambienteIds),eq(data)).will(returnValue(ambientes));
-		
-		assertEquals(1, ambienteManager.findByIds(ambienteIds, data).size());
-	}
-	
 	public void testPopulaRelatorio() throws Exception
 	{
 		Date hoje = Calendar.getInstance().getTime();

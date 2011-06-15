@@ -37,4 +37,12 @@ public class MotivoDemissao extends AbstractModel implements Serializable
 	{
 		this.empresa = empresa;
 	}
+	
+	public void setEmpresaId(Long empresaId)
+	{
+		if (empresa == null)
+			empresa = new Empresa();
+		
+		empresa.setId(empresaId);
+	}
 }

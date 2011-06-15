@@ -28,4 +28,23 @@ public class MotivoDemissaoManagerImpl extends GenericManagerImpl<MotivoDemissao
 	{
 		return getDao().findAllSelect(empresaId);
 	}
+
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId) 
+	{
+		Collection<MotivoDemissao> motivosDemissaoDeOrigem = getDao().findAllSelect(empresaOrigemId);
+		
+		for (MotivoDemissao motivoDemissao : motivosDemissaoDeOrigem)
+		{
+			clonar(motivoDemissao, empresaDestinoId);
+			update(motivoDemissao);
+		}
+	}
+	
+	private void clonar(MotivoDemissao motivoDemissao, Long empresaDestinoId) 
+	{
+		motivoDemissao.setId(null);
+		motivoDemissao.setEmpresaId(empresaDestinoId);
+		
+		getDao().save(motivoDemissao);
+	}
 }

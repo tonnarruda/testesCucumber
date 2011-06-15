@@ -41,11 +41,11 @@
 		<@frt.checkListBox name="cadastrosCheck" label="Cadastros" list="cadastrosCheckList" />
 		
 		<li>
-			<fieldset class="fieldsetPadrao" style="width:510px;">
-				<ul>
-					<legend>Atenção</legend>
-					Cuidado ao importar o cadastro entre empresas, pois o mesmo poderá ficar duplicado caso aconteça mais de uma importação. 
-				</ul>
+			<fieldset class="fieldsetPadrao" style="width:510px;text-align:justify;">
+				<legend>Atenção</legend>
+				Os cargos possuem vínculos com <strong>Áreas Organizacionais, Conhecimentos, Habilidades e Atitudes</strong>. Se desejar manter esses vínculos após a importação, marque também essas opções.
+				<br /><br />
+				Cuidado ao importar o cadastro entre empresas, pois o mesmo poderá ficar <strong>duplicado</strong> caso aconteça mais de uma importação.
 			</fieldset>
 		</li>
 		

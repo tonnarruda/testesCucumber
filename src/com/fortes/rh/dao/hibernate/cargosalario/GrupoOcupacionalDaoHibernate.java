@@ -20,7 +20,10 @@ public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupa
 		Criteria criteria = getSession().createCriteria(GrupoOcupacional.class,"g");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, empresaId);
+		if(empresaId != null)
+			criteria.add(Expression.eq("g.empresa.id", empresaId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		return (Integer) criteria.list().get(0);
 	}
@@ -29,6 +32,7 @@ public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupa
 	public Collection<GrupoOcupacional> findAllSelect(int page, int pagingSize, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(GrupoOcupacional.class,"g");
+		criteria.createCriteria("g.empresa", "e", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("g.id"), "id");
@@ -36,7 +40,10 @@ public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupa
 
 		criteria.setProjection(p);
 
-		montaConsulta(criteria, empresaId);
+		if(empresaId != null)
+			criteria.add(Expression.eq("e.id", empresaId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		criteria.addOrder(Order.asc("g.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(GrupoOcupacional.class));
@@ -49,14 +56,6 @@ public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupa
 		}
 
 		return criteria.list();
-	}
-
-	private void montaConsulta(Criteria criteria, Long empresaId)
-	{
-		if(empresaId != null)
-			criteria.add(Expression.eq("g.empresa.id", empresaId));
-
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	}
 
 	public GrupoOcupacional findByIdProjection(Long grupoOcupacionalId)

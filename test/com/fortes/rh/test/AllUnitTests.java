@@ -90,6 +90,7 @@ import com.fortes.rh.test.business.geral.HistoricoBeneficioManagerTest;
 import com.fortes.rh.test.business.geral.HistoricoColaboradorBeneficioManagerTest;
 import com.fortes.rh.test.business.geral.ImportadorGastosACTest;
 import com.fortes.rh.test.business.geral.MensagemManagerTest;
+import com.fortes.rh.test.business.geral.MotivoDemissaoManagerTest;
 import com.fortes.rh.test.business.geral.OcorrenciaManagerTest;
 import com.fortes.rh.test.business.geral.ParametrosDoSistemaManagerTest;
 import com.fortes.rh.test.business.geral.UsuarioMensagemManagerTest;
@@ -790,6 +791,7 @@ public class AllUnitTests extends TestSuite
         //pessoalTest embedded Colaborador
         suite.addTestSuite(MotivoDemissaoDaoHibernateTest.class);
         suite.addTestSuite(MotivoDemissaoListActionTest.class);
+        suite.addTestSuite(MotivoDemissaoManagerTest.class);
         suite.addTestSuite(DocumentoAnexoDaoHibernateTest.class);
         suite.addTestSuite(DocumentoAnexoManagerTest.class);
         suite.addTestSuite(DocumentoAnexoListActionTest.class);

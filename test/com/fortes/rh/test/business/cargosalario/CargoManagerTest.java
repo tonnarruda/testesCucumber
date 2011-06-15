@@ -26,8 +26,10 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -581,6 +583,8 @@ public class CargoManagerTest extends MockObjectTestCase
 		Map<Long, Long> areaIds = new HashMap<Long, Long>();
 		Map<Long, Long> areaInteresseIds = new HashMap<Long, Long>();
 		Map<Long, Long> conhecimentoIds = new HashMap<Long, Long>();
+		Map<Long, Long> habilidadeIds = new HashMap<Long, Long>();
+		Map<Long, Long> atitudeIds = new HashMap<Long, Long>();
 		
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		Cargo cargo = CargoFactory.getEntity(1L);
@@ -594,6 +598,12 @@ public class CargoManagerTest extends MockObjectTestCase
 		
 		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>(); 
 		conhecimentoManager.expects(once()).method("findByCargo").will(returnValue(conhecimentos ));
+
+		Collection<Habilidade> habilidades = new ArrayList<Habilidade>(); 
+		habilidadeManager.expects(once()).method("findByCargo").will(returnValue(habilidades ));
+		
+		Collection<Atitude> atitudes = new ArrayList<Atitude>(); 
+		atitudeManager.expects(once()).method("findByCargo").will(returnValue(atitudes ));
 		
 		Collection<AreaFormacao> areasFormacao = new ArrayList<AreaFormacao>(); 
 		areaFormacaoManager.expects(once()).method("findByCargo").will(returnValue(areasFormacao ));
@@ -602,6 +612,6 @@ public class CargoManagerTest extends MockObjectTestCase
 		
 		faixaSalarialManager.expects(once()).method("sincronizar");
 		
-		cargoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds, conhecimentoIds);
+		cargoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds);
 	}
 }

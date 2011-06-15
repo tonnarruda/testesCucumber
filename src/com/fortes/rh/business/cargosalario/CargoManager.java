@@ -37,7 +37,7 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<CheckBox> populaCheckBoxAllCargos();
 	public Collection<Cargo> findBySolicitacao(Long solicitacaoId);
 	public Collection<Cargo> findAllSelectDistinctNome();
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds);
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds);
 	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigo, String grupoAC);
 	public Cargo preparaCargoDoAC(TCargo tCargo);
 	public void updateCBO(Long id, TCargo tCargo);

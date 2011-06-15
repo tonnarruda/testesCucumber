@@ -2,16 +2,21 @@ package com.fortes.rh.business.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
+import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, HabilidadeDao> implements HabilidadeManager
 {
+	AreaOrganizacionalManager areaOrganizacionalManager;
 
 	public Collection<Habilidade> populaHabilidades(String[] habilidadesCheck)
 	{
@@ -63,5 +68,53 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 	public Collection<Habilidade> findAllSelect(Long empresaId) 
 	{
 		return getDao().findAllSelect(empresaId);
+	}
+	
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> habilidadeIds) 
+	{
+		
+		Collection<Habilidade> habilidadesDeOrigem = getDao().findSincronizarHabilidades(empresaOrigemId);
+		
+		for (Habilidade habilidade : habilidadesDeOrigem)
+		{
+			Long habilidadeOrigemId = habilidade.getId();
+			clonar(habilidade, empresaDestinoId);
+			habilidadeIds.put(habilidadeOrigemId, habilidade.getId());
+			
+			Collection<AreaOrganizacional> areasOrigem = areaOrganizacionalManager.findByHabilidade(habilidadeOrigemId);
+			popularAreasComIds(areaIds, areasOrigem);
+			
+			habilidade.setAreaOrganizacionals(areasOrigem);
+			update(habilidade);
+		}
+	}
+
+	private void popularAreasComIds(Map<Long, Long> areaIds, Collection<AreaOrganizacional> areasOrigem) 
+	{
+		
+		for (AreaOrganizacional areaOrganizacional : areasOrigem)
+		{
+			Long id = areaIds.get( areaOrganizacional.getId() );
+			
+			if (id == null)
+				continue;
+			
+			areaOrganizacional.setId(id);
+		}
+	}
+
+	private void clonar(Habilidade habilidade, Long empresaDestinoId) 
+	{
+		
+		habilidade.setId(null);
+		habilidade.setAreaOrganizacionals(null);
+		habilidade.setEmpresaId(empresaDestinoId);
+		
+		getDao().save(habilidade);
+	}
+
+	public void setAreaOrganizacionalManager(
+			AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

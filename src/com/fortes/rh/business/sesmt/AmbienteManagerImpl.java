@@ -41,10 +41,10 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	private boolean exibirPpra; 
 	private boolean exibirLtcat;
 	
-	private Collection<Ambiente> getAmbientes(String[] ambienteCheck, Date data) 
+	private Collection<Ambiente> getAmbientes(String[] ambienteCheck, Date data, Long estabelecimentoId) 
 	{
 		Collection<Long> ambienteIds = LongUtil.arrayStringToCollectionLong(ambienteCheck);
-		return getDao().findByIds(ambienteIds, data);
+		return getDao().findByIds(ambienteIds, data, estabelecimentoId);
 	}
 	
 	public Collection<PpraLtcatRelatorio> montaRelatorioPpraLtcat(Empresa empresa, Long estabelecimentoId, Date data, String[] ambienteCheck, boolean gerarPpra, boolean gerarLtcat) throws ColecaoVaziaException 
@@ -56,7 +56,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		
 		relatorios = new ArrayList<PpraLtcatRelatorio>();
 		
-		Collection<Ambiente> ambientes = getAmbientes(ambienteCheck,data);
+		Collection<Ambiente> ambientes = getAmbientes(ambienteCheck,data, estabelecimentoId);
 		
 		if (ambientes.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
@@ -173,11 +173,6 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 			e.printStackTrace();
 			return new ArrayList<CheckBox>();
 		}
-	}
-
-	public Collection<Ambiente> findByIds(Collection<Long> ambienteIds, Date data) 
-	{
-		return getDao().findByIds(ambienteIds, data);
 	}
 
 	public int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo) {
