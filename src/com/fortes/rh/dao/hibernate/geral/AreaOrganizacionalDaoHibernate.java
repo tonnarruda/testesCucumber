@@ -237,6 +237,34 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		return query.list();
 	}
+	
+	public Collection<AreaOrganizacional> findByHabilidade(Long habilidadeId)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new AreaOrganizacional(ao.id, ao.nome, ao.ativo) ");
+		hql.append("from Habilidade as h ");
+		hql.append("join h.areaOrganizacionals as ao ");
+		hql.append("	where h.id = :habilidadeId ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("habilidadeId", habilidadeId);
+		
+		return query.list();
+	}
+	
+	public Collection<AreaOrganizacional> findByAtitude(Long atitudeId)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new AreaOrganizacional(ao.id, ao.nome, ao.ativo) ");
+		hql.append("from Atitude as a ");
+		hql.append("join a.areaOrganizacionals as ao ");
+		hql.append("	where a.id = :atitudeId ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("atitudeId", atitudeId);
+		
+		return query.list();
+	}
 
 	public Collection<AreaOrganizacional> findQtdColaboradorPorArea(Long estabelecimentoId, Date data)
 	{

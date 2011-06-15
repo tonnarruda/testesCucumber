@@ -334,20 +334,21 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return getDao().findAllSelectDistinctNomeMercado();
 	}
 
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds)
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds)
 	{
 		faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
 		
 		Collection<Cargo> cargos = getDao().findSincronizarCargos(empresaOrigemId);
 		
 		Map<Long, Long> cargoIds = new HashMap<Long, Long>();
+		Map<Long, GrupoOcupacional> novosGruposOcupacionais = new HashMap<Long, GrupoOcupacional>();
 		
 		// Clona cargo, Grupo ocupacional; Popula o cargo com as áreas e conhecimentos clonados
 		for (Cargo cargo : cargos) {
 			
 			Long cargoOrigemId = cargo.getId();
 			
-			GrupoOcupacional grupoOcupacional = cargo.getGrupoOcupacional();
+			GrupoOcupacional grupoOcupacionalOrigem = cargo.getGrupoOcupacional();
 			
 			clonar(cargo, empresaDestinoId);
 			cargoIds.put(cargoOrigemId, cargo.getId());
@@ -357,12 +358,23 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 			
 			Collection<Conhecimento> conhecimentos = popularConhecimentosComIds(conhecimentoIds, cargoOrigemId);
 			cargo.setConhecimentos(conhecimentos);
+
+			Collection<Habilidade> habilidades = popularHabilidadesComIds(habilidadeIds, cargoOrigemId);
+			cargo.setHabilidades(habilidades);
+			
+			Collection<Atitude> atitudes = popularAtitudesComIds(atitudeIds, cargoOrigemId);
+			cargo.setAtitudes(atitudes);
 			
 			Collection<AreaFormacao> areaFormacaos = clonarAreasFormacao(cargoOrigemId);
 			cargo.setAreaFormacaos(areaFormacaos);
 			
-			clonarGrupoOcupacional(grupoOcupacional, empresaDestinoId);
-			cargo.setGrupoOcupacional(grupoOcupacional);
+			if (grupoOcupacionalOrigem != null)
+			{
+				if (!novosGruposOcupacionais.containsKey(grupoOcupacionalOrigem.getId()))
+					novosGruposOcupacionais.put(grupoOcupacionalOrigem.getId(), clonarGrupoOcupacional(grupoOcupacionalOrigem, empresaDestinoId));
+				
+				cargo.setGrupoOcupacional(novosGruposOcupacionais.get(grupoOcupacionalOrigem.getId()));
+			}
 			
 			getDao().update(cargo);
 		}
@@ -381,18 +393,17 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return areaFormacaos;
 	}
 
-	private void clonarGrupoOcupacional(GrupoOcupacional grupoOcupacional, Long empresaDestinoId) {
+	private GrupoOcupacional clonarGrupoOcupacional(GrupoOcupacional grupoOcupacional, Long empresaDestinoId) 
+	{
+		GrupoOcupacionalManager grupoOcupacionalManager = (GrupoOcupacionalManager) SpringUtil.getBean("grupoOcupacionalManager");
+		GrupoOcupacional grupoOcupacionalDestino = new GrupoOcupacional();
 		
-		if (grupoOcupacional != null)
-		{
-			GrupoOcupacionalManager grupoOcupacionalManager = (GrupoOcupacionalManager) SpringUtil.getBean("grupoOcupacionalManager");
-			
-			grupoOcupacional.setId(null);
-			grupoOcupacional.setCargos(null);
-			grupoOcupacional.setProjectionEmpresaId(empresaDestinoId);
-			
-			grupoOcupacionalManager.save(grupoOcupacional);
-		}
+		grupoOcupacionalDestino.setNome(grupoOcupacional.getNome());
+		grupoOcupacionalDestino.setProjectionEmpresaId(empresaDestinoId);
+		
+		grupoOcupacionalManager.save(grupoOcupacionalDestino);
+		
+		return grupoOcupacionalDestino;
 	}
 
 	private void clonar(Cargo cargo, Long empresaDestinoId) {
@@ -436,6 +447,40 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		}
 		
 		return conhecimentos;
+	}
+
+	private Collection<Habilidade> popularHabilidadesComIds(Map<Long, Long> habilidadeIds, Long cargoOrigemId) {
+		
+		Collection<Habilidade> habilidades = habilidadeManager.findByCargo(cargoOrigemId);
+		
+		for (Habilidade habilidade : habilidades)
+		{
+			Long id = habilidadeIds.get( habilidade.getId() );
+			
+			if (id == null)
+				continue;
+			
+			habilidade.setId(id);
+		}
+		
+		return habilidades;
+	}
+
+	private Collection<Atitude> popularAtitudesComIds(Map<Long, Long> atitudeIds, Long cargoOrigemId) {
+		
+		Collection<Atitude> atitudes = atitudeManager.findByCargo(cargoOrigemId);
+		
+		for (Atitude atitude : atitudes)
+		{
+			Long id = atitudeIds.get( atitude.getId() );
+			
+			if (id == null)
+				continue;
+			
+			atitude.setId(id);
+		}
+		
+		return atitudes;
 	}
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
@@ -503,6 +548,4 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	public void setAtitudeManager(AtitudeManager atitudeManager) {
 		this.atitudeManager = atitudeManager;
 	}
-
-
 }

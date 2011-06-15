@@ -42,6 +42,8 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Collection<AreaOrganizacional> montaFamiliaOrdemDescricao(Long empresaId, Boolean ativo) throws Exception;
 	public Collection<AreaOrganizacional> findByConhecimento(Long conhecimentoId);
+	public Collection<AreaOrganizacional> findByHabilidade(Long habilidadeId);
+	public Collection<AreaOrganizacional> findByAtitude(Long atitudeId);
 	public AreaOrganizacional findByIdProjection(Long areaId);
 	public Collection<AreaOrganizacional> findQtdColaboradorPorArea(Long estabelecimentoId, Date dataIni);
 	public Collection<AreaOrganizacional> findByEmpresasIds(Long[] empresaIds, Boolean ativo);

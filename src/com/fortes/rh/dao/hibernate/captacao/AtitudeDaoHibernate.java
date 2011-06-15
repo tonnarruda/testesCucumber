@@ -71,4 +71,23 @@ public class AtitudeDaoHibernate extends GenericDaoHibernate<Atitude> implements
 
 		return query.list();
 	}
+	
+	public Collection<Atitude> findSincronizarAtitudes(Long empresaOrigemId)
+	{
+		Criteria criteria = getSession().createCriteria(Atitude.class, "a");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.nome"), "nome");
+		p.add(Projections.property("a.observacao"), "observacao");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("a.empresa.id", empresaOrigemId));
+
+		criteria.addOrder(Order.asc("a.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Atitude.class));
+
+		return criteria.list();
+	}
 }

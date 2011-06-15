@@ -13,4 +13,6 @@ public interface MotivoDemissaoManager extends GenericManager<MotivoDemissao>
 	Map<String, Object> getParametrosRelatorio(Empresa empresa, Date dataIni, Date dataFim, Map<String, Object> parametros);
 
 	Collection<MotivoDemissao> findAllSelect(Long empresaId);
+
+	void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 }

@@ -66,7 +66,7 @@ public class Cargo extends AbstractModel implements Serializable
 	private String complementoConhecimento;
 	@Lob
 	private String observacao;
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	private GrupoOcupacional grupoOcupacional;
 	@ManyToMany(fetch=FetchType.LAZY)
 	private Collection<AreaFormacao> areaFormacaos;

@@ -456,6 +456,16 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	{
 		return getDao().findByConhecimento(conhecimentoId);
 	}
+	
+	public Collection<AreaOrganizacional> findByHabilidade(Long habilidadeId)
+	{
+		return getDao().findByHabilidade(habilidadeId);
+	}
+
+	public Collection<AreaOrganizacional> findByAtitude(Long atitudeId)
+	{
+		return getDao().findByAtitude(atitudeId);
+	}
 
 	public AreaOrganizacional findByIdProjection(Long areaId)
 	{
