@@ -130,4 +130,5 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio);
 
 	public void ajustaMotivoContratado(Long colaboradorId);
+	
 }

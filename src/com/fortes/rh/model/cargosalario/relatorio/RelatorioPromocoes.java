@@ -13,6 +13,17 @@ public class RelatorioPromocoes implements Serializable
 	private int qtdHorizontal;
 	private int qtdVertical;
 
+	public RelatorioPromocoes(Estabelecimento estabelecimento, AreaOrganizacional area) 
+	{
+		super();
+		this.estabelecimento = estabelecimento;
+		this.area = area;
+	}
+	public RelatorioPromocoes() 
+	{
+		super();
+	}
+
 	public AreaOrganizacional getArea()
 	{
 		return area;

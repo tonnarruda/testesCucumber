@@ -58,6 +58,7 @@
     <!-- CARGOS E SALARIOS -->
     <mapping class="com.fortes.rh.model.cargosalario.Cargo" />
     <mapping class="com.fortes.rh.model.cargosalario.HistoricoColaborador" />
+    <mapping class="com.fortes.rh.model.cargosalario.SituacaoColaborador" />
     <mapping class="com.fortes.rh.model.cargosalario.FaixaSalarial" />
     <mapping class="com.fortes.rh.model.cargosalario.GrupoOcupacional" />
     <mapping class="com.fortes.rh.model.cargosalario.ReajusteColaborador" />

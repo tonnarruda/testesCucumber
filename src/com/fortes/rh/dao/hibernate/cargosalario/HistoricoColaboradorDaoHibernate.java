@@ -22,6 +22,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
@@ -208,57 +209,39 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return new ArrayList();
 	}
 
-//TODO NÃO APAGAR RELATORIO DE PROMOÇ~ES EM ESTUDO
-//	public Collection<HistoricoColaborador> getPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim)
-//	{
-//		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
-//		criteria.createCriteria("hc.areaOrganizacional", "a", Criteria.LEFT_JOIN);
-//		criteria.createCriteria("hc.estabelecimento", "e", Criteria.LEFT_JOIN);
-//		criteria.createCriteria("hc.historicoAnterior", "ha", Criteria.LEFT_JOIN);
-//		criteria.createCriteria("ha.areaOrganizacional", "aa", Criteria.LEFT_JOIN);
-//		criteria.createCriteria("ha.estabelecimento", "ae", Criteria.LEFT_JOIN);
-//
-//
-//		ProjectionList p = Projections.projectionList().create();
-//		p.add(Projections.property("hc.id"), "id");
-//		p.add(Projections.property("hc.data"), "data");
-//		p.add(Projections.property("hc.motivo"), "motivo");
-//		p.add(Projections.property("hc.gfip"), "gfip");
-//		p.add(Projections.property("a.id"), "areaId");
-//		p.add(Projections.property("a.nome"), "areaOrganizacionalNome");
-//		p.add(Projections.property("ha.id"), "historicoAnteriorId");
-//		p.add(Projections.property("aa.id"), "areaAnteriorId");
-//		p.add(Projections.property("aa.nome"), "areaAnteriorNome");
-//		p.add(Projections.property("ae.id"), "projectionEstabelecimentoAnteriorId");
-//		p.add(Projections.property("ae.nome"), "projectionEstabelecimentoAnteriorNome");
-//		p.add(Projections.property("e.id"), "projectionEstabelecimentoId");
-//		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
-//
-//		criteria.setProjection(p);
-//
-//		if (dataIni != null)
-//			criteria.add(Expression.ge("hc.data", dataIni));
-//
-//		if (dataFim != null)
-//			criteria.add(Expression.le("hc.data", dataFim));
-//
-//		if(areaIds != null && areaIds.length > 0)
-//			criteria.add(Expression.in("a.id", areaIds));
-//		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-//			criteria.add(Expression.in("e.id", estabelecimentosIds));
-//
-//		Junction juncao = Expression.disjunction();
-//		juncao.add(Expression.eq("hc.motivo", MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL));
-//		juncao.add(Expression.eq("hc.motivo", MotivoHistoricoColaborador.PROMOCAO_VERTICAL));
-//		criteria.add(juncao);
-//
-//		criteria.addOrder(Order.desc("hc.data"));
-//
-//		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-//		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
-//
-//		return criteria.list();
-//	}
+	public Collection<SituacaoColaborador> getPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim)
+	{
+		StringBuilder hql = new StringBuilder();
+
+		hql.append("from SituacaoColaborador as sc ");
+		hql.append("left join sc.estabelecimento as e ");
+
+		hql.append("where sc.motivo <> :dissidio ");
+		if(areaIds != null && areaIds.length > 0)
+			hql.append("and a.id in (:areaIds) ");
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			hql.append("and e.id in (:estabelecimentoIds) ");
+		if (dataIni != null)
+			hql.append("sc.data >= :dataIni");
+		if (dataFim != null)
+			hql.append("sc.data <= :dataFim");
+
+		hql.append("order by sc.colaborador.id, sc.data ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setString("dissidio", MotivoHistoricoColaborador.DISSIDIO);
+		
+		if(areaIds != null && areaIds.length > 0)
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
+		if (dataIni != null)
+			query.setDate("dataIni", dataIni);
+		if (dataFim != null)
+			query.setDate("dataFim", dataFim);
+
+		return query.list();
+	}
 
 	public HistoricoColaborador findByIdProjectionMinimo(Long historicoColaboradorId)
 	{

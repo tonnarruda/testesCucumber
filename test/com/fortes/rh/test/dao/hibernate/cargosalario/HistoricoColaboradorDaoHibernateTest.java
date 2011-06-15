@@ -30,6 +30,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -145,6 +146,13 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historico = historicoColaboradorDao.save(historico);
 
 		assertEquals(1, historicoColaboradorDao.findByColaboradorProjection(colaborador.getId()).size());
+	}
+	
+	public void testGetPromocoes()
+	{
+		Date data = new Date();
+		Collection<SituacaoColaborador> situacaoes = historicoColaboradorDao.getPromocoes(null, null, null, null);
+		System.out.println(new Date().getTime() - data.getTime());
 	}
 	
 	public void testSetMotivo()
