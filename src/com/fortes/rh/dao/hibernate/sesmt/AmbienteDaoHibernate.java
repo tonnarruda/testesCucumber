@@ -97,20 +97,26 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 		return (Ambiente) criteria.uniqueResult();
 	}
 
-	public Collection<Ambiente> findByIds(Collection<Long> ambienteIds, Date data) 
+	public Collection<Ambiente> findByIds(Collection<Long> ambienteIds, Date data, Long estabelecimentoId) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Ambiente(a.id, a.nome, hist.descricao, hist.tempoExposicao) from Ambiente a join a.historicoAmbientes hist ");
-		
-		hql.append("where hist.ambiente.id in (:ambienteIds) ");
-		hql.append("and hist.data = (select max(ha2.data) " +
+		hql.append("select distinct new Ambiente(a.id, a.nome, hist.descricao, hist.tempoExposicao) from Ambiente a join a.historicoAmbientes hist ");
+		hql.append("where hist.data = (select max(ha2.data) " +
 								"from HistoricoAmbiente ha2 " +
 								"where ha2.ambiente.id = hist.ambiente.id and ha2.data <= :data) ");
 		
+		if(ambienteIds != null && !ambienteIds.isEmpty())
+			hql.append("and hist.ambiente.id in (:ambienteIds) ");
+
+		hql.append("and a.estabelecimento.id in (:estabelecimentoId) ");
 		hql.append("order by a.nome ");
 		
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameterList("ambienteIds", ambienteIds, Hibernate.LONG);
+		
+		if(ambienteIds != null && !ambienteIds.isEmpty())
+			query.setParameterList("ambienteIds", ambienteIds, Hibernate.LONG);
+
+		query.setLong("estabelecimentoId", estabelecimentoId);
 		query.setDate("data", data);
 		
 		return query.list();

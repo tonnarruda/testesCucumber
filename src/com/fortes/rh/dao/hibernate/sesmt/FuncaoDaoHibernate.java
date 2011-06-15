@@ -119,7 +119,7 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 	{
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new Funcao(f.id, f.nome, hf.descricao) ");
+		hql.append("select distinct new Funcao(f.id, f.nome, hf.descricao) ");
 		hql.append("from HistoricoColaborador hc ");
 		hql.append("	join hc.colaborador c ");
 		hql.append("	join hc.ambiente a ");
