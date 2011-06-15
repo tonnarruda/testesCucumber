@@ -39,7 +39,7 @@ public class PcmsoManagerImpl implements PcmsoManager
 		StringBuilder msg = new StringBuilder("");
 
 		msg.append(montaAgenda(pcmso, dataIni, dataFim, estabelecimento, exibirAgenda));
-		msg.append(montaColaboradoresPorSetor(pcmso, dataIni, empresaId, estabelecimento, exibirDistColaboradorSetor));
+		msg.append(montaColaboradoresPorSetor(pcmso, dataFim, empresaId, estabelecimento, exibirDistColaboradorSetor));
 		msg.append(montaTabelaAnualExames(pcmso, dataIni, estabelecimento, exibirExames));
 		msg.append(montaTabelaAnualCats(pcmso, dataIni, estabelecimento, exibirAcidentes));
 		msg.append(montaEpisFuncao(pcmso, dataIni, estabelecimento, exibirEpis));

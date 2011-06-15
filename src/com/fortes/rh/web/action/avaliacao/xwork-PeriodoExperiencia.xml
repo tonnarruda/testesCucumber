@@ -64,7 +64,7 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">rankingPerformaceExperiencia.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Avaliador,Avaliado,Respondido em,Performance</param>
+				<param name="columns">Avaliado,Avaliador,Respondido em,Performance</param>
 				<param name="properties">nome,nomeAvaliador,respondidaEmFormatada,performance</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
