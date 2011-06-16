@@ -315,6 +315,7 @@ import com.fortes.rh.test.model.captacao.CtpsTest;
 import com.fortes.rh.test.model.captacao.ExperienciaTest;
 import com.fortes.rh.test.model.captacao.FormacaoTest;
 import com.fortes.rh.test.model.cargosalario.HistoricoColaboradorTest;
+import com.fortes.rh.test.model.cargosalario.RelatorioPromocoesTest;
 import com.fortes.rh.test.model.desenvolvimento.CertificadoTest;
 import com.fortes.rh.test.model.desenvolvimento.TurmaTest;
 import com.fortes.rh.test.model.geral.AreaOrganizacionalTest;
@@ -602,6 +603,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(EmpresaBdsDaoHibernateTest.class);
         suite.addTestSuite(HistoricoCandidatoManagerTest.class);
         suite.addTestSuite(HistoricoCandidatoDaoHibernateTest.class);
+        suite.addTestSuite(RelatorioPromocoesTest.class);
         suite.addTestSuite(CandidatoSolicitacaoManagerTest.class);
         suite.addTestSuite(CandidatoSolicitacaoDaoHibernateTest.class);
         suite.addTestSuite(MotivoSolicitacaoListActionTest.class);

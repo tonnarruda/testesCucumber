@@ -2,6 +2,7 @@ package com.fortes.rh.business.cargosalario;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -130,5 +131,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio, Long empresaId);
 
 	public void ajustaMotivoContratado(Long colaboradorId);
+
+	public List<RelatorioPromocoes> getPromocoes(Long[] arrayStringToArrayLong, Long[] arrayStringToArrayLong2, Date dataIni, Date dataFim, Long empresaId);
 	
 }

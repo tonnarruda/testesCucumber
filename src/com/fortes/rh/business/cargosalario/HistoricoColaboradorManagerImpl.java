@@ -2,16 +2,19 @@ package com.fortes.rh.business.cargosalario;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.PersistenceException;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -132,143 +135,64 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	}
 
 
-	private void addPromocao(Collection<RelatorioPromocoes> promocoes, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional) 
+	private void addPromocao(Collection<RelatorioPromocoes> promocoes, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, String tipoPromocao) 
 	{
-		boolean exists = true;
+		boolean noExists = true;
 		for (RelatorioPromocoes promocao : promocoes) 
 		{
 			if(estabelecimento.equals(promocao.getEstabelecimento()) && areaOrganizacional.equals(promocao.getArea()))
-				exists = false;
+			{
+				promocao.incrementa(tipoPromocao);
+				noExists = false;
+				break;
+			}
 		}
 
-		if(exists)
-			promocoes.add(new RelatorioPromocoes(estabelecimento, areaOrganizacional));
+		if(noExists)
+			promocoes.add(new RelatorioPromocoes(estabelecimento, areaOrganizacional, tipoPromocao));
 	}
 	
-	public Collection<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim)
+	public List<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long empresaId)
 	{
-		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(areasIds, estabelecimentosIds, dataIni, dataFim);
-		Collection<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
+		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
+		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(areasIds, estabelecimentosIds, dataIni, dataFim, empresaId);
+
+		Iterator iterator = situacaoColaboradors.iterator();
+		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
+			
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllList(empresaId, AreaOrganizacional.TODAS);
+		try {
+			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		for (SituacaoColaborador situacao : situacaoColaboradors) 
 		{
-			addPromocao(promocoes, situacao.getEstabelecimento(), situacao.getAreaOrganizacional());
+			
+			if(iterator.hasNext())
+			{
+				proximaSituacao = (SituacaoColaborador) iterator.next();
+				proximaSituacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, proximaSituacao.getAreaOrganizacional().getId()));
+				//a ordem dos ifs são importantes
+				if(!proximaSituacao.getColaborador().equals(situacao.getColaborador()))
+					continue;
+				
+				if(!situacao.getCargo().equals(proximaSituacao.getCargo()))
+				{
+					addPromocao(promocoes, proximaSituacao.getEstabelecimento(), proximaSituacao.getAreaOrganizacional(), MotivoHistoricoColaborador.PROMOCAO);
+					continue;				
+				}
+				
+				if(!situacao.getFaixaSalarial().equals(proximaSituacao.getFaixaSalarial()) || !situacao.getSalario().equals(proximaSituacao.getSalario()))
+					addPromocao(promocoes, proximaSituacao.getEstabelecimento(), proximaSituacao.getAreaOrganizacional(), MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL);
+			}
 		}
 		
+		Collections.sort(promocoes);
 		return promocoes;
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		Map promocaoHorizontal = new HashMap<String, Integer>();
-//		Map promocaoVertical = new HashMap<String, Integer>();
-//
-//		Map areas = new HashMap<Long, AreaOrganizacional>();
-//		Map estabelecimentos = new HashMap<Long, Estabelecimento>();
-//
-//		String chave = "";
-//		Integer subTotal;
-//
-//		for (SituacaoColaborador historico : situacaoColaboradors)
-//		{
-//			areas.put(historico.getAreaOrganizacional().getId(), historico.getAreaOrganizacional());
-//			estabelecimentos.put(historico.getEstabelecimento().getId(), historico.getEstabelecimento());
-//
-//			if (historico.getMotivo().equals(MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL))
-//			{
-//				Long areaId = historico.getAreaOrganizacional().getId();
-//				Long estabelecimentoId = historico.getEstabelecimento().getId();
-//
-//				chave = areaId + "/" + estabelecimentoId;
-//
-//				if (promocaoHorizontal.containsKey(chave))
-//				{
-//					subTotal = (Integer) promocaoHorizontal.get(chave) + 1;
-//					promocaoHorizontal.put(chave, subTotal);
-//				}
-//				else
-//				{
-//					promocaoHorizontal.put(chave, 1);
-//				}
-//			}
-//			else if (historico.getMotivo().equals(MotivoHistoricoColaborador.PROMOCAO))
-//			{
-//				Long areaAnteriorId = historico.getHistoricoAnterior().getAreaOrganizacional().getId();
-//				Long estabelecimentoAnteriorId = historico.getHistoricoAnterior().getEstabelecimento().getId();
-//
-//				chave = areaAnteriorId + "/" + estabelecimentoAnteriorId;
-//
-//				if (promocaoVertical.containsKey(chave))
-//				{
-//					subTotal = (Integer) promocaoVertical.get(chave) + 1;
-//					promocaoVertical.put(chave, subTotal);
-//				}
-//				else
-//				{
-//					promocaoVertical.put(chave, 1);
-//				}
-//			}
-//		}
-//
-//		return montaRelatorioPromocoes(areas, estabelecimentos, promocaoHorizontal, promocaoVertical);
 	}
-
-	public Collection<RelatorioPromocoes> montaRelatorioPromocoes(Map areas, Map estabelecimentos, Map promocaoHorizontal, Map promocaoVertical)
-	{
-		Collection<RelatorioPromocoes> relatorioPromocoes = new ArrayList<RelatorioPromocoes>();
-		Collection<String> chaves = addColl(promocaoHorizontal, promocaoVertical);
-
-		String[] chaveTmp = new String[2];
-
-		for (String chave : chaves)
-		{
-			RelatorioPromocoes relatorioPromo = new RelatorioPromocoes();
-			chaveTmp = chave.split("/");
-
-			relatorioPromo.setArea((AreaOrganizacional) areas.get(Long.valueOf(chaveTmp[0])));
-			relatorioPromo.setEstabelecimento((Estabelecimento) estabelecimentos.get(Long.valueOf(chaveTmp[1])));
-
-			if (promocaoHorizontal.containsKey(chave))
-				relatorioPromo.setQtdHorizontal((Integer) promocaoHorizontal.get(chave));
-
-			if (promocaoVertical.containsKey(chave))
-				relatorioPromo.setQtdVertical((Integer) promocaoVertical.get(chave));
-
-			relatorioPromocoes.add(relatorioPromo);
-		}
-
-		return relatorioPromocoes;
-	}
-
+	
 	private Collection<String> addColl(Map promocaoHorizontal, Map promocaoVertical)
 	{
 		Collection<String> chaves = new ArrayList<String>();
