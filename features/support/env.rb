@@ -76,17 +76,11 @@ def exec_sql sql
 end
 
 class Insert
-	instance_methods.each { |m| undef_method m unless m =~ /^__|instance_eval/ }
+	instance_methods.each { |m| undef_method m unless m =~ /^__|instance_eval|object_id/ }
 
-	def initialize(table, options)
+	def initialize(table)
 		@table = table
-		@columns = []
-		@values = []
-
-		if options[:serial]
-      @columns.push "id"
-			@values.push "nextval('#{@table}_sequence')"
-		end
+    @properties = {:id => "nextval('#{@table}_sequence')"}
 	end
 
 	def method_missing(method, *args, &block)
@@ -99,28 +93,29 @@ class Insert
     else
 			value = value.to_sql_param
 		end
-    @columns.push column
-    @values.push value
+    @properties[column] = value
 	end
 
   def to_sql
-    "insert into #{@table}(" + @columns.join(', ') + ") values (" + @values.join(', ') + ")"
+    "insert into #{@table}(" + @properties.keys.join(', ') + ") values (" + @properties.values.join(', ') + ")"
   end
 
 end
 
-def insert(table, options={:serial=>true}, &block)
-	ins = Insert.new(table, options)
+def insert(table, &block)
+	ins = Insert.new(table)
 	ins.instance_eval(&block)
   exec_sql ins.to_sql
 end
 
 class Object
 	def to_sql_param
-		if (self.is_a? String)
-      "'#{self}'"
-		else
-			to_s
-		end
+		to_s
+	end
+end
+
+class String
+	def to_sql_param
+    "'#{self}'"
 	end
 end

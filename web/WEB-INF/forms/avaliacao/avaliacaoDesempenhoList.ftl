@@ -15,7 +15,7 @@
 	<@display.table name="avaliacaoDesempenhos" id="avaliacaoDesempenho" class="dados">
 		<@display.column title="Ações" class="acao" style="width:180px;">
 		
-			<a href="prepareUpdate.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Atualizar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="prepareUpdate.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Participantes" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			
 			<#if avaliacaoDesempenho.liberada>

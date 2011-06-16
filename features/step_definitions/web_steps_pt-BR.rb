@@ -295,6 +295,16 @@ Dado /^que exista um historico para a faixa salarial "([^"]*)" na data "([^"]*)"
    end
 end
 
+Dado /^que exista uma avaliacao "([^"]*)"$/ do |avaliacao_titulo|
+   insert :avaliacao do
+     id 1
+     titulo avaliacao_titulo
+     tipomodeloavaliacao 'D'
+     ativo true
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista a etapa seletiva "([^"]*)"$/ do |etapaseletiva_nome|
    exec_sql "insert into etapaseletiva (id,nome,ordem,empresa_id) values(nextval('etapaseletiva_sequence'),'#{etapaseletiva_nome}', 1,  1);"
 end
