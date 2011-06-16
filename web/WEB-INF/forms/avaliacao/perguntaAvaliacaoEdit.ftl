@@ -338,7 +338,7 @@
 					</@ww.div>
 				</#if>
 				<@ww.div id="maisMultiplasRespostas"/>
-				<div id="maisMultiplasRespostasLink"><a href="javascript:addMultiplaRespostas();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url value="/imgs/mais.gif"/>" style="margin-top: 5px; margin-bottom: 5px;" align="absmiddle" border="0" width="16" height="16">  Mais uma opção de resposta</a></div>
+				<div id="maisMultiplasRespostasLink"><a id="adicionarMultiplaResposta" href="javascript:addMultiplaRespostas();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url value="/imgs/mais.gif"/>" style="margin-top: 5px; margin-bottom: 5px;" align="absmiddle" border="0" width="16" height="16">  Mais uma opção de resposta</a></div>
 			</@ww.div>
 			<#-- Fim Perguntas Multiplas Escolhas -->
 			

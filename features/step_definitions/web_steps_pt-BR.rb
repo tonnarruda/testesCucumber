@@ -51,6 +51,10 @@ Quando /^eu clico na linha "([^"]*)" da imagem "([^"]*)"$/ do |desc, img|
   find(:xpath, "//td[contains(text(), '#{desc}')]/../td/a/img[@title='#{img}']").click
 end
 
+Quando /^eu clico na imagem "([^"]*)" da pergunta "([^"]*)"$/ do |img, titulo|
+  find(:xpath, "//p[contains(text(), '#{titulo}')]/../div[@class='acaoPerguntas']/a/img[@title='#{img}']").click
+end
+
 Então /^eu devo ver o título "([^"]*)"$/ do |text|
   Then %{I should see "#{text}" within "#waDivTitulo"}
 end
@@ -212,6 +216,10 @@ Então /^eu devo ver o alert do confirmar exclusão e clico no ok/ do
   When %{I press "OK"}
 end
 
+Então /^eu devo ver o alert do confirmar e clico no ok/ do
+  When %{I press "OK"}
+end
+
 Quando /^eu espero (\d+) segundos$/ do |segundos|
   sleep segundos.to_i
 end
@@ -282,6 +290,7 @@ Dado /^que exista um historico para a faixa salarial "([^"]*)" na data "([^"]*)"
      data faixa_data
      tipo 3
      valor 500
+     status 1
      faixasalarial :nome => faixa_nome
    end
 end
