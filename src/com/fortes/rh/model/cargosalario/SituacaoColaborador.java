@@ -36,6 +36,7 @@ public class SituacaoColaborador
 	public SituacaoColaborador() {
 		super();
 	}
+	
 	public SituacaoColaborador(Double salario, Date data, int tipo, Cargo cargo, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento,
 			AreaOrganizacional areaOrganizacional, Colaborador colaborador, String motivo,  Long historicoColaboradorId) {
 		super();
@@ -53,6 +54,54 @@ public class SituacaoColaborador
 
 	private String motivo;
 
+	public void setProjectionEstabelecimentoNome(String projectionEstabelecimentoNome)
+	{
+		if (this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+
+		this.estabelecimento.setNome(projectionEstabelecimentoNome);
+	}
+
+	public void setProjectionEstabelecimentoId(Long projectionEstabelecimentoId)
+	{
+		if (this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+
+		this.estabelecimento.setId(projectionEstabelecimentoId);
+	}
+	
+	public void setProjectionFaixaSalarialId(Long projectionFaixaSalarialId)
+	{
+		if (this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+		
+		this.faixaSalarial.setId(projectionFaixaSalarialId);
+	}
+	
+	public void setProjectionAreaOrganizacionalId(Long projectionAreaOrganizacionalId)
+	{
+		if (this.areaOrganizacional == null)
+			this.areaOrganizacional = new AreaOrganizacional();
+		
+		this.areaOrganizacional.setId(projectionAreaOrganizacionalId);
+	}
+	
+	public void setProjectionCargoId(Long projectionCargoId)
+	{
+		if (this.cargo == null)
+			this.cargo = new Cargo();
+		
+		this.cargo.setId(projectionCargoId);
+	}
+	
+	public void setProjectionColaboradorId(Long projectionColaboradorId)
+	{
+		if (this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setId(projectionColaboradorId);
+	}
+	
 	public Long getHistoricoColaboradorId() {
 		return historicoColaboradorId;
 	}

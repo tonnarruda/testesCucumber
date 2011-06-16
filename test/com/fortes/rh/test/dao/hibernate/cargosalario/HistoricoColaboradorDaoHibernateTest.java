@@ -151,7 +151,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	public void testGetPromocoes()
 	{
 		Date data = new Date();
-		Collection<SituacaoColaborador> situacaoes = historicoColaboradorDao.getPromocoes(null, null, null, null);
+		Collection<SituacaoColaborador> situacaoes = historicoColaboradorDao.getPromocoes(null, null, data, data, 1L);
 		System.out.println(new Date().getTime() - data.getTime());
 	}
 	

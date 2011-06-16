@@ -20,6 +20,8 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
@@ -27,6 +29,7 @@ import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 
@@ -209,38 +212,39 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return new ArrayList();
 	}
 
-	public Collection<SituacaoColaborador> getPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim)
+	public Collection<SituacaoColaborador> getPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long empresaId)
 	{
-		StringBuilder hql = new StringBuilder();
-
-		hql.append("from SituacaoColaborador as sc ");
-		hql.append("left join sc.estabelecimento as e ");
-
-		hql.append("where sc.motivo <> :dissidio ");
-		if(areaIds != null && areaIds.length > 0)
-			hql.append("and a.id in (:areaIds) ");
-		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			hql.append("and e.id in (:estabelecimentoIds) ");
-		if (dataIni != null)
-			hql.append("sc.data >= :dataIni");
-		if (dataFim != null)
-			hql.append("sc.data <= :dataFim");
-
-		hql.append("order by sc.colaborador.id, sc.data ");
-
-		Query query = getSession().createQuery(hql.toString());
-		query.setString("dissidio", MotivoHistoricoColaborador.DISSIDIO);
+		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
+		criteria.createCriteria("sc.estabelecimento", "e");
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("sc.salario"), "salario");
+		p.add(Projections.property("sc.cargo.id"), "projectionCargoId");
+		p.add(Projections.property("sc.faixaSalarial.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("e.id"), "projectionEstabelecimentoId");
+		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
+		p.add(Projections.property("sc.areaOrganizacional.id"), "projectionAreaOrganizacionalId");
+		p.add(Projections.property("sc.colaborador.id"), "projectionColaboradorId");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.not(Expression.eq("sc.motivo", MotivoHistoricoColaborador.DISSIDIO)));
+		criteria.add(Expression.eq("e.empresa.id", empresaId));
 		
 		if(areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			criteria.add(Expression.in("sc.areaOrganizacioanl.id", areaIds));
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
+			criteria.add(Expression.in("e.id", estabelecimentosIds));
 		if (dataIni != null)
-			query.setDate("dataIni", dataIni);
+			criteria.add(Expression.ge("sc.data", dataIni));
 		if (dataFim != null)
-			query.setDate("dataFim", dataFim);
+			criteria.add(Expression.le("sc.data", dataFim));
 
-		return query.list();
+		criteria.addOrder(Order.asc("sc.colaborador.id"));
+		criteria.addOrder(Order.asc("sc.data"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(SituacaoColaborador.class));
+		
+		return criteria.list();
 	}
 
 	public HistoricoColaborador findByIdProjectionMinimo(Long historicoColaboradorId)
