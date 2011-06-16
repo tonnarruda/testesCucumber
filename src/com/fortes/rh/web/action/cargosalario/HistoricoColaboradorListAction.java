@@ -4,11 +4,16 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
+import org.apache.commons.beanutils.BeanComparator;
 import org.springframework.core.NestedRuntimeException;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -28,7 +33,10 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -36,6 +44,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class HistoricoColaboradorListAction extends MyActionSupportList
 {
@@ -182,51 +191,50 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-//TODO NÃO APAGAR RELATORIO DE PROMOÇ~ES EM ESTUDO
-//	public String prepareRelatorioPromocoes() throws Exception
-//	{
-//		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_PROMOCAO");
-//		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
-//		empresaIds = clu.convertCollectionToArrayIds(empresas);
-//		
-//		empresa = getEmpresaSistema();
-//
-//		return Action.SUCCESS;
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	public String imprimirRelatorioPromocoes() throws Exception
-//	{
-//		Collection<RelatorioPromocoes> promocoes = historicoColaboradorManager.getPromocoes(LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim);
-//
-//		if (promocoes.isEmpty())
-//		{
-//			ResourceBundle bundle = ResourceBundle.getBundle("application");
-//			addActionError(bundle.getString("error.relatorio.vazio"));
-//			setActionMsg(bundle.getString("error.relatorio.vazio"));
-//
-//			prepareRelatorioPromocoes();
-//			return Action.INPUT;
-//		}
-//
-//		try
-//		{
-//			Comparator comp = new BeanComparator("estabelecimento.nome", new ComparatorString());
-//			Collections.sort((List) promocoes, comp);
-//			setDataSource(promocoes);
-//
-//			String filtro = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
-//			parametros = RelatorioUtil.getParametrosRelatorio("Indicador de Promoções", getEmpresaSistema(), filtro);
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//			prepareRelatorioPromocoes();
-//			return Action.INPUT;
-//		}
-//
-//		return Action.SUCCESS;
-//	}
+	public String prepareRelatorioPromocoes() throws Exception
+	{
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_PROMOCAO");
+		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
+		empresaIds = clu.convertCollectionToArrayIds(empresas);
+		
+		empresa = getEmpresaSistema();
+
+		return Action.SUCCESS;
+	}
+
+	@SuppressWarnings("unchecked")
+	public String imprimirRelatorioPromocoes() throws Exception
+	{
+		Collection<RelatorioPromocoes> promocoes = null;//historicoColaboradorManager.getPromocoes(LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim);
+
+		if (promocoes.isEmpty())
+		{
+			ResourceBundle bundle = ResourceBundle.getBundle("application");
+			addActionError(bundle.getString("error.relatorio.vazio"));
+			setActionMsg(bundle.getString("error.relatorio.vazio"));
+
+			prepareRelatorioPromocoes();
+			return Action.INPUT;
+		}
+
+		try
+		{
+			Comparator comp = new BeanComparator("estabelecimento.nome", new ComparatorString());
+			Collections.sort((List) promocoes, comp);
+			setDataSource(promocoes);
+
+			String filtro = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
+			parametros = RelatorioUtil.getParametrosRelatorio("Indicador de Promoções", getEmpresaSistema(), filtro);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			prepareRelatorioPromocoes();
+			return Action.INPUT;
+		}
+
+		return Action.SUCCESS;
+	}
 
 	public String list() throws Exception
 	{

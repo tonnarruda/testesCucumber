@@ -34,6 +34,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -130,11 +131,64 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return colaboradoresFiltroVecDistinct;
 	}
 
-//TODO NÃO APAGAR RELATORIO DE PROMOÇ~ES EM ESTUDO
-//	public Collection<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim)
-//	{
-//		Collection<HistoricoColaborador> historicoColaboradors = getDao().getPromocoes(areasIds, estabelecimentosIds, dataIni, dataFim);
-//
+
+	private void addPromocao(Collection<RelatorioPromocoes> promocoes, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional) 
+	{
+		boolean exists = true;
+		for (RelatorioPromocoes promocao : promocoes) 
+		{
+			if(estabelecimento.equals(promocao.getEstabelecimento()) && areaOrganizacional.equals(promocao.getArea()))
+				exists = false;
+		}
+
+		if(exists)
+			promocoes.add(new RelatorioPromocoes(estabelecimento, areaOrganizacional));
+	}
+	
+	public Collection<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim)
+	{
+		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(areasIds, estabelecimentosIds, dataIni, dataFim);
+		Collection<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
+		
+		for (SituacaoColaborador situacao : situacaoColaboradors) 
+		{
+			addPromocao(promocoes, situacao.getEstabelecimento(), situacao.getAreaOrganizacional());
+		}
+		
+		return promocoes;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 //		Map promocaoHorizontal = new HashMap<String, Integer>();
 //		Map promocaoVertical = new HashMap<String, Integer>();
 //
@@ -144,7 +198,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 //		String chave = "";
 //		Integer subTotal;
 //
-//		for (HistoricoColaborador historico : historicoColaboradors)
+//		for (SituacaoColaborador historico : situacaoColaboradors)
 //		{
 //			areas.put(historico.getAreaOrganizacional().getId(), historico.getAreaOrganizacional());
 //			estabelecimentos.put(historico.getEstabelecimento().getId(), historico.getEstabelecimento());
@@ -166,7 +220,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 //					promocaoHorizontal.put(chave, 1);
 //				}
 //			}
-//			else if (historico.getMotivo().equals(MotivoHistoricoColaborador.PROMOCAO_VERTICAL))
+//			else if (historico.getMotivo().equals(MotivoHistoricoColaborador.PROMOCAO))
 //			{
 //				Long areaAnteriorId = historico.getHistoricoAnterior().getAreaOrganizacional().getId();
 //				Long estabelecimentoAnteriorId = historico.getHistoricoAnterior().getEstabelecimento().getId();
@@ -186,55 +240,55 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 //		}
 //
 //		return montaRelatorioPromocoes(areas, estabelecimentos, promocaoHorizontal, promocaoVertical);
-//	}
-//
-//	public Collection<RelatorioPromocoes> montaRelatorioPromocoes(Map areas, Map estabelecimentos, Map promocaoHorizontal, Map promocaoVertical)
-//	{
-//		Collection<RelatorioPromocoes> relatorioPromocoes = new ArrayList<RelatorioPromocoes>();
-//		Collection<String> chaves = addColl(promocaoHorizontal, promocaoVertical);
-//
-//		String[] chaveTmp = new String[2];
-//
-//		for (String chave : chaves)
-//		{
-//			RelatorioPromocoes relatorioPromo = new RelatorioPromocoes();
-//			chaveTmp = chave.split("/");
-//
-//			relatorioPromo.setArea((AreaOrganizacional) areas.get(Long.valueOf(chaveTmp[0])));
-//			relatorioPromo.setEstabelecimento((Estabelecimento) estabelecimentos.get(Long.valueOf(chaveTmp[1])));
-//
-//			if (promocaoHorizontal.containsKey(chave))
-//				relatorioPromo.setQtdHorizontal((Integer) promocaoHorizontal.get(chave));
-//
-//			if (promocaoVertical.containsKey(chave))
-//				relatorioPromo.setQtdVertical((Integer) promocaoVertical.get(chave));
-//
-//			relatorioPromocoes.add(relatorioPromo);
-//		}
-//
-//		return relatorioPromocoes;
-//	}
-//
-//	private Collection<String> addColl(Map promocaoHorizontal, Map promocaoVertical)
-//	{
-//		Collection<String> chaves = new ArrayList<String>();
-//		Collection<String> chavesHorizontal = promocaoHorizontal.keySet();
-//		Collection<String> chavesVertical = promocaoVertical.keySet();
-//
-//		for (String chave : chavesHorizontal)
-//		{
-//			if (!chaves.contains(chave))
-//				chaves.add(chave);
-//		}
-//
-//		for (String chave : chavesVertical)
-//		{
-//			if (!chaves.contains(chave))
-//				chaves.add(chave);
-//		}
-//
-//		return chaves;
-//	}
+	}
+
+	public Collection<RelatorioPromocoes> montaRelatorioPromocoes(Map areas, Map estabelecimentos, Map promocaoHorizontal, Map promocaoVertical)
+	{
+		Collection<RelatorioPromocoes> relatorioPromocoes = new ArrayList<RelatorioPromocoes>();
+		Collection<String> chaves = addColl(promocaoHorizontal, promocaoVertical);
+
+		String[] chaveTmp = new String[2];
+
+		for (String chave : chaves)
+		{
+			RelatorioPromocoes relatorioPromo = new RelatorioPromocoes();
+			chaveTmp = chave.split("/");
+
+			relatorioPromo.setArea((AreaOrganizacional) areas.get(Long.valueOf(chaveTmp[0])));
+			relatorioPromo.setEstabelecimento((Estabelecimento) estabelecimentos.get(Long.valueOf(chaveTmp[1])));
+
+			if (promocaoHorizontal.containsKey(chave))
+				relatorioPromo.setQtdHorizontal((Integer) promocaoHorizontal.get(chave));
+
+			if (promocaoVertical.containsKey(chave))
+				relatorioPromo.setQtdVertical((Integer) promocaoVertical.get(chave));
+
+			relatorioPromocoes.add(relatorioPromo);
+		}
+
+		return relatorioPromocoes;
+	}
+
+	private Collection<String> addColl(Map promocaoHorizontal, Map promocaoVertical)
+	{
+		Collection<String> chaves = new ArrayList<String>();
+		Collection<String> chavesHorizontal = promocaoHorizontal.keySet();
+		Collection<String> chavesVertical = promocaoVertical.keySet();
+
+		for (String chave : chavesHorizontal)
+		{
+			if (!chaves.contains(chave))
+				chaves.add(chave);
+		}
+
+		for (String chave : chavesVertical)
+		{
+			if (!chaves.contains(chave))
+				chaves.add(chave);
+		}
+
+		return chaves;
+	}
 
 	public Collection<RelatorioPromocoes> montaRelatorio(Collection<HistoricoColaborador> historicoColaboradors,
 			Collection<HistoricoColaborador> historicoColaboradorsTodos)

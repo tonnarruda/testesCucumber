@@ -30,12 +30,14 @@ import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.CodigoGFIP;
@@ -56,6 +58,7 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
@@ -421,6 +424,52 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(once()).method("findByGrupoOcupacionalIds").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(historicos));
 
 		assertEquals(2, historicoColaboradorManager.findByGrupoOcupacionalIds(0,0,grupoOcupacionalIds_,1L).size());
+	}
+	
+	public void testGetPromocoes()
+	{
+		Collection<SituacaoColaborador> situacoes = new ArrayList<SituacaoColaborador>();
+		
+		Estabelecimento parajana = EstabelecimentoFactory.getEntity(1L);
+		
+		AreaOrganizacional garagem = AreaOrganizacionalFactory.getEntity(1L);
+		AreaOrganizacional lavajato = AreaOrganizacionalFactory.getEntity(2L);
+		
+		Cargo cobrador = CargoFactory.getEntity(1L);
+		FaixaSalarial faixaUmCobrador = FaixaSalarialFactory.getEntity(1L);
+		FaixaSalarial faixaDoisCobrador = FaixaSalarialFactory.getEntity(2L);
+
+		Cargo motorista = CargoFactory.getEntity(2L);
+		FaixaSalarial faixaAMotorista = FaixaSalarialFactory.getEntity(3L);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(11L);
+		
+		SituacaoColaborador joaoCobradorFaixaUm = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(01, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador joaoCobradorFaixaUmAumentoSalario = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(01, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.PROMOCAO, 1L);
+		SituacaoColaborador joaoCobradorFaixaDois = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(01, 04, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaDoisCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador joaoCobradorFaixaDoisAumentoSalario = new SituacaoColaborador(650.0, DateUtil.criarDataMesAno(01, 04, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaDoisCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador joaoCobradorFaixaDoisMudouArea = new SituacaoColaborador(650.0, DateUtil.criarDataMesAno(01, 05, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaDoisCobrador, parajana, lavajato, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador joaoMotoristaFaixaA = new SituacaoColaborador(650.0, DateUtil.criarDataMesAno(06, 06, 2001), TipoAplicacaoIndice.CARGO, motorista, faixaAMotorista, parajana, lavajato, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+	
+		SituacaoColaborador mariaCobradorFaixaUm = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(01, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador mariaCobradorFaixaUmAumentoSalario = new SituacaoColaborador(555.0, DateUtil.criarDataMesAno(01, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador mariaCobradorFaixaUmAumentoSalarioNovamente = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(05, 05, 2000), TipoAplicacaoIndice.VALOR, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		
+		situacoes.add(joaoCobradorFaixaUm);
+		situacoes.add(joaoCobradorFaixaUmAumentoSalario);
+		situacoes.add(joaoCobradorFaixaDois);
+		situacoes.add(joaoCobradorFaixaDoisAumentoSalario);
+		situacoes.add(joaoCobradorFaixaDoisMudouArea);
+		situacoes.add(joaoMotoristaFaixaA);
+
+		situacoes.add(mariaCobradorFaixaUm);
+		situacoes.add(mariaCobradorFaixaUmAumentoSalario);
+		situacoes.add(mariaCobradorFaixaUmAumentoSalarioNovamente);
+		
+		historicoColaboradorDao.expects(once()).method("getPromocoes").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(situacoes));
+		
+		Collection<RelatorioPromocoes> promocoes = historicoColaboradorManager.getPromocoes(null, null, null, null);
+		assertEquals(2, promocoes.size());
 	}
 
 	public void testMontaRelatorio()

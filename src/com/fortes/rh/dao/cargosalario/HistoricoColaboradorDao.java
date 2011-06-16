@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 
@@ -49,4 +50,5 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio, Long empresaId);
 	public void ajustaMotivoContratado(Long colaboradorId);
 	public void setaContratadoNoPrimeiroHistorico(Long colaboradorId);
+	public Collection<SituacaoColaborador> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim);
 }
