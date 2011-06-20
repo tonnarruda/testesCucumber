@@ -38,6 +38,7 @@
 	</style>
 
 <script type="text/javascript">
+	
 	function exibeComentario()
 	{
 		if(document.getElementById("checkComentario") && document.getElementById("checkComentario").checked)
@@ -292,8 +293,6 @@
 		<br>
 		<@ww.textarea label="Pergunta" name="pergunta.texto" id="texto" required="true" cssStyle="height:30px;"/>
 		<@ww.select label="Tipo de Resposta" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();"/>
-	<li>
-	
 		<#-- Perguntas Objetivas -->
 		<@ww.div id="divRespostas" cssClass="divTipoResposta">
 			<#if pergunta.id?exists && pergunta.respostas?exists>
@@ -307,10 +306,9 @@
 					</#list>
 				</@ww.div>
 			<#else>
-				<#if respostasSugeridas?exists && 0<respostasSugeridas?size>
-					<@ww.checkbox label="Sugerir respostas da última pergunta objetiva" name="" id="sugestaoRespostas" onclick="mudaObjetiva(this.checked);" labelposition="left"/>
-			    </#if>
-			    <br>
+			<#if respostasSugeridas?exists && 0<respostasSugeridas?size>
+				<@ww.checkbox label="Sugerir respostas da última pergunta objetiva" name="" id="sugestaoRespostas" onclick="mudaObjetiva(this.checked);" labelposition="left"/>
+			</#if> 
 				<@ww.div id="respostasSugeridas" style="display:none;">
 					<#if respostasSugeridas?exists && 0<respostasSugeridas?size>
 						Opções de Resposta:
@@ -389,7 +387,7 @@
 					</li>
 				</ul>
 			</@ww.div>
-		</li>
+		
 		<@ww.hidden name="questionario.id" id="questionario" />
 		<@ww.hidden name="pergunta.id" />
 		<@ww.hidden name="pergunta.ordem" />
