@@ -80,15 +80,9 @@ select  hc.id as historicoColaboradorId,
 where hc.status <> 3 -- nao cacelados
 and (hfs_hc.data < proximo.dataProximo or hfs_hc.data is null)
 and (hi_hfs_hc.data < proximo.dataProximo or hi_hfs_hc.data is null)
-
 and (hi_hfs_hc.data < proximaFaixa.dataProximoHistFaixa or hi_hfs_hc.data is null)
-
 and (hfs_hc.data >= faixaAtual.dataAtualFaixa or hfs_hc.data is null)
-
 and (hi_hfs_hc.data >= indiceAtualFaixa.dataAtualIndiceFaixa or hi_hfs_hc.data is null)
-
 and (hi_hc.data < proximo.dataProximo or hi_hc.data is null)
-
 and (hi_hc.data >= indiceAtual.dataAtualIndice or hi_hc.data is null)
-
 order by hc.colaborador_id,hc.data,hfs_hc.data,hi_hfs_hc.data,hi_hc.data;--.go

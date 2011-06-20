@@ -14,7 +14,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 
 @Entity
-public class SituacaoColaborador
+public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 {
 	@Id
 	private Long historicoColaboradorId;
@@ -32,6 +32,11 @@ public class SituacaoColaborador
 	private AreaOrganizacional areaOrganizacional;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Colaborador colaborador;
+	
+	public int compareTo(SituacaoColaborador situacaoColaborador) 
+	{
+		return (estabelecimento.getNome() + " " + areaOrganizacional.getDescricao()).compareTo(situacaoColaborador.getEstabelecimento().getNome() + " " + situacaoColaborador.getAreaOrganizacional().getDescricao());
+	}
 	
 	public SituacaoColaborador() {
 		super();
@@ -94,12 +99,28 @@ public class SituacaoColaborador
 		this.cargo.setId(projectionCargoId);
 	}
 	
+	
 	public void setProjectionColaboradorId(Long projectionColaboradorId)
 	{
+		inicializaColaborador();
+		this.colaborador.setId(projectionColaboradorId);
+	}
+	
+	public void setProjectionColaboradorNome(String projectionColaboradorNome)
+	{
+		inicializaColaborador();
+		this.colaborador.setNome(projectionColaboradorNome);
+	}
+
+	public void setProjectionColaboradorMatricula(String projectionColaboradorMatricula)
+	{
+		inicializaColaborador();
+		this.colaborador.setMatricula(projectionColaboradorMatricula);
+	}
+	
+	private void inicializaColaborador() {
 		if (this.colaborador == null)
 			this.colaborador = new Colaborador();
-		
-		this.colaborador.setId(projectionColaboradorId);
 	}
 	
 	public Long getHistoricoColaboradorId() {

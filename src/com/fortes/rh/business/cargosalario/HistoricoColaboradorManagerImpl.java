@@ -14,7 +14,6 @@ import java.util.Map;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -152,6 +151,48 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			promocoes.add(new RelatorioPromocoes(estabelecimento, areaOrganizacional, tipoPromocao));
 	}
 	
+	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId)
+	{
+		//filtro de area e estabelecimento não ta funcionando, tem que ajustar a consulta. Negó de historico atual
+		Collection<SituacaoColaborador> situacoes = getDao().getUltimasPromocoes(areasIds, estabelecimentosIds, data, empresaId);
+		List<SituacaoColaborador> semReajustes = new ArrayList<SituacaoColaborador>();		
+		
+		Iterator iterator = situacoes.iterator();
+		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
+
+		boolean sofreuReajuste = false;
+		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
+		
+		for (SituacaoColaborador situacao : situacoes) 
+		{			
+			if(iterator.hasNext())
+				proximaSituacao = (SituacaoColaborador) iterator.next();
+			else
+				proximaSituacao = null;
+			
+			if(proximaSituacao != null && situacao.getColaborador().equals(proximaSituacao.getColaborador()))
+			{
+				if( ! situacao.getSalario().equals(proximaSituacao.getSalario()))
+					sofreuReajuste = true;
+			}
+
+			//mudou de colaborador
+			if(proximaSituacao == null || !situacao.getColaborador().equals(proximaSituacao.getColaborador()))
+			{
+				if(!sofreuReajuste)
+				{
+					situacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, situacao.getAreaOrganizacional().getId()));
+					semReajustes.add(situacao);
+				}
+				
+				sofreuReajuste = false;
+			}
+		}
+		
+		Collections.sort(semReajustes);
+		return semReajustes;
+	}
+	
 	public List<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long empresaId)
 	{
 		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
@@ -160,12 +201,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		Iterator iterator = situacaoColaboradors.iterator();
 		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
 			
-		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllList(empresaId, AreaOrganizacional.TODAS);
-		try {
-			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
 		
 		for (SituacaoColaborador situacao : situacaoColaboradors) 
 		{
@@ -191,6 +227,16 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		Collections.sort(promocoes);
 		return promocoes;
+	}
+
+	private Collection<AreaOrganizacional> ajustaFamilia(Long empresaId) {
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllList(empresaId, AreaOrganizacional.TODAS);
+		try {
+			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return areaOrganizacionals;
 	}
 	
 	private Collection<String> addColl(Map promocaoHorizontal, Map promocaoVertical)

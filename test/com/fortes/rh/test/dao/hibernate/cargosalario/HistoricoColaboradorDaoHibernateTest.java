@@ -3,6 +3,7 @@ package com.fortes.rh.test.dao.hibernate.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.model.AbstractModel;
@@ -150,9 +151,78 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	
 	public void testGetPromocoes()
 	{
-		Date data = new Date();
-		Collection<SituacaoColaborador> situacaoes = historicoColaboradorDao.getPromocoes(null, null, data, data, 1L);
-		System.out.println(new Date().getTime() - data.getTime());
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador primeiro = HistoricoColaboradorFactory.getEntity();
+		primeiro.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+		primeiro.setColaborador(colaborador);
+		primeiro.setData(DateUtil.criarDataMesAno(01, 02, 1999));
+		primeiro.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(primeiro);
+		
+		HistoricoColaborador segundo = HistoricoColaboradorFactory.getEntity();
+		segundo.setMotivo(MotivoHistoricoColaborador.DISSIDIO);
+		segundo.setColaborador(colaborador);
+		segundo.setData(DateUtil.criarDataMesAno(02, 05, 2001));
+		segundo.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(segundo);
+		
+		HistoricoColaborador terceiro = HistoricoColaboradorFactory.getEntity();
+		terceiro.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		terceiro.setColaborador(colaborador);
+		terceiro.setData(DateUtil.criarDataMesAno(02, 05, 2005));
+		terceiro.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(terceiro);
+		
+		Collection<SituacaoColaborador> situacoes = historicoColaboradorDao.getPromocoes(null, null, DateUtil.criarDataMesAno(01, 01, 1999), DateUtil.criarDataMesAno(03, 05, 2005), empresa.getId());
+		assertEquals(2, situacoes.size());
+	}
+	
+	public void testUltimasPromocoes()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador primeiro = HistoricoColaboradorFactory.getEntity();
+		primeiro.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		primeiro.setColaborador(colaborador);
+		primeiro.setData(DateUtil.criarDataMesAno(01, 02, 1999));
+		primeiro.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(primeiro);
+		
+		HistoricoColaborador segundo = HistoricoColaboradorFactory.getEntity();
+		segundo.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		segundo.setColaborador(colaborador);
+		segundo.setData(DateUtil.criarDataMesAno(02, 05, 2001));
+		segundo.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(segundo);
+		
+		HistoricoColaborador terceiro = HistoricoColaboradorFactory.getEntity();
+		terceiro.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		terceiro.setColaborador(colaborador);
+		terceiro.setData(DateUtil.criarDataMesAno(02, 05, 2005));
+		terceiro.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(terceiro);
+		
+		List<SituacaoColaborador> situacoes = historicoColaboradorDao.getUltimasPromocoes(null, null, DateUtil.criarDataMesAno(02, 01, 2002), empresa.getId());
+		assertEquals(2, situacoes.size());
+		assertEquals(segundo.getData(), situacoes.get(0).getData());
+		assertEquals(terceiro.getData(), situacoes.get(1).getData());
 	}
 	
 	public void testSetMotivo()

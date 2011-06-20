@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -20,8 +21,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
-import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
@@ -29,7 +28,6 @@ import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 
@@ -237,6 +235,56 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 			criteria.add(Expression.ge("sc.data", dataIni));
 		if (dataFim != null)
 			criteria.add(Expression.le("sc.data", dataFim));
+
+		criteria.addOrder(Order.asc("sc.colaborador.id"));
+		criteria.addOrder(Order.asc("sc.data"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(SituacaoColaborador.class));
+		
+		return criteria.list();
+	}
+	
+	public List<SituacaoColaborador> getUltimasPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date data, Long empresaId)
+	{
+		
+		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc");
+		ProjectionList pSub = Projections.projectionList().create();
+		
+		pSub.add(Projections.max("hc.data"));
+		subQuery.setProjection(pSub);
+		
+		subQuery.add(Expression.eqProperty("hc.colaborador.id", "sc.colaborador.id"));
+		subQuery.add(Expression.le("hc.data", data));
+		subQuery.add(Expression.not(Expression.eq("hc.motivo", MotivoHistoricoColaborador.DISSIDIO)));
+		subQuery.add(Expression.not(Expression.eq("hc.status", StatusRetornoAC.CANCELADO)));
+
+		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
+		criteria.createCriteria("sc.estabelecimento", "e");
+		criteria.createCriteria("sc.colaborador", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("sc.salario"), "salario");
+		p.add(Projections.property("sc.data"), "data");
+		p.add(Projections.property("sc.cargo.id"), "projectionCargoId");
+		p.add(Projections.property("sc.faixaSalarial.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("e.id"), "projectionEstabelecimentoId");
+		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
+		p.add(Projections.property("sc.areaOrganizacional.id"), "projectionAreaOrganizacionalId");
+		p.add(Projections.property("c.id"), "projectionColaboradorId");
+		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("c.matricula"), "projectionColaboradorMatricula");
+		criteria.setProjection(p);
+		
+		criteria.add(Subqueries.propertyGe("sc.data", subQuery));
+		
+		criteria.add(Expression.not(Expression.eq("sc.motivo", MotivoHistoricoColaborador.DISSIDIO)));
+		criteria.add(Expression.eq("e.empresa.id", empresaId));
+		
+		if(areaIds != null && areaIds.length > 0)
+			criteria.add(Expression.in("sc.areaOrganizacioanl.id", areaIds));
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			criteria.add(Expression.in("e.id", estabelecimentosIds));
 
 		criteria.addOrder(Order.asc("sc.colaborador.id"));
 		criteria.addOrder(Order.asc("sc.data"));

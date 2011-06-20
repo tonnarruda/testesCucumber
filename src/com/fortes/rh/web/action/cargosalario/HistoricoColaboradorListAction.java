@@ -201,6 +201,17 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 		return Action.SUCCESS;
 	}
+	
+	public String prepareRelatorioUltimaPromocao() throws Exception
+	{
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_PROMOCAO");
+		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
+		empresaIds = clu.convertCollectionToArrayIds(empresas);
+		
+		empresa = getEmpresaSistema();
+
+		return Action.SUCCESS;
+	}
 
 	@SuppressWarnings("unchecked")
 	public String imprimirRelatorioPromocoes() throws Exception

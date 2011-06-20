@@ -28,6 +28,9 @@
 		<action name="prepareRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioPromocoes">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioPromocoes.ftl</result>
 		</action>
+		<action name="prepareRelatorioUltimaPromocao" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioUltimaPromocao">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioUltimaPromocao.ftl</result>
+		</action>
 		<action name="imprimirRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="imprimirRelatorioPromocoes">
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/promocoes.jasper</param>

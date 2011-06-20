@@ -2,6 +2,7 @@ package com.fortes.rh.dao.cargosalario;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -51,4 +52,5 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public void ajustaMotivoContratado(Long colaboradorId);
 	public void setaContratadoNoPrimeiroHistorico(Long colaboradorId);
 	public Collection<SituacaoColaborador> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long empresaId);
+	public List<SituacaoColaborador> getUltimasPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId);
 }
