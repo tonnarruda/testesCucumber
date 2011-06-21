@@ -665,6 +665,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		empresa = empresaDao.save(empresa);
 
 		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("carpinteiro");
 		cargo = cargoDao.save(cargo);
 
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
@@ -706,6 +707,14 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		parametros.put("cargosIds", cargosIds);
 		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false);
 
+		assertFalse(candidatos.isEmpty());
+		assertEquals(1, candidatos.size());
+
+		parametros = new HashMap();
+		String[] cargosNomes = {cargo.getNome()};
+		parametros.put("cargosNomes", cargosNomes);
+		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false);
+		
 		assertFalse(candidatos.isEmpty());
 		assertEquals(1, candidatos.size());
 	}

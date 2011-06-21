@@ -421,12 +421,11 @@ public class CandidatoListAction extends MyActionSupportList
 		parametros.put("deficiencia", deficiencia);
 
 		Long[] areasCheckLong = StringUtil.stringToLong(areasCheck);
-		Long[] cargosCheckLong = StringUtil.stringToLong(cargosCheck);
 		Long[] conhecimentosCheckLong = StringUtil.stringToLong(conhecimentosCheck);
 		Long[] bairrosCheckLong = StringUtil.stringToLong(bairrosCheck);
 		Long[] experienciasCheckLong = StringUtil.stringToLong(experienciasCheck);
 		parametros.put("areasIds", areasCheckLong);
-		parametros.put("cargosIds", cargosCheckLong);
+		parametros.put("cargosNomes", cargosCheck);
 		parametros.put("conhecimentosIds", conhecimentosCheckLong);
 		parametros.put("bairrosIds", bairrosCheckLong);
 		
@@ -447,17 +446,14 @@ public class CandidatoListAction extends MyActionSupportList
 		else if(candidatos.size() >= 100)
 			addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar a busca.");
 
-		prepareBuscaCandidato();
+		prepareBusca();
 
 		cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
 
-		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, bairrosCheck);
-		experienciasCheckList = CheckListBoxUtil.marcaCheckListBox(experienciasCheckList, experienciasCheck);
 
 		CollectionUtil<CheckBox> cu = new CollectionUtil<CheckBox>();
-
 		areasCheckList = cu.sortCollectionStringIgnoreCase(areasCheckList, "nome");
 
 		Collection<Conhecimento> conhecimentos;
