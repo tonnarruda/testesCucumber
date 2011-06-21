@@ -12,6 +12,7 @@ import javax.persistence.TemporalType;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.util.DateUtil;
 
 @Entity
 public class SituacaoColaborador implements Comparable<SituacaoColaborador>
@@ -35,7 +36,7 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 	
 	public int compareTo(SituacaoColaborador situacaoColaborador) 
 	{
-		return (estabelecimento.getNome() + " " + areaOrganizacional.getDescricao()).compareTo(situacaoColaborador.getEstabelecimento().getNome() + " " + situacaoColaborador.getAreaOrganizacional().getDescricao());
+		return (estabelecimento.getNome() + " " + areaOrganizacional.getDescricao() + " " + colaborador.getNome()).compareTo(situacaoColaborador.getEstabelecimento().getNome() + " " + situacaoColaborador.getAreaOrganizacional().getDescricao() + " " + situacaoColaborador.getColaborador().getNome());
 	}
 	
 	public SituacaoColaborador() {
@@ -131,6 +132,10 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 		this.historicoColaboradorId = historicoColaboradorId;
 	}
 
+	public String getIntervaloData() {
+		return DateUtil.getIntervalDateString(this.data, new Date());
+	}
+	
 	public Date getData() {
 		return data;
 	}

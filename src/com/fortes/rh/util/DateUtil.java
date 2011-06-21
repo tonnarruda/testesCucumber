@@ -232,11 +232,18 @@ public class DateUtil
 
 		String resultado = "(";
 		if (anos > 0)
-			resultado += anos + " ano(s)";
+			resultado += anos + " ano";
+		if (anos > 1)
+			resultado += "s";
+		
 		if (anos > 0 && meses > 0)
 			resultado += " e ";
-		if (meses > 0)
-			resultado += meses + " mês(es)";
+		
+		if (meses == 1)
+			resultado += meses + " mês";
+		else if (meses > 1)
+			resultado += meses + " meses";
+		
 		resultado += ")";
 
 		return resultado;

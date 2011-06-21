@@ -153,11 +153,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId)
 	{
-		//filtro de area e estabelecimento não ta funcionando, tem que ajustar a consulta. Negó de historico atual
+		//filtro de area e estabelecimento não ta funcionando, tem que ajustar a consulta. Negócio de historico atual
 		Collection<SituacaoColaborador> situacoes = getDao().getUltimasPromocoes(areasIds, estabelecimentosIds, data, empresaId);
 		List<SituacaoColaborador> semReajustes = new ArrayList<SituacaoColaborador>();		
 		
-		Iterator iterator = situacoes.iterator();
+		Iterator<SituacaoColaborador> iterator = situacoes.iterator();
 		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
 
 		boolean sofreuReajuste = false;
@@ -198,7 +198,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
 		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(areasIds, estabelecimentosIds, dataIni, dataFim, empresaId);
 
-		Iterator iterator = situacaoColaboradors.iterator();
+		if (situacaoColaboradors == null || situacaoColaboradors.isEmpty())
+			return promocoes;
+		
+		Iterator<SituacaoColaborador> iterator = situacaoColaboradors.iterator();
 		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
 			
 		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);

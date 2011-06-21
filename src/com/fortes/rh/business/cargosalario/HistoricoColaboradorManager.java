@@ -8,6 +8,7 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -134,4 +135,5 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public List<RelatorioPromocoes> getPromocoes(Long[] arrayStringToArrayLong, Long[] arrayStringToArrayLong2, Date dataIni, Date dataFim, Long empresaId);
 	
+	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId);
 }

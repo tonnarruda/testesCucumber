@@ -280,6 +280,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		
 		criteria.add(Expression.not(Expression.eq("sc.motivo", MotivoHistoricoColaborador.DISSIDIO)));
 		criteria.add(Expression.eq("e.empresa.id", empresaId));
+		criteria.add(Expression.eq("c.desligado", false));
 		
 		if(areaIds != null && areaIds.length > 0)
 			criteria.add(Expression.in("sc.areaOrganizacioanl.id", areaIds));

@@ -28,9 +28,6 @@
 		<action name="prepareRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioPromocoes">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioPromocoes.ftl</result>
 		</action>
-		<action name="prepareRelatorioUltimaPromocao" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioUltimaPromocao">
-			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioUltimaPromocao.ftl</result>
-		</action>
 		<action name="imprimirRelatorioPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="imprimirRelatorioPromocoes">
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/promocoes.jasper</param>
@@ -38,6 +35,17 @@
 				<param name="parametersMap">parametros</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioPromocoes.ftl</result>
+		</action>
+		<action name="prepareRelatorioUltimasPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareRelatorioUltimasPromocoes">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioUltimasPromocoes.ftl</result>
+		</action>
+		<action name="imprimirRelatorioUltimasPromocoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="imprimirRelatorioUltimasPromocoes">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/ultimaspromocoes.jasper</param>
+				<param name="dataSource">dataSourceSituacoesColaborador</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioUltimasPromocoes.ftl</result>
 		</action>
 		
 		<!--action name="atualizaHistoricosAreaAnterior" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="atualizaHistoricosAreaAnterior">

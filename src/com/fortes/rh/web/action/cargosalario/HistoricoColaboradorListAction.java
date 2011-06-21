@@ -25,6 +25,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -75,6 +76,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String origemSituacao = "T";
 	
 	private Collection<RelatorioPromocoes> dataSource = new ArrayList<RelatorioPromocoes>();
+	private Collection<SituacaoColaborador> dataSourceSituacoesColaborador = new ArrayList<SituacaoColaborador>();
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private StatusRetornoAC statusRetornoAC = new StatusRetornoAC();
 	private boolean integradoAC;
@@ -202,17 +204,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareRelatorioUltimaPromocao() throws Exception
-	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_PROMOCAO");
-		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
-		empresaIds = clu.convertCollectionToArrayIds(empresas);
-		
-		empresa = getEmpresaSistema();
-
-		return Action.SUCCESS;
-	}
-
 	@SuppressWarnings("unchecked")
 	public String imprimirRelatorioPromocoes() throws Exception
 	{
@@ -236,6 +227,45 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 			String filtro = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
 			parametros = RelatorioUtil.getParametrosRelatorio("Indicador de Promoções", getEmpresaSistema(), filtro);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			prepareRelatorioPromocoes();
+			return Action.INPUT;
+		}
+
+		return Action.SUCCESS;
+	}
+	
+	public String prepareRelatorioUltimasPromocoes() throws Exception
+	{
+		return Action.SUCCESS;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String imprimirRelatorioUltimasPromocoes() throws Exception
+	{
+		Collection<SituacaoColaborador> ultimasPromocoes = historicoColaboradorManager.getColaboradoresSemReajuste(null, null, dataBase, getEmpresaSistema().getId());
+
+		if (ultimasPromocoes.isEmpty())
+		{
+			ResourceBundle bundle = ResourceBundle.getBundle("application");
+			addActionError(bundle.getString("error.relatorio.vazio"));
+			setActionMsg(bundle.getString("error.relatorio.vazio"));
+
+			prepareRelatorioPromocoes();
+			return Action.INPUT;
+		}
+
+		try
+		{
+			Comparator<SituacaoColaborador> comp = new BeanComparator("estabelecimento.nome", new ComparatorString());
+			Collections.sort((List<SituacaoColaborador>) ultimasPromocoes, comp);
+			setDataSourceSituacoesColaborador(ultimasPromocoes);
+
+			String filtro = "Desde o dia: " + DateUtil.formataDiaMesAno(dataBase);
+			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores Sem Reajuste", getEmpresaSistema(), filtro);
 		}
 		catch (Exception e)
 		{
@@ -676,6 +706,15 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setRetiraDissidioIds(Long[] retiraDissidioIds) {
 		this.retiraDissidioIds = retiraDissidioIds;
+	}
+
+	public Collection<SituacaoColaborador> getDataSourceSituacoesColaborador() {
+		return dataSourceSituacoesColaborador;
+	}
+
+	public void setDataSourceSituacoesColaborador(
+			Collection<SituacaoColaborador> dataSourceSituacoesColaborador) {
+		this.dataSourceSituacoesColaborador = dataSourceSituacoesColaborador;
 	}
 	
 }
