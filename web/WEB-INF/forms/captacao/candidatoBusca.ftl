@@ -34,6 +34,28 @@
 	<style type="text/css">#menuBusca a.ativaAvancada{color: #FFCB03;}</style>
 
 	<script type="text/javascript">
+	
+		$(function(){
+			enviaEmpresa($('#empresaSelect').val());
+		});
+	
+		function enviaEmpresa(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
+			CargoDWR.getByEmpresa(createListCargos, empresaId);
+			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId);
+		}
+	
+		function createListCargos(data)
+		{
+			addChecks('cargosCheck',data)
+		}
+		
+		function createListConhecimentos(data)
+		{
+			addChecks('conhecimentosCheck',data)
+		}
 		function populaBairros()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -58,12 +80,6 @@
 			}
 		}
 
-		function enviaEmpresa(empresaId)
-		{
-			<#if BDS?exists && !BDS>
-				window.location = "prepareBusca.action?solicitacao.id=${solicitacao.id}&empresaId="+empresaId;
-			</#if>
-		}
 
 		function limparFiltro()
 		{

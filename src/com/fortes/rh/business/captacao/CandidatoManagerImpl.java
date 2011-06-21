@@ -98,7 +98,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	{
 		return totalSize;
 	}
-
+	
+	//TODO refatorar
 	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresaId, Long solicitacaoId, boolean somenteSemSolicitacao) throws Exception
 	{
 		Collection<Candidato> candidatos = null;

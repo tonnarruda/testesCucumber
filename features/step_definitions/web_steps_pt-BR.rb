@@ -305,6 +305,13 @@ Dado /^que exista uma avaliacao "([^"]*)"$/ do |avaliacao_titulo|
    end
 end
 
+Dado /^que exista uma avaliacao de curso "([^"]*)"$/ do |avaliacaocurso_titulo|
+   insert :avaliacaocurso do
+     titulo avaliacaocurso_titulo
+     tipo 'n'
+   end
+end
+
 Dado /^que exista a etapa seletiva "([^"]*)"$/ do |etapaseletiva_nome|
    exec_sql "insert into etapaseletiva (id,nome,ordem,empresa_id) values(nextval('etapaseletiva_sequence'),'#{etapaseletiva_nome}', 1,  1);"
 end

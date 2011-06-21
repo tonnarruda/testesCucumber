@@ -24,6 +24,7 @@ import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
@@ -312,6 +313,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		if(parametros.get("cargosIds")  != null && ((Long[])parametros.get("cargosIds")).length > 0)
 			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.id", (Long[])parametros.get("cargosIds")));
+
+		if(parametros.get("cargosNomes")  != null && ((String[])parametros.get("cargosNomes")).length > 0)
+			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.nome", (String[]) parametros.get("cargosNomes")));
 
 		if(parametros.get("conhecimentosIds")  != null && ((Long[])parametros.get("conhecimentosIds")).length > 0)
 			criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.id", (Long[])parametros.get("conhecimentosIds")));
