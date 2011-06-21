@@ -285,7 +285,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		promocoes = (List<RelatorioPromocoes>) util.sortCollectionDate(promocoes, "mesAno", "asc");
 		
 		for (RelatorioPromocoes p : promocoes) {
-		
+			System.out.println(p.getMesAno() + "  " + p.getQtdHorizontal() + "  V: " + p.getQtdVertical());
 		}
 		
 		return null; 
