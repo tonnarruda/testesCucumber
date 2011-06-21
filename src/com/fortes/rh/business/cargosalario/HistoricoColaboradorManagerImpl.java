@@ -47,6 +47,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
+import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
@@ -151,6 +152,23 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			promocoes.add(new RelatorioPromocoes(estabelecimento, areaOrganizacional, tipoPromocao));
 	}
 	
+	private void addPromocaoMesAno(Collection<RelatorioPromocoes> promocoes, Date data, String tipoPromocao) 
+	{
+		boolean noExists = true;
+		for (RelatorioPromocoes promocao : promocoes) 
+		{
+			if(data.equals(promocao.getMesAno()))
+			{
+				promocao.incrementa(tipoPromocao);
+				noExists = false;
+				break;
+			}
+		}
+		
+		if(noExists)
+			promocoes.add(new RelatorioPromocoes(data, tipoPromocao));
+	}
+	
 	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId)
 	{
 		//filtro de area e estabelecimento não ta funcionando, tem que ajustar a consulta. Negócio de historico atual
@@ -230,6 +248,47 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		Collections.sort(promocoes);
 		return promocoes;
+	}
+	
+	public Collection<Object[]> countPromocoesMesAno(Date dataIni, Date dataFim, Long empresaId)
+	{
+		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
+		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(null, null, dataIni, dataFim, empresaId);
+		
+		if (situacaoColaboradors == null || situacaoColaboradors.isEmpty())
+			return null;
+		
+		Iterator<SituacaoColaborador> iterator = situacaoColaboradors.iterator();
+		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
+		
+		for (SituacaoColaborador situacao : situacaoColaboradors) 
+		{
+			if(iterator.hasNext())
+			{
+				proximaSituacao = (SituacaoColaborador) iterator.next();
+				//a ordem dos ifs são importantes
+				if(!proximaSituacao.getColaborador().equals(situacao.getColaborador()))
+					continue;
+				
+				if(!situacao.getCargo().equals(proximaSituacao.getCargo()))
+				{
+					addPromocaoMesAno(promocoes, DateUtil.getInicioMesData(proximaSituacao.getData()), MotivoHistoricoColaborador.PROMOCAO);
+					continue;
+				}
+				
+				if(!situacao.getFaixaSalarial().equals(proximaSituacao.getFaixaSalarial()) || !situacao.getSalario().equals(proximaSituacao.getSalario()))
+					addPromocaoMesAno(promocoes, DateUtil.getInicioMesData(proximaSituacao.getData()), MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL);
+			}
+		}
+		
+		CollectionUtil<RelatorioPromocoes> util = new CollectionUtil<RelatorioPromocoes>();
+		promocoes = (List<RelatorioPromocoes>) util.sortCollectionDate(promocoes, "mesAno", "asc");
+		
+		for (RelatorioPromocoes p : promocoes) {
+		
+		}
+		
+		return null; 
 	}
 
 	private Collection<AreaOrganizacional> ajustaFamilia(Long empresaId) {

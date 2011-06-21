@@ -489,6 +489,69 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		assertEquals(0, promocaoParajanaLavajato.getQtdHorizontal());
 		assertEquals(1, promocaoParajanaLavajato.getQtdVertical());
 	}
+	
+	public void testCountPromocoesMesAno()
+	{
+		Collection<SituacaoColaborador> situacoes = new ArrayList<SituacaoColaborador>();
+		
+		Estabelecimento parajana = EstabelecimentoFactory.getEntity(1L);
+		
+		AreaOrganizacional garagem = AreaOrganizacionalFactory.getEntity(1L);
+		AreaOrganizacional lavajato = AreaOrganizacionalFactory.getEntity(2L);
+		
+		Cargo cobrador = CargoFactory.getEntity(1L);
+		FaixaSalarial faixaUmCobrador = FaixaSalarialFactory.getEntity(1L);
+		FaixaSalarial faixaDoisCobrador = FaixaSalarialFactory.getEntity(2L);
+		
+		Cargo motorista = CargoFactory.getEntity(2L);
+		FaixaSalarial faixaAMotorista = FaixaSalarialFactory.getEntity(3L);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(11L);
+		Colaborador maria = ColaboradorFactory.getEntity(22L);
+		
+		SituacaoColaborador joaoCobradorFaixaUm = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(02, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador joaoCobradorFaixaUmAumentoSalario = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(03, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.PROMOCAO, 1L);
+		SituacaoColaborador joaoCobradorFaixaDois = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(01, 04, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaDoisCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.PROMOCAO, 2L);
+		SituacaoColaborador joaoCobradorFaixaDoisAumentoSalario = new SituacaoColaborador(650.0, DateUtil.criarDataMesAno(05, 04, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaDoisCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.PROMOCAO, 2L);
+		SituacaoColaborador joaoCobradorFaixaDoisMudouArea = new SituacaoColaborador(650.0, DateUtil.criarDataMesAno(01, 05, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaDoisCobrador, parajana, lavajato, joao, MotivoHistoricoColaborador.PROMOCAO, 3L);
+		SituacaoColaborador joaoMotoristaFaixaA = new SituacaoColaborador(650.0, DateUtil.criarDataMesAno(06, 06, 2001), TipoAplicacaoIndice.CARGO, motorista, faixaAMotorista, parajana, lavajato, joao, MotivoHistoricoColaborador.PROMOCAO, 4L);
+		
+		SituacaoColaborador mariaCobradorFaixaUm = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(01, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, maria, MotivoHistoricoColaborador.CONTRATADO, 5L);
+		SituacaoColaborador mariaCobradorFaixaUmAumentoSalario = new SituacaoColaborador(555.0, DateUtil.criarDataMesAno(9, 02, 2000), TipoAplicacaoIndice.CARGO, motorista, faixaAMotorista, parajana, garagem, maria, MotivoHistoricoColaborador.PROMOCAO, 5L);
+		SituacaoColaborador mariaCobradorFaixaUmAumentoSalarioNovamente = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(05, 05, 2000), TipoAplicacaoIndice.VALOR, motorista, faixaAMotorista, parajana, garagem, maria, MotivoHistoricoColaborador.PROMOCAO, 6L);
+		
+		situacoes.add(joaoCobradorFaixaUm);
+		situacoes.add(joaoCobradorFaixaUmAumentoSalario);
+		situacoes.add(joaoCobradorFaixaDois);
+		situacoes.add(joaoCobradorFaixaDoisAumentoSalario);
+		situacoes.add(joaoCobradorFaixaDoisMudouArea);
+		situacoes.add(joaoMotoristaFaixaA);
+		
+		situacoes.add(mariaCobradorFaixaUm);
+		situacoes.add(mariaCobradorFaixaUmAumentoSalario);
+		situacoes.add(mariaCobradorFaixaUmAumentoSalarioNovamente);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
+		
+		historicoColaboradorDao.expects(once()).method("getPromocoes").will(returnValue(situacoes));
+		areaOrganizacionalManager.expects(once()).method("findAllList").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS)).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(garagem.getId())).will(returnValue(garagem));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(lavajato.getId())).will(returnValue(lavajato));
+		
+		Collection<Object[]> promocoes = historicoColaboradorManager.countPromocoesMesAno(null, null, empresa.getId());
+		
+		assertEquals(4, promocoes.size());
+		
+//		RelatorioPromocoes promocaoParajanaGaragem = (RelatorioPromocoes) promocoes.get(0);
+//		assertEquals(4, promocaoParajanaGaragem.getQtdHorizontal());
+//		assertEquals(1, promocaoParajanaGaragem.getQtdVertical());
+//		
+//		RelatorioPromocoes promocaoParajanaLavajato = (RelatorioPromocoes) promocoes.get(1);
+//		assertEquals(0, promocaoParajanaLavajato.getQtdHorizontal());
+//		assertEquals(1, promocaoParajanaLavajato.getQtdVertical());
+	}
 
 	public void testGetColaboradoresSemReajuste()
 	{

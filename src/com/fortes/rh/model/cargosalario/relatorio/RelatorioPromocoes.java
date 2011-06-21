@@ -1,5 +1,7 @@
 package com.fortes.rh.model.cargosalario.relatorio;
 
+import java.util.Date;
+
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -9,6 +11,7 @@ public class RelatorioPromocoes implements Comparable<RelatorioPromocoes>
 {
 	private Estabelecimento estabelecimento;
 	private AreaOrganizacional area;
+	private Date mesAno; //EX: 01/02/2011, 01/03/2012
 	private int qtdHorizontal;
 	private int qtdVertical;
 
@@ -30,6 +33,13 @@ public class RelatorioPromocoes implements Comparable<RelatorioPromocoes>
 	public RelatorioPromocoes() 
 	{
 		super();
+	}
+
+	public RelatorioPromocoes(Date data, String tipoPromocao) 
+	{
+		super();
+		this.mesAno = data;
+		incrementa(tipoPromocao);
 	}
 
 	public AreaOrganizacional getArea()
@@ -68,6 +78,14 @@ public class RelatorioPromocoes implements Comparable<RelatorioPromocoes>
 	public int compareTo(RelatorioPromocoes relatorio) 
 	{
 		return (estabelecimento.getNome() + " " + area.getDescricao()).compareTo(relatorio.getEstabelecimento().getNome() + " " + relatorio.getArea().getDescricao());
+	}
+
+	public Date getMesAno() {
+		return mesAno;
+	}
+
+	public void setMesAno(Date mesAno) {
+		this.mesAno = mesAno;
 	}
 
 }
