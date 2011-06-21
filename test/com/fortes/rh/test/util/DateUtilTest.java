@@ -135,12 +135,13 @@ public class DateUtilTest extends TestCase
 	
 	public void testGetIntervalDateString()
 	{
-		assertEquals("Test 1", "(29 ano(s) e 4 mês(es))", DateUtil.getIntervalDateString(new Date(78,11,10), new Date(108,03,15)));
-		assertEquals("Test 2", "(1 ano(s) e 11 mês(es))", DateUtil.getIntervalDateString(new Date(106,04,02), new Date(108,03,15)));
-		assertEquals("Test 3", "(2 mês(es))", DateUtil.getIntervalDateString(new Date(108,01,02), new Date(108,03,15)));
+		assertEquals("Test 1", "(29 anos e 4 meses)", DateUtil.getIntervalDateString(new Date(78,11,10), new Date(108,03,15)));
+		assertEquals("Test 2", "(1 ano e 11 meses)", DateUtil.getIntervalDateString(new Date(106,04,02), new Date(108,03,15)));
+		assertEquals("Test 3", "(1 ano e 1 mês)", DateUtil.getIntervalDateString(new Date(106,04,02), new Date(107,05,02)));
+		assertEquals("Test 4", "(2 meses)", DateUtil.getIntervalDateString(new Date(108,01,02), new Date(108,03,15)));
 
-		assertEquals("Test 4", "(Data inicial maior que data final!)", DateUtil.getIntervalDateString(new Date(108,03,15), new Date(108,03,14)));
-		assertNotNull("Test 5", DateUtil.getIntervalDateString(new Date(108,03,15), null));
+		assertEquals("Test 5", "(Data inicial maior que data final!)", DateUtil.getIntervalDateString(new Date(108,03,15), new Date(108,03,14)));
+		assertNotNull("Test 6", DateUtil.getIntervalDateString(new Date(108,03,15), null));
 	}
 
 	public void testRetornaDataDiaAnterior()

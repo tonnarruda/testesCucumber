@@ -5,6 +5,9 @@ alter sequence papel_sequence restart with 511;--.go
 
 update papel set papelmae_id = 463 where id=510;--.go
 
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (511, 'ROLE_REL_COLAB_SEM_REAJUSTE', 'Colaboradores Sem Reajuste', '/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action', 7, true, 364);--.go
+alter sequence papel_sequence restart with 512;--.go
+
 create view SituacaoColaborador as 
 select  hc.id as historicoColaboradorId,
 	greatest(hc.data,hfs_hc.data, hi_hfs_hc.data, hi_hc.data) as data,

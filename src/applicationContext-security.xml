@@ -297,6 +297,7 @@
 				/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action*=ROLE_CAD_AMBIENTE
 				/cargosalario/historicoColaborador/updateAmbientesEFuncoes.action*=ROLE_CAD_AMBIENTE
 				/cargosalario/historicoColaborador/prepareRelatorioSituacoes.action*=ROLE_REL_SITUACOES
+				/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action*=ROLE_REL_COLAB_SEM_REAJUSTE
 				/cargosalario/historicoColaborador/relatorioSituacoes.action*=ROLE_REL_SITUACOES
 				/cargosalario/historicoColaborador/painelIndicadores.action*=ROLE_INFO_PAINEL_IND
 				/cargosalario/historicoColaborador/*/**=ROLE_CAD_COLABORADOR
