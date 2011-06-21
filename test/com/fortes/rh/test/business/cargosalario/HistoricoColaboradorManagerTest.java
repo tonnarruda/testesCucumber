@@ -532,15 +532,10 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		situacoes.add(mariaCobradorFaixaUmAumentoSalarioNovamente);
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
 		
 		historicoColaboradorDao.expects(once()).method("getPromocoes").will(returnValue(situacoes));
-		areaOrganizacionalManager.expects(once()).method("findAllList").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS)).will(returnValue(areaOrganizacionals));
-		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
-		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(garagem.getId())).will(returnValue(garagem));
-		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(lavajato.getId())).will(returnValue(lavajato));
 		
-		Collection<Object[]> promocoes = historicoColaboradorManager.countPromocoesMesAno(null, null, empresa.getId());
+		List<RelatorioPromocoes> promocoes = historicoColaboradorManager.countPromocoesMesAno(null, null, empresa.getId());
 		
 		assertEquals(4, promocoes.size());
 		

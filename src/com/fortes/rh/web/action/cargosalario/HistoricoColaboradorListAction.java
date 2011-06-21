@@ -94,6 +94,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfEvolucaoFolha = "";
 	private String grfEvolucaoAbsenteismo = "";
 	private String grfEvolucaoTurnover = "";
+	private String grfPromocaoHorizontal = "";
+	private String grfPromocaoVertical = "";
 	private int qtdColaborador = 0;
 	private int qtdItensDesligamento = 20;
 	private String grfColocacao = "";
@@ -178,7 +180,26 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		for (DataGrafico dataGrafico : graficoSalarioArea) 
 			valorTotalFolha += dataGrafico.getData();
 		
+		painelIndicadoresFaixaSalarial();
+		
 		return Action.SUCCESS;
+	}
+
+	private void painelIndicadoresFaixaSalarial() throws Exception
+	{
+		List<RelatorioPromocoes> promocoes = historicoColaboradorManager.countPromocoesMesAno(DateUtil.criarDataMesAno(dataMesAnoIni), DateUtil.criarDataMesAno(dataMesAnoFim),  getEmpresaSistema().getId());
+		
+		Collection<Object[]>  graficoPromocaoHorizontal = new ArrayList<Object[]>();
+		Collection<Object[]>  graficoPromocaoVertical = new ArrayList<Object[]>();
+		
+		for (RelatorioPromocoes promocao : promocoes)
+		{
+			graficoPromocaoHorizontal.add(new Object[]{promocao.getMesAno().getTime(), promocao.getQtdHorizontal()}); 
+			graficoPromocaoVertical.add(new Object[]{promocao.getMesAno().getTime(), promocao.getQtdVertical()}); 
+		}
+		
+		grfPromocaoHorizontal = StringUtil.toJSON(graficoPromocaoHorizontal, null);
+		grfPromocaoVertical = StringUtil.toJSON(graficoPromocaoVertical, null);
 	}
 	
 	public String grfSalarioAreasFilhas() throws Exception
@@ -715,6 +736,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public void setDataSourceSituacoesColaborador(
 			Collection<SituacaoColaborador> dataSourceSituacoesColaborador) {
 		this.dataSourceSituacoesColaborador = dataSourceSituacoesColaborador;
+	}
+
+	public String getGrfPromocaoHorizontal() {
+		return grfPromocaoHorizontal;
+	}
+
+	public String getGrfPromocaoVertical() {
+		return grfPromocaoVertical;
 	}
 	
 }

@@ -1569,7 +1569,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				}
 			}
 			
-			avaliacoes.replace(avaliacoes.length()-1, avaliacoes.length(), "");
+			if(avaliacoes.length() != 0)
+				avaliacoes.replace(avaliacoes.length()-1, avaliacoes.length(), "");
+			
 			colaborador.setDatasDeAvaliacao(avaliacoes.toString());
 		}
 			

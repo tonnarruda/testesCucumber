@@ -152,8 +152,41 @@
 	                	previousPoint = null;            
 		            }
 				});
-
-				
+		        
+		        var temp = ${grfPromocaoHorizontal};
+			    var data = [
+			        {label: 'Horizontal', data: ${grfPromocaoHorizontal}},
+			        {label: 'Vertical', data: ${grfPromocaoVertical}}
+			    ];
+			    var options = {
+			        series: {stack: 0,
+			                 lines: {show: false,
+			                 		 steps: false,
+			                 		 fill: true 
+			                 },
+			                 bars: {show: true, 
+			                 		barWidth: 900000000,
+			                 		align: 'center',
+			                 		fill: true,
+      								fillColor: { colors: [ { opacity: 0.8 }, { opacity: 0.1 } ] }
+			                 },
+			        },
+			        xaxis: { 
+			        	autoscaleMargin:.05,
+			        	minTickSize:1,
+			        	tickSize:1,
+			        	mode: "time",
+			        	ticks: temp.map(function (item){return item[0]}),
+			        	timeformat: '%b/%y ',
+			        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+			        },
+			    };
+			    
+			    
+			    
+			    
+			
+			    $.plot($("#faixaSalarial"), data, options);
 			});
 
 			//CUIDADO com o tamanho do grafico(bug da sombra)http://code.google.com/p/flot/issues/detail?id=5#c110
@@ -296,8 +329,13 @@
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 		<div class="fieldGraph bigger">
-		<h1>Evolução Salarial</h1>
+			<h1>Evolução Salarial</h1>
 	   		<div id="evolucaoFolha" style="margin: 25px;height:300px;"></div>
+	    </div>
+
+		<div class="fieldGraph bigger">
+			<h1>Faixa Salarial</h1>
+	   		<div id="faixaSalarial" style="margin: 25px;height:300px;"></div>
 	    </div>
 
 		<div style="clear: both"></div>

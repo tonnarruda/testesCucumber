@@ -222,6 +222,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
 		p.add(Projections.property("sc.areaOrganizacional.id"), "projectionAreaOrganizacionalId");
 		p.add(Projections.property("sc.colaborador.id"), "projectionColaboradorId");
+		p.add(Projections.property("sc.data"), "data");
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.not(Expression.eq("sc.motivo", MotivoHistoricoColaborador.DISSIDIO)));

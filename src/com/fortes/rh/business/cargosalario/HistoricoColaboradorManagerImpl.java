@@ -250,7 +250,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return promocoes;
 	}
 	
-	public Collection<Object[]> countPromocoesMesAno(Date dataIni, Date dataFim, Long empresaId)
+	public List<RelatorioPromocoes> countPromocoesMesAno(Date dataIni, Date dataFim, Long empresaId)
 	{
 		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
 		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(null, null, dataIni, dataFim, empresaId);
@@ -284,11 +284,15 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		CollectionUtil<RelatorioPromocoes> util = new CollectionUtil<RelatorioPromocoes>();
 		promocoes = (List<RelatorioPromocoes>) util.sortCollectionDate(promocoes, "mesAno", "asc");
 		
-		for (RelatorioPromocoes p : promocoes) {
-			System.out.println(p.getMesAno() + "  " + p.getQtdHorizontal() + "  V: " + p.getQtdVertical());
-		}
+//		Collection<Object[]>  graficoFaixaSalarial = new ArrayList<Object[]>();
+//		for (RelatorioPromocoes p : promocoes) 
+//			graficoFaixaSalarial.add(new Object[]{dataIni.getTime(), }); 
 		
-		return null; 
+//		for (RelatorioPromocoes p : promocoes) {
+//			System.out.println(p.getMesAno() + "  " + p.getQtdHorizontal() + "  V: " + p.getQtdVertical());
+//		}
+		
+		return promocoes; 
 	}
 
 	private Collection<AreaOrganizacional> ajustaFamilia(Long empresaId) {
