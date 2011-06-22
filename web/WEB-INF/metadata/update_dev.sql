@@ -94,4 +94,5 @@ update papel set papelmae_id=381,ordem=6 where id=70;--.go
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (512, 'ROLE_MOV_DISSIDIO', 'Ajuste de Situação (Dissídio)', '/cargosalario/historicoColaborador/prepareAjusteDissidio.action', 4, true, 363); --.go
 alter sequence papel_sequence restart with 513;--.go
+update parametrosdosistema set modulos = encode(decode(modulos, 'base64') || ',512', 'base64');--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 512); --.go
