@@ -3,12 +3,13 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Considerar situações como dissídio</title>
+	<title>Ajuste de Situação (Dissídio)</title>
 	
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
 	
+	<#assign showFilter = true/>
 	<#include "../ftl/showFilterImports.ftl" />
 	<#include "../ftl/mascarasImports.ftl" />
 	
@@ -68,6 +69,7 @@
 		<#else>
 			<#assign data = "">
 	</#if>
+	
 
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="prepareAjusteDissidio.action" id="form"  onsubmit="${validarCampos}" method="POST">

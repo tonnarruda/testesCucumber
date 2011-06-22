@@ -294,6 +294,7 @@
 				/cargosalario/faixaSalarialHistorico/*/**=ROLE_CAD_CARGO
 				/cargosalario/grupoOcupacional/*/**=ROLE_CAD_GRUPO
 				/cargosalario/reajusteRelatorio/*/**=ROLE_REL_SIMULACAOREAJUSTE
+				/cargosalario/historicoColaborador/prepareAjusteDissidio.action*=ROLE_MOV_DISSIDIO
 				/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action*=ROLE_CAD_AMBIENTE
 				/cargosalario/historicoColaborador/updateAmbientesEFuncoes.action*=ROLE_CAD_AMBIENTE
 				/cargosalario/historicoColaborador/prepareRelatorioSituacoes.action*=ROLE_REL_SITUACOES
