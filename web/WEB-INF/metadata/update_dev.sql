@@ -89,3 +89,5 @@ and (hi_hfs_hc.data >= indiceAtualFaixa.dataAtualIndiceFaixa or hi_hfs_hc.data i
 and (hi_hc.data < proximo.dataProximo or hi_hc.data is null)
 and (hi_hc.data >= indiceAtual.dataAtualIndice or hi_hc.data is null)
 order by hc.colaborador_id,hc.data,hfs_hc.data,hi_hfs_hc.data,hi_hc.data;--.go
+
+update papel set papelmae_id=381,ordem=6 where id=70;--.go
