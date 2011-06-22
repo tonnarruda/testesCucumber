@@ -250,11 +250,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return promocoes;
 	}
 	
-	public List<RelatorioPromocoes> countPromocoesMesAno(Date dataIni, Date dataFim, Long empresaId)
+	private List<RelatorioPromocoes> countPromocoesMesAno(Date dataIni, Date dataFim, Long empresaId)
 	{
 		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
 		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(null, null, dataIni, dataFim, empresaId);
-		
+
 		if (situacaoColaboradors == null || situacaoColaboradors.isEmpty())
 			return null;
 		
@@ -284,15 +284,45 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		CollectionUtil<RelatorioPromocoes> util = new CollectionUtil<RelatorioPromocoes>();
 		promocoes = (List<RelatorioPromocoes>) util.sortCollectionDate(promocoes, "mesAno", "asc");
 		
-//		Collection<Object[]>  graficoFaixaSalarial = new ArrayList<Object[]>();
-//		for (RelatorioPromocoes p : promocoes) 
-//			graficoFaixaSalarial.add(new Object[]{dataIni.getTime(), }); 
-		
-//		for (RelatorioPromocoes p : promocoes) {
-//			System.out.println(p.getMesAno() + "  " + p.getQtdHorizontal() + "  V: " + p.getQtdVertical());
-//		}
-		
 		return promocoes; 
+	}
+	
+	
+	public Map<Character, Collection<Object[]>>  montaPromocoesHorizontalEVertical(Date dataIni, Date dataFim, Long empresaId)
+	{
+		List<RelatorioPromocoes> promocoes = countPromocoesMesAno(dataIni, dataFim, empresaId);
+
+		Collection<Object[]>  graficoPromocaoHorizontal = new ArrayList<Object[]>();
+		Collection<Object[]>  graficoPromocaoVertical = new ArrayList<Object[]>();
+		
+		Date dataTemp = dataIni;
+		Date dataFimTemp = DateUtil.getUltimoDiaMes(dataFim);
+		
+		while (dataTemp.before(dataFimTemp))
+		{
+			Object[] graficoHorizontal = new Object[]{dataTemp.getTime(), 0};
+			Object[] graficoVertical = new Object[]{dataTemp.getTime(), 0};
+			
+			for (RelatorioPromocoes promocao : promocoes)
+			{
+				if(promocao.getMesAno().equals(dataTemp))
+				{
+					graficoHorizontal = new Object[]{promocao.getMesAno().getTime(), promocao.getQtdHorizontal()};
+					graficoVertical = new Object[]{promocao.getMesAno().getTime(), promocao.getQtdVertical()};
+				}
+			}
+			
+			graficoPromocaoHorizontal.add(graficoHorizontal);
+			graficoPromocaoVertical.add(graficoVertical);
+			
+			dataTemp = DateUtil.incrementaMes(dataTemp, 1);
+		}
+		
+		Map<Character, Collection<Object[]>> map = new HashMap<Character, Collection<Object[]>>(); 
+		map.put('H', graficoPromocaoHorizontal);
+		map.put('V', graficoPromocaoVertical);
+		
+		return map;
 	}
 
 	private Collection<AreaOrganizacional> ajustaFamilia(Long empresaId) {

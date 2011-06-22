@@ -187,19 +187,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	private void painelIndicadoresFaixaSalarial() throws Exception
 	{
-		List<RelatorioPromocoes> promocoes = historicoColaboradorManager.countPromocoesMesAno(DateUtil.criarDataMesAno(dataMesAnoIni), DateUtil.criarDataMesAno(dataMesAnoFim),  getEmpresaSistema().getId());
+		dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
+		dataFim = DateUtil.criarDataMesAno(dataMesAnoFim);
 		
-		Collection<Object[]>  graficoPromocaoHorizontal = new ArrayList<Object[]>();
-		Collection<Object[]>  graficoPromocaoVertical = new ArrayList<Object[]>();
+		Map<Character, Collection<Object[]>> graficosPromocao = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataIni, dataFim, getEmpresaSistema().getId());
 		
-		for (RelatorioPromocoes promocao : promocoes)
-		{
-			graficoPromocaoHorizontal.add(new Object[]{promocao.getMesAno().getTime(), promocao.getQtdHorizontal()}); 
-			graficoPromocaoVertical.add(new Object[]{promocao.getMesAno().getTime(), promocao.getQtdVertical()}); 
-		}
-		
-		grfPromocaoHorizontal = StringUtil.toJSON(graficoPromocaoHorizontal, null);
-		grfPromocaoVertical = StringUtil.toJSON(graficoPromocaoVertical, null);
+		grfPromocaoHorizontal = StringUtil.toJSON(graficosPromocao.get('H'), null);
+		grfPromocaoVertical = StringUtil.toJSON(graficosPromocao.get('V'), null);
 	}
 	
 	public String grfSalarioAreasFilhas() throws Exception

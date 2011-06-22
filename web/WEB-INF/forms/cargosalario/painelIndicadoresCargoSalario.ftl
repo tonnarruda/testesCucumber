@@ -68,6 +68,7 @@
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.stack.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 		
@@ -153,13 +154,16 @@
 		            }
 				});
 		        
-		        var temp = ${grfPromocaoHorizontal};
-			    var data = [
-			        {label: 'Horizontal', data: ${grfPromocaoHorizontal}},
-			        {label: 'Vertical', data: ${grfPromocaoVertical}}
-			    ];
-			    var options = {
-			        series: {stack: 0,
+		        var promocaoHorizontal = ${grfPromocaoHorizontal};
+		        var promocaoVertical = ${grfPromocaoVertical};
+			    
+			    $.plot($("#faixaSalarial"), 
+			    		[
+					        {label: 'Horizontal', data: promocaoHorizontal },
+					        {label: 'Vertical', data: promocaoVertical }
+					    ], 
+			    		{series: {
+			                 points: {show: true },
 			                 lines: {show: false,
 			                 		 steps: false,
 			                 		 fill: true 
@@ -170,23 +174,31 @@
 			                 		fill: true,
       								fillColor: { colors: [ { opacity: 0.8 }, { opacity: 0.1 } ] }
 			                 },
-			        },
-			        xaxis: { 
-			        	autoscaleMargin:.05,
-			        	minTickSize:1,
-			        	tickSize:1,
-			        	mode: "time",
-			        	ticks: temp.map(function (item){return item[0]}),
-			        	timeformat: '%b/%y ',
-			        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-			        },
-			    };
+				        },
+				        grid: { hoverable: true },
+				        xaxis: { 
+				        	autoscaleMargin:.05,
+				         	mode: "time",
+				        	ticks: promocaoHorizontal.map(function (item){return item[0]}),
+				        	timeformat: '%b/%y ',
+				        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+				        },
+				    });
 			    
-			    
-			    
-			    
-			
-			    $.plot($("#faixaSalarial"), data, options);
+			    $("#faixaSalarial").bind("plothover", function (event, pos, item) {
+		            if (item) 
+		            {
+                		previousPoint = item.dataIndex;
+	                    $("#tooltip").remove();
+	                    var y = item.datapoint[1].toFixed(0);		                    
+	                    showTooltip(item.pageX, item.pageY, y);
+		            }
+					else 
+					{
+	                	$("#tooltip").remove();
+	                	previousPoint = null;            
+		            }
+				});
 			});
 
 			//CUIDADO com o tamanho do grafico(bug da sombra)http://code.google.com/p/flot/issues/detail?id=5#c110
@@ -334,7 +346,7 @@
 	    </div>
 
 		<div class="fieldGraph bigger">
-			<h1>Faixa Salarial</h1>
+			<h1>Promoção</h1>
 	   		<div id="faixaSalarial" style="margin: 25px;height:300px;"></div>
 	    </div>
 
@@ -342,7 +354,6 @@
 
 	    <div style="clear: both"></div>
 		<a name="pagebottom"></a>
-		
 		
 		<div id="box">
 			<!--<a href="#" style="float: right;" tabIndex="-1" onclick="voltar()">&lt;&lt; Voltar</a>-->

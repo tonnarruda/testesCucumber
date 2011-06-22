@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import mockit.Mockit;
 
@@ -535,17 +536,18 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		historicoColaboradorDao.expects(once()).method("getPromocoes").will(returnValue(situacoes));
 		
-		List<RelatorioPromocoes> promocoes = historicoColaboradorManager.countPromocoesMesAno(null, null, empresa.getId());
+		Map<Character, Collection<Object[]>> promocoes = historicoColaboradorManager.montaPromocoesHorizontalEVertical(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId());
 		
-		assertEquals(4, promocoes.size());
+		int qtdHorizontal = 0;
+		for (Object[] promocaoHorizontal : promocoes.get('H'))
+			qtdHorizontal += (Integer)promocaoHorizontal[1];
 		
-//		RelatorioPromocoes promocaoParajanaGaragem = (RelatorioPromocoes) promocoes.get(0);
-//		assertEquals(4, promocaoParajanaGaragem.getQtdHorizontal());
-//		assertEquals(1, promocaoParajanaGaragem.getQtdVertical());
-//		
-//		RelatorioPromocoes promocaoParajanaLavajato = (RelatorioPromocoes) promocoes.get(1);
-//		assertEquals(0, promocaoParajanaLavajato.getQtdHorizontal());
-//		assertEquals(1, promocaoParajanaLavajato.getQtdVertical());
+		int qtdVertical = 0;
+		for (Object[] promocaoVertical : promocoes.get('V'))
+			qtdVertical += (Integer)promocaoVertical[1];
+		
+		assertEquals(4, qtdHorizontal);
+		assertEquals(1, qtdVertical);
 	}
 
 	public void testGetColaboradoresSemReajuste()

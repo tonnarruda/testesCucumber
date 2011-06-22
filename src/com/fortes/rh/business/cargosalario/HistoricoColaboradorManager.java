@@ -3,6 +3,7 @@ package com.fortes.rh.business.cargosalario;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -137,5 +138,5 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	
 	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId);
 	
-	public List<RelatorioPromocoes> countPromocoesMesAno(Date dataIni, Date dataFim, Long empresaId);
+	public Map<Character, Collection<Object[]>> montaPromocoesHorizontalEVertical(Date dataIni, Date dataFim, Long empresaId);
 }
