@@ -91,3 +91,6 @@ and (hi_hc.data >= indiceAtual.dataAtualIndice or hi_hc.data is null)
 order by hc.colaborador_id,hc.data,hfs_hc.data,hi_hfs_hc.data,hi_hc.data;--.go
 
 update papel set papelmae_id=381,ordem=6 where id=70;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (512, 'ROLE_REL_DISSIDIO', 'Ajuste de Situação (Dissídio)', '/cargosalario/historicoColaborador/prepareAjusteDissidio.action', 4, true, 363); --.go
+alter sequence papel_sequence restart with 513;--.go
