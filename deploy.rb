@@ -1,39 +1,34 @@
 require 'rubygems'
 require 'net/ssh'
 require 'net/scp'
+require 'yaml'
+require './ruby/ssh.rb'
 
-Net::SSH.start('10.1.3.48', 'web', :password => "123456") do |ssh|
+deploy_config = YAML::load_file('./deploy.yml')
 
-	tomcat_dir = '/home/web/temp/apache-tomcat-6.0.29'
-	webapps_dir = "#{tomcat_dir}/webapps"
-	fortes_var = "export FORTES_HOME_COMERCIAL=/home/web/fortes/RHCOMERCIAL;export JAVA_HOME=/home/web/temp/jdk1.6.0_22;"
+deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
+	puts "Publicando \"#{name}\""
+	
+	connect config['host'], config['user'], config['password'] do |conn|
 
-	ssh.exec!("#{fortes_var} sh #{tomcat_dir}/bin/shutdown.sh") do |channel, stream, data|
-		puts data
+		tomcat_home = config['tomcat_home']
+		fortes_var = config['environment'].map{|key,value| "export #{key}=#{value};"}.join
+		app_path = "#{tomcat_home}/webapps/#{config['app_name']}"
+		
+		conn.exec "#{fortes_var} sh #{tomcat_home}/bin/shutdown.sh"
+		
+		conn.exec "rm -rf #{app_path}"
+		
+		conn.exec "rm -rf #{app_path}.war"
+		
+		conn.upload config['repository_app'], "#{app_path}.war"
+		
+		if config['fortes_home_properties']
+			conn.exec "unzip #{app_path}.war -d #{app_path}", :output=>:none
+			conn.create_file "#{app_path}/WEB-INF/classes/fortes_home.properties", :content=>config['fortes_home_properties']
+		end
+		
+		conn.exec "#{fortes_var} sh #{tomcat_home}/bin/startup.sh"
+		
 	end
-	
-	ssh.exec!("rm -rf #{webapps_dir}/fortesrhcomercial") do |channel, stream, data|
-		puts data
-	end
-	
-	ssh.exec!("rm -rf #{webapps_dir}/fortesrhcomercial.war") do |channel, stream, data|
-		puts data
-	end
-	
-	ssh.scp.upload!('//10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war', "#{webapps_dir}/fortesrhcomercial.war" ) do |channel, name, sent, total|
-		print "\rUploading #{name}: #{(sent.to_f * 100 / total.to_f).to_i}%"
-	end
-
-	ssh.exec!("unzip #{webapps_dir}/fortesrhcomercial.war -d #{webapps_dir}/fortesrhcomercial") do |channel, stream, data|
-		puts data
-	end
-	
-	ssh.scp.upload!( StringIO.new('name=FORTES_HOME_COMERCIAL'), "#{webapps_dir}/fortesrhcomercial/WEB-INF/classes/fortes_home.properties" ) do |channel, name, sent, total|
-		print "\rUploading #{name}: #{(sent.to_f * 100 / total.to_f).to_i}%"
-	end
-	
-	ssh.exec!("#{fortes_var} sh #{tomcat_dir}/bin/startup.sh") do |channel, stream, data|
-		puts data
-	end
-	
 end
