@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Colaboradores Sem Reajuste</title>
+	<title>Relatório de Colaboradores sem Reajuste Salarial</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
@@ -23,7 +23,11 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="imprimirRelatorioUltimasPromocoes.action" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.datepicker label="Desde o dia" name="dataBase" id="dataBase" value="${valueData}" cssClass="mascaraData"/>
+		<@ww.datepicker label="Data de Referência" name="dataBase" id="dataBase" value="${valueData}" cssClass="mascaraData" required="true"/>
+		
+		Não recebeu reajuste salarial a 
+		<@ww.textfield theme="simple" name="mesesSemReajuste" id="mesesSemReajuste" cssStyle="width:40px; text-align:right;" maxLength="5" onkeypress = "return(somenteNumeros(event,','));"/> 
+		meses
 	</@ww.form>
 
 	<div class="buttonGroup">

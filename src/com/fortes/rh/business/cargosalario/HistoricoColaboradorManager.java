@@ -136,7 +136,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public List<RelatorioPromocoes> getPromocoes(Long[] arrayStringToArrayLong, Long[] arrayStringToArrayLong2, Date dataIni, Date dataFim, Long empresaId);
 	
-	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId);
+	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId, int mesesSemReajuste);
 	
 	public Map<Character, Collection<Object[]>> montaPromocoesHorizontalEVertical(Date dataIni, Date dataFim, Long empresaId);
 }

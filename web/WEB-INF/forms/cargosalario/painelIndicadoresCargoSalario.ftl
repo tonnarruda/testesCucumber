@@ -340,6 +340,9 @@
 		<div class="fieldGraph bigger">
 			<h1>Promoção</h1>
 	   		<div id="faixaSalarial" style="margin: 25px;height:300px;"></div>
+	   		<div style="margin: 5px;text-align: right;">
+		   		 * Promoção Horizontal: Mudança de Faixa Salarial ou Salário. / Promoção Vertical: Mudança de Cargo.
+	   		</div>
 	    </div>
 
 		<div style="clear: both"></div>

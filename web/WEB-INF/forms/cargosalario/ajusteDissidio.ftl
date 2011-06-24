@@ -27,8 +27,18 @@
 			idsCheckedsInicial = $("tbody input:checkbox:checked:enabled").map(function(){
 			    return parseInt($(this).val());
 			});
-
-
+			
+			<#if !sugerir>
+				var prox = $("a[title='Próxima']");
+				
+				if(prox.length > 0)
+				{
+					jQuery.alerts.okButton = 'Sim';				
+					jQuery.alerts.cancelButton = 'Não';				
+					newConfirm('Registros dessa página gravados com sucesso.<br>Deseja ir para a Próxima página?', function(){window.location=prox.attr('href');});
+				}else
+					jAlert('Página gravada com sucesso.');
+			</#if>
 		});
 		
 		function prepareEnviarForm() {
@@ -89,7 +99,8 @@
 	
 	<#assign valorAnterior = 0.0/>
 	<#if historicoColaboradors?exists && 0 < historicoColaboradors?size>
-		<br>
+		<div style="text-align:right;"><span style="padding:0 10px; background-color: #CDCD00;"></span>&nbsp Sugestão de Dissídio</div><br>
+		
 		<@ww.form name="formHistoricos" id="formHistoricos" action="setDissidio.action" method="POST">
 			<@ww.hidden name="dataBase"/>
 			<@ww.hidden name="percentualDissidio"/>

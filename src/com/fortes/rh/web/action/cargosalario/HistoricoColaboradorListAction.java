@@ -109,6 +109,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfSalarioAreas;
 	private String json;
 	private Long[] retiraDissidioIds;
+	private int mesesSemReajuste;
 
 	private boolean sugerir = true;
 	
@@ -261,7 +262,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	@SuppressWarnings("unchecked")
 	public String imprimirRelatorioUltimasPromocoes() throws Exception
 	{
-		Collection<SituacaoColaborador> ultimasPromocoes = historicoColaboradorManager.getColaboradoresSemReajuste(null, null, dataBase, getEmpresaSistema().getId());
+		Collection<SituacaoColaborador> ultimasPromocoes = historicoColaboradorManager.getColaboradoresSemReajuste(null, null, dataBase, getEmpresaSistema().getId(), mesesSemReajuste);
 
 		if (ultimasPromocoes.isEmpty())
 		{
@@ -738,6 +739,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public String getGrfPromocaoVertical() {
 		return grfPromocaoVertical;
+	}
+
+	public int getMesesSemReajuste() {
+		return mesesSemReajuste;
+	}
+
+	public void setMesesSemReajuste(int mesesSemReajuste) {
+		this.mesesSemReajuste = mesesSemReajuste;
 	}
 	
 }

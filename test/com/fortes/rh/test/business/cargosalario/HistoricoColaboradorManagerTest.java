@@ -603,7 +603,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(garagem.getId())).will(returnValue(garagem));
 		
-		List<SituacaoColaborador> retorno = historicoColaboradorManager.getColaboradoresSemReajuste(null, null, DateUtil.criarDataMesAno(01, 02, 2002), empresa.getId());
+		List<SituacaoColaborador> retorno = historicoColaboradorManager.getColaboradoresSemReajuste(null, null, DateUtil.criarDataMesAno(01, 02, 2002), empresa.getId(), 1);
 		assertEquals(3, retorno.size());
 		assertEquals(joao, retorno.get(0).getColaborador());
 		assertEquals(pedro, retorno.get(1).getColaborador());

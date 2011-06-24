@@ -169,7 +169,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			promocoes.add(new RelatorioPromocoes(data, tipoPromocao));
 	}
 	
-	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId)
+	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId, int mesesSemReajuste)
 	{
 		//filtro de area e estabelecimento não ta funcionando, tem que ajustar a consulta. Negócio de historico atual
 		Collection<SituacaoColaborador> situacoes = getDao().getUltimasPromocoes(areasIds, estabelecimentosIds, data, empresaId);
@@ -181,6 +181,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		boolean sofreuReajuste = false;
 		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
 		
+		Date dataLimite = DateUtil.retornaDataAnteriorQtdMeses(new Date(), mesesSemReajuste, true);
 		for (SituacaoColaborador situacao : situacoes) 
 		{			
 			if(iterator.hasNext())
@@ -197,7 +198,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			//mudou de colaborador
 			if(proximaSituacao == null || !situacao.getColaborador().equals(proximaSituacao.getColaborador()))
 			{
-				if(!sofreuReajuste)
+				if(!sofreuReajuste && situacao.getData().before(dataLimite))
 				{
 					situacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, situacao.getAreaOrganizacional().getId()));
 					semReajustes.add(situacao);
