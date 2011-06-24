@@ -159,31 +159,23 @@
 			    
 			    $.plot($("#faixaSalarial"), 
 			    		[
-					        {label: 'Horizontal', data: promocaoHorizontal },
-					        {label: 'Vertical', data: promocaoVertical }
+					        {label: 'Horizontal', data: promocaoHorizontal , bars:{align : "right", barWidth: 900000020}},
+					        {label: 'Vertical', data: promocaoVertical, bars:{align : "left", barWidth: 900000000} }
 					    ], 
 			    		{series: {
-			                 points: {show: true },
-			                 lines: {show: false,
-			                 		 steps: false,
-			                 		 fill: true 
-			                 },
-			                 bars: {show: true, 
-			                 		barWidth: 900000000,
-			                 		align: 'center',
-			                 		fill: true,
-      								fillColor: { colors: [ { opacity: 0.8 }, { opacity: 0.1 } ] }
+			                bars: {show: true, 
+			                 	align: 'center'
 			                 },
 				        },
 				        grid: { hoverable: true },
 				        xaxis: { 
-				        	autoscaleMargin:.05,
 				         	mode: "time",
 				        	ticks: promocaoHorizontal.map(function (item){return item[0]}),
 				        	timeformat: '%b/%y ',
 				        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
 				        },
 				    });
+			    
 			    
 			    $("#faixaSalarial").bind("plothover", function (event, pos, item) {
 		            if (item) 
