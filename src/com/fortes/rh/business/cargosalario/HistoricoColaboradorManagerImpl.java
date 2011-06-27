@@ -200,7 +200,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			{
 				if(!sofreuReajuste && situacao.getData().before(dataLimite))
 				{
-					
 					situacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, situacao.getAreaOrganizacional().getId()));
 					situacao.setDataExtenso(DateUtil.formataDiaMesAno(situacao.getData()) + " " + DateUtil.getIntervalDateString(situacao.getData(), data));
 					
@@ -294,35 +293,37 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	public Map<Character, Collection<Object[]>>  montaPromocoesHorizontalEVertical(Date dataIni, Date dataFim, Long empresaId)
 	{
-		List<RelatorioPromocoes> promocoes = countPromocoesMesAno(dataIni, dataFim, empresaId);
-
+		Map<Character, Collection<Object[]>> map = new HashMap<Character, Collection<Object[]>>(); 
 		Collection<Object[]>  graficoPromocaoHorizontal = new ArrayList<Object[]>();
 		Collection<Object[]>  graficoPromocaoVertical = new ArrayList<Object[]>();
-		
-		Date dataTemp = dataIni;
-		Date dataFimTemp = DateUtil.getUltimoDiaMes(dataFim);
-		
-		while (dataTemp.before(dataFimTemp))
+		List<RelatorioPromocoes> promocoes = countPromocoesMesAno(dataIni, dataFim, empresaId);
+
+		if(promocoes != null)
 		{
-			Object[] graficoHorizontal = new Object[]{dataTemp.getTime(), 0};
-			Object[] graficoVertical = new Object[]{dataTemp.getTime(), 0};
+			Date dataTemp = dataIni;
+			Date dataFimTemp = DateUtil.getUltimoDiaMes(dataFim);
 			
-			for (RelatorioPromocoes promocao : promocoes)
+			while (dataTemp.before(dataFimTemp))
 			{
-				if(promocao.getMesAno().equals(dataTemp))
+				Object[] graficoHorizontal = new Object[]{dataTemp.getTime(), 0};
+				Object[] graficoVertical = new Object[]{dataTemp.getTime(), 0};
+				
+				for (RelatorioPromocoes promocao : promocoes)
 				{
-					graficoHorizontal = new Object[]{promocao.getMesAno().getTime(), promocao.getQtdHorizontal()};
-					graficoVertical = new Object[]{promocao.getMesAno().getTime(), promocao.getQtdVertical()};
+					if(promocao.getMesAno().equals(dataTemp))
+					{
+						graficoHorizontal = new Object[]{promocao.getMesAno().getTime(), promocao.getQtdHorizontal()};
+						graficoVertical = new Object[]{promocao.getMesAno().getTime(), promocao.getQtdVertical()};
+					}
 				}
+				
+				graficoPromocaoHorizontal.add(graficoHorizontal);
+				graficoPromocaoVertical.add(graficoVertical);
+				
+				dataTemp = DateUtil.incrementaMes(dataTemp, 1);
 			}
-			
-			graficoPromocaoHorizontal.add(graficoHorizontal);
-			graficoPromocaoVertical.add(graficoVertical);
-			
-			dataTemp = DateUtil.incrementaMes(dataTemp, 1);
 		}
 		
-		Map<Character, Collection<Object[]>> map = new HashMap<Character, Collection<Object[]>>(); 
 		map.put('H', graficoPromocaoHorizontal);
 		map.put('V', graficoPromocaoVertical);
 		

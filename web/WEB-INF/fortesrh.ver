@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.49.41" data="27/06/2011">
+		- CeS > Movimentações > Ajuste de Situação (Dissídio): Ajusta as promoções para o tipo dissídio de acordo com o valor da promoção.
+		- CeS > Relatório > Colaboradores sem Reajuste Salarial: Novo relatório.
+		- CeS > Relatório > Promoções: Novo relatório, promoções verticais e horizontais.
+		- CeS > Painel de Indicadores: 
+		- ReS > Movimentações > Exame Palográfico: Nova funcionalidade, análise do exame palográfico do candidato.
+	</Versao>
 	<Versao id="1.1.48.40" data="09/06/2011">
 		- Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações: Novo campo [Motivo do reajuste].
 		- Pesquisas > Movimentações > Pesquisas > Resultado da Pesquisa: Ajuste no relatório, exibição dos comentários por nota.
