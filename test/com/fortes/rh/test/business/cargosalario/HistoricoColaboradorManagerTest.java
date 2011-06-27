@@ -563,51 +563,99 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Cargo cobrador = CargoFactory.getEntity(1L);
 		FaixaSalarial faixaUmCobrador = FaixaSalarialFactory.getEntity(1L);
 
-		Cargo motorista = CargoFactory.getEntity(2L);
-		
 		Colaborador joao = ColaboradorFactory.getEntity(11L);
-		Colaborador maria = ColaboradorFactory.getEntity(22L);
 		Colaborador pedro = ColaboradorFactory.getEntity(33L);
 		Colaborador jose = ColaboradorFactory.getEntity(44L);
 		Colaborador marilu = ColaboradorFactory.getEntity(55L);
+		Colaborador isabel = ColaboradorFactory.getEntity(66L);
+		Colaborador cicero = ColaboradorFactory.getEntity(77L);
+		Colaborador carlos = ColaboradorFactory.getEntity(88L);
+		Colaborador maria = ColaboradorFactory.getEntity(99L);
+		Colaborador tiao = ColaboradorFactory.getEntity(100L);
+		Colaborador toin = ColaboradorFactory.getEntity(110L);
 		
-		SituacaoColaborador joaoCobradorAumentouSalario = new SituacaoColaborador(660.0, DateUtil.criarDataMesAno(01, 02, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.PROMOCAO, 1L);	
-		SituacaoColaborador joaoCobradorMesmoSalario = new SituacaoColaborador(660.0, DateUtil.criarDataMesAno(01, 02, 2003), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.PROMOCAO, 1L);
+		//Periodo 02/02/2001 - 02/02/2002
+		SituacaoColaborador joaoUmHistPassado = new SituacaoColaborador(660.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		
+		SituacaoColaborador pedroUmHistNoPeriodo = new SituacaoColaborador(660.0, DateUtil.criarDataMesAno(12, 12, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, pedro, MotivoHistoricoColaborador.CONTRATADO, 1L);	
+		
+		SituacaoColaborador joseHistPassado = new SituacaoColaborador(660.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, jose, MotivoHistoricoColaborador.CONTRATADO, 1L);	
+		SituacaoColaborador joseHistAindaPassado = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, jose, MotivoHistoricoColaborador.PROMOCAO, 1L);	
+		SituacaoColaborador joseHistPeriodo = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 03, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, jose, MotivoHistoricoColaborador.PROMOCAO, 1L);	
+		SituacaoColaborador joseHistPeriodoTambem = new SituacaoColaborador(750.0, DateUtil.criarDataMesAno(02, 11, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, jose, MotivoHistoricoColaborador.PROMOCAO, 1L);	
 
-		SituacaoColaborador mariluCobradorSalario = new SituacaoColaborador(660.0, DateUtil.criarDataMesAno(01, 02, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, marilu, MotivoHistoricoColaborador.CONTRATADO, 1L);	
-		SituacaoColaborador mariluCobradorMesmoSalario = new SituacaoColaborador(670.0, DateUtil.criarDataMesAno(01, 02, 2003), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, marilu, MotivoHistoricoColaborador.PROMOCAO, 1L);
-		SituacaoColaborador mariluCobradorAumentoSalario = new SituacaoColaborador(670.0, DateUtil.criarDataMesAno(01, 02, 2004), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, marilu, MotivoHistoricoColaborador.PROMOCAO, 1L);
+		SituacaoColaborador mariluHistPassado = new SituacaoColaborador(660.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, marilu, MotivoHistoricoColaborador.CONTRATADO, 1L);	
+		SituacaoColaborador mariluHistAindaPassado = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, marilu, MotivoHistoricoColaborador.PROMOCAO, 1L);	
+		SituacaoColaborador mariluHistPeriodoSemReajuste = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 02, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, marilu, MotivoHistoricoColaborador.PROMOCAO, 1L);	
 		
-		SituacaoColaborador pedroCobradorFaixaUm = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(01, 05, 1998), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, pedro, MotivoHistoricoColaborador.CONTRATADO, 1L);
-		
-		SituacaoColaborador joseCobradorAumentouSalarioNovamente = new SituacaoColaborador(502.0, DateUtil.criarDataMesAno(01, 05, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, jose, MotivoHistoricoColaborador.CONTRATADO, 1L);
-		SituacaoColaborador joseNaoAumentouSalario = new SituacaoColaborador(502.0, DateUtil.criarDataMesAno(01, 05, 2002), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, jose, MotivoHistoricoColaborador.CONTRATADO, 1L);
-		SituacaoColaborador joseAumentouSalario = new SituacaoColaborador(505.0, DateUtil.criarDataMesAno(01, 05, 2003), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, jose, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador isabelHistPassadoSemReajuste = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, isabel, MotivoHistoricoColaborador.CONTRATADO, 1L);	
+		SituacaoColaborador isabelHistAindaPassadoSemReajuste = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, isabel, MotivoHistoricoColaborador.PROMOCAO, 1L);	
+		SituacaoColaborador isabelHistPeriodoSemReajuste = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 02, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, isabel, MotivoHistoricoColaborador.PROMOCAO, 1L);	
 
-		SituacaoColaborador mariaCobradorFaixaUm = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(01, 05, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, maria, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador ciceroHistPassadoSemReajuste = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, cicero, MotivoHistoricoColaborador.CONTRATADO, 1L);	
+		SituacaoColaborador ciceroHistAindaPassadoSemReajuste = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, cicero, MotivoHistoricoColaborador.PROMOCAO, 1L);	
+
+		SituacaoColaborador mariaHistPassadoSemReajuste = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, maria, MotivoHistoricoColaborador.CONTRATADO, 1L);	
+		SituacaoColaborador mariaHistAindaPassadoSemReajuste = new SituacaoColaborador(888.0, DateUtil.criarDataMesAno(02, 02, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, maria, MotivoHistoricoColaborador.PROMOCAO, 1L);	
+
+		SituacaoColaborador carlosHistPassado = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, carlos, MotivoHistoricoColaborador.CONTRATADO, 1L);	
+		SituacaoColaborador carlosHistAindaPassadoReajuste = new SituacaoColaborador(700.0, DateUtil.criarDataMesAno(02, 12, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, carlos, MotivoHistoricoColaborador.PROMOCAO, 1L);	
 		
-		situacoes.add(joaoCobradorAumentouSalario);
-		situacoes.add(joaoCobradorMesmoSalario);
-		situacoes.add(mariluCobradorMesmoSalario);
-		situacoes.add(mariluCobradorAumentoSalario);
-		situacoes.add(mariluCobradorSalario);
-		situacoes.add(pedroCobradorFaixaUm);
-		situacoes.add(joseCobradorAumentouSalarioNovamente);
-		situacoes.add(joseNaoAumentouSalario);
-		situacoes.add(joseAumentouSalario);
-		situacoes.add(mariaCobradorFaixaUm);
+		SituacaoColaborador tiaoHistPassado = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, tiao, MotivoHistoricoColaborador.CONTRATADO, 1L);	
+		SituacaoColaborador tiaoHistAindaPassadoReajuste = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(02, 02, 2002), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, tiao, MotivoHistoricoColaborador.PROMOCAO, 1L);	
+		
+		SituacaoColaborador toinHistPassado = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, toin, MotivoHistoricoColaborador.CONTRATADO, 1L);	
+		SituacaoColaborador toinHistReajusteAnterior = new SituacaoColaborador(777.0, DateUtil.criarDataMesAno(02, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, toin, MotivoHistoricoColaborador.PROMOCAO, 1L);	
+		SituacaoColaborador toinHistPeriodo = new SituacaoColaborador(800.0, DateUtil.criarDataMesAno(03, 03, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, toin, MotivoHistoricoColaborador.PROMOCAO, 1L);	
+		SituacaoColaborador toinHistPeriodoTambem = new SituacaoColaborador(800.0, DateUtil.criarDataMesAno(02, 12, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, toin, MotivoHistoricoColaborador.PROMOCAO, 1L);		
+		
+		situacoes.add(joaoUmHistPassado);
+		situacoes.add(pedroUmHistNoPeriodo);
+
+		situacoes.add(joseHistPassado);
+		situacoes.add(joseHistAindaPassado);
+		situacoes.add(joseHistPeriodo);
+		situacoes.add(joseHistPeriodoTambem);
+		
+		situacoes.add(mariluHistPassado);
+		situacoes.add(mariluHistAindaPassado);
+		situacoes.add(mariluHistPeriodoSemReajuste);
+
+		situacoes.add(isabelHistPassadoSemReajuste);
+		situacoes.add(isabelHistAindaPassadoSemReajuste);
+		situacoes.add(isabelHistPeriodoSemReajuste);
+
+		situacoes.add(ciceroHistPassadoSemReajuste);
+		situacoes.add(ciceroHistAindaPassadoSemReajuste);
+		
+		situacoes.add(carlosHistPassado);
+		situacoes.add(carlosHistAindaPassadoReajuste);
+		
+		situacoes.add(mariaHistPassadoSemReajuste);
+		situacoes.add(mariaHistAindaPassadoSemReajuste);
+		
+		situacoes.add(tiaoHistPassado);
+		situacoes.add(tiaoHistAindaPassadoReajuste);
+
+		situacoes.add(toinHistPassado);
+		situacoes.add(toinHistReajusteAnterior);
+		situacoes.add(toinHistPeriodo);
+		situacoes.add(toinHistPeriodoTambem);
+		
+		historicoColaboradorDao.expects(once()).method("getUltimasPromocoes").will(returnValue(situacoes));
 		
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-		historicoColaboradorDao.expects(once()).method("getUltimasPromocoes").will(returnValue(situacoes));
 		areaOrganizacionalManager.expects(once()).method("findAllList").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS)).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(garagem.getId())).will(returnValue(garagem));
 		
-		List<SituacaoColaborador> retorno = historicoColaboradorManager.getColaboradoresSemReajuste(null, null, DateUtil.criarDataMesAno(01, 02, 2002), empresa.getId(), 1);
-		assertEquals(3, retorno.size());
+		//Periodo 02/02/2001 - 02/02/2002
+		List<SituacaoColaborador> retorno = historicoColaboradorManager.getColaboradoresSemReajuste(null, null, DateUtil.criarDataMesAno(02, 02, 2002), empresa.getId(), 12);
+		assertEquals(7, retorno.size());
 		assertEquals(joao, retorno.get(0).getColaborador());
-		assertEquals(pedro, retorno.get(1).getColaborador());
-		assertEquals(maria, retorno.get(2).getColaborador());
+		assertEquals(garagem, retorno.get(0).getAreaOrganizacional());
+		assertEquals(tiao, retorno.get(6).getColaborador());
+		assertEquals(garagem, retorno.get(6).getAreaOrganizacional());
 	}
 	
 	public void testMontaRelatorio()

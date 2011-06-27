@@ -195,34 +195,45 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		estabelecimento.setEmpresa(empresa);
 		estabelecimentoDao.save(estabelecimento);
 
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador = colaboradorDao.save(colaborador);
+		Colaborador joao = ColaboradorFactory.getEntity();
+		colaboradorDao.save(joao);
 		
-		HistoricoColaborador primeiro = HistoricoColaboradorFactory.getEntity();
-		primeiro.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
-		primeiro.setColaborador(colaborador);
-		primeiro.setData(DateUtil.criarDataMesAno(01, 02, 1999));
-		primeiro.setEstabelecimento(estabelecimento);
-		historicoColaboradorDao.save(primeiro);
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		colaboradorDao.save(pedro);
 		
-		HistoricoColaborador segundo = HistoricoColaboradorFactory.getEntity();
-		segundo.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
-		segundo.setColaborador(colaborador);
-		segundo.setData(DateUtil.criarDataMesAno(02, 05, 2001));
-		segundo.setEstabelecimento(estabelecimento);
-		historicoColaboradorDao.save(segundo);
+		HistoricoColaborador histPedro = HistoricoColaboradorFactory.getEntity();
+		histPedro.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		histPedro.setColaborador(pedro);
+		histPedro.setData(DateUtil.criarDataMesAno(01, 02, 2003));
+		histPedro.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(histPedro);
 		
-		HistoricoColaborador terceiro = HistoricoColaboradorFactory.getEntity();
-		terceiro.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
-		terceiro.setColaborador(colaborador);
-		terceiro.setData(DateUtil.criarDataMesAno(02, 05, 2005));
-		terceiro.setEstabelecimento(estabelecimento);
-		historicoColaboradorDao.save(terceiro);
+		HistoricoColaborador primeiroJoao = HistoricoColaboradorFactory.getEntity();
+		primeiroJoao.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		primeiroJoao.setColaborador(joao);
+		primeiroJoao.setData(DateUtil.criarDataMesAno(01, 02, 1999));
+		primeiroJoao.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(primeiroJoao);
 		
-		List<SituacaoColaborador> situacoes = historicoColaboradorDao.getUltimasPromocoes(null, null, DateUtil.criarDataMesAno(02, 01, 2002), empresa.getId());
+		HistoricoColaborador segundoJoao = HistoricoColaboradorFactory.getEntity();
+		segundoJoao.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		segundoJoao.setColaborador(joao);
+		segundoJoao.setData(DateUtil.criarDataMesAno(02, 05, 2001));
+		segundoJoao.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(segundoJoao);
+		
+		HistoricoColaborador terceiroJoao = HistoricoColaboradorFactory.getEntity();
+		terceiroJoao.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		terceiroJoao.setColaborador(joao);
+		terceiroJoao.setData(DateUtil.criarDataMesAno(02, 01, 2005));
+		terceiroJoao.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(terceiroJoao);
+		
+		List<SituacaoColaborador> situacoes = historicoColaboradorDao.getUltimasPromocoes(null, null,  DateUtil.criarDataMesAno(02, 01, 2002), empresa.getId());
 		assertEquals(2, situacoes.size());
-		assertEquals(segundo.getData(), situacoes.get(0).getData());
-		assertEquals(terceiro.getData(), situacoes.get(1).getData());
+		//ordem é importante para regra do manager
+		assertEquals(primeiroJoao.getData(), situacoes.get(0).getData());
+		assertEquals(segundoJoao.getData(), situacoes.get(1).getData());
 	}
 	
 	public void testSetMotivo()

@@ -14,6 +14,8 @@ import java.util.Map;
 
 import javax.persistence.PersistenceException;
 
+import net.sf.antcontrib.design.Log;
+
 import org.apache.commons.lang.Validate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -168,6 +170,58 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if(noExists)
 			promocoes.add(new RelatorioPromocoes(data, tipoPromocao));
 	}
+
+//	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId, int mesesSemReajuste)
+//	{
+//		//filtro de area e estabelecimento não ta funcionando, tem que ajustar a consulta. Negócio de historico atual
+//		Collection<SituacaoColaborador> situacoes = getDao().getUltimasPromocoes(areasIds, estabelecimentosIds, data, empresaId);
+//		List<SituacaoColaborador> semReajustes = new ArrayList<SituacaoColaborador>();		
+//		
+//		Date dataUltimoReajusteColaborador = null;
+//		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
+//		Date dataBase = DateUtil.retornaDataAnteriorQtdMeses(data, mesesSemReajuste, true);
+//		
+//		Iterator<SituacaoColaborador> iterator = situacoes.iterator();
+//		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
+//		
+//		//Periodo 02/02/2001 - 02/02/2002
+//		while (SituacaoColaborador situacao : situacoes) 
+//		{			
+//			if(iterator.hasNext())
+//				proximaSituacao = (SituacaoColaborador) iterator.next();
+//			else
+//				proximaSituacao = null;
+//			
+//			if(proximaSituacao != null && !situacao.getColaborador().equals(proximaSituacao.getColaborador()))
+//				dataUltimoReajusteColaborador = situacao.getData();
+//			
+//			if(proximaSituacao != null && situacao.getColaborador().equals(proximaSituacao.getColaborador()))
+//			{
+//				if (!situacao.getSalario().equals(proximaSituacao.getSalario()))
+//				{
+//					dataUltimoReajusteColaborador = proximaSituacao.getData();
+//				}
+//			}
+//				
+//			//mudou de colaborador
+//			if(proximaSituacao == null || !situacao.getColaborador().equals(proximaSituacao.getColaborador()))
+//			{
+//				if(dataUltimoReajusteColaborador == null || dataUltimoReajusteColaborador.before(dataBase))
+//				{
+//					situacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, situacao.getAreaOrganizacional().getId()));
+//					situacao.setDataExtenso(DateUtil.formataDiaMesAno(situacao.getData()) + " " + DateUtil.getIntervalDateString(situacao.getData(), data));
+//					semReajustes.add(situacao);
+//					
+//					System.out.println(situacao.getData() + " " + situacao.getColaborador().getId());
+//				}
+//				
+//				dataUltimoReajusteColaborador = null;
+//			}
+//		}
+//		
+//		Collections.sort(semReajustes);
+//		return semReajustes;
+//	}
 	
 	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId, int mesesSemReajuste)
 	{
@@ -177,42 +231,87 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		Iterator<SituacaoColaborador> iterator = situacoes.iterator();
 		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
-
+		
 		boolean sofreuReajuste = false;
 		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
+		Date dataBase = DateUtil.retornaDataAnteriorQtdMeses(data, mesesSemReajuste, true);
+		//Periodo 02/02/2001 - 02/02/2002
 		
-		Date dataLimite = DateUtil.retornaDataAnteriorQtdMeses(data, mesesSemReajuste, true);
+		Collection<Long> sofreramReajustes = new ArrayList<Long>();
+		
 		for (SituacaoColaborador situacao : situacoes) 
-		{			
+		{	
+			
 			if(iterator.hasNext())
 				proximaSituacao = (SituacaoColaborador) iterator.next();
 			else
 				proximaSituacao = null;
 			
-			if(proximaSituacao != null && situacao.getColaborador().equals(proximaSituacao.getColaborador()))
+			if(proximaSituacao != null)
 			{
-				if( ! situacao.getSalario().equals(proximaSituacao.getSalario()))
-					sofreuReajuste = true;
-			}
-
-			//mudou de colaborador
-			if(proximaSituacao == null || !situacao.getColaborador().equals(proximaSituacao.getColaborador()))
-			{
-				if(!sofreuReajuste && situacao.getData().before(dataLimite))
+				if(situacao.getColaborador().equals(proximaSituacao.getColaborador()))
 				{
-					situacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, situacao.getAreaOrganizacional().getId()));
-					situacao.setDataExtenso(DateUtil.formataDiaMesAno(situacao.getData()) + " " + DateUtil.getIntervalDateString(situacao.getData(), data));
-					
-					semReajustes.add(situacao);
+					if(!situacao.getSalario().equals(proximaSituacao.getSalario()))
+					{
+						if(proximaSituacao.getData().after(dataBase))
+							sofreramReajustes.add(situacao.getColaborador().getId());
+					}					
 				}
 				
-				sofreuReajuste = false;
+					
 			}
+		}
+
+		for (Long long1 : sofreramReajustes) {
+			System.out.println(long1);
 		}
 		
 		Collections.sort(semReajustes);
 		return semReajustes;
 	}
+	
+//	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId, int mesesSemReajuste)
+//	{
+//		//filtro de area e estabelecimento não ta funcionando, tem que ajustar a consulta. Negócio de historico atual
+//		Collection<SituacaoColaborador> situacoes = getDao().getUltimasPromocoes(areasIds, estabelecimentosIds, data, empresaId);
+//		List<SituacaoColaborador> semReajustes = new ArrayList<SituacaoColaborador>();		
+//		
+//		Iterator<SituacaoColaborador> iterator = situacoes.iterator();
+//		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
+//		
+//		boolean sofreuReajuste = false;
+//		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
+//		Date dataBase = DateUtil.retornaDataAnteriorQtdMeses(data, mesesSemReajuste, true);
+//		//Periodo 02/02/2001 - 02/02/2002
+//		for (SituacaoColaborador situacao : situacoes) 
+//		{	
+//			System.out.println(situacao.getColaborador().getId() + ";" + situacao.getData() + ";" + situacao.getSalario());
+//			if(iterator.hasNext())
+//				proximaSituacao = (SituacaoColaborador) iterator.next();
+//			else
+//				proximaSituacao = null;
+//			
+//			if(proximaSituacao != null && situacao.getColaborador().equals(proximaSituacao.getColaborador()))
+//				sofreuReajuste = !situacao.getSalario().equals(proximaSituacao.getSalario());
+//			
+//			//mudou de colaborador
+//			if(proximaSituacao == null || !situacao.getColaborador().equals(proximaSituacao.getColaborador()))
+//			{
+//				if(situacao.getData().before(dataBase) || !sofreuReajuste)
+//				{
+//					situacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, situacao.getAreaOrganizacional().getId()));
+//					situacao.setDataExtenso(DateUtil.formataDiaMesAno(situacao.getData()) + " " + DateUtil.getIntervalDateString(situacao.getData(), data));
+//					semReajustes.add(situacao);
+//					System.out.println(situacao.getData() + " " + situacao.getColaborador().getId());
+//				}
+//				
+//				sofreuReajuste = false;
+//			}
+//		}
+//		
+//		Collections.sort(semReajustes);
+//		return semReajustes;
+//	}
 	
 	public List<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long empresaId)
 	{

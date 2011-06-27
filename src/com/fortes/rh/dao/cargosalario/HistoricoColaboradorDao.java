@@ -52,5 +52,5 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public void ajustaMotivoContratado(Long colaboradorId);
 	public void setaContratadoNoPrimeiroHistorico(Long colaboradorId);
 	public Collection<SituacaoColaborador> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long empresaId);
-	public List<SituacaoColaborador> getUltimasPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId);
+	public List<SituacaoColaborador> getUltimasPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataBase, Long empresaId);
 }
