@@ -181,7 +181,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		boolean sofreuReajuste = false;
 		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
 		
-		Date dataLimite = DateUtil.retornaDataAnteriorQtdMeses(new Date(), mesesSemReajuste, true);
+		Date dataLimite = DateUtil.retornaDataAnteriorQtdMeses(data, mesesSemReajuste, true);
 		for (SituacaoColaborador situacao : situacoes) 
 		{			
 			if(iterator.hasNext())
@@ -200,7 +200,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			{
 				if(!sofreuReajuste && situacao.getData().before(dataLimite))
 				{
+					
 					situacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, situacao.getAreaOrganizacional().getId()));
+					situacao.setDataExtenso(DateUtil.formataDiaMesAno(situacao.getData()) + " " + DateUtil.getIntervalDateString(situacao.getData(), data));
+					
 					semReajustes.add(situacao);
 				}
 				

@@ -256,6 +256,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public String prepareRelatorioUltimasPromocoes() throws Exception
 	{
+		dataBase = new Date();
+		
 		return Action.SUCCESS;
 	}
 	
@@ -280,8 +282,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			Collections.sort((List<SituacaoColaborador>) ultimasPromocoes, comp);
 			setDataSourceSituacoesColaborador(ultimasPromocoes);
 
-			String filtro = "Desde o dia: " + DateUtil.formataDiaMesAno(dataBase);
-			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores Sem Reajuste", getEmpresaSistema(), filtro);
+			String filtro = "Data de referência: " + DateUtil.formataDiaMesAno(dataBase) + "\nHá " + mesesSemReajuste + " meses sem reajuste";
+			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores Sem Reajuste Salarial", getEmpresaSistema(), filtro);
 		}
 		catch (Exception e)
 		{

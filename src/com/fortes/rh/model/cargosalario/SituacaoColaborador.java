@@ -8,11 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.util.DateUtil;
 
 @Entity
 public class SituacaoColaborador implements Comparable<SituacaoColaborador>
@@ -33,6 +33,9 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 	private AreaOrganizacional areaOrganizacional;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Colaborador colaborador;
+	
+	@Transient
+	private String dataExtenso;
 	
 	public int compareTo(SituacaoColaborador situacaoColaborador) 
 	{
@@ -132,10 +135,6 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 		this.historicoColaboradorId = historicoColaboradorId;
 	}
 
-	public String getIntervaloData() {
-		return DateUtil.getIntervalDateString(this.data, new Date());
-	}
-	
 	public Date getData() {
 		return data;
 	}
@@ -206,6 +205,14 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 
 	public void setMotivo(String motivo) {
 		this.motivo = motivo;
+	}
+
+	public String getDataExtenso() {
+		return dataExtenso;
+	}
+
+	public void setDataExtenso(String dataExtenso) {
+		this.dataExtenso = dataExtenso;
 	}
 	
 }
