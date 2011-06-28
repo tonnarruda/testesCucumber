@@ -6,13 +6,14 @@ import java.util.Collection;
 import org.apache.axis.utils.StringUtils;
 
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 
 public abstract class Menu 
 {
 	private static Collection<Papel> roles;
 	
-	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros)
+	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario)
 	{
 		roles = new ArrayList<Papel>();
         for (Papel papel : rolesPapel)
@@ -38,7 +39,7 @@ public abstract class Menu
 				}
 				
 				menu.append("<li><a href='" + url + "' " + accesskey + " >" + nome +  "</a>\n");
-				menu.append("<ul>\n" + getFilhos(papel.getId(), contexto) + "</ul>\n</li>\n");
+				menu.append("<ul>\n" + getFilhos(papel.getId(), contexto, empresasDoUsuario) + "</ul>\n</li>\n");
 			}
 		}
 
@@ -68,7 +69,7 @@ public abstract class Menu
 		return menu.toString();
 	}
 
-	private static String getFilhos(Long id, String contexto)
+	private static String getFilhos(Long id, String contexto, Collection<Empresa> empresasDoUsuario)
 	{
 		StringBuilder menuFilho = new StringBuilder();
 		String maisFilhos = "";
@@ -77,10 +78,20 @@ public abstract class Menu
 		{
 			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id)
 			{
+				if (empresasDoUsuario != null && papel.getCodigo().equals("ROLE_UTI"))
+				{
+					menuFilho.append("<li><a href='#'>Empresa</a>");
+					menuFilho.append("<ul>\n");
+					for (Empresa emp : empresasDoUsuario) 
+						menuFilho.append("<li><a href='" + contexto + "/index.action?empresaId=" + emp.getId() + "'>" + emp.getNome() + "</a>");
+					menuFilho.append("</li>\n");
+					menuFilho.append("</ul>\n");
+				}
+								
 				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 				menuFilho.append("<li><a href='" + url + "'>" + papel.getNome() + "</a>");
 
-				maisFilhos = getFilhos(papel.getId(), contexto);
+				maisFilhos = getFilhos(papel.getId(), contexto, empresasDoUsuario);
 
 				if (!maisFilhos.equals(""))
 				{
@@ -88,7 +99,7 @@ public abstract class Menu
 				}
 
 				menuFilho.append("</li>\n");
-			}
+			}						
 		}
 
 		return menuFilho.toString();

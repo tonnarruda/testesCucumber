@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.userdetails.UserDetails;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -93,7 +94,33 @@ public class SecurityUtil
 
 		return true;
 	}
+	
+	public static boolean setMenuFormatadoSession(Map session, String menuFormatado)
+	{
+		if (session == null)
+			return false;
+		
+		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+		if(sc == null)
+			return false;
+		
+		((UserDetailsImpl)sc.getAuthentication().getPrincipal()).setMenuFormatado(menuFormatado);
+		
+		return true;
+	}
 
+	public static UserDetails getUserDetails(Map session)
+	{
+		if (session == null)
+			return null;
+		
+		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+		if(sc == null)
+			return null;
+		
+		return ((UserDetailsImpl)sc.getAuthentication().getPrincipal());
+	}
+	
 	public static boolean hasLoggedUser() {
 		Usuario user = getUsuarioLoged(ActionContext.getContext().getSession());
 		return user != null;

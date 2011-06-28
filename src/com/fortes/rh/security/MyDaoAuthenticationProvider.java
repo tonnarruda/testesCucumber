@@ -18,6 +18,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.CollectionUtil;
 
@@ -44,6 +45,11 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		}
 
 		Long empresaId = Long.parseLong(((UsernamePasswordEmpresaAuthenticationToken)authentication).getEmpresa());
+		configuraPapeis(userDetails, empresaId);
+	}
+	
+	public void configuraPapeis(UserDetails userDetails, Long empresaId) 
+	{
 		UsuarioEmpresa usuarioEmpresa = usuarioEmpresaManager.findByUsuarioEmpresa(((UserDetailsImpl)userDetails).getId(), empresaId);
 
 		if(usuarioEmpresa != null || ((UserDetailsImpl)userDetails).getId() == 1L)
@@ -84,7 +90,14 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 					arrayAuths[++index] = new GrantedAuthorityImpl(role.getCodigo());
 			}
 
-			String menu = Menu.getMenuFormatado(roles, contexto, parametrosDoSistema);
+			Long idDoUsuario = ((UserDetailsImpl)userDetails).getId();
+			Collection<Empresa> empresasDoUsuario = null;
+			if (idDoUsuario == 1L)
+				empresasDoUsuario = empresaManager.findTodasEmpresas();
+			else
+				empresasDoUsuario = empresaManager.findByUsuarioPermissao(idDoUsuario, new String[]{});
+			
+			String menu = Menu.getMenuFormatado(roles, contexto, parametrosDoSistema, empresasDoUsuario);
 
 			((UserDetailsImpl)userDetails).setEmpresa(empresaManager.findById(empresaId));
 			((UserDetailsImpl)userDetails).setAuthorities(arrayAuths);
