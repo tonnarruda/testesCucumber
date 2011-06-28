@@ -21,7 +21,7 @@
 			});
 			
 			$('.pagelinks a').each(function(){
-				$(this).attr('href', $(this).attr('href').replace('?sugerir=false&','?'))
+				$(this).attr('href', $(this).attr('href').replace('sugerir=false','sugerir=true'))
 			});
 			
 			idsCheckedsInicial = $("tbody input:checkbox:checked:enabled").map(function(){
@@ -44,17 +44,19 @@
 		function prepareEnviarForm() {
 			if ($(".dados * td").find(":checkbox:checked").size() > 0)
 			{
-				pagina = window.location.toString().replace(/.+action/g,'').replace(/.+-p=/g,'').replace('#fim','');
-				if(pagina == "")
-					pagina = 1;
+				pagina = 1;
+				var pg = window.location.toString().match(/-p=(\d+)/);
+				if(pg != null)
+					pagina = pg[1];
+
+				$("#formHistoricos").append('<input type="hidden" name="page" value='+ pagina +'>');
 				
 				idsCheckedsFinal = $("tbody input:checkbox:checked:enabled").map(function(){
 			    	return parseInt($(this).val());
-				});
-				
-				$("#formHistoricos").append('<input type="hidden" name="page" value='+ pagina +'>');
+				});				
 				
 				retiraDissidioIds = arrayDiff(idsCheckedsInicial, idsCheckedsFinal)
+				
 				$(retiraDissidioIds).each(function(i, value){
 					$("#formHistoricos").append('<input type="hidden" name="retiraDissidioIds" value='+ value +'>');
 				});
@@ -102,7 +104,7 @@
 		<div style="text-align:right;"><span style="padding:0 10px; background-color: #CDCD00;"></span>&nbsp Sugestão de Dissídio</div><br>
 		
 		<@ww.form name="formHistoricos" id="formHistoricos" action="setDissidio.action" method="POST">
-			<@ww.hidden name="dataBase"/>
+			<@ww.hidden name="dataBase" value="${data}"/>
 			<@ww.hidden name="percentualDissidio"/>
 			<@ww.hidden name="sugerir"/>
 			
