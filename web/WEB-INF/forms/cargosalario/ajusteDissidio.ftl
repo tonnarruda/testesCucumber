@@ -42,7 +42,15 @@
 		});
 		
 		function prepareEnviarForm() {
-			if ($(".dados * td").find(":checkbox:checked").size() > 0)
+			//todos os marcados ao carregar a pg
+			idsCheckedsFinal = $("tbody input:checkbox:checked:enabled").map(function(){
+		    	return parseInt($(this).val());
+			});				
+			
+			retiraDissidioIds = arrayDiff(idsCheckedsInicial, idsCheckedsFinal)
+			aplicaDissidioIds = arrayDiff(idsCheckedsFinal, idsCheckedsInicial)
+			
+			if (retiraDissidioIds.length != 0 || aplicaDissidioIds.length != 0)
 			{
 				pagina = 1;
 				var pg = window.location.toString().match(/-p=(\d+)/);
@@ -51,12 +59,6 @@
 
 				$("#formHistoricos").append('<input type="hidden" name="page" value='+ pagina +'>');
 				
-				idsCheckedsFinal = $("tbody input:checkbox:checked:enabled").map(function(){
-			    	return parseInt($(this).val());
-				});				
-				
-				retiraDissidioIds = arrayDiff(idsCheckedsInicial, idsCheckedsFinal)
-				
 				$(retiraDissidioIds).each(function(i, value){
 					$("#formHistoricos").append('<input type="hidden" name="retiraDissidioIds" value='+ value +'>');
 				});
@@ -64,7 +66,7 @@
 				$("#formHistoricos").submit();
 			}
 			else
-				jAlert("Nenhuma situação selecionada.");
+				jAlert("Nenhuma Situação modificada nessa página.");
 		}
 	</script>
 	
@@ -165,7 +167,7 @@
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button onclick="prepareEnviarForm();" class="btnGravar"></button>
+			<button type="button" onclick="prepareEnviarForm();" class="btnGravar"></button>
 		</div>
 	</#if>	
 </body>
