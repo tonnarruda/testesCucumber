@@ -6,6 +6,7 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.Menu;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
@@ -42,7 +43,7 @@ public class MenuTest extends TestCase
 		parametros.setCodClienteSuporte("000006");
 		parametros.setCodEmpresaSuporte("0002");
 		
-		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros));
+		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros, new ArrayList<Empresa>()));
 	}
 
 	public void testGetMenuFormatadoComFilho()
@@ -100,6 +101,6 @@ public class MenuTest extends TestCase
 		parametros.setCodClienteSuporte("000006");
 		parametros.setCodEmpresaSuporte("0002");
 		
-		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros));
+		assertEquals(menu.toString(), Menu.getMenuFormatado(papels, "localhost", parametros, new ArrayList<Empresa>()));
 	}
 }

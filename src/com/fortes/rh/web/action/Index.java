@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.acegisecurity.AuthenticationManager;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
@@ -19,6 +20,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -31,6 +33,7 @@ import com.fortes.rh.model.geral.UsuarioMensagem;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.security.MyDaoAuthenticationProvider;
 import com.fortes.rh.security.SecurityUtil;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -52,6 +55,7 @@ public class Index extends ActionSupport
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private AvaliacaoManager avaliacaoManager;
+	private EmpresaManager empresaManager;
 
 	private Collection<Pesquisa> pesquisasAtrasadas;
 
@@ -78,6 +82,7 @@ public class Index extends ActionSupport
 	private Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager; 
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
+	private MyDaoAuthenticationProvider authenticationProvider;
 	
 	public String index()
 	{
@@ -95,6 +100,12 @@ public class Index extends ActionSupport
 		try
 		{
 			usuarioId = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId();
+			if (empresaId != null)
+			{
+				SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(empresaId));
+				((MyDaoAuthenticationProvider)authenticationProvider).configuraPapeis(SecurityUtil.getUserDetails(ActionContext.getContext().getSession()), empresaId);
+				//SecurityUtil.setMenuFormatadoSession(ActionContext.getContext().getSession(), "Marlus");
+			}
 			empresaId = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).getId();
 
 			questionarios = questionarioManager.findQuestionarioPorUsuario(usuarioId);
@@ -385,6 +396,14 @@ public class Index extends ActionSupport
 
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
 		this.avaliacaoManager = avaliacaoManager;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public void setAuthenticationProvider(MyDaoAuthenticationProvider authenticationProvider) {
+		this.authenticationProvider = authenticationProvider;
 	}
 
 }
