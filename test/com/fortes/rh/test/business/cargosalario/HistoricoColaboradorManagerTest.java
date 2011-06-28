@@ -574,7 +574,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Colaborador tiao = ColaboradorFactory.getEntity(100L);
 		Colaborador toin = ColaboradorFactory.getEntity(110L);
 		
-		//Periodo 02/02/2001 - 02/02/2002
 		SituacaoColaborador joaoUmHistPassado = new SituacaoColaborador(660.0, DateUtil.criarDataMesAno(02, 02, 1999), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
 		
 		SituacaoColaborador pedroUmHistNoPeriodo = new SituacaoColaborador(660.0, DateUtil.criarDataMesAno(12, 12, 2001), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, garagem, pedro, MotivoHistoricoColaborador.CONTRATADO, 1L);	
@@ -649,13 +648,12 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(garagem.getId())).will(returnValue(garagem));
 		
-		//Periodo 02/02/2001 - 02/02/2002
 		List<SituacaoColaborador> retorno = historicoColaboradorManager.getColaboradoresSemReajuste(null, null, DateUtil.criarDataMesAno(02, 02, 2002), empresa.getId(), 12);
-		assertEquals(7, retorno.size());
+		assertEquals(6, retorno.size());
 		assertEquals(joao, retorno.get(0).getColaborador());
 		assertEquals(garagem, retorno.get(0).getAreaOrganizacional());
-		assertEquals(tiao, retorno.get(6).getColaborador());
-		assertEquals(garagem, retorno.get(6).getAreaOrganizacional());
+		assertEquals(tiao, retorno.get(5).getColaborador());
+		assertEquals(garagem, retorno.get(5).getAreaOrganizacional());
 	}
 	
 	public void testMontaRelatorio()
