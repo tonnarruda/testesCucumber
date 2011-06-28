@@ -21,7 +21,7 @@
 			});
 			
 			$('.pagelinks a').each(function(){
-				$(this).attr('href', $(this).attr('href').replace('?sugerir=false&','?'))
+				$(this).attr('href', $(this).attr('href').replace('sugerir=false','sugerir=true'))
 			});
 			
 			idsCheckedsInicial = $("tbody input:checkbox:checked:enabled").map(function(){
@@ -42,19 +42,23 @@
 		});
 		
 		function prepareEnviarForm() {
-			if ($(".dados * td").find(":checkbox:checked").size() > 0)
+			//todos os marcados ao carregar a pg
+			idsCheckedsFinal = $("tbody input:checkbox:checked:enabled").map(function(){
+		    	return parseInt($(this).val());
+			});				
+			
+			retiraDissidioIds = arrayDiff(idsCheckedsInicial, idsCheckedsFinal)
+			aplicaDissidioIds = arrayDiff(idsCheckedsFinal, idsCheckedsInicial)
+			
+			if (retiraDissidioIds.length != 0 || aplicaDissidioIds.length != 0)
 			{
-				pagina = window.location.toString().replace(/.+action/g,'').replace(/.+-p=/g,'').replace('#fim','');
-				if(pagina == "")
-					pagina = 1;
-				
-				idsCheckedsFinal = $("tbody input:checkbox:checked:enabled").map(function(){
-			    	return parseInt($(this).val());
-				});
-				
+				pagina = 1;
+				var pg = window.location.toString().match(/-p=(\d+)/);
+				if(pg != null)
+					pagina = pg[1];
+
 				$("#formHistoricos").append('<input type="hidden" name="page" value='+ pagina +'>');
 				
-				retiraDissidioIds = arrayDiff(idsCheckedsInicial, idsCheckedsFinal)
 				$(retiraDissidioIds).each(function(i, value){
 					$("#formHistoricos").append('<input type="hidden" name="retiraDissidioIds" value='+ value +'>');
 				});
@@ -62,7 +66,7 @@
 				$("#formHistoricos").submit();
 			}
 			else
-				jAlert("Nenhuma situação selecionada.");
+				jAlert("Nenhuma Situação modificada nessa página.");
 		}
 	</script>
 	
@@ -102,7 +106,7 @@
 		<div style="text-align:right;"><span style="padding:0 10px; background-color: #CDCD00;"></span>&nbsp Sugestão de Dissídio</div><br>
 		
 		<@ww.form name="formHistoricos" id="formHistoricos" action="setDissidio.action" method="POST">
-			<@ww.hidden name="dataBase"/>
+			<@ww.hidden name="dataBase" value="${data}"/>
 			<@ww.hidden name="percentualDissidio"/>
 			<@ww.hidden name="sugerir"/>
 			
@@ -163,7 +167,7 @@
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button onclick="prepareEnviarForm();" class="btnGravar"></button>
+			<button type="button" onclick="prepareEnviarForm();" class="btnGravar"></button>
 		</div>
 	</#if>	
 </body>

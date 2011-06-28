@@ -47,7 +47,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
-import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
@@ -168,46 +167,46 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if(noExists)
 			promocoes.add(new RelatorioPromocoes(data, tipoPromocao));
 	}
-	
+
 	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId, int mesesSemReajuste)
 	{
 		//filtro de area e estabelecimento não ta funcionando, tem que ajustar a consulta. Negócio de historico atual
 		Collection<SituacaoColaborador> situacoes = getDao().getUltimasPromocoes(areasIds, estabelecimentosIds, data, empresaId);
 		List<SituacaoColaborador> semReajustes = new ArrayList<SituacaoColaborador>();		
 		
+		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
+		Date dataBase = DateUtil.retornaDataAnteriorQtdMeses(data, mesesSemReajuste, true);
+		
 		Iterator<SituacaoColaborador> iterator = situacoes.iterator();
 		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
-
-		boolean sofreuReajuste = false;
-		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
+		SituacaoColaborador situacaoAnterior = null;
+		Date dataUltimoReajusteColaborador = null;
 		
-		Date dataLimite = DateUtil.retornaDataAnteriorQtdMeses(data, mesesSemReajuste, true);
 		for (SituacaoColaborador situacao : situacoes) 
-		{			
-			if(iterator.hasNext())
-				proximaSituacao = (SituacaoColaborador) iterator.next();
-			else
-				proximaSituacao = null;
+		{	
+			proximaSituacao = iterator.hasNext() ? (SituacaoColaborador) iterator.next() : null;
 			
-			if(proximaSituacao != null && situacao.getColaborador().equals(proximaSituacao.getColaborador()))
+			// primeira situacao do colaborador
+			if (situacaoAnterior == null || !situacao.getColaborador().equals(situacaoAnterior.getColaborador()))
+				dataUltimoReajusteColaborador = situacao.getData();
+			
+			// colaborador mudou de salario
+			if (situacaoAnterior != null && situacao.getColaborador().equals(situacaoAnterior.getColaborador()) && !situacao.getSalario().equals(situacaoAnterior.getSalario()))
+				dataUltimoReajusteColaborador = situacao.getData();
+			
+			// ultima situacao do colaborador
+			if (proximaSituacao == null || !situacao.getColaborador().equals(proximaSituacao.getColaborador()))
 			{
-				if( ! situacao.getSalario().equals(proximaSituacao.getSalario()))
-					sofreuReajuste = true;
-			}
-
-			//mudou de colaborador
-			if(proximaSituacao == null || !situacao.getColaborador().equals(proximaSituacao.getColaborador()))
-			{
-				if(!sofreuReajuste && situacao.getData().before(dataLimite))
+				// se o ultimo reajuste do colaborador foi antes do intervalo de datas especificado
+				if (dataUltimoReajusteColaborador.before(dataBase))
 				{
 					situacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, situacao.getAreaOrganizacional().getId()));
 					situacao.setDataExtenso(DateUtil.formataDiaMesAno(situacao.getData()) + " " + DateUtil.getIntervalDateString(situacao.getData(), data));
-					
 					semReajustes.add(situacao);
 				}
-				
-				sofreuReajuste = false;
 			}
+			
+			situacaoAnterior = situacao;
 		}
 		
 		Collections.sort(semReajustes);

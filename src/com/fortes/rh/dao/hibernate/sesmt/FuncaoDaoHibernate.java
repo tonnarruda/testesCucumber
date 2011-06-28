@@ -128,6 +128,7 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		hql.append("where   hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.data <=:data  and hc2.status = :status and hc2.colaborador.id = hc.colaborador.id) ");
 		hql.append("	and hf.data =   ( select max(hf2.data) from HistoricoFuncao hf2 where hf2.data <= :data and hf2.funcao.id = hf.funcao.id) ");
 		hql.append("	and a.id = :ambienteId ");
+		hql.append("	order by f.nome ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", data);
