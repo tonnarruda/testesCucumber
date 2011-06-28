@@ -4,8 +4,9 @@
 		- CeS > Movimentações > Ajuste de Situação (Dissídio): Ajusta as promoções para o tipo dissídio de acordo com o valor da promoção.
 		- CeS > Relatório > Colaboradores sem Reajuste Salarial: Novo relatório.
 		- CeS > Relatório > Promoções: Novo relatório, promoções verticais e horizontais.
-		- CeS > Painel de Indicadores: 
+		- CeS > Painel de Indicadores: Novo gráfico, promoções verticais e horizontais. 
 		- ReS > Movimentações > Exame Palográfico: Nova funcionalidade, análise do exame palográfico do candidato.
+		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Ajuste da busca avançada, não exibe nome dos cargos repetidos. 
 	</Versao>
 	<Versao id="1.1.48.40" data="09/06/2011">
 		- Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações: Novo campo [Motivo do reajuste].
