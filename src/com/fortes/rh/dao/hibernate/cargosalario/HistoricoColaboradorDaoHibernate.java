@@ -1111,15 +1111,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	}
 
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio, Long empresaId) 
-	{
-//		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
-//		criteria.setFetchMode("hc.colaborador", FetchMode.DEFAULT);
-//
-//		criteria.add(Expression.ge("hc.data", dataBase));
-//		criteria.add(Expression.ne("hc.motivo", MotivoHistoricoColaborador.DISSIDIO));
-//		criteria.addOrder(Order.asc("hc.data"));
-//		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		
+	{	
 		StringBuilder hql = new StringBuilder();
 
 		montaSelectConstrutor(hql);
