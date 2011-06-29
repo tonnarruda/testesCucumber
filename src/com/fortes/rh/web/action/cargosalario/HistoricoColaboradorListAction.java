@@ -417,7 +417,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
 		CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
-		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, getEmpresaSistema().getId());		
+		
+		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, getEmpresaSistema().getId(), cargosCheck);		
 		
 		return Action.SUCCESS;
 	}

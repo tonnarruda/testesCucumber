@@ -94,7 +94,7 @@
 			<#assign data = "">
 	</#if>
 	
-	<@ww.form name="form" action="prepareAjusteDissidio.action" id="form" method="POST">
+	<@ww.form name="form" action="prepareAjusteDissidio.action" id="form" method="POST" onsubmit="${validarCampos}">
 
 		<#include "../util/topFiltro.ftl" />
 			<@ww.datepicker label="Situações a partir de" name="dataBase" id="dataBase" required="true" value="${data}" cssClass="mascaraData"/>

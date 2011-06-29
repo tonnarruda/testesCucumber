@@ -1,6 +1,7 @@
 package com.fortes.rh.business.cargosalario;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -55,6 +56,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
 
@@ -1423,7 +1425,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().setMotivo(historicoColaboradorIds, tipo);
 	}
 
-	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio, Long empresaId)
+	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio, Long empresaId, String[] cargosIds)
 	{
 		Collection<HistoricoColaborador> historicos = getDao().findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresaId);
 		
@@ -1441,6 +1443,30 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			
 			if(historico.getSalario() != null && historico.getSalarioVariavel() != null && !historico.getSalarioVariavel().equals(0.0))
 				historico.setDiferencaSalarialEmPorcentam(((historico.getSalario() - historico.getSalarioVariavel()) / historico.getSalarioVariavel()) * 100);
+		}
+		
+		Collection<Long> cargosIdsLong = Arrays.asList(StringUtil.stringToLong(cargosIds));
+		
+		if (!cargosIdsLong.isEmpty())
+		{
+			Collection<Long> colaboradoresIds = new ArrayList<Long>();
+			Collection<HistoricoColaborador> historicosFiltrados = new ArrayList<HistoricoColaborador>();
+			
+			// Checa se o colaborador ja possuiu um dos cargos selecionados
+			for (HistoricoColaborador historicoColaborador : historicos) 
+			{
+				if (cargosIdsLong.contains(historicoColaborador.getFaixaSalarial().getCargo().getId()) && !colaboradoresIds.contains(historicoColaborador.getColaborador().getId()))
+					colaboradoresIds.add(historicoColaborador.getColaborador().getId());
+			}
+			
+			// Inclui todo o historico de cada colaborador que ja possuiu um dos cargos selecionados
+			for (HistoricoColaborador historicoColaborador : historicos)
+			{
+				if (colaboradoresIds.contains(historicoColaborador.getColaborador().getId()))
+					historicosFiltrados.add(historicoColaborador);
+			}
+			
+			historicos = historicosFiltrados;
 		}
 		
 		return historicos;
