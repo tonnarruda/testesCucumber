@@ -35,6 +35,7 @@ import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
@@ -98,6 +99,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private EstabelecimentoManager estabelecimentoManager;
 	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private F2rhFacade f2rhFacade;
 
 	private Collection<HistoricoCandidato> historicoCandidatos;
@@ -202,6 +204,8 @@ public class CandidatoListAction extends MyActionSupportList
 	private Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
 	private Curriculo curriculo;
 
+	private Boolean compartilharCandidatos;
+
 	public String list() throws Exception
 	{
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
@@ -301,8 +305,13 @@ public class CandidatoListAction extends MyActionSupportList
 				}
 			}
 		}
+		
+		pupulaEmpresas();
+	}
 
-        empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+	private void pupulaEmpresas() {
+		compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
+        empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
 	}
 
 	public String prepareBusca() throws Exception
@@ -319,7 +328,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String prepareBuscaSimples() throws Exception
 	{
-		empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+		pupulaEmpresas();
 
 		if(montaFiltroBySolicitacao)
 		{
@@ -1520,5 +1529,13 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setF2rhFacade(F2rhFacade f2rhFacade) {
 		this.f2rhFacade = f2rhFacade;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharCandidatos() {
+		return compartilharCandidatos;
 	}
 }

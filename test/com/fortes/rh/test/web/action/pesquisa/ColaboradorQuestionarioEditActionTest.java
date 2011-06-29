@@ -18,6 +18,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
@@ -28,6 +29,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -61,6 +63,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 	private Mock colaboradorRespostaManager;
 	private Mock perguntaManager;
 	private Mock respostaManager;
+	private Mock parametrosDoSistemaManager ;
 
 	protected void setUp() throws Exception
 	{
@@ -78,6 +81,9 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 
         estabelecimentoManager = new Mock(EstabelecimentoManager.class);
         action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+
+        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+        action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 
         cargoManager= new Mock(CargoManager.class);
         action.setCargoManager((CargoManager) cargoManager.proxy());
@@ -123,9 +129,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		prepareMockPrepareInsert();
 
 		assertEquals("success", action.prepareInsert());
-		assertEquals("Empresa selecionada",
-				action.getEmpresaId(), action.getEmpresaSistema().getId());
-		assertEquals(1, action.getEmpresas().size());
+		assertEquals("Empresa selecionada",	action.getEmpresaId(), action.getEmpresaSistema().getId());
 	}
 
     public void testInsert() throws Exception
@@ -269,7 +273,12 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
     	action.setQuestionario(questionario);
     	
-    	empresaManager.expects(once()).method("findAll").will(returnValue(empresas));
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharColaboradores(true);
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	estabelecimentoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	grupoOcupacionalManager.expects(once()).method("populaCheckOrderNome").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));

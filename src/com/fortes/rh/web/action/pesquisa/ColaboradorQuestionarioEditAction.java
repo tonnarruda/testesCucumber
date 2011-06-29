@@ -13,6 +13,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
@@ -32,12 +33,14 @@ import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 {
@@ -56,6 +59,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private PerguntaManager perguntaManager;
 	private RespostaManager respostaManager;
 	private CandidatoManager candidatoManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Avaliacao avaliacaoExperiencia;
 	private Questionario questionario;
@@ -99,11 +103,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Solicitacao solicitacao;
 	private Map<String, Object> parametros;
 	private boolean ordenarPorAspecto;
+	private Boolean compartilharColaboradores;
 
 	public String prepareInsert() throws Exception
 	{
-		empresas = empresaManager.findAll();
 		empresaId = getEmpresaSistema().getId();
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_QUESTIONARIO");
 		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
@@ -647,5 +653,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setOrdenarPorAspecto(Boolean ordenarPorAspecto) {
 		this.ordenarPorAspecto = ordenarPorAspecto;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 }

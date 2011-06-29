@@ -13,9 +13,11 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -36,6 +38,7 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 	private Mock estabelecimentoManager;
 	private Mock cargoManager;
 	private Mock empresaManager;
+	private Mock parametrosDoSistemaManager;
 
 	protected void setUp () throws Exception
 	{
@@ -46,11 +49,13 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
 		cargoManager = new Mock(CargoManager.class);
 		empresaManager = new Mock(EmpresaManager.class);
+		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
 		action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
 		action.setCargoManager((CargoManager) cargoManager.proxy());
+		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
@@ -117,7 +122,10 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 	
 	public void testPrepareRelatorioAniversariantes()
 	{
-		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 
 		assertEquals("success",action.prepareRelatorioAniversariantes());
 	}
@@ -133,7 +141,10 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
 		colaboradorManager.expects(once()).method("findAniversariantes").will(throwException(new ColecaoVaziaException("Não existem dados")));
 		
-		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		
 		assertEquals("input",action.relatorioAniversariantes());
 	}
@@ -142,14 +153,21 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
 		colaboradorManager.expects(once()).method("findAniversariantes").will(throwException(new Exception()));
 		
-		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		
 		assertEquals("input",action.relatorioAniversariantes());
 	}
 	
 	public void testPrepareRelatorioAdmitidos()
 	{
-		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+		
 		assertEquals("success",action.prepareRelatorioAdmitidos());
 	}
 	
@@ -164,14 +182,23 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 	{
 		colaboradorManager.expects(once()).method("findAdmitidos").will(throwException(new ColecaoVaziaException("Não existem dados para o filtro informado.")));
 		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
-		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+		
 		assertEquals("input",action.relatorioAdmitidos());
 	}
 	public void testRelatorioAdmitidosException()
 	{
 		colaboradorManager.expects(once()).method("findAdmitidos").will(throwException(new Exception()));
 		empresaManager.expects(once()).method("selecionaEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Long[]{}));
-		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		
 		assertEquals("input",action.relatorioAdmitidos());
 		

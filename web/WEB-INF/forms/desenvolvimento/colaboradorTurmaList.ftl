@@ -16,15 +16,17 @@
 	<@ww.actionerror />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
-	<#include "../util/topFiltro.ftl" />
-        <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
-            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1"/>
-            <@ww.hidden name="turma.id"/>
-            
-            <input type="submit" value="" class="btnPesquisar" >
-        </@ww.form>
-    <#include "../util/bottomFiltro.ftl" />
-    <br>
+	<#if compartilharColaboradores>
+		<#include "../util/topFiltro.ftl" />
+	        <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
+	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores"/>
+	            <@ww.hidden name="turma.id"/>
+	            
+	            <input type="submit" value="" class="btnPesquisar" >
+	        </@ww.form>
+	    <#include "../util/bottomFiltro.ftl" />
+	    <br>
+	</#if>
 	
 	<#if colaboradorTurmas.size()?exists>
 		<b>${colaboradorTurmas.size()} Colaboradores Inscritos</b>

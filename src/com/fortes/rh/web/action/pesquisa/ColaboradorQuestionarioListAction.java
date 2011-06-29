@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
@@ -40,6 +41,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	private ColaboradorManager colaboradorManager;
 	private QuestionarioManager questionarioManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
@@ -79,10 +81,14 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	private String totalRespondidas;
 	private String totalNaoRespondidas;
+	private Boolean compartilharColaboradores;
 	
 	public String list() throws Exception
 	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_PESQUISA");
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresaId = getEmpresaSistema().getId();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores ,empresaId,SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_PESQUISA");
+		
 		questionario = questionarioManager.findByIdProjection(questionario.getId());
 		
 		colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionario.getId(), BooleanUtil.getValueCombo(respondida), empresaId);
@@ -441,6 +447,14 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public String getTotalNaoRespondidas() {
 		return totalNaoRespondidas;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 	
 }

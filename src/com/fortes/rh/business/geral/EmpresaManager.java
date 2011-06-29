@@ -37,4 +37,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato);
 	Collection<Empresa> findTodasEmpresas();
 	boolean checkEmpresaCodACGrupoAC(Empresa empresa);
+	Collection<Empresa> findEmpresasPermitidas(Boolean compartilharCandidatos, Long empresId, Long usuarioId, String... roles);
 }

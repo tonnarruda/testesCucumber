@@ -76,8 +76,8 @@
 		<button onclick="limparFiltro();" class="btnLimparFiltro grayBGE"></button>		
 
 		<@ww.form name="formBusca" id="formBusca" action="buscaSimples.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" cssStyle="width: 147px;" listKey="id" listValue="nome" required="true" onchange="populaCargosConhecimentos(this.value)" liClass="liLeft" headerKey="-1" headerValue="Todas"/>
-
+			
+			<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" onchange="enviaEmpresa(this.value)" liClass="liLeft" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
 			<@ww.textfield label="Indicado Por" id="indicadoPor" name="indicadoPorBusca" cssStyle="width: 350px;"/>
 			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 395px;" liClass="liLeft" />
 			<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" cssClass="mascaraCpf"/>

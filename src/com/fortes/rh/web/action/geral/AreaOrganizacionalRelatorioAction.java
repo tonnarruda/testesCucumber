@@ -56,6 +56,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	private CamposExtras camposExtras;
 	private Long[] empresaIds;//repassado para o DWR
 	private Empresa empresa;
+	private Boolean compartilharColaboradores;
 	
 	public String execute() throws Exception
 	{
@@ -64,7 +65,9 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 
 	public String formFiltro() throws Exception
 	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_AREAORGANIZACIONAL");
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_AREAORGANIZACIONAL");
+
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
 		
@@ -279,6 +282,10 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 
 }

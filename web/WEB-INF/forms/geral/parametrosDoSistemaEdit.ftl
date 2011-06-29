@@ -61,7 +61,10 @@
 	<@ww.select label="Perfil Padrão" name="parametrosDoSistema.perfilPadrao.id" list="perfils" cssStyle="width: 300px;" listKey="id" listValue="nome"/>
 	
 	<@ww.checkbox label="Forçar caixa alta nos campos do módulo externo" id="capitalizarCampos" name="parametrosDoSistema.upperCase" liClass="liLeft" labelPosition="left"/>
-	
+	<@ww.checkbox label="Compartilhar Candidatos entre empresas." id="compartilharCandidato" name="parametrosDoSistema.compartilharCandidatos" liClass="liLeft" labelPosition="left"/>
+	<@ww.checkbox label="Compartilhar Colaboradores entre empresas." id="compartilharColaborador" name="parametrosDoSistema.compartilharColaboradores" liClass="liLeft" labelPosition="left"/>
+	<br>
+
 	<@ww.textfield label="E-mail do Suporte Técnico" name="parametrosDoSistema.emailDoSuportTecnico" id="emailDoSuporteTecnico" size="40" maxLength="39" required="true"/>
 
 	<br>

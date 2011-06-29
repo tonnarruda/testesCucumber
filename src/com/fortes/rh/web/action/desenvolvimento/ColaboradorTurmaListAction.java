@@ -19,6 +19,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
@@ -59,6 +60,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private CertificacaoManager certificacaoManager;
 	private ColaboradorManager colaboradorManager;
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<Colaborador> colaboradors;
@@ -116,7 +118,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes;
 	private Certificacao certificacao;
 	private Collection<Certificacao> certificacoes;
-	
+	private Boolean compartilharColaboradores;
 
 	public String getMsgAlert()
 	{
@@ -134,7 +136,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			addActionMessage(msgAlert);
 
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");	
+		
+		populaEmpresa("ROLE_MOV_TURMA");	
 		
 		turma = turmaManager.findByIdProjection(turma.getId());
 		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), empresaId);
@@ -155,6 +158,12 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		}
 
 		return Action.SUCCESS;
+	}
+
+	private void populaEmpresa(String... roles)
+	{
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), roles);
 	}
 
 	public String prepareFiltroHistoricoTreinamentos() throws Exception
@@ -263,8 +272,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	public String prepareRelatorioColaborador()
 	{
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), new String[]{"ROLE_REL_COLABORADOR_SEM_TREINAMENTO", "ROLE_REL_COLABORADOR_COM_TREINAMENTO"});
-		
+		populaEmpresa(new String[]{"ROLE_REL_COLABORADOR_SEM_TREINAMENTO", "ROLE_REL_COLABORADOR_COM_TREINAMENTO"});	
 		cursos = cursoManager.findToList(new String[]{"id","nome"}, new String[]{"id","nome"}, new String[]{"nome"});
 		empresaId = getEmpresaSistema().getId();
 
@@ -779,5 +787,13 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 }

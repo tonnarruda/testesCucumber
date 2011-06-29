@@ -24,6 +24,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -59,6 +60,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private EmpresaManager empresaManager;
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private CargoManager cargoManager;
 
 	private Collection<HistoricoColaborador> historicoColaboradors;
@@ -117,7 +119,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private int mesesSemReajuste;
 
 	private boolean sugerir = true;
-
+	private Boolean compartilharColaboradores;
 	private boolean aplicaDissidio;
 	
 	public String painelIndicadores() throws Exception
@@ -218,7 +220,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public String prepareRelatorioPromocoes() throws Exception
 	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_PROMOCAO");
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_PROMOCAO");
+		
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 		
@@ -759,6 +763,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		this.mesesSemReajuste = mesesSemReajuste;
 	}
 
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
+	}
+
 	public Collection<CheckBox> getCargosCheckList() {
 		return cargosCheckList;
 	}
@@ -782,5 +794,4 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public void setAplicaDissidio(boolean aplicaDissidio) {
 		this.aplicaDissidio = aplicaDissidio;
 	}
-	
 }

@@ -32,7 +32,7 @@
 	
 		<@ww.hidden name="candidato.id"/>
 		<@ww.hidden name="statusCandSol"/>
-		<@ww.select label="Empresa" name="empresas.nome" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" onchange="populaSolicitacoes(this.value)";/>
+		<@ww.select label="Empresa" name="empresas.nome" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" disabled="!compartilharCandidatos" onchange="populaSolicitacoes(this.value)";/>
 		<@frt.checkListBox label="Solicitações disponíveis" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600"/>
 	
 	</@ww.form>

@@ -11,8 +11,10 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.MotivoDemissao;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.web.action.geral.MotivoDemissaoListAction;
@@ -23,6 +25,7 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
 	private Mock manager;
 	private Mock colaboradorManager;
 	private Mock empresaManager;
+	private Mock parametrosDoSistemaManager;
 
     protected void setUp() throws Exception
     {
@@ -31,10 +34,12 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
         manager = new Mock(MotivoDemissaoManager.class);
         colaboradorManager = new Mock(ColaboradorManager.class);
         empresaManager = new Mock(EmpresaManager.class);
+        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 
         action.setMotivoDemissaoManager((MotivoDemissaoManager) manager.proxy());
         action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
         action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+        action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
     }
 
     protected void tearDown() throws Exception
@@ -54,7 +59,11 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
     	Empresa empresa = new Empresa();
     	empresa.setId(1L);
     	action.setEmpresaSistema(empresa);
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+    	
+       	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	assertEquals("success", action.prepareRelatorioMotivoDemissao());
     }
@@ -97,8 +106,11 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
     	empresa.setId(1L);
     	action.setEmpresaSistema(empresa);
 
+       	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new Exception()));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("input", action.imprimeRelatorioMotivoDemissaoBasico());
     }
@@ -116,9 +128,13 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
     	empresa.setId(1L);
     	action.setEmpresaSistema(empresa);
 
-    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new Exception()));
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new Exception()));
+
     	assertEquals("input", action.imprimeRelatorioMotivoDemissao());
     }
 
