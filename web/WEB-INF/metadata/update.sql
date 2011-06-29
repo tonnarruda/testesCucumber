@@ -5487,3 +5487,9 @@ alter sequence papel_sequence restart with 513;--.go
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=510 WHERE atualizaPapeisIdsAPartirDe is null;--.go
 
 update parametrosdosistema set appversao = '1.1.49.41';--.go
+
+-- versao 1.1.50.42
+alter table parametrosdosistema add column compartilharColaboradores boolean default true;--.go
+alter table parametrosdosistema add column compartilharCandidatos boolean default true;--.go
+
+update parametrosdosistema set appversao = '1.1.50.42';

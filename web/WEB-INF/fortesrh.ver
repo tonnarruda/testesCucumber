@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.50.42" data="29/06/2011">
+		- Utilitários > Empresas: Possibilidade de troca de empresa sem sair do sistema.
+		- Utilitários > Configurações > Sistema: Novas opções de compartilhamento de candidatos e colaboradores entre empresas.
+		- CeS > Movimentações > Ajuste de Situação (Dissídio): Novo filtro por cargo.
+		- SESMT > Relatórios > Afastamentos: Nova opção de agrupamento por CID. 
+	</Versao>
 	<Versao id="1.1.49.41" data="27/06/2011">
 		- CeS > Movimentações > Ajuste de Situação (Dissídio): Ajusta as promoções para o tipo dissídio de acordo com o valor da promoção.
 		- CeS > Relatório > Colaboradores sem Reajuste Salarial: Novo relatório.

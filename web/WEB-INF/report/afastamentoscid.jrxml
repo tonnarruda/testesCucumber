@@ -56,7 +56,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cid}.isEmpty() ? " - " : $F{cid}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cid}.equals("") ? " - " : $F{cid}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>

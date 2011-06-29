@@ -2148,7 +2148,9 @@ CREATE TABLE parametrosdosistema (
     codClienteSuporte character varying(10),
     camposCandidatoVisivel text,
     camposCandidatoObrigatorio text,
-    camposCandidatoTabs text
+    camposCandidatoTabs text,
+    compartilharColaboradores boolean default true,
+    compartilharCandidatos boolean default true
 );
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_pkey PRIMARY KEY (id);
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_perfil_fk FOREIGN KEY (perfilpadrao_id) REFERENCES perfil(id);
