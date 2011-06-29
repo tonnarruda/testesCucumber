@@ -57,9 +57,9 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String diasLembretePeriodoExperiencia;
     
     private Boolean enviarEmail = false;
-   
-
     private Boolean atualizadoSucesso;
+    private Boolean compartilharColaboradores;
+    private Boolean compartilharCandidatos;
 
     // Forçar caixa alta no módulo externo
     private Boolean upperCase = false;
@@ -289,5 +289,17 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setCamposCandidatoTabs(String camposCandidatoTabs) {
 		this.camposCandidatoTabs = camposCandidatoTabs;
+	}
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
+	}
+	public void setCompartilharColaboradores(Boolean compartilharColaboradores) {
+		this.compartilharColaboradores = compartilharColaboradores;
+	}
+	public Boolean getCompartilharCandidatos() {
+		return compartilharCandidatos;
+	}
+	public void setCompartilharCandidatos(Boolean compartilharCandidatos) {
+		this.compartilharCandidatos = compartilharCandidatos;
 	}
 }

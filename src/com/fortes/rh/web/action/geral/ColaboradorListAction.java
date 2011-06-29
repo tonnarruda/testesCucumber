@@ -126,6 +126,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private String reportFilter;
 	private String reportTitle;
+	private Boolean compartilharColaboradores;
 
 	public String list() throws Exception
 	{
@@ -186,7 +187,8 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private void prepareEmpresas(String role)
 	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), role);
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), role);
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 		
@@ -196,7 +198,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	public String prepareRelatorioDinamico()
 	{
 		Long usuarioId = SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession());
-		empresas = empresaManager.findByUsuarioPermissao(usuarioId, "ROLE_CAD_COLABORADOR");
+		prepareEmpresas("ROLE_CAD_COLABORADOR");
+		
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
 		
@@ -809,6 +812,10 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setNomeComercialBusca(String nomeComercialBusca) {
 		this.nomeComercialBusca = nomeComercialBusca;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 
 	

@@ -21,6 +21,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -77,6 +78,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock aproveitamentoAvaliacaoCursoManager;
 	private Mock empresaManager;
+	private Mock parametrosDoSistemaManager;
 
     protected void setUp() throws Exception
     {
@@ -85,6 +87,9 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 
         colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
         action.setColaboradorTurmaManager((ColaboradorTurmaManager) colaboradorTurmaManager.proxy());
+        
+        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+        action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 
         turmaManager = new Mock(TurmaManager.class);
         action.setTurmaManager((TurmaManager) turmaManager.proxy());
@@ -159,10 +164,15 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	colaboradorQuestionarioCollection.add(colaboradorQuestionario);
 
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+    	
     	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(colaboradorQuestionarioCollection));
+    	
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	assertEquals("success", action.list());
     	assertEquals(colaboradorTurmas, action.getColaboradorTurmas());
@@ -229,7 +239,12 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);    	
+    	
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	assertEquals("input", action.relatorioColaboradorSemTreinamento());
     }
 
@@ -239,7 +254,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	curso.setNome("Como Raparigar");
     	action.setCurso(curso);
     	
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
@@ -262,7 +281,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     
     public void testRelatorioColaboradorComTreinamentoException() throws Exception
     {
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
@@ -276,7 +299,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	curso.setNome("Como Raparigar");
     	action.setCurso(curso);
 
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
@@ -305,7 +332,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	String[] estabelecimentosCheck = new String[]{"1"};
     	action.setEstabelecimentosCheck(estabelecimentosCheck);
 
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioSemIndicacaoTreinamento").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
@@ -317,9 +348,13 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 
     public void testPrepareRelatorioColaboradorSemIndicacao() throws Exception
     {
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
@@ -329,12 +364,15 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 
     public void testPrepareRelatorioColaboradorCertificacao() throws Exception
     {
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+		
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
 
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
-    	
     	assertEquals("success", action.prepareRelatorioColaboradorCertificacao());
     }
 
@@ -350,11 +388,15 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 
     public void testRelatorioColaboradorCertificacaoException() throws Exception
     {
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorCertificacaoRelatorio>()));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("input", action.relatorioColaboradorCertificacao());
     }
@@ -370,12 +412,16 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Certificacao certificacao = CertificacaoFactory.getEntity(1L);    	
     	certificacao.setNome("Cerificação");
     	action.setCertificacao(certificacao);
+
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(ANYTHING, eq(certificacao), ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("input", action.relatorioColaboradorCertificacao());
     }
@@ -432,15 +478,17 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
     	parametrosDoSistema.setUpperCase(true);
+    	parametrosDoSistema.setCompartilharCandidatos(true);
     	
     	action.setColaborador(colaborador);
     	action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
     	action.setDataFim(DateUtil.criarAnoMesDia(2010, 01, 01));
-    	
+
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(colaborador.getId()), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(returnValue(colabTurmaCollection));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colabTurmaCollection));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("input", action.relatorioHistoricoTreinamentos());
     }
@@ -464,10 +512,14 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
     	action.setDataFim(DateUtil.criarAnoMesDia(2010, 01, 01));
 
+       	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(colaborador.getId()), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
     	
     	assertEquals("input", action.relatorioHistoricoTreinamentos());
     }
@@ -502,7 +554,11 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
 
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
+
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
     	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(colaboradorTurmas));

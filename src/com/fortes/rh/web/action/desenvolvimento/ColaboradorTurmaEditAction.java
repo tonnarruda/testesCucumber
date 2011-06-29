@@ -17,6 +17,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -53,6 +54,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	private CursoManager cursoManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<PrioridadeTreinamento> prioridadeTreinamentos = null;
@@ -108,6 +110,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	// Indica se a requisição veio do plano de treinamento
 	private boolean planoTreinamento;
 	private FiltroPlanoTreinamento filtroPlanoTreinamento;
+	private Boolean compartilharColaboradores;
 
 	public void prepare() throws Exception
 	{
@@ -120,7 +123,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	public String prepareInsertNota() throws Exception
 	{
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");
+		populaEmpresas();
 		
 		avaliacaoCursos = avaliacaoCursoManager.findByCurso(turma.getCurso().getId());
 		return SUCCESS;
@@ -148,7 +151,8 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		turma = turmaManager.findByIdProjection(turma.getId());
 		colaboradorTurma.setTurma(turma);
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");
+		
+		populaEmpresas();
 		
 		questionario = turma.getAvaliacaoTurma().getQuestionario();
 
@@ -167,6 +171,12 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		colaboradoresCursosCheckList = CheckListBoxUtil.marcaCheckListBox(colaboradoresCursosCheckList, colaboradoresCursosCheck);
 
 		return SUCCESS;
+	}
+
+	private void populaEmpresas() 
+	{
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");
 	}
 
 	public String listFiltro() throws Exception
@@ -764,5 +774,13 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 }

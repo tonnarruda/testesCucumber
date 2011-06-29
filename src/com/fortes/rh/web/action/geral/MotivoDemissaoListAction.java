@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.MotivoDemissao;
@@ -29,6 +30,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	private MotivoDemissaoManager motivoDemissaoManager;
 	private ColaboradorManager colaboradorManager;
 	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Collection<MotivoDemissao> motivoDemissaos = null;
 	private Collection<Colaborador> colaboradores;
@@ -56,6 +58,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	private Long[] empresaIds;//repassado para o DWR
 
 	private Map<String, Object> parametros = new HashMap<String, Object>();
+	private Boolean compartilharColaboradores;
 	
 	
 	public String list() throws Exception
@@ -80,7 +83,9 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	public String prepareRelatorioMotivoDemissao() throws Exception
 	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_MOTIVO_DEMISSAO");
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_MOTIVO_DEMISSAO");
+		
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 		
@@ -320,6 +325,14 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 
 }

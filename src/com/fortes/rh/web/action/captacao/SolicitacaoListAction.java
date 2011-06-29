@@ -15,6 +15,7 @@ import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
@@ -40,6 +41,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private CargoManager cargoManager;
     private Anuncio anuncio;
     private HistoricoCandidatoManager historicoCandidatoManager;
+    private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Collection<Solicitacao> solicitacaos;
     private Collection<CheckBox> solicitacaosCheck;
@@ -58,6 +60,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     
     private String json;
     private char statusCandSol;
+	private Boolean compartilharCandidatos;
 
     @SuppressWarnings("unchecked")
 	public String list() throws Exception
@@ -111,7 +114,8 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public String verSolicitacoes() throws Exception
     {
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_SOLICITACAO");
+		compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_SOLICITACAO");
 		
     	candidato = candidatoManager.findByCandidatoId(candidato.getId());
 
@@ -334,6 +338,14 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setStatusCandSol(char statusCandSol) {
 		this.statusCandSol = statusCandSol;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharCandidatos() {
+		return compartilharCandidatos;
 	}
 
 }

@@ -16,6 +16,7 @@ import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -25,6 +26,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
@@ -47,6 +49,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 	private Mock empresaManager;
 	private Mock colaboradorQuestionarioManager;
 	private Mock avaliacaoManager;
+	private Mock parametrosDoSistemaManager ;
 
 	protected void setUp() throws Exception
 	{
@@ -58,6 +61,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		empresaManager = new Mock(EmpresaManager.class);
 		colaboradorQuestionarioManager = mock(ColaboradorQuestionarioManager.class);
 		avaliacaoManager = mock(AvaliacaoManager.class);
+		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 
 		action.setAvaliacaoDesempenhoManager((AvaliacaoDesempenhoManager) manager.proxy());
 		action.setAvaliacaoDesempenho(new AvaliacaoDesempenho());
@@ -67,6 +71,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setColaboradorQuestionarioManager((ColaboradorQuestionarioManager) colaboradorQuestionarioManager.proxy());
 		action.setAvaliacaoManager((AvaliacaoManager) avaliacaoManager.proxy());
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+	    action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager .proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
@@ -86,9 +91,14 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharColaboradores(true);
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		
 		Collection<Colaborador> colaboradoresAvaliados = new ArrayList<Colaborador>();
 		colaboradoresAvaliados.add(ColaboradorFactory.getEntity(1000L));
-		empresaManager.expects(once()).method("findToList").will(returnValue(new ArrayList<Empresa>()));
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(colaboradoresAvaliados));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
@@ -99,8 +109,8 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		assertEquals(true, action.getIsAvaliados());
 		
 		// Avaliadores
-		
-		empresaManager.expects(once()).method("findToList").will(returnValue(new ArrayList<Empresa>()));
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(colaboradoresAvaliados));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
@@ -162,13 +172,18 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharColaboradores(true);
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		
 		// Avaliado
 		action.setIsAvaliados(true);
 		
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorQuestionarioManager.expects(once()).method("save").with(ANYTHING, ANYTHING, eq(true)).isVoid();
 		
-		empresaManager.expects(once()).method("findToList").will(returnValue(new ArrayList<Empresa>()));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
@@ -178,11 +193,11 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		// Avaliador
 		
 		action.setIsAvaliados(false);
-		
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorQuestionarioManager.expects(once()).method("save").with(ANYTHING, ANYTHING, eq(false)).isVoid();
 		
-		empresaManager.expects(once()).method("findToList").will(returnValue(new ArrayList<Empresa>()));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));

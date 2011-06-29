@@ -19,6 +19,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -54,6 +55,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	private HistoricoColaboradorManager historicoColaboradorManager;
     private EtapaSeletivaManager etapaSeletivaManager;
     private EmpresaManager empresaManager;
+    private ParametrosDoSistemaManager parametrosDoSistemaManager;
     private CodigoCBOManager codigoCBOManager;
 
     private boolean exibirSalario;
@@ -104,6 +106,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Collection<Empresa> empresas;
 	private Long[] empresaIds;//repassado para o DWR
 	private Empresa empresa;
+	private Boolean compartilharColaboradores;
 
 	private void prepare() throws Exception
 	{
@@ -151,7 +154,9 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String prepareRelatorioColaboradorCargo() throws Exception
 	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_COLAB_CARGO");
+		compartilharColaboradores =  parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_COLAB_CARGO");
+		
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 		
@@ -783,6 +788,14 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
 		this.codigoCBOManager = codigoCBOManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 
 }

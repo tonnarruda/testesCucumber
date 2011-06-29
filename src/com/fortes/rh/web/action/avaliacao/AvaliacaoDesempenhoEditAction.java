@@ -12,6 +12,7 @@ import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -42,6 +43,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EmpresaManager empresaManager;
 	private ColaboradorManager colaboradorManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
@@ -78,6 +80,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	//questionario list
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ResultadoAvaliacaoDesempenho> resultados;
+	private Boolean compartilharColaboradores;
 	
 	private void prepare() throws Exception
 	{
@@ -121,7 +124,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private void prepareParticipantes() 
 	{
 		empresaId = getEmpresaSistema().getId();
-		empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), isAvaliados);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
@@ -558,5 +562,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public void setParticipanteIds(Long[] participanteIds)
 	{
 		this.participanteIds = participanteIds;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 }

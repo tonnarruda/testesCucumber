@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
@@ -35,6 +36,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	private OcorrenciaManager ocorrenciaManager;
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Ocorrencia ocorrencia;
 	@SuppressWarnings("unused")
@@ -75,6 +77,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	private Empresa empresa;
 	private Long[] empresaIds;//repassado para o DWR
 	private Collection<Empresa> empresas;
+	private Boolean compartilharColaboradores;
 
 	public String execute() throws Exception
 	{
@@ -131,7 +134,9 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 
 	public String prepareRelatorioOcorrencia() throws Exception
 	{
-		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_OCORRENCIA");
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_OCORRENCIA");
+		
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 		
@@ -540,6 +545,14 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	public void setEmpresaManager(EmpresaManager empresaManager)
 	{
 		this.empresaManager = empresaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Boolean getCompartilharColaboradores() {
+		return compartilharColaboradores;
 	}
 
 

@@ -356,6 +356,16 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		getDao().updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
 	}
 
+	public Collection<Empresa> findEmpresasPermitidas(Boolean compartilhar, Long empresId, Long usuarioId, String... roles) 
+	{
+		if(usuarioId.equals(1L))
+			return getDao().findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"}); 
+
+		if (compartilhar)
+			return getDao().findByUsuarioPermissao(usuarioId, roles);
+
+		return getDao().findById(new Long[]{empresId});
+	}
 
 	public Collection<Empresa> findTodasEmpresas() {
 		return getDao().findTodasEmpresas();
@@ -383,4 +393,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager) {
 		this.motivoDemissaoManager = motivoDemissaoManager;
 	}
+
+	
 }

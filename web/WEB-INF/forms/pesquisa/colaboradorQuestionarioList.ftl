@@ -24,7 +24,7 @@
     <#include "../util/topFiltro.ftl" />
         <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
 
-            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" liClass="liLeft"/>
+            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" liClass="liLeft"  disabled="!compartilharColaboradores"/>
             <@ww.select label="Respondida" name="respondida" id="respondida" list=r"#{'S':'Sim','N':'Não'}" headerValue="Todas" headerKey="T"/>
             <@ww.hidden name="questionario.id"/>
 

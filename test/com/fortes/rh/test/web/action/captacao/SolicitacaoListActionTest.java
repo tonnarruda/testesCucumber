@@ -14,9 +14,11 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -35,6 +37,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 	private Mock candidatoManager;
 	private Mock cargoManager;
 	private Mock empresaManager;
+	private Mock parametrosDoSistemaManager;
 
     protected void setUp() throws Exception
     {
@@ -44,11 +47,13 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
         candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
         cargoManager = new Mock(CargoManager.class);        
         empresaManager = new Mock(EmpresaManager.class);
+        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
         action.setSolicitacaoManager((SolicitacaoManager) manager.proxy());
         action.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
         action.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
         action.setCargoManager((CargoManager)cargoManager.proxy());
         action.setEmpresaManager((EmpresaManager)empresaManager.proxy());
+        action.setParametrosDoSistemaManager((ParametrosDoSistemaManager)parametrosDoSistemaManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         
@@ -149,10 +154,14 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     {
     	Candidato candidato = CandidatoFactory.getCandidato();
     	candidato.setId(100L);
-    	
-		action.setCandidato(candidato);
-		empresaManager.expects(once()).method("findByUsuarioPermissao").with(ANYTHING, ANYTHING);
-    	candidatoManager.expects(once()).method("findByCandidatoId").with(eq(100L)).will(returnValue(candidato));
+    	action.setCandidato(candidato);
+
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+
+		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(100L)).will(returnValue(candidato));
 		manager.expects(once()).method("findSolicitacaoList").with(eq(1L),eq(false),eq(true),eq(false)).will(returnValue(new ArrayList<Solicitacao>()));
 		
 		assertEquals("success", action.verSolicitacoes());
