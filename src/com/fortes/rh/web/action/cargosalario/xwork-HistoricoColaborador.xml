@@ -96,9 +96,5 @@
 		<action name="prepareAjusteDissidio" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="prepareAjusteDissidio">
 		     <result name="success" type="freemarker">/WEB-INF/forms/cargosalario/ajusteDissidio.ftl</result>
 		</action>
-		<action name="setDissidio" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="setDissidio">
-		     <result name="success" type="redirect">prepareAjusteDissidio.action?dataBase=${dataBase}&amp;percentualDissidio=${percentualDissidio}&amp;sugerir=${sugerir}&amp;d-3220764-p=${page}#fim</result>
-		     <result name="input" type="freemarker">/WEB-INF/forms/cargosalario/ajusteDissidio.ftl</result>
-		</action>
 	</package>
 </xwork>

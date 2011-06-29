@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.cargosalario;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +17,7 @@ import java.util.ResourceBundle;
 import org.apache.commons.beanutils.BeanComparator;
 import org.springframework.core.NestedRuntimeException;
 
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -59,6 +61,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private EmpresaManager empresaManager;
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private CargoManager cargoManager;
 
 	private Collection<HistoricoColaborador> historicoColaboradors;
 
@@ -69,6 +72,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] areasCheck;
+	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
+	private String[] cargosCheck;
 	private Date dataBase;
 	private Date dataIni;
 	private Date dataFim;
@@ -115,6 +120,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	private boolean sugerir = true;
 	private Boolean compartilharColaboradores;
+	private boolean aplicaDissidio;
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -406,20 +412,21 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public String prepareAjusteDissidio() 
 	{
-		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, getEmpresaSistema().getId());
+		if(aplicaDissidio)
+		{
+			historicoColaboradorManager.setMotivo(historicoColaboradorIds, "D");
+			historicoColaboradorManager.setMotivo(retiraDissidioIds, "P");
+			sugerir = false;			
+		}
+
+		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
+		CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
+		
+		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, getEmpresaSistema().getId(), cargosCheck);		
 		
 		return Action.SUCCESS;
 	}
 	
-	public String setDissidio() 
-	{
-		historicoColaboradorManager.setMotivo(historicoColaboradorIds, "D");
-		historicoColaboradorManager.setMotivo(retiraDissidioIds, "P");
-		sugerir = false;
-		
-		return Action.SUCCESS;
-	}
-
 	public String[] getAreasCheck()
 	{
 		return areasCheck;
@@ -763,5 +770,28 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
 	}
-	
+
+	public Collection<CheckBox> getCargosCheckList() {
+		return cargosCheckList;
+	}
+
+	public void setCargosCheckList(Collection<CheckBox> cargosCheckList) {
+		this.cargosCheckList = cargosCheckList;
+	}
+
+	public String[] getCargosCheck() {
+		return cargosCheck;
+	}
+
+	public void setCargosCheck(String[] cargosCheck) {
+		this.cargosCheck = cargosCheck;
+	}
+
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
+	}
+
+	public void setAplicaDissidio(boolean aplicaDissidio) {
+		this.aplicaDissidio = aplicaDissidio;
+	}
 }
