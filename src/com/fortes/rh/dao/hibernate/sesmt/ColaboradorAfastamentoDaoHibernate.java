@@ -29,13 +29,13 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 {
 	public Integer getCount(Long empresaId, Long afastamentoId, String nomeBusca, Long[] estabelecimentoIds, Date inicio, Date fim)
 	{
-		Query query = montaConsultaFind(true, "", empresaId, inicio, fim, nomeBusca, estabelecimentoIds, null, afastamentoId, false, 'T');
+		Query query = montaConsultaFind(true, "", empresaId, inicio, fim, nomeBusca, estabelecimentoIds, null, afastamentoId, false, false, 'T');
 		return (Integer)query.uniqueResult();
 	}
 
-	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, Long afastamentoId, String nomeBusca, Long[] estabelecimentoIds, Long[] areaIds, Date inicio, Date fim, String ascOuDesc, boolean ordenaColaboradorPorNome, char afastadoPeloINSS)
+	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, Long afastamentoId, String nomeBusca, Long[] estabelecimentoIds, Long[] areaIds, Date inicio, Date fim, String ascOuDesc, boolean ordenaColaboradorPorNome, boolean ordenaPorCid, char afastadoPeloINSS)
 	{
-		Query query = montaConsultaFind(false, ascOuDesc, empresaId, inicio, fim, nomeBusca, estabelecimentoIds, areaIds, afastamentoId, ordenaColaboradorPorNome, afastadoPeloINSS);
+		Query query = montaConsultaFind(false, ascOuDesc, empresaId, inicio, fim, nomeBusca, estabelecimentoIds, areaIds, afastamentoId, ordenaColaboradorPorNome, ordenaPorCid, afastadoPeloINSS);
 
 		if(pagingSize != 0)
         {
@@ -46,7 +46,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		return query.list();
 	}
 
-	private Query montaConsultaFind(boolean isCount, String ascOuDesc, Long empresaId, Date inicio, Date fim, String nomeBusca, Long[] estabelecimentoIds, Long[] areaIds, Long afastamentoId, boolean ordenaColaboradorPorNome, char afastadoPeloINSS)
+	private Query montaConsultaFind(boolean isCount, String ascOuDesc, Long empresaId, Date inicio, Date fim, String nomeBusca, Long[] estabelecimentoIds, Long[] areaIds, Long afastamentoId, boolean ordenaColaboradorPorNome, boolean ordenaPorCid, char afastadoPeloINSS)
 	{
 		StringBuilder hql = null;
 
@@ -55,7 +55,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		if (isCount)
 			hql = new StringBuilder("select count(ca.id) ");
 		else
-			hql = new StringBuilder("select new ColaboradorAfastamento(ca.id, ca.inicio, ca.fim, a.descricao, co.nome, es.nome, ao.id, ca.cid) ");
+			hql = new StringBuilder("select new ColaboradorAfastamento(ca.id, ca.inicio, ca.fim, a.descricao, co.nome, es.nome, ao.id, upper(trim(coalesce(ca.cid,''))) ) ");
 
 		hql.append("from ColaboradorAfastamento ca ");
 		hql.append("join ca.afastamento a ");
@@ -100,8 +100,10 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		}
 
 		if (!isCount){
-			if (ordenaColaboradorPorNome)
-				hql.append("ORDER BY  co.nome ASC, ca.inicio " + ascOuDesc);
+			if (ordenaPorCid)
+				hql.append("ORDER BY upper(trim(coalesce(ca.cid,''))) ASC, co.nome " + ascOuDesc + ", ca.inicio");
+			else if (ordenaColaboradorPorNome)
+				hql.append("ORDER BY co.nome ASC, ca.inicio " + ascOuDesc);
 			else
 				hql.append("ORDER BY ca.inicio " + ascOuDesc +", co.nome ASC");
 		}else{

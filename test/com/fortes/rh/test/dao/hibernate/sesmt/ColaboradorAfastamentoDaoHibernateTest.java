@@ -100,24 +100,24 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		
 		char afastadoPeloINSS = 'T';//Todos
 
-		Collection<ColaboradorAfastamento> teste = colaboradorAfastamentoDao.findAllSelect(0, 0, empresa.getId(), afastamento.getId(), "a", estabelecimentoIds, null, DateUtil.criarDataMesAno(1, 3, 2009), DateUtil.criarDataMesAno(1, 6, 2009), "DESC", false, afastadoPeloINSS);
+		Collection<ColaboradorAfastamento> teste = colaboradorAfastamentoDao.findAllSelect(0, 0, empresa.getId(), afastamento.getId(), "a", estabelecimentoIds, null, DateUtil.criarDataMesAno(1, 3, 2009), DateUtil.criarDataMesAno(1, 6, 2009), "DESC", false, false, afastadoPeloINSS);
 		assertEquals(1, teste.size());
 
-		Collection<ColaboradorAfastamento> teste2 = colaboradorAfastamentoDao.findAllSelect(1, 15, empresa.getId(), null, "", estabelecimentoIds, null, null, null, "DESC", false, afastadoPeloINSS);
+		Collection<ColaboradorAfastamento> teste2 = colaboradorAfastamentoDao.findAllSelect(1, 15, empresa.getId(), null, "", estabelecimentoIds, null, null, null, "DESC", false, false, afastadoPeloINSS);
 		assertEquals(1, teste2.size());
 
 		//Não afastados pelo inss
 		afastadoPeloINSS = 'N';
 		afastamento.setInss(false);
 		afastamentoDao.save(afastamento);
-		Collection<ColaboradorAfastamento> teste3 = colaboradorAfastamentoDao.findAllSelect(1, 15, empresa.getId(), null, "", estabelecimentoIds, null, null, null, "DESC", false, afastadoPeloINSS);
+		Collection<ColaboradorAfastamento> teste3 = colaboradorAfastamentoDao.findAllSelect(1, 15, empresa.getId(), null, "", estabelecimentoIds, null, null, null, "DESC", false, false, afastadoPeloINSS);
 		assertEquals(1, teste3.size());
 
 		//Afastados por inss
 		afastadoPeloINSS = 'A';
 		afastamento.setInss(true);
 		afastamentoDao.save(afastamento);
-		Collection<ColaboradorAfastamento> teste4 = colaboradorAfastamentoDao.findAllSelect(1, 15, empresa.getId(), null, "", estabelecimentoIds, null, null, null, "DESC", false, afastadoPeloINSS);
+		Collection<ColaboradorAfastamento> teste4 = colaboradorAfastamentoDao.findAllSelect(1, 15, empresa.getId(), null, "", estabelecimentoIds, null, null, null, "DESC", false, false, afastadoPeloINSS);
 		assertEquals(1, teste4.size());
 	}
 

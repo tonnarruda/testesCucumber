@@ -39,6 +39,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private boolean agruparPorCid;
 	
 	public String list() throws Exception
 	{
@@ -46,7 +47,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			return SUCCESS;
 
 		setTotalSize(colaboradorAfastamentoManager.getCount(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento));
-		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, null, colaboradorAfastamento, "DESC", false, 'T');
+		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, null, colaboradorAfastamento, "DESC", false, false, 'T');
 	
 		afastamentos = afastamentoManager.findAll();
 
@@ -95,7 +96,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			if (!validaPeriodo())
 				return INPUT;
 			
-			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, areasCheck, colaboradorAfastamento, ordenaColaboradorPorNome, afastadoPeloINSS);
+			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, areasCheck, colaboradorAfastamento, ordenaColaboradorPorNome, agruparPorCid, afastadoPeloINSS);
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
 		}
 		catch (ColecaoVaziaException e)
@@ -105,7 +106,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			return INPUT;
 		}
 
-		return SUCCESS;
+		return agruparPorCid ? "afastamentos_por_cid" : "afastamentos";
 	}
 
 	private String getPeriodoFormatado()
@@ -214,6 +215,14 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public boolean isAgruparPorCid() {
+		return agruparPorCid;
+	}
+
+	public void setAgruparPorCid(boolean agruparPorCid) {
+		this.agruparPorCid = agruparPorCid;
 	}
 
 

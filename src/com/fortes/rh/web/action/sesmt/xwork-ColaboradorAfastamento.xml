@@ -46,9 +46,15 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
 		</action>
 		<action name="relatorioAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="relatorioAfastamentos">
-			<result name="success" type="jasper">
+			<result name="afastamentos" type="jasper">
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="location">/WEB-INF/report/afastamentos.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">afastamentos.pdf</param>
+			</result>
+			<result name="afastamentos_por_cid" type="jasper">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="location">/WEB-INF/report/afastamentoscid.jasper</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">afastamentos.pdf</param>
 			</result>
