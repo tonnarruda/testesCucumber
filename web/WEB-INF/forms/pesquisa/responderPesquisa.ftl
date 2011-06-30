@@ -150,7 +150,7 @@ function agrupaPerguntaseRespostas(formulario)
 	</#if>
 	<@ww.actionerror />
 
-	<@ww.form name="formAction" action="salvaQuestionarioRespondido.action?tela=${tela}" method="POST">
+	<@ww.form name="formAction" action="salvaQuestionarioRespondido.action?tela=${tela}#c${colaborador.id}" method="POST">
 		<@ww.hidden name="respostas" id="respostas" />
 		<@ww.hidden name="questionario.id" />
 		<@ww.hidden name="questionario.liberado" />

@@ -41,6 +41,8 @@
 	
 				<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkColaborador\", this.checked);' />" style="width: 26px; text-align: center;">
 					<input type="checkbox" class="checkColaborador" value="${colaboradorQuestionario.id}" name="colaboradorQuestionarioIds" />
+					<!-- Marca a posicao da tela -->
+					<a name="c${colaboradorQuestionario.colaborador.id}">
 				</@display.column>
 	
 				<@display.column title="Ações" style="width:60px;text-align:center">
