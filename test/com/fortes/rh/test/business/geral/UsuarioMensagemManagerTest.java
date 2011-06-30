@@ -181,10 +181,8 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
 		usuarioEmpresas.add(usuarioEmpresa);
 
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		mensagemManager.expects(once()).method("save").with(ANYTHING).will(returnValue(mensagem));
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
 		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas);
 	}

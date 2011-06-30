@@ -86,6 +86,30 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 
 		return criteria.list();
 	}
+	
+	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role)
+	{
+		Criteria criteria = getSession().createCriteria(UsuarioEmpresa.class, "ue");
+		criteria.createCriteria("ue.empresa", "emp");
+		criteria.createCriteria("ue.usuario", "u");
+		criteria.createCriteria("ue.perfil", "per");
+		criteria.createCriteria("per.papeis", "p");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ue.id"), "id");
+		p.add(Projections.property("u.id"), "usuarioId");
+		p.add(Projections.property("emp.id"), "empresaId");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("emp.id", empresaId));
+		criteria.add(Expression.eq("p.codigo", role));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));
+
+		return criteria.list();
+	}
 
 	public Collection<UsuarioEmpresa> findByUsuario(Long usuarioId)
 	{

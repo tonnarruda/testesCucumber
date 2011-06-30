@@ -13,4 +13,5 @@ public interface UsuarioEmpresaManager extends GenericManager<UsuarioEmpresa>
 	Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleAvaliacaoExperiencia(Long empresaId);
 	void save(Usuario usuario, String[] empresaIds, String[] selectPerfils);
 	Collection<UsuarioEmpresa> findByUsuario(Long usuarioId);
+	Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role);
 }
