@@ -304,6 +304,7 @@
   <include file="/com/fortes/rh/web/action/captacao/xwork-Atitude.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-ConfiguracaoRelatorioDinamico.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-CodigoCBO.xml" />
+  <include file="/com/fortes/rh/web/action/geral/xwork-Cid.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-GrupoAC.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-ComoFicouSabendoVaga.xml" />
 </xwork>

@@ -407,6 +407,7 @@
 				
 				/thumb/**=ROLE_ANONYMOUS,ROLE_USER
 				/geral/codigoCBO/find.action*=ROLE_USER
+				/geral/cid/find.action*=ROLE_USER
 				/desenvolvimento/colaboradorTurma/findNotas.action*=ROLE_USER
 			</value>
 		</property>

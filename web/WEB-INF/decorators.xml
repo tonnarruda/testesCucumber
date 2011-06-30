@@ -32,6 +32,7 @@
 		<pattern>/updateConf.action</pattern>
 		<pattern>/gerarBD.action</pattern>
 		<pattern>/geral/codigoCBO/find.action*</pattern>
+		<pattern>/geral/cid/find.action*</pattern>
 		<pattern>/desenvolvimento/colaboradorTurma/findNotas.action*</pattern>
 		<pattern>/captacao/solicitacao/findEventos.action*</pattern>
 		<pattern>/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action*</pattern>		

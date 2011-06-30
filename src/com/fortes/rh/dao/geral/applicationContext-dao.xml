@@ -290,6 +290,14 @@
       <ref bean="codigoCBODaoTarget" />
     </property>
   </bean>
+  <bean id="cidDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.CidDao</value>
+    </property>
+    <property name="target">
+      <ref bean="cidDaoTarget" />
+    </property>
+  </bean>
   <bean id="grupoACDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
       <value>com.fortes.rh.dao.geral.GrupoACDao</value>

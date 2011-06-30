@@ -146,6 +146,7 @@
     <mapping class="com.fortes.rh.model.captacao.Atitude" />
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico" />
     <mapping class="com.fortes.rh.model.geral.CodigoCBO" />
+    <mapping class="com.fortes.rh.model.geral.Cid" />
       <mapping class="com.fortes.rh.model.geral.GrupoAC" />
       <mapping class="com.fortes.rh.model.geral.ComoFicouSabendoVaga" />
   </session-factory>

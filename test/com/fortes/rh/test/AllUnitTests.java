@@ -197,6 +197,7 @@ import com.fortes.rh.test.dao.hibernate.geral.AreaOrganizacionalDaoHibernateTest
 import com.fortes.rh.test.dao.hibernate.geral.BairroDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.BeneficioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.CamposExtrasDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.CidDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.CidadeDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ClienteDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.CodigoCBODaoHibernateTest;
@@ -415,6 +416,7 @@ import com.fortes.rh.test.web.action.geral.BairroEditActionTest;
 import com.fortes.rh.test.web.action.geral.BairroListActionTest;
 import com.fortes.rh.test.web.action.geral.BeneficioEditActionTest;
 import com.fortes.rh.test.web.action.geral.BeneficioListActionTest;
+import com.fortes.rh.test.web.action.geral.CidEditActionTest;
 import com.fortes.rh.test.web.action.geral.ClienteEditActionTest;
 import com.fortes.rh.test.web.action.geral.CodigoCBOEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorEditActionTest;
@@ -775,8 +777,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(GrupoACEditActionTest.class);
         suite.addTestSuite(GrupoACManagerTest.class);
         suite.addTestSuite(CodigoCBODaoHibernateTest.class);
+        suite.addTestSuite(CidDaoHibernateTest.class);
         suite.addTestSuite(ConfiguracaoCampoExtraDaoHibernateTest.class);
         suite.addTestSuite(CodigoCBOEditActionTest.class);
+        suite.addTestSuite(CidEditActionTest.class);
         suite.addTestSuite(ComoFicouSabendoVagaDaoHibernateTest.class);
         suite.addTestSuite(ComoFicouSabendoVagaManagerTest.class);
         suite.addTestSuite(ComoFicouSabendoVagaEditActionTest.class);

@@ -6,6 +6,13 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AfastamentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+
+	<style type="text/css">
+	    @import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+	    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+	    @import url('<@ww.url includeParams="none" value="/css/jquery-ui/redmond.css"/>');
+    </style>
 
 	<script type='text/javascript'>
 		function isInss(id)
@@ -22,6 +29,94 @@
 			else
 				elemInss.style.display="none";
 		}
+		
+		
+		function limpar(data)
+		{
+			if(data == '' || data.length < 6)
+				$("#descricaoCid").val('');
+		}
+		
+		$(document).ready(function() {
+			var urlFind = "<@ww.url includeParams="none" value="/geral/cid/find.action"/>";
+			
+			$("#cid").autocomplete({
+				source: function( request, response ) {
+					$.ajax({
+						url: urlFind,
+						dataType: "json",
+						data: {
+							descricao: '',
+							codigo: request.term
+						},
+						success: function( data ) {
+							response( $.map( data, function( item ) {
+								return {
+									label: item.codigo.replace(
+										new RegExp(
+											"(?![^&;]+;)(?!<[^<>]*)(" +
+											$.ui.autocomplete.escapeRegex(request.term) +
+											")(?![^<>]*>)(?![^&;]+;)", "gi"
+										), "<strong>$1</strong>" ) + " - " + item.descricao ,
+									value: item.codigo,
+									descricao: item.descricao
+								}
+							}));
+						}
+					});
+				},
+				minLength: 2,
+				select: function( event, ui ) {
+					$("#descricaoCid").val(ui.item.descricao);
+				}
+			}).data( "autocomplete" )._renderItem = function( ul, item ) {
+					return $( "<li></li>" )
+						.data( "item.autocomplete", item )
+						.append( "<a>" + item.label + "</a>" )
+						.appendTo( ul );
+			};
+			
+			$("#descricaoCid").autocomplete({
+				source: function( request, response ) {
+					$.ajax({
+						url: urlFind,
+						dataType: "json",
+						data: {
+							descricao: request.term,
+							codigo: ''
+						},
+						success: function( data ) {
+							response( $.map( data, function( item ) {
+								return {
+									label: item.descricao.replace(
+											new RegExp(
+												"(?![^&;]+;)(?!<[^<>]*)(" +
+												$.ui.autocomplete.escapeRegex(request.term) +
+												")(?![^<>]*>)(?![^&;]+;)", "gi"
+											), "<strong>$1</strong>" ) + " - " + item.codigo ,
+									
+									value: item.descricao,
+									codigo: item.codigo
+								}
+							}));
+						}
+					});
+				},
+				minLength: 4,
+				select: function( event, ui ) {
+					$("#cid").val(ui.item.codigo);
+				},
+				change: function(){
+					alet()
+				} 
+			}).data( "autocomplete" )._renderItem = function( ul, item ) {
+					return $( "<li></li>" )
+						.data( "item.autocomplete", item )
+						.append( "<a>" + item.label + "</a>" )
+						.appendTo( ul );
+			};
+		});
+		
 	</script>
 	
 	<#include "../ftl/mascarasImports.ftl" />
@@ -103,7 +198,9 @@
 			a <@ww.datepicker label="Fim" id="fim"  name="colaboradorAfastamento.fim" value="${fim}" cssClass="mascaraData validaDataFim" theme="simple"/>
 			<br>
 			<br>
-			<@ww.textfield label="CID (Classificação Internacional de Doenças)" id="cid" name="colaboradorAfastamento.cid" cssStyle="width: 80px;" maxLength="10"/>
+			<@ww.textfield label="CID" id="cid" name="colaboradorAfastamento.cid" cssStyle="width: 80px;" maxLength="10" liClass="liLeft" />
+			<@ww.textfield label="Descrição" name="descricao" id="descricaoCid" cssStyle="width: 418px;" maxLength="200"  />
+			
 			<@ww.textfield label="Médico" name="colaboradorAfastamento.medicoNome" cssClass="inputNome"/>
 			<@ww.textfield label="CRM" name="colaboradorAfastamento.medicoCrm" maxLength="20"/>
 			<@ww.textarea label="Observações" name="colaboradorAfastamento.observacao" cssStyle="width: 505px;"/>

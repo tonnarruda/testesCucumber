@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="cid" extends="default" namespace="/geral/cid">
+		<action name="find" class="com.fortes.rh.web.action.geral.CidEditAction" method="find">
+		     <result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		     <param name="contentType">application/json</param>
+		</action>
+	</package>
+</xwork>
