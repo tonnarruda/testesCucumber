@@ -275,6 +275,8 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		hql.append("join hc.colaborador co ");
 		
 		hql.append("where hc.estabelecimento.id = :estabelecimentoId ");
+		hql.append("and (co.dataDesligamento is null ");
+		hql.append("or co.dataDesligamento >= :data) ");
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("                from HistoricoColaborador as hc2 ");
 		hql.append("                where hc2.colaborador.id = co.id ");

@@ -268,7 +268,7 @@
 	</li>
 	
 	<li id="3" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Avaliações do Período de Experiência</a></h4>
+		<h4><a href="javascript:return false;"  class="linkBox">Acompanhamento do Período de Experiência</a></h4>
 		<ul id="box3" class="box">
 		<table class="grade">
 			<tr>
