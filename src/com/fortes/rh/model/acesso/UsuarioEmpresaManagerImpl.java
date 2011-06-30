@@ -40,6 +40,11 @@ public class UsuarioEmpresaManagerImpl extends GenericManagerImpl<UsuarioEmpresa
 	{
 		return getDao().findUsuariosByEmpresaRoleSetorPessoal(null, null, empresaId);
 	}
+	
+	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role)
+	{
+		return getDao().findUsuariosByEmpresaRole(empresaId, role);
+	}
 
 	public void save(Usuario usuario, String[] empresaIds, String[] selectPerfils)
 	{

@@ -70,38 +70,24 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 
 	public void saveMensagemAndUsuarioMensagem(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas)
 	{
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
+		Mensagem mensagem = new Mensagem();
+		mensagem.setData(new Date());
 
-		try
+		mensagem.setTexto(msg);
+		mensagem.setRemetente(remetente);
+		mensagem.setLink(link);
+
+		mensagem = mensagemManager.save(mensagem);
+
+		for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas)
 		{
-			Mensagem mensagem = new Mensagem();
-			mensagem.setData(new Date());
+			UsuarioMensagem usuarioMensagem = new UsuarioMensagem();
+			usuarioMensagem.setUsuario(usuarioEmpresa.getUsuario());
+			usuarioMensagem.setMensagem(mensagem);
+			usuarioMensagem.setEmpresa(usuarioEmpresa.getEmpresa());
+			usuarioMensagem.setLida(false);
 
-			mensagem.setTexto(msg);
-			mensagem.setRemetente(remetente);
-			mensagem.setLink(link);
-
-			mensagem = mensagemManager.save(mensagem);
-
-			for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas)
-			{
-				UsuarioMensagem usuarioMensagem = new UsuarioMensagem();
-				usuarioMensagem.setUsuario(usuarioEmpresa.getUsuario());
-				usuarioMensagem.setMensagem(mensagem);
-				usuarioMensagem.setEmpresa(usuarioEmpresa.getEmpresa());
-				usuarioMensagem.setLida(false);
-
-				save(usuarioMensagem);
-			}
-
-			transactionManager.commit(status);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			transactionManager.rollback(status);
+			save(usuarioMensagem);
 		}
 	}
 

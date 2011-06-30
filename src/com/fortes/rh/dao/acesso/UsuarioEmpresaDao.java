@@ -15,4 +15,6 @@ public interface UsuarioEmpresaDao extends GenericDao<UsuarioEmpresa>
 	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC, Long empresaId);
 
 	public Collection<UsuarioEmpresa> findByUsuario(Long usuarioId);
+	
+	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role);
 }

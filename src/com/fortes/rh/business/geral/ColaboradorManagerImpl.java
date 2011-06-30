@@ -33,6 +33,8 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
@@ -101,8 +103,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private FaixaSalarialManager faixaSalarialManager;
 	private EstadoManager estadoManager;
 	private CamposExtrasManager camposExtrasManager;
-
-	
+	private UsuarioEmpresaManager usuarioEmpresaManager;
+	private UsuarioMensagemManager usuarioMensagemManager;
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
@@ -1064,12 +1066,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas,
 			Collection<Experiencia> experiencias, Empresa empresa) throws Exception
 	{
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
 		try
 		{
+			Colaborador colaboradorOriginal = findColaboradorById(colaborador.getId());
+			
 			getDao().updateInfoPessoais(colaborador);
 			salvarBairro(colaborador);
 
@@ -1085,14 +1085,43 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
 			}
 
-			transactionManager.commit(status);
+			
+			Colaborador colaboradorAtualizado = findColaboradorById(colaborador.getId());
+			
+			criarMensagemAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
+			
 		}
 		catch (Exception e)
 		{
-			transactionManager.rollback(status);
 			e.printStackTrace();
 			throw new Exception("Não foi possível Editar o colaborador.");
 		}
+	}
+	
+	private void criarMensagemAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado, Long empresaId)
+	{
+		StringBuffer mensagem = new StringBuffer();
+		mensagem.append(colaboradorOriginal.getPessoal().getSexo() == 'F' ? "A colaboradora " : "O colaborador ");
+		mensagem.append("<b>" + colaboradorOriginal.getNome() + "</b> atualizou seu endereço:\n\n");
+		mensagem.append("Endereço original:\n");
+		mensagem.append(colaboradorOriginal.getEndereco().getEnderecoFormatado() + "\n");
+		mensagem.append(colaboradorOriginal.getEndereco().getBairro() + ", " 
+												+ colaboradorOriginal.getEndereco().getCidade().getNome() + "-"
+												+ colaboradorOriginal.getEndereco().getUf().getSigla() + "\n");
+		mensagem.append("CEP: " + colaboradorOriginal.getEndereco().getCepFormatado() + "\n");
+		
+		mensagem.append("\n");
+		
+		mensagem.append("Endereço atualizado:\n");
+		mensagem.append(colaboradorAtualizado.getEndereco().getEnderecoFormatado() + "\n");
+		mensagem.append(colaboradorAtualizado.getEndereco().getBairro() + ", " 
+												+ colaboradorAtualizado.getEndereco().getCidade().getNome() + "-"
+												+ colaboradorAtualizado.getEndereco().getUf().getSigla() + "\n");
+		mensagem.append("CEP: " + colaboradorAtualizado.getEndereco().getCepFormatado() + "\n");
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresaId, "ROLE_VISUALIZAR_MSG");
+		
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "geral/colaborador/prepareUpdate.action?colaborador.id=" + colaboradorOriginal.getId(), usuarioEmpresas);
 	}
 	
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId)
@@ -1798,6 +1827,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			graficoEvolucaoTurnover.add(new Object[]{DateUtil.getUltimoDiaMes(turnOver.getMesAno()).getTime(), turnOver.getTurnOver()});
 		
 		return graficoEvolucaoTurnover;
+	}
+
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
+	}
+
+	public void setUsuarioMensagemManager(
+			UsuarioMensagemManager usuarioMensagemManager) {
+		this.usuarioMensagemManager = usuarioMensagemManager;
 	}
 
 }

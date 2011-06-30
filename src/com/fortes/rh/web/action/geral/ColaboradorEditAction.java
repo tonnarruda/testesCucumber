@@ -34,6 +34,7 @@ import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.CatManager;
@@ -42,6 +43,7 @@ import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
@@ -121,6 +123,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private CamposExtrasManager camposExtrasManager;
 	private ConfiguracaoPerformanceManager configuracaoPerformanceManager;
+	private UsuarioMensagemManager usuarioMensagemManager;
+	private UsuarioEmpresaManager usuarioEmpresaManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -688,6 +692,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			colaboradorManager.updateInfoPessoais(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema());
 			prepareUpdateInfoPessoais();
+			
 			addActionMessage("Colaborador editado com sucesso.");
 		}
 		catch (Exception e)
@@ -1543,6 +1548,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setObsACPessoal(String obsACPessoal) {
 		this.obsACPessoal = obsACPessoal;
+	}
+
+	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager) {
+		this.usuarioMensagemManager = usuarioMensagemManager;
+	}
+
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 	
 }
