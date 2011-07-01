@@ -424,6 +424,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, getEmpresaSistema().getId(), cargosCheck);		
 		
+		if (historicoColaboradors == null || historicoColaboradors.isEmpty())
+			addActionMessage("Não existem colaboradores a serem listados");
+		
 		return Action.SUCCESS;
 	}
 	

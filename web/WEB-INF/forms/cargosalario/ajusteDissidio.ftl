@@ -40,7 +40,7 @@
 				{
 					jQuery.alerts.okButton = 'Sim';				
 					jQuery.alerts.cancelButton = 'Não';				
-					newConfirm('Registros dessa página gravados com sucesso.<br>Deseja ir para a Próxima página?', function(){window.location=prox.attr('href');});
+					newConfirm('Registros dessa página gravados com sucesso.<br>Deseja ir para a Próxima página?', function(){pesquisar( Number($('#page').val()) + 1 );});
 				}else
 					jAlert('Página gravada com sucesso.');
 			</#if>
