@@ -240,136 +240,135 @@
 		<img id="criterioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
 		<@ww.select label="Tipo de Resposta" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();"/>
 		
-		<li>
-			<#-- Perguntas Objetivas -->
-			<@ww.div id="divRespostas" cssClass="divTipoResposta">
-				<#if pergunta.id?exists && pergunta.respostas?exists>
-					<@ww.div id="respostasEdicao">
-						Opção de Resposta:
-						<br>
-						<#list pergunta.respostas as respostaLista>
-							
-							<#if respostaLista.peso?exists>
-								<#assign pesoSugerido=respostaLista.peso/>
-							<#else>
-								<#assign pesoSugerido="1"/>
-							</#if>
-							
-							<@ww.div id="respostaObjetiva${respostaLista.ordem}">
-								<input name="respostaObjetiva" id="respostaObjetiva" value="${respostaLista.texto}" style="width: 355px;"/>
-								Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-								<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta3('respostaObjetiva${respostaLista.ordem}');"/>
-							</@ww.div>
-						</#list>
-					</@ww.div>
-				<#else>
-					<#if respostasSugeridas?exists && 0<respostasSugeridas?size>
-						<@ww.checkbox label="Sugerir respostas da última pergunta objetiva" name="" id="sugerir" onclick="exibeSugestoesObjetivas(this.checked);" labelposition="left"/>
-				    </#if>
-					
-					<@ww.div id="respostasSugeridas" style="display:none;">
-						<#if respostasSugeridas?exists && 0<respostasSugeridas?size>
-							Opções de Resposta:
-							<br>
-							<#list respostasSugeridas as respostaSugerida>
-							
-								<#if respostaSugerida.peso?exists>
-									<#assign pesoSugerido=respostaSugerida.peso/>
-									<#assign pesoSugeridoEdit=respostaSugerida.peso/>
-								<#else>
-									<#assign pesoSugerido="1"/>
-									<#assign pesoSugeridoEdit=""/>
-								</#if>
-							
-								<@ww.div id="respostaObjetiva${respostaSugerida.ordem}">
-									<input name="respostaObjetivaSugerida" id="respostaObjetivaSugerida" value="${respostaSugerida.texto}" style="width: 355px;"/>
-									Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugeridoEdit}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-									<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta2('respostaObjetiva${respostaSugerida.ordem}');"/>
-									<br>
-								</@ww.div>
-							</#list>
+		
+		<#-- Perguntas Objetivas -->
+		<@ww.div id="divRespostas" cssClass="divTipoResposta">
+			<#if pergunta.id?exists && pergunta.respostas?exists>
+				<@ww.div id="respostasEdicao">
+					Opção de Resposta:
+					<br>
+					<#list pergunta.respostas as respostaLista>
+						
+						<#if respostaLista.peso?exists>
+							<#assign pesoSugerido=respostaLista.peso/>
+						<#else>
+							<#assign pesoSugerido="1"/>
 						</#if>
-					</@ww.div>
-					<@ww.div id="respostaInsert">
+						
+						<@ww.div id="respostaObjetiva${respostaLista.ordem}">
+							<input name="respostaObjetiva" id="respostaObjetiva" value="${respostaLista.texto}" style="width: 355px;"/>
+							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta3('respostaObjetiva${respostaLista.ordem}');"/>
+						</@ww.div>
+					</#list>
+				</@ww.div>
+			<#else>
+				<#if respostasSugeridas?exists && 0<respostasSugeridas?size>
+					<@ww.checkbox label="Sugerir respostas da última pergunta objetiva" name="" id="sugerir" onclick="exibeSugestoesObjetivas(this.checked);" labelposition="left"/>
+			    </#if>
+				
+				<@ww.div id="respostasSugeridas" style="display:none;">
+					<#if respostasSugeridas?exists && 0<respostasSugeridas?size>
 						Opções de Resposta:
 						<br>
-						<@ww.div id="respostaObjetivaInsert">
-							<input name="respostaObjetiva" id="respostaObjetiva" style="width: 355px;"/>
-							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="1" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta4('respostaObjetivaInsert');"/>
-						</@ww.div>
-					</@ww.div>
-				</#if>
-				<@ww.div id="maisRespostas"/>
-				<div id="maisRespostasLink"><a href="javascript:addRespostas();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url value="/imgs/mais.gif"/>" style="margin-top: 5px; margin-bottom: 5px;" align="absmiddle" border="0" width="16" height="16">   Mais uma opção de resposta</a></div>
-			</@ww.div>
-			<#-- Fim Perguntas Objetivas -->
-			
-			<#-- Perguntas Multiplas Escolhas -->
-			<@ww.div id="divMultiplasRespostas" cssClass="divTipoResposta">
-				<#if pergunta.id?exists && pergunta.respostas?exists>
-					<@ww.div id="multiplaRespostasEdicao">
-						Opção de Resposta:
-						<br>
-						<#list pergunta.respostas as respostaLista>
+						<#list respostasSugeridas as respostaSugerida>
 						
-							<#if respostaLista.peso?exists>
-								<#assign pesoSugerido=respostaLista.peso/>
+							<#if respostaSugerida.peso?exists>
+								<#assign pesoSugerido=respostaSugerida.peso/>
+								<#assign pesoSugeridoEdit=respostaSugerida.peso/>
 							<#else>
 								<#assign pesoSugerido="1"/>
+								<#assign pesoSugeridoEdit=""/>
 							</#if>
 						
-							<@ww.div id="multiplaResposta${respostaLista.ordem}">
-								<input name="multiplaResposta" id="multiplaResposta" value="${respostaLista.texto}" style="width: 355px;"/>
-								Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-								<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta6('multiplaResposta${respostaLista.ordem}');"/>
+							<@ww.div id="respostaObjetiva${respostaSugerida.ordem}">
+								<input name="respostaObjetivaSugerida" id="respostaObjetivaSugerida" value="${respostaSugerida.texto}" style="width: 355px;"/>
+								Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugeridoEdit}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+								<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta2('respostaObjetiva${respostaSugerida.ordem}');"/>
+								<br>
 							</@ww.div>
 						</#list>
+					</#if>
+				</@ww.div>
+				<@ww.div id="respostaInsert">
+					Opções de Resposta:
+					<br>
+					<@ww.div id="respostaObjetivaInsert">
+						<input name="respostaObjetiva" id="respostaObjetiva" style="width: 355px;"/>
+						Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="1" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+						<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta4('respostaObjetivaInsert');"/>
 					</@ww.div>
-				<#else>
-					<@ww.div id="multiplaRespostaInsert">
-						Opções de Resposta:
-						<br>
-						<@ww.div id="respostaMultiplaEscolhaInsert">
-							<input name="multiplaResposta" id="multiplaResposta" style="width: 355px;"/>
-							Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla" value="1" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta5('respostaMultiplaEscolhaInsert');"/>
+				</@ww.div>
+			</#if>
+			<@ww.div id="maisRespostas"/>
+			<div id="maisRespostasLink"><a href="javascript:addRespostas();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url value="/imgs/mais.gif"/>" style="margin-top: 5px; margin-bottom: 5px;" align="absmiddle" border="0" width="16" height="16">   Mais uma opção de resposta</a></div>
+		</@ww.div>
+		<#-- Fim Perguntas Objetivas -->
+		
+		<#-- Perguntas Multiplas Escolhas -->
+		<@ww.div id="divMultiplasRespostas" cssClass="divTipoResposta">
+			<#if pergunta.id?exists && pergunta.respostas?exists>
+				<@ww.div id="multiplaRespostasEdicao">
+					Opção de Resposta:
+					<br>
+					<#list pergunta.respostas as respostaLista>
+					
+						<#if respostaLista.peso?exists>
+							<#assign pesoSugerido=respostaLista.peso/>
+						<#else>
+							<#assign pesoSugerido="1"/>
+						</#if>
+					
+						<@ww.div id="multiplaResposta${respostaLista.ordem}">
+							<input name="multiplaResposta" id="multiplaResposta" value="${respostaLista.texto}" style="width: 355px;"/>
+							Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta6('multiplaResposta${respostaLista.ordem}');"/>
 						</@ww.div>
+					</#list>
+				</@ww.div>
+			<#else>
+				<@ww.div id="multiplaRespostaInsert">
+					Opções de Resposta:
+					<br>
+					<@ww.div id="respostaMultiplaEscolhaInsert">
+						<input name="multiplaResposta" id="multiplaResposta" style="width: 355px;"/>
+						Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla" value="1" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+						<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta5('respostaMultiplaEscolhaInsert');"/>
 					</@ww.div>
-				</#if>
-				<@ww.div id="maisMultiplasRespostas"/>
-				<div id="maisMultiplasRespostasLink"><a id="adicionarMultiplaResposta" href="javascript:addMultiplaRespostas();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url value="/imgs/mais.gif"/>" style="margin-top: 5px; margin-bottom: 5px;" align="absmiddle" border="0" width="16" height="16">  Mais uma opção de resposta</a></div>
-			</@ww.div>
-			<#-- Fim Perguntas Multiplas Escolhas -->
-			
-			<#-- Perguntas Notas -->
-			<@ww.div id="notas" cssClass="divTipoResposta">
-				<@ww.div> Faixa de Notas:</@ww.div>
-				<#if pergunta.notaMinima?exists && pergunta.notaMaxima?exists>
-					<input name="pergunta.notaMinima" value="${pergunta.notaMinima}" id="notaMinima" style="width: 50px;text-align:right;" />
-					a
-					<input name="pergunta.notaMaxima" value="${pergunta.notaMaxima}" id="notaMaxima" style="width: 50px;text-align:right;"/>
-				<#else>
-					<input name="pergunta.notaMinima" value="1" id="notaMinima" style="width: 30px;text-align:right;" />
-					a
-					<input name="pergunta.notaMaxima" value="10" id="notaMaxima" style="width: 30px;text-align:right;"/>
-				</#if>
-			</@ww.div>
-			<#-- Fim Perguntas Notas -->
-			
-			<@ww.div id="opcaoComentario" cssClass="divTipoResposta">
-				<ul>
-					<@ww.checkbox label="Solicitar comentário" name="pergunta.comentario" id="checkComentario" onclick="mostrar(document.getElementById('coment'));" labelposition="left"/>
-					<li>
-						<@ww.div id="coment" cssStyle="display:none;">
-							<ul>
-								<@ww.textarea name="pergunta.textoComentario" id="textoComentario" cssStyle="height:30px;" />
-							</ul>
-						</@ww.div>
-					</li>
-				</ul>
-			</@ww.div>
-		</li>
+				</@ww.div>
+			</#if>
+			<@ww.div id="maisMultiplasRespostas"/>
+			<div id="maisMultiplasRespostasLink"><a id="adicionarMultiplaResposta" href="javascript:addMultiplaRespostas();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url value="/imgs/mais.gif"/>" style="margin-top: 5px; margin-bottom: 5px;" align="absmiddle" border="0" width="16" height="16">  Mais uma opção de resposta</a></div>
+		</@ww.div>
+		<#-- Fim Perguntas Multiplas Escolhas -->
+		
+		<#-- Perguntas Notas -->
+		<@ww.div id="notas" cssClass="divTipoResposta">
+			<@ww.div> Faixa de Notas:</@ww.div>
+			<#if pergunta.notaMinima?exists && pergunta.notaMaxima?exists>
+				<input name="pergunta.notaMinima" value="${pergunta.notaMinima}" id="notaMinima" style="width: 50px;text-align:right;" />
+				a
+				<input name="pergunta.notaMaxima" value="${pergunta.notaMaxima}" id="notaMaxima" style="width: 50px;text-align:right;"/>
+			<#else>
+				<input name="pergunta.notaMinima" value="1" id="notaMinima" style="width: 30px;text-align:right;" />
+				a
+				<input name="pergunta.notaMaxima" value="10" id="notaMaxima" style="width: 30px;text-align:right;"/>
+			</#if>
+		</@ww.div>
+		<#-- Fim Perguntas Notas -->
+		
+		<@ww.div id="opcaoComentario" cssClass="divTipoResposta">
+			<ul>
+				<@ww.checkbox label="Solicitar comentário" name="pergunta.comentario" id="checkComentario" onclick="mostrar(document.getElementById('coment'));" labelposition="left"/>
+				<li>
+					<@ww.div id="coment" cssStyle="display:none;">
+						<ul>
+							<@ww.textarea name="pergunta.textoComentario" id="textoComentario" cssStyle="height:30px;" />
+						</ul>
+					</@ww.div>
+				</li>
+			</ul>
+		</@ww.div>
 		
 		<@ww.hidden name="avaliacao.id" id="avaliacao" />
 		<@ww.hidden name="pergunta.id" />
