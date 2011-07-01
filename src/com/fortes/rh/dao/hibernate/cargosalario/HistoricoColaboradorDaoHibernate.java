@@ -229,7 +229,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.add(Expression.eq("e.empresa.id", empresaId));
 		
 		if(areaIds != null && areaIds.length > 0)
-			criteria.add(Expression.in("sc.areaOrganizacioanl.id", areaIds));
+			criteria.add(Expression.in("sc.areaOrganizacional.id", areaIds));
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			criteria.add(Expression.in("e.id", estabelecimentosIds));
 		if (dataIni != null)

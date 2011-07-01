@@ -73,21 +73,12 @@ public abstract class Menu
 	{
 		StringBuilder menuFilho = new StringBuilder();
 		String maisFilhos = "";
-
+		boolean carregar = true;
+		
 		for(Papel papel : roles)
 		{
 			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id)
 			{
-				if (empresasDoUsuario != null && papel.getCodigo().equals("ROLE_UTI"))
-				{
-					menuFilho.append("<li><a href='#'>Empresa</a>");
-					menuFilho.append("<ul>\n");
-					for (Empresa emp : empresasDoUsuario) 
-						menuFilho.append("<li><a href='" + contexto + "/index.action?empresaId=" + emp.getId() + "'>" + emp.getNome() + "</a>");
-					menuFilho.append("</li>\n");
-					menuFilho.append("</ul>\n");
-				}
-								
 				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 				menuFilho.append("<li><a href='" + url + "'>" + papel.getNome() + "</a>");
 
@@ -99,6 +90,20 @@ public abstract class Menu
 				}
 
 				menuFilho.append("</li>\n");
+				
+				
+				if (empresasDoUsuario != null && papel.getCodigo().equals("ROLE_UTI") && carregar)
+				{
+					menuFilho.append("<li><a href='#'>Alterar Empresa</a>");
+					menuFilho.append("<ul>\n");
+					for (Empresa emp : empresasDoUsuario) 
+						menuFilho.append("<li><a href='" + contexto + "/index.action?empresaId=" + emp.getId() + "'>" + emp.getNome() + "</a>");
+					menuFilho.append("</li>\n");
+					menuFilho.append("</ul>\n");
+					carregar=false;
+				}
+				
+				
 			}						
 		}
 
