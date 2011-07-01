@@ -2263,6 +2263,13 @@ descricao character varying(200)
 
 alter table codigoCBO add constraint codigocbo_codigo_uk unique (codigo);
 
+create table cid (
+codigo character varying(4) NOT NULL, 
+descricao text
+);
+
+alter table cid add constraint cid_codigo_uk unique (codigo);
+
 create view SituacaoColaborador as 
 select  hc.id as historicoColaboradorId,
 	greatest(hc.data,hfs_hc.data, hi_hfs_hc.data, hi_hc.data) as data,
