@@ -25,10 +25,6 @@
 			Considerar colaboradores com até  
 			<@ww.textfield theme="simple" name="tempoDeEmpresa" id="tempoDeEmpresa" cssStyle="width:60px; text-align:right;" maxLength="8" onkeypress = "return(somenteNumeros(event,''));"/> 
 			dias de empresa.*
-			<br>  
-			Considerar colaboradores com período de acompanhamento de experiência a vencer daqui a  
-			<@ww.textfield theme="simple" name="diasDeAcompanhamento" id="diasDeAcompanhamento" cssStyle="width:60px; text-align:right;" maxLength="8" onkeypress = "return(somenteNumeros(event,''));"/> 
-			dias.
 			<br><br>
 			
 			<@frt.checkListBox label="Período de Acompanhamento" name="periodoCheck" id="periodoCheck" list="periodoCheckList"/>						

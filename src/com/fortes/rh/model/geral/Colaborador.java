@@ -220,7 +220,25 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if(this.areaOrganizacional == null)
 			this.areaOrganizacional = new AreaOrganizacional();
 		this.areaOrganizacional.setResponsavelNome(responsavelDaArea);
+		
 		this.diasDeEmpresa = diasDeEmpresa;
+	}
+
+	public Colaborador(Long id, String matricula, String nome, Date dataAdmissao, String responsavelDaArea, Integer diasDeEmpresa, Long areaId, String cargoNome)
+	{
+		this.setId(id);
+		this.setMatricula(matricula);
+		this.setNome(nome);
+		this.setDataAdmissao(dataAdmissao);
+		
+		if(this.areaOrganizacional == null)
+			this.areaOrganizacional = new AreaOrganizacional();
+		this.areaOrganizacional.setId(areaId);
+		this.areaOrganizacional.setResponsavelNome(responsavelDaArea);
+		
+		this.diasDeEmpresa = diasDeEmpresa;
+
+		setCargoNomeProjection(cargoNome);
 	}
 	
 	public Colaborador(Long id, Date avaliacaoRespondidaEm, Integer qtdDiasRespondeuAvExperiencia, Long periodoExperienciaId)

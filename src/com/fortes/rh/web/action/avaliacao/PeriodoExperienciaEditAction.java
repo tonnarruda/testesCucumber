@@ -118,7 +118,17 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
     	periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
     	
 		return Action.SUCCESS;
-	}  
+	}
+
+	public String prepareRelatorioAcompanhamentoExperiencia() throws Exception{
+		prepare();
+		
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
+		
+		return Action.SUCCESS;
+	}
 	
 	public String prepareRelatorioRankingPerformance() throws Exception{
 				
@@ -143,7 +153,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, diasDeAcompanhamento, periodoExperiencias);
 			
 			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiência", getEmpresaSistema(), filtro);
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiência Previsto", getEmpresaSistema(), filtro);
 			
 			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(periodoExperiencias); 
 			parametros.put("rodapePeriodoExperiencia", rodape);
@@ -158,6 +168,35 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
     	return Action.SUCCESS;
     }
+
+	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia() throws Exception 
+	{
+		try {
+			dataReferencia = getDataReferencia();
+			
+			if(periodoCheck == null || !(periodoCheck.length > 0))
+				periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+			else
+				periodoExperiencias = periodoExperienciaManager.findById(periodoCheck);
+			
+			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, periodoExperiencias);
+			
+			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiência", getEmpresaSistema(), filtro);
+			
+			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(periodoExperiencias); 
+			parametros.put("rodapePeriodoExperiencia", rodape);
+		}
+		catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			prepareRelatorioAcompanhamentoExperiencia();
+			return Action.INPUT;
+		}
+		
+		return Action.SUCCESS;
+	}
 
 	public String imprimeRelatorioRankingPerformancePeriodoDeExperiencia() throws Exception 
 	{
