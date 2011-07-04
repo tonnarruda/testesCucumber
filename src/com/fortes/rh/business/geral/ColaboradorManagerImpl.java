@@ -3,6 +3,8 @@ package com.fortes.rh.business.geral;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +15,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -47,6 +50,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -72,6 +76,7 @@ import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
@@ -1605,7 +1610,29 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 			
 		if(colaboradores.isEmpty())
-			throw new Exception ("Não existe Colabarodores com os filtros selecionados" ); 
+			throw new Exception ("Não existem Colaboradores com os filtros selecionados" ); 
+		
+		return colaboradores;
+	}
+	
+	public Collection<Colaborador> getAvaliacoesExperienciaPendentesPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception 
+	{
+		int menorPeriodo = 0;
+		if(!periodoExperiencias.isEmpty())
+			menorPeriodo = ((PeriodoExperiencia)periodoExperiencias.toArray()[0]).getDias();
+		
+		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodoComCargo(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
+
+		for (Colaborador colaborador : colaboradores)
+		{
+			colaborador.setAreaOrganizacional(areaOrganizacionalManager.findByIdProjection(colaborador.getAreaOrganizacional().getId()));
+		}
+		
+		if(colaboradores.isEmpty())
+			throw new Exception ("Não existem Colaboradores com os filtros selecionados" ); 
+		
+		Comparator<Colaborador> comp = new BeanComparator("areaOrganizacional.descricao", new ComparatorString());
+		Collections.sort((List<Colaborador>) colaboradores, comp);
 		
 		return colaboradores;
 	}

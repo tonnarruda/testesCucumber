@@ -1,10 +1,13 @@
 package com.fortes.rh.business.avaliacao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.web.tags.CheckBox;
 
 public class RankingPerformancePeriodoExperiencia extends GenericManagerImpl<PeriodoExperiencia, PeriodoExperienciaDao> implements PeriodoExperienciaManager
 {
@@ -39,5 +42,20 @@ public class RankingPerformancePeriodoExperiencia extends GenericManagerImpl<Per
 		
 		
 		return rodapeRelatorioPeriodoExperiencia;
+	}
+
+	public Collection<CheckBox> populaCheckBox(Long empresaId)
+	{
+		try
+		{
+			Collection<PeriodoExperiencia> periodos = getDao().findAllSelect(empresaId, false);
+			return CheckListBoxUtil.populaCheckListBox(periodos, "getId", "getDiasDescricao");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return new ArrayList<CheckBox>();
 	}
 }

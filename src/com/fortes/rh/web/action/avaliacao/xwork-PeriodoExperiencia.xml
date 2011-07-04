@@ -32,7 +32,20 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/periodoExperienciaEdit.ftl</result>
 		</action>
 		
-		<action name="prepareRelatorioAcopanhamentoExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioAcopanhamentoExperiencia">
+		<action name="prepareRelatorioAcompanhamentoExperienciaPrevisto" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioAcompanhamentoExperienciaPrevisto">
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperienciaPrevisto.ftl</result>
+		</action>
+		<action name="imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto">
+		  	<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/periodoDeAcompanhamentoDeExperienciaPrevisto.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">periodoDeAcompanhamentoDeExperienciaPrevisto.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperienciaPrevisto.ftl</result>
+		</action>
+		
+		<action name="prepareRelatorioAcompanhamentoExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioAcompanhamentoExperiencia">
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperiencia.ftl</result>
 		</action>
 		<action name="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia">
@@ -48,7 +61,6 @@
 		<action name="prepareRelatorioRankingPerformancePeriodoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioRankingPerformance">
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
-		
 		<action name="imprimeRelatorioRankingPerformancePeriodoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioRankingPerformancePeriodoDeExperiencia">
 		  	<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/rankingPerformaceExperiencia.jasper</param>

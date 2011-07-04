@@ -18,6 +18,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -135,7 +136,13 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		{
 			colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas);
 			addActionMessage("Colaborador e Nota(s) inseridos com sucesso.");
-		} catch (Exception e)
+		}
+		catch (FortesException e)
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			addActionError("Erro ao inserir Colaborador e Nota(s).");

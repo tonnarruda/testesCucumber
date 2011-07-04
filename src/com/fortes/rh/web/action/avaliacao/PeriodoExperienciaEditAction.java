@@ -7,14 +7,12 @@ import java.util.Date;
 import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
-import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
-import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
@@ -47,13 +45,15 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Date dataReferencia;
 	private Date periodoIni;
 	private Date periodoFim;
-	private String[] areasCheck;
-	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Collection<Empresa> empresas;
 	private EmpresaManager empresaManager;
 	
+	private String[] areasCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentoCheck;
 	private Collection<CheckBox> estabelecimentoCheckList = new ArrayList<CheckBox>();
+	private String[] periodoCheck;
+	private Collection<CheckBox> periodoCheckList = new ArrayList<CheckBox>();
 	
 	private Collection<Colaborador> colaboradores;
 
@@ -110,15 +110,25 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareRelatorioAcopanhamentoExperiencia() throws Exception{
+	public String prepareRelatorioAcompanhamentoExperienciaPrevisto() throws Exception{
 		prepare();
 		
-		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+    	periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
     	
 		return Action.SUCCESS;
-	}  
+	}
+
+	public String prepareRelatorioAcompanhamentoExperiencia() throws Exception{
+		prepare();
+		
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
+		
+		return Action.SUCCESS;
+	}
 	
 	public String prepareRelatorioRankingPerformance() throws Exception{
 				
@@ -130,19 +140,46 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		
 	}
 	
-	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia() throws Exception 
+	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto() throws Exception 
     {
 		try {
 			dataReferencia = getDataReferencia();
-			if(periodoExperiencia == null || periodoExperiencia.getId() == null)
+
+			if(periodoCheck == null || !(periodoCheck.length > 0))
 				periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 			else
-			{
-				periodoExperiencias = new ArrayList<PeriodoExperiencia>();
-				periodoExperiencias.add(periodoExperienciaManager.findById(periodoExperiencia.getId()));
-			}
+				periodoExperiencias = periodoExperienciaManager.findById(periodoCheck);
 			
 			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, diasDeAcompanhamento, periodoExperiencias);
+			
+			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiência Previsto", getEmpresaSistema(), filtro);
+			
+			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(periodoExperiencias); 
+			parametros.put("rodapePeriodoExperiencia", rodape);
+		}
+		catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			prepareRelatorioAcompanhamentoExperienciaPrevisto();
+			return Action.INPUT;
+		}
+
+    	return Action.SUCCESS;
+    }
+
+	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia() throws Exception 
+	{
+		try {
+			dataReferencia = getDataReferencia();
+			
+			if(periodoCheck == null || !(periodoCheck.length > 0))
+				periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+			else
+				periodoExperiencias = periodoExperienciaManager.findById(periodoCheck);
+			
+			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, periodoExperiencias);
 			
 			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiência", getEmpresaSistema(), filtro);
@@ -154,12 +191,12 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		{
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
-			prepareRelatorioAcopanhamentoExperiencia();
+			prepareRelatorioAcompanhamentoExperiencia();
 			return Action.INPUT;
 		}
-
-    	return Action.SUCCESS;
-    }
+		
+		return Action.SUCCESS;
+	}
 
 	public String imprimeRelatorioRankingPerformancePeriodoDeExperiencia() throws Exception 
 	{
@@ -369,5 +406,21 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	
 	public void setAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho) {
 		this.avaliacaoDesempenho = avaliacaoDesempenho;
+	}
+
+	public String[] getPeriodoCheck() {
+		return periodoCheck;
+	}
+
+	public void setPeriodoCheck(String[] periodoCheck) {
+		this.periodoCheck = periodoCheck;
+	}
+
+	public Collection<CheckBox> getPeriodoCheckList() {
+		return periodoCheckList;
+	}
+
+	public void setPeriodoCheckList(Collection<CheckBox> periodoCheckList) {
+		this.periodoCheckList = periodoCheckList;
 	}
 }
