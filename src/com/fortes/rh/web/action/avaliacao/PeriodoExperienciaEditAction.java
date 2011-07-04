@@ -110,7 +110,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareRelatorioAcompanhamentoExperiencia() throws Exception{
+	public String prepareRelatorioAcompanhamentoExperienciaPrevisto() throws Exception{
 		prepare();
 		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
@@ -130,7 +130,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		
 	}
 	
-	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia() throws Exception 
+	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto() throws Exception 
     {
 		try {
 			dataReferencia = getDataReferencia();
@@ -152,7 +152,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		{
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
-			prepareRelatorioAcompanhamentoExperiencia();
+			prepareRelatorioAcompanhamentoExperienciaPrevisto();
 			return Action.INPUT;
 		}
 

@@ -3,7 +3,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Acompanhamento do Período de Experiência</title>
+	<title>Acompanhamento de Experiência Previsto</title>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -17,7 +17,7 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
-		<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action" onsubmit="${validarCampos}" method="POST">
+		<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto.action" onsubmit="${validarCampos}" method="POST">
 		
 			<@ww.datepicker label="Data de Referência" id="data" name="dataReferencia" required="true" value="${DataAtual}" cssClass="mascaraData"/>
 
