@@ -3,7 +3,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Acompanhamento do Período de Experiência</title>
+	<title>Acompanhamento de Experiência Previsto</title>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -31,8 +31,7 @@
 			dias.
 			<br><br>
 			
-			<@ww.select label="Período de Acompanhamento" name="periodoExperiencia.id" id="periodoExperiencia" list="periodoExperiencias" listKey="id" listValue="diasDescricao" headerKey="" headerValue="Todos" />  
-
+			<@frt.checkListBox label="Período de Acompanhamento" name="periodoCheck" id="periodoCheck" list="periodoCheckList"/>						
 			<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
 			
