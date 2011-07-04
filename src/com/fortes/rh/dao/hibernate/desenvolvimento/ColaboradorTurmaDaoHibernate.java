@@ -118,6 +118,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("col.id"), "colaboradorId");
 		p.add(Projections.property("col.nome"), "colaboradorNome");
+		p.add(Projections.property("t.id"), "turmaId");
 		p.add(Projections.property("t.descricao"), "turmaDescricao");
 
 		criteria.setProjection(p);
