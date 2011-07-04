@@ -122,6 +122,7 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		p.add(Projections.property("ue.id"), "id");
 		p.add(Projections.property("u.id"), "usuarioId");
 		p.add(Projections.property("emp.id"), "empresaId");
+		p.add(Projections.property("emp.nome"), "empresaNome");
 		p.add(Projections.property("per.id"), "perfilId");
 
 		criteria.setProjection(p);

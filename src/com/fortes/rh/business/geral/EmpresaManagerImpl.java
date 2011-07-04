@@ -30,6 +30,7 @@ import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> implements EmpresaManager
@@ -392,6 +393,21 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager) {
 		this.motivoDemissaoManager = motivoDemissaoManager;
+	}
+
+	public String getEmpresasNaoListadas(Collection<UsuarioEmpresa> usuarioEmpresas, Collection<Empresa> empresasListadas) 
+	{
+		Collection<String> empresasNaoListadas = new ArrayList<String>();
+		for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas) 
+		{
+			if(!empresasListadas.contains(usuarioEmpresa.getEmpresa()))
+				empresasNaoListadas.add(usuarioEmpresa.getEmpresa().getNome());
+		}
+		
+		if(empresasNaoListadas.isEmpty())
+			return null;
+		else
+			return StringUtil.converteCollectionToString(empresasNaoListadas);
 	}
 
 	

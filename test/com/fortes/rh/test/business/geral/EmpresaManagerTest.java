@@ -13,9 +13,12 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.EmpresaManagerImpl;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.util.ArquivoUtil;
@@ -69,6 +72,42 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	empresa = empresaManager.setLogo(empresa, logo, null, null);
 
     	assertNotNull(empresa.getLogoUrl());
+    }
+    
+    public void testGetEmpresasNaoListadas()
+    {
+    	Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
+    	Collection<Empresa> empresasExibidas = new ArrayList<Empresa>();
+    	
+    	Empresa vega = EmpresaFactory.getEmpresa(1L);
+    	vega.setNome("vega");
+    	Empresa papi = EmpresaFactory.getEmpresa(2L);
+    	papi.setNome("papi");
+    	Empresa casique = EmpresaFactory.getEmpresa(3L);
+    	Empresa fortes = EmpresaFactory.getEmpresa(4L);
+
+    	UsuarioEmpresa joaoVega = UsuarioEmpresaFactory.getEntity(1L);
+    	joaoVega.setEmpresa(vega);
+    	UsuarioEmpresa joaoPapi = UsuarioEmpresaFactory.getEntity(2L);
+    	joaoPapi.setEmpresa(papi);
+    	
+    	usuarioEmpresas.add(joaoPapi);
+    	    	
+    	empresasExibidas.add(fortes);
+    	assertEquals("papi", empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
+    	
+    	empresasExibidas.add(casique);
+    	assertEquals("papi", empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
+
+    	usuarioEmpresas.add(joaoVega);
+    	assertEquals("papi,vega", empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
+ 
+    	empresasExibidas.add(vega);
+    	empresasExibidas.add(papi);
+    	assertEquals(null, empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
+
+    	usuarioEmpresas.clear();
+    	assertEquals(null, empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
     }
 
     public void testFindExibirSalarioById() throws Exception

@@ -180,6 +180,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	{
 		validaUsuario(usuario);
 
+		if(usuario.isSuperAdmin())
+			getDao().desativaSuperAdmin();
+			
 		usuario = save(usuario);
 		colaboradorManager.atualizarUsuario(colaboradorId, usuario.getId());
 		usuarioEmpresaManager.save(usuario, empresaIds, selectPerfils);
@@ -190,6 +193,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	public void update(Usuario usuario, Long colaboradorId, String[] empresaIds, String[] selectPerfils) throws LoginExisteException, SenhaNaoConfereException, Exception
 	{
 		validaUsuario(usuario);
+		
+		if(usuario.isSuperAdmin())
+			getDao().desativaSuperAdmin();
 
 		update(usuario);
 		colaboradorManager.atualizarUsuario(colaboradorId, usuario.getId());

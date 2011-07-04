@@ -30,6 +30,7 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 	@Column(length=30)
 	private String senha;
 	private boolean acessoSistema;
+	private boolean superAdmin;
 	
 	@OneToMany(mappedBy="usuario")
 	private Collection<UsuarioEmpresa> usuarioEmpresas;
@@ -50,7 +51,7 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 
 	}
 
-	public Usuario(Long id, String nome, String login, String senha, Date ultimoLogin, boolean acessoSistema, Long idColaborador, String nomeColaborador, String nomeComercialDoColaborador)
+	public Usuario(Long id, String nome, String login, String senha, Date ultimoLogin, boolean acessoSistema, boolean superAdmin, Long idColaborador, String nomeColaborador, String nomeComercialDoColaborador)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -58,6 +59,7 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 		this.senha = senha;
 		this.ultimoLogin = ultimoLogin;
 		this.acessoSistema = acessoSistema;
+		this.superAdmin = superAdmin;
 		this.colaborador = new Colaborador();
 		this.colaborador.setId(idColaborador);
 		this.colaborador.setNome(nomeColaborador);
@@ -174,6 +176,14 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 
 	public void setUltimoLogin(Date ultimoLogin) {
 		this.ultimoLogin = ultimoLogin;
+	}
+
+	public boolean isSuperAdmin() {
+		return superAdmin;
+	}
+
+	public void setSuperAdmin(boolean superAdmin) {
+		this.superAdmin = superAdmin;
 	}
 
 }

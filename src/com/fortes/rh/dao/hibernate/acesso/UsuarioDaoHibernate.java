@@ -26,12 +26,8 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 {
 	public Usuario findByLogin(String login)
 	{
-//		Criteria criteria = getSession().createCriteria(Usuario.class, "usuario");
-//		criteria.add(Expression.eq("usuario.login", login));
-//		return (Usuario) criteria.uniqueResult();
-
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Usuario(usuario.id, usuario.nome, usuario.login, usuario.senha, usuario.ultimoLogin, usuario.acessoSistema, colaborador.id, colaborador.nome, colaborador.nomeComercial) ");
+		hql.append("select new Usuario(usuario.id, usuario.nome, usuario.login, usuario.senha, usuario.ultimoLogin, usuario.acessoSistema, usuario.superAdmin, colaborador.id, colaborador.nome, colaborador.nomeComercial) ");
 		hql.append("from Colaborador as colaborador ");
 		hql.append("right join colaborador.usuario as usuario ");
 		hql.append("where usuario.login = :login ");
@@ -182,5 +178,12 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 		query.executeUpdate();
 		
+	}
+
+	public void desativaSuperAdmin() 
+	{
+		String hql = "update Usuario set superadmin = false where superadmin = true";
+		Query query = getSession().createQuery(hql);
+		query.executeUpdate();
 	}
 }

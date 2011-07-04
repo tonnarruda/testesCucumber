@@ -50,6 +50,24 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 
 		assertNull(usuarioDao.findByLogin(usuario.getLogin()));
 	}
+	
+	public void testDesativaSuperAdmin()
+	{
+		Usuario usuarioJoao = new Usuario();
+		usuarioJoao.setLogin("joaobla12");
+		usuarioJoao.setSuperAdmin(true);
+		usuarioDao.save(usuarioJoao);
+
+		Usuario usuarioMaria = new Usuario();
+		usuarioMaria.setLogin("mariabla12");
+		usuarioDao.save(usuarioMaria);
+		
+		assertTrue(usuarioDao.findByLogin(usuarioJoao.getLogin()).isSuperAdmin());
+		usuarioDao.desativaSuperAdmin();
+
+		assertFalse(usuarioDao.findByLogin(usuarioJoao.getLogin()).isSuperAdmin());
+		assertFalse(usuarioDao.findByLogin(usuarioMaria.getLogin()).isSuperAdmin());
+	}
 
 	public void testFindUsuarios()
 	{

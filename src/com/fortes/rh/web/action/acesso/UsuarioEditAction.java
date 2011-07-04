@@ -60,6 +60,8 @@ public class UsuarioEditAction extends MyActionSupportEdit
 	private Collection<Perfil> perfils;
 
 	private String origem = "";
+	private Long usuarioId;
+	private String empresasNaoListadas;
 
 	public String getOrigem()
 	{
@@ -81,9 +83,7 @@ public class UsuarioEditAction extends MyActionSupportEdit
 		usuario = getUsuario();
 		
 		if(usuario.getId() != null)
-		{
 			usuario =  usuarioManager.findById(usuario.getId());
-		}
 
 		if(colaborador != null && colaborador.getId() != null)
 			colaboradorId = colaborador.getId();
@@ -91,7 +91,13 @@ public class UsuarioEditAction extends MyActionSupportEdit
 			colaboradorId = colaboradorManager.findByUsuario(usuario.getId());
 
 		perfils = perfilManager.findAll(new String[]{"nome"});
-		empresas = empresaManager.findToList(new String[]{"id","nome"}, new String[]{"id","nome"}, new String[]{"nome"});
+
+		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+		usuarioId = usuarioLogado.getId();
+		if(usuarioLogado.isSuperAdmin())
+			usuarioId = 1L;
+		
+		empresas = empresaManager.findByUsuarioPermissao(usuarioId, "ROLE_CAD_USUARIO");
 		colaboradores = colaboradorManager.findSemUsuarios(getEmpresaSistema().getId(), usuario);
 
 		listaEmpresas = new Object[empresas.size()][2];
@@ -173,6 +179,8 @@ public class UsuarioEditAction extends MyActionSupportEdit
 
 		empresasId = empresaManager.getEmpresasByUsuarioEmpresa(usuario.getId());
 		usuarioEmpresas = empresaManager.getPerfilEmpresasByUsuario(usuario.getId());
+		
+		empresasNaoListadas = empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresas);
 
 		return Action.SUCCESS;
 	}
@@ -502,5 +510,13 @@ public class UsuarioEditAction extends MyActionSupportEdit
 	public void setSenhaPadrao(String senhaPadrao)
 	{
 		this.senhaPadrao = senhaPadrao;
+	}
+
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
+
+	public String getEmpresasNaoListadas() {
+		return empresasNaoListadas;
 	}
 }
