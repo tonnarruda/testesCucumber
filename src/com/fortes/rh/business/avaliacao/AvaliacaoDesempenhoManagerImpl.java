@@ -148,6 +148,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
             }
         }
 	}
+	
+	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String nomeBusca, Long avaliacaoId) 
+	{
+		return getDao().findTituloModeloAvaliacao(empresaId, nomeBusca, avaliacaoId);
+	}
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
@@ -163,4 +168,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
+
+
 }

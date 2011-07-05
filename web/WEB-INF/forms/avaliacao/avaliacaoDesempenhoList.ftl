@@ -7,11 +7,24 @@
 	</style>
 
 	<title>Avaliações de Desempenho</title>
+	
+	<#include "../ftl/showFilterImports.ftl" />
+	<#assign validarCampos="return validaFormulario('formBusca', null, null)"/>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
-	
+
+	<#include "../util/topFiltro.ftl" />
+		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST" id="formBusca">
+			<@ww.textfield label="Título" name="nomeBusca" id="nomeBusca" liClass="liLeft" cssStyle="width: 350px;"/>
+			<@ww.select label="Modelo." name="avaliacaoId" list="avaliacaos" listKey="id" listValue="titulo" headerValue="selecione..." headerKey=""/>
+			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+		</@ww.form>
+	<#include "../util/bottomFiltro.ftl" />
+	<br>
+		
 	<@display.table name="avaliacaoDesempenhos" id="avaliacaoDesempenho" class="dados">
 		<@display.column title="Ações" class="acao" style="width:180px;">
 		

@@ -207,7 +207,8 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
+		avaliacaoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Avaliacao>()));
+		manager.expects(once()).method("findTituloModeloAvaliacao").will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
 		assertEquals(action.list(), "success");
 		assertNotNull(action.getAvaliacaoDesempenhos());
 	}

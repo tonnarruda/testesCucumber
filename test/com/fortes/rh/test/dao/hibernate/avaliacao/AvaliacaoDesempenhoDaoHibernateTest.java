@@ -111,6 +111,24 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		AvaliacaoDesempenho retorno = avaliacaoDesempenhoDao.findByIdProjection(avaliacaoDesempenho.getId());
 		assertTrue(retorno.isLiberada());
 	}
+	
+	public void testFindTituloModeloAvaliacao()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacao.setEmpresa(empresa);
+		avaliacaoDao.save(avaliacao);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setTitulo("avaliação desempenho de 90 dias");
+		avaliacaoDesempenho.setAvaliacao(avaliacao);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		assertEquals(1,avaliacaoDesempenhoDao.findTituloModeloAvaliacao(empresa.getId(), "ação", avaliacao.getId()).size());
+		
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao) {
 		this.empresaDao = empresaDao;
