@@ -117,4 +117,40 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		
 		query.executeUpdate();
 	}
+	
+	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String tituloBusca, Long avaliacaoId) {
+		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
+		criteria.createCriteria("a.avaliacao", "avaliacao");
+		criteria.createCriteria("avaliacao.empresa", "emp");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.inicio"), "inicio");
+		p.add(Projections.property("a.fim"), "fim");
+		p.add(Projections.property("a.titulo"), "titulo");
+		p.add(Projections.property("a.liberada"), "liberada");
+		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
+		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
+		p.add(Projections.property("emp.id"), "projectionAvaliacaoEmpresaId");
+
+		criteria.setProjection(p);
+
+		if(empresaId != null)
+			criteria.add(Expression.eq("emp.id", empresaId));
+		
+		if(tituloBusca != null && !tituloBusca.trim().equals(""))
+			criteria.add(Expression.like("a.titulo", "%"+ tituloBusca +"%").ignoreCase() );
+		
+		if(avaliacaoId != null)
+			criteria.add(Expression.eq("avaliacao.id", avaliacaoId));
+
+		criteria.addOrder(Order.asc("a.titulo"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+	
 }

@@ -81,6 +81,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ResultadoAvaliacaoDesempenho> resultados;
 	private Boolean compartilharColaboradores;
+	private Long avaliacaoId;
 	
 	private void prepare() throws Exception
 	{
@@ -294,7 +295,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(getEmpresaSistema().getId(), null, null);
+		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO);
+		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(getEmpresaSistema().getId(), nomeBusca, avaliacaoId);
 		return Action.SUCCESS;
 	}
 
@@ -570,5 +572,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
+	}
+
+	public Long getAvaliacaoId() {
+		return avaliacaoId;
+	}
+
+	public void setAvaliacaoId(Long avaliacaoId) {
+		this.avaliacaoId = avaliacaoId;
 	}
 }
