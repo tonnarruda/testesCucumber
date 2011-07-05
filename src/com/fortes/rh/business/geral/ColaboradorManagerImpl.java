@@ -39,6 +39,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.CertificadoMilitar;
@@ -1615,26 +1616,50 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 	
-	public Collection<Colaborador> getAvaliacoesExperienciaPendentesPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception 
+	public List<AcompanhamentoExperienciaColaborador> getAvaliacoesExperienciaPendentesPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception 
 	{
 		int menorPeriodo = 0;
 		if(!periodoExperiencias.isEmpty())
 			menorPeriodo = ((PeriodoExperiencia)periodoExperiencias.toArray()[0]).getDias();
 		
-		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodoComCargo(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
+		List<AcompanhamentoExperienciaColaborador> acompanhamentos = new ArrayList<AcompanhamentoExperienciaColaborador>();
 
-		for (Colaborador colaborador : colaboradores)
-		{
-			colaborador.setAreaOrganizacional(areaOrganizacionalManager.findByIdProjection(colaborador.getAreaOrganizacional().getId()));
-		}
+		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
+		Collection<Colaborador> colaboradoresRespostas = getDao().findComAvaliacoesExperiencias(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
 		
-		if(colaboradores.isEmpty())
+		Date data;
+		
+		for (Colaborador colab : colaboradores)
+		{
+			AcompanhamentoExperienciaColaborador experienciaColaborador = new AcompanhamentoExperienciaColaborador(colab.getMatricula(), colab.getNome(), colab.getCargoFaixa(), colab.getAreaOrganizacional(), colab.getDataAdmissao());
+			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
+			{
+				data = null;
+				for (Colaborador colaboradorResposta : colaboradoresRespostas)
+				{
+					if(colab.getId().equals(colaboradorResposta.getId()) && periodoExperiencia.getId().equals(colaboradorResposta.getPeriodoExperienciaId()))
+						data = colaboradorResposta.getAvaliacaoRespondidaEm();
+				}
+
+				experienciaColaborador.addPeriodo(data);
+			}
+			
+			acompanhamentos.add(experienciaColaborador);
+		}
+			
+		if(acompanhamentos.isEmpty())
 			throw new Exception ("Não existem Colaboradores com os filtros selecionados" ); 
 		
-		Comparator<Colaborador> comp = new BeanComparator("areaOrganizacional.descricao", new ComparatorString());
-		Collections.sort((List<Colaborador>) colaboradores, comp);
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(new Long[]{empresa.getId()}, AreaOrganizacional.TODAS);
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+
+		for (AcompanhamentoExperienciaColaborador acompanhamento: acompanhamentos)
+			acompanhamento.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, acompanhamento.getAreaOrganizacionalId()));
 		
-		return colaboradores;
+		Comparator<AcompanhamentoExperienciaColaborador> comp = new BeanComparator("areaOrganizacional.descricao", new ComparatorString());
+		Collections.sort((List<AcompanhamentoExperienciaColaborador>) acompanhamentos, comp);
+		
+		return acompanhamentos;
 	}
 
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long avaliacaoId, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 

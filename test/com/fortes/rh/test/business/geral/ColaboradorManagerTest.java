@@ -34,6 +34,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
@@ -170,8 +171,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	String[] areasCheck = new String[1];
     	String[] estabelecimentoCheck = new String[1];
 
-    	Colaborador colaborador1 = new Colaborador(1L, "joao", dataReferencia, "pedro", 40);
-    	Colaborador colaborador2 = new Colaborador(2L, "maria", dataReferencia, "pedro", 12);
+    	Colaborador colaborador1 = new Colaborador(1L, "joao", "", dataReferencia, "", "", null, "pedro", 40);
+    	Colaborador colaborador2 = new Colaborador(2L, "maria", "", dataReferencia, "", "", null, "pedro", 12);
     	
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	colaboradores.add(colaborador1);
@@ -204,6 +205,72 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	assertEquals(2, colabs.size());
     	assertEquals("10 respondida (12 dias)\n30 respondida (33 dias)", ((Colaborador)colabs.toArray()[0]).getDatasDeAvaliacao());
     	assertEquals("10 respondida (12 dias)", ((Colaborador)colabs.toArray()[1]).getDatasDeAvaliacao());
+    }
+    
+    public void testGetAvaliacoesExperienciaPendentesPeriodo() throws Exception
+    {
+    	Date dataReferencia = DateUtil.criarDataMesAno(25, 01, 2011);
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	Integer tempoDeEmpresa = 150;
+    	
+    	String[] areasCheck = new String[1];
+    	String[] estabelecimentoCheck = new String[1];
+    	
+    	Colaborador colaborador1 = new Colaborador(1L, "joao","", dataReferencia, "", "", null, "pedro", 40);
+    	colaborador1.setMatricula("1232456");
+    	Colaborador colaborador2 = new Colaborador(2L, "maria","", dataReferencia, "", "", null, "pedro", 12);
+    	colaborador2.setMatricula("9999999");
+    	
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	colaboradores.add(colaborador1);
+    	colaboradores.add(colaborador2);
+    	
+    	Colaborador colaboradorResposta3 = new Colaborador(2L, dataReferencia, 30, 1L);
+    	Colaborador colaboradorResposta4 = new Colaborador(2L, dataReferencia, 55, 3L);
+    	Colaborador colaboradorResposta5 = new Colaborador(5L, dataReferencia, 33, 2L);
+    	
+    	Collection<Colaborador> colaboradoresComAvaliacoes = new ArrayList<Colaborador>();
+    	colaboradoresComAvaliacoes.add(colaboradorResposta3);
+    	colaboradoresComAvaliacoes.add(colaboradorResposta4);
+    	colaboradoresComAvaliacoes.add(colaboradorResposta5);
+    	    	
+    	PeriodoExperiencia periodoExperiencia30Dias = PeriodoExperienciaFactory.getEntity(1L);
+    	periodoExperiencia30Dias.setDias(30);
+    	
+    	PeriodoExperiencia periodoExperiencia60Dias = PeriodoExperienciaFactory.getEntity(2L);
+    	periodoExperiencia60Dias.setDias(60);
+    	
+    	PeriodoExperiencia periodoExperiencia90Dias = PeriodoExperienciaFactory.getEntity(3L);
+    	periodoExperiencia90Dias.setDias(90);
+    	
+    	Collection<PeriodoExperiencia> periodoExperiencias = new ArrayList<PeriodoExperiencia>();
+    	periodoExperiencias.add(periodoExperiencia30Dias);
+    	periodoExperiencias.add(periodoExperiencia60Dias);
+    	periodoExperiencias.add(periodoExperiencia90Dias);
+    	
+    	colaboradorDao.expects(once()).method("findAdmitidosNoPeriodo").withAnyArguments().will(returnValue(colaboradores));
+    	colaboradorDao.expects(once()).method("findComAvaliacoesExperiencias").withAnyArguments().will(returnValue(colaboradoresComAvaliacoes));
+    	
+    	Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+    	
+		areaOrganizacinoalManager.expects(once()).method("findByEmpresasIds").with(ANYTHING, ANYTHING).will(returnValue(areas));
+        areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
+        areaOrganizacinoalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
+    	
+    	List<AcompanhamentoExperienciaColaborador> acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, periodoExperiencias);
+    	assertEquals(2, acompanhamentos.size());
+    	
+    	assertEquals("1232456", acompanhamentos.get(0).getMatricula());
+    	assertEquals(3, acompanhamentos.get(0).getPeriodoExperiencias().size());
+    	assertNull(acompanhamentos.get(0).getPeriodoExperiencias().get(0));
+    	assertNull(acompanhamentos.get(0).getPeriodoExperiencias().get(1));
+    	assertNull(acompanhamentos.get(0).getPeriodoExperiencias().get(2));
+
+    	assertEquals("9999999", acompanhamentos.get(1).getMatricula());
+    	assertEquals(3, acompanhamentos.get(1).getPeriodoExperiencias().size());
+    	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencias().get(0));
+    	assertNull(acompanhamentos.get(1).getPeriodoExperiencias().get(1));
+    	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencias().get(2));
     }
     
     public void testFindByAreaEstabelecimento()

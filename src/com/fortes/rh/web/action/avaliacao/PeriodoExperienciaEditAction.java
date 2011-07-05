@@ -4,6 +4,7 @@ package com.fortes.rh.web.action.avaliacao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
@@ -15,6 +16,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -63,6 +65,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Integer tempoDeEmpresa;
 	private String reportFilter;
 	private String reportTitle;
+	private List<AcompanhamentoExperienciaColaborador> acompanhamentos;
 		
 	private void prepare() throws Exception
 	{
@@ -179,13 +182,18 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			else
 				periodoExperiencias = periodoExperienciaManager.findById(periodoCheck);
 			
-			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, periodoExperiencias);
+			acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, periodoExperiencias);
 			
 			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiência", getEmpresaSistema(), filtro);
 			
 			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(periodoExperiencias); 
 			parametros.put("rodapePeriodoExperiencia", rodape);
+			
+			int coluna = 1;
+			for (PeriodoExperiencia periodo : periodoExperiencias)
+				parametros.put("tituloPeriodo" + coluna++, periodo.getDiasDescricao());
+				
 		}
 		catch (Exception e)
 		{
@@ -422,5 +430,9 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public void setPeriodoCheckList(Collection<CheckBox> periodoCheckList) {
 		this.periodoCheckList = periodoCheckList;
+	}
+
+	public List<AcompanhamentoExperienciaColaborador> getAcompanhamentos() {
+		return acompanhamentos;
 	}
 }

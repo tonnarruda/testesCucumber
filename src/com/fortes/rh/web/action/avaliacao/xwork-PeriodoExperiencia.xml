@@ -51,7 +51,7 @@
 		<action name="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia">
 		  	<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/periodoDeAcompanhamentoDeExperiencia.jasper</param>
-				<param name="dataSource">colaboradores</param>
+				<param name="dataSource">acompanhamentos</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">periodoDeAcompanhamentoDeExperiencia.pdf</param>
 			</result>
