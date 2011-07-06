@@ -246,11 +246,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setCargoNomeProjection(cargoNome);
 	}
 	
-	public Colaborador(Long id, Date avaliacaoRespondidaEm, Integer qtdDiasRespondeuAvExperiencia, Long periodoExperienciaId)
+	public Colaborador(Long id, Date avaliacaoRespondidaEm, Double performance, Integer qtdDiasRespondeuAvExperiencia, Long periodoExperienciaId)
 	{
 		this.setId(id);
 		this.avaliacaoRespondidaEm = avaliacaoRespondidaEm;
 		this.qtdDiasRespondeuAvExperiencia = qtdDiasRespondeuAvExperiencia;
+		this.performance = performance;
 		this.periodoExperienciaId = periodoExperienciaId;
 	}
 	

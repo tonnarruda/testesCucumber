@@ -5,14 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.util.DateUtil;
 
-public class AcompanhamentoExperienciaColaborador {
+public class AcompanhamentoExperienciaColaborador implements Comparable<AcompanhamentoExperienciaColaborador> {
 	private String matricula;
 	private String nome;
 	private String cargoFaixa;
 	private AreaOrganizacional areaOrganizacional;
 	private Date dataAdmissao;
-	private List<Date> periodoExperiencias = new ArrayList<Date>();
+	private List<String> periodoExperiencias = new ArrayList<String>();
 
 	public AcompanhamentoExperienciaColaborador(String matricula, String nome, String cargoFaixa, AreaOrganizacional areaOrganizacional, Date dataAdmissao)
 	{
@@ -24,9 +25,16 @@ public class AcompanhamentoExperienciaColaborador {
 		this.dataAdmissao = dataAdmissao;
 	}
 
-	public void addPeriodo(Date respondidaEm) 
+	public AcompanhamentoExperienciaColaborador() {
+	
+	}
+
+	public void addPeriodo(Date respondidaEm, String performance) 
 	{
-		this.periodoExperiencias.add(respondidaEm);
+		if(respondidaEm != null)
+			this.periodoExperiencias.add(DateUtil.formataDiaMesAno(respondidaEm) + " (" + performance + ")");
+		else
+			this.periodoExperiencias.add(null);
 	}
 
 	public Long getAreaOrganizacionalId() {
@@ -36,24 +44,24 @@ public class AcompanhamentoExperienciaColaborador {
 			return null;
 	}
 	
-	public Date getPeriodoColunaUm()
+	public String getPeriodoColunaUm()
 	{
 		return getPeriodoColuna(0);
 	}
-	public Date getPeriodoColunaDois()
+	public String getPeriodoColunaDois()
 	{
 		return getPeriodoColuna(1);
 	}
-	public Date getPeriodoColunaTres()
+	public String getPeriodoColunaTres()
 	{
 		return getPeriodoColuna(2);
 	}
-	public Date getPeriodoColunaQuatro()
+	public String getPeriodoColunaQuatro()
 	{
 		return getPeriodoColuna(3);
 	}
 	
-	private Date getPeriodoColuna(int coluna) 
+	private String getPeriodoColuna(int coluna) 
 	{
 		try {return periodoExperiencias.get(coluna);}
 		catch (Exception e){return null;}
@@ -83,7 +91,11 @@ public class AcompanhamentoExperienciaColaborador {
 		return dataAdmissao;
 	}
 
-	public List<Date> getPeriodoExperiencias() {
+	public List<String> getPeriodoExperiencias() {
 		return periodoExperiencias;
+	}
+
+	public int compareTo(AcompanhamentoExperienciaColaborador acomp) {
+		return (areaOrganizacional.getDescricao() + " " + nome).compareTo(acomp.getAreaOrganizacional().getDescricao() + " " + acomp.getNome());
 	}
 }

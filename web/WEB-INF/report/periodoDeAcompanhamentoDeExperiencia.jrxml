@@ -36,23 +36,47 @@
 	<field name="areaOrganizacional.descricao" class="java.lang.String"/>
 	<field name="matricula" class="java.lang.String"/>
 	<field name="cargoFaixa" class="java.lang.String"/>
-	<field name="periodoColunaUm" class="java.util.Date"/>
-	<field name="periodoColunaDois" class="java.util.Date"/>
-	<field name="periodoColunaTres" class="java.util.Date"/>
-	<field name="periodoColunaQuatro" class="java.util.Date"/>
+	<field name="periodoColunaUm" class="java.lang.String"/>
+	<field name="periodoColunaDois" class="java.lang.String"/>
+	<field name="periodoColunaTres" class="java.lang.String"/>
+	<field name="periodoColunaQuatro" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
+	</variable>
+	<variable name="countPeriodoUm" class="java.lang.Integer" resetType="Group" resetGroup="grpArea" calculation="Count">
+		<variableExpression><![CDATA[$F{periodoColunaUm}]]></variableExpression>
+	</variable>
+	<variable name="countPeriodoDois" class="java.lang.Integer" resetType="Group" resetGroup="grpArea" calculation="Count">
+		<variableExpression><![CDATA[$F{periodoColunaDois}]]></variableExpression>
+	</variable>
+	<variable name="countPeriodoTres" class="java.lang.Integer" resetType="Group" resetGroup="grpArea" calculation="Count">
+		<variableExpression><![CDATA[$F{periodoColunaTres}]]></variableExpression>
+	</variable>
+	<variable name="countPeriodoQuatro" class="java.lang.Integer" resetType="Group" resetGroup="grpArea" calculation="Count">
+		<variableExpression><![CDATA[$F{periodoColunaQuatro}]]></variableExpression>
+	</variable>
+	<variable name="totalPeriodoUm" class="java.lang.Integer" resetType="None" incrementType="Group" incrementGroup="grpArea" calculation="Sum">
+		<variableExpression><![CDATA[$V{countPeriodoUm}]]></variableExpression>
+	</variable>
+	<variable name="totalPeriodoDois" class="java.lang.Integer" resetType="Report" incrementType="Group" incrementGroup="grpArea" calculation="Sum">
+		<variableExpression><![CDATA[$V{countPeriodoDois}]]></variableExpression>
+	</variable>
+	<variable name="totalPeriodoTres" class="java.lang.Integer" resetType="Report" incrementType="Group" incrementGroup="grpArea" calculation="Sum">
+		<variableExpression><![CDATA[$V{countPeriodoTres}]]></variableExpression>
+	</variable>
+	<variable name="totalPeriodoQuatro" class="java.lang.Integer" resetType="Report" incrementType="Group" incrementGroup="grpArea" calculation="Sum">
+		<variableExpression><![CDATA[$V{countPeriodoQuatro}]]></variableExpression>
 	</variable>
 
 		<group  name="grpArea" >
 			<groupExpression><![CDATA[$F{areaOrganizacional.descricao}]]></groupExpression>
 			<groupHeader>
-			<band height="17"  isSplitAllowed="true" >
+			<band height="13"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="4"
+						y="0"
 						width="782"
 						height="12"
 						key="textField-1"/>
@@ -65,7 +89,80 @@
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="16"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="283"
+						y="2"
+						width="150"
+						height="12"
+						key="staticText-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Subtotal:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="435"
+						y="2"
+						width="85"
+						height="12"
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo1} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{countPeriodoUm}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="522"
+						y="2"
+						width="85"
+						height="12"
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo2} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{countPeriodoDois}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="609"
+						y="2"
+						width="85"
+						height="12"
+						key="textField-8">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo3} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{countPeriodoTres}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="696"
+						y="2"
+						width="85"
+						height="12"
+						key="textField-9">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo4} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{countPeriodoQuatro}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -94,15 +191,15 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="32"  isSplitAllowed="true" >
+			<band height="30"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="56"
-						y="18"
+						y="15"
 						width="222"
 						height="12"
 						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
@@ -111,11 +208,11 @@
 				<staticText>
 					<reportElement
 						x="14"
-						y="18"
+						y="15"
 						width="37"
 						height="12"
 						key="staticText-12"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
@@ -124,11 +221,11 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="5"
+						y="2"
 						width="782"
 						height="12"
 						key="staticText-13"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
@@ -137,80 +234,158 @@
 				<staticText>
 					<reportElement
 						x="283"
-						y="18"
-						width="126"
+						y="15"
+						width="150"
 						height="12"
 						key="staticText-14"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Cargo]]></text>
+				<text><![CDATA[Cargo / Faixa Salarial]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="417"
-						y="18"
-						width="80"
+						x="435"
+						y="15"
+						width="85"
 						height="12"
 						key="textField">
 							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo1} != null)]]></printWhenExpression>
 						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{tituloPeriodo1}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="503"
-						y="18"
-						width="80"
+						x="522"
+						y="15"
+						width="85"
 						height="12"
 						key="textField">
 							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo2} != null)]]></printWhenExpression>
 						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{tituloPeriodo2}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="589"
-						y="18"
-						width="80"
+						x="609"
+						y="15"
+						width="85"
 						height="12"
 						key="textField">
 							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo3} != null)]]></printWhenExpression>
 						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{tituloPeriodo3}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="676"
-						y="18"
-						width="80"
+						x="696"
+						y="15"
+						width="85"
 						height="12"
 						key="textField">
 							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo4} != null)]]></printWhenExpression>
 						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{tituloPeriodo4}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="14"
+						y="29"
+						width="37"
+						height="0"
+						key="line-1"
+						positionType="FixRelativeToBottom"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="56"
+						y="29"
+						width="222"
+						height="0"
+						key="line-2"
+						positionType="FixRelativeToBottom"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="283"
+						y="29"
+						width="150"
+						height="0"
+						key="line-3"
+						positionType="FixRelativeToBottom"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="435"
+						y="29"
+						width="85"
+						height="0"
+						key="line-4"
+						positionType="FixRelativeToBottom">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo1} != null)]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="522"
+						y="29"
+						width="85"
+						height="0"
+						key="line-5"
+						positionType="FixRelativeToBottom">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo2} != null)]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="609"
+						y="29"
+						width="85"
+						height="0"
+						key="line-6"
+						positionType="FixRelativeToBottom">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo3} != null)]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="696"
+						y="29"
+						width="85"
+						height="0"
+						key="line-7"
+						positionType="FixRelativeToBottom">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo4} != null)]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="15"  isSplitAllowed="true" >
+			<band height="13"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="0"
@@ -256,7 +431,7 @@
 					<reportElement
 						x="283"
 						y="1"
-						width="126"
+						width="150"
 						height="12"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -267,63 +442,63 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="417"
+						x="435"
 						y="1"
-						width="80"
+						width="85"
 						height="12"
 						key="textField">
 							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo1} != null)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{periodoColunaUm}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{periodoColunaUm}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="503"
+						x="522"
 						y="1"
-						width="80"
+						width="85"
 						height="12"
 						key="textField-5">
 							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo2} != null)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{periodoColunaDois}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{periodoColunaDois}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="589"
+						x="609"
 						y="1"
-						width="80"
+						width="85"
 						height="12"
 						key="textField-6">
 							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo3} != null)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{periodoColunaTres}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{periodoColunaTres}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="676"
+						x="696"
 						y="1"
-						width="80"
+						width="85"
 						height="12"
 						key="textField-7">
 							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo4} != null)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{periodoColunaQuatro}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{periodoColunaQuatro}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -332,37 +507,84 @@
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="40"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="6"
-						width="782"
-						height="18"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{rodapePeriodoExperiencia}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="0"
-						y="24"
-						width="782"
-						height="16"
-						key="staticText-11"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[*Avaliação de Desempenho]]></text>
-				</staticText>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="0"  isSplitAllowed="false" >
+			<band height="14"  isSplitAllowed="false" >
+				<staticText>
+					<reportElement
+						x="283"
+						y="2"
+						width="150"
+						height="12"
+						key="staticText-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Total:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="435"
+						y="2"
+						width="85"
+						height="12"
+						key="textField-10">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo1} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{totalPeriodoUm}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="522"
+						y="2"
+						width="85"
+						height="12"
+						key="textField-11">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo2} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{totalPeriodoDois}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="609"
+						y="2"
+						width="85"
+						height="12"
+						key="textField-12">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo3} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{totalPeriodoTres}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="696"
+						y="2"
+						width="85"
+						height="12"
+						key="textField-13">
+							<printWhenExpression><![CDATA[new Boolean($P{tituloPeriodo4} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{totalPeriodoQuatro}]]></textFieldExpression>
+				</textField>
 			</band>
 		</summary>
 </jasperReport>
