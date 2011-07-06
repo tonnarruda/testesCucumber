@@ -145,7 +145,6 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     {
     	prepareMocksInsertCurriculo();
     	
-    	manager.expects(once()).method("validaQtdCadastros").isVoid();
     	action.setCandidato(null);
     	
     	assertEquals("input" , action.insertCurriculoTexto());
@@ -154,9 +153,6 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     public void testInsertCurriculoTexto() throws Exception
     {
     	Candidato candidato = prepareMocksInsertCurriculo();
-
-    	
-    	manager.expects(once()).method("validaQtdCadastros").isVoid();
     	manager.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
     	
     	assertEquals("success" , action.insertCurriculoTexto());
