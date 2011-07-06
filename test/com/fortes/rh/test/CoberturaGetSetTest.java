@@ -12,6 +12,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoCurriculo;
@@ -918,6 +919,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new ConfiguracaoRelatorioDinamico());
 		cobreGetSet(new GrupoAC());
 		cobreGetSet(new GrupoACEditAction());
+		cobreGetSet(new AcompanhamentoExperienciaColaborador());
 
 	}
 	

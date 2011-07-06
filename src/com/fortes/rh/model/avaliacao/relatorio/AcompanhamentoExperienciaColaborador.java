@@ -25,6 +25,10 @@ public class AcompanhamentoExperienciaColaborador implements Comparable<Acompanh
 		this.dataAdmissao = dataAdmissao;
 	}
 
+	public AcompanhamentoExperienciaColaborador() {
+	
+	}
+
 	public void addPeriodo(Date respondidaEm, String performance) 
 	{
 		if(respondidaEm != null)
