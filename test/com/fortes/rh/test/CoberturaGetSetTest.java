@@ -146,6 +146,7 @@ import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.geral.UsuarioMensagem;
+import com.fortes.rh.model.geral.relatorio.AbsenteismoCollection;
 import com.fortes.rh.model.geral.relatorio.ColaboradorOcorrenciaRelatorio;
 import com.fortes.rh.model.geral.relatorio.CurriculoCandidatoRelatorio;
 import com.fortes.rh.model.geral.relatorio.GastoEmpresaTotal;
@@ -920,6 +921,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new GrupoAC());
 		cobreGetSet(new GrupoACEditAction());
 		cobreGetSet(new AcompanhamentoExperienciaColaborador());
+		cobreGetSet(new AbsenteismoCollection());
 
 	}
 	

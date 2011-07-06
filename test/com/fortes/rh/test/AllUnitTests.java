@@ -320,6 +320,7 @@ import com.fortes.rh.test.model.cargosalario.HistoricoColaboradorTest;
 import com.fortes.rh.test.model.cargosalario.RelatorioPromocoesTest;
 import com.fortes.rh.test.model.desenvolvimento.CertificadoTest;
 import com.fortes.rh.test.model.desenvolvimento.TurmaTest;
+import com.fortes.rh.test.model.geral.AbsenteismoCollectionTest;
 import com.fortes.rh.test.model.geral.AreaOrganizacionalTest;
 import com.fortes.rh.test.model.geral.ColaboradorTest;
 import com.fortes.rh.test.model.geral.PendenciaACTest;
@@ -787,6 +788,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ComoFicouSabendoVagaEditActionTest.class);
 
         suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
+        suite.addTestSuite(AbsenteismoCollectionTest.class);
 
         //contatoTest embedded Colaborador
         suite.addTestSuite(DependenteDaoHibernateTest.class);
