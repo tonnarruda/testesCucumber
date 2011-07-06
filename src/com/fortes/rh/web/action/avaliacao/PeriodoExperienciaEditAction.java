@@ -177,15 +177,12 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		try {
 			dataReferencia = getDataReferencia();
 			
-			if(periodoCheck == null || !(periodoCheck.length > 0))
-				periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
-			else
-				periodoExperiencias = periodoExperienciaManager.findById(periodoCheck);
+			periodoExperiencias = periodoExperienciaManager.findById(periodoCheck);
 			
 			acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, periodoExperiencias);
 			
-			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiência", getEmpresaSistema(), filtro);
+			String filtro = "Data de Referência: " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Acompanhamento de Experiência", getEmpresaSistema(), filtro);
 			
 			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(periodoExperiencias); 
 			parametros.put("rodapePeriodoExperiencia", rodape);

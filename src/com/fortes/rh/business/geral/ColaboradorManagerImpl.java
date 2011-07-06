@@ -1628,6 +1628,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Collection<Colaborador> colaboradoresRespostas = getDao().findComAvaliacoesExperiencias(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
 		
 		Date data;
+		String performance;
 		
 		for (Colaborador colab : colaboradores)
 		{
@@ -1635,13 +1636,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
 			{
 				data = null;
+				performance = null;
 				for (Colaborador colaboradorResposta : colaboradoresRespostas)
 				{
 					if(colab.getId().equals(colaboradorResposta.getId()) && periodoExperiencia.getId().equals(colaboradorResposta.getPeriodoExperienciaId()))
+					{
+						performance = colaboradorResposta.getPerformance();
 						data = colaboradorResposta.getAvaliacaoRespondidaEm();
+					}
 				}
 
-				experienciaColaborador.addPeriodo(data);
+				experienciaColaborador.addPeriodo(data, performance);
 			}
 			
 			acompanhamentos.add(experienciaColaborador);
@@ -1656,9 +1661,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		for (AcompanhamentoExperienciaColaborador acompanhamento: acompanhamentos)
 			acompanhamento.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, acompanhamento.getAreaOrganizacionalId()));
 		
-		Comparator<AcompanhamentoExperienciaColaborador> comp = new BeanComparator("areaOrganizacional.descricao", new ComparatorString());
-		Collections.sort((List<AcompanhamentoExperienciaColaborador>) acompanhamentos, comp);
-		
+		Collections.sort(acompanhamentos);
 		return acompanhamentos;
 	}
 

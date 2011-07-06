@@ -178,9 +178,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradores.add(colaborador1);
     	colaboradores.add(colaborador2);
     	
-    	Colaborador colaborador3 = new Colaborador(1L, dataReferencia, 12, 1L);
-    	Colaborador colaborador5 = new Colaborador(1L, dataReferencia, 33, 2L);
-    	Colaborador colaborador4 = new Colaborador(2L, dataReferencia, 12, 1L);
+    	Colaborador colaborador3 = new Colaborador(1L, dataReferencia, 1.0, 12, 1L);
+    	Colaborador colaborador5 = new Colaborador(1L, dataReferencia, 1.0, 33, 2L);
+    	Colaborador colaborador4 = new Colaborador(2L, dataReferencia, 1.0, 12, 1L);
     	
     	Collection<Colaborador> colaboradoresComAvaliacoes = new ArrayList<Colaborador>();
     	colaboradoresComAvaliacoes.add(colaborador3);
@@ -225,9 +225,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradores.add(colaborador1);
     	colaboradores.add(colaborador2);
     	
-    	Colaborador colaboradorResposta3 = new Colaborador(2L, dataReferencia, 30, 1L);
-    	Colaborador colaboradorResposta4 = new Colaborador(2L, dataReferencia, 55, 3L);
-    	Colaborador colaboradorResposta5 = new Colaborador(5L, dataReferencia, 33, 2L);
+    	Colaborador colaboradorResposta3 = new Colaborador(2L, dataReferencia, 1.0, 30, 1L);
+    	Colaborador colaboradorResposta4 = new Colaborador(2L, dataReferencia, 1.0, 55, 3L);
+    	Colaborador colaboradorResposta5 = new Colaborador(5L, dataReferencia, 1.0, 33, 2L);
     	
     	Collection<Colaborador> colaboradoresComAvaliacoes = new ArrayList<Colaborador>();
     	colaboradoresComAvaliacoes.add(colaboradorResposta3);
