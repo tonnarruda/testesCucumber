@@ -311,17 +311,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public String insert() throws Exception
 	{
-		try
-		{
-			candidatoManager.validaQtdCadastros();			
-		} catch (Exception e)
-		{
-			addActionMessage(e.getMessage());
-			prepare();
-			return Action.INPUT;
-		}
-
-		
 		Empresa empresa = new Empresa();
 
 		if(!moduloExterno)
@@ -601,16 +590,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	public String insertCurriculoTexto() throws Exception
 	{		
 		prepareInsertCurriculoTexto();
-
-		try
-		{
-			candidatoManager.validaQtdCadastros();						
-		}
-		catch (Exception e)
-		{
-			addActionMessage(e.getMessage());
-			return Action.INPUT;
-		}
 		
 		try
 		{
