@@ -222,7 +222,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 	}
 
 	//max 100 registros
-	public Collection<Candidato> findBusca(Map parametros, Long empresaId, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao) throws Exception
+	public Collection<Candidato> findBusca(Map parametros, Long empresaId, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao, Integer qtdRegistros) throws Exception
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		
@@ -270,7 +270,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			criteria.add(Expression.not((Expression.in("c.id", idsCandidatos))));
 
 		criteria.addOrder(Order.asc("c.nome"));
-		criteria.setMaxResults(100);
+		
+		if(qtdRegistros!=null)
+			criteria.setMaxResults(qtdRegistros);
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
@@ -732,8 +734,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		montaCriteriaFiltros(param, empresa, criteria);
 
 		Collection<Candidato> result = new ArrayList<Candidato>();
+		
 		Collection lista = criteria.list();
-
 		Candidato candidatoAnterior = null;
 
 		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
@@ -872,7 +874,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.executeUpdate();
 	}
 
-	public Collection<Candidato> findCandidatosForSolicitacaoAllEmpresas(String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao)
+	public Collection<Candidato> findCandidatosForSolicitacaoAllEmpresas(String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		
@@ -890,6 +892,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		if(conhecimentosCheck != null && conhecimentosCheck.length > 0)
 			criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.nome", conhecimentosCheck));
 
+		if(qtdRegistros!=null)
+			criteria.setMaxResults(qtdRegistros);
+		
 		criteria.addOrder(Order.asc("nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
@@ -897,7 +902,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return criteria.list();
 	}
 
-	public Collection<Candidato> findCandidatosForSolicitacaoByEmpresa(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, Long[] cargosCheck, Long[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao)
+	public Collection<Candidato> findCandidatosForSolicitacaoByEmpresa(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, Long[] cargosCheck, Long[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		
@@ -916,6 +921,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		if(conhecimentosCheck != null && conhecimentosCheck.length > 0)
 			criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.id", conhecimentosCheck));
 
+		if(qtdRegistros!=null)
+			criteria.setMaxResults(qtdRegistros);
+		
 		criteria.addOrder(Order.asc("nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));

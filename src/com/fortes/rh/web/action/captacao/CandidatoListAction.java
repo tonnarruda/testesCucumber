@@ -205,6 +205,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private Curriculo curriculo;
 
 	private Boolean compartilharCandidatos;
+	private Integer qtdRegistros = 100;
 
 	public String list() throws Exception
 	{
@@ -448,12 +449,10 @@ public class CandidatoListAction extends MyActionSupportList
 		if (BDS)
 			empresaId = getEmpresaSistema().getId();
 		
-		candidatos = candidatoManager.busca(parametros, empresaId, solicitacao.getId(), somenteCandidatosSemSolicitacao);
+		candidatos = candidatoManager.busca(parametros, empresaId, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros);
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
-		else if(candidatos.size() >= 100)
-			addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar a busca.");
 
 		prepareBusca();
 
@@ -484,7 +483,7 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroBySolicitacao = false;
 		prepareBuscaSimples();
 
-		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao);
+		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros);
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
@@ -1537,5 +1536,13 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public Boolean getCompartilharCandidatos() {
 		return compartilharCandidatos;
+	}
+
+	public Integer getQtdRegistros() {
+		return qtdRegistros;
+	}
+
+	public void setQtdRegistros(Integer qtdRegistros) {
+		this.qtdRegistros = qtdRegistros;
 	}
 }

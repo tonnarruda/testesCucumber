@@ -86,7 +86,8 @@
 			var valueCpf = "   .   .   -  ";
 			var valueData = "  /  /    ";
 			var campos = new Array('indicadoPor', 'nomeBusca', 'dataPrevIni', 'dataPrevFim', 'tempoExperiencia', 'palavrasChave', 'escolaridade', 'idioma', 'nivel', 'uf', 'cidade');
-
+			$('#qtdRegistros').val(100);
+			
 			for(var contador = 0; contador < campos.length; contador++)
 			{
 				document.getElementById(campos[contador]).value = "";
@@ -123,7 +124,7 @@
 	</#if>
 
 <#include "../ftl/showFilterImports.ftl" />
-<#assign validarCampos="return validaFormularioEPeriodo('formBusca', null, new Array('dataCadIni','dataCadFim'))"/>
+<#assign validarCampos="return validaFormularioEPeriodo('formBusca', new Array('qtdRegistros'), new Array('dataCadIni','dataCadFim'))"/>
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 </head>
@@ -165,8 +166,7 @@
 			<@ww.select label="Idioma" name="idioma" id="idioma" list="idiomas" listKey="id" listValue="nome" liClass="liLeft" cssStyle="width: 150px;" headerKey="" headerValue=""/>
 			<@ww.select label="Nível" name="nivel" id="nivel" list="nivels" cssStyle="width: 150px;" headerKey="" headerValue=""/>
 			<@ww.select label="Estado" name="uf" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
-			<@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()"/>
-
+			<@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" />
 			<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros" list="bairrosCheckList" />
 
 			<li style="clear:both;"></li>
@@ -213,7 +213,11 @@
 		       "3":"Frase Exata"}' />
 			
 			<@ww.checkbox label="Trazer apenas candidatos que nunca participaram de processos seletivos" id="somenteCandidatosSemSolicitacao" name="somenteCandidatosSemSolicitacao" labelPosition="left"/>
-
+			
+			<@ww.textfield name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6"  liClass="liLeft" />
+			<li>Quantidade de registros a serem listados.<li>
+			<br>
+			
 			<div class="buttonGroup">
 				<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
 			</div>
