@@ -1091,13 +1091,12 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(PeriodoExperienciaEditActionTest.class);
         suite.addTestSuite(AvaliacaoExperienciaEditActionTest.class);
         suite.addTestSuite(PerguntaAvaliacaoEditActionTest.class);
+        suite.addTestSuite(AcompanhamentoExperienciaColaboradorTest.class);
 
         // Avaliacao de Desempenho
         suite.addTestSuite(AvaliacaoDesempenhoDaoHibernateTest.class);
         suite.addTestSuite(AvaliacaoDesempenhoManagerTest.class);
         suite.addTestSuite(AvaliacaoDesempenhoEditActionTest.class);
-        suite.addTestSuite(AcompanhamentoExperienciaColaboradorTest.class);
-
 
         // DICIONARIO
         suite.addTestSuite(StatusRetornoACTest.class);
