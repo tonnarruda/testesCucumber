@@ -452,4 +452,20 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 
 		return criteria.list();
 	}
+
+	public Collection<Integer> getIdF2RhCandidato(Long solicitacaoId) 
+	{
+        Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
+        criteria.createCriteria("cs.candidato", "c");
+        criteria.createCriteria("cs.solicitacao", "s");
+
+        ProjectionList p = Projections.projectionList().create();
+
+        p.add(Projections.property("c.idF2RH"), "idF2RH");
+
+        criteria.setProjection(p);
+        criteria.add(Expression.eq("s.id", solicitacaoId));
+
+        return criteria.list();
+	}
 }

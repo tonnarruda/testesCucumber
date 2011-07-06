@@ -17,5 +17,7 @@ public interface F2rhFacade {
 	public abstract String[] montaIds(String[] curriculosId);
 	
 	public Collection<Curriculo> buscarCurriculosComFoto(String[] consulta) throws Exception;
+	
+	public Collection<Curriculo> removeCandidatoInseridoSolicitacao(Long SolicitacaoId, Collection<Curriculo> curriculos);
 
 }

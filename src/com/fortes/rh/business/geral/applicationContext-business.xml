@@ -615,6 +615,9 @@
     </property>
   </bean>
   <bean id="f2rhFacadeTarget" class="com.fortes.f2rh.F2rhFacadeImpl">
+      <property name="candidatoSolicitacaoManager">
+      	<ref bean="candidatoSolicitacaoManager" />
+    </property>
   </bean>
   <bean id="f2rhFacade" parent="parentManager">
     <property name="proxyInterfaces">

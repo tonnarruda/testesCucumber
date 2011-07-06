@@ -169,6 +169,7 @@ public class CandidatoListAction extends MyActionSupportList
 	// Uso para exibir mensagen ao deletar candidato
 	// N - Não tem mensagem, E = Erro e O = Deu certo
 	private char msgDelete = 'N';
+	private String ordenar = "dataAtualizacao";
 	private String msgAlert = "";
 	private boolean BDS;
 
@@ -394,6 +395,9 @@ public class CandidatoListAction extends MyActionSupportList
 
 			if(curriculos.size() >= 100)
 				addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar a busca.");
+			
+			curriculos = f2rhFacade.removeCandidatoInseridoSolicitacao(solicitacao.getId(), curriculos);
+			
 		} catch (ConnectException e) {
 			addActionError("Erro ao tentar se conectar ao F2rh. verifique se o site do F2rh está no ar, clicando <a href=\"http://www.f2rh.com.br/\" target=\"_blank\">aqui</a>.");
 			e.printStackTrace();
@@ -404,6 +408,8 @@ public class CandidatoListAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	}
+
+
 
 	public String busca() throws Exception
 	{
@@ -449,7 +455,7 @@ public class CandidatoListAction extends MyActionSupportList
 		if (BDS)
 			empresaId = getEmpresaSistema().getId();
 		
-		candidatos = candidatoManager.busca(parametros, empresaId, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros);
+		candidatos = candidatoManager.busca(parametros, empresaId, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
@@ -483,16 +489,11 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroBySolicitacao = false;
 		prepareBuscaSimples();
 
-		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros);
+		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
-		else if(candidatos.size() > 150)
-		{
-			addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar sua busca.");
-			candidatos = null;
-		}
-		else{
+		else {
 			setShowFilter(false);
 		}
 
@@ -1545,4 +1546,13 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setQtdRegistros(Integer qtdRegistros) {
 		this.qtdRegistros = qtdRegistros;
 	}
+
+	public String getOrdenar() {
+		return ordenar;
+	}
+
+	public void setOrdenar(String ordenar) {
+		this.ordenar = ordenar;
+	}
+
 }

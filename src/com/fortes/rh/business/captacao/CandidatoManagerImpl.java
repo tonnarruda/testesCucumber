@@ -100,7 +100,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	}
 	
 	//TODO refatorar
-	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresaId, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros) throws Exception
+	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresaId, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception
 	{
 		Collection<Candidato> candidatos = null;
 		// Experiencia
@@ -143,9 +143,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		else
 		{
 			if (empresaId != null && empresaId != -1)
-				retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao, qtdRegistros);
+				retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);
 			else
-				retorno = getDao().findBusca(parametros, null, idsCandidatos, somenteSemSolicitacao, qtdRegistros);
+				retorno = getDao().findBusca(parametros, null, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);
 			
 		}
 
@@ -1094,13 +1094,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro)
+	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar)
 	{
 		Collection<Long> candidatosJaSelecionados = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
 		if(empresaId != null && empresaId == -1L)
-			return getDao().findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro);
+			return getDao().findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);
 		else
-			return getDao().findCandidatosForSolicitacaoByEmpresa(empresaId, indicadoPor, nomeBusca, cpfBusca, uf, cidade, StringUtil.stringToLong(cargosCheck), StringUtil.stringToLong(conhecimentosCheck), candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro);
+			return getDao().findCandidatosForSolicitacaoByEmpresa(empresaId, indicadoPor, nomeBusca, cpfBusca, uf, cidade, StringUtil.stringToLong(cargosCheck), StringUtil.stringToLong(conhecimentosCheck), candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);
 	}
 
 	public Candidato verifyCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado) throws Exception 

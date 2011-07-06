@@ -43,6 +43,7 @@
 			var valueCpf = "   .   .   -  ";
 			var campos = new Array('indicadoPor', 'nomeBusca', 'uf', 'cidade');
 			$('#qtdRegistros').val(100);
+			$('#ordenar').val('dataAtualizacao');
 			
 			for(var contador = 0; contador < campos.length; contador++)
 			{
@@ -89,11 +90,10 @@
 			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
 			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" />
 			
-			<@ww.checkbox label="Trazer apenas candidatos que nunca participaram de processos seletivos" id="somenteCandidatosSemSolicitacao" name="somenteCandidatosSemSolicitacao" labelPosition="left"/>
+			<@ww.select label="Ordenar Por" name="ordenar" id="ordenar" list=r"#{'dataAtualizacao':'Data de Atualização','nome':'Nome'}" cssStyle="width: 170px;" />			
+			<@ww.textfield label="Quantidade de registros a serem listados"name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6" />
 			
-			<@ww.textfield name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6"  liClass="liLeft" />
-			<li>Quantidade de registros a serem listados.<li>
-			<br>
+			<@ww.checkbox label="Trazer apenas candidatos que nunca participaram de processos seletivos" id="somenteCandidatosSemSolicitacao" name="somenteCandidatosSemSolicitacao" labelPosition="left"/>
 
 			<@ww.hidden name="filtro" value="true"/>
 			<@ww.hidden name="solicitacao.id"/>
