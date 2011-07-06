@@ -100,14 +100,14 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	}
 	
 	//TODO refatorar
-	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresaId, Long solicitacaoId, boolean somenteSemSolicitacao) throws Exception
+	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresaId, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros) throws Exception
 	{
 		Collection<Candidato> candidatos = null;
 		// Experiencia
 		if( parametros.get("experiencias") != null && !parametros.get("tempoExperiencia").equals("") && !parametros.get("tempoExperiencia").equals("0"))
 		{
 			Collection<Candidato> candidatosExperiencia;
-			if (empresaId == -1L)
+			if (empresaId != null && empresaId == -1L)
 				candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, null);
 			else			
 				candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, empresaId);
@@ -142,10 +142,10 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			retorno = null;
 		else
 		{
-			if (empresaId != -1)
-				retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao);
+			if (empresaId != null && empresaId != -1)
+				retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao, qtdRegistros);
 			else
-				retorno = getDao().findBusca(parametros, null, idsCandidatos, somenteSemSolicitacao);
+				retorno = getDao().findBusca(parametros, null, idsCandidatos, somenteSemSolicitacao, qtdRegistros);
 			
 		}
 
@@ -1094,25 +1094,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao)
+	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro)
 	{
 		Collection<Long> candidatosJaSelecionados = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
-		if(empresaId == -1L)
-			return getDao().findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao);
+		if(empresaId != null && empresaId == -1L)
+			return getDao().findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro);
 		else
-			return getDao().findCandidatosForSolicitacaoByEmpresa(empresaId, indicadoPor, nomeBusca, cpfBusca, uf, cidade, StringUtil.stringToLong(cargosCheck), StringUtil.stringToLong(conhecimentosCheck), candidatosJaSelecionados, somenteSemSolicitacao);
-	}
-
-	public void validaQtdCadastros() throws Exception
-	{
-		//TODO remprot
-//		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-//		RPClient remprot = Autenticador.getRemprot(parametrosDoSistema.getServidorRemprot());
-//		int qtdCandidatoNoBanco = getDao().getCount();
-//		
-//		if(!(Boolean) ActionContext.getContext().getSession().get("REG_LOGS") || !remprot.getRegistered())
-//			if(qtdCandidatoNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
-//				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Candidatos");		
+			return getDao().findCandidatosForSolicitacaoByEmpresa(empresaId, indicadoPor, nomeBusca, cpfBusca, uf, cidade, StringUtil.stringToLong(cargosCheck), StringUtil.stringToLong(conhecimentosCheck), candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro);
 	}
 
 	public Candidato verifyCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado) throws Exception 
@@ -1370,5 +1358,4 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	{
 			getDao().updateExamePalografico(candidato);
 	}
-
 }
