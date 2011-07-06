@@ -3,6 +3,7 @@ package com.fortes.f2rh;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.sf.antcontrib.logic.ForEach;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 
@@ -12,6 +13,8 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.log4j.Logger;
 
 import com.fortes.model.type.File;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class F2rhFacadeImpl implements F2rhFacade {
@@ -19,6 +22,7 @@ public class F2rhFacadeImpl implements F2rhFacade {
 	public static final Logger log = Logger.getLogger(F2rhFacadeImpl.class);
 	
 	private final F2rhDownloadFacade downloader;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	
 	/**
 	 * Instanciará o F2rhDownloadFacadeImpl por padrão.
@@ -94,6 +98,22 @@ public class F2rhFacadeImpl implements F2rhFacade {
 		return f2rhFacade.obterCurriculos(config);
 	}
 	
+	public Collection<Curriculo> removeCandidatoInseridoSolicitacao(Long SolicitacaoId, Collection<Curriculo> curriculos) 
+	{
+		Collection<Integer> candidatosF2rhInseridosSolicitacao = candidatoSolicitacaoManager.getIdF2RhCandidato(SolicitacaoId);
+		Curriculo remover = new Curriculo();
+		
+		for (Integer idf2RH : candidatosF2rhInseridosSolicitacao) 
+		{
+			if(idf2RH!=null)
+			{
+				remover.setId(idf2RH);
+				curriculos.remove(remover);
+			}
+		}
+		return curriculos;
+	}
+	
 	/**
 	 * Busca curriculos com as fotos em anexo.
 	 */
@@ -125,6 +145,10 @@ public class F2rhFacadeImpl implements F2rhFacade {
 		}
 		
 		return StringUtil.converteCollectionToArrayString(idsF2RH);
+	}
+
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
 }

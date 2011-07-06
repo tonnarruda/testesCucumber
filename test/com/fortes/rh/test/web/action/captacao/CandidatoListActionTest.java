@@ -64,6 +64,7 @@ public class CandidatoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("montaStringBuscaF2rh");
     	
     	f2rhFacade.expects(once()).method("buscarCurriculos").with(ANYTHING).will(returnValue(new ArrayList<Curriculo>()));
+    	f2rhFacade.expects(once()).method("removeCandidatoInseridoSolicitacao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Curriculo>()));
 
     	assertEquals(action.buscaF2rh(), "success");
     }

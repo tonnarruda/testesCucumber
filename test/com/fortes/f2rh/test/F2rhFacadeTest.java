@@ -1,5 +1,6 @@
 package com.fortes.f2rh.test;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -7,6 +8,7 @@ import mockit.Mockit;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.NameValuePair;
+import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.f2rh.ConfigF2RH;
@@ -15,18 +17,25 @@ import com.fortes.f2rh.F2rhDownloadFacade;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.f2rh.User;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 
 public class F2rhFacadeTest extends MockObjectTestCase {
 
 	private Curriculo expected;
 	private Curriculo actual;
-	F2rhFacade f2rhFacade;
+	F2rhFacadeImpl f2rhFacade = new F2rhFacadeImpl();
 	ConfigF2RH config;
+	private Mock candidatoSolicitacaoManager;
 	
 //	String jsonList1 = "[{\"ddd_rh\":\"85\",\"endereco\":\"Rua Coronel Linhares 115/202\",\"cidade_rh\":\"Fortaleza\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cep\":\"60170-240\",\"escolaridade_rh\":\"Superior Incompleto\",\"id\":15,\"user\":{\"name\":null,\"login\":\"010.178.063-06\",\"email\":\"henriquesoares@grupofortes.com.br\"},\"nacionalidade\":\"Brasileiro\",\"data_nascimento_rh\":\"27/12/1984\",\"bairro\":\"Meireles\",\"estado_civil\":\"1\",\"estado\":\"CE\",\"curso\":\"Letras\",\"telefone_rh\":\"87472023\",\"sexo\":\"M\",\"observacoes_complementares\":\"\",\"salario\":0.0,\"area_formacao\":\"2\"}]";
 	String jsonList1 = "[{\"ddd_rh\":\"85\",\"endereco\":\"Rua Coronel Linhares 115/202\",\"cidade_rh\":\"Fortaleza\",\"nome\":\"Henrique de Albuquerque Vasconcelos Soares\",\"cep\":\"60170-240\",\"escolaridade_rh\":\"Superior Incompleto\",\"id\":15,\"user\":{\"name\":null,\"login\":\"010.178.063-06\",\"email\":\"henriquesoares@grupofortes.com.br\"},\"nacionalidade\":\"Brasileiro\",\"data_nascimento_rh\":\"27/12/1984\",\"bairro\":\"Meireles\",\"estado_civil\":\"1\",\"estado\":\"CE\",\"curso\":\"Letras\",\"telefone_rh\":\"87472023\",\"sexo\":\"M\",\"observacoes_complementares\":\"\",\"salario\":0.0,\"area_formacao\":\"2\",\"foto_file_name\":\"rponte.jpg\"}]";
 	
-	protected void setUp() {
+	protected void setUp() throws Exception{
+		
+		super.setUp();
+		
 		expected = new Curriculo();
 		expected.setId(15);
 		expected.setNome("Henrique de Albuquerque Vasconcelos Soares");
@@ -37,10 +46,12 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		User user = new User();
 		user.setLogin("01017806306");
 		expected.setUser(user);
-		
+	
 		f2rhFacade = new F2rhFacadeImpl();
 		config = new ConfigF2RH();
 
+		candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
+		f2rhFacade.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
 	}
 	
 	public void testFindF2RHBasico() throws Exception {
@@ -96,6 +107,33 @@ public class F2rhFacadeTest extends MockObjectTestCase {
 		Collection<Curriculo> curriculos = f2rhFacade.buscarCurriculos(consulta);
 		actual = encontrar(curriculos, expected);
 		assertEquals(expected.getCpf(), actual.getCpf());
+	}
+
+	public void testRemoveCandidatoInseridoSolicitacao() throws Exception
+	{
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
+		
+		Curriculo joaoCurriculo = new Curriculo();
+		joaoCurriculo.setId(1);
+		Curriculo joseCurriculo = new Curriculo();
+		joseCurriculo.setId(2);
+		Curriculo abraaoCurriculo = new Curriculo();
+		abraaoCurriculo.setId(3);
+		
+		Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
+		curriculos.add(joaoCurriculo);
+		curriculos.add(joseCurriculo);
+		curriculos.add(abraaoCurriculo);
+		
+	 	Collection<Integer> idCurriculosJaCadastradosNaSolicitacao = new ArrayList<Integer>();
+    	idCurriculosJaCadastradosNaSolicitacao.add(joaoCurriculo.getId());
+    	idCurriculosJaCadastradosNaSolicitacao.add(abraaoCurriculo.getId());
+		
+		candidatoSolicitacaoManager.expects(once()).method("getIdF2RhCandidato").with(ANYTHING).will(returnValue(idCurriculosJaCadastradosNaSolicitacao));
+		
+		curriculos = f2rhFacade.removeCandidatoInseridoSolicitacao(solicitacao.getId(), curriculos);
+		
+		assertEquals(1, curriculos.size());
 	}
 	
 	public void testBuscarCurriculosComFoto() throws Exception

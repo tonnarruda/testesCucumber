@@ -496,7 +496,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Map parametros = new HashMap();
 		parametros.put("cpfBusca", c3.getPessoal().getCpf());
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(1, candidatos.size());
@@ -548,7 +548,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Map parametros = new HashMap();
 		Long[] areaIds = {areaInteresse.getId()};
 		parametros.put("areasIds", areaIds);
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
@@ -603,7 +603,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Map parametros = new HashMap();
 		String[] bairros = {bairro.getNome()};
 		parametros.put("bairros", bairros);
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
@@ -639,21 +639,21 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Map parametros = new HashMap();
 		parametros.put("palavrasChave", palavra);
 		parametros.put("formas", "1");
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
 
 		candidatos.clear();
 		parametros.put("formas", "2");
-		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
 
 		candidatos.clear();
 		parametros.put("formas", "3");
-		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
@@ -705,7 +705,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Map parametros = new HashMap();
 		Long[] cargosIds = {cargo.getId()};
 		parametros.put("cargosIds", cargosIds);
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(1, candidatos.size());
@@ -713,7 +713,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		parametros = new HashMap();
 		String[] cargosNomes = {cargo.getNome()};
 		parametros.put("cargosNomes", cargosNomes);
-		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 		
 		assertFalse(candidatos.isEmpty());
 		assertEquals(1, candidatos.size());
@@ -766,7 +766,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Map parametros = new HashMap();
 		Long[] conhecimentosIds = {conhecimento.getId()};
 		parametros.put("conhecimentosIds", conhecimentosIds);
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(3, candidatos.size());
@@ -849,7 +849,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(2, candidatos.size());
 	}
@@ -931,7 +931,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(3, candidatos.size());
 	}
@@ -975,7 +975,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(1, candidatos.size());
 	}
@@ -1021,7 +1021,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(1, candidatos.size());
 	}
@@ -1067,7 +1067,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(3, candidatos.size());
 	}
@@ -1113,7 +1113,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(2, candidatos.size());
 	}
@@ -1159,7 +1159,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(2, candidatos.size());
 	}
@@ -1205,7 +1205,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(1, candidatos.size());
 	}
@@ -1258,7 +1258,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(3, candidatos.size());
 	}
@@ -1306,7 +1306,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(2, candidatos.size());
 	}
@@ -1353,7 +1353,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(1, candidatos.size());
 	}
@@ -1399,7 +1399,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Map parametros = new HashMap();
 		parametros.put("veiculo", 'S');
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(2, candidatos.size());
 	}
@@ -1445,7 +1445,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(2, candidatos.size());
 	}
@@ -1496,7 +1496,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 		idsCandidatos.add(c1.getId());
 
-		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null);
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
 		assertEquals(1, candidatos.size());
 	}
@@ -2127,7 +2127,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		String[] cargosCheck = new String[]{cargo.getNomeMercado()};
 		String[] conhecimentosCheck = new String[]{conhecimento.getNome()};
 
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, estado.getId(), cidade.getId(), cargosCheck, conhecimentosCheck, null, false, null);
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, estado.getId(), cidade.getId(), cargosCheck, conhecimentosCheck, null, false, null, null);
 		assertEquals(1, resultados.size());
 	}
 
@@ -2149,7 +2149,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Long[] cargosIds = new Long[]{cargo.getId()};
 		Long[] conhecimentosIds = new Long[]{conhecimento.getId()};
 
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(),indicadoPor, nomeBusca, cpfBusca, estado.getId(), cidade.getId(), cargosIds, conhecimentosIds, null, false, null);
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(),indicadoPor, nomeBusca, cpfBusca, estado.getId(), cidade.getId(), cargosIds, conhecimentosIds, null, false, null, null);
 		assertEquals(1, resultados.size());
 	}
 	
@@ -2181,7 +2181,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoSolicitacao.setSolicitacao(solicitacao);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao);
 
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(), null, null, null, null, null, null, null, null, somenteCandidatosSemSolicitacao, null); 
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(), null, null, null, null, null, null, null, null, somenteCandidatosSemSolicitacao, null, null); 
 		assertEquals(2, resultados.size());
 		
 	}
@@ -2209,7 +2209,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<Long> candidatosJaSelecionados = new ArrayList<Long>();
 		candidatosJaSelecionados.add(candidato2.getId());
 
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(), "", nomeBusca, cpfBusca, null, null, null, null, candidatosJaSelecionados, false, null);
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(), "", nomeBusca, cpfBusca, null, null, null, null, candidatosJaSelecionados, false, null, null);
 		assertEquals(1, resultados.size());
 	}
 
