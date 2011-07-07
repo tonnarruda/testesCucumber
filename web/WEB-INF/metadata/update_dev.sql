@@ -7,3 +7,5 @@ update papel set nome = 'Ranking de Performance das Avaliações de Desempenho',
 
 insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (513, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperiencia.action', 3, true, 486);--.go
 alter sequence papel_sequence restart with 514;--.go
+
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=513 WHERE atualizaPapeisIdsAPartirDe is null;--.go

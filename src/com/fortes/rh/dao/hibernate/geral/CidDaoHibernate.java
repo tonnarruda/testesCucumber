@@ -3,10 +3,12 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -24,8 +26,8 @@ public class CidDaoHibernate extends GenericDaoHibernate<Cid> implements CidDao
 		p.add(Projections.property("c.descricao"), "descricao");
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.ilike("c.codigo", codigo + "%"));
-		criteria.add(Expression.ilike("c.descricao", "%" + descricao + "%"));
+		criteria.add(Expression.ilike("c.codigo", "%" + codigo + "%"));
+		criteria.add(Restrictions.sqlRestriction("normalizar(this_.descricao) ilike  normalizar(?)", "%" + descricao + "%", Hibernate.STRING));
 		
 		criteria.addOrder(Order.asc("c.codigo"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cid.class));

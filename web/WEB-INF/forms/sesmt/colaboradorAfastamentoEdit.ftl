@@ -45,6 +45,7 @@
 					$.ajax({
 						url: urlFind,
 						dataType: "json",
+						type: "POST",
 						data: {
 							descricao: '',
 							codigo: request.term
@@ -81,6 +82,7 @@
 					$.ajax({
 						url: urlFind,
 						dataType: "json",
+						type: "POST",
 						data: {
 							descricao: request.term,
 							codigo: ''
@@ -105,10 +107,7 @@
 				minLength: 4,
 				select: function( event, ui ) {
 					$("#cid").val(ui.item.codigo);
-				},
-				change: function(){
-					alet()
-				} 
+				}
 			}).data( "autocomplete" )._renderItem = function( ul, item ) {
 					return $( "<li></li>" )
 						.data( "item.autocomplete", item )
