@@ -387,15 +387,16 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String buscaF2rh() throws Exception
 	{
+		if(candidatosId != null && candidatosId.length > 0)
+			insertCandidatosByF2rh();
+		
 		montaFiltroF2rh();
 		
 		try {
-			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma, ufs, cidades, idiomas);
+			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma, ufs, cidades, idiomas, getPage());
 			curriculos = f2rhFacade.buscarCurriculos(consulta_basica);
 
-			if(curriculos.size() >= 100)
-				addActionMessage("Atenção: Sua pesquisa retornou muitos candidatos. Utilize mais campos do filtro para refinar a busca.");
-			
+			setTotalSize(curriculos.size());
 			curriculos = f2rhFacade.removeCandidatoInseridoSolicitacao(solicitacao.getId(), curriculos);
 			
 		} catch (ConnectException e) {
@@ -409,7 +410,27 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-
+	public String insertCandidatosByF2rh() throws Exception
+	{
+		try {
+			if(candidatosId != null && candidatosId.length > 0)
+			{
+				Collection<Candidato> candidatosParaSolicitacao = candidatoManager.getCurriculosF2rh(candidatosId, getEmpresaSistema());
+	
+				int cont = 0;
+				String[] candidatosParaSolicitacaoIds = new String[candidatosParaSolicitacao.size()];
+				for (Candidato candidato : candidatosParaSolicitacao)
+					candidatosParaSolicitacaoIds[cont++] = Long.toString(candidato.getId());
+				
+				if(candidatosParaSolicitacaoIds != null && candidatosParaSolicitacaoIds.length > 0)
+					candidatoSolicitacaoManager.insertCandidatos(candidatosParaSolicitacaoIds, solicitacao, StatusCandidatoSolicitacao.INDIFERENTE);
+			}
+		} catch (Exception e) {
+			addActionError("Não foi possível importar os Candidatos.");
+		}
+		
+		return Action.SUCCESS;
+	}
 
 	public String busca() throws Exception
 	{
@@ -497,28 +518,6 @@ public class CandidatoListAction extends MyActionSupportList
 			setShowFilter(false);
 		}
 
-		return Action.SUCCESS;
-	}
-	
-	public String insertCandidatosByF2rh() throws Exception
-	{
-		try {
-			if(candidatosId != null && candidatosId.length > 0)
-			{
-				Collection<Candidato> candidatosParaSolicitacao = candidatoManager.getCurriculosF2rh(candidatosId, getEmpresaSistema());
-	
-				int cont = 0;
-				String[] candidatosParaSolicitacaoIds = new String[candidatosParaSolicitacao.size()];
-				for (Candidato candidato : candidatosParaSolicitacao)
-					candidatosParaSolicitacaoIds[cont++] = Long.toString(candidato.getId());
-				
-				if(candidatosParaSolicitacaoIds != null && candidatosParaSolicitacaoIds.length > 0)
-					candidatoSolicitacaoManager.insertCandidatos(candidatosParaSolicitacaoIds, solicitacao, StatusCandidatoSolicitacao.INDIFERENTE);
-			}
-		} catch (Exception e) {
-			addActionError("Não foi possível importar os Candidatos.");
-		}
-		
 		return Action.SUCCESS;
 	}
 

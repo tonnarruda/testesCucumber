@@ -1126,7 +1126,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	}
 
-	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidadeValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idiomaValue, Map ufs, Map cidades, Collection<Idioma> idiomas) 
+	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidadeValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idiomaValue, Map ufs, Map cidades, Collection<Idioma> idiomas, Integer page) 
 	{
 		String nome = "";
 		String cpf = "";
@@ -1142,6 +1142,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		String cidade = "";
 		String bairro = "";
 		String palavra_chave = "";
+		String pagina = "";
 		
 		nome = montaParametro(nome, "nome", "");
 		cpf = montaParametro(cpf, "cpf", "");
@@ -1157,10 +1158,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		if(cidades != null && cidades.size() > 0)
 			cidade = montaParametro(cidade, "cidade", (String) cidades.get(cidadeValue));
 		
+		pagina = montaParametro(pagina, "page", String.valueOf(page));
 		bairro = montaParametro(bairro, "bairro", curriculo.getBairro());
 		palavra_chave = montaParametro(palavra_chave, "palavra_chave", curriculo.getObservacoes_complementares());
 		
-		return new String[]{nome, cpf, escolaridade, idioma, data_cad_ini, data_cad_fim, cargo, sexo, idade_ini, idade_fim, estado, cidade, bairro, palavra_chave};
+		return new String[]{nome, cpf, escolaridade, idioma, data_cad_ini, data_cad_fim, cargo, sexo, idade_ini, idade_fim, estado, cidade, bairro, palavra_chave, pagina};
 	}
 
 	private String getIdioma(Collection<Idioma> idiomas, Long value) 

@@ -19,8 +19,54 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js"/>'></script>
 
 	<script type="text/javascript">
+		function stopEvent(e){
+			if(!e) var e = window.event;
+			
+			//e.cancelBubble is supported by IE - this will kill the bubbling process.
+			e.cancelBubble = true;
+			e.returnValue = false;
+		
+			//e.stopPropagation works only in Firefox.
+			if (e.stopPropagation) {
+				e.stopPropagation();
+				e.preventDefault();
+			}
+			return false;
+		}
+		
+		function enviaBusca(page, evento)
+		{
+			if(getKeyCode(evento) == 13)
+			{
+				stopEvent(evento);	
+				enviaBuscaLink(page);
+			}
+		}
 
-
+		function enviaBuscaLink(page)
+		{
+			var candidatosSelecionados = $('.dados * input[type=checkbox]:checked');
+			
+			if (candidatosSelecionados.size() > 0)
+			{
+				jConfirm('Deseja incluir os candidatos selecionados?', 'Fortes RH', function(r) {
+				    if(r)
+				    {
+					    candidatosSelecionados.each(function(){        
+								$('#formBuscaF2rh').append("<input type='hidden' name='candidatosId' value='" + $(this).val() + "'/>");
+							});
+				    }	
+				    
+			    	$('#page').val(page);
+					$('#formBuscaF2rh').submit();
+				}, true);
+			}
+			else
+			{
+				$('#page').val(page);
+				$('#formBuscaF2rh').submit();
+			}							
+		}
 	</script>
 	<#include "../ftl/showFilterImports.ftl" />
 
@@ -31,7 +77,6 @@
 		<#assign formas=""/>
 	</#if>
 
-	<#assign validarCampos="return validaFormulario('formBuscaF2rh', null, null)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
 
@@ -39,7 +84,7 @@
 	<#include "buscaCandidatoSolicitacaoLinks.ftl" />
 
 	<#include "../util/topFiltro.ftl" />	
-		<@ww.form name="formBuscaF2rh" id="formBuscaF2rh" action="buscaF2rh.action" onsubmit="${validarCampos}" method="POST">
+		<@ww.form name="formBuscaF2rh" id="formBuscaF2rh" action="buscaF2rh.action" method="POST">
 			<@ww.textfield label="Cargo" id="cargo" name="curriculo.cargo" cssStyle="width: 526px;"  />
 						
 			<@ww.select label="Escolaridade" name="escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 180px;" headerKey="" headerValue="" liClass="liLeft"/>
@@ -64,9 +109,10 @@
 			
 			<@ww.hidden name="filtro" value="true"/>
 			<@ww.hidden name="solicitacao.id"/>
+			<@ww.hidden name="page" id="page"/>
 			
 			<div class="buttonGroup">
-				<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
+				<input type="button" value="" class="btnPesquisar grayBGE" onclick="enviaBuscaLink(1);">
 			</div>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
@@ -75,7 +121,7 @@
 
 	<#if curriculos?exists && 0 < curriculos?size>
 		<br>
-		<@ww.form name="formCand" action="insertCandidatosByF2rh.action" validate="true" method="POST">
+		<@ww.form name="formCand" id="formCand" action="insertCandidatosByF2rh.action" validate="true" method="POST">
 
 			<@ww.hidden name="solicitacao.id"/>
 
@@ -100,6 +146,24 @@
 				<@display.column property="updated_rh" title="Atualizado em" style="width: 60px;text-align:center;"/>
 			</@display.table>
 		</@ww.form>
+
+		<div class="linksPaginacao">
+			<#if page == 1>
+				<img src="/fortesrh/imgs/primeira.gif" class="desabilitaImg">&nbsp;&nbsp;&nbsp;
+				<img src="/fortesrh/imgs/anterior.gif" class="desabilitaImg">&nbsp;&nbsp;&nbsp;
+			<#else>
+				<a href='javascript:;' onclick='enviaBuscaLink(1);' title="Primeira página"><img src="/fortesrh/imgs/primeira.gif"></a>&nbsp;&nbsp;&nbsp;
+				<a href='javascript:;' onclick='enviaBuscaLink(${page - 1});' title="Página anterior"><img src="/fortesrh/imgs/anterior.gif"></a>
+			</#if>
+		
+			Página <input name="inputPage" value="${page}" id="inputPage" class="inputPage" maxlength="4" onkeydown='enviaBusca(this.value, event);' onkeypress="somenteNumeros(event,'');" type="text">&nbsp;&nbsp;&nbsp;
+
+			<#if 100 <= totalSize>	
+				<a href='javascript:;' onclick='enviaBuscaLink(${page + 1});' title="Próxima página"><img src="/fortesrh/imgs/proxima.gif"></a>&nbsp;&nbsp;&nbsp;
+			<#else>
+				<img src="/fortesrh/imgs/proxima.gif" class="desabilitaImg">&nbsp;&nbsp;&nbsp;
+			</#if>
+		</div>
 
 		<div class="buttonGroup">
 			<button onclick="prepareEnviarForm();" class="btnInserirSelecionados"></button>

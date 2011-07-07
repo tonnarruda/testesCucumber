@@ -26,4 +26,5 @@
 		<@display.column property="empresa.nome" title="Empresa" />
 		<@display.column property="origemDescricao" title="Origem" style="width: 150px;"/>
 	</@display.table>
+	<br>Total de Candidatos: ${candidatos?size}
 </@ww.form>

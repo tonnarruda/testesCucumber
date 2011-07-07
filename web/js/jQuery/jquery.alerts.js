@@ -49,11 +49,11 @@
 			});
 		},
 		
-		confirm: function(message, title, callback) {
+		confirm: function(message, title, callback, retiraFocus) {
 			if( title == null ) title = 'Fortes RH';
 			$.alerts._show(title, message, null, 'confirm', function(result) {
 				if( callback ) callback(result);
-			});
+			}, retiraFocus);
 		},
 			
 		prompt: function(message, value, title, callback) {
@@ -65,7 +65,7 @@
 		
 		// Private methods
 		
-		_show: function(title, msg, value, type, callback) {
+		_show: function(title, msg, value, type, callback, retiraFocus) {
 			
 			$.alerts._hide();
 			$.alerts._overlay('show');
@@ -125,6 +125,10 @@
 						if( callback ) callback(false);
 					});
 					$("#popup_ok").focus();
+
+					if(retiraFocus)
+						$("#popup_ok").blur();//tem zig no IE e tela de Busca F2RH. Francisco/Rubens 07/07/2011
+					
 					$("#popup_ok, #popup_cancel").keypress( function(e) {
 						if( e.keyCode == 13 ) $("#popup_ok").trigger('click');
 						if( e.keyCode == 27 ) $("#popup_cancel").trigger('click');
@@ -224,8 +228,8 @@
 		$.alerts.alert(message, title, callback);
 	}
 	
-	jConfirm = function(message, title, callback) {
-		$.alerts.confirm(message, title, callback);
+	jConfirm = function(message, title, callback, retiraFocus) {
+		$.alerts.confirm(message, title, callback, retiraFocus);
 	};
 	
 	jPrompt = function(message, value, title, callback) {

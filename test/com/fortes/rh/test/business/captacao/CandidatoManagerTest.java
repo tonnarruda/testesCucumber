@@ -1540,7 +1540,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		Collection<Idioma> idiomas = new ArrayList<Idioma>();
 		idiomas.add(idioma);
 		
-		String[] retorno = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadeValue, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, cidades, idiomas);
+		String[] retorno = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadeValue, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, cidades, idiomas, 1);
 		
 		String[] camposInformados = new String[]{"",
 				"",

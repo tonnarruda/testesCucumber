@@ -156,7 +156,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
 	<div class="buttonGroup" style="margin: 0px;">
-		<div style="float: left;width: 60%;">
+		<div style="float: left; width: 400px;">
 			<#if !solicitacao.encerrada>
 				<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 					<button class="btnTriagem" onclick="window.location='../candidato/prepareBusca.action?solicitacao.id=${solicitacao.id}'"></button>
@@ -172,7 +172,7 @@
 		</div>
 	
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
-			<div style="text-align: right;">
+			<div style="text-align: right; float: right;">
 				<button onclick="window.location='prepareMover.action?solicitacao.id=${solicitacao.id}'" class="btnTransferirCandidatos" accesskey="M"></button>
 				<#if !solicitacao.encerrada>
 					<button onclick="window.location='listTriagem.action?solicitacao.id=${solicitacao.id}'" class="btnTriagemModuloExterno" accesskey="T"></button>
@@ -180,6 +180,7 @@
 			</div>
 		</@authz.authorize>
 	</div>
+	<div style="clear: both;"></div>
 
 	<script>
 		var obj = document.getElementById("legendas");
