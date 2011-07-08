@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.50.42" data="29/06/2011">
-		- SESMT > Movimentações > Afastamentos : Campo CID, listagem com sugestões de  CID´s.
-		- Notificação na caixa de mensagens quando um colaborador altera seu endereço na tela "Atualizar meus dados"
-		- Utilitários > Empresas: Possibilidade de troca de empresa sem sair do sistema.
+	<Versao id="1.1.50.42" data="08/07/2011">
+		- SESMT > Movimentações > Afastamentos: Campo CID, listagem com sugestões de  CID´s.
+		- SESMT > Relatórios > Afastamentos: Nova opção de agrupamento por CID.
+		- Notificação na caixa de mensagens quando um colaborador altera seu endereço na tela "Atualizar meus dados".
+		- Utilitários > Alterar Empresa: Possibilidade de troca de empresa sem sair do sistema.
 		- Utilitários > Configurações > Sistema: Novas opções de compartilhamento de candidatos e colaboradores entre empresas.
+		- Utilitários > Cadastros > Usuário: Novo campo [Super Administrador], este usuário será responsável pela edição do perfil dos administradores.
 		- CeS > Movimentações > Ajuste de Situação (Dissídio): Novo filtro por cargo.
-		- SESMT > Relatórios > Afastamentos: Nova opção de agrupamento por CID. 
+		- Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto: Novo título para o relatório de Acompanhamento do Período de Experiência.
+		- Aval. Desempenho > Relatórios > Acompanhamento do Período de Experiência: Novo relatório.
+		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Busca Simples e Busca Avançada, novo campo [Quantidade de registros a serem listados].
+		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Paginação na Busca F2RH.
 	</Versao>
 	<Versao id="1.1.49.41" data="27/06/2011">
 		- CeS > Movimentações > Ajuste de Situação (Dissídio): Ajusta as promoções para o tipo dissídio de acordo com o valor da promoção.

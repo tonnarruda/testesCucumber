@@ -132,7 +132,8 @@ CREATE TABLE usuario (
     login character varying(30),
     senha character varying(30),
     acessosistema boolean NOT NULL,
-    ultimologin timestamp
+    ultimologin timestamp,
+    superadmin boolean default false
 );
 ALTER TABLE usuario ADD CONSTRAINT usuario_pkey PRIMARY KEY (id);
 alter table usuario add constraint usuario_login_uk unique (login);
