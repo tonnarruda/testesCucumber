@@ -1555,11 +1555,12 @@ public class CandidatoManagerTest extends MockObjectTestCase
 				"",
 				"",
 				"",				
-				""	
+				"",
+				"page=1"
 		};
 		
-		assertEquals(14, camposInformados.length);
-		assertEquals(14, retorno.length);
+		assertEquals(15, camposInformados.length);
+		assertEquals(15, retorno.length);
 		
 		assertEquals("nome", camposInformados[0], retorno[0]);
 		assertEquals("cpf", camposInformados[1], retorno[1]);
@@ -1575,6 +1576,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		assertEquals("cidade", camposInformados[11], retorno[11]);
 		assertEquals("bairro", camposInformados[12], retorno[12]);
 		assertEquals("palavra_chave", camposInformados[13], retorno[13]);
+		assertEquals("page", camposInformados[14], retorno[14]);
 	}
 		
 	public void testGetCurriculosF2rhSave() throws Exception

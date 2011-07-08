@@ -203,7 +203,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 				if (dataUltimoReajusteColaborador.before(dataBase))
 				{
 					situacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, situacao.getAreaOrganizacional().getId()));
-					situacao.setDataExtenso(DateUtil.formataDiaMesAno(situacao.getData()) + " " + DateUtil.getIntervalDateString(situacao.getData(), data));
+					// seta a data da ultima alteracao de salario
+					situacao.setDataExtenso(DateUtil.formataDiaMesAno(dataUltimoReajusteColaborador) + " " + DateUtil.getIntervalDateString(dataUltimoReajusteColaborador, data));
 					semReajustes.add(situacao);
 				}
 			}

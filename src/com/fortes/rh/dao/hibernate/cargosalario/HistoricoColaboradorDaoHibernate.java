@@ -248,18 +248,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	
 	public List<SituacaoColaborador> getUltimasPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date data, Long empresaId)
 	{
-		
-		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc");
-		ProjectionList pSub = Projections.projectionList().create();
-		
-		pSub.add(Projections.max("hc.data"));
-		subQuery.setProjection(pSub);
-		
-		subQuery.add(Expression.eqProperty("hc.colaborador.id", "sc.colaborador.id"));
-		subQuery.add(Expression.le("hc.data", data));
-		subQuery.add(Expression.not(Expression.eq("hc.motivo", MotivoHistoricoColaborador.DISSIDIO)));
-		subQuery.add(Expression.not(Expression.eq("hc.status", StatusRetornoAC.CANCELADO)));
-
 		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
 		criteria.createCriteria("sc.estabelecimento", "e");
 		criteria.createCriteria("sc.colaborador", "c");
@@ -277,7 +265,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("c.matricula"), "projectionColaboradorMatricula");
 		criteria.setProjection(p);
 		
-		criteria.add(Subqueries.propertyLe("sc.data", subQuery));
+		criteria.add(Expression.le("sc.data", data));
 		
 		criteria.add(Expression.not(Expression.eq("sc.motivo", MotivoHistoricoColaborador.DISSIDIO)));
 		criteria.add(Expression.eq("e.empresa.id", empresaId));
