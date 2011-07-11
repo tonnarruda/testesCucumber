@@ -53,6 +53,8 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	@ManyToOne
 	private Empresa empresa;
 	private boolean ativo = ATIVA;
+	@Column
+	private String emailsNotificacoes;
 	
 	@Transient
 	private Integer colaboradorCount;
@@ -353,6 +355,14 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	public void setAtivo(boolean ativo)
 	{
 		this.ativo = ativo;
+	}
+
+	public void setEmailsNotificacoes(String emailsNotificacoes) {
+		this.emailsNotificacoes = emailsNotificacoes;
+	}
+
+	public String getEmailsNotificacoes() {
+		return emailsNotificacoes;
 	}
 
 	/**

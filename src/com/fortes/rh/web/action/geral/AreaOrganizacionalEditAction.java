@@ -14,6 +14,7 @@ import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
@@ -32,6 +33,8 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 
 	private Collection<AreaOrganizacional> areas;
 	private Collection<Colaborador> responsaveis;
+	
+	private String[] emailsNotificacoes;
 
 	private String msgAlert;
 
@@ -71,7 +74,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 				limitado = true;
 				podeEditarAreaMae = false;
 			}
-
+			
 			areas = areaOrganizacionalManager.getNaoFamilia(areas ,areaOrganizacional.getId());
 
 			return Action.SUCCESS;
@@ -87,7 +90,9 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 	{
 		try
 		{
+			areaOrganizacional.setEmailsNotificacoes(StringUtils.deleteWhitespace(StringUtils.join(emailsNotificacoes, ";")));
 			areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, getEmpresaSistema());
+			
 			return Action.SUCCESS;
 		}
 		catch (AreaColaboradorException e)
@@ -123,6 +128,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 
 		try
 		{
+			areaOrganizacional.setEmailsNotificacoes(StringUtils.deleteWhitespace(StringUtils.join(emailsNotificacoes, ";")));
 			areaOrganizacionalManager.editarLotacaoAC(areaOrganizacional, getEmpresaSistema());
 			return Action.SUCCESS;
 		}
@@ -222,6 +228,14 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
 	{
 		this.historicoColaboradorManager = historicoColaboradorManager;
+	}
+
+	public String[] getEmailsNotificacoes() {
+		return emailsNotificacoes;
+	}
+
+	public void setEmailsNotificacoes(String[] emailsNotificacoes) {
+		this.emailsNotificacoes = emailsNotificacoes;
 	}
 
 }

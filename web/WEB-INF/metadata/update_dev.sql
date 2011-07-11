@@ -9,3 +9,5 @@ insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (513,
 alter sequence papel_sequence restart with 514;--.go
 
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=513 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+
+alter table areaorganizacional add column emailsnotificacoes text;--.go
