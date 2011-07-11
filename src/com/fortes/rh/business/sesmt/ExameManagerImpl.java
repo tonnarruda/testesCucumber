@@ -117,9 +117,10 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return new ArrayList<CheckBox>();
 	}
 
-	public Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date data, Long[] examesChecks, Long[] estabelecimentosChecks, Long[] areasChecks, Long[] colaboradoresChecks, boolean agruparPorArea, boolean imprimirAfastados) throws Exception
+	//TODO BACALHAU, consulta gigante e uns forsss
+	public Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date data, Long[] examesChecks, Long[] estabelecimentosChecks, Long[] areasChecks, Long[] colaboradoresChecks, boolean agruparPorArea, boolean imprimirAfastados, boolean imprimirDesligados) throws Exception
 	{
-		Collection<ExamesPrevistosRelatorio> examesRealizadosAteData = getDao().findExamesPeriodicosPrevistos(empresaId, data, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados);
+		Collection<ExamesPrevistosRelatorio> examesRealizadosAteData = getDao().findExamesPeriodicosPrevistos(empresaId, data, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
 
 		Collection<ExamesPrevistosRelatorio> examesAVencer = this.prepararExamesAVencer(data, examesRealizadosAteData);
 		
@@ -283,7 +284,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 				    	parametros.put("CABECALHO", cabecalho);
 				    	parametros.put("SUBREPORT_DIR", path);
 				    	
-						colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, false, true);
+						colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, false, true, false);
 						byte[] output;
 						JasperPrint jasperPrint;
 

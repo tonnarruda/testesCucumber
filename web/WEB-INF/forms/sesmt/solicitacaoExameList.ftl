@@ -142,9 +142,9 @@
 		</@display.column>
 		<@display.column property="dataFormatada" style="width: 70px;vertical-align: top;" title="Data"/>
 
-		<@display.column style="width: 290px;" title="Nome" style="vertical-align: top;">
+		<@display.column style="width: 330px;" title="Nome" style="vertical-align: top;">
 			<#if solicitacaoExame.colaborador?exists>
-				${solicitacaoExame.colaborador.nomeDesligado}
+				${solicitacaoExame.colaborador.nomeComercialDesligado}
 			</#if>
 			<#if solicitacaoExame.candidato?exists>
 				${solicitacaoExame.candidato.nome}
@@ -161,7 +161,7 @@
 		</@display.column>
 
 		<@display.column property="motivoDic" title="Motivo" style="width: 140px;vertical-align: top;"/>
-		<@display.column title="Exames" style="width: 280px;vertical-align: top;">
+		<@display.column title="Exames" style="width: 200px;vertical-align: top;">
 			<#list exameSolicitacaoExames as exameSolicitacaoExame>
 				<#if exameSolicitacaoExame.solicitacaoExame.id == solicitacaoExame.id>
 					<span id="${solicitacaoExame.id}_${exameSolicitacaoExame.exame.id}" class="${exameSolicitacaoExame.resultado}">

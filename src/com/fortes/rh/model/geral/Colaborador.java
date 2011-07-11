@@ -1589,6 +1589,17 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		else
 			return this.nome;
 	}
+	
+	public String getNomeComercialDesligado()
+	{
+		String retorno = this.nome;
+		if(StringUtils.isNotEmpty(this.nomeComercial))
+			retorno += " (" + this.nomeComercial + ")";
+		if(this.desligado)
+			retorno += " (Desligado)";
+	
+			return retorno;
+	}
 
 	public void setNome(String nome)
 	{

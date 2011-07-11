@@ -90,14 +90,14 @@ public class ExameManagerTest extends MockObjectTestCase
     	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
-    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),eq(hoje),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
+    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),eq(hoje),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
 
     	Collection<ExamesPrevistosRelatorio> resultado = null;
 
     	Exception exception = null;
 		try
 		{
-			resultado = exameManager.findRelatorioExamesPrevistos(empresa.getId(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, false, false);
+			resultado = exameManager.findRelatorioExamesPrevistos(empresa.getId(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, false, false, false);
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -144,7 +144,7 @@ public class ExameManagerTest extends MockObjectTestCase
     	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
-    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),eq(hoje),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
+    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),eq(hoje),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
     	
     	// Cabaré > Administração
     	Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
@@ -159,7 +159,7 @@ public class ExameManagerTest extends MockObjectTestCase
     	Exception exception = null;
     	try
     	{
-    		resultado = exameManager.findRelatorioExamesPrevistos(empresa.getId(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, agruparPorArea, imprimirAfastados );
+    		resultado = exameManager.findRelatorioExamesPrevistos(empresa.getId(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, agruparPorArea, imprimirAfastados, false );
     	}
     	catch (ColecaoVaziaException e)
     	{
@@ -173,9 +173,9 @@ public class ExameManagerTest extends MockObjectTestCase
     public void testFindRelatorioExamesPrevistosColecaoVaziaException() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),ANYTHING,ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
+    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),ANYTHING,ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
 
-		assertTrue(exameManager.findRelatorioExamesPrevistos(empresa.getId(), null, null, null, null, null,false, false).isEmpty());
+		assertTrue(exameManager.findRelatorioExamesPrevistos(empresa.getId(), null, null, null, null, null,false, false, false).isEmpty());
     }
 
     public void testFindBySolicitacaoExame()

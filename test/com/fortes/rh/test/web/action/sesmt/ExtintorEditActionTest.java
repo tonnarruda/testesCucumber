@@ -96,9 +96,6 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		action.setAtivo('S');
 
 		manager.expects(once()).method("save").with(eq(extintor)).will(returnValue(extintor));
-		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
-		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
-		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
 
 		assertEquals("success", action.insert());
 	}
@@ -119,9 +116,6 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		extintorInspecaoManager.expects(once()).method("saveOrUpdate").with(ANYTHING, ANYTHING);
 		extintorManutencaoManager.expects(once()).method("save").with(ANYTHING, ANYTHING);
 		manager.expects(once()).method("save").with(eq(extintor)).will(returnValue(extintor));
-		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
-		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
-		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
 		
 		assertEquals("success", action.insert());
 	}
@@ -129,9 +123,6 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 	public void testInsertException() throws Exception
 	{
 		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
-		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
-		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
 		assertEquals("input", action.insert());
 	}
 

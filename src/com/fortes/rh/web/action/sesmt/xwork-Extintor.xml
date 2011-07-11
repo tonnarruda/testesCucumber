@@ -20,6 +20,9 @@
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>		
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="prepare">
+			<interceptor-ref name="defaultListStack">
+				<param name="scope.session">extintor.estabelecimento.id</param>
+			</interceptor-ref>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="prepare">
@@ -27,8 +30,11 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorEdit.ftl</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorEdit.ftl</result>
+			<interceptor-ref name="defaultDeleteStack">
+				<param name="scope.session">extintor.estabelecimento.id</param>
+			</interceptor-ref>
+			<result name="success" type="redirect">prepareInsert.action</result>
+			<result name="input" type="redirect">prepareInsert.action</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
