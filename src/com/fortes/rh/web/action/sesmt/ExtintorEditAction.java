@@ -76,18 +76,12 @@ public class ExtintorEditAction extends MyActionSupportList
 			cadastrarInspecao();
 			cadastrarManutencoes();
 
-			extintor = new Extintor(extintor.getEstabelecimento());//mantem o estabelecimento selecionado na tela para o proximo cadastro.
-			
-			prepare();
-
 			addActionMessage("Extintor gravado com sucesso.");
-			
 			return SUCCESS;
 		}
 		catch (Exception e)
 		{
 			addActionError("Não foi possível gravar o extintor.");
-			prepare();
 			return INPUT;
 		}
 	}
@@ -98,7 +92,6 @@ public class ExtintorEditAction extends MyActionSupportList
 		{
 			extintorInspecao.setExtintor(extintor);
 			extintorInspecaoManager.saveOrUpdate(extintorInspecao, null);
-			extintorInspecao.setData(null);
 		}
 	}
 
