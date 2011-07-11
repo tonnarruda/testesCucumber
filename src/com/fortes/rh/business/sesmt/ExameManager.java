@@ -20,7 +20,7 @@ public interface ExameManager extends GenericManager<Exame>
 	Collection<Exame> populaExames(String[] examesCheck);
 	String[] findBySolicitacaoExame(Long solicitacaoExameId);
 	Collection<CheckBox> populaCheckBox(Long empresaId);
-	Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date data, Long[] examesIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] colaboradoresIds, boolean agruparPorArea, boolean imprimirAfastados) throws ColecaoVaziaException, Exception;
+	Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date data, Long[] examesIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] colaboradoresIds, boolean agruparPorArea, boolean imprimirAfastados, boolean imprimirDesligados) throws ColecaoVaziaException, Exception;
 	Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String motivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, String vinculo) throws ColecaoVaziaException;
 	void enviaLembreteExamesPrevistos(Collection<Empresa> empresas);
 	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizadosResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds) throws ColecaoVaziaException;

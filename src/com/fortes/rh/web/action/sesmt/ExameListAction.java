@@ -91,6 +91,7 @@ public class ExameListAction extends MyActionSupportList
 
 	private boolean agruparPorArea;
 	private boolean imprimirAfastados = false;
+	private boolean imprimirDesligados = false;
 
 	private String vinculo;
 	private boolean relatorioExamesPrevistosResumido;
@@ -212,7 +213,7 @@ public class ExameListAction extends MyActionSupportList
 
 		try
 		{
-			colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(getEmpresaSistema().getId(), data, examesIds, estabelecimentosIds, areasIds, colaboradoresIds, agruparPorArea, imprimirAfastados);
+			colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(getEmpresaSistema().getId(), data, examesIds, estabelecimentosIds, areasIds, colaboradoresIds, agruparPorArea, imprimirAfastados, imprimirDesligados);
 			parametros = RelatorioUtil.getParametrosRelatorio("Exames Previstos até " + DateUtil.formataDiaMesAno(data), getEmpresaSistema(), nomeEstabelecimento );
 			
 			return agruparPorArea ? "successAguparPorArea" : SUCCESS;
@@ -554,5 +555,13 @@ public class ExameListAction extends MyActionSupportList
 
 	public void setRelatorioExamesPrevistosResumido(boolean relatorioExamesPrevistosResumido) {
 		this.relatorioExamesPrevistosResumido = relatorioExamesPrevistosResumido;
+	}
+
+	public boolean isImprimirDesligados() {
+		return imprimirDesligados;
+	}
+
+	public void setImprimirDesligados(boolean imprimirDesligados) {
+		this.imprimirDesligados = imprimirDesligados;
 	}
 }

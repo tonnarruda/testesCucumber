@@ -13,11 +13,9 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExameDao;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
@@ -77,11 +75,11 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		return query.list();
 	}
 
-	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date data, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados)
+	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date data, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados)
 	{
 		String whereColaboradores = "", whereEstabelecimentos = "",
 			   whereAreasOrganizacionais = "", whereExames = "",
-			   afastados = "";
+			   afastados = "", whereDesligados = "";
 
 		if (areaIds != null && areaIds.length > 0)
 			whereAreasOrganizacionais = "and ao.id in (:areaIds) ";
@@ -93,6 +91,8 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			whereExames = "and e.id in (:exameIds) ";
 		if (imprimirAfastados)
 			afastados = "and (afa.fim = null or afa.fim >= :data) ";
+		if (!imprimirDesligados)
+			whereDesligados = "and co.desligado = :imprimirDesligados  ";
 		
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio(co.id,e.id,ao.id,ca.nome,co.nome,co.nomeComercial,e.nome,se.data,re.data,ese.periodicidade, se.motivo) ");
@@ -107,9 +107,10 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as ca ");
-		hql.append("where co.desligado = false and se.empresa.id = :empresaId ");
+		hql.append("where se.empresa.id = :empresaId ");
 		hql.append("and ese.periodicidade > 0 ");
 		hql.append("and se.data <= :data ");
+		hql.append(whereDesligados);
 		hql.append(whereAreasOrganizacionais);
 		hql.append(whereEstabelecimentos);
 		hql.append(whereColaboradores);
@@ -130,6 +131,9 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		query.setDate("data", data);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setLong("empresaId", empresaId);
+		
+		if(!imprimirDesligados)
+			query.setBoolean("imprimirDesligados", imprimirDesligados);
 
 		query.setString("naoRealizado", ResultadoExame.NAO_REALIZADO.toString());
 		
