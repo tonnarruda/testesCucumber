@@ -2,13 +2,17 @@ package com.fortes.rh.test.web.dwr;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.web.dwr.AreaOrganizacionalDWR;
 
@@ -27,6 +31,43 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		
 	}
 
+	public void testeGetEmailsResponsaveis()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmailColaborador("colaborador@teste.com");
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity(1L);
+		area1.setEmpresa(empresa);
+		area1.setResponsavel(colaborador);
+		area1.setEmailsNotificacoes("teste1@teste.com;teste2@teste.com");
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity(2L);
+		area2.setEmpresa(empresa);
+		area2.setEmailsNotificacoes("teste3@teste.com;teste4@teste.com;teste5@teste.com");
+		area2.setAreaMae(area1);
+		
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+		areas.add(area1);
+		areas.add(area2);
+		
+		areaOrganizacionalManager.expects(once()).method("findAllList").with(ANYTHING, ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(once()).method("getAncestrais").with(ANYTHING, ANYTHING).will(returnValue(areas));
+		
+		try 
+		{
+			Map<Object, Object> map = areaOrganizacionalDWR.getEmailsResponsaveis(area2.getId(), empresa.getId());
+			assertTrue(map.containsKey("colaborador@teste.com"));
+			assertTrue(map.containsKey("teste1@teste.com"));
+			assertTrue(map.containsKey("teste3@teste.com"));
+		} 
+		catch (Exception e) 
+		{
+			
+		}
+	}
+	
 	public void testVerificaMaternidade()
 	{
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);

@@ -22,24 +22,43 @@
 	<#assign editaAreaMae="false"/>
 </#if>
 
-<#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
+<#assign validarCampos="validarCampos();"/>
 
 <script type="text/javascript">
-	function adicionarCampoEmail(email) {
+	function validarCampos()
+	{
+		if (validaFormulario('form', new Array('nome'), null, true))
+		{
+			$('.emailsNotificacoes').each(function() {
+				if ($(this).val() == '')
+					$(this).parent().remove();
+			});
+			
+			document.form.submit();
+		
+		} else { return false; }
+	}
+	
+	function adicionarCampoEmail(email) 
+	{
 		if (!email) email = '';
 		var campo = "<li>";
-		campo += "<input type='text' name='emailsNotificacoes' size='40' value='" + email + "'/>";
+		campo += "<input type='text' name='emailsNotificacoes' class='emailsNotificacoes' size='40' value='" + email + "'/>";
 		campo += "<img title='Remover' src='<@ww.url includeParams="none" value="/imgs/delete.gif"/>' onclick='javascript:$(this).parent().remove();' style='cursor:pointer;'/>";
 		campo += "</li>";
 		$('ul#camposEmails').append(campo);
 	}
 	
-	$(function() {
+	$(function() 
+	{
 		<#if areaOrganizacional.emailsNotificacoes?exists>
 			<#list areaOrganizacional.emailsNotificacoes?split(";") as email>
 				adicionarCampoEmail("${email}");
 			</#list>
 		</#if>
+		
+		if ($('.emailsNotificacoes').size() == 0)
+			adicionarCampoEmail();
 	});
 </script>
 
@@ -47,7 +66,7 @@
 <body>
 	<@ww.actionerror />
 
-	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
+	<@ww.form name="form" id="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 
 		<@ww.hidden name="areaOrganizacional.id" />
 		<@ww.hidden name="areaOrganizacional.codigoAC" />
@@ -65,8 +84,9 @@
 		<@ww.select label="Responsável" name="areaOrganizacional.responsavel.id" id="responsavel" list="responsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeComercial"/>
 		<@ww.select label="Ativo" name="areaOrganizacional.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 		
-		<label>Emails para notificações:</label>&nbsp;&nbsp;&nbsp;<a href="javascript:;" onclick="javascript:adicionarCampoEmail();"><img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> Adicionar</a>
+		<label>Emails extras para notificações:</label>
 		<ul id="camposEmails"></ul>
+		<a href="javascript:;" onclick="javascript:adicionarCampoEmail();"><img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> Adicionar</a>
 	<@ww.token/>
 	</@ww.form>
 

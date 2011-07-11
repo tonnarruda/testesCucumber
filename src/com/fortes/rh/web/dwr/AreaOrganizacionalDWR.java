@@ -2,6 +2,7 @@ package com.fortes.rh.web.dwr;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -57,14 +58,25 @@ public class AreaOrganizacionalDWR
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllList(empresaId, true); 
 		areas = areaOrganizacionalManager.getAncestrais(areas, id);
 		Collection<AreaOrganizacional> areasComEmailResp = new ArrayList<AreaOrganizacional>();
+		Map<Object, Object> emailsResponsaveis = new HashMap<Object, Object>();
+		Collection<String> emailsNotificacoes = new ArrayList<String>();
 		
 		for (AreaOrganizacional area : areas) 
 		{
 			if(area.getResponsavel() != null && area.getResponsavel().getContato() != null && area.getResponsavel().getContato().getEmail() != null && !area.getResponsavel().getContato().getEmail().equals(""))
 				areasComEmailResp.add(area);
+			
+			if(area.getEmailsNotificacoes() != null)
+				for (String email : area.getEmailsNotificacoes().split(";"))
+					emailsNotificacoes.add(email);
 		}
 		
-		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areasComEmailResp, "getResponsavelEmail", "getResponsavelEmailNomeComercial");
+		emailsResponsaveis = new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areasComEmailResp, "getResponsavelEmail", "getResponsavelEmailNomeComercial"); 
+		
+		for (String email : emailsNotificacoes)
+			emailsResponsaveis.put(email, email);
+		
+		return emailsResponsaveis;
 	}
 	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)

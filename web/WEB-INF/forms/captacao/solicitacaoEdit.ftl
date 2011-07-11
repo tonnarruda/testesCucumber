@@ -44,7 +44,7 @@
 	
 		function createListEmails(data)
 		{
-			addChecks("emailsCheck", data)
+			addChecks("emailsCheck", data);
 		}
 		
 		function populaCidades()
