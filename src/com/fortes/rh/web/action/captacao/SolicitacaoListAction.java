@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -20,11 +21,14 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.EventoAgenda;
+import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -42,8 +46,11 @@ public class SolicitacaoListAction extends MyActionSupportList
     private Anuncio anuncio;
     private HistoricoCandidatoManager historicoCandidatoManager;
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
+    
+    private Map<String,Object> parametros = new HashMap<String, Object>();
 
 	private Collection<Solicitacao> solicitacaos;
+	private Collection<HistoricoCandidato> historicoCandidatos;	
     private Collection<CheckBox> solicitacaosCheck;
     private Solicitacao solicitacao;
     private char visualizar = 'A';
@@ -61,6 +68,9 @@ public class SolicitacaoListAction extends MyActionSupportList
     private String json;
     private char statusCandSol;
 	private Boolean compartilharCandidatos;
+	
+	private Date dataIni;
+	private Date dataFim;
 
     @SuppressWarnings("unchecked")
 	public String list() throws Exception
@@ -109,6 +119,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 		
 		json = StringUtil.toJSON(eventos, null);
 		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirAgenda()
+	{
+		historicoCandidatos = historicoCandidatoManager.getEventos(getEmpresaSistema().getId(), dataIni, dataFim);
+		parametros = RelatorioUtil.getParametrosRelatorio("Agenda dos Candidatos", getEmpresaSistema(), "Período: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim));
 		return Action.SUCCESS;
 	}
 
@@ -346,6 +363,22 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public Boolean getCompartilharCandidatos() {
 		return compartilharCandidatos;
+	}
+
+	public Collection<HistoricoCandidato> getHistoricoCandidatos() {
+		return historicoCandidatos;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
+	}
+
+	public void setDataIni(Date dataIni) {
+		this.dataIni = dataIni;
+	}
+
+	public void setDataFim(Date dataFim) {
+		this.dataFim = dataFim;
 	}
 
 }

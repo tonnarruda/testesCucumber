@@ -264,4 +264,8 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 		
 		return eventos;
 	}
+
+	public Collection<HistoricoCandidato> getEventos(Long empresaId, Date dataIni, Date dataFim) {
+		return getDao().getEventos("", empresaId, dataIni, dataFim);
+	}
 }

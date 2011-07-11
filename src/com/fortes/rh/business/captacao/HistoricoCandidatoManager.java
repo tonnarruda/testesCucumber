@@ -28,4 +28,5 @@ public interface HistoricoCandidatoManager extends GenericManager<HistoricoCandi
 	String[] findResponsaveis();
 	boolean updateAgenda(Long id, Date data, String horaIni, String horaFim, String observacao);
 	Collection<EventoAgenda> getEventos(String responsavel, Long empresaId);
+	Collection<HistoricoCandidato> getEventos(Long empresaId, Date dataIni, Date dataFim);
 }
