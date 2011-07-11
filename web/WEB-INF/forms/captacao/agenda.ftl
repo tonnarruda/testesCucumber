@@ -31,6 +31,12 @@
 				jAlert("Erro ao gravar informações.");
 		}
 		
+		function imprimir()
+		{
+			var dataIni = $('.wc-day-1').text().match(/(\d\d)\/(\d\d)\/(\d\d\d\d)/)[0];
+			var dataFim = $('.wc-day-8').text().match(/(\d\d)\/(\d\d)\/(\d\d\d\d)/)[0];
+			window.location='imprimirAgenda.action?dataIni=' + dataIni + '&dataFim=' + dataFim ;
+		}
 	</script>
 	
 	<title>Agenda</title>
@@ -56,6 +62,9 @@
 				</li>
 			</ul>
 		</form>
+	</div>
+	<div class="buttonGroup">
+		<button onclick="imprimir();" class="btnImprimirPdf grayBGE"></button>
 	</div>
 </body>
 </html>

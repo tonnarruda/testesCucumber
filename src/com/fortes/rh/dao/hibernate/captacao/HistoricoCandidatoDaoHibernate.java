@@ -262,7 +262,11 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 			criteria.add(Expression.between("hc.data", dataIni, dataFim));
 		
 		criteria.setProjection(p);
-
+		criteria.addOrder(Order.asc("hc.data"));
+		criteria.addOrder(Order.asc("hc.horaIni"));
+		criteria.addOrder(Order.asc("hc.horaFim"));
+		criteria.addOrder(Order.asc("c.nome"));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoCandidato.class));
 
