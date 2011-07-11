@@ -56,6 +56,31 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		colaboradorQuestionarioManager.clonar(participantes, avaliacaoDesempenho, liberada);
 	}
 	
+	public void gerarAutoAvaliacoes(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> participantes)
+	{
+		AvaliacaoDesempenho avaliacaoDesempenhoTemp = null;
+		
+		for (Colaborador colaborador : participantes) 
+		{
+			avaliacaoDesempenhoTemp = new AvaliacaoDesempenho();
+			avaliacaoDesempenhoTemp.setTitulo(avaliacaoDesempenho.getTitulo() + " - " + colaborador.getNome());
+			avaliacaoDesempenhoTemp.setInicio(avaliacaoDesempenho.getInicio());
+			avaliacaoDesempenhoTemp.setFim(avaliacaoDesempenho.getFim());
+			avaliacaoDesempenhoTemp.setAvaliacao(avaliacaoDesempenho.getAvaliacao());
+			avaliacaoDesempenhoTemp.setAnonima(false);
+			avaliacaoDesempenhoTemp.setPermiteAutoAvaliacao(true);
+			save(avaliacaoDesempenhoTemp);
+			
+			ColaboradorQuestionario colaboradorQuestionarioAvaliado = new ColaboradorQuestionario(avaliacaoDesempenhoTemp);
+			colaboradorQuestionarioAvaliado.setAvaliadoOuAvaliador(colaborador.getId(), true);
+			colaboradorQuestionarioManager.save(colaboradorQuestionarioAvaliado);
+
+			ColaboradorQuestionario colaboradorQuestionarioAvaliador = new ColaboradorQuestionario(avaliacaoDesempenhoTemp);
+			colaboradorQuestionarioAvaliador.setAvaliadoOuAvaliador(colaborador.getId(), false);
+			colaboradorQuestionarioManager.save(colaboradorQuestionarioAvaliador);
+		}
+	}
+	
 	public AvaliacaoDesempenho findByIdProjection(Long id)
 	{
 		return getDao().findByIdProjection(id);
@@ -168,6 +193,4 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
-
-
 }

@@ -3,6 +3,7 @@ package com.fortes.rh.test.web.action.avaliacao;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import mockit.Mockit;
 
@@ -102,6 +103,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(colaboradoresAvaliados));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, eq(false)).will(returnValue(new ArrayList<Colaborador>()));
 		
 		action.prepareAvaliados();
 		
@@ -187,6 +189,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, eq(false)).will(returnValue(new ArrayList<Colaborador>()));
 		
 		assertEquals("success",action.insertAvaliados());
 		
@@ -203,6 +206,32 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
 		
 		assertEquals("success",action.insertAvaliadores());
+	}
+	
+	public void testGerarAutoAvaliacoesEmLote() throws Exception
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
+		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
+
+		Collection<Colaborador> colaboradorAvaliados = new ArrayList<Colaborador>();
+		colaboradorAvaliados.add(ColaboradorFactory.getEntity(1L));
+		colaboradorAvaliados.add(ColaboradorFactory.getEntity(2L));
+		
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true)).will(returnValue(colaboradorAvaliados));
+		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, eq(false)).will(returnValue(new ArrayList<Colaborador>()));
+		
+		manager.expects(once()).method("gerarAutoAvaliacoes").with(ANYTHING, ANYTHING);
+		colaboradorQuestionarioManager.expects(once()).method("excluirColaboradorQuestionarioByAvaliacaoDesempenho").with(ANYTHING);
+		manager.expects(once()).method("remove").with(ANYTHING);
+		
+		assertEquals("success",action.gerarAutoAvaliacoesEmLote());
 	}
 
 	public void testList() throws Exception

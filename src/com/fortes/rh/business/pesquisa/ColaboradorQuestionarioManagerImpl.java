@@ -396,6 +396,11 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 			getDao().removeAssociadosSemResposta(avaliacaoDesempenho.getId());
 	}
 	
+	public void excluirColaboradorQuestionarioByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) 
+	{
+		getDao().excluirColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenhoId);
+	}
+	
 	public Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, Boolean respondida)
 	{
 		return getDao().findAvaliadosByAvaliador(avaliacaoDesempenhoId, avaliadorId, respondida);
@@ -420,4 +425,6 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	{
 		return getDao().countByQuestionarioRespondido(questionarioId);
 	}
+
+	
 }

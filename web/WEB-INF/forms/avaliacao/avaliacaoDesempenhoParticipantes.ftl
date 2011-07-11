@@ -29,8 +29,11 @@
 			<#assign tituloLista="Avaliadores"/>
 		</#if>
 		
+		<#assign gerarAutoAvaliacoesEmLoteAction="gerarAutoAvaliacoesEmLote.action"/>
+		
 		<#assign validarCamposModal="return validaFormulario('formModal', new Array('@colaboradorsCheck'), null)"/>
 		
+		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
@@ -38,6 +41,12 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 		
 		<script type="text/javascript">
+		$(function() {
+			$('#tooltipHelp').qtip({
+				content: 'Gera uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio.'
+			});
+		});
+		
 		function pesquisar()
 		{
 			var nome = $("#nomeBusca").val();
@@ -65,6 +74,22 @@
 		{
 			addChecks('colaboradorsCheck');
 			addChecks('areasCheck', data);
+		}
+		
+		function excluir()
+		{
+			newConfirm('Confirma exclusão dos colaboradores selecionados?', function(){ 
+				document.form.action = "${deleteAction}";
+				document.form.submit();
+			});
+		}
+		
+		function gerarAutoAvaliacoesEmLote()
+		{
+			newConfirm('Esta ação irá criar uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio. Deseja continuar?', function(){
+				document.form.action = "${gerarAutoAvaliacoesEmLoteAction}";
+				document.form.submit();
+			});
 		}
 		</script>
 	</head>
@@ -107,9 +132,14 @@
 				<button class="btnExcluirDesabilitado" disabled="disabled" onmouseover="cursor:pointer;" ></button>
 			<#else>
 				<button onclick="openbox('${tituloModal}', 'nomeBusca');" class="btnInserir"></button>
-				<button onclick="javascript: newConfirm('Confirma exclusão das mensagens selecionadas?', function(){document.form.submit();});" class="btnExcluir"></button>
+				<button onclick="javascript: excluir();" class="btnExcluir"></button>
 			</#if>
 			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			
+			<#if isAvaliados && !avaliacaoDesempenho.liberada && (!avaliadors?exists || (avaliadors?exists && avaliadors?size == 0))>
+				<button onclick="gerarAutoAvaliacoesEmLote();" class="btnAutoAvaliacoesEmLote"></button>
+				<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -22px" />
+			</#if>
 		</div>
 		
 		<!--

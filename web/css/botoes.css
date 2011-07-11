@@ -421,6 +421,10 @@
 	background-image:url(../imgs/btnExcluir.gif);
 	width: 82px !important;
 }
+.btnAutoAvaliacoesEmLote{
+	background-image:url(../imgs/btnAutoAvaliacoesEmLote.gif);
+	width: 235px !important;
+}
 .btnExcluirDesabilitado{
 	background-image:url(../imgs/btnExcluirDesabilitado.gif);
 	width: 82px !important;
@@ -616,7 +620,8 @@
 .btnResultadoAvaliacao,
 .btnTriagemF2RH,
 .btnListagemColaborador,
-.btnCarregar
+.btnCarregar,
+.btnAutoAvaliacoesEmLote
 {
 	border: 0;
 	background-repeat: no-repeat;

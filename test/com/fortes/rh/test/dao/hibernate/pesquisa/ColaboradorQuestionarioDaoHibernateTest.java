@@ -754,6 +754,26 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
     	// apenas respondidas
     	assertEquals(1, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), true).size());
 	}
+	
+	public void testExcluirColaboradorQuestionarioByAvaliacaoDesempenho()
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		assertEquals(2, colaboradorQuestionarioDao.findByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), null).size());
+		
+		colaboradorQuestionarioDao.excluirColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+		
+		assertEquals(0, colaboradorQuestionarioDao.findByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), null).size());
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{

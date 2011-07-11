@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.apache.tools.ant.types.resources.Last;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
@@ -38,6 +39,7 @@ import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 
 public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
@@ -103,6 +105,27 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		avaliacaoDesempenhoManager.clonar(3L);
 	}
+	
+	public void testGerarAutoAvaliacoes()
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		avaliacaoDesempenho.setTitulo("teste");
+		avaliacaoDesempenho.setInicio(DateUtil.criarDataMesAno(11, 07, 2011));
+		avaliacaoDesempenho.setFim(DateUtil.criarDataMesAno(15, 07, 2011));
+		avaliacaoDesempenho.setAvaliacao(AvaliacaoFactory.getEntity(1L));
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
+		
+		Collection<Colaborador> participantes = new ArrayList<Colaborador>();
+		participantes.add(colaborador1);
+		participantes.add(colaborador2);
+		
+		avaliacaoDesempenhoDao.expects(atLeastOnce()).method("save").with(ANYTHING);
+		colaboradorQuestionarioManager.expects(atLeastOnce()).method("save").with(ANYTHING);
+
+		avaliacaoDesempenhoManager.gerarAutoAvaliacoes(avaliacaoDesempenho, participantes);
+	}	
 	
 	public void testLiberar() throws Exception
 	{

@@ -733,4 +733,14 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		return (Integer) criteria.uniqueResult();
 	}
+
+	public void excluirColaboradorQuestionarioByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) 
+	{
+		String hql = "delete from ColaboradorQuestionario cq where cq.avaliacaoDesempenho.id = :avaliacaoDesempenhoId"; 
+
+		Query query = getSession().createQuery(hql);
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+		
+		query.executeUpdate();
+	}
 }

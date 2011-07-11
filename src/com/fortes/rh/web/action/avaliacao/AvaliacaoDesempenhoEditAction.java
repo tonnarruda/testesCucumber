@@ -110,6 +110,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		isAvaliados = true;
 		prepareParticipantes();
+		avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false);
 		
 		return Action.SUCCESS;
 	}
@@ -127,6 +128,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		empresaId = getEmpresaSistema().getId();
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
+		
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), isAvaliados);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
@@ -251,6 +253,16 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		colaboradorQuestionarioManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(colaboradorsCheck), isAvaliados);
 		prepareAvaliadores();
+		return Action.SUCCESS;
+	}
+	
+	public String gerarAutoAvaliacoesEmLote() throws Exception
+	{
+		prepareAvaliados();
+		avaliacaoDesempenhoManager.gerarAutoAvaliacoes(avaliacaoDesempenho, participantes);
+		colaboradorQuestionarioManager.excluirColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+		avaliacaoDesempenhoManager.remove(avaliacaoDesempenho);
+		
 		return Action.SUCCESS;
 	}
 
