@@ -3,7 +3,6 @@ package com.fortes.f2rh;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.sf.antcontrib.logic.ForEach;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 
@@ -14,7 +13,6 @@ import org.apache.log4j.Logger;
 
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class F2rhFacadeImpl implements F2rhFacade {
