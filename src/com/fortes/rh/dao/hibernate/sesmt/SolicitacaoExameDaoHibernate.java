@@ -17,7 +17,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.SolicitacaoExameDao;
 import com.fortes.rh.model.dicionario.ResultadoExame;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
@@ -33,7 +32,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 {
 	public Collection<SolicitacaoExame> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, Long[] exameIds, ResultadoExame resultadoExame)
 	{
-		StringBuilder hql = new StringBuilder("select distinct new SolicitacaoExame(se.id, se.data, se.motivo, se.medicoCoordenador.nome, co.nome, ca.nome, cg.nome, co.desligado) ");		
+		StringBuilder hql = new StringBuilder("select distinct new SolicitacaoExame(se.id, se.data, se.motivo, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cg.nome, co.desligado) ");		
 		hql.append("from SolicitacaoExame se ");
 		hql.append("left join se.colaborador co ");
 		hql.append("left join se.candidato ca ");

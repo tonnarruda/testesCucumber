@@ -45,4 +45,29 @@ public class ColaboradorTest extends TestCase {
 		assertFalse("deveria nao ser candidato", colaborador.jaFoiUmCandidato());
 	}
 	
+	public void testGetNomeDesligado() { 
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setNome("João Silva");
+
+		assertEquals("João Silva", colaborador.getNomeDesligado());
+		
+		colaborador.setDesligado(true);
+		assertEquals("João Silva (Desligado)", colaborador.getNomeDesligado());
+	}
+
+	public void testGetNomeComercialDesligado() { 
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setNome("João Silva");
+		
+		assertEquals("João Silva", colaborador.getNomeComercialDesligado());
+		
+		colaborador.setDesligado(true);
+		assertEquals("João Silva (Desligado)", colaborador.getNomeComercialDesligado());
+
+		colaborador.setNomeComercial("Silva");
+		assertEquals("João Silva (Silva) (Desligado)", colaborador.getNomeComercialDesligado());
+	}
+	
 }
