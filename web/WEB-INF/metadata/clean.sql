@@ -11,3 +11,4 @@ update gastoempresaitem set valor=25.00;
 update historicobeneficio set valor=55.00;
 update parametrosdosistema set enviaremail=false;
 update empresa set acintegra=false;
+update areaorganizacional set emailsnotificacoes = null;

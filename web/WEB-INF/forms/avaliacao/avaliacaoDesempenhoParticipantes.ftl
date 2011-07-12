@@ -86,6 +86,8 @@
 		
 		function gerarAutoAvaliacoesEmLote()
 		{
+			$.alerts.okButton = '&nbsp;Sim&nbsp;';
+			$.alerts.cancelButton = '&nbsp;Não&nbsp;';
 			newConfirm('Esta ação irá criar uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio. Deseja continuar?', function(){
 				document.form.action = "${gerarAutoAvaliacoesEmLoteAction}";
 				document.form.submit();
@@ -134,12 +136,15 @@
 				<button onclick="openbox('${tituloModal}', 'nomeBusca');" class="btnInserir"></button>
 				<button onclick="javascript: excluir();" class="btnExcluir"></button>
 			</#if>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
 			
-			<#if isAvaliados && !avaliacaoDesempenho.liberada && (!avaliadors?exists || (avaliadors?exists && avaliadors?size == 0))>
+			<#if !avaliacaoDesempenho.liberada && isAvaliados && (!avaliadors?exists || (avaliadors?exists && avaliadors?size == 0))>
 				<button onclick="gerarAutoAvaliacoesEmLote();" class="btnAutoAvaliacoesEmLote"></button>
 				<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -22px" />
+			<#elseif isAvaliados>	
+				<button class="btnAutoAvaliacoesEmLoteDesabilitado" onclick="javascript: jAlert('Não é possível gerar autoavaliações em lote a partir de avaliações onde já foram definidos avaliadores.');" style="cursor:pointer;" ></button>
 			</#if>
+			
+			<button onclick="window.location='list.action'" class="btnVoltar"></button>
 		</div>
 		
 		<!--

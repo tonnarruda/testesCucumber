@@ -421,13 +421,17 @@
 	background-image:url(../imgs/btnExcluir.gif);
 	width: 82px !important;
 }
+.btnExcluirDesabilitado{
+	background-image:url(../imgs/btnExcluirDesabilitado.gif);
+	width: 82px !important;
+}
 .btnAutoAvaliacoesEmLote{
 	background-image:url(../imgs/btnAutoAvaliacoesEmLote.gif);
 	width: 235px !important;
 }
-.btnExcluirDesabilitado{
-	background-image:url(../imgs/btnExcluirDesabilitado.gif);
-	width: 82px !important;
+.btnAutoAvaliacoesEmLoteDesabilitado{
+	background-image:url(../imgs/btnAutoAvaliacoesEmLoteDesabilitado.gif);
+	width: 235px !important;
 }
 .btnProxima{
 	background-image:url(../imgs/btnProxima.gif);
@@ -621,7 +625,8 @@
 .btnTriagemF2RH,
 .btnListagemColaborador,
 .btnCarregar,
-.btnAutoAvaliacoesEmLote
+.btnAutoAvaliacoesEmLote,
+.btnAutoAvaliacoesEmLoteDesabilitado
 {
 	border: 0;
 	background-repeat: no-repeat;
