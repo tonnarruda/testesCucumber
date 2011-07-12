@@ -27,17 +27,22 @@
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
 	<@display.table name="pesquisas" id="pesquisa" class="dados">
-		<@display.column title="Ações" style="width:210px">
+		<@display.column title="Ações" style="width:230px">
+		
 			<#if !pesquisa.questionario.liberado>
 				<a href="javascript:newConfirm('Deseja liberar esta pesquisa?', function(){window.location='../questionario/liberar.action?questionario.id=${pesquisa.questionario.id}'});"><img border="0" title="Liberar Pesquisa" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
+				<img border="0" title="Não é possível enviar e-mail para pesquisa bloqueada." src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>" style="opacity:0.3;filter:alpha(opacity=30);">
 			<#else>
 				<img border="0" title="Liberar Pesquisa - Esta pesquisa já está liberada." src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>" style="opacity:0.3;filter:alpha(opacity=30);">
+				<a href="javascript:newConfirm('Deseja enviar e-mail de lembrete para os colaboradores que ainda não respoderam esta pesquisa?', function(){window.location='../questionario/enviarLembrete.action?questionario.id=${pesquisa.questionario.id}'});"><img border="0" title="Enviar e-mail de Lembrete" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>"></a>
 			</#if>
+			
 			<#if pesquisa.questionario.aplicarPorAspecto>
 				<a href="../questionario/prepareAplicarByAspecto.action?questionario.id=${pesquisa.questionario.id}&preview=true"><img border="0" title="Visualizar pesquisa" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
 			<#else>
 				<a href="../questionario/prepareAplicar.action?questionario.id=${pesquisa.questionario.id}&preview=true"><img border="0" title="Visualizar pesquisa" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
 			</#if>
+			
 			<a href="prepareUpdate.action?pesquisa.id=${pesquisa.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			<#if !pesquisa.questionario.liberado>
 				<a href="../pergunta/list.action?questionario.id=${pesquisa.questionario.id}"><img border="0" title="Questionário da pesquisa" src="<@ww.url includeParams="none" value="/imgs/question.gif"/>"></a>
@@ -46,6 +51,7 @@
 				<img border="0" title="Questionário da pesquisa - Pesquisa já liberada, não é permitido editar" src="<@ww.url includeParams="none" value="/imgs/question.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" title="Aspectos da pesquisa - Pesquisa já liberada, não é permitido editar" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
+			
 			<a href="../colaboradorQuestionario/list.action?questionario.id=${pesquisa.questionario.id}"><img border="0" title="Colaboradores" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			<a href="../questionario/imprimir.action?questionario.id=${pesquisa.questionario.id}"><img border="0" title="Imprimir pesquisa" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<a href="../questionario/imprimir.action?questionario.id=${pesquisa.questionario.id}&imprimirFormaEconomica=true"><img border="0" title="Imprimir pesquisa em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>

@@ -425,6 +425,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho)).isVoid();
+		manager.expects(once()).method("enviarLembrete").with(ANYTHING, ANYTHING).isVoid();
 		
 		assertEquals("success",action.liberar());
 		
@@ -440,6 +441,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho)).isVoid();
+		manager.expects(once()).method("enviarLembrete").with(ANYTHING, ANYTHING).isVoid();
 		
 		assertEquals("success",action.liberar());
 		
@@ -448,6 +450,15 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		assertEquals("success",action.liberar());
 		assertEquals(1, action.getActionErrors().size());
 		assertEquals("Não foi possível liberar esta avaliação: número insuficiente de participantes.", action.getActionErrors().toArray()[0]);
+	}
+
+	public void testEnviarLembrete() throws Exception
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
+		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		manager.expects(once()).method("enviarLembrete").with(ANYTHING, ANYTHING).isVoid();
+		
+		assertEquals("success",action.enviarLembrete());
 	}
 	
 	public void testBloquear()

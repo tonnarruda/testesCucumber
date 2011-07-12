@@ -51,4 +51,5 @@ public interface QuestionarioManager extends GenericManager<Questionario>
 	Collection<PerguntaFichaMedica> montaImpressaoFichaMedica(Long id, Long colaboradorQuestionarioId, Map<String, Object> parametros);
 	public Collection<PerguntaFichaMedica> montaImpressaoAvaliacaoRespondida(Long colaboradorQuestionarioId, Map<String, Object> parametros);
 	public Collection<Questionario> findQuestionario(Long colaboradorId);
+	public void enviaEmailNaoRespondida(Empresa empresa, Long questionarioId) throws Exception;
 }

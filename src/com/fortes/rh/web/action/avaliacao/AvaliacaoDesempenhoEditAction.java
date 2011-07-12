@@ -333,6 +333,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try 
 		{
 			avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho);
+			avaliacaoDesempenhoManager.enviarLembrete(avaliacaoDesempenho.getId(), getEmpresaSistema());
 			addActionMessage("Avaliação liberada com sucesso.");
 		}
 		catch (FortesException e)

@@ -31,6 +31,10 @@
 		<action name="liberar" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="liberar">
 			<result name="success" type="redirect">/pesquisa/pesquisa/list.action</result>
 		</action>
+		<action name="enviarLembrete" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="enviarLembrete">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect">/pesquisa/pesquisa/list.action</result>
+		</action>
 		<action name="prepareResultado" class="com.fortes.rh.web.action.pesquisa.QuestionarioListAction" method="prepareResultado">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/questionarioFiltroResultado.ftl</result>
 		</action>

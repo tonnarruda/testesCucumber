@@ -40,8 +40,6 @@ public class QuestionarioDaoHibernate extends GenericDaoHibernate<Questionario> 
 		criteria.setProjection(p);
 		//condição
 		criteria.add(Expression.eq("q.id", questionarioId));
-		
-		
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));

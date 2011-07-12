@@ -241,6 +241,19 @@ public class QuestionarioListAction extends MyActionSupportList
 
 		return Action.SUCCESS;
     }
+	
+	public String enviarLembrete()
+	{
+		try {
+			questionarioManager.enviaEmailNaoRespondida(getEmpresaSistema(), questionario.getId());
+			addActionMessage("Email(s) enviado(s) com sucesso.");
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Erro ao enviar email(s).");
+		}	
+		return Action.SUCCESS;
+	}
 
 	public String prepareResultadoEntrevista()
 	{

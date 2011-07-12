@@ -128,6 +128,15 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         }
     }
 
+	public void enviaEmailNaoRespondida(Empresa empresa, Long questionarioId) throws Exception 
+	{
+		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
+        ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionarioId, false, empresa.getId());
+
+		enviaEmailQuestionarioLiberado(empresa, parametros, questionarioId, colaboradorQuestionarios);
+	}
+
     public void aplicarPorAspecto(Long questionarioId, boolean aplicarPorAspecto) throws Exception
     {
         try
@@ -597,5 +606,4 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 	{
 		return getDao().findQuestionario(colaboradorId);
 	}
-
 }
