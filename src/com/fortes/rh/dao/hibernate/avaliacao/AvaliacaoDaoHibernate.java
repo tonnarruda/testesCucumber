@@ -3,11 +3,13 @@ package com.fortes.rh.dao.hibernate.avaliacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -20,7 +22,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 @SuppressWarnings("unchecked")
 public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implements AvaliacaoDao
 {
-	public Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo, char modeloAvaliacao)
+	public Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo)
 	{
 		Criteria criteria = getSession().createCriteria(Avaliacao.class, "a");
 		
@@ -38,6 +40,8 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		}
 		if(ativo != null)
 			criteria.add(Expression.eq("a.ativo", ativo));
+		if(titulo != null)
+			criteria.add(Expression.like("a.titulo", "%"+ titulo +"%").ignoreCase() );
 		
 		criteria.addOrder(Order.asc("a.titulo"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

@@ -66,7 +66,7 @@
 
 			<#if avaliacao.tipoModeloAvaliacao != 'S'>
 				<@ww.select label="Tipo de Avaliação" name="avaliacao.tipoModeloAvaliacao" id="tipoModeloAvaliacao" list=r"#{'D':'Avaliação de Desempenho','A':'Acompanhamento do Período de Experiência'}"/>
-				<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="dias" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
+				<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="diasComDescricao" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
 			</#if>			
 
 		

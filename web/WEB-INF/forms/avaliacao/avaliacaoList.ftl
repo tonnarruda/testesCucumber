@@ -11,10 +11,23 @@
 	<#else>
 		<title>Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência</title>
 	</#if>
+	
+	<#include "../ftl/showFilterImports.ftl" />
+	<#assign validarCampos="return validaFormulario('formBusca', null, null)"/>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
+
+	<#include "../util/topFiltro.ftl" />
+		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST" id="formBusca">
+			<@ww.textfield label="Avaliação" name="titulo" id="titulo" cssStyle="width: 550px;"/>
+			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+		</@ww.form>
+	<#include "../util/bottomFiltro.ftl" />
+	<br>
 	
 	<div align="right">&nbsp;<span class="encerradaBkg">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Inativa(s)</div>
 	<br />

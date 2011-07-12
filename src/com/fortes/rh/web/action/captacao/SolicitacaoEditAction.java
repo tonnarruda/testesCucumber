@@ -162,7 +162,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
         motivoSolicitacaos = motivoSolicitacaoManager.findAll();
         
-        avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO);
+        avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO, null);
 
         escolaridades = new Escolaridade();
         sexos = new Sexo();

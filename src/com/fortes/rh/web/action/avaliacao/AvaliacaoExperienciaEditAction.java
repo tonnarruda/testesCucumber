@@ -61,7 +61,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	
 	public String prepareResultado()
 	{
-		avaliacaoExperiencias = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, TipoModeloAvaliacao.DESEMPENHO);
+		avaliacaoExperiencias = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, TipoModeloAvaliacao.DESEMPENHO, null);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		return SUCCESS;

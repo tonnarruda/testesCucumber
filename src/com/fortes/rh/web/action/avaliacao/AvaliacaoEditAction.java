@@ -40,6 +40,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
 	private Collection<PeriodoExperiencia> periodoExperiencias;
 	private boolean telaInicial;
+	private String titulo;
 	
 	private void prepare() throws Exception
 	{
@@ -101,7 +102,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, modeloAvaliacao);
+		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, modeloAvaliacao, titulo);
 		return Action.SUCCESS;
 	}
 
@@ -213,5 +214,13 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setTelaInicial(boolean telaInicial) {
 		this.telaInicial = telaInicial;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 }

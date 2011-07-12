@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
@@ -20,7 +21,7 @@ public class PeriodoExperiencia extends AbstractModel implements Serializable
 	private String descricao;
 	@ManyToOne
 	private Empresa empresa;
-	
+
 	public PeriodoExperiencia() {
 	}
 	
@@ -59,5 +60,13 @@ public class PeriodoExperiencia extends AbstractModel implements Serializable
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public String getDiasComDescricao() 
+	{
+		if (descricao != null && !descricao.equals(""))
+			return dias + " - " + descricao ;
+		
+		return dias.toString();
 	}
 }
