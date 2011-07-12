@@ -37,6 +37,7 @@
 	<field name="pesquisa.comentario" class="java.lang.Boolean"/>
 	<field name="questionario.tipo" class="java.lang.Integer"/>
 	<field name="questionario.cabecalho" class="java.lang.String"/>
+	<field name="questionario.anonimo" class="java.lang.Boolean"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -55,7 +56,9 @@
 						width="48"
 						height="15"
 						key="staticText-4"
-						positionType="Float"/>
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{questionario.anonimo}.booleanValue() == false)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
@@ -66,10 +69,12 @@
 					<reportElement
 						x="0"
 						y="57"
-						width="32"
+						width="203"
 						height="15"
 						key="staticText-5"
-						positionType="Float"/>
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{questionario.anonimo}.booleanValue() == false)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
@@ -83,7 +88,9 @@
 						width="34"
 						height="15"
 						key="staticText-6"
-						positionType="Float"/>
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{questionario.anonimo}.booleanValue() == false)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
@@ -97,7 +104,9 @@
 						width="50"
 						height="17"
 						key="staticText-7"
-						positionType="Float"/>
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{questionario.anonimo}.booleanValue() == false)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
@@ -111,7 +120,9 @@
 						width="247"
 						height="17"
 						key="staticText-8"
-						positionType="Float"/>
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{questionario.anonimo}.booleanValue() == false)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
@@ -125,7 +136,9 @@
 						width="118"
 						height="17"
 						key="staticText-9"
-						positionType="Float"/>
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean($F{questionario.anonimo}.booleanValue() == false)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
@@ -158,6 +171,22 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{questionario.cabecalho}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="57"
+						width="203"
+						height="15"
+						key="staticText-10"
+						positionType="Float">
+							<printWhenExpression><![CDATA[$F{questionario.anonimo}]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Pesquisa anônima]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>
