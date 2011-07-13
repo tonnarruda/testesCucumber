@@ -86,7 +86,10 @@
 		
 		<label>Emails extras para notificações:</label>
 		<ul id="camposEmails"></ul>
-		<a href="javascript:;" onclick="javascript:adicionarCampoEmail();"><img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> Adicionar</a>
+		<a href="javascript:;" onclick="javascript:adicionarCampoEmail();" style="text-decoration: none;">
+			<img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> 
+			Inserir mais um email
+		</a>
 	<@ww.token/>
 	</@ww.form>
 
