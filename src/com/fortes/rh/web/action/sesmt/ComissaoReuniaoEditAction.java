@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoManager;
+import com.fortes.rh.business.sesmt.ComissaoReuniaoPresencaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
@@ -19,6 +20,7 @@ import com.fortes.rh.model.sesmt.relatorio.ComissaoReuniaoPresencaMatriz;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 
 public class ComissaoReuniaoEditAction extends MyActionSupportList
@@ -26,6 +28,7 @@ public class ComissaoReuniaoEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	
 	private ComissaoReuniaoManager comissaoReuniaoManager;
+	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
 	private ComissaoManager comissaoManager;
 	private ComissaoMembroManager comissaoMembroManager;
 
@@ -108,6 +111,16 @@ public class ComissaoReuniaoEditAction extends MyActionSupportList
 		String logoEmpresa = ArquivoUtil.getPathLogoEmpresa() + getEmpresaSistema().getLogoUrl();
 		parametros.put("LOGO", logoEmpresa);
 
+		return SUCCESS;
+	}
+
+	public String imprimirFrequencia() throws Exception
+	{
+		presencas = comissaoReuniaoPresencaManager.findByComissao(comissao.getId(), true);
+		comissao = comissaoManager.findByIdProjection(comissao.getId());
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Frequência nas Reuniões da CIPA", getEmpresaSistema(), "Eleição: " + comissao.getEleicao().getDescricaoFormatada());
+		
 		return SUCCESS;
 	}
 
@@ -251,5 +264,9 @@ public class ComissaoReuniaoEditAction extends MyActionSupportList
 	
 	public void setComissaoManager(ComissaoManager comissaoManager) {
 		this.comissaoManager = comissaoManager;
+	}
+
+	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
+		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
 	}
 }

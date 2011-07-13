@@ -12,5 +12,5 @@ public interface ComissaoReuniaoPresencaDao extends GenericDao<ComissaoReuniaoPr
 {
 	Collection<ComissaoReuniaoPresenca> findByReuniao(Long comissaoReuniaoId);
 	void removeByReuniao(Long comissaoReuniaoId);
-	Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId);
+	Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId, boolean ordenarPorDataNome);
 }

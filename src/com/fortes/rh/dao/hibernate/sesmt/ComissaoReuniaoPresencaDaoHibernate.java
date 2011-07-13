@@ -52,7 +52,7 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		query.executeUpdate();
 	}
 
-	public Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId)
+	public Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId, boolean ordenarPorDataNome)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"presenca");
 		criteria.createCriteria("presenca.comissaoReuniao", "cr");
@@ -72,6 +72,9 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cr.comissao.id", comissaoId));
+
+		if (ordenarPorDataNome)
+			criteria.addOrder(Order.asc("cr.data"));
 
 		criteria.addOrder(Order.asc("co.nome"));
 

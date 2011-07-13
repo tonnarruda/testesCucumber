@@ -497,6 +497,10 @@
 	background-image:url(../imgs/btnImprimirRelatorioFrequencia.gif);
 	width: 200px !important;
 }
+.btnFrequencia{
+	background-image:url(../imgs/btnFrequencia.gif);
+	width: 110px !important;
+}
 .btnCarregarRiscos{
 	background-image:url(../imgs/btnCarregarRiscos.gif);
 	width: 139px !important;
@@ -608,6 +612,7 @@
 .btnImprimirResultado,
 .btnImprimirCalendario,
 .btnImprimirRelatorioFrequencia,
+.btnFrequencia,
 .btnCarregarRiscos,
 .btnIncluirColaboradoresNota,
 .btnSugerirEtapas,

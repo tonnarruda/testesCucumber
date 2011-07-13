@@ -58,11 +58,26 @@ public class Comissao extends AbstractModel implements Serializable
     		eleicao = new Eleicao();
     	eleicao.setProjectionEstabelecimentoId(estabelecimentoId);
     }
+    
     public void setProjectionEstabelecimentoNome(String estabelecimentoNome)
     {
     	if (eleicao == null)
     		eleicao = new Eleicao();
     	eleicao.setProjectionEstabelecimentoNome(estabelecimentoNome);
+    }
+
+    public void setProjectionEleicaoDescricao(String eleicaoDescricao)
+    {
+    	if (eleicao == null)
+    		eleicao = new Eleicao();
+    	eleicao.setDescricao(eleicaoDescricao);
+    }
+    
+    public void setProjectionEleicaoPosse(Date eleicaoPosse)
+    {
+    	if (eleicao == null)
+    		eleicao = new Eleicao();
+    	eleicao.setPosse(eleicaoPosse);
     }
 
 	public Date getDataFim()

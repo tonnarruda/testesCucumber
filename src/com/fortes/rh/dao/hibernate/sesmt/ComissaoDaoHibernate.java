@@ -41,12 +41,17 @@ public class ComissaoDaoHibernate extends GenericDaoHibernate<Comissao> implemen
 	public Comissao findByIdProjection(Long comissaoId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
+		criteria.createCriteria("c.eleicao", "e");
+		criteria.createCriteria("e.estabelecimento", "estab", CriteriaSpecification.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.dataIni"), "dataIni");
 		p.add(Projections.property("c.dataFim"), "dataFim");
-		p.add(Projections.property("c.eleicao.id"), "projectionEleicaoId");
+		p.add(Projections.property("e.id"), "projectionEleicaoId");
+		p.add(Projections.property("e.descricao"), "projectionEleicaoDescricao");
+		p.add(Projections.property("e.posse"), "projectionEleicaoPosse");
+		p.add(Projections.property("estab.nome"), "projectionEstabelecimentoNome");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("c.id", comissaoId));

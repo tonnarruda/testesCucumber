@@ -14,6 +14,7 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.ComissaoFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class ComissaoReuniaoPresencaDaoHibernateTest extends GenericDaoHibernateTest<ComissaoReuniaoPresenca>
 {
@@ -82,20 +83,50 @@ public class ComissaoReuniaoPresencaDaoHibernateTest extends GenericDaoHibernate
 		Comissao comissao = ComissaoFactory.getEntity();
 		comissaoDao.save(comissao);
 
-		ComissaoReuniao comissaoReuniao = new ComissaoReuniao();
-		comissaoReuniao.setComissao(comissao);
-		comissaoReuniaoDao.save(comissaoReuniao);
+		ComissaoReuniao comissaoReuniao1 = new ComissaoReuniao();
+		comissaoReuniao1.setComissao(comissao);
+		comissaoReuniao1.setData(DateUtil.criarDataMesAno(07, 07, 2011));
+		comissaoReuniaoDao.save(comissaoReuniao1);
 
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador);
+		ComissaoReuniao comissaoReuniao2 = new ComissaoReuniao();
+		comissaoReuniao2.setComissao(comissao);
+		comissaoReuniao2.setData(DateUtil.criarDataMesAno(10, 10, 2011));
+		comissaoReuniaoDao.save(comissaoReuniao2);
 
-		ComissaoReuniaoPresenca comissaoReuniaoPresenca = new ComissaoReuniaoPresenca();
-		comissaoReuniaoPresenca.setComissaoReuniao(comissaoReuniao);
-		comissaoReuniaoPresenca.setColaborador(colaborador);
-		comissaoReuniaoPresencaDao.save(comissaoReuniaoPresenca);
+		Colaborador antonio = ColaboradorFactory.getEntity();
+		antonio.setNome("antonio");
+		colaboradorDao.save(antonio);
 
-		Collection<ComissaoReuniaoPresenca> resultado = comissaoReuniaoPresencaDao.findByComissao(comissao.getId());
-		assertEquals(1, resultado.size());
+		Colaborador jose = ColaboradorFactory.getEntity();
+		jose.setNome("jose");
+		colaboradorDao.save(jose);
+
+		ComissaoReuniaoPresenca comissaoReuniaoPresenca1 = new ComissaoReuniaoPresenca();
+		comissaoReuniaoPresenca1.setComissaoReuniao(comissaoReuniao1);
+		comissaoReuniaoPresenca1.setColaborador(antonio);
+		comissaoReuniaoPresencaDao.save(comissaoReuniaoPresenca1);
+
+		ComissaoReuniaoPresenca comissaoReuniaoPresenca2 = new ComissaoReuniaoPresenca();
+		comissaoReuniaoPresenca2.setComissaoReuniao(comissaoReuniao1);
+		comissaoReuniaoPresenca2.setColaborador(jose);
+		comissaoReuniaoPresencaDao.save(comissaoReuniaoPresenca2);
+		
+		ComissaoReuniaoPresenca comissaoReuniaoPresenca3 = new ComissaoReuniaoPresenca();
+		comissaoReuniaoPresenca3.setComissaoReuniao(comissaoReuniao2);
+		comissaoReuniaoPresenca3.setColaborador(antonio);
+		comissaoReuniaoPresencaDao.save(comissaoReuniaoPresenca3);
+
+		Collection<ComissaoReuniaoPresenca> resultado = comissaoReuniaoPresencaDao.findByComissao(comissao.getId(), false);
+		assertEquals(3, resultado.size());
+		assertEquals(antonio, ((ComissaoReuniaoPresenca)resultado.toArray()[0]).getColaborador());
+		assertEquals(antonio, ((ComissaoReuniaoPresenca)resultado.toArray()[1]).getColaborador());
+		assertEquals(jose, ((ComissaoReuniaoPresenca)resultado.toArray()[2]).getColaborador());
+		
+		resultado = comissaoReuniaoPresencaDao.findByComissao(comissao.getId(), true);
+		assertEquals(3, resultado.size());
+		assertEquals(antonio, ((ComissaoReuniaoPresenca)resultado.toArray()[0]).getColaborador());
+		assertEquals(jose, ((ComissaoReuniaoPresenca)resultado.toArray()[1]).getColaborador());
+		assertEquals(antonio, ((ComissaoReuniaoPresenca)resultado.toArray()[2]).getColaborador());
 	}
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)

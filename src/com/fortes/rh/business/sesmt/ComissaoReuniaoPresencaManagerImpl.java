@@ -76,8 +76,8 @@ public class ComissaoReuniaoPresencaManagerImpl extends GenericManagerImpl<Comis
 		getDao().removeByReuniao(comissaoReuniaoId);
 	}
 
-	public Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId)
+	public Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId, boolean ordenarPorDataNome)
 	{
-		return getDao().findByComissao(comissaoId);
+		return getDao().findByComissao(comissaoId, ordenarPorDataNome);
 	}
 }

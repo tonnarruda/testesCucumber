@@ -92,8 +92,8 @@ public class ComissaoReuniaoPresencaManagerTest extends MockObjectTestCase
 	}
 	public void testFindByComissao()
 	{
-		comissaoReuniaoPresencaDao.expects(once()).method("findByComissao").with(ANYTHING).will(returnValue(new ArrayList<ComissaoReuniaoPresenca>()));
-		comissaoReuniaoPresencaManager.findByComissao(1L);
+		comissaoReuniaoPresencaDao.expects(once()).method("findByComissao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<ComissaoReuniaoPresenca>()));
+		comissaoReuniaoPresencaManager.findByComissao(1L, false);
 	}
 
 

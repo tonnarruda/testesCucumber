@@ -161,7 +161,8 @@
 			<button class="btnSugerirReunioesOrdinarias" onclick="window.location='sugerirReuniao.action?comissao.id=${comissao.id}'" ></button>
 		</#if>
 		<button class="btnImprimirCalendario" onclick="window.location='imprimirCalendario.action?comissao.id=${comissao.id}'"></button>
-		<button class="btnImprimirRelatorioFrequencia" title="Relatório de frequência" onclick="window.location='relatorioPresenca.action?comissao.id=${comissao.id}'"></button>
+		<button class="btnFrequencia" title="Frequência" onclick="window.location='relatorioPresenca.action?comissao.id=${comissao.id}'"></button>
+		<button class="btnImprimirRelatorioFrequencia" title="Relatório de frequência" onclick="window.location='imprimirFrequencia.action?comissao.id=${comissao.id}'"></button>
 	</div>
 
 	<#--

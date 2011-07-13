@@ -125,7 +125,7 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 
 	public Collection<ComissaoReuniaoPresencaMatriz> findRelatorioPresenca(Long comissaoId)
 	{
-		Collection<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findByComissao(comissaoId);
+		Collection<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findByComissao(comissaoId, false);
 		Collection<Colaborador> colaboradores = getColaboradores(presencas);
 		Collection<Long> colaboradorIds = new ArrayList<Long>();
 				

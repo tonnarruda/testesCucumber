@@ -52,7 +52,11 @@ public class ComissaoDaoHibernateTest extends GenericDaoHibernateTest<Comissao>
 
 	public void testFindByIdProjection()
 	{
+		Eleicao eleicao = EleicaoFactory.getEntity();
+		eleicaoDao.save(eleicao);
+		
 		Comissao comissao = ComissaoFactory.getEntity();
+		comissao.setEleicao(eleicao);
 		comissaoDao.save(comissao);
 
 		assertEquals(comissao.getId(), comissaoDao.findByIdProjection(comissao.getId()).getId());

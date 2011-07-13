@@ -10,5 +10,5 @@ public interface ComissaoReuniaoPresencaManager extends GenericManager<ComissaoR
 	void saveOrUpdateByReuniao(Long comissaoReuniaoId, Long comissaoId, String[] colaboradorChecks, String[] colaboradorIds, String[] justificativas) throws Exception;
 	Collection<ComissaoReuniaoPresenca> findByReuniao(Long comissaoReuniaoId);
 	void removeByReuniao(Long comissaoReuniaoId);
-	Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId);
+	Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId, boolean ordenarPorDataNome);
 }
