@@ -16,3 +16,4 @@ file.fortesrh
 features/.idea/
 Thumbs.db
 .externalToolBuilders/
+ruby/Gemfile.lock
