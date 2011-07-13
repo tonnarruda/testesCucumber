@@ -448,7 +448,7 @@
 						</div>
 						
 						<#if integraAc>
-							<@ww.textfield label="Observação para o Setor Pessoal" name="obsACPessoal" id="obsACPessoal" cssStyle="width:355px;" maxLength="100"/>
+							<@ww.textfield label="Observação para o Setor Pessoal" name="obsACPessoal" id="obsACPessoal" cssStyle="width:355px;" disabled="${somenteLeitura}" maxLength="100"/>
 						</#if>
 					</ul>
 				</@ww.div>
