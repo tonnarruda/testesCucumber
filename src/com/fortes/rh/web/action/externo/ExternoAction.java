@@ -272,7 +272,7 @@ public class ExternoAction extends MyActionSupport
 
 		if (!verificarArquivosExterno())
 		{
-			addActionError("Não foi possível localizar os arquivos de layout do módulo externo.");
+			addActionError("Não foi possível localizar os arquivos de layout(Fortes\\RH) do módulo externo.");
 			return "erro";
 		}
 
