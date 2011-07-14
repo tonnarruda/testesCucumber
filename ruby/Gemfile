@@ -1,0 +1,11 @@
+source 'http://rubygems.org'
+
+gem 'rspec'
+gem 'cucumber'
+gem 'capybara'
+gem 'selenium-webdriver'
+gem 'pg'
+gem 'rubyzip'
+gem 'term-ansicolor'
+gem 'net-scp'
+gem 'net-ssh'
