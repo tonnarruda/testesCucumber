@@ -86,6 +86,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		String whereNome = "";
 		String whereMatricula = "";
 		String whereAreaIds = "";
+		String whereCPF = "";
 
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			whereAreaIds = "and ao.id in (:ids) ";
@@ -97,6 +98,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 			if(colaborador.getMatricula() != null && !colaborador.getMatricula().equals(""))
 				whereMatricula = "and lower(co.matricula) like :matricula ";
+
+			if(colaborador.getPessoal() != null && StringUtils.isNotBlank(colaborador.getPessoal().getCpf()))
+				whereCPF = "and lower(co.pessoal.cpf) like :cpf ";
 		}
 
 		StringBuilder hql = new StringBuilder();
@@ -115,7 +119,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		hql.append("and hc.status = :status ");
 		hql.append(whereAreaIds);
-		hql.append(whereNome + whereMatricula);
+		hql.append(whereNome + whereMatricula + whereCPF );
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("from HistoricoColaborador as hc2 ");
 		hql.append("where hc2.colaborador.id = co.id ");
@@ -129,9 +133,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
+		
 		if(!whereAreaIds.equals(""))
 			query.setParameterList("ids", areaOrganizacionalIds, Hibernate.LONG);
 
+		if(!whereCPF.equals(""))
+			query.setString("cpf", "%" + colaborador.getPessoal().getCpf() + "%");
+		
 		if(!whereNome.equals(""))
 			query.setString("nome", "%" + colaborador.getNome().toLowerCase() + "%");
 
@@ -158,11 +166,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	 *            : Array de Long com os ID das Áreas Organizacionais
 	 * @return Coleção com os colaboradores das Áreas Organizacionais Informadas
 	 */
-	public Collection<Colaborador> findByAreaOrganizacionalIds(int page, int pagingSize, Long[] ids, Colaborador colaborador, Long empresaId)
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] ids, Colaborador colaborador, Long empresaId)
 	{
 		Collection<Long> param = new HashSet<Long>();
-		for (int i = 0; i < ids.length; i++)
-			param.add(ids[i]);
+		if(ids != null && ids.length > 0)
+		{
+			for (int i = 0; i < ids.length; i++)
+				param.add(ids[i]);			
+		}
+		
 		return findByAreaOrganizacionalIds(param, page, pagingSize, colaborador, empresaId);
 	}
 

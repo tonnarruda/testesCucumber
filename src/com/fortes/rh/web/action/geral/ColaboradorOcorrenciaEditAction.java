@@ -15,18 +15,24 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.AbsenteismoCollection;
+import com.fortes.rh.model.pesquisa.Pergunta;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings({"serial"})
 public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
@@ -148,11 +154,28 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		if (colaborador!= null)
+		if (colaborador != null)
 		{
-			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), true);
+			Long[] areasIds = null;
+			Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+			if(usuarioLogado.getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
+			{
+				Colaborador colaboradorLogado = colaboradorManager.findByUsuario(usuarioLogado, getEmpresaSistema().getId());
+				Collection<AreaOrganizacional> areaOrganizacionals = null;
+				if(colaboradorLogado != null && colaboradorLogado.getId() != null)
+				{
+					areaOrganizacionals = areaOrganizacionalManager.findAllList(colaboradorLogado.getId(), getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
+					if(!areaOrganizacionals.isEmpty())
+					{
+						CollectionUtil<AreaOrganizacional> clu = new CollectionUtil<AreaOrganizacional>();
+						areasIds = clu.convertCollectionToArrayIds(areaOrganizacionals);
+					}
+				}
+			}
+				
+			colaboradors = colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, colaborador, getEmpresaSistema().getId());
 			
-			if (colaborador.getId()!= null)
+			if (colaborador.getId() != null)
 			{
 				colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
 				setTotalSize(colaboradorOcorrenciaManager.getCount(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()}));

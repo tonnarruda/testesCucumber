@@ -136,7 +136,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findList(page, pagingSize, parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
 	}
 
-	public Collection<Colaborador> findByAreasOrganizacionalIds(int page, int pagingSize, Long[] areasIds, Colaborador colaborador, Long empresaId)
+	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Colaborador colaborador, Long empresaId)
 	{
 		return getDao().findByAreaOrganizacionalIds(page, pagingSize, areasIds, colaborador, empresaId);
 	}
