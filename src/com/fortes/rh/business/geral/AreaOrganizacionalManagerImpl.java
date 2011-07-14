@@ -235,9 +235,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findAllList(0, 0, null, null, empresaId, ativo);
 	}
 
-	public Collection<AreaOrganizacional> findAllList(Long idUsuario, Long empresaId, Boolean ativo)
+	public Collection<AreaOrganizacional> findAllList(Long idColaborador, Long empresaId, Boolean ativo)
 	{
-		return getDao().findAllList(0, 0, idUsuario, null, empresaId, ativo);
+		return getDao().findAllList(0, 0, idColaborador, null, empresaId, ativo);
 	}
 
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, String nome, Long empresaId, Boolean ativo)

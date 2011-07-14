@@ -1494,6 +1494,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaboradorBusca = ColaboradorFactory.getEntity(1L);
 		colaboradorBusca.setNome("dro j");
 		colaboradorBusca.setMatricula("2E3");
+		colaboradorBusca.getPessoal().setCpf("000");
 		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(areaIds, 1, 10, colaboradorBusca, empresa.getId());
 
 		assertEquals(1, colaboradores.size());
