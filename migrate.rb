@@ -29,8 +29,34 @@ if ARGV.empty?
 	    end  
 	  end 
 	end	
+elsif ARGV[0] == '--deploy'
+  version = ARGV[1] || 'INSIRA_NUMERO_VERSAO'
+  
+  last_migrate = File.readlines("./web/WEB-INF/metadata/update.sql").grep(/-- migration (\d{14})/).map{$1}.last
+  puts "migrate atual no update.sql #{last_migrate}"
+  
+  sql_migrates = ""
+  Dir.glob("./web/WEB-INF/metadata/migrate/*.sql").each do |file|
+    if (file =~ /(\d{14})/ and $1 > last_migrate)
+      print "Buscando migrate: #{$1}".ljust(80)
+      sql_migrates << "\n" + File.read(file)
+      sql_migrates << "\n-- migration #{$1}"
+      puts " [ #{green("SUCESSO")} ]"
+    end
+  end
+  
+  if sql_migrates.empty?
+    puts "update.sql ja esta com a migrate mais nova!"
+  else
+    close_version = "\nupdate parametrosdosistema set appversao = '#{version}';--.go"
+    
+    File.open("./web/WEB-INF/metadata/update.sql",'a'){|f| f.write "\n-- versao #{version}\n" + sql_migrates + close_version}
+    puts "update editado com sucesso."
+  end
 else
-	file_name = ARGV[0] || 'sem_comentario_hein'
+	file_name = ARGV[0]
 	content = ARGV[1] || ''
+	print "Criando migrate \"#{file_name}\" ...".ljust(80) 
 	File.open("./web/WEB-INF/metadata/migrate/#{Time.now.strftime('%Y%m%d%H%M%S')}_#{file_name}.sql",'w'){|f| f.write content}
+	puts " [ #{green("SUCESSO")} ]" 
 end
