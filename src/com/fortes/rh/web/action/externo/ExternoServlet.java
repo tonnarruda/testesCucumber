@@ -23,10 +23,21 @@ public class ExternoServlet extends HttpServlet
 		// parametro que especifica qual arquivo buscar
 		String tipo = request.getParameter("tipo");
 		TipoParametro tipoParametro = TipoParametro.valueOf(tipo);
-
 		response.setContentType(tipoParametro.getArquivoTipo());
 
+		String empresaId = request.getParameter("empresaId");
+		
 		String nomeArquivo = ArquivoUtil.getPathExterno() + tipoParametro.getArquivoNome();
+		
+		if (empresaId != null)
+		{
+			String caminhoExternoEmpresa = ArquivoUtil.getPathExternoEmpresa(Long.parseLong(empresaId));
+			File dirExternoEmpresa = new File(caminhoExternoEmpresa);
+			
+			if (dirExternoEmpresa.exists() && dirExternoEmpresa.isDirectory())
+				nomeArquivo = ArquivoUtil.getPathExternoEmpresa(Long.parseLong(empresaId)) + tipoParametro.getArquivoNome();
+		}
+		
 		File arquivo = new File(nomeArquivo);
 
 		ServletOutputStream servletOutputStream = response.getOutputStream();

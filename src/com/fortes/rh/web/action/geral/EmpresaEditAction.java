@@ -85,6 +85,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public String prepareInsert() throws Exception
 	{
 		prepare();
+		empresa.setMensagemModuloExterno("Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.");
 		return Action.SUCCESS;
 	}
 
@@ -114,6 +115,20 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			empresa.setExame(null);
 		
 		empresaManager.save(empresa);
+		
+		//criacao da pasta para o modulo externo
+		java.io.File pastaExterno = new java.io.File(ArquivoUtil.getPathExterno());
+		java.io.File novaPastaExterno = new java.io.File(ArquivoUtil.getPathExternoEmpresa(empresa.getId()));
+
+		try
+		{
+			ArquivoUtil.copiar(pastaExterno, novaPastaExterno);
+		}
+		catch (IOException e)
+		{
+			addActionMessage("Não foi possível criar uma pasta de configurações do módulo externo.");
+			e.printStackTrace();
+		}
 
 		return Action.SUCCESS;
 	}

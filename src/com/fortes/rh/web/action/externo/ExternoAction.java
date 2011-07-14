@@ -43,7 +43,7 @@ public class ExternoAction extends MyActionSupport
 	private String mensagem;
 	private Long empresaId;
 	private String mensagemLogin;
-
+	
 	private Collection<Anuncio> anuncios = null;
 	private AnuncioManager anuncioManager;
 	private EmpresaManager empresaManager;
@@ -58,10 +58,8 @@ public class ExternoAction extends MyActionSupport
 	private CandidatoSolicitacao candidatoSolicitacao;
 
 	private boolean moduloExterno=true; // flag para regra em recuperaSenhaLogin
-
 	private boolean sucessoEnvioCurriculo; // flag de alerta ftl
 	
-
 	public String checaLogin() throws Exception
 	{
 		if (cpf.equals(""))
@@ -71,7 +69,7 @@ public class ExternoAction extends MyActionSupport
 		}
 
 		Map session = ActionContext.getContext().getSession();
-		candidato = candidatoManager.findByCPF(cpf, null);
+		candidato = candidatoManager.findByCPF(cpf, empresaId);
 
 		if (candidato == null)
 		{
@@ -246,14 +244,20 @@ public class ExternoAction extends MyActionSupport
 	private boolean verificarArquivosExterno()
 	{
 		boolean retorno = false;
+		
+		String caminhoExternoEmpresa = ArquivoUtil.getPathExternoEmpresa(empresaId);
 		String caminhoExterno = ArquivoUtil.getPathExterno();
-		File dirExterno = new File(caminhoExterno);
+		
+		File dirExterno = new File(caminhoExternoEmpresa);
 
+		if (!dirExterno.exists() || !dirExterno.isDirectory())
+			dirExterno = new File(caminhoExterno);
+		
 		if (dirExterno.exists() && dirExterno.isDirectory())
 		{
 			File layout = new File(caminhoExterno + "layout.css");
 			File logotipo = new File(caminhoExterno + "logotipo.png");
-
+			
 			retorno = (layout.exists() && logotipo.exists());
 		}
 

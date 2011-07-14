@@ -14,19 +14,15 @@
 		{
 			border: 1px solid #FFF !important;
 		}
-		
-		#mensagemModuloExterno{
-			border: 1px solid #BFB6B3 !important;
-		 	margin: 0 auto;
-			width: 450px;
-			background-color: #E9E9E9;
-			padding: 10px;
-		}
-		
-		
 	</style>
 
-	<link rel="stylesheet" href="${request.contextPath}/externo/layout?tipo=layout" />
+	<#if empresaId?exists>
+		<#assign urlServlet = "${request.contextPath}/externo/layout?empresaId=${empresaId}&tipo=" />
+	<#else>
+		<#assign urlServlet = "${request.contextPath}/externo/layout?tipo=" />
+	</#if>
+
+	<link rel="stylesheet" href="${urlServlet}layout" />
 	<#include "../ftl/mascarasImports.ftl" />
 
 </head>
@@ -38,17 +34,24 @@
 		<table class="loginExternoTable" cellpadding="5" style="margin: 0 auto; width: 470px">
 			<tr>
 				<td>
-					<img border="0" style="width:128px;heigtht:111px;" src="${request.contextPath}/externo/layout?tipo=logotipo"/>
-
-					<br><br>
-					<#if mensagemLogin?exists && mensagemLogin != "">	
-						${mensagemLogin}
-					</#if>		
-					<br><br>
-
-					<span class="linkCadastro">
-						<a href="prepareInsert.action?moduloExterno=true&empresaId=${empresaId}">Clique aqui para se cadastrar</a>
-					</span>
+					<table cellpadding="8">
+					<tr>
+						<td align="center">
+							<img class="loginExternoLogo" border="0" src="${urlServlet}logotipo"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<#if mensagemLogin?exists && mensagemLogin != "">	
+								${mensagemLogin}
+							</#if>		
+							<br><br>
+							<span class="linkCadastro">
+								<a href="prepareInsert.action?moduloExterno=true&empresaId=${empresaId}">Clique aqui para se cadastrar</a>
+							</span>
+						</td>
+					</tr>
+					</table>
 				</td>
 				<td>
 					<table class="loginExternoForm" cellpadding="8">

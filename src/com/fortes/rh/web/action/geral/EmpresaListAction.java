@@ -1,9 +1,13 @@
 package com.fortes.rh.web.action.geral;
 
+import java.io.IOException;
 import java.util.Collection;
+
+import org.apache.commons.io.FileUtils;
 
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -34,6 +38,10 @@ public class EmpresaListAction extends MyActionSupportList
 			empresaManager.remove(new Long[]{empresa.getId()});
 		
 		addActionMessage("Empresa excluída com sucesso.");
+		
+		java.io.File pastaExterna = new java.io.File(ArquivoUtil.getPathExternoEmpresa(empresa.getId()));
+		if (pastaExterna.exists())
+			FileUtils.deleteDirectory(pastaExterna);
 
 		return Action.SUCCESS;
 	}

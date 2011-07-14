@@ -2,8 +2,11 @@ package com.fortes.rh.util;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -238,6 +241,16 @@ public class ArquivoUtil
 
 		return path.toString();
 	}
+
+	public static String getPathExternoEmpresa(Long empresaId)
+	{
+		StringBuilder path = new StringBuilder(getRhHome());
+		path.append(java.io.File.separatorChar);
+		path.append("externo_" + empresaId);
+		path.append(java.io.File.separatorChar);
+		
+		return path.toString();
+	}
 	
 	public static String convertToLatin1Compatible(byte[] bytes)
 	{
@@ -279,5 +292,42 @@ public class ArquivoUtil
 		}
 		
 		return result;
+	}
+	
+    public static void copiar(java.io.File base, java.io.File destino) throws IOException
+    {
+		if(base.isDirectory())
+		{
+			if(!destino.exists())
+			{
+			   destino.mkdir();
+			}
+		
+			String files[] = base.list();
+		
+			for (String file : files) 
+			{
+			   java.io.File srcFile = new java.io.File(base, file);
+			   java.io.File destFile = new java.io.File(destino, file);
+			   copiar(srcFile, destFile);
+			}
+		}
+		else
+		{
+			InputStream in = new FileInputStream(base);
+			OutputStream out = new FileOutputStream(destino); 
+			
+			byte[] buffer = new byte[1024];
+			
+			int length;
+			
+			while ((length = in.read(buffer)) > 0)
+			{
+			   out.write(buffer, 0, length);
+			}
+			
+			in.close();
+			out.close();
+		}
 	}
 }
