@@ -16,8 +16,14 @@
 		 do módulo externo: imagens customizáveis do topo do layout
 		 (sobrescreve as imagens indicadas no default.css)
 	-->
-	<#assign topDivImg = "${request.contextPath}/externo/layout?tipo=menu1" />
-	<#assign userDivImg = "${request.contextPath}/externo/layout?tipo=menu2" />
+	<#if empresaId?exists>
+		<#assign urlServlet = "${request.contextPath}/externo/layout?empresaId=${empresaId}&tipo=" />
+	<#else>
+		<#assign urlServlet = "${request.contextPath}/externo/layout?tipo=" />
+	</#if>
+	
+	<#assign topDivImg = "${urlServlet}menu1" />
+	<#assign userDivImg = "${urlServlet}menu2" />
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
@@ -93,7 +99,7 @@
 				</span>
 			</div>
 			<div id="userDiv1">
-				<img src='${request.contextPath}/externo/layout?tipo=menu3' border='0' align='absMiddle' />
+				<img src='${urlServlet}menu3' border='0' align='absMiddle' />
 			</div>
 		</div>
 		<br/><br/>
