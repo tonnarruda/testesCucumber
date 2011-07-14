@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.51.43" data="14/07/2011">
+		- ReS > Movimentações > Agenda: Impressão da agenda.
+		- CeS > Cadastros > Área Organizacionais: Novo campo [E-mails extras para notificações]. Esses e-mails serão utilizados na solicitação de pessoal [Comunicar responsáveis da Área Organizacional].
+		- Pesquisas > Movimentações > Pesquisas: Nova funcionalidade de enviar lembrete de e-mail.
+		- Pesquisas > Movimentações > Pesquisas: Ao imprimir ficha de pesquisa não exibe cabeçalho para pesquisa anônima.
+		- Aval. Desempenho > Movimentações > Avaliações Desempenho: Nova funcionalidade ao liberar avaliação envia lembrete de e-mail.    
+		- Aval. Desempenho > Movimentações > Avaliações Desempenho > Participantes: Gerar autoavaliações em lote.
+		- Aval. Desempenho > Movimentações > Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência: Novo Filtro.
+		- SESMT > Relatórios > Exames Previstos: Nova opção imprimir desligado(s).
+		- SESMT > Cadastros > CIPA > Comissões > Reuniões: Impressão do relatório de frequência.
+	</Versao>
 	<Versao id="1.1.50.42" data="08/07/2011">
 		- SESMT > Movimentações > Afastamentos: Campo CID, listagem com sugestões de  CID´s.
 		- SESMT > Relatórios > Afastamentos: Nova opção de agrupamento por CID.

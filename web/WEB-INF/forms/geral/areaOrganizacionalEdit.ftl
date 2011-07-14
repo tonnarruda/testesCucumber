@@ -84,7 +84,7 @@
 		<@ww.select label="Responsável" name="areaOrganizacional.responsavel.id" id="responsavel" list="responsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeComercial"/>
 		<@ww.select label="Ativo" name="areaOrganizacional.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 		
-		<label>Emails extras para notificações:</label>
+		<label>E-mails extras para notificações:</label>
 		<ul id="camposEmails"></ul>
 		<a href="javascript:;" onclick="javascript:adicionarCampoEmail();" style="text-decoration: none;">
 			<img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> 

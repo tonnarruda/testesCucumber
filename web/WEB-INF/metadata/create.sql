@@ -405,7 +405,8 @@ CREATE TABLE areaorganizacional (
     areamae_id bigint,
     responsavel_id bigint,
     empresa_id bigint,
-    ativo boolean default true
+    ativo boolean default true,
+    emailsnotificacoes text
 );
 ALTER TABLE areaorganizacional ADD CONSTRAINT areaorganizacional_pkey PRIMARY KEY (id);
 ALTER TABLE areaorganizacional ADD CONSTRAINT areaorganizacional_areaorganizacional_fk FOREIGN KEY (areamae_id) REFERENCES areaorganizacional(id);
@@ -2340,3 +2341,6 @@ and (hi_hc.data < proximo.dataProximo or hi_hc.data is null)
 and (hi_hc.data >= indiceAtual.dataAtualIndice or hi_hc.data is null)
 order by hc.colaborador_id,hc.data,hfs_hc.data,hi_hfs_hc.data,hi_hc.data;
 
+create table migrations (
+	name varchar(14) not null
+);
