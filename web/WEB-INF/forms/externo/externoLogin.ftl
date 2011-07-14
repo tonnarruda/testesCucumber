@@ -39,13 +39,13 @@
 			<tr>
 				<td>
 					<img border="0" style="width:128px;heigtht:111px;" src="${request.contextPath}/externo/layout?tipo=logotipo"/>
+
 					<br><br>
-					Se você não é registrado,<br>
-					cadastre já seu currículo e tenha<br>
-					acesso às vagas
-					disponíveis em <br>
-					nossa empresa.<br>
-					<br>
+					<#if mensagemLogin?exists && mensagemLogin != "">	
+						${mensagemLogin}
+					</#if>		
+					<br><br>
+
 					<span class="linkCadastro">
 						<a href="prepareInsert.action?moduloExterno=true&empresaId=${empresaId}">Clique aqui para se cadastrar</a>
 					</span>
@@ -87,15 +87,6 @@
 					</table>
 				</td>
 			</tr>
-			
-			<#if mensagemLogin?exists && mensagemLogin != "">
-				<tr>
-					<td colspan="2">
-							<div id="mensagemModuloExterno">${mensagemLogin}</div>
-					</td>
-				</tr>
-			</#if>			
-		
 		</table>
 		<br><br>
 				
