@@ -17,13 +17,13 @@ if ARGV.empty?
 	
 	Dir.glob("./web/WEB-INF/metadata/migrate/*.sql").each do |file| 
 	  if (file =~ /(\d{14})/ and !@migrations.include? $1)
-	    print "Executando #{file.split('/').last}".ljust(80)
+	    print "Executando #{File.basename(file)}".ljust(80)
 	    begin
 	      exec_sql File.read(file)
 	      exec_sql "insert into migrations values('#{$1}');"
-	      puts " [ #{green("SUCESSO")} ]" 
+	      puts "[ #{green("SUCESSO")} ]" 
 	    rescue Exception => e
-	      puts " [#{red("ERRO".center(9))}]"
+	      puts "[#{red("ERRO".center(9))}]"
 	      puts red e.message
 	      exit 1
 	    end  
@@ -37,11 +37,11 @@ elsif ARGV[0] == '--deploy'
   
   sql_migrates = ""
   Dir.glob("./web/WEB-INF/metadata/migrate/*.sql").each do |file|
-    if (file =~ /(\d{14})/ and $1 > last_migrate)
+    if (File.basename(file) =~ /^(\d{14})/ and $1 > last_migrate)
       print "Buscando migrate: #{$1}".ljust(80)
       sql_migrates << "\n" + File.read(file)
       sql_migrates << "\n-- migration #{$1}"
-      puts " [ #{green("SUCESSO")} ]"
+      puts "[ #{green("SUCESSO")} ]"
     end
   end
   
@@ -58,5 +58,6 @@ else
 	content = ARGV[1] || ''
 	print "Criando migrate \"#{file_name}\" ...".ljust(80) 
 	File.open("./web/WEB-INF/metadata/migrate/#{Time.now.strftime('%Y%m%d%H%M%S')}_#{file_name}.sql",'w'){|f| f.write content}
-	puts " [ #{green("SUCESSO")} ]" 
+	puts "[ #{green("SUCESSO")} ]"	
+  puts "MIGRATE criada sem ;--.go".ljust(80) + "[" + yellow("AVISO".center(9)) + "]" unless content.empty? or content =~ /;--.go/
 end
