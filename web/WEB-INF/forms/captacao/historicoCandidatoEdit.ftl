@@ -99,6 +99,10 @@
 			</#if>
 
 			$("#resp").autocomplete(${responsaveis});
+			
+			$(".mascaraHora").blur(function() {
+				$(this).val( $(this).val().replace(/ /g, '0') );
+			});
 		});
 		
 </script>
