@@ -5,20 +5,26 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
@@ -33,6 +39,8 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 	private EmpresaDao empresaDao;
 	private ConhecimentoDao conhecimentoDao;
 	private GrupoACDao grupoACDao;
+	private ColaboradorDao colaboradorDao;
+	private UsuarioDao usuarioDao;
 
 	public AreaOrganizacional getEntity()
 	{
@@ -288,6 +296,29 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(1, areas.size());
 	}
 	
+	public void testFindIdsAreasDoResponsavel()
+	{
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setUsuario(usuario);
+		colaboradorDao.save(colaborador);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setEmpresa(empresa);
+		areaOrganizacional.setResponsavel(colaborador);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Long[] areasIds = areaOrganizacionalDao.findIdsAreasDoResponsavel(usuario.getId(), empresa.getId());
+		assertEquals(1, areasIds.length);
+
+		assertEquals(0, areaOrganizacionalDao.findIdsAreasDoResponsavel(45454L, 151545452L).length);
+	}
+	
 	public void setCargoDao(CargoDao cargoDao)
 	{
 		this.cargoDao = cargoDao;
@@ -310,5 +341,13 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
+	}
+
+	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setUsuarioDao(UsuarioDao usuarioDao) {
+		this.usuarioDao = usuarioDao;
 	}
 }

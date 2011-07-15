@@ -6,6 +6,7 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -20,6 +21,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.util.CollectionUtil;
 
 @SuppressWarnings("unchecked")
 public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrganizacional> implements AreaOrganizacionalDao
@@ -394,6 +396,24 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		criteria.addOrder(Order.asc("a.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
 		return criteria.list();
+	}
+
+	public Long[] findIdsAreasDoResponsavel(Long usuarioId, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"a");
+		criteria.createCriteria("a.responsavel", "c");
+		criteria.createCriteria("c.usuario", "u");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("u.id", usuarioId));
+		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		
+		CollectionUtil<AreaOrganizacional> cul = new CollectionUtil<AreaOrganizacional>();
+		return cul.convertCollectionToArrayIds(criteria.list());
 	}
 
 }
