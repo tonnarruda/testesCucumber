@@ -312,6 +312,24 @@ Dado /^que exista uma avaliacao de curso "([^"]*)"$/ do |avaliacaocurso_titulo|
    end
 end
 
+Dado /^que exista um curso "([^"]*)"$/ do |curso_nome|
+   insert :curso do
+     nome curso_nome
+     empresa :id => 1
+   end
+end
+
+Dado /^que exista uma turma "([^"]*)" para o curso "([^"]*)"$/ do |turma_descricao, curso_nome|
+   insert :turma do
+     descricao turma_descricao
+     curso :nome => curso_nome
+     realizada false
+     dataprevini '01/07/2011'
+     dataprevfim '15/07/2011'
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista a etapa seletiva "([^"]*)"$/ do |etapaseletiva_nome|
    exec_sql "insert into etapaseletiva (id,nome,ordem,empresa_id) values(nextval('etapaseletiva_sequence'),'#{etapaseletiva_nome}', 1,  1);"
 end

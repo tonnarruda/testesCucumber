@@ -2182,7 +2182,7 @@ COPY papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) FROM std
 366	ROLE_T&D_CAD	Cadastros	#	1	t	\N	365
 13	ROLE_CAD_PRIORIDADETREINAMENTO	Prioridades de Treinamento	/desenvolvimento/prioridadeTreinamento/list.action	1	t	\N	463
 23	ROLE_MOV_CURSO	Cursos/Treinamentos	/desenvolvimento/curso/list.action	2	t	\N	366
-413	ROLE_MOV_AVALIACAO_CURSO	Avaliações dos Cursos 	/desenvolvimento/avaliacaoCurso/list.action	3	t	\N	366
+413	ROLE_MOV_AVALIACAO_CURSO	Avaliações dos Cursos	/desenvolvimento/avaliacaoCurso/list.action	3	t	\N	366
 419	ROLE_AVALIACAO_TURMA	Modelos de Avaliação de Turma	/pesquisa/avaliacaoTurma/list.action	4	t	\N	366
 420	ROLE_CAD_CERTIFICACAO	Certificações	/desenvolvimento/certificacao/list.action	5	t	\N	366
 367	ROLE_T&D_MOV	Movimentações	#	2	t	\N	365
