@@ -114,7 +114,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (487,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (366, 'ROLE_T&D_CAD', 'Cadastros', '#', 1, true, 365);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (13, 'ROLE_CAD_PRIORIDADETREINAMENTO', 'Prioridades de Treinamento', '/desenvolvimento/prioridadeTreinamento/list.action', 1, true, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (23, 'ROLE_MOV_CURSO', 'Cursos/Treinamentos', '/desenvolvimento/curso/list.action', 2, true, 366);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (413, 'ROLE_MOV_AVALIACAO_CURSO', 'Avaliações dos Cursos ', '/desenvolvimento/avaliacaoCurso/list.action', 3, true, 366);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (413, 'ROLE_MOV_AVALIACAO_CURSO', 'Avaliações dos Cursos', '/desenvolvimento/avaliacaoCurso/list.action', 3, true, 366);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (419, 'ROLE_AVALIACAO_TURMA', 'Modelos de Avaliação de Turma', '/pesquisa/avaliacaoTurma/list.action', 4, true, 366);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (420, 'ROLE_CAD_CERTIFICACAO', 'Certificações', '/desenvolvimento/certificacao/list.action', 5, true, 366);
 

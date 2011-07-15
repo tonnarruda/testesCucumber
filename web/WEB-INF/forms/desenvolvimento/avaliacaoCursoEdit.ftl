@@ -5,7 +5,7 @@
 	<title>Editar Avaliação do Aluno</title>
 	<#assign formAction="update.action"/>
 <#else>
-	<title>Nova Avaliação do Aluno</title>
+	<title>Inserir Avaliação do Aluno</title>
 	<#assign formAction="insert.action"/>
 </#if>
 <#assign validarCampos="return validaFormulario('form', new Array('titulo','tipo'), null)"/>

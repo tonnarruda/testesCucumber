@@ -6,7 +6,7 @@
 			<title>Editar Certificação</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Nova Certificação</title>
+			<title>Inserir Certificação</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 		<#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
