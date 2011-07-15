@@ -158,19 +158,11 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		{
 			Long[] areasIds = null;
 			Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
-			if(usuarioLogado.getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
+			if(usuarioLogado.getId() != 1L || !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
 			{
-				Colaborador colaboradorLogado = colaboradorManager.findByUsuario(usuarioLogado, getEmpresaSistema().getId());
-				Collection<AreaOrganizacional> areaOrganizacionals = null;
-				if(colaboradorLogado != null && colaboradorLogado.getId() != null)
-				{
-					areaOrganizacionals = areaOrganizacionalManager.findAllList(colaboradorLogado.getId(), getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
-					if(!areaOrganizacionals.isEmpty())
-					{
-						CollectionUtil<AreaOrganizacional> clu = new CollectionUtil<AreaOrganizacional>();
-						areasIds = clu.convertCollectionToArrayIds(areaOrganizacionals);
-					}
-				}
+				areasIds = areaOrganizacionalManager.findIdsAreasDoResponsavel(usuarioLogado.getId(), getEmpresaSistema().getId());
+				if(areasIds.length == 0)
+					areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
 			}
 				
 			colaboradors = colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, colaborador, getEmpresaSistema().getId());

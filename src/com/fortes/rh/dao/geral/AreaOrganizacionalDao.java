@@ -28,4 +28,5 @@ public interface AreaOrganizacionalDao extends GenericDao<AreaOrganizacional>
 	public Collection<AreaOrganizacional> findSincronizarAreas(Long empresaOrigemId);
 	public Collection<AreaOrganizacional> findAreas(Long[] areaIds);
 	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId);
+	public Long[] findIdsAreasDoResponsavel(Long usuarioId, Long empresaId);
 }

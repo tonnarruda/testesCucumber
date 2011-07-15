@@ -622,4 +622,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId) {
 		return getDao().findByEmpresa(empresaId);
 	}
+
+	public Long[] findIdsAreasDoResponsavel(Long usuarioId, Long empresaId) 
+	{
+		return getDao().findIdsAreasDoResponsavel(usuarioId, empresaId);
+	}
 }
