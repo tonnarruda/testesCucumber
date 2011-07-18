@@ -99,6 +99,45 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		return (HistoricoColaborador) query.uniqueResult();
 	}
+	
+	public HistoricoColaborador getHistoricoContratacaoAguardando(Long colaboradorId)
+	{
+		StringBuilder hql = new StringBuilder();
+
+		montaSelectConstrutor(hql);
+
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("left join hc.ambiente as a ");
+		hql.append("left join hc.funcao as f ");
+		hql.append("left join hc.estabelecimento as es ");
+		hql.append("left join hc.indice as i ");
+		hql.append("left join i.indiceHistoricos as ih with ih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = i.id and ih2.data <= :hoje ) ");
+		hql.append("left join hc.colaborador as co ");
+		hql.append("left join co.empresa as e ");
+		hql.append("left join hc.faixaSalarial as fs ");
+		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh2.data) from FaixaSalarialHistorico fsh2 where fsh2.faixaSalarial.id = fs.id and fsh2.data <= :hoje and fsh2.status != :status) ");
+		hql.append("left join fsh.indice as ifs ");
+		hql.append("left join ifs.indiceHistoricos as ifsh with ifsh.data = (select max(ih3.data) from IndiceHistorico ih3 where ih3.indice.id = ifs.id and ih3.data <= :hoje) ");
+		hql.append("left join fs.cargo as c ");
+		hql.append("left join c.grupoOcupacional as go ");
+		hql.append("where co.id = :colaboradorId ");
+		hql.append("and hc.data <= :hoje ");
+		hql.append("and hc.status = :statusHistColab ");
+		hql.append("and hc.motivo = :motivo ");
+		hql.append("order by hc.data desc, hc.id desc");
+
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setLong("colaboradorId", colaboradorId);
+		query.setDate("hoje", new Date());
+		query.setInteger("status", StatusRetornoAC.CANCELADO);
+		query.setInteger("statusHistColab", StatusRetornoAC.AGUARDANDO);
+		query.setString("motivo", MotivoHistoricoColaborador.CONTRATADO);
+		query.setMaxResults(1);
+
+		return (HistoricoColaborador) query.uniqueResult();
+	}
 
 	private void montaSelectConstrutor(StringBuilder hql)
 	{

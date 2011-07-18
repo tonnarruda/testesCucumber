@@ -25,6 +25,8 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public Collection findPromocaoByColaborador(Long colaboradorId);
 
 	public HistoricoColaborador getHistoricoAtual(Long colaboradorId);
+	
+	public HistoricoColaborador getHistoricoContratacaoAguardando(Long colaboradorId);
 
 	public Collection<Colaborador> findByGrupoOcupacionalIds(int page, int pagingSize, Long[] longs, Long empresaId);
 

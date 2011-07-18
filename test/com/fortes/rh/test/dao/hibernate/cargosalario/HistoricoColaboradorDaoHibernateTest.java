@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
@@ -488,6 +489,47 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		HistoricoColaborador historicoColaboradore = historicoColaboradorDao.getHistoricoAtual(colaborador.getId(), TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
 
 		assertEquals(historicoColaborador2, historicoColaboradore);
+	}
+	
+	public void testGetHistoricoContratacaoAguardando()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+
+		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
+		grupoOcupacionalDao.save(grupoOcupacional);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setGrupoOcupacional(grupoOcupacional);
+		cargoDao.save(cargo);
+
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(DateUtil.criarDataMesAno(10, 10, 2010));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaboradorDao.save(historicoColaborador);
+
+		HistoricoColaborador historicoColaboradore = historicoColaboradorDao.getHistoricoContratacaoAguardando(colaborador.getId());
+
+		assertEquals(historicoColaborador.getId(), historicoColaboradore.getId());
 	}
 
 	public void testFindByCargosIdsComEmpresa()
