@@ -14,6 +14,7 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 {
 	public Collection<HistoricoColaborador> findPromocaoByColaborador(Long colaboradorId);
 	public HistoricoColaborador getHistoricoAtual(Long colaboradorId, int tipoBuscaHistoricoColaborador);
+	public HistoricoColaborador getHistoricoContratacaoAguardando(Long colaboradorId);
 	public Collection<HistoricoColaborador> findByCargosIds(int page, int pagingSize, Collection<Long> name, Long empresaId, Colaborador colaborador);
 	public Collection<HistoricoColaborador> findByGrupoOcupacionalIds(int page, int pagingSize, Collection<Long> name, Long empresaId);
 	public HistoricoColaborador getHistoricoAnterior(HistoricoColaborador historico);

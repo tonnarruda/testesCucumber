@@ -250,6 +250,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			colaborador = (Colaborador) colaboradorManager.findByIdComHistoricoConfirmados(colaborador.getId());
 
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
+			
+			if (historicoColaborador == null)
+				historicoColaborador = historicoColaboradorManager.getHistoricoContratacaoAguardando(colaborador.getId());
 
 			colaborador.setFuncao(historicoColaborador.getFuncao());
 

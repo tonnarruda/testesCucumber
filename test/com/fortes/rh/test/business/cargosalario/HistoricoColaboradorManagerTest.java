@@ -2012,6 +2012,22 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		assertEquals(historicoColaborador.getId(), retorno.getId());
 	}
+	
+	public void testGetHistoricoContratacaoAguardando()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+		historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
+
+		historicoColaboradorDao.expects(once()).method("getHistoricoContratacaoAguardando").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
+
+		HistoricoColaborador retorno = historicoColaboradorManager.getHistoricoContratacaoAguardando(colaborador.getId());
+
+		assertEquals(historicoColaborador.getId(), retorno.getId());
+	}
 
 	public void testVerificaDataPrimeiroHistorico()
 	{
