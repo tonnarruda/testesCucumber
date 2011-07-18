@@ -260,7 +260,8 @@
 				/geral/areaFormacao/*/**=ROLE_AREAFORMACAO
 				/geral/configuracaoCampoExtra/*/**=ROLE_CAMPO_EXTRA
 				/geral/grupoAC/*/**=ROLE_CAD_GRUPOAC
-				
+				/geral/configuracaoLimiteColaborador/*/**=ROLE_CONFIG_LIMITE_COLABORADOR
+
 
 				/captacao/motivoSolicitacao/*/**=ROLE_MOTIVO_SOLICITACAO
 				/captacao/areaInteresse/*/**=ROLE_CAD_AREA

@@ -147,14 +147,10 @@
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico" />
     <mapping class="com.fortes.rh.model.geral.CodigoCBO" />
     <mapping class="com.fortes.rh.model.geral.Cid" />
-      <mapping class="com.fortes.rh.model.geral.GrupoAC" />
-      <mapping class="com.fortes.rh.model.geral.ComoFicouSabendoVaga" />
+    <mapping class="com.fortes.rh.model.geral.GrupoAC" />
+    <mapping class="com.fortes.rh.model.geral.ComoFicouSabendoVaga" />
+    <mapping class="com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador" />
+    <mapping class="com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo" />
   </session-factory>
-
-
-
-
-
-
 </hibernate-configuration>
 

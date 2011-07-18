@@ -32,4 +32,5 @@ public interface CargoDao extends GenericDao<Cargo>
 	public Collection<Cargo> findByEmpresaAC(String empCodigo, String grupoAC);
 	public void updateCBO(Long id, TCargo tCargo);
 	public Collection<Cargo> findAllSelect(Long[] empresaIds);
+	public Collection<Cargo> findByArea(Long areaOrganizacionalId, Long empresaId);
 }

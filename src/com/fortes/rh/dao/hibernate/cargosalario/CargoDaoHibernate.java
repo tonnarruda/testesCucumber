@@ -474,4 +474,27 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		return criteria.list();
 	}
+
+	public Collection<Cargo> findByArea(Long areaOrganizacionalId, Long empresaId) {
+		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
+		criteria.createCriteria("areasOrganizacionais","ao", Criteria.INNER_JOIN);
+		criteria.createCriteria("empresa", "e", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
+		p.add(Projections.property("c.nome"), "nome");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("ao.id", areaOrganizacionalId));
+		criteria.add(Expression.eq("e.id", empresaId));
+		
+		criteria.addOrder(Order.asc("c.nomeMercado"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cargo.class));
+
+		return criteria.list();
+	}
 }

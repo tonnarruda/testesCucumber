@@ -1,1 +1,0 @@
-update parametrosdosistema set enviaremail=false

@@ -42,4 +42,5 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Cargo preparaCargoDoAC(TCargo tCargo);
 	public void updateCBO(Long id, TCargo tCargo);
 	public Collection<Cargo> findAllSelect(Long[] empresaIds);
+	public Collection<Cargo> findByArea(Long areaOrganizacionalId, Long empresaId);
 }

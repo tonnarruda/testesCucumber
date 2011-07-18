@@ -314,7 +314,16 @@
       <ref bean="comoFicouSabendoVagaDaoTarget" />
     </property>
   </bean>
+  <bean id="configuracaoLimiteColaboradorDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.ConfiguracaoLimiteColaboradorDao</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoLimiteColaboradorDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

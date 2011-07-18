@@ -197,7 +197,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="configuracaoLimiteColaboradorDaoTarget" class="com.fortes.rh.dao.hibernate.geral.ConfiguracaoLimiteColaboradorDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

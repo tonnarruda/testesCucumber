@@ -66,6 +66,11 @@ public class CargoDWR
 		return cargoManager.findByAreaDoHistoricoColaborador(areaOrganizacionalIds); 
 	}
 
+	public Collection<Cargo> getCargosByArea(Long areaOrganizacionalId, Long empresaId)
+	{
+		return cargoManager.findByArea(areaOrganizacionalId, empresaId);
+	}
+	
 	public void setCargoManager(CargoManager cargoManager)
 	{
 		this.cargoManager = cargoManager;

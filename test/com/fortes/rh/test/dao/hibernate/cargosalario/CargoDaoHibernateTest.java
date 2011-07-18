@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -296,6 +298,32 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		motorista = cargoDao.save(motorista);
 		
 		Collection<Cargo> retorno = cargoDao.findAllSelect(new Long[]{vega.getId(), urbana.getId()});
+		
+		assertEquals(2, retorno.size());
+	}
+
+	public void testFindByArea()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Collection<AreaOrganizacional> areasOrganizacionais = new ArrayList<AreaOrganizacional>();
+		areasOrganizacionais.add(areaOrganizacional);
+		
+		Cargo cobrador = CargoFactory.getEntity();
+		cobrador.setAreasOrganizacionais(areasOrganizacionais);
+		cobrador.setEmpresa(empresa);
+		cargoDao.save(cobrador);
+		
+		Cargo motorista = CargoFactory.getEntity();
+		motorista.setEmpresa(empresa);
+		motorista.setAreasOrganizacionais(areasOrganizacionais);
+		cargoDao.save(motorista);
+		
+		Collection<Cargo> retorno = cargoDao.findByArea(areaOrganizacional.getId(), empresa.getId());
 		
 		assertEquals(2, retorno.size());
 	}

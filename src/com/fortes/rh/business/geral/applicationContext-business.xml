@@ -705,7 +705,21 @@
       <ref bean="comoFicouSabendoVagaManagerTarget" />
     </property>
   </bean>
+  <bean id="configuracaoLimiteColaboradorManagerTarget" class="com.fortes.rh.business.geral.ConfiguracaoLimiteColaboradorManagerImpl">
+    <property name="dao">
+      <ref bean="configuracaoLimiteColaboradorDao" />
+    </property>
+  </bean>
+  <bean id="configuracaoLimiteColaboradorManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.ConfiguracaoLimiteColaboradorManager</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoLimiteColaboradorManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
