@@ -2,20 +2,21 @@ package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
+import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.Cargo;
 
 @SuppressWarnings("serial")
 @Entity
-public class QuantidadeLimiteColaboradoresPorCargo implements Serializable
+@SequenceGenerator(name="sequence", sequenceName="quantidadelimitecolaboradoresporcargo_sequence", allocationSize=1)
+public class QuantidadeLimiteColaboradoresPorCargo extends AbstractModel implements Serializable
 {
-	@Id
-	@Column( name="areaorganizacional_id", unique=true, nullable=false)
+	@ManyToOne
 	private AreaOrganizacional areaOrganizacional;
-	@Column( name="cargo_id", unique=true, nullable=false)
+	@ManyToOne
 	private Cargo cargo;
 	private int limite;
 	

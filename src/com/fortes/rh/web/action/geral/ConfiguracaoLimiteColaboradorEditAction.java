@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ConfiguracaoLimiteColaboradorManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
@@ -17,6 +18,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
+	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private CargoManager cargoManager;
 	
@@ -53,7 +55,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		configuracaoLimiteColaboradorManager.save(configuracaoLimiteColaborador);
-		configuracaoLimiteColaboradorManager.saveLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional().getId());
+		quantidadeLimiteColaboradoresPorCargoManager.saveLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional());
 		return Action.SUCCESS;
 	}
 
@@ -65,6 +67,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		configuracaoLimiteColaboradors = configuracaoLimiteColaboradorManager.findAllSelect(getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}
 
@@ -132,5 +135,9 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public void setCargoManager(CargoManager cargoManager) {
 		this.cargoManager = cargoManager;
+	}
+
+	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
+		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 }

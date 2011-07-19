@@ -9,5 +9,5 @@ import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 public interface ConfiguracaoLimiteColaboradorManager extends GenericManager<ConfiguracaoLimiteColaborador>
 {
 	Collection<QuantidadeLimiteColaboradoresPorCargo> findLimiteByArea(long areaId);
-	void saveLimites(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, Long areaId);
+	Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId);
 }

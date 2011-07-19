@@ -32,4 +32,13 @@ public class ConfiguracaoLimiteColaborador extends AbstractModel implements Seri
 	public void setAreaOrganizacional(AreaOrganizacional areaOrganizacional) {
 		this.areaOrganizacional = areaOrganizacional;
 	}
+	
+	public void setProjectionAreaOrganizacionalNome(String areaOrganizacionalNome)
+	{
+		if(areaOrganizacional == null)
+			areaOrganizacional = new AreaOrganizacional();
+		
+		areaOrganizacional.setNome(areaOrganizacionalNome);
+	}
+	
 }

@@ -718,7 +718,21 @@
       <ref bean="configuracaoLimiteColaboradorManagerTarget" />
     </property>
   </bean>
+  <bean id="quantidadeLimiteColaboradoresPorCargoManagerTarget" class="com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManagerImpl">
+    <property name="dao">
+      <ref bean="quantidadeLimiteColaboradoresPorCargoDao" />
+    </property>
+  </bean>
+  <bean id="quantidadeLimiteColaboradoresPorCargoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="quantidadeLimiteColaboradoresPorCargoManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

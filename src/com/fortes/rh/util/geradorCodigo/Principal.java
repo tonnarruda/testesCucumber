@@ -6,8 +6,8 @@ import java.io.IOException;
 public class Principal
 {
 							//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "QuantidadeLimiteColaboradoresPorCargo";
-	public static String NOME_CLASSE_MINUSCULO = "quantidadeLimiteColaboradoresPorCargo";
+	public static String NOME_CLASSE = "ConfiguracaoLimiteColaborador";
+	public static String NOME_CLASSE_MINUSCULO = "configuracaoLimiteColaborador";
 	public static String NOME_PACOTE = "geral";
 	
 	private static final char separator = java.io.File.separatorChar;
@@ -20,7 +20,7 @@ public class Principal
 			System.out.println(gerador.WORKSPACE);
 
 			//com.fortes.rh...
-			//gerador.criarClass("model", NOME_CLASSE + ".java", "model.java", "src");
+			gerador.criarClass("model", NOME_CLASSE + ".java", "model.java", "src");
 			
 			gerador.criarClass("dao", NOME_CLASSE + "Dao.java", "dao.java", "src");
 			gerador.criarClass("dao" + separator + "hibernate", NOME_CLASSE + "DaoHibernate.java", "daoHibernate.java", "src");
@@ -28,17 +28,17 @@ public class Principal
 			gerador.criarClass("business", NOME_CLASSE + "Manager.java", "manager.java", "src");
 			gerador.criarClass("business", NOME_CLASSE + "ManagerImpl.java", "managerImpl.java", "src");
 			
-			//gerador.criarClass("web" + separator + "action", NOME_CLASSE + "EditAction.java", "action.java", "src");
-			//gerador.criarClass("web" + separator + "action", "xwork-" + NOME_CLASSE  + ".xml", "xworkAction.xml", "src");			
+			gerador.criarClass("web" + separator + "action", NOME_CLASSE + "EditAction.java", "action.java", "src");
+			gerador.criarClass("web" + separator + "action", "xwork-" + NOME_CLASSE  + ".xml", "xworkAction.xml", "src");			
 
 			//classes de testes
 			gerador.criarClass("test" + separator + "dao" + separator + "hibernate", NOME_CLASSE + "DaoHibernateTest.java", "daoHibernateTest.java", "test");
 			gerador.criarClass("test" + separator + "business", NOME_CLASSE + "ManagerTest.java", "managerTest.java", "test");
-			//gerador.criarClass("test" + separator + "web" + separator + "action", NOME_CLASSE + "EditActionTest.java", "actionTest.java", "test");
-			//gerador.criarClass("test" + separator + "factory", NOME_CLASSE + "Factory.java", "factory.java", "test");
+			gerador.criarClass("test" + separator + "web" + separator + "action", NOME_CLASSE + "EditActionTest.java", "actionTest.java", "test");
+			gerador.criarClass("test" + separator + "factory", NOME_CLASSE + "Factory.java", "factory.java", "test");
 
-			//gerador.criarFTL(NOME_CLASSE_MINUSCULO + "Edit.ftl", "edit.txt");
-			//gerador.criarFTL(NOME_CLASSE_MINUSCULO + "List.ftl", "list.txt");
+			gerador.criarFTL(NOME_CLASSE_MINUSCULO + "Edit.ftl", "edit.txt");
+			gerador.criarFTL(NOME_CLASSE_MINUSCULO + "List.ftl", "list.txt");
 
 			System.out.println("------------------------------------------------------------------------");
 			System.out.println("Arquivos gerados com sucesso...");
@@ -47,7 +47,7 @@ public class Principal
 			gerador.editarXml("dao", "applicationContext-dao", "appContext-dao", "</beans>");
 			gerador.editarXml("dao" + separator + "hibernate", "applicationContext-dao-hibernate", "appContext-daoHibernate", "</beans>");
 			gerador.editarXml(null, "hibernate.cfg", "hib.cfg", "</session-factory>");
-			//gerador.editarXml(null, "xwork", "xw", "</xwork>");
+			gerador.editarXml(null, "xwork", "xw", "</xwork>");
 			
 			//saida no console
 			System.out.println("Arquivos editados com sucesso...");

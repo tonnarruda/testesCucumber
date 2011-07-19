@@ -10,17 +10,13 @@ import com.fortes.rh.dao.geral.ConfiguracaoLimiteColaboradorDao;
 
 public class ConfiguracaoLimiteColaboradorManagerImpl extends GenericManagerImpl<ConfiguracaoLimiteColaborador, ConfiguracaoLimiteColaboradorDao> implements ConfiguracaoLimiteColaboradorManager
 {
-
 	public Collection<QuantidadeLimiteColaboradoresPorCargo> findLimiteByArea(long areaId) 
 	{
 		return getDao().findLimiteByArea(areaId);
 	}
 
-	public void saveLimites(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, Long areaId) 
+	public Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId) 
 	{
-		for (QuantidadeLimiteColaboradoresPorCargo limite : quantidadeLimiteColaboradoresPorCargos) 
-		{
-			getDao().saveLimites(areaId, limite.getCargo().getId(), limite.getLimite());
-		}
+		return getDao().findAllSelect(empresaId);
 	}
 }

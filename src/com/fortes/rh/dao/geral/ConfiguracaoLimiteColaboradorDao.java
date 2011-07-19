@@ -8,9 +8,6 @@ import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 
 public interface ConfiguracaoLimiteColaboradorDao extends GenericDao<ConfiguracaoLimiteColaborador> 
 {
-
 	Collection<QuantidadeLimiteColaboradoresPorCargo> findLimiteByArea(long areaId);
-
-	void saveLimites(Long areaId, Long cargoId, int limite);
-
+	Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId);
 }

@@ -18,7 +18,7 @@
 			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?configuracaoLimiteColaborador.id=${configuracaoLimiteColaborador.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
-		<@display.column property="areaOrganizacional" title="Área Organizacional"/>
+		<@display.column property="areaOrganizacional.nome" title="Área Organizacional"/>
 	</@display.table>
 	
 	<div class="buttonGroup">
