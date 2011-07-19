@@ -15,4 +15,12 @@ public class ConfiguracaoLimiteColaboradorManagerImpl extends GenericManagerImpl
 	{
 		return getDao().findLimiteByArea(areaId);
 	}
+
+	public void saveLimites(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, Long areaId) 
+	{
+		for (QuantidadeLimiteColaboradoresPorCargo limite : quantidadeLimiteColaboradoresPorCargos) 
+		{
+			getDao().saveLimites(areaId, limite.getCargo().getId(), limite.getLimite());
+		}
+	}
 }

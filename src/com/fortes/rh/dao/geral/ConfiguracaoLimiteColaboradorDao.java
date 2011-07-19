@@ -11,4 +11,6 @@ public interface ConfiguracaoLimiteColaboradorDao extends GenericDao<Configuraca
 
 	Collection<QuantidadeLimiteColaboradoresPorCargo> findLimiteByArea(long areaId);
 
+	void saveLimites(Long areaId, Long cargoId, int limite);
+
 }

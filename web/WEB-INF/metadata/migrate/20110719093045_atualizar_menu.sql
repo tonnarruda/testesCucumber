@@ -1,0 +1,1 @@
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=514;--.go

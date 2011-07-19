@@ -22,6 +22,11 @@ public class ConfiguracaoLimiteColaboradorDaoHibernateTest extends GenericDaoHib
 		return configuracaoLimiteColaboradorDao;
 	}
 
+	public void testSaveLimites()
+	{
+		configuracaoLimiteColaboradorDao.saveLimites(1L, 22L, 100);
+	}
+	
 	public void setConfiguracaoLimiteColaboradorDao(ConfiguracaoLimiteColaboradorDao configuracaoLimiteColaboradorDao)
 	{
 		this.configuracaoLimiteColaboradorDao = configuracaoLimiteColaboradorDao;

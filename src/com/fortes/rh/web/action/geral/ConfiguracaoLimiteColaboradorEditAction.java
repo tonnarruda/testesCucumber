@@ -3,8 +3,10 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ConfiguracaoLimiteColaboradorManager;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
@@ -16,11 +18,13 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private CargoManager cargoManager;
 	
 	private ConfiguracaoLimiteColaborador configuracaoLimiteColaborador;
 	private Collection<ConfiguracaoLimiteColaborador> configuracaoLimiteColaboradors;
 	private Collection<AreaOrganizacional> areaOrganizacionais;
 	private Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos;
+	private Collection<Cargo> cargos;
 	private Long empresaId;
 
 	private void prepare() throws Exception
@@ -30,6 +34,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 		
 		areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
 		empresaId = getEmpresaSistema().getId();
+		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado");
 		//Collection<QuantidadeLimiteColaboradoresPorCargo> quatidades = configuracaoLimiteColaboradorManager.findLimiteByArea(1L);
 	}
 
@@ -48,6 +53,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		configuracaoLimiteColaboradorManager.save(configuracaoLimiteColaborador);
+		configuracaoLimiteColaboradorManager.saveLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional().getId());
 		return Action.SUCCESS;
 	}
 
@@ -118,5 +124,13 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public void setQuantidadeLimiteColaboradoresPorCargos(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos) {
 		this.quantidadeLimiteColaboradoresPorCargos = quantidadeLimiteColaboradoresPorCargos;
+	}
+
+	public Collection<Cargo> getCargos() {
+		return cargos;
+	}
+
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
 	}
 }
