@@ -312,6 +312,19 @@ Dado /^que exista uma avaliacao de curso "([^"]*)"$/ do |avaliacaocurso_titulo|
    end
 end
 
+Dado /^que exista um usuario "([^"]*)"$/ do |usuario_nome|
+   insert :usuario do
+     id 2
+     nome usuario_nome
+     acessosistema true
+     superadmin false
+   end
+   insert :usuarioempresa do
+     usuario :id => 2
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista um curso "([^"]*)"$/ do |curso_nome|
    insert :curso do
      nome curso_nome
