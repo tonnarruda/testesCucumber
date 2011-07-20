@@ -1,9 +1,11 @@
 <html>
 	<head>
 		<@ww.head/>
+		<#assign edit=false/>
 		<#if configuracaoLimiteColaborador.id?exists>
 			<title>Editar limite de Colaboradores por Cargo</title>
 			<#assign formAction="update.action"/>
+			<#assign edit=true/>
 		<#else>
 			<title>Configurar limite de Colaboradores por Cargo</title>
 			<#assign formAction="insert.action"/>
@@ -15,7 +17,17 @@
 	
 	<script type="text/javascript">
 		$(function() {
-			$('.addCargo').hide();
+			<#if edit>
+				<#list quantidadeLimiteColaboradoresPorCargos as limiteCargo>
+					addCargo('${limiteCargo.cargo.id}', '${limiteCargo.cargo.nome}', '${limiteCargo.limite}');
+				</#list>
+			<#else>
+				$('.addCargo').hide();
+
+				<#list idsFamiliasAreasJaConfiguradas as areaId>
+					$("#areaOrganizacionalId option[value='${areaId}']").attr("disabled","disabled").css("background-color", "#DEDEDE");	
+				</#list>
+			</#if>
 		});
 			
 		function getCargos()
@@ -37,8 +49,11 @@
 		}
 		
 		var i = 0;
-		function addCargo(cargoId, cargoNomeMercado)
+		function addCargo(cargoId, cargoNomeMercado, limite)
 		{
+			if(limite == undefined)
+				limite = '';
+			
 			$("#listaCargos").append("<tr><td><img src='<@ww.url includeParams="none" value="/imgs/delete.gif"/>' style='cursor: pointer;' onclick='removerCargo(this)' title='Remover cargo'/></td><td id='cargo_" + i + "'></td><td>" + cargoNomeMercado + "</td></tr>");
 			
 			$('<input>').attr({
@@ -47,6 +62,7 @@
 			    size: 4,
 			    id: 'c_'+ i,
 			    class: 'valida',
+			    value: limite,
 			    maxlength: 3
 			})
 			.css('text-align', 'right')
@@ -96,16 +112,25 @@
 					$('#form').submit();				
 			}
 		}
+		
 	</script>
 	
 	</head>
 	<body>
+		<@ww.actionmessage />
 		<@ww.actionerror />
+		
 		<@ww.form name="form" id="form" action="${formAction}" method="POST">
 			<@ww.hidden name="configuracaoLimiteColaborador.id" />
 			<@ww.token/>
 			<@ww.textfield label="Descrição" name="configuracaoLimiteColaborador.descricao" id="descricao" required="true" cssClass="inputNome valida" maxLength="100"/>
-			<@ww.select label="Área Organizacional" name="configuracaoLimiteColaborador.areaOrganizacional.id" id="areaOrganizacionalId" cssClass="valida" onchange="getCargos()" required="true" list="areaOrganizacionais" cssStyle="width: 447px;" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." />
+			
+			<#if edit>
+				<@ww.hidden name="configuracaoLimiteColaborador.areaOrganizacional.id" />
+				Área Organizacional: ${configuracaoLimiteColaborador.areaOrganizacional.descricao}
+			<#else>
+				<@ww.select label="Área Organizacional" name="configuracaoLimiteColaborador.areaOrganizacional.id" id="areaOrganizacionalId" cssClass="valida" onchange="getCargos()" required="true" list="areaOrganizacionais" cssStyle="width: 447px;" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." />
+			</#if>
 			
 			<div class="addCargo">
 				<table>

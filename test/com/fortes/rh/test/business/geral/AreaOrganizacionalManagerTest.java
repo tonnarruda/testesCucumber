@@ -1,6 +1,5 @@
 package com.fortes.rh.test.business.geral;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -830,9 +829,48 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0),eq(0),eq(null),eq(null),eq(empresaId), ANYTHING}).will(returnValue(areas));
 		
 		assertEquals(1,areaOrganizacionalManager.setFamiliaAreas(examesPrevistosRelatorios, empresaId).size());
-	}
+	} 
 	
-	
-	
-	//Teste do 
+	public void testSelecionaFamilia()
+	{
+		Collection<Long> areasIds = new ArrayList<Long>();
+		areasIds.add(2L);
+		areasIds.add(5L);
+		areasIds.add(8L);
+		
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+		
+		AreaOrganizacional administracao = AreaOrganizacionalFactory.getEntity(1L);
+		
+		AreaOrganizacional financeiro = AreaOrganizacionalFactory.getEntity(2L);
+		financeiro.setAreaMae(administracao);
+		AreaOrganizacional caixa = AreaOrganizacionalFactory.getEntity(3L);
+		caixa.setAreaMae(financeiro);
+		
+		AreaOrganizacional desenvolvimento = AreaOrganizacionalFactory.getEntity(4L);
+		desenvolvimento.setAreaMae(administracao);		
+		AreaOrganizacional java = AreaOrganizacionalFactory.getEntity(5L);
+		java.setAreaMae(desenvolvimento);
+		AreaOrganizacional suporteJava = AreaOrganizacionalFactory.getEntity(6L);
+		suporteJava.setAreaMae(java);
+		
+		AreaOrganizacional contabil = AreaOrganizacionalFactory.getEntity(7L);
+		
+		AreaOrganizacional comercial = AreaOrganizacionalFactory.getEntity(8L);
+		AreaOrganizacional vendedor = AreaOrganizacionalFactory.getEntity(9L);
+		vendedor.setAreaMae(comercial);
+
+		areas.add(administracao);
+		areas.add(financeiro);
+		areas.add(caixa);
+		areas.add(desenvolvimento);
+		areas.add(java);
+		areas.add(suporteJava);
+		areas.add(contabil);
+		areas.add(comercial);
+		areas.add(vendedor);
+		
+		Long[] areasIdsJaConfiguradas = areaOrganizacionalManager.selecionaFamilia(areas, areasIds);
+		assertEquals(6, areasIdsJaConfiguradas.length);
+	} 
 }

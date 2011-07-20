@@ -14,9 +14,27 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 	{
 		for (QuantidadeLimiteColaboradoresPorCargo limite : quantidadeLimiteColaboradoresPorCargos) 
 		{
-			limite.setAreaOrganizacional(areaOrganizacional);
-			getDao().save(limite);
+			if(limite != null)//javascrip pode mandar obj null dentro do array
+			{
+				limite.setAreaOrganizacional(areaOrganizacional);
+				getDao().save(limite);				
+			}
 		}
-		
+	}
+
+	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByArea(Long areaId) 
+	{
+		return getDao().findByArea(areaId);
+	}
+
+	public void updateLimites(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, AreaOrganizacional areaOrganizacional) 
+	{
+		getDao().deleteByArea(areaOrganizacional.getId());
+		saveLimites(quantidadeLimiteColaboradoresPorCargos, areaOrganizacional);
+	}
+
+	public void deleteByArea(Long areaId) 
+	{
+		getDao().deleteByArea(areaId);
 	}
 }

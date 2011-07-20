@@ -57,4 +57,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public AreaOrganizacional getMatriarca(Collection<AreaOrganizacional> areas, AreaOrganizacional area, Long filhaDeId);
 	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId);
 	public Long[] findIdsAreasDoResponsavel(Long usuarioId, Long empresaId);
+	public Long[] selecionaFamilia(Collection<AreaOrganizacional> areaOrganizacionais, Collection<Long> areasIdsConfiguradas);
 }

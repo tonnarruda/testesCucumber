@@ -10,4 +10,5 @@ public interface ConfiguracaoLimiteColaboradorDao extends GenericDao<Configuraca
 {
 	Collection<QuantidadeLimiteColaboradoresPorCargo> findLimiteByArea(long areaId);
 	Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId);
+	Collection<Long> findIdAreas(Long empresaId);
 }

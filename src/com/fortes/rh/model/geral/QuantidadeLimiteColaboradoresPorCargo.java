@@ -38,5 +38,19 @@ public class QuantidadeLimiteColaboradoresPorCargo extends AbstractModel impleme
 	public void setLimite(int limite) {
 		this.limite = limite;
 	}
+	public void setProjectionCargoNome(String cargoNome)
+	{
+		iniciaCargo();
+		cargo.setNome(cargoNome);
+	}
+	public void setProjectionCargoId(Long cargoId)
+	{
+		iniciaCargo();
+		cargo.setId(cargoId);
+	}
+	private void iniciaCargo() {
+		if(cargo == null)
+			cargo = new Cargo();
+	}
 
 }

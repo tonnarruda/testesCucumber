@@ -4,6 +4,7 @@
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -36,6 +37,7 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	private String nome;
 	@Transient
 	private String descricao;
+	
 	@ManyToOne
 	private AreaOrganizacional areaMae;
 	@ManyToMany(mappedBy = "areasOrganizacionais")
@@ -121,6 +123,20 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 			descricao = getAreaMae().getDescricao() + " > " + nome;
 
 		return descricao;
+	}
+	
+	public Collection<Long> getDescricaoIds()
+	{
+		Collection<Long> familiaIds = new ArrayList<Long>();
+		if (getAreaMae() == null || getAreaMae().getId() == null)
+			familiaIds.add(this.getId());
+		else
+		{
+			familiaIds.addAll(getAreaMae().getDescricaoIds());
+			familiaIds.add(this.getId());
+		}
+		
+		return familiaIds;
 	}
 	
 	@NaoAudita

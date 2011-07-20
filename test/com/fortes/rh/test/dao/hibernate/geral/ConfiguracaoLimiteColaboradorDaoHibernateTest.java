@@ -59,6 +59,30 @@ public class ConfiguracaoLimiteColaboradorDaoHibernateTest extends GenericDaoHib
 		
 	}
 	
+	public void testFindIdAreas()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		ConfiguracaoLimiteColaborador contratoA = ConfiguracaoLimiteColaboradorFactory.getEntity();
+		contratoA.setDescricao("contratoA");
+		contratoA.setAreaOrganizacional(areaOrganizacional);
+		configuracaoLimiteColaboradorDao.save(contratoA);
+		
+		ConfiguracaoLimiteColaborador contratoX = ConfiguracaoLimiteColaboradorFactory.getEntity();
+		contratoX.setDescricao("contratoX");
+		contratoX.setAreaOrganizacional(areaOrganizacional);
+		configuracaoLimiteColaboradorDao.save(contratoX);
+		
+		Collection<Long> areasIds = configuracaoLimiteColaboradorDao.findIdAreas(empresa.getId());
+		
+		assertEquals(2, areasIds.size());
+	}
+	
 	
 	public void setConfiguracaoLimiteColaboradorDao(ConfiguracaoLimiteColaboradorDao configuracaoLimiteColaboradorDao)
 	{

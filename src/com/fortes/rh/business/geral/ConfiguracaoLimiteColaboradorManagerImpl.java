@@ -19,4 +19,8 @@ public class ConfiguracaoLimiteColaboradorManagerImpl extends GenericManagerImpl
 	{
 		return getDao().findAllSelect(empresaId);
 	}
+
+	public Collection<Long> findIdAreas(Long empresaId) {
+		return getDao().findIdAreas(empresaId);
+	}
 }

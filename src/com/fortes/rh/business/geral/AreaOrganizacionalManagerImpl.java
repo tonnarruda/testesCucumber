@@ -5,7 +5,6 @@
 
 package com.fortes.rh.business.geral;
 
-import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -19,6 +18,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -626,5 +626,21 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public Long[] findIdsAreasDoResponsavel(Long usuarioId, Long empresaId) 
 	{
 		return getDao().findIdsAreasDoResponsavel(usuarioId, empresaId);
+	}
+
+	public Long[] selecionaFamilia(Collection<AreaOrganizacional> areaOrganizacionais, Collection<Long> areasIdsConfiguradas) 
+	{
+		Collection<Long> familia = new ArrayList<Long>();
+		for (Long id : areasIdsConfiguradas) 
+		{
+			for (AreaOrganizacional area: areaOrganizacionais)
+			{
+				if(area.getDescricaoIds().contains(id))
+					familia.add(area.getId());
+			}
+		}
+		
+		CollectionUtil<Long> cul = new CollectionUtil<Long>();
+		return cul.distinctCollection(familia).toArray(new Long[]{});
 	}
 }

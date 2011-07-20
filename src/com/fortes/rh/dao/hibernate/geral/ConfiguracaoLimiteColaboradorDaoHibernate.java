@@ -35,6 +35,7 @@ public class ConfiguracaoLimiteColaboradorDaoHibernate extends GenericDaoHiberna
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.descricao"), "descricao");
+		p.add(Projections.property("ao.id"), "projectionAreaOrganizacionalId");
 		p.add(Projections.property("ao.nome"), "projectionAreaOrganizacionalNome");
 
 		criteria.setProjection(p);
@@ -44,6 +45,22 @@ public class ConfiguracaoLimiteColaboradorDaoHibernate extends GenericDaoHiberna
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoLimiteColaborador.class));
 
+		return criteria.list();
+	}
+
+	public Collection<Long> findIdAreas(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.createCriteria("c.areaOrganizacional", "ao", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ao.id"), "projectionAreaOrganizacionalId");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("ao.empresa.id", empresaId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
 		return criteria.list();
 	}
 }

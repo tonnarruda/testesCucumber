@@ -27,14 +27,22 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	private Collection<AreaOrganizacional> areaOrganizacionais;
 	private Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos;
 	private Collection<Cargo> cargos;
+	private Long[] idsFamiliasAreasJaConfiguradas;
 	private Long empresaId;
 
 	private void prepare() throws Exception
 	{
-		if(configuracaoLimiteColaborador != null && configuracaoLimiteColaborador.getId() != null)
-			configuracaoLimiteColaborador = (ConfiguracaoLimiteColaborador) configuracaoLimiteColaboradorManager.findById(configuracaoLimiteColaborador.getId());
-		
 		areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
+
+		if(configuracaoLimiteColaborador != null && configuracaoLimiteColaborador.getId() != null)
+		{
+			configuracaoLimiteColaborador = (ConfiguracaoLimiteColaborador) configuracaoLimiteColaboradorManager.findById(configuracaoLimiteColaborador.getId());
+			configuracaoLimiteColaborador.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionais, configuracaoLimiteColaborador.getAreaOrganizacional().getId()));
+		}
+		
+		Collection<Long> idsAreasConfiguradas = configuracaoLimiteColaboradorManager.findIdAreas(getEmpresaSistema().getId());
+		idsFamiliasAreasJaConfiguradas = areaOrganizacionalManager.selecionaFamilia(areaOrganizacionais, idsAreasConfiguradas);
+		
 		empresaId = getEmpresaSistema().getId();
 		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado");
 		//Collection<QuantidadeLimiteColaboradoresPorCargo> quatidades = configuracaoLimiteColaboradorManager.findLimiteByArea(1L);
@@ -49,19 +57,30 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
+		quantidadeLimiteColaboradoresPorCargos = quantidadeLimiteColaboradoresPorCargoManager.findByArea(configuracaoLimiteColaborador.getAreaOrganizacional().getId());
 		return Action.SUCCESS;
 	}
 
 	public String insert() throws Exception
 	{
-		configuracaoLimiteColaboradorManager.save(configuracaoLimiteColaborador);
-		quantidadeLimiteColaboradoresPorCargoManager.saveLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional());
+		try {
+			configuracaoLimiteColaboradorManager.save(configuracaoLimiteColaborador);
+			quantidadeLimiteColaboradoresPorCargoManager.saveLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional());
+			addActionMessage("Configuração gravada com sucesso.");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Não foi possível incluir esta configuração.");
+		}
+		
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
 		configuracaoLimiteColaboradorManager.update(configuracaoLimiteColaborador);
+		quantidadeLimiteColaboradoresPorCargoManager.updateLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional());
+		
 		return Action.SUCCESS;
 	}
 
@@ -75,13 +94,14 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	{
 		try
 		{
+			quantidadeLimiteColaboradoresPorCargoManager.deleteByArea(configuracaoLimiteColaborador.getAreaOrganizacional().getId());
 			configuracaoLimiteColaboradorManager.remove(configuracaoLimiteColaborador.getId());
-			addActionMessage("ConfiguracaoLimiteColaborador excluído com sucesso.");
+			addActionMessage("Configuração excluída com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este configuracaoLimiteColaborador.");
+			addActionError("Não foi possível excluir esta configuração.");
 		}
 
 		return list();
@@ -139,5 +159,9 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
 		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
+	}
+
+	public Long[] getIdsFamiliasAreasJaConfiguradas() {
+		return idsFamiliasAreasJaConfiguradas;
 	}
 }

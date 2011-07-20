@@ -10,4 +10,5 @@ public interface ConfiguracaoLimiteColaboradorManager extends GenericManager<Con
 {
 	Collection<QuantidadeLimiteColaboradoresPorCargo> findLimiteByArea(long areaId);
 	Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId);
+	Collection<Long> findIdAreas(Long empresaId);
 }
