@@ -70,6 +70,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		if (contratado != null )
 			criteria.add(Expression.eq("c.contratado", contratado));
+		
+		criteria.addOrder(Order.desc("c.id"));
+		criteria.setMaxResults(1);
         
 		return (Candidato) criteria.uniqueResult();
     }
