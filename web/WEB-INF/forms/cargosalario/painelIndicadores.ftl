@@ -138,45 +138,47 @@
 		
 		<br>
 		
-		<div class="divFiltro">
-			<div class="divFiltroLink">
-				<a href="javascript:exibeFiltro('${urlImgs}','divFiltroForm2');" id="linkFiltro"><img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
-			</div>
-			<div id="divFiltroForm2" class="divFiltroForm ${classHidden}">
-			<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action#pagebottom" method="POST">
-				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-				<@ww.label value="a" liClass="liLeft" />
-				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
-				&nbsp&nbsp&nbsp&nbsp&nbsp;Exibir os
-				<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
-				itens de maior percentual.<br>
-				<@ww.hidden name="dataBase"/>
-				<@ww.hidden name="dataMesAnoIni"/>
-				<@ww.hidden name="dataMesAnoFim"/>
-				<button onclick="return enviaForm2();" class="btnPesquisar grayBGE"></button>
-			</@ww.form>
-		<#include "../util/bottomFiltro.ftl" />
 			<div class="fieldGraph bigger">
-			<h1>Motivos de Desligamentos</h1>
+				<div class="divFiltro">
+					<div class="divFiltroLink">
+						<a href="javascript:exibeFiltro('${urlImgs}','divFiltroForm2');" id="linkFiltro"><img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
+					</div>
+					<div id="divFiltroForm2" class="divFiltroForm ${classHidden}">
+						<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action#pagebottom" method="POST">
+							<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+							<@ww.label value="a" liClass="liLeft" />
+							<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
+							&nbsp&nbsp&nbsp&nbsp&nbsp;Exibir os
+							<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
+							itens de maior percentual.<br>
+							<@ww.hidden name="dataBase"/>
+							<@ww.hidden name="dataMesAnoIni"/>
+							<@ww.hidden name="dataMesAnoFim"/>
+							<button onclick="return enviaForm2();" class="btnPesquisar grayBGE"></button>
+						</@ww.form>
+					</div>
+				</div><!-- fim .divFiltro -->
+			
+				<h1 style="border-bottom: none;">Motivos de Desligamentos</h1>
 		   		<div id="desligamento" class="graph2"></div>
-		    </div>
-		    
-			<div class="fieldGraph bigger">
-				<h1>Turnover</h1>
+		    	
+		    	<div style="clear: both"></div>
+				
+				<h1 style="border-bottom: none;">Turnover</h1>
 		   		<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
-		    </div>
 		    
-			<div style="clear: both"></div>
-			<br>
-			<div class="fieldDados">
-				<div>Admitidos: ${countAdmitidos}</div>
-				<div>Demitidos: ${countDemitidos}</div>
-				<div>Turnover: ${turnover}</div>
-			</div>
+				<div style="clear: both"></div>
+				
+				<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
+					<div>Admitidos: ${countAdmitidos}</div>
+					<div>Demitidos: ${countDemitidos}</div>
+					<div>Turnover: ${turnover}</div>
+				</div>
+		    </div>
 
 		    <div style="clear: both"></div>
 			<a name="pagebottom"></a>
-					<br>
+			<br>
 		
 			<div class="divFiltro">
 				<div class="divFiltroLink">
