@@ -1377,7 +1377,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join co.historicoColaboradors as hc ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		
-		hql.append("	where co.dataAdmissao < :data ");
+		hql.append("	where co.dataAdmissao <= :data ");
 		hql.append("	and co.empresa.id = :empresaId ");
 		hql.append("	and ( co.dataDesligamento is null ");
 		hql.append("          or co.dataDesligamento > :data ) ");
@@ -1397,8 +1397,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("			and hc2.data <= :data and hc2.status = :status ");
 		hql.append("		) ");
 
-		
-		
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", dataIni);
 		query.setLong("empresaId", empresaId);

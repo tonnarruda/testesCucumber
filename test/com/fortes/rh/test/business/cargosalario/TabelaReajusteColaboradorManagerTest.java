@@ -17,6 +17,7 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -48,18 +49,21 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 	Mock historicoColaboradorManager  = null;
 	Mock acPessoalClientTabelaReajuste = null;
 	Mock colaboradorManager;
+	Mock quantidadeLimiteColaboradoresPorCargoManager;
 
 	protected void setUp() throws Exception
 	{
 		reajusteColaboradorManager  = new Mock(ReajusteColaboradorManager.class);
 		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
 		acPessoalClientTabelaReajuste = new Mock(AcPessoalClientTabelaReajusteInterface.class);
+		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
 
 		tabelaReajusteColaboradorDao = new Mock(TabelaReajusteColaboradorDao.class);
 		tabelaReajusteColaboradorManager.setDao((TabelaReajusteColaboradorDao) tabelaReajusteColaboradorDao.proxy());
 		tabelaReajusteColaboradorManager.setReajusteColaboradorManager((ReajusteColaboradorManager) reajusteColaboradorManager.proxy());
 		tabelaReajusteColaboradorManager.setHistoricoColaboradorManager((HistoricoColaboradorManager)historicoColaboradorManager.proxy());
 		tabelaReajusteColaboradorManager.setAcPessoalClientTabelaReajuste((AcPessoalClientTabelaReajusteInterface)acPessoalClientTabelaReajuste.proxy());
+		tabelaReajusteColaboradorManager.setQuantidadeLimiteColaboradoresPorCargoManager((QuantidadeLimiteColaboradoresPorCargoManager) quantidadeLimiteColaboradoresPorCargoManager.proxy());
 		
 		colaboradorManager = mock(ColaboradorManager.class);
 		tabelaReajusteColaboradorManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
@@ -260,6 +264,8 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		reajusteDoAbreu.setEstabelecimentoProposto(estabelecimentoProposto);
 		
 		HistoricoColaborador historicoAtualDoAbreu = new HistoricoColaborador();
+		historicoAtualDoAbreu.setAreaOrganizacional(areaOrganizacionalProposta);
+		historicoAtualDoAbreu.setFaixaSalarial(faixaSalarial);
 		historicoAtualDoAbreu.setColaborador(abreu);
 		
 
@@ -280,6 +286,8 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		reajusteDoMario.setEstabelecimentoProposto(estabelecimentoProposto);
 		
 		HistoricoColaborador historicoAtualDoMario = new HistoricoColaborador();
+		historicoAtualDoMario.setAreaOrganizacional(areaOrganizacionalProposta);
+		historicoAtualDoMario.setFaixaSalarial(faixaSalarial);
 		historicoAtualDoMario.setColaborador(mario);
 
 		Collection<ReajusteColaborador>reajustes = new ArrayList<ReajusteColaborador>(2);
@@ -301,6 +309,8 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("ajustaTipoSalario").with(new Constraint[]{ANYTHING, eq(TipoAplicacaoIndice.VALOR), ANYTHING, ANYTHING, eq(2000d)}).will(returnValue(historicoAtualDoMario));
 		
 		historicoColaboradorManager.expects(atLeastOnce()).method("verifyExists").will(returnValue(false));
+		
+		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
 		
 		historicoColaboradorManager.expects(atLeastOnce()).method("save").withAnyArguments();
 

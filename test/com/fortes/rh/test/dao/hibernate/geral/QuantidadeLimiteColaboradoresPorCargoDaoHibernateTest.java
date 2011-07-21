@@ -1,5 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -129,6 +130,35 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest extends Gener
 		
 		assertEquals(0, qtdsArea1.size());
 		assertEquals(1, qtdsArea2.size());
+	}
+	
+	
+	public void testFindLimite()
+	{
+		AreaOrganizacional areaFilha = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaFilha);
+		
+		AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaMae);
+		
+		Collection<Long> areasIds = new ArrayList<Long>();
+		areasIds.add(areaFilha.getId());
+		areasIds.add(areaMae.getId());
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("pedreiro");
+		cargoDao.save(cargo);
+		
+		QuantidadeLimiteColaboradoresPorCargo qtdLimite = new QuantidadeLimiteColaboradoresPorCargo();
+		qtdLimite.setAreaOrganizacional(areaMae);
+		qtdLimite.setCargo(cargo);
+		qtdLimite.setLimite(15);
+		quantidadeLimiteColaboradoresPorCargoDao.save(qtdLimite);
+		
+		QuantidadeLimiteColaboradoresPorCargo limite = quantidadeLimiteColaboradoresPorCargoDao.findLimite(cargo.getId(), areasIds);
+		assertEquals(15, limite.getLimite());
+		assertEquals(areaMae.getId(), limite.getAreaOrganizacional().getId());
+		assertEquals(null, quantidadeLimiteColaboradoresPorCargoDao.findLimite(4545454L, areasIds));
 	}
 	
 	public void setQuantidadeLimiteColaboradoresPorCargoDao(QuantidadeLimiteColaboradoresPorCargoDao quantidadeLimiteColaboradoresPorCargoDao)

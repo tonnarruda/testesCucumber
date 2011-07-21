@@ -10,6 +10,7 @@ import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
@@ -142,6 +143,13 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 			return Action.SUCCESS;
 		}
 		catch (ColecaoVaziaException e)
+		{
+			e.printStackTrace();
+			visualizar();
+			addActionMessage(e.getMessage());
+			return Action.INPUT;
+		}
+		catch (LimiteColaboradorExceditoException e)
 		{
 			e.printStackTrace();
 			visualizar();

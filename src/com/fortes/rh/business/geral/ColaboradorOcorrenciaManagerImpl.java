@@ -232,7 +232,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		for (Absenteismo absenteismo : absenteismos) 
 		{
 			Date inicioDoMes = DateUtil.criarDataMesAno(1, Integer.parseInt(absenteismo.getMes()), Integer.parseInt(absenteismo.getAno()));
-			absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(inicioDoMes, empresaId, estabelecimentosIds, areasIds));
+			absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(inicioDoMes), empresaId, estabelecimentosIds, areasIds, null));
 			absenteismo.setQtdDiasTrabalhados(DateUtil.contaDiasUteisMes(inicioDoMes));
 
 			if(!absenteismo.getQtdTotalFaltas().equals(0))

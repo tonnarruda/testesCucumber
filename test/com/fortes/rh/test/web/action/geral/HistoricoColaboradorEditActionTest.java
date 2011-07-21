@@ -13,6 +13,7 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.exception.IntegraACException;
@@ -22,6 +23,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
@@ -44,6 +46,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	private Mock faixaSalarialManager;
 	private Mock areaOrganizacionalManager;
 	private Mock colaboradorManager;
+	private Mock quantidadeLimiteColaboradoresPorCargoManager;
 
 	private Empresa empresaDoSistema;
 	private HistoricoColaborador historicoColaborador;
@@ -51,6 +54,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	protected void setUp() throws Exception
 	{
 		action = new HistoricoColaboradorEditAction();
+		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
+		action.setQuantidadeLimiteColaboradoresPorCargoManager((QuantidadeLimiteColaboradoresPorCargoManager) quantidadeLimiteColaboradoresPorCargoManager.proxy());
 		
 		action.setHistoricoColaboradorManager(mockaHistoricoColaboradorManager());
 		action.setIndiceManager(mockaIndiceManager());
@@ -160,6 +165,14 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	public void testInsertQuandoNaoExisteHistoricoNaData() throws Exception {
 		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		dadoQueNaoExisteHistoricoNaData();
+		
+		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
+		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
+		
+		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueNaoOcorreErroAoInserirHistoricoDeColaborador();
 		
@@ -199,6 +212,13 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	public void testInsertQuandoOcorrerErroInternoQualquer() throws Exception {
 		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		dadoQueNaoExisteHistoricoNaData();
+		
+		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
+		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
+		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador();
 		simulaComportamentoDoPrepareInsert();
@@ -217,6 +237,14 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	public void testInsertQuandoOcorrerErroDeIntegraACException() throws Exception {
 		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		dadoQueNaoExisteHistoricoNaData();
+		
+		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
+		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
+		
+		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueOcorreErroDeIntegracaoACAoInserirHistoricoDeColaborador();
 		simulaComportamentoDoPrepareInsert();

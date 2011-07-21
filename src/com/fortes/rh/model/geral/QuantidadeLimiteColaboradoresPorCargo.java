@@ -48,6 +48,12 @@ public class QuantidadeLimiteColaboradoresPorCargo extends AbstractModel impleme
 		iniciaCargo();
 		cargo.setId(cargoId);
 	}
+	public void setProjectionAreaOrganizacionalId(Long areaOrganizacionalId)	
+	{
+		if(areaOrganizacional == null)
+			areaOrganizacional = new AreaOrganizacional();
+		areaOrganizacional.setId(areaOrganizacionalId);
+	}
 	private void iniciaCargo() {
 		if(cargo == null)
 			cargo = new Cargo();

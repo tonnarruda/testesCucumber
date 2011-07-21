@@ -14,4 +14,6 @@ public interface QuantidadeLimiteColaboradoresPorCargoDao extends GenericDao<Qua
 	Collection<QuantidadeLimiteColaboradoresPorCargo> findByArea(Long areaId);
 
 	void deleteByArea(Long areaId);
+
+	QuantidadeLimiteColaboradoresPorCargo findLimite(Long cargoId, Collection<Long> areasIds);
 }

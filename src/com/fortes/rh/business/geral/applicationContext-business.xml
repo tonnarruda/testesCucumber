@@ -722,6 +722,15 @@
     <property name="dao">
       <ref bean="quantidadeLimiteColaboradoresPorCargoDao" />
     </property>
+    <property name="colaboradorManager">
+      <ref bean="colaboradorManager" />
+    </property>
+    <property name="faixaSalarialManager">
+      <ref bean="faixaSalarialManager" />
+    </property>
+    <property name="areaOrganizacionalManager">
+      <ref bean="areaOrganizacionalManager" />
+    </property>
   </bean>
   <bean id="quantidadeLimiteColaboradoresPorCargoManager" parent="parentManager">
     <property name="proxyInterfaces">

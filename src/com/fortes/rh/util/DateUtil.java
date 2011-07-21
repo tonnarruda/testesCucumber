@@ -698,5 +698,10 @@ public class DateUtil
 	    }
 	      
 	    return diasUteis;
+	}
+
+	public static Date getUltimoDiaMesAnterior(Date data) 
+	{
+		return incrementaDias(data, -1);
 	} 
 }

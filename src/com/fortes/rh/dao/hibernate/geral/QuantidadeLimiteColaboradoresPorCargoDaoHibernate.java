@@ -10,12 +10,11 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
-import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.QuantidadeLimiteColaboradoresPorCargoDao;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 
 public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDaoHibernate<QuantidadeLimiteColaboradoresPorCargo> implements QuantidadeLimiteColaboradoresPorCargoDao
 {
@@ -62,5 +61,21 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDa
 		query.setLong("areaId", areaId);
 
 		query.executeUpdate();
+	}
+
+	public QuantidadeLimiteColaboradoresPorCargo findLimite(Long cargoId, Collection<Long> areasIds) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "q");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("q.limite"), "limite");
+		p.add(Projections.property("q.areaOrganizacional.id"), "projectionAreaOrganizacionalId");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("q.cargo.id", cargoId));
+		criteria.add(Expression.in("q.areaOrganizacional.id", areasIds));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(QuantidadeLimiteColaboradoresPorCargo.class));
+		
+		return (QuantidadeLimiteColaboradoresPorCargo) criteria.uniqueResult();
 	}
 }

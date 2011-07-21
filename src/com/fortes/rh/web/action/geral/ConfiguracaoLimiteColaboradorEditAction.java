@@ -64,6 +64,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		try {
+			
 			configuracaoLimiteColaboradorManager.save(configuracaoLimiteColaborador);
 			quantidadeLimiteColaboradoresPorCargoManager.saveLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional());
 			addActionMessage("Configuração gravada com sucesso.");

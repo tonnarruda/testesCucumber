@@ -18,7 +18,6 @@ public class ColaboradorFactory
 		colaborador.setNome("nome colaborador");
 		colaborador.setNomeComercial("nome comercial colaborador");
 		colaborador.setDesligado(false);
-		colaborador.setDataDesligamento(new Date());
 		colaborador.setObservacao("observação");
 		colaborador.setDataAdmissao(new Date());
 

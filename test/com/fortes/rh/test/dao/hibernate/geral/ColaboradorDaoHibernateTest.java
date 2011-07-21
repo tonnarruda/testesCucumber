@@ -2859,10 +2859,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Date data = DateUtil.criarDataMesAno(01, 05, 2010);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
-		colaborador.setDataAdmissao(data);
-		colaboradorDao.save(colaborador);
+		Colaborador colaborador = montaColaboradorDoTestCountAtivo(empresa, data);
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
@@ -2874,6 +2871,54 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
 		assertEquals(new Integer(31), colaboradorTmp.getDiasDeEmpresa());
+	}
+	
+	public void testCountAtivosPeriodo()
+	{
+		Empresa vega = EmpresaFactory.getEmpresa();
+		empresaDao.save(vega);
+		
+		Date dataReferencia = DateUtil.criarDataMesAno(21, 07, 2011);
+		
+		FaixaSalarial dentista01 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(dentista01);
+		
+		Date dataContratacaoJoao = DateUtil.criarDataMesAno(01, 05, 2010);
+		Colaborador joao = montaColaboradorDoTestCountAtivo(vega, dataContratacaoJoao);
+		montaHistoricoDoTestCountAtivo(dataContratacaoJoao, dentista01, joao);
+
+		Colaborador ivanDesligado = montaColaboradorDoTestCountAtivo(vega, dataContratacaoJoao);
+		ivanDesligado.setDataDesligamento(dataReferencia);
+		montaHistoricoDoTestCountAtivo(dataContratacaoJoao, dentista01, ivanDesligado);
+	
+		Date dataContratacaoPedroFuturo = DateUtil.criarDataMesAno(8, 8, 2011);
+		Colaborador pedro = montaColaboradorDoTestCountAtivo(vega, dataContratacaoPedroFuturo);
+		montaHistoricoDoTestCountAtivo(dataContratacaoPedroFuturo, dentista01, pedro);
+		
+		Date dataContratacaoMariaNoDiaDeReferencia = DateUtil.criarDataMesAno(21, 07, 2011);
+		Colaborador maria = montaColaboradorDoTestCountAtivo(vega, dataContratacaoMariaNoDiaDeReferencia);
+		montaHistoricoDoTestCountAtivo(dataContratacaoMariaNoDiaDeReferencia, dentista01, maria);
+		
+		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(dataReferencia, vega.getId(), null, null, null));
+	}
+
+	private void montaHistoricoDoTestCountAtivo(Date dataContratacaoJoao, FaixaSalarial dentista01, Colaborador joao) 
+	{
+		HistoricoColaborador histJoaoAtivo = HistoricoColaboradorFactory.getEntity();
+		histJoaoAtivo.setColaborador(joao);
+		histJoaoAtivo.setFaixaSalarial(dentista01);
+		histJoaoAtivo.setData(dataContratacaoJoao);
+		histJoaoAtivo.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(histJoaoAtivo);
+	}
+
+	private Colaborador montaColaboradorDoTestCountAtivo(Empresa vega, Date dataContratacaoJoao) 
+	{
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setEmpresa(vega);
+		joao.setDataAdmissao(dataContratacaoJoao);
+		colaboradorDao.save(joao);
+		return joao;
 	}
 	
 	public void testCountDesligados()
@@ -2907,10 +2952,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Date data = DateUtil.criarDataMesAno(01, 05, 2010);
 		Date respondidaEm = DateUtil.criarDataMesAno(16, 05, 2010);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
-		colaborador.setDataAdmissao(data);
-		colaboradorDao.save(colaborador);
+		Colaborador colaborador = montaColaboradorDoTestCountAtivo(empresa, data);
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
@@ -2955,15 +2997,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		estabelecimentoFora.setNome("B");
 		estabelecimentoFora = estabelecimentoDao.save(estabelecimentoFora);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-    	colaborador.setEmpresa(empresa);
-    	colaborador.setDataAdmissao(dataAdmissao);
-    	colaboradorDao.save(colaborador);
+		Colaborador colaborador = montaColaboradorDoTestCountAtivo(empresa, dataAdmissao);
     	
-    	Colaborador colaboradorFora = ColaboradorFactory.getEntity();
-    	colaboradorFora.setEmpresa(empresa);
-    	colaboradorFora.setDataAdmissao(dataAdmissaoFora);
-    	colaboradorDao.save(colaboradorFora);
+    	Colaborador colaboradorFora = montaColaboradorDoTestCountAtivo(empresa, dataAdmissaoFora);
     	
     	HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
 		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));

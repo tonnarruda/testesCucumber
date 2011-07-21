@@ -6,6 +6,7 @@ import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
@@ -27,6 +28,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste;
 	private ColaboradorManager colaboradorManager;
+	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 
 	//private final Boolean APROVADA = true;  - Descomentar se for necessário criar o método para encontrar tabelas aprovadas.
 	private final Boolean NAO_APROVADA = false;
@@ -119,6 +121,8 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 
 			if(historicoColaboradorManager.verifyExists(new String[]{"data", "colaborador.id"}, new Object[]{historicoColaborador.getData(), historicoColaborador.getColaborador().getId()}))
 				throw new Exception("Colaborador já possui um histórico na data do Planejamento de Realinhamento.");
+
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), new Date(), empresa.getId());
 			
 			historicoColaborador = historicoColaboradorManager.save(historicoColaborador);
 
@@ -223,6 +227,10 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
+		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 
 }

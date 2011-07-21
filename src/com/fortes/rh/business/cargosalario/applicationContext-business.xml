@@ -133,6 +133,9 @@
     <property name="acPessoalClientTabelaReajuste">
       <ref bean="acPessoalClientTabelaReajuste" />
     </property>
+    <property name="quantidadeLimiteColaboradoresPorCargoManager">
+      <ref bean="quantidadeLimiteColaboradoresPorCargoManager" />
+    </property>
   </bean>
   <bean id="tabelaReajusteColaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

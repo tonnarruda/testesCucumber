@@ -34,6 +34,7 @@ import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
@@ -43,6 +44,7 @@ import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
@@ -125,6 +127,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private ConfiguracaoPerformanceManager configuracaoPerformanceManager;
 	private UsuarioMensagemManager usuarioMensagemManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
+	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -436,6 +439,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		try
 		{
 			colaboradorManager.validaQtdCadastros();			
+			
 		} catch (Exception e)
 		{
 			addActionMessage(e.getMessage());
@@ -447,47 +451,19 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			
 			if(historicoColaborador.getData().before(colaborador.getDataAdmissao()))
-			{
-				addActionError("Data do primeiro histórico não pode ser anterior à data de admissão.");
-				if(idCandidato == null)
-					prepare();
-				else
-				{
-					updateDados = false;
-					prepareContrata();
-				}
-
-				return Action.ERROR;
-			}
+				throw new Exception("Data do primeiro histórico não pode ser anterior à data de admissão.");
 
 			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId()))
-			{
-				addActionError("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");
-				if(idCandidato == null)
-					prepare();
-				else
-				{
-					updateDados = false;
-					prepareContrata();
-				}
+				throw new Exception("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");
 
-				return Action.ERROR;
-			}
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), new Date(), getEmpresaSistema().getId());
 
 			if(!fotoValida(colaborador.getFoto()))
 			{
 				if(idCandidato == null)
-				{
-					prepare();
 					colaborador.setFoto(null);
-				}
-				else
-				{
-					updateDados = false;
-					prepareContrata();
-				}
-
-				return Action.INPUT;
+				
+				throw new Exception("Erro ao gravar as informações do colaborador. Foto inválida!");				
 			}
 
 			recuperarSessao();
@@ -558,11 +534,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				updateDados = false;
 				prepareContrata();
 			}
-
+	
 			return Action.ERROR;
 		}
 	}
-
+	
 	private void setDadosHistoricoColaborador()
 	{
 		if (historicoColaborador == null)
@@ -615,6 +591,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId()).size() > 1 || (getEmpresaSistema().isAcIntegra() && !colaborador.getCodigoAC().equals("")))
 				editarHistorico = false;
 
+			if(editarHistorico)
+				quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), new Date(), getEmpresaSistema().getId());
+			
 			if(historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(editarHistorico, historicoColaborador, colaborador))
 			{
 				addActionError("Data do primeiro histórico não pode ser anterior à data de admissão.");
@@ -667,6 +646,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		catch (IntegraACException e)
 		{
 			addActionError("Erro ao gravar as informações do colaborador no AC Pessoal.");
+			prepareUpdate();
+			
+			return Action.INPUT;
+		}
+		catch (LimiteColaboradorExceditoException e)
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
 			prepareUpdate();
 			
 			return Action.INPUT;
@@ -1559,6 +1546,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
+	}
+
+	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
+		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 	
 }

@@ -12,9 +12,11 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -46,6 +48,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ColaboradorManager colaboradorManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
@@ -131,6 +134,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				return Action.INPUT;				
 			}
 			
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), new Date(), getEmpresaSistema().getId());
+			
 			if(historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO))
 				historicoColaboradorManager.ajustaMotivoContratado(historicoColaborador.getColaborador().getId());
 			
@@ -151,6 +156,14 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			
 			prepareInsert();
 
+			return Action.INPUT;
+		}
+		catch (LimiteColaboradorExceditoException e)
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
+			prepareInsert();
+			
 			return Action.INPUT;
 		}
 		catch (Exception e)
@@ -198,7 +211,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			addActionError(msg);
 			prepareUpdate();
 			return Action.INPUT;
-		}
+		}		
 		catch (Exception e)
 		{
 			e.printStackTrace();
@@ -409,6 +422,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public Date getDataPrimeiroHist() {
 		return dataPrimeiroHist;
+	}
+
+	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
+		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 	
 }

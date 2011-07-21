@@ -174,6 +174,15 @@ public class DateUtilTest extends TestCase
 
 		data = DateUtil.montaDataByString("30/12/2010");
 		assertEquals("Test ano", "04/01/2011", DateUtil.formataDiaMesAno(DateUtil.incrementaDias(data, 5)));
+		
+		data = DateUtil.montaDataByString("01/12/2010");
+		assertEquals("Test dia anterior", "30/11/2010", DateUtil.formataDiaMesAno(DateUtil.incrementaDias(data, -1)));
+	}
+	
+	public void testGetUltimoDiaMesAnterior() throws Exception
+	{
+		Date data = DateUtil.montaDataByString("01/12/2010");
+		assertEquals("Test dia anterior", "30/11/2010", DateUtil.formataDiaMesAno(DateUtil.getUltimoDiaMesAnterior(data)));
 	}
 	
 	public void testIncrementaMes() throws Exception
