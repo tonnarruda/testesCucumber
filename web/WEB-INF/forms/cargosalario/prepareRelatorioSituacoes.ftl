@@ -31,7 +31,7 @@
 		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData"/>
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData"/>
-		<@frt.checkListBox label="Estabelecimentos" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" />
+		<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" />
 		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" />
 		
 	</@ww.form>
