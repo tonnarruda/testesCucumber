@@ -8,12 +8,15 @@ import org.hibernate.exception.ConstraintViolationException;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.QuantidadeLimiteColaboradoresPorCargoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 
 public class QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest extends GenericDaoHibernateTest<QuantidadeLimiteColaboradoresPorCargo>
@@ -21,6 +24,7 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest extends Gener
 	private QuantidadeLimiteColaboradoresPorCargoDao quantidadeLimiteColaboradoresPorCargoDao;
 	private AreaOrganizacionalDao areaOrganizacionalDao;
 	private CargoDao cargoDao;
+	private EmpresaDao empresaDao;
 	
 	@Override
 	public QuantidadeLimiteColaboradoresPorCargo getEntity()
@@ -62,6 +66,39 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest extends Gener
 		Collection<QuantidadeLimiteColaboradoresPorCargo> qtds = quantidadeLimiteColaboradoresPorCargoDao.findByArea(area.getId());
 		assertEquals(2, qtds.size());
 		assertEquals(qtdLimite2, qtds.toArray()[0]);
+	}
+	
+	public void testFindByEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		area.setEmpresa(empresa);
+		areaOrganizacionalDao.save(area);
+		
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setNome("pedreiro");
+		cargoDao.save(cargo1);
+		
+		Cargo cargo2 = CargoFactory.getEntity();
+		cargo2.setNome("padeiro");
+		cargoDao.save(cargo2);
+		
+		QuantidadeLimiteColaboradoresPorCargo qtdLimite1 = new QuantidadeLimiteColaboradoresPorCargo();
+		qtdLimite1.setAreaOrganizacional(area);
+		qtdLimite1.setCargo(cargo1);
+		qtdLimite1.setLimite(120);
+		quantidadeLimiteColaboradoresPorCargoDao.save(qtdLimite1);
+		
+		QuantidadeLimiteColaboradoresPorCargo qtdLimite2 = new QuantidadeLimiteColaboradoresPorCargo();
+		qtdLimite2.setAreaOrganizacional(area);
+		qtdLimite2.setCargo(cargo2);
+		qtdLimite2.setLimite(20);
+		quantidadeLimiteColaboradoresPorCargoDao.save(qtdLimite2);
+		
+		Collection<QuantidadeLimiteColaboradoresPorCargo> qtds = quantidadeLimiteColaboradoresPorCargoDao.findByEmpresa(empresa.getId());
+		assertEquals(2, qtds.size());
 	}
 
 	public void testSaveCargoDuplicado()
@@ -172,5 +209,9 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest extends Gener
 
 	public void setCargoDao(CargoDao cargoDao) {
 		this.cargoDao = cargoDao;
+	}
+
+	public void setEmpresaDao(EmpresaDao empresaDao) {
+		this.empresaDao = empresaDao;
 	}
 }

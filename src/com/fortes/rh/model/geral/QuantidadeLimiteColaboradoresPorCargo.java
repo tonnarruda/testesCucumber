@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -19,6 +20,8 @@ public class QuantidadeLimiteColaboradoresPorCargo extends AbstractModel impleme
 	@ManyToOne
 	private Cargo cargo;
 	private int limite;
+	@Transient
+	private String descricao;
 	
 	public AreaOrganizacional getAreaOrganizacional() {
 		return areaOrganizacional;
@@ -50,13 +53,27 @@ public class QuantidadeLimiteColaboradoresPorCargo extends AbstractModel impleme
 	}
 	public void setProjectionAreaOrganizacionalId(Long areaOrganizacionalId)	
 	{
+		iniciaArea();
+		areaOrganizacional.setId(areaOrganizacionalId);
+	}
+	public void setProjectionAreaOrganizacionalNome(String areaOrganizacionalNome)	
+	{
+		iniciaArea();
+		areaOrganizacional.setNome(areaOrganizacionalNome);
+	}
+	private void iniciaArea() {
 		if(areaOrganizacional == null)
 			areaOrganizacional = new AreaOrganizacional();
-		areaOrganizacional.setId(areaOrganizacionalId);
 	}
 	private void iniciaCargo() {
 		if(cargo == null)
 			cargo = new Cargo();
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 }

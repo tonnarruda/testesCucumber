@@ -731,6 +731,9 @@
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
     </property>
+    <property name="configuracaoLimiteColaboradorManager">
+      <ref bean="configuracaoLimiteColaboradorManager" />
+    </property>
   </bean>
   <bean id="quantidadeLimiteColaboradoresPorCargoManager" parent="parentManager">
     <property name="proxyInterfaces">

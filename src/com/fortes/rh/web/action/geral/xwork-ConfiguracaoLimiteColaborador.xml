@@ -28,5 +28,14 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/configuracaoLimiteColaboradorEdit.ftl</result>
 		</action>
+				
+		<action name="imprimir" class="com.fortes.rh.web.action.geral.ConfiguracaoLimiteColaboradorEditAction" method="imprimir">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/configLimiteColab.jasper</param>
+				<param name="dataSource">quantidadeLimiteColaboradoresPorCargos</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">configuracaoLimiteColaborador.pdf</param>
+			</result>
+		</action>
 	</package>
 </xwork>
