@@ -211,6 +211,11 @@ Então /^eu devo ver o alert do valida campos e clico no ok/ do
   When %{I press "OK"}
 end
 
+Então /^eu devo ver o alert "([^"]*)" e clico no ok/ do |msg_alert|
+  Then %{I should see "#{msg_alert}"}
+  When %{I press "OK"}
+end
+
 Então /^eu devo ver o alert do confirmar exclusão e clico no ok/ do
   Then %{I should see "Confirma exclusão?"}
   When %{I press "OK"}
@@ -341,6 +346,28 @@ Dado /^que exista uma turma "([^"]*)" para o curso "([^"]*)"$/ do |turma_descric
      dataprevfim '15/07/2011'
      empresa :id => 1
    end
+end
+
+Dado /^que exista uma empresa "([^"]*)"$/ do |empresa_nome|
+   insert :empresa do
+      nome empresa_nome
+      acintegra false
+      maxcandidatacargo 10
+      exibirsalario true
+   end
+end
+
+Dado /^que exista um papel "([^"]*)"$/ do |papel_nome|
+   insert :papel do
+      nome papel_nome
+      codigo 'ROLE'
+      ordem 1
+      menu false
+   end
+end
+
+Dado /^que todos os papeis estejam permitidos$/ do
+   exec_sql "update parametrosdosistema set modulos = encode(cast(array_to_string(array(select id from papel order by id), ',') as bytea), 'base64');"
 end
 
 Dado /^que exista a etapa seletiva "([^"]*)"$/ do |etapaseletiva_nome|
