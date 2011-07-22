@@ -134,7 +134,7 @@
 		<@ww.form name="form" id="form" action="${formAction}" method="POST">
 			<@ww.hidden name="configuracaoLimiteColaborador.id" />
 			<@ww.token/>
-			<@ww.textfield label="Descrição" name="configuracaoLimiteColaborador.descricao" id="descricao" required="true" cssClass="valida" maxLength="100" cssStyle="width: 591px;"/>
+			<@ww.textfield label="Contrato" name="configuracaoLimiteColaborador.descricao" id="descricao" required="true" cssClass="valida" maxLength="100" cssStyle="width: 591px;"/>
 			
 			<#if edit>
 				<@ww.hidden name="configuracaoLimiteColaborador.areaOrganizacional.id" />

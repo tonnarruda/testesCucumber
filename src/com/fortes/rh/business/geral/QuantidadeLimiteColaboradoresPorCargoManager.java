@@ -15,4 +15,5 @@ public interface QuantidadeLimiteColaboradoresPorCargoManager extends GenericMan
 	Collection<QuantidadeLimiteColaboradoresPorCargo> findByArea(Long areaId);
 	void deleteByArea(Long areaId);
 	void validaLimite(Long areaId, Long faixaId, Date data, Long empresaId) throws LimiteColaboradorExceditoException;
+	Collection<QuantidadeLimiteColaboradoresPorCargo> findByEmpresa(Long empresaId)throws Exception;
 }

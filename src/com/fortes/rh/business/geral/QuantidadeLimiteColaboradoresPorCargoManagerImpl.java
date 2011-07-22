@@ -10,6 +10,7 @@ import com.fortes.rh.dao.geral.QuantidadeLimiteColaboradoresPorCargoDao;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.util.LongUtil;
 
@@ -18,6 +19,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 	private ColaboradorManager colaboradorManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
 	
 	public void saveLimites(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, AreaOrganizacional areaOrganizacional) 
 	{
@@ -89,5 +91,39 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByEmpresa(Long empresaId) throws Exception 
+	{
+		Collection<ConfiguracaoLimiteColaborador> configuracaos = configuracaoLimiteColaboradorManager.findAllSelect(empresaId);
+		Collection<AreaOrganizacional> areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.ATIVA);
+		Collection<QuantidadeLimiteColaboradoresPorCargo> limites = getDao().findByEmpresa(empresaId);
+		
+		for (QuantidadeLimiteColaboradoresPorCargo limite : limites) 
+		{
+			for (AreaOrganizacional area : areaOrganizacionais) 
+			{
+				if(area.getId().equals(limite.getAreaOrganizacional().getId()))
+				{
+					limite.setAreaOrganizacional(area);
+					break;
+				}
+			}			
+
+			for (ConfiguracaoLimiteColaborador configuracao : configuracaos) 
+			{
+				if(configuracao.getAreaOrganizacional().getId().equals(limite.getAreaOrganizacional().getId()))
+				{
+					limite.setDescricao(configuracao.getDescricao());
+					break;
+				}				
+			}
+		}
+		
+		return limites;
+	}
+
+	public void setConfiguracaoLimiteColaboradorManager(ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager) {
+		this.configuracaoLimiteColaboradorManager = configuracaoLimiteColaboradorManager;
 	}
 }

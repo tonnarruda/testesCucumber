@@ -631,12 +631,14 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public Long[] selecionaFamilia(Collection<AreaOrganizacional> areaOrganizacionais, Collection<Long> areasIdsConfiguradas) 
 	{
 		Collection<Long> familia = new ArrayList<Long>();
+		Collection<Long> pais = new ArrayList<Long>();
 		for (Long id : areasIdsConfiguradas) 
 		{
 			for (AreaOrganizacional area: areaOrganizacionais)
 			{
-				if(area.getDescricaoIds().contains(id))
-					familia.add(area.getId());
+				pais = area.getDescricaoIds();
+				if(pais.contains(id))
+					familia.addAll(pais);
 			}
 		}
 		

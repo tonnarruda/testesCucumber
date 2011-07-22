@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -11,6 +13,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -29,6 +32,8 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	private Collection<Cargo> cargos;
 	private Long[] idsFamiliasAreasJaConfiguradas;
 	private Long empresaId;
+	
+	private Map<String,Object> parametros = new HashMap<String, Object>();
 
 	private void prepare() throws Exception
 	{
@@ -45,7 +50,14 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 		
 		empresaId = getEmpresaSistema().getId();
 		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado");
-		//Collection<QuantidadeLimiteColaboradoresPorCargo> quatidades = configuracaoLimiteColaboradorManager.findLimiteByArea(1L);
+	}
+	
+	public String imprimir() throws Exception
+	{
+		quantidadeLimiteColaboradoresPorCargos = quantidadeLimiteColaboradoresPorCargoManager.findByEmpresa(getEmpresaSistema().getId());
+		parametros = RelatorioUtil.getParametrosRelatorio("Configuração do limite de Colaboradores por Cargo", getEmpresaSistema(), "");
+	
+		return Action.SUCCESS;
 	}
 
 	public String prepareInsert() throws Exception
@@ -164,5 +176,9 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public Long[] getIdsFamiliasAreasJaConfiguradas() {
 		return idsFamiliasAreasJaConfiguradas;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }

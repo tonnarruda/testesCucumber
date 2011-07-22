@@ -9,10 +9,6 @@ import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 
 public class ConfiguracaoLimiteColaboradorManagerImpl extends GenericManagerImpl<ConfiguracaoLimiteColaborador, ConfiguracaoLimiteColaboradorDao> implements ConfiguracaoLimiteColaboradorManager
 {
-	public Collection<QuantidadeLimiteColaboradoresPorCargo> findLimiteByArea(long areaId) 
-	{
-		return getDao().findLimiteByArea(areaId);
-	}
 
 	public Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId) 
 	{
