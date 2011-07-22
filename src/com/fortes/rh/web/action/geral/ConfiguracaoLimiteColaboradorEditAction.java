@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.geral;
 
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +14,12 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 {
@@ -24,6 +28,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private CargoManager cargoManager;
+	private Mail mail;
 	
 	private ConfiguracaoLimiteColaborador configuracaoLimiteColaborador;
 	private Collection<ConfiguracaoLimiteColaborador> configuracaoLimiteColaboradors;
@@ -76,7 +81,8 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		try {
-			
+			String[] emails = null;
+			mail.send(SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()), "Nova configuração de limite de Colaboradores por Cargo adicionada.", "", null, emails);
 			configuracaoLimiteColaboradorManager.save(configuracaoLimiteColaborador);
 			quantidadeLimiteColaboradoresPorCargoManager.saveLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional());
 			addActionMessage("Configuração gravada com sucesso.");
@@ -180,5 +186,9 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+	public void setMail(Mail mail) {
+		this.mail = mail;
 	}
 }
