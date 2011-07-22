@@ -13,7 +13,7 @@ public class AreaOrganizacionalTest extends TestCase {
 	
 	public void setUp() {
 	}
-	
+		
 	public void testGetDescricao() 
 	{
 		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(1L);
@@ -22,7 +22,7 @@ public class AreaOrganizacionalTest extends TestCase {
 		AreaOrganizacional areaPai = AreaOrganizacionalFactory.getEntity(2L);
 		areaPai.setNome("Pai");
 		
-		AreaOrganizacional areaFilho = AreaOrganizacionalFactory.getEntity(2L);
+		AreaOrganizacional areaFilho = AreaOrganizacionalFactory.getEntity(3L);
 		areaFilho.setNome("Filho");
 		
 		areaPai.setAreaMae(areaAvo);
@@ -31,6 +31,25 @@ public class AreaOrganizacionalTest extends TestCase {
 		assertEquals("Avo", areaAvo.getDescricao());
 		assertEquals("Avo > Pai", areaPai.getDescricao());
 		assertEquals("Avo > Pai > Filho", areaFilho.getDescricao());
+	}
+	
+	public void testGetDescricaoIds() 
+	{
+		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(1L);
+		areaAvo.setNome("Avo");
+		
+		AreaOrganizacional areaPai = AreaOrganizacionalFactory.getEntity(2L);
+		areaPai.setNome("Pai");
+		
+		AreaOrganizacional areaFilho = AreaOrganizacionalFactory.getEntity(3L);
+		areaFilho.setNome("Filho");
+		
+		areaPai.setAreaMae(areaAvo);
+		areaFilho.setAreaMae(areaPai);
+		
+		assertEquals(1, areaAvo.getDescricaoIds().size());
+		assertEquals(2, areaPai.getDescricaoIds().size());
+		assertEquals(3, areaFilho.getDescricaoIds().size());
 	}
 	
 	public void testGetDescricaoComEmpresa() 

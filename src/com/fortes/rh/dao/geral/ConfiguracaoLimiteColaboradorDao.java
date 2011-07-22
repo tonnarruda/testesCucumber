@@ -4,11 +4,9 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
-import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 
 public interface ConfiguracaoLimiteColaboradorDao extends GenericDao<ConfiguracaoLimiteColaborador> 
 {
-	Collection<QuantidadeLimiteColaboradoresPorCargo> findLimiteByArea(long areaId);
 	Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId);
 	Collection<Long> findIdAreas(Long empresaId);
 }

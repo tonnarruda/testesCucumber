@@ -45,7 +45,6 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 		
 		empresaId = getEmpresaSistema().getId();
 		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado");
-		//Collection<QuantidadeLimiteColaboradoresPorCargo> quatidades = configuracaoLimiteColaboradorManager.findLimiteByArea(1L);
 	}
 
 	public String prepareInsert() throws Exception

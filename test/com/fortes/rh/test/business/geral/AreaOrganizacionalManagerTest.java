@@ -871,6 +871,6 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areas.add(vendedor);
 		
 		Long[] areasIdsJaConfiguradas = areaOrganizacionalManager.selecionaFamilia(areas, areasIds);
-		assertEquals(6, areasIdsJaConfiguradas.length);
+		assertEquals(8, areasIdsJaConfiguradas.length);
 	} 
 }
