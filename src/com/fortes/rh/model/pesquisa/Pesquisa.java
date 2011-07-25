@@ -20,6 +20,7 @@ public class Pesquisa extends AbstractModel implements Serializable, Cloneable
 {
     @OneToOne
     private Questionario questionario;
+    private boolean exibirPerformanceProfissional;
 
     //Projections
     public void setProjectionQuestionarioId(Long projectionQuestionarioId)
@@ -156,5 +157,13 @@ public class Pesquisa extends AbstractModel implements Serializable, Cloneable
 	public void setQuestionario(Questionario questionario)
 	{
 		this.questionario = questionario;
+	}
+
+	public boolean isExibirPerformanceProfissional() {
+		return exibirPerformanceProfissional;
+	}
+
+	public void setExibirPerformanceProfissional(boolean exibirPerformanceProfissional) {
+		this.exibirPerformanceProfissional = exibirPerformanceProfissional;
 	}
 }

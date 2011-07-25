@@ -1,0 +1,1 @@
+alter table empresa add column emailresplimitecontrato character varying(120) default '';--.go

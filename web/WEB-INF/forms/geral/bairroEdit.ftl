@@ -6,7 +6,7 @@
 	<title>Editar Bairro</title>
 	<#assign formAction="update.action"/>
 <#else>
-	<title>Novo Bairro</title>
+	<title>Inserir Bairro</title>
 	<#assign formAction="insert.action"/>
 </#if>
 	<#assign validarCampos="return validaFormulario('form', new Array('cidade','bairroNome'), null)"/>

@@ -7,7 +7,7 @@
 	<#assign accessKey="A"/>
 	<#assign idEstabelecimento=estabelecimento.id/>
 <#else>
-	<title>Novo Estabelecimento</title>
+	<title>Inserir Estabelecimento</title>
 	<#assign formAction="insert.action"/>
 	<#assign accessKey="I"/>
 	<#assign idEstabelecimento="0"/>

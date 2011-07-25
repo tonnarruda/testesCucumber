@@ -24,6 +24,17 @@
 
 <#include "../ftl/mascarasImports.ftl" />
 
+<script type="text/javascript" >
+		$(function() {
+			abilitaExibirPerformaceProficional();
+		});
+		
+		function abilitaExibirPerformaceProficional()
+		{
+			$('#exibirPerformaceProficional').attr('disabled', $('#anonima').val()=='true');
+		}
+</script>
+
 </head>
 <body>
 	<#if pesquisa?exists && pesquisa.id?exists && pesquisa.questionario?exists && pesquisa.questionario.dataInicio?exists>
@@ -54,7 +65,8 @@
 			<@ww.hidden name="pesquisa.questionario.anonimo" />
 		</#if>
 		
-		<@ww.select label="Pesquisa Anônima" disabled="${anonimoDisabled}" title="${anonimoTitle}" name="pesquisa.questionario.anonimo" id="anonima" list=r"#{true:'Sim',false:'Não'}" required="true" headerKey="" headerValue=""/>
+		<@ww.select label="Pesquisa Anônima" disabled="${anonimoDisabled}" title="${anonimoTitle}" name="pesquisa.questionario.anonimo" id="anonima" list=r"#{true:'Sim',false:'Não'}" required="true" headerKey="" headerValue="" onchange="abilitaExibirPerformaceProficional();"/>
+		<@ww.checkbox label="Exibir em Performace Proficional" id="exibirPerformaceProficional" name="pesquisa.exibirPerformanceProfissional"  labelPosition="left"/>
 
 		<@ww.hidden name="pesquisa.id" />
 	    <@ww.hidden name="pesquisa.questionario.id" />

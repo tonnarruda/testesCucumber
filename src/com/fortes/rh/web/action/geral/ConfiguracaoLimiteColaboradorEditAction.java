@@ -28,7 +28,6 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private CargoManager cargoManager;
-	private Mail mail;
 	
 	private ConfiguracaoLimiteColaborador configuracaoLimiteColaborador;
 	private Collection<ConfiguracaoLimiteColaborador> configuracaoLimiteColaboradors;
@@ -81,10 +80,10 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		try {
-			String[] emails = null;
-			mail.send(SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()), "Nova configuração de limite de Colaboradores por Cargo adicionada.", "", null, emails);
 			configuracaoLimiteColaboradorManager.save(configuracaoLimiteColaborador);
 			quantidadeLimiteColaboradoresPorCargoManager.saveLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional());
+			configuracaoLimiteColaboradorManager.enviaEmail(configuracaoLimiteColaborador, quantidadeLimiteColaboradoresPorCargos, getEmpresaSistema());
+
 			addActionMessage("Configuração gravada com sucesso.");
 			
 		} catch (Exception e) {
@@ -186,9 +185,5 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public Map<String, Object> getParametros() {
 		return parametros;
-	}
-
-	public void setMail(Mail mail) {
-		this.mail = mail;
 	}
 }

@@ -37,6 +37,8 @@ public class Empresa extends AbstractModel implements Serializable
     private String emailRespSetorPessoal;
 	@Column(length=120)
 	private String emailRespRH;
+	@Column(length=120)
+	private String emailRespLimiteContrato;
 
 	@Column(length=20)
     private String cnae;
@@ -374,5 +376,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setExame(Exame exame) {
 		this.exame = exame;
+	}
+
+	public String getEmailRespLimiteContrato() {
+		return emailRespLimiteContrato;
+	}
+
+	public void setEmailRespLimiteContrato(String emailRespLimiteContrato) {
+		this.emailRespLimiteContrato = emailRespLimiteContrato;
 	}
 }

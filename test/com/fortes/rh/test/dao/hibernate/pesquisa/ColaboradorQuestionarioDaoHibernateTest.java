@@ -17,6 +17,7 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
+import com.fortes.rh.dao.pesquisa.PesquisaDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
@@ -33,6 +34,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
+import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
@@ -49,6 +51,7 @@ import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
+import com.fortes.rh.test.factory.pesquisa.PesquisaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -69,6 +72,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
 	private SolicitacaoDao solicitacaoDao;
 	private EstabelecimentoDao estabelecimentoDao ;
+	private PesquisaDao pesquisaDao ;
 
 	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
 	{
@@ -774,6 +778,20 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		
 		assertEquals(0, colaboradorQuestionarioDao.findByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), null).size());
 	}
+	
+	public void testFindIdsExibidosNaPerformanceProfissional()
+	{
+		Pesquisa satisfacao = PesquisaFactory.getEntity();
+		pesquisaDao.save(satisfacao);
+ 		
+		Questionario dificil = QuestionarioFactory.getEntity();
+		questionarioDao.save(dificil);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setQuestionario(dificil);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
@@ -821,5 +839,9 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
 		this.estabelecimentoDao = estabelecimentoDao;
+	}
+
+	public void setPesquisaDao(PesquisaDao pesquisaDao) {
+		this.pesquisaDao = pesquisaDao;
 	}
 }

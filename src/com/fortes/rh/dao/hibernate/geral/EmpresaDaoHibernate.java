@@ -113,6 +113,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.campoExtraColaborador"), "campoExtraColaborador");
 		p.add(Projections.property("e.campoExtraCandidato"), "campoExtraCandidato");
 		p.add(Projections.property("e.mensagemModuloExterno"), "mensagemModuloExterno");
+		p.add(Projections.property("e.emailRespLimiteContrato"), "emailRespLimiteContrato");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("e.id", id));

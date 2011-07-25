@@ -28,6 +28,7 @@ Funcionalidade: Cadastrar Pesquisas
 
     Então eu devo ver o título "Inserir Pergunta"
     E eu preencho "aspecto" com "_aspecto 1"
+    E eu saio do campo "aspecto"
     E eu preencho "texto" com "_pergunta 1"
     E eu seleciono "Subjetiva" de "Tipo de Resposta"
     E eu clico no botão "Gravar"
@@ -37,6 +38,7 @@ Funcionalidade: Cadastrar Pesquisas
 
     Então eu devo ver o título "Inserir Pergunta"
     E eu preencho "aspecto" com "_aspecto 1"
+    E eu saio do campo "aspecto"
     E eu preencho "texto" com "_pergunta 2"
     E eu seleciono "Nota" de "Tipo de Resposta"
     E eu preencho "notaMinima" com "5"
@@ -50,6 +52,7 @@ Funcionalidade: Cadastrar Pesquisas
 
     Então eu devo ver o título "Inserir Pergunta"
     E eu preencho "aspecto" com "_aspecto 2"
+    E eu saio do campo "aspecto"
     E eu preencho "texto" com "_pergunta 3"
     E eu seleciono "Objetiva" de "Tipo de Resposta"
     E eu preencho "respostaObjetiva" com "_resposta a"
@@ -66,6 +69,7 @@ Funcionalidade: Cadastrar Pesquisas
 
     Então eu devo ver o título "Inserir Pergunta"
     E eu preencho "aspecto" com "_aspecto 2"
+    E eu saio do campo "aspecto"
     E eu preencho "texto" com "_pergunta 4"
     E eu seleciono "Múltipla Escolha" de "Tipo de Resposta"
     E eu preencho "multiplaResposta" com "_resposta a"

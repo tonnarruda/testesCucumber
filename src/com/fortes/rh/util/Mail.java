@@ -133,6 +133,7 @@ public class Mail
         properties.put("mail.smtp.host", mailSender.getHost());
         properties.put("mail.smtp.port", mailSender.getPort());
         properties.put("mail.smtp.sendpartial", "true");
+        properties.put("mail.smtp.starttls.enable","true"); 
 
     	if ((mailSender.getUsername()== null || mailSender.getUsername().equals("")) && (mailSender.getPassword() == null || mailSender.getPassword().equals("")))
     	{

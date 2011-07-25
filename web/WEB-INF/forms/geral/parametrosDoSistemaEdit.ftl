@@ -54,7 +54,7 @@
 	<br/><br/>
 	
 	Alertar sobre Acompanhamento do Período de Experiência com 
-	<@ww.textfield theme="simple" name="parametrosDoSistema.diasLembretePeriodoExperiencia" onkeypress = "return(somenteNumeros(event,'&'));" id="diasLembretePesquisa" maxLength="20" required="true" cssStyle="width:55px; text-align:right;" />
+	<@ww.textfield theme="simple" name="parametrosDoSistema.diasLembretePeriodoExperiencia" onkeypress = "return(somenteNumeros(event,'&'));" id="diasLembretePeriodoExperiencia" maxLength="20" required="true" cssStyle="width:55px; text-align:right;" />
 	dias de antecedência. (Exemplo: 1&2&3)
 	<br/><br/>
 	

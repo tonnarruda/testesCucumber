@@ -522,6 +522,22 @@
 			</ul>
 		</#if>
 	</li>
+	
+		
+	<li  id="14" class="cabecalhoBox">
+		<h4><a href="javascript:return false;"  class="linkBox">Pesquisa</a></h4>
+		<ul  id="box7" class="box">
+		<table class="grade">
+			<tr>
+				<td>
+					<a href="../../pesquisa/colaboradorQuestionario/visualizarRespostasPorColaborador.action?questionario.id=1803&colaboradorId=65" class="ativaSimples">Documentos</a>
+				</td>
+			</tr>
+		</table>
+		</ul>
+	</li>
+	
+	
 </ul>
 	<div class="buttonGroup">
 		<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar" accesskey="V"></button>

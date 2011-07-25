@@ -1,0 +1,1 @@
+alter table pesquisa add column exibirPerformanceProfissional boolean default false;--.go
