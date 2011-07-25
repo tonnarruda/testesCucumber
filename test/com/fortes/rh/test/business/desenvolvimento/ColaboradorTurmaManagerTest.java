@@ -404,11 +404,10 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaboradores.add(colaborador);
 
-		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradores));
+		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradores));
 		
 		
-		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck,
-				filtrarPor, turma, null, empresaId).size());
+		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId).size());
 	}
 
 	public void testFiltrarColaboradoresFiltrarPorCargo() throws Exception
@@ -432,7 +431,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 				)}).will(
 				returnValue(colaboradores));
 		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck,
-				filtrarPor, turma, null, empresaId).size());
+				filtrarPor, turma, null, null, null, empresaId).size());
 	}
 
 	public void testFiltrarColaboradoresFiltrar() throws Exception
@@ -456,7 +455,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmaDao.expects(once()).method("findByColaboradorAndTurma").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, eq(turma.getCurso().getId()), ANYTHING}).will(
 				returnValue(colaboradorTurmas));
 		assertEquals(colaboradorTurmas, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck,
-				colaboradoresCursosCheck, filtrarPor, turma, null, empresaId));
+				colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId));
 	}
 
 	public void testFiltroRelatorioMatriz()

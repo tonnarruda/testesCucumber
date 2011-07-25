@@ -38,7 +38,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
 	public Integer getCount(Map parametros);
 	public Collection findList(int page, int pagingSize, Map parametros);
-	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] longs, Colaborador colaborador, Long empresaId);
+	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] longs, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId);
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
 	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa) throws Exception;
 	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception;

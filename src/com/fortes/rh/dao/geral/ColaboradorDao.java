@@ -17,8 +17,8 @@ import com.fortes.rh.model.relatorio.DataGrafico;
 @SuppressWarnings("unchecked")
 public interface ColaboradorDao extends GenericDao<Colaborador>
 {
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Integer page, Integer pagingSize, Colaborador colaborador, Long empresaId);
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] ids, Colaborador colaborador, Long empresaId);
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Integer page, Integer pagingSize, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId);
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] ids, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId);
 	public Collection<Colaborador> findByAreaOrganizacionalIds(Long[] ids);
 	public Collection<Colaborador> findByArea(AreaOrganizacional areaFiltro);
 
