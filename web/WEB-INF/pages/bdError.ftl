@@ -55,9 +55,6 @@
 			
 			<#if versao?exists>
 				Conexão efetuada com sucesso, versão do Banco de Dados: ${versao}
-			<#else>
-				CUIDADO, somente utilizar na instalação do sistema > 
-				<a href="gerarBD.action">Criar Banco de Dados fortesrh</a>
 			</#if>			
 		</@ww.form>
 	

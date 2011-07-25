@@ -112,6 +112,7 @@
 		<@ww.textfield label="Email Remetente" name="empresa.emailRemetente" id="remetente" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
 		<@ww.textfield label="Email Resp. Setor Pessoal" name="empresa.emailRespSetorPessoal" id="respSetorPessoal" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
 		<@ww.textfield label="Email Resp. RH" name="empresa.emailRespRH" id="respRH" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
+		<@ww.textfield label="Email Resp. pelo limite de Colaboradores por Cargo" name="empresa.emailRespLimiteContrato" id="respLimite" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="120"/>
 		<@ww.textfield label="Representante Legal" name="empresa.representanteLegal" cssClass="inputNome" maxLength="100"/>
 		<@ww.textfield label="NIT do Representante Legal" name="empresa.nitRepresentanteLegal" cssClass="inputNome" maxLength="100" onkeypress="return(somenteNumeros(event,'./-'));"/>
 		<@ww.textfield label="Horário de Trabalho" name="empresa.horarioTrabalho"  cssClass="inputNome" maxLength="50"/>

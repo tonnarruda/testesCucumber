@@ -709,6 +709,12 @@
     <property name="dao">
       <ref bean="configuracaoLimiteColaboradorDao" />
     </property>
+    <property name="mail">
+      <ref bean="mail" />
+    </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
   </bean>
   <bean id="configuracaoLimiteColaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">
