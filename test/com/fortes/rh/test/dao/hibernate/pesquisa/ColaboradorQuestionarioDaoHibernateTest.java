@@ -781,16 +781,29 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	
 	public void testFindIdsExibidosNaPerformanceProfissional()
 	{
-		Pesquisa satisfacao = PesquisaFactory.getEntity();
-		pesquisaDao.save(satisfacao);
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario.setTitulo("Questionario Dificil");
+		questionario.setDataInicio(DateUtil.criarDataMesAno(01, 01, 2000));
+		questionario.setDataFim(DateUtil.criarDataMesAno(01, 01, 2008));
+		questionarioDao.save(questionario);
+		
+		Pesquisa pesquisa = PesquisaFactory.getEntity();
+		pesquisa.setExibirPerformanceProfissional(true);
+		pesquisa.setQuestionario(questionario);
+		pesquisaDao.save(pesquisa);
  		
-		Questionario dificil = QuestionarioFactory.getEntity();
-		questionarioDao.save(dificil);
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	colaborador.setNome("Avaliado");
+    	colaboradorDao.save(colaborador);
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionario.setQuestionario(dificil);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 		
+		Collection<ColaboradorQuestionario> pesquisas = colaboradorQuestionarioDao.findByColaborador(colaborador.getId());
+		assertEquals(1, pesquisas.size());
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)

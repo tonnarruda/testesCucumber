@@ -58,6 +58,7 @@
 	<decorator name="recuperaSenha" page="recuperaSenha.ftl">
 		<pattern>/acesso/usuario/prepareRecuperaSenha.action**</pattern>
 		<pattern>/acesso/usuario/recuperaSenha.action**</pattern>
+		<pattern>/pesquisa/colaboradorQuestionario/visualizarRespostasPorColaboradorPerformanceProfissional.action*</pattern>
 	</decorator>
 
 	<decorator name="app" page="app.ftl">

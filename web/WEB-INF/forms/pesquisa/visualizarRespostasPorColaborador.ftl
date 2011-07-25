@@ -114,9 +114,11 @@
 	</ul>
 </div>
 
-<div class="buttonGroup">
-	<button onclick="window.location='list.action?questionario.id=${questionario.id}'" class="btnVoltar" accesskey="V"></button>
-</div>
+<#if !ocultarBotaoVoltar>
+	<div class="buttonGroup">
+		<button onclick="window.location='list.action?questionario.id=${questionario.id}'" class="btnVoltar" accesskey="V"></button>
+	</div>
+</#if>
 
 </body>
 </html>

@@ -9,6 +9,7 @@
 <meta http-equiv="Pragma" content="no-cache, no-store" />
 <meta http-equiv="Expires" content="0" />
 <title>${title}</title>
+<script src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 <script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 <script src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
 <style type="text/css">
