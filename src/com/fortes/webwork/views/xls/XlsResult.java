@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -28,15 +29,24 @@ public class XlsResult extends WebWorkResultSupport {
     protected String reportFilter;
     protected String reportTitle;
     protected String sheetName;
-
+    protected String dinamicColumns;
+    protected String dinamicProperties;
+    
 	@Override
 	protected void doExecute(String finalLocation, ActionInvocation invocation) throws Exception 
 	{
 		try {
+			OgnlValueStack stack = invocation.getStack();
+			
+			if(StringUtils.isNotBlank(dinamicColumns) && StringUtils.isNotBlank(dinamicProperties))
+			{
+				columns = (String)stack.findValue(dinamicColumns);				
+				properties = (String)stack.findValue(dinamicProperties);
+			}
+			
 			String[] columnsArray = columns.split(",");
 			String[] propertiesArray = properties.split(",");
 
-			OgnlValueStack stack = invocation.getStack();
 			
 		    Collection<Object> dataSourceRef = (Collection<Object>) stack.findValue(dataSource);
 		    String reportFilterRef = (String)stack.findValue(reportFilter);
@@ -135,6 +145,16 @@ public class XlsResult extends WebWorkResultSupport {
 
 	public void setSheetName(String sheetName) {
 		this.sheetName = sheetName;
+	}
+
+
+	public void setDinamicColumns(String dinamicColumns) {
+		this.dinamicColumns = dinamicColumns;
+	}
+
+
+	public void setDinamicProperties(String dinamicProperties) {
+		this.dinamicProperties = dinamicProperties;
 	}
 
 }

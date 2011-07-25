@@ -186,6 +186,18 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
 		</action>
+		<action name="relatorioDinamicoXLS" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioDinamicoXLS">
+			<result name="success" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">colaboradorDinamico.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="dinamicColumns">dinamicColumns</param>
+				<param name="dinamicProperties">dinamicProperts</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
+		</action>
 				
 	</package>
 </xwork>

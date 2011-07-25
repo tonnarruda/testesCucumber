@@ -93,6 +93,8 @@
 
 		$(document).ready(function($)
 		{
+			$('#aviso').hide();
+		
 			var empresa = $('#empresa').val();
 			
 			populaArea(empresa);
@@ -109,64 +111,31 @@
 				ieBg: ieBg
 			});
 			
-			$("#from_colunas option").dblclick(function(e) {
-				alterBackground('#FFF');
-
-				if($(this).attr("disabled"))
-					e.stopPropagation();
-				
-				if(!sizeOk())
-				{
-					e.stopPropagation();
-					jAlert(msgLimiteLargura);
-				}
+			$("#from_colunas option").dblclick(function(opt) {
+				sizeOk();
+					
+					
+				$("#colunas option[value='nome']").dblclick(function(e) {
+					sizeOk();
+				});
+			});
+			
+			$("#b_to_colunas").click(function(e) {
+				sizeOk();
 			});
 
-			$("#b_to_colunas").unbind('click');
-			$("#b_to_colunas").click(function(e) {
-				e.preventDefault(); 
-				alterBackground('#FFF');
-				selecionaCampos();
-				return false;
+			$("#b_from_colunas").click(function(e) {
+				sizeOk();
 			});
 			
 			var configuracaoRelatorioDinamico = '${configuracaoRelatorioDinamico.campos}';
 			
 			$(configuracaoRelatorioDinamico.split(',')).each(function (){
-				$("#from_colunas option[value=" + this +  "]").attr('selected', true);
-				selecionaCampos();
+				$("#from_colunas option[value=" + this +  "]").attr('selected', true).dblclick();
 			});
 			
 		});
 
-		function selecionaCampos()
-		{			
-			if(sizeOk())
-			{
-				var from = 'from_colunas';
-				var to = 'colunas';
-				
-				var dest = $("#"+to)[0];
-
-				$("#"+from+" option:selected").clone().each(function() {
-					if (this.disabled == true) return
-					$(this)
-					.appendTo(dest)
-					.attr("selected", false);
-				});
-				
-				$("#"+from+" option:selected")
-					.attr("selected", false)
-					.attr("disabled", true)
-				
-				if ($.fn.obviouslyDisabled)
-		     		$("#"+from).obviouslyDisabled({textColor: ieColor, bgColor: ieBg});
-			}
-			else
-			{				 
-				jAlert(msgLimiteLargura);
-			}
-		}
 
 		var empresaIds = new Array();
 		var colunasSizes = new Array();
@@ -226,7 +195,7 @@
 		var espace = 4;
 		function sizeOk()
 		{	
-			var totalSize = 0;
+			totalSize = 0;
 			$("#from_colunas option:selected").each(function() 
 			{
 			    totalSize += colunasSizes[$('#from_colunas option').index($(this))] + espace;
@@ -237,8 +206,8 @@
 			    var option = $('#from_colunas option[value=' + $(this).val() + ']');
 			    totalSize += colunasSizes[$('#from_colunas option').index(option)] + espace;
 			});
-
-			return (totalSize <= maxSize);
+			alert(totalSize);
+			$("#aviso").toggle(totalSize > maxSize);
 		}
 		
 		function next()
@@ -295,7 +264,7 @@
 		<fieldset class="fieldsetPadrao" style="width:578px; padding: 10px; padding-top: 0">
 			<ul>
 				<legend>Configurações de impressão</legend><br>
-
+				
 				<@ww.textfield label="Título" id="titulo" name="configuracaoRelatorioDinamico.titulo" maxLength="100" cssStyle="width:542px;"/>
 				<div class="pickListFrom">Campos disponíveis</div>
 				<div class="pickListTo">Campos selecionados</div>
@@ -306,9 +275,10 @@
 					<img border="0" onClick="prev();" title="Subir campo(s) selecionado(s)" src="<@ww.url value="/imgs/up.gif"/>">
 					<img border="0" onClick="next();" title="Baixar campo(s) selecionado(s)" src="<@ww.url value="/imgs/down.gif"/>">
 				</div>
-				
+
 				<img border="0" class="saveLayout" onClick="salvarLayout();" title="Salvar layout do relatório" src="<@ww.url value="/imgs/saveLayout.gif"/>">
 				<div style="clear: both"></div>
+				<div class="actionMessage" id="aviso">Limite de campos para o relatório em PDF foi excedido.<br>Motivo: Largura máxima excedida.</div>
 			</ul>
 		</fieldset>
 	
@@ -318,6 +288,7 @@
 
 	<div class="buttonGroup">
 		<button class="btnRelatorio" onclick="return validarCampos();"></button>
+		<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'relatorioDinamicoXLS.action');validarCampos();"></button>
 	</div>
 </body>
 </html>

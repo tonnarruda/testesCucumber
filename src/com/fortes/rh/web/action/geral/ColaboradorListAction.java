@@ -83,6 +83,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Map situacaosIntegraAC = new SituacaoColaboradorIntegraAC();
 	private String situacao;
 
+	private Collection<String> dinamicColumns;
+	private Collection<String> dinamicProperts;
 
 	private Map statusRetornoACs = new StatusRetornoAC();
 	private boolean integraAc;
@@ -272,10 +274,16 @@ public class ColaboradorListAction extends MyActionSupportList
 	            parametros = RelatorioUtil.getParametrosRelatorio(configuracaoRelatorioDinamico.getTitulo(), getEmpresaSistema(), null);
 	            
 	            Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
-
+	        
+				reportFilter = "Período :";
+				reportTitle = "Relatório de Admitidos";
+	            
 	            int count = 1;
 	            for (ReportColumn coluna : colunasMarcadasRedimensionadas)
 	            {
+	            	dinamicColumns.add(coluna.getName());  
+	            	dinamicProperts.add(coluna.getProperty());  
+	            	
             		parametros.put("TITULO" + (count), coluna.getName());
             		
 	            	valueWidth = coluna.getSize();
@@ -317,6 +325,47 @@ public class ColaboradorListAction extends MyActionSupportList
 			
 			prepareRelatorioDinamico();
  			return Action.INPUT;
+		}
+	}
+	
+	public String relatorioDinamicoXLS() throws Exception
+	{
+		try
+		{
+			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
+			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
+			camposExtras.setId(1l);
+			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField);
+			
+			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
+			reportTitle = configuracaoRelatorioDinamico.getTitulo();
+			
+			dinamicColumns = new ArrayList<String>();
+			dinamicProperts = new ArrayList<String>();
+			
+			montaColunas();
+			for (String marcada : colunasMarcadas) 
+			{
+				for (ReportColumn coluna : colunas) 
+				{
+					if(marcada.equals(coluna.getProperty()))
+					{
+						dinamicColumns.add(coluna.getName());  
+						dinamicProperts.add(coluna.getProperty());
+						break;
+					}
+				}
+			}
+			
+			return Action.SUCCESS;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionMessage("Não foi possível gerar o relatório");
+			
+			prepareRelatorioDinamico();
+			return Action.INPUT;
 		}
 	}
 	
@@ -816,6 +865,14 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
+	}
+
+	public String getDinamicColumns() {
+		return StringUtil.converteCollectionToString(dinamicColumns);
+	}
+
+	public String getDinamicProperts() {
+		return StringUtil.converteCollectionToString(dinamicProperts);
 	}
 
 	
