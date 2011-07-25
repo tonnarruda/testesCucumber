@@ -24,13 +24,7 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
-			CargoDWR.getByEmpresa(createListCargos, empresaId);
 			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId);
-		}
-	
-		function createListCargos(data)
-		{
-			addChecks('cargosCheck',data)
 		}
 		
 		function createListConhecimentos(data)
