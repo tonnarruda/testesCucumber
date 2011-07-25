@@ -59,6 +59,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private String urlVoltar;
 	private String nomeComercialEntreParentese = "";
 	private boolean exibirBotaoConcluir;
+	private boolean ocultarBotaoVoltar;
 
 	private TipoPergunta tipoPergunta = new TipoPergunta();
 	private TipoQuestionario tipoQuestionario = new TipoQuestionario();
@@ -455,6 +456,14 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
+	}
+
+	public boolean isOcultarBotaoVoltar() {
+		return ocultarBotaoVoltar;
+	}
+
+	public void setOcultarBotaoVoltar(boolean ocultarBotaoVoltar) {
+		this.ocultarBotaoVoltar = ocultarBotaoVoltar;
 	}
 	
 }

@@ -745,19 +745,23 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		query.executeUpdate();
 	}
 
-	public Collection<Long> findIdsExibidosNaPerformanceProfissional(Long colaboradorId) {
+	public Collection<ColaboradorQuestionario> findByColaborador(Long colaboradorId) {
 		
 		Criteria criteria = getSession().createCriteria(Pesquisa.class, "p");
 		criteria.createCriteria("p.questionario", "q", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("q.colaboradorQuestionario", "cq", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("q.colaboradorQuestionarios", "cq", CriteriaSpecification.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("q.id"), "projectionQuestionarioId");
+		p.add(Projections.property("q.titulo"), "projectionQuestionarioTitulo");
+		p.add(Projections.property("q.dataInicio"), "projectionQuestionarioDataInicio");
+		p.add(Projections.property("q.dataFim"), "projectionQuestionarioDataFim");
 
+		criteria.add(Expression.eq("cq.respondida", true));
 	    criteria.add(Expression.eq("p.exibirPerformanceProfissional", true));
 	    criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
 
-		criteria.addOrder(Order.asc("c.respondidaEm"));
+		criteria.addOrder(Order.asc("q.dataInicio"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
 		return criteria.list();

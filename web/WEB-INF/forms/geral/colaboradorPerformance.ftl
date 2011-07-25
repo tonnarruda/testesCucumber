@@ -267,6 +267,26 @@
 		</ul>
 	</li>
 	
+	<li id="14" class="cabecalhoBox">
+		<h4><a href="javascript:return false;"  class="linkBox">Pesquisas</a></h4>
+		<ul id="box14" class="box">
+		<table class="grade">
+			<tr>
+				<td>
+				<@display.table name="pesquisas" id="pesquisa" class="dados">
+					<@display.column property="questionario.periodoFormatado" title="Período" style="width: 90px;"/>
+					<@display.column title="Título" style="width: 500px">
+						<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasPorColaboradorPerformanceProfissional.action?questionario.id=${pesquisa.questionario.id}&colaboradorId=${colaborador.id}&ocultarBotaoVoltar=true', 600, 1000)">
+							${pesquisa.questionario.titulo}
+						</a>
+					</@display.column>
+				</@display.table>
+				</td>
+			</tr>
+		</table>
+		</ul>
+	</li>
+	
 	<li id="3" class="cabecalhoBox">
 		<h4><a href="javascript:return false;"  class="linkBox">Acompanhamento do Período de Experiência</a></h4>
 		<ul id="box3" class="box">
@@ -522,22 +542,6 @@
 			</ul>
 		</#if>
 	</li>
-	
-		
-	<li  id="14" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Pesquisa</a></h4>
-		<ul  id="box7" class="box">
-		<table class="grade">
-			<tr>
-				<td>
-					<a href="../../pesquisa/colaboradorQuestionario/visualizarRespostasPorColaborador.action?questionario.id=1803&colaboradorId=65" class="ativaSimples">Documentos</a>
-				</td>
-			</tr>
-		</table>
-		</ul>
-	</li>
-	
-	
 </ul>
 	<div class="buttonGroup">
 		<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar" accesskey="V"></button>

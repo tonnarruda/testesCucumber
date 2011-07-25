@@ -36,7 +36,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js"/>'></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>"></script>
+	<script type="text/javascript" src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
@@ -44,12 +44,11 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/colaborador.js"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js"/>"></script>
-
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js"/>"></script>
+	<script type="text/javascript" src="jsr_class.js"></script>
 	
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/calendar.js"/>"></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/lang/calendar-pt.js"/>"></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/calendar-setup.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.form.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
@@ -88,7 +87,11 @@
 		}
 		
 		$(function() {
-			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');			
+			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
+			
+			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
+			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
+			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');			
 		});
 		
 	</script>

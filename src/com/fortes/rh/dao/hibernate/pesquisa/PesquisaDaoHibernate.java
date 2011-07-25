@@ -27,6 +27,7 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("p.id"), "id");
+		p.add(Projections.property("p.exibirPerformanceProfissional"), "exibirPerformanceProfissional");
 		p.add(Projections.property("q.id"), "projectionQuestionarioId");
 		p.add(Projections.property("q.dataInicio"), "projectionQuestionarioDataInicio");
 		p.add(Projections.property("q.dataFim"), "projectionQuestionarioDataFim");

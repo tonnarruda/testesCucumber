@@ -61,5 +61,5 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 
 	void excluirColaboradorQuestionarioByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 
-	Collection<Long> findIdsExibidosNaPerformanceProfissional(Long colaboradorId);
+	Collection<ColaboradorQuestionario> findByColaborador(Long colaboradorId);
 }

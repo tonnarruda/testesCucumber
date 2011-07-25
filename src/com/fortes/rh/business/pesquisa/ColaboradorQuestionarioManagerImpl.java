@@ -426,9 +426,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().countByQuestionarioRespondido(questionarioId);
 	}
 
-	public Collection<Long> findIdsExibidosNaPerformanceProfissional(Long colaboradorId) {
+	public Collection<ColaboradorQuestionario> findByColaborador(Long colaboradorId) {
 	
-		return getDao().findIdsExibidosNaPerformanceProfissional(colaboradorId);
+		return getDao().findByColaborador(colaboradorId);
 	}
 
 	

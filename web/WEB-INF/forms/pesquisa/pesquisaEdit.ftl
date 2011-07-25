@@ -26,12 +26,12 @@
 
 <script type="text/javascript" >
 		$(function() {
-			abilitaExibirPerformaceProficional();
+			abilitaExibirPerformanceProfissional();
 		});
 		
-		function abilitaExibirPerformaceProficional()
+		function abilitaExibirPerformanceProfissional()
 		{
-			$('#exibirPerformaceProficional').attr('disabled', $('#anonima').val()=='true');
+			$('#exibirPerformanceProfissional').attr('disabled', $('#anonima').val()=='true');
 		}
 </script>
 
@@ -65,8 +65,8 @@
 			<@ww.hidden name="pesquisa.questionario.anonimo" />
 		</#if>
 		
-		<@ww.select label="Pesquisa Anônima" disabled="${anonimoDisabled}" title="${anonimoTitle}" name="pesquisa.questionario.anonimo" id="anonima" list=r"#{true:'Sim',false:'Não'}" required="true" headerKey="" headerValue="" onchange="abilitaExibirPerformaceProficional();"/>
-		<@ww.checkbox label="Exibir em Performace Proficional" id="exibirPerformaceProficional" name="pesquisa.exibirPerformanceProfissional"  labelPosition="left"/>
+		<@ww.select label="Pesquisa Anônima" disabled="${anonimoDisabled}" title="${anonimoTitle}" name="pesquisa.questionario.anonimo" id="anonima" list=r"#{true:'Sim',false:'Não'}" required="true" headerKey="" headerValue="" onchange="abilitaExibirPerformanceProfissional();"/>
+		<@ww.checkbox label="Exibir em Performance Profissional" id="exibirPerformanceProfissional" name="pesquisa.exibirPerformanceProfissional"  labelPosition="left"/>
 
 		<@ww.hidden name="pesquisa.id" />
 	    <@ww.hidden name="pesquisa.questionario.id" />

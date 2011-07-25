@@ -180,7 +180,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private Collection<DocumentoAnexo> documentoAnexosCandidato;
 	private Collection<HistoricoCandidato> historicosCandidatoByColaborador;
 	private Collection<Cat> catsColaborador;
-	private Collection<Long> questionariosIds;
+	private Collection<ColaboradorQuestionario> pesquisas;
 	private Collection<ParticipacaoColaboradorCipa> participacoesNaCipaColaborador;
 	private Map vinculos;
 	private Map sexos;
@@ -744,7 +744,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			avaliacaoDesempenhos = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), true);
 			
-			questionariosIds = colaboradorQuestionarioManager.findIdsExibidosNaPerformanceProfissional(colaborador.getId());
+			pesquisas = colaboradorQuestionarioManager.findByColaborador(colaborador.getId());
 			
 			avaliacaoExperiencias = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), false);
 			
@@ -1563,8 +1563,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 
-	public Collection<Long> getQuestionariosIds() {
-		return questionariosIds;
+	public Collection<ColaboradorQuestionario> getPesquisas() {
+		return pesquisas;
 	}
 	
 	public boolean isChecarCandidatoMesmoCpf() {

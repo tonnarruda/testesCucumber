@@ -25,80 +25,67 @@ public class Pesquisa extends AbstractModel implements Serializable, Cloneable
     //Projections
     public void setProjectionQuestionarioId(Long projectionQuestionarioId)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-
+    	inicializaQuestionario();
     	this.questionario.setId(projectionQuestionarioId);
     }
 
     public void setProjectionQuestionarioCabecalho(String projectionQuestionarioCabecalho)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-
+    	inicializaQuestionario();
     	this.questionario.setCabecalho(projectionQuestionarioCabecalho);
     }
     
     public void setProjectionQuestionarioAnonimo(boolean projectionQuestionarioAnonimo)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-    	
+    	inicializaQuestionario();
     	this.questionario.setAnonimo(projectionQuestionarioAnonimo);
     }
     
     public void setProjectionQuestionarioLiberado(boolean projectionQuestionarioLiberado)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-    	
+    	inicializaQuestionario();
     	this.questionario.setLiberado(projectionQuestionarioLiberado);
     }
     
     public void setProjectionQuestionarioTitulo(String projectionQuestionarioTitulo)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-    	
+    	inicializaQuestionario();
     	this.questionario.setTitulo(projectionQuestionarioTitulo);
     }
     
     public void setProjectionQuestionarioTipo(int projectionQuestionarioTipo)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-    	
+    	inicializaQuestionario();
     	this.questionario.setTipo(projectionQuestionarioTipo);
     }
 
     public void setProjectionQuestionarioAplicarPorAspecto(boolean projectionQuestionarioAplicarPorAspecto)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-    	
+    	inicializaQuestionario();
     	this.questionario.setAplicarPorAspecto(projectionQuestionarioAplicarPorAspecto);
     }
     
     public void setProjectionQuestionarioDataInicio(Date projectionQuestionarioDataInicio)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-    	
+    	inicializaQuestionario();
     	this.questionario.setDataInicio(projectionQuestionarioDataInicio);
     }
 
+	private void inicializaQuestionario() {
+		if(this.questionario == null)
+    		this.questionario = new Questionario();
+	}
+
     public void setProjectionQuestionarioDataFim(Date projectionQuestionarioDataFim )
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	inicializaQuestionario();
     	
     	this.questionario.setDataFim(projectionQuestionarioDataFim);
     }
     
     public void setProjectionQuestionarioEmpresaId(Long projectionQuestionarioEmpresaId)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	inicializaQuestionario();
     	
     	if(this.questionario.getEmpresa() == null)
     		this.questionario.setEmpresa(new Empresa());
@@ -108,8 +95,7 @@ public class Pesquisa extends AbstractModel implements Serializable, Cloneable
     
     public void setProjectionEmailRemetente(String projectionEmailRemetente)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	inicializaQuestionario();
     	
     	if(this.questionario.getEmpresa() == null)
     		this.questionario.setEmpresa(new Empresa());
@@ -119,8 +105,7 @@ public class Pesquisa extends AbstractModel implements Serializable, Cloneable
 
     public void setProjectionEmailRespRH(String projectionEmailRespRH)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	inicializaQuestionario();
     	
     	if(this.questionario.getEmpresa() == null)
     		this.questionario.setEmpresa(new Empresa());
