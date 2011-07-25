@@ -17,11 +17,11 @@ Funcionalidade: Cadastrar Estabelecimento
     E eu clico no botão "Inserir"
     E eu preencho "Nome" com "matriz"
     E eu preencho "complementoCnpj" com "0001"
-    E eu preencho "CEP" com "60140-140"
+    E eu preencho o campo (JS) "CEP" com "60140-140"
     E eu saio do campo "CEP"
+    E eu espero 5 segundos
     E eu preencho "num" com "123"
     E eu preencho "Complemento" com "sala 1001"
-    E eu espero 2 segundos
     E eu clico no botão "Gravar"
     Então eu devo ver o título "Cadastro de Estabelecimentos"
     Então eu devo ver "matriz"
