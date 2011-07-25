@@ -222,7 +222,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private char statusCandSol;
 	private String obsACPessoal;
-
+	
+	private boolean checarCandidatoMesmoCpf = true;
+	private boolean vincularCandidatoMesmoCpf;
 	
 	private void prepare() throws Exception
 	{
@@ -702,11 +704,17 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		
 		if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
 		{
+			candidato = candidatoManager.findByCPF(colaborador.getPessoal().getCpf(), colaborador.getEmpresa().getId());
+			if (candidato != null && checarCandidatoMesmoCpf)
+				return Action.INPUT;
+			
 			colaborador.setColaboradorIdiomas(colaboradorIdiomaManager.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()}));
 			colaborador.setExperiencias(experienciaManager.findByColaborador(colaborador.getId()));
 			colaborador.setFormacao(formacaoManager.findByColaborador(colaborador.getId()));
 
-			candidato = candidatoManager.criarCandidatoByColaborador(colaborador);
+			if (!vincularCandidatoMesmoCpf)
+				candidato = candidatoManager.criarCandidatoByColaborador(colaborador);
+			
 			colaborador.setCandidato(candidato);
 
 			colaboradorManager.update(colaborador);
@@ -1559,4 +1567,19 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return questionariosIds;
 	}
 	
+	public boolean isChecarCandidatoMesmoCpf() {
+		return checarCandidatoMesmoCpf;
+	}
+	
+	public void setChecarCandidatoMesmoCpf(boolean checarCandidatoMesmoCpf) {
+		this.checarCandidatoMesmoCpf = checarCandidatoMesmoCpf;
+	}
+
+	public boolean isVincularCandidatoMesmoCpf() {
+		return vincularCandidatoMesmoCpf;
+	}
+
+	public void setVincularCandidatoMesmoCpf(boolean vincularCandidatoMesmoCpf) {
+		this.vincularCandidatoMesmoCpf = vincularCandidatoMesmoCpf;
+	}
 }
