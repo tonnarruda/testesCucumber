@@ -117,8 +117,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		CollectionUtil<Long> cl = new CollectionUtil<Long>();
 
-		Collection<HistoricoColaborador> historicoTmp = (Collection<HistoricoColaborador>) getDao().findByCargosIds(page, pagingSize,
-				cl.convertArrayToCollection(cargoIds), empresaId, colaborador);
+		Collection<HistoricoColaborador> historicoTmp = (Collection<HistoricoColaborador>) getDao().findByCargosIds(page, pagingSize, cl.convertArrayToCollection(cargoIds), empresaId, colaborador);
 		Collection<Colaborador> colaboradoresFiltroVecDistinct = distinctColaboradores(historicoTmp);
 
 		return colaboradoresFiltroVecDistinct;

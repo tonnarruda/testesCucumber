@@ -1495,7 +1495,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorBusca.setNome("dro j");
 		colaboradorBusca.setMatricula("2E3");
 		colaboradorBusca.getPessoal().setCpf("000");
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(areaIds, 1, 10, colaboradorBusca, empresa.getId());
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(areaIds, 1, 10, colaboradorBusca, null, null, empresa.getId());
 
 		assertEquals(1, colaboradores.size());
 		Colaborador retorno = (Colaborador) colaboradores.toArray()[0];
@@ -1507,7 +1507,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		//Teste findByAreaOrganizacionalIds
 		Long[] areasIds = new Long[]{areaOrganizacional.getId()};
-		colaboradores = colaboradorDao.findByAreaOrganizacionalIds(1, 10, areasIds, null, areaOrganizacional.getEmpresa().getId());
+		colaboradores = colaboradorDao.findByAreaOrganizacionalIds(1, 10, areasIds, null, null, null, areaOrganizacional.getEmpresa().getId());
 		assertEquals(1, colaboradores.size());
 
 		//Teste findByAreaOrganizacionalIds
@@ -1517,6 +1517,63 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		//Teste findByArea
 		colaboradores = colaboradorDao.findByArea(areaOrganizacional);
 		assertEquals(1, colaboradores.size());
+	}
+	
+	public void testFindByAreaOrganizacionalIdsPorPeriodoAdmissao()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Colaborador jose = getColaborador();
+		jose.setEmpresa(empresa);
+		jose.setNome("jose");
+		jose.setMatricula("12e3456789");
+		jose.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2011));
+		colaboradorDao.save(jose);
+
+		Colaborador joao = getColaborador();
+		joao.setEmpresa(empresa);
+		joao.setNome("joao");
+		joao.setMatricula("12e3456999");
+		joao.setDataAdmissao(DateUtil.criarDataMesAno(7, 7, 2011));
+		colaboradorDao.save(joao);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacional.setEmpresa(empresa);
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+		
+		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
+		grupoOcupacional = grupoOcupacionalDao.save(grupoOcupacional);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setGrupoOcupacional(grupoOcupacional);
+		cargo = cargoDao.save(cargo);
+
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		
+		HistoricoColaborador historicoJose = HistoricoColaboradorFactory.getEntity();
+		historicoJose.setData(DateUtil.criarDataMesAno(1, 1, 2011));
+		historicoJose.setColaborador(jose);
+		historicoJose.setAreaOrganizacional(areaOrganizacional);
+		historicoJose.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorDao.save(historicoJose);
+
+		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity();
+		historicoJoao.setData(DateUtil.criarDataMesAno(7, 7, 2011));
+		historicoJoao.setColaborador(joao);
+		historicoJoao.setAreaOrganizacional(areaOrganizacional);
+		historicoJoao.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorDao.save(historicoJoao);
+		
+		Colaborador colaboradorBusca = new Colaborador();
+		Date dataAdmissaoIni = DateUtil.criarDataMesAno(6, 6, 2011);
+		Date dataAdmissaoFim = DateUtil.criarDataMesAno(8, 8, 2011);
+		
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(null, null, new Long[]{ areaOrganizacional.getId() }, colaboradorBusca, dataAdmissaoIni, dataAdmissaoFim, empresa.getId());
+		assertEquals(1, colaboradores.size());
+		assertEquals(joao, colaboradores.toArray()[0]);
 	}
 	
 	public void testFindByAreaOrganizacional()

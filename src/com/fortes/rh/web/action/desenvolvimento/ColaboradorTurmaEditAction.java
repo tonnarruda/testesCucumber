@@ -4,6 +4,7 @@ import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -107,6 +108,9 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 
 	private boolean gestor;
 	private boolean exibeFiltro;
+	
+	private Date dataAdmissaoIni;
+	private Date dataAdmissaoFim;
 
 	// Indica se a requisição veio do plano de treinamento
 	private boolean planoTreinamento;
@@ -190,7 +194,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	{
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 		totalSize = 10000;
-		colaboradorTurmas = colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, colaborador, empresaId);
+		colaboradorTurmas = colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId);
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 
 		return prepareInsert();
@@ -789,5 +793,21 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
+	}
+
+	public Date getDataAdmissaoIni() {
+		return dataAdmissaoIni;
+	}
+
+	public void setDataAdmissaoIni(Date dataAdmissaoIni) {
+		this.dataAdmissaoIni = dataAdmissaoIni;
+	}
+
+	public Date getDataAdmissaoFim() {
+		return dataAdmissaoFim;
+	}
+
+	public void setDataAdmissaoFim(Date dataAdmissaoFim) {
+		this.dataAdmissaoFim = dataAdmissaoFim;
 	}
 }

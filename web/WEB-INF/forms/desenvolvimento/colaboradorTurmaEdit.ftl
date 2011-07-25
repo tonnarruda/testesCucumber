@@ -7,6 +7,8 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
+	
+	<#include "../ftl/mascarasImports.ftl" />
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -31,7 +33,7 @@
 			else if(document.getElementById('divColaboradors').style.display != 'none')
 				document.getElementById('filtrarPor').value = 4;
 
-			validaFormulario('form', null, null);
+			validaFormularioEPeriodo('form', false, new Array('admIni', 'admFim'));
 		}
 
 		function marcarDesmarcar(frm)
@@ -126,6 +128,15 @@
 	<#assign classHidden="">
 </#if>
 
+<#assign dataAdmIni=""/>
+<#if dataAdmissaoIni?exists>
+	<#assign dataAdmIni=dataAdmissaoIni?date/>
+</#if>
+<#assign dataAdmFim=""/>
+<#if dataAdmissaoFim?exists>
+	<#assign dataAdmFim=dataAdmissaoFim?date/>
+</#if>
+
 </head>
 
 <body>
@@ -136,6 +147,12 @@
 		<@ww.form name="form" action="listFiltro.action" onsubmit="enviaForm();" method="POST" id="formBusca">
 
             <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="populaAreas(this.value);" disabled="!compartilharColaboradores"/>
+			
+			<label>Data de Admissão:</label><br />
+			<@ww.datepicker name="dataAdmissaoIni" value="${dataAdmIni}" id="admIni" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+			<@ww.label value="a" liClass="liLeft" />
+			<@ww.datepicker name="dataAdmissaoFim" value="${dataAdmFim}" id="admFim" cssClass="mascaraData validaDataFim"/>
+			
 			<@ww.textfield label="Nome do Colaborador" id="nome" name="colaborador.nome" maxLength="100" cssStyle="width: 500px;" />
 			<@ww.textfield label="Matrícula do Colaborador" id="matricula" name="colaborador.matricula" maxLength="20" cssStyle="width: 170px;"/>
 
@@ -160,7 +177,7 @@
 				</span>
 			-->
 
-			<input type="submit" value="" class="btnPesquisar grayBGE" />
+			<input type="button" onclick="enviaForm();" value="" class="btnPesquisar grayBGE" />
 
 			<@ww.hidden name="colaboradorTurma.id" />
 			<@ww.hidden name="turma.id" />
