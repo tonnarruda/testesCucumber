@@ -1,3 +1,11 @@
+.btnSim{
+	background-image:url(../imgs/btnSim.gif);
+	width: 63px !important;
+}
+.btnNao{
+	background-image:url(../imgs/btnNao.gif);
+	width: 61px !important;
+}
 .btnRelatorioPorCriterio{
 	background-image:url(../imgs/btnRelatorioPorcriterio.gif);
 	width: 171px !important;
@@ -631,7 +639,9 @@
 .btnListagemColaborador,
 .btnCarregar,
 .btnAutoAvaliacoesEmLote,
-.btnAutoAvaliacoesEmLoteDesabilitado
+.btnAutoAvaliacoesEmLoteDesabilitado,
+.btnSim,
+.btnNao
 {
 	border: 0;
 	background-repeat: no-repeat;
