@@ -308,10 +308,10 @@ public class CandidatoListAction extends MyActionSupportList
 			}
 		}
 		
-		pupulaEmpresas();
+		populaEmpresas();
 	}
 
-	private void pupulaEmpresas() {
+	private void populaEmpresas() {
 		compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
         empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
 	}
@@ -330,11 +330,12 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String prepareBuscaSimples() throws Exception
 	{
-		pupulaEmpresas();
+		populaEmpresas();
+		empresaId = getEmpresaSistema().getId();
+		cargosCheckList = cargoManager.populaCheckBox(empresaId);
 
 		if(montaFiltroBySolicitacao)
 		{
-			empresaId = getEmpresaSistema().getId();
 			solicitacao = solicitacaoManager.findByIdProjection(solicitacao.getId());
 
 			if(solicitacao.getCidade() != null)
@@ -356,7 +357,6 @@ public class CandidatoListAction extends MyActionSupportList
 			conhecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(conhecimentosCheckList, conhecimentosCheck);
 		}
 
-		cargosCheckList = cargoManager.populaCheckBox(empresaId);
 		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(empresaId);
 		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
 
