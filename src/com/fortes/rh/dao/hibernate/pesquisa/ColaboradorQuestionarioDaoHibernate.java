@@ -25,6 +25,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Pesquisa;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<ColaboradorQuestionario> implements ColaboradorQuestionarioDao
@@ -742,5 +743,23 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
 		
 		query.executeUpdate();
+	}
+
+	public Collection<Long> findIdsExibidosNaPerformanceProfissional(Long colaboradorId) {
+		
+		Criteria criteria = getSession().createCriteria(Pesquisa.class, "p");
+		criteria.createCriteria("p.questionario", "q", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("q.colaboradorQuestionario", "cq", CriteriaSpecification.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("q.id"), "projectionQuestionarioId");
+
+	    criteria.add(Expression.eq("p.exibirPerformanceProfissional", true));
+	    criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
+
+		criteria.addOrder(Order.asc("c.respondidaEm"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
+		return criteria.list();
 	}
 }

@@ -530,7 +530,7 @@
 		<table class="grade">
 			<tr>
 				<td>
-					<a href="../../pesquisa/questionario/prepareAplicar.action?questionario.id=116&preview=true" class="ativaSimples">Documentos</a>
+					<a href="../../pesquisa/colaboradorQuestionario/visualizarRespostasPorColaborador.action?questionario.id=1803&colaboradorId=65" class="ativaSimples">Documentos</a>
 				</td>
 			</tr>
 		</table>
