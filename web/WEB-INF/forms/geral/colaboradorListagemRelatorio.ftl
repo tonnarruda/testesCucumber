@@ -111,23 +111,9 @@
 				ieBg: ieBg
 			});
 			
-			$("#from_colunas option").dblclick(function(opt) {
-				sizeOk();
-					
-					
-				$("#colunas option[value='nome']").dblclick(function(e) {
-					sizeOk();
-				});
-			});
-			
-			$("#b_to_colunas").click(function(e) {
-				sizeOk();
-			});
-
-			$("#b_from_colunas").click(function(e) {
-				sizeOk();
-			});
-			
+			$("#colunas, #from_colunas").dblclick(sizeOk).find("option");
+			$("#b_to_colunas, #b_from_colunas").click(sizeOk);
+						
 			var configuracaoRelatorioDinamico = '${configuracaoRelatorioDinamico.campos}';
 			
 			$(configuracaoRelatorioDinamico.split(',')).each(function (){
@@ -206,7 +192,7 @@
 			    var option = $('#from_colunas option[value=' + $(this).val() + ']');
 			    totalSize += colunasSizes[$('#from_colunas option').index(option)] + espace;
 			});
-			alert(totalSize);
+
 			$("#aviso").toggle(totalSize > maxSize);
 		}
 		
