@@ -1721,7 +1721,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		  (select max(hc2.data) ");
 		hql.append("		   from HistoricoColaborador as hc2 ");
 		hql.append("		   where hc2.colaborador.id = co.id ");
-		hql.append("			     and hc2.data <= :hoje " );
+		//hql.append("			     and hc2.data <= :hoje " );
 		
 		if (statusRetornoAC !=null)
 			hql.append("  				 and hc2.status = :statusHistColab ");
@@ -1736,8 +1736,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("status", StatusRetornoAC.CANCELADO);
 		
 		if (statusRetornoAC !=null)
-			query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
-
+			query.setInteger("statusHistColab", statusRetornoAC);
+		
 		return (Colaborador) query.uniqueResult();
 	}
 
@@ -2758,7 +2758,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("	where hc2.status in (:status)  ");
 		sql.append("	group by ");
 		sql.append("	hc2.colaborador_id ");
-		sql.append("	having count(hc2.id) = 1 ");
+		//sql.append("	having count(hc2.id) = 1 ");
 		sql.append(") subJoinMaxData ");
 		sql.append("on colabId1 = colab_.id ");
 		sql.append("where ");

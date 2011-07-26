@@ -159,7 +159,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		if(situacao == null)
 			situacao = "A";
 
-		Map parametros = new HashMap();
+		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("nomeBusca", nomeBusca);
 		parametros.put("nomeComercialBusca", nomeComercialBusca);
 		parametros.put("cpfBusca", cpfBusca);
@@ -287,16 +287,10 @@ public class ColaboradorListAction extends MyActionSupportList
 	            parametros = RelatorioUtil.getParametrosRelatorio(configuracaoRelatorioDinamico.getTitulo(), getEmpresaSistema(), null);
 	            
 	            Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
-	        
-				reportFilter = "Período :";
-				reportTitle = "Relatório de Admitidos";
 	            
 	            int count = 1;
 	            for (ReportColumn coluna : colunasMarcadasRedimensionadas)
 	            {
-	            	dinamicColumns.add(coluna.getName());  
-	            	dinamicProperts.add(coluna.getProperty());  
-	            	
             		parametros.put("TITULO" + (count), coluna.getName());
             		
 	            	valueWidth = coluna.getSize();

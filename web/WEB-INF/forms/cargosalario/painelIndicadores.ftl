@@ -40,9 +40,13 @@
 				
 				$('#mediaAbsenteismo').text('Absenteísmo: ' + (somaAbsenteismo / absenteismo.length).toFixed(4));
 				
-				montaLine(absenteismo, "#evolucaoAbsenteismo");
-				montaLine(turnover, "#evolucaoTurnover");
-				
+				var opt = {
+			        yaxis: { 
+			        	tickFormatter: function (v) { return v.toFixed(4).replace(/,/g,'#').replace(/\./g,',').replace(/#/g,'.'); } 
+			        }
+				}
+				montaLine(absenteismo, "#evolucaoAbsenteismo", opt);
+				montaLine(turnover, "#evolucaoTurnover", opt);
 			});
 							
 			function showTooltip(x, y, contents) 

@@ -253,12 +253,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 		if(colaborador != null && colaborador.getId() != null)
 		{
-			colaborador = (Colaborador) colaboradorManager.findByIdComHistoricoConfirmados(colaborador.getId());
+			Long colaboradorId = colaborador.getId();
+			colaborador = (Colaborador) colaboradorManager.findByIdComHistoricoConfirmados(colaboradorId);
 
-			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
+			historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorId);
+
+			if (historicoColaborador == null)
+				historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaboradorId);
 			
 			if (historicoColaborador == null)
-				historicoColaborador = historicoColaboradorManager.getHistoricoContratacaoAguardando(colaborador.getId());
+				historicoColaborador = historicoColaboradorManager.getHistoricoContratacaoAguardando(colaboradorId);
 
 			colaborador.setFuncao(historicoColaborador.getFuncao());
 
@@ -269,7 +273,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 			
-			colaborador.setFoto(colaboradorManager.getFoto(colaborador.getId()));
+			colaborador.setFoto(colaboradorManager.getFoto(colaboradorId));
 			
 			if(habilitaCampoExtra && colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
 				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());

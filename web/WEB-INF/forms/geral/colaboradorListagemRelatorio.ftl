@@ -157,8 +157,10 @@
 			addChecks('areaOrganizacionalsCheck',data);
 		}
 	
-		function validarCampos()
+		function validarCampos(action)
 		{
+			$('form[name=form]').attr('action', action);
+		
 			if($('#colunas option').length < 1)
 			{
 				alterBackground('#FFEEC2');
@@ -194,6 +196,11 @@
 			});
 
 			$("#aviso").toggle(totalSize > maxSize);
+			
+			if (totalSize > maxSize)
+				$("#btnRelatorio").attr('class', 'btnRelatorioDesabilitado').attr('onclick','').unbind('click');
+			else
+				$("#btnRelatorio").attr('class', 'btnRelatorio').click(function() { return validarCampos('relatorioDinamico.action'); });
 		}
 		
 		function next()
@@ -273,8 +280,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnRelatorio" onclick="return validarCampos();"></button>
-		<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'relatorioDinamicoXLS.action');validarCampos();"></button>
+		<button class="btnRelatorio" id="btnRelatorio" onclick="return validarCampos('relatorioDinamico.action');"></button>
+		<button class="btnRelatorioExportar" onclick="return validarCampos('relatorioDinamicoXLS.action');"></button>
 	</div>
 </body>
 </html>
