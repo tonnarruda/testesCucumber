@@ -253,6 +253,11 @@
 	background-image:url(../imgs/btnRelatorio.gif);
 	width: 90px !important;
 }
+.btnRelatorioDesabilitado
+{
+	background-image:url(../imgs/btnRelatorioDesabilitado.gif);
+	width: 90px !important;
+}
 .btnRelatorioExportar
 {
 	background-image:url(../imgs/btn_exportar.gif);
@@ -582,6 +587,7 @@
 .btnImportar,
 .btnAvancarDesabilitado,
 .btnRelatorio,
+.btnRelatorioDesabilitado,
 .btnRelatorioExportar,
 .btnVoltarParaAListaDePesquisas,
 .btnVoltarParaAListaDeAvaliacoes,

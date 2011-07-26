@@ -274,16 +274,10 @@ public class ColaboradorListAction extends MyActionSupportList
 	            parametros = RelatorioUtil.getParametrosRelatorio(configuracaoRelatorioDinamico.getTitulo(), getEmpresaSistema(), null);
 	            
 	            Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
-	        
-				reportFilter = "Período :";
-				reportTitle = "Relatório de Admitidos";
 	            
 	            int count = 1;
 	            for (ReportColumn coluna : colunasMarcadasRedimensionadas)
 	            {
-	            	dinamicColumns.add(coluna.getName());  
-	            	dinamicProperts.add(coluna.getProperty());  
-	            	
             		parametros.put("TITULO" + (count), coluna.getName());
             		
 	            	valueWidth = coluna.getSize();
