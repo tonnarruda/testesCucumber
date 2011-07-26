@@ -49,7 +49,7 @@ public class CodigoCBOEditActionTest extends MockObjectTestCase
 
 	private void dadoQueExistemRegistrosDeCBOsCadastradosNoBanco() {
 		codigoCBOManagerMock.expects(once()).method("buscaCodigosCBO")
-			.with(eq("COD"), eq("DESCRICAO"))
+			.with(eq("DESCRICAO"))
 			.will(returnValue(Collections.singleton(new CodigoCBO("COD", "DESCRICAO"))));
 	}
 

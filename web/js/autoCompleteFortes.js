@@ -5,7 +5,7 @@ function ajaxData(urlFind){
 					dataType: "json",
 				type: "POST",
 				data: { 
-				term: request.term
+				descricao: request.term
 				},
 				success: function( data ) {
 					response( $.map( data, function( item ) {
@@ -25,11 +25,9 @@ function ajaxData(urlFind){
 		};
 }
 
-function renderData(){
-	return function( ul, item ) {
-				return $( "<li></li>" )
-					.data( "item.autocomplete", item )
-					.append( "<a>" + item.label + "</a>" )
-					.appendTo( ul );
-		};
+var renderData = function(ul, item) {
+	return $( "<li></li>" )
+				.data( "item.autocomplete", item )
+				.append( "<a>" + item.label + "</a>" )
+				.appendTo( ul );
 }

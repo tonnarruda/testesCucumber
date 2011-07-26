@@ -22,17 +22,17 @@
 	
 	<script type='text/javascript'>
 		var urlFind = "<@ww.url includeParams="none" value="/geral/colaborador/find.action"/>";
-		var ajaxData = ajaxData(urlFind);
-		var renderData = renderData();
 		
 		$(function() {
+			
 			$("#colaborador").autocomplete({
-				source: ajaxData ,				 
+				source: ajaxData(urlFind),				 
 				minLength: 3,
 				select: function( event, ui ) { 
 					$("#colaboradorId").val(ui.item.id); 
 				}
 			}).data( "autocomplete" )._renderItem = renderData;
+			
 		});
 	</script>
 

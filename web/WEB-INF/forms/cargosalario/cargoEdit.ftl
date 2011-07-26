@@ -23,6 +23,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js"/>'></script>
 	
 	<style type="text/css">
 	    @import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
@@ -31,7 +32,6 @@
     </style>
 	
 	<script language='javascript'>
-
 		function populaCHA(frm, nameCheck)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -66,82 +66,14 @@
 		$(document).ready(function() {
 			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
 			
-			$("#codigoCBO").autocomplete({
-				source: function( request, response ) {
-					$.ajax({
-						url: urlFind,
-						dataType: "json",
-						type: "POST",
-						data: {
-							descricao: '',
-							codigo: request.term
-						},
-						success: function( data ) {
-							response( $.map( data, function( item ) {
-								return {
-									label: item.codigo.replace(
-										new RegExp(
-											"(?![^&;]+;)(?!<[^<>]*)(" +
-											$.ui.autocomplete.escapeRegex(request.term) +
-											")(?![^<>]*>)(?![^&;]+;)", "gi"
-										), "<strong>$1</strong>" ) + " - " + item.descricao ,
-									value: item.codigo,
-									descricao: item.descricao
-								}
-							}));
-						}
-					});
-				},
-				minLength: 2,
-				select: function( event, ui ) {
-					$("#descricaoCBO").val(ui.item.descricao);
-				}
-			}).data( "autocomplete" )._renderItem = function( ul, item ) {
-					return $( "<li></li>" )
-						.data( "item.autocomplete", item )
-						.append( "<a>" + item.label + "</a>" )
-						.appendTo( ul );
-			};
-			
 			$("#descricaoCBO").autocomplete({
-				source: function( request, response ) {
-					$.ajax({
-						url: urlFind,
-						dataType: "json",
-						type: "POST",
-						data: {
-							descricao: request.term,
-							codigo: ''
-						},
-						success: function( data ) {
-							response( $.map( data, function( item ) {
-								return {
-									label: item.descricao.replace(
-											new RegExp(
-												"(?![^&;]+;)(?!<[^<>]*)(" +
-												$.ui.autocomplete.escapeRegex(request.term) +
-												")(?![^<>]*>)(?![^&;]+;)", "gi"
-											), "<strong>$1</strong>" ) + " - " + item.codigo ,
-									
-									value: item.descricao,
-									codigo: item.codigo
-								}
-							}));
-						}
-					});
-				},
+				source: ajaxData(urlFind),				 
 				minLength: 2,
-				select: function( event, ui ) {
-					$("#codigoCBO").val(ui.item.codigo);
+				select: function( event, ui ) { 
+					$("#codigoCBO").val(ui.item.id); 
 				}
-			}).data( "autocomplete" )._renderItem = function( ul, item ) {
-					return $( "<li></li>" )
-						.data( "item.autocomplete", item )
-						.append( "<a>" + item.label + "</a>" )
-						.appendTo( ul );
-			};
+			}).data( "autocomplete" )._renderItem = renderData;
 		});
-		
 	</script>
 
 </head>
@@ -158,8 +90,8 @@
 	<@ww.checkbox labelPosition="right" label="Exibir no modulo externo" name="cargo.exibirModuloExterno" />
 	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:180px;" maxLength="24"/>
 	
-	<@ww.textfield label="CBO Cód." name="cargo.cboCodigo" id="codigoCBO" cssStyle="width:60px;" maxLength="6" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" onblur="limpar(this.value);" />
-	<@ww.textfield label="Descrição" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 430px;" maxLength="200"  />
+	<@ww.textfield label="CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 500px;" />
+	<@ww.hidden label="CBO Cód." name="cargo.cboCodigo" id="codigoCBO" />
 
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>

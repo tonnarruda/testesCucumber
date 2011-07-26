@@ -3,7 +3,7 @@ package com.fortes.rh.web.action.geral;
 import java.util.Collection;
 
 import com.fortes.rh.business.geral.CodigoCBOManager;
-import com.fortes.rh.model.geral.CodigoCBO;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
@@ -15,12 +15,10 @@ public class CodigoCBOEditAction extends MyActionSupportEdit
 	private String codigo;
 	private String descricao;
 	private CodigoCBOManager codigoCBOManager;
-	private Collection<CodigoCBO> cbos;
 
 	public String find() throws Exception
 	{
-		cbos = codigoCBOManager.buscaCodigosCBO(codigo, descricao);
-		
+		Collection<AutoCompleteVO> cbos = codigoCBOManager.buscaCodigosCBO(descricao);
 		json = StringUtil.toJSON(cbos, null);
 		
 		return Action.SUCCESS;
@@ -45,10 +43,6 @@ public class CodigoCBOEditAction extends MyActionSupportEdit
 
 	public CodigoCBOManager getCodigoCBOManager() {
 		return codigoCBOManager;
-	}
-
-	public Collection<CodigoCBO> getCbos() {
-		return cbos;
 	}
 
 	public void setCodigo(String codigo) {

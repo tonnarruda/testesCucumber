@@ -212,23 +212,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void testGetAutoComplete() throws Exception
 	{
-		Colaborador colaboradorBuscaPorNome = getEntity();
+		Colaborador colaboradorBuscaPorNome = ColaboradorFactory.getEntity(1L);
 		colaboradorBuscaPorNome.setNome("amilos");
 		colaboradorBuscaPorNome = colaboradorDao.save(colaboradorBuscaPorNome);
 		
-		Colaborador colaboradorPorNomeComercial = getEntity();
+		Colaborador colaboradorPorNomeComercial = ColaboradorFactory.getEntity(1L);
 		colaboradorPorNomeComercial.setNomeComercial("milosaaaa");
 		colaboradorPorNomeComercial = colaboradorDao.save(colaboradorPorNomeComercial);
 		
-		Colaborador colaboradorBuscaPorMatricula = getEntity();
+		Colaborador colaboradorBuscaPorMatricula = ColaboradorFactory.getEntity(1L);
 		colaboradorBuscaPorMatricula.setMatricula("milosaa");
 		colaboradorBuscaPorMatricula = colaboradorDao.save(colaboradorBuscaPorMatricula);
 		
-		Colaborador colaboradorBuscaPorCPF = getEntity();
+		Colaborador colaboradorBuscaPorCPF = ColaboradorFactory.getEntity(1L);
 		colaboradorBuscaPorCPF.getPessoal().setCpf("milos33");
 		colaboradorBuscaPorCPF = colaboradorDao.save(colaboradorBuscaPorCPF);
 		
-		Colaborador colaboradorForaDaConsulta = getEntity();
+		Colaborador colaboradorForaDaConsulta = ColaboradorFactory.getEntity(1L);
 		colaboradorForaDaConsulta.setNome("babau");
 		colaboradorForaDaConsulta = colaboradorDao.save(colaboradorForaDaConsulta);
 		

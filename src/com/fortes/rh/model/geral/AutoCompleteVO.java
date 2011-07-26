@@ -7,26 +7,33 @@ import javax.persistence.Id;
 public class AutoCompleteVO
 {
 	@Id
-	private Long id;
+	private String id;
     private String value;
 
     public AutoCompleteVO()
     {
     }
-	public AutoCompleteVO(Long id, String value)
+    
+	public AutoCompleteVO(String id, String value)
 	{
 		this.id = id;
 		this.value = value;
 	}
+	
+	public AutoCompleteVO(Long id, String value)
+	{
+		if(id != null)
+			this.id = String.valueOf(id);
+		this.value = value;
+	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-
 	public String getValue() {
 		return value;
 	}

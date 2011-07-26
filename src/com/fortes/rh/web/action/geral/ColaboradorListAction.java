@@ -132,12 +132,12 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Boolean compartilharColaboradores;
 	
 	private Collection<AutoCompleteVO> data;
-	private String term;
+	private String descricao;
 	private String json;
 
 	public String find() throws Exception
 	{
-		data = colaboradorManager.getAutoComplete(term);
+		data = colaboradorManager.getAutoComplete(descricao);
 		json = StringUtil.toJSON(data, null);
 		
 		return Action.SUCCESS;
@@ -886,8 +886,8 @@ public class ColaboradorListAction extends MyActionSupportList
 		return json;
 	}
 
-	public void setTerm(String term) {
-		this.term = term;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	
