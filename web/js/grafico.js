@@ -1,5 +1,5 @@
-function montaLine(data, idGrafico) {
-    var options = {
+function montaLine(data, idGrafico, options) {
+    var config = {
 	    series: {
            lines: { show: true },
            points: { show: true }
@@ -7,7 +7,7 @@ function montaLine(data, idGrafico) {
         grid: { hoverable: true },
         xaxis: { 
         	mode: "time",
-        	ticks: data.map(function (item){return item[0]}),
+        	ticks: data.map(function (item){ return item[0]; }),
         	timeformat: '%b/%y ',
         	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
         },
@@ -15,8 +15,10 @@ function montaLine(data, idGrafico) {
         	 tickFormatter: function (v) {return v;}
         }
     };			
-        
-    var plot = $.plot($(idGrafico), [data], options);
+    
+    if (options){$.extend(config, options);}
+    
+    var plot = $.plot($(idGrafico), [data], config);
 
 	var previousPoint = null;				
 	$(idGrafico).bind("plothover", function (event, pos, item) {

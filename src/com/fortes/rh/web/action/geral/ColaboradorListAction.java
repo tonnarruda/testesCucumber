@@ -146,7 +146,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		if(situacao == null)
 			situacao = "A";
 
-		Map parametros = new HashMap();
+		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("nomeBusca", nomeBusca);
 		parametros.put("nomeComercialBusca", nomeComercialBusca);
 		parametros.put("cpfBusca", cpfBusca);
