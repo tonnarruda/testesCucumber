@@ -318,6 +318,7 @@
 				/desenvolvimento/dnt/*/**=ROLE_MOV_CURSO_DNT,ROLE_MOV_CURSO_DNT_GESTOR
 				/desenvolvimento/turma/*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO
 				/desenvolvimento/turma/filtroPlanoTreinamento.action*=ROLE_MOV_PLANO_TREINAMENTO
+				/desenvolvimento/turma/relatorioInvestimentoPorColaborador.action*=ROLE_INVESTIMENTO_TREINAMENTO_COLAB
 				/desenvolvimento/relatorioPresenca/*/**=ROLE_REL_DESENVOLVIMENTO_LISTA_PRESENCA
 				/desenvolvimento/prioridadeTreinamento/*/**=ROLE_CAD_PRIORIDADETREINAMENTO
 				/desenvolvimento/certificacao/matrizTreinamento.action*=ROLE_REL_MATRIZ_TREINAMENTO

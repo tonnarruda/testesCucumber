@@ -27,6 +27,7 @@ import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaboradorIntegraAC;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
@@ -129,7 +130,19 @@ public class ColaboradorListAction extends MyActionSupportList
 	private String reportFilter;
 	private String reportTitle;
 	private Boolean compartilharColaboradores;
+	
+	private Collection<AutoCompleteVO> data;
+	private String term;
+	private String json;
 
+	public String find() throws Exception
+	{
+		data = colaboradorManager.getAutoComplete(term);
+		json = StringUtil.toJSON(data, null);
+		
+		return Action.SUCCESS;
+	}
+	
 	public String list() throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllList(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
@@ -873,6 +886,14 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public String getDinamicProperts() {
 		return StringUtil.converteCollectionToString(dinamicProperts);
+	}
+
+	public String getJson() {
+		return json;
+	}
+
+	public void setTerm(String term) {
+		this.term = term;
 	}
 
 	

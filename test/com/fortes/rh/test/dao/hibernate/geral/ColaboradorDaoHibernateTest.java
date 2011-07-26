@@ -210,6 +210,31 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(colaboradorRetorno.getId(), colaborador.getId());
 	}
 
+	public void testGetAutoComplete() throws Exception
+	{
+		Colaborador colaboradorBuscaPorNome = getEntity();
+		colaboradorBuscaPorNome.setNome("amilos");
+		colaboradorBuscaPorNome = colaboradorDao.save(colaboradorBuscaPorNome);
+		
+		Colaborador colaboradorPorNomeComercial = getEntity();
+		colaboradorPorNomeComercial.setNomeComercial("milosaaaa");
+		colaboradorPorNomeComercial = colaboradorDao.save(colaboradorPorNomeComercial);
+		
+		Colaborador colaboradorBuscaPorMatricula = getEntity();
+		colaboradorBuscaPorMatricula.setMatricula("milosaa");
+		colaboradorBuscaPorMatricula = colaboradorDao.save(colaboradorBuscaPorMatricula);
+		
+		Colaborador colaboradorBuscaPorCPF = getEntity();
+		colaboradorBuscaPorCPF.getPessoal().setCpf("milos33");
+		colaboradorBuscaPorCPF = colaboradorDao.save(colaboradorBuscaPorCPF);
+		
+		Colaborador colaboradorForaDaConsulta = getEntity();
+		colaboradorForaDaConsulta.setNome("babau");
+		colaboradorForaDaConsulta = colaboradorDao.save(colaboradorForaDaConsulta);
+		
+		assertEquals(4, colaboradorDao.getAutoComplete("milos").size());
+	}
+
 	@Override
 	public void testUpdate() throws Exception
 	{

@@ -151,7 +151,7 @@
     <mapping class="com.fortes.rh.model.geral.ComoFicouSabendoVaga" />
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador" />
     <mapping class="com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo" />
-      <mapping class="com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo" />
+    <mapping class="com.fortes.rh.model.geral.AutoCompleteVO" />
   </session-factory>
 
 </hibernate-configuration>

@@ -54,6 +54,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
@@ -1886,6 +1887,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setUsuarioMensagemManager(
 			UsuarioMensagemManager usuarioMensagemManager) {
 		this.usuarioMensagemManager = usuarioMensagemManager;
+	}
+
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao) {
+		return getDao().getAutoComplete(descricao);
 	}
 
 }

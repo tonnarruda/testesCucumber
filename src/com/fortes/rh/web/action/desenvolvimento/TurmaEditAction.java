@@ -43,15 +43,19 @@ import com.fortes.rh.model.desenvolvimento.relatorio.CertificacaoTreinamentosRel
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ModelDriven;
 
 @SuppressWarnings("serial")
@@ -87,6 +91,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private Collection<AvaliacaoCurso> avaliacaoCursos = new ArrayList<AvaliacaoCurso>();
 	private Collection<Certificacao> certificacaos = new ArrayList<Certificacao>();
 	private Collection<ColaboradorTurma> colaboradoresTurma = new ArrayList<ColaboradorTurma>();
+	private Collection<Empresa> empresas;
 
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -577,6 +582,20 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		return Action.SUCCESS;
 	}
 
+	public String relatorioInvestimentoPorColaborador() throws Exception
+	{
+		empresas = empresaManager.findByUsuarioPermissao(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId(), "ROLE_INVESTIMENTO_TREINAMENTO_COLAB");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirRelatorioInvestimentoPorColaborador() throws Exception
+	{
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatorio de Investimento por Colaborador", getEmpresaSistema(),  "");
+		
+		return Action.SUCCESS;
+	}
+	
 	public Turma getTurma()
 	{
 		if (turma == null)
@@ -1117,5 +1136,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.planoTreinamento = planoTreinamento;
 	}
 
-
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
 }

@@ -21,6 +21,7 @@ import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.DynaRecord;
@@ -149,4 +150,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId);
 	public int countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
 	public Collection<Object[]> montaGraficoTurnover(Collection<TurnOver> turnOvers);
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao);
 }

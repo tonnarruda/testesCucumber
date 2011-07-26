@@ -3,6 +3,7 @@
 <decorators defaultdir="/decorators">
 	<excludes>
 		<pattern>/geral/colaborador/formPrint.action</pattern>
+		<pattern>/geral/colaborador/find.action*</pattern>
 		<pattern>/webwork/richtexteditor/editor/*</pattern>
 		<pattern>/webwork/**</pattern>
 		<pattern>/pesquisa/pesquisa/preview.action*</pattern>
