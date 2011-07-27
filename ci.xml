@@ -106,12 +106,9 @@
 	</target>
 
 	<target name="recreate-and-update-bd" depends="recreate-bd">
-		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/update_dev.sql" output="update_dev.sql.log">
-			<env key="PGPASSWORD" value="${postgres.password}" />
-			<arg value="-U" />
-			<arg value="postgres" />
-			<arg value="fortesrh" />
+		<exec failonerror="true" executable="ruby"
+			output="migration.log">
+			<arg value="${project.dir}/migrate.rb" />
 		</exec>
 	</target>
 

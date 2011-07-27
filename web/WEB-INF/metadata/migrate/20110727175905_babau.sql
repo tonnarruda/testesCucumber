@@ -1,0 +1,1 @@
+update parametrosdosistema set enviaremail=true;--.go
