@@ -137,7 +137,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public String find() throws Exception
 	{
-		data = colaboradorManager.getAutoComplete(descricao);
+		data = colaboradorManager.getAutoComplete(descricao, getEmpresaSistema().getId());
 		json = StringUtil.toJSON(data, null);
 		
 		return Action.SUCCESS;

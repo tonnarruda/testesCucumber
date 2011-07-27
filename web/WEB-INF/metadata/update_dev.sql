@@ -51,6 +51,6 @@ alter table pesquisa add column exibirPerformanceProfissional boolean default fa
 alter table empresa add column emailresplimitecontrato character varying(120) default '';--.go
 -- migration 20110725093103
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (515, 'ROLE_INVESTIMENTO_TREINAMENTO_COLAB', 'Investimento por Colaborador', '/desenvolvimento/turma/relatorioInvestimentoPorColaborador.action', 13, true, 368);--.go
-alter sequence papel_sequence restart with 515;--.go
+alter sequence papel_sequence restart with 516;--.go
 -- migration 20110726092155
 update parametrosdosistema set appversao = '1.1.52.44';--.go

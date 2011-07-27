@@ -1056,5 +1056,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		return aprovadoPresenca && aprovadoNota;
 	}
+	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean realizada) 
+	{
+		return getDao().findColaboradoresComCustoTreinamentos(colaboradorId, dataIni, dataFim, realizada);
+	}
 	
 }

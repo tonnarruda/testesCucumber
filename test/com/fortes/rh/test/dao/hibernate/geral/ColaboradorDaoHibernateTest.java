@@ -212,27 +212,35 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void testGetAutoComplete() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
 		Colaborador colaboradorBuscaPorNome = ColaboradorFactory.getEntity(1L);
 		colaboradorBuscaPorNome.setNome("amilos");
+		colaboradorBuscaPorNome.setEmpresa(empresa);
 		colaboradorBuscaPorNome = colaboradorDao.save(colaboradorBuscaPorNome);
 		
 		Colaborador colaboradorPorNomeComercial = ColaboradorFactory.getEntity(1L);
 		colaboradorPorNomeComercial.setNomeComercial("milosaaaa");
+		colaboradorPorNomeComercial.setEmpresa(empresa);
 		colaboradorPorNomeComercial = colaboradorDao.save(colaboradorPorNomeComercial);
 		
 		Colaborador colaboradorBuscaPorMatricula = ColaboradorFactory.getEntity(1L);
 		colaboradorBuscaPorMatricula.setMatricula("milosaa");
+		colaboradorBuscaPorMatricula.setEmpresa(empresa);
 		colaboradorBuscaPorMatricula = colaboradorDao.save(colaboradorBuscaPorMatricula);
 		
 		Colaborador colaboradorBuscaPorCPF = ColaboradorFactory.getEntity(1L);
 		colaboradorBuscaPorCPF.getPessoal().setCpf("milos33");
+		colaboradorBuscaPorCPF.setEmpresa(empresa);
 		colaboradorBuscaPorCPF = colaboradorDao.save(colaboradorBuscaPorCPF);
 		
 		Colaborador colaboradorForaDaConsulta = ColaboradorFactory.getEntity(1L);
 		colaboradorForaDaConsulta.setNome("babau");
+		colaboradorForaDaConsulta.setEmpresa(empresa);
 		colaboradorForaDaConsulta = colaboradorDao.save(colaboradorForaDaConsulta);
 		
-		assertEquals(4, colaboradorDao.getAutoComplete("milos").size());
+		assertEquals(4, colaboradorDao.getAutoComplete("milos", empresa.getId()).size());
 	}
 
 	@Override

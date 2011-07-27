@@ -1,2 +1,2 @@
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (515, 'ROLE_INVESTIMENTO_TREINAMENTO_COLAB', 'Investimento por Colaborador', '/desenvolvimento/turma/relatorioInvestimentoPorColaborador.action', 13, true, 368);--.go
-alter sequence papel_sequence restart with 515;--.go
+alter sequence papel_sequence restart with 516;--.go

@@ -159,11 +159,11 @@
 		<action name="imprimirRelatorioInvestimentoPorColaborador" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="imprimirRelatorioInvestimentoPorColaborador">
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/investimentos_cursos_colaborador.jasper</param>
-				<param name="dataSource">turmas</param>
+				<param name="dataSource">colaboradoresTurma</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">investimentos_cursos_colaborador.pdf</param>
 			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioInvestimento.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioInvestimentoPorColaborador.ftl</result>
 		</action>
 		<action name="filtroPlanoTreinamento" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="filtroPlanoTreinamento">
 			<interceptor-ref name="defaultListStack">

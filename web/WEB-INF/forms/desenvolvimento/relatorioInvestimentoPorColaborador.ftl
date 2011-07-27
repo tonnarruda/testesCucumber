@@ -29,11 +29,14 @@
 				}
 			}).data( "autocomplete" )._renderItem = renderData;
 			
+			$('#colaborador').focus(function() {
+			    $(this).select();
+			});	
 		});
 	</script>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<#assign validarCampos="return validaFormulario('form', new Array('inicio','fim'), new Array('inicio','fim'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('inicio','fim','colaborador'), new Array('inicio','fim'))"/>
 	
 	<#if dataIni?exists>
 		<#assign inicio=dataIni?date />
@@ -52,13 +55,13 @@
 
 	<@ww.form name="form" action="imprimirRelatorioInvestimentoPorColaborador.action" onsubmit="${validarCampos}" method="POST">
 
-		<@ww.datepicker label="Período" required="true" value="${inicio}" name="dataIni" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
+		<@ww.datepicker label="Turma iniciada entre" required="true" value="${inicio}" name="dataIni" id="inicio" cssClass="mascaraData validaDataIni" after="e" liClass="liLeft"/>
 		<@ww.datepicker label="" value="${fim}" name="dataFim" id="fim" cssClass="mascaraData validaDataFim"/>
 
 		<@ww.select id="realizada" label="Turmas Realizadas" name="realizada" list=r"#{'T':'Todas','S':'Sim','N':'Não'}" />
 		
 		<@ww.textfield label="Colaborador (Nome, Nome Comercial, Matrícula ou CPF)" name="" id="colaborador" cssStyle="width: 650px;"/>
-		<@ww.hidden name="colaboradorId" id="colaboradorId" />
+		<@ww.hidden name="colaborador.id" id="colaboradorId" />
 		
 	</@ww.form>
 

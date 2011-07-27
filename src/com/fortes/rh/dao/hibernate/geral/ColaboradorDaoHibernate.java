@@ -3342,21 +3342,22 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<AutoCompleteVO> getAutoComplete(String descricao) 
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) 
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new AutoCompleteVO(c.id, c.nome || ' (' || c.nomeComercial || ') CPF: ' || c.pessoal.cpf ) ");
 		hql.append("from Colaborador as c ");
 		
-		hql.append(" where ");
+		hql.append(" where c.empresa.id = :empresaId and ( ");
 		hql.append(" normalizar(upper(c.nome)) like normalizar(:descricao) ");
 		hql.append(" or normalizar(upper(c.nomeComercial)) like normalizar(:descricao) ");
 		hql.append(" or normalizar(upper(c.matricula)) like normalizar(:descricao) ");
-		hql.append(" or normalizar(upper(c.pessoal.cpf)) like normalizar(:descricao) ");
+		hql.append(" or normalizar(upper(c.pessoal.cpf)) like normalizar(:descricao) ) ");
 		
 		hql.append(" order by c.nome");		
 
 		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
 		query.setString("descricao", "%" + descricao.toUpperCase() + "%");
 		
 		return query.list();

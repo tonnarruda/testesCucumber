@@ -150,5 +150,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId);
 	public int countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
 	public Collection<Object[]> montaGraficoTurnover(Collection<TurnOver> turnOvers);
-	public Collection<AutoCompleteVO> getAutoComplete(String descricao);
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 }

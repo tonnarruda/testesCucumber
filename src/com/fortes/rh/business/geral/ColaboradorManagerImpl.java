@@ -1889,8 +1889,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.usuarioMensagemManager = usuarioMensagemManager;
 	}
 
-	public Collection<AutoCompleteVO> getAutoComplete(String descricao) {
-		return getDao().getAutoComplete(descricao);
+	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) {
+		return getDao().getAutoComplete(descricao, empresaId);
 	}
 
 }

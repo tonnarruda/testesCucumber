@@ -47,8 +47,10 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -156,6 +158,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private char certificadoDe = 'T';
 	private Certificacao certificacao;
 	private Certificado certificado;
+	private char realizada;
 
 
 	public AvaliacaoTurma getAvaliacaoTurma()
@@ -591,7 +594,21 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	
 	public String imprimirRelatorioInvestimentoPorColaborador() throws Exception
 	{
-		parametros = RelatorioUtil.getParametrosRelatorio("Relatorio de Investimento por Colaborador", getEmpresaSistema(),  "");
+		if(colaborador == null || colaborador.getId() == null)
+		{
+			addActionMessage("Colaborador selecionado é inválido.");
+			return Action.INPUT;
+		}
+			
+		colaboradoresTurma = colaboradorTurmaManager.findColaboradoresComCustoTreinamentos(colaborador.getId(), dataIni, dataFim, BooleanUtil.getValueCombo(realizada));
+		if (colaboradoresTurma.isEmpty()) 
+		{
+			addActionMessage("Não existem dados para o filtro informado");
+			return Action.INPUT;
+		}
+		
+		colaborador = ((ColaboradorTurma)colaboradoresTurma.toArray()[0]).getColaborador();
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatorio de Investimento por Colaborador", getEmpresaSistema(), "Colaborador: " + colaborador.getNome() + "\nTurma iniciada entre: " + DateUtil.formataDiaMesAno(dataIni) + " e " + DateUtil.formataDiaMesAno(dataFim));
 		
 		return Action.SUCCESS;
 	}
@@ -1138,5 +1155,13 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public Collection<Empresa> getEmpresas() {
 		return empresas;
+	}
+
+	public char getRealizada() {
+		return realizada;
+	}
+
+	public void setRealizada(char realizada) {
+		this.realizada = realizada;
 	}
 }

@@ -460,6 +460,43 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 
+	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean turmaRealizada)
+	{
+		StringBuilder hql = new StringBuilder();
+	
+		hql.append("select new ColaboradorTurma(colab.id, colab.nome, emp.nome, curso.nome, turma.descricao, turma.dataPrevIni, turma.dataPrevFim, turma.realizada, ");
+		hql.append(                            "(select (turma.custo / count(ct.turma.id)) from ColaboradorTurma ct where ct.turma.id = turma.id group by ct.turma.id)) " );
+		hql.append("from ColaboradorTurma as colabTurma ");
+		hql.append("left join colabTurma.turma as turma ");
+		hql.append("left join colabTurma.colaborador as colab ");
+		hql.append("left join colabTurma.curso as curso ");
+		hql.append("left join curso.empresa as emp ");
+		hql.append("where colab.id = (:colaboradorId) ");
+		
+		if (dataIni != null && dataFim != null)
+			hql.append("and turma.dataPrevIni between :dataIni and :dataFim ");
+		
+		if (turmaRealizada != null)
+			hql.append("and turma.realizada = :turmaRealizada ");
+		
+		hql.append("order by emp.nome, turma.dataPrevIni ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setLong("colaboradorId", colaboradorId);
+		
+		if (dataIni != null && dataFim != null)
+		{
+			query.setDate("dataIni", dataIni);
+			query.setDate("dataFim", dataFim);
+		}
+		
+		if (turmaRealizada != null)
+			query.setBoolean("turmaRealizada", turmaRealizada);
+		
+		return query.list();
+	}
+
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Long[] colaboradorTurmaIds)
 	{
 		StringBuilder hql = new StringBuilder();

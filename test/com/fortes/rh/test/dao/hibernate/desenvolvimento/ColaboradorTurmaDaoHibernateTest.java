@@ -60,7 +60,6 @@ import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
-@SuppressWarnings("unchecked")
 public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorTurma>
 {
     private ColaboradorTurmaDao colaboradorTurmaDao;
@@ -189,6 +188,65 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 
     	assertEquals(empresa, colaboradorTurmaDao.findEmpresaDoColaborador(colaboradorTurma));
     }
+    
+    @SuppressWarnings("unused")
+    public void testFindColaboradoresComCustoTreinamentos()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+    	
+    	Colaborador joao = ColaboradorFactory.getEntity();
+    	joao.setEmpresa(empresa);
+    	colaboradorDao.save(joao);
+
+    	Colaborador maria = ColaboradorFactory.getEntity();
+    	maria.setEmpresa(empresa);
+    	colaboradorDao.save(maria);
+    	
+    	Curso curso = CursoFactory.getEntity();
+    	curso.setNome("java");
+    	cursoDao.save(curso);
+    	
+    	Turma turmaNoPeriodo = montaTurma("turma I", DateUtil.criarDataMesAno(25, 07, 2011), DateUtil.criarDataMesAno(29, 07, 2011), true, 100.0);
+    	Turma turmaNaoRealizada = montaTurma("turma Abandonada", DateUtil.criarDataMesAno(25, 07, 2011), DateUtil.criarDataMesAno(29, 07, 2011), false, 300.0);
+    	Turma turmaForaPeriodo = montaTurma("turma Antiga", DateUtil.criarDataMesAno(25, 07, 2009), DateUtil.criarDataMesAno(29, 07, 2009), true, 100.0);
+    	Turma turmaNoFuturo = montaTurma("turma no Futuro", DateUtil.criarDataMesAno(25, 07, 2012), DateUtil.criarDataMesAno(29, 07, 2012), true, 100.0);
+    	
+		ColaboradorTurma colaboradorTurmaMaria = montaColaboradorTurma(maria, curso, turmaNoPeriodo);
+    	ColaboradorTurma colaboradorTurmaJoao = montaColaboradorTurma(joao, curso, turmaNoPeriodo);
+    	ColaboradorTurma colaboradorTurmaJoaoNaoRealizada = montaColaboradorTurma(joao, curso, turmaNaoRealizada);
+    	ColaboradorTurma colaboradorTurmaJoaoPassado = montaColaboradorTurma(joao, curso, turmaForaPeriodo);
+    	ColaboradorTurma colaboradorTurmaJoaoFuturo = montaColaboradorTurma(joao, curso, turmaNoFuturo);
+    	
+    	Collection<ColaboradorTurma> colabTurmas = colaboradorTurmaDao.findColaboradoresComCustoTreinamentos(joao.getId(), DateUtil.criarDataMesAno(25, 07, 2011), DateUtil.criarDataMesAno(27, 07, 2011), null);	
+    	assertEquals(2, colabTurmas.size());
+    	
+    	colabTurmas = colaboradorTurmaDao.findColaboradoresComCustoTreinamentos(joao.getId(), DateUtil.criarDataMesAno(25, 07, 2011), DateUtil.criarDataMesAno(27, 07, 2011), true);	
+    	assertEquals(1, colabTurmas.size());
+    	
+    	ColaboradorTurma colabTurmaJoao = (ColaboradorTurma)colabTurmas.toArray()[0];
+    	assertEquals(50.0, colabTurmaJoao.getCustoRateado());
+    }
+
+	private ColaboradorTurma montaColaboradorTurma(Colaborador colaborador, Curso curso, Turma turma) {
+		ColaboradorTurma colaboradorTurma = getEntity();
+    	colaboradorTurma.setColaborador(colaborador);
+    	colaboradorTurma.setCurso(curso);
+    	colaboradorTurma.setTurma(turma);
+    	
+		return colaboradorTurmaDao.save(colaboradorTurma);
+	}
+
+	private Turma montaTurma(String descricao, Date dataIni, Date dataFim, boolean realizada, Double custo) {
+		Turma turma = TurmaFactory.getEntity();
+    	turma.setDescricao(descricao);
+    	turma.setDataPrevIni(dataIni);
+    	turma.setDataPrevFim(dataFim);
+    	turma.setCusto(custo);
+    	turma.setRealizada(realizada);
+    	
+		return turmaDao.save(turma);
+	}
 
     public void testUpdateColaboradorTurmaSetPrioridade()
     {
