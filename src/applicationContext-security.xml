@@ -246,7 +246,7 @@
 				/geral/areaOrganizacional/*/**=ROLE_CAD_AREA
 				/geral/estabelecimento/*/**=ROLE_CAD_ESTABELECIMENTO
 				/geral/bairro/*/**=ROLE_CAD_BAIRRO
-				/geral/documentoAnexo/list*/**=ROLE_CAD_COLABORADOR
+				/geral/documentoAnexo/list*/**=ROLE_CAD_COLABORADOR,ROLE_CAD_CANDIDATO
 				/geral/documentoAnexo/prepareInsertColaborador*/**=ROLE_CAD_COLABORADOR
 				/geral/documentoAnexo/prepareUpdateColaborador*/**=ROLE_CAD_COLABORADOR
 				/geral/documentoAnexo/deleteColaborador*/**=ROLE_CAD_COLABORADOR

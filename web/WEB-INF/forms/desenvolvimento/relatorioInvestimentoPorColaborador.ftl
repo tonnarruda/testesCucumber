@@ -7,11 +7,7 @@
 
 	<title>Investimentos de T&D por Colaborador</title>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js"/>'></script>
-
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	
 	<style type="text/css">
@@ -21,7 +17,7 @@
     </style>
 	
 	<script type='text/javascript'>
-		var urlFind = "<@ww.url includeParams="none" value="/geral/colaborador/find.action"/>";
+		var urlFind = "<@ww.url includeParams="none" value="/geral/colaborador/findJson.action"/>";
 		
 		$(function() {
 			
@@ -55,7 +51,6 @@
 	<@ww.actionerror />
 
 	<@ww.form name="form" action="imprimirRelatorioInvestimentoPorColaborador.action" onsubmit="${validarCampos}" method="POST">
-		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="populaAreas(this.value);"/>
 
 		<@ww.datepicker label="Período" required="true" value="${inicio}" name="dataIni" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
 		<@ww.datepicker label="" value="${fim}" name="dataFim" id="fim" cssClass="mascaraData validaDataFim"/>
