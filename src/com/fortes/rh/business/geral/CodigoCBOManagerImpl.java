@@ -18,12 +18,7 @@ public class CodigoCBOManagerImpl extends GenericManagerImpl<CodigoCBO, CodigoCB
 	{
 		if (cboCodigo != null && !cboCodigo.equals(""))
 		{
-			Collection<AutoCompleteVO> vos = getDao().buscaCodigosCBO(cboCodigo);
-			if(!vos.isEmpty())
-			{
-				String desc = ((AutoCompleteVO)vos.toArray()[0]).getValue();
-				return desc != null ? desc : "";
-			}
+			return getDao().findDescricaoByCodigo(cboCodigo);
 		}
 		
 		return "";

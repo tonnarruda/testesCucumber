@@ -29,6 +29,14 @@
 	    @import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
 	    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 	    @import url('<@ww.url includeParams="none" value="/css/jquery-ui/redmond.css"/>');
+	    
+	    #wwgrp_descricaoCBO
+	    {
+			float: left;
+	    	background-color: #E9E9E9;
+			width: 420px;
+			padding-left: 4px;
+		}
     </style>
 	
 	<script language='javascript'>
@@ -56,45 +64,21 @@
 		{
 			addChecks('atitudesCheck',data)
 		}
-
-		function limpar(data)
-		{
-			if(data == '' || data.length < 6)
-				$("#descricaoCBO").val('');
-		}
 	
 		$(document).ready(function() {
 			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
-			var CBOInvalido = true;
-			var CBOAntigo = "";
 			
 			$("#descricaoCBO").autocomplete({
 				source: ajaxData(urlFind),				 
 				minLength: 2,
 				select: function( event, ui ) { 
 					$("#codigoCBO").val(ui.item.id);
-					CBOInvalido = false; 
 				}
 			}).data( "autocomplete" )._renderItem = renderData;
 
 			$('#descricaoCBO').focus(function() {
-			    CBOAntigo = $(this).val(); 
 			    $(this).select();
-			    CBOInvalido = true;
-			});
-			
-			$("#descricaoCBO").blur(function() {
-				if($(this).val() != "" && $(this).val() != CBOAntigo && CBOInvalido)
-				{
-					alert('Código ou Descrição inválido.');
-					$("#codigoCBO").val("");
-				}
-				
-				if($(this).val() == "")
-					$("#codigoCBO").val("");
-					
-				CBOInvalido = false;
-			});
+			});			
 		});
 	</script>
 
@@ -112,8 +96,9 @@
 	<@ww.checkbox labelPosition="right" label="Exibir no modulo externo" name="cargo.exibirModuloExterno" />
 	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:180px;" maxLength="24"/>
 	
-	<@ww.textfield label="CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 500px;" />
-	<@ww.hidden name="cargo.cboCodigo" id="codigoCBO" />
+	<@ww.textfield label="Cód. CBO" name="cargo.cboCodigo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" size="6"  maxLength="6" liClass="liLeft"/>
+	<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
+	<div style="clear:both"/>
 
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>

@@ -9,4 +9,6 @@ import com.fortes.rh.model.geral.CodigoCBO;
 public interface CodigoCBODao extends GenericDao<CodigoCBO> 
 {
 	public Collection<AutoCompleteVO> buscaCodigosCBO(String descricao);
+
+	public String findDescricaoByCodigo(String cboCodigo);
 }

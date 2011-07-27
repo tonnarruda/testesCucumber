@@ -28,4 +28,17 @@ public class CodigoCBODaoHibernate extends GenericDaoHibernate<CodigoCBO> implem
 		
 		return query.list();
 	}
+
+	public String findDescricaoByCodigo(String cboCodigo) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select c.descricao  ");
+		hql.append("from CodigoCBO as c ");
+		hql.append(" where c.codigo = :codigo ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setString("codigo", cboCodigo);
+		
+		return (String) query.uniqueResult();
+	}
 }
