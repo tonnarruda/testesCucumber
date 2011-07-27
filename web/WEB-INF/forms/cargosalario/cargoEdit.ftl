@@ -65,14 +65,36 @@
 	
 		$(document).ready(function() {
 			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
+			var CBOInvalido = true;
+			var CBOAntigo = "";
 			
 			$("#descricaoCBO").autocomplete({
 				source: ajaxData(urlFind),				 
 				minLength: 2,
 				select: function( event, ui ) { 
-					$("#codigoCBO").val(ui.item.id); 
+					$("#codigoCBO").val(ui.item.id);
+					CBOInvalido = false; 
 				}
 			}).data( "autocomplete" )._renderItem = renderData;
+
+			$('#descricaoCBO').focus(function() {
+			    CBOAntigo = $(this).val(); 
+			    $(this).select();
+			    CBOInvalido = true;
+			});
+			
+			$("#descricaoCBO").blur(function() {
+				if($(this).val() != "" && $(this).val() != CBOAntigo && CBOInvalido)
+				{
+					alert('Código ou Descrição inválido.');
+					$("#codigoCBO").val("");
+				}
+				
+				if($(this).val() == "")
+					$("#codigoCBO").val("");
+					
+				CBOInvalido = false;
+			});
 		});
 	</script>
 
@@ -91,7 +113,7 @@
 	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:180px;" maxLength="24"/>
 	
 	<@ww.textfield label="CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 500px;" />
-	<@ww.hidden label="CBO Cód." name="cargo.cboCodigo" id="codigoCBO" />
+	<@ww.hidden name="cargo.cboCodigo" id="codigoCBO" />
 
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>
