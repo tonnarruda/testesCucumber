@@ -290,6 +290,15 @@ Dado /^que exista o cargo "([^"]*)"$/ do |nome_cargo|
    end
 end
 
+Dado /^que exista a tabela de reajuste "([^"]*)" na data "([^"]*)" aprovada "([^"]*)"$/ do |nome, data, aprovada|
+   insert :tabelareajustecolaborador do
+     nome nome
+     data data
+     aprovada aprovada
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista a faixa salarial "([^"]*)" no cargo "([^"]*)"$/ do |faixa_nome, cargo_nome|
    insert :faixasalarial do
      nome faixa_nome
@@ -437,7 +446,7 @@ Dado /^que exista um colaborador "([^"]*)", com o cargo "([^"]*)" e a faixa sala
   end
 
   insert :historicocolaborador do
-    data '28/07/2011'
+    data '01/07/2011'
     colaborador :nome => colaborador_nome
     faixasalarial :nome => faixasalarial_nome
     status 1
