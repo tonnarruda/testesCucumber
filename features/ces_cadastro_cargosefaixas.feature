@@ -22,7 +22,7 @@ Funcionalidade: Cadastrar Cargos e Faixas
     E eu preencho "Nomenclatura" com "_Desenvolvedor"
     E eu marco "Exibir no modulo externo"
     E eu preencho "Nomenclatura de Mercado" com "_Programador"
-    E eu preencho "CBO Cód." com "123"
+    E eu preencho "Cód. CBO" com "123"
     E eu preencho "Descrição" com "Desenvolvedor"
     E eu marco "Administração > Desenvolvimento"
     E eu preencho "Missão do Cargo" com "Programar"

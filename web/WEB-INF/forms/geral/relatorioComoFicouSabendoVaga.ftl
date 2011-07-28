@@ -45,8 +45,5 @@
 		</button>
 	</div>
 
-	<script type="text/javascript">
-		filtrarOpt(document.getElementById('filtrarPor').value);
-	</script>
 </body>
 </html>
