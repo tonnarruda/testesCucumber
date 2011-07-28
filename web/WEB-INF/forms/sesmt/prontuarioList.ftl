@@ -5,7 +5,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
-	<title>Registros de Prontuários</title>
+	<title>Registro de Prontuário</title>
 
 	<#if colaboradors?exists>
 		<#assign headerValue="Selecione..."/>
