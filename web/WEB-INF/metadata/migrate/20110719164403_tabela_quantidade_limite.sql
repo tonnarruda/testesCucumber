@@ -1,5 +1,3 @@
-drop table quantidadeLimiteColaboradoresPorCargo;--.go
-
 CREATE TABLE quantidadeLimiteColaboradoresPorCargo (
 	id bigint NOT NULL,
 	areaorganizacional_id bigint,

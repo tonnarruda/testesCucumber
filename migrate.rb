@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'pg'
 require 'term/ansicolor'
 include Term::ANSIColor
