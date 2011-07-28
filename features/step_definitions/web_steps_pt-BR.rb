@@ -444,6 +444,24 @@ Dado /^que exista um colaborador "([^"]*)", com o cargo "([^"]*)" e a faixa sala
   end
 end
 
+Dado /^que exista um extintor localizado em "([^"]*)"$/ do |extintor_localizacao|
+  insert :extintor do
+    estabelecimento :nome => 'Estabelecimento Padrão'
+    localizacao extintor_localizacao
+    tipo '1'
+    ativo true
+    empresa :nome => 'Empresa Padrão'
+  end
+end
+
+Dado /^que exista um medico coordenador "([^"]*)"$/ do |nome_medico|
+  insert :medicocoordenador do
+    nome nome_medico
+    inicio '28/07/2011'
+    empresa :nome => 'Empresa Padrão'
+  end
+end
+
 Dado /^que todos os papeis estejam permitidos$/ do
    exec_sql "update parametrosdosistema set modulos = encode(cast(array_to_string(array(select id from papel order by id), ',') as bytea), 'base64');"
 end

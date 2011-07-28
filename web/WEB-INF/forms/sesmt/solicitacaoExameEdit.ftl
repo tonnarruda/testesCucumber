@@ -16,7 +16,7 @@
 		<#assign formAction="update.action"/>
 		<#assign edicao=true/>
 	<#else>
-		<title>Nova Solicitação/Atendimento Médico</title>
+		<title>Inserir Solicitação/Atendimento Médico</title>
 		<#assign formAction="insert.action"/>
 	</#if>
 
