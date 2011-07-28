@@ -366,6 +366,31 @@ Dado /^que exista um papel "([^"]*)"$/ do |papel_nome|
    end
 end
 
+Dado /^que exista um ambiente "([^"]*)" com o risco "([^"]*)"$/ do |ambiente_nome, risco_descricao|
+   insert :ambiente do
+      nome ambiente_nome
+      empresa :nome => 'Empresa Padrão'
+      estabelecimento :nome => 'Estabelecimento Padrão'
+   end
+
+   insert :historicoambiente do
+      descricao ambiente_nome
+      data '25/07/2011'
+      tempoexposicao '8h'
+      ambiente :nome => ambiente_nome
+   end
+
+   insert :risco do
+      descricao risco_descricao
+      empresa :nome => 'Empresa Padrão'
+   end
+
+   insert :riscoambiente do
+      historicoambiente :descricao => ambiente_nome
+      risco :descricao => risco_descricao
+   end
+end
+
 Dado /^que todos os papeis estejam permitidos$/ do
    exec_sql "update parametrosdosistema set modulos = encode(cast(array_to_string(array(select id from papel order by id), ',') as bytea), 'base64');"
 end
