@@ -2,10 +2,10 @@
 <head>
 	<@ww.head/>
 	<#if extintorManutencao.id?exists>
-		<title>Editar Manutenção</title>
+		<title>Editar Manutenção de Extintor</title>
 		<#assign formAction="update.action"/>
 	<#else>
-		<title>Inserir Manutenção</title>
+		<title>Inserir Manutenção de Extintor</title>
 		<#assign formAction="insert.action"/>
 	</#if>
 

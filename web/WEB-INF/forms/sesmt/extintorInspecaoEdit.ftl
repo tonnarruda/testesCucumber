@@ -4,10 +4,10 @@
 	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
 
 	<#if extintorInspecao.id?exists>
-		<title>Editar Inspeção</title>
+		<title>Editar Inspeção de Extintor</title>
 		<#assign formAction="update.action"/>
 	<#else>
-		<title>Inserir Inspeção</title>
+		<title>Inserir Inspeção de Extintor</title>
 		<#assign formAction="insert.action"/>
 	</#if>
 

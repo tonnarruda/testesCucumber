@@ -449,7 +449,33 @@ Dado /^que exista um colaborador "([^"]*)", com o cargo "([^"]*)" e a faixa sala
     data '01/07/2011'
     colaborador :nome => colaborador_nome
     faixasalarial :nome => faixasalarial_nome
+    estabelecimento :id => 1
     status 1
+  end
+end
+
+Dado /^que exista um extintor localizado em "([^"]*)"$/ do |extintor_localizacao|
+  insert :extintor do
+    estabelecimento :nome => 'Estabelecimento Padrão'
+    localizacao extintor_localizacao
+    tipo '1'
+    ativo true
+    empresa :nome => 'Empresa Padrão'
+  end
+end
+
+Dado /^que exista um medico coordenador "([^"]*)"$/ do |medico_nome|
+  insert :medicocoordenador do
+    nome medico_nome
+    inicio '28/07/2011'
+    empresa :nome => 'Empresa Padrão'
+  end
+end
+
+Dado /^que exista uma funcao "([^"]*)" no cargo "([^"]*)"$/ do |funcao_nome, cargo_nome|
+  insert :funcao do
+    nome funcao_nome
+    cargo :nome => cargo_nome
   end
 end
 
