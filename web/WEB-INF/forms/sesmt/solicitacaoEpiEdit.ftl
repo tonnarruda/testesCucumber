@@ -16,7 +16,7 @@
 		<#assign formAction="update.action"/>
 		<#assign edicao=true/>
 	<#else>
-		<title>Nova Solicitação de EPIs</title>
+		<title>Inserir Solicitação de EPIs</title>
 		
 		<#assign formAction="insert.action"/>
 	</#if>

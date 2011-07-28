@@ -87,7 +87,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		{
 			
 			solicitacaoEpiManager.remove(solicitacaoEpi.getId());
-			addActionMessage("Solicitação de exames excluída com sucesso.");			
+			addActionMessage("Solicitação de EPIs excluída com sucesso.");			
 		}
 
 		return SUCCESS;

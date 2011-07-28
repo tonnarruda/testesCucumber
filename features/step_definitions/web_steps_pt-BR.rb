@@ -319,13 +319,12 @@ end
 
 Dado /^que exista um usuario "([^"]*)"$/ do |usuario_nome|
    insert :usuario do
-     id 2
      nome usuario_nome
      acessosistema true
      superadmin false
    end
    insert :usuarioempresa do
-     usuario :id => 2
+     usuario :nome => usuario_nome
      empresa :id => 1
    end
 end
@@ -386,9 +385,56 @@ Dado /^que exista um ambiente "([^"]*)" com o risco "([^"]*)"$/ do |ambiente_nom
    end
 
    insert :riscoambiente do
+      epceficaz true
       historicoambiente :descricao => ambiente_nome
       risco :descricao => risco_descricao
    end
+end
+
+Dado /^que exista o EPI "([^"]*)" da categoria "([^"]*)"$/ do |epi_nome, tipoepi_nome|
+  insert :tipoepi do
+    nome tipoepi_nome
+    empresa :nome => 'Empresa Padrão'
+  end
+
+  insert :epi do
+    nome epi_nome
+    fardamento true
+    tipoepi :nome => tipoepi_nome
+    empresa :nome => 'Empresa Padrão'
+  end
+end
+
+Dado /^que exista um colaborador "([^"]*)", com o cargo "([^"]*)" e a faixa salarial "([^"]*)"$/ do |colaborador_nome, cargo_nome, faixasalarial_nome|
+  insert :cargo do
+    nome cargo_nome
+    nomemercado cargo_nome
+  end
+
+  insert :faixasalarial do
+    nome faixasalarial_nome
+    cargo :nome => cargo_nome
+  end
+
+  insert :colaborador do
+    nome colaborador_nome
+    nomecomercial colaborador_nome
+    desligado false
+    conjugetrabalha true
+    qtdfilhos 0
+    sexo 'M'
+    naointegraac true
+    deficiencia 'N'
+    respondeuentrevista true
+    empresa :nome => 'Empresa Padrão'
+  end
+
+  insert :historicocolaborador do
+    data '28/07/2011'
+    colaborador :nome => colaborador_nome
+    faixasalarial :nome => faixasalarial_nome
+    status 1
+  end
 end
 
 Dado /^que todos os papeis estejam permitidos$/ do
