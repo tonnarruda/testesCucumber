@@ -268,6 +268,13 @@ Dado /^que exista o evento "([^"]*)"$/ do |nome_evento|
    end
 end
 
+Dado /^que exista o estabelecimento "([^"]*)"$/ do |nome|
+   insert :estabelecimento do
+     nome nome
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista a área organizacional "([^"]*)"$/ do |nome_area|
    insert :areaorganizacional do
      nome nome_area
