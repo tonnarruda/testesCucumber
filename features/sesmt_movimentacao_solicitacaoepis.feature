@@ -4,7 +4,7 @@ Funcionalidade: Solicitações de EPI
 
   Cenário: Cadastro de Solicitações de EPI
     Dado que exista o EPI "jaleco" da categoria "roupas"
-    Dado que exista um colaborador "geraldo", com o cargo "quimico" e a faixa salarial "I"
+    Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "quimico" e a faixa salarial "I"
 
     Dado que eu esteja logado
     Quando eu acesso o menu "SESMT > Movimentações > Solicitação de EPIs"

@@ -3,7 +3,7 @@
 Funcionalidade: Solicitações/Atendimentos Médicos
 
   Cenário: Cadastro de Solicitações/Atendimentos Médicos
-    Dado que exista um colaborador "geraldo", com o cargo "desenvolvedor" e a faixa salarial "I"
+    Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "desenvolvedor" e a faixa salarial "I"
     Dado que exista um medico coordenador "alfredo"
     Dado que eu esteja logado
 
