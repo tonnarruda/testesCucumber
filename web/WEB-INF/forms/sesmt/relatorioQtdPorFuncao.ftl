@@ -4,7 +4,7 @@
 
 	<#include "../ftl/mascarasImports.ftl" />
 	
-	<title>Relatório - Distribuição de Colaboradores por Função</title>
+	<title>Distribuição de Colaboradores por Função</title>
 	<#assign formAction="gerarRelatorioQtdPorFuncao.action"/>
 	
 	<#assign date = "" />

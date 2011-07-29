@@ -441,6 +441,7 @@ Dado /^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
   insert :colaborador do
     nome colaborador_nome
     nomecomercial colaborador_nome
+    dataadmissao '01/07/2011'
     desligado false
     conjugetrabalha true
     qtdfilhos 0
