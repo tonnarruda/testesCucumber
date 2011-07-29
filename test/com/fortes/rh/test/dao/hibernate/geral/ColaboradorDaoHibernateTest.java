@@ -466,9 +466,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Map parametros = new HashMap();
 		parametros.put("nomeBusca", "chi");
-		parametros.put("cpfBusca", "");
+		parametros.put("cpfBusca", "   .   .   -  ");
 		parametros.put("empresaId", empresa.getId());
 		parametros.put("areaId", null);
+		parametros.put("matriculaBusca", "554");
 
 		int result = colaboradorDao.getCount(parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
 		assertEquals(2, result);
@@ -540,6 +541,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		c1.setEmpresa(empresa);
 	    c1.setNome("Chico");
 	    c1.setNomeComercial("Chico");
+	    c1.setMatricula("115544");
 	    c1.getPessoal().setCpf("11111111111");
 		c1 = colaboradorDao.save(c1);
 
@@ -555,6 +557,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		c2.setEmpresa(empresa);
 	    c2.setNome("Chiquinho");
 	    c2.setNomeComercial("Chiquinho");
+	    c2.setMatricula("115544");
 	    c2.getPessoal().setCpf("22222222222");
 		c2 = colaboradorDao.save(c2);
 
@@ -839,6 +842,25 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.setCandidatoNull(candidato.getId());
 		
 		assertEquals(0, colaboradorDao.findbyCandidato(candidato.getId(),empresa.getId()).size());
+	}
+	
+	public void testFindTodosColaboradorCpf()
+	{
+		Empresa empresa = new Empresa();
+		empresa.setNome("empresa1");
+		empresaDao.save(empresa);
+		
+		Colaborador joao = getColaborador();
+		joao.setEmpresa(empresa);
+		joao.getPessoal().setCpf("1122554448");
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = getColaborador();
+		maria.setEmpresa(empresa);
+		maria.getPessoal().setCpf("1122554448");
+		colaboradorDao.save(maria);
+		
+		assertEquals(joao, colaboradorDao.findTodosColaboradorCpf("1122554448", empresa.getId(), maria.getId()));
 	}
 
 	private Candidato getCandidato()
