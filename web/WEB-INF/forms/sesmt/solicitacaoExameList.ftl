@@ -131,7 +131,7 @@
 				<img border="0" title="Não há exames para esta solicitação/atendimento" src="<@ww.url includeParams="none" value="/imgs/check.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
 				<a href="imprimirSolicitacaoExames.action?solicitacaoExame.id=${solicitacaoExame.id}"><img border="0" title="Imprimir Solicitação de Exames" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
-				<img onclick="marcarComoNormal('${solicitacaoExame.id}');" border="0" title="Marcar o resultado de todos os exames não informados como normal" src="<@ww.url includeParams="none" value="/imgs/check.gif"/>" style="cursor:pointer;">
+				<a><img onclick="marcarComoNormal('${solicitacaoExame.id}');" border="0" title="Marcar o resultado de todos os exames não informados como normal" src="<@ww.url includeParams="none" value="/imgs/check.gif"/>" style="cursor:pointer;"></a>
 			</#if>
 			
 			<#if solicitacaoExame.motivo != motivoCONSULTA && solicitacaoExame.motivo != motivoATESTADO>

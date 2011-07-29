@@ -106,9 +106,9 @@
 					<@ww.textfield label="Nome" name="colaborador.nome" id="nome" cssStyle="width: 300px;"/>
 					<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" cssClass="mascaraCpf" liClass="liLeft" />
 					<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matricula" disabled="true" cssStyle="width: 140px;" />
-
-					<a href="#" onclick="pesquisar();"><img border="0" src="<@ww.url value="/imgs/btnPesquisar.gif"/>"></a>
 				</ul>
+
+				<button type="button" onclick="pesquisar();" class="btnPesquisar grayBGE"></button>
 			</@ww.div>
 		</li><br>
 

@@ -2,7 +2,7 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Relatório de Afastamentos</title>
+	<title>Afastamentos</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>

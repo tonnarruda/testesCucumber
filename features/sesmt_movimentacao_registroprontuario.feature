@@ -3,7 +3,7 @@
 Funcionalidade: Registro de Prontuário
 
   Cenário: Registro de Prontuário
-    Dado que exista um colaborador "geraldo", com o cargo "desenvolvedor" e a faixa salarial "I"
+    Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "desenvolvedor" e a faixa salarial "I"
     Dado que eu esteja logado
 
     Quando eu acesso o menu "SESMT > Movimentações > Registro de Prontuário"

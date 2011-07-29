@@ -3,7 +3,7 @@
 Funcionalidade: Ambientes e Funções do Colaborador
 
   Cenário: Cadastro de Ambientes e Funções do Colaborador
-    Dado que exista um colaborador "geraldo", com o cargo "desenvolvedor" e a faixa salarial "I"
+    Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "desenvolvedor" e a faixa salarial "I"
     Dado que exista uma funcao "programador" no cargo "desenvolvedor"
     Dado que exista um ambiente "desenvolvimento" com o risco "ergonomia"
     Dado que eu esteja logado
