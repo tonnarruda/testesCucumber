@@ -425,6 +425,37 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1, colaboradorRespostas.size());
 	}
 	
+	public void testFindByColaboradorQuestionario()
+	{
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario = questionarioDao.save(questionario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = colaboradorDao.save(colaborador);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		Pergunta pergunta = PerguntaFactory.getEntity();
+		pergunta = perguntaDao.save(pergunta);
+		
+		Resposta resposta = RespostaFactory.getEntity();
+		resposta = respostaDao.save(resposta);
+		
+		ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta.setComentario("teste");
+		colaboradorResposta.setValor(1);
+		colaboradorResposta.setResposta(resposta);
+		colaboradorResposta.setPergunta(pergunta);
+		colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta = colaboradorRespostaDao.save(colaboradorResposta);
+		
+		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findByColaboradorQuestionario(colaboradorQuestionario.getId());
+		assertEquals(1, colaboradorRespostas.size());
+	}
+	
 	public void testFindByQuestionarioCandidato()
 	{
 		Questionario questionario = QuestionarioFactory.getEntity();
