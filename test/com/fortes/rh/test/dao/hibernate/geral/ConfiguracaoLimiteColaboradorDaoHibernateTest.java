@@ -3,7 +3,6 @@ package com.fortes.rh.test.dao.hibernate.geral;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ConfiguracaoLimiteColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
