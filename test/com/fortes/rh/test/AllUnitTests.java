@@ -30,6 +30,7 @@ import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
 import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest;
+import com.fortes.rh.test.business.avaliacao.RankingPerformancePeriodoExperienciaTest;
 import com.fortes.rh.test.business.captacao.AnuncioManagerTest;
 import com.fortes.rh.test.business.captacao.AtitudeManagerTest;
 import com.fortes.rh.test.business.captacao.CandidatoCurriculoManagerTest;
@@ -82,6 +83,7 @@ import com.fortes.rh.test.business.geral.DocumentoAnexoManagerTest;
 import com.fortes.rh.test.business.geral.EmpresaManagerTest;
 import com.fortes.rh.test.business.geral.EstabelecimentoManagerTest;
 import com.fortes.rh.test.business.geral.EstadoManagerTest;
+import com.fortes.rh.test.business.geral.GastoEmpresaItemManagerTest;
 import com.fortes.rh.test.business.geral.GastoEmpresaManagerTest;
 import com.fortes.rh.test.business.geral.GastoManagerTest;
 import com.fortes.rh.test.business.geral.GrupoACManagerTest;
@@ -295,6 +297,7 @@ import com.fortes.rh.test.dicionario.SexoTest;
 import com.fortes.rh.test.dicionario.SituacaoColaboradorTest;
 import com.fortes.rh.test.dicionario.SituacaoFormacaoTest;
 import com.fortes.rh.test.dicionario.SituacaoSolicitacaoTest;
+import com.fortes.rh.test.dicionario.StatusCandidatoSolicitacaoTest;
 import com.fortes.rh.test.dicionario.StatusRetornoACTest;
 import com.fortes.rh.test.dicionario.TipoAplicacaoIndiceTest;
 import com.fortes.rh.test.dicionario.TipoAvaliacaoCursoTest;
@@ -326,6 +329,7 @@ import com.fortes.rh.test.model.desenvolvimento.TurmaTest;
 import com.fortes.rh.test.model.geral.AbsenteismoCollectionTest;
 import com.fortes.rh.test.model.geral.AreaOrganizacionalTest;
 import com.fortes.rh.test.model.geral.ColaboradorTest;
+import com.fortes.rh.test.model.geral.ParametrosDoSistemaTest;
 import com.fortes.rh.test.model.geral.PendenciaACTest;
 import com.fortes.rh.test.model.geral.ReportColumnTest;
 import com.fortes.rh.test.model.pesquisa.ColaboradorRespostaTest;
@@ -336,6 +340,7 @@ import com.fortes.rh.test.model.sesmt.AgendaTest;
 import com.fortes.rh.test.model.sesmt.AsoRelatorioTest;
 import com.fortes.rh.test.model.sesmt.CandidatoEleicaoTest;
 import com.fortes.rh.test.model.sesmt.ComissaoEleicaoTest;
+import com.fortes.rh.test.model.sesmt.ComissaoTest;
 import com.fortes.rh.test.model.sesmt.EtapaProcessoEleitoralTest;
 import com.fortes.rh.test.model.sesmt.ExamesPrevistosRelatorioTest;
 import com.fortes.rh.test.model.sesmt.PppRelatorioTest;
@@ -385,6 +390,7 @@ import com.fortes.rh.test.web.action.captacao.EtapaSeletivaListActionTest;
 import com.fortes.rh.test.web.action.captacao.HabilidadeEditActionTest;
 import com.fortes.rh.test.web.action.captacao.MotivoSolicitacaoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.MotivoSolicitacaoListActionTest;
+import com.fortes.rh.test.web.action.captacao.SolicitacaoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.SolicitacaoListActionTest;
 import com.fortes.rh.test.web.action.captacao.indicador.IndicadorTurnOverListActionTest;
 import com.fortes.rh.test.web.action.cargosalario.CargoEditActionTest;
@@ -428,6 +434,7 @@ import com.fortes.rh.test.web.action.geral.ColaboradorEditActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorListActionTest;
 import com.fortes.rh.test.web.action.geral.ColaboradorReportActionTest;
 import com.fortes.rh.test.web.action.geral.ComoFicouSabendoVagaEditActionTest;
+import com.fortes.rh.test.web.action.geral.ConfiguracaoCampoExtraEditActionTest;
 import com.fortes.rh.test.web.action.geral.ConfiguracaoRelatorioDinamicoEditActionTest;
 import com.fortes.rh.test.web.action.geral.DocumentoAnexoEditActionTest;
 import com.fortes.rh.test.web.action.geral.DocumentoAnexoListActionTest;
@@ -538,10 +545,12 @@ import com.fortes.rh.test.web.dwr.FuncaoDWRTest;
 import com.fortes.rh.test.web.dwr.GrupoOcupacionalDWRTest;
 import com.fortes.rh.test.web.dwr.HistoricoCandidatoDWRTest;
 import com.fortes.rh.test.web.dwr.ListaPresencaDWRTest;
+import com.fortes.rh.test.web.dwr.OcorrenciaDWRTest;
 import com.fortes.rh.test.web.dwr.PerguntaDWRTest;
 import com.fortes.rh.test.web.dwr.ReajusteDWRTest;
 import com.fortes.rh.test.web.dwr.RiscoAmbienteDWRTest;
 import com.fortes.rh.test.web.dwr.RiscosDWRTest;
+import com.fortes.rh.test.web.dwr.SolicitacaoDWRTest;
 import com.fortes.rh.test.web.dwr.SolicitacaoExameDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
@@ -622,6 +631,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ExperienciaTest.class);
         suite.addTestSuite(FormacaoTest.class);
         suite.addTestSuite(CandidatoSolicitacaoTest.class);
+        suite.addTestSuite(SolicitacaoEditActionTest.class);
 
         suite.addTestSuite(CtpsTest.class);
 
@@ -725,6 +735,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(BackupActionTest.class);
         
         //GERAL
+        suite.addTestSuite(ParametrosDoSistemaTest.class);
         suite.addTestSuite(AreaFormacaoManagerTest.class);
         suite.addTestSuite(AreaFormacaoDaoHibernateTest.class);
         suite.addTestSuite(AreaFormacaoListActionTest.class);
@@ -987,6 +998,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CandidatoEleicaoTest.class);
         suite.addTestSuite(CandidatoEleicaoListActionTest.class);
 
+        suite.addTestSuite(ComissaoTest.class);
         suite.addTestSuite(ComissaoEleicaoDaoHibernateTest.class);
         suite.addTestSuite(ComissaoEleicaoManagerTest.class);
         suite.addTestSuite(ComissaoEleicaoTest.class);
@@ -1092,6 +1104,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AvaliacaoManagerTest.class);
         suite.addTestSuite(AvaliacaoEditActionTest.class);
         suite.addTestSuite(AvaliacaoTurmaDaoHibernateTest.class);
+        suite.addTestSuite(RankingPerformancePeriodoExperienciaTest.class);
         
         
         // Avaliacao de Experiencia
@@ -1135,6 +1148,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(MotivoSolicitacaoExameTest.class);
         suite.addTestSuite(AptoTest.class);
         suite.addTestSuite(TipoAvaliacaoCursoTest.class);
+        suite.addTestSuite(StatusCandidatoSolicitacaoTest.class);
 
         //EXCEPTIONS
         suite.addTestSuite(ColecaoVaziaExceptionTest.class);
@@ -1171,6 +1185,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(UtilDWRTest.class);
         suite.addTestSuite(FaixaSalarialDWRTest.class);
         suite.addTestSuite(EnderecoDWRTest.class);
+        suite.addTestSuite(SolicitacaoDWRTest.class);
+        suite.addTestSuite(OcorrenciaDWRTest.class);
 
         //MODEL
         suite.addTestSuite(HistoricoColaboradorTest.class);

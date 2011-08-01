@@ -6,7 +6,6 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.web.tags.CheckBox;
 
@@ -15,14 +14,6 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean orderDiasDesc)
 	{
 		return getDao().findAllSelect(empresaId, orderDiasDesc);
-	}
-
-	public Integer findPeriodoAnterior(Long empresaId, Integer dias) {
-		return getDao().findPeriodoAnterior(empresaId, dias);
-	}
-
-	public Integer findPeriodoSugerido(Long empresaId, Integer dias) {
-		return getDao().findPeriodoSugerido(empresaId, dias);
 	}
 
 	public String findRodapeDiasDoPeriodoDeExperiencia(Collection<PeriodoExperiencia> periodoExperiencias) {

@@ -16,14 +16,6 @@ public class RankingPerformancePeriodoExperiencia extends GenericManagerImpl<Per
 		return getDao().findAllSelect(empresaId, false);
 	}
 
-	public Integer findPeriodoAnterior(Long empresaId, Integer dias) {
-		return getDao().findPeriodoAnterior(empresaId, dias);
-	}
-
-	public Integer findPeriodoSugerido(Long empresaId, Integer dias) {
-		return getDao().findPeriodoSugerido(empresaId, dias);
-	}
-
 	public String findRodapeDiasDoPeriodoDeExperiencia(Collection<PeriodoExperiencia> periodoExperiencias) {
 		String rodapeRelatorioPeriodoExperiencia = ""; 
 		boolean decisao = false;

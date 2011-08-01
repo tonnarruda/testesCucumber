@@ -222,7 +222,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
         	solicitacao.setCidade(null);
         
-        if (solicitacao.getAvaliacao().getId() == null)
+        if (solicitacao.getAvaliacao() != null && solicitacao.getAvaliacao().getId() == null)
         	solicitacao.setAvaliacao(null);
         
         if(solicitacao.isLiberada())

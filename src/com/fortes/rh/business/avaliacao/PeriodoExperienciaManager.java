@@ -9,8 +9,6 @@ import com.fortes.web.tags.CheckBox;
 public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperiencia> 
 {
 	Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean orderDiasDesc);
-	Integer findPeriodoAnterior(Long empresaId, Integer dias);
-	Integer findPeriodoSugerido(Long empresaId, Integer dias);
 	String findRodapeDiasDoPeriodoDeExperiencia(Collection<PeriodoExperiencia> periodoExperiencias);
 	Collection<CheckBox> populaCheckBox(Long empresaId);
 }

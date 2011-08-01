@@ -17,5 +17,3 @@ Funcionalidade: Relatório de Situações
     E eu marco "estabelecimento"
     E eu marco "geral"
 
-    E eu clico no botão "Relatorio"
-

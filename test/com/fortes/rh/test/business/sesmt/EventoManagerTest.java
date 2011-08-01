@@ -17,4 +17,9 @@ public class EventoManagerTest extends MockObjectTestCase
         eventoDao = new Mock(EventoDao.class);
         eventoManager.setDao((EventoDao) eventoDao.proxy());
     }
+	
+	public void testDemiguel()
+	{
+		assertTrue(true);
+	}
 }

@@ -71,6 +71,7 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			exception = e;
 		}
 		assertNull(exception);

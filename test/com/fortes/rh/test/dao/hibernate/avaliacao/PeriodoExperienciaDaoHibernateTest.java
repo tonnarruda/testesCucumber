@@ -31,51 +31,6 @@ public class PeriodoExperienciaDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(1, periodoExperiencias.size());
 	}
 	
-	public void testFindPeriodoAnterior()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setId(1L);
-		empresa = empresaDao.save(empresa);
-		
-		
-		PeriodoExperiencia periodoExperiencia = new PeriodoExperiencia();
-		periodoExperiencia.setEmpresa(empresa);
-		periodoExperiencia.setDias(60);
-		periodoExperiencia.setDescricao("");
-		periodoExperiencia = periodoExperienciaDao.save(periodoExperiencia);
-		
-		PeriodoExperiencia periodoExperiencia2 = PeriodoExperienciaFactory.getEntity();
-		periodoExperiencia2.setEmpresa(empresa);
-		periodoExperiencia2.setDias(30);
-		periodoExperiencia2.setDescricao("");
-		periodoExperiencia2 = periodoExperienciaDao.save(periodoExperiencia2);
-		
-		Integer dias = periodoExperienciaDao.findPeriodoAnterior(empresa.getId(), 60); 
-		assertEquals(30, dias.intValue());
-	}
-	
-	public void testFindPeriodoSugerido()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setId(1L);
-		empresa = empresaDao.save(empresa);
-		
-		PeriodoExperiencia periodoExperiencia = new PeriodoExperiencia();
-		periodoExperiencia.setEmpresa(empresa);
-		periodoExperiencia.setDias(60);
-		periodoExperiencia.setDescricao("");
-		periodoExperiencia = periodoExperienciaDao.save(periodoExperiencia);
-		
-		PeriodoExperiencia periodoExperiencia2 = PeriodoExperienciaFactory.getEntity();
-		periodoExperiencia2.setEmpresa(empresa);
-		periodoExperiencia2.setDias(30);
-		periodoExperiencia2.setDescricao("");
-		periodoExperiencia2 = periodoExperienciaDao.save(periodoExperiencia2);
-		
-		Integer dias = periodoExperienciaDao.findPeriodoSugerido(empresa.getId(), 30); 
-		assertEquals(60, dias.intValue());
-	}
-	
 	public PeriodoExperiencia getEntity()
 	{
 		return PeriodoExperienciaFactory.getEntity();
