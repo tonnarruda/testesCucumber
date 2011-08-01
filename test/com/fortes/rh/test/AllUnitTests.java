@@ -668,7 +668,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(IndiceHistoricoEditActionTest.class);
         suite.addTestSuite(IndiceHistoricoListActionTest.class);
 
-//        suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
         suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
 

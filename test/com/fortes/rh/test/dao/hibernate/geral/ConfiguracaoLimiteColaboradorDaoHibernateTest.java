@@ -37,18 +37,22 @@ public class ConfiguracaoLimiteColaboradorDaoHibernateTest extends GenericDaoHib
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setEmpresa(empresa);
-		areaOrganizacionalDao.save(areaOrganizacional);
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional1.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional2);
 		
 		ConfiguracaoLimiteColaborador contratoA = ConfiguracaoLimiteColaboradorFactory.getEntity();
 		contratoA.setDescricao("contratoA");
-		contratoA.setAreaOrganizacional(areaOrganizacional);
+		contratoA.setAreaOrganizacional(areaOrganizacional1);
 		configuracaoLimiteColaboradorDao.save(contratoA);
 
 		ConfiguracaoLimiteColaborador contratoX = ConfiguracaoLimiteColaboradorFactory.getEntity();
-		contratoX.setDescricao("contratoX");
-		contratoX.setAreaOrganizacional(areaOrganizacional);
+		contratoX.setDescricao("contratoY");
+		contratoX.setAreaOrganizacional(areaOrganizacional2);
 		configuracaoLimiteColaboradorDao.save(contratoX);
 		
 		Collection<ConfiguracaoLimiteColaborador> configuracaoLimiteColaboradors = configuracaoLimiteColaboradorDao.findAllSelect(empresa.getId());
@@ -63,18 +67,22 @@ public class ConfiguracaoLimiteColaboradorDaoHibernateTest extends GenericDaoHib
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setEmpresa(empresa);
-		areaOrganizacionalDao.save(areaOrganizacional);
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional1.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setEmpresa(empresa);
+		areaOrganizacionalDao.save(areaOrganizacional2);
 		
 		ConfiguracaoLimiteColaborador contratoA = ConfiguracaoLimiteColaboradorFactory.getEntity();
 		contratoA.setDescricao("contratoA");
-		contratoA.setAreaOrganizacional(areaOrganizacional);
+		contratoA.setAreaOrganizacional(areaOrganizacional1);
 		configuracaoLimiteColaboradorDao.save(contratoA);
 		
 		ConfiguracaoLimiteColaborador contratoX = ConfiguracaoLimiteColaboradorFactory.getEntity();
 		contratoX.setDescricao("contratoX");
-		contratoX.setAreaOrganizacional(areaOrganizacional);
+		contratoX.setAreaOrganizacional(areaOrganizacional2);
 		configuracaoLimiteColaboradorDao.save(contratoX);
 		
 		Collection<Long> areasIds = configuracaoLimiteColaboradorDao.findIdAreas(empresa.getId());
