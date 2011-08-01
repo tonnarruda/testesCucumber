@@ -21,3 +21,6 @@ Funcionalidade: Relatório de Afastamentos
     E eu seleciono "Nome" de "Ordenar por"
     E eu seleciono "Afastados" de "INSS"
     E eu marco "Agrupar por CID"
+
+    Então eu clico no botão "Relatorio"
+    E eu devo ver "Não há afastamentos para o filtro informado."

@@ -16,3 +16,6 @@ Funcionalidade: Relatório de EPIs Entregues
     Então eu preencho o campo (JS) "periodoFim" com "29/07/2011"
     E eu marco "jaleco"
     E eu marco "oculos"
+
+    Então eu clico no botão "Relatorio"
+    E eu devo ver "Não existem EPIs a serem listados para os filtros informados."

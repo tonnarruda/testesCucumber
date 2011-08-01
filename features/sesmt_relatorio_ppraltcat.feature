@@ -17,3 +17,8 @@ Funcionalidade: Relatório de PPRA e LTCAT
     Então eu devo ver o alert do valida campos e clico no ok
     E eu preencho o campo (JS) "data" com "29/07/2011"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
+
+
+    Então eu clico no botão "Relatorio"
+    E eu devo ver "Não existem dados para o filtro informado."
+

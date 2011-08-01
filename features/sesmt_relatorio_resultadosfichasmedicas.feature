@@ -22,3 +22,6 @@ Funcionalidade: Resultado de Fichas Médicas
     E eu marco "Exibir todas as respostas"
     E eu marco "Exibir comentários"
     E eu marco "Agrupar perguntas por aspecto"
+    
+    Então eu clico no botão "Relatorio"
+    E eu devo ver "Nenhuma pergunta foi respondida."

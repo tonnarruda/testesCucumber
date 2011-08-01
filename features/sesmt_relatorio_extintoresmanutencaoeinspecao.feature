@@ -15,3 +15,6 @@ Funcionalidade: Relatório de Extintores - Manutenção e Inspeção
     E eu marco "Inspeção Vencida"
     E eu marco "Carga Vencida"
     E eu marco "Teste Hidrostático Vencido"
+
+    Então eu clico no botão "Relatorio"
+    E eu devo ver "Nenhum extintor com prazo vencido."
