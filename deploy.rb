@@ -15,6 +15,8 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
 		fortes_var = config['environment'].map{|key,value| "export #{key}=#{value};"}.join
 		app_path = "#{tomcat_home}/webapps/#{config['app_name']}"
 		
+		#conn.exec "pg_dump -U postgres #{config['db_name']} > /home/web/#{config['db_name']}_#{Time.now.strftime('%Y%m%d%H%M')}.sql"
+		
 		conn.exec "#{fortes_var} sh #{tomcat_home}/bin/shutdown.sh"
 		
 		conn.exec "rm -rf #{app_path}"
