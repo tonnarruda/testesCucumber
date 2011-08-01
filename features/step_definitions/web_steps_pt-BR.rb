@@ -55,6 +55,10 @@ Quando /^eu clico na imagem "([^"]*)" da pergunta "([^"]*)"$/ do |img, titulo|
   find(:xpath, "//p[contains(text(), '#{titulo}')]/../div[@class='acaoPerguntas']/a/img[@title='#{img}']").click
 end
 
+Quando /^eu clico na imagem com o título "([^"]*)"$/ do |titulo|
+  find(:xpath, "//img[@title='#{titulo}']").click
+end
+
 Então /^eu devo ver o título "([^"]*)"$/ do |text|
   Then %{I should see "#{text}" within "#waDivTitulo"}
 end
@@ -282,10 +286,18 @@ Dado /^que exista a área organizacional "([^"]*)"$/ do |nome_area|
    end
 end
 
+<<<<<<< HEAD
 Dado /^que exista o grupo ocupacional "([^"]*)"$/ do |nome_grupo_ocupacional|
    insert :grupoocupacional do
      nome nome_grupo_ocupacional
      empresa :id => 1
+=======
+Dado /^que exista a área organizacional "([^"]*)", filha de "([^"]*)"$/ do |nome_area, nome_area_mae|
+   insert :areaorganizacional do
+     nome nome_area
+     empresa :id => 1
+     areamae :areaorganizacional, :nome => nome_area_mae
+>>>>>>> fd69f6c02050c34c4dd401af7fa2116706e121a8
    end
 end
 

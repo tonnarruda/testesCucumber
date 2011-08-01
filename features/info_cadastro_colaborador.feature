@@ -5,6 +5,7 @@ Funcionalidade: Cadastrar Colaborador
   @dev
   Cenário: Cadastro de Colaborador
     Dado que exista a área organizacional "Financeiro"
+    Dado que exista a área organizacional "Compras", filha de "Financeiro"
     Dado que exista o cargo "Contador"
     Dado que exista a faixa salarial "I" no cargo "Contador"
 
@@ -39,19 +40,32 @@ Funcionalidade: Cadastrar Colaborador
     E eu seleciono "Sem escolaridade" de "Escolaridade"
     E eu clico "Dados Funcionais"
     E eu preencho o campo (JS) "Admissão" com "21/12/2010"
-    E eu preencho o campo (JS) "Data" com "21/12/2010"
+    E eu preencho o campo (JS) "Data" com "20/12/2010"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu seleciono "Financeiro" de "Área Organizacional"
+    Então eu devo ver o alert "Não é possível alocar colaboradores em áreas que possuem sub-áreas." e clico no ok
+
+    Então eu seleciono "Financeiro > Compras" de "Área Organizacional"
     E eu seleciono "Contador I" de "Cargo/Faixa"
     E eu seleciono "Por valor" de "Salário Proposto"
     E eu preencho "Valor" com "100"
     E eu clico no botão "Gravar"
-    Então eu devo ver "cadastrado com sucesso"
-    Então eu devo ver "Colaboradores"
-    E eu devo ver "Silva"
+    Então eu devo ver "Data do primeiro histórico não pode ser anterior à data de admissão."
+
+    Então eu clico "Dados Funcionais"
+    E eu preencho o campo (JS) "Data" com "21/12/2010"
+    E eu clico no botão "Gravar"
+    E eu devo ver "cadastrado com sucesso"
+    E eu devo ver "Colaboradores"
+    Então eu devo ver "Silva"
 
     Quando eu clico em editar "Silva"
     Entao o campo "Nome" deve conter "Silva"
+
+    Dado que exista a área organizacional "Almoxarifado", filha de "Compras"
+    Quando eu clico no botão "Gravar"
+    Então eu devo ver "Colaborador não pode ser inserido em áreas que possuem sub-áreas."
+    
     Quando eu preencho "Nome" com "Silva Barbosa"
     E eu preencho o campo (JS) "CEP" com "60320-100"
     E eu saio do campo "CEP"
@@ -60,12 +74,48 @@ Funcionalidade: Cadastrar Colaborador
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "cidade" deve ter "Fortaleza" selecionado
     E o campo "bairroNome" deve conter "São Gerardo"
+
+    Então eu clico "Dados Funcionais"
+    E eu seleciono "Financeiro > Compras > Almoxarifado" de "Área Organizacional"
     Quando eu clico no botão "Gravar"
-    Entao eu devo ver "Silva Barbosa"
+    Então eu devo ver "editado com sucesso"
+    E eu devo ver "Silva Barbosa"
 
     Quando eu clico em excluir "Silva Barbosa"
     Então eu devo ver "Confirma exclusão?"
     Quando eu aperto "OK"
     Então eu devo ver "Colaborador excluído com sucesso."
     E eu não devo ver "Silva Barbosa"
+    
+    Então eu clico no botão "ListagemColaborador"
+    E eu devo ver o título "Listagem de Colaboradores"
+    E eu seleciono "Empresa Padrão" de "Empresa"
+    E eu marco "Empresa Padrão - Estabelecimento Padrão"
+    E eu marco "Empresa Padrão - Financeiro"
+    E eu marco "Empresa Padrão - Financeiro > Compras"
+    E eu clico no botão "Relatorio"
+    Então eu devo ver o alert "Por favor selecione os campos para impressão." e clico no ok
+    
+    Então eu preencho "Título" com "colaboradores"
+    E eu seleciono "Nome" de "from_colunas"
+    E eu aperto "b_to_colunas"
+    E eu seleciono "Matrícula" de "from_colunas"
+    E eu aperto "b_to_colunas"
+    E eu seleciono "Área Organizacional" de "from_colunas"
+    E eu aperto "b_to_colunas"
+    E eu seleciono "Data Admissão" de "from_colunas"
+    E eu aperto "b_to_colunas"
+    E eu seleciono "Cargo Atual" de "from_colunas"
+    E eu aperto "b_to_colunas"
+    E eu seleciono "Estado Civil" de "from_colunas"
+    E eu aperto "b_to_colunas"
+    E eu seleciono "Nome da Mãe" de "from_colunas"
+    E eu aperto "b_to_colunas"
+    E eu devo ver "Limite de campos para o relatório em PDF foi excedido."
+    E eu seleciono "Nome do Pai" de "from_colunas"
+    E eu aperto "b_to_colunas"
+
+    Então eu clico na imagem com o título "Salvar layout do relatório"
+    E eu devo ver o alert "Layout do relatório salvo com sucesso." e clico no ok
+
 
