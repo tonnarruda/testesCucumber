@@ -82,6 +82,7 @@ public class CandidatoDWR
 	
 	public String verificaCpfDuplicado(String cpf, Long empresaId, Long id, String edit) throws Exception
 	{
+		//acho que não ta sendo utilizado, pode ser em algum ftl. Acho que tem um bug se tiver 3 cpf iguais
 		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
 		
 		if (!cpfSemMascara.equals("") && cpfSemMascara.length() == 11)

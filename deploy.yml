@@ -1,3 +1,13 @@
+rh_local_francisco:
+  host: 10.1.3.120
+  user: web
+  password: 123456
+  tomcat_home: /home/web/temp/apache-tomcat-6.0.29
+  fortes_home_properties: name=FORTES_HOME
+  app_name: fortesrh
+  db_name: fortesrh
+  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
+
 rhcomercial_homologacao:
   host: 10.1.3.48
   user: web
@@ -5,6 +15,7 @@ rhcomercial_homologacao:
   tomcat_home: /home/web/temp/apache-tomcat-6.0.29
   fortes_home_properties: name=FORTES_HOME_COMERCIAL
   app_name: fortesrhcomercial
+  db_name: fortesrhhomologacao
   repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
   environment:
     FORTES_HOME_COMERCIAL: /home/web/fortes/RHCOMERCIAL
@@ -17,6 +28,7 @@ rhcomercial_informatica:
   tomcat_home: /usr/local/apache-tomcat-6.0.26
   fortes_home_properties: name=FORTES_HOME_COMERCIAL
   app_name: fortesrhcomercial
+  db_name: fortesrhcomercial
   repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_51_43/fortesrh.war
   environment:
     FORTES_HOME_COMERCIAL: /home/fortes/rhcomercial
@@ -28,6 +40,7 @@ rhoficial_informatica:
   password: fortes$017
   tomcat_home: /usr/local/apache-tomcat-6.0.26
   app_name: fortesrh
+  db_name: fortesrh
   repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_51_43/fortesrh.war
   environment:
     FORTES_HOME: /home/fortes

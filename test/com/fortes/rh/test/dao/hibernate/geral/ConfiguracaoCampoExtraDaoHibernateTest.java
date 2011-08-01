@@ -8,9 +8,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.ConfiguracaoCampoExtraDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
-import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoCampoExtraFactory;
 
 import dbunit.DbUnitManager;
@@ -56,32 +54,26 @@ public class ConfiguracaoCampoExtraDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals("total de registros encontrados", 3, campos.size());
 	}
 	
+	public void testFindDistinct() 
+	{
+		assertEquals( 16, configuracaoCampoExtraDao.findDistinct().size());
+	}
+	
 	public void testFindAllNomes()
 	{
 		String[] nomes = configuracaoCampoExtraDao.findAllNomes();
 		assertEquals(16, nomes.length);
 	}
 	
-	//TODO BACALHAU: Tá imundo. O teste depende do banco. Refatorar!! 
-//	public void testFindDistinctTodosIguais() 
-//	{
-//		Collection<ConfiguracaoCampoExtra> campos = configuracaoCampoExtraDao.findDistinct();
-//		assertEquals(32, campos.size());
-//	}
-//
-//	public void testFindDistinctComEmpresaDiferente() 
-//	{
-//		Empresa empresa = EmpresaFactory.getEmpresa();
-//		empresaDao.save(empresa);
-//		
-//		ConfiguracaoCampoExtra configuracaoCampoExtra = ConfiguracaoCampoExtraFactory.getEntity();
-//		configuracaoCampoExtra.setTitulo("babau");
-//		configuracaoCampoExtra.setEmpresa(empresa);
-//		configuracaoCampoExtraDao.save(configuracaoCampoExtra);
-//		
-//		Collection<ConfiguracaoCampoExtra> campos = configuracaoCampoExtraDao.findDistinct();
-//		assertEquals(33, campos.size());
-//	}
+	public void testRemoveAllNotModelo()
+	{
+		ConfiguracaoCampoExtra configuracaoCampoExtra = ConfiguracaoCampoExtraFactory.getEntity();
+		configuracaoCampoExtra.setEmpresa(null);
+		configuracaoCampoExtra.setNome("babau");
+		
+		configuracaoCampoExtraDao.removeAllNotModelo();
+		assertEquals( 0, configuracaoCampoExtraDao.findDistinct().size());
+	}
 
 	private void dadoQueJaExistemTresRegistrosCadastradosNoBanco() {
 		dbUnitManager.cleanAndInsert(dataSet);		

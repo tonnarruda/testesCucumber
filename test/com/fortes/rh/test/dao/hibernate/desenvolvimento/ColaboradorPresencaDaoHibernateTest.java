@@ -20,6 +20,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorPresenca>
 {
@@ -117,6 +118,34 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorPresencaDao.remove(diaTurma.getId(), null);
 		
 		assertEquals(new Integer(0), colaboradorPresencaDao.getCount(new String[]{"id"}, new Object[]{colaboradorPresenca.getId()}));
+	}
+	
+	public void testSavePresencaDia()
+	{
+		DiaTurma diaTurma = new DiaTurma();
+		diaTurma.setDia(DateUtil.criarDataMesAno(01, 01, 1988));
+		diaTurma = diaTurmaDao.save(diaTurma);
+		
+		colaboradorPresencaDao.savePresencaDia(diaTurma.getId(), new Long[]{5011L, 5055L});
+		assertEquals(2, colaboradorPresencaDao.findByDiaTurma(diaTurma.getId()).size());
+	}
+	
+	public void testFindByDiaTurma()
+	{
+		Turma turma = TurmaFactory.getEntity();
+		turma = turmaDao.save(turma);
+		
+		ColaboradorTurma colaboradorTurma = prepareColaboradorTurma(turma);
+		
+		DiaTurma diaTurma = new DiaTurma();
+		diaTurma = diaTurmaDao.save(diaTurma);
+		
+		ColaboradorPresenca colaboradorPresenca = getEntity();
+		colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
+		colaboradorPresenca.setDiaTurma(diaTurma);
+		colaboradorPresencaDao.save(colaboradorPresenca);
+		
+		assertEquals(1, colaboradorPresencaDao.findByDiaTurma(diaTurma.getId()).size());
 	}
 	
 	public void testRemoveByColaboradorTurma()
