@@ -84,11 +84,18 @@ class Insert
 	end
 
 	def method_missing(method, *args, &block)
-    value = args[0]
     column = method
+    if args[0].is_a? Symbol
+      table = args[0]
+      value = args[1]
+    else
+      table = method
+      value = args[0]
+    end
+
     if (value.class == Hash)
 			k, v = value.each_pair.first
-      value = "(select id from #{method} where #{k} = #{v.to_sql_param})"
+      value = "(select id from #{table} where #{k} = #{v.to_sql_param})"
       column = "#{column}_id"
     else
 			value = value.to_sql_param
