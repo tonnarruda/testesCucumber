@@ -439,7 +439,13 @@ Dado /^que exista o EPI "([^"]*)" da categoria "([^"]*)"$/ do |epi_nome, tipoepi
   end
 end
 
-Dado /^que exista um colaborador "([^"]*)", com o cargo "([^"]*)" e a faixa salarial "([^"]*)"$/ do |colaborador_nome, cargo_nome, faixasalarial_nome|
+Dado /^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"]*)" e a faixa salarial "([^"]*)"$/ do |colaborador_nome, areaorganizacional_nome, cargo_nome, faixasalarial_nome|
+  insert :areaorganizacional do
+    nome areaorganizacional_nome
+    empresa :nome => 'Empresa Padrão'
+    ativo true
+  end
+
   insert :cargo do
     nome cargo_nome
     nomemercado cargo_nome
@@ -453,6 +459,7 @@ Dado /^que exista um colaborador "([^"]*)", com o cargo "([^"]*)" e a faixa sala
   insert :colaborador do
     nome colaborador_nome
     nomecomercial colaborador_nome
+    dataadmissao '01/07/2011'
     desligado false
     conjugetrabalha true
     qtdfilhos 0
@@ -467,7 +474,11 @@ Dado /^que exista um colaborador "([^"]*)", com o cargo "([^"]*)" e a faixa sala
     data '01/07/2011'
     colaborador :nome => colaborador_nome
     faixasalarial :nome => faixasalarial_nome
+    areaorganizacional :nome => areaorganizacional_nome
     estabelecimento :id => 1
+    motivo 'C'
+    tiposalario 3
+    salario 1000
     status 1
   end
 end
@@ -494,6 +505,38 @@ Dado /^que exista uma funcao "([^"]*)" no cargo "([^"]*)"$/ do |funcao_nome, car
   insert :funcao do
     nome funcao_nome
     cargo :nome => cargo_nome
+  end
+end
+
+Dado /^que exista um modelo de ficha medica "([^"]*)" com a pergunta "([^"]*)"$/ do |fichamedica_nome, pergunta|
+  insert :questionario do
+    titulo fichamedica_nome
+    tipo 4
+    liberado true
+    anonimo false
+    aplicarporaspecto false
+    empresa :id => 1
+  end
+
+  insert :pergunta do
+    id 1
+    texto pergunta
+    questionario :titulo => fichamedica_nome
+    tipo 3
+    ordem 1
+    comentario false
+  end
+
+  insert :fichamedica do
+    questionario :titulo => fichamedica_nome
+    ativa true
+  end
+end
+
+Dado /^que exista um afastamento "([^"]*)"$/ do |afastamento_descricao|
+  insert :afastamento do
+    descricao afastamento_descricao
+    inss true
   end
 end
 

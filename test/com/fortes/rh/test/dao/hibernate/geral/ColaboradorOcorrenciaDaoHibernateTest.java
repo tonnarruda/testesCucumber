@@ -1,10 +1,17 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.management.Query;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -243,7 +250,10 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 	
 	public void testCountFaltasByPeriodo()
 	{
-		Collection<Absenteismo> absenteismo = colaboradorOcorrenciaDao.countFaltasByPeriodo(DateUtil.criarDataMesAno(27, 01, 2011), DateUtil.criarDataMesAno(28, 05, 2011), EmpresaFactory.getEmpresa(1L).getId(), null, null);
+		Collection<Long> areasIds = Arrays.asList(1L);
+		Collection<Long> estabelecimentoIds = Arrays.asList(1L, 2L);
+		
+		Collection<Absenteismo> absenteismo = colaboradorOcorrenciaDao.countFaltasByPeriodo(DateUtil.criarDataMesAno(27, 01, 2011), DateUtil.criarDataMesAno(28, 05, 2011), EmpresaFactory.getEmpresa(1L).getId(), estabelecimentoIds, areasIds);
 		assertTrue(true);//testa apenas se a consulta roda, é um sql e o hibernate roda o teste em outra transação
 	}
 	

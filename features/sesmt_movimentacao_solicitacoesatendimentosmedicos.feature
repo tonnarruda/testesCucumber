@@ -3,7 +3,7 @@
 Funcionalidade: Solicitações/Atendimentos Médicos
 
   Cenário: Cadastro de Solicitações/Atendimentos Médicos
-    Dado que exista um colaborador "geraldo", com o cargo "desenvolvedor" e a faixa salarial "I"
+    Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "desenvolvedor" e a faixa salarial "I"
     Dado que exista um medico coordenador "alfredo"
     Dado que eu esteja logado
 
@@ -26,6 +26,21 @@ Funcionalidade: Solicitações/Atendimentos Médicos
     E eu preencho "periodicidades" com "9"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Solicitações/Atendimentos Médicos"
+
+    Então eu clico na linha "geraldo" da imagem "Resultados"
+    E eu devo ver o título "Resultados de Exames"
+    E eu devo ver "ASO"
+    E eu preencho o campo (JS) "datasRealizacaoExames" com "01/08/2011"
+    E eu seleciono "Não Realizado" de "selectResultados"
+    E eu preencho "observacoes" com "testes"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Resultados de Exames"
+    E eu devo ver "Resultados gravados com sucesso."
+    E eu clico no botão "Voltar"
+    Então eu devo ver o título "Solicitações/Atendimentos Médicos"
+
+    Então eu clico na linha "geraldo" da imagem "Marcar o resultado de todos os exames não informados como normal"
+    E eu devo ver o alert "Marcar o resultado de todos os exames não informados como normal?" e clico no ok
 
     Entao eu clico em editar "28/07/2011"
     E eu devo ver o título "Editar Solicitação/Atendimento Médico"

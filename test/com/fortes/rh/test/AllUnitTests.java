@@ -93,6 +93,7 @@ import com.fortes.rh.test.business.geral.MensagemManagerTest;
 import com.fortes.rh.test.business.geral.MotivoDemissaoManagerTest;
 import com.fortes.rh.test.business.geral.OcorrenciaManagerTest;
 import com.fortes.rh.test.business.geral.ParametrosDoSistemaManagerTest;
+import com.fortes.rh.test.business.geral.QuantidadeLimiteColaboradoresPorCargoManagerTest;
 import com.fortes.rh.test.business.geral.UsuarioMensagemManagerTest;
 import com.fortes.rh.test.business.importacao.ImportacaoColaboradorManagerTest;
 import com.fortes.rh.test.business.pesquisa.AspectoManagerTest;
@@ -206,6 +207,7 @@ import com.fortes.rh.test.dao.hibernate.geral.ColaboradorIdiomaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorOcorrenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ComoFicouSabendoVagaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoCampoExtraDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoLimiteColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoPerformanceDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoRelatorioDinamicoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.DependenteDaoHibernateTest;
@@ -224,6 +226,7 @@ import com.fortes.rh.test.dao.hibernate.geral.MensagemDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.MotivoDemissaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.OcorrenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ParametrosDoSistemaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.UsuarioMensagemDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AspectoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaDaoHibernateTest;
@@ -664,6 +667,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(IndiceHistoricoManagerTest.class);
         suite.addTestSuite(IndiceHistoricoEditActionTest.class);
         suite.addTestSuite(IndiceHistoricoListActionTest.class);
+
+        suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
+        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
 
         //DESENVOLVIMENTO
         suite.addTestSuite(CursoDaoHibernateTest.class);
