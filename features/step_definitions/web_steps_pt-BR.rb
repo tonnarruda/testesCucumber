@@ -282,6 +282,13 @@ Dado /^que exista a área organizacional "([^"]*)"$/ do |nome_area|
    end
 end
 
+Dado /^que exista o grupo ocupacional "([^"]*)"$/ do |nome_grupo_ocupacional|
+   insert :grupoocupacional do
+     nome nome_grupo_ocupacional
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista o cargo "([^"]*)"$/ do |nome_cargo|
    insert :cargo do
      nome nome_cargo
@@ -323,6 +330,17 @@ Dado /^que exista uma avaliacao "([^"]*)"$/ do |avaliacao_titulo|
      tipomodeloavaliacao 'D'
      ativo true
      empresa :id => 1
+   end
+end
+
+Dado /^que exista uma avaliacao desempenho "([^"]*)" com o avaliador "([^"]*)"$/ do |avaliacaodesempenho_titulo|
+
+
+
+   insert :avaliacaodesempenho do
+     titulo avaliacaodesempenho_titulo
+     liberada true
+     avaliacao :id => 1
    end
 end
 

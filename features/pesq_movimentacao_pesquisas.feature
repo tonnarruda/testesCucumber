@@ -39,8 +39,8 @@ Funcionalidade: Cadastrar Pesquisas
     Então eu devo ver o título "Inserir Pergunta"
     E eu preencho "aspecto" com "_aspecto 1"
     E eu saio do campo "aspecto"
-    E eu preencho "texto" com "_pergunta 2"
     E eu seleciono "Nota" de "Tipo de Resposta"
+    E eu preencho "texto" com "_pergunta 2"
     E eu preencho "notaMinima" com "5"
     E eu preencho "notaMaxima" com "10"
     E eu marco "Solicitar comentário da resposta (especifique abaixo a solicitação)"
@@ -69,6 +69,7 @@ Funcionalidade: Cadastrar Pesquisas
 
     Então eu devo ver o título "Inserir Pergunta"
     E eu preencho "aspecto" com "_aspecto 2"
+    E eu saio do campo "aspecto"
     E eu saio do campo "aspecto"
     E eu preencho "texto" com "_pergunta 4"
     E eu seleciono "Múltipla Escolha" de "Tipo de Resposta"
