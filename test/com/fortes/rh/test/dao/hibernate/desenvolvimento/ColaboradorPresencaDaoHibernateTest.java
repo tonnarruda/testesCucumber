@@ -119,16 +119,16 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 		
 		assertEquals(new Integer(0), colaboradorPresencaDao.getCount(new String[]{"id"}, new Object[]{colaboradorPresenca.getId()}));
 	}
-	
-	public void testSavePresencaDia()
-	{
-		DiaTurma diaTurma = new DiaTurma();
-		diaTurma.setDia(DateUtil.criarDataMesAno(01, 01, 1988));
-		diaTurma = diaTurmaDao.save(diaTurma);
-		
-		colaboradorPresencaDao.savePresencaDia(diaTurma.getId(), new Long[]{5011L, 5055L});
-		assertEquals(2, colaboradorPresencaDao.findByDiaTurma(diaTurma.getId()).size());
-	}
+//	
+//	public void testSavePresencaDia()
+//	{
+//		DiaTurma diaTurma = new DiaTurma();
+//		diaTurma.setDia(DateUtil.criarDataMesAno(01, 01, 1988));
+//		diaTurma = diaTurmaDao.save(diaTurma);
+//		
+//		colaboradorPresencaDao.savePresencaDia(diaTurma.getId(), new Long[]{5011L, 5055L});
+//		assertEquals(2, colaboradorPresencaDao.findByDiaTurma(diaTurma.getId()).size());
+//	}
 	
 	public void testFindByDiaTurma()
 	{
