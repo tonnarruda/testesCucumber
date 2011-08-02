@@ -58,7 +58,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="103"
+						x="102"
 						y="0"
 						width="139"
 						height="13"
@@ -81,7 +81,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="101"
+						x="99"
 						y="0"
 						width="0"
 						height="15"
@@ -124,7 +124,7 @@
 					<reportElement
 						x="2"
 						y="1"
-						width="41"
+						width="45"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -133,13 +133,14 @@
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{data}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="103"
+						x="102"
 						y="1"
 						width="409"
 						height="15"
-						key="textField"/>
+						key="textField"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
@@ -152,17 +153,19 @@
 						y="0"
 						width="0"
 						height="17"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-5"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="101"
+						x="99"
 						y="0"
 						width="0"
 						height="17"
-						key="line-6"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-6"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -171,21 +174,23 @@
 						width="0"
 						height="17"
 						key="line-7"
+						stretchType="RelativeToTallestObject"
 						positionType="Float"/>
-					<graphicElement stretchType="NoStretch"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="1"
+						x="0"
 						y="16"
-						width="533"
+						width="534"
 						height="0"
-						key="line-10"/>
+						key="line-10"
+						positionType="FixRelativeToBottom"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<staticText>
 					<reportElement
-						x="46"
+						x="50"
 						y="3"
 						width="4"
 						height="11"
@@ -198,7 +203,7 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="53"
+						x="57"
 						y="1"
 						width="41"
 						height="15"
@@ -211,8 +216,8 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="52"
-						y="0"
+						x="57"
+						y="1"
 						width="41"
 						height="15"
 						key="textField-1">

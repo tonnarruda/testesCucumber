@@ -1623,7 +1623,7 @@ INSTRUÇÃO NORMATIVA INSS/PRES Nº 27, DE 30 DE ABRIL DE 2008]]></text>
 					<reportElement
 						x="3"
 						y="405"
-						width="95"
+						width="91"
 						height="13"
 						key="staticText-80"
 						positionType="Float"/>
@@ -1635,7 +1635,7 @@ INSTRUÇÃO NORMATIVA INSS/PRES Nº 27, DE 30 DE ABRIL DE 2008]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="104"
+						x="101"
 						y="405"
 						width="31"
 						height="13"
@@ -1659,7 +1659,7 @@ INSTRUÇÃO NORMATIVA INSS/PRES Nº 27, DE 30 DE ABRIL DE 2008]]></text>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="102"
+						x="99"
 						y="405"
 						width="0"
 						height="26"

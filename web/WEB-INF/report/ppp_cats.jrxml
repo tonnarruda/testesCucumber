@@ -45,7 +45,7 @@
 					<reportElement
 						x="2"
 						y="1"
-						width="76"
+						width="87"
 						height="13"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -56,7 +56,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="103"
+						x="101"
 						y="1"
 						width="411"
 						height="13"
@@ -78,7 +78,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="101"
+						x="99"
 						y="1"
 						width="0"
 						height="14"
@@ -119,7 +119,7 @@
 			<band height="17"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="103"
+						x="101"
 						y="0"
 						width="402"
 						height="15"
@@ -143,6 +143,32 @@
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{data}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="0"
+						width="74"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{data}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="0"
+						width="85"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{data}]]></textFieldExpression>
+				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -154,7 +180,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="101"
+						x="99"
 						y="0"
 						width="0"
 						height="17"
