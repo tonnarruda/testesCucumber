@@ -715,6 +715,12 @@
     <property name="empresaManager">
       <ref bean="empresaManager" />
     </property>
+    <property name="cargoManager">
+      <ref bean="cargoManager" />
+    </property>
+    <property name="areaOrganizacionalManager">
+      <ref bean="areaOrganizacionalManager" />
+    </property>
   </bean>
   <bean id="configuracaoLimiteColaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

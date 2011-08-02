@@ -1,7 +1,6 @@
 package com.fortes.rh.web.action.geral;
 
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,12 +13,9 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
-import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
 
 public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 {
