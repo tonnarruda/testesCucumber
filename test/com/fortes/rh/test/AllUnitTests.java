@@ -77,6 +77,7 @@ import com.fortes.rh.test.business.geral.ColaboradorIdiomaManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorOcorrenciaManagerTest;
 import com.fortes.rh.test.business.geral.ComoFicouSabendoVagaManagerTest;
+import com.fortes.rh.test.business.geral.ConfiguracaoLimiteColaboradorManagerTest;
 import com.fortes.rh.test.business.geral.ConfiguracaoPerformanceManagerTest;
 import com.fortes.rh.test.business.geral.ConfiguracaoRelatorioDinamicoManagerTest;
 import com.fortes.rh.test.business.geral.DocumentoAnexoManagerTest;
@@ -679,6 +680,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(IndiceHistoricoListActionTest.class);
 
         suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoLimiteColaboradorManagerTest.class);
         suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
         suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
 

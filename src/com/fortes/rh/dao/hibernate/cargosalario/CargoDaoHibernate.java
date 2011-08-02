@@ -218,6 +218,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.id", cargoId));
