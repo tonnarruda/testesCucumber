@@ -463,7 +463,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId()))
 				throw new Exception("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");
 
-			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), new Date(), getEmpresaSistema().getId());
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), null);
 
 			if(!fotoValida(colaborador.getFoto()))
 			{
@@ -599,7 +599,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				editarHistorico = false;
 
 			if(editarHistorico)
-				quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), new Date(), getEmpresaSistema().getId());
+				quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), colaborador.getId());
 			
 			if(historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(editarHistorico, historicoColaborador, colaborador))
 			{

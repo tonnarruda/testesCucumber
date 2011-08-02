@@ -106,6 +106,6 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId);	
 	public Collection<TurnOver> countDemitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
 	public Collection<TurnOver> countAdmitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
-	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
+	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean consideraDataAdmissao, Long colaboradorId);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 }

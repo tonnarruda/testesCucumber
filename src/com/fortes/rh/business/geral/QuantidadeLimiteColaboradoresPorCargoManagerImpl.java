@@ -49,18 +49,21 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 		getDao().deleteByArea(areaId);
 	}
 
-	public void validaLimite(Long areaId, Long faixaId, Date data, Long empresaId) throws LimiteColaboradorExceditoException 
+	public void validaLimite(Long areaId, Long faixaId, Long empresaId, Long colaboradorId) throws LimiteColaboradorExceditoException 
 	{
+		Date hoje = new Date();
 		FaixaSalarial faixa = faixaSalarialManager.findByFaixaSalarialId(faixaId);
 		
 		Collection<AreaOrganizacional> areaOrganizacionais = new ArrayList<AreaOrganizacional>();
 		
-		try {areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.ATIVA);
+		try {
+			areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.ATIVA);
 		} catch (Exception e) {e.printStackTrace();}
 		
 		Collection<Long> areasIds = new ArrayList<Long>();
 		
-		for (AreaOrganizacional area: areaOrganizacionais) {
+		for (AreaOrganizacional area: areaOrganizacionais) 
+		{
 			if(area.getId().equals(areaId))
 				areasIds = area.getDescricaoIds();
 		}
@@ -74,7 +77,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 			Collection<Long> cargosIdsTmp = new ArrayList<Long>();
 			cargosIdsTmp.add(faixa.getCargo().getId());
 		
-			Integer colaboradoresAtivos = colaboradorManager.countAtivosPeriodo(data, empresaId, null, LongUtil.collectionToCollectionLong(descendentes), cargosIdsTmp);
+			Integer colaboradoresAtivos = colaboradorManager.countAtivosPeriodo(hoje, empresaId, null, LongUtil.collectionToCollectionLong(descendentes), cargosIdsTmp, false, colaboradorId);
 			
 			if(colaboradoresAtivos >= configuracaoLimite.getLimite())
 				throw new LimiteColaboradorExceditoException("Limite de colaboradores cadastrados para o cargo \""+ faixa.getCargo().getNome() +"\" foi excedido!");

@@ -134,7 +134,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				return Action.INPUT;				
 			}
 			
-			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), new Date(), getEmpresaSistema().getId());
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), historicoColaborador.getColaborador().getId());
 			
 			if(historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO))
 				historicoColaboradorManager.ajustaMotivoContratado(historicoColaborador.getColaborador().getId());

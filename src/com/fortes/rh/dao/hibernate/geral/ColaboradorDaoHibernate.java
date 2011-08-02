@@ -1384,16 +1384,21 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return turnOvers;
 	}
 
-	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds) 
+	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean consideraDataAdmissao, Long colaboradorId) 
 	{
 		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
 		hql.append("left join co.historicoColaboradors as hc ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		
-		hql.append("	where co.dataAdmissao <= :data ");
-		hql.append("	and co.empresa.id = :empresaId ");
+		hql.append("	where co.empresa.id = :empresaId ");
+		
+		if(colaboradorId != null)
+			hql.append("	and co.id <> :colaboradorId ");
+		if(consideraDataAdmissao)
+			hql.append("	and co.dataAdmissao <= :data ");
+		
 		hql.append("	and ( co.dataDesligamento is null ");
-		hql.append("          or co.dataDesligamento > :data ) ");
+		hql.append("          or co.dataDesligamento > :data ) ");//desligado no futuro
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
 			hql.append("	and hc.estabelecimento.id in (:estabelecimentosIds) ");
@@ -1414,6 +1419,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("data", dataIni);
 		query.setLong("empresaId", empresaId);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(colaboradorId != null)
+			query.setLong("colaboradorId", colaboradorId);
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);

@@ -115,7 +115,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerTest extends MockObject
 		Exception exception = null;
 		try 
 		{
-			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(areaFilha.getId(), faixa.getId(), data, empresa.getId());
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(areaFilha.getId(), faixa.getId(), empresa.getId(), null);
 		
 		} catch (Exception e) 
 		{exception = e;}
@@ -128,7 +128,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerTest extends MockObject
 		exception = null;
 		try 
 		{
-			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(areaFilha.getId(), faixa.getId(), data, empresa.getId());
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(areaFilha.getId(), faixa.getId(), empresa.getId(), null);
 			
 		} catch (Exception e) 
 		{exception = e;}
@@ -140,7 +140,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerTest extends MockObject
 		exception = null;
 		try 
 		{
-			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(areaFilha.getId(), faixa.getId(), data, empresa.getId());
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(areaFilha.getId(), faixa.getId(), empresa.getId(), null);
 			
 		} catch (Exception e) 
 		{exception = e;}

@@ -122,7 +122,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			if(historicoColaboradorManager.verifyExists(new String[]{"data", "colaborador.id"}, new Object[]{historicoColaborador.getData(), historicoColaborador.getColaborador().getId()}))
 				throw new Exception("Colaborador já possui um histórico na data do Planejamento de Realinhamento.");
 
-			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), new Date(), empresa.getId());
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), empresa.getId(), reajuste.getColaborador().getId());
 			
 			historicoColaborador = historicoColaboradorManager.save(historicoColaborador);
 

@@ -2934,28 +2934,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa vega = EmpresaFactory.getEmpresa();
 		empresaDao.save(vega);
 
-		Date dataReferencia = DateUtil.criarDataMesAno(21, 07, 2011);
+		Date data_21_07_2011 = DateUtil.criarDataMesAno(21, 07, 2011);
 
 		FaixaSalarial dentista01 = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(dentista01);
 
-		Date dataContratacaoJoao = DateUtil.criarDataMesAno(01, 05, 2010);
-		Colaborador joao = montaColaboradorDoTestCountAtivo(vega, dataContratacaoJoao);
-		montaHistoricoDoTestCountAtivo(dataContratacaoJoao, dentista01, joao);
+		Date data_01_05_2010 = DateUtil.criarDataMesAno(01, 05, 2010);
+		
+		Colaborador joao = montaColaboradorDoTestCountAtivo(vega, data_01_05_2010);
+		montaHistoricoDoTestCountAtivo(data_01_05_2010, dentista01, joao);
 
-		Colaborador ivanDesligado = montaColaboradorDoTestCountAtivo(vega, dataContratacaoJoao);
-		ivanDesligado.setDataDesligamento(dataReferencia);
-		montaHistoricoDoTestCountAtivo(dataContratacaoJoao, dentista01, ivanDesligado);
+		Colaborador ivanDesligadoNoDia = montaColaboradorDoTestCountAtivo(vega, data_01_05_2010);
+		ivanDesligadoNoDia.setDataDesligamento(data_21_07_2011);
+		montaHistoricoDoTestCountAtivo(data_01_05_2010, dentista01, ivanDesligadoNoDia);
 
-		Date dataContratacaoPedroFuturo = DateUtil.criarDataMesAno(8, 8, 2011);
-		Colaborador pedro = montaColaboradorDoTestCountAtivo(vega, dataContratacaoPedroFuturo);
-		montaHistoricoDoTestCountAtivo(dataContratacaoPedroFuturo, dentista01, pedro);
+		Date data_8_8_2011 = DateUtil.criarDataMesAno(8, 8, 2011);
+		Colaborador pedroContratadoFuturo = montaColaboradorDoTestCountAtivo(vega, data_8_8_2011);
+		montaHistoricoDoTestCountAtivo(data_8_8_2011, dentista01, pedroContratadoFuturo);
 
-		Date dataContratacaoMariaNoDiaDeReferencia = DateUtil.criarDataMesAno(21, 07, 2011);
-		Colaborador maria = montaColaboradorDoTestCountAtivo(vega, dataContratacaoMariaNoDiaDeReferencia);
-		montaHistoricoDoTestCountAtivo(dataContratacaoMariaNoDiaDeReferencia, dentista01, maria);
+		Colaborador maria = montaColaboradorDoTestCountAtivo(vega, data_21_07_2011);
+		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
 
-		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(dataReferencia, vega.getId(), null, null, null));
+		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, vega.getId(), null, null, null, true, null));
 	}
 
 	private void montaHistoricoDoTestCountAtivo(Date dataContratacaoJoao, FaixaSalarial dentista01, Colaborador joao) {

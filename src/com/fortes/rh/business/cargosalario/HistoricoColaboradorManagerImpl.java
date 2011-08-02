@@ -844,6 +844,12 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa) throws Exception
 	{
 		HistoricoColaborador historicoColaboradorTmp = findByIdProjection(historicoColaboradorId);
+		
+		if(getCount(new String[]{"colaborador.id"}, new Object[]{colaboradorId}) <= 1)
+			throw new Exception("Não é permitido deletar o último histórico.");
+		
+		
+		
 		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
 		{
 			if(historicoColaboradorTmp.getColaborador().getCodigoAC() == null)
@@ -855,9 +861,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			if(verificaHistoricoNaFolhaAC(historicoColaboradorId, historicoColaboradorTmp.getColaborador().getCodigoAC(), empresa))
 				throw new Exception("<div>Uma Folha de Pagamento foi processada no AC Pessoal com este Histórico.<br>Não é permitido excluir.</div>");
 		}
-
-		if(getCount(new String[]{"colaborador.id"}, new Object[]{colaboradorId}) <= 1)
-			throw new Exception("Não é permitido deletar o último histórico.");
 
 		getDao().updateHistoricoAnterior(historicoColaboradorId);
 		Long reajusteColaboradorId = getDao().findReajusteByHistoricoColaborador(historicoColaboradorId);

@@ -1763,7 +1763,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Date dataTmp = DateUtil.getInicioMesData(dataIni);
 
 		Collection<TurnOver> turnOvers = new LinkedList<TurnOver>();
-		double qtdAtivos = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataIni), empresaId, estabelecimentosIds, areasIds, cargosIds);
+		double qtdAtivos = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataIni), empresaId, estabelecimentosIds, areasIds, cargosIds, true, null);
 
 		for (int i = 0; i <= ate; i++)
 		{
@@ -1867,8 +1867,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return valor;
 	}
 
-	public int countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds) {
-		return getDao().countAtivosPeriodo(dataIni, empresaId, estabelecimentosIds, areasIds, cargosIds);
+	public int countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean considerarDataAdmissao, Long colaboradorId) {
+		return getDao().countAtivosPeriodo(dataIni, empresaId, estabelecimentosIds, areasIds, cargosIds, considerarDataAdmissao, colaboradorId);
 	}
 
 	public Collection<Object[]> montaGraficoTurnover(Collection<TurnOver> turnOvers) 

@@ -168,6 +168,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		
 		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
 		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
@@ -215,6 +216,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		
 		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
 		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
@@ -240,6 +242,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		
 		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
 		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
