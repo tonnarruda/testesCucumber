@@ -3,7 +3,7 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Ajuste de Situação (Dissídio)</title>
+	<title>Alteração de Promoção para Dissídio</title>
 	
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');

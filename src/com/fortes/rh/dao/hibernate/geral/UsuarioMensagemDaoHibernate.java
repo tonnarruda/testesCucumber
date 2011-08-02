@@ -36,7 +36,7 @@ public class UsuarioMensagemDaoHibernate extends GenericDaoHibernate<UsuarioMens
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioMensagem.class));
-		criteria.addOrder(Order.asc("um.id"));
+		criteria.addOrder(Order.desc("m.data"));
 
 		return criteria.list();
 	}
