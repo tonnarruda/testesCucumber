@@ -6,13 +6,12 @@ function montaLine(data, idGrafico, options) {
         },
         grid: { hoverable: true },
         xaxis: { 
-        	mode: "time",
-        	ticks: data.map(function (item){ return item[0]; }),
+        	mode: 'time',
         	timeformat: '%b/%y ',
         	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
         },
         yaxis: { 
-        	 tickFormatter: function (v) {return v;}
+        	 tickFormatter: function (v) { return formataNumero(v); }
         }
     };			
     
@@ -28,7 +27,7 @@ function montaLine(data, idGrafico, options) {
         	{
         		previousPoint = item.dataIndex;
                 $("#tooltip").remove();
-                var y = item.datapoint[1].toFixed(4);		                    
+                var y = formataNumero(item.datapoint[1]);		                    
                 showTooltip(item.pageX, item.pageY, y);
             }
         }
@@ -106,6 +105,25 @@ function montaPie(data, clazz, options) {
 			labelFormatter : config.legendLabelFormatter
 		}
 	});
+}
 
-	//$(class).bind("plothover", pieHover);
+function showTooltip(x, y, contents) 
+{
+    $('<div id="tooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y - 30,
+        left: x + 5,
+        border: '1px solid #fdd',
+        padding: '2px',
+        'background-color': '#fee',
+        opacity: 0.80,
+        'z-index': 20000
+    }).appendTo("body").fadeIn(0);
+}
+
+function formataNumero(numero, precisao)
+{
+	if (!precisao) precisao = 2;
+	return numero.toFixed(precisao).replace(/,/g,'#').replace(/\./g,',').replace(/#/g,'.');
 }

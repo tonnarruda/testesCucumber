@@ -88,7 +88,7 @@
 	<script type="text/javascript">
 		var ieColor = '#AAA';
 		var ieBg = '#FFF';
-		var msgLimiteLargura = "Os campos selecionados não podem ser adicionados ao relatório.\nMotivo: Largura máxima excedida.";
+		var msgLimiteLargura = "Os campos selecionados não podem ser adicionados ao relatório.\nUtilize o relatório em Excel.";
 		var colunasInfo = ${colunasJson};
 
 		$(document).ready(function($)
@@ -271,7 +271,7 @@
 
 				<img border="0" class="saveLayout" onClick="salvarLayout();" title="Salvar layout do relatório" src="<@ww.url value="/imgs/saveLayout.gif"/>">
 				<div style="clear: both"></div>
-				<div class="actionMessage" id="aviso">Limite de campos para o relatório em PDF foi excedido.<br>Motivo: Largura máxima excedida.</div>
+				<div class="actionMessage" id="aviso">Limite de campos para o relatório em PDF foi excedido.<br>Utilize o relatório em Excel.</div>
 			</ul>
 		</fieldset>
 	

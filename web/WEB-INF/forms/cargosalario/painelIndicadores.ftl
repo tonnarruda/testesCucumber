@@ -6,6 +6,8 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/indicadores.css"/>');
+		
+		.formula { margin: 7px 5px; }
 	</style>
 	
 
@@ -40,29 +42,9 @@
 				
 				$('#mediaAbsenteismo').text('Absenteísmo: ' + (somaAbsenteismo / absenteismo.length).toFixed(4));
 				
-				var opt = {
-			        yaxis: { 
-			        	tickFormatter: function (v) { return v.toFixed(4).replace(/,/g,'#').replace(/\./g,',').replace(/#/g,'.'); } 
-			        }
-				}
-				montaLine(absenteismo, "#evolucaoAbsenteismo", opt);
-				montaLine(turnover, "#evolucaoTurnover", opt);
+				montaLine(absenteismo, "#evolucaoAbsenteismo");
+				montaLine(turnover, "#evolucaoTurnover");
 			});
-							
-			function showTooltip(x, y, contents) 
-			{
-		        $('<div id="tooltip">' + contents + '</div>').css( {
-		            position: 'absolute',
-		            display: 'none',
-		            top: y - 30,
-		            left: x + 5,
-		            border: '1px solid #fdd',
-		            padding: '2px',
-		            'background-color': '#fee',
-		            opacity: 0.80,
-		            'z-index': 20000
-		        }).appendTo("body").fadeIn(0);
-		    }
 			
 			function enviaForm1()
 			{
@@ -170,6 +152,7 @@
 				
 				<h1 style="border-bottom: none;">Turnover</h1>
 		   		<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
+				<div class="formula">Fórmula: [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos no início do mês] * 100</div>
 		    
 				<div style="clear: both"></div>
 				
@@ -181,7 +164,7 @@
 		    </div>
 
 		    <div style="clear: both"></div>
-			<a name="pagebottom"></a>
+				<a name="pagebottom"></a>
 			<br>
 		
 			<div class="divFiltro">
@@ -204,14 +187,16 @@
 			<div class="fieldGraph bigger">
 				<h1>Absenteísmo</h1>
 		   		<div id="evolucaoAbsenteismo" style="margin: 25px;height:300px;"></div>
+				<div class="formula">Fórmula: [Total de faltas do mês / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
+				
+				<div style="clear: both"></div>
+				
+				<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
+					<div id="mediaAbsenteismo"></div>
+				</div>
 		    </div>
-			<div style="clear: both"></div>
-			<br>
-			<div class="fieldDados">
-		   		<div id="mediaAbsenteismo"></div>
-			</div>
-	
-			<div style="clear: both"></div>
-			
+		    
+		    <br>
+		    <div style="clear: both"></div>
 	</body>
 </html>

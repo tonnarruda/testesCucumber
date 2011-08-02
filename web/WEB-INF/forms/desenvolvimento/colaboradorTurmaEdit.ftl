@@ -148,9 +148,9 @@
 
             <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="populaAreas(this.value);" disabled="!compartilharColaboradores"/>
 			
-			<label>Data de Admissão:</label><br />
+			<label>Admitidos entre:</label><br />
 			<@ww.datepicker name="dataAdmissaoIni" value="${dataAdmIni}" id="admIni" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-			<@ww.label value="a" liClass="liLeft" />
+			<@ww.label value="e" liClass="liLeft" />
 			<@ww.datepicker name="dataAdmissaoFim" value="${dataAdmFim}" id="admFim" cssClass="mascaraData validaDataFim"/>
 			
 			<@ww.textfield label="Nome do Colaborador" id="nome" name="colaborador.nome" maxLength="100" cssStyle="width: 500px;" />
