@@ -72,6 +72,15 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioCargo.ftl</result>
 		</action>
+		
+		<action name="imprimir" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="imprimir">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/cargo_resumido.jasper</param>
+				<param name="dataSource">cargos</param>
+				<param name="parametersMap">parametros</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/cargoList.ftl</result>
+		</action>
 
 		<action name="prepareRelatorioColaboradorCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareRelatorioColaboradorCargo">
 			<interceptor-ref name="defaultListStack"/>
