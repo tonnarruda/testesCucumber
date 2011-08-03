@@ -40,7 +40,10 @@ public class CargoListAction extends MyActionSupportList
 	public String imprimir() throws Exception
 	{
 		cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo());
-		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Cargos", getEmpresaSistema(), "");
+		
+		areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaOrganizacional.getId());
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Cargos", getEmpresaSistema(), "Área Organizacional: " + areaOrganizacional.getNome() + "\nAtivos: " + (cargo.isAtivo() ? "Sim" : "Não"));
 		
 		if (cargos.isEmpty()) 
 		{
