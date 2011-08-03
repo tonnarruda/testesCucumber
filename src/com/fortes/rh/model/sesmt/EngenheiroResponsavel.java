@@ -55,54 +55,69 @@ public class EngenheiroResponsavel extends AbstractModel implements Serializable
 
 		return periodo;
 	}
+	
+	public String getPeriodoRelatorio()
+	{
+		return DateUtil.formataDiaMesAno(this.inicio) + " a " + (this.fim != null ? DateUtil.formataDiaMesAno(this.fim) : "__/__/___");
+	}
 
 	public String getCrea()
 	{
 		return crea;
 	}
+	
 	public void setCrea(String crea)
 	{
 		this.crea = crea;
 	}
+	
 	public Empresa getEmpresa()
 	{
 		return empresa;
 	}
+	
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
 	}
+	
 	public String getNome()
 	{
 		return nome;
 	}
+	
 	public void setNome(String nome)
 	{
 		this.nome = nome;
 	}
 
-	public Date getInicio() {
+	public Date getInicio() 
+	{
 		return inicio;
 	}
 
-	public void setInicio(Date inicio) {
+	public void setInicio(Date inicio) 
+	{
 		this.inicio = inicio;
 	}
 
-	public Date getFim() {
+	public Date getFim() 
+	{
 		return fim;
 	}
 
-	public void setFim(Date fim) {
+	public void setFim(Date fim) 
+	{
 		this.fim = fim;
 	}
 
-	public String getNit() {
+	public String getNit() 
+	{
 		return nit;
 	}
 
-	public void setNit(String nit) {
+	public void setNit(String nit) 
+	{
 		this.nit = nit;
 	}
-
 }

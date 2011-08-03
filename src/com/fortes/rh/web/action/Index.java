@@ -182,7 +182,7 @@ public class Index extends ActionSupport
 				catch (Exception e)
 				{
 					e.printStackTrace();
-					throw new Exception("Erro ao verificar versão do WebService do AC Pessoal. Verifique se a conexão está funcionando corretamente.");
+					throw new Exception("Erro ao verificar conexão com o WebService. Verifique se o mesmo está funcionando corretamente.");
 				}
 
 				parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);

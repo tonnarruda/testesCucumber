@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.util.DateUtil;
 
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="historicofuncao_sequence", allocationSize=1)
@@ -80,41 +81,52 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
     	
     	this.funcao.setNome(funcaoNome);
     }
-    
 
 	public Date getData()
 	{
 		return data;
 	}
+	
 	public void setData(Date data)
 	{
 		this.data = data;
 	}
+	
 	public Funcao getFuncao()
 	{
 		return funcao;
 	}
+	
 	public void setFuncao(Funcao funcao)
 	{
 		this.funcao = funcao;
 	}
+	
 	public String getDescricao()
 	{
 		return descricao;
 	}
+	
 	public void setDescricao(String descricao)
 	{
 		this.descricao = descricao;
 	}
+	
 	public Date getDataProximoHistorico()
 	{
 		return dataProximoHistorico;
 	}
+	
 	public void setDataProximoHistorico(Date dataProximoHistorico)
 	{
 		this.dataProximoHistorico = dataProximoHistorico;
 	}
 
+	public String getPeriodo()
+	{
+		return DateUtil.formataDiaMesAno(this.data) + " a " + (this.dataProximoHistorico != null ? DateUtil.formataDiaMesAno(this.dataProximoHistorico) : "__/__/___");
+	}
+	
 	public Collection<Exame> getExames()
 	{
 		return exames;
@@ -158,5 +170,4 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 		
 		return descricao.toString();
 	}
-
 }

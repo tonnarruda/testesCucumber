@@ -888,6 +888,12 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	{
 		this.dataProximoHistorico = dataProximoHistorico;
 	}
+	
+	public String getPeriodo()
+	{
+		return DateUtil.formataDiaMesAno(this.data) + " a " + (this.dataProximoHistorico != null ? DateUtil.formataDiaMesAno(this.dataProximoHistorico) : "__/__/___");
+	}
+	
 	public Object clone()
 	{
 		try
