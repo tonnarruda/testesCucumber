@@ -7,7 +7,7 @@ alter sequence usuario_sequence restart with 2;
 INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acsenha) VALUES (1,'001','AC Padrão','http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal','ADMIN','');
 alter sequence grupoac_sequence restart with 2;
 
-INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,grupoac, campoextracolaborador) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'001',false);
+INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,grupoac, campoextracolaborador, mensagemmoduloexterno) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'001',false, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.');
 alter sequence empresa_sequence restart with 2;
 
 insert into exame (id, nome, periodicidade, periodico, empresa_id) values (1, 'ASO', 0, false, 1);
@@ -47,6 +47,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (507,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (359, 'ROLE_R&S_MOV', 'Movimentações', '#', 2, true, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (21, 'ROLE_MOV_SOLICITACAO', 'Solicitação de Pessoal', '/captacao/solicitacao/list.action', 1, true, 359);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (500, 'ROLE_SOLICITACAO_AGENDA', 'Agenda', '/captacao/solicitacao/agenda.action', 2, true, 359);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (510, 'ROLE_MOV_PALOGRAFICO', 'Exame Palográfico', '/captacao/candidato/prepareExamePalografico.action', 3, true, 359);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (50, 'ROLE_BD_SOLIDARIO', 'Banco de Dados Solidário', '/captacao/candidato/prepareBusca.action?BDS=true', 2, true, 463);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (360, 'ROLE_R&S_REL', 'Relatórios', '#', 3, true, 357);
@@ -76,6 +77,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (26, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (49, 'ROLE_MOV_SOLICITACAOREAJUSTE', 'Solicitação de Realinhamento de C&S', '/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste.action', 2, true, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (395, 'ROLE_DISSIDIO', 'Reajuste Coletivo', '/cargosalario/reajusteColaborador/prepareDissidio.action', 3, true, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (478, 'ROLE_VER_AREAS', 'Visualizar todas as Áreas Organizacionais', '#', 0, false, 363);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (512, 'ROLE_MOV_DISSIDIO', 'Ajuste de Situação (Dissídio)', '/cargosalario/historicoColaborador/prepareAjusteDissidio.action', 4, true, 363);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (364, 'ROLE_C&S_REL', 'Relatórios', '#', 3, true, 361);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (54, 'ROLE_REL_CARGO', 'Descrição de Cargos', '/cargosalario/cargo/prepareRelatorioCargo.action', 1, true, 364);
@@ -85,6 +87,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (396,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (406, 'ROLE_MOV_TABELA', 'Análise de Tabela Salarial', '/cargosalario/faixaSalarialHistorico/analiseTabelaSalarialFiltro.action', 5, true, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (407, 'ROLE_REL_PROJECAO_SALARIAL', 'Projeção Salarial', '/geral/colaborador/prepareProjecaoSalarialFiltro.action',6, true, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (473, 'ROLE_REL_SITUACOES', 'Situações', '/cargosalario/historicoColaborador/prepareRelatorioSituacoes.action', 7, true, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (511, 'ROLE_REL_COLAB_SEM_REAJUSTE', 'Colaboradores sem Reajuste Salarial', '/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action', 7, true, 364);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (417, 'ROLE_TRANSFERIR_FAIXAS_AC', 'Transferir Faixas entre Cargos', '', 4, false, 361);
 -- Fim C&S
@@ -164,15 +167,16 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (403,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (423, 'ROLE_REL_ANIVERSARIANTES', 'Aniversariantes do mês', '/geral/colaborador/prepareRelatorioAniversariantes.action', 4, true, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (472, 'ROLE_REL_ADMITIDOS', 'Admitidos', '/geral/colaborador/prepareRelatorioAdmitidos.action', 5, true, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (479, 'ROLE_CAD_PERIODOEXPERIENCIA', 'Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência', '/avaliacao/avaliacaoExperiencia/prepareResultado.action', 1, true, 486);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (490, 'ROLE_REL_ACOMPANHAMENTO_EXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareRelatorioAcopanhamentoExperiencia.action', 2, true, 486);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (491, 'ROLE_REL_ACOMP_RANKING_PERIODO_EXPERIENCIA', 'Ranking de Performace das Avaliações de Desempenho','/avaliacao/periodoExperiencia/prepareRelatorioRankingPerformancePeriodoDeExperiencia.action', 3, true,486);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (490, 'ROLE_REL_ACOMP_EXPERIENCIA_PREVISTO', 'Acompanhamento de Experiência Previsto', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperienciaPrevisto.action', 2, true, 486);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (513, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperiencia.action', 3, true, 486);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (491, 'ROLE_REL_ACOMP_RANKING_PERIODO_EXPERIENCIA', 'Ranking de Performance das Avaliações de Desempenho','/avaliacao/periodoExperiencia/prepareRelatorioRankingPerformancePeriodoDeExperiencia.action', 4, true,486);
 
 -- Fim Info. Funcionais
 -- Modulo Indicadores
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (73, 'ROLE_IND', 'Estatísticas de Vagas por Motivo', '/indicador/duracaoPreenchimentoVaga/prepareMotivo.action', 1, true, 461);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (69, 'ROLE_IND', 'Duração para Preenchimento de Vagas', '/indicador/duracaoPreenchimentoVaga/prepare.action', 2, true, 461);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (47, 'ROLE_REL_PRODUTIVIDADE', 'Análise das Etapas Seletivas', '/captacao/produtividade/prepareProdutividade.action', 3, true, 463);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (70, 'ROLE_REL_PROMOCAO', 'Promoções', '/cargosalario/historicoColaborador/prepareRelatorioPromocoes.action', 6, true, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (70, 'ROLE_REL_PROMOCAO', 'Promoções', '/cargosalario/historicoColaborador/prepareRelatorioPromocoes.action', 6, true, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (398, 'ROLE_REL_TURNOVER', 'Turnover (rotatividade)', '/indicador/indicadorTurnOver/prepare.action', 6, true, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (509, 'ROLE_REL_ABSENTEISMO', 'Absenteísmo', '/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action', 7, true, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (506, 'ROLE_REL_LISTA_COLAB', 'Listagem de Colaboradores', '/geral/colaborador/prepareRelatorioDinamico.action', 8, true, 377);
@@ -273,7 +277,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 510;
+alter sequence papel_sequence restart with 514;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 insert into public."perfil" ("id", "nome") values (2, 'Usuário');

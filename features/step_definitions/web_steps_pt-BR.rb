@@ -346,7 +346,7 @@ Dado /^que exista uma avaliacao "([^"]*)"$/ do |avaliacao_titulo|
    end
 end
 
-Dado /^que exista uma avaliacao desempenho "([^"]*)" com o avaliador "([^"]*)"$/ do |avaliacaodesempenho_titulo|
+Dado /^que exista uma avaliacao desempenho "([^"]*)"$/ do |avaliacaodesempenho_titulo|
    insert :avaliacaodesempenho do
      titulo avaliacaodesempenho_titulo
      liberada true
