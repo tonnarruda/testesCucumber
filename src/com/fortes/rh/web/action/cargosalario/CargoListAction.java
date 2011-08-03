@@ -1,11 +1,15 @@
 package com.fortes.rh.web.action.cargosalario;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -19,6 +23,7 @@ public class CargoListAction extends MyActionSupportList
 	private Collection<Cargo> cargos;
 	private Cargo cargo = new Cargo();
 	private AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
+	private Map<String,Object> parametros;
 
 	private Collection<AreaOrganizacional> areas;
 
@@ -29,6 +34,24 @@ public class CargoListAction extends MyActionSupportList
 
 		areas = areaOrganizacionalManager.montaAllSelect(getEmpresaSistema().getId());
 
+		return Action.SUCCESS;
+	}
+	
+	public String imprimir() throws Exception
+	{
+		cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo());
+		
+		areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaOrganizacional.getId());
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Cargos", getEmpresaSistema(), "Área Organizacional: " + areaOrganizacional.getNome() + "\nAtivos: " + (cargo.isAtivo() ? "Sim" : "Não"));
+		
+		if (cargos.isEmpty()) 
+		{
+			addActionMessage("Não existem dados para o filtro informado");
+			list();
+			return Action.INPUT;
+		}
+		
 		return Action.SUCCESS;
 	}
 
@@ -83,5 +106,9 @@ public class CargoListAction extends MyActionSupportList
 	public void setAreaOrganizacional(AreaOrganizacional areaOrganizacional)
 	{
 		this.areaOrganizacional = areaOrganizacional;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }

@@ -22,6 +22,8 @@ public class QuantidadeLimiteColaboradoresPorCargo extends AbstractModel impleme
 	private int limite;
 	@Transient
 	private String descricao;
+	@Transient
+	private int qtdColaboradoresCadastrados;
 	
 	public AreaOrganizacional getAreaOrganizacional() {
 		return areaOrganizacional;
@@ -74,6 +76,12 @@ public class QuantidadeLimiteColaboradoresPorCargo extends AbstractModel impleme
 	}
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	public int getQtdColaboradoresCadastrados() {
+		return qtdColaboradoresCadastrados;
+	}
+	public void setQtdColaboradoresCadastrados(int qtdColaboradoresCadastrados) {
+		this.qtdColaboradoresCadastrados = qtdColaboradoresCadastrados;
 	}
 
 }

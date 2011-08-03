@@ -22,14 +22,14 @@ rhcomercial_homologacao:
     JAVA_HOME: /home/web/temp/jdk1.6.0_22
 	
 rhcomercial_informatica:
-  host: 10.1.254.77777
-  user: root7
-  password: fortes$017
+  host: 10.1.254.777777
+  user: root
+  password: fortes$0177
   tomcat_home: /usr/local/apache-tomcat-6.0.26
   fortes_home_properties: name=FORTES_HOME_COMERCIAL
   app_name: fortesrhcomercial
   db_name: fortesrhcomercial
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_51_43/fortesrh.war
+  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
   environment:
     FORTES_HOME_COMERCIAL: /home/fortes/rhcomercial
     JRE_HOME: /usr

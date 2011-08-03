@@ -69,6 +69,17 @@ public class DateUtil
 		return dataDiaMesAno;
 	}
 
+	public static String formataAnoMesDia(Date data)
+	{
+		if(data == null)
+			return "";
+		
+		SimpleDateFormat formatar = new SimpleDateFormat("yyyy-MM-dd");
+		String dataDiaMesAno = formatar.format(data);
+		
+		return dataDiaMesAno;
+	}
+	
 	/**
 	 * Formata uma Date() baseado em uma mascara
 	 *

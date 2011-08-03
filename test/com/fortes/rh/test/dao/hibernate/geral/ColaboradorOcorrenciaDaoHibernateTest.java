@@ -259,17 +259,17 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 	
 	public void testMontaDiasDoPeriodo()
 	{
-		assertEquals("select cast('27/02/2011' as date) as dia union " +
-				"select cast('28/02/2011' as date) as dia union " +
-				"select cast('01/03/2011' as date) as dia union " +
-				"select cast('02/03/2011' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("27/02/2011"), DateUtil.montaDataByString("02/03/2011")));
+		assertEquals("select cast('2011-02-27' as date) as dia union " +
+				"select cast('2011-02-28' as date) as dia union " +
+				"select cast('2011-03-01' as date) as dia union " +
+				"select cast('2011-03-02' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("27/02/2011"), DateUtil.montaDataByString("02/03/2011")));
 		
-		assertEquals("select cast('02/03/2011' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("02/03/2011"), DateUtil.montaDataByString("02/03/2011")));
+		assertEquals("select cast('2011-03-02' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("02/03/2011"), DateUtil.montaDataByString("02/03/2011")));
 
-		assertEquals("select cast('30/12/2011' as date) as dia union " +
-				"select cast('31/12/2011' as date) as dia union " +
-				"select cast('01/01/2012' as date) as dia union " +
-				"select cast('02/01/2012' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("30/12/2011"), DateUtil.montaDataByString("02/01/2012")));
+		assertEquals("select cast('2011-12-30' as date) as dia union " +
+				"select cast('2011-12-31' as date) as dia union " +
+				"select cast('2012-01-01' as date) as dia union " +
+				"select cast('2012-01-02' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("30/12/2011"), DateUtil.montaDataByString("02/01/2012")));
 	}
 
 	public GenericDao<ColaboradorOcorrencia> getGenericDao()

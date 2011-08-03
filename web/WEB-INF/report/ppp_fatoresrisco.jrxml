@@ -29,8 +29,7 @@
 	<parameter name="RESPOSTA4" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="RESPOSTA5" isForPrompting="false" class="java.lang.String"/>
 
-	<field name="dataInicio" class="java.util.Date"/>
-	<field name="dataFim" class="java.util.Date"/>
+	<field name="periodo" class="java.lang.String"/>
 	<field name="risco.descricao" class="java.lang.String"/>
 	<field name="risco.descricaoGrupoRisco" class="java.lang.String"/>
 	<field name="intensidade" class="java.lang.String"/>
@@ -63,7 +62,7 @@
 					<reportElement
 						x="2"
 						y="0"
-						width="91"
+						width="93"
 						height="13"
 						key="staticText-1"
 						positionType="Float"/>
@@ -266,21 +265,6 @@
 		</columnHeader>
 		<detail>
 			<band height="16"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="56"
-						y="0"
-						width="41"
-						height="15"
-						key="textField-8">
-							<printWhenExpression><![CDATA[new Boolean($F{dataFim} == null)]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["__/__/____"]]></textFieldExpression>
-				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -372,45 +356,19 @@
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
 						y="0"
-						width="45"
+						width="97"
 						height="15"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataInicio}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{periodo}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="56"
-						y="0"
-						width="41"
-						height="15"
-						key="textField-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataFim}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="49"
-						y="2"
-						width="5"
-						height="11"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[a]]></text>
-				</staticText>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="101"

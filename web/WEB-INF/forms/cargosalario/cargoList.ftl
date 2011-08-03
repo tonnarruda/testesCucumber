@@ -9,23 +9,37 @@
 	</style>
 
 	<#include "../ftl/showFilterImports.ftl" />
-	<#assign validarCampos="return validaFormulario('formBusca', null, null, true)"/>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<title>Cargos</title>
+	
+	<script type="text/javascript">
+		function pesquisar()
+		{
+			$('#pagina').val(1);
+			$('#formBusca').attr('action','list.action');
+			$('#formBusca').submit();
+		}
+
+		function imprimir()
+		{ 
+			$('#formBusca').attr('action','imprimir.action');
+			$('#formBusca').submit();
+		}
+	</script>
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST" id="formBusca">
+		<@ww.form name="formBusca" action="list.action" validate="true" method="POST" id="formBusca">
 			<@ww.textfield label="Nomenclatura Mercado" name="cargo.nomeMercado" cssStyle="width: 350px;"/>
 			<@ww.select label="Área Organizacional" name="areaOrganizacional.id" list="areas" listKey="id" listValue="descricao" headerValue="" headerKey="-1" cssStyle="width:445px;"/>
 			<@ww.checkbox label="Ativos" name="cargo.ativo" labelPosition="left"/>
 			<@ww.hidden id="pagina" name="page"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>
-			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+			<input type="button" value="" onclick="pesquisar();" class="btnPesquisar grayBGE">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
@@ -55,8 +69,8 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
-		</button>
+		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+		<button class="btnImprimir" onclick="imprimir();" accesskey="P"></button>
 	</div>
 </body>
 </html>

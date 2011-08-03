@@ -202,9 +202,9 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		
 		int qtdDias = DateUtil.diferencaEntreDatas(dataIni, dataFim);
 		for (int i = 0; i < qtdDias; i++) 
-			diasDoPeriodo.append("select cast('" + DateUtil.formataDiaMesAno(DateUtil.incrementaDias(dataIni, i)) + "' as date) as dia union ");
+			diasDoPeriodo.append("select cast('" + DateUtil.formataAnoMesDia(DateUtil.incrementaDias(dataIni, i)) + "' as date) as dia union ");
 
-		diasDoPeriodo.append("select cast('" + DateUtil.formataDiaMesAno(DateUtil.incrementaDias(dataIni, qtdDias)) + "' as date) as dia ");
+		diasDoPeriodo.append("select cast('" + DateUtil.formataAnoMesDia(DateUtil.incrementaDias(dataIni, qtdDias)) + "' as date) as dia ");
 		
 		return diasDoPeriodo.toString();
 	}

@@ -24,9 +24,8 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 
-	<field name="data" class="java.util.Date"/>
+	<field name="periodo" class="java.lang.String"/>
 	<field name="descricao" class="java.lang.String"/>
-	<field name="dataProximoHistorico" class="java.util.Date"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -46,7 +45,7 @@
 					<reportElement
 						x="2"
 						y="0"
-						width="95"
+						width="96"
 						height="13"
 						key="staticText-1"
 						positionType="Float"/>
@@ -124,14 +123,14 @@
 					<reportElement
 						x="2"
 						y="1"
-						width="45"
+						width="96"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{data}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{periodo}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -188,47 +187,6 @@
 						positionType="FixRelativeToBottom"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<staticText>
-					<reportElement
-						x="50"
-						y="3"
-						width="4"
-						height="11"
-						key="staticText-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Top">
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[a]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="57"
-						y="1"
-						width="41"
-						height="15"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataProximoHistorico}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="57"
-						y="1"
-						width="41"
-						height="15"
-						key="textField-1">
-							<printWhenExpression><![CDATA[new Boolean($F{dataProximoHistorico} == null)]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["__/__/____"]]></textFieldExpression>
-				</textField>
 			</band>
 		</detail>
 		<columnFooter>

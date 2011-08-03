@@ -197,6 +197,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	{
 		try
 		{
+			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), historicoColaborador.getColaborador().getId());
+			
 			historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
 			historicoColaboradorManager.updateHistorico(historicoColaborador, getEmpresaSistema());
 			
@@ -211,7 +213,15 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			addActionError(msg);
 			prepareUpdate();
 			return Action.INPUT;
-		}		
+		}
+		catch (LimiteColaboradorExceditoException e)
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
+			prepareInsert();
+			
+			return Action.INPUT;
+		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
