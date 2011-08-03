@@ -1,1 +1,1 @@
-update papel set nome = 'Alteração de Promoção para Dissídio' where id = 512;--.go
+update papel set nome = 'AlteraÃ§Ã£o de PromoÃ§Ã£o para DissÃ­dio' where id = 512;--.go
