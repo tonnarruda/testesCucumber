@@ -24,15 +24,14 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 
-	<field name="data" class="java.util.Date"/>
 	<field name="colaborador.empresa.cnpj" class="java.lang.String"/>
 	<field name="ambiente.nome" class="java.lang.String"/>
 	<field name="funcao.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.cboCodigo" class="java.lang.String"/>
 	<field name="gfip" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.nome" class="java.lang.String"/>
-	<field name="dataProximoHistorico" class="java.util.Date"/>
 	<field name="cnpjFormatado" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -235,18 +234,18 @@
 		</columnHeader>
 		<detail>
 			<band height="16"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
 						y="0"
-						width="46"
+						width="97"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{data}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{periodo}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -327,32 +326,6 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{gfip}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="56"
-						y="0"
-						width="41"
-						height="15"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataProximoHistorico}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="50"
-						y="2"
-						width="4"
-						height="11"
-						key="staticText-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Top">
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[a]]></text>
-				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -435,21 +408,6 @@
 						positionType="Float"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="56"
-						y="0"
-						width="41"
-						height="15"
-						key="textField-1">
-							<printWhenExpression><![CDATA[new Boolean($F{dataProximoHistorico} == null)]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["__/__/____"]]></textFieldExpression>
-				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="0"

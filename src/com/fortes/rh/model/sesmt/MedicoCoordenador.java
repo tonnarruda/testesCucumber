@@ -63,6 +63,11 @@ public class MedicoCoordenador extends AbstractModel implements Serializable
 
 		return periodo;
 	}
+    
+    public String getPeriodoRelatorio()
+	{
+		return DateUtil.formataDiaMesAno(this.inicio) + " a " + (this.fim != null ? DateUtil.formataDiaMesAno(this.fim) : "__/__/___");
+	}
 
     public String getCrmRegistro()
     {

@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.util.DateUtil;
 
 public class PppFatorRisco implements Serializable, Cloneable
 {
@@ -134,6 +135,11 @@ public class PppFatorRisco implements Serializable, Cloneable
 	public void setDataInicio(Date dataInicio)
 	{
 		this.dataInicio = dataInicio;
+	}
+	
+	public String getPeriodo()
+	{
+		return DateUtil.formataDiaMesAno(this.dataInicio) + " a " + (this.dataFim != null ? DateUtil.formataDiaMesAno(this.dataFim) : "__/__/___");
 	}
 
 	public String getIntensidade() {
