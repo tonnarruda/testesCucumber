@@ -33,6 +33,7 @@
 	<field name="dataIni" class="java.util.Date"/>
 	<field name="ocorrencia.pontuacao" class="java.lang.Integer"/>
 	<field name="observacao" class="java.lang.String"/>
+	<field name="dataFim" class="java.util.Date"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{ocorrencia.descricao}]]></variableExpression>
@@ -74,7 +75,7 @@
 					<reportElement
 						x="3"
 						y="0"
-						width="94"
+						width="96"
 						height="11"
 						key="textField"
 						positionType="Float"
@@ -88,9 +89,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="101"
+						x="102"
 						y="0"
-						width="70"
+						width="53"
 						height="11"
 						key="textField"
 						positionType="Float"
@@ -104,9 +105,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="172"
+						x="214"
 						y="0"
-						width="49"
+						width="38"
 						height="11"
 						key="textField"
 						positionType="Float"
@@ -120,9 +121,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="225"
+						x="254"
 						y="0"
-						width="303"
+						width="277"
 						height="11"
 						key="textField"
 						isPrintWhenDetailOverflows="true"/>
@@ -131,6 +132,22 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{observacao}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="158"
+						y="0"
+						width="53"
+						height="11"
+						key="textField-1"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"
+						isPrintWhenDetailOverflows="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataFim}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

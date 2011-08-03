@@ -106,25 +106,9 @@
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="104"
+						x="215"
 						y="60"
-						width="66"
-						height="11"
-						backcolor="#FFFFFF"
-						key="staticText-2"
-						isPrintInFirstWholeBand="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Data]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="174"
-						y="60"
-						width="48"
+						width="38"
 						height="11"
 						backcolor="#FFFFFF"
 						key="staticText-6"
@@ -138,9 +122,9 @@
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="226"
+						x="255"
 						y="60"
-						width="307"
+						width="277"
 						height="11"
 						backcolor="#FFFFFF"
 						key="staticText-7"
@@ -182,6 +166,38 @@
 					</subreportParameter>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "cabecalho.jasper"]]></subreportExpression>
 				</subreport>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="159"
+						y="60"
+						width="53"
+						height="11"
+						backcolor="#FFFFFF"
+						key="staticText-9"
+						isPrintInFirstWholeBand="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Término]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="103"
+						y="60"
+						width="53"
+						height="11"
+						backcolor="#FFFFFF"
+						key="staticText-10"
+						isPrintInFirstWholeBand="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Início]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
