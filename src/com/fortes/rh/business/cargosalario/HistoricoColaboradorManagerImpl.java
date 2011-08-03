@@ -848,8 +848,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if(getCount(new String[]{"colaborador.id"}, new Object[]{colaboradorId}) <= 1)
 			throw new Exception("Não é permitido deletar o último histórico.");
 		
-		
-		
 		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
 		{
 			if(historicoColaboradorTmp.getColaborador().getCodigoAC() == null)

@@ -93,6 +93,7 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDa
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("q.limite"), "limite");
+		p.add(Projections.property("c.id"), "projectionCargoId");
 		p.add(Projections.property("c.nome"), "projectionCargoNome");
 		p.add(Projections.property("a.id"), "projectionAreaOrganizacionalId");
 		p.add(Projections.property("a.nome"), "projectionAreaOrganizacionalNome");

@@ -35,12 +35,16 @@
 	<field name="areaOrganizacional.id" class="java.lang.Long"/>
 	<field name="limite" class="java.lang.Integer"/>
 	<field name="descricao" class="java.lang.String"/>
+	<field name="qtdColaboradoresCadastrados" class="java.lang.Integer"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpArea" calculation="Count">
 		<variableExpression><![CDATA[$F{cargo.nome}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL" class="java.lang.Integer" resetType="Group" resetGroup="grpArea" calculation="Sum">
 		<variableExpression><![CDATA[$F{limite}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_CAD" class="java.lang.Integer" resetType="Group" resetGroup="grpArea" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdColaboradoresCadastrados}]]></variableExpression>
 	</variable>
 
 		<group  name="grpArea" >
@@ -66,7 +70,7 @@
 			<band height="13"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="482"
+						x="425"
 						y="1"
 						width="54"
 						height="12"
@@ -79,7 +83,7 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="429"
+						x="372"
 						y="1"
 						width="46"
 						height="12"
@@ -90,6 +94,19 @@
 					</textElement>
 				<text><![CDATA[Total:]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="482"
+						y="1"
+						width="54"
+						height="12"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{TOTAL_CAD}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -146,13 +163,13 @@
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Limite]]></text>
+				<text><![CDATA[Qtd. Cad.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="6"
 						y="12"
-						width="472"
+						width="416"
 						height="11"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -160,6 +177,19 @@
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Cargo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="425"
+						y="12"
+						width="54"
+						height="11"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Limite]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -184,7 +214,7 @@
 					<reportElement
 						x="6"
 						y="1"
-						width="472"
+						width="416"
 						height="12"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="1"/>
@@ -200,6 +230,19 @@
 						width="54"
 						height="12"
 						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{qtdColaboradoresCadastrados}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="425"
+						y="1"
+						width="54"
+						height="12"
+						key="textField-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>

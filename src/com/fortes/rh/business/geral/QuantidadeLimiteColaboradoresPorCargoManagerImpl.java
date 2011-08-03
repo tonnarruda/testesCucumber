@@ -1,6 +1,7 @@
 package com.fortes.rh.business.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -101,7 +102,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 		Collection<ConfiguracaoLimiteColaborador> configuracaos = configuracaoLimiteColaboradorManager.findAllSelect(empresaId);
 		Collection<AreaOrganizacional> areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.ATIVA);
 		Collection<QuantidadeLimiteColaboradoresPorCargo> limites = getDao().findByEmpresa(empresaId);
-		
+		Date hoje = new Date();
 		for (QuantidadeLimiteColaboradoresPorCargo limite : limites) 
 		{
 			for (AreaOrganizacional area : areaOrganizacionais) 
@@ -117,6 +118,8 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 			{
 				if(configuracao.getAreaOrganizacional().getId().equals(limite.getAreaOrganizacional().getId()))
 				{
+					Collection<AreaOrganizacional> descendentes = areaOrganizacionalManager.findAreasPossiveis(areaOrganizacionais, limite.getAreaOrganizacional().getId());
+					limite.setQtdColaboradoresCadastrados(colaboradorManager.countAtivosPeriodo(hoje, empresaId, null, LongUtil.collectionToCollectionLong(descendentes), Arrays.asList(limite.getCargo().getId()), false, null));
 					limite.setDescricao(configuracao.getDescricao());
 					break;
 				}				
