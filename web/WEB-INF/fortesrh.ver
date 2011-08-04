@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.52.44" data="04/08/2011">
+		- CeS > Cadastros > Cargos e Faixas: Impressão da listagem de Cargos.
+		- TeD > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Novo campo [Admitidos entre] no filtro.
+		- TeD > Relatórios > Investimento por Colaborador: Novo relatório.
+		- Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Adicionadas respostas do colaborador para pesquisas.
+		- Info. Funcionais > Cadastros > Atualizar meus dados: Possibilidade de alteração das informações de Formação Escolar, Idiomas e Experiência Profissional.
+		- Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova funcionalidade, exportar para Excel.
+		- Utilitários > Cadastros > Empresa: Configuração da mensagem do módulo externo no campo [Mensagem a ser exibida no módulo externo].
+		- Utilitários > Configurações > Limite de Colab. por Cargo: Nova funcionalidade, permite configurar um limite de Colaboradores cadastrados em um Cargo de uma determinada Área Organizacional.
+		- Utilitários > Configurações > Limite de Colab. por Cargo: Novo relatório, lista a quantidade de Colaboradores cadastrados e limite para os Cargos configurados.
+	</Versao>
 	<Versao id="1.1.51.43" data="14/07/2011">
 		- ReS > Movimentações > Agenda: Impressão da agenda.
 		- CeS > Cadastros > Área Organizacionais: Novo campo [E-mails extras para notificações]. Esses e-mails serão utilizados na solicitação de pessoal [Comunicar responsáveis da Área Organizacional].

@@ -137,6 +137,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (421,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (422, 'ROLE_REL_HISTORICO_TREINAMENTOS', 'Histórico de Treinamentos', '/desenvolvimento/colaboradorTurma/prepareFiltroHistoricoTreinamentos.action', 10, true, 368);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (465, 'ROLE_REL_COLABORADORES_CERTIFICACOES', 'Colaboradores x Certificações', '/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorCertificacao.action', 11, true, 368);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (498, 'ROLE_CRONOGRAMA_TREINAMENTO', 'Relatorio de investimento de T&D', '/desenvolvimento/turma/relatorioInvestimento.action', 12, true, 368);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (515, 'ROLE_INVESTIMENTO_TREINAMENTO_COLAB', 'Investimento por Colaborador', '/desenvolvimento/turma/relatorioInvestimentoPorColaborador.action', 13, true, 368);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (454, 'ROLE_T&D_REL', 'Painel de Indicadores', '/desenvolvimento/indicadores/list.action', 4, true, 365);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (63, 'ROLE_MOV_TURMA', 'Pode Cadastrar Turma', '/desenvolvimento/turma/list.action', 4, false, 365);
@@ -199,6 +200,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (41, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (485, 'ROLE_CAMPO_EXTRA', 'Campos Extras', '/geral/configuracaoCampoExtra/prepareUpdate.action', 2, true, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (502, 'ROLE_UTI_CONFIGURACAO', 'Sistema', '/geral/parametrosDoSistema/prepareUpdate.action', 1, true, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (503, 'ROLE_CONFIG_CANDIDATO_EXT', 'Cadastro de Candidato (externo)', '/geral/parametrosDoSistema/listCamposCandidato.action', 3, true, 41);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (514, 'ROLE_CONFIG_LIMITE_COLABORADOR', 'Limite de Colab. por Cargo', '/geral/configuracaoLimiteColaborador/list.action', 4, true, 41);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (39, 'ROLE_UTI_AUDITORIA', 'Auditoria', '/security/auditoria/prepareList.action', 5, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (44, 'ROLE_UTI_HISTORICO_VERSAO', 'Histórico de Versões', '/geral/documentoVersao/list.action', 6, true, 37);
@@ -277,7 +279,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 514;
+alter sequence papel_sequence restart with 516;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -21021,11 +21023,11 @@ insert into cid (codigo, descricao) values ('U99','ID 10ª Revisão não dispon�
 insert into comoFicouSabendoVaga (id, nome) values (1, 'Outro');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.51.43', '', '25', false,false, 2, '1.0.1.44', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.52.44', '', '25', false,false, 2, '1.0.1.44', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'
 );
 
 alter sequence parametrosdosistema_sequence restart with 2;
-insert into migrations values('20110714095934');--.go
+insert into migrations values('20110726092155');--.go

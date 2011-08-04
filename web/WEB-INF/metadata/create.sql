@@ -66,7 +66,8 @@ CREATE TABLE empresa (
 	campoextracandidato boolean default false,
 	emailCandidatoNaoApto boolean,
 	mailnaoaptos text,
-	exame_id bigint
+	exame_id bigint,
+	emailresplimitecontrato character varying(120) default ''
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
@@ -1305,7 +1306,8 @@ CREATE SEQUENCE resposta_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MIN
 
 CREATE TABLE pesquisa (
     id bigint NOT NULL,
-    questionario_id bigint
+    questionario_id bigint,
+    exibirPerformanceProfissional boolean default false
 );
 ALTER TABLE ONLY pesquisa ADD CONSTRAINT pesquisa_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY pesquisa ADD CONSTRAINT pesquisa_questionario_fk FOREIGN KEY (questionario_id) REFERENCES questionario(id);
@@ -2344,3 +2346,27 @@ order by hc.colaborador_id,hc.data,hfs_hc.data,hi_hfs_hc.data,hi_hc.data;
 create table migrations (
 	name varchar(14) not null
 );
+
+CREATE TABLE configuracaoLimiteColaborador (
+	id bigint NOT NULL,
+	descricao character varying(100) NOT NULL,
+	areaorganizacional_id bigint
+);
+
+ALTER TABLE configuracaoLimiteColaborador ADD CONSTRAINT configuracaoLimiteColaborador_pkey PRIMARY KEY(id);
+ALTER TABLE configuracaoLimiteColaborador ADD CONSTRAINT configuracaoLimiteColaborador_areaorganizacional_fk FOREIGN KEY (areaorganizacional_id) REFERENCES areaorganizacional(id);
+ALTER TABLE configuracaoLimiteColaborador ADD CONSTRAINT configuracaoLimiteColaborador_areaorganizacional_uk UNIQUE (areaorganizacional_id);
+CREATE SEQUENCE configuracaoLimiteColaborador_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE quantidadeLimiteColaboradoresPorCargo (
+	id bigint NOT NULL,
+	areaorganizacional_id bigint,
+	cargo_id bigint,
+	limite integer NOT NULL
+);
+
+ALTER TABLE quantidadelimitecolaboradoresporcargo ADD CONSTRAINT quantidadelimitecolaboradoresporcargo_pkey PRIMARY KEY (id);
+ALTER TABLE quantidadeLimiteColaboradoresPorCargo ADD CONSTRAINT quantidadeLimiteColaboradoresPorCargo_areaorganizacional_fk FOREIGN KEY (areaorganizacional_id) REFERENCES areaorganizacional(id);
+ALTER TABLE quantidadeLimiteColaboradoresPorCargo ADD CONSTRAINT quantidadeLimiteColaboradoresPorCargo_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);
+ALTER TABLE quantidadeLimiteColaboradoresPorCargo ADD CONSTRAINT quantidadeLimiteColaboradoresPorCargo_cargo_area_uk UNIQUE (cargo_id, areaorganizacional_id);
+CREATE SEQUENCE quantidadelimitecolaboradoresporcargo_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
