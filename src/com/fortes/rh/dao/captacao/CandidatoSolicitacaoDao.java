@@ -26,4 +26,5 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca);
 	Collection<CandidatoSolicitacao> findHistoricoAptoByEtapaSolicitacao(Long empresaId, Long[] etapaIds);
 	Collection<Integer> getIdF2RhCandidato(Long solicitacaoId);
+	void setStatusByColaborador(Long colaboradorId, char status);
 }

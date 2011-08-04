@@ -46,6 +46,7 @@ import com.fortes.rh.test.business.captacao.ExperienciaManagerTest;
 import com.fortes.rh.test.business.captacao.FormacaoManagerTest;
 import com.fortes.rh.test.business.captacao.HabilidadeManagerTest;
 import com.fortes.rh.test.business.captacao.HistoricoCandidatoManagerTest;
+import com.fortes.rh.test.business.captacao.NivelCompetenciaManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoBDSManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest;
 import com.fortes.rh.test.business.cargosalario.CargoManagerTest;
@@ -174,6 +175,7 @@ import com.fortes.rh.test.dao.hibernate.captacao.HabilidadeDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.HistoricoCandidatoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.IdiomaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.MotivoSolicitacaoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.captacao.NivelCompetenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.SolicitacaoBDSDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.SolicitacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.CargoDaoHibernateTest;
@@ -391,6 +393,7 @@ import com.fortes.rh.test.web.action.captacao.EtapaSeletivaListActionTest;
 import com.fortes.rh.test.web.action.captacao.HabilidadeEditActionTest;
 import com.fortes.rh.test.web.action.captacao.MotivoSolicitacaoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.MotivoSolicitacaoListActionTest;
+import com.fortes.rh.test.web.action.captacao.NivelCompetenciaEditActionTest;
 import com.fortes.rh.test.web.action.captacao.SolicitacaoEditActionTest;
 import com.fortes.rh.test.web.action.captacao.SolicitacaoListActionTest;
 import com.fortes.rh.test.web.action.captacao.indicador.IndicadorTurnOverListActionTest;
@@ -633,6 +636,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(FormacaoTest.class);
         suite.addTestSuite(CandidatoSolicitacaoTest.class);
         suite.addTestSuite(SolicitacaoEditActionTest.class);
+        suite.addTestSuite(NivelCompetenciaEditActionTest.class);
+        suite.addTestSuite(NivelCompetenciaManagerTest.class);
+        suite.addTestSuite(NivelCompetenciaDaoHibernateTest.class);
 
         suite.addTestSuite(CtpsTest.class);
 

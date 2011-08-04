@@ -246,6 +246,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	public void testRelatorioColaboradorCargo_ComHistoricoColaboradorNulo() throws Exception
 	{
 		Exception exp = null;
+		Date hoje = new Date();
 		
 		try {
 			//Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro
@@ -256,10 +257,10 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 			Date data = new Date();
 			Empresa empresa = EmpresaFactory.getEmpresa();
 			empresa.setAcIntegra(false);
-			historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(new Date()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<HistoricoColaborador>()));
+			historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(hoje), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<HistoricoColaborador>()));
 			
 			
-			Collection<HistoricoColaborador> resultado = historicoColaboradorManager.relatorioColaboradorCargo(empresa, new Date(), null, null, 2, '1', null, true, null);
+			Collection<HistoricoColaborador> resultado = historicoColaboradorManager.relatorioColaboradorCargo(empresa, hoje, null, null, 2, '1', null, true, null);
 		} catch (Exception e) {
 			exp = e;
 		}

@@ -130,7 +130,16 @@
       <ref bean="atitudeDaoTarget" />
     </property>
   </bean>
+  <bean id="nivelCompetenciaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.captacao.NivelCompetenciaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="nivelCompetenciaDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

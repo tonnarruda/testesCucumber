@@ -152,7 +152,9 @@
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador" />
     <mapping class="com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo" />
     <mapping class="com.fortes.rh.model.geral.AutoCompleteVO" />
+      <mapping class="com.fortes.rh.model.captacao.NivelCompetencia" />
   </session-factory>
+
 
 </hibernate-configuration>
 
