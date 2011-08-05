@@ -574,6 +574,7 @@ INSERT INTO estado VALUES (nextval('estado_sequence'), 'SC', 'Santa Catarina');
 INSERT INTO estado VALUES (nextval('estado_sequence'), 'SE', 'Sergipe');
 INSERT INTO estado VALUES (nextval('estado_sequence'), 'TO', 'Tocantins');
 
+-- BEGIN_TEST_IGNORE
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'RO'),'00015','Alta Floresta D''Oeste');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'RO'),'00023','Ariquemes');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'RO'),'00031','Cabixi');
@@ -1518,9 +1519,11 @@ insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence')
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04277','Ererê');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04285','Eusébio');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04301','Farias Brito');
+-- END_TEST_IGNORE
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04350','Forquilha');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04400','Fortaleza');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04459','Fortim');
+-- BEGIN_TEST_IGNORE
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04509','Frecheirinha');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04608','General Sampaio');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04657','Graça');
@@ -6081,6 +6084,7 @@ insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence')
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'GO'),'22203','Vila Boa');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'GO'),'22302','Vila Propício');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'DF'),'00108','Brasília');
+-- END_TEST_IGNORE
 
 INSERT INTO extintorinspecaoitem VALUES(1, 'Lacre');
 INSERT INTO extintorinspecaoitem VALUES(2, 'Selo');
@@ -6141,6 +6145,7 @@ insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,desc
 
 alter sequence configuracaocampoextra_sequence restart with 33;
 
+-- BEGIN_TEST_IGNORE
 insert into codigoCBO (codigo, descricao) values ('848505','Abatedor');
 insert into codigoCBO (codigo, descricao) values ('764305','Acabador de calçados');
 insert into codigoCBO (codigo, descricao) values ('766305','Acabador de embalagens (flexíveis e cartotécnicas)');
@@ -8021,11 +8026,15 @@ insert into codigoCBO (codigo, descricao) values ('332105','Professor leigo no e
 insert into codigoCBO (codigo, descricao) values ('332205','Professor prático no ensino profissionalizante');
 insert into codigoCBO (codigo, descricao) values ('333115','Professores de cursos livres');
 insert into codigoCBO (codigo, descricao) values ('377140','Profissional de Atletismo');
+-- END_TEST_IGNORE
+
 insert into codigoCBO (codigo, descricao) values ('519805','Profissional do sexo');
 insert into codigoCBO (codigo, descricao) values ('317105','Programador de internet');
 insert into codigoCBO (codigo, descricao) values ('317120','Programador de multimídia');
 insert into codigoCBO (codigo, descricao) values ('317115','Programador de máquinas - ferramenta com comando numérico');
 insert into codigoCBO (codigo, descricao) values ('317110','Programador de sistemas de informaçao');
+
+-- BEGIN_TEST_IGNORE
 insert into codigoCBO (codigo, descricao) values ('766155','Programador visual gráfico');
 insert into codigoCBO (codigo, descricao) values ('318805','Projetista de móveis');
 insert into codigoCBO (codigo, descricao) values ('374135','Projetista de sistemas de áudio');
@@ -8567,6 +8576,7 @@ insert into codigoCBO (codigo, descricao) values ('632015','Viveirista florestal
 insert into codigoCBO (codigo, descricao) values ('841745','Xaropeiro');
 insert into codigoCBO (codigo, descricao) values ('514120','Zelador de edifício');
 insert into codigoCBO (codigo, descricao) values ('223310','Zootecnista');
+-- END_TEST_IGNORE
 
 insert into cid (codigo, descricao) values ('A000','Cólera devida a Vibrio cholerae 01, biótipo cholerae');
 insert into cid (codigo, descricao) values ('A001','Cólera devida a Vibrio cholerae 01, biótipo El Tor');
@@ -8574,6 +8584,8 @@ insert into cid (codigo, descricao) values ('A009','Cólera não especificada');
 insert into cid (codigo, descricao) values ('A010','Febre tifóide');
 insert into cid (codigo, descricao) values ('A011','Febre paratifóide A');
 insert into cid (codigo, descricao) values ('A012','Febre paratifóide B');
+
+-- BEGIN_TEST_IGNORE
 insert into cid (codigo, descricao) values ('A013','Febre paratifóide C');
 insert into cid (codigo, descricao) values ('A014','Febre paratifóide não especificada');
 insert into cid (codigo, descricao) values ('A020','Enterite por salmonela');
@@ -21019,6 +21031,7 @@ insert into cid (codigo, descricao) values ('U88','gente resistente a múltiplos
 insert into cid (codigo, descricao) values ('U898','Agente resistente a outro antibiótico especificado único');
 insert into cid (codigo, descricao) values ('U899','Agente resistente a antibiótico não especificado');
 insert into cid (codigo, descricao) values ('U99','ID 10ª Revisão não disponível');
+-- END_TEST_IGNORE
 
 insert into comoFicouSabendoVaga (id, nome) values (1, 'Outro');
 
