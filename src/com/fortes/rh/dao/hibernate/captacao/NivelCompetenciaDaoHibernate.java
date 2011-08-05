@@ -1,8 +1,12 @@
 package com.fortes.rh.dao.hibernate.captacao;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -12,10 +16,13 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaFaixaSalarial;
 
 public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompetencia> implements NivelCompetenciaDao
 {
-	public Collection<NivelCompetencia> findAllSelect(Long empresaId) {
+	@SuppressWarnings("unchecked")
+	public Collection<NivelCompetencia> findAllSelect(Long empresaId) 
+	{
 		Criteria criteria = getSession().createCriteria(NivelCompetencia.class,"nc");
 
 		ProjectionList p = Projections.projectionList().create();
@@ -34,5 +41,39 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		criteria.addOrder(Order.asc("nc.ordem"));
 
 		return criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<NivelCompetenciaFaixaSalarial> findByFaixa(Long cargoId) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select id, nome, 'C' as tipocompetencia ");
+		sql.append("from conhecimento as c inner join cargo_conhecimento as cc on c.id = cc.conhecimentos_id ");
+		sql.append("where cc.cargo_id = :cargoId ");
+		sql.append("union ");
+		sql.append("select id, nome, 'H' as tipocompetencia "); 
+		sql.append("from habilidade as h inner join cargo_habilidade as ch on h.id = ch.habilidades_id ");
+		sql.append("where ch.cargo_id = :cargoId ");
+		sql.append("union ");
+		sql.append("select id, nome, 'A' as tipocompetencia "); 
+		sql.append("from atitude as a inner join cargo_atitude as ca on a.id = ca.atitudes_id ");
+		sql.append("where ca.cargo_id = :cargoId ");
+		sql.append("order by nome");
+
+		Query query = getSession().createSQLQuery(sql.toString());
+		
+		if (cargoId != null)
+			query.setLong("cargoId", cargoId);
+		
+		Collection<Object[]> resultado = query.list();
+		Collection<NivelCompetenciaFaixaSalarial> lista = new ArrayList<NivelCompetenciaFaixaSalarial>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			lista.add(new NivelCompetenciaFaixaSalarial(((String)res[2]).charAt(0), ((BigInteger)res[0]).longValue(), (String)res[1]));
+		}
+
+		return lista;				
 	}
 }

@@ -4,16 +4,24 @@ package com.fortes.rh.web.action.captacao;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
+import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
 public class NivelCompetenciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
+	
 	private NivelCompetenciaManager nivelCompetenciaManager;
+	private FaixaSalarialManager faixaSalarialManager;
+	
 	private NivelCompetencia nivelCompetencia;
+	private FaixaSalarial faixaSalarial;
 	private Collection<NivelCompetencia> nivelCompetencias;
+	private Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalarial;
 
 	private void prepare() throws Exception
 	{
@@ -79,6 +87,14 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return list();
 	}
 	
+	public String prepareCompetenciasByFaixa()
+	{
+		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
+		niveisCompetenciaFaixaSalarial = nivelCompetenciaManager.findByFaixa(faixaSalarial.getCargo().getId());
+		
+		return Action.SUCCESS;
+	}
+	
 	public NivelCompetencia getNivelCompetencia()
 	{
 		if(nivelCompetencia == null)
@@ -99,5 +115,30 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public Collection<NivelCompetencia> getNivelCompetencias()
 	{
 		return nivelCompetencias;
+	}
+
+	public Collection<NivelCompetenciaFaixaSalarial> getNiveisCompetenciaFaixaSalarial() 
+	{
+		return niveisCompetenciaFaixaSalarial;
+	}
+
+	public void setNiveisCompetenciaFaixaSalarial(Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalarial) 
+	{
+		this.niveisCompetenciaFaixaSalarial = niveisCompetenciaFaixaSalarial;
+	}
+
+	public FaixaSalarial getFaixaSalarial() 
+	{
+		return faixaSalarial;
+	}
+
+	public void setFaixaSalarial(FaixaSalarial faixaSalarial)
+	{
+		this.faixaSalarial = faixaSalarial;
+	}
+	
+	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
+	{
+		this.faixaSalarialManager = faixaSalarialManager;
 	}
 }
