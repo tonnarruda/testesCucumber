@@ -137,6 +137,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (421,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (422, 'ROLE_REL_HISTORICO_TREINAMENTOS', 'Histórico de Treinamentos', '/desenvolvimento/colaboradorTurma/prepareFiltroHistoricoTreinamentos.action', 10, true, 368);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (465, 'ROLE_REL_COLABORADORES_CERTIFICACOES', 'Colaboradores x Certificações', '/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorCertificacao.action', 11, true, 368);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (498, 'ROLE_CRONOGRAMA_TREINAMENTO', 'Relatorio de investimento de T&D', '/desenvolvimento/turma/relatorioInvestimento.action', 12, true, 368);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (515, 'ROLE_INVESTIMENTO_TREINAMENTO_COLAB', 'Investimento por Colaborador', '/desenvolvimento/turma/relatorioInvestimentoPorColaborador.action', 13, true, 368);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (454, 'ROLE_T&D_REL', 'Painel de Indicadores', '/desenvolvimento/indicadores/list.action', 4, true, 365);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (63, 'ROLE_MOV_TURMA', 'Pode Cadastrar Turma', '/desenvolvimento/turma/list.action', 4, false, 365);
@@ -199,6 +200,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (41, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (485, 'ROLE_CAMPO_EXTRA', 'Campos Extras', '/geral/configuracaoCampoExtra/prepareUpdate.action', 2, true, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (502, 'ROLE_UTI_CONFIGURACAO', 'Sistema', '/geral/parametrosDoSistema/prepareUpdate.action', 1, true, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (503, 'ROLE_CONFIG_CANDIDATO_EXT', 'Cadastro de Candidato (externo)', '/geral/parametrosDoSistema/listCamposCandidato.action', 3, true, 41);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (514, 'ROLE_CONFIG_LIMITE_COLABORADOR', 'Limite de Colab. por Cargo', '/geral/configuracaoLimiteColaborador/list.action', 4, true, 41);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (39, 'ROLE_UTI_AUDITORIA', 'Auditoria', '/security/auditoria/prepareList.action', 5, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (44, 'ROLE_UTI_HISTORICO_VERSAO', 'Histórico de Versões', '/geral/documentoVersao/list.action', 6, true, 37);
@@ -277,7 +279,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 514;
+alter sequence papel_sequence restart with 516;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -572,6 +574,7 @@ INSERT INTO estado VALUES (nextval('estado_sequence'), 'SC', 'Santa Catarina');
 INSERT INTO estado VALUES (nextval('estado_sequence'), 'SE', 'Sergipe');
 INSERT INTO estado VALUES (nextval('estado_sequence'), 'TO', 'Tocantins');
 
+-- BEGIN_TEST_IGNORE
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'RO'),'00015','Alta Floresta D''Oeste');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'RO'),'00023','Ariquemes');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'RO'),'00031','Cabixi');
@@ -1516,9 +1519,11 @@ insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence')
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04277','Ererê');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04285','Eusébio');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04301','Farias Brito');
+-- END_TEST_IGNORE
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04350','Forquilha');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04400','Fortaleza');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04459','Fortim');
+-- BEGIN_TEST_IGNORE
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04509','Frecheirinha');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04608','General Sampaio');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'CE'),'04657','Graça');
@@ -6079,6 +6084,7 @@ insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence')
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'GO'),'22203','Vila Boa');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'GO'),'22302','Vila Propício');
 insert into cidade(id, uf_id, codigoac, nome) VALUES (nextval('cidade_sequence'),(select e.id from estado e where e.sigla = 'DF'),'00108','Brasília');
+-- END_TEST_IGNORE
 
 INSERT INTO extintorinspecaoitem VALUES(1, 'Lacre');
 INSERT INTO extintorinspecaoitem VALUES(2, 'Selo');
@@ -6139,6 +6145,7 @@ insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,desc
 
 alter sequence configuracaocampoextra_sequence restart with 33;
 
+-- BEGIN_TEST_IGNORE
 insert into codigoCBO (codigo, descricao) values ('848505','Abatedor');
 insert into codigoCBO (codigo, descricao) values ('764305','Acabador de calçados');
 insert into codigoCBO (codigo, descricao) values ('766305','Acabador de embalagens (flexíveis e cartotécnicas)');
@@ -8019,11 +8026,15 @@ insert into codigoCBO (codigo, descricao) values ('332105','Professor leigo no e
 insert into codigoCBO (codigo, descricao) values ('332205','Professor prático no ensino profissionalizante');
 insert into codigoCBO (codigo, descricao) values ('333115','Professores de cursos livres');
 insert into codigoCBO (codigo, descricao) values ('377140','Profissional de Atletismo');
+-- END_TEST_IGNORE
+
 insert into codigoCBO (codigo, descricao) values ('519805','Profissional do sexo');
 insert into codigoCBO (codigo, descricao) values ('317105','Programador de internet');
 insert into codigoCBO (codigo, descricao) values ('317120','Programador de multimídia');
 insert into codigoCBO (codigo, descricao) values ('317115','Programador de máquinas - ferramenta com comando numérico');
 insert into codigoCBO (codigo, descricao) values ('317110','Programador de sistemas de informaçao');
+
+-- BEGIN_TEST_IGNORE
 insert into codigoCBO (codigo, descricao) values ('766155','Programador visual gráfico');
 insert into codigoCBO (codigo, descricao) values ('318805','Projetista de móveis');
 insert into codigoCBO (codigo, descricao) values ('374135','Projetista de sistemas de áudio');
@@ -8565,6 +8576,7 @@ insert into codigoCBO (codigo, descricao) values ('632015','Viveirista florestal
 insert into codigoCBO (codigo, descricao) values ('841745','Xaropeiro');
 insert into codigoCBO (codigo, descricao) values ('514120','Zelador de edifício');
 insert into codigoCBO (codigo, descricao) values ('223310','Zootecnista');
+-- END_TEST_IGNORE
 
 insert into cid (codigo, descricao) values ('A000','Cólera devida a Vibrio cholerae 01, biótipo cholerae');
 insert into cid (codigo, descricao) values ('A001','Cólera devida a Vibrio cholerae 01, biótipo El Tor');
@@ -8572,6 +8584,8 @@ insert into cid (codigo, descricao) values ('A009','Cólera não especificada');
 insert into cid (codigo, descricao) values ('A010','Febre tifóide');
 insert into cid (codigo, descricao) values ('A011','Febre paratifóide A');
 insert into cid (codigo, descricao) values ('A012','Febre paratifóide B');
+
+-- BEGIN_TEST_IGNORE
 insert into cid (codigo, descricao) values ('A013','Febre paratifóide C');
 insert into cid (codigo, descricao) values ('A014','Febre paratifóide não especificada');
 insert into cid (codigo, descricao) values ('A020','Enterite por salmonela');
@@ -21017,15 +21031,16 @@ insert into cid (codigo, descricao) values ('U88','gente resistente a múltiplos
 insert into cid (codigo, descricao) values ('U898','Agente resistente a outro antibiótico especificado único');
 insert into cid (codigo, descricao) values ('U899','Agente resistente a antibiótico não especificado');
 insert into cid (codigo, descricao) values ('U99','ID 10ª Revisão não disponível');
+-- END_TEST_IGNORE
 
 insert into comoFicouSabendoVaga (id, nome) values (1, 'Outro');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.51.43', '', '25', false,false, 2, '1.0.1.44', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.52.44', '', '25', false,false, 2, '1.0.1.44', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'
 );
 
 alter sequence parametrosdosistema_sequence restart with 2;
-insert into migrations values('20110714095934');--.go
+insert into migrations values('20110726092155');--.go

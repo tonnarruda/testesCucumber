@@ -320,7 +320,21 @@
       <ref bean="atitudeManagerTarget" />
     </property>
   </bean>
+  <bean id="nivelCompetenciaManagerTarget" class="com.fortes.rh.business.captacao.NivelCompetenciaManagerImpl">
+    <property name="dao">
+      <ref bean="nivelCompetenciaDao" />
+    </property>
+  </bean>
+  <bean id="nivelCompetenciaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.NivelCompetenciaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="nivelCompetenciaManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

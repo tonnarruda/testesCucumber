@@ -229,6 +229,7 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		}
 	}
 	
+	//TODO BACALHAU, findById apenas para update no status
 	public void setStatus(Long candidatoSolicitacaoId, char status)
 	{
 		CandidatoSolicitacao cs = getDao().findById(candidatoSolicitacaoId);
@@ -239,6 +240,10 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 	public Collection<Integer> getIdF2RhCandidato(Long SolicitacaoId) 
 	{
 		return getDao().getIdF2RhCandidato(SolicitacaoId);
+	}
+
+	public void setStatusByColaborador(Long colaboradorId, char status) {
+		getDao().setStatusByColaborador(colaboradorId, status);
 	}
 
 }

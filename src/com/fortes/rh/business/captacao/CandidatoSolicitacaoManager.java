@@ -32,4 +32,5 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	void setColaboradorQuestionarioId(Collection<CandidatoSolicitacao> candidatoSolicitacaos, Avaliacao avaliacao, Long solicitacaoId);
 	public void setStatus(Long candidatoSolicitacaoId, char status);
 	Collection<Integer> getIdF2RhCandidato(Long SolicitacaoId);
+	void setStatusByColaborador(Long colaboradorId, char status);
 }

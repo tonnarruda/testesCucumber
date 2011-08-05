@@ -120,6 +120,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("cs.id"), "id");
+        p.add(Projections.property("cs.status"), "status");
         p.add(Projections.property("c.id"), "candidatoId");
         p.add(Projections.property("c.blackList"), "projectionCandidatoBlackList");
         p.add(Projections.property("s.id"), "solicitacaoId");
@@ -467,5 +468,16 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         criteria.add(Expression.eq("s.id", solicitacaoId));
 
         return criteria.list();
+	}
+
+	public void setStatusByColaborador(Long colaboradorId, char status) 
+	{
+		String hql = "update CandidatoSolicitacao set status = :status where candidato.id=(select candidato.id from Colaborador where id = :colaboradorId)";
+
+		Query query = getSession().createQuery(hql);
+		query.setCharacter("status", status);
+		query.setLong("colaboradorId", colaboradorId);
+		
+		query.executeUpdate();
 	}
 }

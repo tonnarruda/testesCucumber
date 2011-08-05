@@ -12,6 +12,7 @@ import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.CidadeDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstadoDao;
 import com.fortes.rh.model.captacao.Candidato;
@@ -22,13 +23,16 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.EtapaSeletivaFactory;
 import com.fortes.rh.test.factory.captacao.HistoricoCandidatoFactory;
@@ -49,6 +53,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 	private EstadoDao estadoDao;
 	private HistoricoCandidatoDao historicoCandidatoDao;
 	private EtapaSeletivaDao etapaSeletivaDao;
+	private ColaboradorDao colaboradorDao;
 
 	private Candidato candidato;
 	private Solicitacao solicitacao;
@@ -128,6 +133,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 	{
 		this.candidatoSolicitacaoDao = candidatoSolicitacaoDao;
 	}
+	
 	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao)
 	{
 		this.solicitacaoDao = solicitacaoDao;
@@ -411,6 +417,22 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(2, retorno.size());
 	}
 
+	public void testSetStatusByColaborador()
+	{
+		candidatoSolicitacao = prepareFindCandidatoSolicitacao();
+		candidatoSolicitacao.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(candidatoSolicitacao.getCandidato());
+		colaboradorDao.save(colaborador);
+		
+		candidatoSolicitacaoDao.setStatusByColaborador(colaborador.getId(), StatusCandidatoSolicitacao.INDIFERENTE);
+		candidatoSolicitacao = candidatoSolicitacaoDao.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
+		
+		assertEquals(StatusCandidatoSolicitacao.INDIFERENTE, candidatoSolicitacao.getStatus());
+	}
+	
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{
 		this.cidadeDao = cidadeDao;
@@ -441,5 +463,9 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 
 	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
 		this.faixaSalarialDao = faixaSalarialDao;
+	}
+
+	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+		this.colaboradorDao = colaboradorDao;
 	}
 }

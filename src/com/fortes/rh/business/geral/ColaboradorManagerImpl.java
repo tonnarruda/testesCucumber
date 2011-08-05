@@ -24,6 +24,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
@@ -50,6 +51,7 @@ import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
@@ -107,6 +109,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private CamposExtrasManager camposExtrasManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private UsuarioMensagemManager usuarioMensagemManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
@@ -1337,13 +1341,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
 		
-		if (colaboradorTmp != null && colaboradorTmp.getCandidato()!= null && colaboradorTmp.getCandidato().getId() != null)
-		{
-			Candidato candidatoTmp = candidatoManager.findById(colaboradorTmp.getCandidato().getId());
-			candidatoTmp.setContratado(false);
-			candidatoTmp.setDisponivel(true);
-			candidatoManager.update(candidatoTmp);
-		}
+		candidatoManager.habilitaByColaborador(colaborador.getId());
+		candidatoSolicitacaoManager.setStatusByColaborador(colaborador.getId(), StatusCandidatoSolicitacao.INDIFERENTE);
 		
 		historicoColaboradorManager.removeColaborador(colaborador.getId());
 				
@@ -1891,6 +1890,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) {
 		return getDao().getAutoComplete(descricao, empresaId);
+	}
+
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
 }

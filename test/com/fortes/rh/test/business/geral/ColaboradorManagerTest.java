@@ -20,6 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -90,6 +91,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock colaboradorDao = null;
     private Mock transactionManager;
     private Mock candidatoManager;
+    private Mock candidatoSolicitacaoManager;
     private Mock historicoColaboradorManager;
     private Mock areaOrganizacinoalManager;
     private Mock indiceManager;
@@ -117,6 +119,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         candidatoManager = new Mock(CandidatoManager.class);
         colaboradorManager.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
+
+        candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
+        colaboradorManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
 
         historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
         colaboradorManager.setHistoricoColaboradorManager((HistoricoColaboradorManager)historicoColaboradorManager.proxy());
@@ -680,7 +685,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	empresa.setAcIntegra(true);
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-
+    	
+    	candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(colaborador.getId())).isVoid();
+    	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(eq(colaborador.getId()), ANYTHING).isVoid();
     	formacaoManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	colaboradorIdiomaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	experienciaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();

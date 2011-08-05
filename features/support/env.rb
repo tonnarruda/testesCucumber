@@ -41,9 +41,10 @@ end
 Capybara.default_selector = :css
 
 $db_name = "fortesrh"
+$data = File.read("./web/WEB-INF/metadata/create_data.sql").gsub(/-- BEGIN_TEST_IGNORE.*?-- END_TEST_IGNORE/m, '')
+
 Before do
   puts "Limpando Banco de Dados, apagando todos os registros"
-	puts "fd"
   begin
 	conn = PGconn.connect( :dbname => $db_name, :user => 'postgres')
     conn.exec("select alter_trigger(table_name, 'DISABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{$db_name}' group by table_name;")
@@ -56,12 +57,10 @@ Before do
     
     puts "Populando Banco de Dados, dados iniciais..."
     
-    file = File.open('features/data/dataInicial.sql', 'r')
-    conn.exec(file.read)
+    conn.exec($data)
     puts "Banco de Dados populado com sucesso."
   ensure
     conn.finish if conn
-    file.close if file
   end
 
 end
