@@ -68,9 +68,10 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (10, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (5, 'ROLE_CAD_CONHECIMENTO', 'Conhecimentos', '/captacao/conhecimento/list.action', 3, true, 362);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (493, 'ROLE_CAD_HABILIDADE', 'Habilidades', '/captacao/habilidade/list.action', 4, true, 362);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (494, 'ROLE_CAD_ATITUDE', 'Atitudes', '/captacao/atitude/list.action', 5, true, 362);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (11, 'ROLE_CAD_CARGO', 'Cargos e Faixas', '/cargosalario/cargo/list.action', 6, true, 362);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (499, 'ROLE_CAD_FAIXA_SALARIAL', 'Exibir Faixa Salarial de Cargos', '', 7, false, 362);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (404, 'ROLE_CAD_INDICE', 'Índices', '/cargosalario/indice/list.action', 8, true, 362);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (516, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Níveis de Competência', '/captacao/nivelCompetencia/list.action', 6, true, 362);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (11, 'ROLE_CAD_CARGO', 'Cargos e Faixas', '/cargosalario/cargo/list.action', 7, true, 362);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (499, 'ROLE_CAD_FAIXA_SALARIAL', 'Exibir Faixa Salarial de Cargos', '', 8, false, 362);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (404, 'ROLE_CAD_INDICE', 'Índices', '/cargosalario/indice/list.action', 9, true, 362);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (363, 'ROLE_C&S_MOV', 'Movimentações', '#', 2, true, 361);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (26, 'ROLE_MOV_SIMULACAOREAJUSTE', 'Planejamentos de Realinhamentos', '/cargosalario/tabelaReajusteColaborador/list.action', 1, true, 363);
@@ -277,7 +278,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 514;
+alter sequence papel_sequence restart with 517;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 insert into public."perfil" ("id", "nome") values (2, 'Usuário');
