@@ -33,7 +33,7 @@ if ARGV.empty?
 elsif ARGV[0] == '--deploy'
   version = ARGV[1] || 'INSIRA_NUMERO_VERSAO'
   
-  last_migrate = File.readlines("./web/WEB-INF/metadata/update.sql").grep(/(\d{14})/).map{$1}.last
+  last_migrate = File.readlines("./web/WEB-INF/metadata/update.sql").grep(/insert into migrations values\('(\d{14})'\);--.go/){$1}.last
   puts "migrate atual no update.sql #{last_migrate}"
   
   sql_migrates = ""

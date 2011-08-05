@@ -8,6 +8,8 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
@@ -21,6 +23,7 @@ public class AsoRelatorio
 
 	private Colaborador colaborador;
 	private Candidato candidato;
+	private Collection<ExameSolicitacaoExame> exames;
 	
 	private String grpRiscoFisico = "";
 	private String grpRiscoQuimico = "";
@@ -34,6 +37,14 @@ public class AsoRelatorio
 		this.colaborador = solicitacaoExame.getColaborador();
 		this.candidato = solicitacaoExame.getCandidato();
 		this.medico = solicitacaoExame.getMedicoCoordenador();
+		this.exames = solicitacaoExame.getExameSolicitacaoExames();
+		
+		if(exames.size() < 15)
+		{
+			int count = exames.size();
+			for(int i=0 ; i < (15 - count); i++)
+				exames.add(new ExameSolicitacaoExame());
+		}
 		
 		if (empresa.getCidade() != null) 
 			this.cidadeNome = empresa.getCidade().getNome();
@@ -176,5 +187,12 @@ public class AsoRelatorio
 				grpRiscoOcupacional += risco.getDescricao();
 			}
 		}
+	}
+	public void setExames(Collection<ExameSolicitacaoExame> exames) {
+		this.exames = exames;
+	}
+
+	public Collection<ExameSolicitacaoExame> getExames() {
+		return exames;
 	}
 }
