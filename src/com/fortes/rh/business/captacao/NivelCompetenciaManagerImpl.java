@@ -21,8 +21,8 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 			throw new Exception("Não é permitido cadastrar mais do que dez Níveis de Competência.");
 	}
 
-	public Collection<NivelCompetenciaFaixaSalarial> findByFaixa(Long cargoId) 
+	public Collection<NivelCompetenciaFaixaSalarial> findByCargoOrEmpresa(Long cargoId, Long empresaId) 
 	{
-		return getDao().findByFaixa(cargoId);
+		return getDao().findByCargoOrEmpresa(cargoId, empresaId);
 	}
 }

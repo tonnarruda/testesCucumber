@@ -44,25 +44,38 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<NivelCompetenciaFaixaSalarial> findByFaixa(Long cargoId) 
+	public Collection<NivelCompetenciaFaixaSalarial> findByCargoOrEmpresa(Long cargoId, Long empresaId) 
 	{
+		String whereConhecimento = "cc.cargo_id = :cargoId ";
+		String whereHabilidade = "ch.cargo_id = :cargoId ";
+		String whereAtitude = "ca.cargo_id = :cargoId ";
+		
+		if(cargoId == null)
+		{
+			whereConhecimento = "c.empresa_id = :empresaId ";
+			whereHabilidade = "h.empresa_id = :empresaId ";
+			whereAtitude = "a.empresa_id = :empresaId ";			
+		}
+		
 		StringBuilder sql = new StringBuilder();
 		sql.append("select id, nome, 'C' as tipocompetencia ");
 		sql.append("from conhecimento as c inner join cargo_conhecimento as cc on c.id = cc.conhecimentos_id ");
-		sql.append("where cc.cargo_id = :cargoId ");
+		sql.append("where " + whereConhecimento);
 		sql.append("union ");
 		sql.append("select id, nome, 'H' as tipocompetencia "); 
 		sql.append("from habilidade as h inner join cargo_habilidade as ch on h.id = ch.habilidades_id ");
-		sql.append("where ch.cargo_id = :cargoId ");
+		sql.append("where " + whereHabilidade);
 		sql.append("union ");
 		sql.append("select id, nome, 'A' as tipocompetencia "); 
 		sql.append("from atitude as a inner join cargo_atitude as ca on a.id = ca.atitudes_id ");
-		sql.append("where ca.cargo_id = :cargoId ");
+		sql.append("where " + whereAtitude);
 		sql.append("order by nome");
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		
-		if (cargoId != null)
+		if(cargoId == null)
+			query.setLong("empresaId", empresaId);
+		else
 			query.setLong("cargoId", cargoId);
 		
 		Collection<Object[]> resultado = query.list();

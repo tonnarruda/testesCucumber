@@ -9,5 +9,7 @@ public interface NivelCompetenciaFaixaSalarialManager extends GenericManager<Niv
 {
 	Collection<NivelCompetenciaFaixaSalarial> findByFaixa(Long faixaSalarialId);
 	
-	void saveByFaixa(Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariais, Long faixaSalarialId);
+	void saveCompetencias(Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariais, Long faixaSalarialId, Long candidatoId);
+
+	Collection<NivelCompetenciaFaixaSalarial> findByCandidato(Long candidato);
 }

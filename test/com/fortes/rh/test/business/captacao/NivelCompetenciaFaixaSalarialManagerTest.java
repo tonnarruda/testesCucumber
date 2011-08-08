@@ -52,6 +52,6 @@ public class NivelCompetenciaFaixaSalarialManagerTest extends MockObjectTestCase
 		//so passa uma vez no save
 		nivelCompetenciaFaixaSalarialDao.expects(once()).method("save").with(ANYTHING).isVoid();
 	
-		nivelCompetenciaFaixaSalarialManager.saveByFaixa(niveisCompetenciaFaixaSalariais, faixaSalarial.getId());
+		nivelCompetenciaFaixaSalarialManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), null);
 	}
 }

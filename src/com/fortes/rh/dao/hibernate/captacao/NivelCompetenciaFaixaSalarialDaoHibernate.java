@@ -14,31 +14,62 @@ import com.fortes.rh.model.captacao.NivelCompetenciaFaixaSalarial;
 
 public class NivelCompetenciaFaixaSalarialDaoHibernate extends GenericDaoHibernate<NivelCompetenciaFaixaSalarial> implements NivelCompetenciaFaixaSalarialDao
 {
-	public void deleteConfiguracaoByFaixa(Long faixaSalarialId) 
+	
+	@SuppressWarnings("unchecked")
+	public Collection<NivelCompetenciaFaixaSalarial> findByFaixa(Long faixaSalarialId) 
 	{
-		String queryHQL = "delete from NivelCompetenciaFaixaSalarial where faixaSalarial.id = :faixaSalarialId";
+		Criteria criteria = createCriteria();
 
-		getSession().createQuery(queryHQL).setLong("faixaSalarialId", faixaSalarialId).executeUpdate();		
+		criteria.add(Expression.eq("ncfs.faixaSalarial.id", faixaSalarialId));
+		criteria.add(Expression.isNull("ncfs.candidato.id"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(NivelCompetenciaFaixaSalarial.class));
+
+		return criteria.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<NivelCompetenciaFaixaSalarial> findByFaixa(Long faixaSalarialId) 
+	public Collection<NivelCompetenciaFaixaSalarial> findByCandidato(Long candidatoId) 
+	{
+		Criteria criteria = createCriteria();
+
+		criteria.add(Expression.eq("ncfs.candidato.id", candidatoId));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(NivelCompetenciaFaixaSalarial.class));
+
+		return criteria.list();
+
+	}
+
+	private Criteria createCriteria() 
 	{
 		Criteria criteria = getSession().createCriteria(NivelCompetenciaFaixaSalarial.class,"ncfs");
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ncfs.id"), "id");
 		p.add(Projections.property("ncfs.faixaSalarial.id"), "faixaSalarialIdProjection");
+		p.add(Projections.property("ncfs.candidato.id"), "candidatoIdProjection");
 		p.add(Projections.property("ncfs.nivelCompetencia.id"), "nivelCompetenciaIdProjection");
 		p.add(Projections.property("ncfs.competenciaId"), "competenciaId");
 		p.add(Projections.property("ncfs.tipoCompetencia"), "tipoCompetencia");
 
 		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("ncfs.faixaSalarial.id", faixaSalarialId));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(NivelCompetenciaFaixaSalarial.class));
-
-		return criteria.list();
+		return criteria;
 	}
+
+	public void deleteConfiguracaoByFaixa(Long faixaSalarialId) 
+	{
+		String queryHQL = "delete from NivelCompetenciaFaixaSalarial where faixaSalarial.id = :faixaSalarialId and candidato.id is null";
+
+		getSession().createQuery(queryHQL).setLong("faixaSalarialId", faixaSalarialId).executeUpdate();		
+	}
+
+	public void deleteConfiguracaoByCandidatoFaixa(Long candidatoId, Long faixaSalarialId) 
+	{
+		String queryHQL = "delete from NivelCompetenciaFaixaSalarial where candidato.id = :candidatoId and faixaSalarial.id = :faixaSalarialId";
+		
+		getSession().createQuery(queryHQL).setLong("candidatoId", candidatoId).setLong("faixaSalarialId", faixaSalarialId).executeUpdate();		
+	}
+
 }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.AtitudeDao;
+import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
@@ -13,6 +14,7 @@ import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.NivelCompetencia;
@@ -23,6 +25,7 @@ import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
@@ -40,6 +43,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	private HabilidadeDao habilidadeDao;
 	private AtitudeDao atitudeDao;
 	private FaixaSalarialDao faixaSalarialDao;
+	private CandidatoDao candidatoDao;
 
 	@Override
 	public NivelCompetencia getEntity()
@@ -100,7 +104,75 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		cargoDao.save(cargo);
 		
 		assertEquals(cargo, cargoDao.findByIdAllProjection(cargo.getId()));//SQL MEGA POWER GAMBIIII
-		assertEquals(3, nivelCompetenciaDao.findByFaixa(cargo.getId()).size());
+		assertEquals(3, nivelCompetenciaDao.findByCargoOrEmpresa(cargo.getId(), null).size());
+	}
+	
+	public void testFindByEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setEmpresa(empresa);
+		conhecimentoDao.save(conhecimento);
+		
+		Habilidade habilidade = HabilidadeFactory.getEntity();
+		habilidade.setEmpresa(empresa);
+		habilidadeDao.save(habilidade);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitude.setEmpresa(empresa);
+		atitudeDao.save(atitude);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setConhecimentos(Arrays.asList(conhecimento));
+		cargo.setHabilidades(Arrays.asList(habilidade));
+		cargo.setAtitudes(Arrays.asList(atitude));
+		cargoDao.save(cargo);
+		
+		assertEquals(cargo, cargoDao.findByIdAllProjection(cargo.getId()));//SQL MEGA POWER GAMBIIII
+		assertEquals(3, nivelCompetenciaDao.findByCargoOrEmpresa(null, empresa.getId()).size());
+	}
+	
+	public void testNivelCompetenciaFaixaFindByFaixa()
+	{
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimentoDao.save(conhecimento);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitudeDao.save(atitude);
+		
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato1);
+
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato2);
+		
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		NivelCompetenciaFaixaSalarial nivelCompetenciaCandidato1 = new NivelCompetenciaFaixaSalarial();
+		nivelCompetenciaCandidato1.setCandidato(candidato1);
+		nivelCompetenciaCandidato1.setNivelCompetencia(nivelCompetencia);
+		nivelCompetenciaCandidato1.setCompetenciaId(atitude.getId());
+		nivelCompetenciaCandidato1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		nivelCompetenciaFaixaSalarialDao.save(nivelCompetenciaCandidato1);
+		
+		NivelCompetenciaFaixaSalarial nivelCompetenciaCandidato2 = new NivelCompetenciaFaixaSalarial();
+		nivelCompetenciaCandidato2.setCandidato(candidato1);
+		nivelCompetenciaCandidato2.setNivelCompetencia(nivelCompetencia);
+		nivelCompetenciaCandidato2.setCompetenciaId(conhecimento.getId());
+		nivelCompetenciaCandidato2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		nivelCompetenciaFaixaSalarialDao.save(nivelCompetenciaCandidato2);
+		
+		NivelCompetenciaFaixaSalarial nivelCompetenciaCandidatoDiferente = new NivelCompetenciaFaixaSalarial();
+		nivelCompetenciaCandidatoDiferente.setCandidato(candidato2);
+		nivelCompetenciaCandidatoDiferente.setNivelCompetencia(nivelCompetencia);
+		nivelCompetenciaCandidatoDiferente.setCompetenciaId(conhecimento.getId());
+		nivelCompetenciaCandidatoDiferente.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		nivelCompetenciaFaixaSalarialDao.save(nivelCompetenciaCandidatoDiferente);
+		
+		assertEquals(2, nivelCompetenciaFaixaSalarialDao.findByCandidato(candidato1.getId()).size());
 	}
 	
 	public void testDeleteConfiguracaoByFaixa()
@@ -185,5 +257,9 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 
 	public void setNivelCompetenciaFaixaSalarialDao(NivelCompetenciaFaixaSalarialDao nivelCompetenciaFaixaSalarialDao) {
 		this.nivelCompetenciaFaixaSalarialDao = nivelCompetenciaFaixaSalarialDao;
+	}
+
+	public void setCandidatoDao(CandidatoDao candidatoDao) {
+		this.candidatoDao = candidatoDao;
 	}
 }

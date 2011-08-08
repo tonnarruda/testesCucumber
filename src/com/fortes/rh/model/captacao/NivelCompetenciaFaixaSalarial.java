@@ -19,6 +19,8 @@ public class NivelCompetenciaFaixaSalarial extends AbstractModel implements Seri
 	@ManyToOne
 	private FaixaSalarial faixaSalarial;
 	@ManyToOne
+	private Candidato candidato;
+	@ManyToOne
 	private NivelCompetencia nivelCompetencia;
 	@Column
 	private Character tipoCompetencia;
@@ -64,6 +66,14 @@ public class NivelCompetenciaFaixaSalarial extends AbstractModel implements Seri
 			this.faixaSalarial = new FaixaSalarial();
 		
 		this.faixaSalarial.setId(faixaSalarialId);
+	}
+	
+	public void setCandidatoIdProjection(Long candidatoId) 
+	{
+		if (this.candidato == null)
+			this.candidato = new Candidato();
+		
+		this.candidato.setId(candidatoId);
 	}
 	
 	public NivelCompetencia getNivelCompetencia() 
@@ -112,5 +122,13 @@ public class NivelCompetenciaFaixaSalarial extends AbstractModel implements Seri
 	public void setCompetenciaDescricao(String competenciaDescricao) 
 	{
 		this.competenciaDescricao = competenciaDescricao;
+	}
+
+	public Candidato getCandidato() {
+		return candidato;
+	}
+
+	public void setCandidato(Candidato candidato) {
+		this.candidato = candidato;
 	}
 }

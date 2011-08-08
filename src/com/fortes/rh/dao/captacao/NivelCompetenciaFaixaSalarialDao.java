@@ -8,6 +8,10 @@ import com.fortes.rh.model.captacao.NivelCompetenciaFaixaSalarial;
 public interface NivelCompetenciaFaixaSalarialDao extends GenericDao<NivelCompetenciaFaixaSalarial> 
 {
 	void deleteConfiguracaoByFaixa(Long faixaSalarialId);
+	void deleteConfiguracaoByCandidatoFaixa(Long candidatoId, Long faixaSalarialId);
 
 	Collection<NivelCompetenciaFaixaSalarial> findByFaixa(Long faixaSalarialId);
+
+	Collection<NivelCompetenciaFaixaSalarial> findByCandidato(Long candidatoId);
+
 }
