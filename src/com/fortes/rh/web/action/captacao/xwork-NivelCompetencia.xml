@@ -30,5 +30,8 @@
 		<action name="prepareCompetenciasByFaixa" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareCompetenciasByFaixa">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixa.ftl</result>
 		</action>
+		<action name="saveCompetenciasByFaixa" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByFaixa">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixa.ftl</result>
+		</action>
 	</package>
 </xwork>

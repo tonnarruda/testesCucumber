@@ -21,7 +21,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private NivelCompetencia nivelCompetencia;
 	private FaixaSalarial faixaSalarial;
 	private Collection<NivelCompetencia> nivelCompetencias;
-	private Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalarial;
+	private Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariais;
 
 	private void prepare() throws Exception
 	{
@@ -90,8 +90,15 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public String prepareCompetenciasByFaixa()
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
-		niveisCompetenciaFaixaSalarial = nivelCompetenciaManager.findByFaixa(faixaSalarial.getCargo().getId());
+		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByFaixa(faixaSalarial.getCargo().getId());
+		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
+		return Action.SUCCESS;
+	}
+	
+	public String saveCompetenciasByFaixa()
+	{
+		prepareCompetenciasByFaixa();
 		return Action.SUCCESS;
 	}
 	
@@ -117,14 +124,14 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return nivelCompetencias;
 	}
 
-	public Collection<NivelCompetenciaFaixaSalarial> getNiveisCompetenciaFaixaSalarial() 
+	public Collection<NivelCompetenciaFaixaSalarial> getNiveisCompetenciaFaixaSalariais() 
 	{
-		return niveisCompetenciaFaixaSalarial;
+		return niveisCompetenciaFaixaSalariais;
 	}
 
-	public void setNiveisCompetenciaFaixaSalarial(Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalarial) 
+	public void setNiveisCompetenciaFaixaSalariais(Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariais) 
 	{
-		this.niveisCompetenciaFaixaSalarial = niveisCompetenciaFaixaSalarial;
+		this.niveisCompetenciaFaixaSalariais = niveisCompetenciaFaixaSalariais;
 	}
 
 	public FaixaSalarial getFaixaSalarial() 

@@ -20,7 +20,7 @@
 			<@ww.token/>
 			
 			<@ww.textfield label="Ordem" name="nivelCompetencia.ordem" id="ordem" size="4"  maxLength="4" required="true" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:40px; text-align:right;"/>
-			<@ww.textfield label="Descrição" name="nivelCompetencia.descricao" id="descricao" maxLength="20" cssStyle="width:145px;" required="true"/>
+			<@ww.textfield label="Descrição" name="nivelCompetencia.descricao" id="descricao" maxLength="15" cssStyle="width:110px;" required="true"/>
 		</@ww.form>
 	
 		<div class="buttonGroup">

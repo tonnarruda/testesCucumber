@@ -17,7 +17,7 @@ import com.fortes.model.AbstractModel;
 @SequenceGenerator(name="sequence", sequenceName="nivelCompetencia_sequence", allocationSize=1)
 public class NivelCompetencia extends AbstractModel implements Serializable
 {
-	@Column(length=20)
+	@Column(length=15)
 	private String descricao;
 	private Integer ordem;
 	@ManyToOne

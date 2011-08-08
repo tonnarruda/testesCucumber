@@ -1,6 +1,6 @@
 CREATE TABLE nivelCompetencia (
 	id bigint NOT NULL,
-	descricao character varying(20),
+	descricao character varying(15),
 	ordem int,
 	empresa_id bigint
 );--.go
