@@ -39,10 +39,10 @@ public class AsoRelatorio
 		this.medico = solicitacaoExame.getMedicoCoordenador();
 		this.exames = solicitacaoExame.getExameSolicitacaoExames();
 		
-		if(exames.size() < 15)
+		if(exames.size() < 14)
 		{
 			int count = exames.size();
-			for(int i=0 ; i < (15 - count); i++)
+			for(int i=0 ; i < (14 - count); i++)
 				exames.add(new ExameSolicitacaoExame());
 		}
 		
