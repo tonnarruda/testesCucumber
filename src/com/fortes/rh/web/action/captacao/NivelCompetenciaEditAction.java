@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
 
+import com.fortes.rh.business.captacao.NivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.captacao.NivelCompetencia;
@@ -16,18 +17,19 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	
 	private NivelCompetenciaManager nivelCompetenciaManager;
+	private NivelCompetenciaFaixaSalarialManager nivelCompetenciaFaixaSalarialManager; 
 	private FaixaSalarialManager faixaSalarialManager;
 	
 	private NivelCompetencia nivelCompetencia;
 	private FaixaSalarial faixaSalarial;
 	private Collection<NivelCompetencia> nivelCompetencias;
 	private Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariais;
+	private Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariaisSalvos;
 
 	private void prepare() throws Exception
 	{
 		if(nivelCompetencia != null && nivelCompetencia.getId() != null)
 			nivelCompetencia = (NivelCompetencia) nivelCompetenciaManager.findById(nivelCompetencia.getId());
-
 	}
 
 	public String prepareInsert() throws Exception
@@ -91,6 +93,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByFaixa(faixaSalarial.getCargo().getId());
+		niveisCompetenciaFaixaSalariaisSalvos = nivelCompetenciaFaixaSalarialManager.findByFaixa(faixaSalarial.getId());
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
 		return Action.SUCCESS;
@@ -98,6 +101,17 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String saveCompetenciasByFaixa()
 	{
+		try
+		{
+			nivelCompetenciaFaixaSalarialManager.saveByFaixa(niveisCompetenciaFaixaSalariais, faixaSalarial.getId());
+			addActionMessage("Níveis de Competência da Faixa Salarial salvos com sucesso.");
+		}
+		catch (Exception e)
+		{
+			addActionError(e.getMessage());
+			e.printStackTrace();
+		}
+
 		prepareCompetenciasByFaixa();
 		return Action.SUCCESS;
 	}
@@ -147,5 +161,13 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
 	{
 		this.faixaSalarialManager = faixaSalarialManager;
+	}
+
+	public void setNivelCompetenciaFaixaSalarialManager(NivelCompetenciaFaixaSalarialManager nivelCompetenciaFaixaSalarialManager) {
+		this.nivelCompetenciaFaixaSalarialManager = nivelCompetenciaFaixaSalarialManager;
+	}
+
+	public Collection<NivelCompetenciaFaixaSalarial> getNiveisCompetenciaFaixaSalariaisSalvos() {
+		return niveisCompetenciaFaixaSalariaisSalvos;
 	}
 }

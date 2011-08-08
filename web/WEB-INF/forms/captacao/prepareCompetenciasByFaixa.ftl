@@ -18,19 +18,31 @@
 				$('.checkNivel').attr('disabled', !($(this).attr('checked')));
 				$('.checkCompetencia').attr('checked', $(this).attr('checked'));
 			});
+			
+			<#list niveisCompetenciaFaixaSalariaisSalvos as nivelSalvo>
+				var linha = $('tr').has('.checkCompetencia[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
+				linha.find('.checkCompetencia').attr('checked', 'true');
+				linha.find('.checkNivel').removeAttr('disabled');
+				linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
+			</#list>
 		});
 		
 		function enviarForm()
 		{
 			var linhasSemRadioMarcado = $('tr').has('.checkNivel:enabled').not(':has(.checkNivel:checked)');
 			if(linhasSemRadioMarcado.size() == 0)
+			{
 				$('#form').submit();
+				return true;
+			}
 				
 			$('tr.even').css('background-color', '#E4F0FE');
 			$('tr.odd').css('background-color', '#FFF');
 		
 			jAlert('Selecione os níveis para as competências indicadas.');
 			linhasSemRadioMarcado.css('background-color', '#FFEEC2');
+
+			return false;
 		}
 	</script>
 
