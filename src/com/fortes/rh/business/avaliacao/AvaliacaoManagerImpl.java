@@ -20,6 +20,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -96,9 +97,10 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		}
 	}
 	
-	private void enviaLembrete(Collection<Colaborador> colaboradores, Empresa empresa, Integer diaLembrete, Integer diasAvaliacao, Date dataAvaliacao) {
-		
-		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId());		
+	private void enviaLembrete(Collection<Colaborador> colaboradores, Empresa empresa, Integer diaLembrete, Integer diasAvaliacao, Date dataAvaliacao) 
+	{
+		Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId());		
+		Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperienciaGerencial = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId());		
 		
 		String data = DateUtil.formataDiaMesAno(dataAvaliacao);
 		
@@ -123,8 +125,10 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 					.append("\nData da avaliação: ").append(data);
 			
 			String link = "avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action?colaborador.id=" + colaborador.getId();
+			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperienciaGerencial);
 			
-			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", link, usuarioEmpresas);
+			if(colaborador.getAreaOrganizacional()!=null);
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperiencia, colaborador.getAreaOrganizacional().getDescricaoIds());
 		}
 	}
 	

@@ -19,6 +19,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CollectionUtil;
@@ -415,5 +416,4 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		CollectionUtil<AreaOrganizacional> cul = new CollectionUtil<AreaOrganizacional>();
 		return cul.convertCollectionToArrayIds(criteria.list());
 	}
-
 }

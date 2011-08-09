@@ -1,5 +1,6 @@
 package com.fortes.rh.business.geral;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -12,14 +13,17 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.UsuarioMensagemDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
+import com.fortes.rh.util.SpringUtil;
 
 public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensagem, UsuarioMensagemDao> implements UsuarioMensagemManager
 {
 	private PlatformTransactionManager transactionManager;
 	private MensagemManager mensagemManager;
+	private UsuarioEmpresaManager usuarioEmpresaManager;
 
 	public Collection<UsuarioMensagem> listaUsuarioMensagem(Long usuarioId, Long empresaId)
 	{
@@ -91,6 +95,19 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 	}
 
+	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Collection<Long> areasIds)
+	{
+		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioResponsavelAreaOrganizacional(areasIds);
+		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionaisComRole = new ArrayList<UsuarioEmpresa>();
+		
+		for (UsuarioEmpresa usuarioEmpresaAreaOrganizacional : usuariosResponsaveisAreaOrganizacionais)
+			for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas)
+				if(usuarioEmpresa.getUsuario().getId() == usuarioEmpresaAreaOrganizacional.getUsuario().getId())
+					usuariosResponsaveisAreaOrganizacionaisComRole.add(usuarioEmpresa);
+			
+		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionaisComRole);
+	}
+
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
@@ -120,5 +137,9 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		else
 			if(usuarioMensagemIds != null && usuarioMensagemIds.length > 0)
 				remove(usuarioMensagemIds);		
+	}
+
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 }

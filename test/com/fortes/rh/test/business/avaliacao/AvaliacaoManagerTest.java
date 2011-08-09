@@ -151,8 +151,9 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 		periodoExperienciaManager.expects(once()).method("findAll").withNoArguments().will(returnValue(periodos));
 		parametrosDoSistemaManager.expects(once()).method("getDiasLembretePeriodoExperiencia").withNoArguments().will(returnValue(dias));
 		colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(eq(40),eq(empresa)).will(returnValue(colaboradores));
-		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleAvaliacaoExperiencia").will(returnValue(new ArrayList<UsuarioEmpresa>()));
+		usuarioEmpresaManager.expects(atLeastOnce()).method("findUsuariosByEmpresaRoleAvaliacaoExperiencia").will(returnValue(new ArrayList<UsuarioEmpresa>()));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(eq(mensagem), ANYTHING, ANYTHING, ANYTHING);
+		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").withAnyArguments();
 		
 		avaliacaoManager.enviaLembrete();
 	}

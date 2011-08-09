@@ -3,6 +3,7 @@ package com.fortes.rh.dao.geral;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.UsuarioMensagem;
 
 public interface UsuarioMensagemDao extends GenericDao<UsuarioMensagem>

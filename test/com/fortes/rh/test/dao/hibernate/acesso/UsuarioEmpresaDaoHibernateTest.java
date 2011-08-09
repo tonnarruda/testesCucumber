@@ -8,16 +8,22 @@ import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 
 public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<UsuarioEmpresa>
@@ -28,6 +34,8 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 	private PapelDao papelDao;
 	private PerfilDao perfilDao;
 	private GrupoACDao grupoACDao;
+	private ColaboradorDao colaboradorDao;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
 
 	public UsuarioEmpresa getEntity()
 	{
@@ -67,6 +75,35 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		usuarioEmpresa = usuarioEmpresaDao.save(usuarioEmpresa);
 		
 		assertEquals(usuarioEmpresa, usuarioEmpresaDao.findByUsuario(usuario.getId()).toArray()[0]);
+	}
+	
+	public void testFindUsuarioResponsavelAreaOrganizacional()
+	{
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario = usuarioDao.save(usuario);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Colaborador responsavelArea = ColaboradorFactory.getEntity();
+		responsavelArea.setUsuario(usuario);
+		responsavelArea.setEmpresa(empresa);
+		colaboradorDao.save(responsavelArea);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setResponsavel(responsavelArea);
+		areaOrganizacionalDao.save(areaOrganizacional);
+
+		Collection<Long> areasIds = new ArrayList<Long>();
+		areasIds.add(areaOrganizacional.getId());
+
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setAreaOrganizacional(areaOrganizacional);
+		colaboradorDao.save(joao);
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaDao.findUsuarioResponsavelAreaOrganizacional(areasIds);
+		
+		assertEquals(1, usuarioEmpresas.size());
 	}
 
 	public void testFindAllBySelectUsuarioEmpresaNull()
@@ -187,6 +224,14 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
+	}
+
+	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
 
 }

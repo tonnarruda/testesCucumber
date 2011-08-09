@@ -18,6 +18,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -597,7 +598,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			return resultado;
 	}
 
-
 	public AreaOrganizacional getMatriarca(Collection<AreaOrganizacional> areas, AreaOrganizacional area, Long filhaDeId) 
 	{
 		AreaOrganizacional matriarca = area;
@@ -645,4 +645,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		CollectionUtil<Long> cul = new CollectionUtil<Long>();
 		return cul.distinctCollection(familia).toArray(new Long[]{});
 	}
+
+
 }

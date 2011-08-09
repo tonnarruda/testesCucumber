@@ -24,6 +24,11 @@ public class UsuarioEmpresa extends AbstractModel implements Serializable
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Empresa empresa;
 
+
+	public UsuarioEmpresa() 
+	{	
+	}
+	
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;

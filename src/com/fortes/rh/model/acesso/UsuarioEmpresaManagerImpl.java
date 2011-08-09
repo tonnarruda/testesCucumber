@@ -72,4 +72,9 @@ public class UsuarioEmpresaManagerImpl extends GenericManagerImpl<UsuarioEmpresa
 	{
 		return getDao().findByUsuario(usuarioId);
 	}
+
+	public Collection<UsuarioEmpresa> findUsuarioResponsavelAreaOrganizacional(Collection<Long> areasIds) 
+	{
+		return getDao().findUsuarioResponsavelAreaOrganizacional(areasIds);
+	}
 }

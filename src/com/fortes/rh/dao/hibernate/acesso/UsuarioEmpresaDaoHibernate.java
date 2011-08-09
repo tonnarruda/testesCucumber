@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -15,6 +16,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 
 @SuppressWarnings("unchecked")
 public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpresa> implements UsuarioEmpresaDao
@@ -133,6 +135,25 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));
 
+		return criteria.list();
+	}
+
+	public Collection<UsuarioEmpresa> findUsuarioResponsavelAreaOrganizacional(Collection<Long> areasIds) 
+	{
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
+		criteria.createCriteria("ao.responsavel", "r", Criteria.LEFT_JOIN);
+		criteria.createCriteria("r.usuario", "u", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("r.usuario"), "usuario");
+		p.add(Projections.property("r.empresa"), "empresa");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.in("ao.id", areasIds));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));
+		
 		return criteria.list();
 	}
 }
