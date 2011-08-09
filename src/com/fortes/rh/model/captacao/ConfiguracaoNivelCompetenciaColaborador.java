@@ -60,12 +60,31 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 		this.data = data;
 	}
 	
-	public void setProjectionColaboradorNome(String nome)
+	public void setProjectionColaboradorId(Long colaboradorId)
 	{
+		inicializarColaborador();
+		colaborador.setId(colaboradorId);
+	}
+
+	private void inicializarColaborador() {
 		if (colaborador == null)
 			colaborador = new Colaborador();
-		
+	}
+	
+	public void setProjectionColaboradorNome(String nome)
+	{
+		inicializarColaborador();
 		colaborador.setNome(nome);
+	}
+	
+	public void setProjectionCargoId(Long cargoId)
+	{
+		inicializarFaixaSalarial();
+		
+		if (faixaSalarial.getCargo() == null)
+			faixaSalarial.setCargo(new Cargo());
+		
+		faixaSalarial.getCargo().setId(cargoId);
 	}
 
 	public void setProjectionCargoNome(String nome)
@@ -76,6 +95,13 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 			faixaSalarial.setCargo(new Cargo());
 		
 		faixaSalarial.getCargo().setNome(nome);
+	}
+	
+	public void setProjectionFaixaSalarialId(Long faixaId)
+	{
+		inicializarFaixaSalarial();
+		
+		faixaSalarial.setId(faixaId);
 	}
 
 	public void setProjectionFaixaSalarialNome(String nome)

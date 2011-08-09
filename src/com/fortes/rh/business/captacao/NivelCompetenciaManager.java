@@ -13,4 +13,5 @@ public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia
 	void validaLimite(Long empresaId) throws Exception;
 
 	Collection<ConfiguracaoNivelCompetencia> findByCargoOrEmpresa(Long id, Long empresaId);
+
 }

@@ -96,6 +96,14 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.nivelCompetencia.setId(nivelCompetenciaId);
 	}
 	
+	public void setProjectionConfiguracaoNivelCompetenciaColaboradorId(Long configuracaoNivelCompetenciaColaboradorId) 
+	{
+		if (this.configuracaoNivelCompetenciaColaborador == null)
+			this.configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+		
+		this.configuracaoNivelCompetenciaColaborador.setId(configuracaoNivelCompetenciaColaboradorId);
+	}
+	
 	public void setProjectionNivelCompetenciaDescricao(String descricao) 
 	{
 		if (this.nivelCompetencia == null)

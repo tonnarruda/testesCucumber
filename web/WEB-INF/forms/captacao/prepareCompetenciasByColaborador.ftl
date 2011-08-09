@@ -46,6 +46,13 @@
 		
 		<title>Competências do Colaborador</title>
 		
+		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.data?exists>
+			<#assign data = configuracaoNivelCompetenciaColaborador.data?date/>
+		<#else>
+			<#assign data = ""/>
+		</#if>
+				
+		<#assign validarCampos="return validaFormulario('form', new Array('data'), new Array('data'))"/>
 		<#include "../ftl/mascarasImports.ftl" />
 	</head>
 	<body>
@@ -56,15 +63,18 @@
 		<b>Cargo:</b> ${faixaSalarial.cargo.nome}  &nbsp;&nbsp;  <b>Faixa Salarial:</b> ${faixaSalarial.nome}
 		<div style="clear: both;"></div><br />
 		
-		<@ww.form name="form" action="" method="POST">
-			<@ww.hidden name="colaborador.id" />
+		<@ww.form name="form" action="saveCompetenciasColaborador.action"  onsubmit="${validarCampos}" method="POST">
 			
 			<div id="legendas" style="float:right;">
 				<span style='background-color: #b8e2ff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência definidos para a Faixa Salarial
 			</div>
 			
-			<@ww.datepicker label="A partir de" name="data" id="data" cssClass="mascaraData" />
+			<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" id="data" cssClass="mascaraData" />
 			
+			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.id" />
+			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.faixaSalarial.id" value="${faixaSalarial.id}"/>
+			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.colaborador.id" value="${colaborador.id}"/>
+			<@ww.hidden name="colaborador.id" />
 			<br />
 			
 			<#assign i = 0/>
@@ -89,8 +99,8 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="enviarForm();" class="btnGravar"></button>
-			<button onclick="window.location=''" class="btnVoltar"></button>
+			<button onclick="${validarCampos};" class="btnGravar"></button>
+			<button onclick="window.location='listCompetenciasColaborador.action?colaborador.id=${colaborador.id}';" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

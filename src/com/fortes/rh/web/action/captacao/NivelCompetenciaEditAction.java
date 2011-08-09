@@ -133,42 +133,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String listCompetenciasColaborador()
-	{
-		configuracaoNivelCompetenciaColaboradores = configuracaoNivelCompetenciaColaboradorManager.findByColaborador(colaborador.getId()); 
-		
-		return Action.SUCCESS;	
-	}
-	
-	public void prepareCompetenciasByColaborador()
-	{
-		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
-		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
-		
-		niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
-	}
-	
-	public String prepareInsertCompetenciasByColaborador()
-	{
-		colaborador = colaboradorManager.findById(colaborador.getId());
-		faixaSalarial = colaborador.getHistoricoColaborador().getFaixaSalarial();
-		
-		prepareCompetenciasByColaborador();
-		
-		return Action.SUCCESS;
-	}
-	
-	public String prepareUpdateCompetenciasByColaborador()
-	{
-		configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByIdProjection(configuracaoNivelCompetenciaColaborador.getId());
-		colaborador = configuracaoNivelCompetenciaColaborador.getColaborador();
-		faixaSalarial = configuracaoNivelCompetenciaColaborador.getFaixaSalarial();
-		
-		prepareCompetenciasByColaborador();
-		
-		return Action.SUCCESS;
-	}
-	
 	public String saveCompetenciasByFaixa()
 	{
 		try
@@ -207,6 +171,64 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(candidato.getId(), getEmpresaSistema().getId());
 		
+		return Action.SUCCESS;
+	}
+	
+	public String listCompetenciasColaborador()
+	{
+		configuracaoNivelCompetenciaColaboradores = configuracaoNivelCompetenciaColaboradorManager.findByColaborador(colaborador.getId()); 
+		
+		return Action.SUCCESS;	
+	}
+	
+	public void prepareCompetenciasColaborador()
+	{
+		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
+		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
+		
+		niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
+	}
+	
+	public String prepareInsertCompetenciasColaborador()
+	{
+		configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+		configuracaoNivelCompetenciaColaborador.setData(new Date());
+		
+		colaborador = colaboradorManager.findById(colaborador.getId());
+		faixaSalarial = colaborador.getHistoricoColaborador().getFaixaSalarial();
+		
+		prepareCompetenciasColaborador();
+		
+		return Action.SUCCESS;
+	}
+	
+	public String prepareUpdateCompetenciasColaborador()
+	{
+		configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByIdProjection(configuracaoNivelCompetenciaColaborador.getId());
+		colaborador = configuracaoNivelCompetenciaColaborador.getColaborador();
+		faixaSalarial = configuracaoNivelCompetenciaColaborador.getFaixaSalarial();
+		
+		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(configuracaoNivelCompetenciaColaborador.getId());
+		
+		prepareCompetenciasColaborador();
+		
+		return Action.SUCCESS;
+	}
+	
+	public String saveCompetenciasColaborador()
+	{
+		try
+		{
+			configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
+			addActionMessage("Níveis de Competência do Colaborador salvos com sucesso.");
+		}
+		catch (Exception e)
+		{
+			addActionError(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		prepareInsertCompetenciasColaborador();
 		return Action.SUCCESS;
 	}
 	

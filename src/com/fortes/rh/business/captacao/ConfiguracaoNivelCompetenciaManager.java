@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 
 public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<ConfiguracaoNivelCompetencia>
 {
@@ -14,4 +15,8 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	Collection<ConfiguracaoNivelCompetencia> findByCandidato(Long candidato);
 
 	Collection<ConfiguracaoNivelCompetencia> getCompetenciasCandidato(Long candidatoId, Long empresaId);
+
+	void saveCompetenciasColaborador(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
+
+	Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long configuracaoNivelCompetenciaColaboradorId);
 }

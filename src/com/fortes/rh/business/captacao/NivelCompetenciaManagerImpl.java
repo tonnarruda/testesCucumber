@@ -24,4 +24,5 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 	{
 		return getDao().findByCargoOrEmpresa(cargoId, empresaId);
 	}
+
 }

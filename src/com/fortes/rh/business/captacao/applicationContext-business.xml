@@ -340,6 +340,9 @@
     <property name="nivelCompetenciaManager">
       <ref bean="nivelCompetenciaManager" />
     </property>
+    <property name="configuracaoNivelCompetenciaColaboradorManager">
+      <ref bean="configuracaoNivelCompetenciaColaboradorManager" />
+    </property>
   </bean>
   <bean id="configuracaoNivelCompetenciaManager" parent="parentManager">
     <property name="proxyInterfaces">

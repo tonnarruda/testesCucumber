@@ -26,8 +26,11 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cncc.id"), "id");
 		p.add(Projections.property("cncc.data"), "data");
+		p.add(Projections.property("co.id"), "projectionColaboradorId");
 		p.add(Projections.property("co.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("ca.id"), "projectionCargoId");
 		p.add(Projections.property("ca.nome"), "projectionCargoNome");
+		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
 		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
 
 		criteria.setProjection(p);

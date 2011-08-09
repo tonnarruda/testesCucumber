@@ -5,10 +5,12 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 
 public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetencia, ConfiguracaoNivelCompetenciaDao> implements ConfiguracaoNivelCompetenciaManager
 {
 	private NivelCompetenciaManager nivelCompetenciaManager;
+	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId) 
 	{
@@ -34,6 +36,20 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				if(candidatoId != null)
 					configuracaoNivelCompetencia.setCandidatoIdProjection(candidatoId);
 				
+				getDao().save(configuracaoNivelCompetencia);
+			}
+		}
+	}
+	
+	public void saveCompetenciasColaborador(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) 
+	{
+		configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.save(configuracaoNivelCompetenciaColaborador);
+		
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNiveisCompetencias) 
+		{
+			if (configuracaoNivelCompetencia.getCompetenciaId() != null)
+			{
+				configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
 				getDao().save(configuracaoNivelCompetencia);
 			}
 		}
@@ -64,5 +80,13 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) {
 		this.nivelCompetenciaManager = nivelCompetenciaManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long configuracaoNivelCompetenciaColaboradorId) {
+		return getDao().findByColaborador(configuracaoNivelCompetenciaColaboradorId);
 	}
 }

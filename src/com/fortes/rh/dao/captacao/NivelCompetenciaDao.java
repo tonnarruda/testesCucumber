@@ -11,4 +11,5 @@ public interface NivelCompetenciaDao extends GenericDao<NivelCompetencia>
 	Collection<NivelCompetencia> findAllSelect(Long empresaId);
 
 	Collection<ConfiguracaoNivelCompetencia> findByCargoOrEmpresa(Long cargoId, Long empresaId);
+
 }

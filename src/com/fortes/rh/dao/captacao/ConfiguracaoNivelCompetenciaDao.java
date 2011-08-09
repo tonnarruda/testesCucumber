@@ -13,5 +13,6 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 	Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId);
 
 	Collection<ConfiguracaoNivelCompetencia> findByCandidato(Long candidatoId);
+	Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long configuracaoNivelCompetenciaColaboradorId);
 
 }

@@ -33,12 +33,6 @@
 		<action name="saveCompetenciasByFaixa" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByFaixa">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixa.ftl</result>
 		</action>
-		<action name="prepareCompetenciasByColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareCompetenciasByColaborador">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
-		</action>
-		<action name="saveCompetenciasByColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByColaborador">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
-		</action>
 		<action name="prepareCompetenciasByCandidato" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareCompetenciasByCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByCandidato.ftl</result>
 		</action>
@@ -47,6 +41,18 @@
 		</action>
 		<action name="visualizarCandidato" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="visualizarCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/visualizarCompetenciasCandidato.ftl</result>
+		</action>
+		<action name="listCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="listCompetenciasColaborador">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/listCompetenciasColaborador.ftl</result>
+		</action>
+		<action name="prepareInsertCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareInsertCompetenciasColaborador">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
+		</action>
+		<action name="prepareUpdateCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareUpdateCompetenciasColaborador">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
+		</action>
+		<action name="saveCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasColaborador">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
 		</action>
 	</package>
 </xwork>
