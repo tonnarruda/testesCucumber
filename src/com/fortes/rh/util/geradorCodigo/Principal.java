@@ -6,8 +6,8 @@ import java.io.IOException;
 public class Principal
 {
 							//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "NivelCompetencia";
-	public static String NOME_CLASSE_MINUSCULO = "nivelCompetencia";
+	public static String NOME_CLASSE = "ConfiguracaoNivelCompetenciaColaborador";
+	public static String NOME_CLASSE_MINUSCULO = "configuracaoNivelCompetenciaColaborador";
 	public static String NOME_PACOTE = "captacao";
 	
 	private static final char separator = java.io.File.separatorChar;

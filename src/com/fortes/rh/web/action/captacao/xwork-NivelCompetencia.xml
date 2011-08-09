@@ -33,6 +33,12 @@
 		<action name="saveCompetenciasByFaixa" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByFaixa">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixa.ftl</result>
 		</action>
+		<action name="prepareCompetenciasByColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareCompetenciasByColaborador">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
+		</action>
+		<action name="saveCompetenciasByColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByColaborador">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
+		</action>
 		<action name="prepareCompetenciasByCandidato" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareCompetenciasByCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByCandidato.ftl</result>
 		</action>

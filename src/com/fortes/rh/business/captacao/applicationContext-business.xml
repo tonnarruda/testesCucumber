@@ -349,7 +349,21 @@
       <ref bean="configuracaoNivelCompetenciaManagerTarget" />
     </property>
   </bean>
+  <bean id="configuracaoNivelCompetenciaColaboradorManagerTarget" class="com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManagerImpl">
+    <property name="dao">
+      <ref bean="configuracaoNivelCompetenciaColaboradorDao" />
+    </property>
+  </bean>
+  <bean id="configuracaoNivelCompetenciaColaboradorManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoNivelCompetenciaColaboradorManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

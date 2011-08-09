@@ -28,7 +28,7 @@
 			
 			<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
 				var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
-				linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#7E9DB9');
+				linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#b8e2ff');
 			</#list>
 		});
 		
@@ -57,7 +57,14 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	
-	<p><b>Candidato:</b> ${candidato.nome}</p>
+	
+	<div id="legendas" style="float:right;">
+		<span style='background-color: #b8e2ff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência definidos para o Cargo
+	</div>
+	
+	<b>Candidato:</b> ${candidato.nome}
+	
+	<div style="clear: both;"></div><br />
 	
 	<@ww.form name="form" id="form" action="../../captacao/nivelCompetencia/saveCompetenciasByCandidato.action" method="POST">
 		<@ww.hidden name="candidato.id"/>

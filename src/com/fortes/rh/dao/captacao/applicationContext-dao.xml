@@ -146,7 +146,16 @@
       <ref bean="configuracaoNivelCompetenciaDaoTarget" />
     </property>
   </bean>
+  <bean id="configuracaoNivelCompetenciaColaboradorDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoNivelCompetenciaColaboradorDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

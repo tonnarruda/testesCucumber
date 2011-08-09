@@ -22,6 +22,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 
 		criteria.add(Expression.eq("ncfs.faixaSalarial.id", faixaSalarialId));
 		criteria.add(Expression.isNull("ncfs.candidato.id"));
+		criteria.add(Expression.isNull("ncfs.configuracaoNivelCompetenciaColaborador.id"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
@@ -62,7 +63,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 
 	public void deleteConfiguracaoByFaixa(Long faixaSalarialId) 
 	{
-		String queryHQL = "delete from ConfiguracaoNivelCompetencia where faixaSalarial.id = :faixaSalarialId and candidato.id is null";
+		String queryHQL = "delete from ConfiguracaoNivelCompetencia where faixaSalarial.id = :faixaSalarialId and candidato.id is null and configuracaoNivelCompetenciaColaborador_id is null";
 
 		getSession().createQuery(queryHQL).setLong("faixaSalarialId", faixaSalarialId).executeUpdate();		
 	}

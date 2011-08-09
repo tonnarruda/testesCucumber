@@ -21,6 +21,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	@ManyToOne
 	private Candidato candidato;
 	@ManyToOne
+	private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
+	@ManyToOne
 	private NivelCompetencia nivelCompetencia;
 	@Column
 	private Character tipoCompetencia;
@@ -138,5 +140,14 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 
 	public void setCandidato(Candidato candidato) {
 		this.candidato = candidato;
+	}
+
+	public ConfiguracaoNivelCompetenciaColaborador getConfiguracaoNivelCompetenciaColaborador() {
+		return configuracaoNivelCompetenciaColaborador;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaborador(
+			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) {
+		this.configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaborador;
 	}
 }

@@ -453,7 +453,7 @@ public class MockCall
 
 	protected void finalize() throws Throwable
 	{
-		System.out.println("Finalizando MockCall.");
+
 	}
 
 	// public boolean equals(Object obj)
