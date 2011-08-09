@@ -45,12 +45,14 @@ public class NivelCompetenciaFaixaSalarialDaoHibernate extends GenericDaoHiberna
 	private Criteria createCriteria() 
 	{
 		Criteria criteria = getSession().createCriteria(NivelCompetenciaFaixaSalarial.class,"ncfs");
+		criteria.createCriteria("ncfs.nivelCompetencia", "nc", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ncfs.id"), "id");
 		p.add(Projections.property("ncfs.faixaSalarial.id"), "faixaSalarialIdProjection");
 		p.add(Projections.property("ncfs.candidato.id"), "candidatoIdProjection");
-		p.add(Projections.property("ncfs.nivelCompetencia.id"), "nivelCompetenciaIdProjection");
+		p.add(Projections.property("nc.id"), "nivelCompetenciaIdProjection");
+		p.add(Projections.property("nc.descricao"), "projectionNivelCompetenciaDescricao");
 		p.add(Projections.property("ncfs.competenciaId"), "competenciaId");
 		p.add(Projections.property("ncfs.tipoCompetencia"), "tipoCompetencia");
 

@@ -94,6 +94,14 @@ public class NivelCompetenciaFaixaSalarial extends AbstractModel implements Seri
 		this.nivelCompetencia.setId(nivelCompetenciaId);
 	}
 	
+	public void setProjectionNivelCompetenciaDescricao(String descricao) 
+	{
+		if (this.nivelCompetencia == null)
+			this.nivelCompetencia = new NivelCompetencia();
+		
+		this.nivelCompetencia.setDescricao(descricao);
+	}
+	
 	public Long getCompetenciaId() 
 	{
 		return competenciaId;

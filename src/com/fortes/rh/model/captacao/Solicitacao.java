@@ -99,7 +99,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	}
 
-	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Double valorDoHistoricoDaFaixaSalarial, Long avaliacaoId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante)
+	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Double valorDoHistoricoDaFaixaSalarial, Long avaliacaoId, Long faixaSalarialId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante)
 	{
 		setId(id);
 		setQuantidade(quantidade);
@@ -111,7 +111,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		setAvaliacao(new Avaliacao());
 		getAvaliacao().setId(avaliacaoId);
 		
-		setFaixaSalarial(new FaixaSalarial());
+		setProjectionFaixaSalarialId(faixaSalarialId);
 		getFaixaSalarial().setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
 		getFaixaSalarial().getFaixaSalarialHistoricoAtual().setValor(valorDoHistoricoDaFaixaSalarial);
 		getFaixaSalarial().setCargo(new Cargo());

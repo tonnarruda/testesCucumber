@@ -10,6 +10,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -26,6 +27,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private NivelCompetencia nivelCompetencia;
 	private FaixaSalarial faixaSalarial;
 	private Candidato candidato;
+	private Solicitacao solicitacao;
 	
 	private Collection<NivelCompetencia> nivelCompetencias;
 	private Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariais;
@@ -154,6 +156,13 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	public String visualizarCandidato()
+	{
+		niveisCompetenciaFaixaSalariaisSalvos = nivelCompetenciaFaixaSalarialManager.getCompetenciasCandidato(candidato.getId(), getEmpresaSistema().getId());
+		
+		return Action.SUCCESS;
+	}
+	
 	public NivelCompetencia getNivelCompetencia()
 	{
 		if(nivelCompetencia == null)
@@ -223,5 +232,13 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public Collection<NivelCompetenciaFaixaSalarial> getNiveisCompetenciaFaixaSalariaisSugeridos() {
 		return niveisCompetenciaFaixaSalariaisSugeridos;
+	}
+
+	public Solicitacao getSolicitacao() {
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) {
+		this.solicitacao = solicitacao;
 	}
 }
