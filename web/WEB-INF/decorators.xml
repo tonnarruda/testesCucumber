@@ -27,6 +27,7 @@
 		<pattern>*incluirFaixaNaTabela*</pattern>
 		<pattern>*verCurriculoEscaneado*</pattern>
 		<pattern>*verCurriculoTextoOcr*</pattern>
+		<pattern>*visualizarCandidato*</pattern>
 		<pattern>*verExamePalografico*</pattern>
 		<pattern>/concurrentSessionError.action</pattern>
 		<pattern>/security/auditoria/listaOperacoes.action</pattern>

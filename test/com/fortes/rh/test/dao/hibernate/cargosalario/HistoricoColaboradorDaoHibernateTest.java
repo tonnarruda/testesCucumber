@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;

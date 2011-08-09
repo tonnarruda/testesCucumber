@@ -87,7 +87,7 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
-  <bean id="nivelCompetenciaFaixaSalarialDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.NivelCompetenciaFaixaSalarialDaoHibernate">
+  <bean id="configuracaoNivelCompetenciaDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>

@@ -13,7 +13,6 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.EmpresaManagerImpl;
 import com.fortes.rh.dao.geral.EmpresaDao;
-import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TEmpresa;

@@ -5,7 +5,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		
-		.dados th { text-align: left; padding-left: 5px; }
+		.dados th:first-child { text-align: left; padding-left: 5px; }
 	</style>
 
 	<script type="text/javascript">
@@ -58,16 +58,16 @@
 		<@ww.hidden name="faixaSalarial.id"/>
 		
 		<#assign i = 0/>
-		<@display.table name="niveisCompetenciaFaixaSalariais" id="nivelCompetenciaFaixaSalarial" class="dados">
+		<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
 		
 			<@display.column title="<input type='checkbox' id='checkAllCompetencia'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
-				<input type="checkbox" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${nivelCompetenciaFaixaSalarial.competenciaId}" class="checkCompetencia" />
-				${nivelCompetenciaFaixaSalarial.competenciaDescricao}
+				<input type="checkbox"  id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
+				<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>			
-				<@display.column title="${nivel.descricao}" style="width: 100px;">
+				<@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;">
 					<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" />
 				</@display.column>
 			</#list>

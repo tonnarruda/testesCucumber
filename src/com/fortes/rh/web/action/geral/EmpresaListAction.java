@@ -1,6 +1,5 @@
 package com.fortes.rh.web.action.geral;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;

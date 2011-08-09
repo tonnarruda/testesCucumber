@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
-import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;

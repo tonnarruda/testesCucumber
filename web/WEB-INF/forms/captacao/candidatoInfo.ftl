@@ -84,7 +84,7 @@
 			$("#historico").load('<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/verHistoricoCandidato.action"/>', {'candidato.id':'${candidato.id}'});
 			$("#imagens").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoEscaneado.action"/>', {'candidato.id':'${candidato.id}'});
 			$("#textoOcr").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoTextoOcr.action"/>', {'candidato.id':'${candidato.id}',palavras:'${palavras}',forma:'${forma}'});
-			$("#examePalografico").load('<@ww.url includeParams="none" value="/captacao/candidato/verExamePalografico.action"/>', {'candidato.id':'${candidato.id}'});
+			$("#competencia").load('<@ww.url includeParams="none" value="/captacao/nivelCompetencia/visualizarCandidato.action"/>', {'candidato.id':'${candidato.id}'});
 		});
 	</script>
 	<@ww.head/>
@@ -107,6 +107,10 @@
 
 		<div id="aba4">
 			<a href="javascript:mudaAba(4)">TEXTO DIGITALIZADO</a>
+		</div>
+
+		<div id="aba5">
+			<a href="javascript:mudaAba(5)">COMPETÊNCIAS</a>
 		</div>
 		
 		<!-- Exame Palografico removido ate segunda ordem do Denis
@@ -133,7 +137,7 @@
 	</div>
 	
 	<div id="content5" style="display: none;">
-		<@ww.div id="examePalografico"/>
+		<@ww.div id="competencia"/>
 	</div>
 
 	<@ww.hidden id="palavras" name="palavras"/>

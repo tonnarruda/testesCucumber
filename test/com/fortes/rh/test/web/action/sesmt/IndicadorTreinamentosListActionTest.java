@@ -13,10 +13,7 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
-import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.desenvolvimento.IndicadorTreinamentosListAction;
 import com.opensymphony.webwork.ServletActionContext;
 

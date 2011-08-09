@@ -21043,4 +21043,11 @@ values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.52.44', '', '25',
 );
 
 alter sequence parametrosdosistema_sequence restart with 2;
+
+insert into migrations values('20110718095432');--.go
+insert into migrations values('20110718103503');--.go
+insert into migrations values('20110719093045');--.go
+insert into migrations values('20110719164403');--.go
+insert into migrations values('20110722151723');--.go
+insert into migrations values('20110725093103');--.go
 insert into migrations values('20110726092155');--.go

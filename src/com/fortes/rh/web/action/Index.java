@@ -6,7 +6,6 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.acegisecurity.AuthenticationManager;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
@@ -16,11 +15,11 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;

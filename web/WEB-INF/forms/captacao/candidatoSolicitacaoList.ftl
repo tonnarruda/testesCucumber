@@ -88,7 +88,7 @@
 			<#assign classe="contratado"/>
 		</#if>
 		
-		<@display.column title="Ações" media="html" class="acao" style="width: 120px;">
+		<@display.column title="Ações" media="html" class="acao" style="width: 140px;">
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 			<#if !solicitacao.encerrada>
 				<a href="../historicoCandidato/list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}"><img border="0" title="Histórico" src="<@ww.url includeParams="none" value="/imgs/page_user.gif"/>"></a>
@@ -97,7 +97,9 @@
 			</#if>
 		</@authz.authorize>
 
-	        <a href="javascript:popup('../candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
+		<a href="../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}"><img border="0" title="Competências" src="<@ww.url value="/imgs/medalha.gif"/>"></a>
+
+        <a href="javascript:popup('../candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
 
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 			<#if !solicitacao.encerrada>

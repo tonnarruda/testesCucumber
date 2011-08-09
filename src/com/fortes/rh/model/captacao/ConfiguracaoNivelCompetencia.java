@@ -13,8 +13,8 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 
 @SuppressWarnings("serial")
 @Entity
-@SequenceGenerator(name="sequence", sequenceName="nivelcompetenciafaixasalarial_sequence", allocationSize=1)
-public class NivelCompetenciaFaixaSalarial extends AbstractModel implements Serializable
+@SequenceGenerator(name="sequence", sequenceName="configuracaonivelcompetencia_sequence", allocationSize=1)
+public class ConfiguracaoNivelCompetencia extends AbstractModel implements Serializable
 {
 	@ManyToOne
 	private FaixaSalarial faixaSalarial;
@@ -29,11 +29,11 @@ public class NivelCompetenciaFaixaSalarial extends AbstractModel implements Seri
 	@Transient
 	private String competenciaDescricao;	
 	
-	public NivelCompetenciaFaixaSalarial()
+	public ConfiguracaoNivelCompetencia()
 	{
 	}
 
-	public NivelCompetenciaFaixaSalarial(Long id, Long faixaSalarialId, Long nivelCompetenciaId, Character tipoCompetencia, Long competenciaId, String competenciaDescricao)
+	public ConfiguracaoNivelCompetencia(Long id, Long faixaSalarialId, Long nivelCompetenciaId, Character tipoCompetencia, Long competenciaId, String competenciaDescricao)
 	{
 		this.setId(id);
 		this.setFaixaSalarialIdProjection(faixaSalarialId);
@@ -43,7 +43,7 @@ public class NivelCompetenciaFaixaSalarial extends AbstractModel implements Seri
 		this.setCompetenciaDescricao(competenciaDescricao);
 	}
 	
-	public NivelCompetenciaFaixaSalarial(Character tipoCompetencia, Long competenciaId, String competenciaDescricao)
+	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, String competenciaDescricao)
 	{
 		this.setTipoCompetencia(tipoCompetencia);
 		this.setCompetenciaId(competenciaId);
@@ -92,6 +92,14 @@ public class NivelCompetenciaFaixaSalarial extends AbstractModel implements Seri
 			this.nivelCompetencia = new NivelCompetencia();
 		
 		this.nivelCompetencia.setId(nivelCompetenciaId);
+	}
+	
+	public void setProjectionNivelCompetenciaDescricao(String descricao) 
+	{
+		if (this.nivelCompetencia == null)
+			this.nivelCompetencia = new NivelCompetencia();
+		
+		this.nivelCompetencia.setDescricao(descricao);
 	}
 	
 	public Long getCompetenciaId() 

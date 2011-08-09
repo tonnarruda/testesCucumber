@@ -4,12 +4,13 @@ package com.fortes.rh.web.action.captacao;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
-import com.fortes.rh.business.captacao.NivelCompetenciaFaixaSalarialManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
-import com.fortes.rh.model.captacao.NivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -19,18 +20,19 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	
 	private NivelCompetenciaManager nivelCompetenciaManager;
-	private NivelCompetenciaFaixaSalarialManager nivelCompetenciaFaixaSalarialManager; 
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager; 
 	private FaixaSalarialManager faixaSalarialManager;
 	private CandidatoManager candidatoManager;
 	
 	private NivelCompetencia nivelCompetencia;
 	private FaixaSalarial faixaSalarial;
 	private Candidato candidato;
+	private Solicitacao solicitacao;
 	
 	private Collection<NivelCompetencia> nivelCompetencias;
-	private Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariais;
-	private Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariaisSalvos;
-	private Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariaisSugeridos;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSugeridos;
 
 	private void prepare() throws Exception
 	{
@@ -101,7 +103,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), null);
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
-		niveisCompetenciaFaixaSalariaisSalvos = nivelCompetenciaFaixaSalarialManager.findByFaixa(faixaSalarial.getId());
+		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
 		
 		return Action.SUCCESS;
 	}
@@ -114,8 +116,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
-		niveisCompetenciaFaixaSalariaisSugeridos = nivelCompetenciaFaixaSalarialManager.findByFaixa(faixaSalarial.getId());
-		niveisCompetenciaFaixaSalariaisSalvos = nivelCompetenciaFaixaSalarialManager.findByCandidato(candidato.getId());
+		niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
+		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByCandidato(candidato.getId());
 		
 		return Action.SUCCESS;
 	}
@@ -124,7 +126,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		try
 		{
-			nivelCompetenciaFaixaSalarialManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), null);
+			configuracaoNivelCompetenciaManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), null);
 			addActionMessage("Níveis de Competência da Faixa Salarial salvos com sucesso.");
 		}
 		catch (Exception e)
@@ -141,7 +143,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		try
 		{
-			nivelCompetenciaFaixaSalarialManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), candidato.getId());
+			configuracaoNivelCompetenciaManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), candidato.getId());
 			addActionMessage("Níveis de Competência do Candidato salvos com sucesso.");
 		}
 		catch (Exception e)
@@ -151,6 +153,13 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		}
 		
 		prepareCompetenciasByCandidato();
+		return Action.SUCCESS;
+	}
+	
+	public String visualizarCandidato()
+	{
+		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(candidato.getId(), getEmpresaSistema().getId());
+		
 		return Action.SUCCESS;
 	}
 	
@@ -176,12 +185,12 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return nivelCompetencias;
 	}
 
-	public Collection<NivelCompetenciaFaixaSalarial> getNiveisCompetenciaFaixaSalariais() 
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariais() 
 	{
 		return niveisCompetenciaFaixaSalariais;
 	}
 
-	public void setNiveisCompetenciaFaixaSalariais(Collection<NivelCompetenciaFaixaSalarial> niveisCompetenciaFaixaSalariais) 
+	public void setNiveisCompetenciaFaixaSalariais(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais) 
 	{
 		this.niveisCompetenciaFaixaSalariais = niveisCompetenciaFaixaSalariais;
 	}
@@ -201,11 +210,11 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
-	public void setNivelCompetenciaFaixaSalarialManager(NivelCompetenciaFaixaSalarialManager nivelCompetenciaFaixaSalarialManager) {
-		this.nivelCompetenciaFaixaSalarialManager = nivelCompetenciaFaixaSalarialManager;
+	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
-	public Collection<NivelCompetenciaFaixaSalarial> getNiveisCompetenciaFaixaSalariaisSalvos() {
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSalvos() {
 		return niveisCompetenciaFaixaSalariaisSalvos;
 	}
 
@@ -221,7 +230,15 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		this.candidatoManager = candidatoManager;
 	}
 
-	public Collection<NivelCompetenciaFaixaSalarial> getNiveisCompetenciaFaixaSalariaisSugeridos() {
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSugeridos() {
 		return niveisCompetenciaFaixaSalariaisSugeridos;
+	}
+
+	public Solicitacao getSolicitacao() {
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) {
+		this.solicitacao = solicitacao;
 	}
 }

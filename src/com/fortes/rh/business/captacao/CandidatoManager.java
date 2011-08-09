@@ -8,7 +8,6 @@ import com.fortes.business.GenericManager;
 import com.fortes.f2rh.Curriculo;
 import com.fortes.model.type.File;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.exception.FormatoArquivoInvalidoException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.HistoricoCandidato;

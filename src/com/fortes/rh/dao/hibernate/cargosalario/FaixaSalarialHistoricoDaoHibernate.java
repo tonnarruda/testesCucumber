@@ -20,7 +20,6 @@ import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
-import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unchecked")
 public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<FaixaSalarialHistorico> implements FaixaSalarialHistoricoDao

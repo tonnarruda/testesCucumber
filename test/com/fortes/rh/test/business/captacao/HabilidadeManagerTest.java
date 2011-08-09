@@ -8,18 +8,14 @@ import java.util.Map;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.captacao.HabilidadeManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
-import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
-import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
-import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.web.tags.CheckBox;
 

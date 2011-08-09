@@ -3,8 +3,8 @@ package com.fortes.rh.business.captacao;
 import java.util.Collection;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
-import com.fortes.rh.model.captacao.NivelCompetenciaFaixaSalarial;
 
 public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia>
 {
@@ -12,5 +12,5 @@ public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia
 
 	void validaLimite(Long empresaId) throws Exception;
 
-	Collection<NivelCompetenciaFaixaSalarial> findByCargoOrEmpresa(Long id, Long empresaId);
+	Collection<ConfiguracaoNivelCompetencia> findByCargoOrEmpresa(Long id, Long empresaId);
 }

@@ -18,8 +18,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
-import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;

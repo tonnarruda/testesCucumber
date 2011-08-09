@@ -20,7 +20,6 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
-import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorPresenca>
 {

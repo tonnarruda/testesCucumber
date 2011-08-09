@@ -15,8 +15,8 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
-import com.fortes.rh.model.captacao.NivelCompetenciaFaixaSalarial;
 
 public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompetencia> implements NivelCompetenciaDao
 {
@@ -44,7 +44,7 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<NivelCompetenciaFaixaSalarial> findByCargoOrEmpresa(Long cargoId, Long empresaId) 
+	public Collection<ConfiguracaoNivelCompetencia> findByCargoOrEmpresa(Long cargoId, Long empresaId) 
 	{
 		String whereConhecimento = "cc.cargo_id = :cargoId ";
 		String whereHabilidade = "ch.cargo_id = :cargoId ";
@@ -79,12 +79,12 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 			query.setLong("cargoId", cargoId);
 		
 		Collection<Object[]> resultado = query.list();
-		Collection<NivelCompetenciaFaixaSalarial> lista = new ArrayList<NivelCompetenciaFaixaSalarial>();
+		Collection<ConfiguracaoNivelCompetencia> lista = new ArrayList<ConfiguracaoNivelCompetencia>();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new NivelCompetenciaFaixaSalarial(((String)res[2]).charAt(0), ((BigInteger)res[0]).longValue(), (String)res[1]));
+			lista.add(new ConfiguracaoNivelCompetencia(((String)res[2]).charAt(0), ((BigInteger)res[0]).longValue(), (String)res[1]));
 		}
 
 		return lista;				

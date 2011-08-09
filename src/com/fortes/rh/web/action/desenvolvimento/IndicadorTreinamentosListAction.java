@@ -1,8 +1,5 @@
 package com.fortes.rh.web.action.desenvolvimento;
 
-import java.awt.Color;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -11,29 +8,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot3D;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
-import com.fortes.rh.model.desenvolvimento.relatorio.GraficoIndicadorTreinamento;
 import com.fortes.rh.model.relatorio.DataGrafico;
-import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.MathUtil;
-import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.webwork.ServletActionContext;
-import com.opensymphony.xwork.Action;
 
 public class IndicadorTreinamentosListAction extends MyActionSupportList
 {

@@ -1,8 +1,8 @@
 package com.fortes.rh.test.util;
 
-import com.fortes.rh.util.geradorCodigo.Principal;
-
 import junit.framework.TestCase;
+
+import com.fortes.rh.util.geradorCodigo.Principal;
 
 public class PrincipalTest extends TestCase
 {

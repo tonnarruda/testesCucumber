@@ -16,11 +16,9 @@ import com.fortes.rh.model.dicionario.TipoExtintor;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
-import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorInspecaoFactory;
-import com.fortes.rh.test.factory.sesmt.ExtintorManutencaoFactory;
 import com.fortes.rh.web.action.sesmt.ExtintorEditAction;
 
 public class ExtintorEditActionTest extends MockObjectTestCase

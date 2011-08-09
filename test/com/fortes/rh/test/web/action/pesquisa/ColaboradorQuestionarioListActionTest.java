@@ -1,6 +1,5 @@
 package com.fortes.rh.test.web.action.pesquisa;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -15,7 +14,6 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;

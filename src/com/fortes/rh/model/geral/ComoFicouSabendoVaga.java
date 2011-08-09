@@ -2,7 +2,6 @@ package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
 
-import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
