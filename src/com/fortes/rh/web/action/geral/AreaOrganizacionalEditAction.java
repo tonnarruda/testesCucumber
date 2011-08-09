@@ -14,7 +14,6 @@ import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;

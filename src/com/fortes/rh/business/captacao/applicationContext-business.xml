@@ -333,20 +333,20 @@
       <ref bean="nivelCompetenciaManagerTarget" />
     </property>
   </bean>
-  <bean id="nivelCompetenciaFaixaSalarialManagerTarget" class="com.fortes.rh.business.captacao.NivelCompetenciaFaixaSalarialManagerImpl">
+  <bean id="configuracaoNivelCompetenciaManagerTarget" class="com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManagerImpl">
     <property name="dao">
-      <ref bean="nivelCompetenciaFaixaSalarialDao" />
+      <ref bean="configuracaoNivelCompetenciaDao" />
     </property>
     <property name="nivelCompetenciaManager">
       <ref bean="nivelCompetenciaManager" />
     </property>
   </bean>
-  <bean id="nivelCompetenciaFaixaSalarialManager" parent="parentManager">
+  <bean id="configuracaoNivelCompetenciaManager" parent="parentManager">
     <property name="proxyInterfaces">
-      <value>com.fortes.rh.business.captacao.NivelCompetenciaFaixaSalarialManager</value>
+      <value>com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager</value>
     </property>
     <property name="target">
-      <ref bean="nivelCompetenciaFaixaSalarialManagerTarget" />
+      <ref bean="configuracaoNivelCompetenciaManagerTarget" />
     </property>
   </bean>
 </beans>

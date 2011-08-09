@@ -2,15 +2,13 @@ package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
 
-import com.fortes.rh.model.captacao.NivelCompetencia;
-import com.fortes.rh.model.geral.Empresa;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("serial")
 @Entity

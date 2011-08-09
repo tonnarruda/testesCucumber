@@ -1,7 +1,5 @@
 package com.fortes.rh.security;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.providers.ProviderManager;
 
 public class MyProviderManager extends ProviderManager

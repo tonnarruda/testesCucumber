@@ -8,7 +8,6 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.Risco;

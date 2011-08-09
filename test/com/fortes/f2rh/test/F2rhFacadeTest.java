@@ -14,7 +14,6 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.f2rh.ConfigF2RH;
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.F2rhDownloadFacade;
-import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.f2rh.User;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;

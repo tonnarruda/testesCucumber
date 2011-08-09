@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.ComoFicouSabendoVagaManager;
-import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;

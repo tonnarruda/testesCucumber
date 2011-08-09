@@ -6,7 +6,6 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 import java.util.Date;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -19,7 +18,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
-import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CollectionUtil;

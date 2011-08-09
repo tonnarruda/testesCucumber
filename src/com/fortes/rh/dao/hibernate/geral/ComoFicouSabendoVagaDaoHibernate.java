@@ -8,10 +8,9 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.fortes.rh.model.geral.Bairro;
-import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ComoFicouSabendoVagaDao;
+import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 
 public class ComoFicouSabendoVagaDaoHibernate extends GenericDaoHibernate<ComoFicouSabendoVaga> implements ComoFicouSabendoVagaDao
 {

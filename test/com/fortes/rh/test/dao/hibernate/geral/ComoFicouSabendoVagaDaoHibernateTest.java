@@ -1,9 +1,5 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import com.ctc.wstx.util.DataUtil;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.geral.ComoFicouSabendoVagaDao;

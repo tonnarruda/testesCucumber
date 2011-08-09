@@ -58,12 +58,12 @@
 		<@ww.hidden name="faixaSalarial.id"/>
 		
 		<#assign i = 0/>
-		<@display.table name="niveisCompetenciaFaixaSalariais" id="nivelCompetenciaFaixaSalarial" class="dados">
+		<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
 		
 			<@display.column title="<input type='checkbox' id='checkAllCompetencia'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
-				<input type="checkbox"  id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${nivelCompetenciaFaixaSalarial.competenciaId}" class="checkCompetencia" />
-				<label for="competencia_${i}">${nivelCompetenciaFaixaSalarial.competenciaDescricao}</label>
+				<input type="checkbox"  id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
+				<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>			

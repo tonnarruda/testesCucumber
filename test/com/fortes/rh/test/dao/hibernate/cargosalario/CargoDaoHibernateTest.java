@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;

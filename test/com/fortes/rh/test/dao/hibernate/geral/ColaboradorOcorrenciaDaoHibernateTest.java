@@ -3,15 +3,9 @@ package com.fortes.rh.test.dao.hibernate.geral;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.management.Query;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;

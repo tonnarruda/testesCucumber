@@ -45,7 +45,6 @@ import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
-import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -57,7 +56,6 @@ import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ModelDriven;
 
 @SuppressWarnings("serial")

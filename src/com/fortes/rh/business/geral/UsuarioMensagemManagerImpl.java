@@ -17,7 +17,6 @@ import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
-import com.fortes.rh.util.SpringUtil;
 
 public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensagem, UsuarioMensagemDao> implements UsuarioMensagemManager
 {

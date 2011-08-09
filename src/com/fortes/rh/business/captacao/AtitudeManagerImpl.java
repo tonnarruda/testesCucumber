@@ -8,7 +8,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.model.captacao.Atitude;
-import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
