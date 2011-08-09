@@ -10,7 +10,7 @@ public interface UsuarioEmpresaManager extends GenericManager<UsuarioEmpresa>
 	Collection<UsuarioEmpresa> findAllBySelectUsuarioEmpresa(Long empresaId);
 	void removeAllUsuario(Usuario usuario);
 	Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC);
-	Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleAvaliacaoExperiencia(Long empresaId);
+	Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleAvaliacaoExperiencia(Long empresaId, String role);
 	void save(Usuario usuario, String[] empresaIds, String[] selectPerfils);
 	Collection<UsuarioEmpresa> findByUsuario(Long usuarioId);
 	Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role);

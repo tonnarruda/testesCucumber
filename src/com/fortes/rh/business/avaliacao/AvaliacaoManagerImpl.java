@@ -99,8 +99,8 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	
 	private void enviaLembrete(Collection<Colaborador> colaboradores, Empresa empresa, Integer diaLembrete, Integer diasAvaliacao, Date dataAvaliacao) 
 	{
-		Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId());		
-		Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperienciaGerencial = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId());		
+		Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId(), "RECEBE_MSG_PERIODOEXPERIENCIA");		
+		Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperienciaGerencial = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId(), "GERENCIA_MSG_PERIODOEXPERIENCIA");		
 		
 		String data = DateUtil.formataDiaMesAno(dataAvaliacao);
 		
@@ -125,10 +125,9 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 					.append("\nData da avaliação: ").append(data);
 			
 			String link = "avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action?colaborador.id=" + colaborador.getId();
-			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperienciaGerencial);
 			
-			if(colaborador.getAreaOrganizacional()!=null);
-				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperiencia, colaborador.getAreaOrganizacional().getDescricaoIds());
+			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperienciaGerencial);
+			usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperiencia, colaborador.getAreaOrganizacional().getDescricaoIds());
 		}
 	}
 	

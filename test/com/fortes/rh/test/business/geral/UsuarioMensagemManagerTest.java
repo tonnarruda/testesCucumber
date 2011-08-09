@@ -14,6 +14,7 @@ import com.fortes.rh.business.geral.UsuarioMensagemManagerImpl;
 import com.fortes.rh.dao.geral.UsuarioMensagemDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
@@ -33,6 +34,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 	private Mock usuarioMensagemDao = null;
 	private Mock mensagemManager = null;
 	private Mock transactionManager = null;
+	private Mock usuarioEmpresaManager = null;
 
     protected void setUp() throws Exception
     {
@@ -46,6 +48,9 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 
         transactionManager = new Mock(PlatformTransactionManager.class);
         usuarioMensagemManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+        
+        usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
+        usuarioMensagemManager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
 
         Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
@@ -185,6 +190,28 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 
 		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas);
+	}
+
+	public void testSaveMensagemAndUsuarioMensagemRespAreaOrganizacional() throws Exception
+	{
+		Usuario usuario = UsuarioFactory.getEntity(1L);
+		
+		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity(1L);
+		usuarioEmpresa.setUsuario(usuario);
+		
+		Mensagem mensagem = MensagemFactory.getEntity(1L);
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
+		usuarioEmpresas.add(usuarioEmpresa);
+		
+		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = new ArrayList<UsuarioEmpresa>();
+		usuariosResponsaveisAreaOrganizacionais.add(usuarioEmpresa);
+		
+		usuarioEmpresaManager.expects(once()).method("findUsuarioResponsavelAreaOrganizacional").with(ANYTHING).will(returnValue(usuariosResponsaveisAreaOrganizacionais));
+		mensagemManager.expects(once()).method("save").with(ANYTHING).will(returnValue(mensagem));
+		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
+		
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, new ArrayList<Long>());
 	}
 	
 	public void testDeleteUm() throws Exception

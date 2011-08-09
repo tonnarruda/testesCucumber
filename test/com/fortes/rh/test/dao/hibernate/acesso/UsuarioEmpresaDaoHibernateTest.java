@@ -186,10 +186,10 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		usuarioEmpresa3= usuarioEmpresaDao.save(usuarioEmpresa3);
 		
 		// por codigoAC
-		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRoleSetorPessoal(empresa.getCodigoAC(), "XXX", null).size());
+		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRoleSetorPessoal(empresa.getCodigoAC(), "XXX", null, "RECEBE_ALERTA_SETORPESSOAL").size());
 		
 		// por empresaId
-		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRoleSetorPessoal(null, null, empresa.getId()).size());
+		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRoleSetorPessoal(null, null, empresa.getId(), "RECEBE_ALERTA_SETORPESSOAL").size());
 	}
 
 	public GenericDao<UsuarioEmpresa> getGenericDao()

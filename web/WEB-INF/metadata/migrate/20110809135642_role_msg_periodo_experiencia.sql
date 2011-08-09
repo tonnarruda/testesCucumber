@@ -1,0 +1,1 @@
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (517,'RECEBE_MSG_PERIODOEXPERIENCIA', 'Receber Mensagens de Aviso Perodo de Experincia', '#', 4, false, 382);--.go

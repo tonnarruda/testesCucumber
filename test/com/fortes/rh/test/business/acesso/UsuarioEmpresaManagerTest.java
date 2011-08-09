@@ -57,7 +57,7 @@ public class UsuarioEmpresaManagerTest extends MockObjectTestCase
 	{
 		String codigoAC = "";
 		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(codigoAC), eq(""), eq(null)).will(returnValue(usuarioEmpresas));
+		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(codigoAC), eq(""), eq(null), ANYTHING).will(returnValue(usuarioEmpresas));
 		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoAC, ""));
 	}
 	
@@ -65,8 +65,8 @@ public class UsuarioEmpresaManagerTest extends MockObjectTestCase
 	{
 		Long empresaId = 1L;
 		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(null),eq(null),eq(empresaId)).will(returnValue(usuarioEmpresas));
-		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresaId));
+		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(null),eq(null),eq(empresaId), ANYTHING).will(returnValue(usuarioEmpresas));
+		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresaId, "RECEBE_ALERTA_SETORPESSOAL"));
 	}
 	
 	public void testFindByUsuarioEmpresa()
