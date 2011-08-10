@@ -60,6 +60,32 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		configuracaoNivelCompetenciaManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), null);
 	}
 	
+	public void testSaveCompetenciasColaborador()
+	{
+		Atitude atitude = AtitudeFactory.getEntity(1L);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia1.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetencia1.setNivelCompetencia(nivelCompetencia);
+		configuracaoNivelCompetencia1.setCompetenciaId(atitude.getId());
+		configuracaoNivelCompetencia1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		
+		ConfiguracaoNivelCompetencia nivelCompetenciaSemCompetenciaId = new ConfiguracaoNivelCompetencia();
+		nivelCompetenciaSemCompetenciaId.setFaixaSalarial(faixaSalarial);
+		nivelCompetenciaSemCompetenciaId.setNivelCompetencia(nivelCompetencia);
+		nivelCompetenciaSemCompetenciaId.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		
+		Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais = Arrays.asList(configuracaoNivelCompetencia1, nivelCompetenciaSemCompetenciaId);
+		
+		configuracaoNivelCompetenciaDao.expects(once()).method("deleteConfiguracaoByFaixa").with(eq(faixaSalarial.getId())).isVoid();
+		//so passa uma vez no save
+		configuracaoNivelCompetenciaDao.expects(once()).method("save").with(ANYTHING).isVoid();
+		
+		configuracaoNivelCompetenciaManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), null);
+	}
+	
 	public void testGetCompetenciasCandidato()
 	{
 		ConfiguracaoNivelCompetencia nivelConhecimento = new ConfiguracaoNivelCompetencia(TipoCompetencia.CONHECIMENTO, 1L, null);
