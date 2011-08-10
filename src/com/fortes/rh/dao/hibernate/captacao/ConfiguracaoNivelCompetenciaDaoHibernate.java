@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
@@ -125,6 +126,43 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 			lista.add(new ConfiguracaoNivelCompetencia(((BigInteger)res[0]).longValue(), (String)res[1] + " (" + (String)res[2]+ ")"));
 		}
 
+		return lista;				
+	}
+	
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Collection<Long> configuracaoNivelCompetenciaIds) 
+	{
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao, ncncf.ordem, c.nome, nc.descricao, nc.ordem from "); 
+		sql.append("ConfiguracaoNivelCompetencia cncf ");
+		sql.append("join NivelCompetencia ncncf on ncncf.id = cncf.nivelcompetencia_id ");
+		sql.append("left join Atitude a on a.id = cncf.competencia_id and 'A' = cncf.tipocompetencia ");
+		sql.append("left join Conhecimento conhe on conhe.id = cncf.competencia_id and 'C' = cncf.tipocompetencia ");
+		sql.append("left join Habilidade h on h.id = cncf.competencia_id and 'H' = cncf.tipocompetencia ");
+		sql.append("left join ConfiguracaoNivelCompetencia cnc on cncf.competencia_id = cnc.competencia_id and cncf.tipocompetencia = cnc.tipocompetencia ");
+		sql.append("and cnc.candidato_id is null and cnc.faixasalarial_id is null ");
+		sql.append("left join NivelCompetencia nc on nc.id = cnc.nivelcompetencia_id ");
+		sql.append("left join ConfiguracaoNivelCompetenciaColaborador cncc on cncc.id = cnc.ConfiguracaoNivelCompetenciaColaborador_id ");
+		sql.append("left join Colaborador c on c.id = cncc.colaborador_id ");
+		sql.append("where  ");
+		sql.append("(cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador_id = cncc.colaborador_id) ");
+		sql.append("or cncc.data is null) ");
+		sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
+		sql.append("order by competencia, c.nome ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setParameterList("ids", configuracaoNivelCompetenciaIds, Hibernate.LONG);
+		
+		Collection<Object[]> resultado = query.list();
+		
+		Collection<ConfiguracaoNivelCompetencia> lista = new ArrayList<ConfiguracaoNivelCompetencia>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			lista.add(new ConfiguracaoNivelCompetencia((String)res[0], (String)res[1], (Integer)res[2], (String)res[3], (String)res[4], (Integer)res[5] ));
+		}
+		
 		return lista;				
 	}
 

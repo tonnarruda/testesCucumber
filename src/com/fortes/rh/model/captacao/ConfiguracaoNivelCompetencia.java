@@ -10,6 +10,7 @@ import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.Colaborador;
 
 @SuppressWarnings("serial")
 @Entity
@@ -30,6 +31,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	private Long competenciaId;
 	@Transient
 	private String competenciaDescricao;	
+	@Transient
+	private NivelCompetencia nivelCompetenciaColaborador;
 	
 	public ConfiguracaoNivelCompetencia()
 	{
@@ -56,6 +59,23 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	{
 		this.setId(id);
 		this.setCompetenciaDescricao(competenciaDescricao);
+	}
+	
+	public ConfiguracaoNivelCompetencia(String faixaCompetencia, String faixaNivel, Integer faixaOrdem, String colaboradorNome, String colaboradorNivel, Integer colaboradorOrden)
+	{
+		competenciaDescricao = faixaCompetencia;
+		nivelCompetencia = new NivelCompetencia();
+		nivelCompetencia.setDescricao(faixaNivel);
+		nivelCompetencia.setOrdem(faixaOrdem);
+		
+		configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+		Colaborador colaborador = new Colaborador();
+		colaborador.setNome(colaboradorNome);
+		configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+		
+		nivelCompetenciaColaborador = new NivelCompetencia();
+		nivelCompetenciaColaborador.setDescricao(colaboradorNivel);
+		nivelCompetenciaColaborador.setOrdem(colaboradorOrden);
 	}
 	
 	public FaixaSalarial getFaixaSalarial() 
@@ -163,5 +183,13 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	public void setConfiguracaoNivelCompetenciaColaborador(
 			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) {
 		this.configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaborador;
+	}
+
+	public NivelCompetencia getNivelCompetenciaColaborador() {
+		return nivelCompetenciaColaborador;
+	}
+
+	public void setNivelCompetenciaColaborador(NivelCompetencia nivelCompetenciaColaborador) {
+		this.nivelCompetenciaColaborador = nivelCompetenciaColaborador;
 	}
 }
