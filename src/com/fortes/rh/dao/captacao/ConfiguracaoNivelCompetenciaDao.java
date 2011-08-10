@@ -14,5 +14,5 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 
 	Collection<ConfiguracaoNivelCompetencia> findByCandidato(Long candidatoId);
 	Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long configuracaoNivelCompetenciaColaboradorId);
-
+	void deleteByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId);
 }

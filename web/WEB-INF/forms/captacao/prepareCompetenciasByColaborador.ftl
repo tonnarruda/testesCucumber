@@ -19,6 +19,15 @@
 					$('.checkCompetencia').attr('checked', $(this).attr('checked'));
 				});
 				
+				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
+					<#list niveisCompetenciaFaixaSalariaisSalvos as nivelSalvo>
+						var linha = $('tr').has('.checkCompetencia[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
+						linha.find('.checkCompetencia').attr('checked', 'true');
+						linha.find('.checkNivel').removeAttr('disabled');
+						linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
+					</#list>
+				</#if>
+				
 				<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
 					var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
 					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#b8e2ff');
@@ -27,8 +36,14 @@
 			
 			function enviarForm()
 			{
+				if (!validaFormulario('form', new Array('data'), new Array('data'), true))
+				{
+					jAlert('Informe uma data correta.');
+					return false;
+				}
+				
 				var linhasSemRadioMarcado = $('tr').has('.checkNivel:enabled').not(':has(.checkNivel:checked)');
-				if(linhasSemRadioMarcado.size() == 0)
+				if (linhasSemRadioMarcado.size() == 0)
 				{
 					$('#form').submit();
 					return true;
@@ -52,7 +67,6 @@
 			<#assign data = ""/>
 		</#if>
 				
-		<#assign validarCampos="return validaFormulario('form', new Array('data'), new Array('data'))"/>
 		<#include "../ftl/mascarasImports.ftl" />
 	</head>
 	<body>
@@ -63,7 +77,7 @@
 		<b>Cargo:</b> ${faixaSalarial.cargo.nome}  &nbsp;&nbsp;  <b>Faixa Salarial:</b> ${faixaSalarial.nome}
 		<div style="clear: both;"></div><br />
 		
-		<@ww.form name="form" action="saveCompetenciasColaborador.action"  onsubmit="${validarCampos}" method="POST">
+		<@ww.form name="form" id="form" action="saveCompetenciasColaborador.action" method="POST">
 			
 			<div id="legendas" style="float:right;">
 				<span style='background-color: #b8e2ff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência definidos para a Faixa Salarial
@@ -99,7 +113,7 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="${validarCampos};" class="btnGravar"></button>
+			<button onclick="enviarForm();" class="btnGravar"></button>
 			<button onclick="window.location='listCompetenciasColaborador.action?colaborador.id=${colaborador.id}';" class="btnVoltar"></button>
 		</div>
 	</body>

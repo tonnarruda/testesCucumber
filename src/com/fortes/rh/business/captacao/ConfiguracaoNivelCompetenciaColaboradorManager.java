@@ -10,4 +10,6 @@ public interface ConfiguracaoNivelCompetenciaColaboradorManager extends GenericM
 	ConfiguracaoNivelCompetenciaColaborador findByIdProjection(Long configuracaoNivelCompetenciaColaboradorId);
 
 	Collection<ConfiguracaoNivelCompetenciaColaborador> findByColaborador(Long colaboradorId);
+
+	ConfiguracaoNivelCompetenciaColaborador checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
 }

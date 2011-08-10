@@ -176,6 +176,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String listCompetenciasColaborador()
 	{
+		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
 		configuracaoNivelCompetenciaColaboradores = configuracaoNivelCompetenciaColaboradorManager.findByColaborador(colaborador.getId()); 
 		
 		return Action.SUCCESS;	
@@ -219,6 +220,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		try
 		{
+			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaboradorMesmaData = configuracaoNivelCompetenciaColaboradorManager.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
+			
 			configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
 			addActionMessage("Níveis de Competência do Colaborador salvos com sucesso.");
 		}
@@ -228,7 +231,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			e.printStackTrace();
 		}
 		
-		prepareInsertCompetenciasColaborador();
+		prepareUpdateCompetenciasColaborador();
+		
 		return Action.SUCCESS;
 	}
 	

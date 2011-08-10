@@ -10,4 +10,6 @@ public interface ConfiguracaoNivelCompetenciaColaboradorDao extends GenericDao<C
 	ConfiguracaoNivelCompetenciaColaborador findByIdProjection(Long configuracaoNivelCompetenciaColaboradorId);
 
 	Collection<ConfiguracaoNivelCompetenciaColaborador> findByColaborador(Long colaboradorId);
+
+	ConfiguracaoNivelCompetenciaColaborador checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
 }

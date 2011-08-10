@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
+import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -21,6 +22,7 @@ import com.fortes.rh.util.DateUtil;
 public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends GenericDaoHibernateTest<ConfiguracaoNivelCompetenciaColaborador>
 {
 	private ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao;
+	private ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao;
 	private CargoDao cargoDao;
 	private FaixaSalarialDao faixaSalarialDao;
 	private ColaboradorDao colaboradorDao;
@@ -91,7 +93,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		assertEquals(2, configuracaoNivelCompetenciaColaboradores.size());
 		assertEquals(configuracaoNivelCompetenciaColaborador2, (ConfiguracaoNivelCompetenciaColaborador)configuracaoNivelCompetenciaColaboradores.toArray()[0]);
 	}
-
+	
 	public void setConfiguracaoNivelCompetenciaColaboradorDao(ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao)
 	{
 		this.configuracaoNivelCompetenciaColaboradorDao = configuracaoNivelCompetenciaColaboradorDao;
@@ -107,5 +109,10 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
 		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setConfiguracaoNivelCompetenciaDao(
+			ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao) {
+		this.configuracaoNivelCompetenciaDao = configuracaoNivelCompetenciaDao;
 	}
 }

@@ -6,11 +6,15 @@
 <style type="text/css">
 	@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 </style>
-<title>Competências</title>
+<title>Competências do Colaborador</title>
 </head>
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
+	
+	<b>Colaborador:</b> ${colaborador.nome}
+	<div style="clear: both;"></div><br />
+	
 	<@display.table name="configuracaoNivelCompetenciaColaboradores" id="competencia" class="dados">
 		<@display.column title="Ações" media="html" style="text-align:center; width:80px;" >
 			<a href="prepareUpdateCompetenciasColaborador.action?configuracaoNivelCompetenciaColaborador.id=${competencia.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
