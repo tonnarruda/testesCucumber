@@ -79,31 +79,46 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 	
 	public void testFindUsuarioResponsavelAreaOrganizacional()
 	{
-		Usuario usuario = UsuarioFactory.getEntity();
-		usuario = usuarioDao.save(usuario);
-		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
 		Colaborador responsavelArea = ColaboradorFactory.getEntity();
 		responsavelArea.setUsuario(usuario);
 		responsavelArea.setEmpresa(empresa);
 		colaboradorDao.save(responsavelArea);
-		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional.setResponsavel(responsavelArea);
 		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Usuario usuario2 = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario2);
+		Colaborador responsavelArea2 = ColaboradorFactory.getEntity();
+		responsavelArea2.setUsuario(usuario2);
+		responsavelArea2.setEmpresa(empresa);
+		colaboradorDao.save(responsavelArea2);
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setResponsavel(responsavelArea2);
+		areaOrganizacionalDao.save(areaOrganizacional2);
 
+		Usuario usuarioFora = UsuarioFactory.getEntity();
+		usuarioDao.save(usuarioFora);
+		Colaborador responsavelAreaFora = ColaboradorFactory.getEntity();
+		responsavelAreaFora.setUsuario(usuarioFora);
+		responsavelAreaFora.setEmpresa(empresa);
+		colaboradorDao.save(responsavelAreaFora);
+		AreaOrganizacional areaOrganizacionalFora = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalFora.setResponsavel(responsavelAreaFora);
+		areaOrganizacionalDao.save(areaOrganizacionalFora);
+		
 		Collection<Long> areasIds = new ArrayList<Long>();
 		areasIds.add(areaOrganizacional.getId());
-
-		Colaborador joao = ColaboradorFactory.getEntity();
-		joao.setAreaOrganizacional(areaOrganizacional);
-		colaboradorDao.save(joao);
+		areasIds.add(areaOrganizacional2.getId());
 		
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaDao.findUsuarioResponsavelAreaOrganizacional(areasIds);
 		
-		assertEquals(1, usuarioEmpresas.size());
+		assertEquals(2, usuarioEmpresas.size());
 	}
 
 	public void testFindAllBySelectUsuarioEmpresaNull()
