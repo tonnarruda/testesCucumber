@@ -6,6 +6,7 @@ import java.util.Arrays;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
+import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
@@ -16,6 +17,7 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.NivelCompetencia;
@@ -44,6 +46,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	private AtitudeDao atitudeDao;
 	private FaixaSalarialDao faixaSalarialDao;
 	private CandidatoDao candidatoDao;
+	private ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao;
 
 	@Override
 	public NivelCompetencia getEntity()
@@ -175,6 +178,49 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(2, configuracaoNivelCompetenciaDao.findByCandidato(candidato1.getId()).size());
 	}
 	
+	public void testFindByColaborador()
+	{
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimentoDao.save(conhecimento);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitudeDao.save(atitude);
+		
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato1);
+		
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato2);
+		
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador);
+		
+		ConfiguracaoNivelCompetencia nivelCompetenciaCandidato1 = new ConfiguracaoNivelCompetencia();
+		nivelCompetenciaCandidato1.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+		nivelCompetenciaCandidato1.setNivelCompetencia(nivelCompetencia);
+		nivelCompetenciaCandidato1.setCompetenciaId(atitude.getId());
+		nivelCompetenciaCandidato1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(nivelCompetenciaCandidato1);
+		
+		ConfiguracaoNivelCompetencia nivelCompetenciaCandidato2 = new ConfiguracaoNivelCompetencia();
+		nivelCompetenciaCandidato2.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+		nivelCompetenciaCandidato2.setNivelCompetencia(nivelCompetencia);
+		nivelCompetenciaCandidato2.setCompetenciaId(conhecimento.getId());
+		nivelCompetenciaCandidato2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(nivelCompetenciaCandidato2);
+		
+		ConfiguracaoNivelCompetencia nivelCompetenciaCandidatoDiferente = new ConfiguracaoNivelCompetencia();
+		nivelCompetenciaCandidatoDiferente.setNivelCompetencia(nivelCompetencia);
+		nivelCompetenciaCandidatoDiferente.setCompetenciaId(conhecimento.getId());
+		nivelCompetenciaCandidatoDiferente.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(nivelCompetenciaCandidatoDiferente);
+		
+		assertEquals(2, configuracaoNivelCompetenciaDao.findByColaborador(configuracaoNivelCompetenciaColaborador.getId()).size());
+	}
+	
 	public void testDeleteConfiguracaoByFaixa()
 	{
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
@@ -261,5 +307,9 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 
 	public void setCandidatoDao(CandidatoDao candidatoDao) {
 		this.candidatoDao = candidatoDao;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaboradorDao(ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao) {
+		this.configuracaoNivelCompetenciaColaboradorDao = configuracaoNivelCompetenciaColaboradorDao;
 	}
 }
