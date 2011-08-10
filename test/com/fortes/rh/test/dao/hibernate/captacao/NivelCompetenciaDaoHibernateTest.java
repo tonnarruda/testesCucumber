@@ -2,6 +2,7 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.AtitudeDao;
@@ -264,6 +265,51 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetenciaDao.deleteConfiguracaoByFaixa(faixaSalarial1.getId());
 
 		assertEquals(0, configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial1.getId()).size());
+	}
+	
+	public void testFindByFaixaSalarial()
+	{
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setNome("esporte");
+		conhecimentoDao.save(conhecimento);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitude.setNome("atividade");
+		atitudeDao.save(atitude);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia1.setDescricao("bom");
+		nivelCompetenciaDao.save(nivelCompetencia1);
+
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia2.setDescricao("dificil");
+		nivelCompetenciaDao.save(nivelCompetencia2);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia1.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetencia1.setNivelCompetencia(nivelCompetencia1);
+		configuracaoNivelCompetencia1.setCompetenciaId(atitude.getId());
+		configuracaoNivelCompetencia1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia2.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetencia2.setNivelCompetencia(nivelCompetencia2);
+		configuracaoNivelCompetencia2.setCompetenciaId(conhecimento.getId());
+		configuracaoNivelCompetencia2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
+		
+		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId());//gambi do SQL, precisa disso só para a proxima consulta
+		
+		Collection<ConfiguracaoNivelCompetencia> competenciasDaFaixa = configuracaoNivelCompetenciaDao.findCompetenciaByFaixaSalarial(faixaSalarial.getId());
+		assertEquals(2, competenciasDaFaixa.size());
+		
+		ConfiguracaoNivelCompetencia competenciaAtitude = (ConfiguracaoNivelCompetencia)competenciasDaFaixa.toArray()[0]; 
+		assertEquals(configuracaoNivelCompetencia1.getId(), competenciaAtitude.getId());
+		assertEquals("atividade (bom)", competenciaAtitude.getCompetenciaDescricao());
 	}
 
 	@Override

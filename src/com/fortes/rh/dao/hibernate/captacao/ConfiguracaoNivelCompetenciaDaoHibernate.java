@@ -1,8 +1,12 @@
 package com.fortes.rh.dao.hibernate.captacao;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -92,6 +96,36 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
 
 		return criteria.list();
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId) 
+	{
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("select cnc.id, COALESCE(a.nome, conhe.nome, h.nome) as competenciaNome, nc.descricao from ConfiguracaoNivelCompetencia cnc ");
+		sql.append("join nivelcompetencia nc on nc.id = cnc.nivelcompetencia_id ");
+		sql.append("left join Atitude a on a.id = cnc.competencia_id and 'A' = cnc.tipocompetencia ");
+		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and 'C' = cnc.tipocompetencia ");
+		sql.append("left join Habilidade h on h.id = cnc.competencia_id and 'H' = cnc.tipocompetencia ");
+		sql.append("where cnc.faixasalarial_id = :faixaSalarialId  ");
+		sql.append("and cnc.configuracaoNivelCompetenciaColaborador_id is null ");
+		sql.append("and cnc.candidato_id is null ");		
+		sql.append("order by competenciaNome ");
+
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("faixaSalarialId", faixaId);
+		
+		Collection<Object[]> resultado = query.list();
+		
+		Collection<ConfiguracaoNivelCompetencia> lista = new ArrayList<ConfiguracaoNivelCompetencia>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			lista.add(new ConfiguracaoNivelCompetencia(((BigInteger)res[0]).longValue(), (String)res[1] + " (" + (String)res[2]+ ")"));
+		}
+
+		return lista;				
 	}
 
 }
