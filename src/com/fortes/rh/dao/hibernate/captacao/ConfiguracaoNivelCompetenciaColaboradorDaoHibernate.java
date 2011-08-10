@@ -69,6 +69,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 	public ConfiguracaoNivelCompetenciaColaborador checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) 
 	{
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
+		criteria.createCriteria("cncc.colaborador", "co", CriteriaSpecification.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cncc.id"), "id");
@@ -76,11 +77,14 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.ne("cncc.id", configuracaoNivelCompetenciaColaborador.getId()));
+		if (configuracaoNivelCompetenciaColaborador.getId() != null)
+			criteria.add(Expression.ne("cncc.id", configuracaoNivelCompetenciaColaborador.getId()));
+		
 		criteria.add(Expression.eq("cncc.data", configuracaoNivelCompetenciaColaborador.getData()));
-		criteria.add(Expression.eq("cncc.colaborador.id", configuracaoNivelCompetenciaColaborador.getColaborador().getId()));
+		criteria.add(Expression.eq("co.id", configuracaoNivelCompetenciaColaborador.getColaborador().getId()));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaColaborador.class));
+		
 		
 		return (ConfiguracaoNivelCompetenciaColaborador)criteria.uniqueResult();
 	}

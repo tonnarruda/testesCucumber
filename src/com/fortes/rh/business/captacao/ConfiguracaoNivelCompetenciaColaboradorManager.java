@@ -11,5 +11,5 @@ public interface ConfiguracaoNivelCompetenciaColaboradorManager extends GenericM
 
 	Collection<ConfiguracaoNivelCompetenciaColaborador> findByColaborador(Long colaboradorId);
 
-	ConfiguracaoNivelCompetenciaColaborador checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
+	void checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) throws Exception;
 }

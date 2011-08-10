@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.captacao;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
@@ -92,6 +93,29 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		
 		assertEquals(2, configuracaoNivelCompetenciaColaboradores.size());
 		assertEquals(configuracaoNivelCompetenciaColaborador2, (ConfiguracaoNivelCompetenciaColaborador)configuracaoNivelCompetenciaColaboradores.toArray()[0]);
+	}
+	
+	public void testChecarHistoricoMesmaData()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Date data = DateUtil.criarDataMesAno(8, 8, 2011);
+		
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador1 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
+		configuracaoNivelCompetenciaColaborador1.setColaborador(colaborador);
+		configuracaoNivelCompetenciaColaborador1.setData(data);
+		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador1);
+
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador2 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
+		configuracaoNivelCompetenciaColaborador2.setColaborador(colaborador);
+		configuracaoNivelCompetenciaColaborador2.setData(data);
+		
+		assertNotNull(configuracaoNivelCompetenciaColaboradorDao.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador2));
+
+		configuracaoNivelCompetenciaColaborador2.setData(DateUtil.criarDataMesAno(10, 8, 2011));
+
+		assertNull(configuracaoNivelCompetenciaColaboradorDao.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador2));
 	}
 	
 	public void setConfiguracaoNivelCompetenciaColaboradorDao(ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao)
