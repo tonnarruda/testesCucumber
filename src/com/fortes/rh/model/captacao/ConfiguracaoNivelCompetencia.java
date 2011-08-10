@@ -52,6 +52,12 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaDescricao(competenciaDescricao);
 	}
 	
+	public ConfiguracaoNivelCompetencia(Long id, String competenciaDescricao)
+	{
+		this.setId(id);
+		this.setCompetenciaDescricao(competenciaDescricao);
+	}
+	
 	public FaixaSalarial getFaixaSalarial() 
 	{
 		return faixaSalarial;

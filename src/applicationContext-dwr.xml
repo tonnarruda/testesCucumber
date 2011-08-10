@@ -17,6 +17,10 @@
 	<bean id="cargoDWR" class="com.fortes.rh.web.dwr.CargoDWR">
 		<property name="cargoManager" ref="cargoManager"/>
 	</bean>
+	
+	<bean id="competenciaDWR" class="com.fortes.rh.web.dwr.CompetenciaDWR">
+		<property name="configuracaoNivelCompetenciaManager" ref="configuracaoNivelCompetenciaManager"/>
+	</bean>
 	<bean id="grupoOcupacionalDWR" class="com.fortes.rh.web.dwr.GrupoOcupacionalDWR">
 		<property name="grupoOcupacionalManager" ref="grupoOcupacionalManager"/>
 	</bean>

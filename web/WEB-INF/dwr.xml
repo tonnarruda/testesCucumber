@@ -16,6 +16,9 @@
 		<create creator="spring" javascript="CargoDWR">
 			<param name="beanName" value="cargoDWR"/>
 		</create>
+		<create creator="spring" javascript="CompetenciaDWR">
+			<param name="beanName" value="competenciaDWR"/>
+		</create>
 		<create creator="spring" javascript="HistoricoCandidatoDWR">
 			<param name="beanName" value="historicoCandidatoDWR"/>
 		</create>

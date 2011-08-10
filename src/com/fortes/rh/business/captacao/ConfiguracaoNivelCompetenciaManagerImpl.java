@@ -96,4 +96,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long configuracaoNivelCompetenciaColaboradorId) {
 		return getDao().findByColaborador(configuracaoNivelCompetenciaColaboradorId);
 	}
+
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId) {
+		return getDao().findCompetenciaByFaixaSalarial(faixaId);
+	}
 }

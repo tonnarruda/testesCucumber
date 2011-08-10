@@ -54,5 +54,17 @@
 		<action name="saveCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
 		</action>
+		<action name="prepareRelatorioCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareRelatorioCompetenciasColaborador">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
+		</action>
+		<action name="imprimirRelatorioCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="imprimirRelatorioCompetenciasColaborador">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/competencias_colaborador.jasper</param>
+				<param name="dataSource">avaliacaoCandidatos</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">competencias_colaborador.pdf</param>
+			</result>
+			<result name="input" type="redirect">prepareRelatorioCompetenciasColaborador.action</result>
+		</action>
 	</package>
 </xwork>

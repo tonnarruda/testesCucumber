@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.captacao;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -17,7 +18,9 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 public class NivelCompetenciaEditAction extends MyActionSupportList
@@ -39,12 +42,16 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private Date data;
 	private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
 	
+	private Collection<FaixaSalarial> faixaSalarials;
 	private Collection<NivelCompetencia> nivelCompetencias;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSugeridos;
 	private Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradores;
 
+	private String[] competenciasCheck;
+	private Collection<CheckBox> competenciasCheckList = new ArrayList<CheckBox>();
+	
 	private void prepare() throws Exception
 	{
 		if(nivelCompetencia != null && nivelCompetencia.getId() != null)
@@ -239,6 +246,20 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	public String prepareRelatorioCompetenciasColaborador()
+	{
+		faixaSalarials = faixaSalarialManager.findAllSelectByCargo(getEmpresaSistema().getId());
+
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirRelatorioCompetenciasColaborador()
+	{
+		faixaSalarials = faixaSalarialManager.findAllSelectByCargo(getEmpresaSistema().getId());
+		
+		return Action.SUCCESS;
+	}
+	
 	public NivelCompetencia getNivelCompetencia()
 	{
 		if(nivelCompetencia == null)
@@ -359,5 +380,17 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public void setConfiguracaoNivelCompetenciaColaboradores(
 			Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradores) {
 		this.configuracaoNivelCompetenciaColaboradores = configuracaoNivelCompetenciaColaboradores;
+	}
+
+	public Collection<FaixaSalarial> getFaixaSalarials() {
+		return faixaSalarials;
+	}
+
+	public void setCompetenciasCheck(String[] competenciasCheck) {
+		this.competenciasCheck = competenciasCheck;
+	}
+
+	public Collection<CheckBox> getCompetenciasCheckList() {
+		return competenciasCheckList;
 	}
 }
