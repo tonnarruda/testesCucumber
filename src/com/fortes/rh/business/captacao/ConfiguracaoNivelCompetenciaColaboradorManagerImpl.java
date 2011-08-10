@@ -18,8 +18,10 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 		return getDao().findByColaborador(colaboradorId);
 	}
 
-	public ConfiguracaoNivelCompetenciaColaborador checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) 
+	public void checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) throws Exception 
 	{
-		return getDao().checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
+		ConfiguracaoNivelCompetenciaColaborador configMesmaData = getDao().checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
+		if (configMesmaData != null && configMesmaData.getId() != null)
+			throw new Exception("Já existe uma configuração para este Colaborador na data informada.");
 	}
 }

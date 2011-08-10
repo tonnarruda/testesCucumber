@@ -220,7 +220,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		try
 		{
-			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaboradorMesmaData = configuracaoNivelCompetenciaColaboradorManager.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
+			configuracaoNivelCompetenciaColaboradorManager.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
 			
 			configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
 			addActionMessage("Níveis de Competência do Colaborador salvos com sucesso.");
@@ -231,7 +231,10 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			e.printStackTrace();
 		}
 		
-		prepareUpdateCompetenciasColaborador();
+		if (configuracaoNivelCompetenciaColaborador.getId() != null)
+			prepareUpdateCompetenciasColaborador();
+		else
+			prepareInsertCompetenciasColaborador();
 		
 		return Action.SUCCESS;
 	}
