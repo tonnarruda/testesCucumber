@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import mockit.Mockit;
+
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -31,6 +33,8 @@ import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction;
 
 public class NivelCompetenciaEditActionTest extends MockObjectTestCase
@@ -62,6 +66,8 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
 		action.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
 		action.setConfiguracaoNivelCompetenciaColaboradorManager((ConfiguracaoNivelCompetenciaColaboradorManager) configuracaoNivelCompetenciaColaboradorManager.proxy());
+		
+		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 	}
 
 	protected void tearDown() throws Exception
@@ -271,6 +277,36 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		assertEquals("success", action.listCompetenciasColaborador());
 		assertNotNull(action.getColaborador());
 		assertNotNull(action.getConfiguracaoNivelCompetenciaColaboradores());
+	}
+	
+	public void testImprimirRelatorioCompetenciasColaborador() throws Exception
+	{
+		Cargo cargo = CargoFactory.getEntity();
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		action.setFaixaSalarial(faixaSalarial);
+		
+		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING).will(returnValue(Arrays.asList(new ConfiguracaoNivelCompetencia())));
+		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(ANYTHING).will(returnValue(faixaSalarial));
+		
+		assertEquals("success", action.imprimirRelatorioCompetenciasColaborador());
+		assertNotNull(action.getNiveisCompetenciaFaixaSalariais());
+	}
+	
+	public void testImprimirRelatorioCompetenciasColaboradorException() throws Exception
+	{
+		Cargo cargo = CargoFactory.getEntity();
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		action.setFaixaSalarial(faixaSalarial);
+		
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		
+		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING).will(returnValue(new ArrayList<ConfiguracaoNivelCompetencia>()));
+		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(ANYTHING).will(returnValue(faixaSalarial));
+		faixaSalarialManager.expects(once()).method("findAllSelectByCargo").with(ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
+		
+		assertEquals("input", action.imprimirRelatorioCompetenciasColaborador());
 	}
 
 	public void testInsertCompetenciasColaborador() throws Exception

@@ -21,4 +21,8 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long configuracaoNivelCompetenciaColaboradorId);
 
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId);
+
+	Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] competenciasIds);
+
+	Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds);
 }

@@ -1,5 +1,6 @@
 package com.fortes.rh.business.captacao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
@@ -99,5 +100,23 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId) {
 		return getDao().findCompetenciaByFaixaSalarial(faixaId);
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] competenciasIds) {
+		return getDao().findCompetenciaColaborador(competenciasIds);
+	}
+	
+	public Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds) 
+	{
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(competenciasIds);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoAbaixos = new ArrayList<ConfiguracaoNivelCompetencia>();
+		
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias)
+		{
+			if(configuracaoNivelCompetencia.getNivelCompetenciaColaborador().getOrdem() != null && configuracaoNivelCompetencia.getNivelCompetenciaColaborador().getOrdem() < configuracaoNivelCompetencia.getNivelCompetencia().getOrdem())
+				configuracaoAbaixos.add(configuracaoNivelCompetencia);
+		}
+		
+		return configuracaoAbaixos;
 	}
 }

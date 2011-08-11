@@ -129,11 +129,11 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;				
 	}
 	
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Collection<Long> configuracaoNivelCompetenciaIds) 
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] configuracaoNivelCompetenciaIds) 
 	{
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao, ncncf.ordem, c.nome, nc.descricao, nc.ordem from "); 
+		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao as nivelFaixaDescricao, ncncf.ordem as nivelFaixaOrdem, c.nome as colabNome, nc.descricao as nivelColabDescricao, nc.ordem as nivelColabOrdem from "); 
 		sql.append("ConfiguracaoNivelCompetencia cncf ");
 		sql.append("join NivelCompetencia ncncf on ncncf.id = cncf.nivelcompetencia_id ");
 		sql.append("left join Atitude a on a.id = cncf.competencia_id and 'A' = cncf.tipocompetencia ");
@@ -151,7 +151,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("order by competencia, c.nome ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
-		query.setParameterList("ids", configuracaoNivelCompetenciaIds, Hibernate.LONG);
+		query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
 		
 		Collection<Object[]> resultado = query.list();
 		

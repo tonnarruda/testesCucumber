@@ -60,11 +60,11 @@
 		<action name="imprimirRelatorioCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="imprimirRelatorioCompetenciasColaborador">
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/competencias_colaborador.jasper</param>
-				<param name="dataSource">avaliacaoCandidatos</param>
+				<param name="dataSource">niveisCompetenciaFaixaSalariais</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">competencias_colaborador.pdf</param>
 			</result>
-			<result name="input" type="redirect">prepareRelatorioCompetenciasColaborador.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
 		</action>
 	</package>
 </xwork>

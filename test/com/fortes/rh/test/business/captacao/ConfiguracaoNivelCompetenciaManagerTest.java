@@ -108,4 +108,15 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		assertEquals("java", ((ConfiguracaoNivelCompetencia)niveisComDescricao.toArray()[0]).getCompetenciaDescricao());
 		assertEquals("proatividade", ((ConfiguracaoNivelCompetencia)niveisComDescricao.toArray()[1]).getCompetenciaDescricao());
 	}
+	
+	public void testFindColaboradorAbaixoNivel()
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia("faixa1", "bom", 5, "Joao", "Ruim", 2);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia("faixa2", "medio", 2, "Pedro", "otimo", 5);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias =  Arrays.asList(configuracaoNivelCompetencia1, configuracaoNivelCompetencia2);
+		
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaColaborador").with(ANYTHING).will(returnValue(configuracaoNivelCompetencias));
+		
+		assertEquals(1, configuracaoNivelCompetenciaManager.findColaboradorAbaixoNivel(new Long[]{1L, 2L}).size());
+	}
 }
