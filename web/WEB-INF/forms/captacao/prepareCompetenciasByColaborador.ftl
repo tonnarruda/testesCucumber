@@ -30,7 +30,7 @@
 				
 				<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
 					var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
-					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#b8e2ff');
+					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#ececec');
 				</#list>
 			});
 			
@@ -80,7 +80,7 @@
 		<@ww.form name="form" id="form" action="saveCompetenciasColaborador.action" method="POST">
 			
 			<div id="legendas" style="float:right;">
-				<span style='background-color: #b8e2ff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência definidos para a Faixa Salarial
+				<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
 			</div>
 			
 			<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" id="data" cssClass="mascaraData" />
