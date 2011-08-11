@@ -25,6 +25,7 @@ import com.fortes.model.type.File;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
@@ -42,6 +43,8 @@ import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColabora
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.CertificadoMilitar;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Ctps;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
@@ -110,6 +113,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private UsuarioMensagemManager usuarioMensagemManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
@@ -185,6 +189,21 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (idCandidato != null)
 		{
 			candidatoManager.updateSetContratado(idCandidato);
+			
+			// Transfere as competências configuradas no candidato
+			Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencias = configuracaoNivelCompetenciaManager.findByCandidato(idCandidato);
+			if (configuracoesNiveisCompetencias != null && configuracoesNiveisCompetencias.size() > 0)
+			{
+				for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracoesNiveisCompetencias)
+					configuracaoNivelCompetencia.setCandidato(null);
+				
+				ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+				configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+				configuracaoNivelCompetenciaColaborador.setFaixaSalarial(historico.getFaixaSalarial());
+				configuracaoNivelCompetenciaColaborador.setData(historico.getData());
+				
+				configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(configuracoesNiveisCompetencias, configuracaoNivelCompetenciaColaborador);
+			}
 
 			// Contratação COM solicitação
 			if (solicitacao.getId() != null)
@@ -1894,6 +1913,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
 }
