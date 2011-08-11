@@ -1,0 +1,2 @@
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (519,'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores X Nível Competência', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 8, true, 364);--.go
+alter sequence papel_sequence restart with 520;--.go

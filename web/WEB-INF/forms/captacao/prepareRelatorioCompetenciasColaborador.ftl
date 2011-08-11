@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Competências</title>
+	<title>Relatório de Colaboradores com Nível de Competência inferior ao exigido pela Faixa Salarial</title>
 	<#assign validarCampos="return validaFormulario('form', new Array('faixa', '@competenciasCheck'))"/>	
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -32,8 +32,7 @@
 	
 	
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnRelatorio" accesskey="I">
-		</button>
+		<button onclick="${validarCampos};" class="btnRelatorio"></button>
 	</div>
 </body>
 </html>

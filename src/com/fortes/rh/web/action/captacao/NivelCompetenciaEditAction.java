@@ -4,6 +4,8 @@ package com.fortes.rh.web.action.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
@@ -19,6 +21,8 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -51,6 +55,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	private String[] competenciasCheck;
 	private Collection<CheckBox> competenciasCheckList = new ArrayList<CheckBox>();
+	private Map<String,Object> parametros;
 	
 	private void prepare() throws Exception
 	{
@@ -255,7 +260,9 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String imprimirRelatorioCompetenciasColaborador()
 	{
-		faixaSalarials = faixaSalarialManager.findAllSelectByCargo(getEmpresaSistema().getId());
+		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório Colaboradres com nível de competência inferior ao exigido", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
+		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findColaboradorAbaixoNivel(LongUtil.arrayStringToArrayLong(competenciasCheck));
 		
 		return Action.SUCCESS;
 	}
@@ -392,5 +399,9 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public Collection<CheckBox> getCompetenciasCheckList() {
 		return competenciasCheckList;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }
