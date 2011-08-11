@@ -4,7 +4,6 @@ package com.fortes.rh.web.action.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -20,7 +19,6 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -263,6 +261,15 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 		parametros = RelatorioUtil.getParametrosRelatorio("Relatório Colaboradres com nível de competência inferior ao exigido", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
 		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findColaboradorAbaixoNivel(LongUtil.arrayStringToArrayLong(competenciasCheck));
+		
+		if(niveisCompetenciaFaixaSalariais.isEmpty())
+		{
+			prepareRelatorioCompetenciasColaborador();
+			faixaSalarial = null;
+
+			addActionMessage("Não existem dados para o filtro informado.");
+			return Action.INPUT;			
+		}
 		
 		return Action.SUCCESS;
 	}

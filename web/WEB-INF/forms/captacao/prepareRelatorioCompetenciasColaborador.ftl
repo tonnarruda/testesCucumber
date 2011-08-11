@@ -30,7 +30,6 @@
 		<@frt.checkListBox  label="Competências da Faixa Salarial *" name="competenciasCheck" id="competenciasCheck" list="competenciasCheckList" height="250"/>
 	</@ww.form>
 	
-	
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnRelatorio"></button>
 	</div>

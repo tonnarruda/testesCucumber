@@ -137,7 +137,7 @@ public class FuncaoListAction extends MyActionSupportList
 			
 			if (dataSource.isEmpty())
 			{
-				msg = "Não existe dados para relatório";
+				msg = "Não existem dados para relatório";
 				throw new Exception(msg);  
 			}
 			

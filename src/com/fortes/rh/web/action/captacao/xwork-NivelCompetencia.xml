@@ -64,7 +64,7 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">competencias_colaborador.pdf</param>
 			</result>
-			<result name="input" type="redirect">prepareRelatorioCompetenciasColaborador.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
 		</action>
 	</package>
 </xwork>
