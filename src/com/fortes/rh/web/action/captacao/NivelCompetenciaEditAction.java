@@ -9,6 +9,7 @@ import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.captacao.Candidato;
@@ -18,7 +19,6 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -33,6 +33,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private CandidatoManager candidatoManager;
 	private ColaboradorManager colaboradorManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	private SolicitacaoManager solicitacaoManager;
 	
 	private NivelCompetencia nivelCompetencia;
 	private FaixaSalarial faixaSalarial;
@@ -48,6 +49,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSugeridos;
 	private Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradores;
+	private Collection<Solicitacao> solicitacoes;
 
 	private String[] competenciasCheck;
 	private Collection<CheckBox> competenciasCheckList = new ArrayList<CheckBox>();
@@ -176,6 +178,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String visualizarCandidato()
 	{
+		solicitacoes = solicitacaoManager.findAllByCandidato(candidato.getId());
+		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(candidato.getId(), getEmpresaSistema().getId());
 		
 		return Action.SUCCESS;
@@ -392,5 +396,17 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public Collection<CheckBox> getCompetenciasCheckList() {
 		return competenciasCheckList;
+	}
+
+	public Collection<Solicitacao> getSolicitacoes() {
+		return solicitacoes;
+	}
+
+	public void setSolicitacoes(Collection<Solicitacao> solicitacoes) {
+		this.solicitacoes = solicitacoes;
+	}
+
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+		this.solicitacaoManager = solicitacaoManager;
 	}
 }

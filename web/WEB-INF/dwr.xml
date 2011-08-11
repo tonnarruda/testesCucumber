@@ -67,6 +67,9 @@
 		<create creator="spring" javascript="DntDWR">
 			<param name="beanName" value="dntDWR"/>
 		</create>
+		<create creator="spring" javascript="ConfiguracaoNivelCompetenciaDWR">
+			<param name="beanName" value="configuracaoNivelCompetenciaDWR"/>
+		</create>
 		<create creator="spring" javascript="ConfiguracaoPerformanceDWR">
 			<param name="beanName" value="configuracaoPerformanceDWR"/>
 		</create>
@@ -127,6 +130,8 @@
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.Cargo"/>
+		<convert converter="bean" match="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia"/>
+		<convert converter="bean" match="com.fortes.rh.model.captacao.NivelCompetencia"/>
     </allow>
 
 </dwr>

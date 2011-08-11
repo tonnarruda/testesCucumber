@@ -268,4 +268,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().getIndicadorQtdCandidatos(dataDe, dataAte, areasIds, estabelecimentosIds);
 	}
 
+	public Collection<Solicitacao> findAllByCandidato(Long candidatoId) {
+		return getDao().findAllByCandidato(candidatoId);
+	}
 }

@@ -29,6 +29,17 @@
 		
 		function enviarForm()
 		{
+			if ($('.checkCompetencia').size() == 0)
+			{
+				jAlert('Não existem competências cadastradas para o cargo.');
+				return false;
+			}
+			else if ($('.checkNivel').size() == 0)
+			{
+				jAlert('Não existem níveis de competência cadastrados.');
+				return false;
+			}
+		
 			var linhasSemRadioMarcado = $('tr').has('.checkNivel:enabled').not(':has(.checkNivel:checked)');
 			if(linhasSemRadioMarcado.size() == 0)
 			{

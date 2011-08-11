@@ -536,6 +536,31 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 		assertEquals(1, retorno.size());
 	}
+	
+	public void testFindAllByCandidato()
+	{
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacao = solicitacaoDao.save(solicitacao);
+
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
+		solicitacao2 = solicitacaoDao.save(solicitacao2);
+
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidato = candidatoDao.save(candidato);
+
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
+
+		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao2.setCandidato(candidato);
+		candidatoSolicitacao2.setSolicitacao(solicitacao2);
+		candidatoSolicitacao2 = candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+		
+		Collection<Solicitacao> solicitacoes = solicitacaoDao.findAllByCandidato(candidato.getId());
+		assertEquals(2, solicitacoes.size());
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{

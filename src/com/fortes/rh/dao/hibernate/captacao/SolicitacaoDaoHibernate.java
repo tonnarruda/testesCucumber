@@ -20,6 +20,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -489,5 +490,28 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
     		query.setParameterList("estabelecimentos", estabelecimentos);
 
 		return query.list();
+	}
+	
+
+	public Collection<Solicitacao> findAllByCandidato(Long candidatoId) 
+	{
+		Criteria criteria = getSession().createCriteria(Candidato.class, "cd");
+		criteria.createCriteria("cd.candidatoSolicitacaos", "cs");
+		criteria.createCriteria("cs.solicitacao", "s");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("s.id"), "id");
+		p.add(Projections.property("s.descricao"), "descricao");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cd.id", candidatoId));
+		
+		criteria.addOrder(Order.asc("s.descricao"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Solicitacao.class));
+		
+		return criteria.list();
 	}
 }

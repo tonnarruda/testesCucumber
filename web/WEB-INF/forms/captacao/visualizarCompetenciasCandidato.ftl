@@ -2,21 +2,70 @@
 <html>
 <head>
 	<@ww.head/>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CompetenciaDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		
-		.dados { width: 710px; margin: 10px !important; }
+		.tabelaCompetencias { padding: 10px; }
+		.dados { width: 710px; }
 		.dados td { border: none; }
 	</style>
+	
+	<script type="text/javascript">
+		$(function() {
+			DWRUtil.useLoadingMessage('Carregando...');
+			$('#solicitacao').val();
+		});
+		
+		function getNiveisCargo(solicitacaoId)
+		{
+			$('tr.even > td').css('background-color', '#E4F0FE');
+			$('tr.odd > td').css('background-color', '#FFF');
+		
+			if (solicitacaoId != '')
+				CompetenciaDWR.getSugestoesBySolicitacao(sugerirNiveisCargo, solicitacaoId);
+		}
+		
+		function sugerirNiveisCargo(data)
+		{
+			$(data).each(function(i, nivelSugerido) {
+				var linhaSugerida = $('tr').has('td.competencia-' + nivelSugerido.competenciaId).has('td.tipo-competencia-' + nivelSugerido.tipoCompetencia);
+				linhaSugerida.find('.nivel-' + nivelSugerido.nivelCompetencia.id).css('background-color', '#ececec');			
+			});
+		}
+	</script>
 
 	<title>Competências do Candidato</title>
 </head>
 <body>
-	<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
-		<@display.table name="niveisCompetenciaFaixaSalariaisSalvos" id="configuracaoNivelCompetencia" class="dados">
-			<@display.column title="Competência" property="competenciaDescricao"/>
-			<@display.column title="Nível" property="nivelCompetencia.descricao"/>
-		</@display.table>
-	</#if>
+	<div class="tabelaCompetencias">
+		<#if niveisCompetenciaFaixaSalariaisSalvos?exists && 0 < niveisCompetenciaFaixaSalariaisSalvos?size>
+			<p>Selecione uma solicitação no campo abaixo para verificar o nível de competência exigido:</p>
+
+			<div id="legendas" style="float:right;">
+				<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
+			</div>
+
+			<@ww.select label="Solicitação" onchange="getNiveisCargo(this.value)" name="solicitacao.id" id="solicitacao" headerKey="" headerValue="" listKey="id" listValue="descricao" list="solicitacoes" theme="simple"/>
+		
+			<br /><br />
+		
+			<@display.table name="niveisCompetenciaFaixaSalariaisSalvos" id="configuracaoNivelCompetencia" class="dados">
+				<@display.column title="Competência" property="competenciaDescricao" class="competencia-${configuracaoNivelCompetencia.competenciaId} tipo-competencia-${configuracaoNivelCompetencia.tipoCompetencia}"/>
+				
+				<#list nivelCompetencias as nivel>			
+					<@display.column title="${nivel.descricao}" class="nivel-${nivel.id}" style="text-align: center;">
+						<#if nivel.id == configuracaoNivelCompetencia.nivelCompetencia.id>
+							<img border="0" style="align: top;" src="<@ww.url includeParams="none" value="/imgs/check_ok.gif"/>">
+						</#if>
+					</@display.column>
+				</#list>
+			</@display.table>
+		</#if>
+	</div>
 </body>
 </html>
