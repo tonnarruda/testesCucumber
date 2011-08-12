@@ -27,6 +27,7 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA[".\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="TOTAL_COLAB_RESP" isForPrompting="false" class="java.lang.Integer"/>
 
 	<field name="texto" class="java.lang.String"/>
 	<field name="ordem" class="java.lang.Integer"/>
@@ -34,6 +35,9 @@
 	<field name="legenda" class="java.lang.String"/>
 	<field name="qtdRespostas" class="java.lang.Integer"/>
 
+	<variable name="countColabPorPergunta" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdRespostas}]]></variableExpression>
+	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -78,6 +82,7 @@
 		</pageFooter>
 		<summary>
 			<band height="102"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[new Boolean($P{TOTAL_COLAB_RESP}.intValue() > 1)]]></printWhenExpression>
 				<pie3DChart>
 					<chart isShowLegend="false"  hyperlinkTarget="Self" >
 					<reportElement
@@ -87,6 +92,7 @@
 						width="426"
 						height="102"
 						key="element-2"
+						isRemoveLineWhenBlank="true"
 						isPrintInFirstWholeBand="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					</chart>

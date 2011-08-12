@@ -80,6 +80,7 @@
 		</pageFooter>
 		<summary>
 			<band height="116"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[new Boolean($P{TOTAL_COLAB_RESP}.intValue() > 1)]]></printWhenExpression>
 				<barChart>
 					<chart isShowLegend="false" evaluationTime="Report"  hyperlinkTarget="Self"  customizerClass="com.fortes.report.BarChartCustomizer" >
 					<reportElement
