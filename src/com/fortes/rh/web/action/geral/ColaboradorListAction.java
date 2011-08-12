@@ -279,6 +279,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	            StringBuilder sb = new StringBuilder();
 	            sb.append("    var xml = " + xml + ";");
 	           
+	            
 	            int posicaoX = 0;
 	            int valueWidth = 0;
 	            int valueX = 0;

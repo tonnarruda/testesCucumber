@@ -7,6 +7,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 
 public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetencia, ConfiguracaoNivelCompetenciaDao> implements ConfiguracaoNivelCompetenciaManager
 {
@@ -103,12 +104,12 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] competenciasIds) {
-		return getDao().findCompetenciaColaborador(competenciasIds);
+		return getDao().findCompetenciaColaborador(competenciasIds, false);
 	}
 	
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds) 
 	{
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(competenciasIds);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(competenciasIds, false);
 		Collection<ConfiguracaoNivelCompetencia> configuracaoAbaixos = new ArrayList<ConfiguracaoNivelCompetencia>();
 		
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias)
@@ -118,5 +119,53 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		}
 		
 		return configuracaoAbaixos;
+	}
+
+	public Collection<ConfiguracaoNivelCompetenciaVO> montaRelatorioConfiguracaoNivelCompetencia() 
+	{
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias =  getDao().findCompetenciaColaborador(null, true);
+		Collection<ConfiguracaoNivelCompetenciaVO> configuracaoNivelCompetenciaVOs = new ArrayList<ConfiguracaoNivelCompetenciaVO>();
+		ConfiguracaoNivelCompetenciaVO configuracaoNivelCompetenciaVO = null;
+		
+		String nomeColaboradorAnterior = null;
+		
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia: configuracaoNivelCompetencias) 
+		{
+			String nomeColaboradorAtual = configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome();
+			
+			if (nomeColaboradorAnterior != nomeColaboradorAtual)
+			{
+				configuracaoNivelCompetenciaVO = new ConfiguracaoNivelCompetenciaVO();
+				configuracaoNivelCompetenciaVO.setNome(nomeColaboradorAtual);
+				configuracaoNivelCompetenciaVO.setConfiguracaoNivelCompetencias(new ArrayList<ConfiguracaoNivelCompetencia>());
+
+				configuracaoNivelCompetenciaVOs.add(configuracaoNivelCompetenciaVO);
+			}
+			
+			configuracaoNivelCompetenciaVO.getConfiguracaoNivelCompetencias().add(configuracaoNivelCompetencia);
+						
+			
+			nomeColaboradorAnterior = nomeColaboradorAtual;
+		}
+		
+//		ConfiguracaoNivelCompetencia c1 = new ConfiguracaoNivelCompetencia();
+//		c1.set
+//		ConfiguracaoNivelCompetencia c1 = new ConfiguracaoNivelCompetencia();
+//		ConfiguracaoNivelCompetencia c1 = new ConfiguracaoNivelCompetencia();
+//		ConfiguracaoNivelCompetencia c1 = new ConfiguracaoNivelCompetencia();
+//		
+//		configuracaoNivelCompetenciaVO = new ConfiguracaoNivelCompetenciaVO();
+//		configuracaoNivelCompetenciaVO.setNome("joao");
+//		configuracaoNivelCompetenciaVOs.add(configuracaoNivelCompetenciaVO);
+//		
+//		configuracaoNivelCompetenciaVO = new ConfiguracaoNivelCompetenciaVO();
+//		configuracaoNivelCompetenciaVO.setNome(null);
+//		configuracaoNivelCompetenciaVOs.add(configuracaoNivelCompetenciaVO);
+//		
+//		configuracaoNivelCompetenciaVO = new ConfiguracaoNivelCompetenciaVO();
+//		configuracaoNivelCompetenciaVO.setNome(null);
+//		configuracaoNivelCompetenciaVOs.add(configuracaoNivelCompetenciaVO);
+
+		return configuracaoNivelCompetenciaVOs;
 	}
 }

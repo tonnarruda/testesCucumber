@@ -66,5 +66,17 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
 		</action>
+		<action name="prepareRelatorioMatrizCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareRelatorioCompetenciasColaborador">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioMatrizCompetenciasColaborador.ftl</result>
+		</action>
+		<action name="imprimirMatrizCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="imprimirMatrizCompetenciasColaborador">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/matriz_colaboradores_competencias.jasper</param>
+				<param name="dataSource">configuracaoNivelCompetenciaVOs</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">matriz_colaboradores_competencias.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
+		</action>
 	</package>
 </xwork>

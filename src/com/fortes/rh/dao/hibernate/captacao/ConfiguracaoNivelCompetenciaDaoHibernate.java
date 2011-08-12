@@ -129,7 +129,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;				
 	}
 	
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] configuracaoNivelCompetenciaIds) 
+	@SuppressWarnings("unchecked")
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] configuracaoNivelCompetenciaIds, boolean ordenarPorNivel) 
 	{
 		StringBuilder sql = new StringBuilder();
 
@@ -147,11 +148,19 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("where  ");
 		sql.append("(cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador_id = cncc.colaborador_id) ");
 		sql.append("or cncc.data is null) ");
-		sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
-		sql.append("order by competencia, c.nome ");
+		
+		if(configuracaoNivelCompetenciaIds != null && configuracaoNivelCompetenciaIds.length > 0)
+			sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
+		
+		if(ordenarPorNivel)
+			sql.append("order by c.nome, competencia, ncncf.ordem ");
+		else
+			sql.append("order by competencia, c.nome ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
-		query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
+		
+		if(configuracaoNivelCompetenciaIds != null && configuracaoNivelCompetenciaIds.length > 0)
+			query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
 		
 		Collection<Object[]> resultado = query.list();
 		
@@ -165,5 +174,4 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		
 		return lista;				
 	}
-
 }
