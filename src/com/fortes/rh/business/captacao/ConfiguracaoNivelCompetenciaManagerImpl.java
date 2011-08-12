@@ -125,15 +125,27 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	{
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias =  getDao().findCompetenciaColaborador(null, true);
 		Collection<ConfiguracaoNivelCompetenciaVO> configuracaoNivelCompetenciaVOs = new ArrayList<ConfiguracaoNivelCompetenciaVO>();
-		ConfiguracaoNivelCompetenciaVO configuracaoNivelCompetenciaVO;
+		ConfiguracaoNivelCompetenciaVO configuracaoNivelCompetenciaVO = null;
+		
+		String nomeColaboradorAnterior = null;
 		
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia: configuracaoNivelCompetencias) 
 		{
-			configuracaoNivelCompetenciaVO = new ConfiguracaoNivelCompetenciaVO();
-			configuracaoNivelCompetenciaVO.setNome(configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome());
-			configuracaoNivelCompetenciaVO.setConfiguracaoNivelCompetencias(configuracaoNivelCompetencia);
+			String nomeColaboradorAtual = configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome();
 			
-			configuracaoNivelCompetenciaVOs.add(configuracaoNivelCompetenciaVO);
+			if (nomeColaboradorAnterior != nomeColaboradorAtual)
+			{
+				configuracaoNivelCompetenciaVO = new ConfiguracaoNivelCompetenciaVO();
+				configuracaoNivelCompetenciaVO.setNome(nomeColaboradorAtual);
+				configuracaoNivelCompetenciaVO.setConfiguracaoNivelCompetencias(new ArrayList<ConfiguracaoNivelCompetencia>());
+
+				configuracaoNivelCompetenciaVOs.add(configuracaoNivelCompetenciaVO);
+			}
+			
+			configuracaoNivelCompetenciaVO.getConfiguracaoNivelCompetencias().add(configuracaoNivelCompetencia);
+						
+			
+			nomeColaboradorAnterior = nomeColaboradorAtual;
 		}
 		
 //		ConfiguracaoNivelCompetencia c1 = new ConfiguracaoNivelCompetencia();
