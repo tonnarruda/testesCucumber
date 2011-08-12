@@ -12,6 +12,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.EstadoCivil;
@@ -382,17 +383,18 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
      * Monta resultados da avaliação de desempenho
      * @see avaliacaoDesempenhoManager.montaResultado()
      */
-    public Collection<ResultadoAvaliacaoDesempenho> montaResultadosAvaliacaoDesempenho(Collection<Pergunta> perguntas, Collection<Resposta> respostas, Long avaliadoId, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, boolean anonima)
+    public Collection<ResultadoAvaliacaoDesempenho> montaResultadosAvaliacaoDesempenho(Collection<Pergunta> perguntas, Collection<Resposta> respostas, Long avaliadoId, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, AvaliacaoDesempenho avaliacaoDesempenho)
 	{
 		Collection<ResultadoAvaliacaoDesempenho> resultadoQuestionarios = new ArrayList<ResultadoAvaliacaoDesempenho>();
 		
 		String avaliadoNome = colaboradorManager.getNome(avaliadoId);
+		ColaboradorQuestionario colabQuestionario = colaboradorQuestionarioManager.findByColaboradorAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenho.getId());
 		
 		for (Pergunta pergunta: perguntas)
 		{
 			perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, avaliadoNome);
 			
-			ResultadoAvaliacaoDesempenho resultadoQuestionario = new ResultadoAvaliacaoDesempenho(avaliadoId, avaliadoNome);
+			ResultadoAvaliacaoDesempenho resultadoQuestionario = new ResultadoAvaliacaoDesempenho(avaliadoId, avaliadoNome, colabQuestionario.getPerformance());
 			resultadoQuestionario.setPergunta(calculaMedia(colaboradorRespostas, pergunta));
 			resultadoQuestionario.setColabRespostas(montaColaboradorReposta(colaboradorRespostas, pergunta));
 			resultadoQuestionario.setRespostas(montaRespostas(respostas, pergunta, percentuaisDeRespostas));

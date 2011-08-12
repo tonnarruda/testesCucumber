@@ -27,7 +27,7 @@
 	<@ww.actionmessage />
 	
 	<@ww.form name="form" action="resultado.action" onsubmit="${validarCampos}" method="POST">
-		<@frt.checkListBox name="colaboradorsCheck" label="Avaliados" list="colaboradorsCheckList" width="600" height="300"/>
+		<@frt.checkListBox name="colaboradorsCheck" label="Avaliados *" list="colaboradorsCheckList" width="600" height="300"/>
 		
 		
 		<@ww.select label="Resultado" required="true" name="opcaoResultado" id="opcaoResultado" list=r"#{'avaliador':'Resultado por Avaliador', 'criterio':'Resultado por Critérios'}" onchange="filtrarOpt(this.value);"/>

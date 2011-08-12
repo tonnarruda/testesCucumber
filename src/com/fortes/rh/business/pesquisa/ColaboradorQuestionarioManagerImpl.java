@@ -431,5 +431,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findByColaborador(colaboradorId);
 	}
 
+	public ColaboradorQuestionario findByColaboradorAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId) {
+		return getDao().findByColaboradorAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId);
+	}
+
 	
 }

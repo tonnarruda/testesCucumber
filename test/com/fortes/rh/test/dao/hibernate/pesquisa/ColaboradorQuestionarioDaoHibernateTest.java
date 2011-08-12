@@ -805,6 +805,25 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		Collection<ColaboradorQuestionario> pesquisas = colaboradorQuestionarioDao.findByColaborador(colaborador.getId());
 		assertEquals(1, pesquisas.size());
 	}
+	
+	public void testFindByColaboradorAndAvaliacaoDesempenhos()
+	{
+
+		Colaborador avaliado = ColaboradorFactory.getEntity();
+		avaliado.setNome("Avaliado");
+		colaboradorDao.save(avaliado);
+
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(avaliado);
+		colaboradorQuestionario.setRespondida(true);
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+
+		assertEquals(colaboradorQuestionario, colaboradorQuestionarioDao.findByColaboradorAndAvaliacaoDesempenho(avaliado.getId(), avaliacaoDesempenho.getId()));
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{

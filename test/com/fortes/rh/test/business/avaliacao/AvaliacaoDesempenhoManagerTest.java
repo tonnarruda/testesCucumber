@@ -191,7 +191,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostasMultiplas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
 		
 		Collection<ResultadoAvaliacaoDesempenho> resultadoQuestionarios = new ArrayList<ResultadoAvaliacaoDesempenho>();
-		ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = new ResultadoAvaliacaoDesempenho(2L, "José");
+		ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = new ResultadoAvaliacaoDesempenho(2L, "José", 1.0);
 		resultadoQuestionarios.add(resultadoAvaliacaoDesempenho);
 		
 		perguntaManager.expects(atLeastOnce()).method("findByQuestionarioAspectoPergunta").will(returnValue(perguntas));
@@ -203,7 +203,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(eq(2L),eq(3L)).will(returnValue(percentuaisDeRespostas));
 		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").with(eq(2L),eq(3L)).will(returnValue(percentuaisDeRespostasMultiplas));
 		
-		questionarioManager.expects(once()).method("montaResultadosAvaliacaoDesempenho").with(new Constraint[]{eq(perguntas),eq(respostas), eq(2L), eq(colaboradorRespostas), eq(percentuaisDeRespostas), eq(false)}).will(returnValue(resultadoQuestionarios));
+		questionarioManager.expects(once()).method("montaResultadosAvaliacaoDesempenho").with(new Constraint[]{eq(perguntas),eq(respostas), eq(2L), eq(colaboradorRespostas), eq(percentuaisDeRespostas), eq(avaliacaoDesempenho)}).will(returnValue(resultadoQuestionarios));
 		
 		Collection<ResultadoAvaliacaoDesempenho> resultados = avaliacaoDesempenhoManager.montaResultado(avaliadosIds, avaliacaoDesempenho, agruparPorAspectos);
 		assertEquals(1, resultados.size());

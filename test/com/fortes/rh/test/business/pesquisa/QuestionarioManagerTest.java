@@ -611,15 +611,16 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 		Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>(); 
 		
 		Collection<ResultadoAvaliacaoDesempenho> resultadoQuestionarios = new ArrayList<ResultadoAvaliacaoDesempenho>();
-		ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = new ResultadoAvaliacaoDesempenho(2L, "José");
+		ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = new ResultadoAvaliacaoDesempenho(2L, "José", 1.0);
 		resultadoQuestionarios.add(resultadoAvaliacaoDesempenho);
 		
 		Long avaliadoId = 1L;
 		
+		colaboradorQuestionarioManager.expects(once()).method("findByColaboradorAndAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(colaboradorQuestionario));
 		colaboradorManager.expects(once()).method("getNome").with(eq(1L)).will(returnValue("José"));
 		perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
 		
-		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, false);
+		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho);
 		assertEquals(2, resultados.size());
     }
 
