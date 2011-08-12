@@ -14,8 +14,13 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
 		tomcat_home = config['tomcat_home']
 		fortes_var = config['environment'].map{|key,value| "export #{key}=#{value};"}.join
 		app_path = "#{tomcat_home}/webapps/#{config['app_name']}"
+		backup_folder = config['backup_folder']
 		
-		#conn.exec "pg_dump -U postgres #{config['db_name']} > /home/web/#{config['db_name']}_#{Time.now.strftime('%Y%m%d%H%M')}.sql"
+		if backup_folder 
+		  bkpfile = "#{backup_folder}/#{config['db_name']}_#{Time.now.strftime('%Y%m%d%H%M')}.sql"
+		  puts "Gerando backup \"#{bkpfile}\""
+		  conn.exec "pg_dump -U postgres #{config['db_name']} > #{bkpfile}"
+		end
 		
 		conn.exec "#{fortes_var} sh #{tomcat_home}/bin/shutdown.sh"
 		
@@ -25,9 +30,18 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
 		
 		conn.upload config['repository_app'], "#{app_path}.war"
 		
-		if config['fortes_home_properties']
+		if config['fortes_home_properties'] || config['run_migrates']
 			conn.exec "unzip #{app_path}.war -d #{app_path}", :output=>:none
+		end
+		
+		if config['fortes_home_properties']	
 			conn.create_file "#{app_path}/WEB-INF/classes/fortes_home.properties", :content=>config['fortes_home_properties']
+		end
+		
+		if config['run_migrates']
+    		conn.upload 'migrate.rb', "#{app_path}/migrate.rb"
+    		conn.exec "ruby #{app_path}/migrate.rb"
+    		conn.exec "rm -f #{app_path}/migrate.rb"
 		end
 		
 		conn.exec "#{fortes_var} sh #{tomcat_home}/bin/startup.sh"
