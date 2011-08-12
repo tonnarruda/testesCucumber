@@ -9,6 +9,7 @@ public class ConfiguracaoNivelCompetenciaVO
 {
 	private String nome;
 	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
+	private Collection<NivelCompetencia> nivelCompetencias;
 	
 	public String getNome() {
 		return nome;
@@ -32,5 +33,13 @@ public class ConfiguracaoNivelCompetenciaVO
 
 	public void setConfiguracaoNivelCompetencias(Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) {
 		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
+	}
+
+	public Collection<NivelCompetencia> getNivelCompetencias() {
+		return nivelCompetencias;
+	}
+
+	public void setNivelCompetencias(Collection<NivelCompetencia> nivelCompetencias) {
+		this.nivelCompetencias = nivelCompetencias;
 	}
 }

@@ -28,6 +28,7 @@
 
 	<field name="configuracaoNivelCompetencias" class="java.lang.Object"/>
 	<field name="nome" class="java.lang.String"/>
+	<field name="nivelCompetencias" class="java.lang.Object"/>
 
 	<variable name="NUM_PAGINA" class="java.lang.Integer" resetType="None" incrementType="Page" calculation="Count">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
@@ -77,6 +78,9 @@
 					</subreportParameter>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="NIVEL_COMPETENCIAS">
+						<subreportParameterExpression><![CDATA[$F{nivelCompetencias}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "matriz_colaboradores_competencias_sub.jasper"]]></subreportExpression>
 				</subreport>

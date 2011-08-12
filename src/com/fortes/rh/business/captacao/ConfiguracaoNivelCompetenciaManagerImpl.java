@@ -8,6 +8,7 @@ import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
+import com.fortes.rh.model.captacao.NivelCompetencia;
 
 public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetencia, ConfiguracaoNivelCompetenciaDao> implements ConfiguracaoNivelCompetenciaManager
 {
@@ -121,32 +122,43 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return configuracaoAbaixos;
 	}
 
-	public Collection<ConfiguracaoNivelCompetenciaVO> montaRelatorioConfiguracaoNivelCompetencia() 
+	public Collection<ConfiguracaoNivelCompetenciaVO> montaRelatorioConfiguracaoNivelCompetencia(Long empresaId) 
 	{
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias =  getDao().findCompetenciaColaborador(null, true);
+		Collection<NivelCompetencia> nivelCompetencias = nivelCompetenciaManager.findAllSelect(empresaId);
 		Collection<ConfiguracaoNivelCompetenciaVO> configuracaoNivelCompetenciaVOs = new ArrayList<ConfiguracaoNivelCompetenciaVO>();
 		ConfiguracaoNivelCompetenciaVO configuracaoNivelCompetenciaVO = null;
 		
 		String nomeColaboradorAnterior = "";
 		
+//		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciaFaixaSalarials = new ArrayList<ConfiguracaoNivelCompetencia>();
+//		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia: configuracaoNivelCompetencias) 
+//			if(configuracaoNivelCompetencia.isFaixaSalarial())
+//				configuracaoNivelCompetenciaFaixaSalarials.add(configuracaoNivelCompetencia);
+//			
+//		ConfiguracaoNivelCompetenciaVO configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaVO();
+//		configuracaoNivelCompetenciaFaixaSalarial.setConfiguracaoNivelCompetencias(configuracaoNivelCompetenciaFaixaSalarials);
+			
+
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia: configuracaoNivelCompetencias) 
 		{
 			String nomeColaboradorAtual = "";
 			if(configuracaoNivelCompetencia.isColaboradorOuCandidato())
 				nomeColaboradorAtual = configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome();
 			
-			if (!nomeColaboradorAnterior.equals(nomeColaboradorAtual))
+			if (nomeColaboradorAnterior == null || !nomeColaboradorAnterior.equals(nomeColaboradorAtual))
 			{
 				configuracaoNivelCompetenciaVO = new ConfiguracaoNivelCompetenciaVO();
+				configuracaoNivelCompetenciaVO.setNivelCompetencias(nivelCompetencias);
 				configuracaoNivelCompetenciaVO.setNome(nomeColaboradorAtual);
 				configuracaoNivelCompetenciaVO.setConfiguracaoNivelCompetencias(new ArrayList<ConfiguracaoNivelCompetencia>());
-
+				
 				configuracaoNivelCompetenciaVOs.add(configuracaoNivelCompetenciaVO);
 			}
 			
 			configuracaoNivelCompetenciaVO.getConfiguracaoNivelCompetencias().add(configuracaoNivelCompetencia);
 			
-			nomeColaboradorAnterior = nomeColaboradorAtual + "";
+			nomeColaboradorAnterior = nomeColaboradorAtual;
 		}
 		
 //		ConfiguracaoNivelCompetencia c1 = new ConfiguracaoNivelCompetencia();

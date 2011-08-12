@@ -286,7 +286,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 		parametros = RelatorioUtil.getParametrosRelatorio("Relatório Colaboradres com nível de competência inferior ao exigido", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
-		configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaRelatorioConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaRelatorioConfiguracaoNivelCompetencia(getEmpresaSistema().getId());
 		
 		if(configuracaoNivelCompetenciaVOs.isEmpty())
 		{

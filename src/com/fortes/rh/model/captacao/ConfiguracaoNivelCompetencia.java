@@ -198,6 +198,6 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 	
 	public boolean isColaboradorOuCandidato() {
-		return this.candidato != null || this.configuracaoNivelCompetenciaColaborador != null; 
+		return this.configuracaoNivelCompetenciaColaborador != null; 
 	}
 }
