@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 
 public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<ConfiguracaoNivelCompetencia>
 {
@@ -25,4 +26,6 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] competenciasIds);
 
 	Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds);
+
+	Collection<ConfiguracaoNivelCompetenciaVO> montaRelatorioConfiguracaoNivelCompetencia();
 }

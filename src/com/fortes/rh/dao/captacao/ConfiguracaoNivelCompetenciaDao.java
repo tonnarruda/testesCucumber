@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 
 public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<ConfiguracaoNivelCompetencia> 
 {
@@ -16,5 +17,5 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 	Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long configuracaoNivelCompetenciaColaboradorId);
 	void deleteByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId);
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId);
-	Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] competenciasIds);
+	Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] competenciasIds, boolean ordenarPorNivel);
 }
