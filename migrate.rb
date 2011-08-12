@@ -16,7 +16,7 @@ if ARGV.empty?
 	result = exec_sql "select name from migrations order by name;"
 	@migrations = result.map{|r| r['name']}
 	
-	Dir.glob("./web/WEB-INF/metadata/migrate/*.sql").each do |file| 
+	Dir.glob("./**/*/migrate/*.sql").sort.each do |file|
 	  if (file =~ /(\d{14})/ and !@migrations.include? $1)
 	    print "Executando #{File.basename(file)}".ljust(80)
 	    begin
