@@ -38,6 +38,7 @@ import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
@@ -160,6 +161,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private CamposExtrasManager camposExtrasManager;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	private CamposExtras camposExtras;
+	private Solicitacao solicitacao;
 	
 	private void prepare() throws Exception
 	{
@@ -1375,6 +1377,14 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager) {
 		this.camposExtrasManager = camposExtrasManager;
+	}
+
+	public Solicitacao getSolicitacao() {
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) {
+		this.solicitacao = solicitacao;
 	}
 	
 }
