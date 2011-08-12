@@ -8,7 +8,7 @@ import java.util.Collection;
 public class ConfiguracaoNivelCompetenciaVO
 {
 	private String nome;
-	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias ;
+	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
 	
 	public String getNome() {
 		return nome;

@@ -192,4 +192,12 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	public void setNivelCompetenciaColaborador(NivelCompetencia nivelCompetenciaColaborador) {
 		this.nivelCompetenciaColaborador = nivelCompetenciaColaborador;
 	}
+	
+	public boolean isFaixaSalarial() {
+		return this.candidato == null && this.configuracaoNivelCompetenciaColaborador == null; 
+	}
+	
+	public boolean isColaboradorOuCandidato() {
+		return this.candidato != null || this.configuracaoNivelCompetenciaColaborador != null; 
+	}
 }

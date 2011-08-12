@@ -24,7 +24,7 @@
 
 		function imprimir()
 		{ 
-			$('#formBusca').attr('action','imprimir.action');
+			$('#formBusca').attr('action','imprimirLista.action');
 			$('#formBusca').submit();
 		}
 	</script>

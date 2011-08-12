@@ -6,14 +6,14 @@
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
-		 pageWidth="535"
-		 pageHeight="802"
+		 pageWidth="595"
+		 pageHeight="842"
 		 columnWidth="535"
 		 columnSpacing="0"
-		 leftMargin="0"
-		 rightMargin="0"
-		 topMargin="0"
-		 bottomMargin="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
@@ -23,91 +23,37 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
 
-	<field name="competenciaDescricao" class="java.lang.String"/>
-	<field name="nivelCompetenciaDescricao" class="java.lang.String"/>
-	<field name="configuracaoFaixa" class="java.lang.Boolean"/>
-	<field name="configuracaoColaboradorOuCandidato" class="java.lang.Boolean"/>
+	<field name="configuracaoNivelCompetencias" class="java.lang.Object"/>
 	<field name="nome" class="java.lang.String"/>
 
-
-		<group  name="grpNome" >
-			<groupExpression><![CDATA[$F{nome}]]></groupExpression>
-			<groupHeader>
-			<band height="50"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="16"
-						y="4"
-						width="184"
-						height="10"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="6"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nome}]]></textFieldExpression>
-				</textField>
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupFooter>
-		</group>
+	<variable name="NUM_PAGINA" class="java.lang.Integer" resetType="None" incrementType="Page" calculation="Count">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</background>
 		<title>
-			<band height="50"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="104"
-						y="8"
-						width="420"
-						height="34"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
-					</textElement>
-				<text><![CDATA[MATRIZ]]></text>
-				</staticText>
-				<image  scaleImage="RetainShape" vAlign="Middle" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="16"
-						y="3"
-						width="67"
-						height="46"
-						key="image-1"
-						stretchType="RelativeToTallestObject"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($P{CABECALHO}.getLogoUrl() != null && !$P{CABECALHO}.getLogoUrl().equals(""))]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<graphicElement stretchType="RelativeToTallestObject"/>
-					<imageExpression class="java.lang.String"><![CDATA[$P{CABECALHO}.getLogoUrl()]]></imageExpression>
-				</image>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="183"
-						y="15"
-						width="100"
-						height="18"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Boolean"><![CDATA[$F{configuracaoFaixa}]]></textFieldExpression>
-				</textField>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</title>
 		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="51"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="0"
+						y="1"
+						width="535"
+						height="50"
+						key="subreport-1"/>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "cabecalho.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -115,119 +61,47 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="92"  isSplitAllowed="true" >
-				<crosstab >
+			<band height="49"  isSplitAllowed="true" >
+				<subreport  isUsingCache="false">
 					<reportElement
-						x="16"
-						y="38"
-						width="508"
-						height="20"
-						key="crosstab-1"/>
-					<crosstabHeaderCell>						<cellContents mode="Opaque">
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
-						</cellContents>
-					</crosstabHeaderCell>					<rowGroup name="competenciaDescricao" width="207">
-						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{competenciaDescricao}]]></bucketExpression>
-						</bucket>
-						<crosstabRowHeader>
-						<cellContents mode="Transparent">
-					<box topBorder="None" topBorderColor="#000000" leftBorder="1Point" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+						x="8"
+						y="23"
+						width="520"
+						height="26"
+						key="colabPorSetor"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{configuracaoNivelCompetencias}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "matriz_colaboradores_competencias_sub.jasper"]]></subreportExpression>
+				</subreport>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
-						y="0"
-						width="205"
-						height="30"
-						key="textField"
-						isRemoveLineWhenBlank="true"
-						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" topPadding="3" leftBorder="None" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" rightPadding="3" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="3"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{competenciaDescricao}]]></textFieldExpression>
-				</textField>
-						</cellContents>
-						</crosstabRowHeader>
-					</rowGroup>
-					<columnGroup name="nivelCompetenciaDescricao" height="60" headerPosition="Center">
-						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{nivelCompetenciaDescricao}]]></bucketExpression>
-						</bucket>
-						<crosstabColumnHeader>
-						<cellContents backcolor="#FFFFFF" mode="Transparent">
-					<box topBorder="1Point" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="0"
-						width="26"
-						height="60"
+						x="8"
+						y="6"
+						width="263"
+						height="14"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
-						<font size="9"/>
+					<textElement>
+						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{nivelCompetenciaDescricao}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nome}]]></textFieldExpression>
 				</textField>
-						</cellContents>
-						</crosstabColumnHeader>
-					</columnGroup>
-
-					<measure name="competencia_count" class="java.lang.String" calculation="Count">
-						<measureExpression><![CDATA[$F{competenciaDescricao}]]></measureExpression>
-					</measure>
-					<measure name="cand" class="java.lang.Boolean">
-						<measureExpression><![CDATA[$F{configuracaoColaboradorOuCandidato}]]></measureExpression>
-					</measure>
-					<crosstabCell width="26" height="30">
-						<cellContents mode="Transparent">
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
-				<ellipse>
+				<line direction="TopDown">
 					<reportElement
-						x="3"
-						y="12"
-						width="8"
-						height="7"
-						key="ellipse-1">
-							<printWhenExpression><![CDATA[new Boolean($V{competencia_count} != null)]]></printWhenExpression>
-						</reportElement>
+						x="0"
+						y="20"
+						width="535"
+						height="0"
+						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
-				</ellipse>
-				<ellipse>
-					<reportElement
-						x="14"
-						y="12"
-						width="8"
-						height="7"
-						backcolor="#000000"
-						key="ellipse-1">
-							<printWhenExpression><![CDATA[$V{cand}]]></printWhenExpression>
-						</reportElement>
-					<graphicElement stretchType="NoStretch"/>
-				</ellipse>
-						</cellContents>
-					</crosstabCell>
-					<crosstabCell width="0" height="30" columnTotalGroup="nivelCompetenciaDescricao">
-						<cellContents mode="Transparent">
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
-						</cellContents>
-					</crosstabCell>
-					<crosstabCell width="26" height="0" rowTotalGroup="competenciaDescricao">
-						<cellContents mode="Transparent">
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
-						</cellContents>
-					</crosstabCell>
-					<crosstabCell width="0" height="0" rowTotalGroup="competenciaDescricao" columnTotalGroup="nivelCompetenciaDescricao">
-						<cellContents mode="Transparent">
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
-						</cellContents>
-					</crosstabCell>
-					<whenNoDataCell>						<cellContents mode="Transparent">
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
-						</cellContents>
-					</whenNoDataCell>					</crosstab>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>

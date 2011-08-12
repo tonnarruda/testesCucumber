@@ -127,13 +127,15 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Collection<ConfiguracaoNivelCompetenciaVO> configuracaoNivelCompetenciaVOs = new ArrayList<ConfiguracaoNivelCompetenciaVO>();
 		ConfiguracaoNivelCompetenciaVO configuracaoNivelCompetenciaVO = null;
 		
-		String nomeColaboradorAnterior = null;
+		String nomeColaboradorAnterior = "";
 		
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia: configuracaoNivelCompetencias) 
 		{
-			String nomeColaboradorAtual = configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome();
+			String nomeColaboradorAtual = "";
+			if(configuracaoNivelCompetencia.isColaboradorOuCandidato())
+				nomeColaboradorAtual = configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome();
 			
-			if (nomeColaboradorAnterior != nomeColaboradorAtual)
+			if (!nomeColaboradorAnterior.equals(nomeColaboradorAtual))
 			{
 				configuracaoNivelCompetenciaVO = new ConfiguracaoNivelCompetenciaVO();
 				configuracaoNivelCompetenciaVO.setNome(nomeColaboradorAtual);
@@ -143,9 +145,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			}
 			
 			configuracaoNivelCompetenciaVO.getConfiguracaoNivelCompetencias().add(configuracaoNivelCompetencia);
-						
 			
-			nomeColaboradorAnterior = nomeColaboradorAtual;
+			nomeColaboradorAnterior = nomeColaboradorAtual + "";
 		}
 		
 //		ConfiguracaoNivelCompetencia c1 = new ConfiguracaoNivelCompetencia();

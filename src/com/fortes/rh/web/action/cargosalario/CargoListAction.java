@@ -35,13 +35,15 @@ public class CargoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String imprimir() throws Exception
+	public String imprimirLista() throws Exception
 	{
-		cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo());
+		Long areaId = areaOrganizacional != null ? areaOrganizacional.getId() : null;
 		
-		areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaOrganizacional.getId());
+		cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), areaId, cargo.getNomeMercado(), cargo.isAtivo());
 		
-		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Cargos", getEmpresaSistema(), "Área Organizacional: " + areaOrganizacional.getNome() + "\nAtivos: " + (cargo.isAtivo() ? "Sim" : "Não"));
+		areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaId);
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Cargos", getEmpresaSistema(), (areaOrganizacional == null ? "" : "Área Organizacional: " + areaOrganizacional.getNome() + "\n") + "Ativos: " + (cargo.isAtivo() ? "Sim" : "Não"));
 		
 		if (cargos.isEmpty()) 
 		{
