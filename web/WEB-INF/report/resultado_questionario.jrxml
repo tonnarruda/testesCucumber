@@ -201,6 +201,9 @@
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 					</subreportParameter>
+					<subreportParameter  name="TOTAL_COLAB_RESP">
+						<subreportParameterExpression><![CDATA[$P{TOTAL_COLAB_RESP}]]></subreportParameterExpression>
+					</subreportParameter>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "resultado_resposta_objetiva.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport  isUsingCache="true">
