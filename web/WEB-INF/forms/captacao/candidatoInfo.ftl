@@ -79,12 +79,18 @@
 				document.getElementById(campo).disabled=true;
 		}
 		
+		<#if solicitacao.id?exists>
+			var paramsCompetencia = {'candidato.id':'${candidato.id}','solicitacao.id':'${solicitacao.id}'};
+		<#else>
+			var paramsCompetencia = {'candidato.id':'${candidato.id}'};
+		</#if>
+		
 		$(function() {
 			$("#cv").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculo.action"/>', {'candidato.id':'${candidato.id}'});
 			$("#historico").load('<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/verHistoricoCandidato.action"/>', {'candidato.id':'${candidato.id}'});
 			$("#imagens").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoEscaneado.action"/>', {'candidato.id':'${candidato.id}'});
 			$("#textoOcr").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoTextoOcr.action"/>', {'candidato.id':'${candidato.id}',palavras:'${palavras}',forma:'${forma}'});
-			$("#competencia").load('<@ww.url includeParams="none" value="/captacao/nivelCompetencia/visualizarCandidato.action"/>', {'candidato.id':'${candidato.id}'});
+			$("#competencia").load('<@ww.url includeParams="none" value="/captacao/nivelCompetencia/visualizarCandidato.action"/>', paramsCompetencia);
 		});
 	</script>
 	<@ww.head/>

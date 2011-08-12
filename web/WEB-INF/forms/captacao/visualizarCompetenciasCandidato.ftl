@@ -18,7 +18,15 @@
 	<script type="text/javascript">
 		$(function() {
 			DWRUtil.useLoadingMessage('Carregando...');
-			$('#solicitacao').val();
+			
+			<#if solicitacao?exists && solicitacao.id?exists>
+				$('#solicitacao').val(${solicitacao.id});
+				getNiveisCargo(${solicitacao.id});
+			</#if>
+			
+			$('#solicitacao').change(function() {
+				getNiveisCargo(this.value);
+			});
 		});
 		
 		function getNiveisCargo(solicitacaoId)
@@ -50,7 +58,7 @@
 				<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
 			</div>
 
-			<@ww.select label="Solicitação" onchange="getNiveisCargo(this.value)" name="solicitacao.id" id="solicitacao" headerKey="" headerValue="" listKey="id" listValue="descricao" list="solicitacoes" theme="simple"/>
+			<@ww.select label="Solicitação" name="solicitacao.id" id="solicitacao" headerKey="" headerValue="" listKey="id" listValue="descricao" list="solicitacoes" theme="simple"/>
 		
 			<br /><br />
 		
