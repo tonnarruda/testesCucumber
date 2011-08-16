@@ -37,7 +37,8 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private Mail mail;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
-	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) {
+	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) 
+	{
 		return getDao().findAllSelect(empresaId, ativa, tipoModeloAvaliacao);
 	}
 
@@ -174,6 +175,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
         }
 	}
 	
+	public Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId) 
+	{
+		return getDao().findIdsAvaliacaoDesempenho(avaliacaoId);
+	}
 	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String nomeBusca, Long avaliacaoId) 
 	{
 		return getDao().findTituloModeloAvaliacao(empresaId, nomeBusca, avaliacaoId);

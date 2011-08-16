@@ -197,6 +197,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String datasDeAvaliacao = "";
 	@Transient
 	private Long avaliacaoDesempenhoId;
+	@Transient
+	private String avaliacaoDesempenhoTitulo;
 
 	public Colaborador()
 	{
@@ -766,7 +768,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.titulo = titulo;
 	}
 
-	public Colaborador(String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, boolean anonima)
+	public Colaborador(String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, boolean anonima, String avaliacaoDesempenhoTitulo)
 	{
 		this.nome = nome;
 		this.nomeComercial = nomeComercial;
@@ -777,6 +779,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		this.respondidaEm = respondidaEm;
 		this.performance = performance;
+		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo;
 	}
 	
 	
@@ -2214,6 +2217,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		NumberFormat formata = new DecimalFormat("#0.00");
 		return formata.format(result).toString() + " %"; 
 	}
+	
+	public Double getPerformanceDouble() 
+	{
+		return performance ; 
+	}
 
 	public String getTitulo() {
 		return titulo;
@@ -2295,5 +2303,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return ambiente;
 	}
 
-	
+	public String getAvaliacaoDesempenhoTitulo() {
+		return avaliacaoDesempenhoTitulo;
+	}
 }

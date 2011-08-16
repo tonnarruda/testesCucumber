@@ -44,6 +44,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -2886,10 +2887,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return null;
 	}
 
-	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long avaliacaoId, Long[] areasCheck, Long[] estabelecimentosCheck) 
+	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao) 
 	{
 		StringBuilder hql = new StringBuilder();
-		  hql.append("select new Colaborador(co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, ad.anonima) ");
+		  hql.append("select new Colaborador(co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, ad.anonima, ad.titulo) ");
 		  hql.append("from HistoricoColaborador as hc ");
 		  hql.append("left join hc.colaborador as co ");
 		  hql.append("left join co.colaboradorQuestionarios as cq ");
@@ -2905,7 +2906,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  hql.append("and co.desligado = false ");
 		  hql.append("and co.empresa.id = :empresaId ");
 		  hql.append("and cq.respondidaEm between :periodoIni and :periodoFim ");
-		  hql.append("and ad.id = :avaliacaoId ");
+		  hql.append("and ad.id in (:avaliacaoId) ");
 		  hql.append("and cq.respondida = true ");
 		  		  
 		  if(areasCheck != null && areasCheck.length > 0) 
@@ -2914,20 +2915,30 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  if(estabelecimentosCheck != null && estabelecimentosCheck.length > 0) 
 			  hql.append("and hc.estabelecimento.id in (:estabelecimentoCheck) ");
 
-		  hql.append("order by  co.nome, aval.nome ");//importante para relatorio
+		  if(colaboradorsCheck != null && colaboradorsCheck.length > 0) 
+			  hql.append("and co.id in (:colaboradorsCheck) ");
+
+		  if(!considerarAutoAvaliacao) 
+			  hql.append("and co.id <> aval.id ");
+
+		  hql.append("order by  co.nome, ad.titulo, aval.nome ");//importante para relatorio
 		  
 		  Query query = getSession().createQuery(hql.toString());
 		  query.setLong("empresaId", empresaId);
-		  query.setLong("avaliacaoId", avaliacaoId);
 		  query.setDate("periodoIni", periodoIni);
 		  query.setDate("periodoFim", periodoFim);
 		  query.setDate("dataAtual", new Date());
+
+		  query.setParameterList("avaliacaoId", avaliacaoIds);
 
 		  if(areasCheck != null && areasCheck.length > 0)
 			  query.setParameterList("areasCheck", areasCheck);
 
 		  if(estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
 			  query.setParameterList("estabelecimentoCheck", estabelecimentosCheck);   
+
+		  if(colaboradorsCheck != null && colaboradorsCheck.length > 0) 
+			  query.setParameterList("colaboradorsCheck", colaboradorsCheck);   
 
 		  return query.list();
 	}
@@ -3369,5 +3380,28 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setString("descricao", "%" + descricao.toUpperCase() + "%");
 		
 		return query.list();
+	}
+
+	public Collection<Colaborador> findByAvaliacao(Long avaliacaoId) 
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.colaboradorQuestionarios", "cq");
+		criteria.createCriteria("cq.avaliacao", "a", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("c.id")), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("a.id", avaliacaoId));
+		criteria.add(Expression.isNotNull("cq.performance"));
+		criteria.add(Expression.isNotNull("cq.avaliador.id"));
+
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+		
+		return criteria.list();
 	}
 }

@@ -238,6 +238,55 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		assertEquals(4, colaboradorDao.getAutoComplete("milos", empresa.getId()).size());
 	}
+	
+	public void testFindByAvaliacao() throws Exception 
+	{
+		Colaborador colaboradorMaria = ColaboradorFactory.getEntity(1L);
+		colaboradorMaria.setNome("maria");
+		colaboradorDao.save(colaboradorMaria);
+
+		Colaborador colaboradorJorge = ColaboradorFactory.getEntity(1L);
+		colaboradorJorge.setNome("jorge");
+		colaboradorDao.save(colaboradorJorge);
+		
+		Colaborador avaliador = ColaboradorFactory.getEntity(1L);
+		avaliador.setNome("avaliador");
+		colaboradorDao.save(avaliador);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+
+		Avaliacao avaliacaoFora = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacaoFora);
+		
+		ColaboradorQuestionario colaboradorQuestionarioJorge = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioJorge.setColaborador(colaboradorJorge);
+		colaboradorQuestionarioJorge.setPerformance(97.0);
+		colaboradorQuestionarioJorge.setAvaliacao(avaliacao);
+		colaboradorQuestionarioJorge.setAvaliador(avaliador);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioJorge);
+
+		ColaboradorQuestionario colaboradorQuestionariosSemAvaliacao = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionariosSemAvaliacao.setColaborador(colaboradorJorge);
+		colaboradorQuestionariosSemAvaliacao.setAvaliador(avaliador);
+		colaboradorQuestionarioDao.save(colaboradorQuestionariosSemAvaliacao);
+		
+		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioMaria.setColaborador(colaboradorMaria);
+		colaboradorQuestionarioMaria.setAvaliador(avaliador);
+		colaboradorQuestionarioMaria.setPerformance(12.0);
+		colaboradorQuestionarioMaria.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioMaria);
+		
+		ColaboradorQuestionario colaboradorQuestionarioEmOutraAvaliacao = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioEmOutraAvaliacao.setColaborador(colaboradorJorge);
+		colaboradorQuestionarioEmOutraAvaliacao.setAvaliador(avaliador);
+		colaboradorQuestionarioEmOutraAvaliacao.setPerformance(20.0);
+		colaboradorQuestionarioEmOutraAvaliacao.setAvaliacao(avaliacaoFora);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioEmOutraAvaliacao);
+		
+		assertEquals(2, colaboradorDao.findByAvaliacao(avaliacao.getId()).size());
+	}
 
 	@Override
 	public void testUpdate() throws Exception {
@@ -3301,7 +3350,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(new Integer(2), colaboradorDao.qtdColaboradoresByTurmas(turmaIds));
 	}
 
-	public void testFindColabPeriodoExperiencia() {
+	public void testFindColabPeriodoExperiencia() 
+	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -3357,8 +3407,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Date periodoIni = DateUtil.montaDataByString("14/08/2010");
 		Date periodoFim = DateUtil.montaDataByString("16/12/2010");
 
-		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
-		colaboradors = colaboradorDao.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoDesempenho.getId(), areaIds, estabelecimentoIds);
+		Long[] avaliacaoIds = new Long[]{avaliacaoDesempenho.getId()};
+		
+		Collection<Colaborador> colaboradors = colaboradorDao.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoIds, areaIds, estabelecimentoIds, null, true);
 
 		assertEquals(1, colaboradors.size());
 	}

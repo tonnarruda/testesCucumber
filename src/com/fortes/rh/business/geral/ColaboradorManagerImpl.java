@@ -23,6 +23,8 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.acesso.UsuarioManager;
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
@@ -38,6 +40,7 @@ import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.Candidato;
@@ -1681,13 +1684,27 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long avaliacaoId, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
 	{
+		Long[] avaliacaoIds = new Long[]{avaliacaoId};
 		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
-		 	retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, avaliacaoId, StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck));
+		 	retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, avaliacaoIds, StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), null, true);
 		
 		 if(retorno.isEmpty())
 			throw new Exception("Não existe informações para os filtros selecionados");
 		
 		
+		return retorno;
+	}
+
+	public Collection<Colaborador> findColabPeriodoExperienciaAgrupadoPorModelo(Long empresaId, Date periodoIni, Date periodoFim, Long avaliacaoId, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck, boolean considerarAutoAvaliacao) throws Exception 
+	{
+		AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
+		Collection<AvaliacaoDesempenho> avaliacaoIds = avaliacaoDesempenhoManager.findIdsAvaliacaoDesempenho(avaliacaoId);
+		CollectionUtil<AvaliacaoDesempenho> clu = new CollectionUtil<AvaliacaoDesempenho>();
+		Collection<Colaborador> retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, clu.convertCollectionToArrayIds(avaliacaoIds), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), StringUtil.stringToLong(colaboradorsCheck), considerarAutoAvaliacao);
+		
+		if(retorno.isEmpty())
+			throw new Exception("Não existe informações para os filtros selecionados");
+
 		return retorno;
 	}
  
@@ -1897,6 +1914,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		return graficoEvolucaoTurnover;
 	}
+	
+	public Collection<Colaborador> findByAvaliacao(Long avaliacaoId) 
+	{
+		return getDao().findByAvaliacao(avaliacaoId);
+	}
 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
@@ -1919,4 +1941,5 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
+	
 }

@@ -13,6 +13,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 
@@ -116,6 +117,25 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
+		return criteria.list();
+	}
+
+	public Collection<Avaliacao> findAllSelectComAvaliacaoDesempenho(Long empresaId, boolean ativa) 
+	{
+		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "ad");
+		criteria.createCriteria("ad.avaliacao", "a", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("a.id")), "id");
+		p.add(Projections.property("a.titulo"), "titulo");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		criteria.add(Expression.eq("a.ativo", ativa));
+		
+		criteria.addOrder(Order.asc("a.titulo"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
 		return criteria.list();
 	}
 }

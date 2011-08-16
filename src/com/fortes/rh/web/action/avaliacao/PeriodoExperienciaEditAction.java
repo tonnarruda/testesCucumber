@@ -8,12 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
@@ -21,6 +23,7 @@ import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -35,9 +38,12 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<PeriodoExperiencia> periodoExperiencias;			
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
+	private Avaliacao avaliacao;
+	private Collection<Avaliacao> avaliacoes;
 	
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	private AvaliacaoManager avaliacaoManager;
 	private EstabelecimentoManager estabelecimentoManager;
 
 	private Pergunta pergunta;
@@ -58,6 +64,8 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<CheckBox> periodoCheckList = new ArrayList<CheckBox>();
 	
 	private Collection<Colaborador> colaboradores;
+	private String[] colaboradorsCheck;
+	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
 
 	private ColaboradorManager colaboradorManager;
 	private Map<String, Object> parametros;
@@ -66,6 +74,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private String reportFilter;
 	private String reportTitle;
 	private List<AcompanhamentoExperienciaColaborador> acompanhamentos;
+	private boolean considerarAutoAvaliacao;
 		
 	private void prepare() throws Exception
 	{
@@ -224,6 +233,40 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
 			prepareRelatorioRankingPerformance();
+			return Action.INPUT;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String prepareImpRankPerformAvDesempenho() throws Exception
+	{
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+    	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+    	avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
+    	
+    	if(avaliacao != null  && avaliacao.getId() != null)
+    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacao( avaliacao.getId()), "getId", "getNome");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String impRankPerformAvDesempenho() throws Exception 
+	{
+		try 
+		{
+			colaboradores = colaboradorManager.findColabPeriodoExperienciaAgrupadoPorModelo(getEmpresaSistema().getId(), periodoIni, periodoFim, avaliacao.getId(), areasCheck, estabelecimentoCheck, colaboradorsCheck, considerarAutoAvaliacao);
+
+			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) ;
+			reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
+			
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
+		}
+		catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			prepareImpRankPerformAvDesempenho();
 			return Action.INPUT;
 		}
 		
@@ -431,5 +474,41 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public List<AcompanhamentoExperienciaColaborador> getAcompanhamentos() {
 		return acompanhamentos;
+	}
+
+	public Collection<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
+	}
+
+	public Avaliacao getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Avaliacao avaliacao) {
+		this.avaliacao = avaliacao;
+	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
+	}
+
+	public String[] getColaboradorsCheck() {
+		return colaboradorsCheck;
+	}
+
+	public void setColaboradorsCheck(String[] colaboradorsCheck) {
+		this.colaboradorsCheck = colaboradorsCheck;
+	}
+
+	public Collection<CheckBox> getColaboradorsCheckList() {
+		return colaboradorsCheckList;
+	}
+
+	public boolean isConsiderarAutoAvaliacao() {
+		return considerarAutoAvaliacao;
+	}
+
+	public void setConsiderarAutoAvaliacao(boolean considerarAutoAvaliacao) {
+		this.considerarAutoAvaliacao = considerarAutoAvaliacao;
 	}
 }

@@ -129,6 +129,29 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1,avaliacaoDesempenhoDao.findTituloModeloAvaliacao(empresa.getId(), "ação", avaliacao.getId()).size());
 		
 	}
+	
+	public void testFindIdsAvaliacaoDesempenha()
+	{
+		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao1);
+		
+		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao2);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho1 = AvaliacaoDesempenhoFactory.getEntity(1L);
+		avaliacaoDesempenho1.setAvaliacao(avaliacao1);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho1);
+
+		AvaliacaoDesempenho avaliacaoDesempenho2 = AvaliacaoDesempenhoFactory.getEntity(2L);
+		avaliacaoDesempenho2.setAvaliacao(avaliacao1);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho2);
+
+		AvaliacaoDesempenho avaliacaoDesempenhoFora = AvaliacaoDesempenhoFactory.getEntity(3L);
+		avaliacaoDesempenhoFora.setAvaliacao(avaliacao2);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenhoFora);
+		
+		assertEquals(2, avaliacaoDesempenhoDao.findIdsAvaliacaoDesempenho(avaliacao1.getId()).size());
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao) {
 		this.empresaDao = empresaDao;

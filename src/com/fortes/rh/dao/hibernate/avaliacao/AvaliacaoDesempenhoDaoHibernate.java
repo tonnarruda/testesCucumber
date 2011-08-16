@@ -14,6 +14,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.util.CollectionUtil;
 
 public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<AvaliacaoDesempenho> implements AvaliacaoDesempenhoDao
 {
@@ -150,6 +151,22 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
+		return criteria.list();
+	}
+
+	public Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId) 
+	{
+		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "ad");
+		criteria.createCriteria("ad.avaliacao", "a", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ad.id"), "id");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("a.id", avaliacaoId));
+		criteria.addOrder(Order.asc("ad.id"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
 		return criteria.list();
 	}
 	

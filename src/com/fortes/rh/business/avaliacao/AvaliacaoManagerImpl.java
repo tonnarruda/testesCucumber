@@ -205,4 +205,9 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	{
 		return getDao().findPeriodoExperienciaIsNull(acompanhamentoExperiencia, empresaId);
 	}
+
+	public Collection<Avaliacao> findAllSelectComAvaliacaoDesempenho(Long empresaId, boolean ativa) 
+	{
+		return getDao().findAllSelectComAvaliacaoDesempenho(empresaId, ativa);
+	}
 }

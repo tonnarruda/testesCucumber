@@ -21,4 +21,5 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	void enviarLembrete(Long id, Empresa empresa);
 	Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String nomeBusca, Long avaliacaoId);
 	void gerarAutoAvaliacoes(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> participantes);
+	Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId);
 }

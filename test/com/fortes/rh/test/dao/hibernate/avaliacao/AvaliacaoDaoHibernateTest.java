@@ -1,12 +1,16 @@
 package com.fortes.rh.test.dao.hibernate.avaliacao;
 
+import java.util.Collection;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
+import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.PerguntaDao;
 import com.fortes.rh.dao.pesquisa.RespostaDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -14,6 +18,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -21,6 +26,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao>
 {
 	private AvaliacaoDao avaliacaoDao;
+	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
 	private EmpresaDao empresaDao;
 	private RespostaDao respostaDao;
 	private PerguntaDao perguntaDao;
@@ -87,6 +93,32 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 		assertEquals(1, avaliacaoDao.findAllSelect(empresa.getId(), true, TipoModeloAvaliacao.SOLICITACAO, null).size());
 		assertEquals(4, avaliacaoDao.findAllSelect(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO, null).size());
 		assertEquals(2, avaliacaoDao.findAllSelect(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO, "60").size());
+	}
+
+	public void testFindAllSelectComAvaliacaoDesempenho()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacao.setAtivo(true);
+		avaliacao.setEmpresa(empresa);
+		avaliacao.setTitulo("Modelo");
+		avaliacaoDao.save(avaliacao);
+
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setAvaliacao(avaliacao);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+
+		AvaliacaoDesempenho avaliacaoDesempenho2 = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho2.setAvaliacao(avaliacao);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho2);
+
+		Collection<Avaliacao> avaliacaos = avaliacaoDao.findAllSelectComAvaliacaoDesempenho(empresa.getId(), true);
+		assertEquals(1, avaliacaos.size());
+
+		Avaliacao resp = (Avaliacao) avaliacaos.toArray()[0];
+		assertEquals("Modelo", resp.getTitulo());
 	}
 	
 	public void testFindPeriodoExperienciaIsNull()
@@ -260,5 +292,9 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 
 	public void setPeriodoExperienciaDao(PeriodoExperienciaDao periodoExperienciaDao) {
 		this.periodoExperienciaDao = periodoExperienciaDao;
+	}
+
+	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao) {
+		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
 	}
 }
