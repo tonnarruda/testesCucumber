@@ -1,6 +1,7 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,7 +62,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaDescricao(competenciaDescricao);
 	}
 	
-	public ConfiguracaoNivelCompetencia(String faixaCompetencia, String faixaNivel, Integer faixaOrdem, String colaboradorNome, String colaboradorNivel, Integer colaboradorOrden)
+	public ConfiguracaoNivelCompetencia(String faixaCompetencia, String faixaNivel, Integer faixaOrdem, String colaboradorNome, BigInteger colaboradorId, String colaboradorNivel, Integer colaboradorOrden)
 	{
 		competenciaDescricao = faixaCompetencia;
 		nivelCompetencia = new NivelCompetencia();
@@ -70,6 +71,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		
 		configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
 		Colaborador colaborador = new Colaborador();
+		if(colaboradorId != null)
+			colaborador.setId(colaboradorId.longValue());
 		colaborador.setNome(colaboradorNome);
 		configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
 		
@@ -194,10 +197,13 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 	
 	public boolean isFaixaSalarial() {
-		return this.candidato == null && this.configuracaoNivelCompetenciaColaborador == null; 
+		return this.candidato == null && (this.configuracaoNivelCompetenciaColaborador == null || this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() == null); 
 	}
 	
-	public boolean isColaboradorOuCandidato() {
-		return this.configuracaoNivelCompetenciaColaborador != null; 
+	public boolean isColaborador() {
+		return this.configuracaoNivelCompetenciaColaborador != null && this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() != null; 
+	}
+	public Long getColaboradorId() {
+		return getConfiguracaoNivelCompetenciaColaborador().getColaborador().getId(); 
 	}
 }

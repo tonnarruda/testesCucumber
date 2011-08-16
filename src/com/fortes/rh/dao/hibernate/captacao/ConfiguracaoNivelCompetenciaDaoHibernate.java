@@ -134,7 +134,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	{
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao as nivelFaixaDescricao, ncncf.ordem as nivelFaixaOrdem, c.nome as colabNome, nc.descricao as nivelColabDescricao, nc.ordem as nivelColabOrdem from "); 
+		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao as nivelFaixaDescricao, ncncf.ordem as nivelFaixaOrdem, c.nome as colabNome, c.id as colabId, nc.descricao as nivelColabDescricao, nc.ordem as nivelColabOrdem from "); 
 		sql.append("ConfiguracaoNivelCompetencia cncf ");
 		sql.append("join NivelCompetencia ncncf on ncncf.id = cncf.nivelcompetencia_id ");
 		sql.append("left join Atitude a on a.id = cncf.competencia_id and 'A' = cncf.tipocompetencia ");
@@ -149,18 +149,15 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("(cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador_id = cncc.colaborador_id) ");
 		sql.append("or cncc.data is null) ");
 		
-		if(configuracaoNivelCompetenciaIds != null && configuracaoNivelCompetenciaIds.length > 0)
-			sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
+		sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
 		
 		if(ordenarPorNivel)
-			sql.append("order by c.nome, competencia, ncncf.ordem ");
+			sql.append("order by c.nome, c.id ");
 		else
 			sql.append("order by competencia, c.nome ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
-		
-		if(configuracaoNivelCompetenciaIds != null && configuracaoNivelCompetenciaIds.length > 0)
-			query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
+		query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
 		
 		Collection<Object[]> resultado = query.list();
 		
@@ -169,7 +166,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new ConfiguracaoNivelCompetencia((String)res[0], (String)res[1], (Integer)res[2], (String)res[3], (String)res[4], (Integer)res[5] ));
+			lista.add(new ConfiguracaoNivelCompetencia((String)res[0], (String)res[1], (Integer)res[2], (String)res[3], ((BigInteger)res[4]), (String)res[5], (Integer)res[6] ));
 		}
 		
 		return lista;				

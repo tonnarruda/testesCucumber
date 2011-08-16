@@ -24,13 +24,11 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
-	<parameter name="NIVEL_COMPETENCIAS" isForPrompting="false" class="java.lang.Object"/>
 
-	<field name="nivelCompetencia.descricao" class="java.lang.String"/>
-	<field name="competenciaDescricao" class="java.lang.String"/>
-	<field name="faixaSalarial" class="java.lang.Boolean"/>
-	<field name="colaboradorOuCandidato" class="java.lang.Boolean"/>
-	<field name="nivelCompetenciaColaborador.descricao" class="java.lang.String"/>
+	<field name="competencia" class="java.lang.String"/>
+	<field name="nivel" class="java.lang.String"/>
+	<field name="configuracaoFaixa" class="java.lang.Boolean"/>
+	<field name="configuracao" class="java.lang.Boolean"/>
 
 
 		<group  name="grpNome" >
@@ -84,9 +82,9 @@
 					<crosstabHeaderCell>						<cellContents mode="Opaque">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 						</cellContents>
-					</crosstabHeaderCell>					<rowGroup name="competenciaDescricao" width="207">
+					</crosstabHeaderCell>					<rowGroup name="competencia" width="207">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{competenciaDescricao}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{competencia}]]></bucketExpression>
 						</bucket>
 						<crosstabRowHeader>
 						<cellContents mode="Transparent">
@@ -96,7 +94,7 @@
 						x="0"
 						y="0"
 						width="205"
-						height="30"
+						height="23"
 						key="textField"
 						isRemoveLineWhenBlank="true"
 						isPrintWhenDetailOverflows="true"/>
@@ -104,14 +102,14 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{competenciaDescricao}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{competencia}]]></textFieldExpression>
 				</textField>
 						</cellContents>
 						</crosstabRowHeader>
 					</rowGroup>
-					<columnGroup name="nivelCompetenciaDescricao" height="60" headerPosition="Center">
+					<columnGroup name="nivel" height="78" headerPosition="Center">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$P{NIVEL_COMPETENCIAS}]]></bucketExpression>
+							<bucketExpression class="java.lang.String"><![CDATA[$F{nivel}]]></bucketExpression>
 						</bucket>
 						<crosstabColumnHeader>
 						<cellContents backcolor="#FFFFFF" mode="Transparent">
@@ -121,72 +119,64 @@
 						x="0"
 						y="0"
 						width="26"
-						height="60"
+						height="75"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="Left">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{nivelCompetenciaDescricao}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{nivel}]]></textFieldExpression>
 				</textField>
 						</cellContents>
 						</crosstabColumnHeader>
 					</columnGroup>
 
-					<measure name="competencia_count" class="java.lang.String" calculation="Count">
-						<measureExpression><![CDATA[$F{competenciaDescricao}]]></measureExpression>
+					<measure name="isConfiguracao" class="java.lang.Boolean">
+						<measureExpression><![CDATA[$F{configuracao}]]></measureExpression>
 					</measure>
-					<measure name="vNivelCompetenciaColaboradorDescricao" class="java.lang.String">
-						<measureExpression><![CDATA[$F{nivelCompetenciaColaborador.descricao}]]></measureExpression>
+					<measure name="isConfiguracaoFaixa" class="java.lang.Boolean">
+						<measureExpression><![CDATA[$F{configuracaoFaixa}]]></measureExpression>
 					</measure>
-					<measure name="vNivelCompetenciaDescricao" class="java.lang.String">
-						<measureExpression><![CDATA[$F{nivelCompetencia.descricao}]]></measureExpression>
-					</measure>
-					<measure name="isColaboradorOuCandidato" class="java.lang.Boolean">
-						<measureExpression><![CDATA[$F{colaboradorOuCandidato}]]></measureExpression>
-					</measure>
-					<measure name="isFaixaSalarial" class="java.lang.Boolean">
-						<measureExpression><![CDATA[$F{faixaSalarial}]]></measureExpression>
-					</measure>
-					<crosstabCell width="26" height="30">
+					<crosstabCell width="28" height="25">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 				<ellipse>
 					<reportElement
 						x="3"
-						y="12"
+						y="9"
 						width="8"
-						height="7"
+						height="8"
+						backcolor="#333333"
 						key="ellipse-1">
-							<printWhenExpression><![CDATA[new Boolean($V{isColaboradorOuCandidato}.booleanValue() && $V{vNivelCompetenciaColaboradorDescricao}.equals($V{vNivelCompetenciaDescricao}))]]></printWhenExpression>
+							<printWhenExpression><![CDATA[$V{isConfiguracaoFaixa}]]></printWhenExpression>
 						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
 				<ellipse>
 					<reportElement
-						x="14"
-						y="12"
+						x="15"
+						y="9"
 						width="8"
-						height="7"
-						backcolor="#000000"
+						height="8"
+						backcolor="#FFFFFF"
 						key="ellipse-1">
-							<printWhenExpression><![CDATA[new Boolean($V{isFaixaSalarial}.booleanValue() && $V{vNivelCompetenciaColaboradorDescricao}.equals($V{vNivelCompetenciaDescricao}))]]></printWhenExpression>
+							<printWhenExpression><![CDATA[$V{isConfiguracao}]]></printWhenExpression>
 						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="0" height="30" columnTotalGroup="nivelCompetenciaDescricao">
+					<crosstabCell width="0" height="25" columnTotalGroup="nivel">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="26" height="0" rowTotalGroup="competenciaDescricao">
+					<crosstabCell width="28" height="0" rowTotalGroup="competencia">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="0" height="0" rowTotalGroup="competenciaDescricao" columnTotalGroup="nivelCompetenciaDescricao">
+					<crosstabCell width="0" height="0" rowTotalGroup="competencia" columnTotalGroup="nivel">
 						<cellContents mode="Transparent">
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
 						</cellContents>

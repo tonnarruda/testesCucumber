@@ -7,9 +7,18 @@ import java.util.Collection;
  */
 public class ConfiguracaoNivelCompetenciaVO
 {
+
 	private String nome;
-	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
-	private Collection<NivelCompetencia> nivelCompetencias;
+	private Collection<MatrizCompetenciaNivelConfiguracao> matrizes;
+
+	public ConfiguracaoNivelCompetenciaVO() {
+		super();
+	}
+	public ConfiguracaoNivelCompetenciaVO(String nome, Collection<MatrizCompetenciaNivelConfiguracao> matrizes) {
+		super();
+		this.nome = nome;
+		this.matrizes = matrizes;
+	}
 	
 	public String getNome() {
 		return nome;
@@ -26,20 +35,11 @@ public class ConfiguracaoNivelCompetenciaVO
 	public boolean isConfiguracaoColaboradorOuCandidato() {
 		return nome != null;
 	}
-
-	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias() {
-		return configuracaoNivelCompetencias;
+	
+	public Collection<MatrizCompetenciaNivelConfiguracao> getMatrizes() {
+		return matrizes;
 	}
-
-	public void setConfiguracaoNivelCompetencias(Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) {
-		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
-	}
-
-	public Collection<NivelCompetencia> getNivelCompetencias() {
-		return nivelCompetencias;
-	}
-
-	public void setNivelCompetencias(Collection<NivelCompetencia> nivelCompetencias) {
-		this.nivelCompetencias = nivelCompetencias;
+	public void setMatrizes(Collection<MatrizCompetenciaNivelConfiguracao> matrizes) {
+		this.matrizes = matrizes;
 	}
 }
