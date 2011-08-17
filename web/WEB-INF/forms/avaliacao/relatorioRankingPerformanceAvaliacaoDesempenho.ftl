@@ -4,7 +4,7 @@
 <head>
 <@ww.head/>
 
-	<title>Ranking de Performace das Avaliações de Desempenho Agrupado por Modelo de Aavaliação</title>
+	<title>Ranking de Performance das Avaliações de Desempenho Agrupado por Modelo de Avaliação</title>
 
 	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('avaliacao','periodoIni','periodoFim'), new Array('periodoIni','periodoFim'))"/>
 	<#include "../ftl/mascarasImports.ftl" />
@@ -47,7 +47,7 @@
 			
 			<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 			<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
-			<@ww.select label="Modelo de Avaliação de Período de Experiência" required="true" name="avaliacao.id" id="avaliacao" list="avaliacoes" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="pesquisar(this.value);" />
+			<@ww.select label="Modelo de Avaliação de Desempenho" required="true" name="avaliacao.id" id="avaliacao" list="avaliacoes" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="pesquisar(this.value);" />
 			<@frt.checkListBox label="Colaboradores" name="colaboradorsCheck" id="colaboradorsCheck" list="colaboradorsCheckList"/>
 			<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>

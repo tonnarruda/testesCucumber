@@ -105,7 +105,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		Colaborador maria = ColaboradorFactory.getEntity(2L);
 		maria.setNome("maria");
 
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(999999999999L);
 		
 		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
 		nivelPessimo.setDescricao("pessimo");
@@ -119,11 +119,11 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		nivelBom.setDescricao("bom");
 		nivelBom.setOrdem(3);
 		
-		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaJoao = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(1L);
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaJoao = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(999999999998L);
 		configuracaoNivelCompetenciaJoao.setColaborador(joao);
 		configuracaoNivelCompetenciaJoao.setFaixaSalarial(faixaSalarial);
 		
-		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaMaria = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(1L);
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaMaria = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(999999999999L);
 		configuracaoNivelCompetenciaMaria.setColaborador(maria);
 		configuracaoNivelCompetenciaMaria.setFaixaSalarial(faixaSalarial);
 		
@@ -158,23 +158,23 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 
 		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(nivelRuim,nivelBom);
 		
-		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaColaborador").with(eq(competenciaIds), eq(true)).will(returnValue(configuracaoNivelCompetencias));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaColaborador").with(eq(competenciaIds), eq(faixaSalarial.getId()), eq(true)).will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(nivelCompetencias));
 		
-		Collection<ConfiguracaoNivelCompetenciaVO> result = configuracaoNivelCompetenciaManager.montaRelatorioConfiguracaoNivelCompetencia(empresa.getId(),competenciaIds);
+		Collection<ConfiguracaoNivelCompetenciaVO> result = configuracaoNivelCompetenciaManager.montaRelatorioConfiguracaoNivelCompetencia(empresa.getId(),faixaSalarial.getId(), competenciaIds);
 		
 		assertEquals(2, result.size());
 
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizJoao = ((ConfiguracaoNivelCompetenciaVO)result.toArray()[0]).getMatrizes();
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizMaria = ((ConfiguracaoNivelCompetenciaVO)result.toArray()[1]).getMatrizes();
 		
-		assertEquals("Matriz padrão (6), mais competências do João (2)", 8, matrizJoao.size());
-		assertEquals("Matriz padrão (6), mais competências da Maria (1)", 7, matrizMaria.size());
+		assertEquals("Matriz padrão (9) com GAP, mais competências do João (2 + 2GAP = 4)", 13, matrizJoao.size());
+		assertEquals("Matriz padrão (9) com GAP, mais competências da Maria (1 + 1GAP = 2)", 11, matrizMaria.size());
 		
 		assertEquals(Boolean.TRUE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[0]).getConfiguracaoFaixa());
 		assertEquals(Boolean.FALSE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[0]).getConfiguracao());
-		assertEquals(Boolean.FALSE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[6]).getConfiguracaoFaixa());
-		assertEquals(Boolean.TRUE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[6]).getConfiguracao());
+		assertEquals(Boolean.TRUE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[7]).getConfiguracaoFaixa());
+		assertEquals(Boolean.FALSE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[7]).getConfiguracao());
 	}
 	
 	public void testGetCompetenciasCandidato()
@@ -202,12 +202,14 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 	
 	public void testFindColaboradorAbaixoNivel()
 	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia("faixa1", "bom", 5, "Joao", null, "Ruim", 2);
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia("faixa2", "medio", 2, "Pedro", null, "otimo", 5);
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias =  Arrays.asList(configuracaoNivelCompetencia1, configuracaoNivelCompetencia2);
 		
-		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaColaborador").with(ANYTHING,ANYTHING).will(returnValue(configuracaoNivelCompetencias));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaColaborador").with(ANYTHING, eq(faixaSalarial.getId()),ANYTHING).will(returnValue(configuracaoNivelCompetencias));
 		
-		assertEquals(1, configuracaoNivelCompetenciaManager.findColaboradorAbaixoNivel(new Long[]{1L, 2L}).size());
+		assertEquals(1, configuracaoNivelCompetenciaManager.findColaboradorAbaixoNivel(new Long[]{1L, 2L}, faixaSalarial.getId()).size());
 	}
 }

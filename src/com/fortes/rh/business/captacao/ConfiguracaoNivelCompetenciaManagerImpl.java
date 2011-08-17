@@ -92,12 +92,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findCompetenciaByFaixaSalarial(faixaId);
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] competenciasIds) {
-		return getDao().findCompetenciaColaborador(competenciasIds, false);
-	}
-
-	public Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds) {
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(competenciasIds, false);
+	public Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds, Long faixaSalarialId) {
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(competenciasIds, faixaSalarialId, false);
 		Collection<ConfiguracaoNivelCompetencia> configuracaoAbaixos = new ArrayList<ConfiguracaoNivelCompetencia>();
 
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias) {
@@ -109,11 +105,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return configuracaoAbaixos;
 	}
 
-	public Collection<ConfiguracaoNivelCompetenciaVO> montaRelatorioConfiguracaoNivelCompetencia(Long empresaId, Long[] competenciasIds) 
+	public Collection<ConfiguracaoNivelCompetenciaVO> montaRelatorioConfiguracaoNivelCompetencia(Long empresaId, Long faixaSalarialId, Long[] competenciasIds) 
 	{
 		Collection<ConfiguracaoNivelCompetenciaVO> vos = new ArrayList<ConfiguracaoNivelCompetenciaVO>();
 
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(competenciasIds, true);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(competenciasIds, faixaSalarialId, true);
 		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
 
 		int totalPontosFaixa = 0;
@@ -123,6 +119,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			competenciaNiveis.put(competencia.getCompetenciaDescricao(), competencia.getNivelCompetencia().getDescricao());
 
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
+		Map<String, String> competenciaNiveisConfigurados = new HashMap<String, String>();
 		for (Map.Entry<String, String> competenciaNivel : competenciaNiveis.entrySet()) 
 		{
 			for (NivelCompetencia nivel : niveis) 
@@ -131,26 +128,50 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, false));
 
 				if(isConfiguracaoFaixa)
+				{
+					competenciaNiveisConfigurados.put(competenciaNivel.getKey(), competenciaNivel.getValue());
 					totalPontosFaixa += nivel.getOrdem();
+				}
 			}
+			
+			// Adiciona coluna para o gap
+			matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), "gap", false, false));
 		}
 
 		Long idColaboradorAnterior = null;
 		ConfiguracaoNivelCompetenciaVO vo = null;
 		
+		String nome;
+		String competencia;
+		String nivel;
+		Integer ordem;
+		Integer ordemFaixa;
+		
 		for (ConfiguracaoNivelCompetencia configNivelCompetenciaColaborador : configuracaoNivelCompetencias) 
 		{
+			nome = configNivelCompetenciaColaborador.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome();
+			competencia = configNivelCompetenciaColaborador.getCompetenciaDescricao();
+			nivel = configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getDescricao();
+			ordem = configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getOrdem();
+			ordemFaixa = configNivelCompetenciaColaborador.getNivelCompetencia().getOrdem();
+			
 			if(configNivelCompetenciaColaborador.isColaborador())
 			{
 				if(!configNivelCompetenciaColaborador.getColaboradorId().equals(idColaboradorAnterior))
 				{
-					vo = new ConfiguracaoNivelCompetenciaVO(configNivelCompetenciaColaborador.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome(), new ArrayList<MatrizCompetenciaNivelConfiguracao>(matrizModelo));
+					vo = new ConfiguracaoNivelCompetenciaVO(nome, new ArrayList<MatrizCompetenciaNivelConfiguracao>(matrizModelo));
 					vo.setTotalPontosFaixa(totalPontosFaixa);
 					vos.add(vo);
 				}
 				
-				vo.somaTotalPontos(configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getOrdem());
-				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(configNivelCompetenciaColaborador.getCompetenciaDescricao(), configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getOrdem() + " - " + configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getDescricao(), false, true));
+				boolean isConfiguracaoFaixa = false;
+				if (competenciaNiveisConfigurados.containsKey(competencia) && competenciaNiveisConfigurados.get(competencia).equals(nivel))
+					isConfiguracaoFaixa = true;
+				
+				vo.somaTotalPontos(ordem);
+				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(competencia, ordem + " - " + nivel, isConfiguracaoFaixa, true));
+				//Configura o gap
+				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(competencia, "gap", false, false, (ordem - ordemFaixa)));
 				idColaboradorAnterior = configNivelCompetenciaColaborador.getColaboradorId();
 			}
 		}

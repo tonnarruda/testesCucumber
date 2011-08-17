@@ -52,7 +52,7 @@
 <body>
 	<div class="tabelaCompetencias">
 		<#if niveisCompetenciaFaixaSalariaisSalvos?exists && 0 < niveisCompetenciaFaixaSalariaisSalvos?size>
-			<p>Selecione uma solicitação no campo abaixo para verificar o nível de competência exigido:</p>
+			<p>Comparar as competências do candidato com as exigidas pelo Cargo da seguinte solicitação:</p>
 
 			<div id="legendas" style="float:right;">
 				<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial

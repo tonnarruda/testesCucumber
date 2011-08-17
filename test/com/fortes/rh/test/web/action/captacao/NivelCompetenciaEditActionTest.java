@@ -282,11 +282,11 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 	public void testImprimirRelatorioCompetenciasColaborador() throws Exception
 	{
 		Cargo cargo = CargoFactory.getEntity();
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCargo(cargo);
 		action.setFaixaSalarial(faixaSalarial);
 		
-		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING).will(returnValue(Arrays.asList(new ConfiguracaoNivelCompetencia())));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING, eq(faixaSalarial.getId())).will(returnValue(Arrays.asList(new ConfiguracaoNivelCompetencia())));
 		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(ANYTHING).will(returnValue(faixaSalarial));
 		
 		assertEquals("success", action.imprimirRelatorioCompetenciasColaborador());
@@ -296,13 +296,13 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 	public void testImprimirRelatorioCompetenciasColaboradorException() throws Exception
 	{
 		Cargo cargo = CargoFactory.getEntity();
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCargo(cargo);
 		action.setFaixaSalarial(faixaSalarial);
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
-		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING).will(returnValue(new ArrayList<ConfiguracaoNivelCompetencia>()));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING, eq(faixaSalarial.getId())).will(returnValue(new ArrayList<ConfiguracaoNivelCompetencia>()));
 		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialManager.expects(once()).method("findAllSelectByCargo").with(ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
 		

@@ -267,8 +267,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public String imprimirRelatorioCompetenciasColaborador()
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
-		parametros = RelatorioUtil.getParametrosRelatorio("Relatório Colaboradres com nível de competência inferior ao exigido", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
-		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findColaboradorAbaixoNivel(LongUtil.arrayStringToArrayLong(competenciasCheck));
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório Colaboradores com nível de competência inferior ao exigido", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
+		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findColaboradorAbaixoNivel(LongUtil.arrayStringToArrayLong(competenciasCheck), faixaSalarial.getId());
 		
 		if(niveisCompetenciaFaixaSalariais.isEmpty())
 		{
@@ -285,8 +285,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public String imprimirMatrizCompetenciasColaborador()
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
-		parametros = RelatorioUtil.getParametrosRelatorio("Relatório Colaboradres com nível de competência inferior ao exigido", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
-		configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaRelatorioConfiguracaoNivelCompetencia(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(competenciasCheck));
+		parametros = RelatorioUtil.getParametrosRelatorio("Matriz comparativa Cargo x Colaborador", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
+		configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaRelatorioConfiguracaoNivelCompetencia(getEmpresaSistema().getId(), faixaSalarial.getId(), LongUtil.arrayStringToArrayLong(competenciasCheck));
 		
 		if(configuracaoNivelCompetenciaVOs.isEmpty())
 		{

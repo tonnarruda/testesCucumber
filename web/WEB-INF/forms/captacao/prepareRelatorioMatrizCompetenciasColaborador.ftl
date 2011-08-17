@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Competências dos Colaboradores</title>
+	<title>Matriz comparativa de competências de Colaborador X Cargo/Faixa</title>
 	<#assign validarCampos="return validaFormulario('form', new Array('faixa', '@competenciasCheck'))"/>	
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>

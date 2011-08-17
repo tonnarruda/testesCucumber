@@ -28,8 +28,7 @@
 
 	<field name="nome" class="java.lang.String"/>
 	<field name="matrizes" class="java.lang.Object"/>
-	<field name="totalPontos" class="java.lang.Integer"/>
-	<field name="totalPontosFaixa" class="java.lang.Integer"/>
+	<field name="totaisDescricao" class="java.lang.String"/>
 
 	<variable name="NUM_PAGINA" class="java.lang.Integer" resetType="None" incrementType="Page" calculation="Count">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
@@ -43,7 +42,7 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="51"  isSplitAllowed="true" >
+			<band height="65"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="0"
@@ -56,6 +55,69 @@
 					</subreportParameter>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "cabecalho.jasper"]]></subreportExpression>
 				</subreport>
+				<ellipse>
+					<reportElement
+						x="43"
+						y="53"
+						width="8"
+						height="8"
+						key="ellipse-2"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<ellipse>
+					<reportElement
+						x="213"
+						y="53"
+						width="8"
+						height="8"
+						backcolor="#000000"
+						key="ellipse-3"
+						positionType="Float"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="56"
+						y="51"
+						width="152"
+						height="13"
+						key="textField-2"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Nível de Competência do Colaborador"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="227"
+						y="51"
+						width="216"
+						height="13"
+						key="textField-3"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Nível de Competência exigido pelo Cargo/Faixa Salarial"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="51"
+						width="40"
+						height="13"
+						key="textField-4"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Legenda: "]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -116,7 +178,7 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Índice: " + $F{totalPontos} + "/" + $F{totalPontosFaixa} + " = 71,43%."]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Índice de assertividade: " + $F{totaisDescricao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

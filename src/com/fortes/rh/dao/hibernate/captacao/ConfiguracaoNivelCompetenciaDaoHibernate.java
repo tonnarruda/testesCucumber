@@ -131,7 +131,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] configuracaoNivelCompetenciaIds, boolean ordenarPorNivel) 
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] configuracaoNivelCompetenciaIds, Long faixaSalarialColaboradorId, boolean ordenarPorNivel) 
 	{
 		StringBuilder sql = new StringBuilder();
 
@@ -147,7 +147,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("left join ConfiguracaoNivelCompetenciaColaborador cncc on cncc.id = cnc.ConfiguracaoNivelCompetenciaColaborador_id ");
 		sql.append("left join Colaborador c on c.id = cncc.colaborador_id ");
 		sql.append("where  ");
-		sql.append("(cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador_id = cncc.colaborador_id) ");
+		sql.append("(cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador_id = cncc.colaborador_id and cncc.faixaSalarial_id = :faixaSalarialColaboradorId) ");
 		sql.append("or cncc.data is null) ");
 		
 		sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
@@ -159,6 +159,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
+		query.setParameter("faixaSalarialColaboradorId", faixaSalarialColaboradorId);
 		
 		Collection<Object[]> resultado = query.list();
 		
