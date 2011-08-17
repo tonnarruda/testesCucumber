@@ -25,6 +25,13 @@ public class PerfilListAction extends MyActionSupportList {
 		return Action.SUCCESS;
 	}
 
+	
+	public String imprimirPerfis() throws Exception
+	{
+		perfils = perfilManager.findPapeis();
+		return Action.SUCCESS;
+	}
+	
 	public String delete() throws Exception {
 		perfilManager.remove(new Long[] { perfil.getId() });
 		addActionMessage("Perfil excluído com sucesso.");

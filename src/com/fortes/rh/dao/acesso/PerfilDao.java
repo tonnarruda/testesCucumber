@@ -15,4 +15,4 @@ public interface PerfilDao extends GenericDao<Perfil>
 	public Collection<Perfil> findAll(Integer page, Integer pagingSize);
 	public Integer getCount();
 
-	}
+}

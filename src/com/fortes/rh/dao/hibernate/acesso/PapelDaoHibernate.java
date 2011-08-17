@@ -6,6 +6,7 @@ package com.fortes.rh.dao.hibernate.acesso;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -34,5 +35,19 @@ public class PapelDaoHibernate extends GenericDaoHibernate<Papel> implements Pap
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Papel.class));
 		return criteria.list();
+	}
+
+	public Collection<Papel> findByPerfil(Long perfilId) 
+	{
+		StringBuilder hql = new StringBuilder("select new Papel(pa.id, pa.nome, pa.ordem, pa.papelMae.id) ");
+		hql.append("from Perfil pe ");
+		hql.append("join pe.papeis pa ");
+		hql.append("where pe.id = :perfilId ");
+		hql.append("order by pa.papelMae.id desc, pa.ordem ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("perfilId", perfilId);
+		
+		return query.list();
 	}
 }

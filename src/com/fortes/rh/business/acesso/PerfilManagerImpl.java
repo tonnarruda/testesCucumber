@@ -1,5 +1,6 @@
 package com.fortes.rh.business.acesso;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
@@ -7,10 +8,12 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.SpringUtil;
 
 public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> implements PerfilManager
 {
+	private PapelManager papelManager;
 	
 	public Collection<Perfil> findAll(Integer page, Integer pagingSize)
 	{
@@ -48,6 +51,31 @@ public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> imp
 		Collection<String> emails = colaboradorManager.findEmailsDeColaboradoresByPerfis(perfis, empresaId);
 		
 		return emails;
+	}
+
+	public Collection<Perfil> findPapeis() 
+	{
+		Collection<Perfil> perfis = getDao().findAll(null, null);
+		
+		for (Perfil perfil : perfis) 
+		{
+			String a = papelManager.montarArvore(papelManager.findByPerfil(perfil.getId()));
+
+			System.out.println("################");
+			System.out.println("################");
+			System.out.println("################");
+			System.out.println(perfil.getNome());
+			
+			System.out.println(a);
+		}
+		
+		return null;
+	}
+
+	
+	
+	public void setPapelManager(PapelManager papelManager) {
+		this.papelManager = papelManager;
 	}
 
 	

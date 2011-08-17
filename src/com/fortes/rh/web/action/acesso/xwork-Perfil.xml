@@ -4,6 +4,15 @@
 <xwork>
 	<package name="perfil" extends="default" namespace="/acesso/perfil">
 		
+		<action name="imprimirPerfis" class="com.fortes.rh.web.action.acesso.PerfilListAction" method="imprimirPerfis">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/competencias_colaborador.jasper</param>
+				<param name="dataSource">niveisCompetenciaFaixaSalariais</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">competencias_colaborador.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.acesso.PerfilListAction" method="list">
 			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/acesso/perfilList.ftl</result>

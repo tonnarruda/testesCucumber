@@ -26,8 +26,8 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}'/>
 	
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
-		</button>
+		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnImprimirPdf" onclick="window.location='imprimirPerfis.action'">
 	</div>
 </body>
 </html>

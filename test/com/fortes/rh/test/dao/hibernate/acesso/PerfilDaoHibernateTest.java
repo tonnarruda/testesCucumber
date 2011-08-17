@@ -53,7 +53,7 @@ public class PerfilDaoHibernateTest extends GenericDaoHibernateTest<Perfil>
 		assertEquals(1, perfilDao.findPerfisByCodigoPapel(codigo).size());
 		
 	}
-
+	
 	public void testFindAll()
 	{
 		String codigo = "TESTE_PAPEL_FINDPERFIS";
