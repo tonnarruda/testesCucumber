@@ -22,6 +22,7 @@ rhcomercial_homologacao:
   environment:
     FORTES_HOME_COMERCIAL: /home/web/fortes/RHCOMERCIAL
     JAVA_HOME: /home/web/temp/jdk1.6.0_22
+    ANT_HOME: /home/web/temp/apache-ant-1.8.1
 	
 rhcomercial_informatica:
   host: 10.1.254.77777
