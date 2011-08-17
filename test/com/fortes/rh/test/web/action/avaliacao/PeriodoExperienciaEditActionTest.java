@@ -1,30 +1,72 @@
 package com.fortes.rh.test.web.action.avaliacao;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+
+import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction;
+import com.fortes.web.tags.CheckBox;
+
 
 public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 {
 	private PeriodoExperienciaEditAction action;
 	private Mock manager;
+	private Mock colaboradorManager;
+	private Mock avaliacaoDesempenhoManager;
+	private Mock areaOrganizacionalManager;
+	private Mock estabelecimentoManager;
+	private Mock avaliacaoManager;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
 		manager = new Mock(PeriodoExperienciaManager.class);
+		colaboradorManager = new Mock(ColaboradorManager.class);
+		avaliacaoDesempenhoManager = new Mock(AvaliacaoDesempenhoManager.class);
+		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
+		avaliacaoManager = new Mock(AvaliacaoManager.class);
 		action = new PeriodoExperienciaEditAction();
+		
 		action.setPeriodoExperienciaManager((PeriodoExperienciaManager) manager.proxy());
-
+		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+		action.setAvaliacaoDesempenhoManager((AvaliacaoDesempenhoManager) avaliacaoDesempenhoManager.proxy());
+		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+		action.setAvaliacaoManager((AvaliacaoManager) avaliacaoManager.proxy());
 		action.setPeriodoExperiencia(new PeriodoExperiencia());
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		
+		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
+		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
 
 	protected void tearDown() throws Exception
@@ -77,6 +119,57 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 
 		assertEquals("success", action.update());
 	}
+	
+    public void testImpRankPerformAvDesempenho() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	empresa.setNome("Ente");
+    	action.setEmpresaSistema(empresa);
+    	
+    	Date periodo = new Date();
+    	action.setPeriodoIni(periodo);
+    	action.setPeriodoFim(periodo);
+    	
+    	Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+    	action.setAvaliacao(avaliacao);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	
+    	Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+    	colaboradors.add(colaborador);
+    	
+    	colaboradorManager.expects(once()).method("findColabPeriodoExperienciaAgrupadoPorModelo").will(returnValue(colaboradors));
+    	
+    	assertEquals("success",action.impRankPerformAvDesempenho());
+    }
+    
+    public void testImpRankPerformAvDesempenhoException() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	empresa.setNome("Ente");
+    	action.setEmpresaSistema(empresa);
+    	
+    	Date periodo = new Date();
+    	action.setPeriodoIni(periodo);
+    	action.setPeriodoFim(periodo);
+    	
+    	Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+    	action.setAvaliacao(avaliacao);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+    	colaboradors.add(colaborador);
+    	
+    	Collection<Avaliacao> avaliacaos = new ArrayList<Avaliacao>();
+
+    	colaboradorManager.expects(once()).method("findColabPeriodoExperienciaAgrupadoPorModelo").will(throwException(new Exception()));
+    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao");
+    	estabelecimentoManager.expects(once()).method("populaCheckBox");
+    	avaliacaoManager.expects(once()).method("findAllSelectComAvaliacaoDesempenho").will(returnValue(avaliacaos));
+    	colaboradorManager.expects(once()).method("findByAvaliacao").will(returnValue(colaboradors));
+    	
+    	assertEquals("input",action.impRankPerformAvDesempenho());
+    }
 	
 	public void testPrepareInsert() throws Exception
 	{

@@ -18,6 +18,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
@@ -33,6 +34,8 @@ import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
@@ -103,6 +106,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock experienciaManager;
     private Mock acPessoalClientColaborador;
     private Mock parametrosDoSistemaManager;
+    private Mock avaliacaoDesempenhoManager;
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
 	private List<CandidatoIdioma> idiomas;
@@ -121,7 +125,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
         colaboradorManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
-
+        
         historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
         colaboradorManager.setHistoricoColaboradorManager((HistoricoColaboradorManager)historicoColaboradorManager.proxy());
 
@@ -160,6 +164,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
+        MockSpringUtil.mocks.put("avaliacaoDesempenhoManager", avaliacaoDesempenhoManager);
         
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
