@@ -41,7 +41,9 @@
     <property name="dao">
       <ref bean="perfilDao" />
     </property>
-   
+    <property name="papelManager">
+      <ref bean="papelManager" />
+    </property>
   </bean>
   <bean id="perfilManager" parent="parentManager">
     <property name="proxyInterfaces">

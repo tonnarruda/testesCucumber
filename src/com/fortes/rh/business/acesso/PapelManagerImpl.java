@@ -57,7 +57,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 
 		return montarOpcoes(papeisPermitidos);
 	}
-
+	
 	private String montarOpcoes(Collection<Papel> papeis)
 	{
 		StringBuilder perfilOrganizado = new StringBuilder();
@@ -85,6 +85,46 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 
 		return perfilOrganizado.toString();
 	}
+	
+	public String montarArvore(Collection<Papel> papeis)
+	{
+		StringBuilder perfilOrganizado = new StringBuilder();
+		
+		for (Papel papel : papeis)
+		{
+			if(papel.getPapelMae() == null || papel.getPapelMae().getId() == null)
+			{
+				perfilOrganizado.append( papel.getNome() + "\n");
+				perfilOrganizado.append( getFolha(papel.getId(), papeis, 1));
+			}
+		}
+		
+		return perfilOrganizado.toString();
+	}
+	
+
+	private String getFolha(Long id, Collection<Papel> papeis, int posicao)
+	{
+		StringBuilder filhos = new StringBuilder();
+		String maisFilhos = "";
+
+		
+		for (Papel papel : papeis)
+		{
+			if(papel.getPapelMae() != null && papel.getPapelMae().getId()!= null && papel.getPapelMae().getId().equals(id))
+			{
+				filhos.append(posicao + " " + papel.getNome() + "\n");
+				maisFilhos = getFolha(papel.getId(), papeis, posicao + 1);
+				if(maisFilhos != "")
+					filhos.append( maisFilhos);
+			}
+
+		}
+
+		return filhos.toString();
+	}
+
+	
 
 	private String getFilhos(Long id, Collection<Papel> papeis, String idExibir)
 	{
@@ -162,6 +202,11 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Collection<Papel> findByPerfil(Long perfilId) 
+	{
+		return getDao().findByPerfil(perfilId);
 	}
 
 

@@ -14,8 +14,7 @@ import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.model.acesso.Perfil;
 
 @SuppressWarnings("unchecked")
-public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements
-		PerfilDao {
+public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements PerfilDao {
 
 	public Collection<Perfil> findPerfisByCodigoPapel(String codigo) {
 		StringBuilder hql = new StringBuilder(
@@ -29,7 +28,7 @@ public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements
 
 		return query.list();
 	}
-
+	
 	public Collection<Perfil> findAll(Integer page, Integer pagingSize) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 
@@ -39,11 +38,14 @@ public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements
 
 		criteria.setProjection(p);
 
-		criteria.setFirstResult(((page - 1) * pagingSize));
-		criteria.setMaxResults(pagingSize);
+		if(page != null)
+		{
+			criteria.setFirstResult(((page - 1) * pagingSize));
+			criteria.setMaxResults(pagingSize);			
+		}
+		
 		criteria.addOrder(Order.asc("c.nome"));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(
-				Perfil.class));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Perfil.class));
 
 		return criteria.list();
 

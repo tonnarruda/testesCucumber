@@ -11,5 +11,6 @@ public interface PerfilManager extends GenericManager<Perfil>
 	Collection<String> getEmailsByRoleLiberaSolicitacao(Long empresaId);
 	public Integer getCount();
 	public Collection<Perfil> findAll(Integer page, Integer pagingSize);
+	Collection<Perfil> findPapeis();
 	
 }

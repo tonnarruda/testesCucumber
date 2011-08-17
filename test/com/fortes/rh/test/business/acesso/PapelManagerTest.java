@@ -103,4 +103,47 @@ public class PapelManagerTest extends MockObjectTestCase
 		
 		papelManager.atualizarPapeis(10L);
 	}
+	
+	public void testMontarArvore()
+	{
+		Collection<Papel> papeis = new ArrayList<Papel>();
+		
+		Papel papelVizinho = new Papel();
+		papelVizinho.setNome("Vizinho");
+		papelVizinho.setId(3L);
+		papeis.add(papelVizinho);
+		
+		Papel papelAvo = new Papel(); 
+		papelAvo.setNome("Avo");
+		papelAvo.setId(2L);
+		papeis.add(papelAvo);
+		
+		Papel papelMae = new Papel(); 
+		papelMae.setNome("Mae");
+		papelMae.setId(4L);
+		papelMae.setPapelMae(papelAvo);
+		papeis.add(papelMae);
+		
+		Papel papelTia = new Papel(); 
+		papelTia.setNome("Tia");
+		papelTia.setId(6L);
+		papelTia.setPapelMae(papelAvo);
+		papeis.add(papelTia);
+		
+		Papel papelFilho1 = new Papel();
+		papelFilho1.setNome("Filho 1");
+		papelFilho1.setId(1L);
+		papelFilho1.setPapelMae(papelMae);
+		papeis.add(papelFilho1);
+		
+		Papel papelFilho2 = new Papel();
+		papelFilho2.setNome("Filho 2");
+		papelFilho2.setId(5L);
+		papelFilho2.setPapelMae(papelMae);
+		papeis.add(papelFilho2);
+		
+		String arvore = papelManager.montarArvore(papeis);
+		System.out.println(arvore);
+		
+	}
 }

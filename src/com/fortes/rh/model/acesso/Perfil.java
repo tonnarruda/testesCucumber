@@ -33,6 +33,7 @@ public class Perfil extends AbstractModel implements Serializable, Cloneable
 		this.nome = nome;
 	}
 
+
 	public String getNome()
 	{
 		return nome;

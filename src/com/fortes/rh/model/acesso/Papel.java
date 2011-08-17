@@ -20,6 +20,20 @@ import com.fortes.model.AbstractModel;
 @SequenceGenerator(name="sequence", sequenceName="papel_sequence", allocationSize=1)
 public class Papel extends AbstractModel implements Serializable, Cloneable
 {
+	public Papel() 
+	{
+		super();
+	}
+
+	public Papel(Long id, String nome, int ordem, Long papelMaeId) 
+	{
+		super();
+		this.setId(id);
+		this.nome = nome;
+		this.ordem = ordem;
+		setPapelMaeId(papelMaeId);
+	}
+
 	@Column(length=50)
 	private String codigo;
 	@Column(length=100)
