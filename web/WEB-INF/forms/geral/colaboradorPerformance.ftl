@@ -77,6 +77,11 @@
 		text-decoration: none;
 		color: #000;
 	}
+	
+	.grade_field a {
+		font-family: verdana,sans-seriff;
+		font-size: 13px !important;
+	}
 </style>
 
 <title>Performance Profissional</title>
@@ -111,6 +116,13 @@
 	</#if>
 			
 	<div class='grade_field'><strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.cargo?exists>${historicoColaborador.faixaSalarial.cargo.nome}</#if></div>
+	
+	<#if colaborador.contato?exists && colaborador.contato.email?exists>
+		<div class='grade_field'><strong>Email:</strong> <a title="enviar email" href="mailto:${colaborador.contato.email}">${colaborador.contato.email}</a></div>
+	<#else>
+		<div class='grade_field'><strong>Email:</strong></div>
+	</#if>
+	
 	<div class='grade_field'><strong>Estado Civil:</strong> ${colaborador.pessoal.getEstadoCivilDic()}</div>
 	<div class='grade_field'><strong>Escolaridade:</strong> ${colaborador.pessoal.getEscolaridadeDic()}</div>
 	<div class='grade_field'><strong>Bairro:</strong> ${colaborador.endereco.bairro}</div>

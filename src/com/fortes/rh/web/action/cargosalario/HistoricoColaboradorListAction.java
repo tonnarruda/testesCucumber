@@ -123,6 +123,12 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public String painelIndicadores() throws Exception
 	{
+		if(empresa == null || empresa.getId() == null)
+			empresa = getEmpresaSistema();
+			
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_INFO_PAINEL_IND");
+		
 		Date hoje = new Date();
 		if (dataBase == null)
 			dataBase = hoje;
@@ -135,20 +141,20 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
 			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
 		
-		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, getEmpresaSistema().getId(), qtdItensDesligamento);
-		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, getEmpresaSistema().getId());
-		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, getEmpresaSistema().getId());
+		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresa.getId());
+		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresa.getId());
+		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresa.getId());
+		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresa.getId());
+		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, empresa.getId(), qtdItensDesligamento);
+		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresa.getId());
+		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresa.getId());
 		
-		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, getEmpresaSistema().getId());
+		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresa.getId());
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
-		countAdmitidos = colaboradorManager.countAdmitidos(dataIni, dataFim, getEmpresaSistema().getId());
-		countDemitidos = colaboradorManager.countDemitidos(dataIni, dataFim, getEmpresaSistema().getId());
-		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, getEmpresaSistema().getId());
+		countAdmitidos = colaboradorManager.countAdmitidos(dataIni, dataFim, empresa.getId());
+		countDemitidos = colaboradorManager.countDemitidos(dataIni, dataFim, empresa.getId());
+		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresa.getId());
 		
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
 		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);
@@ -159,7 +165,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
 		
 		TurnOverCollection turnOverCollection = new TurnOverCollection();
-		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema().getId(), null, null, null, 0);
+		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), null, null, null, 0);
 		turnOverCollection.setTurnOvers(turnOvers);
 		turnover = turnOverCollection.getMedia();
 		

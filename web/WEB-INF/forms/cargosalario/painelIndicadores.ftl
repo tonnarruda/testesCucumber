@@ -83,8 +83,9 @@
 	<body>
 		<#include "../util/topFiltro.ftl" />
 			<@ww.form name="formBusca1" id="formBusca1" action="painelIndicadores.action" method="POST">
+				<@ww.select label="Empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas"/>
 				<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
-				
+			
 				<@ww.hidden name="dataIni"/>	
 				<@ww.hidden name="dataFim"/>
 				<@ww.hidden name="dataMesAnoIni"/>
