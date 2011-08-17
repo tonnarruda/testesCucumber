@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
@@ -25,16 +26,19 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<NivelCompetencia>
 {
@@ -48,6 +52,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	private FaixaSalarialDao faixaSalarialDao;
 	private CandidatoDao candidatoDao;
 	private ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao;
+private ColaboradorManager colaboradorManager;
 
 	@Override
 	public NivelCompetencia getEntity()
@@ -311,6 +316,59 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(configuracaoNivelCompetencia1.getId(), competenciaAtitude.getId());
 		assertEquals("atividade (bom)", competenciaAtitude.getCompetenciaDescricao());
 	}
+	
+	public void testFindCompetenciaColaborador()
+	{
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setNome("esporte");
+		conhecimentoDao.save(conhecimento);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitude.setNome("atividade");
+		atitudeDao.save(atitude);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia1.setDescricao("bom");
+		nivelCompetencia1.setOrdem(4);
+		nivelCompetenciaDao.save(nivelCompetencia1);
+
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia2.setDescricao("pessimo");
+		nivelCompetencia2.setOrdem(1);
+		nivelCompetenciaDao.save(nivelCompetencia2);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "pedro", "pedro", "0123");
+		colaboradorManager.save(colaborador);
+		
+		ConfiguracaoNivelCompetenciaColaborador configColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+		configColaborador.setColaborador(colaborador);
+		configColaborador.setFaixaSalarial(faixaSalarial);
+		configColaborador.setData(DateUtil.criarDataMesAno(17, 8, 2011));
+		configuracaoNivelCompetenciaColaboradorDao.save(configColaborador);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia1.setConfiguracaoNivelCompetenciaColaborador(configColaborador);
+		configuracaoNivelCompetencia1.setNivelCompetencia(nivelCompetencia1);
+		configuracaoNivelCompetencia1.setCompetenciaId(atitude.getId());
+		configuracaoNivelCompetencia1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia2.setConfiguracaoNivelCompetenciaColaborador(configColaborador);
+		configuracaoNivelCompetencia2.setNivelCompetencia(nivelCompetencia2);
+		configuracaoNivelCompetencia2.setCompetenciaId(conhecimento.getId());
+		configuracaoNivelCompetencia2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
+
+		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId()); // Arranjo para teste de consulta SQL
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaColaborador(new Long[] { configuracaoNivelCompetencia1.getId(), configuracaoNivelCompetencia2.getId() }, true);
+		assertEquals(2, configs.size());
+		assertEquals("atividade", ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCompetenciaDescricao());
+		assertEquals("esporte", ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCompetenciaDescricao());
+	}
 
 	@Override
 	public GenericDao<NivelCompetencia> getGenericDao()
@@ -357,5 +415,9 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 
 	public void setConfiguracaoNivelCompetenciaColaboradorDao(ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao) {
 		this.configuracaoNivelCompetenciaColaboradorDao = configuracaoNivelCompetenciaColaboradorDao;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
 	}
 }

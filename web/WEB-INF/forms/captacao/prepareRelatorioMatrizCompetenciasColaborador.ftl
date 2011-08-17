@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Colaboradores com Nível de Competência inferior ao exigido pela Faixa Salarial</title>
+	<title>Relatório de Competências dos Colaboradores</title>
 	<#assign validarCampos="return validaFormulario('form', new Array('faixa', '@competenciasCheck'))"/>	
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>

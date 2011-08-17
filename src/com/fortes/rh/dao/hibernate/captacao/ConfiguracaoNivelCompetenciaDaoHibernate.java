@@ -99,6 +99,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId) 
 	{
 		StringBuilder sql = new StringBuilder();
