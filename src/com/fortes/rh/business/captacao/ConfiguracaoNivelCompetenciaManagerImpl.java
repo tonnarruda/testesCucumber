@@ -116,6 +116,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(competenciasIds, true);
 		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
 
+		int totalPontosFaixa = 0;
+		
 		Map<String, String> competenciaNiveis = new HashMap<String, String>();
 		for (ConfiguracaoNivelCompetencia competencia : configuracaoNivelCompetencias) 
 			competenciaNiveis.put(competencia.getCompetenciaDescricao(), competencia.getNivelCompetencia().getDescricao());
@@ -127,6 +129,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			{
 				boolean isConfiguracaoFaixa = competenciaNivel.getValue().equals(nivel.getDescricao());
 				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, false));
+
+				if(isConfiguracaoFaixa)
+					totalPontosFaixa += nivel.getOrdem();
 			}
 		}
 
@@ -140,9 +145,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				if(!configNivelCompetenciaColaborador.getColaboradorId().equals(idColaboradorAnterior))
 				{
 					vo = new ConfiguracaoNivelCompetenciaVO(configNivelCompetenciaColaborador.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome(), new ArrayList<MatrizCompetenciaNivelConfiguracao>(matrizModelo));
+					vo.setTotalPontosFaixa(totalPontosFaixa);
 					vos.add(vo);
 				}
 				
+				vo.somaTotalPontos(configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getOrdem());
 				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(configNivelCompetenciaColaborador.getCompetenciaDescricao(), configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getOrdem() + " - " + configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getDescricao(), false, true));
 				idColaboradorAnterior = configNivelCompetenciaColaborador.getColaboradorId();
 			}
