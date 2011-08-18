@@ -57,20 +57,6 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperiencia.ftl</result>
 		</action>
-		
-		<action name="prepareImpRankPerformAvDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareImpRankPerformAvDesempenho">
-			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformanceAvaliacaoDesempenho.ftl</result>
-		</action>
-		<action name="impRankPerformAvDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="impRankPerformAvDesempenho">
-		  	<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/rankingPerformanceAvDesempenho.jasper</param>
-				<param name="dataSource">colaboradores</param>
-				<param name="parametersMap">parametros</param>
-				<param name="documentName">rankingPerformanceAvDesempenho.pdf</param>
-			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformanceAvaliacaoDesempenho.ftl</result>
-		</action>
-		
 		<action name="prepareRelatorioRankingPerformancePeriodoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioRankingPerformance">
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
@@ -95,7 +81,15 @@
 			</result>		
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
-		
+		<action name="impRankPerformAvDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="impRankPerformAvDesempenho">
+		  	<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/rankingPerformanceAvDesempenho.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">rankingPerformanceAvDesempenho.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
+		</action>
 
 	</package>
 </xwork>

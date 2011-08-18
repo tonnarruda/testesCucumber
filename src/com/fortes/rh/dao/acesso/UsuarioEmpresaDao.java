@@ -19,4 +19,6 @@ public interface UsuarioEmpresaDao extends GenericDao<UsuarioEmpresa>
 	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role);
 
 	public Collection<UsuarioEmpresa> findUsuarioResponsavelAreaOrganizacional(Collection<Long> areasIds);
+
+	public Collection<UsuarioEmpresa> findPerfisEmpresas();
 }

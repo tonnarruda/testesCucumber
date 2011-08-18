@@ -143,7 +143,6 @@ public class PapelManagerTest extends MockObjectTestCase
 		papeis.add(papelFilho2);
 		
 		String arvore = papelManager.montarArvore(papeis);
-		System.out.println(arvore);
-		
+		assertEquals("Vizinho\nAvo\n   Mae\n      Filho 1\n      Filho 2\n   Tia\n", arvore);
 	}
 }

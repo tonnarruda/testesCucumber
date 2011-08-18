@@ -147,6 +147,10 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
     	avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO);
+    	avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
+    	
+    	if(avaliacao != null  && avaliacao.getId() != null)
+    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacao( avaliacao.getId()), "getId", "getNome");
     	
 		return Action.SUCCESS;
 		
@@ -238,19 +242,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	}
-	
-	public String prepareImpRankPerformAvDesempenho() throws Exception
-	{
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-    	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-    	avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
-    	
-    	if(avaliacao != null  && avaliacao.getId() != null)
-    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacao( avaliacao.getId()), "getId", "getNome");
-		
-		return Action.SUCCESS;
-	}
-	
+
 	public String impRankPerformAvDesempenho() throws Exception 
 	{
 		try 
@@ -266,7 +258,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		{
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
-			prepareImpRankPerformAvDesempenho();
+			prepareRelatorioRankingPerformance();
 			return Action.INPUT;
 		}
 		

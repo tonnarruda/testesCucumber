@@ -63,7 +63,8 @@
 			var nomes = "";
 			for (var prop in data)
 			{
-				nomes += " - <a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"javascript:popup('/fortesrh/captacao/candidato/infoCandidato.action?palavras=&forma=&candidato.id=" + prop + "', 580, 750)\">" + data[prop] + "</a><br>";
+				var url = "<@ww.url value='/captacao'/>";
+				nomes += " - <a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"javascript:popup('"+url+"/candidato/infoCandidato.action?palavras=&forma=&candidato.id=" + prop + "', 580, 750)\">" + data[prop] + "</a><br>";
 			}
 
 			if(nomes != "")

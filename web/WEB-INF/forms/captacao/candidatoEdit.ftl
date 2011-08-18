@@ -271,6 +271,17 @@
 				$('#wwgrp_comoFicouSabendoVagaQual').hide();
 			}
 		}
+		
+		function candidatosHomonimos()
+		{
+			var url = "<@ww.url value="/captacao/candidato/infoCandidato.action"/>"
+			
+			<#if candidato?exists && candidato.id?exists>
+				url =url.replace("?candidato.id=" + ${candidato.id} , "");
+			</#if>
+			
+			getCandidatosHomonimos(url);
+		}
 </script>
 
   <@ww.head />
@@ -299,7 +310,7 @@
 			<#assign formAction="insert.action"/>
 		</#if>
 	</#if>
-
+	
 	<#assign edit="true"/>
 
 	<#if candidato.id?exists>
@@ -453,7 +464,7 @@
 			
 			<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>			
 			
-			<@ww.textfield label="Nome" name="candidato.nome" id="nome" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="${capitalizar}" onblur="getCandidatosHomonimos();"/>
+			<@ww.textfield label="Nome" name="candidato.nome" id="nome" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="${capitalizar}" onblur="candidatosHomonimos();"/>
 			
 			<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento" liClass="liLeft , campo" cssClass="mascaraData" value="${dataNas}"/>
 			<@ww.textfield label="Naturalidade" id="naturalidade" name="candidato.pessoal.naturalidade" cssStyle="width: 160px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>
@@ -674,6 +685,7 @@
       <@ww.hidden name="candidato.cursos" id="candidato.cursos" />
       <@ww.hidden name="candidato.observacao" id="candidato.observacao" />
       <@ww.hidden name="candidato.observacaoRH" id="candidato.observacaoRH" />
+      <@ww.hidden name="candidato.id" />
       <@ww.hidden name="candidato.id" />
 
 	  <@ww.token/>

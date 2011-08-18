@@ -160,12 +160,11 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
     	Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
     	colaboradors.add(colaborador);
     	
-    	Collection<Avaliacao> avaliacaos = new ArrayList<Avaliacao>();
-
     	colaboradorManager.expects(once()).method("findColabPeriodoExperienciaAgrupadoPorModelo").will(throwException(new Exception()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao");
+    	avaliacaoDesempenhoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
     	estabelecimentoManager.expects(once()).method("populaCheckBox");
-    	avaliacaoManager.expects(once()).method("findAllSelectComAvaliacaoDesempenho").will(returnValue(avaliacaos));
+    	avaliacaoManager.expects(once()).method("findAllSelectComAvaliacaoDesempenho").will(returnValue(new ArrayList<Avaliacao>()));
     	colaboradorManager.expects(once()).method("findByAvaliacao").will(returnValue(colaboradors));
     	
     	assertEquals("input",action.impRankPerformAvDesempenho());

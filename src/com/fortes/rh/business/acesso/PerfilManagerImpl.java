@@ -1,6 +1,5 @@
 package com.fortes.rh.business.acesso;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
@@ -8,7 +7,6 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.SpringUtil;
 
 public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> implements PerfilManager
@@ -59,17 +57,10 @@ public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> imp
 		
 		for (Perfil perfil : perfis) 
 		{
-			String a = papelManager.montarArvore(papelManager.findByPerfil(perfil.getId()));
-
-			System.out.println("################");
-			System.out.println("################");
-			System.out.println("################");
-			System.out.println(perfil.getNome());
-			
-			System.out.println(a);
+			perfil.setArvorePapeis(papelManager.montarArvore(papelManager.findByPerfil(perfil.getId())));
 		}
 		
-		return null;
+		return perfis;
 	}
 
 	

@@ -16,8 +16,8 @@
 				<tr>
 				<td style="width:882px;font-weight:bold;">Comissão de ${comissaoPeriodo.periodoFormatado}</td>
 				<td>
-					<a href="prepareUpdate.action?comissaoPeriodo.id=${comissaoPeriodo.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="/fortesrh/imgs/edit.gif?comissao.id=51"></a>
-					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?comissaoPeriodo.id=${comissaoPeriodo.id}&comissao.id=${comissao.id}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+					<a href="prepareUpdate.action?comissaoPeriodo.id=${comissaoPeriodo.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif?comissao.id=51"/>"></a>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?comissaoPeriodo.id=${comissaoPeriodo.id}&comissao.id=${comissao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 					<a href="clonar.action?comissaoPeriodo.id=${comissaoPeriodo.id}&comissao.id=${comissao.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 				 </td>
 				</tr>

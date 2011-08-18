@@ -1,7 +1,7 @@
 <html>
 	<head>
-		<link type="text/css" rel="stylesheet" href="/fortesrh/css/syntaxhighlighter/shCore.css"/>
-		<link type="text/css" rel="stylesheet" href="/fortesrh/css/syntaxhighlighter/shThemeDefault.css"/>
+		<link type="text/css" rel="stylesheet" href="<@ww.url value="/css/syntaxhighlighter/shCore.css"/>"/>
+		<link type="text/css" rel="stylesheet" href="<@ww.url value="/css/syntaxhighlighter/shThemeDefault.css"/>"/>
 		<script src='<@ww.url includeParams="none" value="/js/syntaxhighlighter/shCore.js"/>'></script>
 		<script src='<@ww.url includeParams="none" value="/js/syntaxhighlighter/shBrushPlain.js"/>'></script>
 		

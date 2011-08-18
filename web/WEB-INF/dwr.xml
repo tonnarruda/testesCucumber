@@ -67,9 +67,6 @@
 		<create creator="spring" javascript="DntDWR">
 			<param name="beanName" value="dntDWR"/>
 		</create>
-		<create creator="spring" javascript="ConfiguracaoNivelCompetenciaDWR">
-			<param name="beanName" value="configuracaoNivelCompetenciaDWR"/>
-		</create>
 		<create creator="spring" javascript="ConfiguracaoPerformanceDWR">
 			<param name="beanName" value="configuracaoPerformanceDWR"/>
 		</create>
