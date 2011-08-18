@@ -964,9 +964,10 @@ function exibeEscondeConteudo(){
 		});
 	});
 }
-
-function getCandidatosHomonimos()
+var link = "";
+function getCandidatosHomonimos(url)
 {
+	link = url;
 	if(document.getElementById("nome").value.length >= 3)
 	{
 		DWRUtil.useLoadingMessage('Carregando...');
@@ -981,7 +982,7 @@ function createListCandidatosHomonimos(data)
 	var nomes = "";
 	for (var prop in data)
 	{
-		nomes += " - <a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"javascript:popup('/fortesrh/captacao/candidato/infoCandidato.action?palavras=&forma=&candidato.id=" + prop + "', 580, 750)\">" + data[prop] + "</a><br>";
+		nomes += " - <a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"javascript:popup('" + link + "?palavras=&forma=&candidato.id=" + prop + "', 580, 750)\">" + data[prop] + "</a><br>";
 	}
 
 	if(nomes != "")

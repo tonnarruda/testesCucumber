@@ -33,11 +33,13 @@
 				{
 					$('#opcaoAgrupadoPorModeloAvaliacao,  #considerarAutoAvaliacao').show();
 					$('#opcaoPorAvaliacaoDesempenho').hide();
+					//impRankPerformAvDesempenho
 				}
 				else
 				{				
 					$('#opcaoAgrupadoPorModeloAvaliacao,  #considerarAutoAvaliacao').hide();
 					$('#opcaoPorAvaliacaoDesempenho').show();
+			//$('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperiencia.action');${validarCampos};
 				}
 			});
 			
@@ -52,9 +54,9 @@
 			return false;
 		}
 		
-		function createListColaboradorAvaliacao(data)
+		function action()
 		{
-			addChecks('colaboradorsCheck',data);
+			aletr(('.btnRelatorio').val());
 		}
 		
 	</script>
@@ -89,7 +91,9 @@
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button class="btnRelatorio" onclick="$('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperiencia.action');${validarCampos};"></button>
+			
+			<button class="btnRelatorio"  onclick="action(this)"></button>
+			
 			<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperienciaXLS.action');${validarCampos};"></button>
 		</div>
 </body>

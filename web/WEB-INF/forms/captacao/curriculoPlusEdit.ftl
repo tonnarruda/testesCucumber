@@ -92,6 +92,12 @@
 				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"
 			}
 		}
+		function candidatosHomonimos()
+		{
+			var url = "<@ww.url value="/captacao/candidato/infoCandidato.action"/>"
+			getCandidatosHomonimos(url);
+		}
+		
 
 	</script>
 <#assign validarCampos="return validaForm()"/>
@@ -101,7 +107,7 @@
 	<@ww.form name="form" action="insertCurriculoPlus.action" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
 		<b>Preenchimento de Dados</b>
 		<br><br>
-		<@ww.textfield label="Nome" id="nome" name="candidato.nome" required="true" cssStyle="width:400px;" liClass="liLeft" onblur="getCandidatosHomonimos();"/>
+		<@ww.textfield label="Nome" id="nome" name="candidato.nome" required="true" cssStyle="width:400px;" liClass="liLeft" onblur="candidatosHomonimos();"/>
 		<@ww.select label="Sexo" required="true" name="candidato.pessoal.sexo" list="sexos" cssStyle="width: 100px;" />
 		<@ww.div id="homonimos" cssStyle="color:blue;display:none; ">
 			Existe(m) candidato(s) homônimo(s):
