@@ -147,6 +147,26 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		assertNull(usuarioEmpresaDao.findById(usuarioEmpresa.getId(), null));
 	}
 	
+	public void testFindPerfisEmpresas()
+	{
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Perfil perfil = new Perfil();
+		perfilDao.save(perfil);
+		
+		UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa();
+		usuarioEmpresa.setUsuario(usuario);
+		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresa.setPerfil(perfil);
+		usuarioEmpresaDao.save(usuarioEmpresa);
+		
+		assertEquals(true, usuarioEmpresaDao.findPerfisEmpresas().size() >= 1);
+	}
+	
 	public void testFindUsuariosByEmpresaRoleSetorPessoal()
 	{
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");

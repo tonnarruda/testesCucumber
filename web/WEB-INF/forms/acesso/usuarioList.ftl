@@ -74,10 +74,9 @@
 
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
-		</button>
-		<button class="btnCriarUsuariosAuto" onclick="window.location='prepareAutoInsert.action'" accesskey="I">
-		</button>
+		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+		<button class="btnCriarUsuariosAuto" onclick="window.location='prepareAutoInsert.action'" accesskey="I"></button>
+		<button class="btnImprimirPdf" onclick="window.location='imprimirUsuariosPerfis.action'">
 	</div>
 </body>
 </html>

@@ -6,12 +6,12 @@
 		
 		<action name="imprimirPerfis" class="com.fortes.rh.web.action.acesso.PerfilListAction" method="imprimirPerfis">
 			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/competencias_colaborador.jasper</param>
-				<param name="dataSource">niveisCompetenciaFaixaSalariais</param>
+				<param name="location">WEB-INF/report/perfis_papeis.jasper</param>
+				<param name="dataSource">perfils</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">competencias_colaborador.pdf</param>
+				<param name="documentName">permissoesDosPerfis.pdf</param>
 			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
+			<result name="input" type="redirect">list.action</result>
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.acesso.PerfilListAction" method="list">
 			<interceptor-ref name="defaultListStack"/>
