@@ -26,4 +26,6 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds, Long faixaSalarialId);
 
 	Collection<ConfiguracaoNivelCompetenciaVO> montaRelatorioConfiguracaoNivelCompetencia(Long empresaId, Long faixaSalarialId, Long[] competenciasIds);
+
+	Collection<ConfiguracaoNivelCompetenciaVO> montaMatrizCompetenciaCandidato(Long empresaId, Long faixaSalarialId);
 }

@@ -1,5 +1,6 @@
 package com.fortes.rh.test.business.captacao;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -10,6 +11,7 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManagerImpl;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
@@ -20,6 +22,7 @@ import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -175,6 +178,91 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		assertEquals(Boolean.FALSE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[0]).getConfiguracao());
 		assertEquals(Boolean.TRUE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[7]).getConfiguracaoFaixa());
 		assertEquals(Boolean.FALSE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[7]).getConfiguracao());
+	}
+
+	public void testMontaMatrizCompetenciaCandidato()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(999999999999L);
+		
+		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
+		nivelPessimo.setDescricao("pessimo");
+		nivelPessimo.setOrdem(1);
+		
+		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity();
+		nivelRuim.setDescricao("ruim");
+		nivelRuim.setOrdem(2);
+		
+		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
+		nivelBom.setDescricao("bom");
+		nivelBom.setOrdem(3);
+		
+		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(nivelPessimo, nivelRuim, nivelBom);
+		
+		Candidato joao = CandidatoFactory.getCandidato(1L);
+		joao.setNome("joao");
+
+		Candidato maria = CandidatoFactory.getCandidato(2L);
+		maria.setNome("maria");
+		
+		ConfiguracaoNivelCompetencia configFaixa1Java = criaConfigCompetencia("java", faixaSalarial, nivelBom, TipoCompetencia.ATITUDE, null);
+		ConfiguracaoNivelCompetencia configFaixa1Delphi = criaConfigCompetencia("delphi", faixaSalarial, nivelPessimo, TipoCompetencia.CONHECIMENTO, null);
+		ConfiguracaoNivelCompetencia configFaixa1BD = criaConfigCompetencia("BD", faixaSalarial, nivelPessimo, TipoCompetencia.CONHECIMENTO, null);
+
+		ConfiguracaoNivelCompetencia configCandidatoJoao1 = criaConfigCompetencia("BD", faixaSalarial, nivelBom, TipoCompetencia.CONHECIMENTO, joao);
+		ConfiguracaoNivelCompetencia configCandidatoJoao2 = criaConfigCompetencia("java", faixaSalarial, nivelBom, TipoCompetencia.ATITUDE, joao);
+		
+		ConfiguracaoNivelCompetencia configCandidatoMaria1 = criaConfigCompetencia("java", faixaSalarial, nivelPessimo, TipoCompetencia.ATITUDE, maria);
+		
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = Arrays.asList(configFaixa1Java, configFaixa1Delphi, configFaixa1BD, configCandidatoJoao1, configCandidatoJoao2, configCandidatoMaria1);
+		
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaCandidato").with(eq(faixaSalarial.getId())).will(returnValue(configuracaoNivelCompetencias));
+		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(nivelCompetencias));
+
+		Collection<ConfiguracaoNivelCompetenciaVO> matrizes = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(empresa.getId(), faixaSalarial.getId());
+		assertEquals(2, matrizes.size());
+		
+		ConfiguracaoNivelCompetenciaVO matrizJoao = (ConfiguracaoNivelCompetenciaVO) matrizes.toArray()[0];
+		ConfiguracaoNivelCompetenciaVO matrizMaria = (ConfiguracaoNivelCompetenciaVO) matrizes.toArray()[1];
+		
+		assertEquals("joao", matrizJoao.getNome());
+		assertEquals("maria", matrizMaria.getNome());
+		
+		assertEquals("matriz Joao", 12, matrizJoao.getMatrizes().size());
+		assertEquals("matriz Maria", 12, matrizJoao.getMatrizes().size());
+	
+		String comp = null;
+		for (MatrizCompetenciaNivelConfiguracao m : matrizJoao.getMatrizes()) 
+		{
+			if(!m.getCompetencia().equals(comp))
+				System.out.print("\n" + m.getCompetencia() + "\t" );
+			
+			System.out.print(m.getNivel() + "\t"+ m.getConfiguracaoFaixa() + "\t" + m.getConfiguracao() + "\t" + m.getGap() + "\t");
+			comp = m.getCompetencia();
+		}
+		
+		comp = null;
+		System.out.println("#######################%%%%%%%%%%%%%%%%%%%%%%");
+		for (MatrizCompetenciaNivelConfiguracao m : matrizJoao.getMatrizes()) 
+		{
+			if(!m.getCompetencia().equals(comp))
+				System.out.print("\n" + m.getCompetencia() + "\t" );
+			
+			System.out.print(m.getNivel() + "\t"+ m.getConfiguracaoFaixa() + "\t" + m.getConfiguracao() + "\t" + m.getGap() + "\t");
+			comp = m.getCompetencia();
+		}
+	}
+
+	private ConfiguracaoNivelCompetencia criaConfigCompetencia(String descricao, FaixaSalarial faixaSalarial, NivelCompetencia nivel, char tipo, Candidato candidato)
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia.setCompetenciaDescricao(descricao);
+		configuracaoNivelCompetencia.setNivelCompetencia(nivel);
+		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetencia.setCandidato(candidato);
+		configuracaoNivelCompetencia.setTipoCompetencia(tipo);
+		
+		return configuracaoNivelCompetencia;
 	}
 	
 	public void testGetCompetenciasCandidato()

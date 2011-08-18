@@ -81,6 +81,22 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		nivelCompetenciaColaborador.setOrdem(colaboradorOrden);
 	}
 	
+	public ConfiguracaoNivelCompetencia(BigInteger candidatoId, String candidatoNome, String competencia, String nivel, Integer ordem)
+	{
+		competenciaDescricao = competencia;
+		
+		nivelCompetencia = new NivelCompetencia();
+		nivelCompetencia.setDescricao(nivel);
+		nivelCompetencia.setOrdem(ordem);
+		
+		if(candidatoId != null)
+		{
+			this.candidato = new Candidato();
+			candidato.setId(candidatoId.longValue());
+			candidato.setNome(candidatoNome);
+		}
+	}
+	
 	public FaixaSalarial getFaixaSalarial() 
 	{
 		return faixaSalarial;

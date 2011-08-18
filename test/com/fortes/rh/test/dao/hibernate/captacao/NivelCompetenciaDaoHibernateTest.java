@@ -369,6 +369,86 @@ private ColaboradorManager colaboradorManager;
 		assertEquals("atividade", ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCompetenciaDescricao());
 		assertEquals("esporte", ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCompetenciaDescricao());
 	}
+	
+	public void testFindCompetenciaCandidato()
+	{
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setNome("java");
+		conhecimentoDao.save(conhecimento);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitude.setNome("proativo");
+		atitudeDao.save(atitude);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		NivelCompetencia nivel1 = NivelCompetenciaFactory.getEntity();
+		nivel1.setDescricao("pessimo");
+		nivel1.setOrdem(1);
+		nivelCompetenciaDao.save(nivel1);
+
+		NivelCompetencia nivel2 = NivelCompetenciaFactory.getEntity();
+		nivel2.setDescricao("bom");
+		nivel2.setOrdem(2);
+		nivelCompetenciaDao.save(nivel2);
+
+		Candidato joao = CandidatoFactory.getCandidato();
+		joao.setNome("joao");
+		candidatoDao.save(joao);
+
+		Candidato jose = CandidatoFactory.getCandidato();
+		jose.setNome("jose");
+		candidatoDao.save(jose);
+		
+		ConfiguracaoNivelCompetencia configFaixa1 = new ConfiguracaoNivelCompetencia();
+		configFaixa1.setFaixaSalarial(faixaSalarial);
+		configFaixa1.setNivelCompetencia(nivel1);
+		configFaixa1.setCompetenciaId(atitude.getId());
+		configFaixa1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(configFaixa1);
+
+		ConfiguracaoNivelCompetencia configFaixa2 = new ConfiguracaoNivelCompetencia();
+		configFaixa2.setFaixaSalarial(faixaSalarial);
+		configFaixa2.setNivelCompetencia(nivel2);
+		configFaixa2.setCompetenciaId(conhecimento.getId());
+		configFaixa2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(configFaixa2);
+		
+		ConfiguracaoNivelCompetencia configJoao1 = new ConfiguracaoNivelCompetencia();
+		configJoao1.setFaixaSalarial(faixaSalarial);
+		configJoao1.setCandidato(joao);
+		configJoao1.setNivelCompetencia(nivel1);
+		configJoao1.setCompetenciaId(conhecimento.getId());
+		configJoao1.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(configJoao1);
+
+		ConfiguracaoNivelCompetencia configJoao2 = new ConfiguracaoNivelCompetencia();
+		configJoao2.setFaixaSalarial(faixaSalarial);
+		configJoao2.setCandidato(joao);
+		configJoao2.setNivelCompetencia(nivel2);
+		configJoao2.setCompetenciaId(atitude.getId());
+		configJoao2.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(configJoao2);
+
+		ConfiguracaoNivelCompetencia configJose1 = new ConfiguracaoNivelCompetencia();
+		configJose1.setFaixaSalarial(faixaSalarial);
+		configJose1.setCandidato(jose);
+		configJose1.setNivelCompetencia(nivel2);
+		configJose1.setCompetenciaId(atitude.getId());
+		configJose1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(configJose1);
+		
+		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId()); // Arranjo para teste de consulta SQL
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaCandidato(faixaSalarial.getId());
+		
+		assertEquals(5, configs.size());
+		assertEquals("joao", ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCandidato().getNome());
+		assertEquals("joao", ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCandidato().getNome());
+		assertEquals("jose", ((ConfiguracaoNivelCompetencia)configs.toArray()[2]).getCandidato().getNome());
+		assertNull("faixa 1", ((ConfiguracaoNivelCompetencia)configs.toArray()[3]).getCandidato());
+		assertNull("faixa 2", ((ConfiguracaoNivelCompetencia)configs.toArray()[4]).getCandidato());
+	}
 
 	@Override
 	public GenericDao<NivelCompetencia> getGenericDao()

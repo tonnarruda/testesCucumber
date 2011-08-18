@@ -299,6 +299,14 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	}
+	public String imprimirMatrizCompetenciasCandidatos()
+	{
+		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
+		parametros = RelatorioUtil.getParametrosRelatorio("Matriz comparativa Cargo x Colaborador", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
+		configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(getEmpresaSistema().getId(), faixaSalarial.getId());
+		
+		return Action.SUCCESS;
+	}
 	
 	public NivelCompetencia getNivelCompetencia()
 	{

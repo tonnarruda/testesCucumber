@@ -65,4 +65,22 @@ public class ConfiguracaoNivelCompetenciaVO
 	public String getTotaisDescricao() {
 		return totalPontos + " / " + totalPontosFaixa + " = " + MathUtil.formataValor((totalPontos.doubleValue() / totalPontosFaixa.doubleValue()) * 100.0) + " %";
 	}
+	
+	public void configuraNivelCandidato(String competenciaDescricao, NivelCompetencia nivelCompetencia) 
+	{
+		for (MatrizCompetenciaNivelConfiguracao competenciaNivel : matrizes) 
+		{
+			if(competenciaNivel.getCompetencia().equals(competenciaDescricao) && competenciaNivel.getNivel().equals(nivelCompetencia.getDescricao()))
+			{
+				competenciaNivel.setConfiguracao(true);
+			}
+			
+			if(competenciaNivel.getCompetencia().equals(competenciaDescricao) && competenciaNivel.getNivel().equals("gap"))
+			{
+				System.out.println(competenciaNivel.getCompetencia() + "\t" + competenciaNivel.getGap() + "\t" + nivelCompetencia.getOrdem() + "\t" + (nivelCompetencia.getOrdem() - competenciaNivel.getGap()));
+				competenciaNivel.setGap(nivelCompetencia.getOrdem() - competenciaNivel.getGap());					
+			}
+
+		}
+	}
 }

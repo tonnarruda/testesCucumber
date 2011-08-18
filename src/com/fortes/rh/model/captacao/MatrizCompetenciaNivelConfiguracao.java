@@ -1,7 +1,8 @@
 package com.fortes.rh.model.captacao;
 
 
-public class MatrizCompetenciaNivelConfiguracao
+
+public class MatrizCompetenciaNivelConfiguracao implements Cloneable
 {
 	private String competencia;
 	private String nivel;
@@ -26,6 +27,21 @@ public class MatrizCompetenciaNivelConfiguracao
 		this.gap = gap;
 	}
 
+
+	public Object clone()
+	{
+		try
+		{
+			MatrizCompetenciaNivelConfiguracao clone = (MatrizCompetenciaNivelConfiguracao) super.clone();
+
+			return clone;
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new Error("This should not occur since we implement Cloneable");
+		}
+	}
+	
 	public String getCompetencia() {
 		return competencia;
 	}

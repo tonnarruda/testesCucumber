@@ -178,4 +178,53 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		
 		return vos;
 	}
+
+	public Collection<ConfiguracaoNivelCompetenciaVO> montaMatrizCompetenciaCandidato(Long empresaId, Long faixaSalarialId) 
+	{
+		Collection<ConfiguracaoNivelCompetenciaVO> tabelasCandidatos = new ArrayList<ConfiguracaoNivelCompetenciaVO>();
+
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaCandidato(faixaSalarialId);//Ordem da consulta é importantissima, primeiro as competencias da faixa e depois do candidato
+		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
+		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
+		
+		Long idCandidatoAnterior = null;
+		Long idCandidatoAtual;
+		ConfiguracaoNivelCompetenciaVO tabelaCandidato = null;
+		System.out.println(tabelaCandidato);
+		
+		for (ConfiguracaoNivelCompetencia configuracaoCompetencia : configuracaoNivelCompetencias) 
+		{
+			if(configuracaoCompetencia.getCandidato() == null)
+			{
+				//monta competencia X nivel
+				for (NivelCompetencia nivel : niveis) 
+				{
+					boolean nivelExigidoPelaFaixa = nivel.getDescricao().equals(configuracaoCompetencia.getNivelCompetencia().getDescricao());
+					matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(configuracaoCompetencia.getCompetenciaDescricao(), nivel.getDescricao(), nivelExigidoPelaFaixa, false));
+				}
+
+				//monta coluna GAP
+				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(configuracaoCompetencia.getCompetenciaDescricao(), "gap", false, false, configuracaoCompetencia.getNivelCompetencia().getOrdem()));
+			}
+			else
+			{
+				//configura competencia X nivel do candidato
+				idCandidatoAtual = configuracaoCompetencia.getCandidato().getId();
+				if(!idCandidatoAtual.equals(idCandidatoAnterior))
+				{
+					tabelaCandidato = new ConfiguracaoNivelCompetenciaVO();
+					tabelaCandidato.setNome(configuracaoCompetencia.getCandidato().getNome());
+					tabelaCandidato.setMatrizes(matrizModelo);
+					tabelasCandidatos.add(tabelaCandidato);
+				}
+				
+				tabelaCandidato.configuraNivelCandidato(configuracaoCompetencia.getCompetenciaDescricao(), configuracaoCompetencia.getNivelCompetencia());
+				System.out.println(tabelaCandidato);
+				
+				idCandidatoAnterior = idCandidatoAtual;
+			}
+		}
+		
+		return tabelasCandidatos;
+	}
 }

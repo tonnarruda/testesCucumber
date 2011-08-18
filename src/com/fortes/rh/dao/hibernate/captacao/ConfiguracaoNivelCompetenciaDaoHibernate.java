@@ -16,6 +16,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 
 public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetencia> implements ConfiguracaoNivelCompetenciaDao
 {
@@ -138,9 +139,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao as nivelFaixaDescricao, ncncf.ordem as nivelFaixaOrdem, c.nome as colabNome, c.id as colabId, nc.descricao as nivelColabDescricao, nc.ordem as nivelColabOrdem from "); 
 		sql.append("ConfiguracaoNivelCompetencia cncf ");
 		sql.append("join NivelCompetencia ncncf on ncncf.id = cncf.nivelcompetencia_id ");
-		sql.append("left join Atitude a on a.id = cncf.competencia_id and 'A' = cncf.tipocompetencia ");
-		sql.append("left join Conhecimento conhe on conhe.id = cncf.competencia_id and 'C' = cncf.tipocompetencia ");
-		sql.append("left join Habilidade h on h.id = cncf.competencia_id and 'H' = cncf.tipocompetencia ");
+		sql.append("left join Atitude a on a.id = cnc.competencia_id and :tipoAtitude = cnc.tipocompetencia ");
+		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and :tipoConhecimento = cnc.tipocompetencia ");
+		sql.append("left join Habilidade h on h.id = cnc.competencia_id and :tipoHabilidade = cnc.tipocompetencia ");
 		sql.append("left join ConfiguracaoNivelCompetencia cnc on cncf.competencia_id = cnc.competencia_id and cncf.tipocompetencia = cnc.tipocompetencia ");
 		sql.append("and cnc.candidato_id is null and cnc.faixasalarial_id is null ");
 		sql.append("left join NivelCompetencia nc on nc.id = cnc.nivelcompetencia_id ");
@@ -158,8 +159,11 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 			sql.append("order by competencia, c.nome ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
+		query.setCharacter("tipoAtitude", TipoCompetencia.ATITUDE);
+		query.setCharacter("tipoConhecimento", TipoCompetencia.CONHECIMENTO);
+		query.setCharacter("tipoHabilidade", TipoCompetencia.HABILIDADE);
 		query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
-		query.setParameter("faixaSalarialColaboradorId", faixaSalarialColaboradorId);
+		query.setLong("faixaSalarialColaboradorId", faixaSalarialColaboradorId);
 		
 		Collection<Object[]> resultado = query.list();
 		
@@ -169,6 +173,41 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		{
 			Object[] res = it.next();
 			lista.add(new ConfiguracaoNivelCompetencia((String)res[0], (String)res[1], (Integer)res[2], (String)res[3], ((BigInteger)res[4]), (String)res[5], (Integer)res[6] ));
+		}
+		
+		return lista;				
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaCandidato(Long faixaSalarialId) 
+	{
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("select c.id as candidatoId, c.nome as candidatoNome, COALESCE(a.nome, conhe.nome, h.nome) as competencia, nc.descricao as nivelFaixaDescricao, nc.ordem as nivelFaixaOrdem ");       
+		sql.append("from configuracaonivelcompetencia cnc ");
+		sql.append("left join nivelcompetencia nc on nc.id=cnc.nivelcompetencia_id ");
+		sql.append("left join Atitude a on a.id = cnc.competencia_id and :tipoAtitude = cnc.tipocompetencia ");
+		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and :tipoConhecimento = cnc.tipocompetencia ");
+		sql.append("left join Habilidade h on h.id = cnc.competencia_id and :tipoHabilidade = cnc.tipocompetencia ");
+		sql.append("left join Candidato c on c.id = cnc.candidato_id ");
+		sql.append("where cnc.faixasalarial_id = :faixaSalarialId ");
+		sql.append("and cnc.configuracaonivelcompetenciacolaborador_id is null ");
+		sql.append("order by c.id, c.nome ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setCharacter("tipoAtitude", TipoCompetencia.ATITUDE);
+		query.setCharacter("tipoConhecimento", TipoCompetencia.CONHECIMENTO);
+		query.setCharacter("tipoHabilidade", TipoCompetencia.HABILIDADE);
+		query.setLong("faixaSalarialId", faixaSalarialId);
+		
+		Collection<Object[]> resultado = query.list();
+		
+		Collection<ConfiguracaoNivelCompetencia> lista = new ArrayList<ConfiguracaoNivelCompetencia>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			lista.add(new ConfiguracaoNivelCompetencia((BigInteger)res[0], (String)res[1], (String)res[2], (String)res[3], (Integer)res[4] ));
 		}
 		
 		return lista;				
