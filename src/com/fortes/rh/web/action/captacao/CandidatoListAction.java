@@ -458,11 +458,12 @@ public class CandidatoListAction extends MyActionSupportList
 		parametros.put("deficiencia", deficiencia);
 
 		Long[] areasCheckLong = StringUtil.stringToLong(areasCheck);
+		Long[] cargosCheckLong = StringUtil.stringToLong(cargosCheck);
 		Long[] conhecimentosCheckLong = StringUtil.stringToLong(conhecimentosCheck);
 		Long[] bairrosCheckLong = StringUtil.stringToLong(bairrosCheck);
 		Long[] experienciasCheckLong = StringUtil.stringToLong(experienciasCheck);
 		parametros.put("areasIds", areasCheckLong);
-		parametros.put("cargosNomes", cargosCheck);
+		parametros.put("cargosIds", cargosCheckLong);
 		parametros.put("conhecimentosIds", conhecimentosCheckLong);
 		parametros.put("bairrosIds", bairrosCheckLong);
 		
