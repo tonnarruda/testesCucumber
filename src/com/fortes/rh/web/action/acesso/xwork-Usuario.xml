@@ -3,6 +3,16 @@
 
 <xwork>
 	<package name="usuario" extends="default" namespace="/acesso/usuario">
+	
+		<action name="imprimirUsuariosPerfis" class="com.fortes.rh.web.action.acesso.UsuarioListAction" method="imprimirUsuariosPerfis">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/usuarios_perfis.jasper</param>
+				<param name="dataSource">usuarioEmpresas</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">usuariosPerfis.pdf</param>
+			</result>
+			<result name="input" type="redirect">list.action</result>
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.acesso.UsuarioListAction" method="list">
 			<interceptor-ref name="defaultListStack">
 	    		<param name="scope.session">usuario.nome,empresa.id</param>

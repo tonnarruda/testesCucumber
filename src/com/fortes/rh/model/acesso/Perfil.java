@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -24,6 +25,8 @@ public class Perfil extends AbstractModel implements Serializable, Cloneable
 	@ManyToMany(fetch=FetchType.EAGER, targetEntity=Papel.class)
 	@OrderBy("ordem")
 	private Collection<Papel> papeis;
+	@Transient
+	private String arvorePapeis;
 	
 	public Perfil() {
 	}
@@ -75,5 +78,13 @@ public class Perfil extends AbstractModel implements Serializable, Cloneable
 		{
 			throw new Error("This should not occur since we implement Cloneable");
 		}
+	}
+
+	public String getArvorePapeis() {
+		return arvorePapeis;
+	}
+
+	public void setArvorePapeis(String arvorePapeis) {
+		this.arvorePapeis = arvorePapeis;
 	}
 }

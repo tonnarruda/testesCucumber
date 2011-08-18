@@ -155,4 +155,27 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		
 		return criteria.list();
 	}
+
+	public Collection<UsuarioEmpresa> findPerfisEmpresas() 
+	{
+		Criteria criteria = getSession().createCriteria(UsuarioEmpresa.class, "ue");
+		criteria.createCriteria("ue.perfil", "p", Criteria.LEFT_JOIN);
+		criteria.createCriteria("ue.usuario", "u", Criteria.LEFT_JOIN);
+		criteria.createCriteria("ue.empresa", "e", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("u.id"), "usuarioId");
+		p.add(Projections.property("u.nome"), "usuarioNome");
+		p.add(Projections.property("p.nome"), "perfilNome");
+		p.add(Projections.property("e.nome"), "empresaNome");
+		criteria.setProjection(p);
+
+		criteria.addOrder(Order.asc("u.nome"));
+		criteria.addOrder(Order.asc("p.nome"));
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));
+		
+		return criteria.list();
+	}
 }

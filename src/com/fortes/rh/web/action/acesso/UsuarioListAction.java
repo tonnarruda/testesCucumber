@@ -1,6 +1,8 @@
 package com.fortes.rh.web.action.acesso;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -9,6 +11,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -27,6 +30,8 @@ public class UsuarioListAction extends MyActionSupportList
 	private Empresa empresa;
 	private Usuario usuario;
 	private UsuarioEmpresa usuarioEmpresa;
+	
+	private Map<String,Object> parametros = new HashMap<String, Object>();
 
 	public String execute() throws Exception {
 		return Action.SUCCESS;
@@ -46,6 +51,14 @@ public class UsuarioListAction extends MyActionSupportList
 
 		setTotalSize(usuarioManager.getCountUsuario(usuarioNome, empresa));
 
+		return Action.SUCCESS;
+	}
+
+	public String imprimirUsuariosPerfis()
+	{
+		parametros = RelatorioUtil.getParametrosRelatorio("Perfis dos Usuários por Empresa", getEmpresaSistema(), "");
+		usuarioEmpresas = usuarioEmpresaManager.findPerfisEmpresas();
+		
 		return Action.SUCCESS;
 	}
 
@@ -158,5 +171,9 @@ public class UsuarioListAction extends MyActionSupportList
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }
