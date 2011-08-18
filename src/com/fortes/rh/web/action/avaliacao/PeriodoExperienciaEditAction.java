@@ -147,6 +147,10 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
     	avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO);
+    	avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
+    	
+    	if(avaliacao != null  && avaliacao.getId() != null)
+    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacao( avaliacao.getId()), "getId", "getNome");
     	
 		return Action.SUCCESS;
 		
