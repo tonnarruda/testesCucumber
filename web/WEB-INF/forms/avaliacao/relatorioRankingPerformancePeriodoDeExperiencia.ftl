@@ -6,7 +6,9 @@
 
 	<title>Ranking de Performance das Avaliações de Desempenho</title>
 
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('avaliacaoDesempenho','periodoIni','periodoFim'), new Array('periodoIni','periodoFim'))"/>
+	<#assign validarCamposAvaliacaoDesempenho="return validaFormularioEPeriodo('form', new Array('avaliacaoDesempenho','periodoIni','periodoFim'), new Array('periodoIni','periodoFim'))"/>
+	<#assign validarCamposAvaliacao="return validaFormularioEPeriodo('form', new Array('avaliacao','periodoIni','periodoFim'), new Array('periodoIni','periodoFim'))"/>
+	<#assign action="imprimeRelatorioRankingPerformancePeriodoDeExperiencia.action"/>
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<#if periodoIni?exists>
@@ -20,6 +22,7 @@
 		<#assign periodoFimFormatado = ""/>
 	</#if>
 
+					
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -31,21 +34,19 @@
 			$("#agruparPorModelo").change(function() {
 				if(this.checked)
 				{
-					$('#opcaoAgrupadoPorModeloAvaliacao,  #considerarAutoAvaliacao').show();
-					$('#opcaoPorAvaliacaoDesempenho').hide();
-					//impRankPerformAvDesempenho
+					$('#opcaoAgrupadoPorModeloAvaliacao,  #considerarAutoAvaliacao, .buttonGroupAvaliacao').show();
+					$('#opcaoPorAvaliacaoDesempenho, .buttonGroupAvaliacaoDesempenho').hide();
+					$('form[name=form]').attr('action', 'impRankPerformAvDesempenho.action');
 				}
 				else
 				{				
-					$('#opcaoAgrupadoPorModeloAvaliacao,  #considerarAutoAvaliacao').hide();
-					$('#opcaoPorAvaliacaoDesempenho').show();
-			//$('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperiencia.action');${validarCampos};
-				}
+					$('#opcaoAgrupadoPorModeloAvaliacao,  #considerarAutoAvaliacao, .buttonGroupAvaliacao').hide();
+					$('#opcaoPorAvaliacaoDesempenho, .buttonGroupAvaliacaoDesempenho').show();
+					$('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperiencia.action');
+				};
 			});
 			
-			$('#opcaoAgrupadoPorModeloAvaliacao, #considerarAutoAvaliacao').toggle($('#agruparPorModelo').is(':checked'));
-		
-			
+			$('#opcaoAgrupadoPorModeloAvaliacao, #considerarAutoAvaliacao, .buttonGroupAvaliacao').toggle($('#agruparPorModelo').is(':checked'));
 		});
 		function pesquisar(avaliacaoId)
 		{
@@ -54,11 +55,11 @@
 			return false;
 		}
 		
-		function action()
+		function createListColaboradorAvaliacao(data)
 		{
-			aletr(('.btnRelatorio').val());
+			addChecks('colaboradorsCheck',data);
 		}
-		
+
 	</script>
 
 </head>
@@ -66,7 +67,7 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 
-		<@ww.form name="form" action="imprimeRelatorioRankingPerformancePeriodoDeExperiencia.action" onsubmit="${validarCampos}" method="POST">
+		<@ww.form name="form" action="${action}" onsubmit="${validarCamposAvaliacaoDesempenho}" method="POST">
 			
 			<@ww.checkbox label="Agrupar por Modelo de Avaliação" id="agruparPorModelo" name="agruparPorModelo" labelPosition="left" />
 			<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
@@ -90,11 +91,12 @@
 				
 		</@ww.form>
 
-		<div class="buttonGroup">
-			
-			<button class="btnRelatorio"  onclick="action(this)"></button>
-			
-			<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperienciaXLS.action');${validarCampos};"></button>
+		<div class="buttonGroupAvaliacaoDesempenho">
+			<button class="btnRelatorio"  onclick="${validarCamposAvaliacaoDesempenho};"></button>
+			<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'imprimeRelatorioRankingPerformancePeriodoDeExperienciaXLS.action');${validarCamposAvaliacaoDesempenho};"></button>
+		</div>
+		<div class="buttonGroupAvaliacao">
+			<button class="btnRelatorio"  onclick="${validarCamposAvaliacao};"></button>
 		</div>
 </body>
 </html>
