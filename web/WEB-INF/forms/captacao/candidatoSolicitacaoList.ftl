@@ -178,6 +178,11 @@
 		</@authz.authorize>
 
 		<button onclick="window.location='../solicitacao/list.action'" class="btnVoltar" accesskey="V"></button>
+		
+		<#if solicitacao.faixaSalarial?exists>
+			<br /><br />
+			<button onclick="window.location='../nivelCompetencia/imprimirMatrizCompetenciasCandidatos.action?faixaSalarial.id=${solicitacao.faixaSalarial.id}'">Imprimir Matriz de Competências</button>
+		</#if>
 	</div>
 	<div style="clear: both;"></div>
 

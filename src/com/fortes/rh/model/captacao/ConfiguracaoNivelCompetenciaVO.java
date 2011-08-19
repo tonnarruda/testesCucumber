@@ -24,9 +24,17 @@ public class ConfiguracaoNivelCompetenciaVO
 		this.matrizes = matrizes;
 	}
 	
+	public ConfiguracaoNivelCompetenciaVO(String candidatoNome, Collection<MatrizCompetenciaNivelConfiguracao> matriz, int totalPontosFaixa) 
+	{
+		this.nome = candidatoNome;
+		this.matrizes = matriz;
+		this.totalPontosFaixa = totalPontosFaixa;
+	}
 	public void somaTotalPontos(int totalPontos)
 	{
-		if (this.totalPontos == null) this.totalPontos = 0;
+		if (this.totalPontos == null) 
+			this.totalPontos = 0;
+		
 		this.totalPontos = this.totalPontos + totalPontos;
 	}
 	
@@ -63,24 +71,27 @@ public class ConfiguracaoNivelCompetenciaVO
 	}
 	
 	public String getTotaisDescricao() {
-		return totalPontos + " / " + totalPontosFaixa + " = " + MathUtil.formataValor((totalPontos.doubleValue() / totalPontosFaixa.doubleValue()) * 100.0) + " %";
+		if (totalPontos != null && totalPontosFaixa != null)
+			return totalPontos + " / " + totalPontosFaixa + " = " + MathUtil.formataValor((totalPontos.doubleValue() / totalPontosFaixa.doubleValue()) * 100.0) + " %";
+		
+		return "";
 	}
 	
 	public void configuraNivelCandidato(String competenciaDescricao, NivelCompetencia nivelCompetencia) 
 	{
 		for (MatrizCompetenciaNivelConfiguracao competenciaNivel : matrizes) 
 		{
-			if(competenciaNivel.getCompetencia().equals(competenciaDescricao) && competenciaNivel.getNivel().equals(nivelCompetencia.getDescricao()))
+			if(competenciaNivel.getCompetencia().equals(competenciaDescricao))
 			{
-				competenciaNivel.setConfiguracao(true);
+				if(competenciaNivel.getNivel().equals(nivelCompetencia.getOrdem() + " - " + nivelCompetencia.getDescricao()))
+				{
+					competenciaNivel.setConfiguracao(true);
+					somaTotalPontos(nivelCompetencia.getOrdem());
+				}
+				
+				if(competenciaNivel.getNivel().equals("gap"))
+					competenciaNivel.setGap(nivelCompetencia.getOrdem() - competenciaNivel.getNivelDaFaixa());
 			}
-			
-			if(competenciaNivel.getCompetencia().equals(competenciaDescricao) && competenciaNivel.getNivel().equals("gap"))
-			{
-				System.out.println(competenciaNivel.getCompetencia() + "\t" + competenciaNivel.getGap() + "\t" + nivelCompetencia.getOrdem() + "\t" + (nivelCompetencia.getOrdem() - competenciaNivel.getGap()));
-				competenciaNivel.setGap(nivelCompetencia.getOrdem() - competenciaNivel.getGap());					
-			}
-
 		}
 	}
 }

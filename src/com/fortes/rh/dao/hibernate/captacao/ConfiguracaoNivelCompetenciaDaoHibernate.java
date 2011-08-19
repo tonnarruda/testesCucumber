@@ -139,9 +139,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao as nivelFaixaDescricao, ncncf.ordem as nivelFaixaOrdem, c.nome as colabNome, c.id as colabId, nc.descricao as nivelColabDescricao, nc.ordem as nivelColabOrdem from "); 
 		sql.append("ConfiguracaoNivelCompetencia cncf ");
 		sql.append("join NivelCompetencia ncncf on ncncf.id = cncf.nivelcompetencia_id ");
-		sql.append("left join Atitude a on a.id = cnc.competencia_id and :tipoAtitude = cnc.tipocompetencia ");
-		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and :tipoConhecimento = cnc.tipocompetencia ");
-		sql.append("left join Habilidade h on h.id = cnc.competencia_id and :tipoHabilidade = cnc.tipocompetencia ");
+		sql.append("left join Atitude a on a.id = cncf.competencia_id and :tipoAtitude = cncf.tipocompetencia ");
+		sql.append("left join Conhecimento conhe on conhe.id = cncf.competencia_id and :tipoConhecimento = cncf.tipocompetencia ");
+		sql.append("left join Habilidade h on h.id = cncf.competencia_id and :tipoHabilidade = cncf.tipocompetencia ");
 		sql.append("left join ConfiguracaoNivelCompetencia cnc on cncf.competencia_id = cnc.competencia_id and cncf.tipocompetencia = cnc.tipocompetencia ");
 		sql.append("and cnc.candidato_id is null and cnc.faixasalarial_id is null ");
 		sql.append("left join NivelCompetencia nc on nc.id = cnc.nivelcompetencia_id ");
@@ -192,7 +192,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("left join Candidato c on c.id = cnc.candidato_id ");
 		sql.append("where cnc.faixasalarial_id = :faixaSalarialId ");
 		sql.append("and cnc.configuracaonivelcompetenciacolaborador_id is null ");
-		sql.append("order by c.id, c.nome ");
+		sql.append("order by c.id nulls first, c.nome ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setCharacter("tipoAtitude", TipoCompetencia.ATITUDE);

@@ -1,8 +1,8 @@
 package com.fortes.rh.test.business.captacao;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -231,26 +231,21 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		assertEquals("matriz Joao", 12, matrizJoao.getMatrizes().size());
 		assertEquals("matriz Maria", 12, matrizJoao.getMatrizes().size());
 	
-		String comp = null;
-		for (MatrizCompetenciaNivelConfiguracao m : matrizJoao.getMatrizes()) 
-		{
-			if(!m.getCompetencia().equals(comp))
-				System.out.print("\n" + m.getCompetencia() + "\t" );
-			
-			System.out.print(m.getNivel() + "\t"+ m.getConfiguracaoFaixa() + "\t" + m.getConfiguracao() + "\t" + m.getGap() + "\t");
-			comp = m.getCompetencia();
-		}
+		List<MatrizCompetenciaNivelConfiguracao> matrizConfiguradaJoao = (List<MatrizCompetenciaNivelConfiguracao>) matrizJoao.getMatrizes();
+		assertEquals("java configuracao candidato", Boolean.TRUE, matrizConfiguradaJoao.get(2).getConfiguracao());
+		assertEquals("java configuracao faixa", Boolean.TRUE, matrizConfiguradaJoao.get(2).getConfiguracaoFaixa());
 		
-		comp = null;
-		System.out.println("#######################%%%%%%%%%%%%%%%%%%%%%%");
-		for (MatrizCompetenciaNivelConfiguracao m : matrizJoao.getMatrizes()) 
-		{
-			if(!m.getCompetencia().equals(comp))
-				System.out.print("\n" + m.getCompetencia() + "\t" );
-			
-			System.out.print(m.getNivel() + "\t"+ m.getConfiguracaoFaixa() + "\t" + m.getConfiguracao() + "\t" + m.getGap() + "\t");
-			comp = m.getCompetencia();
-		}
+		assertEquals("gap java", new Integer(0), matrizConfiguradaJoao.get(3).getGap());
+		assertEquals("gap delphi", null, matrizConfiguradaJoao.get(7).getGap());
+		assertEquals("gap BD", new Integer(2), matrizConfiguradaJoao.get(11).getGap());
+
+		List<MatrizCompetenciaNivelConfiguracao> matrizConfiguradaMaria = (List<MatrizCompetenciaNivelConfiguracao>) matrizMaria.getMatrizes();
+		assertEquals("java configuracao candidato", Boolean.TRUE, matrizConfiguradaMaria.get(0).getConfiguracao());
+		assertEquals("java configuracao faixa", Boolean.FALSE, matrizConfiguradaMaria.get(0).getConfiguracaoFaixa());
+		
+		assertEquals("gap java", new Integer(-2), matrizConfiguradaMaria.get(3).getGap());
+		assertEquals("gap delphi", null, matrizConfiguradaMaria.get(7).getGap());
+		assertEquals("gap BD", null, matrizConfiguradaMaria.get(11).getGap());
 	}
 
 	private ConfiguracaoNivelCompetencia criaConfigCompetencia(String descricao, FaixaSalarial faixaSalarial, NivelCompetencia nivel, char tipo, Candidato candidato)

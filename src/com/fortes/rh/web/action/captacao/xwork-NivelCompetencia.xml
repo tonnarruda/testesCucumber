@@ -78,5 +78,13 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
 		</action>
+		<action name="imprimirMatrizCompetenciasCandidatos" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="imprimirMatrizCompetenciasCandidatos">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/matriz_colaboradores_competencias.jasper</param>
+				<param name="dataSource">configuracaoNivelCompetenciaVOs</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">matriz_colaboradores_competencias.pdf</param>
+			</result>
+		</action>
 	</package>
 </xwork>
