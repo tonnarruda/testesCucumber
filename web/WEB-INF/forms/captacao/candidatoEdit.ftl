@@ -686,7 +686,6 @@
       <@ww.hidden name="candidato.observacao" id="candidato.observacao" />
       <@ww.hidden name="candidato.observacaoRH" id="candidato.observacaoRH" />
       <@ww.hidden name="candidato.id" />
-      <@ww.hidden name="candidato.id" />
 
 	  <@ww.token/>
     </@ww.form>
