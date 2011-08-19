@@ -1097,7 +1097,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar)
 	{
 		Collection<Long> candidatosJaSelecionados = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
-		if(empresaId != null && empresaId == -1L)
+		if(empresaId == -1L)
 			return getDao().findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);
 		else
 			return getDao().findCandidatosForSolicitacaoByEmpresa(empresaId, indicadoPor, nomeBusca, cpfBusca, uf, cidade, StringUtil.stringToLong(cargosCheck), StringUtil.stringToLong(conhecimentosCheck), candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);

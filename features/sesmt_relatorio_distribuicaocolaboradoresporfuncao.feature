@@ -14,4 +14,4 @@ Funcionalidade: Relatório de Distribuição de Colaboradores por Função
     Então eu preencho o campo (JS) "data" com "29/01/2011"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu clico no botão "Relatorio"
-    E eu devo ver "Não existe dados para relatório"
+    E eu devo ver "Não existem dados para relatório"
