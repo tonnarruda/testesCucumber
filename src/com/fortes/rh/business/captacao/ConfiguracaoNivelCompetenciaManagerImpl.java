@@ -190,7 +190,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Long idCandidatoAnterior = null;
 		Long idCandidatoAtual;
 		ConfiguracaoNivelCompetenciaVO tabelaCandidato = null;
-		System.out.println(tabelaCandidato);
+		int totalPontosFaixa = 0;
 		
 		for (ConfiguracaoNivelCompetencia configuracaoCompetencia : configuracaoNivelCompetencias) 
 		{
@@ -200,11 +200,12 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				for (NivelCompetencia nivel : niveis) 
 				{
 					boolean nivelExigidoPelaFaixa = nivel.getDescricao().equals(configuracaoCompetencia.getNivelCompetencia().getDescricao());
-					matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(configuracaoCompetencia.getCompetenciaDescricao(), nivel.getDescricao(), nivelExigidoPelaFaixa, false));
+					matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(configuracaoCompetencia.getCompetenciaDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), nivelExigidoPelaFaixa, false));
 				}
 
 				//monta coluna GAP
-				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(configuracaoCompetencia.getCompetenciaDescricao(), "gap", false, false, configuracaoCompetencia.getNivelCompetencia().getOrdem()));
+				totalPontosFaixa += configuracaoCompetencia.getNivelCompetencia().getOrdem();
+				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(configuracaoCompetencia.getNivelCompetencia().getOrdem(), configuracaoCompetencia.getCompetenciaDescricao(), "gap", false, false));
 			}
 			else
 			{
@@ -212,19 +213,26 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				idCandidatoAtual = configuracaoCompetencia.getCandidato().getId();
 				if(!idCandidatoAtual.equals(idCandidatoAnterior))
 				{
-					tabelaCandidato = new ConfiguracaoNivelCompetenciaVO();
-					tabelaCandidato.setNome(configuracaoCompetencia.getCandidato().getNome());
-					tabelaCandidato.setMatrizes(matrizModelo);
+					tabelaCandidato = new ConfiguracaoNivelCompetenciaVO(configuracaoCompetencia.getCandidato().getNome(), clonaMatriz(matrizModelo), totalPontosFaixa);
 					tabelasCandidatos.add(tabelaCandidato);
 				}
 				
 				tabelaCandidato.configuraNivelCandidato(configuracaoCompetencia.getCompetenciaDescricao(), configuracaoCompetencia.getNivelCompetencia());
-				System.out.println(tabelaCandidato);
-				
 				idCandidatoAnterior = idCandidatoAtual;
 			}
 		}
 		
 		return tabelasCandidatos;
+	}
+
+	private Collection<MatrizCompetenciaNivelConfiguracao> clonaMatriz(Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo) 
+	{
+		Collection<MatrizCompetenciaNivelConfiguracao> matriz = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
+		for (MatrizCompetenciaNivelConfiguracao modelo : matrizModelo) 
+		{
+			matriz.add((MatrizCompetenciaNivelConfiguracao) modelo.clone());
+		}
+		
+		return matriz;
 	}
 }

@@ -286,6 +286,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 		parametros = RelatorioUtil.getParametrosRelatorio("Matriz comparativa Cargo x Colaborador", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
+		parametros.put("ENTIDADE", "Colaborador");
 		configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaRelatorioConfiguracaoNivelCompetencia(getEmpresaSistema().getId(), faixaSalarial.getId(), LongUtil.arrayStringToArrayLong(competenciasCheck));
 		
 		if(configuracaoNivelCompetenciaVOs.isEmpty())
@@ -302,7 +303,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public String imprimirMatrizCompetenciasCandidatos()
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
-		parametros = RelatorioUtil.getParametrosRelatorio("Matriz comparativa Cargo x Colaborador", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
+		parametros = RelatorioUtil.getParametrosRelatorio("Matriz comparativa Cargo x Candidato", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
+		parametros.put("ENTIDADE", "Candidato");
 		configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(getEmpresaSistema().getId(), faixaSalarial.getId());
 		
 		return Action.SUCCESS;

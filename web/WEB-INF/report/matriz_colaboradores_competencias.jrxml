@@ -25,6 +25,7 @@
 
 	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
+	<parameter name="ENTIDADE" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="nome" class="java.lang.String"/>
 	<field name="matrizes" class="java.lang.Object"/>
@@ -88,7 +89,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Nível de Competência do Colaborador"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Nível de Competência do " + $P{ENTIDADE}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -172,7 +173,7 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Colaborador: " + $F{nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTIDADE} + ": " + $F{nome}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

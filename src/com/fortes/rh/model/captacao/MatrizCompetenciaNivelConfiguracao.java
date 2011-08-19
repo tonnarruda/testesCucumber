@@ -9,6 +9,7 @@ public class MatrizCompetenciaNivelConfiguracao implements Cloneable
 	private Boolean configuracaoFaixa;
 	private Boolean configuracao;
 	private Integer gap;
+	private Integer nivelDaFaixa;
 	
 	public MatrizCompetenciaNivelConfiguracao(String competencia, String nivel, Boolean configuracaoFaixa, Boolean configuracao) {
 		super();
@@ -26,7 +27,16 @@ public class MatrizCompetenciaNivelConfiguracao implements Cloneable
 		this.configuracao = configuracao;
 		this.gap = gap;
 	}
-
+	
+	public MatrizCompetenciaNivelConfiguracao(Integer nivelDaFaixa, String competencia, String nivel, Boolean configuracaoFaixa, Boolean configuracao) {
+		super();
+		this.nivelDaFaixa = nivelDaFaixa;
+		this.competencia = competencia;
+		this.nivel = nivel;
+		this.configuracaoFaixa = configuracaoFaixa;
+		this.configuracao = configuracao;
+	}
+	
 
 	public Object clone()
 	{
@@ -80,5 +90,13 @@ public class MatrizCompetenciaNivelConfiguracao implements Cloneable
 
 	public void setGap(Integer gap) {
 		this.gap = gap;
+	}
+
+	public Integer getNivelDaFaixa() {
+		return nivelDaFaixa;
+	}
+
+	public void setNivelDaFaixa(Integer nivelDaFaixa) {
+		this.nivelDaFaixa = nivelDaFaixa;
 	}
 }

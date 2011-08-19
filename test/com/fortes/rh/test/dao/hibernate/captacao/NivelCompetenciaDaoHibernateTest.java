@@ -443,11 +443,12 @@ private ColaboradorManager colaboradorManager;
 		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaCandidato(faixaSalarial.getId());
 		
 		assertEquals(5, configs.size());
-		assertEquals("joao", ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCandidato().getNome());
-		assertEquals("joao", ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCandidato().getNome());
-		assertEquals("jose", ((ConfiguracaoNivelCompetencia)configs.toArray()[2]).getCandidato().getNome());
-		assertNull("faixa 1", ((ConfiguracaoNivelCompetencia)configs.toArray()[3]).getCandidato());
-		assertNull("faixa 2", ((ConfiguracaoNivelCompetencia)configs.toArray()[4]).getCandidato());
+		//a ordem é importante para o manager
+		assertNull("faixa 2", ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCandidato());
+		assertNull("faixa 1", ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCandidato());
+		assertEquals("joao", ((ConfiguracaoNivelCompetencia)configs.toArray()[2]).getCandidato().getNome());
+		assertEquals("joao", ((ConfiguracaoNivelCompetencia)configs.toArray()[3]).getCandidato().getNome());
+		assertEquals("jose", ((ConfiguracaoNivelCompetencia)configs.toArray()[4]).getCandidato().getNome());
 	}
 
 	@Override
