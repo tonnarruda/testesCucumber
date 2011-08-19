@@ -238,6 +238,11 @@
 	background-image:url(../imgs/btnTriagemModuloExterno.gif);
 	width: 195px !important;
 }
+.btnMatrizCompetencia
+{
+	background-image:url(../imgs/btnMatrizCompetencia.gif);
+	width: 255px !important;
+}
 .btnEnviarPorEmail
 {
 	background-image:url(../imgs/btnEnviarPorEmail.gif);
@@ -583,6 +588,7 @@
 .btnMoverCandidatos,
 .btnTriagem,
 .btnTriagemModuloExterno,
+.btnMatrizCompetencia,
 .btnImportarbds,
 .btnImportar,
 .btnAvancarDesabilitado,

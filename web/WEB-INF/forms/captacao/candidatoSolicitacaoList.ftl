@@ -181,7 +181,7 @@
 		
 		<#if solicitacao.faixaSalarial?exists>
 			<br /><br />
-			<button onclick="window.location='../nivelCompetencia/imprimirMatrizCompetenciasCandidatos.action?faixaSalarial.id=${solicitacao.faixaSalarial.id}'">Imprimir Matriz de Competências</button>
+			<button onclick="window.location='../nivelCompetencia/imprimirMatrizCompetenciasCandidatos.action?faixaSalarial.id=${solicitacao.faixaSalarial.id}'" class="btnMatrizCompetencia"></button>
 		</#if>
 	</div>
 	<div style="clear: both;"></div>
