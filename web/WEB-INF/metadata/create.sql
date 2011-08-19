@@ -2370,3 +2370,45 @@ ALTER TABLE quantidadeLimiteColaboradoresPorCargo ADD CONSTRAINT quantidadeLimit
 ALTER TABLE quantidadeLimiteColaboradoresPorCargo ADD CONSTRAINT quantidadeLimiteColaboradoresPorCargo_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);
 ALTER TABLE quantidadeLimiteColaboradoresPorCargo ADD CONSTRAINT quantidadeLimiteColaboradoresPorCargo_cargo_area_uk UNIQUE (cargo_id, areaorganizacional_id);
 CREATE SEQUENCE quantidadelimitecolaboradoresporcargo_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE nivelCompetencia (
+	id bigint NOT NULL,
+	descricao character varying(15),
+	ordem int,
+	empresa_id bigint
+);
+
+ALTER TABLE nivelCompetencia ADD CONSTRAINT nivelCompetencia_pkey PRIMARY KEY(id);
+ALTER TABLE nivelCompetencia ADD CONSTRAINT nivelCompetencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE nivelCompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+create table configuracaoNivelCompetenciaColaborador 
+(
+  id bigint NOT NULL,
+  colaborador_id bigint,
+  faixasalarial_id bigint,
+  data date
+);
+
+ALTER TABLE configuracaoNivelCompetenciaColaborador ADD CONSTRAINT configuracaoNivelCompetenciaColaborador_pkey PRIMARY KEY (id);
+ALTER TABLE configuracaoNivelCompetenciaColaborador ADD CONSTRAINT configuracaoNivelCompetenciaColaborador_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
+ALTER TABLE configuracaoNivelCompetenciaColaborador ADD CONSTRAINT configuracaoNivelCompetenciaColaborador_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
+CREATE SEQUENCE configuracaoNivelCompetenciaColaborador_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+create table configuracaoNivelCompetencia 
+(
+  id bigint NOT NULL,
+  faixasalarial_id bigint,
+  nivelcompetencia_id bigint NOT NULL,
+  competencia_id bigint,
+  candidato_id bigint,
+  tipocompetencia character,
+  configuracaoNivelCompetenciaColaborador_id bigint
+);
+
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_pkey PRIMARY KEY (id);
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_candidato_fk FOREIGN KEY (candidato_id) REFERENCES candidato(id);
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_configuracaoNivelCompetenciaColaborador_fk FOREIGN KEY (configuracaoNivelCompetenciaColaborador_id) REFERENCES configuracaoNivelCompetenciaColaborador(id);
+CREATE SEQUENCE configuracaoNivelCompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
