@@ -18014,3 +18014,71 @@ insert into migrations values('20110802145553');--.go
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=514 WHERE atualizaPapeisIdsAPartirDe is null;--.go
 
 update parametrosdosistema set appversao = '1.1.52.44';--.go
+
+
+-- versao 1.1.53.45
+CREATE TABLE nivelCompetencia (
+	id bigint NOT NULL,
+	descricao character varying(15),
+	ordem int,
+	empresa_id bigint
+);--.go
+
+ALTER TABLE nivelCompetencia ADD CONSTRAINT nivelCompetencia_pkey PRIMARY KEY(id);--.go
+ALTER TABLE nivelCompetencia ADD CONSTRAINT nivelCompetencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE nivelCompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+create table configuracaoNivelCompetenciaColaborador 
+(
+  id bigint NOT NULL,
+  colaborador_id bigint,
+  faixasalarial_id bigint,
+  data date
+);--.go
+
+ALTER TABLE configuracaoNivelCompetenciaColaborador ADD CONSTRAINT configuracaoNivelCompetenciaColaborador_pkey PRIMARY KEY (id);--.go
+ALTER TABLE configuracaoNivelCompetenciaColaborador ADD CONSTRAINT configuracaoNivelCompetenciaColaborador_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
+ALTER TABLE configuracaoNivelCompetenciaColaborador ADD CONSTRAINT configuracaoNivelCompetenciaColaborador_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);--.go
+CREATE SEQUENCE configuracaoNivelCompetenciaColaborador_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+create table configuracaoNivelCompetencia 
+(
+  id bigint NOT NULL,
+  faixasalarial_id bigint,
+  nivelcompetencia_id bigint NOT NULL,
+  competencia_id bigint,
+  candidato_id bigint,
+  tipocompetencia character,
+  configuracaoNivelCompetenciaColaborador_id bigint
+);--.go
+
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_pkey PRIMARY KEY (id);--.go
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);--.go
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);--.go
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_candidato_fk FOREIGN KEY (candidato_id) REFERENCES candidato(id);--.go
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_configuracaoNivelCompetenciaColaborador_fk FOREIGN KEY (configuracaoNivelCompetenciaColaborador_id) REFERENCES configuracaoNivelCompetenciaColaborador(id);--.go
+CREATE SEQUENCE configuracaoNivelCompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+update papel set ordem=ordem+1 where papelmae_id=362 and ordem > 5;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (516, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Níveis de Competência', '/captacao/nivelCompetencia/list.action', 6, true, 362);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (517,'RECEBE_MSG_PERIODOEXPERIENCIA', 'Receber Mensagens do Período de Acomp. de Experiência Apenas da Área Cujo Gestor é Responsável.', '#', 4, false, 382);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (518,'GERENCIA_MSG_PERIODOEXPERIENCIA', 'Receber Mensagens do Período de Acomp. de Experiência de Todas as Áreas Organizacionais.', '#', 5, false, 382);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (519,'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores com Nível de Experiência inferior ao exigido pelo Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 8, true, 364);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (520, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Matriz comparativa de competências de Colaborador X Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador.action', 9, true, 364);--.go
+update papel set nome = 'Investimento em T&D' where id = 498;--.go
+
+alter sequence papel_sequence restart with 521;--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=516 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+
+insert into migrations values('20110809151648');--.go
+insert into migrations values('20110805144500');--.go
+insert into migrations values('20110804152010');--.go
+insert into migrations values('20110809171743');--.go
+insert into migrations values('20110804151455');--.go
+insert into migrations values('20110811085158');--.go
+insert into migrations values('20110811092316');--.go
+insert into migrations values('20110817092248');--.go
+insert into migrations values('20110817170136');--.go
+insert into migrations values('20110817170825');--.go
+
+update parametrosdosistema set appversao = '1.1.53.45';--.go

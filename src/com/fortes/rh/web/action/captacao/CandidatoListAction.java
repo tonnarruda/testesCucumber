@@ -331,7 +331,10 @@ public class CandidatoListAction extends MyActionSupportList
 	public String prepareBuscaSimples() throws Exception
 	{
 		populaEmpresas();
-		empresaId = getEmpresaSistema().getId();
+		
+		if(empresaId==null)
+			empresaId = getEmpresaSistema().getId();
+		
 		cargosCheckList = cargoManager.populaCheckBox(empresaId);
 
 		if(montaFiltroBySolicitacao)

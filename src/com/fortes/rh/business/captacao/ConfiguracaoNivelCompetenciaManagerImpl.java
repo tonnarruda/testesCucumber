@@ -164,10 +164,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 					vos.add(vo);
 				}
 				
-				boolean isConfiguracaoFaixa = false;
-				if (competenciaNiveisConfigurados.containsKey(competencia) && competenciaNiveisConfigurados.get(competencia).equals(nivel))
-					isConfiguracaoFaixa = true;
-				
+				boolean isConfiguracaoFaixa = competenciaNiveisConfigurados.containsKey(competencia) && competenciaNiveisConfigurados.get(competencia).equals(nivel);
 				vo.somaTotalPontos(ordem);
 				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(competencia, ordem + " - " + nivel, isConfiguracaoFaixa, true));
 				//Configura o gap
