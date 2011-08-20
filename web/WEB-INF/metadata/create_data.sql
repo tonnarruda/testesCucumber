@@ -90,7 +90,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (407,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (70, 'ROLE_REL_PROMOCAO', 'Promoções', '/cargosalario/historicoColaborador/prepareRelatorioPromocoes.action', 6, true, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (473, 'ROLE_REL_SITUACOES', 'Situações', '/cargosalario/historicoColaborador/prepareRelatorioSituacoes.action', 7, true, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (511, 'ROLE_REL_COLAB_SEM_REAJUSTE', 'Colaboradores sem Reajuste Salarial', '/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action', 7, true, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (519,'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores com Nível de Experiência inferior ao exigido pelo Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 8, true, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (519,'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores com Nível de Competência inferior ao exigido pelo Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 8, true, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (520, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Matriz comparativa de competências de Colaborador X Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador.action', 9, true, 364);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (417, 'ROLE_TRANSFERIR_FAIXAS_AC', 'Transferir Faixas entre Cargos', '', 4, false, 361);
@@ -103,9 +103,9 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (59, 
 -- Fim Pesquisas
 -- Modulo Aval. Desempenho
 
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (481, 'ROLE_CAD_AVALIACAO', 'Cadastros', '#', 1, true, 382);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (482, 'ROLE_CAD_AVALIACAO', 'Avaliações de Desempenho/Acomp. do Período de Experiência', '/avaliacao/modelo/list.action', 1, true, 481);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (467, 'ROLE_CAD_PERIODOEXPERIENCIA', 'Dias do Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/list.action', 2, true, 481);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (481, 'ROLE_CAD_AVALIACAO', 'Cadastros', '#', 1, true, 382);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (384, 'ROLE_MOV_AVALIACAO', 'Movimentações', '#', 2, true, 382);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (486, 'ROLE_REL_AVALIACAO', 'Relatórios', '#', 3, true, 382);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (484, 'ROLE_RESPONDE_AVALIACAO', 'Pode ver e responder Aval. Desempenho', '#', 3, false, 382);

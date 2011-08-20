@@ -179,10 +179,14 @@
 
 		<button onclick="window.location='../solicitacao/list.action'" class="btnVoltar" accesskey="V"></button>
 		
-		<#if solicitacao.faixaSalarial?exists>
+		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">
 			<br /><br />
-			<button onclick="window.location='../nivelCompetencia/imprimirMatrizCompetenciasCandidatos.action?faixaSalarial.id=${solicitacao.faixaSalarial.id}'" class="btnMatrizCompetencia"></button>
-		</#if>
+			<#if existeCompetenciaParaFaixa>
+				<button onclick="window.location='../nivelCompetencia/imprimirMatrizCompetenciasCandidatos.action?faixaSalarial.id=${solicitacao.faixaSalarial.id}'" class="btnMatrizCompetencia"></button>
+			<#else>
+				<img border="0" title="Não existe Competência configurada para a Faixa Salarial" style="opacity:0.2;filter:alpha(opacity=20);" src="<@ww.url includeParams="none" value="/imgs/btnMatrizCompetencia.gif"/>">
+			</#if>
+		</@authz.authorize>
 	</div>
 	<div style="clear: both;"></div>
 

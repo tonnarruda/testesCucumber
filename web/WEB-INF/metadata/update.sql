@@ -18063,7 +18063,7 @@ update papel set ordem=ordem+1 where papelmae_id=362 and ordem > 5;--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (516, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Níveis de Competência', '/captacao/nivelCompetencia/list.action', 6, true, 362);--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (517,'RECEBE_MSG_PERIODOEXPERIENCIA', 'Receber Mensagens do Período de Acomp. de Experiência Apenas da Área Cujo Gestor é Responsável.', '#', 4, false, 382);--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (518,'GERENCIA_MSG_PERIODOEXPERIENCIA', 'Receber Mensagens do Período de Acomp. de Experiência de Todas as Áreas Organizacionais.', '#', 5, false, 382);--.go
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (519,'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores com Nível de Experiência inferior ao exigido pelo Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 8, true, 364);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (519,'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores com Nível de Competência inferior ao exigido pelo Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 8, true, 364);--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (520, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Matriz comparativa de competências de Colaborador X Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador.action', 9, true, 364);--.go
 update papel set nome = 'Investimento em T&D' where id = 498;--.go
 

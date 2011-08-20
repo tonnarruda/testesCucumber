@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.53.45" data="19/08/2011">
+		- CeS > Cadastros > Níveis de Competência.
+		- CeS > Cadastros > Cargos > Faixas Salariais > Níveis de Competência > Nova funcionalidade, configuração das Competências da Faixa Salarial.
+		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Competências: Configuração das Competências do Candidato.
+		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Currículo: Comparação das Competências do Candidato com as exigidas pelo Cargo da Solicitação.
+		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Impressão da Matriz comparativa de competências dos Candidatos da Solicitação.
+		- Aval. Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Novo relatório agrupado por Modelo de Avaliação.
+		- Info. Funcionais > Cadastros > Colaboradores > Competências: Configuração das Competências do Colaborador.
+		- Info. Funcionais > Relatórios > Colaboradores com Nível de Competência inferior exigido pelo Cargo/Faixa: Novo relatório.
+		- Info. Funcionais > Relatórios > Matriz comparativa de competências de Colaborador X Cargo/Faixa: Novo relatório.
+		- SESMT > Movimentos > Solicitações/Atendimentos Médicos > Imprimir ASO: Nova listagem com Exames Complementares e assinatura do médico examinador.
+		- Utilitários > Cadastros > Perfis: Impressão das permissões dos perfis.
+		- Utilitários > Cadastros > Usuários: Impressão dos Perfis dos Usuários por Empresa.  
+	</Versao>
 	<Versao id="1.1.52.44" data="04/08/2011">
 		- CeS > Cadastros > Cargos e Faixas: Impressão da listagem de Cargos.
 		- TeD > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Novo campo [Admitidos entre] no filtro.

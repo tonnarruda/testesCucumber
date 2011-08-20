@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.captacao;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -25,6 +26,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private HistoricoCandidatoManager historicoCandidatoManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 	private Collection<Solicitacao> solicitacaos;
@@ -39,6 +41,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private String indicadoPor;
 	private String observacaoRH;
 	private String nomeBusca;
+	private boolean existeCompetenciaParaFaixa;
 
 	private Long etapaSeletivaId;//usado no ftl para manter dados do filtro
 	private char visualizar;
@@ -80,6 +83,8 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 			setActionMessages(null);
 		}
 
+		existeCompetenciaParaFaixa = !configuracaoNivelCompetenciaManager.findByFaixa(solicitacao.getFaixaSalarial().getId()).isEmpty();
+		
 		return Action.SUCCESS;
 	}
 
@@ -315,6 +320,14 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public void setNomeBusca(String nomeBusca) {
 		this.nomeBusca = nomeBusca;
+	}
+
+	public boolean isExisteCompetenciaParaFaixa() {
+		return existeCompetenciaParaFaixa;
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
 }
