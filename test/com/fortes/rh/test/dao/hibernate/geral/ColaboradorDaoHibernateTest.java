@@ -3239,13 +3239,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradorDao.countDeficiencia(hoje, empresa.getId()).size());
 	}
 	
-	public void testFindComHistoricoFuturoSQL() {
-		//sql, ta so passando por dentro
-		HashMap<String, Object> param = new HashMap<String, Object>();
-		param.put("empresaId", 1L);
-		colaboradorDao.findComHistoricoFuturoSQL(param, 10, 1);
-	}
-	
 	public void testFindEmailsByPapel() 
 	{
 		//sql, ta so passando por dentro
@@ -3414,76 +3407,87 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradors.size());
 	}
 
-	// @SuppressWarnings("unchecked")
-	// public void testFindComHistoricoFuturoSQL()
-	// {
-	// Cargo cargo = CargoFactory.getEntity();
-	// cargo.setNome("Teste");
-	// cargoDao.save(cargo);
-	//
-	// FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-	// faixaSalarial.setNome("I");
-	// faixaSalarial.setCargo(cargo);
-	// faixaSalarialDao.save(faixaSalarial);
-	//
-	// Empresa empresa = EmpresaFactory.getEmpresa(4L);
-	// empresaDao.save(empresa);
-	//
-	// Colaborador joao = ColaboradorFactory.getEntity();
-	// joao.setNome("Joao ");
-	// joao.setEmpresa(empresa);
-	// joao.getPessoal().setCpf("99999888888");
-	// colaboradorDao.save(joao);
-	//
-	// Colaborador maria = ColaboradorFactory.getEntity();
-	// maria.setNome("Maria");
-	// maria.setEmpresa(empresa);
-	// maria.getPessoal().setCpf("12321362391");
-	// colaboradorDao.save(maria);
-	//
-	// Colaborador pedro = ColaboradorFactory.getEntity();
-	// pedro.setNome("Pedro");
-	// pedro.setEmpresa(empresa);
-	// pedro.getPessoal().setCpf("12321362391");
-	// colaboradorDao.save(pedro);
-	//
-	// HistoricoColaborador historicoColaboradorJoao =
-	// HistoricoColaboradorFactory.getEntity();
-	// historicoColaboradorJoao.setData(DateUtil.criarDataMesAno(1, 1, 2008));
-	// historicoColaboradorJoao.setColaborador(joao);
-	// historicoColaboradorJoao.setFaixaSalarial(faixaSalarial);
-	// historicoColaboradorDao.save(historicoColaboradorJoao);
-	//
-	// HistoricoColaborador historicoColaboradorMaria =
-	// HistoricoColaboradorFactory.getEntity();
-	// historicoColaboradorMaria.setData(DateUtil.criarDataMesAno(1, 1, 2020));
-	// historicoColaboradorMaria.setColaborador(maria);
-	// historicoColaboradorMaria.setFaixaSalarial(faixaSalarial);
-	// historicoColaboradorDao.save(historicoColaboradorMaria);
-	//
-	// HistoricoColaborador historicoColaboradorPedroAntigo =
-	// HistoricoColaboradorFactory.getEntity();
-	// historicoColaboradorPedroAntigo.setData(DateUtil.criarDataMesAno(1, 1,
-	// 2000));
-	// historicoColaboradorPedroAntigo.setColaborador(pedro);
-	// historicoColaboradorPedroAntigo.setFaixaSalarial(faixaSalarial);
-	// historicoColaboradorDao.save(historicoColaboradorPedroAntigo);
-	//
-	// HistoricoColaborador historicoColaboradorPedroAtual =
-	// HistoricoColaboradorFactory.getEntity();
-	// historicoColaboradorPedroAtual.setData(DateUtil.criarDataMesAno(1, 1,
-	// 2010));
-	// historicoColaboradorPedroAtual.setColaborador(pedro);
-	// historicoColaboradorPedroAtual.setFaixaSalarial(faixaSalarial);
-	// historicoColaboradorDao.save(historicoColaboradorPedroAtual);
-	//
-	// Map parametros = new HashMap<String, Object>();
-	// parametros.put("cpfBusca", "12321362391");
-	// parametros.put("empresaId", empresa.getId());
-	//
-	// assertEquals(2, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0,
-	// 0).size());
-	// }
+	 @SuppressWarnings("unchecked")
+	public void testFindComHistoricoFuturoSQL()
+	 {
+		 Cargo cargo = CargoFactory.getEntity();
+		 cargo.setNome("Teste");
+		 cargoDao.save(cargo);
+		
+		 FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		 faixaSalarial.setNome("I");
+		 faixaSalarial.setCargo(cargo);
+		 faixaSalarialDao.save(faixaSalarial);
+		
+		 Empresa empresa = EmpresaFactory.getEmpresa(4L);
+		 empresaDao.save(empresa);
+		
+		 Colaborador joao = inicializaColaborador("Joao ", "99999888888", empresa);
+		 colaboradorDao.save(joao);
+		
+		 Colaborador maria = inicializaColaborador("Maria", "12321362391", empresa);
+		 colaboradorDao.save(maria);
+		
+		 Colaborador pedro = inicializaColaborador("Pedro", "12321362391", empresa);
+		 colaboradorDao.save(pedro);
+
+		 Colaborador ronaldo = inicializaColaborador("ronaldo", "12321362391", empresa);
+		 colaboradorDao.save(ronaldo);
+		 
+		 Colaborador tadeu = inicializaColaborador("tadeu", "12321362391", empresa);
+		 colaboradorDao.save(tadeu);
+		
+		 HistoricoColaborador historicoColaboradorJoao = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2008), joao, faixaSalarial);
+		 historicoColaboradorDao.save(historicoColaboradorJoao);
+		
+		 HistoricoColaborador historicoColaboradorMaria = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2020), maria, faixaSalarial);
+		 historicoColaboradorDao.save(historicoColaboradorMaria);
+		
+		 HistoricoColaborador historicoColaboradorPedroAntigo = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2000), pedro, faixaSalarial);
+		 historicoColaboradorDao.save(historicoColaboradorPedroAntigo);
+		
+		 HistoricoColaborador historicoColaboradorPedroAtual = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2010), pedro, faixaSalarial);
+		 historicoColaboradorDao.save(historicoColaboradorPedroAtual);
+		 
+		 HistoricoColaborador historicoColaboradorRonaldoAtual = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2010), ronaldo, faixaSalarial);
+		 historicoColaboradorDao.save(historicoColaboradorRonaldoAtual);
+
+		 HistoricoColaborador historicoColaboradorRonaldoFuturo1 = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2022), ronaldo, faixaSalarial);
+		 historicoColaboradorDao.save(historicoColaboradorRonaldoFuturo1);
+
+		 HistoricoColaborador historicoColaboradorRonaldoFuturo2 = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2023), ronaldo, faixaSalarial);
+		 historicoColaboradorDao.save(historicoColaboradorRonaldoFuturo2);
+		 
+		 HistoricoColaborador historicoColaboradorTadeuFuturo1 = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2022), tadeu, faixaSalarial);
+		 historicoColaboradorDao.save(historicoColaboradorTadeuFuturo1);
+		
+		 Map<String, Object> parametros = new HashMap<String, Object>();
+		 parametros.put("cpfBusca", "12321362391");
+		 parametros.put("empresaId", empresa.getId());
+		 
+		 historicoColaboradorDao.getHistoricoProximo(historicoColaboradorJoao);//miguel do SQL
+		
+		 assertEquals(4, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0).size());
+	 }
+
+	private HistoricoColaborador inicializaHistorico(Date data, Colaborador colaborador, FaixaSalarial faixaSalarial) 
+	{
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(data);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		return historicoColaborador;
+	}
+
+	private Colaborador inicializaColaborador(String nome, String cpf, Empresa empresa)
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome(nome);
+		colaborador.setEmpresa(empresa);
+		colaborador.getPessoal().setCpf(cpf);
+		
+		return colaborador;
+	}
 
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
 		this.areaOrganizacionalDao = areaOrganizacionalDao;

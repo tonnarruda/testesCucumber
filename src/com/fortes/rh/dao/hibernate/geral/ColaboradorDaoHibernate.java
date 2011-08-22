@@ -44,7 +44,6 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -52,19 +51,12 @@ import com.fortes.rh.util.StringUtil;
 public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> implements ColaboradorDao
 {
 	private static final int AREA_ORGANIZACIONAL = 1;
-
 	private static final int GRUPO_OCUPACIONAL = 2;
-
 	private static final int CARGO = 3;
-
 	private static final int NO_MES = 0;
-
 	private static final int ADMITIDOS = 1;
-
 	private static final int DEMITIDOS = 2;
-
 	private static final int MOTIVODEMISSAO = 1;
-
 	private static final int MOTIVODEMISSAOQUANTIDADE = 2;
 
 	/**
@@ -2767,7 +2759,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("	where hc2.status in (:status)  ");
 		sql.append("	group by ");
 		sql.append("	hc2.colaborador_id ");
-		//sql.append("	having count(hc2.id) = 1 ");
+		sql.append("	having count(hc2.id) = 1 ");
 		sql.append(") subJoinMaxData ");
 		sql.append("on colabId1 = colab_.id ");
 		sql.append("where ");
@@ -2789,13 +2781,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("colab_.empresa_id = :empresaId ");
 		sql.append("and hc.status in (:status) ");
 		
-		// Area
 		if(areaBuscaId != null)
 			sql.append("and hc.areaOrganizacional_id = :areaBuscaId ");
-		// Cargo
 		if(cargoId != null)
 			sql.append("and fs.cargo_id = :cargoId ");
-		// Area
 		if(estabelecimentoId != null)
 			sql.append("and hc.estabelecimento_id = :estabelecimentoId ");
 
@@ -2840,16 +2829,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		// CPF
 		if(cpfBusca != null && !cpfBusca.trim().equals(""))
 			query.setString("cpfBusca", "%" + cpfBusca + "%");
-		// Area
+
 		if(areaBuscaId != null)
 			query.setLong("areaBuscaId", areaBuscaId);
-		// Cargo
 		if(cargoId != null)
 			query.setLong("cargoId", cargoId);
-		// Area
 		if(estabelecimentoId != null)
 			query.setLong("estabelecimentoId", estabelecimentoId);
-		// Situação
 		if(situacao != null && !situacao.trim().equals("") && !situacao.trim().equals("T"))
 		{
 			if(situacao.trim().equals("A"))
