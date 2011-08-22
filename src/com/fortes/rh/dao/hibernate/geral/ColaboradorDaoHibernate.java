@@ -1724,7 +1724,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		   where hc2.colaborador.id = co.id ");
 		//hql.append("			     and hc2.data <= :hoje " );
 		
-		if (statusRetornoAC !=null)
+		if (statusRetornoAC != null)
 			hql.append("  				 and hc2.status = :statusHistColab ");
 		
 		hql.append("       ) or ");
@@ -1736,7 +1736,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setLong("id", colaboradorId);
 		query.setInteger("status", StatusRetornoAC.CANCELADO);
 		
-		if (statusRetornoAC !=null)
+		if (statusRetornoAC != null)
 			query.setInteger("statusHistColab", statusRetornoAC);
 		
 		return (Colaborador) query.uniqueResult();

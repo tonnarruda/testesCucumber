@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -48,6 +49,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
+import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
 import com.fortes.rh.model.ws.TCandidato;
 import com.fortes.rh.model.ws.TCargo;
@@ -962,6 +964,26 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
+	public FeedbackWebService removerEmpregado(TEmpregado empregado)
+	{
+		if(StringUtils.isEmpty(empregado.getCodigoAC()) || StringUtils.isEmpty(empregado.getEmpresaCodigoAC()) ||  StringUtils.isEmpty(empregado.getGrupoAC()))
+			return new FeedbackWebService(false, "Dados do empregado invalidos", empregado.getChaveAC_RH());
+		
+		try {
+			Colaborador colaborador = colaboradorManager.findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());		
+
+			if(colaborador == null)
+				return new FeedbackWebService(true, "Empregado não localizado no Fortes RH.", empregado.getChaveAC_RH());
+			
+			colaboradorManager.removeColaboradorDependencias(colaborador);
+			return new FeedbackWebService(true, "colaborador deletado com sucesso.", "");
+		}
+		catch (Exception e) 
+		{
+			return new FeedbackWebService(false, "Erro ao deletar empregado no Fortes RH.", e.getMessage());
+		}
+	}
+
 	public TGrupo[] getGrupos() 
 	{
 		return grupoACManager.findTGrupos();
