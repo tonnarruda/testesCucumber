@@ -231,7 +231,7 @@
 
 <ul id="sortable">
 	<li id="1" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Histórico de Cursos de Formação Profissional</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Histórico de Cursos de Formação Profissional</a></h4>
 		<ul id="box1" class="box">
 		<table class="grade">
 			<tr>
@@ -258,7 +258,7 @@
 	</li>
 	
 	<li id="2" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Avaliação de Desempenho</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Avaliação de Desempenho</a></h4>
 		<ul id="box2" class="box">
 		<table class="grade">
 			<tr>
@@ -280,7 +280,7 @@
 	</li>
 	
 	<li id="14" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Pesquisas</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Pesquisas</a></h4>
 		<ul id="box14" class="box">
 		<table class="grade">
 			<tr>
@@ -300,7 +300,7 @@
 	</li>
 	
 	<li id="3" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Acompanhamento do Período de Experiência</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Acompanhamento do Período de Experiência</a></h4>
 		<ul id="box3" class="box">
 		<table class="grade">
 			<tr>
@@ -322,7 +322,7 @@
 	</li>
 	
 	<li  id="4" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Participação em Cursos/Treinamentos</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Participação em Cursos/Treinamentos</a></h4>
 		<ul id="box4" class="box">
 		<table class="grade">
 			<tr>
@@ -345,7 +345,7 @@
 	</li>
 	
 	<li id="5" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Trajetória Profissional na Empresa</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Trajetória Profissional na Empresa</a></h4>
 		<ul id="box5" class="box">
 		<table class="grade">
 			<tr>
@@ -372,7 +372,7 @@
 	</li>
 	
 	<li id="6" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Ocorrências</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Ocorrências</a></h4>
 		<ul id="box6" class="box">
 		<table class="grade">
 			<tr>
@@ -393,7 +393,7 @@
 	</li>
 	
 	<li  id="7" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Afastamentos</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Afastamentos</a></h4>
 		<ul  id="box7" class="box">
 		<table class="grade">
 			<tr>
@@ -416,7 +416,7 @@
 	</li>
 	
 	<li id="8" class="cabecalhoBox">	
-		<h4><a href="javascript:return false;"  class="linkBox">Etapas Seletivas</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Etapas Seletivas</a></h4>
 		<ul id="box8" class="box">
 		<table class="grade">
 			<tr>
@@ -440,7 +440,7 @@
 	</li>
 	
 	<li id="9" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Participações na CIPA</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Participações na CIPA</a></h4>
 		<ul id="box9" class="box">
 		<table class="grade">
 			<tr>
@@ -457,7 +457,7 @@
 	</li>
 	
 	<li id="10" class="cabecalhoBox">
-		<h4><a href="javascript:return false;"  class="linkBox">Acidentes de Trabalho</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Acidentes de Trabalho</a></h4>
 		<ul id="box10" class="box">
 		<table class="grade">
 			<tr>
@@ -475,7 +475,7 @@
 	</li>
 	
 	<li id="11" class="cabecalhoBox">
-		<h4><a href="javascript:return false;" class="linkBox">Documentos</a></h4>
+		<h4><a href="javascript:;" class="linkBox">Documentos</a></h4>
 		<ul id="box11" class="box">
 		<table class="grade">
 			<tr>
@@ -516,7 +516,7 @@
 	
 	<li id="12" class="cabecalhoBox">
 		<#if colaborador.desligado>
-			<h4><a href="javascript:return false;"  class="linkBox">Desligamento</a></h4>
+			<h4><a href="javascript:;"  class="linkBox">Desligamento</a></h4>
 			<ul id="box12" class="box">
 			<table class="grade">
 				<tr>
@@ -530,8 +530,8 @@
 				<tr>
 					<td>
 						<strong>Observações:</strong><br>
-						<#if colaborador?exists && colaborador.observacao?exists>
-							${colaborador.observacao}
+						<#if colaborador?exists && colaborador.observacaoDemissao?exists>
+							${colaborador.observacaoDemissao}
 						</#if>
 					</td>
 				</tr>
@@ -542,8 +542,28 @@
 	
 	<li id="13" class="cabecalhoBox">
 		<#if colaborador.observacao?exists && colaborador.observacao!=''>
-			<h4><a href="javascript:return false;" class="linkBox">Informações Adicionais</a></h4>
+			<h4><a href="javascript:;" class="linkBox">Experiência Profissional</a></h4>
 			<ul id="box13" class="box">
+				<table class="grade">
+					<tr>
+						<td>
+							<@display.table name="experiencias" id="exp" class="dados" defaultsort=4 defaultorder="descending">
+								<@display.column property="empresa" title="Empresa"/>
+								<@display.column property="nomeMercado" title="Cargo/Função"/>
+								<@display.column property="dataAdmissao" title="Admissão" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
+								<@display.column property="dataDesligamento" title="Desligamento" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
+							</@display.table>
+						</td>
+					</tr>
+				</table>
+			</ul>
+		</#if>
+	</li>
+	
+	<li id="14" class="cabecalhoBox">
+		<#if colaborador.observacao?exists && colaborador.observacao!=''>
+			<h4><a href="javascript:;" class="linkBox">Informações Adicionais</a></h4>
+			<ul id="box14" class="box">
 				<table class="grade">
 					<tr>
 						<td>

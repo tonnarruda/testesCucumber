@@ -28,6 +28,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
+import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -229,6 +230,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		ocorrenciasColaborador.add(colaboradorOcorrencia);
 		
 		Collection<ColaboradorAfastamento> afastamentosColaborador = new ArrayList<ColaboradorAfastamento>();
+		Collection<Experiencia> experiencias = new ArrayList<Experiencia>();
 
 		DocumentoAnexo documentoAnexo = new DocumentoAnexo();
 		documentoAnexo.setId(1L);
@@ -258,6 +260,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(once()).method("findHistoricoTreinamentosByColaborador").with(eq(empresa.getId()),eq(colaborador.getId()),ANYTHING,ANYTHING).will(returnValue(cursosColaborador));
 		colaboradorOcorrenciaManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(ocorrenciasColaborador));
 		colaboradorAfastamentoManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(afastamentosColaborador));
+		experienciaManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(experiencias));
 		catManager.expects(once()).method("findByColaborador").with(eq(colaborador)).will(returnValue(new ArrayList<Cat>()));
 		comissaoManager.expects(once()).method("getParticipacoesDeColaboradorNaCipa").with(eq(colaborador.getId())).will(returnValue(new ArrayList<ParticipacaoColaboradorCipa>()));
 		colaboradorQuestionarioManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId()));
