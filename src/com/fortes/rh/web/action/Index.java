@@ -181,7 +181,8 @@ public class Index extends ActionSupport
 				catch (Exception e)
 				{
 					e.printStackTrace();
-					throw new Exception("Erro ao verificar conexão com o WebService. Verifique se o mesmo está funcionando corretamente.");
+					String msg = (e.getCause() instanceof java.net.ConnectException) ? "Verifique se o mesmo está funcionando corretamente." : e.getMessage();
+					throw new Exception("Erro ao verificar conexão com o WebService. " + msg);
 				}
 
 				parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);

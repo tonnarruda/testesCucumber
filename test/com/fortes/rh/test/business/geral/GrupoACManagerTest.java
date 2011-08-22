@@ -16,6 +16,7 @@ public class GrupoACManagerTest extends MockObjectTestCase
 	{
 		super.setUp();
 		grupoACManager = new GrupoACManagerImpl();
+		
 		grupoACDao = new Mock(GrupoACDao.class);
 		grupoACManager.setDao((GrupoACDao) grupoACDao.proxy());
 	}
@@ -56,14 +57,16 @@ public class GrupoACManagerTest extends MockObjectTestCase
 	
 	public void testUpdateGrupo() throws Exception 
 	{
-		GrupoAC grupoAC = new GrupoAC("XXX", "teste");
+		GrupoAC grupoAC = new GrupoAC(null, "teste");
 		grupoAC.setId(1L);
-		grupoAC.setAcSenha("564");
 		
+		GrupoAC grupoACTmp = new GrupoAC("XXX", "teste");
+		
+		grupoACDao.expects(once()).method("findById").with(eq(1L)).will(returnValue(grupoACTmp));
 		grupoACDao.expects(once()).method("update").with(eq(grupoAC));
 		
 		GrupoAC retorno = grupoACManager.updateGrupo(grupoAC);
 		
-		assertEquals("564", retorno.getAcSenha());
+		assertEquals("XXX", retorno.getCodigo());
 	}
 }

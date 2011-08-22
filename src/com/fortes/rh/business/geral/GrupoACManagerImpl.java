@@ -21,11 +21,11 @@ public class GrupoACManagerImpl extends GenericManagerImpl<GrupoAC, GrupoACDao> 
 
 	public GrupoAC updateGrupo(GrupoAC grupoAC) 
 	{
+		GrupoAC grupoACTemp = findById(grupoAC.getId());
+		grupoAC.setCodigo(grupoACTemp.getCodigo());
+
 		if(StringUtils.isBlank(grupoAC.getAcSenha()))
-		{
-			GrupoAC grupoACTemp = findById(grupoAC.getId());
 			grupoAC.setAcSenha(grupoACTemp.getAcSenha());
-		}
 
 		update(grupoAC);
 		return grupoAC;
