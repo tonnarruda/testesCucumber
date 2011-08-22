@@ -43,6 +43,7 @@ import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
 import com.fortes.rh.model.ws.TCandidato;
 import com.fortes.rh.model.ws.TCargo;
@@ -184,6 +185,64 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		assertEquals("ecoooo", rHServiceManager.eco("ecoooo"));
 	}
 
+
+    public void testRemoveByACCamposInvalidos() throws Exception
+    {
+    	TEmpregado tEmpregado = new TEmpregado();
+    	tEmpregado.setCodigoAC("1");
+    	
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregado(tEmpregado);
+    	
+    	assertEquals(false, feedback.isSucesso());
+    	assertEquals("Dados do empregado invalidos", feedback.getMensagem());
+    	assertEquals("Empregado codigo AC: 1  Empresa Codigo AC: null  Grupo codigo AC: null", feedback.getException());
+    }
+    
+    public void testRemoveByACColaboradorNull() throws Exception
+    {
+    	TEmpregado tEmpregado = new TEmpregado();
+    	tEmpregado.setCodigoAC("01");
+    	tEmpregado.setEmpresaCodigoAC("12");
+    	tEmpregado.setGrupoAC("004");
+    	
+    	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregado(tEmpregado);
+    	
+    	assertEquals(true, feedback.isSucesso());
+    	assertEquals("Empregado não localizado no Fortes RH.", feedback.getMensagem());
+    	assertEquals("Empregado codigo AC: 01  Empresa Codigo AC: 12  Grupo codigo AC: 004", feedback.getException());
+    }
+    
+    public void testRemoveByACException() throws Exception
+    {
+    	TEmpregado tEmpregado = new TEmpregado();
+    	tEmpregado.setCodigoAC("01");
+    	tEmpregado.setEmpresaCodigoAC("12");
+    	tEmpregado.setGrupoAC("004");
+    	
+    	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregado(tEmpregado);
+    	
+    	assertEquals(false, feedback.isSucesso());
+    	assertEquals("Erro ao deletar empregado no Fortes RH.", feedback.getMensagem());
+    }
+    
+    public void testRemoveByAC() throws Exception
+    {
+    	TEmpregado tEmpregado = new TEmpregado();
+    	tEmpregado.setCodigoAC("01");
+    	tEmpregado.setEmpresaCodigoAC("12");
+    	tEmpregado.setGrupoAC("004");
+    	
+    	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Colaborador()));
+    	colaboradorManager.expects(once()).method("removeColaboradorDependencias").with(ANYTHING);
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregado(tEmpregado);
+    	
+    	assertEquals(true, feedback.isSucesso());
+    	assertEquals("colaborador deletado com sucesso.", feedback.getMensagem());
+    	assertEquals("", feedback.getException());
+    }
+	
 	public void testDesligarColaborador() throws Exception
 	{
 		String dataDesligamento = "01/01/2009";

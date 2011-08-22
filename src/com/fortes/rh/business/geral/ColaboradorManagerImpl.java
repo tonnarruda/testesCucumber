@@ -24,7 +24,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
-import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
@@ -78,6 +77,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
+import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -1354,8 +1354,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		return nome;
 	}
-
+	
 	public void remove(Colaborador colaborador, Empresa empresa) throws Exception
+	{
+		Colaborador colaboradorTmp = removeColaboradorDependencias(colaborador);
+
+		if(empresa.isAcIntegra())
+		{
+			if( ! acPessoalClientColaborador.remove(colaboradorTmp, empresa))
+				throw new Exception("Não foi possível remover o colaborador no AC Pessoal.");
+		}
+	}
+
+	public Colaborador removeColaboradorDependencias(Colaborador colaborador) 
 	{
 		formacaoManager.removeColaborador(colaborador);
 		colaboradorIdiomaManager.removeColaborador(colaborador);
@@ -1371,12 +1382,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		remove(colaborador.getId());
 		if(colaboradorTmp.getCamposExtras() != null && colaboradorTmp.getCamposExtras().getId() != null)
 			camposExtrasManager.remove(colaboradorTmp.getCamposExtras().getId());
-
-		if(empresa.isAcIntegra())
-		{
-			if( ! acPessoalClientColaborador.remove(colaboradorTmp, empresa))
-				throw new Exception("Não foi possível remover o colaborador no AC Pessoal.");
-		}
+		
+		return colaboradorTmp;
 	}
 
 	public Collection<CheckBox> populaCheckBox(Long empresaId)
@@ -1873,6 +1880,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 		
 		return dados;
+	}
+
+	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC) {
+		return getDao().findByCodigoACEmpresaCodigoAC(codigoAC, empresaCodigoAC, grupoAC);
 	}
 
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId) 

@@ -763,6 +763,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			ocorrenciasColaborador = colaboradorOcorrenciaManager.findByColaborador(colaborador.getId());
 			
 			afastamentosColaborador = colaboradorAfastamentoManager.findByColaborador(colaborador.getId());
+			experiencias = experienciaManager.findByColaborador(colaborador.getId());
 			
 			documentoAnexosColaborador = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoColaborador, colaborador.getId());
 

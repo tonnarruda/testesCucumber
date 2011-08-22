@@ -34,8 +34,8 @@ import com.fortes.rh.model.geral.Estabelecimento;
 @SuppressWarnings("unchecked")
 public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<HistoricoColaborador> implements HistoricoColaboradorDao
 {
-	private static final int PROXIMO = 1;
 	private static final int ANTERIOR = 2;
+	private static final int PROXIMO = 1;
 
 	public Collection<HistoricoColaborador> findPromocaoByColaborador(Long colaboradorId)
 	{

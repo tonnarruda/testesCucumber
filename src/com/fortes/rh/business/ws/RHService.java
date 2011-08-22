@@ -1,5 +1,6 @@
 package com.fortes.rh.business.ws;
 
+import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
 import com.fortes.rh.model.ws.TCandidato;
 import com.fortes.rh.model.ws.TCargo;
@@ -34,6 +35,7 @@ public interface RHService
 	boolean cadastrarCandidato(TCandidato candidato) throws Exception;
 
 	//Tabela empregado no AC -> EPG
+	FeedbackWebService removerEmpregado(TEmpregado empregado);
 	boolean atualizarEmpregado(TEmpregado empregado);
 	boolean atualizarEmpregadoAndSituacao(TEmpregado empregado, TSituacao situacao);//O AC confirma cadastro de empregado que estava na CTT
 	boolean desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC);
