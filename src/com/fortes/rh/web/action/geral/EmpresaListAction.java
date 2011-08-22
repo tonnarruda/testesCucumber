@@ -6,9 +6,11 @@ import org.apache.commons.io.FileUtils;
 
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings("serial")
 public class EmpresaListAction extends MyActionSupportList
@@ -17,6 +19,7 @@ public class EmpresaListAction extends MyActionSupportList
 
 	private Collection<Empresa> empresas;
 	private Empresa empresa;
+	private boolean usuarioFortes;
 
 	public String execute() throws Exception {
 		return Action.SUCCESS;
@@ -24,6 +27,7 @@ public class EmpresaListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		usuarioFortes = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L); 
 		empresas = empresaManager.findToList(new String[]{"id","nome","razaoSocial"}, new String[]{"id","nome","razaoSocial"}, new String[]{"nome"});
 
 		return Action.SUCCESS;
@@ -31,7 +35,9 @@ public class EmpresaListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		if(empresa.getId().equals(1L) && !empresa.getId().equals(getEmpresaSistema().getId()))
+		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L) && !empresa.getId().equals(getEmpresaSistema().getId()))
+			empresaManager.removeEmpresaPadrao(empresa.getId());
+		else if(empresa.getId().equals(1L) && !empresa.getId().equals(getEmpresaSistema().getId()))
 			empresaManager.removeEmpresaPadrao(1L);//só vai apagar se for a padrão, id=1 e caso o usuario não esteja logada nela
 		else
 			empresaManager.remove(new Long[]{empresa.getId()});
@@ -63,5 +69,9 @@ public class EmpresaListAction extends MyActionSupportList
 
 	public void setEmpresaManager(EmpresaManager empresaManager){
 		this.empresaManager=empresaManager;
+	}
+
+	public boolean isUsuarioFortes() {
+		return usuarioFortes;
 	}
 }
