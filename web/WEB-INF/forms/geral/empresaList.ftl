@@ -14,11 +14,12 @@
 		<@display.column title="Ações" style="text-align:center; width: 80px" media="html">
 			<a href="prepareUpdate.action?empresa.id=${empresa.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			
+			<#assign msgDelete ="Confirma exclusão?"/>
 			<#if usuarioFortes>
-				<a href="#" onclick="newConfirm('Deseja realmente excluir a empresa?\nIsso acarretará a perda de todos os dados referente à empresa.\n Sugiro efetuar um backup do banco de dados antes da confirmação.', function(){window.location='delete.action?empresa.id=${empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
-			<#else>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?empresa.id=${empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<#assign msgDelete ="Deseja realmente excluir a empresa?\\n Isso acarretará a perda de todos os dados referente à empresa.\\n Sugiro efetuar um backup do banco de dados antes da confirmação."/>
 			</#if>
+			
+			<a href="#" onclick="newConfirm('${msgDelete}', function(){window.location='delete.action?empresa.id=${empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
