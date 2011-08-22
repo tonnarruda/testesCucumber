@@ -585,19 +585,19 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("left join ( ");
 		sql.append("	select  ");
 		sql.append("		cursos_id, ");
-		sql.append("		count(avaliacaocursos_id) qtdavaliacoescurso ");
+		sql.append("		count(avaliacaocursos_id) as qtdavaliacoescurso ");
 		sql.append("	from curso_avaliacaocurso ");
 		sql.append("	group by cursos_id ");
 		sql.append("	order by cursos_id )as ca on ca.cursos_id = c.id ");
 		
 		sql.append("left join ( ");
-		sql.append("	select turma_id, count(dia) totaldias from diaturma ");
+		sql.append("	select turma_id, count(dia) as totaldias from diaturma ");
 		sql.append("	group by turma_id ");
 		sql.append("	order by turma_id ");
 		sql.append("	) as dt	on dt.turma_id = t.id ");
 		
 		sql.append("left join ( ");
-		sql.append("	select colaboradorturma_id, count(id) qtdpresenca  ");
+		sql.append("	select colaboradorturma_id, count(id) as qtdpresenca  ");
 		sql.append("	from colaboradorpresenca ");
 		sql.append("	where presenca=true ");
 		sql.append("	group by colaboradorturma_id ");

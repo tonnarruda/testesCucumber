@@ -43,7 +43,7 @@
 
 	<@ww.form name="formBusca" action="prepareUpdateAmbientesEFuncoes.action" onsubmit="list();" method="POST">
 		<li>
-			<@ww.div cssClass="divInfo" cssStyle="width: 500px;">
+			<@ww.div cssClass="divInfo" cssStyle="width: 950px;">
 				<ul>
 					<@ww.textfield label="Nome" name="colaborador.nome" id="nome" cssClass="inputNome" maxLength="100" cssStyle="width: 400px;"/>
 					<@ww.textfield label="CPF" id="cpf" name="colaborador.pessoal.cpf" liClass="liLeft" maxLength="11" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:150px;"/>

@@ -9,6 +9,7 @@ import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
+import com.fortes.rh.util.StringUtil;
 
 public class PpraLtcatRelatorio
 {
@@ -75,9 +76,11 @@ public class PpraLtcatRelatorio
 			StringBuilder riscoAtual = new StringBuilder();
 			String quebraDeLinha="\n";
 			
-			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()))
-					.append(": ".concat(styleTagClosing) + riscoMedicao.getIntensidadeMedida() + ". " + riscoMedicao.getDescricaoPpra());
-			
+			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(": ").concat(styleTagClosing));
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? riscoMedicao.getIntensidadeMedida().concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat(riscoMedicao.getTecnicaUtilizada()).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoPpra()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat(riscoMedicao.getDescricaoPpra()).concat(". ") : "");
+
 			if (riscoMedicao.getRisco().getGrupoRisco().equals(GrupoRisco.FISICO))
 			{
 				riscosFisicos.append( riscosFisicos.length()>0 ? quebraDeLinha : "" );
@@ -176,8 +179,10 @@ public class PpraLtcatRelatorio
 			StringBuilder riscoAtual = new StringBuilder();
 			String quebraDeLinha="\n";
 			
-			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()))
-					.append(": ".concat(styleTagClosing) + riscoMedicao.getIntensidadeMedida() + ". " + riscoMedicao.getDescricaoLtcat());
+			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(": ").concat(styleTagClosing));
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? riscoMedicao.getIntensidadeMedida().concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat(riscoMedicao.getTecnicaUtilizada()).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoLtcat()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat(riscoMedicao.getDescricaoLtcat()).concat(". ") : "");
 			
 			if (riscoMedicao.getRisco().getGrupoRisco().equals(GrupoRisco.FISICO))
 			{
