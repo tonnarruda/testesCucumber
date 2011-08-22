@@ -35,10 +35,14 @@ public class EmpresaListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L) && !empresa.getId().equals(getEmpresaSistema().getId()))
-			empresaManager.removeEmpresaPadrao(empresa.getId());
-		else if(empresa.getId().equals(1L) && !empresa.getId().equals(getEmpresaSistema().getId()))
-			empresaManager.removeEmpresaPadrao(1L);//só vai apagar se for a padrão, id=1 e caso o usuario não esteja logada nela
+		if(empresa.getId().equals(getEmpresaSistema().getId()))
+		{
+			addActionMessage("Não é possível excluir a empresa cujo você esta logado.");
+			return Action.SUCCESS;			
+		}
+			
+		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L) || empresa.getId().equals(1L))
+			empresaManager.removeEmpresa(empresa.getId());
 		else
 			empresaManager.remove(new Long[]{empresa.getId()});
 		

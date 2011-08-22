@@ -310,7 +310,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		this.cargoManager = cargoManager;
 	}
 
-	public void removeEmpresaPadrao(long id) 
+	public void removeEmpresa(long id) 
 	{
 		getDao().removeEmpresaPadrao(id);
 	}
