@@ -1,4 +1,5 @@
 <html>
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<head>
 	<@ww.head/>
@@ -15,6 +16,11 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
+		
+		
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 		
 		<#include "../ftl/showFilterImports.ftl" />
 		
@@ -58,6 +64,17 @@
 			{
 				return validaFormularioEPeriodoMesAno('formBusca3', new Array('dataMesAnoIni','dataMesAnoFim'), new Array('dataMesAnoIni','dataMesAnoFim'));
 			}
+			
+			function populaAreas(empresaId)
+			{
+				DWRUtil.useLoadingMessage('Carregando...');
+				AreaOrganizacionalDWR.getByEmpresa(createListAreas, empresaId);
+			}
+	
+			function createListAreas(data)
+			{
+				addChecks('areasCheck', data)
+			}
 		</script>
 	
 		<#include "../ftl/mascarasImports.ftl" />
@@ -83,8 +100,10 @@
 	<body>
 		<#include "../util/topFiltro.ftl" />
 			<@ww.form name="formBusca1" id="formBusca1" action="painelIndicadores.action" method="POST">
-				<@ww.select label="Empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas"/>
+				<@ww.select label="Empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
 				<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
+			
+				<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
 			
 				<@ww.hidden name="dataIni"/>	
 				<@ww.hidden name="dataFim"/>

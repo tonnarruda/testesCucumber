@@ -126,6 +126,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
 			
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		
+		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
+		
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_INFO_PAINEL_IND");
 		
@@ -141,18 +146,18 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
 			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
 		
-		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresa.getId());
-		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresa.getId());
-		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresa.getId());
-		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresa.getId());
-		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, empresa.getId(), qtdItensDesligamento);
-		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresa.getId());
-		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresa.getId());
+		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresa.getId(), areasIds);
+		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresa.getId(), areasIds);
+		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresa.getId(), areasIds);
+		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresa.getId(), areasIds);
+		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, empresa.getId(), qtdItensDesligamento, areasIds);
+		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresa.getId(), areasIds);
+		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresa.getId(), areasIds);
 		
-		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresa.getId());
+		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresa.getId(), LongUtil.arrayLongToCollectionLong(areasIds));
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
-		countAdmitidos = colaboradorManager.countAdmitidos(dataIni, dataFim, empresa.getId());
+		countAdmitidos = colaboradorManager.countAdmitidos(dataIni, dataFim, empresa.getId(), areasIds);
 		countDemitidos = colaboradorManager.countDemitidos(dataIni, dataFim, empresa.getId());
 		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresa.getId());
 		
@@ -165,7 +170,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
 		
 		TurnOverCollection turnOverCollection = new TurnOverCollection();
-		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), null, null, null, 0);
+		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), null, LongUtil.arrayLongToCollectionLong(areasIds), null, 0);
 		turnOverCollection.setTurnOvers(turnOvers);
 		turnover = turnOverCollection.getMedia();
 		

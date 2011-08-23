@@ -45,6 +45,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
@@ -2028,15 +2029,26 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 
-	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId)
+	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds)
 	{
-		StringBuilder hql = new StringBuilder("select count(id) from Colaborador c ");
+		StringBuilder hql = new StringBuilder("select count(c.id) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.empresa.id = :empresaId ");
+		
+		subSelectHistoricoAtual(hql, areasIds);
+		
 		hql.append("and c.dataAdmissao between :dataIni and :dataFim ");
 
 		Query query = getSession().createQuery(hql.toString());
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
 		query.setLong("empresaId", empresaId);
 
+		query.setDate("data", dataFim);
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 
@@ -2463,7 +2475,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	) ");
 		hql.append("and	co.dataAdmissao between :dataIni and :dataFim ");
 		hql.append("and	es.id in (:estabelecimentosIds) ");
-		if(areasIds != null && areasIds.length > 0)
+		if(LongUtil.isNotEmpty(areasIds))
 			hql.append("and	ao.id in (:areasIds) ");
 		if(exibirSomenteAtivos)
 			hql.append("and	co.desligado = false ");
@@ -2478,7 +2490,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 
-		if(areasIds != null && areasIds.length > 0)
+		if(LongUtil.isNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 
 		return query.list();
@@ -3061,17 +3073,25 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<DataGrafico> countSexo(Date data, Long empresaId) 
+	public Collection<DataGrafico> countSexo(Date data, Long empresaId, Long[] areasIds) 
 	{
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
 		hql.append("c.pessoal.sexo, count(c.id) ");
-		hql.append("from Colaborador c ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId and (c.pessoal.sexo = :masc or c.pessoal.sexo = :fem) ");
+		
+		subSelectHistoricoAtual(hql, areasIds);
+		
 		hql.append("group by c.pessoal.sexo order by c.pessoal.sexo ");
 		
 		Query query = getSession().createQuery(hql.toString());
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		query.setDate("data", data);
 		query.setBoolean("desligado", false);
@@ -3102,17 +3122,25 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId) 
+	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId, Long[] areasIds) 
 	{
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
 		hql.append("c.pessoal.estadoCivil, count(c.id) ");
-		hql.append("from Colaborador c ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
+		
+		subSelectHistoricoAtual(hql, areasIds);
+		
 		hql.append("group by c.pessoal.estadoCivil order by c.pessoal.estadoCivil ");
 		
 		Query query = getSession().createQuery(hql.toString());
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		query.setDate("data", data);
 		query.setBoolean("desligado", false);
@@ -3151,18 +3179,26 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId) {
-		
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId, Long[] areasIds) 
+	{
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
 		hql.append("c.pessoal.escolaridade, count(c.id) ");
-		hql.append("from Colaborador c ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
+		
+		subSelectHistoricoAtual(hql, areasIds);
+			
 		hql.append("group by c.pessoal.escolaridade order by c.pessoal.escolaridade ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setDate("data", data);
 		query.setBoolean("desligado", false);
 		query.setLong("empresaId", empresaId);
@@ -3183,18 +3219,39 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return dataGraficos;
 	}
+
+	private void subSelectHistoricoAtual(StringBuilder hql, Long[] areasIds) 
+	{
+		hql.append("		and hc.status = :status ");
+		hql.append("		and hc.data = ( ");
+		hql.append("			select max(hc2.data) ");
+		hql.append("			from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = c.id ");
+		hql.append("			and hc2.data <= :data and hc2.status = :status ");
+		hql.append("		) ");
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
+	}
 	
-	public Collection<DataGrafico> countFaixaEtaria(Date data, Long empresaId)
+	public Collection<DataGrafico> countFaixaEtaria(Date data, Long empresaId, Long[] areasIds)
 	{
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
 		hql.append("c.pessoal.dataNascimento ");
-		hql.append("from Colaborador c ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
 		
-		Query query = getSession().createQuery(hql.toString());
+		subSelectHistoricoAtual(hql, areasIds);
 		
+		Query query = getSession().createQuery(hql.toString());
+
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setDate("data", data);
 		query.setBoolean("desligado", false);
 		query.setLong("empresaId", empresaId);
@@ -3239,17 +3296,25 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countDeficiencia(Date data, Long empresaId) 
+	public Collection<DataGrafico> countDeficiencia(Date data, Long empresaId, Long[] areasIds) 
 	{
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
 		hql.append("c.pessoal.deficiencia, count(c.id) ");
-		hql.append("from Colaborador c ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
+		
+		subSelectHistoricoAtual(hql, areasIds);
+		
 		hql.append("group by c.pessoal.deficiencia order by c.pessoal.deficiencia ");
 		
 		Query query = getSession().createQuery(hql.toString());
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		query.setDate("data", data);
 		query.setBoolean("desligado", false);
@@ -3284,20 +3349,29 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens) 
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens, Long[] areasIds) 
 	{
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
 		hql.append("m.motivo, count(m.id) ");
-		hql.append("from Colaborador c ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("join c.motivoDemissao m ");
 		hql.append("where c.dataDesligamento between :dataIni and :dataFim  and c.empresa.id = :empresaId ");
+		
+		subSelectHistoricoAtual(hql, areasIds);
+		
 		hql.append("group by m.motivo order by count(m.motivo) desc");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setMaxResults(qtdItens);
 		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		query.setDate("data", dataFim);
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setLong("empresaId", empresaId);
@@ -3314,17 +3388,25 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId) 
+	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId, Long[] areasIds) 
 	{
 		StringBuilder hql = new StringBuilder();		
 		
 		hql.append("select ");
 		hql.append("c.vinculo, count(c.id) ");
-		hql.append("from Colaborador c ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and c.empresa.id = :empresaId ");
+		
+		subSelectHistoricoAtual(hql, areasIds);
+		
 		hql.append("group by c.vinculo order by count(c.id) desc");
 		
 		Query query = getSession().createQuery(hql.toString());
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		query.setDate("data", dataBase);
 		query.setBoolean("desligado", false);

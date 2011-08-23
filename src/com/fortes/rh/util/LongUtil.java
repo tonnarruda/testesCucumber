@@ -35,6 +35,19 @@ public class LongUtil
 
 		return result;
 	}
+	
+	public static Collection<Long> arrayLongToCollectionLong(Long[] colecao)
+	{
+		if (colecao == null || colecao.length == 0)
+			return new ArrayList<Long>();
+		
+		Collection<Long> result = new ArrayList<Long>();
+		
+		for (int i = 0; i < colecao.length; i++)
+			result.add(Long.valueOf(colecao[i]));
+		
+		return result;
+	}
 
 	public static Long[] arrayStringToArrayLong(String[] array)
 	{
@@ -77,5 +90,10 @@ public class LongUtil
 		}
 		
 		return ids;
+	}
+	
+	public static boolean isNotEmpty(Long[] ids)
+	{
+		return ids != null && ids.length > 0;
 	}
 }

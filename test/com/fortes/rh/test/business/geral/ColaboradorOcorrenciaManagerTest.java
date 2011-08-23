@@ -427,7 +427,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorOcorrenciaDao.expects(once()).method("countFaltasByPeriodo").will(returnValue(retornoBD));
 		colaboradorManager.expects(atLeastOnce()).method("countAtivosPeriodo").will(returnValue(10));
 		
-		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", empresa.getId());
+		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", empresa.getId(), null);
 		assertEquals(5, absenteismos.size());
 		assertEquals(0.0, ((Object[])absenteismos.toArray()[0])[1]);
 		assertEquals(0.01, ((Object[])absenteismos.toArray()[1])[1]);
