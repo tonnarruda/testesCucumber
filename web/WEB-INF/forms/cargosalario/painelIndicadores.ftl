@@ -44,7 +44,7 @@
 				var somaAbsenteismo = 0;
 				$.each(absenteismo, function (){
 				    somaAbsenteismo = this[1] + somaAbsenteismo;
-				})
+				});
 				
 				$('#mediaAbsenteismo').text('Absenteísmo: ' + (somaAbsenteismo / absenteismo.length).toFixed(4));
 				
@@ -54,14 +54,28 @@
 			
 			function enviaForm1()
 			{
+				$('#formBusca1 input:checked').each(function(){
+					$("#formBusca1").append('<input type="hidden" name="areasCheck" value='+ $(this).val() +'>');
+				});
+
 				return validaFormulario('formBusca1', new Array('dataBase'), new Array('dataBase'));
 			}
+			
 			function enviaForm2()
 			{
+				$('#formBusca2 input:checked').each(function(){
+					$("#formBusca2").append('<input type="hidden" name="areasCheck" value='+ $(this).val() +'>');
+				});
+				
 				return validaFormularioEPeriodo('formBusca2', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'));
 			}
+			
 			function enviaForm3()
 			{
+				$('#formBusca3 input:checked').each(function(){
+					$("#formBusca3").append('<input type="hidden" name="areasCheck" value='+ $(this).val() +'>');
+				});
+				
 				return validaFormularioEPeriodoMesAno('formBusca3', new Array('dataMesAnoIni','dataMesAnoFim'), new Array('dataMesAnoIni','dataMesAnoFim'));
 			}
 			
@@ -69,11 +83,14 @@
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
 				AreaOrganizacionalDWR.getByEmpresa(createListAreas, empresaId);
+				$('.empresa').val(empresaId);
 			}
 	
 			function createListAreas(data)
 			{
-				addChecks('areasCheck', data)
+				addChecks('areasCheck1', data);
+				addChecks('areasCheck2', data);
+				addChecks('areasCheck3', data);
 			}
 		</script>
 	
@@ -100,11 +117,11 @@
 	<body>
 		<#include "../util/topFiltro.ftl" />
 			<@ww.form name="formBusca1" id="formBusca1" action="painelIndicadores.action" method="POST">
-				<@ww.select label="Empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
+				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
 				<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
 			
-				<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
-			
+				<@frt.checkListBox form="document.getElementById('formBusca1')" label="Áreas Organizacionais" name="areasCheck1" id="areasCheck1" list="areasCheckList"/>
+					
 				<@ww.hidden name="dataIni"/>	
 				<@ww.hidden name="dataFim"/>
 				<@ww.hidden name="dataMesAnoIni"/>
@@ -151,12 +168,17 @@
 					</div>
 					<div id="divFiltroForm2" class="divFiltroForm ${classHidden}">
 						<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action#pagebottom" method="POST">
+							<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
+										
+							<@frt.checkListBox form="document.getElementById('formBusca2')" label="Áreas Organizacionais" name="areasCheck2" id="areasCheck2" list="areasCheckList"/>
+							
 							<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 							<@ww.label value="a" liClass="liLeft" />
 							<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
 							&nbsp&nbsp&nbsp&nbsp&nbsp;Exibir os
 							<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
 							itens de maior percentual.<br>
+							
 							<@ww.hidden name="dataBase"/>
 							<@ww.hidden name="dataMesAnoIni"/>
 							<@ww.hidden name="dataMesAnoFim"/>
@@ -193,6 +215,10 @@
 				</div>
 				<div id="divFiltroForm3" class="divFiltroForm ${classHidden}">
 				<@ww.form name="formBusca3" id="formBusca3" action="painelIndicadores.action#pagebottom" method="POST">
+					<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
+					
+					<@frt.checkListBox form="document.getElementById('formBusca3')" label="Áreas Organizacionais" name="areasCheck3" id="areasCheck3" list="areasCheckList"/>
+			
 					<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="dataMesAnoIni" cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
 					<@ww.label value="a" liClass="liLeft" />
 					<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="dataMesAnoFim" cssClass="mascaraMesAnoData validaDataFim"/>

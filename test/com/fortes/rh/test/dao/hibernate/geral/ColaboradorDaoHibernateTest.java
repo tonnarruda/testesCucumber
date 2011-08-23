@@ -1245,7 +1245,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2004), null, null, area);
 		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2009), null, null, area);
 
-		int count = colaboradorDao.countDemitidos(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa.getId());
+		int count = colaboradorDao.countDemitidos(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa.getId(), null);
+		assertEquals(3, count);
+		count = colaboradorDao.countDemitidos(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa.getId(), new Long[]{area.getId()});
 		assertEquals(3, count);
 	}
 
@@ -2796,7 +2798,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2012), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area);
 		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2012), empresa2, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area);
 
-		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, empresa.getId()));
+		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, empresa.getId(), null));
+		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, empresa.getId(), new Long[]{area.getId()}));
 	}
 
 	public void testFindAniversariantes() {

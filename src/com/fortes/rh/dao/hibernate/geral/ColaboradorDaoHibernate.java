@@ -2055,13 +2055,24 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 	
-	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId)
+	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds)
 	{
-		StringBuilder hql = new StringBuilder("select count(id) from Colaborador c ");
+		StringBuilder hql = new StringBuilder("select count(c.id) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.empresa.id = :empresaId ");
 		hql.append("and c.dataDesligamento between :dataIni and :dataFim ");
 		
+		subSelectHistoricoAtual(hql, areasIds);
+		
 		Query query = getSession().createQuery(hql.toString());
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setDate("data", dataFim);
+		
 		query.setLong("empresaId", empresaId);
 		
 		query.setDate("dataIni", dataIni);
@@ -2070,20 +2081,29 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 	
-	public int getCountAtivos(Date dataBase, Long empresaId) 
+	public int getCountAtivos(Date dataBase, Long empresaId, Long[] areasIds) 
 	{
-		StringBuilder hql = new StringBuilder("select count(id) from Colaborador c ");
+		StringBuilder hql = new StringBuilder("select count(c.id) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.empresa.id = :empresaId ");
 		hql.append("and  c.desligado =  false ");
 		hql.append("and c.dataAdmissao <= :dataBase ");
 
+		subSelectHistoricoAtual(hql, areasIds);
+		
 		Query query = getSession().createQuery(hql.toString());
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setDate("data", dataBase);
+		
 		query.setLong("empresaId", empresaId);
 		query.setDate("dataBase", dataBase);
 
 		return (Integer) query.uniqueResult();
 	}
-
 
 	public Integer getCountAtivosByEstabelecimento(Long estabelecimentoId)
 	{

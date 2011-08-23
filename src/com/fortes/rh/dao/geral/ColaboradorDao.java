@@ -101,9 +101,9 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<DataGrafico> countDeficiencia(Date data, Long empresaId, Long[] areasIds);
 	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens, Long[] areasIds);
 	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId, Long[] areasIds);
-	public int getCountAtivos(Date dataBase, Long empresaId);
+	public int getCountAtivos(Date dataBase, Long empresaId, Long[] areasIds);
 	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);
-	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId);	
+	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);	
 	public Collection<TurnOver> countDemitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
 	public Collection<TurnOver> countAdmitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
 	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean consideraDataAdmissao, Long colaboradorId);

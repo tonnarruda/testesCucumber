@@ -158,8 +158,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
 		countAdmitidos = colaboradorManager.countAdmitidos(dataIni, dataFim, empresa.getId(), areasIds);
-		countDemitidos = colaboradorManager.countDemitidos(dataIni, dataFim, empresa.getId());
-		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresa.getId());
+		countDemitidos = colaboradorManager.countDemitidos(dataIni, dataFim, empresa.getId(), areasIds);
+		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresa.getId(), areasIds);
 		
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
 		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);

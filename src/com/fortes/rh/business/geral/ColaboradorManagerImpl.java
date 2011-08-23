@@ -77,7 +77,6 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
-import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -1777,8 +1776,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().countColocacao(dataBase, empresaId, areasIds);
 	}
 
-	public int getCountAtivos(Date dataBase, Long empresaId) {
-		return getDao().getCountAtivos(dataBase, empresaId);
+	public int getCountAtivos(Date dataBase, Long empresaId, Long[] areasIds) {
+		return getDao().getCountAtivos(dataBase, empresaId, areasIds);
 	}
 
 	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) 
@@ -1786,9 +1785,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().countAdmitidos(dataIni, dataFim, empresaId, areasIds);
 	}
 
-	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId) 
+	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) 
 	{
-		return getDao().countDemitidos(dataIni, dataFim, empresaId);
+		return getDao().countDemitidos(dataIni, dataFim, empresaId, areasIds);
 	}
 
 	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception 
