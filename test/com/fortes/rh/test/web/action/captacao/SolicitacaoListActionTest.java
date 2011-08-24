@@ -178,6 +178,18 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 		assertEquals("success",action.gravarSolicitacoesCandidato());
     }
     
+    public void testGravarUmaSolicitacaoCandidato() throws Exception
+    {
+    	Long[] solicitacaosCheckIds = new Long[]{100L};
+		action.setSolicitacaosCheckIds(solicitacaosCheckIds);
+		action.setCandidato(CandidatoFactory.getCandidato(2L));
+		
+		candidatoSolicitacaoManager.expects(once()).method("insertCandidatos").with(eq(new String[]{"2"}), ANYTHING, ANYTHING).isVoid();
+		
+		assertEquals("successSolicitacao", action.gravarSolicitacoesCandidato());
+    }
+    
+    
     public void testEncerrarSolicitacao() throws Exception
     {
     	action.setSolicitacao(SolicitacaoFactory.getSolicitacao(1L));
