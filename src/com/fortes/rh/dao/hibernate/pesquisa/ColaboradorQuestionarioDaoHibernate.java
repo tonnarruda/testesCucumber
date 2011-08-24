@@ -767,23 +767,20 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 
-	public ColaboradorQuestionario findByColaboradorAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId) 
+	public Double getMediaPeformance(Long avaliadoId, Long avaliacaoDesempenhoId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 
 		ProjectionList p = Projections.projectionList().create();
 
-		p.add(Projections.property("cq.id"), "id");
-		p.add(Projections.property("cq.performance"), "performance");
+		p.add(Projections.avg("cq.performance")) ;
 		
 		criteria.add(Expression.eq("cq.colaborador.id", avaliadoId));
 	    criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
 	    criteria.add(Expression.eq("cq.respondida", true));
 
 		criteria.setProjection(Projections.distinct(p));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
-		return (ColaboradorQuestionario) criteria.uniqueResult();
+		return (Double) criteria.uniqueResult();
 	}
 }

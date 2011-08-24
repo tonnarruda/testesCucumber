@@ -808,7 +808,6 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	
 	public void testFindByColaboradorAndAvaliacaoDesempenhos()
 	{
-
 		Colaborador avaliado = ColaboradorFactory.getEntity();
 		avaliado.setNome("Avaliado");
 		colaboradorDao.save(avaliado);
@@ -818,11 +817,19 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario.setColaborador(avaliado);
+		colaboradorQuestionario.setPerformance(25.0);
 		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 
-		assertEquals(colaboradorQuestionario, colaboradorQuestionarioDao.findByColaboradorAndAvaliacaoDesempenho(avaliado.getId(), avaliacaoDesempenho.getId()));
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setColaborador(avaliado);
+		colaboradorQuestionario2.setPerformance(35.0);
+		colaboradorQuestionario2.setRespondida(true);
+		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+
+		assertEquals(30.0, colaboradorQuestionarioDao.getMediaPeformance(avaliado.getId(), avaliacaoDesempenho.getId()));
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)

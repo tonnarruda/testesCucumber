@@ -51,6 +51,7 @@
 	<field name="avaliadoId" class="java.lang.Long"/>
 	<field name="avaliadoNome" class="java.lang.String"/>
 	<field name="performance" class="java.lang.Double"/>
+	<field name="percentualAspecto" class="java.lang.Double"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="None" calculation="Count">
 		<variableExpression><![CDATA[$F{pergunta.id}]]></variableExpression>
@@ -73,22 +74,22 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Avaliado: " + $F{avaliadoNome}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00 %" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="500"
+						x="493"
 						y="6"
-						width="33"
+						width="40"
 						height="14"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double($F{performance}.doubleValue() * 100) ]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{performance}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="427"
+						x="420"
 						y="6"
 						width="72"
 						height="14"
@@ -143,6 +144,19 @@
 					</textElement>
 				<text><![CDATA[Sem aspecto]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00 %" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="470"
+						y="2"
+						width="63"
+						height="12"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{percentualAspecto}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>

@@ -603,6 +603,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 		Collection<Resposta> respostas = new ArrayList<Resposta>();
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
+		colaboradorQuestionario.setColaborador(ColaboradorFactory.getEntity(1L));
     	ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity(1L);
     	colaboradorResposta1.setPergunta(pergunta1);
     	colaboradorResposta1.setColaboradorQuestionario(colaboradorQuestionario);
@@ -616,12 +617,80 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 		
 		Long avaliadoId = 1L;
 		
-		colaboradorQuestionarioManager.expects(once()).method("findByColaboradorAndAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(colaboradorQuestionario));
+		colaboradorQuestionarioManager.expects(once()).method("getMediaPeformance").with(ANYTHING, ANYTHING).will(returnValue(new Double(2)));
 		colaboradorManager.expects(once()).method("getNome").with(eq(1L)).will(returnValue("José"));
 		perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
 		
 		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho);
 		assertEquals(2, resultados.size());
+    }
+    
+    public void testMontaResultadosAvaliacaoDesempenhoComAspecto()
+    {
+    	Aspecto aspecto1 = AspectoFactory.getEntity(1L);
+    	aspecto1.setNome("tecnico");
+    	Aspecto aspecto2 = AspectoFactory.getEntity(2L);
+    	aspecto2.setNome("humano");
+    	
+    	AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(3L);
+    	avaliacaoDesempenho.setAvaliacao(AvaliacaoFactory.getEntity(1L));
+    	
+    	Pergunta pergunta1 = PerguntaFactory.getEntity(1L);
+    	pergunta1.setTipo(TipoPergunta.NOTA);
+    	pergunta1.setAspecto(aspecto1);
+    	pergunta1.setPeso(3);
+    	Pergunta pergunta2 = PerguntaFactory.getEntity(2L);
+    	pergunta2.setTipo(TipoPergunta.SUBJETIVA);
+    	pergunta2.setAspecto(aspecto2);
+    	pergunta2.setPeso(2);
+    	Pergunta pergunta3 = PerguntaFactory.getEntity(3L);
+    	pergunta3.setTipo(TipoPergunta.OBJETIVA);
+    	pergunta3.setAspecto(aspecto2);
+    	pergunta3.setPeso(4);
+    	Pergunta pergunta4 = PerguntaFactory.getEntity(4L);
+    	pergunta4.setTipo(TipoPergunta.NOTA);
+    	pergunta4.setAspecto(aspecto2);
+    	pergunta4.setPeso(13);
+    	
+    	Collection<Pergunta> perguntas = Arrays.asList(pergunta1, pergunta2, pergunta3, pergunta4);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
+    	colaboradorQuestionario.setColaborador(colaborador);
+    	
+    	Resposta resposta = RespostaFactory.getEntity(1L);
+    	resposta.setPergunta(pergunta3);
+    	resposta.setPeso(20);
+    	Collection<Resposta> respostas = Arrays.asList(resposta);
+
+    	ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity(1L);
+    	colaboradorResposta1.setPergunta(pergunta1);
+    	colaboradorResposta1.setValor(7);
+    	colaboradorResposta1.setResposta(resposta);
+    	colaboradorResposta1.setColaboradorQuestionario(colaboradorQuestionario);
+    	
+    	ColaboradorResposta colaboradorResposta2 = ColaboradorRespostaFactory.getEntity(2L);
+    	colaboradorResposta2.setPergunta(pergunta3);
+    	colaboradorResposta2.setResposta(resposta);
+    	colaboradorResposta2.setColaboradorQuestionario(colaboradorQuestionario);
+    	
+    	ColaboradorResposta colaboradorResposta3 = ColaboradorRespostaFactory.getEntity(3L);
+    	colaboradorResposta3.setValor(6);
+    	colaboradorResposta3.setPergunta(pergunta4);
+    	colaboradorResposta3.setResposta(resposta);
+    	colaboradorResposta3.setColaboradorQuestionario(colaboradorQuestionario);
+    	
+    	Collection<ColaboradorResposta> colaboradorRespostas = Arrays.asList(colaboradorResposta1, colaboradorResposta2, colaboradorResposta3);
+    	Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>(); 
+    	Long avaliadoId = colaborador.getId();
+    	
+    	colaboradorQuestionarioManager.expects(once()).method("getMediaPeformance").with(ANYTHING, ANYTHING).will(returnValue(new Double(2)));
+    	colaboradorManager.expects(once()).method("getNome").with(eq(1L)).will(returnValue("José"));
+    	perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
+    	
+    	Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho);
+    	assertEquals(4, resultados.size());
+    	assertEquals(new Integer(272), ((ResultadoAvaliacaoDesempenho) resultados.toArray()[0]).getPontuacaoMaximaAspecto());
     }
 
     public void testEnviaLembreteDeQuestionarioNaoLiberado()

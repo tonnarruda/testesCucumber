@@ -22,6 +22,7 @@ import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.FichaMedica;
@@ -388,29 +389,52 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 		Collection<ResultadoAvaliacaoDesempenho> resultadoQuestionarios = new ArrayList<ResultadoAvaliacaoDesempenho>();
 		
 		String avaliadoNome = colaboradorManager.getNome(avaliadoId);
-		ColaboradorQuestionario colabQuestionario = colaboradorQuestionarioManager.findByColaboradorAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenho.getId());
+		Double mediaPeformance = colaboradorQuestionarioManager.getMediaPeformance(avaliadoId, avaliacaoDesempenho.getId());
 		
 		for (Pergunta pergunta: perguntas)
 		{
 			perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, avaliadoNome);
-			
-			ResultadoAvaliacaoDesempenho resultadoQuestionario = new ResultadoAvaliacaoDesempenho(avaliadoId, avaliadoNome, colabQuestionario.getPerformance());
+			ResultadoAvaliacaoDesempenho resultadoQuestionario = new ResultadoAvaliacaoDesempenho(avaliadoId, avaliadoNome, mediaPeformance);
+			pergunta.setAspecto(calculaPontuacaoAspecto(colaboradorRespostas, pergunta, avaliadoId));
 			resultadoQuestionario.setPergunta(calculaMedia(colaboradorRespostas, pergunta));
 			resultadoQuestionario.setColabRespostas(montaColaboradorReposta(colaboradorRespostas, pergunta));
 			resultadoQuestionario.setRespostas(montaRespostas(respostas, pergunta, percentuaisDeRespostas));
 			resultadoQuestionarios.add(resultadoQuestionario);
 		}
 		
+		Map<String, Integer> aspectos = new HashMap<String, Integer>();
+		Map<String, Integer> pontuacaoPorAspectos = new HashMap<String, Integer>();
+		Integer pontuacaoTotalAspectos = 0;
+		
 		for (ResultadoAvaliacaoDesempenho resultadoQuestionario : resultadoQuestionarios)
 		{
-			if(!resultadoQuestionario.getPergunta().getTipo().equals(TipoPergunta.SUBJETIVA))
+			Integer tipoPergunta = resultadoQuestionario.getPergunta().getTipo();
+			String nomeAspecto = resultadoQuestionario.getPergunta().getAspecto() != null ?  resultadoQuestionario.getPergunta().getAspecto().getNome() : "Sem aspecto";
+			Integer pontuacaoAspecto = resultadoQuestionario.getPergunta().getAspecto() != null ?  resultadoQuestionario.getPergunta().getAspecto().getPontuacao() : 0;
+			
+			//obtem respostas distintas para o colaborador
+			if(!tipoPergunta.equals(TipoPergunta.SUBJETIVA))
 				resultadoQuestionario.montaColabRespostasDistinct();
+			
+			//obtem a pontuacao total dos aspectos envolvidos
+			if (!aspectos.containsKey(nomeAspecto) || !aspectos.get(nomeAspecto).equals(tipoPergunta))
+			{
+				aspectos.put(nomeAspecto, tipoPergunta);
+				pontuacaoTotalAspectos += resultadoQuestionario.getPergunta().getAspecto()!=null? resultadoQuestionario.getPergunta().getAspecto().getPontuacao(): 0;
+				pontuacaoPorAspectos.put(nomeAspecto, pontuacaoAspecto + (pontuacaoPorAspectos.get(nomeAspecto)!=null?pontuacaoPorAspectos.get(nomeAspecto):0));
+			}
 		}        	
 		
 		for (ResultadoAvaliacaoDesempenho resultadoQuestionario : resultadoQuestionarios)
 		{
+			//configura os comentarios para as respostas do loop anterior
 			if(!resultadoQuestionario.getPergunta().getTipo().equals(TipoPergunta.SUBJETIVA))
 				resultadoQuestionario.montaComentarioDistinct();
+			
+			//configura a pontuacao maxima calculada no loop anterior para cada objeto da lista
+			resultadoQuestionario.setPontuacaoMaximaAspecto(pontuacaoTotalAspectos);
+			String nomeAspecto = resultadoQuestionario.getPergunta().getAspecto() != null ?  resultadoQuestionario.getPergunta().getAspecto().getNome() : "sem aspecto";
+			resultadoQuestionario.setPontuacaoPorAspecto(pontuacaoPorAspectos.get(nomeAspecto));
 		}
 		
 		return resultadoQuestionarios;
@@ -418,13 +442,13 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 
 	public Integer countColaborador(Collection<ColaboradorResposta> colaboradorRespostas)
 	{
-    	Map<Long, String> distinct = new HashMap<Long, String>();
+		Map<Long, String> distinct = new HashMap<Long, String>();
 		for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
 		{
 			if(colaboradorResposta.getColaboradorQuestionario() != null && colaboradorResposta.getColaboradorQuestionario().getId() != null)
-			distinct.put(colaboradorResposta.getColaboradorQuestionario().getId(), "");
-   		}    		
-    	
+				distinct.put(colaboradorResposta.getColaboradorQuestionario().getId(), "");
+		}    		
+		
 		return distinct.keySet().size();
 	}
 
@@ -448,8 +472,44 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 
             pergunta.setMedia(MathUtil.formataValor(media / cont));
         }
-
         return pergunta;
+    }
+	
+	public Aspecto calculaPontuacaoAspecto(Collection<ColaboradorResposta> colaboradorRespostas, Pergunta pergunta, Long avaliadoId)
+	{
+		Aspecto aspecto;
+		if (pergunta.getAspecto() != null)
+			aspecto = (Aspecto) pergunta.getAspecto().clone();
+		else
+			aspecto = new Aspecto("Sem aspecto");
+		
+		int pontuacaoObtida = 0;
+        for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
+        {
+        	String aspectoColaboradorResposta = colaboradorResposta.getPergunta().getAspecto()!= null ? colaboradorResposta.getPergunta().getAspecto().getNome() : "Sem aspecto";  
+        	
+        	if(avaliadoId.equals(colaboradorResposta.getColaboradorQuestionario().getColaborador().getId()) && aspecto.getNome().equals(aspectoColaboradorResposta))
+        	{
+				Resposta resposta = colaboradorResposta.getResposta();
+				
+				int peso = pergunta.getPeso() == null ? 0 : pergunta.getPeso();
+				int pesoResposta = 0;
+				
+				if (pergunta.getTipo() == TipoPergunta.SUBJETIVA)
+					continue;
+				
+				else if (pergunta.getTipo() == TipoPergunta.OBJETIVA || pergunta.getTipo() == TipoPergunta.MULTIPLA_ESCOLHA)
+					pesoResposta = resposta.getPeso() == null ? 0 : resposta.getPeso();
+				
+				else if (pergunta.getTipo() == TipoPergunta.NOTA)
+					pesoResposta = colaboradorResposta.getValor() == null ? 0 : colaboradorResposta.getValor();
+				
+				pontuacaoObtida += (peso * pesoResposta);
+        	}
+        }
+        aspecto.setPontuacao(pontuacaoObtida);
+        
+        return aspecto;
     }
 
     public Collection<ColaboradorResposta> montaColaboradorReposta(Collection<ColaboradorResposta> colaboradorRespostas, Pergunta pergunta)

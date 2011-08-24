@@ -409,9 +409,10 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		p.add(Projections.property("cq.id"), "projectionColaboradorQuestionarioId");
 		p.add(Projections.property("cr.comentario"), "comentario");
 		p.add(Projections.property("cr.valor"), "valor");
+		p.add(Projections.property("cr.resposta"), "resposta");
 		p.add(Projections.property("r.id"), "projectionRespostaId");
 		p.add(Projections.property("r.ordem"), "projectionRespostaOrdem");
-		p.add(Projections.property("p.id"), "projectionPerguntaId");
+		p.add(Projections.property("cr.pergunta"), "pergunta");
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.id"), "projectionColaboradorId");
 		p.add(Projections.property("av.id"), "projectionAvaliadorId");

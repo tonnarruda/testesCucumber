@@ -28,8 +28,21 @@ public class Aspecto extends AbstractModel implements Serializable, Cloneable
 
     @Transient
     private Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
+    
+    @Transient
+    private Integer pontuacao;
+    
 
-    public void setProjectionQuestionarioId(Long questionarioId)
+    public Aspecto() 
+    {
+	}
+    
+	public Aspecto(String nome) 
+	{
+		this.nome = nome;
+	}
+
+	public void setProjectionQuestionarioId(Long questionarioId)
     {
     	if(this.questionario == null)
     		this.questionario = new Questionario();
@@ -92,5 +105,13 @@ public class Aspecto extends AbstractModel implements Serializable, Cloneable
 
 	public void setAvaliacao(Avaliacao avaliacao) {
 		this.avaliacao = avaliacao;
+	}
+
+	public Integer getPontuacao() {
+		return pontuacao;
+	}
+
+	public void setPontuacao(Integer pontuacao) {
+		this.pontuacao = pontuacao;
 	}
 }

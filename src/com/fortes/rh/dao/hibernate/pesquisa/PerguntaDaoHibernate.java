@@ -92,15 +92,15 @@ public class PerguntaDaoHibernate extends GenericDaoHibernate<Pergunta> implemen
 		p.add(Projections.property("pergunta.id"), "id");
 		p.add(Projections.property("pergunta.texto"), "texto");
 		p.add(Projections.property("pergunta.ordem"), "ordem");
+		p.add(Projections.property("pergunta.peso"), "peso");
 		p.add(Projections.property("pergunta.comentario"), "comentario");
 		p.add(Projections.property("pergunta.textoComentario"), "textoComentario");
 		p.add(Projections.property("pergunta.tipo"), "tipo");
 		p.add(Projections.property("pergunta.notaMaxima"), "notaMaxima");
 		p.add(Projections.property("pergunta.notaMinima"), "notaMinima");
+		p.add(Projections.property("pergunta.aspecto"), "aspecto");
 		p.add(Projections.property("questionario.id"), "projectionQuestionarioId");
 		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
-		p.add(Projections.property("aspecto.id"), "projectionAspectoId");
-		p.add(Projections.property("aspecto.nome"), "projectionAspectoNome");
 
 		criteria.setProjection(p);
 		
