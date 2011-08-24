@@ -76,8 +76,8 @@ public class PpraLtcatRelatorio
 			StringBuilder riscoAtual = new StringBuilder();
 			String quebraDeLinha="\n";
 			
-			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(": ").concat(styleTagClosing));
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? riscoMedicao.getIntensidadeMedida().concat(". ") : "");
+			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(" - ").concat(styleTagClosing));
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat(riscoMedicao.getIntensidadeMedida()).concat(". ") : "");
 			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat(riscoMedicao.getTecnicaUtilizada()).concat(". ") : "");
 			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoPpra()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat(riscoMedicao.getDescricaoPpra()).concat(". ") : "");
 
@@ -174,8 +174,8 @@ public class PpraLtcatRelatorio
 			StringBuilder riscoAtual = new StringBuilder();
 			String quebraDeLinha="\n";
 			
-			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(": ").concat(styleTagClosing));
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? riscoMedicao.getIntensidadeMedida().concat(". ") : "");
+			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(" - ").concat(styleTagClosing));
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat(riscoMedicao.getIntensidadeMedida()).concat(". ") : "");
 			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat(riscoMedicao.getTecnicaUtilizada()).concat(". ") : "");
 			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoLtcat()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat(riscoMedicao.getDescricaoLtcat()).concat(". ") : "");
 			
