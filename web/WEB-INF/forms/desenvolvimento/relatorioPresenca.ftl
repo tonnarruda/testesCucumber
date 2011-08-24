@@ -130,7 +130,7 @@
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width:490px;">
 				<ul>
-					<@ww.label value="Exibir colunas (selecione duas colunas):" />
+					<@ww.label value="Exibir colunas extras (selecione duas colunas):*" />
 					<@ww.checkbox label="Cargo" name="exibirCargo" id="exibirCargo" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Estabelecimento" name="exibirEstabelecimento" id="exibirEstabelecimento" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Assinatura" name="exibirAssinatura" id="exibirAssinatura" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
