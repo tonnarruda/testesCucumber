@@ -106,11 +106,6 @@ public class PpraLtcatRelatorio
 				riscosAcidentes.append( riscosAcidentes.length()>0 ? quebraDeLinha : "" );
 				riscosAcidentes.append(riscoAtual);
 			}
-			if (riscoMedicao.getRisco().getGrupoRisco().equals(GrupoRisco.OCUPACIONAL))
-			{
-				riscosOcupacional.append( riscosOcupacional.length()>0 ? quebraDeLinha : "" );
-				riscosOcupacional.append(riscoAtual);
-			}
 		}
 		
 		ppra.setRiscosFisicos(riscosFisicos.toString());

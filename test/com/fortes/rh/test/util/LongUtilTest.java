@@ -62,6 +62,30 @@ public class LongUtilTest extends TestCase
 		assertEquals("Test 6", Long.valueOf(30), longs[3]);
 		assertEquals("Test 7", Long.valueOf(40), longs[4]);
 	}
+	
+	public void testArrayLongToCollectionLong(){
+		
+		Long[] longs = null;
+		
+		assertEquals("Test 1", 0, LongUtil.arrayLongToCollectionLong(longs).size());
+		
+		longs = new Long[5];
+		longs[0] = 10L;
+		longs[1] = 15L;
+		longs[2] = 20L;
+		longs[3] = 30L;
+		longs[4] = 40L;
+		
+		Collection<Long> colLongs = LongUtil.arrayLongToCollectionLong(longs);
+		Long[] longsCheck = colLongs.toArray(new Long[]{});
+		
+		assertEquals("Test 2", longs.length, longs.length);
+		assertEquals("Test 3", Long.valueOf(10), longsCheck[0]);
+		assertEquals("Test 4", Long.valueOf(15), longsCheck[1]);
+		assertEquals("Test 5", Long.valueOf(20), longsCheck[2]);
+		assertEquals("Test 6", Long.valueOf(30), longsCheck[3]);
+		assertEquals("Test 7", Long.valueOf(40), longsCheck[4]);
+	}
 
 	public void testArrayStringToArrayLong(){
 
@@ -97,6 +121,14 @@ public class LongUtilTest extends TestCase
 		assertTrue(LongUtil.contains(100L, colaboradors));
 		assertTrue(LongUtil.contains(200L, colaboradors));
 		assertFalse(LongUtil.contains(1L, colaboradors));
+	}
+	
+	public void testIsNotEmpty()
+	{
+		assertFalse(LongUtil.isNotEmpty(null));
+		assertFalse(LongUtil.isNotEmpty(new Long[]{}));
+		assertTrue(LongUtil.isNotEmpty(new Long[]{1L}));
+		assertTrue(LongUtil.isNotEmpty(new Long[]{1L,2L}));
 	}
 
 	public void testCollectionToCollectionLong()

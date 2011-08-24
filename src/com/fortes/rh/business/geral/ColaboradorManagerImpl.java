@@ -77,7 +77,6 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
-import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -1743,52 +1742,52 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findEmailsByPapel(empresaId, codPapel);
 	}
 
-	public Collection<DataGrafico> countSexo(Date data, Long empresaId) 
+	public Collection<DataGrafico> countSexo(Date data, Long empresaId, Long[] areasIds) 
 	{
-		return getDao().countSexo(data, empresaId);
+		return getDao().countSexo(data, empresaId, areasIds);
 	}
 
-	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId) {
-		return getDao().countEstadoCivil(data, empresaId);
+	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId, Long[] areasIds) {
+		return getDao().countEstadoCivil(data, empresaId, areasIds);
 	}
 
-	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId) 
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId, Long[] areasIds) 
 	{
-		return  getDao().countFormacaoEscolar(data, empresaId);
+		return  getDao().countFormacaoEscolar(data, empresaId, areasIds);
 	}
 	
-	public Collection<DataGrafico> countFaixaEtaria(Date data, Long empresaId)
+	public Collection<DataGrafico> countFaixaEtaria(Date data, Long empresaId, Long[] areasIds)
 	{
-		return  getDao().countFaixaEtaria(data, empresaId);
+		return  getDao().countFaixaEtaria(data, empresaId, areasIds);
 	}
 
-	public Collection<DataGrafico> countDeficiencia(Date data, Long empresaId) 
+	public Collection<DataGrafico> countDeficiencia(Date data, Long empresaId, Long[] areasIds) 
 	{
-		return getDao().countDeficiencia(data, empresaId);
+		return getDao().countDeficiencia(data, empresaId, areasIds);
 	}
 
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens) 
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens, Long[] areasIds) 
 	{
-		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaId, qtdItens);
+		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaId, qtdItens, areasIds);
 	}
 
-	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId) 
+	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId, Long[] areasIds) 
 	{
-		return getDao().countColocacao(dataBase, empresaId);
+		return getDao().countColocacao(dataBase, empresaId, areasIds);
 	}
 
-	public int getCountAtivos(Date dataBase, Long empresaId) {
-		return getDao().getCountAtivos(dataBase, empresaId);
+	public int getCountAtivos(Date dataBase, Long empresaId, Long[] areasIds) {
+		return getDao().getCountAtivos(dataBase, empresaId, areasIds);
 	}
 
-	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId) 
+	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) 
 	{
-		return getDao().countAdmitidos(dataIni, dataFim, empresaId);
+		return getDao().countAdmitidos(dataIni, dataFim, empresaId, areasIds);
 	}
 
-	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId) 
+	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) 
 	{
-		return getDao().countDemitidos(dataIni, dataFim, empresaId);
+		return getDao().countDemitidos(dataIni, dataFim, empresaId, areasIds);
 	}
 
 	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception 

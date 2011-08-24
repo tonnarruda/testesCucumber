@@ -180,11 +180,6 @@ public class AsoRelatorio
 				grpRiscoAcidente += grpRiscoAcidente.equals("")?"Acidentes: ":", ";
 				grpRiscoAcidente += risco.getDescricao();
 			}
-			else if(risco.getGrupoRisco().equals(GrupoRisco.OCUPACIONAL))
-			{
-				grpRiscoOcupacional += grpRiscoAcidente.equals("")?"Ocupacionais: ":", ";
-				grpRiscoOcupacional += risco.getDescricao();
-			}
 		}
 	}
 	public void setExames(Collection<ExameSolicitacaoExame> exames) {
