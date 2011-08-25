@@ -1946,7 +1946,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador2.setEstabelecimento(estabelecimentoAtual);
 		historicoColaborador2 = historicoColaboradorDao.save(historicoColaborador2);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds, "francisco");
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds, "francisco", null);
 
 		assertEquals(1, colaboradores.size());
 
@@ -2010,7 +2010,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorFuturo.setEstabelecimento(estabelecimentoAntigo);
 		historicoColaboradorFuturo = historicoColaboradorDao.save(historicoColaboradorFuturo);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds, "franci");
+		Collection<Colaborador> colaboradores = colaboradorDao.findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds, "franci", null);
 
 		assertEquals(1, colaboradores.size());
 

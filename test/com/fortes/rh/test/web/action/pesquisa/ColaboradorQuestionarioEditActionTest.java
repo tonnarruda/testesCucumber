@@ -165,7 +165,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 
     	Colaborador colaborador = new Colaborador();
     	action.setColaborador(colaborador);
-    	colaboradorManager.expects(once()).method("getColaboradoresByEstabelecimentoAreaGrupo").with(new Constraint[]{eq('1'), ANYTHING, ANYTHING, ANYTHING, eq(colaborador.getNome())}).will(returnValue(colaboradores));
+    	colaboradorManager.expects(once()).method("getColaboradoresByEstabelecimentoAreaGrupo").with(new Constraint[]{eq('1'), ANYTHING, ANYTHING, ANYTHING, eq(colaborador.getNome()), ANYTHING}).will(returnValue(colaboradores));
     	colaboradorQuestionarioManager.expects(once()).method("selecionaColaboradoresPorParte").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradores));
 
     	prepareMockPrepareInsert();
@@ -193,7 +193,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	Collection<Colaborador> colaboradores = ColaboradorFactory.getCollection();
     	Colaborador colaborador = new Colaborador();
     	action.setColaborador(colaborador);
-    	colaboradorManager.expects(once()).method("getColaboradoresByEstabelecimentoAreaGrupo").with(new Constraint[]{eq('1'), ANYTHING, ANYTHING, ANYTHING, eq(colaborador.getNome())}).will(returnValue(colaboradores));
+    	colaboradorManager.expects(once()).method("getColaboradoresByEstabelecimentoAreaGrupo").with(new Constraint[]{eq('1'), ANYTHING, ANYTHING, ANYTHING, eq(colaborador.getNome()),ANYTHING}).will(returnValue(colaboradores));
     	colaboradorQuestionarioManager.expects(once()).method("selecionaColaboradores").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradores));
 
     	//prepareInsert
@@ -222,7 +222,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	Colaborador colaborador = new Colaborador();
     	action.setColaborador(colaborador);
-    	colaboradorManager.expects(once()).method("getColaboradoresByEstabelecimentoAreaGrupo").with(new Constraint[]{eq('1'), ANYTHING, ANYTHING, ANYTHING, eq(colaborador.getNome())}).will(returnValue(colaboradores));
+    	colaboradorManager.expects(once()).method("getColaboradoresByEstabelecimentoAreaGrupo").with(new Constraint[]{eq('1'), ANYTHING, ANYTHING, ANYTHING, eq(colaborador.getNome()),ANYTHING}).will(returnValue(colaboradores));
     	colaboradorQuestionarioManager.expects(once()).method("selecionaColaboradores").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradores));
     	
     	//prepareInsert
@@ -251,7 +251,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	Collection<Colaborador> colaboradores = ColaboradorFactory.getCollection();
     	Colaborador colaborador = new Colaborador();
     	action.setColaborador(colaborador);
-    	colaboradorManager.expects(once()).method("getColaboradoresByEstabelecimentoAreaGrupo").with(new Constraint[]{eq('1'), ANYTHING, ANYTHING, ANYTHING, eq(colaborador.getNome())}).will(returnValue(colaboradores));
+    	colaboradorManager.expects(once()).method("getColaboradoresByEstabelecimentoAreaGrupo").with(new Constraint[]{eq('1'), ANYTHING, ANYTHING, ANYTHING, eq(colaborador.getNome()),ANYTHING}).will(returnValue(colaboradores));
     	colaboradorQuestionarioManager.expects(once()).method("selecionaColaboradores").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradores));
 
     	//prepareInsert

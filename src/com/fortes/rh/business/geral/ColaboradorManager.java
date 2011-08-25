@@ -72,7 +72,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)throws Exception;
 	public Collection<MotivoDemissaoQuantidade> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)throws Exception;
-	public Collection<Colaborador> getColaboradoresByEstabelecimentoAreaGrupo(char filtrarPor, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, String colaboradorNome);
+	public Collection<Colaborador> getColaboradoresByEstabelecimentoAreaGrupo(char filtrarPor, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, String colaboradorNome, Long empresaId);
 	public void desligaColaborador( boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId) throws Exception;
 	public void religaColaborador(Long colaboradorId) throws Exception;
 	public Collection<Colaborador> findProjecaoSalarial(Long tabelaReajusteColaboradorId, Date data, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId) throws Exception;

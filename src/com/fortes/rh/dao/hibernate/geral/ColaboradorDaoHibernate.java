@@ -859,7 +859,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds, String colaboradorNome)
+	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome, faixa.id, faixa.nome) ");
@@ -878,6 +878,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
+		
+		if(empresaId != null)
+			hql.append("	and co.empresa.id = :empresaId ");
 		
 		hql.append("	and hc.data = (");
 		hql.append("		select max(hc2.data) ");
@@ -898,11 +901,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("areaIds", areasOrganizacionaisIds, Hibernate.LONG);
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds, String colaboradorNome)
+	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome) ");
@@ -923,6 +928,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
 		
+		if(empresaId != null)
+			hql.append("	and co.empresa.id = :empresaId ");
+		
 		hql.append("	and hc.data = (");
 		hql.append("		select max(hc2.data) ");
 		hql.append("		from HistoricoColaborador as hc2 ");
@@ -941,6 +949,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 
 		return query.list();
 	}
