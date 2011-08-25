@@ -146,12 +146,16 @@ public class SolicitacaoListAction extends MyActionSupportList
     {
     	for(Long id : solicitacaosCheckIds)
     	{
-    		Solicitacao solicitacao = new Solicitacao();
+    		solicitacao = new Solicitacao();
 	    	solicitacao.setId(id);
 
     		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
     	}
-    	return Action.SUCCESS;
+    	
+    	if (solicitacaosCheckIds != null && solicitacaosCheckIds.length == 1)
+    		return "successSolicitacao";
+    	else
+    		return Action.SUCCESS;
     }
 
     public String delete() throws Exception
