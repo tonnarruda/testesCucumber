@@ -60,6 +60,7 @@ import com.fortes.rh.test.factory.pesquisa.RespostaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.ServletActionContext;
@@ -600,6 +601,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
     	perguntas.add(pergunta1);
     	perguntas.add(pergunta2);
+    	Long[] perguntasIds = new CollectionUtil<Pergunta>().convertCollectionToArrayIds(perguntas);
 		Collection<Resposta> respostas = new ArrayList<Resposta>();
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
@@ -621,7 +623,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("getNome").with(eq(1L)).will(returnValue("José"));
 		perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
 		
-		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho);
+		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1);
 		assertEquals(2, resultados.size());
     }
     
@@ -688,9 +690,8 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	colaboradorManager.expects(once()).method("getNome").with(eq(1L)).will(returnValue("José"));
     	perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
     	
-    	Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho);
+    	Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1);
     	assertEquals(4, resultados.size());
-    	assertEquals(new Integer(272), ((ResultadoAvaliacaoDesempenho) resultados.toArray()[0]).getPontuacaoMaximaAspecto());
     }
 
     public void testEnviaLembreteDeQuestionarioNaoLiberado()

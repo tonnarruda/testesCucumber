@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.pesquisa;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -23,4 +24,5 @@ public interface PerguntaDao extends GenericDao<Pergunta>
 	int getTotalPerguntas(Long questionarioId);
 	boolean existsOrdem(Long questionarioOrAvaliacaoId, Integer ordem);
 	public Collection<Pergunta> findByQuestionarioAgrupadoPorAspecto(Long questionarioId, boolean ordenarPorAspecto);
+	Map<Long, Integer> getPontuacoesMaximas(Long[] perguntasIds);
 }

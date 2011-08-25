@@ -2,6 +2,7 @@ package com.fortes.rh.business.avaliacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -112,11 +113,13 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public Collection<ResultadoAvaliacaoDesempenho> montaResultado(Collection<Long> avaliadosIds, AvaliacaoDesempenho avaliacaoDesempenho, boolean agruparPorAspectos) throws ColecaoVaziaException
 	{
 		Collection<ResultadoAvaliacaoDesempenho> resultadoQuestionarios = new ArrayList<ResultadoAvaliacaoDesempenho>();
+		Integer qtdAvaliadores = colaboradorQuestionarioManager.getQtdavaliadores(avaliacaoDesempenho.getId());
 		
 		for (Long avaliadoId : avaliadosIds)
 		{
 			Collection<Pergunta> perguntas = perguntaManager.findByQuestionarioAspectoPergunta(avaliacaoDesempenho.getAvaliacao().getId(), null, null, agruparPorAspectos);
 			Long[] perguntasIds = new CollectionUtil<Pergunta>().convertCollectionToArrayIds(perguntas);
+			Map<Long, Integer> pontuacoesMaximasPerguntas = perguntaManager.getPontuacoesMaximas(perguntasIds); 
 			Collection<Resposta> respostas = respostaManager.findInPerguntaIds(perguntasIds);
 			
 			Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findByAvaliadoAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenho.getId());
@@ -128,7 +131,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(avaliadoId, avaliacaoDesempenho.getId());
 			percentuaisDeRespostas.addAll(percentuaisDeRespostasMultiplas);
 			
-			resultadoQuestionarios.addAll(questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho));        	
+			resultadoQuestionarios.addAll(questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, pontuacoesMaximasPerguntas, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, qtdAvaliadores));        	
 		}
 		
 		if (resultadoQuestionarios.isEmpty())

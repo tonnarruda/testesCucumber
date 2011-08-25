@@ -783,4 +783,19 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		return (Double) criteria.uniqueResult();
 	}
+
+	public Integer getQtdavaliadores(Long avaliacaoDesempenhoId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.countDistinct("avaliador.id"));
+		
+	    criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+	    criteria.add(Expression.eq("cq.respondida", true));
+
+		criteria.setProjection(Projections.distinct(p));
+		
+		return (Integer) criteria.uniqueResult();
+	}
 }

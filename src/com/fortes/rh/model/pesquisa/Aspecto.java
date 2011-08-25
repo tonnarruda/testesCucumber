@@ -30,9 +30,11 @@ public class Aspecto extends AbstractModel implements Serializable, Cloneable
     private Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
     
     @Transient
-    private Integer pontuacao;
-    
+    private Integer pontuacaoObtida;
 
+    @Transient
+    private Integer pontuacaoMaxima;
+    
     public Aspecto() 
     {
 	}
@@ -107,11 +109,19 @@ public class Aspecto extends AbstractModel implements Serializable, Cloneable
 		this.avaliacao = avaliacao;
 	}
 
-	public Integer getPontuacao() {
-		return pontuacao;
+	public Integer getPontuacaoObtida() {
+		return pontuacaoObtida;
 	}
 
-	public void setPontuacao(Integer pontuacao) {
-		this.pontuacao = pontuacao;
+	public void setPontuacaoObtida(Integer pontuacaoObtida) {
+		this.pontuacaoObtida = pontuacaoObtida;
+	}
+
+	public Integer getPontuacaoMaxima() {
+		return pontuacaoMaxima;
+	}
+
+	public void setPontuacaoMaxima(Integer pontuacaoMaxima) {
+		this.pontuacaoMaxima = pontuacaoMaxima;
 	}
 }

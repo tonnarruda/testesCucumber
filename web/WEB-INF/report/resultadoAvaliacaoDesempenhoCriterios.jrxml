@@ -51,7 +51,8 @@
 	<field name="avaliadoId" class="java.lang.Long"/>
 	<field name="avaliadoNome" class="java.lang.String"/>
 	<field name="performance" class="java.lang.Double"/>
-	<field name="percentualAspecto" class="java.lang.Double"/>
+	<field name="pergunta.aspecto.pontuacaoObtida" class="java.lang.Integer"/>
+	<field name="pergunta.aspecto.pontuacaoMaxima" class="java.lang.Integer"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="None" calculation="Count">
 		<variableExpression><![CDATA[$F{pergunta.id}]]></variableExpression>
@@ -155,7 +156,7 @@
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{percentualAspecto}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double($F{pergunta.aspecto.pontuacaoObtida}.doubleValue()/$F{pergunta.aspecto.pontuacaoMaxima}.doubleValue())]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>

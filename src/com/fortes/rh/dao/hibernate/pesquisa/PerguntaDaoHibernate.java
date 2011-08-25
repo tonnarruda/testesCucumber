@@ -1,7 +1,11 @@
 package com.fortes.rh.dao.hibernate.pesquisa;
 
+import java.math.BigInteger;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -343,5 +347,32 @@ public class PerguntaDaoHibernate extends GenericDaoHibernate<Pergunta> implemen
 		Collection<Object> perguntas = query.list();
 
 		return !perguntas.isEmpty();
+	}
+
+	public Map<Long, Integer> getPontuacoesMaximas(Long[] perguntasIds) {
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("select p.id, ");
+		sql.append("case p.tipo ");
+		sql.append("when 1 then (select coalesce(max(r.peso), 0) from resposta r where r.pergunta_id = p.id) "); 
+		sql.append("when 4 then coalesce(p.notamaxima, 0) ");
+		sql.append("when 5 then (select coalesce(sum(r.peso), 0) from resposta r where r.pergunta_id = p.id) "); 
+		sql.append("else 0 end as pontuacaomaxima ");
+		sql.append("from pergunta p where p.id in (:perguntasIds)");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		
+		query.setParameterList("perguntasIds", perguntasIds);
+		
+		Collection<Object[]> resultado = query.list();
+		Map<Long, Integer> map = new HashMap<Long, Integer>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			map.put(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).intValue());
+		}
+		
+		return map;
 	}
 }

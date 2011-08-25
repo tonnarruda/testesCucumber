@@ -435,5 +435,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().getMediaPeformance(avaliadoId, avaliacaoDesempenhoId);
 	}
 
+	public Integer getQtdavaliadores(Long avaliacaoDesempenhoId){
+		return getDao().getQtdavaliadores(avaliacaoDesempenhoId);
+	}
+
 	
 }

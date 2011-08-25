@@ -9,8 +9,6 @@ public class ResultadoAvaliacaoDesempenho extends ResultadoQuestionario
 	private Long avaliadoId;
 	private String avaliadoNome;
 	private Double performance;
-	private Integer pontuacaoMaximaAspecto;
-	private Integer pontuacaoPorAspecto;
 	
 	public ResultadoAvaliacaoDesempenho(Long avaliadoId, String avaliadoNome, Double performance)
 	{
@@ -33,25 +31,5 @@ public class ResultadoAvaliacaoDesempenho extends ResultadoQuestionario
 
 	public void setPerformance(Double performance) {
 		this.performance = performance;
-	}
-
-	public Double getPercentualAspecto(){
-		return ((double) pontuacaoPorAspecto / (double) pontuacaoMaximaAspecto)*performance;
-	}
-
-	public Integer getPontuacaoMaximaAspecto() {
-		return pontuacaoMaximaAspecto;
-	}
-
-	public void setPontuacaoMaximaAspecto(Integer pontuacaoMaximaAspecto) {
-		this.pontuacaoMaximaAspecto = pontuacaoMaximaAspecto;
-	}
-
-	public Integer getPontuacaoPorAspecto() {
-		return pontuacaoPorAspecto;
-	}
-
-	public void setPontuacaoPorAspecto(Integer pontuacaoPorAspecto) {
-		this.pontuacaoPorAspecto = pontuacaoPorAspecto;
 	}
 }
