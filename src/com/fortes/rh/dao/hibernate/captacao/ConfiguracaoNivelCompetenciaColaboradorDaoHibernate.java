@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.captacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -13,6 +14,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetenciaColaborador> implements ConfiguracaoNivelCompetenciaColaboradorDao
 {
@@ -87,5 +89,15 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		
 		
 		return (ConfiguracaoNivelCompetenciaColaborador)criteria.uniqueResult();
+	}
+
+	public void removeColaborador(Colaborador colaborador) {
+		String queryHQL = "delete from ConfiguracaoNivelCompetenciaColaborador cncc where cncc.colaborador.id = :colaboradorId";
+
+		Query query = getSession().createQuery(queryHQL);
+
+		query.setLong("colaboradorId", colaborador.getId());
+
+		query.executeUpdate();
 	}
 }

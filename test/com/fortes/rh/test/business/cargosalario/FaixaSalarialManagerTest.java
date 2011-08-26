@@ -10,6 +10,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManagerImpl;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -31,6 +32,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 	Mock faixaSalarialDao = null;
 	Mock faixaSalarialHistoricoManager;
 	Mock faixaSalarialHistoricoDao;
+	Mock configuracaoNivelCompetenciaManager;
 	Mock transactionManager;
 	Mock acPessoalClientCargo;
 
@@ -45,6 +47,9 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		faixaSalarialHistoricoManager = new Mock(FaixaSalarialHistoricoManager.class);
 		faixaSalarialManager.setFaixaSalarialHistoricoManager((FaixaSalarialHistoricoManager) faixaSalarialHistoricoManager.proxy());
 
+		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
+		faixaSalarialManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+		
 		faixaSalarialHistoricoDao = new Mock(FaixaSalarialHistoricoDao.class);
 
 		transactionManager = new Mock(PlatformTransactionManager.class);
@@ -638,6 +643,8 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 	{
 		Long[] faixaSalarialIds = new Long[] {1L};
 
+		
+		configuracaoNivelCompetenciaManager.expects(once()).method("removeByFaixas").with(eq(faixaSalarialIds));
 		faixaSalarialHistoricoManager.expects(once()).method("removeByFaixas").with(eq(faixaSalarialIds));
 		faixaSalarialDao.expects(once()).method("remove").with(eq(faixaSalarialIds));
 

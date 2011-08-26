@@ -12,6 +12,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetencia, ConfiguracaoNivelCompetenciaDao> implements ConfiguracaoNivelCompetenciaManager {
 	private NivelCompetenciaManager nivelCompetenciaManager;
@@ -236,5 +237,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public void removeByFaixas(Long[] faixaSalarialIds) 
 	{
 		getDao().removeByFaixas(faixaSalarialIds);
+	}
+
+	public void removeColaborador(Colaborador colaborador) {
+		getDao().removeColaborador(colaborador);
 	}
 }

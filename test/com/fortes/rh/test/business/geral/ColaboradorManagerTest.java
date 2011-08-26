@@ -20,6 +20,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -104,6 +106,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock acPessoalClientColaborador;
     private Mock parametrosDoSistemaManager;
     private Mock avaliacaoDesempenhoManager;
+    private Mock configuracaoNivelCompetenciaManager;
+    private Mock configuracaoNivelCompetenciaColaboradorManager;
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
 	private List<CandidatoIdioma> idiomas;
@@ -158,6 +162,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
 		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
 		colaboradorManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+		
+		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
+		colaboradorManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+
+		configuracaoNivelCompetenciaColaboradorManager = new Mock(ConfiguracaoNivelCompetenciaColaboradorManager.class);
+		colaboradorManager.setConfiguracaoNivelCompetenciaColaboradorManager((ConfiguracaoNivelCompetenciaColaboradorManager) configuracaoNivelCompetenciaColaboradorManager.proxy());
 		
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
@@ -693,6 +703,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorIdiomaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	experienciaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	historicoColaboradorManager.expects(once()).method("removeColaborador").with(eq(colaborador.getId())).isVoid();
+    	configuracaoNivelCompetenciaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
+    	configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	colaboradorDao.expects(once()).method("remove").with(eq(colaborador.getId())).isVoid();
     	colaboradorDao.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
     	acPessoalClientColaborador.expects(once()).method("remove").with(ANYTHING, ANYTHING).will(returnValue(true));

@@ -7,6 +7,8 @@ Funcionalidade: Cadastrar Cargos e Faixas
     Dado que exista a área organizacional "administracao"
     Dado que exista a área organizacional "administracao > desenvolvimento"
     Dado que exista a etapa seletiva "Entrevista com RH"
+    Dado que exista um conhecimento "testes"
+    Dado que exista um conhecimento "java"
     Dado que exista um conhecimento "testes" na area organizacional "administracao"
     Dado que exista um conhecimento "java" na area organizacional "administracao > desenvolvimento"
     Dado que exista um nivel de competencia "ruim" com a ordem 1

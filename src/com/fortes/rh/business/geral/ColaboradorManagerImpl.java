@@ -26,6 +26,7 @@ import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
@@ -116,6 +117,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private UsuarioMensagemManager usuarioMensagemManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
@@ -1370,7 +1372,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		formacaoManager.removeColaborador(colaborador);
 		colaboradorIdiomaManager.removeColaborador(colaborador);
 		experienciaManager.removeColaborador(colaborador);
-
+		configuracaoNivelCompetenciaManager.removeColaborador(colaborador);
+		configuracaoNivelCompetenciaColaboradorManager.removeColaborador(colaborador);
+		
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
 		
 		candidatoManager.habilitaByColaborador(colaborador.getId());
@@ -1949,6 +1953,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(
+			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 
 	

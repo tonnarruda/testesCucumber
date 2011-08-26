@@ -310,6 +310,19 @@ Dado /^que exista o cargo "([^"]*)"$/ do |nome_cargo|
    end
 end
 
+Dado /^que exista o cargo "([^"]*)" na área organizacional "([^"]*)"$/ do |nome_cargo, nome_area|
+   insert :cargo do
+     nome nome_cargo
+     nomemercado nome_cargo
+     empresa :id => 1
+   end
+
+   insert :cargo_areaorganizacional, :sem_id => true do
+     cargo :nome => nome_cargo
+     areasorganizacionais :areaorganizacional, :nome => nome_area
+   end
+end
+
 Dado /^que exista a tabela de reajuste "([^"]*)" na data "([^"]*)" aprovada "([^"]*)"$/ do |nome, data, aprovada|
    insert :tabelareajustecolaborador do
      nome nome
@@ -550,15 +563,24 @@ Dado /^que exista um afastamento "([^"]*)"$/ do |afastamento_descricao|
   end
 end
 
-Dado /^que exista um conhecimento "([^"]*)" na area organizacional "([^"]*)"$/ do |conhecimento_nome, area_nome|
+Dado /^que exista um conhecimento "([^"]*)"$/ do |conhecimento_nome|
   insert :conhecimento do
     nome conhecimento_nome
     empresa :id => 1
   end
+end
 
+Dado /^que exista um conhecimento "([^"]*)" na area organizacional "([^"]*)"$/ do |conhecimento_nome, area_nome|
   insert :conhecimento_areaorganizacional, :sem_id => true do
      conhecimentos :conhecimento, :nome => conhecimento_nome
      areaorganizacionals :areaorganizacional, :nome => area_nome
+  end
+end
+
+Dado /^que exista um conhecimento "([^"]*)" no cargo "([^"]*)"$/ do |conhecimento_nome, cargo_nome|
+  insert :cargo_conhecimento, :sem_id => true do
+     cargo :nome => cargo_nome
+     conhecimentos :conhecimento, :nome => conhecimento_nome
   end
 end
 

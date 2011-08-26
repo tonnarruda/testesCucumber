@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetenciaColaborador, ConfiguracaoNivelCompetenciaColaboradorDao> implements ConfiguracaoNivelCompetenciaColaboradorManager
 {
@@ -23,5 +24,9 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 		ConfiguracaoNivelCompetenciaColaborador configMesmaData = getDao().checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
 		if (configMesmaData != null && configMesmaData.getId() != null)
 			throw new Exception("Já existe uma configuração para este Colaborador na data informada.");
+	}
+
+	public void removeColaborador(Colaborador colaborador) {
+		getDao().removeColaborador(colaborador);
 	}
 }
