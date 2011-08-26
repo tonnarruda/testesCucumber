@@ -131,6 +131,9 @@
     <property name="configuracaoNivelCompetenciaManager">
       <ref bean="configuracaoNivelCompetenciaManager" />
     </property>
+    <property name="configuracaoNivelCompetenciaColaboradorManager">
+      <ref bean="configuracaoNivelCompetenciaColaboradorManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

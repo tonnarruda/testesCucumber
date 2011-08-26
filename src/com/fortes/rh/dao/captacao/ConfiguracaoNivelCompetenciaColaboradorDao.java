@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.geral.Colaborador;
 
 public interface ConfiguracaoNivelCompetenciaColaboradorDao extends GenericDao<ConfiguracaoNivelCompetenciaColaborador> 
 {
@@ -12,4 +13,6 @@ public interface ConfiguracaoNivelCompetenciaColaboradorDao extends GenericDao<C
 	Collection<ConfiguracaoNivelCompetenciaColaborador> findByColaborador(Long colaboradorId);
 
 	ConfiguracaoNivelCompetenciaColaborador checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
+
+	void removeColaborador(Colaborador colaborador);
 }

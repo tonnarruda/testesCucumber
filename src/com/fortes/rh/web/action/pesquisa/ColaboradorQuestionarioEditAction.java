@@ -154,7 +154,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		Collection<Long> cargosIds = LongUtil.arrayStringToCollectionLong(cargosCheck);
 		Collection<Long> estabelecimentosIds = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 
-		colaboradores = colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo(filtrarPor, estabelecimentosIds, areasIds, cargosIds, colaborador.getNome());
+		colaboradores = colaboradorManager.getColaboradoresByEstabelecimentoAreaGrupo(filtrarPor, estabelecimentosIds, areasIds, cargosIds, colaborador.getNome(), empresaId);
 
 		if(calcularPercentual)
 		{
@@ -661,5 +661,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
 	}
 }

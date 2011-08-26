@@ -808,21 +808,69 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	
 	public void testFindByColaboradorAndAvaliacaoDesempenhos()
 	{
-
+		Colaborador avaliado = ColaboradorFactory.getEntity();
+		avaliado.setNome("Avaliado");
+		colaboradorDao.save(avaliado);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(avaliado);
+		colaboradorQuestionario.setPerformance(25.0);
+		colaboradorQuestionario.setRespondida(true);
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setColaborador(avaliado);
+		colaboradorQuestionario2.setPerformance(35.0);
+		colaboradorQuestionario2.setRespondida(true);
+		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		assertEquals(30.0, colaboradorQuestionarioDao.getMediaPeformance(avaliado.getId(), avaliacaoDesempenho.getId()));
+	}
+	
+	public void testGetQtdavaliadores()
+	{
 		Colaborador avaliado = ColaboradorFactory.getEntity();
 		avaliado.setNome("Avaliado");
 		colaboradorDao.save(avaliado);
 
+		Colaborador avaliador = ColaboradorFactory.getEntity();
+		avaliador.setNome("Avaliador");
+		colaboradorDao.save(avaliador);
+		
+		Colaborador avaliador2 = ColaboradorFactory.getEntity();
+		avaliador2.setNome("Avaliador");
+		colaboradorDao.save(avaliador2);
+		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
-
+		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario.setColaborador(avaliado);
+		colaboradorQuestionario.setAvaliador(avaliador);
 		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
-
-		assertEquals(colaboradorQuestionario, colaboradorQuestionarioDao.findByColaboradorAndAvaliacaoDesempenho(avaliado.getId(), avaliacaoDesempenho.getId()));
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setColaborador(avaliado);
+		colaboradorQuestionario2.setAvaliador(avaliador);
+		colaboradorQuestionario2.setRespondida(true);
+		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario3.setColaborador(avaliado);
+		colaboradorQuestionario3.setAvaliador(avaliador2);
+		colaboradorQuestionario3.setRespondida(true);
+		colaboradorQuestionario3.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+		
+		assertEquals(new Integer(2), colaboradorQuestionarioDao.getQtdavaliadores(avaliacaoDesempenho.getId()));
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)

@@ -3,6 +3,7 @@ package com.fortes.rh.business.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -631,5 +632,9 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 		Collection<Pergunta> perguntas = getDao().findByQuestionarioAgrupadoPorAspecto(questionarioId, ordenarPorAspecto);
 
 		return associarPerguntasRespostas(perguntas);
+	}
+
+	public Map<Long, Integer> getPontuacoesMaximas(Long[] perguntasIds) {
+		return getDao().getPontuacoesMaximas(perguntasIds);
 	}
 }

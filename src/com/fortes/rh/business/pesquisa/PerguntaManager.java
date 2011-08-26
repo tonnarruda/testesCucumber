@@ -1,6 +1,7 @@
 package com.fortes.rh.business.pesquisa;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -35,4 +36,5 @@ public interface PerguntaManager extends GenericManager<Pergunta>
 	void montaImpressaoPergunta(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPergunta, StringBuilder textoComentario);
 	void setAvaliadoNaPerguntaDeAvaliacaoDesempenho(Pergunta pergunta, String avaliadoNome);
 	Collection<Pergunta> getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(Long questionarioId, boolean ordenarPorAspecto);
+	Map<Long, Integer> getPontuacoesMaximas(Long[] perguntasIds);
 }

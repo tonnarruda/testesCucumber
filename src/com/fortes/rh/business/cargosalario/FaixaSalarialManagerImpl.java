@@ -13,6 +13,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -30,6 +31,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	private PlatformTransactionManager transactionManager;
 	private AcPessoalClientCargo acPessoalClientCargo;
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
 	@Override
 	@Deprecated
@@ -234,6 +236,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 
 	public void removeFaixaAndHistoricos(Long[] faixaSalarialIds)
 	{
+		configuracaoNivelCompetenciaManager.removeByFaixas(faixaSalarialIds);
 		faixaSalarialHistoricoManager.removeByFaixas(faixaSalarialIds);
 		remove(faixaSalarialIds);
 	}
@@ -318,6 +321,11 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	public TCargo[] getFaixasAC() 
 	{
 		return getDao().getFaixasAC();
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(
+			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
 }

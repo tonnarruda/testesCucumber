@@ -219,8 +219,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		{
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 			
+			
 			resultados = avaliacaoDesempenhoManager.montaResultado(LongUtil.arrayStringToCollectionLong(colaboradorsCheck), avaliacaoDesempenho, agruparPorAspectos);
-		
 			parametros = RelatorioUtil.getParametrosRelatorio("Resultado Avaliação Desempenho (" + avaliacaoDesempenho.getTitulo() + ")", getEmpresaSistema(), "Resultado por Critérios\nPeríodo: " + avaliacaoDesempenho.getPeriodoFormatado());
 			
 	    	parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);

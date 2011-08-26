@@ -17,6 +17,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetencia> implements ConfiguracaoNivelCompetenciaDao
 {
@@ -211,5 +212,25 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		}
 		
 		return lista;				
+	}
+
+	public void removeByFaixas(Long[] faixaSalarialIds) 
+	{
+		String hql = "delete ConfiguracaoNivelCompetencia where faixaSalarial.id in(:faixaSalarialIds)";
+
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("faixaSalarialIds", faixaSalarialIds, Hibernate.LONG);
+
+		query.executeUpdate();
+	}
+
+	public void removeColaborador(Colaborador colaborador) {
+		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id in (select id from ConfiguracaoNivelCompetenciaColaborador where colaborador.id = :colaboradorId)";
+
+		Query query = getSession().createQuery(queryHQL);
+
+		query.setLong("colaboradorId", colaborador.getId());
+
+		query.executeUpdate();
 	}
 }

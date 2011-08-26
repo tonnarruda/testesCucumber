@@ -1,7 +1,9 @@
 package com.fortes.rh.test.dao.hibernate.pesquisa;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
@@ -9,18 +11,21 @@ import com.fortes.rh.dao.pesquisa.AspectoDao;
 import com.fortes.rh.dao.pesquisa.PerguntaDao;
 import com.fortes.rh.dao.pesquisa.PesquisaDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
+import com.fortes.rh.dao.pesquisa.RespostaDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.pesquisa.AspectoFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
 import com.fortes.rh.test.factory.pesquisa.PesquisaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
+import com.fortes.rh.test.factory.pesquisa.RespostaFactory;
 
 public class PerguntaDaoHibernateTest extends GenericDaoHibernateTest<Pergunta>
 {
@@ -29,6 +34,7 @@ public class PerguntaDaoHibernateTest extends GenericDaoHibernateTest<Pergunta>
 	private QuestionarioDao questionarioDao;
 	private AspectoDao aspectoDao;
 	private AvaliacaoDao avaliacaoDao;
+	private RespostaDao respostaDao;
 
 	public Pergunta getEntity()
 	{
@@ -430,6 +436,71 @@ public class PerguntaDaoHibernateTest extends GenericDaoHibernateTest<Pergunta>
 		assertEquals(false, perguntaDao.existsOrdem(questionario.getId(), 10));
 	}
 
+	public void testGetPontuacoesMaximas()
+	{
+		
+		Pergunta pergunta1 = PerguntaFactory.getEntity();
+		pergunta1.setTipo(TipoPergunta.OBJETIVA);
+		pergunta1 = perguntaDao.save(pergunta1);
+
+		Resposta resp1 = RespostaFactory.getEntity();
+		resp1.setPergunta(pergunta1);
+		resp1.setPeso(1);
+		respostaDao.save(resp1);
+
+		Resposta resp2 = RespostaFactory.getEntity();
+		resp2.setPergunta(pergunta1);
+		resp2.setPeso(2);
+		respostaDao.save(resp2);
+
+		Resposta resp3 = RespostaFactory.getEntity();
+		resp3.setPergunta(pergunta1);
+		resp3.setPeso(3);
+		respostaDao.save(resp3);
+		
+		pergunta1.setRespostas(Arrays.asList(resp1, resp2, resp3));
+
+		Pergunta pergunta2 = PerguntaFactory.getEntity();
+		pergunta2.setTipo(TipoPergunta.MULTIPLA_ESCOLHA);
+		pergunta2 = perguntaDao.save(pergunta2);
+
+		Resposta resp4 = RespostaFactory.getEntity();
+		resp4.setPergunta(pergunta2);
+		resp4.setPeso(1);
+		respostaDao.save(resp4);
+
+		Resposta resp5 = RespostaFactory.getEntity();
+		resp5.setPergunta(pergunta2);
+		resp5.setPeso(2);
+		respostaDao.save(resp5);
+
+		Resposta resp6 = RespostaFactory.getEntity();
+		resp6.setPergunta(pergunta2);
+		resp6.setPeso(3);
+		respostaDao.save(resp6);
+		
+		pergunta2.setRespostas(Arrays.asList(resp4, resp5, resp6));
+
+		Pergunta pergunta3 = PerguntaFactory.getEntity();
+		pergunta3.setTipo(TipoPergunta.SUBJETIVA);
+		pergunta3 = perguntaDao.save(pergunta3);
+
+		Pergunta pergunta4 = PerguntaFactory.getEntity();
+		pergunta4.setTipo(TipoPergunta.NOTA);
+		pergunta4.setNotaMinima(1);
+		pergunta4.setNotaMaxima(5);
+		pergunta4 = perguntaDao.save(pergunta4);
+		
+		perguntaDao.findByIdProjection(pergunta1.getId());
+		Map<Long,Integer> pontuacoesMaximas = perguntaDao.getPontuacoesMaximas(new Long[] { pergunta1.getId(), pergunta2.getId(), pergunta3.getId(), pergunta4.getId() }); 
+		
+		assertEquals(4, pontuacoesMaximas.size());
+		assertEquals(new Integer(3), pontuacoesMaximas.get(pergunta1.getId()));
+		assertEquals(new Integer(6), pontuacoesMaximas.get(pergunta2.getId()));
+		assertEquals(new Integer(0), pontuacoesMaximas.get(pergunta3.getId()));
+		assertEquals(new Integer(5), pontuacoesMaximas.get(pergunta4.getId()));
+	}
+
 	public void testFindIdByOrdem()
 	{
 		Questionario questionario = QuestionarioFactory.getEntity();
@@ -569,6 +640,10 @@ public class PerguntaDaoHibernateTest extends GenericDaoHibernateTest<Pergunta>
 
 	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao) {
 		this.avaliacaoDao = avaliacaoDao;
+	}
+
+	public void setRespostaDao(RespostaDao respostaDao) {
+		this.respostaDao = respostaDao;
 	}
 
 }

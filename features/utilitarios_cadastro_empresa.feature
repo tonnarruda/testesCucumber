@@ -39,7 +39,7 @@ Funcionalidade: Cadastrar Empresa
     Então eu devo ver o título "Empresas"
 
     Então eu clico em excluir "ente"
-    E eu devo ver o alert do confirmar exclusão e clico no ok
+    E eu devo ver o alert "Deseja realmente excluir a empresa?" e clico no ok
     E eu devo ver "Empresa excluída com sucesso."
     Então eu não devo ver na listagem "ente"
 

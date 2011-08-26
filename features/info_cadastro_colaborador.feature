@@ -6,8 +6,17 @@ Funcionalidade: Cadastrar Colaborador
   Cenário: Cadastro de Colaborador
     Dado que exista a área organizacional "Financeiro"
     Dado que exista a área organizacional "Compras", filha de "Financeiro"
-    Dado que exista o cargo "Contador"
+    Dado que exista o cargo "Contador" na área organizacional "Compras"
     Dado que exista a faixa salarial "I" no cargo "Contador"
+    Dado que exista um conhecimento "testes"
+    Dado que exista um conhecimento "java"
+    Dado que exista um conhecimento "testes" na area organizacional "Compras"
+    Dado que exista um conhecimento "java" na area organizacional "Compras"
+    Dado que exista um conhecimento "testes" no cargo "Contador"
+    Dado que exista um conhecimento "java" no cargo "Contador"
+    Dado que exista um nivel de competencia "ruim" com a ordem 1
+    Dado que exista um nivel de competencia "regular" com a ordem 2
+    Dado que exista um nivel de competencia "bom" com a ordem 3
 
     Dado que eu esteja logado
 
@@ -80,6 +89,24 @@ Funcionalidade: Cadastrar Colaborador
     Quando eu clico no botão "Gravar"
     Então eu devo ver "editado com sucesso"
     E eu devo ver "Silva Barbosa"
+    
+    Então eu clico na linha "Silva Barbosa" da imagem "Competências"
+    E eu devo ver "Competências do Colaborador"
+    E eu clico no botão "Inserir"
+    E eu devo ver "Competências do Colaborador"
+    E eu devo ver "Colaborador: Silva Barbosa"
+    E eu marco "java"
+    E eu escolho "niveisCompetenciaFaixaSalariais[0].nivelCompetencia.id"
+    E eu marco "testes"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "Selecione os níveis para as competências indicadas." e clico no ok
+    E eu escolho "niveisCompetenciaFaixaSalariais[1].nivelCompetencia.id"
+    E eu clico no botão "Gravar"
+    E eu devo ver "Níveis de Competência do Colaborador salvos com sucesso."
+    E eu clico no botão "Voltar"
+    E eu devo ver "Competências do Colaborador"
+    E eu clico no botão "Voltar"
+    E eu devo ver "Colaboradores"
 
     Quando eu clico em excluir "Silva Barbosa"
     Então eu devo ver "Confirma exclusão?"

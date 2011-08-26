@@ -96,7 +96,12 @@ public class ResultadoQuestionario implements Serializable
 				colaboradorResposta.getColaboradorQuestionario().setId(0L);
 			
 			if(colaboradorResposta.getPergunta().getId().equals(perguntaId) && colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioId) && colaboradorResposta.getResposta()!=null)
-				respostas.add(colaboradorResposta.getResposta().getLetraByOrdem());
+			{
+				if (colaboradorResposta.getPergunta().getTipo().equals(TipoPergunta.NOTA))
+					respostas.add(colaboradorResposta.getValor() != null ? "Nota " + colaboradorResposta.getValor() : "-");
+				else
+					respostas.add(colaboradorResposta.getResposta().getLetraByOrdem());
+			}
 		}	
 		
 		return StringUtil.converteCollectionToString(respostas);

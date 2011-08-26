@@ -77,9 +77,15 @@ end
 class Insert
 	instance_methods.each { |m| undef_method m unless m =~ /^__|instance_eval|object_id/ }
 
-	def initialize(table)
+	def initialize(table, options)
+    options[:sem_id]  ||= false
+
 		@table = table
-    @properties = {:id => "nextval('#{@table}_sequence')"}
+    if options[:sem_id] == true
+      @properties = {}
+    else
+      @properties = {:id => "nextval('#{@table}_sequence')"}
+    end
 	end
 
 	def method_missing(method, *args, &block)
@@ -108,8 +114,8 @@ class Insert
 
 end
 
-def insert(table, &block)
-	ins = Insert.new(table)
+def insert(table, options={}, &block)
+	ins = Insert.new(table, options)
 	ins.instance_eval(&block)
   exec_sql ins.to_sql
 end

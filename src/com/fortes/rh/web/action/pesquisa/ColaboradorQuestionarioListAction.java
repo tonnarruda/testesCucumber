@@ -76,7 +76,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	
 	private EmpresaManager empresaManager;
 	private Collection<Empresa> empresas;
-	private Long empresaId = null;
+	private Long empresaId = -1L;
 	private char respondida;
 	private Long[] colaboradorQuestionarioIds;
 
@@ -87,7 +87,10 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-		empresaId = getEmpresaSistema().getId();
+		
+		if(empresaId == null)
+			empresaId = getEmpresaSistema().getId();
+		
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores ,empresaId,SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_PESQUISA");
 		
 		questionario = questionarioManager.findByIdProjection(questionario.getId());
