@@ -212,4 +212,14 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		
 		return lista;				
 	}
+
+	public void removeByFaixas(Long[] faixaSalarialIds) 
+	{
+		String hql = "delete ConfiguracaoNivelCompetencia where faixaSalarial.id in(:faixaSalarialIds)";
+
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("faixaSalarialIds", faixaSalarialIds, Hibernate.LONG);
+
+		query.executeUpdate();
+	}
 }

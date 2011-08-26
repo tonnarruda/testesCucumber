@@ -550,6 +550,26 @@ Dado /^que exista um afastamento "([^"]*)"$/ do |afastamento_descricao|
   end
 end
 
+Dado /^que exista um conhecimento "([^"]*)" na area organizacional "([^"]*)"$/ do |conhecimento_nome, area_nome|
+  insert :conhecimento do
+    nome conhecimento_nome
+    empresa :id => 1
+  end
+
+  insert :conhecimento_areaorganizacional, :sem_id => true do
+     conhecimentos :conhecimento, :nome => conhecimento_nome
+     areaorganizacionals :areaorganizacional, :nome => area_nome
+  end
+end
+
+Dado /^que exista um nivel de competencia "([^"]*)" com a ordem (\d+)$/ do |nivelcompetencia_descricao, numero_ordem|
+  insert :nivelcompetencia do
+    descricao nivelcompetencia_descricao
+    ordem numero_ordem
+    empresa :id => 1
+  end
+end
+
 Dado /^que todos os papeis estejam permitidos$/ do
    exec_sql "update parametrosdosistema set modulos = encode(cast(array_to_string(array(select id from papel order by id), ',') as bytea), 'base64');"
 end

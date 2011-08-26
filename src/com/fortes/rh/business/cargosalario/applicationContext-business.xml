@@ -67,6 +67,9 @@
     <property name="faixaSalarialHistoricoManager">
       <ref bean="faixaSalarialHistoricoManager" />
     </property>
+    <property name="configuracaoNivelCompetenciaManager">
+      <ref bean="configuracaoNivelCompetenciaManager" />
+    </property>
   </bean>
   <bean id="faixaSalarialManager" parent="parentManager">
     <property name="proxyInterfaces">

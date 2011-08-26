@@ -232,4 +232,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		
 		return matriz;
 	}
+
+	public void removeByFaixas(Long[] faixaSalarialIds) 
+	{
+		getDao().removeByFaixas(faixaSalarialIds);
+	}
 }
