@@ -156,4 +156,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByAvaliacao(Long avaliacaoId);
 	public Colaborador removeColaboradorDependencias(Colaborador colaborador);
 	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC);
+	public void enviaEmailAniversariantes() throws Exception;
 }

@@ -541,23 +541,21 @@
 	</li>
 	
 	<li id="13" class="cabecalhoBox">
-		<#if colaborador.observacao?exists && colaborador.observacao!=''>
-			<h4><a href="javascript:;" class="linkBox">Experiência Profissional</a></h4>
-			<ul id="box13" class="box">
-				<table class="grade">
-					<tr>
-						<td>
-							<@display.table name="experiencias" id="exp" class="dados" defaultsort=4 defaultorder="descending">
-								<@display.column property="empresa" title="Empresa"/>
-								<@display.column property="nomeMercado" title="Cargo/Função"/>
-								<@display.column property="dataAdmissao" title="Admissão" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
-								<@display.column property="dataDesligamento" title="Desligamento" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
-							</@display.table>
-						</td>
-					</tr>
-				</table>
-			</ul>
-		</#if>
+		<h4><a href="javascript:;" class="linkBox">Experiência Profissional</a></h4>
+		<ul id="box13" class="box">
+			<table class="grade">
+				<tr>
+					<td>
+						<@display.table name="experiencias" id="exp" class="dados" defaultsort=4 defaultorder="descending">
+							<@display.column property="empresa" title="Empresa"/>
+							<@display.column property="nomeMercado" title="Cargo/Função"/>
+							<@display.column property="dataAdmissao" title="Admissão" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
+							<@display.column property="dataDesligamento" title="Desligamento" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
+						</@display.table>
+					</td>
+				</tr>
+			</table>
+		</ul>
 	</li>
 	
 	<li id="14" class="cabecalhoBox">

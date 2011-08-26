@@ -5,7 +5,10 @@ package com.fortes.rh.web.action.geral;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +23,7 @@ import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
@@ -56,15 +60,30 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	private File logo;
 	private File logoCert;
+	private File imgCartaoAniversariante;
 	private Collection<Empresa> empresas;
 	private Collection<GrupoAC> grupoACs;
 	private Collection<Exame> exames;
+	
+	private Map<String,Object> parametros = new HashMap<String, Object>();
+	private Collection<Colaborador> colaboradores;
 
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;
 	}
 
+	public String cartaoAniversariante() throws Exception
+	{
+		empresa = empresaManager.findByIdProjection(empresa.getId());
+		
+		parametros.put("BACKGROUND", ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl());
+		parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", "Nome do Aniversariante"));
+		
+		colaboradores = Arrays.asList(new Colaborador());
+		return Action.SUCCESS;
+	}
+	
 	private void prepare() throws Exception
 	{
 		if(empresa != null && empresa.getId() != null)
@@ -105,10 +124,13 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		if(empresa.getGrupoAC().equals(""))
 			empresa.setGrupoAC(null);
 		
-		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
+		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert, imgCartaoAniversariante);
 		
 		if(StringUtils.isEmpty(empresa.getLogoUrl()))
 			empresa.setLogoUrl("fortes.gif");
+		
+		if(StringUtils.isEmpty(empresa.getImgAniversarianteUrl()))
+			empresa.setLogoUrl("aniversariantes.jpg");
 		
 		//evitando problema de vir instância sem o id (TransientObjectException) 
 		if (empresa.getExame() != null && empresa.getExame().getId() == null)
@@ -138,7 +160,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		if(empresa.getGrupoAC().equals(""))
 			empresa.setGrupoAC(null);
 		
-		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert);
+		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert, imgCartaoAniversariante);
 		
 		if (empresaManager.checkEmpresaCodACGrupoAC(empresa)){
 			throw new Exception("Já existe uma empresa com o mesmo código AC no grupo AC especificado");
@@ -176,6 +198,17 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		if (empresa.getLogoCertificadoUrl() != null && !empresa.getLogoCertificadoUrl().equals(""))
 		{
 			java.io.File file = ArquivoUtil.getArquivo(empresa.getLogoCertificadoUrl(),"logoEmpresas");
+			showFile(file);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String showImgAniversariante() throws Exception
+	{
+		if (empresa.getImgAniversarianteUrl() != null && !empresa.getImgAniversarianteUrl().equals(""))
+		{
+			java.io.File file = ArquivoUtil.getArquivo(empresa.getImgAniversarianteUrl(), "logoEmpresas");
 			showFile(file);
 		}
 		
@@ -355,5 +388,22 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setExameManager(ExameManager exameManager) {
 		this.exameManager = exameManager;
+	}
+
+
+	public Collection<Colaborador> getColaboradores() {
+		return colaboradores;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
+	}
+
+	public File getImgCartaoAniversariante() {
+		return imgCartaoAniversariante;
+	}
+
+	public void setImgCartaoAniversariante(File imgCartaoAniversariante) {
+		this.imgCartaoAniversariante = imgCartaoAniversariante;
 	}
 }

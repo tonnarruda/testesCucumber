@@ -130,6 +130,17 @@
     <property name="targetObject" ref="importadorGastosACJob"/>
     <property name="targetMethod" value="execute"/>
   </bean>
+
+  <bean name="emailCartaoAniversariantesJob" class="com.fortes.rh.business.geral.ColaboradorManagerImpl">
+    <property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
+    <property name="empresaManager" ref="empresaManager" />
+    <property name="mail" ref="mail" />
+    <property name="dao" ref="colaboradorDaoTarget" />
+  </bean>
+  <bean name="emailCartaoAniversariantes" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="emailCartaoAniversariantesJob"/>
+    <property name="targetMethod" value="enviaEmailAniversariantes"/>
+  </bean>
   
   <bean name="quantidadeCurriculosJob" class="com.fortes.rh.business.captacao.QuantidadeCurriculos">
 	<property name="candidatoManager" ref="candidatoManager" />
@@ -199,6 +210,10 @@
     <property name="jobDetail" ref="quantidadeCurriculos" />
     <property name="cronExpression" value="0 10 7 1 * ?" /> <!-- Todo dia 1 de cada mes as 07:10h am -->
   </bean>
+  <bean id="cronTriggerEmailCartaoAniversariantes" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="emailCartaoAniversariantes" />
+	<property name="cronExpression" value="0 20 6 * * ?" /> <!-- Todo dia 25 de cada mes as 03:00h am -->
+  </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
       <list>
@@ -210,6 +225,7 @@
 		<ref bean="cronTriggerBackupCleaner" />
 		<ref bean="cronTriggerQuantidadeCurriculos" />
 		<ref bean="cronTriggerLembreteExamesPrevistos" />
+		<ref bean="cronTriggerEmailCartaoAniversariantes" />
       </list>
     </property>
   </bean>

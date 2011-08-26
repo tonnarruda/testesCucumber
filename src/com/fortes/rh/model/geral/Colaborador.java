@@ -791,6 +791,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.desligado = desligado;
 	}
 	
+	public Colaborador(String nome, String email, Long id)
+	{
+		super();
+		this.nome = nome;
+		this.contato.setEmail(email);
+		this.setId(id);
+	}
+	
 	//Construtor usado por findAdmitidosHaDias
 	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId)
 	{

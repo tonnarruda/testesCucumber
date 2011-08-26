@@ -11,14 +11,29 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+
+import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.mozilla.universalchardet.UniversalDetector;
 
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.ibm.icu.text.CharsetDetector;
 import com.ibm.icu.text.CharsetMatch;
 import com.opensymphony.webwork.ServletActionContext;
@@ -330,4 +345,33 @@ public class ArquivoUtil
 			out.close();
 		}
 	}
+
+    public static void montaRelatorio(Empresa empresa, String subject, String body, Collection<String> emailsCollection, Map<String,Object> parametros, Collection dataSource, Mail mail, String jasperName) throws Exception 
+	{
+		try
+		{
+			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(parametros.get("SUBREPORT_DIR") + jasperName);
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JRBeanCollectionDataSource(dataSource));
+
+			byte[] output = JasperExportManager.exportReportToPdf(jasperPrint);
+			
+			ByteArrayDataSource file = new ByteArrayDataSource(output, "application/pdf"){
+				@Override
+				public String getName() {
+					return "anexo.pdf";
+				}
+			};
+			
+			DataSource[] files = new DataSource[]{file};
+			String[] emails = new String[emailsCollection.size()];
+			emails = emailsCollection.toArray(emails);
+			mail.send(empresa, subject, files, body, emails);		
+		}
+		catch (JRException e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
 }

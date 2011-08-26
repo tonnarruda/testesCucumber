@@ -1,8 +1,10 @@
 package com.fortes.rh.web.action.geral;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,6 +49,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -134,7 +137,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Collection<AutoCompleteVO> data;
 	private String descricao;
 	private String json;
-
+	
 	public String find() throws Exception
 	{
 		data = colaboradorManager.getAutoComplete(descricao, getEmpresaSistema().getId());
@@ -145,6 +148,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String list() throws Exception
 	{
+		colaboradorManager.enviaEmailAniversariantes();
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllList(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
 		areasList = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsTmp);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();

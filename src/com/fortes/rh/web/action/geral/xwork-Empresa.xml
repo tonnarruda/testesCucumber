@@ -33,6 +33,7 @@
 		</action>
 		<action name="showLogo" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showLogo" />
 		<action name="showLogoCertificado" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showLogoCertificado" />
+		<action name="showImgAniversariante" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showImgAniversariante" />
 		
 		<action name="prepareImportarCadastros" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="prepareImportarCadastros">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/importaCadastros.ftl</result>
@@ -42,6 +43,14 @@
 		</action>
 		<action name="sobre" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="sobre">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/sobre.ftl</result>
+		</action>
+		<action name="cartaoAniversariante" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="cartaoAniversariante">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/cartaoAniversariante.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">cartaoAniversario.pdf</param>
+			</result>
 		</action>
 	</package>
 </xwork>

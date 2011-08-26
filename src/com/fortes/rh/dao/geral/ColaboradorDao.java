@@ -109,4 +109,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean consideraDataAdmissao, Long colaboradorId);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public Collection<Colaborador> findByAvaliacao(Long avaliacaoId);
+	public Collection<Colaborador> findAniversariantesByEmpresa(Long empresaId, int dia, int mes);
 }

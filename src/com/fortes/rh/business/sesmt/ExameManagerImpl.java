@@ -8,17 +8,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.activation.DataSource;
-import javax.mail.util.ByteArrayDataSource;
-
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -284,36 +276,11 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 				    	parametros.put("CABECALHO", cabecalho);
 				    	parametros.put("SUBREPORT_DIR", path);
 				    	
-						colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, false, true, false);
-						byte[] output;
-						JasperPrint jasperPrint;
+				    	colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, false, true, false);
 
 						if (!colecaoExamesPrevistos.isEmpty())
-						{
-							try
-							{
-								JasperReport jasperReport = (JasperReport) JRLoader.loadObject(parametros.get("SUBREPORT_DIR") + "exames_previstos.jasper");
-								jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JRBeanCollectionDataSource((Collection) colecaoExamesPrevistos));
-							}
-							catch (JRException e)
-							{
-								throw new Exception(e.getMessage(), e);
-							}
-							
-							output = JasperExportManager.exportReportToPdf(jasperPrint);
-	
-							ByteArrayDataSource file = new ByteArrayDataSource(output, "application/pdf"){
-					            @Override
-					            public String getName() {
-					                return "relatorio.pdf";
-					            }
-					        };
-					        
-					        DataSource[] files = new DataSource[]{file};
-							String[] emails = new String[emailsCollection.size()];
-							emails = emailsCollection.toArray(emails);
-							mail.send(empresa, subject, files, body.toString(), emails);
-						}
+							ArquivoUtil.montaRelatorio(empresa, subject, body, emailsCollection, parametros, colecaoExamesPrevistos, mail, "exames_previstos.jasper");
+						
 					} 
 					catch (ColecaoVaziaException e) 
 					{

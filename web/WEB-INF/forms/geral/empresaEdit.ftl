@@ -57,9 +57,15 @@
 
 		function enviaForm()
 		{
-			if(document.getElementById('mensagemModuloExterno').value.length > 400)
+			if($('#mensagemModuloExterno').val().length > 400)
 			{
-				jAlert("A quantidade de carácteres não pode ser maior que 400");
+				jAlert("A quantidade de carácteres do campo [Mensagem a ser exibida no módulo externo] não pode ser maior que 400");
+				return false;
+			}
+
+			if($('#mensagemCartaoAniversariante').val().length > 300)
+			{
+				jAlert("A quantidade de carácteres do campo [Mensagem do Cartão de Aniversariantes] não pode ser maior que 300");
 				return false;
 			}
 						
@@ -86,7 +92,6 @@
 				</@ww.div>
 			</li>
 		<br>
-		
 		<@authz.authorize ifAllGranted="ROLE_CERTIFICADO_CURSO">
 			<@ww.file label="Logo dos Certificados(110px x 110px)" name="logoCert" id="logoCert" liClass="liLeft"/>
 			<li>
@@ -98,6 +103,7 @@
 					</ul>
 				</@ww.div>
 			</li>
+			<br>
 		</@authz.authorize>
 		
 		<@ww.textfield label="Nome" name="empresa.nome" id="nome" required="true" cssClass="inputNome" maxLength="15"/>
@@ -125,6 +131,27 @@
 		<@ww.checkbox label="Enviar e-mails de confirmação" id="emailCandidatoNaoApto" name="empresa.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/>
 		<@ww.textarea label="Texto para email de candidatos não aptos" name="empresa.mailNaoAptos" id="mailNaoAptos" size="40"/>
 		<@ww.textarea label="Mensagem a ser exibida no módulo externo" id="mensagemModuloExterno" name="empresa.mensagemModuloExterno" cssStyle="height:30px;"/>
+		
+		<li>
+			<@ww.div cssClass="divInfo">
+				<ul>
+				Configuração do Cartão dos Aniversariantes<br>
+				<@ww.file label="Imagem (400px x 570px)" name="imgCartaoAniversariante" id="imgCartaoAniversariante" liClass="liLeft"/>
+				<li>
+					<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
+						<ul>
+							<#if empresa.id?exists && empresa.imgAniversarianteUrl?exists && empresa.imgAniversarianteUrl != "">
+								<a href="cartaoAniversariante.action?empresa.id=${empresa.id}" ><img title="Visualizar Cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgAniversariante.action?empresa.imgAniversarianteUrl=${empresa.imgAniversarianteUrl}"/>"></a>
+							</#if>
+						</ul>
+					</@ww.div>
+				</li>
+				<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do Aniversariante)" id="mensagemCartaoAniversariante" name="empresa.mensagemCartaoAniversariante" cssStyle="height:40px;"/>
+				<@ww.checkbox label="Enviar email com Cartão?" name="empresa.enviarEmailAniversariante" id="enviarEmailAniversariante" labelPosition="right" /><br>
+				</ul>
+			</@ww.div>
+		</li>
+		<br>
 		<li>
 			<@ww.div cssClass="divInfo">
 				<ul>
@@ -141,6 +168,7 @@
 		<@ww.hidden name="empresa.id" />
 		<@ww.hidden name="empresa.logoUrl" />
 		<@ww.hidden name="empresa.logoCertificacaoUrl" />
+		<@ww.hidden name="empresa.imgAniversarianteUrl" />
 		<@ww.hidden name="empresa.codigoAC" id="codigoAC" />
 	<@ww.token/>
 	</@ww.form>

@@ -3492,4 +3492,25 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return criteria.list();
 	}
+
+	public Collection<Colaborador> findAniversariantesByEmpresa(Long empresaId, int dia, int mes) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(c.nome, c.contato.email, c.id) ");
+		hql.append("from Colaborador as c ");
+		hql.append("where c.empresa.id = :empresaId ");		
+		hql.append("and date_part('day', c.pessoal.dataNascimento) = :dia ");		
+		hql.append("and date_part('month', c.pessoal.dataNascimento) = :mes ");		
+		hql.append("and c.desligado = :desligado ");
+		hql.append("and c.contato.email <> '' ");
+		
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setDouble("dia", new Integer(dia));
+		query.setDouble("mes", new Integer(mes));
+		query.setLong("empresaId", empresaId);
+		query.setBoolean("desligado", false);
+	
+		return query.list();		
+	}
 }

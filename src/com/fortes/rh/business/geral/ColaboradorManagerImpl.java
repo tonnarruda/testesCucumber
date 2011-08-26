@@ -2,6 +2,7 @@ package com.fortes.rh.business.geral;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -79,6 +80,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -116,6 +118,49 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private UsuarioMensagemManager usuarioMensagemManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	
+	public void enviaEmailAniversariantes() throws Exception
+	{
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+		if(parametrosDoSistema.getEnviarEmail())
+		{
+			Collection<Empresa> empresas = empresaManager.findByCartaoAniversario();
+			Date data = new Date();
+			int dia = DateUtil.getDia(data);
+			int mes = DateUtil.getMes(data);
+			
+			char barra = java.io.File.separatorChar;
+			String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
+			path = path + barra + "web" + barra + "WEB-INF" + barra +"report" + barra; 
+
+			Map<String,Object> parametros = new HashMap<String, Object>();
+	    	parametros.put("SUBREPORT_DIR", path);
+	    	
+			for (Empresa empresa : empresas) 
+			{
+				parametros.put("BACKGROUND", ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl());
+				
+				Collection<Colaborador> aniversariantes = getDao().findAniversariantesByEmpresa(empresa.getId(), dia, mes);
+				for (Colaborador aniversariante : aniversariantes)
+				{
+					parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", aniversariante.getNome()));					
+					//empresaManager.montaEnviaCartaoAniversariante(aniversariante.getNome(), aniversariante.getContato().getEmail(), empresa, parametrosDoSistema, parametros);
+					String subject = "Feliz Aniversário " + aniversariante.getNome();
+					String body = "Cartão em anexo, feliz aniversário.";
+					
+					try
+					{
+				    	Collection<Colaborador> colaboradores = Arrays.asList(new Colaborador());
+						ArquivoUtil.montaRelatorio(empresa, subject, body, Arrays.asList(aniversariante.getContato().getEmail()), parametros, colaboradores, mail, "cartaoAniversariante.jasper");
+					} 
+					catch (Exception e) 
+					{
+						throw e;
+					}
+				}
+			}			
+		}
+	}
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{

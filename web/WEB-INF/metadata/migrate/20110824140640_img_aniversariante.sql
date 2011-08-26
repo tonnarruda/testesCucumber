@@ -1,0 +1,1 @@
+alter table empresa add column ImgAniversarianteUrl varchar(200);--.go

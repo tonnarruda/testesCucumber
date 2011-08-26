@@ -114,6 +114,9 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.campoExtraCandidato"), "campoExtraCandidato");
 		p.add(Projections.property("e.mensagemModuloExterno"), "mensagemModuloExterno");
 		p.add(Projections.property("e.emailRespLimiteContrato"), "emailRespLimiteContrato");
+		p.add(Projections.property("e.imgAniversarianteUrl"), "imgAniversarianteUrl");
+		p.add(Projections.property("e.mensagemCartaoAniversariante"), "mensagemCartaoAniversariante");
+		p.add(Projections.property("e.enviarEmailAniversariante"), "enviarEmailAniversariante");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("e.id", id));
@@ -271,6 +274,31 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.emailRespSetorPessoal"),"emailRespSetorPessoal");
 		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
 		p.add(Projections.property("e.logoUrl"),"logoUrl");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
+	
+	public Collection<Empresa> findByCartaoAniversario()
+	{
+		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"),"nome");
+		p.add(Projections.property("e.emailRemetente"),"emailRemetente");
+		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
+		p.add(Projections.property("e.logoUrl"),"logoUrl");
+		p.add(Projections.property("e.imgAniversarianteUrl"), "imgAniversarianteUrl");
+		p.add(Projections.property("e.mensagemCartaoAniversariante"), "mensagemCartaoAniversariante");
+		p.add(Projections.property("e.enviarEmailAniversariante"), "enviarEmailAniversariante");
+		
+		criteria.add(Expression.eq("e.enviarEmailAniversariante", true));
+		criteria.add(Expression.not(Expression.eq("e.imgAniversarianteUrl", "")));
+		
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.addOrder(Order.asc("e.nome"));

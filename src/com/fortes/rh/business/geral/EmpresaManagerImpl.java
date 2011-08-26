@@ -95,16 +95,20 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return url;
 	}
 
-	public Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado)
+	public Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado, File imgAniversariante)
 	{
 		String logoUrl = saveLogo(logo, local);
 		String logoCertificadoUrl = saveLogo(logoCertificado, local);
+		String imgAniversarianteUrl = saveLogo(imgAniversariante, local);
 
 		if(!logoUrl.equals(""))
 			empresa.setLogoUrl(logoUrl);
 		
 		if(!logoCertificadoUrl.equals(""))
 			empresa.setLogoCertificadoUrl(logoCertificadoUrl);
+
+		if(!imgAniversarianteUrl.equals(""))
+			empresa.setImgAniversarianteUrl(imgAniversarianteUrl);
 
 		return empresa;
 	}
@@ -356,7 +360,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 		getDao().updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
 	}
-
+	
 	public Collection<Empresa> findEmpresasPermitidas(Boolean compartilhar, Long empresId, Long usuarioId, String... roles) 
 	{
 		if(usuarioId.equals(1L))
@@ -410,5 +414,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			return StringUtil.converteCollectionToString(empresasNaoListadas);
 	}
 
-	
+	public Collection<Empresa> findByCartaoAniversario() {
+		return getDao().findByCartaoAniversario();
+	}
 }

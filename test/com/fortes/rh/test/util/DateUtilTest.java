@@ -40,6 +40,18 @@ public class DateUtilTest extends TestCase
 		assertEquals(0, data.getMonth());
 		assertEquals(107, data.getYear());
 	}
+	
+	public void testGetDia()
+	{
+		Date data = DateUtil.criarDataMesAno(02, 12, 2011);
+		assertEquals(2, DateUtil.getDia(data));
+	}
+	
+	public void testGetMes()
+	{
+		Date data = DateUtil.criarDataMesAno(02, 11, 2011);
+		assertEquals(11, DateUtil.getMes(data));
+	}
 
 	public void testStringToGregorian() throws Exception{
 		GregorianCalendar gc = DateUtil.stringToGregorian("01/2007");

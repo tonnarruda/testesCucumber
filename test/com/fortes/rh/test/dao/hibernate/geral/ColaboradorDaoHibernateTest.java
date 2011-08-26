@@ -364,6 +364,57 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertNull(colaboradorRetorno.getUsuario().getId());
 	}
 
+	public void testFindAniversariantesByEmpresa() throws Exception 
+	{
+		Empresa empresa = new Empresa();
+		empresaDao.save(empresa);
+
+		Colaborador joao = getEntity();
+		joao.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 4, 1984));
+		joao.getContato().setEmail("email.com");
+		joao.setDesligado(false);
+		joao.setEmpresa(empresa);
+		colaboradorDao.save(joao);
+		
+		Colaborador jonas = getEntity();
+		jonas.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 5, 1984));
+		jonas.getContato().setEmail("email.com");
+		jonas.setDesligado(false);
+		jonas.setEmpresa(empresa);
+		colaboradorDao.save(jonas);
+		
+		Colaborador paula = getEntity();
+		paula.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(25, 4, 1984));
+		paula.getContato().setEmail("email.com");
+		paula.setDesligado(false);
+		paula.setEmpresa(empresa);
+		colaboradorDao.save(paula);
+		
+		Colaborador maria = getEntity();
+		maria.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 4, 1984));
+		maria.getContato().setEmail("");
+		maria.setDesligado(false);
+		maria.setEmpresa(empresa);
+		colaboradorDao.save(maria);
+		
+		Colaborador pedro = getEntity();
+		pedro.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 4, 1984));
+		pedro.getContato().setEmail(null);
+		pedro.setDesligado(false);
+		pedro.setEmpresa(empresa);
+		colaboradorDao.save(pedro);
+		
+		Colaborador marcos = getEntity();
+		marcos.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 4, 1984));
+		marcos.getContato().setEmail("asdf");
+		marcos.setDesligado(true);
+		marcos.setEmpresa(empresa);
+		colaboradorDao.save(marcos);
+		
+		Collection<Colaborador> colaboradores = colaboradorDao.findAniversariantesByEmpresa(empresa.getId(), 7, 4);
+		assertEquals(1, colaboradores.size());
+	}
+
 	public void testFindByUsuarioProjection() throws Exception {
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario.setNome("João Batista");

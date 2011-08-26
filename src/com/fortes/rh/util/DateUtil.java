@@ -710,6 +710,22 @@ public class DateUtil
 	      
 	    return diasUteis;
 	}
+	
+	public static int getDia(Date data)
+	{  
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(data);
+		
+		return calendar.get(Calendar.DAY_OF_MONTH);
+	}
+	
+	public static int getMes(Date data)
+	{  
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(data);
+		
+		return calendar.get(Calendar.MONTH) + 1;
+	}
 
 	public static Date getUltimoDiaMesAnterior(Date data) 
 	{
