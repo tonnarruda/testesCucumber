@@ -13,7 +13,9 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
@@ -27,8 +29,11 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
@@ -3522,5 +3527,72 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setBoolean("desligado", false);
 	
 		return query.list();		
+	}
+
+	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(co.id, co.nome, co.desligado) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as co ");
+		hql.append("where hc.data = ( ");
+		hql.append("   select max(hc2.data) ");
+		hql.append("   from HistoricoColaborador as hc2 ");
+		hql.append("   where hc2.colaborador.id = co.id ");
+		hql.append("   and hc2.status = :status ");
+		hql.append("  ) ");
+		hql.append("and co.desligado = false ");
+		hql.append("and co.dataAdmissao >= :dataAdmissao ");
+		
+		if (estabelecimentoId != null && !estabelecimentoId.equals(-1L))
+			hql.append("and hc.estabelecimento.id = :estabelecimentoId ");
+
+		hql.append("order by co.nome ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		if (estabelecimentoId != null && !estabelecimentoId.equals(-1L))
+			query.setLong("estabelecimentoId", estabelecimentoId);
+		query.setDate("dataAdmissao", dataAdmissao);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		return query.list();
+	}
+
+	public Collection<Colaborador> findColaboradoresByIds(Long[] colaboradoresIds) 
+	{
+		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
+        ProjectionList pSub = Projections.projectionList().create();
+
+        pSub.add(Projections.max("hc2.data"));
+        subQuery.setProjection(pSub);
+
+        subQuery.add(Restrictions.sqlRestriction("this0__.colaborador_id=this_.id"));
+        subQuery.add(Expression.le("hc2.data", new Date()));
+        subQuery.add(Expression.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+        
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.estabelecimento", "e", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("fs.cargo", "ca", CriteriaSpecification.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.matricula"), "matricula");
+		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("e.nome"), "estabelecimentoNomeProjection");
+		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
+		
+		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Expression.in("c.id", colaboradoresIds));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
 	}
 }

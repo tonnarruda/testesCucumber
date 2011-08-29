@@ -22,10 +22,14 @@ import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColabora
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -62,10 +66,10 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<CheckBox> estabelecimentoCheckList = new ArrayList<CheckBox>();
 	private String[] periodoCheck;
 	private Collection<CheckBox> periodoCheckList = new ArrayList<CheckBox>();
-	
-	private Collection<Colaborador> colaboradores;
 	private String[] colaboradorsCheck;
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
+	
+	private Collection<Colaborador> colaboradores;
 
 	private ColaboradorManager colaboradorManager;
 	private Map<String, Object> parametros;
@@ -75,6 +79,11 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private String reportTitle;
 	private List<AcompanhamentoExperienciaColaborador> acompanhamentos;
 	private boolean considerarAutoAvaliacao;
+	
+	private Estabelecimento estabelecimento;
+	private Collection<Estabelecimento> estabelecimentos;
+	private String observacoes;
+	private Collection<CartaoAcompanhamentoExperienciaVO> cartoesAcompanhamentoExperienciaVOs;
 		
 	private void prepare() throws Exception
 	{
@@ -259,6 +268,38 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
 			prepareRelatorioRankingPerformance();
+			return Action.INPUT;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String prepareCartoesAcompanhamentoPeriodoExperiencia()
+	{
+		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		periodoCheckList = periodoExperienciaManager.populaCheckBoxDistinctDias(getEmpresaSistema().getId());
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimeCartoesAcompanhamentoPeriodoExperiencia()
+	{
+		try 
+		{
+			Long[] colaboradoresIds = StringUtil.stringToLong(colaboradorsCheck);
+			Long[] dias = StringUtil.stringToLong(periodoCheck);
+			cartoesAcompanhamentoExperienciaVOs = colaboradorManager.montaCartoesPeriodoExperiencia(colaboradoresIds, dias, observacoes);
+
+			reportFilter = "Admitidos a partir de " + DateUtil.formataDiaMesAno(dataReferencia);
+			reportTitle = "Acompanhamento do Período de Experiência";
+			
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
+		}
+		catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			prepareCartoesAcompanhamentoPeriodoExperiencia();
 			return Action.INPUT;
 		}
 		
@@ -502,5 +543,33 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public void setConsiderarAutoAvaliacao(boolean considerarAutoAvaliacao) {
 		this.considerarAutoAvaliacao = considerarAutoAvaliacao;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
+	}
+
+	public Collection<Estabelecimento> getEstabelecimentos() {
+		return estabelecimentos;
+	}
+
+	public void setEstabelecimentos(Collection<Estabelecimento> estabelecimentos) {
+		this.estabelecimentos = estabelecimentos;
+	}
+
+	public String getObservacoes() {
+		return observacoes;
+	}
+
+	public void setObservacoes(String observacoes) {
+		this.observacoes = observacoes;
+	}
+
+	public Collection<CartaoAcompanhamentoExperienciaVO> getCartoesAcompanhamentoExperienciaVOs() {
+		return cartoesAcompanhamentoExperienciaVOs;
 	}
 }

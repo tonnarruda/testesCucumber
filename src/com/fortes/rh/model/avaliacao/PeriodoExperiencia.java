@@ -1,11 +1,13 @@
 package com.fortes.rh.model.avaliacao;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
@@ -20,6 +22,9 @@ public class PeriodoExperiencia extends AbstractModel implements Serializable
 	private String descricao;
 	@ManyToOne
 	private Empresa empresa;
+	
+	@Transient
+	private Date dataFim;
 
 	public PeriodoExperiencia() {
 	}
@@ -67,5 +72,13 @@ public class PeriodoExperiencia extends AbstractModel implements Serializable
 			return dias + " - " + descricao ;
 		
 		return dias.toString();
+	}
+
+	public Date getDataFim() {
+		return dataFim;
+	}
+
+	public void setDataFim(Date dataFim) {
+		this.dataFim = dataFim;
 	}
 }

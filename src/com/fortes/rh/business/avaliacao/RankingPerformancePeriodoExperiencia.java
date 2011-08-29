@@ -50,4 +50,27 @@ public class RankingPerformancePeriodoExperiencia extends GenericManagerImpl<Per
 
 		return new ArrayList<CheckBox>();
 	}
+
+	public Collection<CheckBox> populaCheckBoxDistinctDias(Long empresaId) {
+		try
+		{
+			Collection<PeriodoExperiencia> periodos = getDao().findAllSelectDistinctDias(empresaId);
+			Collection<CheckBox> listBox = new ArrayList<CheckBox>();
+			for (PeriodoExperiencia periodo : periodos)
+			{
+				CheckBox checkBox = new CheckBox();
+				checkBox.setId(periodo.getDias().longValue());
+				checkBox.setNome(periodo.getDias() + " dias");
+				listBox.add(checkBox);
+			}
+			
+			return listBox;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return new ArrayList<CheckBox>();
+	}
 }

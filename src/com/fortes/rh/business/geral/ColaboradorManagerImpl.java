@@ -76,6 +76,7 @@ import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
@@ -85,6 +86,7 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
@@ -1978,13 +1980,49 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().findByAvaliacao(avaliacaoId);
 	}
+	
+	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao) 
+	{
+		return getDao().findByEstabelecimentoDataAdmissao(estabelecimentoId, dataAdmissao);
+	}
+	
+	public Collection<CartaoAcompanhamentoExperienciaVO> montaCartoesPeriodoExperiencia(Long[] colaboradoresIds, Long[] dias, String observacao) throws Exception 
+	{
+		Collection<Colaborador> colaboradores = getDao().findColaboradoresByIds(colaboradoresIds);
+		Collection<CartaoAcompanhamentoExperienciaVO> vos = new ArrayList<CartaoAcompanhamentoExperienciaVO>();
+		
+		if (colaboradores.isEmpty())
+			throw new Exception("Não existem dados para o filtro informado");
+		
+		Collection<PeriodoExperiencia> periodos = new ArrayList<PeriodoExperiencia>();
+		PeriodoExperiencia periodo;
+		
+		for (Colaborador colaborador : colaboradores) 
+		{
+			CartaoAcompanhamentoExperienciaVO vo = new CartaoAcompanhamentoExperienciaVO();
+			vo.setColaborador(colaborador);
+			vo.setObservacao(observacao);
+
+			periodos = new ArrayList<PeriodoExperiencia>();
+			for (Long qtdDias : dias) {
+				periodo = new PeriodoExperiencia();
+				periodo.setDias(qtdDias.intValue());
+				periodo.setDataFim(DateUtil.incrementaDias(colaborador.getDataAdmissao(), qtdDias.intValue()));
+				periodos.add(periodo);
+			}
+			
+			vo.setPeriodosExperiencias(periodos);
+			vos.add(vo);
+		}
+		
+		return vos;
+	}
 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
-	public void setUsuarioMensagemManager(
-			UsuarioMensagemManager usuarioMensagemManager) {
+	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager) {
 		this.usuarioMensagemManager = usuarioMensagemManager;
 	}
 
@@ -2000,10 +2038,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(
-			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
-
-	
 }

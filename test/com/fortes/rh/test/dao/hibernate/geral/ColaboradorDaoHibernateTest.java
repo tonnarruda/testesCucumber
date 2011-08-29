@@ -98,12 +98,6 @@ import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colaborador> {
-	private final int AREA_ORGANIZACIONAL = 1;
-	private final int CARGO = 3;
-	private final int NO_MES = 0;
-	private final int ADMITIDOS = 1;
-	private final int DEMITIDOS = 2;
-
 	private ColaboradorDao colaboradorDao;
 	private TurmaDao turmaDao;
 	private ColaboradorTurmaDao colaboradorTurmaDao;
@@ -555,7 +549,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		insereAmbiente(empresa);
 
-		Map parametros = new HashMap();
+		Map<Object, Object> parametros = new HashMap<Object, Object>();
 		parametros.put("nomeBusca", "chi");
 		parametros.put("cpfBusca", "   .   .   -  ");
 		parametros.put("empresaId", empresa.getId());
@@ -588,7 +582,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		insereAmbiente(empresa);
 
-		Map parametros = new HashMap();
+		Map<Object, Object> parametros = new HashMap<Object, Object>();
 		parametros.put("nomeBusca", "chi");
 		parametros.put("cpfBusca", "");
 		parametros.put("empresaId", empresa.getId());
@@ -3519,7 +3513,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradors.size());
 	}
 
-	 @SuppressWarnings("unchecked")
 	public void testFindComHistoricoFuturoSQL()
 	 {
 		 Cargo cargo = CargoFactory.getEntity();
@@ -3581,6 +3574,122 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		 assertEquals(4, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0).size());
 	 }
+	
+	public void testFindByEstabelecimentoDataAdmissao()
+	{
+		Estabelecimento matriz = EstabelecimentoFactory.getEntity(1L);
+		estabelecimentoDao.save(matriz);
+		Estabelecimento filial = EstabelecimentoFactory.getEntity(2L);
+		estabelecimentoDao.save(filial);
+		
+		Date hoje = DateUtil.criarDataMesAno(29, 8, 2011);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(1L, "joao", "joao", "001");
+		joao.setDataAdmissao(hoje);
+		colaboradorDao.save(joao);
+		
+		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity(1L);
+		historicoJoao.setColaborador(joao);
+		historicoJoao.setEstabelecimento(matriz);
+		historicoJoao.setData(hoje);
+		historicoColaboradorDao.save(historicoJoao);
+		
+		Colaborador pedro = ColaboradorFactory.getEntity(2L, "pedro", "pedro", "002");
+		pedro.setDataAdmissao(hoje);
+		colaboradorDao.save(pedro);
+		
+		HistoricoColaborador historicoPedro = HistoricoColaboradorFactory.getEntity(2L);
+		historicoPedro.setColaborador(pedro);
+		historicoPedro.setEstabelecimento(matriz);
+		historicoPedro.setData(hoje);
+		historicoColaboradorDao.save(historicoPedro);
+
+		Colaborador rui = ColaboradorFactory.getEntity(3L, "rui", "rui", "003");
+		rui.setDataAdmissao(hoje);
+		colaboradorDao.save(rui);
+		
+		HistoricoColaborador historicoRui = HistoricoColaboradorFactory.getEntity(3L);
+		historicoRui.setColaborador(rui);
+		historicoRui.setEstabelecimento(filial);
+		historicoRui.setData(hoje);
+		historicoColaboradorDao.save(historicoRui);
+		
+		Colaborador manoel = ColaboradorFactory.getEntity(4L, "manoel", "manoel", "004");
+		manoel.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2011));
+		colaboradorDao.save(manoel);
+		
+		HistoricoColaborador historicoManoel = HistoricoColaboradorFactory.getEntity(4L);
+		historicoManoel.setColaborador(manoel);
+		historicoManoel.setEstabelecimento(matriz);
+		historicoManoel.setData(DateUtil.criarDataMesAno(1, 1, 2011));
+		historicoColaboradorDao.save(historicoManoel);
+		
+		assertEquals(2, colaboradorDao.findByEstabelecimentoDataAdmissao(matriz.getId(), hoje).size());
+	}
+	
+	public void testFindColaboradoresByIds()
+	{
+		Estabelecimento matriz = EstabelecimentoFactory.getEntity(1L);
+		estabelecimentoDao.save(matriz);
+		Estabelecimento filial = EstabelecimentoFactory.getEntity(2L);
+		estabelecimentoDao.save(filial);
+		
+		Date hoje = DateUtil.criarDataMesAno(29, 8, 2011);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(1L, "joao", "joao", "001");
+		joao.setDataAdmissao(hoje);
+		colaboradorDao.save(joao);
+		
+		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity(1L);
+		historicoJoao.setColaborador(joao);
+		historicoJoao.setEstabelecimento(matriz);
+		historicoJoao.setData(hoje);
+		historicoJoao.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoJoao);
+		
+		Colaborador pedro = ColaboradorFactory.getEntity(2L, "pedro", "pedro", "002");
+		pedro.setDataAdmissao(hoje);
+		colaboradorDao.save(pedro);
+		
+		HistoricoColaborador historicoPedro = HistoricoColaboradorFactory.getEntity(2L);
+		historicoPedro.setColaborador(pedro);
+		historicoPedro.setEstabelecimento(matriz);
+		historicoPedro.setData(hoje);
+		historicoPedro.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoPedro);
+		
+		Colaborador rui = ColaboradorFactory.getEntity(3L, "rui", "rui", "003");
+		rui.setDataAdmissao(hoje);
+		colaboradorDao.save(rui);
+		
+		HistoricoColaborador historicoRui = HistoricoColaboradorFactory.getEntity(3L);
+		historicoRui.setColaborador(rui);
+		historicoRui.setEstabelecimento(filial);
+		historicoRui.setData(hoje);
+		historicoRui.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoRui);
+		
+		Date dataPassado = DateUtil.criarDataMesAno(1, 1, 2011);
+		
+		Colaborador manoel = ColaboradorFactory.getEntity(4L, "manoel", "manoel", "004");
+		manoel.setDataAdmissao(dataPassado);
+		colaboradorDao.save(manoel);
+		
+		HistoricoColaborador historicoManoel = HistoricoColaboradorFactory.getEntity(4L);
+		historicoManoel.setColaborador(manoel);
+		historicoManoel.setEstabelecimento(matriz);
+		historicoManoel.setData(dataPassado);
+		historicoManoel.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoManoel);
+		
+		Collection<Colaborador> colaboradores = colaboradorDao.findColaboradoresByIds(new Long[] { joao.getId(), pedro.getId(), rui.getId(), manoel.getId() }); 
+		assertEquals(4, colaboradores.size());
+		
+		Colaborador colabJoao = (Colaborador) colaboradores.toArray()[0];
+		assertEquals("joao", colabJoao.getNome());
+		assertEquals("001", colabJoao.getMatricula());
+		assertEquals(hoje, colabJoao.getDataAdmissao());
+	}
 
 	private HistoricoColaborador inicializaHistorico(Date data, Colaborador colaborador, FaixaSalarial faixaSalarial) 
 	{

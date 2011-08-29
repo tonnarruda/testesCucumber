@@ -57,6 +57,21 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperiencia.ftl</result>
 		</action>
+
+		<action name="prepareCartoesAcompanhamentoPeriodoExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareCartoesAcompanhamentoPeriodoExperiencia">
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/cartoesAcompanhamentoPeriodoDeExperiencia.ftl</result>
+		</action>
+		<action name="imprimeCartoesAcompanhamentoPeriodoExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeCartoesAcompanhamentoPeriodoExperiencia">
+		  	<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/cartoes_periodo_experiencia.jasper</param>
+				<param name="dataSource">cartoesAcompanhamentoExperienciaVOs</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">cartoesAcompPeriodoExperiencia.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/cartoesAcompanhamentoPeriodoDeExperiencia.ftl</result>
+		</action>
+		
+		
 		<action name="prepareRelatorioRankingPerformancePeriodoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioRankingPerformance">
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>

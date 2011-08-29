@@ -1,7 +1,11 @@
 package com.fortes.rh.web.dwr;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -130,14 +134,34 @@ public class ColaboradorDWR
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercialEmpresa", Colaborador.class);
     }
+
+    public Map getColaboradoresByEstabelecimentoDataAdmissao(Long estabelecimentoId, String dataAdmissao)
+    {
+    	Date data = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		try
+		{
+			data = sdf.parse(dataAdmissao);
+		} 
+		catch (ParseException e) {
+			return null;
+		}
+    	
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	
+    	colaboradores.addAll(colaboradorManager.findByEstabelecimentoDataAdmissao(estabelecimentoId, data));
+    	
+    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNome", Colaborador.class);
+    }
     
-    public Map getAvaliadores(Long avaliacaoDesempenhoId)
+    public Map<Long, String> getAvaliadores(Long avaliacaoDesempenhoId)
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	colaboradores.add(new Colaborador("Selecione...", -1L, null, null));
     	colaboradores.addAll(colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, false));
     	
-    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNome", Colaborador.class);
+    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercial", Colaborador.class);
     }
 
 	public Map find(String nome, String cpf, String matricula, Long empresaId, boolean somenteAtivos)

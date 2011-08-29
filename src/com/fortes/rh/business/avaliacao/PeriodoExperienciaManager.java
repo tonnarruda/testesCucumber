@@ -11,4 +11,5 @@ public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperie
 	Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean orderDiasDesc);
 	String findRodapeDiasDoPeriodoDeExperiencia(Collection<PeriodoExperiencia> periodoExperiencias);
 	Collection<CheckBox> populaCheckBox(Long empresaId);
+	Collection<CheckBox> populaCheckBoxDistinctDias(Long empresaId);
 }

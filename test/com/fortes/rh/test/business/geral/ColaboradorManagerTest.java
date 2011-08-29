@@ -1154,6 +1154,34 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	assertNotNull(colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(1L, true, null));
     }
     
+    public void testFindByEstabelecimentoDataAdmissao()
+    {
+    	Estabelecimento matriz = EstabelecimentoFactory.getEntity(1L);
+		Date hoje = DateUtil.criarDataMesAno(29, 8, 2011);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(1L, "joao", "joao", "001");
+		joao.setDataAdmissao(hoje);
+		
+		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity(1L);
+		historicoJoao.setColaborador(joao);
+		historicoJoao.setEstabelecimento(matriz);
+		historicoJoao.setData(hoje);
+		
+		Colaborador pedro = ColaboradorFactory.getEntity(2L, "pedro", "pedro", "002");
+		pedro.setDataAdmissao(hoje);
+		
+		HistoricoColaborador historicoPedro = HistoricoColaboradorFactory.getEntity(2L);
+		historicoPedro.setColaborador(pedro);
+		historicoPedro.setEstabelecimento(matriz);
+		historicoPedro.setData(hoje);
+		
+		Collection<Colaborador> colaboradores = Arrays.asList(joao, pedro);
+		
+		colaboradorDao.expects(once()).method("findByEstabelecimentoDataAdmissao").with(eq(matriz.getId()), eq(hoje)).will(returnValue(colaboradores));
+		
+		assertEquals(2, colaboradorManager.findByEstabelecimentoDataAdmissao(matriz.getId(), hoje).size());
+    }
+    
   //TODO remprot
 //    public void testValidaQtdCadastros()
 //    {

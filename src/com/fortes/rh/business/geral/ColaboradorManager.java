@@ -26,14 +26,13 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
-import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.web.tags.CheckBox;
 
-@SuppressWarnings("unchecked")
 public interface ColaboradorManager extends GenericManager<Colaborador>
 {
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
@@ -157,4 +156,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador removeColaboradorDependencias(Colaborador colaborador);
 	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC);
 	public void enviaEmailAniversariantes() throws Exception;
+	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao);
+	public Collection<CartaoAcompanhamentoExperienciaVO> montaCartoesPeriodoExperiencia(Long[] colaboradoresIds, Long[] dias, String observacao) throws Exception;
 }

@@ -242,6 +242,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 	{
 		Empresa empresaConfigurada = EmpresaFactory.getEmpresa();
 		empresaConfigurada.setEnviarEmailAniversariante(true);
+		empresaConfigurada.setImgAniversarianteUrl("backgroundAniv.jpg");
 		empresaDao.save(empresaConfigurada);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
