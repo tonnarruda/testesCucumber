@@ -42,6 +42,7 @@
 	<parameter name="exibirFormacao" isForPrompting="false" class="java.lang.Boolean"/>
 	<parameter name="exibirIdioma" isForPrompting="false" class="java.lang.Boolean"/>
 	<parameter name="exibirExamePalografico" isForPrompting="false" class="java.lang.Boolean"/>
+	<parameter name="exibirTextoOCR" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="candidato.nome" class="java.lang.String"/>
 	<field name="candidato.colocacaoDic" class="java.lang.String"/>
@@ -99,6 +100,7 @@
 	<field name="candidato.contato.nomeContato" class="java.lang.String"/>
 	<field name="candidato.examePalografico" class="java.lang.String"/>
 	<field name="candidato.resultadoExamePalografico" class="java.lang.String"/>
+	<field name="candidato.ocrTexto" class="java.lang.String"/>
 
 
 		<group  name="formacaoSocioEconomicaGroup" >
@@ -762,6 +764,59 @@
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{candidato.resultadoExamePalografico}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="grpTextoOCR" >
+			<groupExpression><![CDATA[$F{candidato.ocrTexto}]]></groupExpression>
+			<groupHeader>
+			<band height="37"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{exibirTextoOCR}]]></printWhenExpression>
+				<staticText>
+					<reportElement
+						x="0"
+						y="1"
+						width="535"
+						height="15"
+						key="staticText-66"/>
+					<box topBorder="1Point" topBorderColor="#000000" leftBorder="1Point" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[TEXTO DIGITALIZADO]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="16"
+						width="535"
+						height="18"
+						key="textField-48"
+						stretchType="RelativeToTallestObject"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="1Point" leftBorderColor="#000000" leftPadding="5" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{candidato.ocrTexto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="34"
+						width="535"
+						height="2"
+						key="textField-49"
+						stretchType="RelativeToTallestObject"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="1Point" leftBorderColor="#000000" leftPadding="5" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>

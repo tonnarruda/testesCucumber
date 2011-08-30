@@ -1,0 +1,1 @@
+alter table configuracaoimpressaocurriculo add column exibirTextoOCR boolean default false;--.go

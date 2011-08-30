@@ -63,6 +63,11 @@
 				document.getElementById('aba' + i).style.background  = id == i ? "#FFF" : "#CCC";
 				document.getElementById('aba' + i).style.borderBottom = id == i ? "1px solid #FFF" : "1px solid #7E9DB9";
 			}
+			
+			if(id==1)
+				$('.btnImprimirPdfB').show();
+			else
+				$('.btnImprimirPdfB').hide();
 		}
 
 		function popUp(caminho)
@@ -182,6 +187,7 @@
 						<@ww.checkbox label="Informações Adicionais" name="configuracaoImpressaoCurriculo.exibirInformacao" labelPosition="left"/>
 						<@ww.checkbox label="Observações do RH" name="configuracaoImpressaoCurriculo.exibirObservacao" labelPosition="left"/>
 						<@ww.checkbox label="Histórico" name="configuracaoImpressaoCurriculo.exibirHistorico" labelPosition="left"/>
+						<@ww.checkbox label="Texto Digitalizado" name="configuracaoImpressaoCurriculo.exibirTextoOCR" labelPosition="left"/>
 						<!--<@ww.checkbox label="Exame Palográfico" name="configuracaoImpressaoCurriculo.exibirExamePalografico" labelPosition="left"/>-->
 			
 						<br>
@@ -197,6 +203,8 @@
 				</fieldset>
 			</li>
 			
+			
+			
 			<@ww.hidden name="configuracaoImpressaoCurriculo.id" />
 			<@ww.hidden name="candidato.id" />
 		</@ww.form>
@@ -205,14 +213,16 @@
 			<button onclick="closebox();document.form.submit();" class="btnImprimirPdf"></button>
 			<button onclick="closebox();" class="btnCancelar"></button>
 		</div>
-	</div>
+	
+		</div>
 		<br>
-		<#--p><input type="checkbox" name="imprimirHC" id="impHC" /> <label for="impHC">Imprimir Histórico</label></p>
-		<p><input type="checkbox" name="imprimirAS" id="impAS" /> <label for="impAS">Imprimir Assinatura</label></p-->
-		<button class="btnImprimirPdfB" onclick="openbox('Configurar Impressão', '');" ></button>
+			<#--p><input type="checkbox" name="imprimirHC" id="impHC" /> <label for="impHC">Imprimir HistÃ³rico</label></p>
+			<p><input type="checkbox" name="imprimirAS" id="impAS" /> <label for="impAS">Imprimir Assinatura</label></p-->
+			<button class="btnImprimirPdfB" onclick="openbox('Configurar ImpressÃ£o', '');" ></button>
 		<br>
 	</div>
 	
+		
 	<style>
 	/* Coisas do Gogs */
 	#content1 th,

@@ -633,6 +633,9 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String imprimirCurriculo() throws Exception
 	{
+		if(configuracaoImpressaoCurriculo == null)
+			configuracaoImpressaoCurriculo = new ConfiguracaoImpressaoCurriculo();
+		
 		configuracaoImpressaoCurriculo.setUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
 		configuracaoImpressaoCurriculo.setEmpresa(getEmpresaSistema());
 		configuracaoImpressaoCurriculoManager.saveOrUpdate(configuracaoImpressaoCurriculo);
