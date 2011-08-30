@@ -9,7 +9,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
-import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
 import com.fortes.rh.util.CollectionUtil;
@@ -29,31 +28,28 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 		return historicoAmbiente;
 	}
 	
-	public void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, String[] epcEficazChecks, String[] epcCheck) throws Exception 
+	public void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception 
 	{
-		CollectionUtil<Risco> util = new CollectionUtil<Risco>();
-		Collection<Risco> riscosMarcados = util.convertArrayStringToCollection(Risco.class, riscoChecks);
+		Long[] riscosMarcados = LongUtil.arrayStringToArrayLong(riscoChecks);
 		Collection<Epc> epcs = new CollectionUtil<Epc>().convertArrayStringToCollection(Epc.class, epcCheck);
 		
 		riscoAmbienteManager.removeByHistoricoAmbiente(historicoAmbiente.getId());
 		
-		Collection<RiscoAmbiente> riscoAmbientes = new ArrayList<RiscoAmbiente>(riscosMarcados.size());
+		Collection<RiscoAmbiente> riscoAmbientesSelecionados = new ArrayList<RiscoAmbiente>();
 		
-		for (Risco risco : riscosMarcados)
+		for (Long riscoId : riscosMarcados)
 		{
-			RiscoAmbiente riscoAmbiente = new RiscoAmbiente();
-			riscoAmbiente.setHistoricoAmbiente(historicoAmbiente);
-			riscoAmbiente.setRisco(risco);
-			
-			for (Long idRiscoComEpcEficaz : LongUtil.arrayStringToArrayLong(epcEficazChecks))
+			for (RiscoAmbiente riscoAmbiente : riscosAmbientes)
 			{
-				if (idRiscoComEpcEficaz.equals(risco.getId()))
-					riscoAmbiente.setEpcEficaz(true);
+				if (riscoAmbiente.getRisco() != null && riscoId.equals(riscoAmbiente.getRisco().getId()))
+				{
+					riscoAmbiente.setHistoricoAmbiente(historicoAmbiente);
+					riscoAmbientesSelecionados.add(riscoAmbiente);
+				}
 			}
-			riscoAmbientes.add(riscoAmbiente);
 		}
 		
-		historicoAmbiente.setRiscoAmbientes(riscoAmbientes);
+		historicoAmbiente.setRiscoAmbientes(riscoAmbientesSelecionados);
 		historicoAmbiente.setEpcs(epcs);
 		
 		if (historicoAmbiente.getId() == null)

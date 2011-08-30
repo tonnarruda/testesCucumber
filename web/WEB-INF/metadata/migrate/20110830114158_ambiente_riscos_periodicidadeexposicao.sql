@@ -1,0 +1,1 @@
+alter table riscoambiente add column periodicidadeexposicao character(1);--.go

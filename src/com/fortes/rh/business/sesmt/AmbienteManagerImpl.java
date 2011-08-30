@@ -18,6 +18,7 @@ import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.model.sesmt.relatorio.Ltcat;
 import com.fortes.rh.model.sesmt.relatorio.Ppra;
@@ -113,12 +114,12 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return getDao().findAmbientes(page, pagingSize, empresaId);
 	}
 
-	public void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, String[] epcEficazChecks, String[] epcCheck) throws Exception
+	public void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception
 	{
 		save(ambiente);
 
 		historicoAmbiente.setAmbiente(ambiente);
-		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, epcEficazChecks, epcCheck);
+		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 	}
 	
 	public void removeCascade(Long id) throws Exception 

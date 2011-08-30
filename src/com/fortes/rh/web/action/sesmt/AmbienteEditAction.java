@@ -13,6 +13,7 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -36,6 +37,7 @@ public class AmbienteEditAction extends MyActionSupportList
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<Epc> epcs;
 	private Collection<Risco> riscos;
+	private Collection<RiscoAmbiente> riscosAmbientes;
 
 	private Collection<CheckBox> epcCheckList = new ArrayList<CheckBox>();
 	private String[] epcCheck;
@@ -56,6 +58,17 @@ public class AmbienteEditAction extends MyActionSupportList
 	public String prepareInsert() throws Exception
 	{
 		riscos = riscoManager.findAllSelect(getEmpresaSistema().getId());
+		riscosAmbientes = new ArrayList<RiscoAmbiente>();
+		if (riscos != null)
+		{
+			RiscoAmbiente riscoAmbiente;
+			for (Risco risco : riscos) {
+				riscoAmbiente = new RiscoAmbiente();
+				riscoAmbiente.setRisco(risco);
+				riscosAmbientes.add(riscoAmbiente);
+			}
+		}
+		
 		epcs = epcManager.findAllSelect(getEmpresaSistema().getId());
 		epcCheckList = epcManager.populaCheckBox(getEmpresaSistema().getId());
 		
@@ -82,7 +95,7 @@ public class AmbienteEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		ambiente.setEmpresa(getEmpresaSistema());
-		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, epcEficazChecks, epcCheck);
+		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 
 		return Action.SUCCESS;
 	}
@@ -234,5 +247,13 @@ public class AmbienteEditAction extends MyActionSupportList
 
 	public Collection<Ambiente> getAmbientes() {
 		return ambientes;
+	}
+
+	public Collection<RiscoAmbiente> getRiscosAmbientes() {
+		return riscosAmbientes;
+	}
+
+	public void setRiscosAmbientes(Collection<RiscoAmbiente> riscosAmbientes) {
+		this.riscosAmbientes = riscosAmbientes;
 	}
 }

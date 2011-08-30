@@ -25,56 +25,32 @@
 	</#if>
 	
 	<script type="text/javascript">
-	
-		function desabilitaEpcEficaz(elementoCheck)
-		{
-			elemEpcEficaz = document.getElementById("epcEficazId" + elementoCheck.value);
+		$(function() {
+			<#if historicoAmbiente?exists && historicoAmbiente.riscoAmbientes?exists>
+				<#list historicoAmbiente.riscoAmbientes as riscoAmbiente>
+					$('#check' + ${riscoAmbiente.risco.id}).attr('checked', true).parent().parent().find('input, select').attr('disabled', false);
+					<#if riscoAmbiente.periodicidadeExposicao?exists>
+						$('#perExposicao' + ${riscoAmbiente.risco.id}).val('${riscoAmbiente.periodicidadeExposicao}');
+					</#if>
+					<#if riscoAmbiente.epcEficaz>
+						$('#epcEficaz' + ${riscoAmbiente.risco.id}).attr('checked', true);
+					</#if>
+				</#list>
+			</#if>
 			
-			elemEpcEficaz.disabled = !elementoCheck.checked;
-			if (!elementoCheck.checked)
-			{
-				elemEpcEficaz.checked = "";
-			}
-		}
-		
-		function marcarDesmarcar(mdCheck)
-		{
-			var vMarcar;
+			$('#md').click(function() {
+				var checked = $(this).attr('checked');
+				$('input[name="riscoChecks"]').each(function() { $(this).attr('checked', checked); habilitarDesabilitarCamposLinha(this); });
+			});
 			
-			if (mdCheck.checked)
-			{
-				vMarcar = true;
-			}
-			else
-			{
-				vMarcar = false;
-			}
-
-			for (var i = 0; i < document.form.elements.length; i++)
-			{
-				var elementForm = document.form.elements[i];
-				if ((elementForm != null) && (elementForm.type == 'checkbox') && (elementForm.id != 'md') && (elementForm.name != 'epcCheck') && (elementForm.name != 'epcEficazChecks') )
-				{
-					elementForm.checked = vMarcar;
-					desabilitaEpcEficaz(elementForm);
-				}
-			}
-		}
+			$('input[name="riscoChecks"]').click(function() {
+				habilitarDesabilitarCamposLinha(this);
+			});
+		});
 		
-		function popularRiscos()
+		function habilitarDesabilitarCamposLinha(campoRisco)
 		{
-		<#if historicoAmbiente?exists && historicoAmbiente.riscoAmbientes?exists>
-			<#list historicoAmbiente.riscoAmbientes as riscoAmbiente>
-				riscoId = ${riscoAmbiente.risco.id};
-				elementoCheck = document.getElementById("check"+riscoId);
-				elementoCheck.checked = true;
-				desabilitaEpcEficaz(elementoCheck);
-				<#if riscoAmbiente.epcEficaz>
-				elementoCheck = document.getElementById("epcEficazId"+riscoId);
-				elementoCheck.checked = true;
-				</#if>
-			</#list>
-		</#if>
+			$(campoRisco).parent().parent().find('input, select').not(campoRisco).attr('disabled', !campoRisco.checked);
 		}
 	</script>
 </head>
@@ -89,22 +65,29 @@
 		<@frt.checkListBox label="EPCs existentes no Ambiente" name="epcCheck" list="epcCheckList" />
 		
 		Riscos existentes:<br>
-		<@display.table name="riscos" id="risco" class="dados" style="width:500px;border:none;">
-			<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(this);' />" style="width: 30px; text-align: center;">
-				<input type="checkbox" onclick="desabilitaEpcEficaz(this);" id="check${risco.id}" value="${risco.id}" name="riscoChecks" />
+		<#assign i = 0/>
+		<@display.table name="riscosAmbientes" id="riscoAmbiente" class="dados" style="width:500px;border:none;">
+			<@display.column title="<input type='checkbox' id='md'/>" style="width: 30px; text-align: center;">
+				<input type="checkbox" id="check${riscoAmbiente.risco.id}" value="${riscoAmbiente.risco.id}" name="riscoChecks" />
 			</@display.column>
-			<@display.column property="descricao" title="Risco" style="width: 240px;"/>
-			<@display.column property="descricaoGrupoRisco" title="Tipo" style="width: 240px;"/>
+			<@display.column property="risco.descricao" title="Risco" style="width: 240px;"/>
+			<@display.column property="risco.descricaoGrupoRisco" title="Tipo" style="width: 240px;"/>
 			<@display.column title="EPI Eficaz" style="width: 140px;text-align:center;">
-				<#if risco.epiEficaz == true> 
-				Sim
+				<#if riscoAmbiente.risco.epiEficaz == true> 
+					Sim
 				<#else>
-				NA 
+					NA 
 				</#if>
 			</@display.column>
-			<@display.column title="EPC Eficaz" style="width: 140px;text-align:center;">
-				<input type="checkbox" onclick="" id="epcEficazId${risco.id}" value="${risco.id}" name="epcEficazChecks" />
+			<@display.column title="Periodicidade" style="text-align:center;">
+				<@ww.select name="riscosAmbientes[${i}].periodicidadeExposicao" id="perExposicao${riscoAmbiente.risco.id}" headerKey="" headerValue="Selecione" list=r"#{'C':'Contínua','I':'Intermitente','E':'Eventual'}" disabled="true"/>
 			</@display.column>
+			<@display.column title="EPC Eficaz" style="width: 140px;text-align:center;">
+				<@ww.checkbox id="epcEficaz${riscoAmbiente.risco.id}" name="riscosAmbientes[${i}].epcEficaz" disabled="true"/>
+				<@ww.hidden name="riscosAmbientes[${i}].risco.id"/>
+			</@display.column>
+			
+			<#assign i = i + 1/>
 		</@display.table>
 
 		<@ww.hidden name="historicoAmbiente.id" />
@@ -116,9 +99,5 @@
 		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>
 		<button onclick="window.location='../ambiente/prepareUpdate.action?ambiente.id=${ambiente.id}'" class="btnCancelar" accesskey="V"></button>
 	</div>
-	<script>
-		marcarDesmarcar(document.form.md);
-		popularRiscos();
-	</script>
 </body>
 </html>

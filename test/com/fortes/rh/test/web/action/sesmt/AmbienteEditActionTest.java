@@ -17,8 +17,10 @@ import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.sesmt.AmbienteEditAction;
 import com.fortes.web.tags.CheckBox;
@@ -116,13 +118,13 @@ public class AmbienteEditActionTest extends MockObjectTestCase
 		action.setHistoricoAmbiente(historicoAmbiente);
 
 		String[] riscoChecks = new String[]{"822", "823"};
-		String[] epcEficazChecks = new String[]{"822"};
 		String[] epcCheck = new String[]{"100"};
+		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 		action.setRiscoChecks(riscoChecks);
-		action.setEpcEficazChecks(epcEficazChecks);
+		action.setRiscosAmbientes(riscosAmbientes);
 		action.setEpcCheck(epcCheck);
 		
-		manager.expects(once()).method("saveAmbienteHistorico").with(new Constraint[]{eq(ambiente), eq(historicoAmbiente), eq(riscoChecks), eq(epcEficazChecks), eq(epcCheck)});
+		manager.expects(once()).method("saveAmbienteHistorico").with(new Constraint[]{eq(ambiente), eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck)});
 
     	assertEquals("success", action.insert());
     	assertEquals(action.getAmbiente().getEmpresa(), action.getEmpresaSistema());

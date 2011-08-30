@@ -16,6 +16,7 @@ import com.fortes.model.AbstractModel;
 public class RiscoAmbiente extends AbstractModel implements Serializable
 {
 	private boolean epcEficaz;
+	private Character periodicidadeExposicao;
 	
 	@ManyToOne
 	private HistoricoAmbiente historicoAmbiente;
@@ -76,5 +77,13 @@ public class RiscoAmbiente extends AbstractModel implements Serializable
 
 	public void setRisco(Risco risco) {
 		this.risco = risco;
+	}
+
+	public Character getPeriodicidadeExposicao() {
+		return periodicidadeExposicao;
+	}
+
+	public void setPeriodicidadeExposicao(Character periodicidadeExposicao) {
+		this.periodicidadeExposicao = periodicidadeExposicao;
 	}
 }

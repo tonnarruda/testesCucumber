@@ -7,7 +7,6 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -47,24 +46,31 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 
 	public HistoricoAmbiente findUltimoHistorico(Long ambienteId) 
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "historico");
+		StringBuilder hql = new StringBuilder("from HistoricoAmbiente ha ");
+		hql.append("where ha.ambiente.id = :ambienteId ");
+		hql.append("and ha.data >= (select max(ha2.data) from HistoricoAmbiente ha2 where ha2.ambiente.id = :ambienteId) ");
+		hql.append("order by ha.data ");
 		
-		criteria.add(Expression.eq("historico.ambiente.id", ambienteId));
-		criteria.addOrder(Order.desc("historico.data"));
-		criteria.setMaxResults(1);
-		return (HistoricoAmbiente)criteria.uniqueResult();
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("ambienteId", ambienteId);
+		
+		query.setMaxResults(1);
+		return (HistoricoAmbiente)query.uniqueResult();
 	}
 	
 	public HistoricoAmbiente findUltimoHistoricoAteData(Long ambienteId, Date dataMaxima)
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "historico");
+		StringBuilder hql = new StringBuilder("from HistoricoAmbiente ha ");
+		hql.append("where ha.ambiente.id = :ambienteId ");
+		hql.append("and ha.data >= (select max(ha2.data) from HistoricoAmbiente ha2 where ha2.ambiente.id = :ambienteId and ha2.data <= :dataMaxima) ");
+		hql.append("order by ha.data ");
 		
-		criteria.add(Expression.eq("historico.ambiente.id", ambienteId));
-		criteria.add(Expression.le("historico.data", dataMaxima));
-		criteria.addOrder(Order.desc("historico.data"));
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("ambienteId", ambienteId);
+		query.setDate("dataMaxima", dataMaxima);
 		
-		criteria.setMaxResults(1);
-		return (HistoricoAmbiente)criteria.uniqueResult();
+		query.setMaxResults(1);
+		return (HistoricoAmbiente)query.uniqueResult();
 	}
 
 	public List<DadosAmbienteRisco> findDadosNoPeriodo(Long ambienteId, Date dataIni, Date dataFim) 

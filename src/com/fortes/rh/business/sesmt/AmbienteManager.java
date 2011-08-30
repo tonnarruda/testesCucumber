@@ -8,6 +8,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.relatorio.PpraLtcatRelatorio;
 import com.fortes.web.tags.CheckBox;
 
@@ -16,7 +17,7 @@ public interface AmbienteManager extends GenericManager<Ambiente>
 	Integer getCount(Long empresaId);
 	Collection<Ambiente> findAmbientes(Long empresaId);
 	Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId);
-	void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, String[] epcEficazChecks, String[] epcCheck) throws Exception;
+	void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception;
 	Collection<Ambiente> findByEstabelecimento(Long estabelecimentoId);
 	Collection<Ambiente> findByEmpresa(Long empresaId);
 	Collection<CheckBox> getAmbientes(Empresa empresa) throws Exception;

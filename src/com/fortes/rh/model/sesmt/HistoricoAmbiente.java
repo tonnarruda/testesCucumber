@@ -48,6 +48,14 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 	public HistoricoAmbiente()
 	{	}
 
+	public HistoricoAmbiente(String descricao, Date data, Date dataInativo, String tempoExposicao) 
+	{ 
+		this.descricao = descricao;
+		this.data = data;
+		this.dataInativo = dataInativo;
+		this.tempoExposicao = tempoExposicao;
+	}
+
 	public HistoricoAmbiente(String descricao, String ambienteNome)
 	{
 		this.descricao = descricao;

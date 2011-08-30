@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -13,8 +14,10 @@ import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.web.action.sesmt.HistoricoAmbienteEditAction;
 
 public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
@@ -96,15 +99,15 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
     	historicoAmbiente.setId(1L);
     	
     	String[] riscoChecks = new String[]{"822", "823"};
-		String[] epcEficazChecks = new String[]{"822"};
 		String[] epcCheck = new String[]{"100"};
+		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 		action.setRiscoChecks(riscoChecks);
-		action.setEpcEficazChecks(epcEficazChecks);
+		action.setRiscosAmbientes(riscosAmbientes);
 		action.setEpcCheck(epcCheck);
 
     	action.setHistoricoAmbiente(historicoAmbiente);
     	
-    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(epcEficazChecks), eq(epcCheck)});
+    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck)});
     	assertEquals(action.insert(), "success");
     }
 
@@ -114,14 +117,14 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
     	historicoAmbiente.setId(1L);
     	
     	String[] riscoChecks = new String[]{"822", "823"};
-		String[] epcEficazChecks = new String[]{"822"};
 		String[] epcCheck = new String[]{"100"};
+		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 		action.setRiscoChecks(riscoChecks);
-		action.setEpcEficazChecks(epcEficazChecks);
+		action.setRiscosAmbientes(riscosAmbientes);
 		action.setEpcCheck(epcCheck);
 
     	action.setHistoricoAmbiente(historicoAmbiente);
-    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(epcEficazChecks), eq(epcCheck)});
+    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck)});
     	assertEquals(action.update(), "success");
     }
     

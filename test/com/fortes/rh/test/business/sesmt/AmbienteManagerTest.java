@@ -25,12 +25,14 @@ import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.model.sesmt.relatorio.PpraLtcatCabecalho;
 import com.fortes.rh.model.sesmt.relatorio.PpraLtcatRelatorio;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
 
@@ -119,13 +121,14 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		ambiente.setId(1L);
 		
 		String[] riscoChecks = new String[]{"822", "823"};
-		String[] epcEficazChecks = new String[]{"822"};
 		String[] epcCheck = new String[]{"100"};
+		
+		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 
 		ambienteDao.expects(atLeastOnce()).method("save").will(returnValue(ambiente));
-		historicoAmbienteManager.expects(atLeastOnce()).method("save").with(eq(historicoAmbiente),eq(riscoChecks),eq(epcEficazChecks),eq(epcCheck)).isVoid();
+		historicoAmbienteManager.expects(atLeastOnce()).method("save").with(eq(historicoAmbiente),eq(riscoChecks),eq(riscosAmbientes),eq(epcCheck)).isVoid();
 
-		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, epcEficazChecks, epcCheck);
+		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 		
 		assertEquals(Long.valueOf(1L), ambiente.getId());
 	}

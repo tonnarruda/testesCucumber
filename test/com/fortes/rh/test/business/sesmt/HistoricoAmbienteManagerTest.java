@@ -12,6 +12,7 @@ import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
+import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 
 public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 {
@@ -36,8 +37,9 @@ public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 		historicoAmbiente.setDescricao("Histórico do ambiente");
 		
 		String[] riscoChecks = new String[]{"822", "823"};
-		String[] epcEficazChecks = new String[]{"822"};
 		String[] epcCheck = new String[]{"100"};
+		
+		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 		
 		riscoAmbienteManager.expects(once()).method("removeByHistoricoAmbiente").with(ANYTHING).will(returnValue(true));
 		historicoAmbienteDao.expects(once()).method("save");
@@ -46,7 +48,7 @@ public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 		
 		try 
 		{
-			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, epcEficazChecks, epcCheck);
+			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 		} 
 		catch (Exception e)  { exception = e; }	
 		
@@ -61,8 +63,9 @@ public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 		historicoAmbiente.setDescricao("Histórico do ambiente");
 		
 		String[] riscoChecks = new String[]{"822", "823"};
-		String[] epcEficazChecks = new String[]{"822"};
 		String[] epcCheck = new String[]{"100"};
+		
+		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 		
 		riscoAmbienteManager.expects(once()).method("removeByHistoricoAmbiente").with(eq(historicoAmbiente.getId())).will(returnValue(true));
 		historicoAmbienteDao.expects(once()).method("update");
@@ -71,7 +74,7 @@ public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 		
 		try 
 		{
-			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, epcEficazChecks, epcCheck);
+			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 		} 
 		catch (Exception e) { exception = e; }
 		

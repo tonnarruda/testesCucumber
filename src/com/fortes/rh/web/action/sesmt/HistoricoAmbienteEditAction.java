@@ -10,6 +10,7 @@ import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
@@ -28,6 +29,7 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	private Ambiente ambiente;
 	
 	private Collection<Risco> riscos;
+	private Collection<RiscoAmbiente> riscosAmbientes;
 	
 	private Collection<CheckBox> epcCheckList = new ArrayList<CheckBox>();
 	private String[] epcCheck;
@@ -39,6 +41,16 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	private void prepare() throws Exception
 	{
 		riscos = riscoManager.findAllSelect(getEmpresaSistema().getId());
+		riscosAmbientes = new ArrayList<RiscoAmbiente>();
+		if (riscos != null)
+		{
+			RiscoAmbiente riscoAmbiente;
+			for (Risco risco : riscos) {
+				riscoAmbiente = new RiscoAmbiente();
+				riscoAmbiente.setRisco(risco);
+				riscosAmbientes.add(riscoAmbiente);
+			}
+		}
 		
 		if(historicoAmbiente != null && historicoAmbiente.getId() != null)
 			historicoAmbiente = historicoAmbienteManager.findById(historicoAmbiente.getId());
@@ -84,14 +96,14 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	public String insert() throws Exception
 	{
 		historicoAmbiente.setAmbiente(ambiente);
-		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, epcEficazChecks, epcCheck);
+		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 		
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, epcEficazChecks, epcCheck);
+		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 		return Action.SUCCESS;
 	}
 	
@@ -176,5 +188,13 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	public void setAmbienteManager(AmbienteManager ambienteManager)
 	{
 		this.ambienteManager = ambienteManager;
+	}
+
+	public Collection<RiscoAmbiente> getRiscosAmbientes() {
+		return riscosAmbientes;
+	}
+
+	public void setRiscosAmbientes(Collection<RiscoAmbiente> riscosAmbientes) {
+		this.riscosAmbientes = riscosAmbientes;
 	}
 }

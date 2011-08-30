@@ -6,11 +6,12 @@ import java.util.List;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
 
 public interface HistoricoAmbienteManager extends GenericManager<HistoricoAmbiente>
 {
-	void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, String[] epcEficazChecks, String[] epcCheck) throws Exception;
+	void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception;
 	boolean removeByAmbiente(Long ambienteId);
 	Collection<HistoricoAmbiente> findByAmbiente(Long ambienteId);
 	void removeCascade(Long id);
