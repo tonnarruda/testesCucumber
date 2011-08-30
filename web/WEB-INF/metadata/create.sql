@@ -67,7 +67,10 @@ CREATE TABLE empresa (
 	emailCandidatoNaoApto boolean,
 	mailnaoaptos text,
 	exame_id bigint,
-	emailresplimitecontrato character varying(120) default ''
+	emailresplimitecontrato character varying(120) default '',
+	mgAniversarianteUrl varchar(200),
+	mensagemCartaoAniversariante varchar(300),
+	enviarEmailAniversariante boolean default false
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);

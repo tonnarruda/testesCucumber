@@ -18082,3 +18082,13 @@ insert into migrations values('20110817170136');--.go
 insert into migrations values('20110817170825');--.go
 
 update parametrosdosistema set appversao = '1.1.53.45';--.go
+
+-- versao 1.1.54.46
+alter table empresa add column ImgAniversarianteUrl varchar(200);--.go
+alter table empresa add column mensagemCartaoAniversariante varchar(300);--.go
+alter table empresa add column enviarEmailAniversariante boolean default false;--.go
+
+insert into migrations values('20110824140640');--.go
+insert into migrations values('20110825141502');--.go
+
+update parametrosdosistema set appversao = '1.1.54.46';--.go

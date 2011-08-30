@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.54.46" data="30/08/2011">
+		- Aval. Desempenho > Movimentações > Avaliações Desempenho > Resultado da Avaliação > Resultado por Critérios > Agrupar perguntas por aspecto: Exibição no relatório o percentual da performance por Aspecto.
+		- Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Adicionadas Experiências Profissionais do colaborador para pesquisas.
+		- Info. Funcionais > Cadastro > Colaboradores > Incluir em Solicitação: Ao transferir Colaborador para vaga o mesmo é direcionado para vaga em aberto.
+		- Info. Funcionais > Painel de Indicadores: Novo filtro por Empresa e Áreas Organizacionais.
+		- Utilitários > Cadastros > Empresas: Apagar empresas com o usuário Fortes.
+		- Utilitários > Cadastros > Empresas: Cartão dos Aniversariantes.
+	</Versao>
 	<Versao id="1.1.53.45" data="19/08/2011">
 		- CeS > Cadastros > Níveis de Competência.
 		- CeS > Cadastros > Cargos > Faixas Salariais > Níveis de Competência > Nova funcionalidade, configuração das Competências da Faixa Salarial.

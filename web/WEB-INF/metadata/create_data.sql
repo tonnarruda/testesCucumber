@@ -7,7 +7,7 @@ alter sequence usuario_sequence restart with 2;
 INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acsenha) VALUES (1,'001','AC Padrão','http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal','ADMIN','');
 alter sequence grupoac_sequence restart with 2;
 
-INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,grupoac, campoextracolaborador, mensagemmoduloexterno) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'001',false, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.');
+INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,grupoac, campoextracolaborador, mensagemmoduloexterno, imgAniversarianteUrl, mensagemCartaoAniversariante, enviarEmailAniversariante) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'001',false, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', 'cartao_aniversario.jpg', 'Parabens #NOMECOLABORADOR#', false);
 alter sequence empresa_sequence restart with 2;
 
 insert into exame (id, nome, periodicidade, periodico, empresa_id) values (1, 'ASO', 0, false, 1);
@@ -21042,7 +21042,7 @@ insert into cid (codigo, descricao) values ('U99','ID 10ª Revisão não dispon�
 insert into comoFicouSabendoVaga (id, nome) values (1, 'Outro');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.53.45', '', '25', false,false, 2, '1.0.1.44', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.54.46', '', '25', false,false, 2, '1.0.1.44', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'
@@ -21067,3 +21067,5 @@ insert into migrations values('20110811092316');--.go
 insert into migrations values('20110817092248');--.go
 insert into migrations values('20110817170136');--.go
 insert into migrations values('20110817170825');--.go
+insert into migrations values('20110824140640');--.go
+insert into migrations values('20110825141502');--.go

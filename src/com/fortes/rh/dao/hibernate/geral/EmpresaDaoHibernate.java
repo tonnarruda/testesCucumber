@@ -307,9 +307,6 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		return criteria.list();
 	}
 	
-	
-	
-	
 	private String executaTrigger(String acao) 
 	{
 		String execTrigger = "select alter_trigger(table_name, '" + acao + "') FROM information_schema.constraint_column_usage " +

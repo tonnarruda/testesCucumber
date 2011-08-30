@@ -4,7 +4,7 @@ require 'term/ansicolor'
 include Term::ANSIColor
 
 def exec_sql sql
-	begin
+  begin
     conn = PGconn.connect( :dbname => "fortesrh", :user => "postgres")
     conn.exec(sql)
 	ensure
