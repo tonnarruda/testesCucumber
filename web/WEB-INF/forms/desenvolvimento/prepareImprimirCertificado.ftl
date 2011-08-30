@@ -63,7 +63,7 @@
 			<@ww.textarea label="Assinatura 1" name="certificado.ass1" cssStyle="width: 296px;height: 30px;" liClass="liLeft"/>
 			<@ww.textarea label="Assinatura 2" name="certificado.ass2" cssStyle="width: 296px;height: 30px;"/>
  			<@ww.textfield label="Data Completa" name="certificado.data" cssStyle="width: 296px;" />
-			<@ww.select label="Tamanho do Certificado" id="certificadoTamanho" name="certificado.tamanho" list=r"#{'1':'1 por página','2':'2 por página'}" />
+			<@ww.select label="Tamanho do Certificado" id="certificadoTamanho" name="certificado.tamanho" list=r"#{'1':'1 por página','2':'2 por página','declaracao':'Declaração'}" />
 			<@ww.checkbox label="Imprimir Moldura" name="certificado.imprimirMoldura" labelPosition="left"/>
 			<@ww.checkbox label="Imprimir Logotipo" name="certificado.imprimirLogo" labelPosition="left"/>
 
