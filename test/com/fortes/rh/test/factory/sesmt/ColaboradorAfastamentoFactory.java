@@ -14,6 +14,7 @@ public class ColaboradorAfastamentoFactory
 	{
 		ColaboradorAfastamento colaboradorAfastamento = getEntity();
 		colaboradorAfastamento.setId(id);
+		colaboradorAfastamento.setCid("A11");
 		return colaboradorAfastamento;
 	}
 }

@@ -8,6 +8,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
+import com.fortes.rh.business.geral.CidManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
@@ -25,6 +26,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 	private Mock manager;
 	private Mock afastamentoManager;
 	private Mock colaboradorManager;
+	private Mock cidManager;
 
 	protected void setUp() throws Exception
 	{
@@ -38,6 +40,9 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 
 		colaboradorManager = mock(ColaboradorManager.class);
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+
+		cidManager = mock(CidManager.class);
+		action.setCidManager((CidManager) cidManager.proxy());
 
 		action.setColaboradorAfastamento(ColaboradorAfastamentoFactory.getEntity());
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(3L));
@@ -56,8 +61,11 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 	}
 	public void testPrepareUpdate() throws Exception
 	{
-		action.setColaboradorAfastamento(ColaboradorAfastamentoFactory.getEntity(1L));
-		manager.expects(once()).method("findById");
+		ColaboradorAfastamento colaboradorAfastamento = ColaboradorAfastamentoFactory.getEntity(1L);
+		action.setColaboradorAfastamento(colaboradorAfastamento);
+		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(colaboradorAfastamento));
+		cidManager.expects(once()).method("findDescricaoByCodigo");
+		
 		afastamentoManager.expects(once()).method("findAll");
 		assertEquals("success", action.prepareUpdate());
 	}
@@ -97,8 +105,9 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 
 		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 
-		manager.expects(once()).method("findById");
+		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(afastamento));
 		afastamentoManager.expects(once()).method("findAll");
+		cidManager.expects(once()).method("findDescricaoByCodigo");
 
 		assertEquals("input", action.update());
 	}

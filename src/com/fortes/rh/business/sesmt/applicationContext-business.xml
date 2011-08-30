@@ -633,6 +633,9 @@
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>
+    <property name="cidManager">
+      <ref bean="cidManager" />
+    </property>
   </bean>
   <bean id="colaboradorAfastamentoManager" parent="parentManager">
     <property name="proxyInterfaces">

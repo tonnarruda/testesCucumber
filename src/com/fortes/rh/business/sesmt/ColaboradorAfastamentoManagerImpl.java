@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.CidManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.ColaboradorAfastamentoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -27,6 +28,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private AfastamentoManager afastamentoManager;
 	private ColaboradorManager colaboradorManager; 
+	private CidManager cidManager; 
 
 	public Integer getCount(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, ColaboradorAfastamento colaboradorAfastamento)
 	{
@@ -74,6 +76,15 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		if (colaboradorAfastamentos == null || colaboradorAfastamentos.isEmpty())
 			throw new ColecaoVaziaException("Não há afastamentos para o filtro informado.");
 
+		if(ordenaPorCid)
+		{
+			for (ColaboradorAfastamento colaboradorAfastamentotemp : colaboradorAfastamentos)
+			{
+				String descricaoCid = cidManager.findDescricaoByCodigo(colaboradorAfastamentotemp.getCid());
+				colaboradorAfastamentotemp.setCid(colaboradorAfastamentotemp.getCid() +  (descricaoCid.equals("")?"":" - " + descricaoCid));
+			}
+		}
+		
 		setFamiliaAreas(colaboradorAfastamentos, empresaId);
 
 		return colaboradorAfastamentos;
@@ -197,5 +208,9 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 
 	public Collection<ColaboradorAfastamento> findByColaborador(Long colaboradorId) {
 		return getDao().findByColaborador(colaboradorId);
+	}
+
+	public void setCidManager(CidManager cidManager) {
+		this.cidManager = cidManager;
 	}
 }

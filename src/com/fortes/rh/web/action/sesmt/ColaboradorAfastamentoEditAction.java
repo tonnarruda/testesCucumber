@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import com.fortes.rh.business.geral.CidManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
@@ -20,19 +21,23 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 	private ColaboradorAfastamento colaboradorAfastamento;
 	private ColaboradorManager colaboradorManager;
 	private AfastamentoManager afastamentoManager;
+	private CidManager cidManager;
 
 	private Collection<Afastamento> afastamentos;
 
 	private Collection<Colaborador> colaboradors;
 	private Colaborador colaborador = new Colaborador();
+	private String descricao;
 
 	private void prepare() throws Exception
 	{
 		if(colaboradorAfastamento != null && colaboradorAfastamento.getId() != null)
+		{
 			colaboradorAfastamento = (ColaboradorAfastamento) colaboradorAfastamentoManager.findById(colaboradorAfastamento.getId());
-
+			descricao = cidManager.findDescricaoByCodigo(colaboradorAfastamento.getCid());
+		}
+		
 		afastamentos = afastamentoManager.findAll();
-
 	}
 
 	public String prepareInsert() throws Exception
@@ -141,5 +146,13 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 	public void setAfastamentoManager(AfastamentoManager afastamentoManager)
 	{
 		this.afastamentoManager = afastamentoManager;
+	}
+
+	public void setCidManager(CidManager cidManager) {
+		this.cidManager = cidManager;
+	}
+
+	public String getDescricao() {
+		return descricao;
 	}
 }
