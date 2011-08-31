@@ -2035,7 +2035,8 @@ CREATE TABLE riscoambiente (
 	id bigint NOT NULL,
     epceficaz boolean,
     historicoambiente_id bigint,
-    risco_id bigint
+    risco_id bigint,
+    periodicidadeexposicao character(1)
 );
 ALTER TABLE riscoambiente ADD CONSTRAINT riscoambiente_pkey PRIMARY KEY (id);
 ALTER TABLE riscoambiente ADD CONSTRAINT riscoambiente_historicoambiente_fk FOREIGN KEY (historicoambiente_id) REFERENCES historicoambiente(id);
@@ -2122,7 +2123,8 @@ CREATE TABLE configuracaoImpressaoCurriculo (
 	assinatura3 character varying(50),
 	usuario_id bigint,
 	empresa_id bigint,
-	exibirexamepalografico boolean default false
+	exibirexamepalografico boolean default false,
+	exibirTextoOCR boolean default false
 );       
 
 ALTER TABLE configuracaoImpressaoCurriculo ADD CONSTRAINT configuracaoImpressaoCurriculo_pkey PRIMARY KEY(id);

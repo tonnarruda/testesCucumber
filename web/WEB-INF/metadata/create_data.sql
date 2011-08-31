@@ -178,6 +178,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (479,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (490, 'ROLE_REL_ACOMP_EXPERIENCIA_PREVISTO', 'Acompanhamento de Experiência Previsto', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperienciaPrevisto.action', 2, true, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (513, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperiencia.action', 3, true, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (491, 'ROLE_REL_ACOMP_RANKING_PERIODO_EXPERIENCIA', 'Ranking de Performance das Avaliações de Desempenho','/avaliacao/periodoExperiencia/prepareRelatorioRankingPerformancePeriodoDeExperiencia.action', 4, true,486);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (521, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Cartões de Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action', 5, true, 486);
 
 -- Fim Info. Funcionais
 -- Modulo Indicadores
@@ -285,7 +286,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 521;
+alter sequence papel_sequence restart with 522;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -21069,3 +21070,6 @@ insert into migrations values('20110817170136');--.go
 insert into migrations values('20110817170825');--.go
 insert into migrations values('20110824140640');--.go
 insert into migrations values('20110825141502');--.go
+insert into migrations values('20110830114158');--.go
+insert into migrations values('20110830151026');--.go
+insert into migrations values('20110831133044');--.go

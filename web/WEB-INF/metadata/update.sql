@@ -18092,4 +18092,14 @@ update parametrosdosistema set acversaowebservicecompativel = '1.0.1.45';--.go
 insert into migrations values('20110824140640');--.go
 insert into migrations values('20110825141502');--.go
 
+alter table riscoambiente add column periodicidadeexposicao character(1);--.go
+insert into migrations values('20110830114158');--.go
+
+alter table configuracaoimpressaocurriculo add column exibirTextoOCR boolean default false;--.go
+insert into migrations values('20110830151026');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (521, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Cartões de Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action', 5, true, 486);--.go
+alter sequence papel_sequence restart with 522;--.go
+insert into migrations values('20110831133044');--.go
+
 update parametrosdosistema set appversao = '1.1.54.46';--.go
