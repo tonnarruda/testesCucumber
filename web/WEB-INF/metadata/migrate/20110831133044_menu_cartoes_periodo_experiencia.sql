@@ -1,0 +1,2 @@
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (521, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Cartões de Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action', 5, true, 486);--.go
+alter sequence papel_sequence restart with 522;--.go
