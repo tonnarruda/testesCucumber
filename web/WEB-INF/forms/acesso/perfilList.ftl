@@ -5,7 +5,12 @@
 <@ww.head/>
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
+	@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+	
+	#formDialog { display: none; width: 600px; }
 </style>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+
 <title>Perfis</title>
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
@@ -27,7 +32,14 @@
 	
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
-		<button class="btnImprimirPdf" onclick="window.location='imprimirPerfis.action'">
+		<button class="btnImprimirPdf" onclick="$('#formDialog').dialog({ modal: true, width: 530 });">
+	</div>
+	
+	<div id="formDialog" title="Relatório de permissões dos perfis">
+		<@ww.form name="formModal" id="formModal" action="imprimirPerfis.action" method="POST">
+			<@frt.checkListBox label="Selecione os perfis" name="perfisCheck" list="perfisCheckList" form="document.getElementById('formModal')"/>
+			<button class="btnImprimirPdf" onclick="window.location=''">
+		</@ww.form>
 	</div>
 </body>
 </html>

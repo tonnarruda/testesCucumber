@@ -51,9 +51,9 @@ public class PerfilManagerImpl extends GenericManagerImpl<Perfil, PerfilDao> imp
 		return emails;
 	}
 
-	public Collection<Perfil> findPapeis() 
+	public Collection<Perfil> findPapeis(Long[] perfisIds) 
 	{
-		Collection<Perfil> perfis = getDao().findAll(null, null);
+		Collection<Perfil> perfis = getDao().findByIds(perfisIds);
 		
 		for (Perfil perfil : perfis) 
 		{

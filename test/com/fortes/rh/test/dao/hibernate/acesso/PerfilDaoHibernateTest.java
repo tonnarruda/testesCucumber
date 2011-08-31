@@ -70,6 +70,15 @@ public class PerfilDaoHibernateTest extends GenericDaoHibernateTest<Perfil>
 		
 		assertEquals(2, perfilDao.findAll(0, 2).size());
 	}
+	
+	public void testFindByIds()
+	{
+		Collection<Papel> papeis = new ArrayList<Papel>();
+		criaPerfil(papeis, 1L);
+		criaPerfil(papeis, 2L);
+		
+		assertEquals(2, perfilDao.findByIds(new Long[] { 1L, 2L }).size());
+	}
 
 	private void criaPerfil(Collection<Papel> papeis, Long id) {
 		Perfil perfil = new Perfil();

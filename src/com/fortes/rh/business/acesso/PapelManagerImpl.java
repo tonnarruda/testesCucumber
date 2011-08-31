@@ -105,17 +105,17 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	private String getFolha(Long id, Collection<Papel> papeis, int posicao)
 	{
 		StringBuilder filhos = new StringBuilder();
-		String maisFilhos = "";
+		StringBuilder maisFilhos = new StringBuilder();
 		
 		for (Papel papel : papeis)
 		{
 			if(papel.getPapelMae() != null && papel.getPapelMae().getId()!= null && papel.getPapelMae().getId().equals(id))
 			{
 				filhos.append(String.format("%"+ posicao +"s", "") +  papel.getNome() + "\n");
-				maisFilhos = getFolha(papel.getId(), papeis, posicao + 3);
+				maisFilhos.append(getFolha(papel.getId(), papeis, posicao + 3));
 
-				if(maisFilhos != "")
-					filhos.append( maisFilhos);
+				if(maisFilhos.equals(""))
+					filhos.append( maisFilhos );
 			}
 		}
 

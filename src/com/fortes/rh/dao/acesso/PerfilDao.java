@@ -11,8 +11,7 @@ import com.fortes.rh.model.acesso.Perfil;
 public interface PerfilDao extends GenericDao<Perfil> 
 {
 	Collection<Perfil> findPerfisByCodigoPapel(String codigo);
-
-	public Collection<Perfil> findAll(Integer page, Integer pagingSize);
-	public Integer getCount();
-
+	Collection<Perfil> findAll(Integer page, Integer pagingSize);
+	Integer getCount();
+	Collection<Perfil> findByIds(Long[] perfisIds);
 }

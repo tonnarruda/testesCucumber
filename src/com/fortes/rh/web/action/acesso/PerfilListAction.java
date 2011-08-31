@@ -1,13 +1,18 @@
 package com.fortes.rh.web.action.acesso;
 
+import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 public class PerfilListAction extends MyActionSupportList {
@@ -16,6 +21,9 @@ public class PerfilListAction extends MyActionSupportList {
 	private PerfilManager perfilManager = null;
 
 	private Collection<Perfil> perfils = null;
+	
+	private String[] perfisCheck;
+	private Collection<CheckBox> perfisCheckList = new ArrayList<CheckBox>();
 
 	private Perfil perfil;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
@@ -25,6 +33,9 @@ public class PerfilListAction extends MyActionSupportList {
 		setTotalSize(perfilManager.getCount());
 
 		perfils = perfilManager.findAll(getPage(),getPagingSize());
+		
+		Collection<Perfil> todosPerfis = perfilManager.findAll(null, null);
+		perfisCheckList = populaCheckListBox(todosPerfis, "getId", "getNome");
 
 		return Action.SUCCESS;
 	}
@@ -32,7 +43,9 @@ public class PerfilListAction extends MyActionSupportList {
 	
 	public String imprimirPerfis() throws Exception
 	{
-		perfils = perfilManager.findPapeis();
+		Long[] perfisIds = LongUtil.arrayStringToArrayLong(perfisCheck);
+		perfils = perfilManager.findPapeis(perfisIds);
+		
 		parametros = RelatorioUtil.getParametrosRelatorio("Permissões dos Perfis", getEmpresaSistema(), "");
 		return Action.SUCCESS;
 	}
@@ -66,5 +79,25 @@ public class PerfilListAction extends MyActionSupportList {
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+
+	public String[] getPerfisCheck() {
+		return perfisCheck;
+	}
+
+
+	public void setPerfisCheck(String[] perfisCheck) {
+		this.perfisCheck = perfisCheck;
+	}
+
+
+	public Collection<CheckBox> getPerfisCheckList() {
+		return perfisCheckList;
+	}
+
+
+	public void setPerfisCheckList(Collection<CheckBox> perfisCheckList) {
+		this.perfisCheckList = perfisCheckList;
 	}
 }

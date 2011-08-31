@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -49,6 +50,24 @@ public class PerfilDaoHibernate extends GenericDaoHibernate<Perfil> implements P
 
 		return criteria.list();
 
+	}
+
+	public Collection<Perfil> findByIds(Long[] perfisIds) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		
+		criteria.setProjection(p);
+		if (perfisIds != null && perfisIds.length > 0)
+			criteria.add(Expression.in("c.id", perfisIds));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Perfil.class));
+		
+		return criteria.list();
+		
 	}
 
 	public Integer getCount() 
