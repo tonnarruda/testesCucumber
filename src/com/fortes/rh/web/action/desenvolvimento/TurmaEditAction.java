@@ -424,7 +424,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		colaboradores = colaboradorManager.findAllSelect(LongUtil.arrayStringToCollectionLong(colaboradoresCheck), false);
 		dataSource = colaboradorTurmaManager.montaCertificados(colaboradores, certificado, getEmpresaSistema().getId());
 
-		if(certificado.getTamanho().equals("1"))
+		if(certificado.getTamanho().equals("declaracao"))
+			return "successDeclaracao";
+		else if(certificado.getTamanho().equals("1"))
 			return "successGrande";
 		else
 			return "successPequeno";

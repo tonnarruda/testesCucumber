@@ -1,3 +1,5 @@
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+<#assign ww=JspTaglibs["/WEB-INF/tlds/webwork.tld"] />
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
