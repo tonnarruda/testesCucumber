@@ -54,14 +54,14 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="385"  isSplitAllowed="false" >
+			<band height="255"  isSplitAllowed="false" >
 				<rectangle>
 					<reportElement
 						mode="Transparent"
 						x="0"
 						y="0"
 						width="267"
-						height="385"
+						height="255"
 						key="rectangle-1"/>
 					<graphicElement stretchType="NoStretch" pen="Thin"/>
 				</rectangle>
@@ -108,13 +108,14 @@
 				</textField>
 				<staticText>
 					<reportElement
+						mode="Opaque"
 						x="0"
 						y="25"
 						width="267"
 						height="14"
-						backcolor="#FFFFFF"
+						backcolor="#EEEEEE"
 						key="staticText-1"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
@@ -122,14 +123,15 @@
 				</staticText>
 				<staticText>
 					<reportElement
+						mode="Opaque"
 						x="0"
 						y="114"
 						width="267"
 						height="14"
-						backcolor="#FFFFFF"
+						backcolor="#EEEEEE"
 						key="staticText-2"
 						positionType="Float"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
@@ -342,7 +344,7 @@
 						x="1"
 						y="130"
 						width="265"
-						height="30"
+						height="20"
 						key="subreport-1"
 						stretchType="RelativeToTallestObject"
 						positionType="Float"/>
