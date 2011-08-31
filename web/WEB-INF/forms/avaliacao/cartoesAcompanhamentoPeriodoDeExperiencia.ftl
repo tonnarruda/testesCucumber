@@ -11,6 +11,7 @@
 	<script type='text/javascript'>
 		$(function() {
 			populaColaboradores();
+			$('#wwctrl_periodoCheck * span').eq(0).removeAttr('onclick').css('color', '#6E7B8B').css('cursor', 'default');
 		});
 	
 		function populaColaboradores()
@@ -21,6 +22,14 @@
 		function createListColaborador(data)
 		{
 			addChecks('colaboradorsCheck',data);
+		}
+		
+		function validaQtd()
+		{
+		    if($("input[name='periodoCheck']:checked").size() >= 6)
+		        $("input[name='periodoCheck']").not(':checked').attr('disabled','disabled').parent().css('color', '#DEDEDE');
+		    else
+		        $("input[name='periodoCheck']").removeAttr('disabled').parent().css('color', '#5C5C5A');
 		}
 	</script> 
 
@@ -36,7 +45,7 @@
 			<@ww.datepicker label="Admitidos a partir de" onchange="populaColaboradores();" id="data" name="dataReferencia" required="true" value="${dataDoDia}" cssClass="mascaraData"/>
 			<@ww.select label="Estabelecimento" onchange="populaColaboradores();" name="estabelecimento.id" id="estabelecimentoId" listKey="id" listValue="nome" headerKey="-1" headerValue="Todos" list="estabelecimentos"/>
 			<@frt.checkListBox name="colaboradorsCheck" label="Colaborador*" list="colaboradorsCheckList" />						
-			<@frt.checkListBox name="periodoCheck" label="Período de Acompanhamento*" list="periodoCheckList" />	
+			<@frt.checkListBox name="periodoCheck" label="Período de Acompanhamento (máx. 6 opções) *" list="periodoCheckList" onClick="validaQtd();"/>	
 			<@ww.textarea label="Observação" name="observacoes" cssStyle="width: 500px"/>				
 		</@ww.form>
 

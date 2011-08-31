@@ -50,10 +50,10 @@
 						x="2"
 						y="0"
 						width="46"
-						height="10"
+						height="20"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Top">
+					<textElement verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="6" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{dias} + " dias"]]></textFieldExpression>
@@ -62,11 +62,11 @@
 					<reportElement
 						x="96"
 						y="0"
-						width="56"
-						height="10"
+						width="43"
+						height="20"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top">
+					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="6" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ASSINATURA]]></text>
@@ -76,15 +76,24 @@
 						x="48"
 						y="0"
 						width="48"
-						height="10"
+						height="20"
 						key="textField-1"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top">
+					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="6"/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataFim}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="139"
+						y="17"
+						width="122"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
