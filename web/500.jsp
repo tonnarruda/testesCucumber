@@ -13,7 +13,7 @@
 	<br>
 	<br>A requisição não pode ser completada.
 	<br>Dúvidas entre em contato com 
-	<a href="#">webmaster@grupofortes.com.br</a>
+	<a href="mailto:suporte.rh@grupofortes.com.br">suporte.rh@grupofortes.com.br</a>
 	</p>
 </font>
 </center>

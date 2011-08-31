@@ -12,7 +12,7 @@
 	<font face=verdana size=2 color=black>
 	<br>
 	<br>Dúvidas entre em contato com 
-	<a href="#">webmaster@grupofortes.com.br</a>
+	<a href="mailto:suporte.rh@grupofortes.com.br">suporte.rh@grupofortes.com.br</a>
 	</p>
 </font>
 </center>
