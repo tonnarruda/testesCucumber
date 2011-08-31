@@ -68,7 +68,7 @@ CREATE TABLE empresa (
 	mailnaoaptos text,
 	exame_id bigint,
 	emailresplimitecontrato character varying(120) default '',
-	mgAniversarianteUrl varchar(200),
+	imgAniversarianteUrl varchar(200),
 	mensagemCartaoAniversariante varchar(300),
 	enviarEmailAniversariante boolean default false
 );

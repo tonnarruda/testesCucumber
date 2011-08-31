@@ -48,6 +48,7 @@ public class PerfilListActionTest extends MockObjectTestCase
 
     	manager.expects(once()).method("getCount").will(returnValue(2));
     	manager.expects(once()).method("findAll").with(eq(action.getPage()),eq(action.getPagingSize())).will(returnValue(perfilsAux));
+    	manager.expects(once()).method("findAll").with(eq(null),eq(null)).will(returnValue(perfilsAux));
 
     	assertEquals(action.list(), "success");
     	assertEquals(action.getPerfils(), perfilsAux);

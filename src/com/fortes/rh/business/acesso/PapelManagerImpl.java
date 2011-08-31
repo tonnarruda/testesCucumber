@@ -94,28 +94,28 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		{
 			if(papel.getPapelMae() == null || papel.getPapelMae().getId() == null)
 			{
-				perfilOrganizado.append( papel.getNome() + "\n");
+				perfilOrganizado.append( "\n" + papel.getNome() + "\n");
 				perfilOrganizado.append( getFolha(papel.getId(), papeis, 3));
 			}
 		}
 		
-		return perfilOrganizado.toString();
+		return perfilOrganizado.substring(1);
 	}
 	
 	private String getFolha(Long id, Collection<Papel> papeis, int posicao)
 	{
-		StringBuilder filhos = new StringBuilder();
-		StringBuilder maisFilhos = new StringBuilder();
+		StringBuffer filhos = new StringBuffer();
 		
 		for (Papel papel : papeis)
 		{
-			if(papel.getPapelMae() != null && papel.getPapelMae().getId()!= null && papel.getPapelMae().getId().equals(id))
+			StringBuffer maisFilhos;
+			if(papel.getPapelMae() != null && papel.getPapelMae().getId() != null && papel.getPapelMae().getId().equals(id))
 			{
 				filhos.append(String.format("%"+ posicao +"s", "") +  papel.getNome() + "\n");
-				maisFilhos.append(getFolha(papel.getId(), papeis, posicao + 3));
+				maisFilhos = new StringBuffer(getFolha(papel.getId(), papeis, posicao + 3));
 
-				if(maisFilhos.equals(""))
-					filhos.append( maisFilhos );
+				if(!maisFilhos.toString().equals("")) 
+					filhos.append( maisFilhos.toString() );
 			}
 		}
 
