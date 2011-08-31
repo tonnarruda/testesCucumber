@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.54.46" data="31/08/2011">
+		- ReS > Cadastros > Candidatos > Visualizar Currículo: Nova opção de imprimir Texto Digitalizado.
 		- Aval. Desempenho > Movimentações > Avaliações Desempenho > Resultado da Avaliação > Resultado por Critérios > Agrupar perguntas por aspecto: Exibição no relatório o percentual da performance por Aspecto.
+		- Aval. Desempenho > Relatórios > Cartões para Acompanhamento do Período de Experiência: Novo relatório.
+		- TeD > Relatórios > Certificados > Tamanho do Certificado: Nova opção para imprimir declaração.
 		- Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Adicionadas Experiências Profissionais do colaborador para pesquisas.
 		- Info. Funcionais > Cadastro > Colaboradores > Incluir em Solicitação: Ao transferir Colaborador para vaga o mesmo é direcionado para vaga em aberto.
 		- Info. Funcionais > Painel de Indicadores: Novo filtro por Empresa e Áreas Organizacionais.
+		- SESMT > Cadastros > Ambientes: Novo campo de Periodicidade de Exposição para os riscos do ambiente.
 		- Utilitários > Cadastros > Empresas: Apagar empresas com o usuário Fortes.
 		- Utilitários > Cadastros > Empresas: Cartão dos Aniversariantes.
 		- Utilitários > Cadastros > Perfis > Impressão: Nova opção de seleção de perfis a serem impressos.

@@ -21043,7 +21043,7 @@ insert into cid (codigo, descricao) values ('U99','ID 10ª Revisão não dispon�
 insert into comoFicouSabendoVaga (id, nome) values (1, 'Outro');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.54.46', '', '25', false,false, 2, '1.0.1.45', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.54.46', '', '25', false,false, 2, '1.1.45.1', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'

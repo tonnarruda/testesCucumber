@@ -18087,7 +18087,7 @@ update parametrosdosistema set appversao = '1.1.53.45';--.go
 alter table empresa add column imgAniversarianteUrl varchar(200);--.go
 alter table empresa add column mensagemCartaoAniversariante varchar(300);--.go
 alter table empresa add column enviarEmailAniversariante boolean default false;--.go
-update parametrosdosistema set acversaowebservicecompativel = '1.0.1.45';--.go
+update parametrosdosistema set acversaowebservicecompativel = '1.1.45.1';--.go
 
 insert into migrations values('20110824140640');--.go
 insert into migrations values('20110825141502');--.go
