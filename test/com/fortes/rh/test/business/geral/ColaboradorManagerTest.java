@@ -1129,7 +1129,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Date dataIni = DateUtil.criarDataMesAno(01, 02, 2000);
     	Date dataFim = DateUtil.criarDataMesAno(01, 03, 2000);
     	
-    	Collection<Object[]> dados = colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, 1L);
+    	Collection<Object[]> dados;
+		dados = colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, 1L, new Long[]{});
+	
     	assertEquals(2, dados.size());
     	
     	Object[] result = (Object[]) dados.toArray()[0];

@@ -86,7 +86,6 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
@@ -1936,24 +1935,26 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByCodigoACEmpresaCodigoAC(codigoAC, empresaCodigoAC, grupoAC);
 	}
 
-	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId) 
+	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds)
 	{
 		Collection<Object[]>  graficoEvolucaoFolha = new ArrayList<Object[]>();
 		dataFim = DateUtil.getUltimoDiaMes(dataFim);
 		while (!dataIni.after(dataFim))
 		{
 			dataIni = DateUtil.getUltimoDiaMes(dataIni);
-			double valor = totalFolhaDia (dataIni, empresaId);
+			double valor = totalFolhaDia (dataIni, empresaId, areasIds);
 			graficoEvolucaoFolha.add(new Object[]{dataIni.getTime(), valor}); 
 			dataIni = DateUtil.incrementaMes(dataIni, 1);
 		}
-		
+			
 		return graficoEvolucaoFolha;
 	}
 	
-	private Double totalFolhaDia (Date dataBase, Long empresaId)
+	private Double totalFolhaDia (Date dataBase, Long empresaId, Long[] areasIds)
 	{
-		Collection<Colaborador> colaboradores = getDao().findProjecaoSalarialByHistoricoColaborador(dataBase, null, null, null, null, "99", empresaId);
+		Collection<Long> areasOrganizacionais = new CollectionUtil<Long>().convertArrayToCollection(areasIds);
+		Collection<Colaborador> colaboradores = getDao().findProjecaoSalarialByHistoricoColaborador(dataBase, null, areasOrganizacionais, null, null, "1", empresaId);
+		
 		double valor = 0.0;
 		for (Colaborador colaborador : colaboradores)
 		{

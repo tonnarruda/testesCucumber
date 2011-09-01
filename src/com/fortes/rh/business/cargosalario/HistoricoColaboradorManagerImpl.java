@@ -254,10 +254,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return promocoes;
 	}
 	
-	private List<RelatorioPromocoes> countPromocoesMesAno(Date dataIni, Date dataFim, Long empresaId)
+	private List<RelatorioPromocoes> countPromocoesMesAno(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds)
 	{
 		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
-		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(null, null, dataIni, dataFim, empresaId);
+		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(areasIds, null, dataIni, dataFim, empresaId);
 
 		if (situacaoColaboradors == null || situacaoColaboradors.isEmpty())
 			return null;
@@ -288,16 +288,16 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		CollectionUtil<RelatorioPromocoes> util = new CollectionUtil<RelatorioPromocoes>();
 		promocoes = (List<RelatorioPromocoes>) util.sortCollectionDate(promocoes, "mesAno", "asc");
 		
-		return promocoes; 
+		return promocoes;
 	}
 	
 	
-	public Map<Character, Collection<Object[]>>  montaPromocoesHorizontalEVertical(Date dataIni, Date dataFim, Long empresaId)
+	public Map<Character, Collection<Object[]>>  montaPromocoesHorizontalEVertical(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds)
 	{
 		Map<Character, Collection<Object[]>> map = new HashMap<Character, Collection<Object[]>>(); 
 		Collection<Object[]>  graficoPromocaoHorizontal = new ArrayList<Object[]>();
 		Collection<Object[]>  graficoPromocaoVertical = new ArrayList<Object[]>();
-		List<RelatorioPromocoes> promocoes = countPromocoesMesAno(dataIni, dataFim, empresaId);
+		List<RelatorioPromocoes> promocoes = countPromocoesMesAno(dataIni, dataFim, empresaId, areasIds);
 
 		if(promocoes != null)
 		{

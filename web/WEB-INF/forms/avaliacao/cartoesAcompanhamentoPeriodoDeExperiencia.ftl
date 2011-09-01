@@ -33,7 +33,7 @@
 		}
 	</script> 
 
-	<#assign validarCampos="return validaFormulario('form', new Array('data','@colaboradorsCheck'), new Array('data'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('data','@colaboradorsCheck','@periodoCheck'), new Array('data'))"/>
 </head>
 <body>
 	<@ww.actionerror />

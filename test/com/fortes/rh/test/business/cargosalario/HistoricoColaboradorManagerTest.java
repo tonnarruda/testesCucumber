@@ -537,7 +537,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		historicoColaboradorDao.expects(once()).method("getPromocoes").will(returnValue(situacoes));
 		
-		Map<Character, Collection<Object[]>> promocoes = historicoColaboradorManager.montaPromocoesHorizontalEVertical(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId());
+		Map<Character, Collection<Object[]>> promocoes = historicoColaboradorManager.montaPromocoesHorizontalEVertical(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId(), null);
 		
 		int qtdHorizontal = 0;
 		for (Object[] promocaoHorizontal : promocoes.get('H'))

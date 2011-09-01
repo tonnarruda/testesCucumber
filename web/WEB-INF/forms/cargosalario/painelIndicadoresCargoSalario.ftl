@@ -1,4 +1,5 @@
 <html>
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<head>
 	<@ww.head/>
@@ -71,6 +72,10 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.stack.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+		
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 		
 		<#include "../ftl/showFilterImports.ftl" />
 		
@@ -276,13 +281,9 @@
 		    }
 
 			
-			function enviaForm1()
+			function enviaForm()
 			{
-				return validaFormulario('formBusca1', new Array('dataBase'), new Array('dataBase'));
-			}
-			function enviaForm2()
-			{
-				return validaFormularioEPeriodo('formBusca2', new Array('mesAnoIni','mesAnoFim'), new Array('mesAnoIni','mesAnoFim'));
+				return validaFormulario('formBusca', new Array('dataBase','mesAnoIni','mesAnoFim'), new Array('dataBase','mesAnoIni','mesAnoFim'));
 			}
 			
 			function formataNumero(value)
@@ -290,6 +291,17 @@
 				return 'R$' + $('<span>' + value + '</span>').format({}).text().replace(/,/g,'#').replace(/\./g,',').replace(/#/g,'.');
 			}
 
+			function populaAreas(empresaId)
+			{
+				DWRUtil.useLoadingMessage('Carregando...');
+				AreaOrganizacionalDWR.getByEmpresa(createListAreas, empresaId);
+				$('.empresa').val(empresaId);
+			}
+	
+			function createListAreas(data)
+			{
+				addChecks('areasCheck', data);
+			}
 		</script>
 	
 		<#include "../ftl/mascarasImports.ftl" />
@@ -297,15 +309,24 @@
 	</head>
 	<body>
 		<#include "../util/topFiltro.ftl" />
-			<@ww.form name="formBusca1" id="formBusca1" action="painelIndicadoresCargoSalario.action" method="POST">
+			<@ww.form name="formBusca" id="formBusca" action="painelIndicadoresCargoSalario.action" method="POST">
+				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
 			
+				<li>&nbsp;</li>
+				<li><strong>Indicador de Salário por Área Organizacional</strong></li>
 				<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
 				
-				<@ww.hidden name="dataMesAnoIni"/>	
-				<@ww.hidden name="dataMesAnoFim"/>
-				<button onclick="return enviaForm1();" class="btnPesquisar grayBGE"></button>
+				<li>&nbsp;</li>
+				<li><strong>Indicadores de Evolução Salarial e Promoção</strong></li>
+				<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="mesAnoIni" cssClass="mascaraMesAnoData" liClass="liLeft"/>
+				<@ww.label value="a" liClass="liLeft" />
+				<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="mesAnoFim" cssClass="mascaraMesAnoData"/>
+				<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
+
+				<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
+		
 		<div class="legendTotal">Valor total da folha em ${dateBase}: ${valorTotalFolha}</div>
 		<div class="fieldGraph">
 			<h1>Salário por Área Organizacional</h1>
@@ -315,23 +336,6 @@
 		
 		<div style="clear: both"></div>
 
-				<br>
-		
-		<div class="divFiltro">
-			<div class="divFiltroLink">
-				<a href="javascript:exibeFiltro('${urlImgs}','divFiltroForm2');" id="linkFiltro"><img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
-			</div>
-			<div id="divFiltroForm2" class="divFiltroForm ${classHidden}">
-			<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadoresCargoSalario.action#pagebottom" method="POST">
-				<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="mesAnoIni" cssClass="mascaraMesAnoData" liClass="liLeft"/>
-				<@ww.label value="a" liClass="liLeft" />
-				<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="mesAnoFim" cssClass="mascaraMesAnoData"/>
-				
-				<@ww.hidden name="dataBase"/>
-
-				<button onclick="return enviaForm2();" class="btnPesquisar grayBGE"></button>
-			</@ww.form>
-		<#include "../util/bottomFiltro.ftl" />
 		<div class="fieldGraph bigger">
 			<h1>Evolução Salarial</h1>
 	   		<div id="evolucaoFolha" style="margin: 25px;height:300px;"></div>

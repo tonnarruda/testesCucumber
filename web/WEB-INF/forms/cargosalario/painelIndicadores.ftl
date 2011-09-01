@@ -52,33 +52,11 @@
 				montaLine(turnover, "#evolucaoTurnover");
 			});
 			
-			function enviaForm1()
+			function enviaForm()
 			{
-				$('#formBusca1 input:checked').each(function(){
-					$("#formBusca1").append('<input type="hidden" name="areasCheck" value='+ $(this).val() +'>');
-				});
-
-				return validaFormulario('formBusca1', new Array('dataBase'), new Array('dataBase'));
+				return validaFormulario('formBusca', new Array('dataBase','dataIni','dataFim','dataMesAnoIni','dataMesAnoFim'), new Array('dataBase','dataIni','dataFim','dataMesAnoIni','dataMesAnoFim'));
 			}
-			
-			function enviaForm2()
-			{
-				$('#formBusca2 input:checked').each(function(){
-					$("#formBusca2").append('<input type="hidden" name="areasCheck" value='+ $(this).val() +'>');
-				});
-				
-				return validaFormularioEPeriodo('formBusca2', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'));
-			}
-			
-			function enviaForm3()
-			{
-				$('#formBusca3 input:checked').each(function(){
-					$("#formBusca3").append('<input type="hidden" name="areasCheck" value='+ $(this).val() +'>');
-				});
-				
-				return validaFormularioEPeriodoMesAno('formBusca3', new Array('dataMesAnoIni','dataMesAnoFim'), new Array('dataMesAnoIni','dataMesAnoFim'));
-			}
-			
+						
 			function populaAreas(empresaId)
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
@@ -88,9 +66,7 @@
 	
 			function createListAreas(data)
 			{
-				addChecks('areasCheck1', data);
-				addChecks('areasCheck2', data);
-				addChecks('areasCheck3', data);
+				addChecks('areasCheck', data);
 			}
 		</script>
 	
@@ -116,20 +92,34 @@
 	</head>
 	<body>
 		<#include "../util/topFiltro.ftl" />
-			<@ww.form name="formBusca1" id="formBusca1" action="painelIndicadores.action" method="POST">
+			<@ww.form name="formBusca" id="formBusca" action="painelIndicadores.action" method="POST">
 				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
+				<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
+				
+				<li>&nbsp;</li>
+				<li><strong>Indicadores de Faixa Etária, Estado Civil, Deficiência, Colocação, Formação Escolar e Sexo</strong></li>
 				<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
-			
-				<@frt.checkListBox form="document.getElementById('formBusca1')" label="Áreas Organizacionais" name="areasCheck1" id="areasCheck1" list="areasCheckList"/>
-					
-				<@ww.hidden name="dataIni"/>	
-				<@ww.hidden name="dataFim"/>
-				<@ww.hidden name="dataMesAnoIni"/>
-				<@ww.hidden name="dataMesAnoFim"/>
-				<button onclick="return enviaForm1();" class="btnPesquisar grayBGE"></button>
+				
+				<li>&nbsp;</li>
+				<li><strong>Indicadores de Motivos de Desligamento e Turnover</strong></li>
+				<@ww.datepicker label="Data Início" name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+				<@ww.label value="a" liClass="liLeft" />
+				<@ww.datepicker label="Data Fim" name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
+				<li>&nbsp;</li>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exibir os
+				<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
+				itens de maior percentual.
+				
+				<li>&nbsp;</li>
+				<li><strong>Indicador de Absenteísmo</strong></li>
+				<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="dataMesAnoIni" cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
+				<@ww.label value="a" liClass="liLeft" />
+				<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="dataMesAnoFim" cssClass="mascaraMesAnoData validaDataFim"/>
+				
+				<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
-		
+	
 		<div class="legendTotal">Total de Colaboradores: ${qtdColaborador}</div>
 		
 		<div class="fieldGraph">
@@ -157,92 +147,39 @@
 	    	<div id="sexo" class="graph"></div>
 	    </div>
 	    
-		<div style="clear: both"></div>
-		
-		<br>
-		
-			<div class="fieldGraph bigger">
-				<div class="divFiltro">
-					<div class="divFiltroLink">
-						<a href="javascript:exibeFiltro('${urlImgs}','divFiltroForm2');" id="linkFiltro"><img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
-					</div>
-					<div id="divFiltroForm2" class="divFiltroForm ${classHidden}">
-						<@ww.form name="formBusca2" id="formBusca2" action="painelIndicadores.action#pagebottom" method="POST">
-							<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
-										
-							<@frt.checkListBox form="document.getElementById('formBusca2')" label="Áreas Organizacionais" name="areasCheck2" id="areasCheck2" list="areasCheckList"/>
-							
-							<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-							<@ww.label value="a" liClass="liLeft" />
-							<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
-							&nbsp&nbsp&nbsp&nbsp&nbsp;Exibir os
-							<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
-							itens de maior percentual.<br>
-							
-							<@ww.hidden name="dataBase"/>
-							<@ww.hidden name="dataMesAnoIni"/>
-							<@ww.hidden name="dataMesAnoFim"/>
-							<button onclick="return enviaForm2();" class="btnPesquisar grayBGE"></button>
-						</@ww.form>
-					</div>
-				</div><!-- fim .divFiltro -->
-			
-				<h1 style="border-bottom: none;">Motivos de Desligamentos</h1>
-		   		<div id="desligamento" class="graph2"></div>
-		    	
-		    	<div style="clear: both"></div>
-				
-				<h1 style="border-bottom: none;">Turnover</h1>
-		   		<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
-				<div class="formula">Fórmula: [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos no início do mês] * 100</div>
-		    
-				<div style="clear: both"></div>
-				
-				<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
-					<div>Admitidos: ${countAdmitidos}</div>
-					<div>Demitidos: ${countDemitidos}</div>
-					<div>Turnover: ${turnover}</div>
-				</div>
-		    </div>
+		<div class="fieldGraph bigger">
+			<h1>Motivos de Desligamentos</h1>
+	   		<div id="desligamento" class="graph2"></div>
+	   	</div>
+	    	
+		<div class="fieldGraph bigger">
+			<h1>Turnover</h1>
+	   		<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
 
-		    <div style="clear: both"></div>
-				<a name="pagebottom"></a>
-			<br>
-		
-			<div class="divFiltro">
-				<div class="divFiltroLink">
-					<a href="javascript:exibeFiltro('${urlImgs}','divFiltroForm3');" id="linkFiltro"><img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
-				</div>
-				<div id="divFiltroForm3" class="divFiltroForm ${classHidden}">
-				<@ww.form name="formBusca3" id="formBusca3" action="painelIndicadores.action#pagebottom" method="POST">
-					<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
-					
-					<@frt.checkListBox form="document.getElementById('formBusca3')" label="Áreas Organizacionais" name="areasCheck3" id="areasCheck3" list="areasCheckList"/>
+			<div class="formula">Fórmula: [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos no início do mês] * 100</div>
+	    
+			<div style="clear: both"></div>
 			
-					<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="dataMesAnoIni" cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
-					<@ww.label value="a" liClass="liLeft" />
-					<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="dataMesAnoFim" cssClass="mascaraMesAnoData validaDataFim"/>
-					
-					<@ww.hidden name="dataBase"/>
-					<@ww.hidden name="dataIni"/>	
-					<@ww.hidden name="dataFim"/>
-	
-					<button onclick="enviaForm3();" class="btnPesquisar grayBGE"></button>
-				</@ww.form>
-			<#include "../util/bottomFiltro.ftl" />
-			<div class="fieldGraph bigger">
-				<h1>Absenteísmo</h1>
-		   		<div id="evolucaoAbsenteismo" style="margin: 25px;height:300px;"></div>
-				<div class="formula">Fórmula: [Total de faltas do mês / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
-				
-				<div style="clear: both"></div>
-				
-				<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
-					<div id="mediaAbsenteismo"></div>
-				</div>
-		    </div>
-		    
-		    <br>
-		    <div style="clear: both"></div>
+			<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
+				<div>Admitidos: ${countAdmitidos}</div>
+				<div>Demitidos: ${countDemitidos}</div>
+				<div>Turnover: ${turnover}</div>
+			</div>
+	    </div>
+
+		<div class="fieldGraph bigger">
+			<h1>Absenteísmo</h1>
+	   		<div id="evolucaoAbsenteismo" style="margin: 25px;height:300px;"></div>
+			<div class="formula">Fórmula: [Total de faltas do mês / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
+			
+			<div style="clear: both"></div>
+			
+			<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
+				<div id="mediaAbsenteismo"></div>
+			</div>
+	    </div>
+	    
+	    <div style="clear: both"></div>
+		<a name="pagebottom"></a>
 	</body>
 </html>
