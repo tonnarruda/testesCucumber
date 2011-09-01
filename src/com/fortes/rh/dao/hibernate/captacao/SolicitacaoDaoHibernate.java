@@ -24,6 +24,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 
 @SuppressWarnings("unchecked")
 public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> implements SolicitacaoDao
@@ -441,7 +442,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
         return query.list();
     }
 	
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId)
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao)
 	{
 		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga( ");
 		consulta.append("estabelecimento.id, areaOrganizacional.id, cargo.id, motivo.id, motivo.descricao, count(solicitacao.id)) ");
@@ -452,9 +453,12 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		consulta.append("join solicitacao.estabelecimento as estabelecimento ");
 		consulta.append("where ");
 		consulta.append("solicitacao.empresa.id = :empresaId ");
-		consulta.append("and solicitacao.data >= :dataDe ");
-		consulta.append("and (solicitacao.dataEncerramento <= :dataAte ");
-		consulta.append("or solicitacao.dataEncerramento is null) ");
+		consulta.append("and (solicitacao.data between :dataDe and :dataAte) ");
+		
+		if (statusSolicitacao == StatusSolicitacao.ABERTA)
+			consulta.append("and (solicitacao.dataEncerramento is null or solicitacao.dataEncerramento >= :dataAte) ");
+		else if (statusSolicitacao == StatusSolicitacao.ENCERRADA)
+			consulta.append("and (solicitacao.dataEncerramento is not null and solicitacao.dataEncerramento <= :dataAte) ");
 		
 		if (areasOrganizacionais != null && !areasOrganizacionais.isEmpty())
 			consulta.append("	and areaOrganizacional.id in (:areasOrganizacionais) ");

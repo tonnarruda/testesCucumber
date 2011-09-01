@@ -5,7 +5,7 @@
 <@ww.head/>
 
 <#assign validarCampos="return imprimir();"/>
-<title>Recrutamento e Seleção - Estatísticas de Vagas por Motivo</title>
+<title>Estatísticas de Vagas por Motivo</title>
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'))"/>
 
@@ -33,7 +33,7 @@
 	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
 
-
+	<@ww.select id="statusSolicitacao" label="Status" name="statusSolicitacao" list=r"#{'T':'Todos', 'A':'Abertas', 'E':'Encerradas'}"/>
 </@ww.form>
 
 

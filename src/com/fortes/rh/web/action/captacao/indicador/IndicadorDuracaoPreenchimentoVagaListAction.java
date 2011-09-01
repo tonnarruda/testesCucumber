@@ -12,6 +12,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -46,6 +47,8 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	private String reportFilter;
 	private String reportTitle;
+	
+	private char statusSolicitacao;
 	
 	public String prepare() throws Exception
 	{
@@ -103,9 +106,10 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 		try
 		{
-			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId());
+			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId(), statusSolicitacao);
 			
-			reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataDe) + " a " + DateUtil.formataDiaMesAno(dataAte);
+			StatusSolicitacao status = new StatusSolicitacao();
+			reportFilter = status.get(statusSolicitacao) + " - Período: " + DateUtil.formataDiaMesAno(dataDe) + " a " + DateUtil.formataDiaMesAno(dataAte);
 			
 			parametros = getParametrosRelatorio("Indicador - Estatísticas de Vagas por Motivo", reportFilter);
 			
@@ -256,6 +260,14 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	public String getReportTitle() {
 		return reportTitle;
+	}
+
+	public char getStatusSolicitacao() {
+		return statusSolicitacao;
+	}
+
+	public void setStatusSolicitacao(char statusSolicitacao) {
+		this.statusSolicitacao = statusSolicitacao;
 	}
 	
 }

@@ -28,6 +28,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Colaborador;
@@ -494,8 +495,10 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	
 	public void testFindMotivosPreenchimentoSolicitacao()
 	{
-		Date dataDe = DateUtil.criarDataMesAno(1,1,2000);
-		Date dataAte = new Date();
+		Date dataDe = DateUtil.criarDataMesAno(1, 9, 2010);
+		Date dataAte = DateUtil.criarDataMesAno(1, 9, 2011);
+		Date dataEntre = DateUtil.criarDataMesAno(1, 8, 2011);
+		Date dataFutura = DateUtil.criarDataMesAno(1, 12, 2011);
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -512,29 +515,70 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Collection<Long> estabelecimentos = new ArrayList<Long>();
 		estabelecimentos.add(estabelecimento.getId());
 
-		Cargo cargo = CargoFactory.getEntity();
-		cargo = cargoDao.save(cargo);
+		Cargo motorista = CargoFactory.getEntity();
+		motorista.setNome("motorista");
+		motorista = cargoDao.save(motorista);
+		
+		Cargo cobrador = CargoFactory.getEntity();
+		cobrador.setNome("cobrador");
+		cobrador = cargoDao.save(cobrador);
 
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		Cargo fiscal = CargoFactory.getEntity();
+		fiscal.setNome("fiscal");
+		fiscal = cargoDao.save(fiscal);
+
+		FaixaSalarial faixaMotorista = FaixaSalarialFactory.getEntity();
+		faixaMotorista.setCargo(motorista);
+		faixaMotorista = faixaSalarialDao.save(faixaMotorista);
+
+		FaixaSalarial faixaCobrador = FaixaSalarialFactory.getEntity();
+		faixaCobrador.setCargo(cobrador);
+		faixaCobrador = faixaSalarialDao.save(faixaCobrador);
+
+		FaixaSalarial faixaFiscal = FaixaSalarialFactory.getEntity();
+		faixaFiscal.setCargo(fiscal);
+		faixaFiscal = faixaSalarialDao.save(faixaFiscal);
 
 		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
 		motivoSolicitacao = motivoSolicitacaoDao.save(motivoSolicitacao);
 
-		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
-		solicitacao.setEmpresa(empresa);
-		solicitacao.setEstabelecimento(estabelecimento);
-		solicitacao.setData(dataDe);
-		solicitacao.setMotivoSolicitacao(motivoSolicitacao);
-		solicitacao.setDataEncerramento(dataAte);
-		solicitacao.setFaixaSalarial(faixaSalarial);
-		solicitacao.setAreaOrganizacional(areaOrganizacional);
-		solicitacao = solicitacaoDao.save(solicitacao);
+		Solicitacao solicitacaoAberta = SolicitacaoFactory.getSolicitacao();
+		solicitacaoAberta.setEmpresa(empresa);
+		solicitacaoAberta.setEstabelecimento(estabelecimento);
+		solicitacaoAberta.setData(dataDe);
+		solicitacaoAberta.setMotivoSolicitacao(motivoSolicitacao);
+		solicitacaoAberta.setFaixaSalarial(faixaMotorista);
+		solicitacaoAberta.setAreaOrganizacional(areaOrganizacional);
+		solicitacaoAberta = solicitacaoDao.save(solicitacaoAberta);
 
-		List<IndicadorDuracaoPreenchimentoVaga> retorno = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresa.getId());
+		Solicitacao solicitacaoEncerrada = SolicitacaoFactory.getSolicitacao();
+		solicitacaoEncerrada.setEmpresa(empresa);
+		solicitacaoEncerrada.setEstabelecimento(estabelecimento);
+		solicitacaoEncerrada.setData(dataDe);
+		solicitacaoEncerrada.setDataEncerramento(dataEntre);
+		solicitacaoEncerrada.setMotivoSolicitacao(motivoSolicitacao);
+		solicitacaoEncerrada.setFaixaSalarial(faixaCobrador);
+		solicitacaoEncerrada.setAreaOrganizacional(areaOrganizacional);
+		solicitacaoEncerrada = solicitacaoDao.save(solicitacaoEncerrada);
 
-		assertEquals(1, retorno.size());
+		Solicitacao solicitacaoEncerradaFuturo = SolicitacaoFactory.getSolicitacao();
+		solicitacaoEncerradaFuturo.setEmpresa(empresa);
+		solicitacaoEncerradaFuturo.setEstabelecimento(estabelecimento);
+		solicitacaoEncerradaFuturo.setData(dataDe);
+		solicitacaoEncerradaFuturo.setDataEncerramento(dataFutura);
+		solicitacaoEncerradaFuturo.setMotivoSolicitacao(motivoSolicitacao);
+		solicitacaoEncerradaFuturo.setFaixaSalarial(faixaFiscal);
+		solicitacaoEncerradaFuturo.setAreaOrganizacional(areaOrganizacional);
+		solicitacaoEncerradaFuturo = solicitacaoDao.save(solicitacaoEncerradaFuturo);
+
+		List<IndicadorDuracaoPreenchimentoVaga> todas = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresa.getId(), StatusSolicitacao.TODAS);
+		assertEquals(3, todas.size());
+
+		List<IndicadorDuracaoPreenchimentoVaga> abertas = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresa.getId(), StatusSolicitacao.ABERTA);
+		assertEquals(2, abertas.size());
+
+		List<IndicadorDuracaoPreenchimentoVaga> encerradas = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresa.getId(), StatusSolicitacao.ENCERRADA);
+		assertEquals(1, encerradas.size());
 	}
 	
 	public void testFindAllByCandidato()

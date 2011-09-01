@@ -19,6 +19,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -141,9 +142,9 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
     	estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(estabelecimentos));
     	cargoManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(CargoFactory.getEntity(1L)));
     	
-    	solicitacaoManager.expects(once()).method("getIndicadorMotivosSolicitacao").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areasIds),eq(estabelecimentosIds),eq(empresaId)}).will(returnValue(indicadores));
+    	solicitacaoManager.expects(once()).method("getIndicadorMotivosSolicitacao").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areasIds),eq(estabelecimentosIds),eq(empresaId),ANYTHING}).will(returnValue(indicadores));
 
-		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasIds,estabelecimentosIds, empresaId);
+		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasIds,estabelecimentosIds, empresaId, StatusSolicitacao.TODAS);
 		
 		assertEquals(1, resultado.size());
 		assertEquals(65, ((IndicadorDuracaoPreenchimentoVaga)resultado.toArray()[0]).getQtdAberturas().intValue());
