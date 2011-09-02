@@ -91,13 +91,16 @@
 
 	function valida()
 	{
-		validaFormulario('form', new Array('cursos','turma','@diasCheck','qtdLinhas'), null, true);
-		valido = validaQtdColunas(null, false);
-		if (valido)
+		if (validaFormulario('form', new Array('cursos','turma','@diasCheck','qtdLinhas'), null, true))
 		{
-			document.form.submit();
+			valido = validaQtdColunas(null, false);
+			if (valido)
+			{
+				document.form.submit();
+			}
+			return valido;
 		}
-		return valido;
+		return false;
 	}
 
 </script>

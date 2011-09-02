@@ -592,6 +592,14 @@ Dado /^que exista um nivel de competencia "([^"]*)" com a ordem (\d+)$/ do |nive
   end
 end
 
+Dado /^que exista um periodo de experiencia "([^"]*)" de (\d+) dias$/ do |periodo_descricao, periodo_dias|
+  insert :periodoexperiencia do
+    descricao periodo_descricao
+    dias periodo_dias
+    empresa :id => 1
+  end
+end
+
 Dado /^que todos os papeis estejam permitidos$/ do
    exec_sql "update parametrosdosistema set modulos = encode(cast(array_to_string(array(select id from papel order by id), ',') as bytea), 'base64');"
 end

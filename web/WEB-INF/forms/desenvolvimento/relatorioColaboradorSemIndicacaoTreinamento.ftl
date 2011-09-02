@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Colaboradores Sem Indicação de Treinamento</title>
+	<title>Colaboradores Sem Indicação de Treinamento</title>
 	<#assign validaCampos="return validaFormulario('form', new Array('meses'), null)"/>
 </head>
 <body>
