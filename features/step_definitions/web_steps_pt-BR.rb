@@ -404,6 +404,18 @@ Dado /^que exista uma turma "([^"]*)" para o curso "([^"]*)"$/ do |turma_descric
    end
 end
 
+Dado /^que exista uma certificacao "([^"]*)" para o curso "([^"]*)"$/ do |certificacao_nome, curso_nome|
+   insert :certificacao do
+     nome certificacao_nome
+     empresa :id=> 1
+   end
+
+   insert :certificacao_curso do
+     certificacaos :certificacao, :nome => certificacao_nome
+     cursos :curso, :nome => curso_nome
+   end
+end
+
 Dado /^que exista uma empresa "([^"]*)"$/ do |empresa_nome|
    insert :empresa do
       nome empresa_nome

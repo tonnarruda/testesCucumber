@@ -5,7 +5,7 @@ Funcionalidade: Relatório de Lista de Frequência
   Cenário: Relatório de Lista de Frequência
     Dado que exista um curso "java"
     Dado que exista uma turma "turma1" para o curso "java"
-    
+
     Dado que eu esteja logado
     
     Quando eu acesso o menu "T&D > Relatórios > Lista de Frequência"
