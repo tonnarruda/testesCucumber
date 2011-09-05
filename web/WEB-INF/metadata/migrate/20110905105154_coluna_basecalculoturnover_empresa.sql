@@ -1,0 +1,1 @@
+alter table empresa add column basecalculoturnover character(1) NOT NULL DEFAULT 'C';--.go

@@ -70,7 +70,7 @@
 			}
 						
 			if(document.getElementById('cnpj').value.length == 8)
-		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'));
+		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'baseCalculoTurnover'), new Array('remetente','respSetorPessoal','respRH'));
 			else
 				jAlert("Base CNPJ deve ter 8 dígitos.");
 		}
@@ -132,33 +132,38 @@
 		<@ww.textarea label="Texto para email de candidatos não aptos" name="empresa.mailNaoAptos" id="mailNaoAptos" size="40"/>
 		<@ww.textarea label="Mensagem a ser exibida no módulo externo" id="mensagemModuloExterno" name="empresa.mensagemModuloExterno" cssStyle="height:30px;"/>
 		
+		<@ww.select label="Base de cálculo de turnover" name="empresa.baseCalculoTurnover" id="baseCalculoTurnover" list=r"#{'C':'Todos os colaboradores contratados no período', 'S':'Apenas os colaboradores contratados através de uma solicitação cujo motivo está marcado como turnover'}" headerKey="" headerValue="Selecione..." required="true"/>
+		
+		<li>&nbsp;</li>
+				
 		<li>
 			<@ww.div cssClass="divInfo">
+				Configurações do Cartão dos Aniversariantes
+				<br><br>
 				<ul>
-				Configuração do Cartão dos Aniversariantes<br>
-				<@ww.file label="Imagem (400px x 570px)" name="imgCartaoAniversariante" id="imgCartaoAniversariante" liClass="liLeft"/>
-				<li>
-					<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
-						<ul>
-							<#if empresa.id?exists && empresa.imgAniversarianteUrl?exists && empresa.imgAniversarianteUrl != "">
-								<a href="cartaoAniversariante.action?empresa.id=${empresa.id}" ><img title="Visualizar Cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgAniversariante.action?empresa.imgAniversarianteUrl=${empresa.imgAniversarianteUrl}"/>"></a>
-							</#if>
-						</ul>
-					</@ww.div>
-				</li>
-				<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do Aniversariante)" id="mensagemCartaoAniversariante" name="empresa.mensagemCartaoAniversariante" cssStyle="height:40px;"/>
-				<@ww.checkbox label="Enviar email com Cartão?" name="empresa.enviarEmailAniversariante" id="enviarEmailAniversariante" labelPosition="right" /><br>
+					<@ww.file label="Imagem (400px x 570px)" name="imgCartaoAniversariante" id="imgCartaoAniversariante" liClass="liLeft"/>
+					<#if empresa.id?exists && empresa.imgAniversarianteUrl?exists && empresa.imgAniversarianteUrl != "">
+						<li>
+							<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
+								<ul>
+										<a href="cartaoAniversariante.action?empresa.id=${empresa.id}" ><img title="Visualizar Cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgAniversariante.action?empresa.imgAniversarianteUrl=${empresa.imgAniversarianteUrl}"/>"></a>
+								</ul>
+							</@ww.div>
+						</li>
+					</#if>
+					<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do Aniversariante)" id="mensagemCartaoAniversariante" name="empresa.mensagemCartaoAniversariante" cssStyle="height:40px;"/>
+					<@ww.checkbox label="Enviar email com Cartão?" name="empresa.enviarEmailAniversariante" id="enviarEmailAniversariante" labelPosition="right" /><br>
 				</ul>
 			</@ww.div>
 		</li>
-		<br>
+		
+		<li>&nbsp;</li>
+				
 		<li>
 			<@ww.div cssClass="divInfo">
 				<ul>
 					<div style="float:right;"><img id="btnTransferir" border="0" title="Testar Conexão com AC" onclick="testaConexaoAC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
-
 					<@ww.checkbox label="Integra com AC Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right"  />
-					
 					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao" headerKey="" headerValue="Selecione..."/>
 				</ul>
 			</@ww.div>

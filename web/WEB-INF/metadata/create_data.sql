@@ -7,7 +7,7 @@ alter sequence usuario_sequence restart with 2;
 INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acsenha) VALUES (1,'001','AC Padrão','http://localhost:1024/soap/IAcPessoal','http://localhost:1024/wsdl/IAcPessoal','ADMIN','');
 alter sequence grupoac_sequence restart with 2;
 
-INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,grupoac, campoextracolaborador, mensagemmoduloexterno, imgAniversarianteUrl, mensagemCartaoAniversariante, enviarEmailAniversariante) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'001',false, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', 'cartao_aniversario.jpg', 'Parabens #NOMECOLABORADOR#', false);
+INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario,grupoac, campoextracolaborador, mensagemmoduloexterno, imgAniversarianteUrl, mensagemCartaoAniversariante, enviarEmailAniversariante) VALUES (1,'Empresa Padrão','00000000','Empresa Padrão',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true,'001',false, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false);
 alter sequence empresa_sequence restart with 2;
 
 insert into exame (id, nome, periodicidade, periodico, empresa_id) values (1, 'ASO', 0, false, 1);
