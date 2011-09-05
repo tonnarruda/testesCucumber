@@ -1780,7 +1780,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append(" pessoal.mae = :mae ,");
 		hql.append(" pessoal.conjuge = :conjuge ,");
 		hql.append(" cursos = :cursos ,");
-		hql.append(" observacao = :observacao");
+		hql.append(" observacao = :observacao ,");
+		hql.append(" dataAtualizacao = :dataAtualizacao ");
 		hql.append(" where id = :id");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -1812,6 +1813,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setString("conjuge", colaborador.getPessoal().getConjuge());
 		query.setString("cursos", colaborador.getCursos());
 		query.setString("observacao", colaborador.getObservacao());
+		query.setDate("dataAtualizacao", new Date());
 		query.setLong("id", colaborador.getId());
 
 		query.executeUpdate();

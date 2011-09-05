@@ -142,15 +142,15 @@
 				<br><br>
 				<ul>
 					<@ww.file label="Imagem (400px x 570px)" name="imgCartaoAniversariante" id="imgCartaoAniversariante" liClass="liLeft"/>
-					<#if empresa.id?exists && empresa.imgAniversarianteUrl?exists && empresa.imgAniversarianteUrl != "">
-						<li>
-							<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
+					<li>
+						<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
+							<#if empresa.id?exists && empresa.imgAniversarianteUrl?exists && empresa.imgAniversarianteUrl != "">
 								<ul>
-										<a href="cartaoAniversariante.action?empresa.id=${empresa.id}" ><img title="Visualizar Cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgAniversariante.action?empresa.imgAniversarianteUrl=${empresa.imgAniversarianteUrl}"/>"></a>
+									<a href="cartaoAniversariante.action?empresa.id=${empresa.id}" ><img title="Visualizar Cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgAniversariante.action?empresa.imgAniversarianteUrl=${empresa.imgAniversarianteUrl}"/>"></a>
 								</ul>
-							</@ww.div>
-						</li>
-					</#if>
+							</#if>
+						</@ww.div>
+					</li>
 					<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do Aniversariante)" id="mensagemCartaoAniversariante" name="empresa.mensagemCartaoAniversariante" cssStyle="height:40px;"/>
 					<@ww.checkbox label="Enviar email com Cartão?" name="empresa.enviarEmailAniversariante" id="enviarEmailAniversariante" labelPosition="right" /><br>
 				</ul>
