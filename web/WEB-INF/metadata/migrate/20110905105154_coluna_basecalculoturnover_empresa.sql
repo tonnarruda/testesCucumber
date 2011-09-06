@@ -1,2 +1,1 @@
-alter table empresa add column basecalculoturnover character(1) DEFAULT 'C';--.go
-update empresa set basecalculoturnover = 'C';--.go
+alter table empresa add column turnoverPorSolicitacao boolean NOT NULL DEFAULT false;--.go

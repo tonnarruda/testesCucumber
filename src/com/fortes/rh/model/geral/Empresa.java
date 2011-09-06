@@ -85,7 +85,7 @@ public class Empresa extends AbstractModel implements Serializable
     @OneToOne
     private Exame exame; // Exame ASO
     
-    private Character baseCalculoTurnover;
+    private boolean turnoverPorSolicitacao;
 	
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -417,11 +417,11 @@ public class Empresa extends AbstractModel implements Serializable
 		this.enviarEmailAniversariante = enviarEmailAniversariante;
 	}
 
-	public Character getBaseCalculoTurnover() {
-		return baseCalculoTurnover;
+	public boolean isTurnoverPorSolicitacao() {
+		return turnoverPorSolicitacao;
 	}
 
-	public void setBaseCalculoTurnover(Character baseCalculoTurnover) {
-		this.baseCalculoTurnover = baseCalculoTurnover;
+	public void setTurnoverPorSolicitacao(boolean turnoverPorSolicitacao) {
+		this.turnoverPorSolicitacao = turnoverPorSolicitacao;
 	}
 }

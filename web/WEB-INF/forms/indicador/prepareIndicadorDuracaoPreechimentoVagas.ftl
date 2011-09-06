@@ -5,7 +5,7 @@
 <@ww.head/>
 
 <#assign validarCampos="return imprimir();"/>
-<title>Recrutamento e Seleção - Duração para Preenchimento de Vaga</title>
+<title>Duração para Preenchimento de Vaga</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'))"/>

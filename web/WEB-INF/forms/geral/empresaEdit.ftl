@@ -70,7 +70,7 @@
 			}
 						
 			if(document.getElementById('cnpj').value.length == 8)
-		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'baseCalculoTurnover'), new Array('remetente','respSetorPessoal','respRH'));
+		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'));
 			else
 				jAlert("Base CNPJ deve ter 8 dígitos.");
 		}
@@ -128,11 +128,10 @@
 		<@ww.textfield label="Máximo de Cargos por Candidato" name="empresa.maxCandidataCargo"  maxLength="3" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;"/>
 		<@ww.checkbox label="Exibir valor do salário na Solicitação de Realinhamento e na Solicitação de Pessoal" name="empresa.exibirSalario" id="exibirSalario" labelPosition="right" /><br>
 		<@ww.checkbox label="Exibir dados do Ambiente nos Relatórios do SESMT" name="empresa.exibirDadosAmbiente" id="exibirDadosAmbiente" labelPosition="right" /><br>
-		<@ww.checkbox label="Enviar e-mails de confirmação" id="emailCandidatoNaoApto" name="empresa.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/>
+		<@ww.checkbox label="Enviar e-mails de confirmação" id="emailCandidatoNaoApto" name="empresa.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/><br>
+		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo está marcado como Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
 		<@ww.textarea label="Texto para email de candidatos não aptos" name="empresa.mailNaoAptos" id="mailNaoAptos" size="40"/>
 		<@ww.textarea label="Mensagem a ser exibida no módulo externo" id="mensagemModuloExterno" name="empresa.mensagemModuloExterno" cssStyle="height:30px;"/>
-		
-		<@ww.select label="Base de cálculo de turnover" name="empresa.baseCalculoTurnover" id="baseCalculoTurnover" list=r"#{'C':'Todos os colaboradores contratados no período', 'S':'Apenas os colaboradores contratados através de uma solicitação cujo motivo está marcado como turnover'}" headerKey="" headerValue="Selecione..." required="true"/>
 		
 		<li>&nbsp;</li>
 				
