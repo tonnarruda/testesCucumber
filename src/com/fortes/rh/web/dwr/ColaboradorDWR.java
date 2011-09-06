@@ -158,7 +158,7 @@ public class ColaboradorDWR
     public Map<Long, String> getAvaliadores(Long avaliacaoDesempenhoId)
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-    	colaboradores.add(new Colaborador("Selecione...", -1L, null, null));
+    	colaboradores.add(new Colaborador( -1L, "Selecione..."));
     	colaboradores.addAll(colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, false));
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercial", Colaborador.class);

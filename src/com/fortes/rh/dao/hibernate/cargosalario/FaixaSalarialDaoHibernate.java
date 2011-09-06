@@ -43,6 +43,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("f.id"), "id");
 		p.add(Projections.property("f.codigoAC"), "codigoAC");
+		p.add(Projections.property("f.nomeACPessoal"), "nomeACPessoal");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("f.id", id));

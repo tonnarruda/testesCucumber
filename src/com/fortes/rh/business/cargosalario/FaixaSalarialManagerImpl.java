@@ -129,6 +129,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			{
 				FaixaSalarial faixaTmp = getDao().findCodigoACById(faixaSalarial.getId());
 				faixaSalarial.setCodigoAC(faixaTmp.getCodigoAC());
+				faixaSalarial.setNomeACPessoal(faixaTmp.getNomeACPessoal());
 				acPessoalClientCargo.updateCargo(faixaSalarial, empresa);
 			}
 			

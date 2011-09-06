@@ -11,7 +11,7 @@ rh_local_francisco:
 rhcomercial_homologacao:
   host: 10.1.3.48
   user: web
-  password: 123456
+  password: F0rt3sW3b!
   tomcat_home: /home/web/temp/apache-tomcat-6.0.29
   fortes_home_properties: name=FORTES_HOME_COMERCIAL
   app_name: fortesrhcomercial
@@ -25,9 +25,9 @@ rhcomercial_homologacao:
     ANT_HOME: /home/web/temp/apache-ant-1.8.1
 	
 rhcomercial_informatica:
-  host: 10.1.254.77777
-  user: root7
-  password: fortes$017
+  host: 10.1.254.77
+  user: root
+  password: fortes$01
   tomcat_home: /usr/local/apache-tomcat-6.0.26
   fortes_home_properties: name=FORTES_HOME_COMERCIAL
   app_name: fortesrhcomercial
@@ -38,9 +38,9 @@ rhcomercial_informatica:
     JRE_HOME: /usr
 	
 rhoficial_informatica:
-  host: 10.1.254.77777
-  user: root7
-  password: fortes$017
+  host: 10.1.254.77
+  user: root
+  password: fortes$01
   tomcat_home: /usr/local/apache-tomcat-6.0.26
   app_name: fortesrh
   db_name: fortesrh
