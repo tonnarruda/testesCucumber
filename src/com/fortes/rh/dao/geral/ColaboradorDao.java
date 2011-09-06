@@ -102,11 +102,11 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens, Long[] areasIds);
 	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId, Long[] areasIds);
 	public int getCountAtivos(Date dataBase, Long empresaId, Long[] areasIds);
-	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);
-	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);	
-	public Collection<TurnOver> countDemitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
-	public Collection<TurnOver> countAdmitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds);
+	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Empresa empresa, Long[] areasIds, boolean isAdmitidos);
+//	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);	
+	public Collection<TurnOver> countAdmitidosDemitidosPeriodoTurnover(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean isAdmitidos);
 	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean consideraDataAdmissao, Long colaboradorId);
+	public Integer countAtivosTurnover(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean consideraDataAdmissao);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public Collection<Colaborador> findByAvaliacao(Long avaliacaoId);
 	public Collection<Colaborador> findAniversariantesByEmpresa(Long empresaId, int dia, int mes);

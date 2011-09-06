@@ -94,6 +94,7 @@
 		<#include "../util/topFiltro.ftl" />
 			<@ww.form name="formBusca" id="formBusca" action="painelIndicadores.action" method="POST">
 				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
+				<@ww.hidden name="empresa.turnoverPorSolicitacao"/>
 				<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
 				
 				<li>&nbsp;</li>

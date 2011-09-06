@@ -143,9 +143,8 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens, Long[] areasIds);
 	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId, Long[] areasIds);
 	public int getCountAtivos(Date dataBase, Long empresaId, Long[] areasIds);
-	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);
-	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);
-	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception;
+	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Empresa empresa, Long[] areasIds, boolean isAdmitidos);
+	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception;
 	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional area);
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) throws Exception;
 	public int countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean considerarDataAdmissao, Long colaboradorId);

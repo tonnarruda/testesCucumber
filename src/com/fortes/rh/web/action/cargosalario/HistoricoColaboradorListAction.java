@@ -157,8 +157,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresa.getId(), LongUtil.arrayLongToCollectionLong(areasIds));
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
-		countAdmitidos = colaboradorManager.countAdmitidos(dataIni, dataFim, empresa.getId(), areasIds);
-		countDemitidos = colaboradorManager.countDemitidos(dataIni, dataFim, empresa.getId(), areasIds);
+		countAdmitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIni, dataFim, empresa, areasIds, true);
+		countDemitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIni, dataFim, empresa, areasIds, false);
 		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresa.getId(), areasIds);
 		
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
@@ -170,7 +170,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
 		
 		TurnOverCollection turnOverCollection = new TurnOverCollection();
-		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), null, LongUtil.arrayLongToCollectionLong(areasIds), null, 0);
+		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa, null, LongUtil.arrayLongToCollectionLong(areasIds), null, 1);
 		turnOverCollection.setTurnOvers(turnOvers);
 		turnover = turnOverCollection.getMedia();
 		
