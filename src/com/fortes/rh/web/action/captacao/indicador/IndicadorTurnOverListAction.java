@@ -71,7 +71,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		try 
 		{
 			TurnOverCollection turnOverCollection = new TurnOverCollection();
-			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema().getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
+			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
 			dataSource = Arrays.asList(turnOverCollection);
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;

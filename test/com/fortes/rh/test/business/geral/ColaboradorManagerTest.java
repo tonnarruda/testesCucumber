@@ -469,7 +469,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
     public void testMontaTurnOver() throws Exception
     {
-    	Long empresaId = 333L;
+    	Empresa empresa = EmpresaFactory.getEmpresa(333L);
     	Date dataIni = DateUtil.criarDataMesAno(01, 01, 2010);
     	Date dataFim = DateUtil.criarDataMesAno(28, 12, 2010);
     	
@@ -501,11 +501,11 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	demitidos.add(montaDemitido(11, 2010, 19));
     	demitidos.add(montaDemitido(12, 2010, 10));
 
-    	colaboradorDao.expects(once()).method("countAdmitidosPeriodo").withAnyArguments().will(returnValue(admitidos));
-    	colaboradorDao.expects(once()).method("countDemitidosPeriodo").withAnyArguments().will(returnValue(demitidos));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(admitidos));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
     	colaboradorDao.expects(once()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(973));
     	
-    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresaId, null, null, null, 1);
+    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa, null, null, null, 1);
   
     	TurnOver[] turnOverArray = (TurnOver[]) turnOvers.toArray(new TurnOver[12]);
     	

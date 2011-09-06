@@ -798,4 +798,8 @@ public class CargoEditAction extends MyActionSupportEdit
 		return compartilharColaboradores;
 	}
 
+	public void setExibColabDesatualizado(boolean exibColabDesatualizado) {
+		this.exibColabDesatualizado = exibColabDesatualizado;
+	}
+
 }

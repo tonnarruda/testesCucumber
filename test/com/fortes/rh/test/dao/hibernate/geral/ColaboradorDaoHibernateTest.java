@@ -14,6 +14,9 @@ import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
+import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
+import com.fortes.rh.dao.captacao.MotivoSolicitacaoDao;
+import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
@@ -39,7 +42,10 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Habilitacao;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -78,8 +84,12 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
+import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -123,6 +133,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
 	private CamposExtrasDao camposExtrasDao;
 	private GrupoACDao grupoACDao;
+	private MotivoSolicitacaoDao motivoSolicitacaoDao;
+	private SolicitacaoDao solicitacaoDao;
+	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -1267,10 +1280,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2004), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area);
 		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2009), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area);
 
-		int count = colaboradorDao.countAdmitidos(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa.getId(), null);
+		int count = colaboradorDao.countAdmitidosDemitidosTurnover(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa, null, true);
 		assertEquals(3, count);
 		
-		count = colaboradorDao.countAdmitidos(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa.getId(), new Long[]{area.getId()});
+		count = colaboradorDao.countAdmitidosDemitidosTurnover(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa, new Long[]{area.getId()}, true);
 		assertEquals(3, count);
 	}
 
@@ -1290,9 +1303,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2004), null, null, area);
 		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2009), null, null, area);
 
-		int count = colaboradorDao.countDemitidos(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa.getId(), null);
+		int count = colaboradorDao.countAdmitidosDemitidosTurnover(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa, null, false);
 		assertEquals(3, count);
-		count = colaboradorDao.countDemitidos(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa.getId(), new Long[]{area.getId()});
+		count = colaboradorDao.countAdmitidosDemitidosTurnover(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa, new Long[]{area.getId()}, false);
 		assertEquals(3, count);
 	}
 
@@ -2825,7 +2838,121 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(new Integer(2), colaboradorDao.getCountAtivos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa.getId()));
 
 	}
+	
+	public void testCountAdmitidosSemTurnover() {
+		
+		Calendar dataDoisMesesAtras = Calendar.getInstance();
+		dataDoisMesesAtras.add(Calendar.MONTH, -2);
+		Calendar dataTresMesesAtras = Calendar.getInstance();
+		dataTresMesesAtras.add(Calendar.MONTH, -3);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaboradorAtivoDentroDaConsulta = ColaboradorFactory.getEntity();
+		colaboradorAtivoDentroDaConsulta.setEmpresa(empresa);
+		colaboradorAtivoDentroDaConsulta.setDataAdmissao(dataTresMesesAtras.getTime());
+		colaboradorAtivoDentroDaConsulta.setDesligado(false);
+		colaboradorDao.save(colaboradorAtivoDentroDaConsulta);
+		
+		HistoricoColaborador histColaboradorAtivoDentroDaConsulta = HistoricoColaboradorFactory.getEntity();
+		histColaboradorAtivoDentroDaConsulta.setColaborador(colaboradorAtivoDentroDaConsulta);
+		histColaboradorAtivoDentroDaConsulta.setStatus(StatusRetornoAC.CONFIRMADO);
+		histColaboradorAtivoDentroDaConsulta.setData(dataTresMesesAtras.getTime());
+		historicoColaboradorDao.save(histColaboradorAtivoDentroDaConsulta);
+		
+		Colaborador colaboradorDentroDaConsulta2 = ColaboradorFactory.getEntity();
+		colaboradorDentroDaConsulta2.setEmpresa(empresa);
+		colaboradorDentroDaConsulta2.setDataAdmissao(dataTresMesesAtras.getTime());
+		colaboradorDentroDaConsulta2.setDesligado(false);
+		colaboradorDao.save(colaboradorDentroDaConsulta2);
+		
+		HistoricoColaborador histColaboradorDentroDaConsulta2 = HistoricoColaboradorFactory.getEntity();
+		histColaboradorDentroDaConsulta2.setColaborador(colaboradorDentroDaConsulta2);
+		histColaboradorDentroDaConsulta2.setStatus(StatusRetornoAC.CONFIRMADO);
+		histColaboradorDentroDaConsulta2.setData(dataTresMesesAtras.getTime());
+		historicoColaboradorDao.save(histColaboradorDentroDaConsulta2);
+		
+		assertEquals(new Integer(2), colaboradorDao.countAdmitidosDemitidosTurnover(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa, null, true));
+	}
 
+	public void testCountAdmitidosComTurnover() {
+		
+		Calendar dataDoisMesesAtras = Calendar.getInstance();
+		dataDoisMesesAtras.add(Calendar.MONTH, -2);
+		Calendar dataTresMesesAtras = Calendar.getInstance();
+		dataTresMesesAtras.add(Calendar.MONTH, -3);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setTurnoverPorSolicitacao(true);
+		empresaDao.save(empresa);
+		
+		MotivoSolicitacao motivoTurnover = MotivoSolicitacaoFactory.getEntity();
+		motivoTurnover.setDescricao("Substituição");
+		motivoTurnover.setTurnover(true);
+		motivoSolicitacaoDao.save(motivoTurnover);
+
+		MotivoSolicitacao motivoSemTurnover = MotivoSolicitacaoFactory.getEntity();
+		motivoSemTurnover.setDescricao("Aumento");
+		motivoSemTurnover.setTurnover(false);
+		motivoSolicitacaoDao.save(motivoSemTurnover);
+		
+		Candidato candidatoTurnover = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidatoTurnover);
+
+		Candidato candidatoSemTurnover = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidatoSemTurnover);
+		
+		Solicitacao solicitacaoTurnover = SolicitacaoFactory.getSolicitacao();
+		solicitacaoTurnover.setMotivoSolicitacao(motivoTurnover);
+		solicitacaoDao.save(solicitacaoTurnover);
+		
+		Solicitacao solicitacaoSemTurnover = SolicitacaoFactory.getSolicitacao();
+		solicitacaoSemTurnover.setMotivoSolicitacao(motivoSemTurnover);
+		solicitacaoDao.save(solicitacaoSemTurnover);
+		
+		CandidatoSolicitacao candSolicTurnover = CandidatoSolicitacaoFactory.getEntity(); 
+		candSolicTurnover.setCandidato(candidatoTurnover);
+		candSolicTurnover.setSolicitacao(solicitacaoTurnover);
+		candidatoSolicitacaoDao.save(candSolicTurnover);
+
+		CandidatoSolicitacao candSolicSemTurnover = CandidatoSolicitacaoFactory.getEntity(); 
+		candSolicSemTurnover.setCandidato(candidatoSemTurnover);
+		candSolicSemTurnover.setSolicitacao(solicitacaoSemTurnover);
+		candidatoSolicitacaoDao.save(candSolicSemTurnover);
+		
+		FaixaSalarial dentista01 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(dentista01);
+		
+		Colaborador colaboradorAtivoDentroDaConsulta = ColaboradorFactory.getEntity();
+		colaboradorAtivoDentroDaConsulta.setEmpresa(empresa);
+		colaboradorAtivoDentroDaConsulta.setCandidato(candidatoSemTurnover);
+		colaboradorAtivoDentroDaConsulta.setDataAdmissao(dataTresMesesAtras.getTime());
+		colaboradorAtivoDentroDaConsulta.setDesligado(false);
+		colaboradorDao.save(colaboradorAtivoDentroDaConsulta);
+		
+		HistoricoColaborador histColaboradorAtivoDentroDaConsulta = HistoricoColaboradorFactory.getEntity();
+		histColaboradorAtivoDentroDaConsulta.setColaborador(colaboradorAtivoDentroDaConsulta);
+		histColaboradorAtivoDentroDaConsulta.setStatus(StatusRetornoAC.CONFIRMADO);
+		histColaboradorAtivoDentroDaConsulta.setData(dataTresMesesAtras.getTime());
+		historicoColaboradorDao.save(histColaboradorAtivoDentroDaConsulta);
+		
+		Colaborador colaboradorDentroDaConsulta2 = ColaboradorFactory.getEntity();
+		colaboradorDentroDaConsulta2.setEmpresa(empresa);
+		colaboradorDentroDaConsulta2.setCandidato(candidatoTurnover);
+		colaboradorDentroDaConsulta2.setDataAdmissao(dataTresMesesAtras.getTime());
+		colaboradorDentroDaConsulta2.setDesligado(false);
+		colaboradorDao.save(colaboradorDentroDaConsulta2);
+		
+		HistoricoColaborador histColaboradorDentroDaConsulta2 = HistoricoColaboradorFactory.getEntity();
+		histColaboradorDentroDaConsulta2.setColaborador(colaboradorDentroDaConsulta2);
+		histColaboradorDentroDaConsulta2.setStatus(StatusRetornoAC.CONFIRMADO);
+		histColaboradorDentroDaConsulta2.setData(dataTresMesesAtras.getTime());
+		historicoColaboradorDao.save(histColaboradorDentroDaConsulta2);
+		
+		assertEquals(new Integer(1), colaboradorDao.countAdmitidosDemitidosTurnover(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa, null, true));
+	}
+	
 	public void testGetCountAtivosDataBase() {
 		Date dataBase = DateUtil.criarDataMesAno(01, 02, 2011);
 
@@ -3094,6 +3221,62 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, vega.getId(), null, null, null, true, null));
 	}
 
+	public void testCountAtivosTurnover() {
+		
+		Empresa vega = EmpresaFactory.getEmpresa();
+		empresaDao.save(vega);
+		
+		MotivoSolicitacao motivoTurnover = MotivoSolicitacaoFactory.getEntity();
+		motivoTurnover.setDescricao("Substituição");
+		motivoTurnover.setTurnover(true);
+		motivoSolicitacaoDao.save(motivoTurnover);
+
+		MotivoSolicitacao motivoSemTurnover = MotivoSolicitacaoFactory.getEntity();
+		motivoSemTurnover.setDescricao("Aumento");
+		motivoSemTurnover.setTurnover(false);
+		motivoSolicitacaoDao.save(motivoSemTurnover);
+		
+		Candidato candidatoTurnover = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidatoTurnover);
+
+		Candidato candidatoSemTurnover = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidatoSemTurnover);
+		
+		Solicitacao solicitacaoTurnover = SolicitacaoFactory.getSolicitacao();
+		solicitacaoTurnover.setMotivoSolicitacao(motivoTurnover);
+		solicitacaoDao.save(solicitacaoTurnover);
+		
+		Solicitacao solicitacaoSemTurnover = SolicitacaoFactory.getSolicitacao();
+		solicitacaoSemTurnover.setMotivoSolicitacao(motivoSemTurnover);
+		solicitacaoDao.save(solicitacaoSemTurnover);
+		
+		CandidatoSolicitacao candSolicTurnover = CandidatoSolicitacaoFactory.getEntity(); 
+		candSolicTurnover.setCandidato(candidatoTurnover);
+		candSolicTurnover.setSolicitacao(solicitacaoTurnover);
+		candidatoSolicitacaoDao.save(candSolicTurnover);
+
+		CandidatoSolicitacao candSolicSemTurnover = CandidatoSolicitacaoFactory.getEntity(); 
+		candSolicSemTurnover.setCandidato(candidatoSemTurnover);
+		candSolicSemTurnover.setSolicitacao(solicitacaoSemTurnover);
+		candidatoSolicitacaoDao.save(candSolicSemTurnover);
+		
+		FaixaSalarial dentista01 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(dentista01);
+		
+		Date data_01_05_2010 = DateUtil.criarDataMesAno(01, 05, 2010);
+		Date data_21_07_2011 = DateUtil.criarDataMesAno(21, 07, 2011);
+		
+		Colaborador joao = montaColaboradorDoTestCountAtivo(vega, data_01_05_2010);
+		joao.setCandidato(candidatoTurnover);
+		montaHistoricoDoTestCountAtivo(data_01_05_2010, dentista01, joao);
+		
+		Colaborador maria = montaColaboradorDoTestCountAtivo(vega, data_21_07_2011);
+		maria.setCandidato(candidatoSemTurnover);
+		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
+		
+		assertEquals(new Integer(1), colaboradorDao.countAtivosTurnover(data_21_07_2011, vega.getId(), null, null, null, true));
+	}
+
 	private void montaHistoricoDoTestCountAtivo(Date dataContratacaoJoao, FaixaSalarial dentista01, Colaborador joao) {
 		HistoricoColaborador histJoaoAtivo = HistoricoColaboradorFactory.getEntity();
 		histJoaoAtivo.setColaborador(joao);
@@ -3118,17 +3301,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
 
-		Collection<TurnOver> colaboradores = colaboradorDao.countDemitidosPeriodo(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa.getId(), longs, longs, longs);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, false);
 		assertEquals(0, colaboradores.size());
 	}
 
-	public void testCountAdmitidosPeriodo() {
+	public void testCountAdmitidosPeriodoTurnover() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
-		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosPeriodo(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa.getId(), longs, longs, longs);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, true);
+		assertEquals(0, colaboradores.size());
+	}
+
+	public void testCountAdmitidosPeriodoTurnoverSolicitacao() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setTurnoverPorSolicitacao(true);
+		empresaDao.save(empresa);
+		
+		Collection<Long> longs = new ArrayList<Long>();
+		longs.add(1L);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, true);
 		assertEquals(0, colaboradores.size());
 	}
 
@@ -3812,6 +4006,19 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
+	}
+
+	public void setMotivoSolicitacaoDao(MotivoSolicitacaoDao motivoSolicitacaoDao) {
+		this.motivoSolicitacaoDao = motivoSolicitacaoDao;
+	}
+
+	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao) {
+		this.solicitacaoDao = solicitacaoDao;
+	}
+
+	public void setCandidatoSolicitacaoDao(
+			CandidatoSolicitacaoDao candidatoSolicitacaoDao) {
+		this.candidatoSolicitacaoDao = candidatoSolicitacaoDao;
 	}
 
 }

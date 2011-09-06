@@ -1,0 +1,1 @@
+alter table empresa add column turnoverPorSolicitacao boolean NOT NULL DEFAULT false;--.go

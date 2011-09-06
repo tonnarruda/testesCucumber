@@ -1,0 +1,1 @@
+alter table motivosolicitacao add column turnover boolean NOT NULL DEFAULT false;--.go

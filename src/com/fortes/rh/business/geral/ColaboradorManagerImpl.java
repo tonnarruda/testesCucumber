@@ -1830,31 +1830,30 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().getCountAtivos(dataBase, empresaId, areasIds);
 	}
 
-	public Integer countAdmitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) 
+	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Empresa empresa, Long[] areasIds, boolean isAdmitidos) 
 	{
-		return getDao().countAdmitidos(dataIni, dataFim, empresaId, areasIds);
+		return getDao().countAdmitidosDemitidosTurnover(dataIni, dataFim, empresa, areasIds, isAdmitidos);
 	}
 
-	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) 
-	{
-		return getDao().countDemitidos(dataIni, dataFim, empresaId, areasIds);
-	}
-
-	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception 
+	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception 
 	{
 		if(filtrarPor == 1)
 			cargosIds = null;
 		else
 			areasIds = null;
 		
-		Collection<TurnOver> admitidos = getDao().countAdmitidosPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds, cargosIds);
-		Collection<TurnOver> demitidos = getDao().countDemitidosPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds, cargosIds);
+		Collection<TurnOver> admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataIni, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, true);
+		Collection<TurnOver> demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataIni, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, false);
 
 		int ate = DateUtil.mesesEntreDatas(dataIni, dataFim);
 		Date dataTmp = DateUtil.getInicioMesData(dataIni);
 
 		Collection<TurnOver> turnOvers = new LinkedList<TurnOver>();
-		double qtdAtivos = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataIni), empresaId, estabelecimentosIds, areasIds, cargosIds, true, null);
+		double qtdAtivos;
+		if (empresa.isTurnoverPorSolicitacao())
+			qtdAtivos = getDao().countAtivosTurnover(DateUtil.getUltimoDiaMesAnterior(dataIni), empresa.getId(), estabelecimentosIds, areasIds, cargosIds, true);
+		else
+			qtdAtivos = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataIni), empresa.getId(), estabelecimentosIds, areasIds, cargosIds, true, null);
 
 		for (int i = 0; i <= ate; i++)
 		{

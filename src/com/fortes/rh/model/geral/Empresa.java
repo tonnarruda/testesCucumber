@@ -84,6 +84,8 @@ public class Empresa extends AbstractModel implements Serializable
     private String mailNaoAptos;
     @OneToOne
     private Exame exame; // Exame ASO
+    
+    private boolean turnoverPorSolicitacao;
 	
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -413,5 +415,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setEnviarEmailAniversariante(boolean enviarEmailAniversariante) {
 		this.enviarEmailAniversariante = enviarEmailAniversariante;
+	}
+
+	public boolean isTurnoverPorSolicitacao() {
+		return turnoverPorSolicitacao;
+	}
+
+	public void setTurnoverPorSolicitacao(boolean turnoverPorSolicitacao) {
+		this.turnoverPorSolicitacao = turnoverPorSolicitacao;
 	}
 }

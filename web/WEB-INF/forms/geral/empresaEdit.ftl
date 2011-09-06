@@ -128,37 +128,41 @@
 		<@ww.textfield label="Máximo de Cargos por Candidato" name="empresa.maxCandidataCargo"  maxLength="3" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;"/>
 		<@ww.checkbox label="Exibir valor do salário na Solicitação de Realinhamento e na Solicitação de Pessoal" name="empresa.exibirSalario" id="exibirSalario" labelPosition="right" /><br>
 		<@ww.checkbox label="Exibir dados do Ambiente nos Relatórios do SESMT" name="empresa.exibirDadosAmbiente" id="exibirDadosAmbiente" labelPosition="right" /><br>
-		<@ww.checkbox label="Enviar e-mails de confirmação" id="emailCandidatoNaoApto" name="empresa.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/>
+		<@ww.checkbox label="Enviar e-mails de confirmação" id="emailCandidatoNaoApto" name="empresa.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/><br>
+		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo está marcado como Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
 		<@ww.textarea label="Texto para email de candidatos não aptos" name="empresa.mailNaoAptos" id="mailNaoAptos" size="40"/>
 		<@ww.textarea label="Mensagem a ser exibida no módulo externo" id="mensagemModuloExterno" name="empresa.mensagemModuloExterno" cssStyle="height:30px;"/>
 		
+		<li>&nbsp;</li>
+				
 		<li>
 			<@ww.div cssClass="divInfo">
+				Configurações do Cartão dos Aniversariantes
+				<br><br>
 				<ul>
-				Configuração do Cartão dos Aniversariantes<br>
-				<@ww.file label="Imagem (400px x 570px)" name="imgCartaoAniversariante" id="imgCartaoAniversariante" liClass="liLeft"/>
-				<li>
-					<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
-						<ul>
+					<@ww.file label="Imagem (400px x 570px)" name="imgCartaoAniversariante" id="imgCartaoAniversariante" liClass="liLeft"/>
+					<li>
+						<@ww.div cssStyle="width:450px; height:55px; text-align:right;">
 							<#if empresa.id?exists && empresa.imgAniversarianteUrl?exists && empresa.imgAniversarianteUrl != "">
-								<a href="cartaoAniversariante.action?empresa.id=${empresa.id}" ><img title="Visualizar Cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgAniversariante.action?empresa.imgAniversarianteUrl=${empresa.imgAniversarianteUrl}"/>"></a>
+								<ul>
+									<a href="cartaoAniversariante.action?empresa.id=${empresa.id}" ><img title="Visualizar Cartão dos aniversariantes." border="0" width="55" height="55" src="<@ww.url includeParams="none" value="/geral/empresa/showImgAniversariante.action?empresa.imgAniversarianteUrl=${empresa.imgAniversarianteUrl}"/>"></a>
+								</ul>
 							</#if>
-						</ul>
-					</@ww.div>
-				</li>
-				<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do Aniversariante)" id="mensagemCartaoAniversariante" name="empresa.mensagemCartaoAniversariante" cssStyle="height:40px;"/>
-				<@ww.checkbox label="Enviar email com Cartão?" name="empresa.enviarEmailAniversariante" id="enviarEmailAniversariante" labelPosition="right" /><br>
+						</@ww.div>
+					</li>
+					<@ww.textarea label="Mensagem (Utilize a expressão #NOMECOLABORADOR#, caso queira exibir o nome do Aniversariante)" id="mensagemCartaoAniversariante" name="empresa.mensagemCartaoAniversariante" cssStyle="height:40px;"/>
+					<@ww.checkbox label="Enviar email com Cartão?" name="empresa.enviarEmailAniversariante" id="enviarEmailAniversariante" labelPosition="right" /><br>
 				</ul>
 			</@ww.div>
 		</li>
-		<br>
+		
+		<li>&nbsp;</li>
+				
 		<li>
 			<@ww.div cssClass="divInfo">
 				<ul>
 					<div style="float:right;"><img id="btnTransferir" border="0" title="Testar Conexão com AC" onclick="testaConexaoAC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
-
 					<@ww.checkbox label="Integra com AC Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right"  />
-					
 					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao" headerKey="" headerValue="Selecione..."/>
 				</ul>
 			</@ww.div>
