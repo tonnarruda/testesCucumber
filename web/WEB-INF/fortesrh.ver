@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.55.47" data="08/09/2011">
+		- CeS > Painel de Indicadores: Novo filtro por Empresa e Áreas Organizacionais.
+		- Utilitários > Cadastros > Empresas: Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo está marcado como Turnover.
+		- ReS > Relatórios > Estatísticas de Vagas por Motivo: Nova filtro para selecionar o status da solicitação.
+	</Versao>
 	<Versao id="1.1.54.46" data="31/08/2011">
 		- ReS > Cadastros > Candidatos > Visualizar Currículo: Nova opção de imprimir Texto Digitalizado.
 		- Aval. Desempenho > Movimentações > Avaliações Desempenho > Resultado da Avaliação > Resultado por Critérios > Agrupar perguntas por aspecto: Exibição no relatório o percentual da performance por Aspecto.

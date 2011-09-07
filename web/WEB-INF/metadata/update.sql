@@ -18103,3 +18103,24 @@ alter sequence papel_sequence restart with 522;--.go
 insert into migrations values('20110831133044');--.go
 
 update parametrosdosistema set appversao = '1.1.54.46';--.go
+-- versao 1.1.55.47
+
+CREATE OR REPLACE FUNCTION normalizar(a_string text)
+  RETURNS text AS
+$BODY$
+BEGIN
+  RETURN TRANSLATE(a_string, 'áéíóúàèìòùãõâêîôôäëïöüçÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ', 'aeiouaeiouaoaeiooaeioucAEIOUAEIOUAOAEIOOAEIOUC');
+END
+$BODY$
+  LANGUAGE plpgsql;--.go
+
+ALTER FUNCTION normalizar(text) OWNER TO postgres;--.go
+insert into migrations values('20110905092612');--.go
+
+alter table motivosolicitacao add column turnover boolean NOT NULL DEFAULT false;--.go
+insert into migrations values('20110905101802');--.go
+
+alter table empresa add column turnoverPorSolicitacao boolean NOT NULL DEFAULT false;--.go
+insert into migrations values('20110905105154');--.go
+
+update parametrosdosistema set appversao = '1.1.55.47';--.go

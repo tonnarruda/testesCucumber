@@ -70,7 +70,8 @@ CREATE TABLE empresa (
 	emailresplimitecontrato character varying(120) default '',
 	imgAniversarianteUrl varchar(200),
 	mensagemCartaoAniversariante varchar(300),
-	enviarEmailAniversariante boolean default false
+	enviarEmailAniversariante boolean default false,
+	turnoverPorSolicitacao boolean NOT NULL DEFAULT false
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
@@ -615,7 +616,8 @@ ALTER TABLE ONLY candidato_cargo ADD CONSTRAINT candidato_cargo_cargo_fk FOREIGN
 
 CREATE TABLE motivosolicitacao (
     id bigint NOT NULL,
-    descricao character varying(100)
+    descricao character varying(100),
+    turnover boolean NOT NULL DEFAULT false
 );
 ALTER TABLE motivosolicitacao ADD CONSTRAINT motivosolicitacao_pkey PRIMARY KEY (id);
 CREATE SEQUENCE motivosolicitacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
@@ -2417,3 +2419,14 @@ ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompete
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_candidato_fk FOREIGN KEY (candidato_id) REFERENCES candidato(id);
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_configuracaoNivelCompetenciaColaborador_fk FOREIGN KEY (configuracaoNivelCompetenciaColaborador_id) REFERENCES configuracaoNivelCompetenciaColaborador(id);
 CREATE SEQUENCE configuracaoNivelCompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE OR REPLACE FUNCTION normalizar(a_string text)
+  RETURNS text AS
+$BODY$
+BEGIN
+  RETURN TRANSLATE(a_string, 'áéíóúàèìòùãõâêîôôäëïöüçÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ', 'aeiouaeiouaoaeiooaeioucAEIOUAEIOUAOAEIOOAEIOUC');
+END
+$BODY$
+  LANGUAGE plpgsql;--.go
+
+ALTER FUNCTION normalizar(text) OWNER TO postgres;--.go
