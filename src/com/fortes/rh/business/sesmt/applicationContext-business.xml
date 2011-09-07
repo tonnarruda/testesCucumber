@@ -313,6 +313,12 @@
     <property name="funcaoManager">
       <ref bean="funcaoManager" />
     </property>
+    <property name="riscoAmbienteManager">
+      <ref bean="riscoAmbienteManager" />
+    </property>
+    <property name="historicoAmbienteManager">
+      <ref bean="historicoAmbienteManager" />
+    </property>
   </bean>
   <bean id="pcmsoManager" parent="parentManager">
     <property name="proxyInterfaces">

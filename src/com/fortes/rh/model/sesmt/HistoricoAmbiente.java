@@ -45,6 +45,11 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 	@Transient
 	private Date dataProximoHistorico;
 
+	@Transient
+	private Risco risco;
+	@Transient
+	private Collection<Risco> riscos;
+
 	public HistoricoAmbiente()
 	{	}
 
@@ -69,6 +74,21 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 		this.data = data;
 		this.ambiente = ambiente;
 	}
+   
+	public HistoricoAmbiente(Long ambienteId, String ambienteNome, Long riscoId, String riscoDescricao)
+    {
+    	if(this.ambiente == null)
+    		this.ambiente = new Ambiente();
+    	
+    	this.getAmbiente().setId(ambienteId);
+    	this.getAmbiente().setNome(ambienteNome);
+    	
+    	if(this.risco == null)
+    		this.risco = new Risco();
+    	
+    	this.risco.setId(riscoId);
+    	this.risco.setDescricao(riscoDescricao);
+    }
 
 	public Date getData()
 	{
@@ -136,5 +156,36 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 
 	public void setDataProximoHistorico(Date dataProximoHistorico) {
 		this.dataProximoHistorico = dataProximoHistorico;
+	}
+
+	public Risco getRisco() {
+		return risco;
+	}
+
+	public void setRiscos(Collection<Risco> riscos){
+		this.riscos = riscos;
+	}
+
+	public Collection<Risco> getRiscos() {
+		return riscos;
+	}
+	
+	public String getDescricaoRiscos()
+	{
+		StringBuilder descricao = new StringBuilder("");
+		int cont = 1;
+		if(this.riscos != null && !this.riscos.isEmpty())
+		{
+			for (Risco risco : this.riscos)
+			{
+				descricao.append("- " + risco.getDescricao());
+				if(cont != riscos.size())
+					descricao.append("\n");
+				
+				cont++;
+			}
+		}
+		
+		return descricao.toString();
 	}
 }

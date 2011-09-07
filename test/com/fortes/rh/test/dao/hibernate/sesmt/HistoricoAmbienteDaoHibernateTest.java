@@ -8,12 +8,19 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
+import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.sesmt.EpiFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -21,7 +28,7 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 {
 	private HistoricoAmbienteDao historicoAmbienteDao;
 	private AmbienteDao ambienteDao;
-//	private RiscoAmbienteDao riscoAmbienteDao;
+	private RiscoAmbienteDao riscoAmbienteDao;
 	private RiscoDao riscoDao;
 
 	public HistoricoAmbiente getEntity()
@@ -135,11 +142,72 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		historicoAmbienteDao.findDadosNoPeriodo(ambiente.getId(), dataIni, dataFim);
 	}
 
+	public void testFindRiscosAmbientes() throws Exception
+	{
+		Ambiente a1 = new Ambiente();
+		a1.setNome("a1");
+		ambienteDao.save(a1);
+		
+		Ambiente a2 = new Ambiente();
+		a2.setNome("a2");
+		ambienteDao.save(a2);
+		
+		Risco risco1 = RiscoFactory.getEntity();
+		risco1.setDescricao("Risco 1");
+		riscoDao.save(risco1);		
+
+		Risco risco2 = RiscoFactory.getEntity();
+		risco1.setDescricao("Risco 2");
+		riscoDao.save(risco2);		
+
+		HistoricoAmbiente historico1 = new HistoricoAmbiente();
+		historico1.setData(new Date("2007/05/01"));
+		historico1.setAmbiente(a1);
+		historicoAmbienteDao.save(historico1);
+		
+		HistoricoAmbiente historico2 = new HistoricoAmbiente();
+		historico2.setData(new Date("2008/05/01"));
+		historico2.setAmbiente(a1);
+		historicoAmbienteDao.save(historico2);
+		
+		HistoricoAmbiente historico3 = new HistoricoAmbiente();
+		historico3.setData(new Date("2007/01/01"));
+		historico3.setAmbiente(a2);
+		historicoAmbienteDao.save(historico3);
+		
+		HistoricoAmbiente historico4 = new HistoricoAmbiente();
+		historico4.setData(new Date("2008/01/01"));
+		historico4.setAmbiente(a2);
+		historicoAmbienteDao.save(historico4);
+		
+		RiscoAmbiente riscoAmbiente1 = RiscoAmbienteFactory.getEntity();
+		riscoAmbiente1.setRisco(risco1);
+		riscoAmbiente1.setHistoricoAmbiente(historico2);
+		riscoAmbienteDao.save(riscoAmbiente1);
+
+		RiscoAmbiente riscoAmbiente2 = RiscoAmbienteFactory.getEntity();
+		riscoAmbiente2.setRisco(risco2);
+		riscoAmbiente2.setHistoricoAmbiente(historico4);
+		riscoAmbienteDao.save(riscoAmbiente2);
+		
+		Collection<Long> ambientesIds = new ArrayList<Long>();
+		ambientesIds.add(a1.getId());
+		ambientesIds.add(a2.getId());
+		
+		Collection<HistoricoAmbiente> historicoAmbientes = historicoAmbienteDao.findRiscosAmbientes(ambientesIds, new Date("2008/01/01"));
+		
+		assertEquals("Test 1", 1, historicoAmbientes.size());
+	}
+
 	public void setAmbienteDao(AmbienteDao ambienteDao) {
 		this.ambienteDao = ambienteDao;
 	}
 
 	public void setRiscoDao(RiscoDao riscoDao) {
 		this.riscoDao = riscoDao;
+	}
+
+	public void setRiscoAmbienteDao(RiscoAmbienteDao riscoAmbienteDao) {
+		this.riscoAmbienteDao = riscoAmbienteDao;
 	}
 }

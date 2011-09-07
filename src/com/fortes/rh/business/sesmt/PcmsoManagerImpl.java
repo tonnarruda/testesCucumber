@@ -10,6 +10,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Agenda;
 import com.fortes.rh.model.sesmt.Evento;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
 import com.fortes.rh.model.sesmt.relatorio.ExameAnualRelatorio;
@@ -27,6 +28,8 @@ public class PcmsoManagerImpl implements PcmsoManager
 	private CatManager catManager;
 	private HistoricoFuncaoManager historicoFuncaoManager;
 	private FuncaoManager funcaoManager;
+	private RiscoAmbienteManager riscoAmbienteManager;
+	private HistoricoAmbienteManager historicoAmbienteManager;
 
 	public Collection<PCMSO> montaRelatorio(Date dataIni, Date dataFim, Estabelecimento estabelecimento, Long empresaId, boolean exibirAgenda, boolean exibirDistColaboradorSetor, boolean exibirRiscos, boolean exibirEpis, boolean exibirExames, boolean exibirAcidentes) throws Exception
 	{
@@ -43,6 +46,7 @@ public class PcmsoManagerImpl implements PcmsoManager
 		msg.append(montaTabelaAnualExames(pcmso, dataIni, estabelecimento, exibirExames));
 		msg.append(montaTabelaAnualCats(pcmso, dataIni, estabelecimento, exibirAcidentes));
 		msg.append(montaEpisFuncao(pcmso, dataIni, estabelecimento, exibirEpis));
+		msg.append(montaRiscosAmbientais(pcmso, dataIni, estabelecimento, exibirRiscos));
 		
 		if(!msg.toString().equals(""))
 			throw new ColecaoVaziaException(msg.toString());
@@ -69,6 +73,26 @@ public class PcmsoManagerImpl implements PcmsoManager
 			pcmso.setHistoricoFuncaos(historicoFuncaos);
 		}
 
+		return "";
+	}
+	
+	private String montaRiscosAmbientais (PCMSO pcmso, Date data, Estabelecimento estabelecimento, boolean exibirRiscos) throws ColecaoVaziaException
+	{
+		if (exibirRiscos)
+		{
+			Collection<String> colaboradores = riscoAmbienteManager.findColaboradoresSemAmbiente(data, estabelecimento.getId());
+			if(!colaboradores.isEmpty())
+				return "Não existe Ambiente para os Colaboradores: " + StringUtil.converteCollectionToString(colaboradores) + "<br>";
+			
+			Collection<Long> funcaoIds = riscoAmbienteManager.findAmbienteAtualDosColaboradores(data, estabelecimento.getId());
+			Collection<HistoricoAmbiente> historicoAmbiente = historicoAmbienteManager.findRiscosAmbientes(funcaoIds, data);
+			
+			if (historicoAmbiente.isEmpty())
+				return "Não existem dados de EPIs para o período informado.<br>";
+			
+			pcmso.setHistoricoAmbientes(historicoAmbiente);
+		}
+		
 		return "";
 	}
 
@@ -204,5 +228,13 @@ public class PcmsoManagerImpl implements PcmsoManager
 	public void setFuncaoManager(FuncaoManager funcaoManager)
 	{
 		this.funcaoManager = funcaoManager;
+	}
+
+	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
+		this.riscoAmbienteManager = riscoAmbienteManager;
+	}
+
+	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager) {
+		this.historicoAmbienteManager = historicoAmbienteManager;
 	}
 }

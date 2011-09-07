@@ -93,4 +93,9 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 	{
 		return getDao().findUltimoHistoricoAteData(ambienteId, dataMaxima);
 	}
+
+	public Collection<HistoricoAmbiente> findRiscosAmbientes(Collection<Long> ambienteIds, Date data) 
+	{
+		return getDao().findRiscosAmbientes(ambienteIds, data);
+	}
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.sesmt.Agenda;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 
 
@@ -23,6 +24,7 @@ public class PCMSO
 	private Collection<ExameAnualRelatorio> exames;
 	private Collection<CatRelatorioAnual> cats;
 	private Collection<HistoricoFuncao> historicoFuncaos;
+	private Collection<HistoricoAmbiente> historicoAmbientes;
 	
 	public PCMSO() {
 	}
@@ -143,5 +145,13 @@ public class PCMSO
 	public void setHistoricoFuncaos(Collection<HistoricoFuncao> historicoFuncaos)
 	{
 		this.historicoFuncaos = historicoFuncaos;
+	}
+
+	public Collection<HistoricoAmbiente> getHistoricoAmbientes() {
+		return historicoAmbientes;
+	}
+
+	public void setHistoricoAmbientes(Collection<HistoricoAmbiente> historicoAmbientes) {
+		this.historicoAmbientes = historicoAmbientes;
 	}
 }

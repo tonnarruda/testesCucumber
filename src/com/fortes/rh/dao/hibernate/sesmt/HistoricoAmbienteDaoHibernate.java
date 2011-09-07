@@ -1,10 +1,14 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
@@ -13,7 +17,11 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
+import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
 
 @SuppressWarnings("unchecked")
@@ -94,4 +102,49 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 		return query.list();
 	}
 	
+	public Collection<HistoricoAmbiente> findRiscosAmbientes(Collection<Long> ambienteIds, Date data)
+	{
+		StringBuilder hql = new StringBuilder("select new HistoricoAmbiente(a.id, a.nome, r.id, r.descricao) ");
+		hql.append("from HistoricoAmbiente h ");
+		hql.append("left join h.riscoAmbientes ra ");
+		hql.append("left join h.ambiente a ");
+		hql.append("left join ra.risco r ");
+			hql.append("where h.data = (select max(h2.data) ");
+							hql.append("from HistoricoAmbiente h2 ");
+							hql.append("where h2.ambiente.id = h.ambiente.id ");
+							hql.append("and h2.data <= :dataHist) ");
+			hql.append("and a.id in (:ambienteIds) ");
+			hql.append("and r.id is not null ");
+		hql.append("order by a.nome, r.descricao ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setDate("dataHist", data);
+		query.setParameterList("ambienteIds", ambienteIds, Hibernate.LONG);
+
+		Collection<HistoricoAmbiente> historicosDistinct = new ArrayList<HistoricoAmbiente>();
+		List<HistoricoAmbiente> historicos = query.list();
+		
+		Map<Ambiente, Collection<Risco>> riscosPorAmbiente = new HashMap<Ambiente, Collection<Risco>>();
+		
+		for (HistoricoAmbiente historicoAmbiente : historicos)
+		{
+			if(riscosPorAmbiente.get(historicoAmbiente.getAmbiente()) == null)
+				riscosPorAmbiente.put(historicoAmbiente.getAmbiente(), new ArrayList<Risco>());
+
+			riscosPorAmbiente.get(historicoAmbiente.getAmbiente()).add(historicoAmbiente.getRisco());
+		}
+		
+		Collection<Ambiente> ambientes = riscosPorAmbiente.keySet();
+		
+		for (Ambiente chave : ambientes)
+		{
+			HistoricoAmbiente historicoFuncao = new HistoricoAmbiente();
+			historicoFuncao.setAmbiente(chave);
+			historicoFuncao.setRiscos((riscosPorAmbiente.get(chave)));
+			
+			historicosDistinct.add(historicoFuncao);			
+		}
+		
+		return historicosDistinct;
+	}
 }
