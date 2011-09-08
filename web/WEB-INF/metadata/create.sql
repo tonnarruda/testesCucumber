@@ -1952,11 +1952,10 @@ CREATE FUNCTION to_ascii(bytea, name)
 RETURNS text STRICT AS 'to_ascii_encname' LANGUAGE internal;
 
 CREATE OR REPLACE FUNCTION normalizar(a_string text)
-RETURNS text AS '
+  RETURNS text AS '
 BEGIN
-	RETURN to_ascii(convert_to(a_string, ''latin1''), ''latin1'');
-END
-' LANGUAGE plpgsql;
+  RETURN TRANSLATE(a_string, ''áéíóúàèìòùãõâêîôôäëïöüçÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ'', ''aeiouaeiouaoaeiooaeioucAEIOUAEIOUAOAEIOOAEIOUC'');
+END' LANGUAGE plpgsql;
 
 CREATE TABLE extintor (
 	id bigint NOT NULL,
@@ -2419,14 +2418,3 @@ ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompete
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_candidato_fk FOREIGN KEY (candidato_id) REFERENCES candidato(id);
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_configuracaoNivelCompetenciaColaborador_fk FOREIGN KEY (configuracaoNivelCompetenciaColaborador_id) REFERENCES configuracaoNivelCompetenciaColaborador(id);
 CREATE SEQUENCE configuracaoNivelCompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
-
-CREATE OR REPLACE FUNCTION normalizar(a_string text)
-  RETURNS text AS
-$BODY$
-BEGIN
-  RETURN TRANSLATE(a_string, 'áéíóúàèìòùãõâêîôôäëïöüçÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ', 'aeiouaeiouaoaeiooaeioucAEIOUAEIOUAOAEIOOAEIOUC');
-END
-$BODY$
-  LANGUAGE plpgsql;--.go
-
-ALTER FUNCTION normalizar(text) OWNER TO postgres;--.go
