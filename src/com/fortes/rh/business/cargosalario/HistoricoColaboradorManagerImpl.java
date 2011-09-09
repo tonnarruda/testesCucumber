@@ -591,7 +591,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		int proximo = 1;
 		for (HistoricoColaborador historicoColaboradorTmp : historicoColaboradors)
 		{
-			if (historicoColaboradorTmp.getMotivo().equals("null") || historicoColaboradorTmp.getMotivo().equals(""))
+			if (historicoColaboradorTmp.getMotivo() == null || historicoColaboradorTmp.getMotivo().equals(""))
 				historicoColaboradorTmp.setMotivo("Mudança de Situação");
 
 			switch (historicoColaboradorTmp.getTipoSalario())
