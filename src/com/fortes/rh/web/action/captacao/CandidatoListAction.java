@@ -52,6 +52,7 @@ import com.fortes.rh.model.dicionario.NivelIdioma;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
@@ -207,6 +208,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	private Boolean compartilharCandidatos;
 	private Integer qtdRegistros = 100;
+	private char statusSolicitacao;
 
 	public String list() throws Exception
 	{
@@ -702,7 +704,7 @@ public class CandidatoListAction extends MyActionSupportList
 		avaliacaoCandidatos = new ArrayList<AvaliacaoCandidatosRelatorio>();
 		try
 		{
-			avaliacaoCandidatos = candidatoManager.findRelatorioAvaliacaoCandidatos(dataCadIni, dataCadFim, getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck));
+			avaliacaoCandidatos = candidatoManager.findRelatorioAvaliacaoCandidatos(dataCadIni, dataCadFim, getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), statusSolicitacao);
 			parametros = RelatorioUtil.getParametrosRelatorio("Avaliações dos Candidatos", getEmpresaSistema(), getPeriodoFormatado());
 			return SUCCESS;
 
@@ -719,7 +721,10 @@ public class CandidatoListAction extends MyActionSupportList
 	{
 		String periodoFormatado = "-";
 		if (dataCadIni != null && dataCadFim != null)
-			periodoFormatado = "Período: " + DateUtil.formataDiaMesAno(dataCadIni) + " - " + DateUtil.formataDiaMesAno(dataCadFim);
+		{
+			StatusSolicitacao status = new StatusSolicitacao();
+			periodoFormatado = status.get(statusSolicitacao) + " - " +  "Período: " + DateUtil.formataDiaMesAno(dataCadIni) + " - " + DateUtil.formataDiaMesAno(dataCadFim);
+		}
 
 		return periodoFormatado;
 	}
@@ -1559,6 +1564,14 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setOrdenar(String ordenar) {
 		this.ordenar = ordenar;
+	}
+
+	public char getStatusSolicitacao() {
+		return statusSolicitacao;
+	}
+
+	public void setStatusSolicitacao(char statusSolicitacao) {
+		this.statusSolicitacao = statusSolicitacao;
 	}
 
 }

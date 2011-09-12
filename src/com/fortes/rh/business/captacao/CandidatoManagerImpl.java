@@ -1013,9 +1013,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		super.update(candidato);
 	}
 
-	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds) throws ColecaoVaziaException
+	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, char statusSolicitacao) throws ColecaoVaziaException
 	{
-		Collection<AvaliacaoCandidatosRelatorio> avaliacaoCandidatos = getDao().findRelatorioAvaliacaoCandidatos(dataIni, dataFim, empresaId, estabelecimentoIds, areaIds, cargoIds);
+		Collection<AvaliacaoCandidatosRelatorio> avaliacaoCandidatos = getDao().findRelatorioAvaliacaoCandidatos(dataIni, dataFim, empresaId, estabelecimentoIds, areaIds, cargoIds, statusSolicitacao);
 
 		if (avaliacaoCandidatos == null || avaliacaoCandidatos.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");

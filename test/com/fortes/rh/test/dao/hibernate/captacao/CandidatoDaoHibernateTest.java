@@ -40,6 +40,7 @@ import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
@@ -1988,25 +1989,37 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoForaDaConsultaCargoDiferente.setCargos(cargos2);
 		candidatoDao.save(candidatoForaDaConsultaCargoDiferente);
 
-		Solicitacao solicitacao1 = new Solicitacao();
-		solicitacao1.setEstabelecimento(estabelecimento);
-		solicitacao1.setAreaOrganizacional(areaOrganizacional);
-		solicitacaoDao.save(solicitacao1);
+		Solicitacao solicitacaoEncerrada = new Solicitacao();
+		solicitacaoEncerrada.setEstabelecimento(estabelecimento);
+		solicitacaoEncerrada.setAreaOrganizacional(areaOrganizacional);
+		solicitacaoEncerrada.setDataEncerramento(dataDoisMesesAtras.getTime());
+		solicitacaoDao.save(solicitacaoEncerrada);
+		
+		Solicitacao solicitacaoAberta = new Solicitacao();
+		solicitacaoAberta.setEstabelecimento(estabelecimento);
+		solicitacaoAberta.setAreaOrganizacional(areaOrganizacional);
+		solicitacaoAberta.setDataEncerramento(DateUtil.criarDataMesAno(01, 01, 2030));
+		solicitacaoDao.save(solicitacaoAberta);
 
-		Solicitacao solicitacao2 = new Solicitacao();
-		solicitacao2.setEstabelecimento(estabelecimento);
-		solicitacao2.setAreaOrganizacional(areaOrganizacional);
-		solicitacaoDao.save(solicitacao2);
+		Solicitacao solicitacaoFora = new Solicitacao();
+		solicitacaoFora.setEstabelecimento(estabelecimento);
+		solicitacaoFora.setAreaOrganizacional(areaOrganizacional);
+		solicitacaoDao.save(solicitacaoFora);
 
-		CandidatoSolicitacao candidatoSolicitacao = new CandidatoSolicitacao();
-		candidatoSolicitacao.setCandidato(candidato1);
-		candidatoSolicitacao.setSolicitacao(solicitacao1);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		CandidatoSolicitacao candidatoSolicitacaoEncerrada = new CandidatoSolicitacao();
+		candidatoSolicitacaoEncerrada.setCandidato(candidato1);
+		candidatoSolicitacaoEncerrada.setSolicitacao(solicitacaoEncerrada);
+		candidatoSolicitacaoDao.save(candidatoSolicitacaoEncerrada);
+		
+		CandidatoSolicitacao candidatoSolicitacaoAberta = new CandidatoSolicitacao();
+		candidatoSolicitacaoAberta.setCandidato(candidatoForaDaConsultaCargoDiferente);
+		candidatoSolicitacaoAberta.setSolicitacao(solicitacaoAberta);
+		candidatoSolicitacaoDao.save(candidatoSolicitacaoAberta);
 
-		CandidatoSolicitacao candidatoSolicitacao2 = new CandidatoSolicitacao();
-		candidatoSolicitacao2.setCandidato(candidatoForaDaConsultaCargoDiferente);
-		candidatoSolicitacao2.setSolicitacao(solicitacao2);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+		CandidatoSolicitacao candidatoSolicitacaoFora = new CandidatoSolicitacao();
+		candidatoSolicitacaoFora.setCandidato(candidatoForaDaConsultaCargoDiferente);
+		candidatoSolicitacaoFora.setSolicitacao(solicitacaoFora);
+		candidatoSolicitacaoDao.save(candidatoSolicitacaoFora);
 
 		EtapaSeletiva etapaSeletiva1 = EtapaSeletivaFactory.getEntity();
 		etapaSeletiva1.setNome("Entrevista ");
@@ -2017,32 +2030,32 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		etapaSeletivaDao.save(etapaSeletiva2);
 
 		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity();
-		historicoCandidato1.setCandidatoSolicitacao(candidatoSolicitacao);
+		historicoCandidato1.setCandidatoSolicitacao(candidatoSolicitacaoEncerrada);
 		historicoCandidato1.setData(dataDoisMesesAtras.getTime());
 		historicoCandidato1.setEtapaSeletiva(etapaSeletiva1);
 		historicoCandidato1.setApto(Apto.SIM);
 		historicoCandidatoDao.save(historicoCandidato1);
 
 		HistoricoCandidato historicoCandidato1_ = HistoricoCandidatoFactory.getEntity();
-		historicoCandidato1_.setCandidatoSolicitacao(candidatoSolicitacao);
+		historicoCandidato1_.setCandidatoSolicitacao(candidatoSolicitacaoAberta);
 		historicoCandidato1_.setData(dataDoisMesesAtras.getTime());
 		historicoCandidato1_.setEtapaSeletiva(etapaSeletiva2);
 		historicoCandidato1_.setApto(Apto.NAO);
 		historicoCandidatoDao.save(historicoCandidato1_);
 
 		HistoricoCandidato historicoCandidatoForaDaConsulta = HistoricoCandidatoFactory.getEntity();
-		historicoCandidatoForaDaConsulta.setCandidatoSolicitacao(candidatoSolicitacao2);
+		historicoCandidatoForaDaConsulta.setCandidatoSolicitacao(candidatoSolicitacaoFora);
 		historicoCandidatoForaDaConsulta.setData(dataDoisMesesAtras.getTime());
 		historicoCandidatoForaDaConsulta.setEtapaSeletiva(etapaSeletiva2);
 		historicoCandidatoForaDaConsulta.setApto(Apto.NAO);
 		historicoCandidatoDao.save(historicoCandidatoForaDaConsulta);
 
-		Collection<AvaliacaoCandidatosRelatorio> resultados = candidatoDao.findRelatorioAvaliacaoCandidatos(dataDoisMesesAtras.getTime(), hoje, empresa.getId(), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo1.getId()});
+		Collection<AvaliacaoCandidatosRelatorio> resultadosComStatusSolicitacaoTodas = candidatoDao.findRelatorioAvaliacaoCandidatos(dataDoisMesesAtras.getTime(), hoje, empresa.getId(), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo1.getId()}, StatusSolicitacao.TODAS);
+		Collection<AvaliacaoCandidatosRelatorio> resultadosComStatusSolicitacaoEncerradas = candidatoDao.findRelatorioAvaliacaoCandidatos(dataDoisMesesAtras.getTime(), hoje, empresa.getId(), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo1.getId()}, StatusSolicitacao.ENCERRADA);
 
-		assertNotNull(resultados);
-		assertEquals(2, resultados.size());
-		assertEquals(Integer.valueOf(1), ((AvaliacaoCandidatosRelatorio)resultados.toArray()[0]).getTotal());
-
+		assertEquals(1, resultadosComStatusSolicitacaoTodas.size());
+		assertEquals(1, resultadosComStatusSolicitacaoEncerradas.size());
+		assertEquals(Integer.valueOf(1), ((AvaliacaoCandidatosRelatorio)resultadosComStatusSolicitacaoTodas.toArray()[0]).getTotal());
 	}
 
 	public void testFindByNomeCpf()

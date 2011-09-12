@@ -99,7 +99,7 @@
 					</ul>
 				</@ww.div>
 			</li>
-
+		<@ww.select id="statusSolicitacao" label="Considerar Solicitações de Pessoal" name="statusSolicitacao" list=r"#{'T':'Abertas e Encerradas', 'A':'Abertas', 'E':'Encerradas'}"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

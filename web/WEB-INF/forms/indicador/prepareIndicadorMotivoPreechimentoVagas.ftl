@@ -33,7 +33,7 @@
 	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
 
-	<@ww.select id="statusSolicitacao" label="Status" name="statusSolicitacao" list=r"#{'T':'Todos', 'A':'Abertas', 'E':'Encerradas'}"/>
+	<@ww.select id="statusSolicitacao" label="Considerar Solicitações de Pessoal" name="statusSolicitacao" list=r"#{'T':'Abertas e Encerradas', 'A':'Abertas', 'E':'Encerradas'}"/>
 </@ww.form>
 
 

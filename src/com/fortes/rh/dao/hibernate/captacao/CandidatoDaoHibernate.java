@@ -42,6 +42,7 @@ import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Sexo;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.util.ArquivoUtil;
 
 @SuppressWarnings({ "deprecation", "unchecked" })
@@ -798,7 +799,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.executeUpdate();
 	}
 
-	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds)
+	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, char statusSolicitacao)
 	{
 		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio(count(c.id), es.nome, hc.apto) ");
 		hql.append("from Candidato c ");
@@ -809,6 +810,11 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		hql.append("where c.empresa.id = :empresaId ");
 		hql.append("and hc.data between :dataIni and :dataFim ");
 
+		if (statusSolicitacao == StatusSolicitacao.ABERTA)
+			hql.append("and (sol.dataEncerramento is null or sol.dataEncerramento >= :dataFim) ");
+		else if (statusSolicitacao == StatusSolicitacao.ENCERRADA)
+			hql.append("and (sol.dataEncerramento is not null and sol.dataEncerramento <= :dataFim) ");
+		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			hql.append("and sol.estabelecimento.id in (:estabelecimentoIds) ");
 
@@ -817,6 +823,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		if (cargoIds != null && cargoIds.length > 0)
 			hql.append("and c.cargos.id in (:cargoIds) ");
+
 
 		hql.append("group by hc.apto, es.nome order by es.nome ");
 
