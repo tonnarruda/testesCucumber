@@ -417,4 +417,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public Collection<Empresa> findByCartaoAniversario() {
 		return getDao().findByCartaoAniversario();
 	}
+
+	public boolean checkEmpresaIntegradaAc() {
+		return getDao().checkEmpresaIntegradaAc();
+	}
 }

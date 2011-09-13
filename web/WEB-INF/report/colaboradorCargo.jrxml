@@ -27,6 +27,7 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
 	<parameter name="EXIBIRSALARIO" isForPrompting="false" class="java.lang.Boolean"/>
+	<parameter name="EXIBIRSALARIOVARIAVEL" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="faixaSalarial.descricao" class="java.lang.String"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
@@ -207,14 +208,15 @@
 		</pageHeader>
 		<columnHeader>
 			<band height="32"  isSplitAllowed="true" >
+				<elementGroup><!--  Start: 3 !-->
 				<staticText>
 					<reportElement
-						x="263"
+						x="231"
 						y="15"
-						width="93"
+						width="126"
 						height="12"
 						key="staticText-9">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -229,7 +231,7 @@
 						width="73"
 						height="12"
 						key="staticText-10">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -244,7 +246,7 @@
 						width="102"
 						height="12"
 						key="staticText-13">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -252,11 +254,12 @@
 					</textElement>
 				<text><![CDATA[Salário]]></text>
 				</staticText>
+				</elementGroup><!-- End 3 !-->
 				<staticText>
 					<reportElement
 						x="12"
 						y="15"
-						width="248"
+						width="217"
 						height="12"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -265,11 +268,12 @@
 					</textElement>
 				<text><![CDATA[Colaborador]]></text>
 				</staticText>
+				<elementGroup><!--  Start: 2 !-->
 				<staticText>
 					<reportElement
-						x="262"
+						x="231"
 						y="15"
-						width="131"
+						width="163"
 						height="12"
 						key="staticText-5">
 							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -295,6 +299,8 @@
 					</textElement>
 				<text><![CDATA[Data de Admissão]]></text>
 				</staticText>
+				</elementGroup><!-- End 2 !-->
+				<elementGroup><!--  Start: 1 !-->
 				<staticText>
 					<reportElement
 						x="396"
@@ -302,7 +308,7 @@
 						width="37"
 						height="12"
 						key="staticText-11">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -317,7 +323,7 @@
 						width="60"
 						height="12"
 						key="staticText-12">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -327,12 +333,12 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="263"
+						x="231"
 						y="15"
-						width="70"
+						width="103"
 						height="12"
 						key="staticText-14">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -347,7 +353,7 @@
 						width="59"
 						height="12"
 						key="staticText-15">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -355,6 +361,7 @@
 					</textElement>
 				<text><![CDATA[Data de Admis.]]></text>
 				</staticText>
+				</elementGroup><!-- End 1 !-->
 				<staticText>
 					<reportElement
 						x="0"
@@ -368,6 +375,7 @@
 					</textElement>
 				<text><![CDATA[Cargo / Faixa Salarial]]></text>
 				</staticText>
+				<elementGroup><!--  Start: 1 !-->
 				<staticText>
 					<reportElement
 						x="501"
@@ -375,7 +383,7 @@
 						width="33"
 						height="12"
 						key="staticText-18">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -383,6 +391,7 @@
 					</textElement>
 				<text><![CDATA[Total]]></text>
 				</staticText>
+				</elementGroup><!-- End 1 !-->
 			</band>
 		</columnHeader>
 		<detail>
@@ -402,6 +411,7 @@
 						</reportElement>
 					<graphicElement stretchType="RelativeToTallestObject" pen="None"/>
 				</rectangle>
+				<elementGroup><!--  Start: 5 !-->
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="397"
@@ -417,6 +427,8 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
 				</textField>
+				</elementGroup><!-- End 5 !-->
+				<elementGroup><!--  Start: 4 !-->
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="397"
@@ -424,7 +436,7 @@
 						width="36"
 						height="11"
 						key="textField">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -432,6 +444,8 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salarioCalculado}]]></textFieldExpression>
 				</textField>
+				</elementGroup><!-- End 4 !-->
+				<elementGroup><!--  Start: 6 !-->
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="434"
@@ -439,7 +453,7 @@
 						width="102"
 						height="11"
 						key="textField-13">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -447,11 +461,13 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salarioCalculado}]]></textFieldExpression>
 				</textField>
+				</elementGroup><!-- End 6 !-->
+				<elementGroup><!--  Start: 5 !-->
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="263"
+						x="231"
 						y="1"
-						width="131"
+						width="164"
 						height="11"
 						key="textField-9">
 							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
@@ -462,14 +478,16 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.tempoDeServico}]]></textFieldExpression>
 				</textField>
+				</elementGroup><!-- End 5 !-->
+				<elementGroup><!--  Start: 6 !-->
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="263"
+						x="231"
 						y="1"
-						width="93"
+						width="129"
 						height="11"
 						key="textField-11">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -484,7 +502,7 @@
 						width="73"
 						height="11"
 						key="textField-12">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -492,6 +510,8 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
 				</textField>
+				</elementGroup><!-- End 6 !-->
+				<elementGroup><!--  Start: 4 !-->
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="435"
@@ -499,7 +519,7 @@
 						width="56"
 						height="11"
 						key="textField">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -514,7 +534,7 @@
 						width="41"
 						height="11"
 						key="textField-18">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -524,12 +544,12 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="263"
+						x="231"
 						y="1"
-						width="70"
+						width="103"
 						height="11"
 						key="textField-14">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -544,7 +564,7 @@
 						width="59"
 						height="11"
 						key="textField-15">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $F{colaborador.empresa.acIntegra}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -552,11 +572,12 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
 				</textField>
+				</elementGroup><!-- End 4 !-->
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="12"
 						y="1"
-						width="248"
+						width="217"
 						height="11"
 						key="textField-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>

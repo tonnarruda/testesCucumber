@@ -23,6 +23,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
@@ -77,6 +78,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private UsuarioMensagemManager usuarioMensagemManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private MensagemManager mensagemManager;
+	private EmpresaManager empresaManager;
 	
 	public Collection<HistoricoColaborador> getByColaboradorId(Long colaboradorId)
 	{
@@ -1280,9 +1282,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			dataAtualizacao = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMesesDesatualizacao, false);
 		
 		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, empresaId);
-		
-		if (empresa != null && empresa.isAcIntegra())
-			getRemuneracaoVariavelByAcPessoal(empresa, dataHistorico, historicoColaboradors);
+		getRemuneracaoVariavelByAcPessoal(dataHistorico, historicoColaboradors);
 		
 		if(historicoColaboradors.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
@@ -1290,23 +1290,42 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicoColaboradors;
 	}
 
-	private void getRemuneracaoVariavelByAcPessoal(Empresa empresa, Date dataHistorico, Collection<HistoricoColaborador> historicoColaboradors) throws Exception 
+	private void getRemuneracaoVariavelByAcPessoal(Date dataHistorico, Collection<HistoricoColaborador> historicoColaboradors) throws Exception 
 	{
 		ArrayList<String> colaboradoresIdsList = new ArrayList<String>();
+		ArrayList<Long> empresasIdsList = new ArrayList<Long>();
+		
 		for (HistoricoColaborador historicoColaborador : historicoColaboradors) 
 		{			
-			if (historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getCodigoAC() != null && !historicoColaborador.getColaborador().getCodigoAC().equals(""))
+			if (historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getEmpresa().isAcIntegra() && historicoColaborador.getColaborador().getCodigoAC() != null && !historicoColaborador.getColaborador().getCodigoAC().equals(""))
+			{
 				colaboradoresIdsList.add(historicoColaborador.getColaborador().getCodigoAC().toString());
+				
+				Long empresaId = historicoColaborador.getColaborador().getEmpresa().getId();
+				if (empresaId != null && !empresasIdsList.contains(empresaId));
+					empresasIdsList.add(empresaId);
+			}
 		}
 		
 		String[] colaboradoresIds = new String[colaboradoresIdsList.size()];
 		colaboradoresIds = colaboradoresIdsList.toArray(colaboradoresIds);
 		
+		
 		if (colaboradoresIdsList.size() != 0)
 		{
-			TRemuneracaoVariavel[] remuneracoesVariaveis = acPessoalClientColaborador.getRemuneracoesVariaveis(empresa, colaboradoresIds, DateUtil.formataAnoMes(dataHistorico), DateUtil.formataAnoMes(dataHistorico));
-			
-			for (TRemuneracaoVariavel remuneracaoVariavel : remuneracoesVariaveis)
+			List<TRemuneracaoVariavel> remuneracoesVariaveisList = new ArrayList<TRemuneracaoVariavel>();
+			Empresa empresa;
+			TRemuneracaoVariavel[] remuneracoesVariaveisTemp;
+
+			for (Long empresaId : empresasIdsList)
+			{
+				empresa = empresaManager.findById(empresaId);
+				remuneracoesVariaveisTemp = acPessoalClientColaborador.getRemuneracoesVariaveis(empresa, colaboradoresIds, DateUtil.formataAnoMes(dataHistorico), DateUtil.formataAnoMes(dataHistorico)); 
+				CollectionUtil<TRemuneracaoVariavel> util = new CollectionUtil<TRemuneracaoVariavel>();
+				remuneracoesVariaveisList.addAll(util.convertArrayToCollection(remuneracoesVariaveisTemp));
+			}
+						
+			for (TRemuneracaoVariavel remuneracaoVariavel : remuneracoesVariaveisList)
 			{
 				for (HistoricoColaborador historicoColaborador : historicoColaboradors) 
 				{
@@ -1485,5 +1504,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void ajustaMotivoContratado(Long colaboradorId) 
 	{
 		getDao().ajustaMotivoContratado(colaboradorId);
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

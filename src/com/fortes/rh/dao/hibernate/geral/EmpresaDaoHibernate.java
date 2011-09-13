@@ -344,4 +344,9 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		return empresas.size() > 0;
 	}
+
+	public boolean checkEmpresaIntegradaAc() {
+		Query query = getSession().createQuery("select e.acIntegra from Empresa e where e.acIntegra = true");
+		return !query.list().isEmpty();
+	}
 }

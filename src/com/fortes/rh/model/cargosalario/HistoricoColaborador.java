@@ -193,6 +193,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setDataAdmissao(colaboradorDataAdmissao);
 		this.colaborador.setCodigoAC(colaboradorCodigoAC);
 		this.colaborador.getEmpresa().setAcIntegra(acIntegra);
+		this.colaborador.getEmpresa().setId(empresaId);
 		
 		this.faixaSalarial = new FaixaSalarial();
 		this.faixaSalarial.setId(faixaId);

@@ -45,6 +45,9 @@
     <property name="mensagemManager">
       <ref bean="mensagemManager" />
     </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
   </bean>
   <bean id="historicoColaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

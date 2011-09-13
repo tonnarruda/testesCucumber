@@ -23,6 +23,7 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
@@ -98,6 +99,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	Mock colaboradorManager;
 	Mock ambienteManager;
 	Mock funcaoManager;
+	Mock empresaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -136,6 +138,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		mensagemManager = new Mock(MensagemManager.class);
 		historicoColaboradorManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
+
+		empresaManager = new Mock(EmpresaManager.class);
+		historicoColaboradorManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
 		acPessoalClientTabelaReajuste = mock(AcPessoalClientTabelaReajusteInterface.class);
 		historicoColaboradorManager.setAcPessoalClientTabelaReajuste((AcPessoalClientTabelaReajusteInterface) acPessoalClientTabelaReajuste.proxy());
@@ -275,16 +280,19 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		Colaborador francisco = ColaboradorFactory.getEntity();
 		francisco.setCodigoAC("000001");
+		francisco.setEmpresa(empresa);
 		HistoricoColaborador historicoColaboradorFrancisco = HistoricoColaboradorFactory.getEntity(1L);
 		historicoColaboradorFrancisco.setColaborador(francisco);
 
 		Colaborador fulano = ColaboradorFactory.getEntity();
 		fulano.setCodigoAC("000002");
+		fulano.setEmpresa(empresa);
 		HistoricoColaborador historicoColaboradorFulano = HistoricoColaboradorFactory.getEntity(2L);
 		historicoColaboradorFulano.setColaborador(fulano);
 		
 		Colaborador bruno = ColaboradorFactory.getEntity();
 		bruno.setCodigoAC("000003");
+		bruno.setEmpresa(empresa);
 		HistoricoColaborador historicoColaboradorBruno = HistoricoColaboradorFactory.getEntity(3L);
 		historicoColaboradorBruno.setColaborador(bruno);
 		
@@ -305,7 +313,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		Date hoje = new Date();
 		historicoColaboradorDao.expects(once()).method("findByCargoEstabelecimento").with(new Constraint[]{eq(hoje), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoColaboradors));
-		acPessoalClientColaborador.expects(once()).method("getRemuneracoesVariaveis").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(treRemuneracaoVariavels));
+		acPessoalClientColaborador.expects(atLeastOnce()).method("getRemuneracoesVariaveis").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(treRemuneracaoVariavels));
+		empresaManager.expects(atLeastOnce()).method("findById").with(ANYTHING).will(returnValue(empresa));
+		
 		
 		Collection<HistoricoColaborador> resultado = historicoColaboradorManager.relatorioColaboradorCargo(empresa, hoje, null, null, 2, '1', null, true, null);
 

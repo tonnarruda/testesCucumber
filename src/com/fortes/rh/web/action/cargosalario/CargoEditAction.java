@@ -158,7 +158,9 @@ public class CargoEditAction extends MyActionSupportEdit
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 		
-		empresa = getEmpresaSistema();
+		if (empresa == null)
+			empresa = getEmpresaSistema();
+		
 		dataHistorico = new Date();
 		
 		return Action.SUCCESS;
@@ -166,12 +168,20 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String relatorioColaboradorCargo() throws Exception
 	{
+		boolean exibirSalarioVariavel = false;
+		
 		if (empresa.getId() != null)
+		{
 			empresa = empresaManager.findByIdProjection(empresa.getId());
+			exibirSalarioVariavel = empresa.isAcIntegra();
+		}
+		else
+			exibirSalarioVariavel = empresaManager.checkEmpresaIntegradaAc();
 		
 		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck, exibColabAdmitido, qtdMesesDesatualizacao);
 		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Cargos", getEmpresaSistema(), "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico));
 		parametros.put("EXIBIRSALARIO", exibirSalario);
+		parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);
 		
 		if(relatorioResumido)
 			return "successResumido";

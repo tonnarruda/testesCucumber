@@ -42,4 +42,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Collection<Empresa> findEmpresasPermitidas(Boolean compartilharCandidatos, Long empresId, Long usuarioId, String... roles);
 	String getEmpresasNaoListadas(Collection<UsuarioEmpresa> usuarioEmpresas, Collection<Empresa> empresas);
 	Collection<Empresa> findByCartaoAniversario();
+	boolean checkEmpresaIntegradaAc();
 }
