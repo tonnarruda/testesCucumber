@@ -929,6 +929,7 @@ public class RHServiceImpl implements RHService
 	{
 		try
 		{
+			int i =1;
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
 			
 			tCargo.setId(faixaSalarial.getId());

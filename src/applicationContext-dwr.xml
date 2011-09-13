@@ -38,6 +38,9 @@
 	<bean id="areaOrganizacionalDWR" class="com.fortes.rh.web.dwr.AreaOrganizacionalDWR">
 		<property name="areaOrganizacionalManager" ref="areaOrganizacionalManager"/>
 	</bean>
+	<bean id="colaboradorTurmaDWR" class="com.fortes.rh.web.dwr.ColaboradorTurmaDWR">
+		<property name="colaboradorTurmaManager" ref="colaboradorTurmaManager"/>
+	</bean>
 	<bean id="ocorrenciaDWR" class="com.fortes.rh.web.dwr.OcorrenciaDWR">
 		<property name="ocorrenciaManager" ref="ocorrenciaManager"/>
 	</bean>

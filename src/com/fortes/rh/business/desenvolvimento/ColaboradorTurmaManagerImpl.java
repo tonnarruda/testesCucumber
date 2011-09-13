@@ -513,17 +513,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		{
 			jaInscrito = false;
 			for (ColaboradorTurma ccTemp : colaboradoresTurmas)
-			{
-				if(ccTemp.getColaborador().getId().equals(colaboradoresId[i]))
-				{
+				if(ccTemp.getColaborador().getId().equals(colaboradoresId[i]) && turma.getId().equals(ccTemp.getTurma().getId()))
 					jaInscrito = true;
-					if (msgAlert.equals(""))
-						msgAlert = "Os seguintes colaboradores já estão inscritos neste curso: <br>";
-
-					msgAlert += ccTemp.getColaborador().getNome() + "  (Turma: " + ccTemp.getTurma().getDescricao() + ")<br>";
-					break;
-				}
-			}
 
 			if(!jaInscrito)
 			{
@@ -552,6 +543,31 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		if (msgAlert.equals(""))
 			msgAlert = "Colaborador(es) incluído(s) com sucesso!";
 
+		return msgAlert;
+	}
+	
+	public String checaColaboradorInscritoEmOutraTurma(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Long turmaId)
+	{
+		String msgAlert = "";
+		
+		for(int i = 0; i < colaboradoresId.length; i++)
+		{
+			for (ColaboradorTurma ccTemp : colaboradoresTurmas)
+			{
+				if(ccTemp.getColaborador().getId().equals(colaboradoresId[i]) && !turmaId.equals(ccTemp.getTurma().getId()))
+				{
+					if (msgAlert.equals(""))
+						msgAlert = "Os seguintes colaboradores já estão inscritos neste curso: <br>";
+					
+					msgAlert += ccTemp.getColaborador().getNome() + "  (Turma: " + ccTemp.getTurma().getDescricao() + ")<br>";
+					break;
+				}
+			}
+		}
+		
+		if (!msgAlert.equals(""))
+			msgAlert += "<br>Deseja realmente incluir os colaboradores nesta turma?";
+		
 		return msgAlert;
 	}
 

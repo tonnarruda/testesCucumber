@@ -31,6 +31,9 @@
 		<create creator="spring" javascript="AreaOrganizacionalDWR">
 			<param name="beanName" value="areaOrganizacionalDWR"/>
 		</create>
+		<create creator="spring" javascript="ColaboradorTurmaDWR">
+			<param name="beanName" value="colaboradorTurmaDWR"/>
+		</create>
 		<create creator="spring" javascript="OcorrenciaDWR">
 			<param name="beanName" value="ocorrenciaDWR"/>
 		</create>

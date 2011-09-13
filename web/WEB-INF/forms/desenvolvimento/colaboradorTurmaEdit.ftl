@@ -11,6 +11,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
@@ -36,48 +37,22 @@
 			validaFormularioEPeriodo('form', false, new Array('admIni', 'admFim'));
 		}
 
-		function marcarDesmarcar(frm)
+		function marcarDesmarcar()
 		{
-			var vMarcar;
-
-			if (document.getElementById('md').checked)
-				vMarcar = true;
-			else
-				vMarcar = false;
-
-			with(frm)
-			{
-				for(i = 0; i < elements.length; i++)
-				{
-					if(elements[i].name == 'colaboradoresId' && elements[i].type == 'checkbox')
-						elements[i].checked = vMarcar;
-				}
-			}
+			var marcar = $('#md').attr('checked');
+			$("input[name='colaboradoresId']").attr('checked', marcar);
 		}
 
-		function verificaSelecao(frm)
+		function verificaSelecao()
 		{
-			var taValendo = false;
-			var count = 0;
-
-			with(frm)
+			var colabsIds = $("input[name='colaboradoresId']:checked").map(function(){
+			    return parseInt($(this).val());
+			});
+			
+			if(colabsIds.length > 0)
 			{
-				for(i = 0; i < elements.length; i++)
-				{
-					if(elements[i].name == 'colaboradoresId')
-					{
-						if(elements[i].type == 'checkbox' && elements[i].checked)
-						{
-							if(!taValendo)
-								taValendo = true;
-						}
-					}
-				}
-			}
-			if(taValendo)
-			{
-				document.formColab.submit();
-				return true;
+				DWRUtil.useLoadingMessage('Carregando...');
+				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(colabNaOutraTurma, $("input[name='turma.id']").val(), $("input[name='turma.curso.id']").val(), colabsIds.toArray());
 			}
 			else
 			{
@@ -86,35 +61,33 @@
 			}
 		}
 
+		function colabNaOutraTurma(msg)
+		{
+			if (msg != "")
+				newConfirm(msg, function() { document.formColab.submit(); });
+			else 
+				document.formColab.submit();
+		}
+		
 		function filtrarOpt()
 		{
-			value =	document.getElementById('optFiltro').value;
+			value =	$('#optFiltro').val();
 			if(value == "1")
 			{
-				exibe("divColaboradors");
-				oculta("divAreaOrganizacionals");
+				$("#divColaboradors").show();
+				$("#divAreaOrganizacionals").hide();
 			}
 			else if(value == "2")
 			{
-				oculta("divColaboradors");
-				exibe("divAreaOrganizacionals");
+				$("#divColaboradors").hide();
+				$("#divAreaOrganizacionals").show();
 			}
 			else if(value == "3")
 			{
-				oculta("divColaboradors");
-				oculta("divAreaOrganizacionals");
+				$("#divColaboradors").hide();
+				$("#divAreaOrganizacionals").hide();
 			}
 		}
-
-		function oculta(id_da_div)
-		{
-			document.getElementById(id_da_div).style.display = 'none';
-		}
-		function exibe(id_da_div)
-		{
-			document.getElementById(id_da_div).style.display = '';
-		}
-
 	</script>
 
 <#include "../ftl/showFilterImports.ftl" />
@@ -159,7 +132,7 @@
 			<@ww.select id="optFiltro" label="Filtrar Por" name="filtro"
 				list=r"#{'2':'Áreas Organizacionais','1':'Colaboradores pré-inscritos no curso'}" onchange="filtrarOpt();" />
 
-			<#--filtrarPor do colaboradoresCursosCheck tem que ser 4 ta amarrado nocodigo pois dele depende um update no ColaboradorTurmaEdit e o hidden no formColab-->
+			<#--filtrarPor do colaboradoresCursosCheck tem que ser 4 ta amarrado no codigo pois dele depende um update no ColaboradorTurmaEdit e o hidden no formColab-->
 			<br>
 			<span id="divColaboradors" style="display:none">
 				<@frt.checkListBox name="colaboradoresCursosCheck" label="Colaboradores pré-inscritos no curso" list="colaboradoresCursosCheckList" />
@@ -168,14 +141,6 @@
 			<span id="divAreaOrganizacionals" style="display:''">
 				<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
 			</span>
-
-			<!-- 
-				//31/01/2011 - Francisco, retirei acho que os clientes não tão usando, retirar depois de 3 meses, hehehe
-				<span id="divGruposCargos" style="display:none">
-					<@frt.checkListBox name="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos(document.forms[0],'gruposCheck', ${empresaId});"/>
-					<@frt.checkListBox name="cargosCheck" label="Cargos" id="cargosCheck" list="cargosCheckList" />
-				</span>
-			-->
 
 			<input type="button" onclick="enviaForm();" value="" class="btnPesquisar grayBGE" />
 
@@ -192,8 +157,8 @@
 	<#if colaboradorTurmas?exists>
 		<@ww.form name="formColab" action="insert.action" validate="true" method="POST">
 			<@display.table name="colaboradorTurmas" id="colaboradorTurma" class="dados" defaultsort=2 sort="list">
-				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formColab);' checked />" style="width: 30px; text-align: center;">
-					<input type="checkbox" value="${colaboradorTurma.id}" name="colaboradoresId" checked/>
+				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar();' checked='checked'/>" style="width: 30px; text-align: center;">
+					<input type="checkbox" value="${colaboradorTurma.id}" name="colaboradoresId" checked='checked'/>
 				</@display.column>
 				<@display.column property="colaborador.nome" title="Nome" style="width: 500px;"/>
 				<@display.column property="colaborador.matricula" title="Matrícula" style="width: 100px;"/>
@@ -210,7 +175,7 @@
 
 	<div class="buttonGroup">
 		<#if colaboradorTurmas?exists && colaboradorTurmas?size != 0>
-			<button onclick="javascript: verificaSelecao(document.formColab);" class="btnInserirSelecionados"></button>
+			<button onclick="javascript: verificaSelecao();" class="btnInserirSelecionados"></button>
 		</#if>
 		<button onclick="window.location='list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'" class="btnVoltar"></button>
 	</div>

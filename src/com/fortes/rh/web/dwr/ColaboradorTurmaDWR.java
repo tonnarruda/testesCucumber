@@ -1,0 +1,21 @@
+package com.fortes.rh.web.dwr;
+
+import java.util.Collection;
+
+import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+
+public class ColaboradorTurmaDWR
+{
+	private ColaboradorTurmaManager colaboradorTurmaManager;
+
+	public String checaColaboradorInscritoEmOutraTurma(Long turmaId, Long cursoId, Long[] colaboradorIds) throws Exception
+	{
+		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaCurso(cursoId);
+		return colaboradorTurmaManager.checaColaboradorInscritoEmOutraTurma(colaboradorIds, colaboradoresTurmas, turmaId);
+	}
+
+	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
+		this.colaboradorTurmaManager = colaboradorTurmaManager;
+	}
+}
