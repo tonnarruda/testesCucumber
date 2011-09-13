@@ -1261,6 +1261,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		Date dataAtualizacao = null;
 		Date dataAtual = new Date();
 		DateUtil dateUtil = new DateUtil();
+		Long empresaId = null;
+		
+		if (empresa != null)
+			empresaId = empresa.getId(); 
 		
 		if (exibColabAdmitido)
 			if(qtdMeses != null && qtdMeses > 0)
@@ -1275,9 +1279,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if (qtdMesesDesatualizacao != null)
 			dataAtualizacao = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMesesDesatualizacao, false);
 		
-		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, empresa.getId());
+		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, empresaId);
 		
-		if (empresa.isAcIntegra())
+		if (empresa != null && empresa.isAcIntegra())
 			getRemuneracaoVariavelByAcPessoal(empresa, dataHistorico, historicoColaboradors);
 		
 		if(historicoColaboradors.isEmpty())

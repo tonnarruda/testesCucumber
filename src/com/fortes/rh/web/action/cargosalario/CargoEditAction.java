@@ -18,7 +18,6 @@ import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -51,7 +50,6 @@ public class CargoEditAction extends MyActionSupportEdit
 	private AreaFormacaoManager areaFormacaoManager;
 	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private FaixaSalarialManager faixaSalarialManager;
-	private EstabelecimentoManager estabelecimentoManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
     private EtapaSeletivaManager etapaSeletivaManager;
     private EmpresaManager empresaManager;
@@ -168,10 +166,10 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String relatorioColaboradorCargo() throws Exception
 	{
-		if (!exibColabDesatualizado)
-			qtdMesesDesatualizacao = null;
+		if (empresa.getId() != null)
+			empresa = empresaManager.findByIdProjection(empresa.getId());
 		
-		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(getEmpresaSistema(), dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck, exibColabAdmitido, qtdMesesDesatualizacao);
+		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck, exibColabAdmitido, qtdMesesDesatualizacao);
 		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Cargos", getEmpresaSistema(), "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico));
 		parametros.put("EXIBIRSALARIO", exibirSalario);
 		
@@ -573,11 +571,6 @@ public class CargoEditAction extends MyActionSupportEdit
 	public Collection<CheckBox> getEstabelecimentosCheckList()
 	{
 		return estabelecimentosCheckList;
-	}
-
-	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
-	{
-		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public Date getData()
