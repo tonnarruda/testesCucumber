@@ -209,7 +209,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		return diasDoPeriodo.toString();
 	}
 	
-	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds) 
+	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds) 
 	{
 		String diasDoPeriodo = montaDiasDoPeriodo(dataIni, dataFim);
 
@@ -217,10 +217,11 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(hc.id) as total from ");
 		sql.append(" ( " + diasDoPeriodo + " ) as datasDoPeriodo  ");
 		sql.append("left join ColaboradorOcorrencia co on ");
-		sql.append("	datasDoPeriodo.dia between co.dataini and co.datafim ");
+		sql.append("	((datasDoPeriodo.dia between co.dataini and co.datafim) or (co.datafim is null and datasDoPeriodo.dia = co.dataini)) ");
+		if(ocorrenciasIds != null && !ocorrenciasIds.isEmpty())
+			sql.append("	and co.ocorrencia_id in (:ocorrenciasIds) ");
 		sql.append("left join Ocorrencia o on ");
 		sql.append("	o.id = co.ocorrencia_id ");
-		sql.append("	and o.absenteismo = true ");
 		sql.append("left join Colaborador c on c.id = co.colaborador_id ");
 		sql.append("	and c.empresa_id = :empresaId ");
 		sql.append("left join HistoricoColaborador hc on hc.colaborador_id = c.id ");
@@ -236,7 +237,8 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		sql.append("		from HistoricoColaborador as hc2 ");
 		sql.append("		where hc2.colaborador_id = c.id ");
 		sql.append("			and hc2.data <= :hoje and hc2.status = :status ");
-		sql.append("	)");
+		sql.append("	) ");
+		sql.append("where o.absenteismo = true or co.id is null ");
 		sql.append("group by date_part('year',dia), date_part('month',dia) ");
 		sql.append("order by date_part('year',dia), date_part('month',dia) ");
 		
@@ -250,6 +252,8 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 			query.setParameterList("areaIds", areasIds, Hibernate.LONG);
 		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
 			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
+		if(ocorrenciasIds != null && !ocorrenciasIds.isEmpty())
+			query.setParameterList("ocorrenciasIds", ocorrenciasIds, Hibernate.LONG);
 		
 		Collection lista = query.list();
 		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();

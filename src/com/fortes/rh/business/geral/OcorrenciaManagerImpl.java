@@ -2,15 +2,21 @@ package com.fortes.rh.business.geral;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TOcorrencia;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrencia;
+import com.fortes.web.tags.CheckBox;
 
 public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, OcorrenciaDao> implements OcorrenciaManager
 {
@@ -119,5 +125,10 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 	public Collection<Ocorrencia> findAllSelect(Long[] empresaIds)
 	{
 		return getDao().findAllSelect(empresaIds);
+	}
+
+	public Collection<Ocorrencia> findOcorrenciasComAbseteismo(Long empresaId) 
+	{
+		return getDao().findOcorrenciasComAbseteismo(empresaId);
 	}
 }

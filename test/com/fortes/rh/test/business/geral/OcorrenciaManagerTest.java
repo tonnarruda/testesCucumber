@@ -10,7 +10,9 @@ import com.fortes.rh.business.geral.OcorrenciaManagerImpl;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrencia;
 

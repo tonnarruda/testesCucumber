@@ -30,10 +30,12 @@ import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.BairroDao;
 import com.fortes.rh.dao.geral.CamposExtrasDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.geral.MotivoDemissaoDao;
+import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
@@ -65,6 +67,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -72,6 +75,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.MotivoDemissao;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
@@ -102,8 +106,10 @@ import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
+import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -136,6 +142,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private MotivoSolicitacaoDao motivoSolicitacaoDao;
 	private SolicitacaoDao solicitacaoDao;
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
+	private OcorrenciaDao ocorrenciaDao;
+	private ColaboradorOcorrenciaDao colaboradorOcorrenciaDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -3193,7 +3201,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(new Integer(31), colaboradorTmp.getDiasDeEmpresa());
 	}
 
-	public void testCountAtivosPeriodo() {
+	public void testCountAtivosPeriodo() 
+	{
 		Empresa vega = EmpresaFactory.getEmpresa();
 		empresaDao.save(vega);
 
@@ -3203,7 +3212,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		faixaSalarialDao.save(dentista01);
 
 		Date data_01_05_2010 = DateUtil.criarDataMesAno(01, 05, 2010);
-		
+
 		Colaborador joao = montaColaboradorDoTestCountAtivo(vega, data_01_05_2010);
 		montaHistoricoDoTestCountAtivo(data_01_05_2010, dentista01, joao);
 
@@ -3217,8 +3226,53 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador maria = montaColaboradorDoTestCountAtivo(vega, data_21_07_2011);
 		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
+		
+		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, vega.getId(), null, null, null, null, false,null, false));
+	}
+	
+	public void testCountAtivosPeriodoComAbsenteismo() 
+	{
+		Empresa vega = EmpresaFactory.getEmpresa();
+		empresaDao.save(vega);
+		
+		Date data_21_07_2011 = DateUtil.criarDataMesAno(21, 07, 2011);
+		
+		FaixaSalarial dentista01 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(dentista01);
+		
+		Date data_01_05_2010 = DateUtil.criarDataMesAno(01, 05, 2010);
+		
+		Colaborador joao = montaColaboradorDoTestCountAtivo(vega, data_01_05_2010);
+		montaHistoricoDoTestCountAtivo(data_01_05_2010, dentista01, joao);
+		criaColaboradorOcorrenciaComAbseteismo(joao);
+		
+		Colaborador ivanDesligadoNoDia = montaColaboradorDoTestCountAtivo(vega, data_01_05_2010);
+		ivanDesligadoNoDia.setDataDesligamento(data_21_07_2011);
+		montaHistoricoDoTestCountAtivo(data_01_05_2010, dentista01, ivanDesligadoNoDia);
+		criaColaboradorOcorrenciaComAbseteismo(ivanDesligadoNoDia);
+		
+		Date data_8_8_2011 = DateUtil.criarDataMesAno(8, 8, 2011);
+		Colaborador pedroContratadoFuturo = montaColaboradorDoTestCountAtivo(vega, data_8_8_2011);
+		montaHistoricoDoTestCountAtivo(data_8_8_2011, dentista01, pedroContratadoFuturo);
+		criaColaboradorOcorrenciaComAbseteismo(pedroContratadoFuturo);
+		
+		Colaborador maria = montaColaboradorDoTestCountAtivo(vega, data_21_07_2011);
+		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
+		criaColaboradorOcorrenciaComAbseteismo(maria);
+		
+		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, vega.getId(), null, null, null, null, true, null, true));
+	}
 
-		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, vega.getId(), null, null, null, true, null));
+	private void criaColaboradorOcorrenciaComAbseteismo(Colaborador joao) 
+	{
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		ocorrencia.setAbsenteismo(true);
+		ocorrenciaDao.save(ocorrencia);
+		
+		ColaboradorOcorrencia ocorrenciaJoao = ColaboradorOcorrenciaFactory.getEntity();
+		ocorrenciaJoao.setOcorrencia(ocorrencia);
+		ocorrenciaJoao.setColaborador(joao);
+		colaboradorOcorrenciaDao.save(ocorrenciaJoao);
 	}
 
 	public void testCountAtivosTurnover() {
@@ -4019,6 +4073,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void setCandidatoSolicitacaoDao(
 			CandidatoSolicitacaoDao candidatoSolicitacaoDao) {
 		this.candidatoSolicitacaoDao = candidatoSolicitacaoDao;
+	}
+
+	public void setOcorrenciaDao(OcorrenciaDao ocorrenciaDao) {
+		this.ocorrenciaDao = ocorrenciaDao;
+	}
+
+	public void setColaboradorOcorrenciaDao(ColaboradorOcorrenciaDao colaboradorOcorrenciaDao) {
+		this.colaboradorOcorrenciaDao = colaboradorOcorrenciaDao;
 	}
 
 }

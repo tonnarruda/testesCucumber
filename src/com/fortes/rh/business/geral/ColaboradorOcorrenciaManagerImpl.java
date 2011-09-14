@@ -223,16 +223,16 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return getDao().verifyExistsMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni);
 	}
 
-	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds) throws Exception 
+	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasId) throws Exception 
 	{
-		Collection<Absenteismo> absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds);
+		Collection<Absenteismo> absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds, ocorrenciasId);
 		if (absenteismos == null || absenteismos.isEmpty())
 			throw new ColecaoVaziaException();
 		
 		for (Absenteismo absenteismo : absenteismos) 
 		{
 			Date inicioDoMes = DateUtil.criarDataMesAno(1, Integer.parseInt(absenteismo.getMes()), Integer.parseInt(absenteismo.getAno()));
-			absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(inicioDoMes), empresaId, estabelecimentosIds, areasIds, null, true, null));
+			absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(inicioDoMes), empresaId, estabelecimentosIds, areasIds, null, ocorrenciasId, true, null, true));
 			absenteismo.setQtdDiasTrabalhados(DateUtil.contaDiasUteisMes(inicioDoMes));
 
 			if(!absenteismo.getQtdTotalFaltas().equals(0))
@@ -271,7 +271,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataMesAnoFim));
 
 		try {
-			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaId, null, areasIds);
+			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaId, null, areasIds, null);
 			
 			for (Absenteismo absenteismo : absenteismos) 
 			{

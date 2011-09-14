@@ -1347,13 +1347,23 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return turnOvers;
 	}
 	
-	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean consideraDataAdmissao, Long colaboradorId) 
+	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasIds, boolean consideraDataAdmissao, Long colaboradorId, boolean isAbsenteismo) 
 	{
 		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
 		hql.append("left join co.historicoColaboradors as hc ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		
+		if(isAbsenteismo)
+		{
+			hql.append("left join co.colaboradorOcorrencia as colabOcor ");
+			hql.append("left join colabOcor.ocorrencia as o ");
+		}
+		
 		hql.append("	where co.empresa.id = :empresaId ");
+		
+		if(isAbsenteismo)
+			hql.append("	and o.absenteismo = true ");
+
 		
 		if(colaboradorId != null)
 			hql.append("	and co.id <> :colaboradorId ");
@@ -1369,6 +1379,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append("	and hc.areaOrganizacional.id in (:areasIds) ");
 		if(cargosIds != null && cargosIds.size() > 0)
 			hql.append("	and fs.cargo.id in (:cargosIds) ");
+		if(isAbsenteismo && ocorrenciasIds != null && ocorrenciasIds.size() > 0)
+			hql.append("	and o.id in (:ocorrenciasIds) ");
 		
 		hql.append("	and hc.status = :status ");
 		hql.append("	and hc.data = (");
@@ -1392,6 +1404,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 		if(cargosIds != null && cargosIds.size() > 0)
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		if(isAbsenteismo && ocorrenciasIds != null && ocorrenciasIds.size() > 0)
+			query.setParameterList("ocorrenciasIds", ocorrenciasIds, Hibernate.LONG);
 
 		return (Integer) query.uniqueResult();
 	}

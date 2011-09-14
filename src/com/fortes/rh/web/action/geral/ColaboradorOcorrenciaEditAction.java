@@ -52,8 +52,10 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	
 	private String[] areasCheck;
 	private String[] estabelecimentosCheck;
+	private String[] ocorrenciasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> ocorrenciasCheckList = new ArrayList<CheckBox>();
 	
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<AbsenteismoCollection> dataSource = new ArrayList<AbsenteismoCollection>();
@@ -208,10 +210,14 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	public String prepareRelatorioAbsenteismo() throws Exception
 	{
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());		
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		
+		Collection<Ocorrencia> ocorrencia = ocorrenciaManager.findOcorrenciasComAbseteismo(getEmpresaSistema().getId());
+		ocorrenciasCheckList = CheckListBoxUtil.populaCheckListBox(ocorrencia, "getId", "getDescricao");		
 
 		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		CheckListBoxUtil.marcaCheckListBox(ocorrenciasCheckList, ocorrenciasCheck);
 
 		return Action.SUCCESS;
 	}
@@ -231,7 +237,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		try 
 		{
 			AbsenteismoCollection absenteismoCollection = new AbsenteismoCollection();
-			absenteismoCollection.setAbsenteismos(colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, getEmpresaSistema().getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck)));
+			absenteismoCollection.setAbsenteismos(colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, getEmpresaSistema().getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(ocorrenciasCheck)));
 			dataSource = Arrays.asList(absenteismoCollection);
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;
@@ -361,5 +367,13 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	public Collection<AbsenteismoCollection> getDataSource() {
 		return dataSource;
+	}
+
+	public Collection<CheckBox> getOcorrenciasCheckList() {
+		return ocorrenciasCheckList;
+	}
+
+	public void setOcorrenciasCheck(String[] ocorrenciasCheck) {
+		this.ocorrenciasCheck = ocorrenciasCheck;
 	}
 }

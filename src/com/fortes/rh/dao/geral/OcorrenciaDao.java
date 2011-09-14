@@ -10,5 +10,6 @@ public interface OcorrenciaDao extends GenericDao<Ocorrencia>
 	boolean removeByCodigoAC(String codigo, Long id);
 	Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa, String grupoAC);
 	public Collection<Ocorrencia> findSincronizarOcorrenciaInteresse(Long empresaOrigemId);
-		Collection<Ocorrencia> findAllSelect(Long[] empresaIds);
+	Collection<Ocorrencia> findAllSelect(Long[] empresaIds);
+	Collection<Ocorrencia> findOcorrenciasComAbseteismo(Long empresaId);
 }

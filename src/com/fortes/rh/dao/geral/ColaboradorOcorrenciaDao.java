@@ -16,6 +16,6 @@ public interface ColaboradorOcorrenciaDao extends GenericDao<ColaboradorOcorrenc
 	ColaboradorOcorrencia findByIdProjection(Long colaboradorOcorrenciaId);
 	ColaboradorOcorrencia findByDadosAC(Date dataIni, String ocorrenciaCodigoAC, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC);
 	boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni);
-	Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds);
+	Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds);
 	String montaDiasDoPeriodo(Date dataIni, Date dataFim);
 }
