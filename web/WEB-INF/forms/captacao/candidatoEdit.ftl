@@ -120,11 +120,37 @@
 		function validarCamposCpf()
 		{
 			<#if moduloExterno?exists && moduloExterno>
+				var msg = "Os seguintes campos são obrigatórios: <br />";
+				
+				var formacaoInvalido = $.inArray('formacao', arrayObrigatorios) > -1 && $('#formacao tbody tr').size() < 1;
+				var idiomaInvalido = $.inArray('idioma', arrayObrigatorios) > -1 && $('#idiomaTable tbody tr').size() < 1;
+				var expInvalido = $.inArray('expProfissional', arrayObrigatorios) > -1 && $('#exp tbody tr').size() < 1;
+				
+				if (formacaoInvalido)
+		    		msg += "Formação Escolar<br />";
+
+				if (idiomaInvalido)
+		    		msg += "Idiomas<br />";
+
+				if (expInvalido)
+		    		msg += "Experiência Profissional<br />";
+		    		
+		    	
+		    	if (formacaoInvalido || idiomaInvalido || expInvalido) {
+		    		jAlert(msg);
+		    		return false;
+		    	}
+			
 				<#if candidato.id?exists>
 					arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
 						return value != 'senha' && value != 'comfirmaSenha';
 					});
 				</#if>
+				
+				arrayMultiplos = ['cargosCheck', 'areasCheck', 'conhecimentosCheck'];
+				arrayObrigatorios = arrayObrigatorios.map(function(item) {
+					return $.inArray(item, arrayMultiplos) ? item : '@' + item;
+				});
 				
 				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
 		   	<#else>
@@ -160,7 +186,7 @@
 			</#if>
 		
 			document.getElementById('candidato.cursos').value = document.getElementById('desCursos').value;
-			document.getElementById('candidato.observacao').value = document.getElementById('obs').value;
+			document.getElementById('candidato.observacao').value = document.getElementById('infoAdicionais').value;
 		
 			if(document.getElementById('obsrh'))
 				document.getElementById('candidato.observacaoRH').value = document.getElementById('obsrh').value;
@@ -403,7 +429,7 @@
 			<@ww.div >
 				<ul>
 					Informações Adicionais:<br />
-					<@ww.textarea id="obs" name="obs" cssStyle="width: 705px;" onblur="${capitalizar}"/>
+					<@ww.textarea id="infoAdicionais" name="obs" cssStyle="width: 705px;" onblur="${capitalizar}"/>
 				</ul>
 			</@ww.div>
 		</li>			
@@ -565,30 +591,30 @@
 
       <div id="content3" class="3" style="display: none;">
 		<li>
-			<@ww.div id="wwgrp_funcaoPretendida" cssClass="campo">
+			<@ww.div id="wwgrp_cargosCheck" cssClass="campo">
 			<ul>
-				<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
+				<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" id="cargosCheck" list="cargosCheckList" />
 			</ul>
 			</@ww.div>
 		</li>	
 		<li>
-			<@ww.div id="wwgrp_areasInteresse" cssClass="campo">
+			<@ww.div id="wwgrp_areasCheck" cssClass="campo">
 			<ul>
-        		<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList" onClick="populaConhecimento(document.forms[0],'areasCheck');"/>
+        		<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList" id="areasCheck" onClick="populaConhecimento(document.forms[0],'areasCheck');"/>
 			</ul>
 			</@ww.div>
 		</li>	
 		<li>
-			<@ww.div id="wwgrp_conhecimentos" cssClass="campo">
+			<@ww.div id="wwgrp_conhecimentosCheck" cssClass="campo">
 				<ul>        
-					<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" />
+					<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" id="conhecimentosCheck"  />
 				</ul>
 			</@ww.div>
 		</li>	
 		<li>
 			<@ww.div id="wwgrp_colocacao" cssClass="campo">
 				<ul>
-			        <@ww.select label="Colocação" name="candidato.colocacao" list="colocacaoList" liClass="liLeft"/>
+			        <@ww.select label="Colocação" name="candidato.colocacao" list="colocacaoList" id ="colocacao" liClass="liLeft"/>
 			        <@ww.textfield label="Pretensão Salarial" name="candidato.pretencaoSalarial"  onkeypress = "return(somenteNumeros(event,','));" cssStyle="width:85px; text-align:right;" maxLength="12" />
 				</ul>
 			</@ww.div>
@@ -664,7 +690,7 @@
       
       <div id="content6" class="6" style="display:none;">
 		<@ww.label label="Descrição do Currículo" />
-		<@ww.textarea name="candidato.ocrTexto" cssStyle="width: 777px;height: 500px"/>
+		<@ww.textarea name="candidato.ocrTexto" id="ocrTexto" cssStyle="width: 777px;height: 500px"/>
 	  </div>
       
 		<#if habilitaCampoExtra>
@@ -720,7 +746,7 @@
 
     <script>
       document.getElementById('desCursos').value = document.getElementById('candidato.cursos').value;
-      document.getElementById('obs').value = document.getElementById('candidato.observacao').value;
+      document.getElementById('infoAdicionais').value = document.getElementById('candidato.observacao').value;
 
       if(document.getElementById('obsrh'))
         document.getElementById('obsrh').value = document.getElementById('candidato.observacaoRH').value;
