@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.56.47" data="14/09/2011">
+		- ReS > Relatórios > Avaliações de Candidatos: Novo filtro por status da Solicitação de Pessoal.
+		- TeD > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Possibilidade de inserir um colaborador já cadastrado em outra turma do mesmo curso.
+		- Info. Funcionais > Relatórios > Absenteísmo: Nova opção para selecionar as ocorrências ao gerar relatório.
+	</Versao>
 	<Versao id="1.1.55.47" data="08/09/2011">
 		- CeS > Painel de Indicadores: Novo filtro por Empresa e Áreas Organizacionais.
 		- Utilitários > Cadastros > Empresas: Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo está marcado como Turnover.

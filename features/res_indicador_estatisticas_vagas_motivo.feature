@@ -14,6 +14,6 @@ Funcionalidade: Indicador Estatísticas de Vagas por Motivo
     E eu preencho o campo (JS) "dataAte" com "05/05/2000"
     E eu marco "centro"
     E eu marco "geral"
-    E eu seleciono "Abertas" de "Status"
+    E eu seleciono "Abertas" de "Considerar Solicitações de Pessoal"
     E eu clico no botão "Relatorio"
     Entao eu devo ver "Não existem dados para o filtro informado."
