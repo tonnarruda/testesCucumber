@@ -1738,11 +1738,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return acompanhamentos;
 	}
 
-	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long avaliacaoId, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
+	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, String[] avaliacaoCheck, String[] areasCheck, String[] estabelecimentoCheck) throws Exception 
 	{
-		Long[] avaliacaoIds = new Long[]{avaliacaoId};
 		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
-		 	retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, avaliacaoIds, StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), null, true);
+		 	retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, StringUtil.stringToLong(avaliacaoCheck), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), null, true);
 		
 		 if(retorno.isEmpty())
 			throw new Exception("Não existe informações para os filtros selecionados");
@@ -1976,9 +1975,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return graficoEvolucaoTurnover;
 	}
 	
-	public Collection<Colaborador> findByAvaliacao(Long avaliacaoId) 
+	public Collection<Colaborador> findByAvaliacoes(Long... avaliacaoIds) 
 	{
-		return getDao().findByAvaliacao(avaliacaoId);
+		return getDao().findByAvaliacoes(avaliacaoIds);
 	}
 	
 	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao) 

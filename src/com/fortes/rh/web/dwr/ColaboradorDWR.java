@@ -63,12 +63,12 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNome", Colaborador.class);
     }
     
-    public Map getColaboradoresByAvaliacao(Long avaliacaoId)
+    public Map getColaboradoresByAvaliacoes(Long[] avaliacaoIds)
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	
-    	if(avaliacaoId != null)
-    		colaboradores = colaboradorManager.findByAvaliacao(avaliacaoId);
+    	if(avaliacaoIds != null && avaliacaoIds.length > 0)
+    		colaboradores = colaboradorManager.findByAvaliacoes(avaliacaoIds);
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeDesligado", Colaborador.class);
     }

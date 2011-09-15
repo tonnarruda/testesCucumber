@@ -18,14 +18,17 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.Mail;
+import com.fortes.web.tags.CheckBox;
 
 public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<AvaliacaoDesempenho, AvaliacaoDesempenhoDao> implements AvaliacaoDesempenhoManager
 {
@@ -200,5 +203,19 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa, char tipoModeloAvaliacao) {
+		try
+		{
+			Collection<AvaliacaoDesempenho> avaliacoesDesempenho = getDao().findAllSelect(empresaId, ativa, tipoModeloAvaliacao);
+			return CheckListBoxUtil.populaCheckListBox(avaliacoesDesempenho, "getId", "getTitulo");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return new ArrayList<CheckBox>();
 	}
 }

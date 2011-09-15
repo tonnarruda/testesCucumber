@@ -3491,11 +3491,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByAvaliacao(Long avaliacaoId) 
+	public Collection<Colaborador> findByAvaliacoes(Long... avaliacaoIds) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.colaboradorQuestionarios", "cq");
-		criteria.createCriteria("cq.avaliacao", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.avaliacaoDesempenho", "ad", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.distinct(Projections.property("c.id")), "id");
@@ -3503,7 +3503,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("a.id", avaliacaoId));
+		criteria.add(Expression.in("ad.id", avaliacaoIds));
 		criteria.add(Expression.isNotNull("cq.performance"));
 		criteria.add(Expression.isNotNull("cq.avaliador.id"));
 

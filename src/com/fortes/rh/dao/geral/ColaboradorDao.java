@@ -89,7 +89,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId, Long colaboradorId);
 	public Collection<Colaborador> findColaboradoresEleicao(Long empresaId, Long estabelecimentosIds, Date data);
 	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer diasDeAcompanhamento, int menorPeriodo);
-	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao);
+	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacoesCheck, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao);
 	public void setCandidatoNull(Long idCandidato);
 	public Colaborador findByUsuarioProjection(Long usuarioId);
 	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel);
@@ -108,7 +108,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Integer countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasIds, boolean consideraDataAdmissao, Long colaboradorId, boolean isAbsenteismo);
 	public Integer countAtivosTurnover(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean consideraDataAdmissao);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
-	public Collection<Colaborador> findByAvaliacao(Long avaliacaoId);
+	public Collection<Colaborador> findByAvaliacoes(Long... avaliacaoIds);
 	public Collection<Colaborador> findAniversariantesByEmpresa(Long empresaId, int dia, int mes);
 	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao);
 	public Collection<Colaborador> findColaboradoresByIds(Long[] colaboradoresIds);

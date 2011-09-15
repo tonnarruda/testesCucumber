@@ -300,7 +300,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionarioEmOutraAvaliacao.setAvaliacao(avaliacaoFora);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioEmOutraAvaliacao);
 		
-		assertEquals(2, colaboradorDao.findByAvaliacao(avaliacao.getId()).size());
+		assertEquals(2, colaboradorDao.findByAvaliacoes(avaliacao.getId()).size());
 	}
 
 	@Override

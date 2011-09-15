@@ -64,6 +64,8 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentoCheck;
 	private Collection<CheckBox> estabelecimentoCheckList = new ArrayList<CheckBox>();
+	private String[] avaliacaoCheck;
+	private Collection<CheckBox> avaliacaoCheckList = new ArrayList<CheckBox>();
 	private String[] periodoCheck;
 	private Collection<CheckBox> periodoCheckList = new ArrayList<CheckBox>();
 	private String[] colaboradorsCheck;
@@ -155,11 +157,12 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 				
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-    	avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO);
+    	avaliacaoCheckList = avaliacaoDesempenhoManager.populaCheckBox(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO);
+    	
     	avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
     	
     	if(avaliacao != null  && avaliacao.getId() != null)
-    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacao( avaliacao.getId()), "getId", "getNome");
+    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacoes( avaliacao.getId()), "getId", "getNome");
     	
 		return Action.SUCCESS;
 		
@@ -229,14 +232,15 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, avaliacaoDesempenho.getId(), areasCheck, estabelecimentoCheck);
-			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck);
+//			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 
-			String avalAnonima = "";
-			if(avaliacaoDesempenho.isAnonima())
-				avalAnonima = " (Anônima)";
+//			String avalAnonima = "";
+//			if(avaliacaoDesempenho.isAnonima())
+//				avalAnonima = " (Anônima)";
 			
-			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + "Avaliação: " + avaliacaoDesempenho.getTitulo() + avalAnonima;
+//			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + "Avaliação: " + avaliacaoDesempenho.getTitulo();
+			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n";
 			reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
 
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
@@ -571,5 +575,21 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public Collection<CartaoAcompanhamentoExperienciaVO> getCartoesAcompanhamentoExperienciaVOs() {
 		return cartoesAcompanhamentoExperienciaVOs;
+	}
+
+	public String[] getAvaliacaoCheck() {
+		return avaliacaoCheck;
+	}
+
+	public void setAvaliacaoCheck(String[] avaliacaoCheck) {
+		this.avaliacaoCheck = avaliacaoCheck;
+	}
+
+	public Collection<CheckBox> getAvaliacaoCheckList() {
+		return avaliacaoCheckList;
+	}
+
+	public void setAvaliacaoCheckList(Collection<CheckBox> avaliacaoCheckList) {
+		this.avaliacaoCheckList = avaliacaoCheckList;
 	}
 }
