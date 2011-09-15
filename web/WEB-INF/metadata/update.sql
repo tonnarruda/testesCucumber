@@ -18121,3 +18121,7 @@ alter table empresa add column turnoverPorSolicitacao boolean NOT NULL DEFAULT f
 insert into migrations values('20110905105154');--.go
 
 update parametrosdosistema set appversao = '1.1.55.47';--.go
+
+-- versao 1.1.56.47
+
+update parametrosdosistema set appversao = '1.1.56.47';--.go

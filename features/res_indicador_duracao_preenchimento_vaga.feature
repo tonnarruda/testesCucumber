@@ -7,7 +7,7 @@ Funcionalidade: Indicador Duração para Preenchimento de Vaga
     Dado que exista o estabelecimento "centro"
     Dado que exista a área organizacional "geral"
     Quando eu acesso o menu "R&S > Indicadores > Duração para Preenchimento de Vagas"
-    Então eu devo ver o título "Recrutamento e Seleção - Duração para Preenchimento de Vaga"
+    Então eu devo ver o título "Duração para Preenchimento de Vaga"
     E eu clico no botão "Relatorio"
     Então eu devo ver o alert do valida campos e clico no ok
     E eu clico no botão "RelatorioExportar"
