@@ -162,7 +162,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
     	avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
     	
     	if(avaliacao != null  && avaliacao.getId() != null)
-    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacoes( avaliacao.getId()), "getId", "getNome");
+    		colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(colaboradorManager.findByAvaliacoes(StringUtil.stringToLong(avaliacaoCheck)), "getId", "getNome");
     	
 		return Action.SUCCESS;
 		
@@ -232,18 +232,23 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck);
-//			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck);
 
-//			String avalAnonima = "";
-//			if(avaliacaoDesempenho.isAnonima())
-//				avalAnonima = " (Anônima)";
-			
-//			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + "Avaliação: " + avaliacaoDesempenho.getTitulo();
-			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n";
+			String msgAval = "";
+			if(avaliacaoCheck != null && avaliacaoCheck.length == 1)
+			{
+				avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(StringUtil.stringToLong(avaliacaoCheck)[0]);
+				String avalAnonima = "";
+				if(avaliacaoDesempenho.isAnonima())
+					avalAnonima = " (Anônima)";
+				
+				msgAval = "Avaliação: " + avaliacaoDesempenho.getTitulo() + avalAnonima;
+			}
+			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + msgAval;
 			reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
 
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
+			parametros.put("exibirNomeAvaliacao", !msgAval.equals(""));
 		}
 		catch (Exception e)
 		{

@@ -268,16 +268,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		avaliador.setNome("avaliador");
 		colaboradorDao.save(avaliador);
 		
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacaoDao.save(avaliacao);
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 
-		Avaliacao avaliacaoFora = AvaliacaoFactory.getEntity();
-		avaliacaoDao.save(avaliacaoFora);
+		AvaliacaoDesempenho avaliacaoDesempenhoFora = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenhoFora);
 		
 		ColaboradorQuestionario colaboradorQuestionarioJorge = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionarioJorge.setColaborador(colaboradorJorge);
 		colaboradorQuestionarioJorge.setPerformance(97.0);
-		colaboradorQuestionarioJorge.setAvaliacao(avaliacao);
+		colaboradorQuestionarioJorge.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionarioJorge.setAvaliador(avaliador);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioJorge);
 
@@ -290,17 +290,17 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionarioMaria.setColaborador(colaboradorMaria);
 		colaboradorQuestionarioMaria.setAvaliador(avaliador);
 		colaboradorQuestionarioMaria.setPerformance(12.0);
-		colaboradorQuestionarioMaria.setAvaliacao(avaliacao);
+		colaboradorQuestionarioMaria.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioMaria);
 		
 		ColaboradorQuestionario colaboradorQuestionarioEmOutraAvaliacao = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionarioEmOutraAvaliacao.setColaborador(colaboradorJorge);
 		colaboradorQuestionarioEmOutraAvaliacao.setAvaliador(avaliador);
 		colaboradorQuestionarioEmOutraAvaliacao.setPerformance(20.0);
-		colaboradorQuestionarioEmOutraAvaliacao.setAvaliacao(avaliacaoFora);
+		colaboradorQuestionarioEmOutraAvaliacao.setAvaliacaoDesempenho(avaliacaoDesempenhoFora);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioEmOutraAvaliacao);
 		
-		assertEquals(2, colaboradorDao.findByAvaliacoes(avaliacao.getId()).size());
+		assertEquals(2, colaboradorDao.findByAvaliacoes(avaliacaoDesempenho.getId()).size());
 	}
 
 	@Override
