@@ -14,6 +14,7 @@ import com.opensymphony.xwork.ActionContext;
 
 public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, AuditoriaDao> implements AuditoriaManager
 {
+	
 	public Map findEntidade(Long empresaId)
 	{
 		return getDao().findEntidade(empresaId);
@@ -50,5 +51,4 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 	public List<String> findOperacoesPeloModulo(String modulo) {
 		return getDao().findOperacoesPeloModulo(modulo);
 	}
-	
 }

@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -37,7 +38,7 @@ public class Atitude extends AbstractModel implements Serializable
 		this.setId(id);
 		this.nome = nome;
 	}
-
+	@ChaveDaAuditoria
 	public String getNome()
 	{
 		return nome;

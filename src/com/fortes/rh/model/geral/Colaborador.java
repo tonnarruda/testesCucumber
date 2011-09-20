@@ -54,6 +54,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SalarioUtil;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
@@ -1588,6 +1589,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.empresa.setRepresentanteLegal(projectionRepresentanteLegal);
 	}
 
+	@ChaveDaAuditoria
 	public String getNome()
 	{
 		return nome;

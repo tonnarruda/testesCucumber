@@ -45,6 +45,7 @@ public class AuditoriaListAction extends ActionSupport
 	private boolean showFilter = false;
 
 	private Auditoria auditoriaView;
+	private String detalhes; 
 
 	public String execute() throws Exception
 	{
@@ -73,7 +74,6 @@ public class AuditoriaListAction extends ActionSupport
 	public String viewAuditoria() throws Exception
 	{
 		auditoriaView = auditoriaManager.projectionFindById(auditoriaView.getId(), getEmpresaId());
-
 		return Action.SUCCESS;
 	}
 
@@ -247,5 +247,9 @@ public class AuditoriaListAction extends ActionSupport
 	public void setShowFilter(boolean filterState) 
 	{
 		this.showFilter = filterState;
+	}
+
+	public String getDetalhes() {
+		return detalhes;
 	}	
 }

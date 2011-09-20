@@ -22,6 +22,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
@@ -29,11 +30,15 @@ import com.fortes.security.auditoria.NaoAudita;
 @SequenceGenerator(name="sequence", sequenceName="areaorganizacional_sequence", allocationSize=1)
 public class AreaOrganizacional extends AbstractModel implements Serializable, Cloneable
 {
+	@Transient
 	public static Boolean TODAS = null;
+	@Transient
 	public static Boolean ATIVA = true;
+	@Transient
 	public static Boolean INATIVA = false;
 
 	@Column(length=60)
+	@ChaveDaAuditoria
 	private String nome;
 	@Transient
 	private String descricao;
