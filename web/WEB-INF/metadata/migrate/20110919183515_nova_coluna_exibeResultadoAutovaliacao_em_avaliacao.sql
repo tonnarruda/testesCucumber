@@ -1,0 +1,1 @@
+alter table avaliacao add column exibeResultadoAutoavaliacao boolean NOT NULL DEFAULT false;--.go
