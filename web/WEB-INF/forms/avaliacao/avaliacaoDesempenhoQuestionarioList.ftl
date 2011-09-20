@@ -11,6 +11,7 @@
 
 	<title>Responder Avaliações de Desempenho</title>
 	
+	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<#include "../ftl/showFilterImports.ftl" />
 	
@@ -19,6 +20,12 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	
 	<script type="text/javascript">
+		$(function() {
+			<#if exibeResultadoAutoavaliacao && msgResultadoAvaliacao?exists && msgResultadoAvaliacao != "">
+				jAlert('${msgResultadoAvaliacao}');
+			</#if>
+		});
+		
 		function populaAvaliador(avaliacaoDesempenhoId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -46,6 +53,8 @@
 	<@ww.actionmessage />
 	
 	<#include "../util/topFiltro.ftl" />
+
+	
 	
 	<@ww.form name="form" action="avaliacaoDesempenhoQuestionarioList.action" onsubmit="${validarCampos}" method="POST">
 

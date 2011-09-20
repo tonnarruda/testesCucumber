@@ -26,6 +26,7 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	private String cabecalho;
 	
 	private boolean ativo;
+	private boolean exibeResultadoAutoavaliacao;
 	private char tipoModeloAvaliacao = 'D';
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -35,6 +36,7 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	
 	@Transient
 	private int totalColab;
+	
 	
 	public String getTitulo() {
 		return titulo;
@@ -104,5 +106,13 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 
 	public void setPeriodoExperiencia(PeriodoExperiencia periodoExperiencia) {
 		this.periodoExperiencia = periodoExperiencia;
+	}
+
+	public boolean isExibeResultadoAutoavaliacao() {
+		return exibeResultadoAutoavaliacao;
+	}
+
+	public void setExibeResultadoAutoavaliacao(boolean exibeResultadoAutoavaliacao) {
+		this.exibeResultadoAutoavaliacao = exibeResultadoAutoavaliacao;
 	}
 }

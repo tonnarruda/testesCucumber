@@ -334,6 +334,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.respondida"), "respondida");
 		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
 		p.add(Projections.property("cq.observacao"), "observacao");
+		p.add(Projections.property("cq.performance"), "performance");
 		p.add(Projections.property("colab.id"), "projectionColaboradorId");
 		p.add(Projections.property("colab.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("cand.id"), "projectionCandidatoId");
@@ -341,9 +342,11 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
 		p.add(Projections.property("avaliacao.cabecalho"), "projectionAvaliacaoCabecalho");
+		p.add(Projections.property("avaliacao.exibeResultadoAutoavaliacao"), "projectionAvaliacaoExibeResultadoAutoavaliacao");
 		p.add(Projections.property("avaliacaoDesempenho.id"), "projectionAvaliacaoDesempenhoId");
 		p.add(Projections.property("avaliacaoDesempenho.anonima"), "projectionAvaliacaoDesempenhoAnonima");
 		p.add(Projections.property("avaliacaoDesempenho.titulo"), "projectionAvaliacaoDesempenhoTitulo");
+		p.add(Projections.property("avaliacaoDesempenho.permiteAutoAvaliacao"), "projectionAvaliacaoDesempenhoPermiteAutoAvaliacao");
 		p.add(Projections.property("cq.avaliador.id"), "projectionAvaliadorId");
 
 		criteria.setProjection(p);

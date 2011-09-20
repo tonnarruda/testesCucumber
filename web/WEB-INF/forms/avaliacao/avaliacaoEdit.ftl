@@ -61,6 +61,8 @@
 			<@ww.textfield label="Título" name="avaliacao.titulo" id="titulo" cssClass="inputNome" maxLength="100" required="true" />
 
 			<@ww.textarea label="Observação" name="avaliacao.cabecalho"/>
+
+			<@ww.checkbox label="Exibir Resultado ao Colaborador quando for AutoAvaliação" id="exibeResultadoAutoavaliacao" name="avaliacao.exibeResultadoAutoavaliacao" labelPosition="left"/>
 			
 			<@ww.select label="Ativa" name="avaliacao.ativo" id="ativo" list=r"#{true:'Sim',false:'Não'}"/>
 
@@ -68,7 +70,6 @@
 				<@ww.select label="Tipo de Avaliação" name="avaliacao.tipoModeloAvaliacao" id="tipoModeloAvaliacao" list=r"#{'D':'Avaliação de Desempenho','A':'Acompanhamento do Período de Experiência'}"/>
 				<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="diasComDescricao" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
 			</#if>			
-
 		
 			<@ww.hidden name="telaInicial" />
 			<@ww.hidden name="avaliacao.id" />
