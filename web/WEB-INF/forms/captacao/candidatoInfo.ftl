@@ -1,3 +1,4 @@
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 	<title>Informações do Candidato</title>
@@ -91,11 +92,23 @@
 		</#if>
 		
 		$(function() {
-			$("#cv").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculo.action"/>', {'candidato.id':'${candidato.id}'});
-			$("#historico").load('<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/verHistoricoCandidato.action"/>', {'candidato.id':'${candidato.id}'});
+			<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO_CURRICULO">
+				$('#aba1').css("display", "inline");
+				$("#cv").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculo.action"/>', {'candidato.id':'${candidato.id}'});
+			</@authz.authorize>
+
+			<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO_HISTORICO">
+				$('#aba2').css("display", "inline");
+				$("#historico").load('<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/verHistoricoCandidato.action"/>', {'candidato.id':'${candidato.id}'});
+			</@authz.authorize>
+			
 			$("#imagens").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoEscaneado.action"/>', {'candidato.id':'${candidato.id}'});
 			$("#textoOcr").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoTextoOcr.action"/>', {'candidato.id':'${candidato.id}',palavras:'${palavras}',forma:'${forma}'});
-			$("#competencia").load('<@ww.url includeParams="none" value="/captacao/nivelCompetencia/visualizarCandidato.action"/>', paramsCompetencia);
+
+			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICIT_CANDID_COMPETENCIA">
+				$('#aba5').css("display", "inline");
+				$("#competencia").load('<@ww.url includeParams="none" value="/captacao/nivelCompetencia/visualizarCandidato.action"/>', paramsCompetencia);
+			</@authz.authorize>
 		});
 	</script>
 	<@ww.head/>
@@ -104,11 +117,11 @@
 <body>
 	<br>
 	<div id="abas">
-		<div id="aba1">
+		<div id="aba1" style="display: none">
 			<a href="javascript:mudaAba(1)">CURRÍCULO</a>
 		</div>
-
-		<div id="aba2">
+	
+		<div id="aba2" style="display: none">
 			<a href="javascript:mudaAba(2)">HISTÓRICO</a>
 		</div>
 
@@ -119,8 +132,8 @@
 		<div id="aba4">
 			<a href="javascript:mudaAba(4)">TEXTO DIGITALIZADO</a>
 		</div>
-
-		<div id="aba5">
+	
+		<div id="aba5" style="display: none">
 			<a href="javascript:mudaAba(5)">COMPETÊNCIAS</a>
 		</div>
 		
@@ -131,7 +144,7 @@
 		-->
 	</div>
 
-	<div id="content1">
+	<div id="content1"}>
 		<@ww.div id="cv"/>
 	</div>
 
@@ -154,9 +167,8 @@
 	<@ww.hidden id="palavras" name="palavras"/>
 	<@ww.hidden id="forma" name="forma"/>
 
-
 	<div class="buttonGroup" style="position:relative;">
-<div id="box">
+	<div id="box">
 		<span id="boxtitle"></span>
 		<@ww.form name="form" id="form" action="imprimirCurriculo.action" method="POST">
 		
@@ -215,11 +227,13 @@
 		</div>
 	
 		</div>
-		<br>
-			<#--p><input type="checkbox" name="imprimirHC" id="impHC" /> <label for="impHC">Imprimir HistÃ³rico</label></p>
-			<p><input type="checkbox" name="imprimirAS" id="impAS" /> <label for="impAS">Imprimir Assinatura</label></p-->
-			<button class="btnImprimirPdfB" onclick="openbox('Configurar ImpressÃ£o', '');" ></button>
-		<br>
+		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO_CURRICULO">
+			<br>
+				<#--p><input type="checkbox" name="imprimirHC" id="impHC" /> <label for="impHC">Imprimir HistÃ³rico</label></p>
+				<p><input type="checkbox" name="imprimirAS" id="impAS" /> <label for="impAS">Imprimir Assinatura</label></p-->
+				<button class="btnImprimirPdfB" onclick="openbox('Configurar ImpressÃ£o', '');" ></button>
+			<br>
+		</@authz.authorize>
 	</div>
 	
 		
