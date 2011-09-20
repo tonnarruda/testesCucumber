@@ -687,6 +687,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(camposExtras != null && habilitaCampoExtra)
 				colaborador.setCamposExtras(camposExtrasManager.update(camposExtras, colaborador.getCamposExtras().getId(), getEmpresaSistema().getId()));
 
+			colaborador.setDataAtualizacao(new Date());
 			colaboradorManager.updateInfoPessoais(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema());
 			prepareUpdateInfoPessoais();
 			

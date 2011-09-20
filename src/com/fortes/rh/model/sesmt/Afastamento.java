@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -23,6 +24,7 @@ public class Afastamento extends AbstractModel implements Serializable
 		return inss ? "Sim" : "Não";
 	}
 
+	@ChaveDaAuditoria
 	public String getDescricao()
 	{
 		return descricao;

@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
