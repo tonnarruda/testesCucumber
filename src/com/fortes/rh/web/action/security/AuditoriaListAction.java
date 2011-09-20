@@ -74,6 +74,8 @@ public class AuditoriaListAction extends ActionSupport
 	public String viewAuditoria() throws Exception
 	{
 		auditoriaView = auditoriaManager.projectionFindById(auditoriaView.getId(), getEmpresaId());
+//		detalhes = auditoriaManager.getDetalhes(auditoriaView.getDados());
+//		auditoriaView.setDados(detalhes);
 		return Action.SUCCESS;
 	}
 
