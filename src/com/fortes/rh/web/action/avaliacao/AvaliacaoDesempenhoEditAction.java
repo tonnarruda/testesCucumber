@@ -52,6 +52,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Collection<Colaborador> participantes;
 	private Collection<Colaborador> avaliadors;
 	private Colaborador avaliador;
+	private ColaboradorQuestionario colaboradorQuestionario; 
 	
 	private Collection<Empresa> empresas;
 	
@@ -388,8 +389,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		
 		if(exibeResultadoAutoavaliacao)
 		{
-			ColaboradorQuestionario colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionarioId);
-			this.msgResultadoAvaliacao = "Resultado da Avaliacao: <br><br>"  + colaboradorQuestionario.getAvaliacao().getCabecalho().replace("\r\n","<br>") + "<br>Pontuação Obtida: " + colaboradorQuestionario.getPerformanceFormatada();
+			colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionarioId);
+			this.msgResultadoAvaliacao = colaboradorQuestionario.getAvaliacao().getCabecalho().replace("\r\n","<br>") + "<br><br>Pontuação Obtida: " + colaboradorQuestionario.getPerformanceFormatada();
 		}
 		
 		return Action.SUCCESS;
@@ -626,5 +627,14 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setExibeResultadoAutoavaliacao(boolean exibeResultadoAutoavaliacao) {
 		this.exibeResultadoAutoavaliacao = exibeResultadoAutoavaliacao;
+	}
+
+	public ColaboradorQuestionario getColaboradorQuestionario() {
+		return colaboradorQuestionario;
+	}
+
+	public void setColaboradorQuestionario(
+			ColaboradorQuestionario colaboradorQuestionario) {
+		this.colaboradorQuestionario = colaboradorQuestionario;
 	}
 }
