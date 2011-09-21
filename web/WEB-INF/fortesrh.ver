@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.57.48" data="14/09/2011">
+		- ReS > Relatórios > Colaboradores por Cargo: Novo filtro por Colocação do colaborador e nova coluna de colocação no relatório.
+		- Aval. Desempenho > Cadastro > Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência: Nova opção para exibir resultado ao Colaborador em AutoAvaliação.
+		- Aval. Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Mudanças no filtro de Avaliação Desempenho e novo filtro por colaborador.
+		- Utilitários > Cadastros > Perfis: Novas configurações para exibir informações do candidato.
+	</Versao>
 	<Versao id="1.1.56.47" data="14/09/2011">
 		- ReS > Relatórios > Avaliações de Candidatos: Novo filtro por status da Solicitação de Pessoal.
 		- TeD > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Possibilidade de inserir um colaborador já cadastrado em outra turma do mesmo curso.

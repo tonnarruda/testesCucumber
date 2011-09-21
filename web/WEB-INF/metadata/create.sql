@@ -686,7 +686,8 @@ CREATE TABLE avaliacao (
 	ativo boolean,
 	empresa_id bigint,
 	tipoModeloAvaliacao character(1) NOT NULL,
-	periodoExperiencia_id bigint
+	periodoExperiencia_id bigint,
+	exibeResultadoAutoavaliacao boolean NOT NULL DEFAULT false
 );
 
 ALTER TABLE avaliacao ADD CONSTRAINT avaliacao_pkey PRIMARY KEY(id);

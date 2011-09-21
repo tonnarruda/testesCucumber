@@ -18125,3 +18125,46 @@ update parametrosdosistema set appversao = '1.1.55.47';--.go
 -- versao 1.1.56.47
 
 update parametrosdosistema set appversao = '1.1.56.47';--.go
+-- versao 1.1.57.48
+
+update parametrosdosistema set camposcandidatovisivel = replace(camposcandidatovisivel, 'funcaoPretendida', 'cargosCheck'), camposcandidatoobrigatorio = replace(camposcandidatoobrigatorio, 'funcaoPretendida', 'cargosCheck');--.go
+update parametrosdosistema set camposcandidatovisivel = replace(camposcandidatovisivel, 'areasInteresse', 'areasCheck'), camposcandidatoobrigatorio = replace(camposcandidatoobrigatorio, 'areasInteresse', 'areasCheck');--.go
+update parametrosdosistema set camposcandidatovisivel = replace(camposcandidatovisivel, 'conhecimentos', 'conhecimentosCheck'), camposcandidatoobrigatorio = replace(camposcandidatoobrigatorio, 'conhecimentos', 'conhecimentosCheck');--.go
+insert into migrations values('20110915140001');--.go
+
+alter table avaliacao add column exibeResultadoAutoavaliacao boolean NOT NULL DEFAULT false;--.go
+insert into migrations values('20110919183515');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (522, 'ROLE_INFORM_CANDIDATO', 'Informações do Candidato', '--', 15, false, 357); --.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (523, 'ROLE_INFORM_CANDIDATO_CURRICULO', 'Visualizar Currículo', '--', 1, false, 522); --.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (524, 'ROLE_INFORM_CANDIDATO_HISTORICO', 'Visualizar Histórico', '--', 2, false, 522); --.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (525, 'ROLE_INFORM_CANDIDATO_COMPETENCIA', 'Visualizar Competência', '--', 3, false, 522); --.go
+alter sequence papel_sequence restart with 526;--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=522 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+
+CREATE FUNCTION ajusta_perfil_papel_faixa() RETURNS integer AS '
+DECLARE
+	mpapeis RECORD;
+BEGIN
+    FOR mpapeis IN
+	select id as papeisId from papel where id in (522,523,524,525)
+	    LOOP
+		DECLARE
+		    mviews RECORD;
+		BEGIN
+		    FOR mviews IN
+				select distinct perfil_id as perfilId from perfil_papel where (papeis_id = 2 or papeis_id = 496) order by perfil_id
+				LOOP
+				  EXECUTE ''insert into perfil_papel(perfil_id, papeis_id) values(''|| mviews.perfilId ||'', ''|| mpapeis.papeisId ||'')'';
+				END LOOP;
+		END;
+	     END LOOP;
+RETURN 1;
+END;
+' LANGUAGE plpgsql;--.go
+select ajusta_perfil_papel_faixa();--.go
+drop function ajusta_perfil_papel_faixa();--.go
+
+insert into migrations values('20110920141058');--.go
+
+update parametrosdosistema set appversao = '1.1.57.48';--.go

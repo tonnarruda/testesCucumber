@@ -5,7 +5,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (525,
 alter sequence papel_sequence restart with 526;--.go
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=522 WHERE atualizaPapeisIdsAPartirDe is null;--.go
 
-
 CREATE FUNCTION ajusta_perfil_papel_faixa() RETURNS integer AS '
 DECLARE
 	mpapeis RECORD;
@@ -17,7 +16,7 @@ BEGIN
 		    mviews RECORD;
 		BEGIN
 		    FOR mviews IN
-				select distinct perfil_id as perfilId from perfil_papel where papeis_id = 2 order by perfil_id
+				select distinct perfil_id as perfilId from perfil_papel where (papeis_id = 2 or papeis_id = 496) order by perfil_id
 				LOOP
 				  EXECUTE ''insert into perfil_papel(perfil_id, papeis_id) values(''|| mviews.perfilId ||'', ''|| mpapeis.papeisId ||'')'';
 				END LOOP;

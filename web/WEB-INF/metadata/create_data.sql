@@ -59,6 +59,12 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (508,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (56, 'ROLE_LIBERA_SOLICITACAO', 'Liberador de Solicitação', '#', 4, false, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (45, 'ROLE_MOV_SOLICITACAO_SELECAO', 'Recrutador(a)', '#', 4, false, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (22, 'ROLE_MOV_SOLICITACAO_CANDIDATO', 'Ver Candidatos da Solicitação', '#', 4, false, 357);
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (522, 'ROLE_INFORM_CANDIDATO', 'Informações do Candidato', '--', 15, false, 357);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (523, 'ROLE_INFORM_CANDIDATO_CURRICULO', 'Visualizar Currículo', '--', 1, false, 522);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (524, 'ROLE_INFORM_CANDIDATO_HISTORICO', 'Visualizar Histórico', '--', 2, false, 522);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (525, 'ROLE_INFORM_CANDIDATO_COMPETENCIA', 'Visualizar Competência', '--', 3, false, 522);
+
 -- Fim R&S
 
 -- Modulo C&S
@@ -286,7 +292,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 522;
+alter sequence papel_sequence restart with 526;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -21042,37 +21048,41 @@ insert into cid (codigo, descricao) values ('U99','ID 10ª Revisão não dispon�
 
 insert into comoFicouSabendoVaga (id, nome) values (1, 'Outro');
 
+insert into migrations values('20110718095432');
+insert into migrations values('20110718103503');
+insert into migrations values('20110719093045');
+insert into migrations values('20110719164403');
+insert into migrations values('20110722151723');
+insert into migrations values('20110725093103');
+insert into migrations values('20110726092155');
+insert into migrations values('20110809151648');
+insert into migrations values('20110805144500');
+insert into migrations values('20110804152010');
+insert into migrations values('20110809171743');
+insert into migrations values('20110804151455');
+insert into migrations values('20110811085158');
+insert into migrations values('20110811092316');
+insert into migrations values('20110817092248');
+insert into migrations values('20110817170136');
+insert into migrations values('20110817170825');
+insert into migrations values('20110824140640');
+insert into migrations values('20110825141502');
+insert into migrations values('20110830114158');
+insert into migrations values('20110830151026');
+insert into migrations values('20110831133044');
+insert into migrations values('20110905092612');
+insert into migrations values('20110905101802');
+insert into migrations values('20110905105154');
+insert into migrations values('20110915140001');
+insert into migrations values('20110919183515');
+insert into migrations values('20110920141058');
+
+
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.56.47', '', '25', false,false, 2, '1.1.45.1', 3, 
-'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,funcaoPretendida,areasInteresse,conhecimentos,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.57.48', '', '25', false,false, 2, '1.1.45.1', 3, 
+'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'
 );
 
 alter sequence parametrosdosistema_sequence restart with 2;
-
-insert into migrations values('20110718095432');--.go
-insert into migrations values('20110718103503');--.go
-insert into migrations values('20110719093045');--.go
-insert into migrations values('20110719164403');--.go
-insert into migrations values('20110722151723');--.go
-insert into migrations values('20110725093103');--.go
-insert into migrations values('20110726092155');--.go
-insert into migrations values('20110809151648');--.go
-insert into migrations values('20110805144500');--.go
-insert into migrations values('20110804152010');--.go
-insert into migrations values('20110809171743');--.go
-insert into migrations values('20110804151455');--.go
-insert into migrations values('20110811085158');--.go
-insert into migrations values('20110811092316');--.go
-insert into migrations values('20110817092248');--.go
-insert into migrations values('20110817170136');--.go
-insert into migrations values('20110817170825');--.go
-insert into migrations values('20110824140640');--.go
-insert into migrations values('20110825141502');--.go
-insert into migrations values('20110830114158');--.go
-insert into migrations values('20110830151026');--.go
-insert into migrations values('20110831133044');--.go
-insert into migrations values('20110905092612');--.go
-insert into migrations values('20110905101802');--.go
-insert into migrations values('20110905105154');--.go
