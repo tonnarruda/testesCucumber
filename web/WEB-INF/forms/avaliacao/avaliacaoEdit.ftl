@@ -62,7 +62,7 @@
 
 			<@ww.textarea label="Observação" name="avaliacao.cabecalho"/>
 
-			<@ww.checkbox label="Exibir Resultado ao Colaborador quando for AutoAvaliação" id="exibeResultadoAutoavaliacao" name="avaliacao.exibeResultadoAutoavaliacao" labelPosition="left"/>
+			<@ww.checkbox label="Exibir Resultado ao Colaborador(AutoAvaliação)" id="exibeResultadoAutoavaliacao" name="avaliacao.exibeResultadoAutoavaliacao" labelPosition="left"/>
 			
 			<@ww.select label="Ativa" name="avaliacao.ativo" id="ativo" list=r"#{true:'Sim',false:'Não'}"/>
 

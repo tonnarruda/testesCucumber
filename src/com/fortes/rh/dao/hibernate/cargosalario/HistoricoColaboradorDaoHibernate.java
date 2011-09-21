@@ -857,10 +857,10 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return criteria.list();
 	}
 
-	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta, Long[] areaOrganizacionalIds, Date dataAtualizacao, Long empresaId)
+	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta, Long[] areaOrganizacionalIds, Date dataAtualizacao, Long empresaId, String vinculo)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new HistoricoColaborador(hc.id, co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.codigoAC, c.id, c.nome, fs.id, fs.nome, e.id, e.nome, emp.id, emp.nome, hc.salario, emp.acIntegra, hc.tipoSalario, hc.quantidadeIndice, i, fs, fsh, ih, ifs, ifsh) ");
+		hql.append("select new HistoricoColaborador(hc.id, co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.codigoAC, co.vinculo, c.id, c.nome, fs.id, fs.nome, e.id, e.nome, emp.id, emp.nome, hc.salario, emp.acIntegra, hc.tipoSalario, hc.quantidadeIndice, i, fs, fsh, ih, ifs, ifsh) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.estabelecimento as e ");
@@ -895,6 +895,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if(empresaId != null )
 			hql.append("and co.empresa.id = :empresaId ");
 
+		if(vinculo != null && !vinculo.equals("") )
+			hql.append("and co.vinculo = :vinculo ");
+
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("			from HistoricoColaborador as hc2 ");
 		hql.append("			where hc2.colaborador.id = co.id ");
@@ -925,6 +928,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
+		
+		if(vinculo != null && !vinculo.equals("") )
+			query.setString("vinculo", vinculo);
 
 		return query.list();
 	}

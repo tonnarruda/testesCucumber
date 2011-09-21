@@ -25,6 +25,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Escolaridade;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
@@ -62,6 +63,8 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Collection<GrupoOcupacional> grupoOcupacionals = new ArrayList<GrupoOcupacional>();
 	private Cargo cargo;
 	private HashMap<String, String> escolaridades;
+	private HashMap<String, String> vinculos;
+	private String vinculo;
 	private Map<String, Object> parametros;
 	private String filtro;
 	private String descricaoCBO;
@@ -154,6 +157,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	{
 		compartilharColaboradores =  parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_COLAB_CARGO");
+		vinculos = new Vinculo();
 		
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
@@ -178,11 +182,13 @@ public class CargoEditAction extends MyActionSupportEdit
 		else
 			exibirSalarioVariavel = empresaManager.checkEmpresaIntegradaAc();
 		
-		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck, exibColabAdmitido, qtdMesesDesatualizacao);
+		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
 		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Cargos", getEmpresaSistema(), "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico));
 		parametros.put("EXIBIRSALARIO", exibirSalario);
 		parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);
 		
+		if(exibirSalarioVariavel)
+			return "successRemuneracaoVariavel";
 		if(relatorioResumido)
 			return "successResumido";
 		else
@@ -803,6 +809,18 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public void setExibColabDesatualizado(boolean exibColabDesatualizado) {
 		this.exibColabDesatualizado = exibColabDesatualizado;
+	}
+
+	public HashMap<String, String> getVinculos() {
+		return vinculos;
+	}
+
+	public void setVinculos(HashMap<String, String> vinculos) {
+		this.vinculos = vinculos;
+	}
+
+	public void setVinculo(String vinculo) {
+		this.vinculo = vinculo;
 	}
 
 }

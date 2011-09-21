@@ -26,6 +26,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -182,7 +183,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setDataAdmissao(dataAdmissao);
 	}
 	
-	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, Date colaboradorDataAdmissao, String colaboradorCodigoAC, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario, Boolean acIntegra, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico, Indice faixaIndice, IndiceHistorico faixaHistoricoIndice)
+	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, Date colaboradorDataAdmissao, String colaboradorCodigoAC, String vinculo, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long estabelecimentoId, String estabelecimentoNome, Long empresaId, String empresaNome, Double salario, Boolean acIntegra, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico, Indice faixaIndice, IndiceHistorico faixaHistoricoIndice)
 	{
 		this.setId(historicoId);
 		
@@ -194,6 +195,11 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setCodigoAC(colaboradorCodigoAC);
 		this.colaborador.getEmpresa().setAcIntegra(acIntegra);
 		this.colaborador.getEmpresa().setId(empresaId);
+		
+		if(vinculo == null || vinculo.equals(""))
+			vinculo = "E";
+		Vinculo vinc = new Vinculo();
+		this.colaborador.setVinculo((String) vinc.get(vinculo));
 		
 		this.faixaSalarial = new FaixaSalarial();
 		this.faixaSalarial.setId(faixaId);
