@@ -119,24 +119,29 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 		return pesquisa;
 	}
 
-	public Pesquisa clonarPesquisa(Long pesquisaId) throws Exception
+	public Pesquisa clonarPesquisa(Long pesquisaId, Long[] empresasIds) throws Exception
 	{
-		Pesquisa pesquisaClonada;
+		Pesquisa pesquisaClonada = null;
 
 		try
 		{
 			Pesquisa pesquisa = findByIdProjection(pesquisaId);
-
-	    	Questionario questionario = new Questionario();
-	    	questionario = pesquisa.getQuestionario();
-	    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
-
-	    	pesquisaClonada = (Pesquisa) pesquisa.clone();
-	    	pesquisaClonada.setId(null);
-	    	pesquisaClonada.setQuestionario(questionarioClonado);
-	    	save(pesquisaClonada);
-
-	    	perguntaManager.clonarPergunta(questionario.getId(), questionarioClonado, null);
+	    	Questionario questionario = pesquisa.getQuestionario();
+	    	
+	    	if(empresasIds != null && empresasIds.length > 0)
+	    	{
+	    		for (Long empresaId : empresasIds) 
+	    		{
+	    			Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
+	    			questionarioClonado.getEmpresa().setId(empresaId);
+	    			pesquisaClonada = clonarPesquisaQuestionario(pesquisa, questionario, questionarioClonado);
+				}
+	    	}
+	    	else
+	    	{
+	    		Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
+	    		pesquisaClonada = clonarPesquisaQuestionario(pesquisa, questionario, questionarioClonado);
+	    	}
 		}
 		catch (Exception e)
 		{
@@ -145,6 +150,19 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 		}
 
     	return pesquisaClonada;
+	}
+
+	private Pesquisa clonarPesquisaQuestionario(Pesquisa pesquisa, Questionario questionario, Questionario questionarioClonado)
+	{
+		Pesquisa pesquisaClonada;
+		
+		pesquisaClonada = (Pesquisa) pesquisa.clone();
+		pesquisaClonada.setId(null);
+		pesquisaClonada.setQuestionario(questionarioClonado);
+		save(pesquisaClonada);
+		
+		perguntaManager.clonarPergunta(questionario.getId(), questionarioClonado, null);
+		return pesquisaClonada;
 	}
 
 	public Pesquisa findParaSerRespondida(Long pesquisaId)

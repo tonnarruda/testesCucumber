@@ -17,7 +17,7 @@ public interface PesquisaManager extends GenericManager<Pesquisa>
 	Pesquisa save(Pesquisa pesquisa, Questionario questionario, Empresa empresa) throws Exception;
 	Pesquisa findParaSerRespondida(Long id);
 	Pesquisa findByQuestionario(Long questionarioId);
-	Pesquisa clonarPesquisa(Long pesquisaId) throws Exception;
+	Pesquisa clonarPesquisa(Long pesquisaId, Long[] empresasIds) throws Exception;
 	Long getIdByQuestionario(Long questionarioId);
 	Integer getCount(Long empresaId, String questionarioTitulo);
 }
