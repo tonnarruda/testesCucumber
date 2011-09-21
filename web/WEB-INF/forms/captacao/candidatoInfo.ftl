@@ -105,7 +105,7 @@
 			$("#imagens").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoEscaneado.action"/>', {'candidato.id':'${candidato.id}'});
 			$("#textoOcr").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculoTextoOcr.action"/>', {'candidato.id':'${candidato.id}',palavras:'${palavras}',forma:'${forma}'});
 
-			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICIT_CANDID_COMPETENCIA">
+			<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO_COMPETENCIA">
 				$('#aba5').css("display", "inline");
 				$("#competencia").load('<@ww.url includeParams="none" value="/captacao/nivelCompetencia/visualizarCandidato.action"/>', paramsCompetencia);
 			</@authz.authorize>
