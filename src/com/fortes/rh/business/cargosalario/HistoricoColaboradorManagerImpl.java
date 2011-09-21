@@ -1256,7 +1256,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	//testes samuel
 	@SuppressWarnings("static-access")
-	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao) throws Exception
+	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao, String vinculo) throws Exception
 	{
 		Collection<HistoricoColaborador> historicoColaboradors;
 		Date dataConsulta = null;
@@ -1281,7 +1281,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if (qtdMesesDesatualizacao != null)
 			dataAtualizacao = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMesesDesatualizacao, false);
 		
-		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, empresaId);
+		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, empresaId, vinculo);
 		getRemuneracaoVariavelByAcPessoal(dataHistorico, historicoColaboradors);
 		
 		if(historicoColaboradors.isEmpty())
