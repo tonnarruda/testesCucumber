@@ -25,6 +25,11 @@ public class MyActionSupportEditTest extends TestCase
 	{
 		assertTrue(myActionSupportEdit.getEmpresaSistema().getId().equals(1L));
 	}
+	
+	public void testGetUsuarioLogado()
+	{
+		assertTrue(myActionSupportEdit.getUsuarioLogado().getId().equals(1L));
+	}
 
 	public void testSetEmpresaSistema()
 	{

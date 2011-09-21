@@ -1,18 +1,33 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 
 <html>
 <head>
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+	
+		#formDialog { display: none; width: 600px; }
 	</style>
 	
 	<#include "../ftl/showFilterImports.ftl" />
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	
 	<#assign validarCampos="return validaFormulario('formBusca', null, null, true)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<title>Pesquisas</title>
+	
+	<script type='text/javascript'>
+		function clonar(pesquisaId, titulo)
+		{
+			$('#pesquisaId').val(pesquisaId);
+			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
+		}
+	</script>
 </head>
 <body>
 	<@ww.actionerror />
@@ -56,7 +71,7 @@
 			<a href="../questionario/imprimir.action?questionario.id=${pesquisa.questionario.id}"><img border="0" title="Imprimir pesquisa" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<a href="../questionario/imprimir.action?questionario.id=${pesquisa.questionario.id}&imprimirFormaEconomica=true"><img border="0" title="Imprimir pesquisa em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
 			<a href="../questionario/prepareResultado.action?questionario.id=${pesquisa.questionario.id}"><img border="0" title="Relatório da Pesquisa" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
-			<a href="clonarPesquisa.action?pesquisa.id=${pesquisa.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
+			<a href="javascript:;" onclick="javascript:clonar(${pesquisa.id}, '${pesquisa.questionario.titulo}')"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			<a href="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?pesquisa.id=${pesquisa.id}&pesquisa.questionario.empresa.id=${pesquisa.questionario.empresa.id}&page=${page}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 
 		</@display.column>
@@ -76,6 +91,15 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>
+	</div>
+	
+	<div id="formDialog">
+		<@ww.form name="formModal" id="formModal" action="clonarPesquisa.action" method="POST">
+			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta pesquisa" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')"/>
+			* Caso nenhuma empresa seja selecionada, a pesquisa será clonada apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
+			<@ww.hidden name="pesquisa.id" id="pesquisaId"/>
+			<button class="btnClonar" onclick="window.location=''">
+		</@ww.form>
 	</div>
 </body>
 </html>

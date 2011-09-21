@@ -12,7 +12,10 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 @SuppressWarnings("serial")
@@ -28,6 +31,9 @@ public class PesquisaListAction extends MyActionSupportList
 
     private Collection<Pesquisa> pesquisas = new ArrayList<Pesquisa>();
     private Collection<Questionario> questionarios;
+    
+    private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	private String[] empresasCheck;
 
 	@SuppressWarnings("unused")
 	private String areasIds;//Não apague ta sendo usado no ftl
@@ -49,8 +55,11 @@ public class PesquisaListAction extends MyActionSupportList
     {
    		this.setTotalSize(pesquisaManager.getCount(getEmpresaSistema().getId(), questionarioTitulo));
    		pesquisas = pesquisaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize(), questionarioTitulo);
-
-        return Action.SUCCESS;
+   		
+   		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+        
+   		return Action.SUCCESS;
     }
     
     public String listTrafego() throws Exception
@@ -84,7 +93,7 @@ public class PesquisaListAction extends MyActionSupportList
 
     public String clonarPesquisa() throws Exception
     {
-		pesquisa = pesquisaManager.clonarPesquisa(pesquisa.getId());
+		pesquisa = pesquisaManager.clonarPesquisa(pesquisa.getId(), LongUtil.arrayStringToArrayLong(empresasCheck));
 		return Action.SUCCESS;
     }
 
@@ -163,6 +172,22 @@ public class PesquisaListAction extends MyActionSupportList
 
 	public void setQuestionarioTitulo(String questionarioTitulo) {
 		this.questionarioTitulo = questionarioTitulo;
+	}
+
+	public String[] getEmpresasCheck() {
+		return empresasCheck;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+
+	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList) {
+		this.empresasCheckList = empresasCheckList;
 	}
 
 }

@@ -402,6 +402,7 @@ public class PesquisaManagerTest extends MockObjectTestCase
     	Pesquisa pesquisaClonada = PesquisaFactory.getEntity();
 
     	Questionario questionarioClonado = QuestionarioFactory.getEntity();
+    	questionarioClonado.setEmpresa(empresa);
 
     	TransactionStatus status = null;
 
@@ -410,8 +411,20 @@ public class PesquisaManagerTest extends MockObjectTestCase
     	pesquisaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(pesquisaClonada));
     	perguntaManager.expects(atLeastOnce()).method("clonarPergunta").with(ANYTHING, ANYTHING, ANYTHING);
 
-    	Pesquisa retorno = pesquisaManager.clonarPesquisa(pesquisa.getId());
+    	Pesquisa retorno = pesquisaManager.clonarPesquisa(pesquisa.getId(), null);
+    	assertEquals(questionarioClonado.getId(), retorno.getId());
 
+    	pesquisaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(pesquisa));
+    	
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	pesquisaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(pesquisaClonada));
+    
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	pesquisaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(pesquisaClonada));
+    	
+    	perguntaManager.expects(atLeastOnce()).method("clonarPergunta").with(ANYTHING, ANYTHING, ANYTHING);
+    	
+    	retorno = pesquisaManager.clonarPesquisa(pesquisa.getId(), new Long[]{1L, 2L});
     	assertEquals(questionarioClonado.getId(), retorno.getId());
     }
 
@@ -431,7 +444,7 @@ public class PesquisaManagerTest extends MockObjectTestCase
 
     	try
 		{
-    		pesquisaManager.clonarPesquisa(pesquisa.getId());
+    		pesquisaManager.clonarPesquisa(pesquisa.getId(), null);
 		}
 		catch (Exception e)
 		{

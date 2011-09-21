@@ -86,7 +86,7 @@ public class PesquisaListActionTest extends MockObjectTestCase
 
 		pesquisaListAction.setPesquisa(pesquisa);
 
-		pesquisaManager.expects(once()).method("clonarPesquisa").with(ANYTHING).will(returnValue(pesquisa));
+		pesquisaManager.expects(once()).method("clonarPesquisa").with(ANYTHING, ANYTHING).will(returnValue(pesquisa));
 
 		assertEquals("Teste de sucesso do clonar pesquisa", "success", pesquisaListAction.clonarPesquisa());
 	}
