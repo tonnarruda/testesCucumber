@@ -17,6 +17,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -24,6 +25,7 @@ import com.fortes.rh.model.sesmt.Exame;
 public class Empresa extends AbstractModel implements Serializable
 {
 	@Column(length=15)
+	@ChaveDaAuditoria
 	private String nome;
 	@Column(length=20)
 	private String cnpj;

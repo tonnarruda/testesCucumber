@@ -61,6 +61,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
 	private String nomeBusca;
 	private Long empresaId;
+	private Long colaboradorQuestionarioId;
 	
 	private boolean isAvaliados;
 	private boolean temParticipantesAssociados;
@@ -81,6 +82,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ResultadoAvaliacaoDesempenho> resultados;
 	private Boolean compartilharColaboradores;
+	private boolean exibeResultadoAutoavaliacao;
+	private String msgResultadoAvaliacao;
 	private Long avaliacaoId;
 	
 	private void prepare() throws Exception
@@ -383,6 +386,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		if(avaliacaoDesempenho != null)
 			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), filtroRespondida());
 		
+		if(exibeResultadoAutoavaliacao)
+		{
+			ColaboradorQuestionario colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionarioId);
+			this.msgResultadoAvaliacao = "Resultado da Avaliacao: <br><br>"  + colaboradorQuestionario.getAvaliacao().getCabecalho().replace("\r\n","<br>") + "<br>Pontuação Obtida: " + colaboradorQuestionario.getPerformanceFormatada();
+		}
+		
 		return Action.SUCCESS;
 	}
 	
@@ -593,5 +602,29 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setAvaliacaoId(Long avaliacaoId) {
 		this.avaliacaoId = avaliacaoId;
+	}
+
+	public void setColaboradorQuestionarioId(Long colaboradorQuestionarioId) {
+		this.colaboradorQuestionarioId = colaboradorQuestionarioId;
+	}
+
+	public String getMsgResultadoAvaliacao() {
+		return msgResultadoAvaliacao;
+	}
+
+	public Long getColaboradorQuestionarioId() {
+		return colaboradorQuestionarioId;
+	}
+
+	public void setMsgResultadoAvaliacao(String msgResultadoAvaliacao) {
+		this.msgResultadoAvaliacao = msgResultadoAvaliacao;
+	}
+
+	public boolean isExibeResultadoAutoavaliacao() {
+		return exibeResultadoAutoavaliacao;
+	}
+
+	public void setExibeResultadoAutoavaliacao(boolean exibeResultadoAutoavaliacao) {
+		this.exibeResultadoAutoavaliacao = exibeResultadoAutoavaliacao;
 	}
 }

@@ -182,8 +182,11 @@
 				</#if>
 			</@authz.authorize>
 			<a href="prepareClonar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
+			
+		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">		
 			<a href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Candidatos da Seleção" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
-
+		</@authz.authorize>
+		
 		</@display.column>
 		<@display.column title="Cargo" class="${classe}">
 			<#if solicitacao.obsSuspensao?exists && solicitacao.obsSuspensao?trim != "">

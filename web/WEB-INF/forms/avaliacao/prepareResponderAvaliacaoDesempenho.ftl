@@ -23,6 +23,9 @@
 			<#include "includePerguntasAvaliacao.ftl" />
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliador.id" />
+			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.permiteAutoAvaliacao"/>
+			<@ww.hidden name="colaboradorQuestionario.avaliacao.exibeResultadoAutoavaliacao"/>
+			
 			<@ww.token/>
 		</@ww.form>
 

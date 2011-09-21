@@ -153,46 +153,59 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	newAvaliacao();
     	this.avaliacao.setCabecalho(projectionAvaliacaoCabecalho); 	
     }
-    
+
+    public void setProjectionAvaliacaoExibeResultadoAutoavaliacao(boolean projectionAvaliacaoExibeResultadoAutoavaliacao)
+    {
+    	newAvaliacao();    	
+    	this.avaliacao.setExibeResultadoAutoavaliacao(projectionAvaliacaoExibeResultadoAutoavaliacao); 	
+    }
+   
     public void setProjectionAvaliacaoDesempenhoId(Long projectionAvaliacaoDesempenhoId)
     {
-    	if (avaliacaoDesempenho == null)
-    		avaliacaoDesempenho = new AvaliacaoDesempenho();
+    	newAvaliacaoDesempenho();
     	
     	this.avaliacaoDesempenho.setId(projectionAvaliacaoDesempenhoId); 	
     }
     
     public void setProjectionAvaliacaoDesempenhoTitulo(String projectionAvaliacaoDesempenhoTitulo)
     {
-    	if (avaliacaoDesempenho == null)
-    		avaliacaoDesempenho = new AvaliacaoDesempenho();
+    	newAvaliacaoDesempenho();
     	
     	this.avaliacaoDesempenho.setTitulo(projectionAvaliacaoDesempenhoTitulo); 	
     }
     
     public void setProjectionAvaliacaoDesempenhoInicio(Date projectionAvaliacaoDesempenhoInicio)
     {
-    	if (avaliacaoDesempenho == null)
-    		avaliacaoDesempenho = new AvaliacaoDesempenho();
+    	newAvaliacaoDesempenho();
     	
     	this.avaliacaoDesempenho.setInicio(projectionAvaliacaoDesempenhoInicio); 	
     }
     
     public void setProjectionAvaliacaoDesempenhoFim(Date projectionAvaliacaoDesempenhoFim)
     {
-    	if (avaliacaoDesempenho == null)
-    		avaliacaoDesempenho = new AvaliacaoDesempenho();
+    	newAvaliacaoDesempenho();
     	
     	this.avaliacaoDesempenho.setFim(projectionAvaliacaoDesempenhoFim); 	
     }
     
     public void setProjectionAvaliacaoDesempenhoAnonima(Boolean anonima)
     {
-    	if (avaliacaoDesempenho == null)
-    		avaliacaoDesempenho = new AvaliacaoDesempenho();
+    	newAvaliacaoDesempenho();
     	
     	this.avaliacaoDesempenho.setAnonima(anonima == null ? false : anonima); 	
     }
+    
+    public void setProjectionAvaliacaoDesempenhoPermiteAutoAvaliacao(Boolean projectionAvaliacaoDesempenhoPermiteAutoAvaliacao)
+    {
+    	newAvaliacaoDesempenho();
+    	
+    	this.avaliacaoDesempenho.setPermiteAutoAvaliacao(projectionAvaliacaoDesempenhoPermiteAutoAvaliacao == null ? false : projectionAvaliacaoDesempenhoPermiteAutoAvaliacao); 	
+    }
+
+	private void newAvaliacaoDesempenho() {
+		if (avaliacaoDesempenho == null)
+    		avaliacaoDesempenho = new AvaliacaoDesempenho();
+	}
     
     public void setProjectionAvaliadorId(Long projectionAvaliadorId)
     {

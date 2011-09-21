@@ -1831,7 +1831,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setString("conjuge", colaborador.getPessoal().getConjuge());
 		query.setString("cursos", colaborador.getCursos());
 		query.setString("observacao", colaborador.getObservacao());
-		query.setDate("dataAtualizacao", new Date());
+		query.setDate("dataAtualizacao", colaborador.getDataAtualizacao());
 		query.setLong("id", colaborador.getId());
 
 		query.executeUpdate();

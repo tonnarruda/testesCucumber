@@ -103,6 +103,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Solicitacao solicitacao;
 	private Map<String, Object> parametros;
 	private boolean ordenarPorAspecto;
+	private boolean exibeResultadoAutoavaliacao;
 	private Boolean compartilharColaboradores;
 
 	public String prepareInsert() throws Exception
@@ -205,6 +206,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		if(colaboradorQuestionario.getRespondidaEm() == null)
 			colaboradorQuestionario.setRespondidaEm(new Date());
 		
+		//levado para action avaliacaodesempenhoQuestionariolist.action
+		exibeResultadoAutoavaliacao = colaboradorQuestionario.getAvaliacaoDesempenho().isPermiteAutoAvaliacao() && colaboradorQuestionario.getAvaliador().getId().equals(colaboradorQuestionario.getColaborador().getId()) && colaboradorQuestionario.getAvaliacao().isExibeResultadoAutoavaliacao();
+
 		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		addActionMessage("Avaliação respondida com sucesso.");
 		
@@ -665,5 +669,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setEmpresaId(Long empresaId) {
 		this.empresaId = empresaId;
+	}
+
+	public boolean isExibeResultadoAutoavaliacao() {
+		return exibeResultadoAutoavaliacao;
+	}
+
+	public void setExibeResultadoAutoavaliacao(boolean exibeResultadoAutoavaliacao) {
+		this.exibeResultadoAutoavaliacao = exibeResultadoAutoavaliacao;
 	}
 }

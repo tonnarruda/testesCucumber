@@ -34,5 +34,5 @@ public interface AuditoriaManager extends GenericManager<Auditoria>
 	 * Busca todas as operações existente de um módulo.
 	 */
 	public List<String> findOperacoesPeloModulo(String modulo);
-	
+	public String getDetalhes(String dados);	
 }
