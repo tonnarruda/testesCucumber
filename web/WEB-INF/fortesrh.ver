@@ -2,8 +2,14 @@
 <Versoes>
 	<Versao id="1.1.57.48" data="14/09/2011">
 		- ReS > Relatórios > Colaboradores por Cargo: Novo filtro por Colocação do colaborador e nova coluna de colocação no relatório.
+		- Pesquisas > Movimentações > Pesquisas > Clonar: Nova opção de clonagem para mais de uma empresa.		
+		- Aval. Desempenho > Cadastro > Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência > Clonar: Nova opção de clonagem para mais de uma empresa.
 		- Aval. Desempenho > Cadastro > Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência: Nova opção para exibir resultado ao Colaborador em AutoAvaliação.
+		- Aval. Desempenho > Movimentações > Avaliações Desempenho > Clonar: Nova opção de clonagem para mais de uma empresa.
 		- Aval. Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Mudanças no filtro de Avaliação Desempenho e novo filtro por colaborador.
+		- TeD > Cadastros > Modelos de Avaliação de Curso > Clonar: Nova opção de clonagem para mais de uma empresa.
+		- Info. Funcionais > Cadastros > Modelos de Entrevistas de Desligamento > Clonar: Nova opção de clonagem para mais de uma empresa.
+		- SESMT > Cadastros > Modelos de Fichas Médicas > Clonar: Nova opção de clonagem para mais de uma empresa.
 		- Utilitários > Cadastros > Perfis: Novas configurações para exibir informações do candidato.
 	</Versao>
 	<Versao id="1.1.56.47" data="14/09/2011">
