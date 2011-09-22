@@ -7,14 +7,19 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.FichaMedicaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.FichaMedica;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 public class FichaMedicaListAction extends MyActionSupportList
@@ -25,6 +30,7 @@ public class FichaMedicaListAction extends MyActionSupportList
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private CandidatoManager candidatoManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager; 
+	private EmpresaManager empresaManager;
 
 	private Collection<FichaMedica> fichaMedicas = new ArrayList<FichaMedica>();
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
@@ -34,6 +40,9 @@ public class FichaMedicaListAction extends MyActionSupportList
 	private Colaborador colaborador;
 	private ColaboradorQuestionario colaboradorQuestionario;
 
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	private String[] empresasCheck;
+	
 	private String voltarPara = "";
 	private Date dataIni;
 	private Date dataFim;
@@ -51,6 +60,9 @@ public class FichaMedicaListAction extends MyActionSupportList
 			addActionMessage(actionMsg);
 
 		fichaMedicas = fichaMedicaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize());
+		
+		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
 
 		return Action.SUCCESS;
 	}
@@ -103,7 +115,14 @@ public class FichaMedicaListAction extends MyActionSupportList
 	{
 		try
 		{
-			fichaMedica = fichaMedicaManager.clonarFichaMedica(fichaMedica.getId());
+			Long[] empresasIds = LongUtil.arrayStringToArrayLong(empresasCheck);
+			if (empresasIds != null && empresasIds.length > 0)
+				fichaMedicaManager.clonarFichaMedica(fichaMedica.getId(), empresasIds);
+			else
+				fichaMedicaManager.clonarFichaMedica(fichaMedica.getId(), getEmpresaSistema().getId());
+			
+			addActionMessage("Ficha Médica clonada com sucesso.");
+			list();
 			return Action.SUCCESS;
 		}
 		catch (Exception e)
@@ -272,5 +291,25 @@ public class FichaMedicaListAction extends MyActionSupportList
 	public void setActionMsg(String actionMsg)
 	{
 		this.actionMsg = actionMsg;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+
+	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList) {
+		this.empresasCheckList = empresasCheckList;
+	}
+
+	public String[] getEmpresasCheck() {
+		return empresasCheck;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

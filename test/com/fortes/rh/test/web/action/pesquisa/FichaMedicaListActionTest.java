@@ -10,6 +10,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.FichaMedicaManager;
@@ -33,6 +34,7 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
 	private Mock colaboradorQuestionarioManager;
 	private Mock colaboradorRespostaManager;
 	private Mock candidatoManager;
+	private Mock empresaManager;
 
     protected void setUp() throws Exception
     {
@@ -49,6 +51,9 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
         
         candidatoManager = mock(CandidatoManager.class);
         fichaMedicaListAction.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
+
+        empresaManager = mock(EmpresaManager.class);
+        fichaMedicaListAction.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         
@@ -73,6 +78,7 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
 
     	fichaMedicaManager.expects(once()).method("delete").with(ANYTHING, ANYTHING);
     	fichaMedicaManager.expects(once()).method("findToListByEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(fichaMedicas));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").withAnyArguments().will(returnValue(new ArrayList<Empresa>()));
 
     	assertEquals("success", fichaMedicaListAction.delete());
     	assertNotNull(fichaMedicaListAction.getActionMsg());
@@ -83,7 +89,8 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     	Collection<FichaMedica> fichaMedicas = FichaMedicaFactory.getCollection();
 
     	fichaMedicaManager.expects(once()).method("findToListByEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(fichaMedicas));
-
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").withAnyArguments().will(returnValue(new ArrayList<Empresa>()));
+    	
     	assertEquals("success", fichaMedicaListAction.delete());
     	assertNull(fichaMedicaListAction.getActionMsg());
     	assertNotNull(fichaMedicaListAction.getActionErrors());
@@ -94,6 +101,7 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     	Collection<FichaMedica> fichaMedicas = FichaMedicaFactory.getCollection();
 
     	fichaMedicaManager.expects(once()).method("findToListByEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(fichaMedicas));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").withAnyArguments().will(returnValue(new ArrayList<Empresa>()));
 
     	assertEquals("success", fichaMedicaListAction.list());
     }
@@ -103,7 +111,9 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     	FichaMedica fichaMedica = FichaMedicaFactory.getEntity(1L);
     	fichaMedicaListAction.setFichaMedica(fichaMedica);
 
-    	fichaMedicaManager.expects(once()).method("clonarFichaMedica").with(eq(fichaMedica.getId())).will(returnValue(fichaMedica));
+    	fichaMedicaManager.expects(once()).method("clonarFichaMedica").with(eq(fichaMedica.getId()), ANYTHING).isVoid();
+    	fichaMedicaManager.expects(once()).method("findToListByEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(FichaMedicaFactory.getCollection()));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").withAnyArguments().will(returnValue(new ArrayList<Empresa>()));
 
     	assertEquals("success", fichaMedicaListAction.clonarFichaMedica());
     	assertEquals(fichaMedica.getId(), fichaMedicaListAction.getEmpresaSistema().getId());
@@ -114,6 +124,7 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     	Collection<FichaMedica> fichaMedicas = FichaMedicaFactory.getCollection();
 
     	fichaMedicaManager.expects(once()).method("findToListByEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(fichaMedicas));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").withAnyArguments().will(returnValue(new ArrayList<Empresa>()));
 
     	assertEquals("input", fichaMedicaListAction.clonarFichaMedica());
     }

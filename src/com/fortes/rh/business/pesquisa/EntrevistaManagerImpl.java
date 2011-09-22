@@ -118,34 +118,28 @@ public class EntrevistaManagerImpl extends GenericManagerImpl<Entrevista, Entrev
 
 		return entrevista;
 	}
-
+	
 	public void clonarEntrevista(Long entrevistaId, Long... empresasIds) throws Exception
 	{
-		
 		Entrevista entrevista = findByIdProjection(entrevistaId);
 		
 		for (Long empresaId : empresasIds)
 		{
-			Entrevista entrevistaClonada = (Entrevista) entrevista.clone();
+			Empresa empresa = new Empresa();
+			empresa.setId(empresaId);
+			
+	    	Questionario questionario = (Questionario) questionarioManager.findById(entrevista.getQuestionario().getId()).clone();
+	    	questionario = entrevista.getQuestionario();
+	    	questionario.setEmpresa(empresa);
+	    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario, empresaId);
+	    	
+	    	Entrevista entrevistaClonada = (Entrevista) entrevista.clone();
+	    	entrevistaClonada.setId(null);
+	    	entrevistaClonada.setQuestionario(questionarioClonado);
+	    	save(entrevistaClonada);
 
-			// se for para outra empresa o modelo deve ser clonado
-			if (empresaId != entrevistaClonada.getQuestionario().getEmpresa().getId())
-			{
-				Empresa empresa = new Empresa();
-				empresa.setId(empresaId);
-				
-		    	Questionario questionario = (Questionario) questionarioManager.findById(entrevista.getQuestionario().getId()).clone();
-		    	questionario.setEmpresa(empresa);
-		    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
-		
-		    	entrevistaClonada.setId(null);
-		    	entrevistaClonada.setQuestionario(questionarioClonado);
-		    	save(entrevistaClonada);
-		
-		    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
-			}
+	    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
 		}
-
 	}
 
 	public Entrevista findParaSerRespondida(Long entrevistaId)

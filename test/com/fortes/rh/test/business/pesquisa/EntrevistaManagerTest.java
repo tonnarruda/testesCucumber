@@ -409,7 +409,6 @@ public class EntrevistaManagerTest extends MockObjectTestCase
 		assertNotNull(exception);
     }
 
-
     public void testClonarEntrevista() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -453,33 +452,26 @@ public class EntrevistaManagerTest extends MockObjectTestCase
 
     	TransactionStatus status = null;
 
-    	transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(status));
     	entrevistaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(entrevista));
-    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
-    	perguntaManager.expects(once()).method("clonarPerguntas").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
     	entrevistaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(entrevistaClonada));
-    	transactionManager.expects(once()).method("commit").with(ANYTHING);
-
-    	Entrevista retorno = entrevistaManager.clonarEntrevista(entrevista.getId(), null);
-
-    	assertEquals(questionarioClonado.getId(), retorno.getId());
+    	perguntaManager.expects(once()).method("clonarPerguntas").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
+    	questionarioManager.expects(once()).method("findById").withAnyArguments().will(returnValue(questionarioClonado));
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING, ANYTHING).will(returnValue(questionarioClonado));
+    	
+    	Exception ret = null;
+    	try {
+    		entrevistaManager.clonarEntrevista(entrevista.getId(), empresa.getId());
+			
+		} catch (Exception e) {
+			ret = e;
+		}
+		assertNull(ret);
     }
 
     public void testClonarEntrevistaComException() throws Exception
     {
     	Entrevista entrevista = EntrevistaFactory.getEntity(1L);
-
-    	Questionario questionarioClonado = QuestionarioFactory.getEntity();
-
-    	TransactionStatus status = null;
-
-    	Entrevista entrevistaClonada = EntrevistaFactory.getEntity();
-
-    	transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(status));
     	entrevistaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(entrevista));
-    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
-    	entrevistaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(entrevistaClonada));
-    	transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
     	Exception exception = null;
 

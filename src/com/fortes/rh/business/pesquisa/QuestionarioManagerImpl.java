@@ -60,12 +60,16 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         return getDao().checarQuestionarioLiberado(questionario);
     }
 
-    public Questionario clonarQuestionario(Questionario questionario)
+    public Questionario clonarQuestionario(Questionario questionario, Long empresaId)
     {
         Questionario questionarioClonado = (Questionario) questionario.clone();
 
         questionarioClonado.setTitulo(questionario.getTitulo() + " (Clone)");
         questionarioClonado.setLiberado(false);
+        
+        if (empresaId != null)
+        	questionarioClonado.getEmpresa().setId(empresaId);
+        	
         questionarioClonado = save(questionarioClonado);
 
         return questionarioClonado;

@@ -1,5 +1,6 @@
 package com.fortes.rh.test.web.action.pesquisa;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -8,6 +9,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.EntrevistaManager;
 import com.fortes.rh.model.geral.Colaborador;
@@ -28,6 +30,7 @@ public class EntrevistaListActionTest extends MockObjectTestCase
 	private Mock entrevistaManager;
 	private Mock colaboradorManager;
 	private Mock colaboradorQuestionarioManager;
+	private Mock empresaManager;
 
     protected void setUp() throws Exception
     {
@@ -42,6 +45,9 @@ public class EntrevistaListActionTest extends MockObjectTestCase
 
         colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
         entrevistaListAction.setColaboradorQuestionarioManager((ColaboradorQuestionarioManager) colaboradorQuestionarioManager.proxy());
+
+        empresaManager = new Mock(EmpresaManager.class);
+        entrevistaListAction.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -78,17 +84,21 @@ public class EntrevistaListActionTest extends MockObjectTestCase
 
     	entrevistaManager.expects(once()).method("getCount").with(ANYTHING).will(returnValue(1));
     	entrevistaManager.expects(once()).method("findToListByEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(entrevistas));
-
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
+    	
     	assertEquals("success", entrevistaListAction.list());
     	assertEquals(1, entrevistaListAction.getTotalSize());
     }
 
     public void testClonarEntrevista() throws Exception
     {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	entrevistaListAction.setEmpresaSistema(empresa);
+    	
     	Entrevista entrevista = EntrevistaFactory.getEntity(1L);
     	entrevistaListAction.setEntrevista(entrevista);
 
-    	entrevistaManager.expects(once()).method("clonarEntrevista").with(eq(entrevista.getId())).will(returnValue(entrevista));
+    	entrevistaManager.expects(once()).method("clonarEntrevista").with(eq(entrevista.getId()), eq(new Long[]{empresa.getId()})).isVoid();
 
     	assertEquals("success", entrevistaListAction.clonarEntrevista());
     	assertEquals(entrevista.getId(), entrevistaListAction.getEmpresaSistema().getId());
@@ -100,6 +110,7 @@ public class EntrevistaListActionTest extends MockObjectTestCase
 
     	entrevistaManager.expects(once()).method("getCount").with(ANYTHING).will(returnValue(1));
     	entrevistaManager.expects(once()).method("findToListByEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(entrevistas));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
 
     	assertEquals("input", entrevistaListAction.clonarEntrevista());
     }

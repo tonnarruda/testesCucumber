@@ -34,7 +34,7 @@ public interface QuestionarioManager extends GenericManager<Questionario>
 	//	
 	Questionario findByIdProjection(Long questionarioId);
 	boolean checarPesquisaLiberadaByQuestionario(Questionario questionario);
-	Questionario clonarQuestionario(Questionario questionario);
+	Questionario clonarQuestionario(Questionario questionario, Long empresaId);
 	String montaUrlVoltar(Long questionarioId);
 	void aplicarPorAspecto(Long questionarioId, boolean aplicarPorAspecto) throws Exception;
 	Collection<QuestionarioRelatorio> getQuestionarioRelatorio(Questionario questionario);
