@@ -134,42 +134,30 @@ public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma
 		return avaliacaoTurma;
 	}
 
-	public AvaliacaoTurma clonarAvaliacaoTurma(Long avaliacaoTurmaId) throws Exception
+	public void clonarAvaliacaoTurma(Long avaliacaoTurmaId, Long... empresasIds) throws Exception
 	{
-
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
 		AvaliacaoTurma avaliacaoTurmaClonado;
+		AvaliacaoTurma avaliacaoTurma = findByIdProjection(avaliacaoTurmaId);
+		Questionario questionario = avaliacaoTurma.getQuestionario();
 
 		try
 		{
-			AvaliacaoTurma avaliacaoTurma = findByIdProjection(avaliacaoTurmaId);
+			for (Long empresaId : empresasIds)
+			{
+		    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario, empresaId);
+		    	avaliacaoTurmaClonado = (AvaliacaoTurma) avaliacaoTurma.clone();
+		    	avaliacaoTurmaClonado.setId(null);
+		    	avaliacaoTurmaClonado.setQuestionario(questionarioClonado);
+		    	save(avaliacaoTurmaClonado);
 
-	    	Questionario questionario = new Questionario();
-	    	questionario = avaliacaoTurma.getQuestionario();
-	    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario, null);
-
-	    	avaliacaoTurmaClonado = (AvaliacaoTurma) avaliacaoTurma.clone();
-	    	avaliacaoTurmaClonado.setId(null);
-	    	avaliacaoTurmaClonado.setQuestionario(questionarioClonado);
-	    	save(avaliacaoTurmaClonado);
-
-	    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
-
-	    	transactionManager.commit(status);
-
+		    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
+			}
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			transactionManager.rollback(status);
-
 			throw e;
 		}
-
-    	return avaliacaoTurmaClonado;
 	}
 
 	public void setQuestionarioManager(QuestionarioManager questionarioManager)
