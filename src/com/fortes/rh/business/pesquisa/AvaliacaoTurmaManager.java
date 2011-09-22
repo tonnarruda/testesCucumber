@@ -11,7 +11,7 @@ public interface AvaliacaoTurmaManager extends GenericManager<AvaliacaoTurma>
 {
 	Collection<AvaliacaoTurma> findToListByEmpresa(Long empresaId, int page, int pagingSize);
 	void delete(Long avaliacaoTurmaId, Long empresaId) throws Exception;
-	AvaliacaoTurma clonarAvaliacaoTurma(Long avaliacaoTurmaId) throws Exception;
+	void clonarAvaliacaoTurma(Long avaliacaoTurmaId, Long... empresasIds) throws Exception;
 	Integer getCount(Long empresaId);
 	AvaliacaoTurma findByIdProjection(Long entrevistaId);
 	void update(AvaliacaoTurma avaliacaoTurma, Questionario questionario, Long empresaId) throws Exception;

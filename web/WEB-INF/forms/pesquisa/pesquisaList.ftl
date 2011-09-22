@@ -14,13 +14,13 @@
 	
 	<#include "../ftl/showFilterImports.ftl" />
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	
 	<#assign validarCampos="return validaFormulario('formBusca', null, null, true)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<title>Pesquisas</title>
 	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript'>
 		function clonar(pesquisaId, titulo)
 		{

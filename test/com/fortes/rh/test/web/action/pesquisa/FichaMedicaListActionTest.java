@@ -115,7 +115,7 @@ public class FichaMedicaListActionTest extends MockObjectTestCase
     	fichaMedicaManager.expects(once()).method("findToListByEmpresa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(FichaMedicaFactory.getCollection()));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").withAnyArguments().will(returnValue(new ArrayList<Empresa>()));
 
-    	assertEquals("success", fichaMedicaListAction.clonarFichaMedica());
+    	assertEquals("success", fichaMedicaListAction.clonarFichaMedica()); 
     	assertEquals(fichaMedica.getId(), fichaMedicaListAction.getEmpresaSistema().getId());
     }
 

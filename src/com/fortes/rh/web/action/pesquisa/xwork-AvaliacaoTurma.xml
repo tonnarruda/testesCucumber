@@ -34,7 +34,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/avaliacaoTurmaEdit.ftl</result>
 		</action>
 		<action name="clonarAvaliacaoTurma" class="com.fortes.rh.web.action.pesquisa.AvaliacaoTurmaListAction" method="clonarAvaliacaoTurma">
-			<result name="success" type="redirect">list.action</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/avaliacaoTurmaList.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/entrevistaList.ftl</result>
 		</action>
 

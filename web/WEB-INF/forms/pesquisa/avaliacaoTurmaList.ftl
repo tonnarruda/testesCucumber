@@ -1,11 +1,25 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+
 <html>
 <head>
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+	
+		#formDialog { display: none; width: 600px; }
 	</style>
+
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript'>
+		function clonar(avaliacaoTurmaId, titulo)
+		{
+			$('#avaliacaoTurmaId').val(avaliacaoTurmaId);
+			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
+		}
+	</script>
 
 	<title>Modelos de Avaliação de Curso</title>
 </head>
@@ -32,7 +46,8 @@
 				<a href="../aspecto/list.action?questionario.id=${avaliacaoTurma.questionario.id}"><img border="0" title="Aspectos da avaliação" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>"></a>
 			</#if>
 
-			<a href="clonarAvaliacaoTurma.action?avaliacaoTurma.id=${avaliacaoTurma.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
+			<a href="javascript:;" onclick="javascript:clonar(${avaliacaoTurma.id}, '${avaliacaoTurma.questionario.titulo}');"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
+			
 			<#if 0 < avaliacaoTurma.questionario.quantidadeDeResposta>
 				<img border="0" title="Já existe resposta para este questionário, não é permitido excluir." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
@@ -59,6 +74,15 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>
+	</div>
+		
+	<div id="formDialog">
+		<@ww.form name="formModal" id="formModal" action="clonarAvaliacaoTurma.action" method="POST">
+			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar este modelo de avaliação de curso" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')"/>
+			* Caso nenhuma empresa seja selecionada, o modelo de avaliação de curso será clonado apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
+			<@ww.hidden name="avaliacaoTurma.id" id="avaliacaoTurmaId"/>
+			<button class="btnClonar" type="submit"></button>
+		</@ww.form>
 	</div>
 </body>
 </html>

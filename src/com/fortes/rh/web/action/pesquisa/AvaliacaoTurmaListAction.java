@@ -3,11 +3,16 @@ package com.fortes.rh.web.action.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 
@@ -15,6 +20,8 @@ import com.opensymphony.xwork.Action;
 public class AvaliacaoTurmaListAction extends  MyActionSupportList
 {
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	private EmpresaManager empresaManager;
+	
 	private ColaboradorQuestionario colaboradorQuestionario;
 
 	private Collection<AvaliacaoTurma> avaliacaoTurmas = new ArrayList<AvaliacaoTurma>(0);
@@ -22,6 +29,9 @@ public class AvaliacaoTurmaListAction extends  MyActionSupportList
 	private AvaliacaoTurma avaliacaoTurma;
 	private Colaborador colaborador;
 
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	private String[] empresasCheck;
+	
 	private String voltarPara = "";
 
 	public String execute() throws Exception {
@@ -33,6 +43,9 @@ public class AvaliacaoTurmaListAction extends  MyActionSupportList
    		this.setTotalSize(avaliacaoTurmaManager.getCount(getEmpresaSistema().getId()));
    		avaliacaoTurmas = avaliacaoTurmaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize());
 
+   		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+   		
         return Action.SUCCESS;
 	}
 
@@ -53,7 +66,14 @@ public class AvaliacaoTurmaListAction extends  MyActionSupportList
     {
     	try
 		{
-    		avaliacaoTurma = avaliacaoTurmaManager.clonarAvaliacaoTurma(avaliacaoTurma.getId());
+    		Long[] empresasIds = LongUtil.arrayStringToArrayLong(empresasCheck);
+    		if (empresasIds != null && empresasIds.length > 0)
+    			avaliacaoTurmaManager.clonarAvaliacaoTurma(avaliacaoTurma.getId(), empresasIds);
+    		else
+    			avaliacaoTurmaManager.clonarAvaliacaoTurma(avaliacaoTurma.getId(), getEmpresaSistema().getId());
+    		
+    		addActionMessage("Modelo de Avaliação de Curso clonado com sucesso.");
+			list();
     		return Action.SUCCESS;
 		}
 		catch (Exception e)
@@ -117,5 +137,25 @@ public class AvaliacaoTurmaListAction extends  MyActionSupportList
 	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager)
 	{
 		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+
+	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList) {
+		this.empresasCheckList = empresasCheckList;
+	}
+
+	public String[] getEmpresasCheck() {
+		return empresasCheck;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }
