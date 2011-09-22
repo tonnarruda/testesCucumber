@@ -11,7 +11,7 @@ public interface FichaMedicaManager extends GenericManager<FichaMedica>
 {
 	Collection<FichaMedica> findToListByEmpresa(Long empresaId, int page, int pagingSize);
 	void delete(Long fichaMedicaId, Long empresaId) throws Exception;
-	FichaMedica clonarFichaMedica(Long fichaMedicaId) throws Exception;
+	void clonarFichaMedica(Long fichaMedicaId, Long... empresasIds) throws Exception;
 	Integer getCount(Long empresaId);
 	FichaMedica findByIdProjection(Long entrevistaId);
 	void update(FichaMedica fichaMedica, Questionario questionario, Long empresaId) throws Exception;

@@ -149,7 +149,7 @@ public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma
 
 	    	Questionario questionario = new Questionario();
 	    	questionario = avaliacaoTurma.getQuestionario();
-	    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
+	    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario, null);
 
 	    	avaliacaoTurmaClonado = (AvaliacaoTurma) avaliacaoTurma.clone();
 	    	avaliacaoTurmaClonado.setId(null);

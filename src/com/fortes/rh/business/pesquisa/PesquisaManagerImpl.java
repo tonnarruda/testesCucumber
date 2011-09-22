@@ -132,14 +132,13 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 	    	{
 	    		for (Long empresaId : empresasIds) 
 	    		{
-	    			Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
-	    			questionarioClonado.getEmpresa().setId(empresaId);
+	    			Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario, empresaId);
 	    			pesquisaClonada = clonarPesquisaQuestionario(pesquisa, questionario, questionarioClonado);
 				}
 	    	}
 	    	else
 	    	{
-	    		Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
+	    		Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario, null);
 	    		pesquisaClonada = clonarPesquisaQuestionario(pesquisa, questionario, questionarioClonado);
 	    	}
 		}

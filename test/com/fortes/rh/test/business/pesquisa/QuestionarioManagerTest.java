@@ -165,7 +165,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 
     	questionarioDao.expects(once()).method("save").with(ANYTHING).will(returnValue(questionarioClonado));
 
-    	questionarioManager.clonarQuestionario(questionario);
+    	questionarioManager.clonarQuestionario(questionario, null);
     }
 
     public void testMontaUrlVoltar()

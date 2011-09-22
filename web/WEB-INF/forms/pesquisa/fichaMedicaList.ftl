@@ -1,11 +1,25 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+
 <html>
 <head>
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+	
+		#formDialog { display: none; width: 600px; }
 	</style>
+
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript'>
+		function clonar(fichaMedicaId, titulo)
+		{
+			$('#fichaMedicaId').val(fichaMedicaId);
+			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
+		}
+	</script>
 
 	<title>Modelos de Fichas Médicas</title>
 </head>
@@ -32,7 +46,8 @@
 				<a href="../../pesquisa/aspecto/list.action?questionario.id=${fichaMedica.questionario.id}"><img border="0" title="Aspectos da ficha médica" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>"></a>
 			</#if>
 
-			<a href="clonarFichaMedica.action?fichaMedica.id=${fichaMedica.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
+			<a href="javascript:;" onclick="javascript:clonar(${fichaMedica.id}, '${fichaMedica.questionario.titulo}')"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
+			
 			<#if 0 < fichaMedica.questionario.quantidadeDeResposta>
 				<img border="0" title="Já existe resposta para este questionário, não é permitido excluir." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
@@ -59,6 +74,15 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>
+	</div>
+	
+	<div id="formDialog">
+		<@ww.form name="formModal" id="formModal" action="clonarFichaMedica.action" method="POST">
+			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta ficha médica" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')"/>
+			* Caso nenhuma empresa seja selecionada, a ficha médica será clonada apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
+			<@ww.hidden name="fichaMedica.id" id="fichaMedicaId"/>
+			<button class="btnClonar" type="submit"></button>
+		</@ww.form>
 	</div>
 </body>
 </html>

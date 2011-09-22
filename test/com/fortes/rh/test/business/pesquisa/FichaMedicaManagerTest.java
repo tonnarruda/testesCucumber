@@ -469,9 +469,7 @@ public class FichaMedicaManagerTest extends MockObjectTestCase
     	perguntaManager.expects(atLeastOnce()).method("clonarPerguntas").with(ANYTHING, ANYTHING, ANYTHING);
     	transactionManager.expects(once()).method("commit").with(ANYTHING);
 
-    	FichaMedica retorno = fichaMedicaManager.clonarFichaMedica(fichaMedica.getId());
-
-    	assertEquals(questionarioClonado.getId(), retorno.getId());
+    	fichaMedicaManager.clonarFichaMedica(fichaMedica.getId(), empresa.getId());
     }
 
     public void testClonarFichaMedicaComException() throws Exception
@@ -494,7 +492,7 @@ public class FichaMedicaManagerTest extends MockObjectTestCase
 
     	try
 		{
-    		fichaMedicaManager.clonarFichaMedica(fichaMedica.getId());
+    		fichaMedicaManager.clonarFichaMedica(fichaMedica.getId(), 1L);
 		}
 		catch (Exception e)
 		{

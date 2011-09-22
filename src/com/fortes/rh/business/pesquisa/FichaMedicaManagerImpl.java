@@ -134,42 +134,30 @@ public class FichaMedicaManagerImpl extends GenericManagerImpl<FichaMedica, Fich
 		return fichaMedica;
 	}
 
-	public FichaMedica clonarFichaMedica(Long fichaMedicaId) throws Exception
+	public void clonarFichaMedica(Long fichaMedicaId, Long... empresasIds) throws Exception
 	{
-
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
-		FichaMedica fichaMedicaClonado;
+		FichaMedica fichaMedicaClonada;
+		FichaMedica fichaMedica = findByIdProjection(fichaMedicaId);
+		Questionario questionario = fichaMedica.getQuestionario();
 
 		try
 		{
-			FichaMedica fichaMedica = findByIdProjection(fichaMedicaId);
-
-	    	Questionario questionario = new Questionario();
-	    	questionario = fichaMedica.getQuestionario();
-	    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
-
-	    	fichaMedicaClonado = (FichaMedica) fichaMedica.clone();
-	    	fichaMedicaClonado.setId(null);
-	    	fichaMedicaClonado.setQuestionario(questionarioClonado);
-	    	save(fichaMedicaClonado);
-
-	    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
-
-	    	transactionManager.commit(status);
-
+			for (Long empresaId : empresasIds)
+			{
+				Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario, empresaId);
+		    	fichaMedicaClonada = (FichaMedica) fichaMedica.clone();
+		    	fichaMedicaClonada.setId(null);
+		    	fichaMedicaClonada.setQuestionario(questionarioClonado);
+		    	save(fichaMedicaClonada);
+	
+		    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
+			}
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			transactionManager.rollback(status);
-
 			throw e;
 		}
-
-    	return fichaMedicaClonado;
 	}
 
 	public void setQuestionarioManager(QuestionarioManager questionarioManager)
