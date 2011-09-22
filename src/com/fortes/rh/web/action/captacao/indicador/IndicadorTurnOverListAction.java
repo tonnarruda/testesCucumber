@@ -75,6 +75,22 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			dataSource = Arrays.asList(turnOverCollection);
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;
+
+			if (filtrarPor == 1)
+			{
+				if (areasCheck != null && areasCheck.length > 0)
+					filtro +=  "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areasCheck));
+				else
+					filtro +=  "\nTodas as Áreas Organizacionais";
+			}
+			else
+			{
+				if (cargosCheck != null && cargosCheck.length > 0)
+					filtro +=  "\nCargos: " + cargoManager.nomeCargos(LongUtil.arrayStringToArrayLong(cargosCheck));
+				else
+					filtro +=  "\nTodos os Cargos";
+			}
+			
 			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", getEmpresaSistema(), filtro);
 			
 			return Action.SUCCESS;
@@ -206,5 +222,13 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	public void setDataSource(Collection<TurnOverCollection> dataSource)
 	{
 		this.dataSource = dataSource;
+	}
+
+	public int getFiltrarPor() {
+		return filtrarPor;
+	}
+
+	public void setFiltrarPor(int filtrarPor) {
+		this.filtrarPor = filtrarPor;
 	}
 }
