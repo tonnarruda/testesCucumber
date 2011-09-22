@@ -156,7 +156,7 @@ public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma
 	    	avaliacaoTurmaClonado.setQuestionario(questionarioClonado);
 	    	save(avaliacaoTurmaClonado);
 
-	    	perguntaManager.clonarPergunta(questionario.getId(), questionarioClonado, null);
+	    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
 
 	    	transactionManager.commit(status);
 

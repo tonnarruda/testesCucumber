@@ -56,10 +56,14 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private Collection<Empresa> empresas;
 	
+	private String[] empresasCheck;
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	
 	//pesquisa colaborador
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] colaboradorsCheck;
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
+	
 	private String nomeBusca;
 	private Long empresaId;
 	private Long colaboradorQuestionarioId;
@@ -299,7 +303,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		try
 		{
-			avaliacaoDesempenhoManager.clonar(avaliacaoDesempenho.getId());
+			Long[] empresasIds = LongUtil.arrayStringToArrayLong(empresasCheck);
+			if (empresasIds != null && empresasIds.length > 0)
+				avaliacaoDesempenhoManager.clonar(avaliacaoDesempenho.getId(), empresasIds);
+			else
+				avaliacaoDesempenhoManager.clonar(avaliacaoDesempenho.getId(), getEmpresaSistema().getId());
+				
 			addActionMessage("Avaliação de Desempenho clonada com sucesso.");
 		} 
 		catch (Exception e) {
@@ -313,6 +322,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null);
 		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(getEmpresaSistema().getId(), nomeBusca, avaliacaoId);
+		
+		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+		
 		return Action.SUCCESS;
 	}
 
@@ -636,5 +649,21 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public void setColaboradorQuestionario(
 			ColaboradorQuestionario colaboradorQuestionario) {
 		this.colaboradorQuestionario = colaboradorQuestionario;
+	}
+
+	public String[] getEmpresasCheck() {
+		return empresasCheck;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+
+	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList) {
+		this.empresasCheckList = empresasCheckList;
 	}
 }

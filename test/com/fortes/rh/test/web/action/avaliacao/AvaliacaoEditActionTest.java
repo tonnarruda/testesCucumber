@@ -11,9 +11,11 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.security.SecurityUtil;
@@ -29,6 +31,7 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 	private AvaliacaoEditAction action;
 	private Mock manager;
 	private Mock perguntaManager;
+	private Mock empresaManager;
 	private Mock periodoExperienciaManager;
 
 	protected void setUp() throws Exception
@@ -40,6 +43,9 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 		
 		perguntaManager = mock(PerguntaManager.class);
 		action.setPerguntaManager((PerguntaManager) perguntaManager.proxy());
+
+		empresaManager = mock(EmpresaManager.class);
+		action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 		
 		periodoExperienciaManager = mock(PeriodoExperienciaManager.class);
 		action.setPeriodoExperienciaManager((PeriodoExperienciaManager) periodoExperienciaManager.proxy());
@@ -62,6 +68,7 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
 	public void testList() throws Exception
 	{
 		manager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Avaliacao>()));
+		empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
 		assertEquals(action.list(), "success");
 		assertNotNull(action.getAvaliacao());
 	}

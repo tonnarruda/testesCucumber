@@ -1092,7 +1092,7 @@ public class PerguntaManagerTest extends MockObjectTestCase
     	perguntaDao.expects(atLeastOnce()).method("save").with(ANYTHING).will(returnValue(perguntaClonada));
     	respostaManager.expects(atLeastOnce()).method("clonarResposta").with(ANYTHING, ANYTHING);
 
-    	perguntaManager.clonarPergunta(questionario.getId(), questionarioClonado, null);
+    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
     }
     
     public void testSetAvaliadoNaPerguntaDeAvaliacaoDesempenho()

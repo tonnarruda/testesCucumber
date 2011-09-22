@@ -456,8 +456,8 @@ public class EntrevistaManagerTest extends MockObjectTestCase
     	transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(status));
     	entrevistaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(entrevista));
     	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	perguntaManager.expects(once()).method("clonarPerguntas").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
     	entrevistaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(entrevistaClonada));
-    	perguntaManager.expects(atLeastOnce()).method("clonarPergunta").with(ANYTHING, ANYTHING, ANYTHING);
     	transactionManager.expects(once()).method("commit").with(ANYTHING);
 
     	Entrevista retorno = entrevistaManager.clonarEntrevista(entrevista.getId());

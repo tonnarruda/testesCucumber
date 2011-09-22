@@ -161,7 +161,7 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 		pesquisaClonada.setQuestionario(questionarioClonado);
 		save(pesquisaClonada);
 		
-		perguntaManager.clonarPergunta(questionario.getId(), questionarioClonado, null);
+		perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
 		return pesquisaClonada;
 	}
 

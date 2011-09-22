@@ -103,7 +103,15 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 	
 	public void testLiberarOrBloquear()
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacao.setEmpresa(empresa);
+		avaliacaoDao.save(avaliacao);
+		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setAvaliacao(avaliacao);
 		avaliacaoDesempenho.setLiberada(false);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		

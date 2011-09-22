@@ -21,6 +21,7 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
@@ -90,7 +91,13 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	
 	public void testClonar() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+		avaliacao.setEmpresa(empresa);
+		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(3L);
+		avaliacaoDesempenho.setAvaliacao(avaliacao);
 		avaliacaoDesempenho.setLiberada(true);
 		
 		Collection<ColaboradorQuestionario> participantes = new ArrayList<ColaboradorQuestionario>();
@@ -103,7 +110,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		colaboradorQuestionarioManager.expects(once()).method("clonar").with(eq(participantes), ANYTHING, eq(true));
 		
-		avaliacaoDesempenhoManager.clonar(3L);
+		avaliacaoDesempenhoManager.clonar(3L, empresa.getId());
 	}
 	
 	public void testGerarAutoAvaliacoes()

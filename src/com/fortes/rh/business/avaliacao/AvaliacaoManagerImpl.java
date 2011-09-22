@@ -191,14 +191,33 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		this.colaboradorRespostaManager = colaboradorRespostaManager;
 	}
 
-	public void clonar(Long id)
+	public void clonar(Long id, Long... empresasIds)
 	{
-		Avaliacao avaliacao = (Avaliacao) getDao().findById(id).clone();
-		avaliacao.setTitulo(avaliacao.getTitulo() + "(Clone)");
-		avaliacao.setId(null);
-		save(avaliacao);
-		
-		perguntaManager.clonarPergunta(id, null, avaliacao);
+		if (empresasIds != null && empresasIds.length > 0)
+		{
+			for (Long empresaId : empresasIds)
+			{
+				Empresa empresa = new Empresa();
+				empresa.setId(empresaId);
+				
+				Avaliacao avaliacao = (Avaliacao) getDao().findById(id).clone();
+				avaliacao.setEmpresa(empresa);
+				avaliacao.setTitulo(avaliacao.getTitulo() + "(Clone)");
+				avaliacao.setId(null);
+				save(avaliacao);
+				
+				perguntaManager.clonarPerguntas(id, null, avaliacao);
+			}
+		}
+		else
+		{
+			Avaliacao avaliacao = (Avaliacao) getDao().findById(id).clone();
+			avaliacao.setTitulo(avaliacao.getTitulo() + "(Clone)");
+			avaliacao.setId(null);
+			save(avaliacao);
+			
+			perguntaManager.clonarPerguntas(id, null, avaliacao);
+		}
 	}
 
 	public Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId) 

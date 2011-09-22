@@ -156,7 +156,7 @@ public class FichaMedicaManagerImpl extends GenericManagerImpl<FichaMedica, Fich
 	    	fichaMedicaClonado.setQuestionario(questionarioClonado);
 	    	save(fichaMedicaClonado);
 
-	    	perguntaManager.clonarPergunta(questionario.getId(), questionarioClonado, null);
+	    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
 
 	    	transactionManager.commit(status);
 

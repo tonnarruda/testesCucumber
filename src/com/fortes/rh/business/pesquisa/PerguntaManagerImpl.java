@@ -472,7 +472,7 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 		return retorno;
 	}
 
-	public void clonarPergunta(Long questionarioId, Questionario questionarioClonado, Avaliacao avaliacaoClonada)
+	public void clonarPerguntas(Long questionarioId, Questionario questionarioClonado, Avaliacao avaliacaoClonada)
 	{
 		Collection<Pergunta> perguntas = getPerguntasRespostaByQuestionario(questionarioId);
 		

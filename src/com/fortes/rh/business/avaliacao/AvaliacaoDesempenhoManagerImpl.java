@@ -14,11 +14,11 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -38,6 +38,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	private QuestionarioManager questionarioManager;
 	private ColaboradorManager colaboradorManager;
+	private AvaliacaoManager avaliacaoManager;
 	private Mail mail;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
@@ -46,19 +47,44 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return getDao().findAllSelect(empresaId, ativa, tipoModeloAvaliacao);
 	}
 
-	public void clonar(Long avaliacaoDesempenhoId) throws Exception 
+	public void clonar(Long avaliacaoDesempenhoId, Long... empresasIds) throws Exception 
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = getDao().findByIdProjection(avaliacaoDesempenhoId);
+		Long avaliacaoId = avaliacaoDesempenho.getAvaliacao().getId();
 		boolean liberada = avaliacaoDesempenho.isLiberada();
-		
-		avaliacaoDesempenho.setId(null);
-		avaliacaoDesempenho.setTitulo(avaliacaoDesempenho.getTitulo() + " (Clone)");
-		avaliacaoDesempenho.setLiberada(false);
-		
-		save(avaliacaoDesempenho);
-		
 		Collection<ColaboradorQuestionario> participantes = colaboradorQuestionarioManager.findByAvaliacaoDesempenho(avaliacaoDesempenhoId, null);
-		colaboradorQuestionarioManager.clonar(participantes, avaliacaoDesempenho, liberada);
+		
+		for (Long empresaId : empresasIds)
+		{
+			AvaliacaoDesempenho avaliacaoDesempenhoClone = (AvaliacaoDesempenho) avaliacaoDesempenho.clone();
+			
+			// se for para outra empresa o modelo deve ser clonado
+			if (empresaId != avaliacaoDesempenhoClone.getAvaliacao().getEmpresa().getId())
+			{
+				Empresa empresa = new Empresa();
+				empresa.setId(empresaId);
+				
+				Avaliacao avaliacao = (Avaliacao) avaliacaoManager.findById(avaliacaoId).clone();
+				avaliacao.setEmpresa(empresa);
+				avaliacao.setTitulo(avaliacao.getTitulo() + "(Clone)");
+				avaliacao.setId(null);
+				avaliacaoManager.save(avaliacao);
+				
+				perguntaManager.clonarPerguntas(avaliacaoId, null, avaliacao);
+				
+				avaliacaoDesempenhoClone.setAvaliacao(avaliacao);
+			}
+			
+			avaliacaoDesempenhoClone.setId(null);
+			avaliacaoDesempenhoClone.setTitulo(avaliacaoDesempenhoClone.getTitulo() + " (Clone)");
+			avaliacaoDesempenhoClone.setLiberada(false);
+			
+			save(avaliacaoDesempenhoClone);
+
+			// só clona os participantes se for para a mesma empresa
+			if (empresaId == avaliacaoDesempenhoClone.getAvaliacao().getEmpresa().getId())
+				colaboradorQuestionarioManager.clonar(participantes, avaliacaoDesempenhoClone, liberada);
+		}
 	}
 	
 	public void gerarAutoAvaliacoes(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> participantes)
@@ -217,5 +243,9 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		}
 
 		return new ArrayList<CheckBox>();
+	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
 	}
 }

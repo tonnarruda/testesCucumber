@@ -1,20 +1,26 @@
 package com.fortes.rh.web.action.avaliacao;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 public class AvaliacaoEditAction extends MyActionSupportList
@@ -23,11 +29,15 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private AvaliacaoManager avaliacaoManager;
 	private PerguntaManager perguntaManager;
 	private PeriodoExperienciaManager periodoExperienciaManager;
+	private EmpresaManager empresaManager;
 	
 	private Avaliacao avaliacao;
 	
 	private Collection<Avaliacao> avaliacaos;
 	private Collection<Pergunta> perguntas;
+	
+    private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	private String[] empresasCheck;
 	
 	private String urlVoltar;
 	private TipoPergunta tipoPergunta = new TipoPergunta();
@@ -52,7 +62,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	
 	public String clonar() throws Exception
 	{
-		avaliacaoManager.clonar(avaliacao.getId());
+		avaliacaoManager.clonar(avaliacao.getId(), LongUtil.arrayStringToArrayLong(empresasCheck));
 		return Action.SUCCESS;
 	}
 
@@ -103,6 +113,10 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, modeloAvaliacao, titulo);
+		
+		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+		
 		return Action.SUCCESS;
 	}
 
@@ -222,5 +236,25 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+
+	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList) {
+		this.empresasCheckList = empresasCheckList;
+	}
+
+	public String[] getEmpresasCheck() {
+		return empresasCheck;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

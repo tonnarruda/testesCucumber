@@ -18,7 +18,7 @@ import com.fortes.security.auditoria.NaoAudita;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="avaliacaoDesempenho_sequence", allocationSize=1)
-public class AvaliacaoDesempenho extends AbstractModel implements Serializable
+public class AvaliacaoDesempenho extends AbstractModel implements Serializable, Cloneable 
 {
 	@ManyToOne
 	private Avaliacao avaliacao;
@@ -47,6 +47,18 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable
     	
     	return periodo;
     }
+    
+	public Object clone()
+	{
+	   try
+	   {
+	      return super.clone();
+	   }
+	   catch (CloneNotSupportedException e)
+	   {
+	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
+	   }
+	}
     
     //Projection
     public void setProjectionAvaliacaoId(Long avaliacaoId)

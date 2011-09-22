@@ -25,6 +25,7 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.security.SecurityUtil;
@@ -236,6 +237,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 	{
 		avaliacaoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Avaliacao>()));
 		manager.expects(once()).method("findTituloModeloAvaliacao").will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
+		empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
 		assertEquals(action.list(), "success");
 		assertNotNull(action.getAvaliacaoDesempenhos());
 	}
@@ -403,7 +405,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		
-		manager.expects(once()).method("clonar").with(eq(2L)).isVoid();
+		manager.expects(once()).method("clonar").with(eq(2L), ANYTHING).isVoid();
 		
 		assertEquals("success",action.clonar());
 	}
@@ -412,7 +414,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		
-		manager.expects(once()).method("clonar").with(eq(2L)).will(throwException(new Exception()));
+		manager.expects(once()).method("clonar").with(eq(2L), ANYTHING).will(throwException(new Exception()));
 		
 		assertEquals("success",action.clonar());
 		assertEquals(1, action.getActionErrors().size());

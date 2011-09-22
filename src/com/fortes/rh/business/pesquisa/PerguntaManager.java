@@ -29,7 +29,7 @@ public interface PerguntaManager extends GenericManager<Pergunta>
 	Collection<CheckBox> populaCheckOrderTexto(Long questionarioId);
 	Collection<Pergunta> findByQuestionarioAspectoPergunta(Long questionarioId, Long[] aspectosIds, Long[] perguntasIds, boolean agruparPorAspectos);
 	Collection<Pergunta> modificarOrdens(Collection<Pergunta> perguntas, int qtdPosicoes);
-	void clonarPergunta(Long questionarioId, Questionario questionarioClonado, Avaliacao avaliacaoClonada);
+	void clonarPerguntas(Long questionarioId, Questionario questionarioClonado, Avaliacao avaliacaoClonada);
 	void removerPerguntasDoQuestionario(Long questionarioId);
 	Collection<Long> findPerguntasDoQuestionario(Long questionarioId);
 	Collection<Pergunta> findByQuestionario(Long questionarioId);

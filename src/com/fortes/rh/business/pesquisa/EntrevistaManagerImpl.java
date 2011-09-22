@@ -141,7 +141,7 @@ public class EntrevistaManagerImpl extends GenericManagerImpl<Entrevista, Entrev
 	    	entrevistaClonada.setQuestionario(questionarioClonado);
 	    	save(entrevistaClonada);
 
-	    	perguntaManager.clonarPergunta(questionario.getId(), questionarioClonado, null);
+	    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
 
 	    	transactionManager.commit(status);
 

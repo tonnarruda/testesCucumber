@@ -90,6 +90,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	public AvaliacaoDesempenho findByIdProjection(Long id)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"ad");
+		criteria.createCriteria("ad.avaliacao", "avaliacao");
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ad.id"), "id");
@@ -100,6 +101,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		p.add(Projections.property("ad.liberada"), "liberada");
 		p.add(Projections.property("ad.permiteAutoAvaliacao"), "permiteAutoAvaliacao");
 		p.add(Projections.property("ad.avaliacao.id"), "projectionAvaliacaoId");
+		p.add(Projections.property("avaliacao.empresa.id"), "projectionAvaliacaoEmpresaId");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("ad.id", id));

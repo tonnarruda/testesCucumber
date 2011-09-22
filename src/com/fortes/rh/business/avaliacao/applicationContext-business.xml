@@ -78,6 +78,9 @@
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>
+    <property name="avaliacaoManager">
+      <ref bean="avaliacaoManager" />
+    </property>
     <property name="mail">
       <ref bean="mail" />
     </property>

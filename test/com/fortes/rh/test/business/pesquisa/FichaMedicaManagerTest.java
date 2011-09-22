@@ -466,7 +466,7 @@ public class FichaMedicaManagerTest extends MockObjectTestCase
     	fichaMedicaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(fichaMedica));
     	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
     	fichaMedicaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(fichaMedicaClonada));
-    	perguntaManager.expects(atLeastOnce()).method("clonarPergunta").with(ANYTHING, ANYTHING, ANYTHING);
+    	perguntaManager.expects(atLeastOnce()).method("clonarPerguntas").with(ANYTHING, ANYTHING, ANYTHING);
     	transactionManager.expects(once()).method("commit").with(ANYTHING);
 
     	FichaMedica retorno = fichaMedicaManager.clonarFichaMedica(fichaMedica.getId());
