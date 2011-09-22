@@ -462,12 +462,10 @@ public class FichaMedicaManagerTest extends MockObjectTestCase
 
     	TransactionStatus status = null;
 
-    	transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(status));
     	fichaMedicaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(fichaMedica));
-    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING, ANYTHING).will(returnValue(questionarioClonado));
     	fichaMedicaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(fichaMedicaClonada));
     	perguntaManager.expects(atLeastOnce()).method("clonarPerguntas").with(ANYTHING, ANYTHING, ANYTHING);
-    	transactionManager.expects(once()).method("commit").with(ANYTHING);
 
     	fichaMedicaManager.clonarFichaMedica(fichaMedica.getId(), empresa.getId());
     }
@@ -478,15 +476,11 @@ public class FichaMedicaManagerTest extends MockObjectTestCase
 
     	Questionario questionarioClonado = QuestionarioFactory.getEntity();
 
-    	TransactionStatus status = null;
-
     	FichaMedica fichaMedicaClonada = FichaMedicaFactory.getEntity();
 
-    	transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(status));
     	fichaMedicaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(fichaMedica));
-    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING, ANYTHING).will(returnValue(questionarioClonado));
     	fichaMedicaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(fichaMedicaClonada));
-    	transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
     	Exception exception = null;
 

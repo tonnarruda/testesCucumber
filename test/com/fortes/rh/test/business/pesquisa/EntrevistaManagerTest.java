@@ -455,7 +455,7 @@ public class EntrevistaManagerTest extends MockObjectTestCase
 
     	transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(status));
     	entrevistaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(entrevista));
-    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING, ANYTHING).will(returnValue(questionarioClonado));
     	perguntaManager.expects(once()).method("clonarPerguntas").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
     	entrevistaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(entrevistaClonada));
     	transactionManager.expects(once()).method("commit").with(ANYTHING);
@@ -477,7 +477,7 @@ public class EntrevistaManagerTest extends MockObjectTestCase
 
     	transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(status));
     	entrevistaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(entrevista));
-    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING, ANYTHING).will(returnValue(questionarioClonado));
     	entrevistaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(entrevistaClonada));
     	transactionManager.expects(once()).method("rollback").with(ANYTHING);
 

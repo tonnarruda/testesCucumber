@@ -416,10 +416,10 @@ public class PesquisaManagerTest extends MockObjectTestCase
 
     	pesquisaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(pesquisa));
     	
-    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING, ANYTHING).will(returnValue(questionarioClonado));
     	pesquisaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(pesquisaClonada));
     
-    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING, ANYTHING).will(returnValue(questionarioClonado));
     	pesquisaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(pesquisaClonada));
     	
     	perguntaManager.expects(atLeastOnce()).method("clonarPerguntas").withAnyArguments();
@@ -437,7 +437,7 @@ public class PesquisaManagerTest extends MockObjectTestCase
     	Pesquisa pesquisaClonada = PesquisaFactory.getEntity();
 
     	pesquisaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(pesquisa));
-    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING).will(returnValue(questionarioClonado));
+    	questionarioManager.expects(once()).method("clonarQuestionario").with(ANYTHING, ANYTHING).will(returnValue(questionarioClonado));
     	pesquisaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(pesquisaClonada));
 
     	Exception exception = null;
