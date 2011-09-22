@@ -460,7 +460,7 @@ public class EntrevistaManagerTest extends MockObjectTestCase
     	entrevistaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(entrevistaClonada));
     	transactionManager.expects(once()).method("commit").with(ANYTHING);
 
-    	Entrevista retorno = entrevistaManager.clonarEntrevista(entrevista.getId());
+    	Entrevista retorno = entrevistaManager.clonarEntrevista(entrevista.getId(), null);
 
     	assertEquals(questionarioClonado.getId(), retorno.getId());
     }
@@ -485,7 +485,7 @@ public class EntrevistaManagerTest extends MockObjectTestCase
 
     	try
 		{
-    		entrevistaManager.clonarEntrevista(entrevista.getId());
+    		entrevistaManager.clonarEntrevista(entrevista.getId(), null);
 		}
 		catch (Exception e)
 		{

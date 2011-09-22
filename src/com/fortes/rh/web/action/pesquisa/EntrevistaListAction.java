@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.EntrevistaManager;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Entrevista;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 
@@ -18,6 +23,7 @@ public class EntrevistaListAction extends  MyActionSupportList
 {
 	private EntrevistaManager entrevistaManager;
 	private ColaboradorManager colaboradorManager;
+	private EmpresaManager empresaManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private ColaboradorQuestionario colaboradorQuestionario;
 
@@ -25,6 +31,9 @@ public class EntrevistaListAction extends  MyActionSupportList
 
 	private Entrevista entrevista;
 	private Colaborador colaborador;
+	
+	private String[] empresasCheck;
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
 
 	private String voltarPara = "";
 	
@@ -36,6 +45,9 @@ public class EntrevistaListAction extends  MyActionSupportList
 	{
    		this.setTotalSize(entrevistaManager.getCount(getEmpresaSistema().getId()));
    		entrevistas = entrevistaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize());
+
+		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
 
         return Action.SUCCESS;
 	}
@@ -71,7 +83,12 @@ public class EntrevistaListAction extends  MyActionSupportList
     {
     	try
 		{
-    		entrevista = entrevistaManager.clonarEntrevista(entrevista.getId());
+			Long[] empresasIds = LongUtil.arrayStringToArrayLong(empresasCheck);
+			if (empresasIds != null && empresasIds.length > 0)
+				entrevistaManager.clonarEntrevista(entrevista.getId(), empresasIds);
+			else
+				entrevistaManager.clonarEntrevista(entrevista.getId(), getEmpresaSistema().getId());
+			
     		return Action.SUCCESS;
 		}
 		catch (Exception e)
@@ -135,5 +152,25 @@ public class EntrevistaListAction extends  MyActionSupportList
 	public void setVoltarPara(String voltarPara)
 	{
 		this.voltarPara = voltarPara;
+	}
+
+	public String[] getEmpresasCheck() {
+		return empresasCheck;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+
+	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList) {
+		this.empresasCheckList = empresasCheckList;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

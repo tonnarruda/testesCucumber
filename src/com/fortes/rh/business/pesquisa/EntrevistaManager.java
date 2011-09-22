@@ -16,7 +16,7 @@ public interface EntrevistaManager extends GenericManager<Entrevista>
 	void update(Entrevista entrevista, Questionario questionario, Long empresaId) throws Exception;
 	Entrevista save(Entrevista entrevista, Questionario questionario, Empresa empresa) throws Exception;
 	Entrevista findParaSerRespondida(Long id);
-	Entrevista clonarEntrevista(Long entrevistaId) throws Exception;
+	void clonarEntrevista(Long entrevistaId, Long... empresasIds) throws Exception;
 	Long getIdByQuestionario(Long questionarioId);
 	Integer getCount(Long empresaId);
 	Collection<Entrevista> findAllSelect(Long empresaId, Boolean ativa);

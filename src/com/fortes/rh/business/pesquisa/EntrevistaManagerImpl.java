@@ -119,42 +119,33 @@ public class EntrevistaManagerImpl extends GenericManagerImpl<Entrevista, Entrev
 		return entrevista;
 	}
 
-	public Entrevista clonarEntrevista(Long entrevistaId) throws Exception
+	public void clonarEntrevista(Long entrevistaId, Long... empresasIds) throws Exception
 	{
-
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
-		Entrevista entrevistaClonada;
-
-		try
+		
+		Entrevista entrevista = findByIdProjection(entrevistaId);
+		
+		for (Long empresaId : empresasIds)
 		{
-			Entrevista entrevista = findByIdProjection(entrevistaId);
+			Entrevista entrevistaClonada = (Entrevista) entrevista.clone();
 
-	    	Questionario questionario = new Questionario();
-	    	questionario = entrevista.getQuestionario();
-	    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
-
-	    	entrevistaClonada = (Entrevista) entrevista.clone();
-	    	entrevistaClonada.setId(null);
-	    	entrevistaClonada.setQuestionario(questionarioClonado);
-	    	save(entrevistaClonada);
-
-	    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
-
-	    	transactionManager.commit(status);
-
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			transactionManager.rollback(status);
-
-			throw e;
+			// se for para outra empresa o modelo deve ser clonado
+			if (empresaId != entrevistaClonada.getQuestionario().getEmpresa().getId())
+			{
+				Empresa empresa = new Empresa();
+				empresa.setId(empresaId);
+				
+		    	Questionario questionario = (Questionario) questionarioManager.findById(entrevista.getQuestionario().getId()).clone();
+		    	questionario.setEmpresa(empresa);
+		    	Questionario questionarioClonado = questionarioManager.clonarQuestionario(questionario);
+		
+		    	entrevistaClonada.setId(null);
+		    	entrevistaClonada.setQuestionario(questionarioClonado);
+		    	save(entrevistaClonada);
+		
+		    	perguntaManager.clonarPerguntas(questionario.getId(), questionarioClonado, null);
+			}
 		}
 
-    	return entrevistaClonada;
 	}
 
 	public Entrevista findParaSerRespondida(Long entrevistaId)
