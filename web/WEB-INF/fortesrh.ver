@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.57.48" data="14/09/2011">
+	<Versao id="1.1.57.48" data="23/09/2011">
 		- ReS > Relatórios > Colaboradores por Cargo: Novo filtro por Colocação do colaborador e nova coluna de colocação no relatório.
 		- Pesquisas > Movimentações > Pesquisas > Clonar: Nova opção de clonagem para mais de uma empresa.		
 		- Aval. Desempenho > Cadastro > Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência > Clonar: Nova opção de clonagem para mais de uma empresa.
