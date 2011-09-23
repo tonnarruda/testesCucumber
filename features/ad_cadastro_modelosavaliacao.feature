@@ -87,6 +87,12 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     E eu preencho "Título" com "_avaliacao II"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência"
+
+    Então eu clico na linha "_avaliacao II" da imagem "Clonar"
+    E eu devo ver "Clonar: _avaliacao II"
+    E eu marco "Empresa Padrão"
+    E eu clico no botão "Clonar"
+    E eu devo ver "_avaliacao II (Clone)"
     
     Entao eu clico na linha "_avaliacao II" da imagem "Critérios"
       Então eu devo ver o título "Critérios de Avaliação"

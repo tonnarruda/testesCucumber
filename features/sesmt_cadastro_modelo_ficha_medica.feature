@@ -29,6 +29,17 @@ Funcionalidade: Modelos de Fichas Médicas
     E eu clico no botão "Cancelar"
     Então eu devo ver o título "Modelos de Fichas Médicas"
 
+    Então eu clico na linha "ficha2" da imagem "Clonar"
+    E eu devo ver "Clonar: ficha2"
+    E eu marco "Empresa Padrão"
+    E eu clico no botão "Clonar"
+    E eu devo ver "ficha2 (Clone)"
+
+    Então eu clico em excluir "ficha2 (Clone)"
+    E eu devo ver o alert do confirmar exclusão e clico no ok
+    E eu devo ver "Ficha Médica excluída com sucesso."
+    Então eu não devo ver na listagem "ficha2 (Clone)"
+
     Então eu clico em excluir "ficha2"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     E eu devo ver "Ficha Médica excluída com sucesso."

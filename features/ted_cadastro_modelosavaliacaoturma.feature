@@ -54,6 +54,17 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Turma
     E eu clico no botão "Voltar"
     E eu devo ver o título "Modelos de Avaliação de Curso"
 
+    Então eu clico na linha "contabilidade" da imagem "Clonar"
+    E eu devo ver "Clonar: contabilidade"
+    E eu marco "Empresa Padrão"
+    E eu clico no botão "Clonar"
+    E eu devo ver "contabilidade (Clone)"
+
+    Então eu clico em excluir "contabilidade (Clone)"
+    E eu devo ver o alert do confirmar exclusão e clico no ok
+    Então eu devo ver "Modelo de Avaliação de Curso excluído com sucesso."
+    E eu não devo ver "contabilidade (Clone)"
+
     Então eu clico em excluir "contabilidade"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     Então eu devo ver "Modelo de Avaliação de Curso excluído com sucesso."

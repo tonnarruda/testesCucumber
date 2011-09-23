@@ -31,6 +31,17 @@ Funcionalidade: Modelos de Entrevistas de Desligamento
     E eu clico no botão "Cancelar"
     Então eu devo ver o título "Modelos de Entrevistas de Desligamento"
 
+    Então eu clico na linha "Unico" da imagem "Clonar"
+    E eu devo ver "Clonar: Unico"
+    E eu marco "Empresa Padrão"
+    E eu clico no botão "Clonar"
+    E eu devo ver "Unico (Clone)"
+
+    Então eu clico em excluir "Unico (Clone)"
+    E eu devo ver o alert do confirmar exclusão e clico no ok
+    Então eu devo ver "Entrevista excluída com sucesso."
+    E eu não devo ver "Unico (Clone)"
+
     Então eu clico em excluir "Unico"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     Então eu devo ver "Entrevista excluída com sucesso."

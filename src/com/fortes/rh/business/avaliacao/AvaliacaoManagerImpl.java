@@ -202,7 +202,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 				
 				Avaliacao avaliacao = (Avaliacao) getDao().findById(id).clone();
 				avaliacao.setEmpresa(empresa);
-				avaliacao.setTitulo(avaliacao.getTitulo() + "(Clone)");
+				avaliacao.setTitulo(avaliacao.getTitulo() + " (Clone)");
 				avaliacao.setId(null);
 				save(avaliacao);
 				
@@ -212,7 +212,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		else
 		{
 			Avaliacao avaliacao = (Avaliacao) getDao().findById(id).clone();
-			avaliacao.setTitulo(avaliacao.getTitulo() + "(Clone)");
+			avaliacao.setTitulo(avaliacao.getTitulo() + " (Clone)");
 			avaliacao.setId(null);
 			save(avaliacao);
 			
