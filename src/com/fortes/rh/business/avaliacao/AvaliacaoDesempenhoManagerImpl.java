@@ -82,7 +82,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			save(avaliacaoDesempenhoClone);
 
 			// só clona os participantes se for para a mesma empresa
-			if (empresaId == avaliacaoDesempenhoClone.getAvaliacao().getEmpresa().getId())
+			if (empresaId.equals(avaliacaoDesempenho.getAvaliacao().getEmpresa().getId()))
 				colaboradorQuestionarioManager.clonar(participantes, avaliacaoDesempenhoClone, liberada);
 		}
 	}
