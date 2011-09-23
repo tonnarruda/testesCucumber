@@ -158,6 +158,9 @@ Funcionalidade: Cadastrar Pesquisas
     Então eu devo ver o título "Pesquisas"
 
     Então eu clico na linha "_pesquisa 2" da imagem "Clonar"
+    E eu devo ver "Clonar: _pesquisa 2"
+    E eu marco "Empresa Padrão"
+    E eu clico no botão "Clonar"
     E eu devo ver "_pesquisa 2 (Clone)"
 
     Então eu clico na linha "_pesquisa 2" da imagem "Liberar Pesquisa"

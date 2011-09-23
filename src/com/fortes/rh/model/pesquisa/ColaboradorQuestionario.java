@@ -154,10 +154,10 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	this.avaliacao.setCabecalho(projectionAvaliacaoCabecalho); 	
     }
 
-    public void setProjectionAvaliacaoExibeResultadoAutoavaliacao(boolean projectionAvaliacaoExibeResultadoAutoavaliacao)
+    public void setProjectionAvaliacaoExibeResultadoAutoavaliacao(Boolean projectionAvaliacaoExibeResultadoAutoavaliacao)
     {
     	newAvaliacao();    	
-    	this.avaliacao.setExibeResultadoAutoavaliacao(projectionAvaliacaoExibeResultadoAutoavaliacao); 	
+    	this.avaliacao.setExibeResultadoAutoavaliacao(projectionAvaliacaoExibeResultadoAutoavaliacao == null ? false : projectionAvaliacaoExibeResultadoAutoavaliacao); 	
     }
    
     public void setProjectionAvaliacaoDesempenhoId(Long projectionAvaliacaoDesempenhoId)
