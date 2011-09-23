@@ -36,7 +36,6 @@ import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
 import com.fortes.web.tags.CheckBox;
 
-@SuppressWarnings("unchecked")
 public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implements CargoManager
 {
 	private AcPessoalClientCargo acPessoalClientCargo;
@@ -547,6 +546,20 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return getDao().findAllSelect(empresaIds);
 	}
 
+	public String nomeCargos(Long[] cargosIds) 
+	{
+		Collection<Cargo> cargos = getDao().findCargosByIds(cargosIds, null);
+		String resultado = "";
+		
+		for (Cargo cargo : cargos) 
+			resultado += cargo.getNome() + ", ";
+		
+		if(!resultado.equals(""))
+			return resultado.substring(0, (resultado.length() - 2));
+		else
+			return resultado;
+	}
+	
 	public void setHabilidadeManager(HabilidadeManager habilidadeManager) {
 		this.habilidadeManager = habilidadeManager;
 	}
