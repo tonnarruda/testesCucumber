@@ -106,9 +106,6 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		avaliacaoDesempenhoDao.expects(once()).method("findByIdProjection").with(eq(3L)).will(returnValue(avaliacaoDesempenho));
 		avaliacaoDesempenhoDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorQuestionarioManager.expects(once()).method("findByAvaliacaoDesempenho").with(eq(3L),eq(null)).will(returnValue(participantes));
-		
-		colaboradorQuestionarioManager.expects(once()).method("clonar").with(eq(participantes), ANYTHING, eq(true));
 		
 		avaliacaoDesempenhoManager.clonar(3L, empresa.getId());
 	}

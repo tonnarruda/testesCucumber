@@ -14,6 +14,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
@@ -25,6 +26,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.pesquisa.Pergunta;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -33,32 +35,36 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class PeriodoExperienciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	private PeriodoExperienciaManager periodoExperienciaManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
+	private AvaliacaoManager avaliacaoManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private PerguntaManager perguntaManager;
+	private EmpresaManager empresaManager;
+	private ColaboradorManager colaboradorManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+
 	private PeriodoExperiencia periodoExperiencia;
 	private Collection<PeriodoExperiencia> periodoExperiencias;			
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Avaliacao avaliacao;
 	private Collection<Avaliacao> avaliacoes;
-	
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
-	private AvaliacaoManager avaliacaoManager;
-	private EstabelecimentoManager estabelecimentoManager;
 
 	private Pergunta pergunta;
 	private Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
-	private PerguntaManager perguntaManager;
 	
 	private Date dataReferencia;
 	private Date periodoIni;
 	private Date periodoFim;
 	private Collection<Empresa> empresas;
-	private EmpresaManager empresaManager;
+	private Empresa empresa;
 	
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -73,7 +79,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	
 	private Collection<Colaborador> colaboradores;
 
-	private ColaboradorManager colaboradorManager;
 	private Map<String, Object> parametros;
 	private Integer diasDeAcompanhamento;
 	private Integer tempoDeEmpresa;
@@ -86,6 +91,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<Estabelecimento> estabelecimentos;
 	private String observacoes;
 	private Collection<CartaoAcompanhamentoExperienciaVO> cartoesAcompanhamentoExperienciaVOs;
+	private boolean compartilharColaboradores;
 		
 	private void prepare() throws Exception
 	{
@@ -153,11 +159,16 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareRelatorioRankingPerformance() throws Exception{
-				
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-    	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-    	avaliacaoCheckList = avaliacaoDesempenhoManager.populaCheckBox(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO);
+	public String prepareRelatorioRankingPerformance() throws Exception
+	{
+		empresa = getEmpresaSistema();
+		
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresa.getId(), getUsuarioLogado().getId(), null);
+		
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
+    	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(empresa.getId());
+    	avaliacaoCheckList = avaliacaoDesempenhoManager.populaCheckBox(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO);
     	
     	avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
     	
@@ -232,7 +243,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(getEmpresaSistema().getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck);
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck);
 
 			String msgAval = "";
 			if(avaliacaoCheck != null && avaliacaoCheck.length == 1)
@@ -268,7 +279,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			colaboradores = colaboradorManager.findColabPeriodoExperienciaAgrupadoPorModelo(getEmpresaSistema().getId(), periodoIni, periodoFim, avaliacao.getId(), areasCheck, estabelecimentoCheck, colaboradorsCheck, considerarAutoAvaliacao);
 
 			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) ;
-			reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
+			reportTitle = "Relatório de Ranking de Performance de Avaliação de Desempenho";
 			
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
 		}
@@ -596,5 +607,26 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public void setAvaliacaoCheckList(Collection<CheckBox> avaliacaoCheckList) {
 		this.avaliacaoCheckList = avaliacaoCheckList;
+	}
+
+	public void setParametrosDoSistemaManager(
+			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public boolean isCompartilharColaboradores() {
+		return compartilharColaboradores;
+	}
+
+	public void setCompartilharColaboradores(boolean compartilharColaboradores) {
+		this.compartilharColaboradores = compartilharColaboradores;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 }

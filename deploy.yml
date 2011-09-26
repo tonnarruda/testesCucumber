@@ -11,20 +11,6 @@ rh_local_francisco:
 rhhomologacao:
   host: 10.1.3.48
   user: web
-  password: F0rt3sW3b! 
-  tomcat_home: /home/web/temp/apache-tomcat-6.0.29
-  fortes_home_properties: name=FORTES_HOME_COMERCIAL
-  app_name: fortesrhcomercial
-  db_name: fortesrhhomologacao
-  run_migrates: true
-  backup_folder: /home/web/fortes/RHCOMERCIAL 
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
-  environment:
-    FORTES_HOME_COMERCIAL: /home/web/fortes/RHCOMERCIAL
-
-rhhomologacaooriginal:
-  host: 10.1.3.48
-  user: web
   password: F0rt3sW3b!
   tomcat_home: /home/web/temp/apache-tomcat-6.0.29
   fortes_home_properties: name=FORTES_HOME_HOMOLOGACAO

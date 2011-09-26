@@ -34,6 +34,7 @@
 	<field name="respondidaEm" class="java.util.Date"/>
 	<field name="nomeAvaliador" class="java.lang.String"/>
 	<field name="avaliacaoDesempenhoTitulo" class="java.lang.String"/>
+	<field name="nomeEmpresa" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
@@ -150,7 +151,7 @@
 					<reportElement
 						x="11"
 						y="41"
-						width="261"
+						width="238"
 						height="16"
 						key="staticText-1">
 							<printWhenExpression><![CDATA[new Boolean(!$P{exibirNomeAvaliacao}.booleanValue())]]></printWhenExpression>
@@ -182,7 +183,7 @@
 						height="16"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Performance ]]></text>
@@ -202,9 +203,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="275"
+						x="254"
 						y="41"
-						width="104"
+						width="125"
 						height="16"
 						key="staticText-14">
 							<printWhenExpression><![CDATA[new Boolean(!$P{exibirNomeAvaliacao}.booleanValue())]]></printWhenExpression>
@@ -253,7 +254,7 @@
 					<reportElement
 						x="11"
 						y="0"
-						width="261"
+						width="238"
 						height="17"
 						key="textField">
 							<printWhenExpression><![CDATA[new Boolean(!$P{exibirNomeAvaliacao}.booleanValue())]]></printWhenExpression>
@@ -292,15 +293,15 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="275"
+						x="254"
 						y="0"
-						width="104"
+						width="125"
 						height="17"
 						key="textField-1">
 							<printWhenExpression><![CDATA[new Boolean(!$P{exibirNomeAvaliacao}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{avaliacaoDesempenhoTitulo}]]></textFieldExpression>

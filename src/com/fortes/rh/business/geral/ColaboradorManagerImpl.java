@@ -1744,7 +1744,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		 	retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, StringUtil.stringToLong(avaliacaoCheck), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), StringUtil.stringToLong(colaboradorsCheck), true);
 		
 		 if(retorno.isEmpty())
-			throw new Exception("Não existe informações para os filtros selecionados");
+			throw new Exception("Não existem informações para os filtros selecionados");
 		
 		
 		return retorno;
@@ -1758,7 +1758,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Collection<Colaborador> retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, clu.convertCollectionToArrayIds(avaliacaoIds), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), StringUtil.stringToLong(colaboradorsCheck), considerarAutoAvaliacao);
 		
 		if(retorno.isEmpty())
-			throw new Exception("Não existe informações para os filtros selecionados");
+			throw new Exception("Não existem informações para os filtros selecionados");
 
 		return retorno;
 	}

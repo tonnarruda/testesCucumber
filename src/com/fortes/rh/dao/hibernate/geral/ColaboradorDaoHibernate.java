@@ -2929,11 +2929,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao) 
 	{
 		StringBuilder hql = new StringBuilder();
-		  hql.append("select new Colaborador(co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, ad.anonima, ad.titulo) ");
+		  hql.append("select new Colaborador(co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, ad.anonima, ad.titulo, emp.nome) ");
 		  hql.append("from HistoricoColaborador as hc ");
 		  hql.append("left join hc.colaborador as co ");
 		  hql.append("left join co.colaboradorQuestionarios as cq ");
 		  hql.append("left join cq.avaliacaoDesempenho as ad ");
+		  hql.append("left join ad.avaliacao as a ");
+		  hql.append("left join a.empresa as emp ");
 		  hql.append("left join cq.avaliador as aval ");
 		  hql.append("where ");
 		  hql.append("  hc.data = (");
@@ -2943,7 +2945,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  hql.append("   and hc2.data <= :dataAtual  ");
 		  hql.append("  ) ");
 		  hql.append("and co.desligado = false ");
-		  hql.append("and co.empresa.id = :empresaId ");
+		  
+		  if (empresaId != null && empresaId > -1)
+			  hql.append("and co.empresa.id = :empresaId ");
+		  
 		  hql.append("and cq.respondidaEm between :periodoIni and :periodoFim ");
 		  hql.append("and ad.id in (:avaliacaoId) ");
 		  hql.append("and cq.respondida = true ");
@@ -2963,7 +2968,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  hql.append("order by  co.nome, ad.titulo, aval.nome ");//importante para relatorio
 		  
 		  Query query = getSession().createQuery(hql.toString());
-		  query.setLong("empresaId", empresaId);
+		  
+		  if (empresaId != null && empresaId > -1)
+			  query.setLong("empresaId", empresaId);
+		  
 		  query.setDate("periodoIni", periodoIni);
 		  query.setDate("periodoFim", periodoFim);
 		  query.setDate("dataAtual", new Date());

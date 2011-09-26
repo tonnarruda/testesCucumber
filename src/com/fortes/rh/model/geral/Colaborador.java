@@ -769,7 +769,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.titulo = titulo;
 	}
 
-	public Colaborador(String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, boolean anonima, String avaliacaoDesempenhoTitulo)
+	public Colaborador(String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, boolean anonima, String avaliacaoDesempenhoTitulo, String nomeEmpresa)
 	{
 		this.nome = nome;
 		this.nomeComercial = nomeComercial;
@@ -780,7 +780,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		this.respondidaEm = respondidaEm;
 		this.performance = performance;
-		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo;
+		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo + " (" + nomeEmpresa + ")";
 	}
 	
 	

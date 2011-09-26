@@ -51,8 +51,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = getDao().findByIdProjection(avaliacaoDesempenhoId);
 		Long avaliacaoId = avaliacaoDesempenho.getAvaliacao().getId();
-		boolean liberada = avaliacaoDesempenho.isLiberada();
-		Collection<ColaboradorQuestionario> participantes = colaboradorQuestionarioManager.findByAvaliacaoDesempenho(avaliacaoDesempenhoId, null);
 		
 		for (Long empresaId : empresasIds)
 		{
@@ -80,10 +78,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			avaliacaoDesempenhoClone.setLiberada(false);
 			
 			save(avaliacaoDesempenhoClone);
-
-			// só clona os participantes se for para a mesma empresa
-			if (empresaId.equals(avaliacaoDesempenho.getAvaliacao().getEmpresa().getId()))
-				colaboradorQuestionarioManager.clonar(participantes, avaliacaoDesempenhoClone, liberada);
 		}
 	}
 	

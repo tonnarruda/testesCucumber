@@ -18147,7 +18147,7 @@ insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 523 from perfil
 insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 524 from perfil_papel where papeis_id in (2, 496);--.go
 insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 525 from perfil_papel where papeis_id in (2, 496);--.go
 
-update papel set url='' where url = '--';
+update papel set url='' where url = '--';--.go
 
 insert into migrations values('20110920141058');--.go
 

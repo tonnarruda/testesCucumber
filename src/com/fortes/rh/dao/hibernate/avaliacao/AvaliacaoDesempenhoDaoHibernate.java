@@ -14,7 +14,6 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.util.CollectionUtil;
 
 public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<AvaliacaoDesempenho> implements AvaliacaoDesempenhoDao
 {
@@ -35,13 +34,14 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
 		p.add(Projections.property("emp.id"), "projectionAvaliacaoEmpresaId");
+		p.add(Projections.property("emp.nome"), "projectionAvaliacaoEmpresaNome");
 
 		criteria.setProjection(p);
 
 		if(tipoModeloAvaliacao != null)
 			criteria.add(Expression.eq("avaliacao.tipoModeloAvaliacao", tipoModeloAvaliacao));			
 	
-		if(empresaId != null)
+		if(empresaId != null && empresaId > -1)
 			criteria.add(Expression.eq("emp.id", empresaId));
 
 		if(ativa != null)
