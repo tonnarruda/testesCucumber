@@ -89,6 +89,11 @@ public class AuditorialDaoHibernateTest extends GenericDaoHibernateTest<Auditori
 		Map parametros = new HashMap();
 		
 		assertEquals(1, auditoriaDao.list(0, 10, parametros, empresa.getId()).size());
+
+		auditoria.setDados("teste __#baBau#__");
+		auditoriaDao.save(auditoria);
+		parametros.put("dados", "#babau#");
+		assertEquals(1, auditoriaDao.list(0, 10, parametros, empresa.getId()).size());
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -33,6 +33,7 @@ public class AuditoriaListAction extends ActionSupport
 	private Usuario usuario;
 	private String operacao;
 	private String entidade;
+	private String dados;
 	private List<String> operacoes = new ArrayList<String>();
 	private Map entidades;
 	
@@ -74,6 +75,8 @@ public class AuditoriaListAction extends ActionSupport
 	public String viewAuditoria() throws Exception
 	{
 		auditoriaView = auditoriaManager.projectionFindById(auditoriaView.getId(), getEmpresaId());
+		auditoriaView.setDados(auditoriaView.getDados().replace("</null>", "").replace("<null>", "").replace("}", "").replace("{", "").replace("\"", ""));
+		
 //		detalhes = auditoriaManager.getDetalhes(auditoriaView.getDados());
 //		auditoriaView.setDados(detalhes);
 		return Action.SUCCESS;
@@ -88,6 +91,7 @@ public class AuditoriaListAction extends ActionSupport
 		parametros.put("usuarioId", usuario.getId());
 		parametros.put("operacao", operacao);
 		parametros.put("entidade", entidade);
+		parametros.put("dados", dados);
 
 		totalSize = auditoriaManager.getCount(parametros, getEmpresaId());
 		auditorias = auditoriaManager.list(page, pagingSize, parametros, getEmpresaId());
@@ -253,5 +257,13 @@ public class AuditoriaListAction extends ActionSupport
 
 	public String getDetalhes() {
 		return detalhes;
+	}
+
+	public String getDados() {
+		return dados;
+	}
+
+	public void setDados(String dados) {
+		this.dados = dados;
 	}	
 }

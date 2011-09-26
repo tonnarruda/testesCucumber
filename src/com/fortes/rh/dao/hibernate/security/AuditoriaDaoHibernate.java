@@ -134,6 +134,12 @@ public class AuditoriaDaoHibernate extends GenericDaoHibernate<Auditoria> implem
 		{
 			criteria.add(Expression.eq("a.operacao", parametros.get("operacao")));
 		}
+		
+		//dados
+		if(parametros.get("dados") != null && !(parametros.get("dados").equals("")))
+		{
+			criteria.add(Expression.ilike("a.dados", "%" + parametros.get("dados") + "%"));
+		}
 
 		//Entidade
 		if(parametros.get("entidade") != null && !parametros.get("entidade").equals(""))

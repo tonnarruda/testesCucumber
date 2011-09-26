@@ -35,7 +35,7 @@
 				<tr>
 					<td>Período:</td>
 					<td>Usuário:</td>
-					<td>Módulo:</td>
+					<td>Movimentação:</td>
 					<td>Operação: <span id="loading" style="display:none;">Carregando..</span></td>
 				</tr>
 				<tr>
@@ -78,6 +78,7 @@
 					</td>
 				</tr>
 			</table>
+			<@ww.textfield label="Dados" name="dados" id="dados" cssStyle="width: 300px;"/>
 			
 			<input id="btnPesquisar" type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 			<br><br>
@@ -89,7 +90,7 @@
 	<@display.table name="auditorias" id="auditoria" class="dados" >
 		<@display.column property="data" title="Data / Hora" format="{0,date,dd/MM/yyyy HH:mm}" style="text-align: center;width: 150px;"/>
 		<@display.column property="usuario.nome" title="Usuário"/>
-		<@display.column property="entidade" title="Módulo"/>
+		<@display.column property="entidade" title="Movimentação"/>
 		<@display.column title="Operação" property="operacao" />
 		<@display.column title="Detalhes" style="text-align: center;width:50px;">
 			<a title="Ver Informação" href="javascript:popup('<@ww.url includeParams="none" value="viewAuditoria.action?auditoriaView.id=${auditoria.id?string?replace('.', '')}"/>', 610, 750)">
