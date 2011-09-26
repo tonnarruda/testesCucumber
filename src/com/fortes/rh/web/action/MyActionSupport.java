@@ -22,6 +22,11 @@ public abstract class MyActionSupport extends ActionSupport
 		return empresaSistema;
 	}
 	
+	public void setEmpresaSistema(Empresa empresaSistema)
+	{
+		this.empresaSistema = empresaSistema;
+	}
+	
 	public Usuario getUsuarioLogado()
 	{
 		if (usuarioSistema == null)
@@ -29,9 +34,9 @@ public abstract class MyActionSupport extends ActionSupport
 		return usuarioSistema;
 	}
 
-	public void setEmpresaSistema(Empresa empresaSistema)
+	public void setUsuarioLogado(Usuario usuario)
 	{
-		this.empresaSistema = empresaSistema;
+		this.usuarioSistema = usuario;
 	}
 
 	public String getActionMsg()

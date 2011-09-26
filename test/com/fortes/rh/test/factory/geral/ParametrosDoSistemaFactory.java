@@ -16,6 +16,8 @@ public class ParametrosDoSistemaFactory
 		parametrosDoSistema.setEnviarEmail(false);
 		parametrosDoSistema.setAtualizadoSucesso(true);
 		parametrosDoSistema.setPerfilPadrao(null);
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		parametrosDoSistema.setCompartilharCandidatos(true);
 
 		return parametrosDoSistema;
 	}

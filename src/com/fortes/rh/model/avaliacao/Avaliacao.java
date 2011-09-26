@@ -37,6 +37,26 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	@Transient
 	private int totalColab;
 	
+	@Override
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
+		}
+	}
+	
+	public void setProjectionEmpresaNome(String empresaNome)
+	{
+		if (empresa == null)
+			empresa = new Empresa();
+		
+		empresa.setNome(empresaNome);
+	}
 	
 	public String getTitulo() {
 		return titulo;
@@ -78,20 +98,6 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 		this.totalColab = totalColab;
 	}
 	
-
-	@Override
-	public Object clone()
-	{
-	   try
-	   {
-	      return super.clone();
-	   }
-	   catch (CloneNotSupportedException e)
-	   {
-	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
-	   }
-	}
-
 	public char getTipoModeloAvaliacao() {
 		return tipoModeloAvaliacao;
 	}

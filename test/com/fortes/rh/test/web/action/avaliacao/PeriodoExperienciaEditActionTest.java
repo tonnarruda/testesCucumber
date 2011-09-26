@@ -14,25 +14,26 @@ import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction;
-import com.fortes.web.tags.CheckBox;
 
 
 public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
@@ -44,6 +45,8 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 	private Mock areaOrganizacionalManager;
 	private Mock estabelecimentoManager;
 	private Mock avaliacaoManager;
+	private Mock parametrosDoSistemaManager;
+	private Mock empresaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -54,6 +57,9 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
 		avaliacaoManager = new Mock(AvaliacaoManager.class);
+		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+		empresaManager = new Mock(EmpresaManager.class);
+
 		action = new PeriodoExperienciaEditAction();
 		
 		action.setPeriodoExperienciaManager((PeriodoExperienciaManager) manager.proxy());
@@ -62,8 +68,12 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
 		action.setAvaliacaoManager((AvaliacaoManager) avaliacaoManager.proxy());
+		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 		action.setPeriodoExperiencia(new PeriodoExperiencia());
+		action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		action.setUsuarioLogado(UsuarioFactory.getEntity(2L));
 		
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -160,12 +170,17 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
     	Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
     	colaboradors.add(colaborador);
     	
+    	ParametrosDoSistema params = ParametrosDoSistemaFactory.getEntity(1L);
+    	params.setCompartilharColaboradores(false);
+    	
     	colaboradorManager.expects(once()).method("findColabPeriodoExperienciaAgrupadoPorModelo").will(throwException(new Exception()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao");
     	estabelecimentoManager.expects(once()).method("populaCheckBox");
     	avaliacaoDesempenhoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
     	avaliacaoManager.expects(once()).method("findAllSelectComAvaliacaoDesempenho").will(returnValue(new ArrayList<Avaliacao>()));
     	colaboradorManager.expects(once()).method("findByAvaliacoes").will(returnValue(new ArrayList<Colaborador>()));
+    	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(params));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
     	
     	assertEquals("input",action.impRankPerformAvDesempenho());
     }
