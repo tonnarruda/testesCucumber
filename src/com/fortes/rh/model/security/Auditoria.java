@@ -66,7 +66,7 @@ public class Auditoria extends AbstractModel implements Serializable
 
 	public String getOperacao()
 	{
-		return StringUtil.camelCaseToSnakeCase(operacao);
+		return operacao;
 	}
 
 	public void setOperacao(String operacao)

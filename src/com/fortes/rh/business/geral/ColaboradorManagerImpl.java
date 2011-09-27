@@ -1429,6 +1429,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		historicoColaboradorManager.removeColaborador(colaborador.getId());
 				
 		remove(colaborador.getId());
+		
 		if(colaboradorTmp.getCamposExtras() != null && colaboradorTmp.getCamposExtras().getId() != null)
 			camposExtrasManager.remove(colaboradorTmp.getCamposExtras().getId());
 		
