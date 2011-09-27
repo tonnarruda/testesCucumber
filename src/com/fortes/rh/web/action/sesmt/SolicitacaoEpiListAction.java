@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
@@ -26,12 +27,12 @@ import com.fortes.web.tags.CheckBox;
 public class SolicitacaoEpiListAction extends MyActionSupportList
 {
 	private SolicitacaoEpiManager solicitacaoEpiManager;
+	private ColaboradorManager colaboradorManager;
 	private EpiManager epiManager;
 	private Collection<SolicitacaoEpi> solicitacaoEpis;
 	private Collection<SolicitacaoEpiItem> solicitacaoEpiItems;
 	private String[] epiCheck;
 	private Collection<CheckBox> epiCheckList = new ArrayList<CheckBox>(); 
-
 	private Date dataIni;
 	private Date dataFim;
 	private String nomeBusca;
@@ -45,7 +46,8 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentoCheck;
 	private Collection<CheckBox> estabelecimentoCheckList = new ArrayList<CheckBox>();
-	
+	private String[] colaboradorCheck;
+	private Collection<CheckBox> colaboradorCheckList = new ArrayList<CheckBox>();
 
 	private String[] tipoEPICheck;
 	private Collection<CheckBox> tipoEPICheckList = new ArrayList<CheckBox>();
@@ -131,6 +133,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	public String prepareRelatorioEntregaEpi()
 	{
 		epiCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		colaboradorCheckList = colaboradorManager.populaCheckBox(getEmpresaSistema().getId());
 		return SUCCESS;
 	}
 	
@@ -138,10 +141,18 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	{
 		try
 		{
-			dataSource = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck);
+			dataSource = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, colaboradorCheck, agruparPor);
 			parametros = RelatorioUtil.getParametrosRelatorio("EPIs Entregues " + DateUtil.formataDiaMesAno(vencimento), getEmpresaSistema(), null);
 			
-			return SUCCESS;
+			switch (agruparPor)
+			{
+				case 'C':
+					return "success_agrupar_colaborador";
+				case 'E':
+					return SUCCESS;
+				default:
+					return INPUT;
+			}
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -151,6 +162,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public Collection getSolicitacaoEpis() {
 		return solicitacaoEpis;
 	}
@@ -345,5 +357,23 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
 		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public Collection<CheckBox> getColaboradorCheckList() {
+		return colaboradorCheckList;
+	}
+
+
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setColaboradorCheck(String[] colaboradorCheck) {
+		this.colaboradorCheck = colaboradorCheck;
+	}
+
+	public String[] getColaboradorCheck() {
+		return colaboradorCheck;
 	}
 }

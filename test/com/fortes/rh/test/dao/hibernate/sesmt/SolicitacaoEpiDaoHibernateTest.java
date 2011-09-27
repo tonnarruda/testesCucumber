@@ -198,8 +198,60 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
 		
 		Long[] epiCheck = {epi.getId()};
+		char agruparPor = 'E';//agrupar por EPI
 		
-		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), epiCheck, DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020));
+		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), epiCheck, null, agruparPor);
+		
+		assertEquals(1, colecao.size());
+	}
+	
+	
+	public void testFindEntregaEpiComColaborador()
+	{
+		Date hoje = new Date();
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setDesligado(false);
+		colaborador.setNome("nometeste");
+		colaboradorDao.save(colaborador);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("cargo");
+		cargoDao.save(cargo);
+		
+		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi.setData(hoje);
+		solicitacaoEpi.setColaborador(colaborador);
+		solicitacaoEpi.setCargo(cargo);
+		solicitacaoEpi.setEntregue(true);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		EpiHistorico epiHistorico = new EpiHistorico();
+		epiHistorico.setValidadeUso(6);
+		epiHistorico.setData(hoje);
+		epiHistoricoDao.save(epiHistorico);
+		
+		Collection<EpiHistorico> epiHistoricos = new ArrayList<EpiHistorico>();
+		epiHistoricos.add(epiHistorico);
+		
+		Epi epi = EpiFactory.getEntity();
+		epi.setEmpresa(empresa);
+		epi.setNome("teste");
+		epi.setEpiHistoricos(epiHistoricos);
+		epiDao.save(epi);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
+		solicitacaoEpiItem.setDataEntrega(hoje);
+		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
+		solicitacaoEpiItem.setEpi(epi);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		Long[] colaboradorCheck = {colaborador.getId()};
+		char agruparPor = 'C';//agrupar por colaborador
+		
+		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), null, colaboradorCheck, agruparPor);
 		
 		assertEquals(1, colecao.size());
 	}

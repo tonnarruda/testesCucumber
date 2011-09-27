@@ -23,6 +23,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.LongUtil;
+import com.sun.org.apache.xml.internal.security.encryption.AgreementMethod;
 
 public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi, SolicitacaoEpiDao> implements SolicitacaoEpiManager
 {
@@ -152,9 +153,9 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<SolicitacaoEpi> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck) throws ColecaoVaziaException
+	public Collection<SolicitacaoEpi> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] colaboradorCheck, char agruparPor) throws ColecaoVaziaException
 	{
-		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findEntregaEpi(empresaId, LongUtil.arrayStringToArrayLong(epiCheck), dataIni, dataFim);
+		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findEntregaEpi(empresaId, dataIni, dataFim, LongUtil.arrayStringToArrayLong(epiCheck), LongUtil.arrayStringToArrayLong(colaboradorCheck), agruparPor);
 		
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			throw new ColecaoVaziaException("Não existem EPIs a serem listados para os filtros informados.");

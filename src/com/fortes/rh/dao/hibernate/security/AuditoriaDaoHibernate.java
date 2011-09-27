@@ -18,6 +18,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.security.AuditoriaDao;
 import com.fortes.rh.model.security.Auditoria;
+import com.fortes.rh.util.StringUtil;
 
 public class AuditoriaDaoHibernate extends GenericDaoHibernate<Auditoria> implements AuditoriaDao
 {
@@ -34,7 +35,7 @@ public class AuditoriaDaoHibernate extends GenericDaoHibernate<Auditoria> implem
 		comboEntidade.put("", "Todas");//na criteria ele não fará where por entidade
 		for (String string : result)
 		{
-			comboEntidade.put(string, string);
+			comboEntidade.put(string, StringUtil.camelCaseToSnakeCase(string));
 		}
 
 		return comboEntidade;

@@ -217,15 +217,15 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		Collection<SolicitacaoEpi> solicitacaoEpisRetorno = new ArrayList<SolicitacaoEpi>();
 		solicitacaoEpisRetorno.add(solicitacaoEpi);
 		
-		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(eq(empresaId),ANYTHING, ANYTHING, ANYTHING).will(returnValue(solicitacaoEpisRetorno));
+		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(new Constraint[]{eq(empresaId),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(solicitacaoEpisRetorno));
 		
-		assertEquals(1, solicitacaoEpiManager.findRelatorioEntregaEpi(empresaId, hoje, null, null).size());
+		assertEquals(1, solicitacaoEpiManager.findRelatorioEntregaEpi(empresaId, hoje, null, null, null, 'E').size());
 
 		Collection<SolicitacaoEpi> solicitacaoEpisRetorno2 = new ArrayList<SolicitacaoEpi>();
-		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(eq(empresaId),ANYTHING, ANYTHING, ANYTHING).will(returnValue(solicitacaoEpisRetorno2));
+		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(new Constraint[]{eq(empresaId),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(solicitacaoEpisRetorno));
 		
 		try {
-			solicitacaoEpiManager.findRelatorioEntregaEpi(empresaId, hoje, null, null);
+			solicitacaoEpiManager.findRelatorioEntregaEpi(empresaId, hoje, null, null, null, 'E');
 		} catch (Exception e) {
 			assertEquals("Não existem EPIs a serem listados para os filtros informados.", e.getMessage());
 		}
