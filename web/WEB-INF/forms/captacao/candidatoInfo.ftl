@@ -144,7 +144,7 @@
 		-->
 	</div>
 
-	<div id="content1"}>
+	<div id="content1">
 		<@ww.div id="cv"/>
 	</div>
 
@@ -227,7 +227,7 @@
 		</div>
 	
 		</div>
-		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO_CURRICULO">
+		<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO_CURRICULO">
 			<br>
 				<#--p><input type="checkbox" name="imprimirHC" id="impHC" /> <label for="impHC">Imprimir HistÃ³rico</label></p>
 				<p><input type="checkbox" name="imprimirAS" id="impAS" /> <label for="impAS">Imprimir Assinatura</label></p-->

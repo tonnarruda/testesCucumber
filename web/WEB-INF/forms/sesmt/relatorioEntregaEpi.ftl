@@ -29,6 +29,8 @@
 		<@ww.datepicker label="Fim" name="dataFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${dataFim}"/>
 		
 		<@frt.checkListBox name="epiCheck" label="EPIs" list="epiCheckList" />
+		<@frt.checkListBox name="colaboradorCheck" label="Colaboradores" list="colaboradorCheckList" />
+		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'E':'Epi','C':'Colaborador'}" />
 	</@ww.form>
 
 	<div class="buttonGroup">
