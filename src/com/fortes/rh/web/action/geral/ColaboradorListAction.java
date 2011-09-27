@@ -148,7 +148,6 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String list() throws Exception
 	{
-		colaboradorManager.enviaEmailAniversariantes();
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllList(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
 		areasList = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsTmp);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
