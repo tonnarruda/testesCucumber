@@ -448,4 +448,12 @@ public final class StringUtil
 	{
 		return nomeBusca!=null?nomeBusca.toLowerCase():"";
 	}
+
+	public static String camelCaseToSnakeCase(String str) 
+	{
+		if(str == null)
+			return null;
+		else
+			return str.replaceAll("([a-z])([A-Z])", "$1 $2");
+	}
 }

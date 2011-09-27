@@ -50,6 +50,14 @@ public class StringUtilTest extends TestCase
 		assertEquals(esperado, StringUtil.removeAspas(texto));
 	}
 
+	public void testCamelCaseToSnakeCase()
+	{
+		assertEquals("faixa Salarial CArgo", StringUtil.camelCaseToSnakeCase("faixaSalarialCArgo"));
+		assertEquals("faixa Salarial CArgo", StringUtil.camelCaseToSnakeCase("faixaSalarial CArgo"));
+		assertEquals("", StringUtil.camelCaseToSnakeCase(""));
+		assertEquals(null, StringUtil.camelCaseToSnakeCase(null));
+	}
+	
 	public void testSubStr()
 	{
 		String texto = "Mas quando tamanho";//length = 20
