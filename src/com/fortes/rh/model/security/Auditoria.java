@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.StringUtil;
 
 @Entity
 @SequenceGenerator(name = "sequence", sequenceName = "auditoria_sequence", allocationSize = 1)
@@ -55,7 +56,7 @@ public class Auditoria extends AbstractModel implements Serializable
 
 	public String getEntidade()
 	{
-		return entidade;
+		return StringUtil.camelCaseToSnakeCase(entidade);
 	}
 
 	public void setEntidade(String entidade)

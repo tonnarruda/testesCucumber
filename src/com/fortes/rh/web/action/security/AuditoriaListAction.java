@@ -189,14 +189,17 @@ public class AuditoriaListAction extends ActionSupport
 		this.operacao = operacao;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Map getOperacoes()
 	{
 		Map<String, String> map = new LinkedHashMap<String, String>(operacoes.size());
 		map.put("", "Todas");
-		for (String op : operacoes) {
+		map.put("Inserção", "Inserção");
+		map.put("Atualização", "Atualização");
+		map.put("Remoção", "Remoção");
+		
+		for (String op : operacoes)
 			map.put(op, op);
-		}
+		
 		return map;
 	}
 	

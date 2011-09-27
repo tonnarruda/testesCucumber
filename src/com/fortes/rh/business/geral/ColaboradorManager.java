@@ -31,18 +31,25 @@ import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 import com.fortes.web.tags.CheckBox;
 
 public interface ColaboradorManager extends GenericManager<Colaborador>
 {
+	@Audita(operacao="Inserção", auditor=ColaboradorAuditorCallbackImpl.class)
+	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa) throws Exception;
+	@Audita(operacao="Atualização", auditor=ColaboradorAuditorCallbackImpl.class)
+	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception;
+	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
+	public void remove(Colaborador colaborador, Empresa empresa) throws Exception;
+
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
 	public Integer getCount(Map parametros);
 	public Collection findList(int page, int pagingSize, Map parametros);
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] longs, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId);
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
-	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa) throws Exception;
-	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception;
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias);
 	public void enviarEmailCadastro(Colaborador colaborador, Empresa empresa) throws AddressException, MessagingException;
 	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
@@ -102,7 +109,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findAniversariantes(Long[] empresaIds, int mes, Long[] areaIds, Long[] estabelecimentoIds) throws Exception;
 	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos);
 	public String getNome(Long id);
-	public void remove(Colaborador colaborador, Empresa empresa) throws Exception;
 	public Colaborador findByIdHistoricoProjection(Long id);
 	public Collection<CheckBox> populaCheckBox(Long empresaId);
 	public Colaborador findByIdDadosBasicos(Long id);

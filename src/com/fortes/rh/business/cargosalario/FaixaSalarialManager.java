@@ -10,10 +10,15 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
+import com.fortes.rh.security.spring.aop.callback.InsertFaixaSalarialAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
+import com.fortes.security.auditoria.Modulo;
 
+@Modulo("Faixa Salarial")
 public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 {
 	FaixaSalarial findCodigoACById(Long id);
+	@Audita(operacao="Inserção", auditor=InsertFaixaSalarialAuditorCallbackImpl.class)
 	void saveFaixaSalarial(FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, Empresa empresa, String[] certificacaosCheck) throws Exception;
 	void updateFaixaSalarial(FaixaSalarial faixaSalarial, Empresa empresa, String[] certificacaosCheck) throws Exception;
 	void deleteFaixaSalarial(Long id, Empresa empresa) throws Exception;
