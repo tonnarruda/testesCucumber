@@ -49,7 +49,7 @@ Before do
 	conn = PGconn.connect( :dbname => $db_name, :user => 'postgres')
     conn.exec("select alter_trigger(table_name, 'DISABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{$db_name}' group by table_name;")
 
-    tables = conn.exec("select table_name FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{$db_name}' group by table_name;")
+    tables = conn.exec("SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');")
     delete_tables = tables.map {|table| "delete from #{table['table_name']};"}.join()
 
     conn.exec delete_tables
