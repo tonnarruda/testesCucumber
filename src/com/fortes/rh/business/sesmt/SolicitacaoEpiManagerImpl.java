@@ -23,7 +23,6 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.LongUtil;
-import com.sun.org.apache.xml.internal.security.encryption.AgreementMethod;
 
 public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi, SolicitacaoEpiDao> implements SolicitacaoEpiManager
 {
