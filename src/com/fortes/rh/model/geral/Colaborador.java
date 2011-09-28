@@ -2285,7 +2285,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			return "-";
 		}
 	}
-	
+	@NaoAudita
 	public String getTipoSalarioDescricao()
 	{
 		return com.fortes.rh.model.dicionario.TipoAplicacaoIndice.getDescricao(historicoColaborador.getTipoSalario());

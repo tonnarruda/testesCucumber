@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 
 import com.fortes.business.GenericManager;
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
@@ -53,7 +55,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		Colaborador colaborador = (Colaborador) metodo.getParametros()[0];
 		colaborador = carregaEntidade(metodo, colaborador);
 		
-		metodo.processa(); // processa metodo
+		metodo.processa();
 		
 		String modulo = metodo.getModulo();
 		String operacao = metodo.getOperacao();
@@ -65,7 +67,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 	
 	@SuppressWarnings("unchecked")
 	private Colaborador carregaEntidade(MetodoInterceptado metodo, Colaborador colaborador) {
-		GenericManager<Colaborador> manager = (GenericManager<Colaborador>) metodo.getComponente();
-		return (Colaborador) manager.findEntidadeComAtributosSimplesById(colaborador.getId());
+		ColaboradorManager manager = (ColaboradorManager) metodo.getComponente();
+		return manager.findEntidadeComAtributosSimplesById(colaborador.getId());
 	}
 }

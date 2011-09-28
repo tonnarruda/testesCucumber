@@ -33,8 +33,10 @@ import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
+import com.fortes.security.auditoria.Modulo;
 import com.fortes.web.tags.CheckBox;
 
+@Modulo("Colaborador")
 public interface ColaboradorManager extends GenericManager<Colaborador>
 {
 	@Audita(operacao="Inserção", auditor=ColaboradorAuditorCallbackImpl.class)
