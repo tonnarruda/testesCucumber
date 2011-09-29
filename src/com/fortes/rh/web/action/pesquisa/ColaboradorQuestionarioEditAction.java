@@ -34,6 +34,7 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.security.UserDetailsImpl;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -206,13 +207,20 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		if(colaboradorQuestionario.getRespondidaEm() == null)
 			colaboradorQuestionario.setRespondidaEm(new Date());
 		
-		//levado para action avaliacaodesempenhoQuestionariolist.action
-		exibeResultadoAutoavaliacao = colaboradorQuestionario.getAvaliacaoDesempenho().isPermiteAutoAvaliacao() && colaboradorQuestionario.getAvaliador().getId().equals(colaboradorQuestionario.getColaborador().getId()) && colaboradorQuestionario.getAvaliacao().isExibeResultadoAutoavaliacao();
+		ExibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
 
 		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		addActionMessage("Avaliação respondida com sucesso.");
 		
 		return Action.SUCCESS;
+	}
+
+	private void ExibeResultadoAutoavaliacao() 
+	{
+		this.exibeResultadoAutoavaliacao =  colaboradorQuestionario.getAvaliacaoDesempenho().isPermiteAutoAvaliacao() 
+		&& SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId().equals(colaboradorQuestionario.getColaborador().getId()) 
+		&& colaboradorQuestionario.getAvaliador().getId().equals(colaboradorQuestionario.getColaborador().getId()) 
+		&& colaboradorQuestionario.getAvaliacao().isExibeResultadoAutoavaliacao();
 	}
 	
 	public String prepareInsertAvaliacaoExperiencia()

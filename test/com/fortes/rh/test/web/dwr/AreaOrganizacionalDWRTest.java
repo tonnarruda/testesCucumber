@@ -110,7 +110,7 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 	public void testGetByEmpresa() throws Exception
 	{
 		Long empresaId = 1L;
-		areaOrganizacionalManager.expects(once()).method("findAllList").with(eq(empresaId),eq(AreaOrganizacional.TODAS)).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		areaOrganizacionalManager.expects(once()).method("findByEmpresa").with(eq(empresaId)).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(new ArrayList<AreaOrganizacional>()));
 		
@@ -125,7 +125,7 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 			areaOrganizacional.setEmpresa(EmpresaFactory.getEmpresa(1L));
 		}
 		
-		areaOrganizacionalManager.expects(once()).method("findAll").will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("findByEmpresa").with(eq(empresaId)).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
 		

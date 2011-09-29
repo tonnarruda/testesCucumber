@@ -23,17 +23,12 @@ public class AreaOrganizacionalDWR
 	public Map<Object, Object> getByEmpresa(Long empresaId) throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-		
-		if(empresaId == -1) // Traz todas as áreas, com nome da Empresa na descrição.
-			areaOrganizacionals = areaOrganizacionalManager.findAll();
-		else
-			areaOrganizacionals = areaOrganizacionalManager.findAllList(empresaId, AreaOrganizacional.TODAS);
+		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(empresaId);
 		
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
-
-		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", ((empresaId == null || empresaId < 0) ? "getDescricaoComEmpresa" : "getDescricao") );
+		
+		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", ((empresaId == null || empresaId < 0) ? "getDescricaoComEmpresa" : "getDescricao") ); 
 	}
 
 	@SuppressWarnings("unchecked")

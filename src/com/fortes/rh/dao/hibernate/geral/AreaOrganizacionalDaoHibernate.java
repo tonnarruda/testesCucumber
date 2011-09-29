@@ -341,11 +341,15 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("ao.nome"), "nome");
 		p.add(Projections.property("am.id"), "idAreaMae");
 		p.add(Projections.property("am.nome"), "nomeAreaMae");
+		p.add(Projections.property("e.id"), "empresaId");
+		p.add(Projections.property("e.nome"), "empresaNome");
 
 		criteria.setProjection(p);
 
-		if(empresaId != null)
+		if(empresaId != null && !empresaId.equals(-1L))
 			criteria.add(Expression.eq("ao.empresa.id", empresaId));
+		else
+			criteria.addOrder(Order.asc("e.nome"));
 
 		criteria.addOrder(Order.asc("ao.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));

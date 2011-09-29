@@ -780,7 +780,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		this.respondidaEm = respondidaEm;
 		this.performance = performance;
-		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo + " (" + nomeEmpresa + ")";
+		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo;
+		
+		if (empresa == null)
+			empresa = new Empresa();
+		
+		this.empresa.setNome(nomeEmpresa);
 	}
 	
 	

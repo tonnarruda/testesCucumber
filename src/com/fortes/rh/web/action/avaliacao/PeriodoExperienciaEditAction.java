@@ -244,6 +244,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		try 
 		{
 			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck);
+			reportTitle = "Relatório de Performace de Avaliação de Desempenho";
 
 			String msgAval = "";
 			if(avaliacaoCheck != null && avaliacaoCheck.length == 1)
@@ -254,9 +255,10 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 					avalAnonima = " (Anônima)";
 				
 				msgAval = "Avaliação: " + avaliacaoDesempenho.getTitulo() + avalAnonima;
+				reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
 			}
+
 			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + msgAval;
-			reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
 
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
 			parametros.put("exibirNomeAvaliacao", !msgAval.equals(""));
