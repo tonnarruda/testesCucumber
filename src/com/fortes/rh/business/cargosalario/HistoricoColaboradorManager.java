@@ -16,8 +16,20 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.security.spring.aop.callback.HistoricoColaboradorAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 
 public interface HistoricoColaboradorManager extends GenericManager<HistoricoColaborador> {
+
+	@Audita(operacao="Inserção", auditor=HistoricoColaboradorAuditorCallbackImpl.class)
+	public void insertHistorico(HistoricoColaborador historicoColaborador, Empresa empresaSistema) throws Exception;
+	
+	@Audita(operacao="Atualização", auditor=HistoricoColaboradorAuditorCallbackImpl.class)
+	public void updateHistorico(HistoricoColaborador historicoColaborador, Empresa empresa) throws Exception;
+	
+	@Audita(operacao="Remoção", auditor=HistoricoColaboradorAuditorCallbackImpl.class)
+	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa) throws Exception;
+	
 	public Collection<HistoricoColaborador> getByColaboradorId(Long id);
 
 	public HistoricoColaborador findByIdProjection(Long historicoColaboradorId);
@@ -69,10 +81,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public boolean verificaHistoricoNaFolhaAC(Long historicoColaboradorId, String colaboradorCodigoAC, Empresa empresa);
 
-	public void updateHistorico(HistoricoColaborador historicoColaborador, Empresa empresa) throws Exception;
-
-	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa) throws Exception;
-
 	public Collection<TSituacao> findHistoricosByTabelaReajuste(Long tabelaReajusteColaboradorId, Empresa empresa);
 
 	public String findColaboradorCodigoAC(Long historicoColaboradorId);
@@ -108,8 +116,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public Collection<HistoricoColaborador> findColaboradoresByTabelaReajusteData(Long tabelaReajusteColaboradorId, Date data);
 
 	public HistoricoColaborador getPrimeiroHistorico(Long colaboradorId);
-
-	public void insertHistorico(HistoricoColaborador historicoColaborador, Empresa empresaSistema) throws Exception;
 
 	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHitorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao, String vinculo) throws Exception;
 
