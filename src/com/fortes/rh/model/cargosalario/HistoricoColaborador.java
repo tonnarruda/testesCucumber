@@ -36,6 +36,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SalarioUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Table(uniqueConstraints=@UniqueConstraint(columnNames={"data", "colaborador_id"}))
@@ -300,6 +301,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	{
 	}
 	
+	@NaoAudita
 	public String getCnpjFormatado()
 	{
 		String cnpj = this.getCnpjDaEmpresa();
@@ -308,12 +310,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		return StringUtil.formataCnpj(cnpj, complementoCnpj);
 	}
 
+	@NaoAudita
 	private String getComplementoDoCnpj() {
 		if (estabelecimento != null)
 			return estabelecimento.getComplementoCnpj();
 		return "";
 	}
 
+	@NaoAudita
 	private String getCnpjDaEmpresa() {
 		if (this.colaborador != null)
 			return this.colaborador.getCnpjDaEmpresa();
@@ -692,6 +696,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		areaOrganizacional.getAreaMae().setNome(areaMaeNome);
 	}
 
+	@NaoAudita
 	public Double getSalarioCalculado()
 	{
 		return SalarioUtil.getValor(this.getTipoSalario(), this.getFaixaSalarial(), this.getIndice(), this.getQuantidadeIndice(), this.salario);
@@ -732,6 +737,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		return data;
 	}
 	
+	@NaoAudita
 	public String getDataFormatada()
 	{
 		String dataFormatada = "";
@@ -814,6 +820,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	}
 
 	@Deprecated
+	@NaoAudita
 	public HistoricoColaborador getHistoricoAnterior()
 	{
 		return historicoAnterior;
@@ -896,6 +903,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.dataProximoHistorico = dataProximoHistorico;
 	}
 	
+	@NaoAudita
 	public String getPeriodo()
 	{
 		return DateUtil.formataDiaMesAno(this.data) + " a " + (this.dataProximoHistorico != null ? DateUtil.formataDiaMesAno(this.dataProximoHistorico) : "__/__/___");
@@ -994,7 +1002,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	{
 		this.movimentoSalarialId = movimentoSalarialId;
 	}
-
+	
 	public Double getSalarioVariavel() 
 	{
 		if (salarioVariavel == null)

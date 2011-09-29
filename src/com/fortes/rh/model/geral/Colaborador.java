@@ -1561,6 +1561,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		empresa.setNome(nome);
 	}
 
+	@NaoAudita
 	public String getEmpresaNome()
 	{
 		if(empresa == null || empresa.getNome()==null)
@@ -1599,7 +1600,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		return nome;
 	}
-	
+	@NaoAudita
 	public String getNomeDesligado()
 	{
 		if(this.desligado)
@@ -1607,7 +1608,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		else
 			return this.nome;
 	}
-	
+	@NaoAudita
 	public String getNomeComercialDesligado()
 	{
 		String retorno = this.nome;
@@ -1643,6 +1644,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		return dataAdmissao;
 	}
+	@NaoAudita
 	public String getDataAdmissaoFormatada()
 	{
 		return DateUtil.formataDate(this.dataAdmissao, "dd/MM/yyyy");
@@ -1655,6 +1657,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		return dataDesligamento;
 	}
+	@NaoAudita
 	public String getDataDesligamentoFormatada()
 	{
 		return DateUtil.formataDiaMesAno(this.dataDesligamento);
@@ -1781,7 +1784,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		return vinculo;
 	}
-	
+	@NaoAudita
 	public String getVinculoDescricao()
 	{
 		if (StringUtils.isNotBlank(this.vinculo))
@@ -1973,7 +1976,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		this.reajusteColaborador = reajusteColaborador;
 	}
-
+	@NaoAudita
 	public Boolean getEhProjecao()
 	{
 		return ehProjecao;
@@ -1983,7 +1986,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		this.ehProjecao = ehProjecao;
 	}
-
+	@NaoAudita
 	public String getDescricaoEstabelecimentoAreaOrganizacional()
 	{
 		if (this.getEstabelecimento() != null
@@ -1992,7 +1995,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		}
 		return "";
 	}
-
+	@NaoAudita
 	public String getDescricaoEmpresaEstabelecimentoAreaOrganizacional()
 	{
 		if (this.empresa != null && this.getEstabelecimento() != null && this.areaOrganizacional != null) 
@@ -2000,7 +2003,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 		return "";
 	}
-	
+	@NaoAudita
 	public String getNomeComercialEmpresa()
 	{
 		StringBuilder descricao = new StringBuilder();
@@ -2016,7 +2019,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		return descricao.toString();
 	}
-	
+	@NaoAudita
 	public String getNomeMaisNomeComercial()
 	{
 		String NomeMaisNomeComercial  = this.nome;
@@ -2045,7 +2048,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		this.colaboradorTurmas = colaboradorTurmas;
 	}
-
+	@NaoAudita
 	public File getFoto()
 	{
 		return foto;
@@ -2055,7 +2058,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		this.foto = foto;
 	}
-
+	@NaoAudita
 	public String getNomeCpf()
 	{
 		String nomeCpf = "";
@@ -2068,7 +2071,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 		return nomeCpf;
 	}
-
+	@NaoAudita
 	public String getNomeCpfMatricula()
 	{
 		String nomeCpf = "";
@@ -2104,7 +2107,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setCats(Collection<Cat> cats) {
 		this.cats = cats;
 	}
-
+	@NaoAudita
 	public String getCnpjDaEmpresa() {
 		Empresa empresa = this.getEmpresa();
 		if (empresa != null)
@@ -2121,7 +2124,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 				this.getHistoricoColaborador().getQuantidadeIndice(), 
 				this.getHistoricoColaborador().getSalario());
 	}
-
+	@NaoAudita
 	public String getFuncaoNome()
 	{
 		if(funcao != null && funcao.getNome() != null)
@@ -2129,7 +2132,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		return "";
 	}
-	
+	@NaoAudita
 	public String getAmbienteNome()
 	{
 		if(ambiente != null && ambiente.getNome() != null)
@@ -2164,12 +2167,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		this.camposExtras = camposExtras;
 	}
-
+	@NaoAudita
 	public String getAdmitidoHa() 
 	{
 		return diasDeEmpresa + " dias";
 	}
-
+	
 	public String getSugestaoPeriodoAcompanhamentoExperiencia() {
 		return sugestaoPeriodoAcompanhamentoExperiencia;
 	}
@@ -2225,14 +2228,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public Date getRespondidaEm() {
 		return respondidaEm;
 	}
-
+	@NaoAudita
 	public String getPerformance() {
 		Double result = (performance * 100);
 		
 		NumberFormat formata = new DecimalFormat("#0.00");
 		return formata.format(result).toString() + " %"; 
 	}
-	
+	@NaoAudita
 	public Double getPerformanceDouble() 
 	{
 		return performance ; 
@@ -2250,9 +2253,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
-	/**
-	 * Verifica se este colaborador já foi um candidato
-	 */
 	public boolean jaFoiUmCandidato() {
 		return (candidato != null && candidato.getId() != null);
 	}
@@ -2276,12 +2276,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public Long getPeriodoExperienciaId() {
 		return periodoExperienciaId;
 	}
-	
+	@NaoAudita
 	public String getRespondidaEmFormatada()
 	{
 		return DateUtil.formataDate(this.respondidaEm, "dd/MM/yyyy");
 	}
-	
+	@NaoAudita
 	public String getCargoFaixa()
 	{
 		try {
@@ -2302,7 +2302,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		NumberFormat formata = new DecimalFormat("#,##0.00");
 		return formata.format(historicoColaborador.getSalarioCalculado()).toString(); 
 	}
-
+	@NaoAudita
 	public AreaOrganizacional getAreaOrganizacionalMatriarca() {
 		return areaOrganizacionalMatriarca;
 	}

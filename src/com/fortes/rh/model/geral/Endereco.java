@@ -13,6 +13,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.rh.util.StringUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 public class Endereco implements Serializable
@@ -46,12 +47,12 @@ public class Endereco implements Serializable
 	{
 		return cep;
 	}
-	
+	@NaoAudita
 	public String getCepFormatado()
 	{
 		return StringUtil.formataCep(cep);
 	}
-	
+	@NaoAudita
 	public String getEnderecoFormatado()
 	{
 		String endereco = logradouro + ", " + numero;

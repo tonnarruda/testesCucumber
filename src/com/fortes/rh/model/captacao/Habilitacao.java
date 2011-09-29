@@ -15,6 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.rh.util.DateUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 public class Habilitacao implements Serializable
 {
@@ -38,7 +39,7 @@ public class Habilitacao implements Serializable
 	public Date getEmissao() {
 		return emissao;
 	}
-
+	@NaoAudita
 	public String getEmissaoFormatada() {
 		return DateUtil.formataDiaMesAno(emissao);
 	}
@@ -61,6 +62,7 @@ public class Habilitacao implements Serializable
 	public Date getVencimento() {
 		return vencimento;
 	}
+	@NaoAudita
 	public String getVencimentoFormatada() {
 		return DateUtil.formataDiaMesAno(vencimento);
 	}

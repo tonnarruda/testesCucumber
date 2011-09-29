@@ -24,6 +24,7 @@ import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 public class Pessoal implements Serializable
@@ -77,18 +78,19 @@ public class Pessoal implements Serializable
 	@Column(length=5)
 	private String estadoCivil;
 	//Usado no iReport
+	@NaoAudita
 	public String getEscolaridadeDic()
 	{
 		Escolaridade escolarMap = new Escolaridade();
 		return (String) escolarMap.get(this.escolaridade);
 	}
-
+	@NaoAudita
 	public String getSexoDic()
 	{
 		Sexo sexoMap = new Sexo();
 		return (String) sexoMap.get(((Character)this.sexo).toString());
 	}
-
+	@NaoAudita
 	public String getEstadoCivilDic()
 	{
 		EstadoCivil estadoCivilMap = new EstadoCivil();
@@ -99,7 +101,7 @@ public class Pessoal implements Serializable
 	{
 		return DateUtil.calcularIdade(this.dataNascimento, new Date());
 	}
-
+	@NaoAudita
 	public String getDataNascimentoFormatada()
 	{
 		if (this.dataNascimento != null)
@@ -107,7 +109,7 @@ public class Pessoal implements Serializable
 		else
 			return "";
 	}
-
+	@NaoAudita
 	public String getCpfFormatado()
 	{
 		return StringUtil.criarMascaraCpf(this.cpf);
@@ -249,7 +251,7 @@ public class Pessoal implements Serializable
 	public int getQtdFilhos() {
 		return qtdFilhos;
 	}
-	
+	@NaoAudita
 	public String getQtdFilhosString() {
 		return StringUtil.valueOf(qtdFilhos);
 	}
@@ -272,7 +274,7 @@ public class Pessoal implements Serializable
 	{
 		return rgDataExpedicao;
 	}
-
+	@NaoAudita
 	public String getRgDataExpedicaoFormatada()
 	{
 		return DateUtil.formataDiaMesAno(this.rgDataExpedicao);
@@ -406,7 +408,7 @@ public class Pessoal implements Serializable
 		else
 			return retorno;
 	}
-
+	@NaoAudita
 	public String getDiaMesDataNascimento()
 	{
 		String diaMes = "-";
