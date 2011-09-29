@@ -45,6 +45,10 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception;
 	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void remove(Colaborador colaborador, Empresa empresa) throws Exception;
+	@Audita(operacao="Desligamento", auditor=ColaboradorAuditorCallbackImpl.class)
+	public void desligaColaborador( boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId) throws Exception;
+	@Audita(operacao="Religamento", auditor=ColaboradorAuditorCallbackImpl.class)
+	public void religaColaborador(Long colaboradorId) throws Exception;
 
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
@@ -81,8 +85,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)throws Exception;
 	public Collection<MotivoDemissaoQuantidade> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)throws Exception;
 	public Collection<Colaborador> getColaboradoresByEstabelecimentoAreaGrupo(char filtrarPor, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, String colaboradorNome, Long empresaId);
-	public void desligaColaborador( boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId) throws Exception;
-	public void religaColaborador(Long colaboradorId) throws Exception;
 	public Collection<Colaborador> findProjecaoSalarial(Long tabelaReajusteColaboradorId, Date data, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId) throws Exception;
 
 	Collection<Colaborador> ordenaPorEstabelecimentoArea(Long empresaId, Collection<Colaborador> colaboradors) throws Exception;

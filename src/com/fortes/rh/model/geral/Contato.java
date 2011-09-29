@@ -11,6 +11,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.rh.util.StringUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 public class Contato implements Serializable
 {
@@ -66,17 +67,17 @@ public class Contato implements Serializable
 	{
 		this.ddd = ddd;
 	}
-	
+	@NaoAudita
 	public String getFoneFixoFormatado()
 	{
 		return StringUtil.criarMascaraTelefone(foneFixo);
 	}
-	
+	@NaoAudita
 	public String getFoneCelularFormatado()
 	{
 		return StringUtil.criarMascaraTelefone(foneCelular);
 	}
-
+	@NaoAudita
 	public String getFoneContatoFormatado()
 	{
 		String result = "";
@@ -106,7 +107,7 @@ public class Contato implements Serializable
 				.append("foneCelular", this.foneCelular)
 				.append("ddd", this.ddd).toString();
 	}
-
+	
 	public String getNomeContato()
 	{
 		return nomeContato;
