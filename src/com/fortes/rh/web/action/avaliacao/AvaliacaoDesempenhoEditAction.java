@@ -403,7 +403,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		if(exibeResultadoAutoavaliacao)
 		{
 			colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionarioId);
-			this.msgResultadoAvaliacao = colaboradorQuestionario.getAvaliacao().getCabecalho().replace("\r\n","<br>") + "<br><br>Pontuação Obtida: " + colaboradorQuestionario.getPerformanceFormatada();
+			this.msgResultadoAvaliacao = colaboradorQuestionario.getAvaliacao().getCabecalho().replace("\r\n","<br>") + "<br><br><h4>Pontuação Obtida: " + colaboradorQuestionario.getPerformanceFormatada() + "<h4>";
 		}
 		
 		return Action.SUCCESS;

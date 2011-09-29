@@ -25,7 +25,7 @@
 		
 		$(function() {
 			<#if exibeResultadoAutoavaliacao && colaboradorQuestionario?exists && msgResultadoAvaliacao?exists>
-				$("<div>${msgResultadoAvaliacao}</div>").dialog({ title: 'Resultado da Avaliação ${colaboradorQuestionario.avaliacao.titulo}', width: 600 });
+				$("<div>${msgResultadoAvaliacao}</div>").dialog({ title: '${colaboradorQuestionario.avaliacao.titulo}', width: 400 });
 			</#if>
 		});
 		
