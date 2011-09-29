@@ -61,13 +61,15 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		criteria.createCriteria("cq.avaliacaoDesempenho", "ad");
 		criteria.createCriteria("cq.avaliacao", "a");
-
+		criteria.createCriteria("a.empresa", "e");
+		
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.distinct(Projections.property("ad.id")), "id");
 		p.add(Projections.property("ad.titulo"), "titulo");
 		p.add(Projections.property("ad.inicio"), "inicio");
 		p.add(Projections.property("ad.fim"), "fim");
+		p.add(Projections.property("e.nome"), "empresaNomeProjection");
 
 		criteria.setProjection(p);
 		
@@ -77,7 +79,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		if(liberada != null)
 			criteria.add(Expression.eq("ad.liberada", liberada));
 		
-		if(empresaId != null)
+		if(empresaId != null && !empresaId.equals(-1L))
 			criteria.add(Expression.eq("a.empresa.id", empresaId));
 
 		criteria.addOrder(Order.asc("ad.titulo"));

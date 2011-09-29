@@ -18,11 +18,12 @@
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	
 	<script type="text/javascript">
-		
+	
 		$(function() {
 			<#if exibeResultadoAutoavaliacao && colaboradorQuestionario?exists && msgResultadoAvaliacao?exists>
 				$("<div>${msgResultadoAvaliacao}</div>").dialog({ title: '${colaboradorQuestionario.avaliacao.titulo}', width: 400 });
@@ -40,6 +41,18 @@
 			DWRUtil.removeAllOptions("avaliador");
 			DWRUtil.addOptions("avaliador", data);
 		}
+
+		function populaAvaliacaoDesempenho()
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresaPermitidas(createListAvaliacaoDesmpenho, $('#empresaId').val(), false);
+		}
+
+		function createListAvaliacaoDesmpenho(data)
+		{
+			DWRUtil.removeAllOptions("avaliacao");
+			DWRUtil.addOptions("avaliacao", data);
+		}
 	</script>
 
 	<#assign validarCampos="return validaFormulario('form', new Array('avaliacao'), null)"/>
@@ -54,15 +67,18 @@
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
+
+	<#assign desabilita="true"/>
+	<#if empresas?exists && 1 < empresas?size>
+		<#assign desabilita="false"/>
+	</#if>
 	
 	<#include "../util/topFiltro.ftl" />
-
-	
 	
 	<@ww.form name="form" action="avaliacaoDesempenhoQuestionarioList.action" onsubmit="${validarCampos}" method="POST">
 
+		<@ww.select label="Empresa" name="empresaId" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa" onchange="populaAvaliacaoDesempenho();" disabled="${desabilita}"/>
 		<@ww.select label="Avaliação de Desempenho" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 245px;" headerKey="" headerValue="Selecione..." onchange="${funcaoAvaliacao}"/>
-		
 		<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO">
 			<@ww.select label="Avaliador" name="avaliador.id" id="avaliador" list="avaliadors" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="Selecione..."/>
 		</@authz.authorize>

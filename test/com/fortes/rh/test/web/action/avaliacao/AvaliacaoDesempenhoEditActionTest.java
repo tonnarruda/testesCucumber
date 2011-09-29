@@ -485,6 +485,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		manager.expects(once()).method("findByAvaliador").with(ANYTHING, eq(true), ANYTHING).will(returnValue(avaliacaoDesempenhos));
 		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
 		
 		assertEquals("success",action.avaliacaoDesempenhoQuestionarioList());
 		
@@ -492,6 +493,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setRespondida('1');
 		manager.expects(once()).method("findByAvaliador").with(ANYTHING, eq(true), ANYTHING).will(returnValue(avaliacaoDesempenhos));
 		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").with(ANYTHING,ANYTHING,eq(true)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
 		
 		assertEquals("success",action.avaliacaoDesempenhoQuestionarioList());
 		
@@ -499,6 +501,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setRespondida('2');
 		manager.expects(once()).method("findByAvaliador").with(ANYTHING, eq(true), ANYTHING).will(returnValue(avaliacaoDesempenhos));
 		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").with(ANYTHING,ANYTHING,eq(false)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
 		
 		assertEquals("success",action.avaliacaoDesempenhoQuestionarioList());
 	}

@@ -31,6 +31,7 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.webwork.dispatcher.SessionMap;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -44,7 +45,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private EmpresaManager empresaManager;
 	private ColaboradorManager colaboradorManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Collection<Avaliacao> avaliacaos;
@@ -54,6 +54,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Colaborador avaliador;
 	private ColaboradorQuestionario colaboradorQuestionario; 
 	
+	private Empresa empresa;
 	private Collection<Empresa> empresas;
 	
 	private String[] empresasCheck;
@@ -383,13 +384,16 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	public String avaliacaoDesempenhoQuestionarioList()
 	{
+		empresaId = getEmpresaSistema().getId();
+		empresas = empresaManager.findEmpresasPermitidas(true, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
+
 		if(avaliador == null)
 			avaliador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 		
-		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO"}) )
-			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(null, true, getEmpresaSistema().getId());//pega todas liberadas
+		if(SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO"}) )
+			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(null, true, empresaId );//pega todas liberadas
 		else
-			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(avaliador.getId(), true, getEmpresaSistema().getId());
+			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(avaliador.getId(), true, empresaId);
 		
 		if(avaliacaoDesempenho == null && ! avaliacaoDesempenhos.isEmpty())
 			avaliacaoDesempenho = (AvaliacaoDesempenho) avaliacaoDesempenhos.toArray()[0];
@@ -665,5 +669,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setEmpresasCheckList(Collection<CheckBox> empresasCheckList) {
 		this.empresasCheckList = empresasCheckList;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 }

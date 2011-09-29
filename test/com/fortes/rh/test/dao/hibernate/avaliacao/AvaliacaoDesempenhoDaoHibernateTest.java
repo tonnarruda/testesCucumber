@@ -63,6 +63,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 	public void testFindByAvaliador()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("empresa");
 		empresaDao.save(empresa);
 		
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
