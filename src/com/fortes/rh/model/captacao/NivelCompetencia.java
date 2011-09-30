@@ -9,6 +9,7 @@ import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -21,6 +22,7 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 	@ManyToOne
 	private Empresa empresa;
 	
+	@ChaveDaAuditoria
 	public String getDescricao() {
 		return descricao;
 	}

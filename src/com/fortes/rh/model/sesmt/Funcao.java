@@ -13,6 +13,7 @@ import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -40,6 +41,7 @@ public class Funcao extends AbstractModel implements Serializable
 		this.historicoAtual = new HistoricoFuncao();
 		historicoAtual.setDescricao(descricao);
 	}
+	
 	public Funcao(Long id, String nome) 
 	{
 		setId(id);
@@ -59,14 +61,18 @@ public class Funcao extends AbstractModel implements Serializable
 	{
 		return cargo;
 	}
+	
 	public void setCargo(Cargo cargo)
 	{
 		this.cargo = cargo;
 	}
+	
+	@ChaveDaAuditoria
 	public String getNome()
 	{
 		return nome;
 	}
+	
 	public void setNome(String nome)
 	{
 		this.nome = nome;
