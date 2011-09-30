@@ -129,7 +129,7 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 		return descricao;
 	}
-	
+	@NaoAudita
 	public Collection<Long> getDescricaoIds()
 	{
 		Collection<Long> familiaIds = new ArrayList<Long>();
@@ -248,11 +248,13 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		responsavel.setNome(nome);
 	}
 	
+	@NaoAudita
 	public String getResponsavelNome() {
 		preparaResponsavel();
 		return responsavel.getNome();
 	}
 	
+	@NaoAudita
 	public String getResponsavelEmailNomeComercial() {
 		try {
 			String email = "";
@@ -268,6 +270,7 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		}
 	}
 	
+	@NaoAudita
 	public String getResponsavelEmail() {
 		try {
 			String email = "";
@@ -288,6 +291,8 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 		areaMae.setId(areaMaeId);
 	}
+	
+	@NaoAudita
 	public Long getAreaMaeId()
 	{
 		if(areaMae == null)
@@ -295,6 +300,8 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 		return areaMae.getId();
 	}
+	
+	@NaoAudita
 	public String getAreaMaeNome()
 	{
 		if(areaMae == null)
@@ -318,6 +325,7 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 		empresa.setId(empresaId);
 	}
+	
 	public void setEmpresaNome(String empresaNome)
 	{
 		if(empresa == null)
@@ -335,6 +343,7 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		
 		areaMae.getEmpresa().setId(empresaId);
 	}
+	
 	public void setEmpresaAreaMaeNome(String empresaNome)
 	{
 		if(areaMae == null)
