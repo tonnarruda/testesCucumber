@@ -8,7 +8,6 @@ import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.business.cargosalario.IndiceManagerImpl;
@@ -25,7 +24,6 @@ public class IndiceManagerTest extends MockObjectTestCase
 {
 	IndiceManagerImpl indiceManager = null;
 	Mock indiceDao = null;
-	Mock transactionManager;
 	Mock indiceHistoricoManager;
 
 	protected void setUp() throws Exception
@@ -35,9 +33,6 @@ public class IndiceManagerTest extends MockObjectTestCase
 
 		indiceDao = new Mock(IndiceDao.class);
 		indiceManager.setDao((IndiceDao) indiceDao.proxy());
-
-		transactionManager = new Mock(PlatformTransactionManager.class);
-		indiceManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 
 		indiceHistoricoManager = new Mock(IndiceHistoricoManager.class);
 		indiceManager.setIndiceHistoricoManager((IndiceHistoricoManager) indiceHistoricoManager.proxy());
@@ -56,10 +51,8 @@ public class IndiceManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 			indiceDao.expects(once()).method("save").with(ANYTHING);
 			indiceHistoricoManager.expects(once()).method("save").with(ANYTHING);
-			transactionManager.expects(once()).method("commit").with(ANYTHING);
 			indiceManager.save(indice, indiceHistorico);
 		}
 		catch (Exception e)
@@ -78,9 +71,7 @@ public class IndiceManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 			indiceDao.expects(once()).method("save").with(ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(indice.getId(),""))));;
-			transactionManager.expects(once()).method("rollback").with(ANYTHING);
 			indiceManager.save(indice, indiceHistorico);
 		}
 		catch (Exception e)

@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -91,6 +92,7 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 	{
 		this.codigoAC = codigoAC;
 	}
+	@ChaveDaAuditoria
 	public String getNome()
 	{
 		return nome;
