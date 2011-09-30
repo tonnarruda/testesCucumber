@@ -91,5 +91,15 @@ public class PerfilDaoHibernateTest extends GenericDaoHibernateTest<Perfil>
 	public void setPapelDao(PapelDao papelDao) {
 		this.papelDao = papelDao;
 	}
+	
+	public void testGetCount()
+	{
+		Perfil perfil = new Perfil();
+		perfil.setNome("perfil");
+		perfilDao.save(perfil);
+		
+		assertTrue(perfilDao.getCount() > 0);
+		
+	}
 
 }

@@ -171,6 +171,7 @@ import com.fortes.rh.test.dao.hibernate.captacao.CandidatoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoIdiomaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.CandidatoSolicitacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoImpressaoCurriculoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConhecimentoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.EmpresaBdsDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.EtapaSeletivaDaoHibernateTest;
@@ -646,6 +647,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(NivelCompetenciaManagerTest.class);
         suite.addTestSuite(NivelCompetenciaDaoHibernateTest.class);
         suite.addTestSuite(ConfiguracaoNivelCompetenciaManagerTest.class);
+        suite.addTestSuite(ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest.class);
 
         suite.addTestSuite(CtpsTest.class);
 
