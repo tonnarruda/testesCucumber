@@ -34,7 +34,6 @@ import com.fortes.web.tags.CheckBox;
 @SuppressWarnings("unchecked")
 public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrganizacional, AreaOrganizacionalDao> implements AreaOrganizacionalManager
 {
-//	private PlatformTransactionManager transactionManager;
 	private AcPessoalClientLotacao acPessoalClientLotacao;
 	private ColaboradorManager colaboradorManager;
 
@@ -196,20 +195,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 		if(empresa.isAcIntegra())
 		{
-//			DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//			def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//			TransactionStatus status = transactionManager.getTransaction(def);
-
-//			try
-//			{
-				acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
-//				transactionManager.commit(status);
-//			}
-//			catch (Exception e)
-//			{
-//				transactionManager.rollback(status);
-//				throw new IntegraACException(e.getMessage());
-//			}
+			acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
 		}
 	}
 

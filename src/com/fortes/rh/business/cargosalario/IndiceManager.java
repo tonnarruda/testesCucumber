@@ -7,26 +7,22 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.spring.aop.callback.IndiceAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 
 public interface IndiceManager extends GenericManager<Indice>
 {
+	@Audita(operacao="Inserção", auditor=IndiceAuditorCallbackImpl.class)
 	void save(Indice indice, IndiceHistorico indiceHistorico)throws Exception;
-
-	Indice findByIdProjection(Long indiceId);
-
-	Indice findByCodigo(String codigo, String grupoAC);
-
-	boolean remove(String codigo, String grupoAC);
-
-	Indice findHistoricoAtual(Long indiceId);
-
-	Indice getCodigoAc(Indice indice);
-
+	@Audita(operacao="Remoção", auditor=IndiceAuditorCallbackImpl.class)
 	void removeIndice(Long indiceId) throws Exception;
 
+	Indice findByIdProjection(Long indiceId);
+	Indice findByCodigo(String codigo, String grupoAC);
+	boolean remove(String codigo, String grupoAC);
+	Indice findHistoricoAtual(Long indiceId);
+	Indice getCodigoAc(Indice indice);
 	Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC);
-
 	Indice findHistorico(Long indiceId, Date dataHistorico);
-
 	Collection<Indice> findAll(Empresa empresa);
 }

@@ -4,9 +4,7 @@ import java.lang.reflect.Method;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
-import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -45,7 +43,9 @@ public class HistoricoColaboradorAuditorCallbackImpl implements AuditorCallback 
 	public Auditavel removeHistoricoAndReajuste(MetodoInterceptado metodo) throws Throwable 
 	{
 		Long historicoId = (Long) metodo.getParametros()[0];
-		HistoricoColaborador historico = carregaEntidade(metodo, HistoricoColaboradorFactory.getEntity(historicoId));
+		HistoricoColaborador hist = new HistoricoColaborador();
+		hist.setId(historicoId);
+		HistoricoColaborador historico = carregaEntidade(metodo, hist);
 		
 		metodo.processa();
 		

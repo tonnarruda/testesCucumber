@@ -3,11 +3,6 @@ package com.fortes.rh.business.cargosalario;
 import java.util.Collection;
 import java.util.Date;
 
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -17,27 +12,19 @@ import com.fortes.rh.util.CollectionUtil;
 
 public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> implements IndiceManager
 {
-	private PlatformTransactionManager transactionManager;
 	private IndiceHistoricoManager indiceHistoricoManager;
 
 	public void save(Indice indice, IndiceHistorico indiceHistorico) throws Exception
 	{
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
 		try
 		{
 			indice = save(indice);
 
 			indiceHistorico.setIndice(indice);
 			indiceHistoricoManager.save(indiceHistorico);
-
-			transactionManager.commit(status);
 		}
 		catch (Exception e)
 		{
-			transactionManager.rollback(status);
 			throw e;
 		}
 	}
@@ -60,11 +47,6 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
 	{
 		this.indiceHistoricoManager = indiceHistoricoManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
 	}
 
 	public Indice findByIdProjection(Long indiceId)

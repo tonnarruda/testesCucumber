@@ -12,10 +12,15 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
+import com.fortes.rh.security.spring.aop.callback.CargoAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 import com.fortes.web.tags.CheckBox;
 
 public interface CargoManager extends GenericManager<Cargo>
 {
+	@Audita(operacao="Remoção", auditor=CargoAuditorCallbackImpl.class)
+	public void remove(Long cargoId, Empresa empresa)throws Exception;
+
 	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo);
 	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo);
 	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId);
@@ -29,7 +34,6 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<CheckBox> populaCheckBox(Long empresaId);
 	public Collection<CheckBox> populaCheckBox(String[] gruposCheck, String[] cargosCheck, Long empresaId) throws Exception;
 	public Collection<Cargo> getCargosFromFaixaSalarialHistoricos(Collection<FaixaSalarialHistorico> faixaSalarialHistoricos);
-	public void remove(Long cargoId, Empresa empresa)throws Exception;
 	public Collection<Cargo> findAllSelectModuloExterno(Long empresaId, String ordenarPor);
 	boolean verifyExistCargoNome(String cargoNome, Long empresaId);
 	public Collection<Cargo> findByGrupoOcupacional(Long grupoOcupacionalId);

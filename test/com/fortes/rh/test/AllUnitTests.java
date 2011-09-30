@@ -69,13 +69,16 @@ import com.fortes.rh.test.business.desenvolvimento.DiaTurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.TurmaManagerTest;
 import com.fortes.rh.test.business.geral.AreaFormacaoManagerTest;
 import com.fortes.rh.test.business.geral.AreaInteresseManagerTest;
+import com.fortes.rh.test.business.geral.AreaOrganizacionalManagerAuditaTest;
 import com.fortes.rh.test.business.geral.AreaOrganizacionalManagerTest;
 import com.fortes.rh.test.business.geral.BairroManagerTest;
 import com.fortes.rh.test.business.geral.BeneficioManagerTest;
 import com.fortes.rh.test.business.geral.CamposExtrasManagerTest;
+import com.fortes.rh.test.business.geral.CargoManagerAuditaTest;
 import com.fortes.rh.test.business.geral.CidadeManagerTest;
 import com.fortes.rh.test.business.geral.ClienteManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorIdiomaManagerTest;
+import com.fortes.rh.test.business.geral.ColaboradorManagerAuditaTest;
 import com.fortes.rh.test.business.geral.ColaboradorManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorOcorrenciaManagerTest;
 import com.fortes.rh.test.business.geral.ComoFicouSabendoVagaManagerTest;
@@ -92,7 +95,9 @@ import com.fortes.rh.test.business.geral.GrupoACManagerTest;
 import com.fortes.rh.test.business.geral.GrupoGastoManagerTest;
 import com.fortes.rh.test.business.geral.HistoricoBeneficioManagerTest;
 import com.fortes.rh.test.business.geral.HistoricoColaboradorBeneficioManagerTest;
+import com.fortes.rh.test.business.geral.HistoricoColaboradorManagerAuditaTest;
 import com.fortes.rh.test.business.geral.ImportadorGastosACTest;
+import com.fortes.rh.test.business.geral.IndiceManagerAuditaTest;
 import com.fortes.rh.test.business.geral.MensagemManagerTest;
 import com.fortes.rh.test.business.geral.MotivoDemissaoManagerTest;
 import com.fortes.rh.test.business.geral.OcorrenciaManagerTest;
@@ -1258,6 +1263,12 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(UpdateAuditorCallbackImplTest.class);
         suite.addTestSuite(DateFormatJsonValueProcessorTest.class);
         suite.addTestSuite(AbstractModelJsonValueProcessorTest.class);
+        
+        suite.addTestSuite(ColaboradorManagerAuditaTest.class);
+        suite.addTestSuite(HistoricoColaboradorManagerAuditaTest.class);
+        suite.addTestSuite(AreaOrganizacionalManagerAuditaTest.class);
+        suite.addTestSuite(CargoManagerAuditaTest.class);
+        suite.addTestSuite(IndiceManagerAuditaTest.class);
         
         suite.addTestSuite(F2rhFacadeTest.class);
         

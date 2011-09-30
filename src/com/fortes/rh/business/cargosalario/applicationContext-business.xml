@@ -158,9 +158,6 @@
     <property name="indiceHistoricoManager">
       <ref bean="indiceHistoricoManager" />
     </property>
-    <property name="transactionManager">
-      <ref bean="transactionManager" />
-    </property>
   </bean>
   <bean id="indiceManager" parent="parentManager">
     <property name="proxyInterfaces">
