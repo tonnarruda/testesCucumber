@@ -7,7 +7,6 @@ import java.util.Map;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -60,7 +59,9 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		metodo.processa();
 
 		Long colaboradorId = (Long) metodo.getParametros()[4];
-		Colaborador colaborador = carregaEntidade(metodo, ColaboradorFactory.getEntity(colaboradorId));
+		Colaborador colab = new Colaborador();
+		colab.setId(colaboradorId);
+		Colaborador colaborador = carregaEntidade(metodo, colab);
 
 		Long motivoDemissaoId = (Long) metodo.getParametros()[3];
 
@@ -81,7 +82,9 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		metodo.processa();
 
 		Long colaboradorId = (Long) metodo.getParametros()[0];
-		Colaborador colaborador = carregaEntidade(metodo, ColaboradorFactory.getEntity(colaboradorId));
+		Colaborador colab = new Colaborador();
+		colab.setId(colaboradorId);
+		Colaborador colaborador = carregaEntidade(metodo, colab);
 		
 		Map<String, Object> dadosColab = new LinkedHashMap<String, Object>();
 		dadosColab.put("Colaborador ID", colaborador.getId());
