@@ -446,6 +446,7 @@ import com.fortes.rh.test.web.action.geral.ComoFicouSabendoVagaEditActionTest;
 import com.fortes.rh.test.web.action.geral.ConfiguracaoRelatorioDinamicoEditActionTest;
 import com.fortes.rh.test.web.action.geral.DocumentoAnexoEditActionTest;
 import com.fortes.rh.test.web.action.geral.DocumentoAnexoListActionTest;
+import com.fortes.rh.test.web.action.geral.EmpresaEditActionTest;
 import com.fortes.rh.test.web.action.geral.EmpresaListActionTest;
 import com.fortes.rh.test.web.action.geral.EstabelecimentoEditActionTest;
 import com.fortes.rh.test.web.action.geral.EstabelecimentoListActionTest;
@@ -770,6 +771,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ImportadorGastosACTest.class);
         suite.addTestSuite(EmpresaManagerTest.class);
         suite.addTestSuite(EmpresaListActionTest.class);
+        suite.addTestSuite(EmpresaEditActionTest.class);
         suite.addTestSuite(EstabelecimentoEditActionTest.class);
         suite.addTestSuite(EstabelecimentoDaoHibernateTest.class);
         suite.addTestSuite(EstabelecimentoListActionTest.class);

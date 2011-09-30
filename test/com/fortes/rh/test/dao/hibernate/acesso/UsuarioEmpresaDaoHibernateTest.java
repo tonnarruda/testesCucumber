@@ -25,6 +25,7 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 
 public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<UsuarioEmpresa>
 {
@@ -225,6 +226,37 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		
 		// por empresaId
 		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRoleSetorPessoal(null, null, empresa.getId(), "RECEBE_ALERTA_SETORPESSOAL").size());
+	}
+	
+	public void testFindUsuariosByEmpresaRole()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Papel papel = new Papel();
+		papel.setCodigo("xx");
+		papelDao.save(papel);
+		
+		Collection<Papel> papeis = new ArrayList<Papel>();
+		papeis.add(papel);
+		
+		Perfil perfil = new Perfil();
+		perfil.setPapeis(papeis);
+		perfilDao.save(perfil);
+		
+		
+		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresa.setUsuario(usuario);
+		usuarioEmpresa.setPerfil(perfil);
+		usuarioEmpresaDao.save(usuarioEmpresa);
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaDao.findUsuariosByEmpresaRole(empresa.getId(), "xx");
+		assertEquals(1, usuarioEmpresas.size());
+		
 	}
 
 	public GenericDao<UsuarioEmpresa> getGenericDao()
