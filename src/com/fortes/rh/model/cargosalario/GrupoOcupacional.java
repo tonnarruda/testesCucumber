@@ -15,6 +15,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="grupoocupacional_sequence", allocationSize=1)
@@ -47,6 +48,7 @@ public class GrupoOcupacional extends AbstractModel implements Serializable
 		this.cargos = cargos;
 	}
 
+	@ChaveDaAuditoria
 	public String getNome()
 	{
 		return nome;
