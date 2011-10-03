@@ -12,6 +12,22 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<title>Áreas Organizacionais</title>
+	
+	<script type="text/javascript">
+		function pesquisar()
+		{
+			$('#pagina').val(1);
+			$('#formBusca').attr('action','list.action');
+			$('#formBusca').submit();
+		}
+
+		function imprimir()
+		{ 
+			$('#formBusca').attr('action','imprimirLista.action');
+			$('#formBusca').submit();
+		}
+	</script>
+	
 </head>
 <body>
 
@@ -25,7 +41,7 @@
 			<@ww.checkbox label="Ativas" name="areaOrganizacional.ativo" labelPosition="left"/>
 			<@ww.hidden id="pagina" name="page"/>
 			
-			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="pesquisar();">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
@@ -46,6 +62,7 @@
 	<div class="buttonGroup">
 		<button type="button" class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>
+		<button class="btnImprimir" onclick="imprimir();" accesskey="P"></button>
 	</div>
 </body>
 </html>

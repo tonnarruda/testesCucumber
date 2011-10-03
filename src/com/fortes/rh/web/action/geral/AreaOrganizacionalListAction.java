@@ -4,10 +4,12 @@
 package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -19,6 +21,7 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 
 	private Collection<AreaOrganizacional> areaOrganizacionals;
 	private AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
+	private Map<String,Object> parametros;
 
 	private boolean integradoAC;
 
@@ -35,6 +38,21 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 
 		integradoAC = getEmpresaSistema().isAcIntegra();
 
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirLista() throws Exception
+	{
+		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), areaOrganizacional.isAtivo());
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Areas Organizacionais", getEmpresaSistema(),"Ativas: " + (areaOrganizacional.isAtivo() ? "Sim" : "Não"));
+		
+		if (areaOrganizacionals.isEmpty()) 
+		{
+			addActionMessage("Não existem dados para o filtro informado");
+			list();
+			return Action.INPUT;
+		}
+		
 		return Action.SUCCESS;
 	}
 
@@ -81,5 +99,10 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	public void setIntegradoAC(boolean integradoAC)
 	{
 		this.integradoAC = integradoAC;
+	}
+
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }
