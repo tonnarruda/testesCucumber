@@ -26,6 +26,7 @@ import com.fortes.rh.model.sesmt.relatorio.FichaEpiRelatorio;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements EpiManager
@@ -74,6 +75,11 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	public Epi findByIdProjection(Long epiId)
 	{
 		return getDao().findByIdProjection(epiId);
+	}
+
+	public Collection<Epi> findAllSelect(Long empresaId)
+	{
+		return getDao().findAllSelect(empresaId);
 	}
 
 	public void saveEpi(Epi epi, EpiHistorico epiHistorico) throws Exception
@@ -204,6 +210,23 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		return epiHistoricos;
 	}
 	
+	private void clonar(Epi epiInteresse, Long empresaDestinoId) 
+	{
+		epiInteresse.setId(null);
+		epiInteresse.setEmpresaIdProjection(empresaDestinoId);
+		
+		getDao().save(epiInteresse);
+	}
+
+	public String findFabricantesDistinctByEmpresa(Long empresaId) 
+	{
+		Collection<String> fabricantes = getDao().findFabricantesDistinctByEmpresa(empresaId);
+		if(fabricantes == null || fabricantes.isEmpty())
+			return "";
+		else
+			return StringUtil.converteCollectionToStringComAspas(fabricantes);
+	}
+	
 	public Collection<Epi> findByVencimentoCa(Date data, Long empresaId, String[] tipoEPICheck)
 	{
 		return getDao().findByVencimentoCa(data, empresaId,  LongUtil.arrayStringToArrayLong(tipoEPICheck));
@@ -237,13 +260,5 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	public Collection<Epi> findByHistoricoFuncao(Long historicoFuncaoId)
 	{
 		return getDao().findByHistoricoFuncao(historicoFuncaoId);
-	}
-	
-	private void clonar(Epi epiInteresse, Long empresaDestinoId) {
-		
-		epiInteresse.setId(null);
-		epiInteresse.setEmpresaIdProjection(empresaDestinoId);
-		
-		getDao().save(epiInteresse);
 	}
 }

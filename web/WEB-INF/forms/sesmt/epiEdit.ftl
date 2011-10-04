@@ -3,10 +3,15 @@
 <head>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
+	
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<style type="text/css">
+		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
+		
 		#text {margin:50px auto; width:500px}
 		.hotspot {color:#900; padding-bottom:1px; cursor:pointer}
 		#tt {position:absolute; display:block;}
@@ -15,47 +20,45 @@
 		#ttbot {display:block; height:5px; margin-left:5px; overflow:hidden}
 	</style>
 
-<script language='javascript'>
 
-	function validarEpi() {
-		fardamentoCheck = document.getElementById('fardamento');
-		if (document.getElementById('validadeUso')) {
-			if (fardamentoCheck.checked)
-				return validaFormulario('form', new Array('nome','tipoEpi','fabricante','data','validadeUso'), new Array('vencimentoCA','data'));
-			else
-				return validaFormulario('form', new Array('nome','tipoEpi','fabricante','CA','vencimentoCA','validadeUso','data'), new Array('vencimentoCA', 'validadeUso', 'data'));
-		}
-		else {
-			return validaFormulario('form', new Array('nome','tipoEpi','fabricante'), null);
-		}
-	}
-
-	// tira/coloca asterisco dos campos obrigatórios do histórico
-	function setCamposObrigatorios(check) {
-		divHistorico = document.getElementById('epiHistorico');
-		disp = '';
-		if (check.checked) disp = 'none';
-
-		requiredCA=document.getElementById('requiredCA');
-		if (requiredCA != null && requiredCA != 'undefined') {
-			requiredCA.style.display=disp;
-			document.getElementById('requiredVencimentoCA').style.display=disp;
-		}
-	}
+	<script type="text/javascript">
+		var fabricantes = [${fabricantes}];
 	
-	$(document).ready(function() {
-
+		$(document).ready(function() {
+			$("#fabricante").autocomplete(fabricantes);
+		
 			$('#help_fardamento').qtip({
 				content: 'Caso esta opção seja marcada, não é <br/>obrigatório o preenchimento dos campos <br/>Número do CA e Vencimento do CA.'
 				, style: { width: '100px' }
 			});
-	});
-</script>
-
-<@ww.head/>
-<style type="text/css">
-	@import url('<@ww.url value="/css/displaytag.css"/>');
-</style>
+		});
+	
+		function validarEpi() {
+			fardamentoCheck = document.getElementById('fardamento');
+			if (document.getElementById('validadeUso')) {
+				if (fardamentoCheck.checked)
+					return validaFormulario('form', new Array('nome','tipoEpi','fabricante','data','validadeUso'), new Array('vencimentoCA','data'));
+				else
+					return validaFormulario('form', new Array('nome','tipoEpi','fabricante','CA','vencimentoCA','validadeUso','data'), new Array('vencimentoCA', 'validadeUso', 'data'));
+			}
+			else {
+				return validaFormulario('form', new Array('nome','tipoEpi','fabricante'), null);
+			}
+		}
+	
+		// remove/insere asterisco dos campos obrigatórios do histórico
+		function setCamposObrigatorios(check) {
+			divHistorico = document.getElementById('epiHistorico');
+			disp = '';
+			if (check.checked) disp = 'none';
+	
+			requiredCA=document.getElementById('requiredCA');
+			if (requiredCA != null && requiredCA != 'undefined') {
+				requiredCA.style.display=disp;
+				document.getElementById('requiredVencimentoCA').style.display=disp;
+			}
+		}
+	</script>
 
 	<#assign validarCampos="return validarEpi()"/>
 
@@ -67,8 +70,8 @@
 		<title>Inserir EPI</title>
 		<#assign formAction="insert.action"/>
 	</#if>
-
 </head>
+
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />

@@ -191,7 +191,7 @@
 			<div>EPIs:</div>
 
 			<#assign i = 0/>
-			<@display.table name="listaEpis" id="lista" class="dados" sort="list" style="width:450px;">
+			<@display.table name="listaEpis" id="lista" class="dados" sort="list">
 
 				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.forms[1]);' />" style="width: 30px; text-align: center;">
 					<#assign checked=""/>
@@ -205,8 +205,16 @@
 					<input type="checkbox" value="${lista[0].id}" id="check${lista[0].id}" name="epiIds" onclick="mudarQtd(this);" ${checked}/>
 				</@display.column>
 
-				<@display.column title="EPI" style="width:500px;">
+				<@display.column title="EPI" style="width:400px;">
 					<label for="check${lista[0].id}">${lista[0].nome}</label>
+				</@display.column>
+
+				<@display.column title="Fabricante">
+					<label for="check${lista[0].id}">${lista[0].fabricante}</label>
+				</@display.column>
+
+				<@display.column title="Número do CA">
+					<label for="check${lista[0].id}">${lista[0].epiHistorico.CA}</label>
 				</@display.column>
 
 				<@display.column title="Quantidade">

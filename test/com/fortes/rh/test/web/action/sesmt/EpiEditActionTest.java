@@ -83,6 +83,7 @@ public class EpiEditActionTest extends MockObjectTestCase
     	epiHistoricoManager.expects(once()).method("find").with(ANYTHING,ANYTHING).will(returnValue(epiHistoricos));
     	tipoEpiManager.expects(once()).method("find").with(new Constraint[]{ANYTHING, ANYTHING}).will(returnValue(collection));
     	epiManager.expects(once()).method("findById").with(eq(epi.getId())).will(returnValue(epi));
+    	epiManager.expects(once()).method("findFabricantesDistinctByEmpresa").with(eq(epi.getEmpresa().getId())).will(returnValue(""));
     	assertEquals(action.prepareUpdate(), "success");
     	assertEquals(action.getTipos(),collection);
      }
@@ -109,6 +110,7 @@ public class EpiEditActionTest extends MockObjectTestCase
     	epiHistoricoManager.expects(once()).method("find").with(ANYTHING,ANYTHING).will(returnValue(epiHistoricos));
     	tipoEpiManager.expects(once()).method("find").with(new Constraint[]{ANYTHING, ANYTHING}).will(returnValue(collection));
     	epiManager.expects(once()).method("findById").with(eq(epi.getId())).will(returnValue(epi));
+    	epiManager.expects(once()).method("findFabricantesDistinctByEmpresa").with(ANYTHING).will(returnValue(""));
     	assertEquals(action.prepareUpdate(), "error");
     	assertEquals(action.getTipos(),collection);
     	assertTrue(action.getMsgAlert()!= null && !action.getMsgAlert().equals(""));
@@ -160,6 +162,7 @@ public class EpiEditActionTest extends MockObjectTestCase
 
     	epiManager.expects(once()).method("findById").with(eq(epi.getId())).will(returnValue(epi));
     	tipoEpiManager.expects(once()).method("find").with(new Constraint[]{ANYTHING, ANYTHING}).will(returnValue(collection));
+    	epiManager.expects(once()).method("findFabricantesDistinctByEmpresa").with(ANYTHING).will(returnValue(""));
     	assertEquals(action.getTipos(),collection);
     	assertEquals(action.prepareInsert(), "success");
     }
@@ -200,6 +203,7 @@ public class EpiEditActionTest extends MockObjectTestCase
     	epiManager.expects(once()).method("saveEpi").with(ANYTHING, ANYTHING).will(throwException(new Exception("Erro")));
 
     	epiManager.expects(once()).method("findById").with(eq(epi.getId())).will(returnValue(epi));
+    	epiManager.expects(once()).method("findFabricantesDistinctByEmpresa").with(ANYTHING).will(returnValue(""));
     	tipoEpiManager.expects(once()).method("find").with(new Constraint[]{ANYTHING, ANYTHING}).will(returnValue(collection));
 
     	assertEquals(action.insert(), "input");
