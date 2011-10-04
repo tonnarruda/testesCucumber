@@ -553,8 +553,12 @@
 
 	<br>
 	<div class="buttonGroup">
-		<div style="float: left;width: 50%;">
+		<div style="width: 440px; float: right; text-align: right;">
+			<button id='voltar' disabled="disabled" onclick="abas(-1, 'V', ${edicao}, ${totalAbas});" class="btnVoltarDesabilitado" ></button>
+			<button id='avancar' onclick="abas(-1, 'A', ${edicao}, ${totalAbas});" class="btnAvancar" ></button>
+		</div>
 
+		<div style="width: 440px;">
 			<button onclick="if (setaCampos()) ${validarCampos};" id="gravar" <#if !colaborador.id?exists> </#if> class="btnGravar" accesskey="${accessKey}">
 			</button>
 
@@ -564,10 +568,6 @@
 				<button onclick="window.location='list.action'" class="btnCancelar" accesskey="C">
 			</#if>
 			</button>
-		</div>
-		<div style="text-align: right;">
-			<button id='voltar' disabled="disabled" onclick="abas(-1, 'V', ${edicao}, ${totalAbas});" class="btnVoltarDesabilitado" ></button>
-			<button id='avancar' onclick="abas(-1, 'A', ${edicao}, ${totalAbas});" class="btnAvancar" ></button>
 		</div>
 	</div>
 
