@@ -215,6 +215,11 @@ function agrupaPerguntaseRespostas(formulario)
 			<button onclick="${validarCampos}" class="${buttonClass}"></button>
 		</#if>
 		<button onclick="window.location='${retorno}'" class="btnVoltar"></button>
+
+		<#if exibirImprimir>
+			<button onclick="javascript:window.location='imprimirEntrevistaDesligamento.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}'" class="btnImprimir"></button>
+		</#if>
+		
 	</div>
 </body>
 </html>

@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -17,8 +19,11 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.FichaMedica;
+import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
+import com.fortes.rh.model.relatorio.PerguntaFichaMedica;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
@@ -33,7 +38,10 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     private ColaboradorManager colaboradorManager;
     private CandidatoManager candidatoManager;
     private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-
+    private boolean exibirImprimir;
+    
+    private Collection<QuestionarioRelatorio> dataSource;
+    private Map<String, Object> parametros;
     private Pesquisa pesquisa;
     private Questionario questionario;
     private ColaboradorResposta colaboradorResposta;
@@ -41,6 +49,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     private Colaborador colaborador;
     private Candidato candidato;
     private FichaMedica fichaMedica;
+    private Collection<PerguntaFichaMedica> perguntasRespondidas = new ArrayList<PerguntaFichaMedica>();
 
     private TipoPergunta tipoPergunta = new TipoPergunta();
     private String respostas;
@@ -175,6 +184,28 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         	retorno = voltarPara;
             return "colaboradorQuestionario";
         }
+    }
+    
+    public String imprimirEntrevistaDesligamento()
+    {
+    	colaboradorQuestionario = colaboradorQuestionarioManager.findColaboradorComEntrevistaDeDesligamento(colaborador.getId());
+		try
+		{
+			prepareResponderQuestionario();
+			perguntasRespondidas = questionarioManager.montaPerguntasComRespostas(questionario.getPerguntas(), colaboradorRespostas);
+			
+			parametros = new HashMap<String, Object>();//tem que ser aqui
+			parametros.put("TITULO", "Entrevista de Desligamento");
+	    	parametros.put("RODAPE", colaboradorQuestionario.getQuestionario().getCabecalho());
+	    	parametros.put("COLABORADOR", colaboradorQuestionario.getColaborador().getNome());
+			
+			return Action.SUCCESS;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return Action.INPUT;
+		}
     }
 
     public Object getModel()
@@ -416,5 +447,25 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
+	}
+
+	public Collection<QuestionarioRelatorio> getDataSource() {
+		return dataSource;
+	}
+
+	public Collection<PerguntaFichaMedica> getPerguntasRespondidas() {
+		return perguntasRespondidas;
+	}
+
+	public boolean isExibirImprimir() {
+		return exibirImprimir;
+	}
+
+	public void setExibirImprimir(boolean exibirImprimir) {
+		this.exibirImprimir = exibirImprimir;
 	}
 }

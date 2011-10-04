@@ -37,8 +37,6 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/avaliacaoTurmaList.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/entrevistaList.ftl</result>
 		</action>
-
-
 		<action name="prepareResponderEntrevista" class="com.fortes.rh.web.action.pesquisa.EntrevistaListAction" method="prepareResponderEntrevista">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/prepareResponderEntrevista.ftl</result>
 			<result name="entrevistaDeDesligamentoJaRespondida" type="redirect"><![CDATA[../colaboradorResposta/prepareResponderEntrevista.action?colaborador.id=${colaboradorQuestionario.colaborador.id}&questionario.id=${colaboradorQuestionario.questionario.id}&voltarPara=${voltarPara}]]></result>
