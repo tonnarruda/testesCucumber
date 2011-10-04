@@ -36,6 +36,7 @@ public class EpiEditAction extends MyActionSupportEdit
 
 	private Collection<TipoEPI> tipos;
 	private Collection<EpiHistorico> epiHistoricos;
+	private String fabricantes = "";
 	
 	//Impressão de ficha de EPI
 	private Colaborador colaborador = new Colaborador();
@@ -65,7 +66,10 @@ public class EpiEditAction extends MyActionSupportEdit
 		if(epi != null && epi.getId() != null)
 			epi = (Epi) epiManager.findById(epi.getId());
 
-		tipos = tipoEPIManager.find(new String[]{"empresa.id"},new Object[]{getEmpresaSistema().getId()});
+		Long empresaId = getEmpresaSistema().getId();
+		
+		tipos = tipoEPIManager.find(new String[]{"empresa.id"},new Object[]{ empresaId });
+		fabricantes = epiManager.findFabricantesDistinctByEmpresa(empresaId);
 	}
 
 	public String prepareInsert() throws Exception
@@ -242,5 +246,9 @@ public class EpiEditAction extends MyActionSupportEdit
 
 	public Collection<FichaEpiRelatorio> getDataSourceFichaEpi() {
 		return dataSourceFichaEpi;
+	}
+
+	public String getFabricantes() {
+		return fabricantes;
 	}
 }

@@ -48,7 +48,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		if(solicitacaoEpi != null && solicitacaoEpi.getId() != null)
 			solicitacaoEpi = (SolicitacaoEpi) solicitacaoEpiManager.findById(solicitacaoEpi.getId());
 
-		Collection<Epi> epis = epiManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"nome"});
+		Collection<Epi> epis = epiManager.findAllSelect(getEmpresaSistema().getId());
 
 		listaEpis = new Object[epis.size()][2];
 		int i=0;

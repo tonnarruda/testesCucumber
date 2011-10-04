@@ -199,14 +199,14 @@
 	
 		<br>
 		<div class="buttonGroup">
-			<div style="float: left;width: 50%;">
-				<button onclick="if (setaCampos()) ${validarCampos};" id="gravar" class="btnGravar">
-				</button>
-			</div>
-			<div style="text-align: right;">
+			<div style="float: right; width: 400px; text-align: right;">
 				<button id='voltar' disabled="disabled" onclick="abas(-1, 'V', true, ${totalAbas});" class="btnVoltarDesabilitado" accesskey="V">
 				</button>
 				<button id='avancar' onclick="abas(-1, 'A', true, ${totalAbas});" class="btnAvancar" accesskey="A">
+				</button>
+			</div>
+			<div style="width: 400px;">
+				<button onclick="if (setaCampos()) ${validarCampos};" id="gravar" class="btnGravar">
 				</button>
 			</div>
 		</div>

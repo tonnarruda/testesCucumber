@@ -31,6 +31,7 @@ import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 {
@@ -236,6 +237,76 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		Collection<Epi> episRetorno = epiDao.findSincronizarEpiInteresse(empresa.getId());
 
 		assertEquals(1, episRetorno.size());
+	}
+	
+	public void testFindFabricantesDistinctByEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Epi epi1 = EpiFactory.getEntity();
+		epi1.setFabricante("plast");
+		epi1.setEmpresa(empresa);
+		epiDao.save(epi1);
+
+		Epi epi2 = EpiFactory.getEntity();
+		epi2.setFabricante("gaviao");
+		epi2.setEmpresa(empresa);
+		epiDao.save(epi2);
+
+		Epi epi3 = EpiFactory.getEntity();
+		epi3.setFabricante("plast");
+		epi3.setEmpresa(empresa);
+		epiDao.save(epi3);
+
+
+		Collection<String> fabricantes = epiDao.findFabricantesDistinctByEmpresa(empresa.getId());
+		assertEquals(2, fabricantes.size());
+		assertEquals(epi2.getFabricante(), fabricantes.toArray()[0]);
+		assertEquals(epi1.getFabricante(), fabricantes.toArray()[1]);
+	}
+	
+	public void testFindAllSelect()
+	{
+		Date data1 = DateUtil.criarDataMesAno(01, 01, 2011);
+		Date data2 = DateUtil.criarDataMesAno(02, 02, 2011);
+		
+		TipoEPI tipoEPI = new TipoEPI();
+		tipoEPIDao.save(tipoEPI);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Epi epi = EpiFactory.getEntity();
+		epi.setTipoEPI(tipoEPI);
+		epi.setEmpresa(empresa);
+		epiDao.save(epi);
+
+		Epi epi2 = EpiFactory.getEntity();
+		epi2.setTipoEPI(tipoEPI);
+		epi2.setEmpresa(empresa);
+		epiDao.save(epi2);
+		
+		EpiHistorico eh1 = new EpiHistorico();
+		eh1.setData(data1);
+		eh1.setVencimentoCA(data1);
+		eh1.setEpi(epi);
+		epiHistoricoDao.save(eh1);
+
+		EpiHistorico eh2 = new EpiHistorico();
+		eh2.setData(data2);
+		eh2.setVencimentoCA(data2);
+		eh2.setEpi(epi);
+		epiHistoricoDao.save(eh2);
+
+		EpiHistorico eh3 = new EpiHistorico();
+		eh3.setData(data1);
+		eh3.setVencimentoCA(data1);
+		eh3.setEpi(epi2);
+		epiHistoricoDao.save(eh3);
+
+		Collection<Epi> colecao = epiDao.findAllSelect(empresa.getId());
+		assertEquals(2, colecao.size());
 	}
 	
 	private void setEmpresa()
