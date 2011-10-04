@@ -150,7 +150,7 @@
 					<a href="prepareUpdate.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 				<#else>
-					<img border="0" title="Não é possível editar a solicitação. Esta já foi liberada ou encerrada." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+					<img border="0" title="Não é possível editar a solicitação. Esta já foi aprovada ou encerrada." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				</#if>
 			</@authz.authorize>
@@ -174,7 +174,7 @@
 						<a href="liberarSolicitacao.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Liberar solicitação" src="<@ww.url includeParams="none" value="/imgs/control_play.gif"/>"></a>
 					</#if>
 				<#else>
-					<img border="0" title="Não é possível editar a solicitação. Esta já foi liberada ou encerrada." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+					<img border="0" title="Não é possível editar a solicitação. Esta já foi aprovada ou encerrada." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<img border="0" title="Não é possível anunciar a solicitação. Esta já foi encerrada." src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<a href="#" onclick="newConfirm('${fraseConfirma}', function(){window.location='${actionEncerra}?solicitacao.id=${solicitacao.id}'});"><img border="0" title="${titleEncerra}" src="<@ww.url includeParams="none" value="/imgs/${imgEncerra}"/>"></a>
@@ -198,12 +198,13 @@
 			</#if>
 		</@display.column>
 		<@display.column title="Descrição" property="descricao" class="${classe}"/>
+		<@display.column property="motivoSolicitacao.descricao" title="Motivo" class="${classe}"/>
 		<@display.column property="estabelecimento.nome" title="Estabelecimento" class="${classe}"/>
 		<@display.column property="areaOrganizacional.nome" title="Área" class="${classe}"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;" class="${classe}"/>
 
 		<#-- <@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO"> -->
-			<@display.column title="Liberada" style="width:43px;" class="${classe}">
+			<@display.column title="Aprovada" style="width:43px;" class="${classe}">
 				<#if solicitacao.liberada> Sim <#else> Não </#if>
 			</@display.column>
 		<#--/@authz.authorize -->

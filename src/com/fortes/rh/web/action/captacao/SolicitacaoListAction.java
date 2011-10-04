@@ -72,7 +72,6 @@ public class SolicitacaoListAction extends MyActionSupportList
 	private Date dataIni;
 	private Date dataFim;
 
-    @SuppressWarnings("unchecked")
 	public String list() throws Exception
     {
         Map session = ActionContext.getContext().getSession();
@@ -88,7 +87,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 		}
 		else
 		{
-			Usuario usuario = SecurityUtil.getUsuarioLoged(session);
+			Usuario usuario = getUsuarioLogado();
 			setTotalSize(solicitacaoManager.getCount(visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId()));
 			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId());
 		}
