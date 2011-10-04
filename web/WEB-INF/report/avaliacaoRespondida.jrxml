@@ -78,7 +78,7 @@
 					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Avaliação do Período de Experiência - " + $P{TITULO}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement

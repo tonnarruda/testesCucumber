@@ -24,5 +24,7 @@ public interface EpiManager extends GenericManager<Epi>
 	Collection<Epi> findByRisco(Long riscoId);
 	Collection<Epi> findByHistoricoFuncao(Long historicoFuncaoId);
 	void removeEpi(Epi epi) throws Exception;
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
+	void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
+	String findFabricantesDistinctByEmpresa(Long empresaId);
+	Collection<Epi> findAllSelect(Long empresaId);
 }

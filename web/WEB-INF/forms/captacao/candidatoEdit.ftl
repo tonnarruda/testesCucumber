@@ -719,10 +719,15 @@
     <#-- Campo para controle das abas -->
     <@ww.hidden id="aba" name="aba" value="1"/>
 
-    <br>
+    <br />
+    <div class="buttonGroup" style="width: 440px; float:right; text-align: right;">
+        <button class="btnVoltarDesabilitado" id='voltar' disabled="disabled" onclick="abas(-1, 'V',${edicao}, qtdAbas);" accesskey="V">
+        </button>
+        <button id='avancar' onclick="abas(-1, 'A',${edicao}, qtdAbas);" class="btnAvancar" accesskey="A">
+        </button>
+    </div>
 
-    <div class="buttonGroup" style="float:left; width:49%;">
-       
+    <div class="buttonGroup" style="width: 440px;">
 		<#if moduloExterno>
        		<button class="btnGravarDesabilitado"  disabled="disabled" onclick="if(setaCampos())javascript:validarCamposCpf();" id="gravarModuloExterno" >
         	</button>
@@ -734,16 +739,7 @@
         <button class="btnCancelar" onclick="newConfirm('Tem certeza que deseja cancelar?', function(){window.location='${actionCancelar}'});" class="btnCancelar" accesskey="C">
         </button>
     </div>
-    <div class="buttonGroup" style="width:50%; float:right; text-align:right;">
-        <button class="btnVoltarDesabilitado" id='voltar' disabled="disabled" onclick="abas(-1, 'V',${edicao}, qtdAbas);" accesskey="V">
-        </button>
-        <button id='avancar' onclick="abas(-1, 'A',${edicao}, qtdAbas);" class="btnAvancar" accesskey="A">
-        </button>
-    </div>
-    <br clear="all">
-
-
-
+    
     <script>
       document.getElementById('desCursos').value = document.getElementById('candidato.cursos').value;
       document.getElementById('infoAdicionais').value = document.getElementById('candidato.observacao').value;

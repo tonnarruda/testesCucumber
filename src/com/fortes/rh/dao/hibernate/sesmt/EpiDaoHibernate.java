@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -35,6 +36,22 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Epi.class));
 
 		return (Epi) criteria.uniqueResult();
+	}
+	
+	public Collection<Epi> findAllSelect(Long empresaId)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Epi(epi.id, epi.nome, epi.fabricante, hist.CA, hist.vencimentoCA) ");
+		hql.append("from Epi as epi ");
+		hql.append("left join epi.epiHistoricos as hist "); 
+		hql.append("where epi.empresa.id = :empresaId ");
+		hql.append("  and hist.data = (select max(eh.data) from EpiHistorico eh where eh.epi.id = epi.id) ");
+		hql.append("order by epi.nome");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+
+		return query.list();
 	}
 
 	public Collection<Epi> findByVencimentoCa(Date data, Long empresaId, Long[] tipoEPIIds)
@@ -190,6 +207,21 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Epi.class));
 
+		return criteria.list();
+	}
+	
+	public Collection<String> findFabricantesDistinctByEmpresa(Long empresaId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.fabricante"), "fabricante");
+		
+		criteria.setProjection(p);
+		criteria.setProjection(Projections.distinct(p));
+		criteria.addOrder(Order.asc("e.fabricante"));
+		
+		criteria.add(Expression.eq("e.empresa.id", empresaId));
 		return criteria.list();
 	}
 }

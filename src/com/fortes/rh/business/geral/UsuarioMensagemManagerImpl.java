@@ -101,8 +101,9 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		
 		for (UsuarioEmpresa usuarioEmpresaAreaOrganizacional : usuariosResponsaveisAreaOrganizacionais)
 			for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas)
-				if(usuarioEmpresa.getUsuario().getId().equals(usuarioEmpresaAreaOrganizacional.getUsuario().getId()))
-					usuariosResponsaveisAreaOrganizacionaisComRole.add(usuarioEmpresa);
+				if(usuarioEmpresa.getUsuario() != null && usuarioEmpresaAreaOrganizacional.getUsuario() != null 
+					&& usuarioEmpresa.getUsuario().getId().equals(usuarioEmpresaAreaOrganizacional.getUsuario().getId()))
+						usuariosResponsaveisAreaOrganizacionaisComRole.add(usuarioEmpresa);
 			
 		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionaisComRole);
 	}

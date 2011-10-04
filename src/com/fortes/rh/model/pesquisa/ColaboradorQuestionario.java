@@ -424,19 +424,27 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 
     public void setProjectionQuestionarioId(Long projectionQuestionarioId)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-
+    	newQuestionario();
     	this.questionario.setId(projectionQuestionarioId);
     }
     
     public void setProjectionQuestionarioTitulo(String questionarioTitulo)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-    	
+    	newQuestionario();
     	this.questionario.setTitulo(questionarioTitulo);
     }
+
+    public void setProjectionQuestionarioCabecalho(String questionarioCabecalho)
+    {
+    	newQuestionario();
+    	this.questionario.setCabecalho(questionarioCabecalho);
+    }
+	
+    private void newQuestionario() 
+	{
+		if(this.questionario == null)
+    		this.questionario = new Questionario();
+	}
 
  	public Colaborador getColaborador()
 	{

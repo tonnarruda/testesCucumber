@@ -569,21 +569,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         parametros.put("CABECALHOFICHAMEDICA", fichaMedica.getQuestionario().getCabecalho());
 
         
-        Collection<PerguntaFichaMedica> perguntasFormatadas = new ArrayList<PerguntaFichaMedica>();
-        for (Pergunta pergunta : perguntas)
-        {
-            StringBuilder perg = new StringBuilder();
-            StringBuilder coment = new StringBuilder();
-
-            perguntaManager.montaImpressaoPergunta(pergunta, colaboradorRespostas, perg, coment);
-
-            // Campos pergunta e comentario estão no mesmo campo texto, devido a problema de layout.
-            if (coment.length() > 0)
-            	coment.insert(0, "\n");
-
-            PerguntaFichaMedica perguntaFichaMedica = new PerguntaFichaMedica(perg.toString(), coment.toString(), pergunta.getTipo());
-            perguntasFormatadas.add(perguntaFichaMedica);
-        }
+        Collection<PerguntaFichaMedica> perguntasFormatadas = montaPerguntasComRespostas(perguntas, colaboradorRespostas);
 
         return perguntasFormatadas;
     }
@@ -598,12 +584,19 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     	
 		colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario, colaboradorQuestionario.getAvaliacao().getId());
     	
-    	parametros.put("TITULO", colaboradorQuestionario.getAvaliacao().getTitulo());
+    	parametros.put("TITULO", "Avaliação do Período de Experiência - " + colaboradorQuestionario.getAvaliacao().getTitulo());
     	parametros.put("RODAPE", colaboradorQuestionario.getObservacao());
     	parametros.put("COLABORADOR", colaboradorQuestionario.getColaborador().getNome());
     	
     	
-    	Collection<PerguntaFichaMedica> perguntasFormatadas = new ArrayList<PerguntaFichaMedica>();
+    	Collection<PerguntaFichaMedica> perguntasFormatadas = montaPerguntasComRespostas(perguntas, colaboradorRespostas);
+    	
+    	return perguntasFormatadas;
+    }
+
+	public Collection<PerguntaFichaMedica> montaPerguntasComRespostas(Collection<Pergunta> perguntas, Collection<ColaboradorResposta> colaboradorRespostas) 
+	{
+		Collection<PerguntaFichaMedica> perguntasFormatadas = new ArrayList<PerguntaFichaMedica>();
     	for (Pergunta pergunta : perguntas)
     	{
     		StringBuilder perg = new StringBuilder();
@@ -618,9 +611,8 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     		PerguntaFichaMedica perguntaFichaMedica = new PerguntaFichaMedica(perg.toString(), coment.toString(), pergunta.getTipo());
     		perguntasFormatadas.add(perguntaFichaMedica);
     	}
-    	
-    	return perguntasFormatadas;
-    }
+		return perguntasFormatadas;
+	}
     
     private void montaParametros(ColaboradorQuestionario colaboradorQuestionario, Map<String, Object> parametros)
     {
