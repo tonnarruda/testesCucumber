@@ -15,9 +15,8 @@ public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoS
 	public boolean verificaCompatibilidadeComWebServiceAC(String versaoAC, String versaoMinimaCompativel);
 	public String getVersaoWebServiceAC(Empresa empresa) throws Exception;
 	public boolean isACIntegrado(Empresa empresa) throws Exception;
-	public String findModulos(Long id);
 	public void updateModulos(String papeis);
-	public String[] getModulosDecodificados();
+	public String[] getModulosDecodificados(ParametrosDoSistema parametros);
 	public void disablePapeisIds();
 	public String getUrlDaAplicacao();
 	public String getEmailDoSuporteTecnico();

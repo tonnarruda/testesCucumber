@@ -13,6 +13,8 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -27,9 +29,12 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	{
 		this.marcados = marcados;
 
-		String[] permissoes = parametrosDoSistemaManager.getModulosDecodificados();
+		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
+		String[] permissoes = parametrosDoSistemaManager.getModulosDecodificados(parametros);
 
-		this.listaFull = findAll(new String[]{"ordem"});
+		Collection<Long> modulosConfigurados = Autenticador.getModulosNaoConfigurados(parametros.getServidorRemprot());
+
+		this.listaFull = getDao().findNotIn(modulosConfigurados);
 		Collection<Papel> papeisPermitidos = new ArrayList<Papel>();
 
 		if (acessoModulos)
@@ -165,7 +170,8 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 
 	public Collection<Long> getPapeisPermitidos()
 	{
-		String[] modulosPermitidos = parametrosDoSistemaManager.getModulosDecodificados();
+		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
+		String[] modulosPermitidos = parametrosDoSistemaManager.getModulosDecodificados(parametros);
 		
 		Collection<Long> modulosIds = LongUtil.arrayStringToCollectionLong(modulosPermitidos);
 		

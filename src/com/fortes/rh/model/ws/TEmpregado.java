@@ -469,10 +469,5 @@ public class TEmpregado implements Serializable
 	{
 		this.nomeComercial = nomeComercial;
 	}
-
-	public String getChaveAC_RH() 
-	{
-		return "Empregado codigo AC: " + this.getCodigoAC() + "  Empresa Codigo AC: " + this.getEmpresaCodigoAC() + "  Grupo codigo AC: " + this.getGrupoAC();
-	}
 	
 }

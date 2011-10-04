@@ -10,6 +10,7 @@ import com.fortes.rh.business.acesso.PapelManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 
 public class PapelManagerTest extends MockObjectTestCase
 {
@@ -50,8 +51,10 @@ public class PapelManagerTest extends MockObjectTestCase
 		papeis.add(p3);
 		papeis.add(p4);
 
-		papelDao.expects(once()).method("findAll").will(returnValue(papeis));
+		papelDao.expects(once()).method("findNotIn").will(returnValue(papeis));
+		
 		String[] permissoes = new String[]{"1","2","3"};
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
 		parametrosDoSistemaManager.expects(once()).method("getModulosDecodificados").will(returnValue(permissoes));
 
 		assertNotNull(papelManager.getPerfilOrganizado(permissoes, false));
@@ -66,6 +69,7 @@ public class PapelManagerTest extends MockObjectTestCase
 		papeisPermitidosIds.add(2L);
 		papeisPermitidosIds.add(3L);
 		
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
 		parametrosDoSistemaManager.expects(once()).method("getModulosDecodificados").will(returnValue(permissoes));
 		
 		assertEquals(papeisPermitidosIds, papelManager.getPapeisPermitidos());
@@ -93,7 +97,8 @@ public class PapelManagerTest extends MockObjectTestCase
 		papel3.setId(12L);
 		papel3.setPapelMaeId(2L);
 		novosPapeis.add(papel3);
-		
+
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
 		parametrosDoSistemaManager.expects(once()).method("getModulosDecodificados").will(returnValue(new String[]{"1","2"}));
 		
 		papelDao.expects(once()).method("findPapeisAPartirDe").with(eq(10L)).will(returnValue(novosPapeis));
@@ -127,7 +132,9 @@ public class PapelManagerTest extends MockObjectTestCase
 		papel3.setPapelMaeId(10L);
 		novosPapeis.add(papel3);
 		
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
 		parametrosDoSistemaManager.expects(once()).method("getModulosDecodificados").will(returnValue(new String[]{"1","2"}));
+		
 		papelDao.expects(once()).method("findPapeisAPartirDe").with(eq(10L)).will(returnValue(novosPapeis));
 		parametrosDoSistemaManager.expects(once()).method("updateModulos").with(eq("1,2,10,11,12")).isVoid();
 		parametrosDoSistemaManager.expects(once()).method("disablePapeisIds").isVoid();

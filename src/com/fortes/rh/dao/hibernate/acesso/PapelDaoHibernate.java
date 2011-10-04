@@ -50,4 +50,16 @@ public class PapelDaoHibernate extends GenericDaoHibernate<Papel> implements Pap
 		
 		return query.list();
 	}
+
+	public Collection<Papel> findNotIn(Collection<Long> ids) 
+	{
+		Criteria criteria = getSession().createCriteria(Papel.class,"p");
+
+		if(ids != null && !ids.isEmpty())
+			criteria.add(Expression.not(Expression.in("p.id", ids)));
+		
+		criteria.addOrder(Order.asc("p.ordem"));
+		
+		return criteria.list();
+	}
 }

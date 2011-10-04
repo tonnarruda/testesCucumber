@@ -35,7 +35,7 @@ public class LoginAction extends MyActionSupport
 			boolean rhRegistrado = Autenticador.verificaCopia(parametrosDoSistema.getServidorRemprot());
 			if (!rhRegistrado)
 			{
-				msgRemprot = "Este sistema não está licenciado para uso";
+				msgRemprot = "Este sistema não está licenciado para uso ou ocorreu algum erro com a comunicação do servidor.";
 				msgAutenticacao = Autenticador.getMsgPadrao();
 				return "not_registered";
 			}

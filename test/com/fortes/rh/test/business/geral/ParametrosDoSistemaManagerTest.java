@@ -123,11 +123,7 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
     	acPessoalClientSistema.expects(once()).method("idACIntegrado").with(eq(empresa)).will(returnValue(true));
     	assertTrue(parametrosDoSistemaManager.isACIntegrado(empresa));
     }
-    public void testFindModulos()
-    {
-    	parametrosDoSistemaDao.expects(once()).method("findModulos").will(returnValue("modulos"));
-    	assertEquals("modulos",parametrosDoSistemaManager.findModulos(1L));
-    }
+    
     public void testUpdateModulos()
     {
     	parametrosDoSistemaDao.expects(once()).method("updateModulos").isVoid();
@@ -136,14 +132,18 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
     }
     public void testGetModulosDecodificados()
     {
-    	parametrosDoSistemaDao.expects(once()).method("findModulos").will(returnValue("MSwyLDM="));
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setModulos("MSwyLDM=");
+    	
     	String[] papeis = {"1","2","3"};
-    	assertEquals(papeis.length, parametrosDoSistemaManager.getModulosDecodificados().length);
+    	assertEquals(papeis.length, parametrosDoSistemaManager.getModulosDecodificados(parametrosDoSistema).length);
     }
     public void testGetModulosDecodificadosSemModulos()
     {
-    	parametrosDoSistemaDao.expects(once()).method("findModulos").will(returnValue(""));
-    	assertEquals(0, parametrosDoSistemaManager.getModulosDecodificados().length);
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setModulos("");
+    	
+    	assertEquals(0, parametrosDoSistemaManager.getModulosDecodificados(parametrosDoSistema).length);
     }
 
     public void testAjustaCamposExtras()

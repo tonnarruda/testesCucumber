@@ -20,6 +20,7 @@ public interface RHService
 {
 	String eco(String texto);
 
+	//TEM QUE VER SE O AC, NÃO SEI QUE USSSSAAAAAAA
 	boolean criarEmpresa(TEmpresa empresa);
 	boolean removerEmpresa(String empresaCodigoAC, String grupoAC);
 
@@ -32,56 +33,57 @@ public interface RHService
 	TGrupo[] getGrupos();
 	TCargo[] getCargosAC(String empCodigo, String codigo, String grupoAC);
 
+	//UTILIZADO PELO PLUGIN DO OFFICE
 	boolean cadastrarCandidato(TCandidato candidato) throws Exception;
 
 	//Tabela empregado no AC -> EPG
 	FeedbackWebService removerEmpregado(TEmpregado empregado);
-	boolean atualizarEmpregado(TEmpregado empregado);
-	boolean atualizarEmpregadoAndSituacao(TEmpregado empregado, TSituacao situacao);//O AC confirma cadastro de empregado que estava na CTT
-	boolean desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC);
-	boolean religarEmpregado(String codigo, String empCodigo, String grupoAC);
+	FeedbackWebService atualizarEmpregado(TEmpregado empregado);
+	FeedbackWebService atualizarEmpregadoAndSituacao(TEmpregado empregado, TSituacao situacao);//O AC confirma cadastro de empregado que estava na CTT
+	FeedbackWebService desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC);
+	FeedbackWebService religarEmpregado(String codigo, String empCodigo, String grupoAC);
 
 	//Tabela situacao no AC -> SEP
-	boolean removerSituacao(TSituacao situacao);
-	boolean removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo, String grupoAC);
-	boolean criarSituacao(TSituacao situacao);
-	boolean criarSituacaoEmLote(TSituacao[] situacao);
-	boolean atualizarSituacao(TSituacao situacao);
-	boolean cancelarSituacao(TSituacao situacao, String mensagem);
+	FeedbackWebService removerSituacao(TSituacao situacao);
+	FeedbackWebService removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo, String grupoAC);
+	FeedbackWebService criarSituacao(TSituacao situacao);
+	FeedbackWebService criarSituacaoEmLote(TSituacao[] situacao);
+	FeedbackWebService atualizarSituacao(TSituacao situacao);
+	FeedbackWebService cancelarSituacao(TSituacao situacao, String mensagem);
 
-	boolean criarEstabelecimento(TEstabelecimento testabelecimento);
-	boolean atualizarEstabelecimento(TEstabelecimento testabelecimento);
-	boolean removerEstabelecimento(String codigo, String empCodigo, String grupoAC);
+	FeedbackWebService criarEstabelecimento(TEstabelecimento testabelecimento);
+	FeedbackWebService atualizarEstabelecimento(TEstabelecimento testabelecimento);
+	FeedbackWebService removerEstabelecimento(String codigo, String empCodigo, String grupoAC);
 
 	// AreaOrganizacional -> LOT
-	boolean criarAreaOrganizacional(TAreaOrganizacional areaOrganizacional);
-	boolean atualizarAreaOrganizacional(TAreaOrganizacional areaOrganizacional);
-	boolean removerAreaOrganizacional(TAreaOrganizacional areaOrganizacional);
+	FeedbackWebService criarAreaOrganizacional(TAreaOrganizacional areaOrganizacional);
+	FeedbackWebService atualizarAreaOrganizacional(TAreaOrganizacional areaOrganizacional);
+	FeedbackWebService removerAreaOrganizacional(TAreaOrganizacional areaOrganizacional);
 	
 	// Indice -> IND
-	boolean criarIndice(TIndice tindice);
-	boolean atualizarIndice(TIndice tindice);
-	boolean removerIndice(String codigo, String grupoAC);
+	FeedbackWebService criarIndice(TIndice tindice);
+	FeedbackWebService atualizarIndice(TIndice tindice);
+	FeedbackWebService removerIndice(String codigo, String grupoAC);
 
 	// Historico do Indice -> VID
-	boolean criarIndiceHistorico(TIndiceHistorico tindiceHistorico);
-	boolean removerIndiceHistorico(String data, String indiceCodigo, String grupoAC);
+	FeedbackWebService criarIndiceHistorico(TIndiceHistorico tindiceHistorico);
+	FeedbackWebService removerIndiceHistorico(String data, String indiceCodigo, String grupoAC);
 
-	boolean setStatusFaixaSalarialHistorico(Long faixaSalarialHistoricoId, Boolean aprovado, String mensagem, String empresaCodigoAC, String grupoAC);
+	FeedbackWebService setStatusFaixaSalarialHistorico(Long faixaSalarialHistoricoId, Boolean aprovado, String mensagem, String empresaCodigoAC, String grupoAC);
 
 	//Cargo, FaixaSalarial -> CAR
-	boolean criarCargo(TCargo tCargo);
-	boolean atualizarCargo(TCargo tCargo);
-	boolean removerCargo(TCargo tCargo);
+	FeedbackWebService criarCargo(TCargo tCargo);
+	FeedbackWebService atualizarCargo(TCargo tCargo);
+	FeedbackWebService removerCargo(TCargo tCargo);
 
-	boolean criarSituacaoCargo(TSituacaoCargo tSituacaoCargo);
-	boolean atualizarSituacaoCargo(TSituacaoCargo tSituacaoCargo);
-	boolean removerSituacaoCargo(TSituacaoCargo tSituacaoCargo);
+	FeedbackWebService criarSituacaoCargo(TSituacaoCargo tSituacaoCargo);
+	FeedbackWebService atualizarSituacaoCargo(TSituacaoCargo tSituacaoCargo);
+	FeedbackWebService removerSituacaoCargo(TSituacaoCargo tSituacaoCargo);
 
 	// Tipo de Ocorrencia -> OCR
-	boolean criarOcorrencia(TOcorrencia tocorrencia);
-	boolean removerOcorrencia(TOcorrencia tocorrencia);
+	FeedbackWebService criarOcorrencia(TOcorrencia tocorrencia);
+	FeedbackWebService removerOcorrencia(TOcorrencia tocorrencia);
 	// Ocorrencia de Empregado -> OCE
-	boolean criarOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados);
-	boolean removerOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados);
+	FeedbackWebService criarOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados);
+	FeedbackWebService removerOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados);
 }

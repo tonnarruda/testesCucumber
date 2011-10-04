@@ -259,7 +259,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING);
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresa), ANYTHING).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX"));
+		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
 	}
 
 	public void testReligarColaborador() throws Exception
@@ -269,7 +269,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		colaboradorManager.expects(once()).method("religaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq("XXX")).will(returnValue(1L));
 		usuarioManager.expects(once()).method("reativaAcessoSistema").withAnyArguments();
-		assertEquals(true, rHServiceManager.religarEmpregado(colaboradorCodigoAC, empresaCodigoAC, "XXX"));
+		assertEquals(true, rHServiceManager.religarEmpregado(colaboradorCodigoAC, empresaCodigoAC, "XXX").isSucesso());
 	}
 
 	public void testAtualizarEmpregadoAndSituacao() throws Exception
@@ -285,7 +285,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
-		assertEquals(true, rHServiceManager.atualizarEmpregadoAndSituacao(empregado, situacao));
+		assertEquals(true, rHServiceManager.atualizarEmpregadoAndSituacao(empregado, situacao).isSucesso());
 	}
 
 	public void testAtualizarEmpregadoAndSituacaoEmpregadoException() throws Exception
@@ -299,7 +299,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(colaborador)).will(throwException(new Exception()));
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
-		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao(colaborador, situacao));
+		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao(colaborador, situacao).isSucesso());
 	}
 
 	public void testAtualizarEmpregadoAndSituacaoSituacaoException() throws Exception
@@ -315,7 +315,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao)).will(throwException(new Exception()));;
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
-		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao(empregado, situacao));
+		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao(empregado, situacao).isSucesso());
 	}
 
 	public void testAtualizarColaborador() throws Exception
@@ -323,7 +323,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TEmpregado colaborador = new TEmpregado();
 
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(colaborador));
-		assertEquals(true, rHServiceManager.atualizarEmpregado(colaborador));
+		assertEquals(true, rHServiceManager.atualizarEmpregado(colaborador).isSucesso());
 	}
 	
 	public void testGetFaixas() throws Exception
@@ -337,7 +337,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TEmpregado colaborador = new TEmpregado();
 
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(colaborador)).will(throwException(new Exception()));
-		assertEquals(false, rHServiceManager.atualizarEmpregado(colaborador));
+		assertEquals(false, rHServiceManager.atualizarEmpregado(colaborador).isSucesso());
 	}
 
 	public void testCriarSituacao() throws Exception
@@ -354,7 +354,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("save").with(eq(historicoColaborador));
 
-		assertEquals(true, rHServiceManager.criarSituacao(situacao));
+		assertEquals(true, rHServiceManager.criarSituacao(situacao).isSucesso());
 	}
 
 	public void testCriarSituacaoException() throws Exception
@@ -364,7 +364,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpregadoCodigoAC("54321");
 
 		historicoColaboradorManager.expects(once()).method("prepareSituacao").with(eq(situacao)).will(throwException(new Exception()));
-		assertEquals(false, rHServiceManager.criarSituacao(situacao));
+		assertEquals(false, rHServiceManager.criarSituacao(situacao).isSucesso());
 	}
 
 	public void testAtualizarSituacao() throws Exception
@@ -374,7 +374,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao));
-		assertEquals(true, rHServiceManager.atualizarSituacao(situacao));
+		assertEquals(true, rHServiceManager.atualizarSituacao(situacao).isSucesso());
 	}
 
 	public void testAtualizarSituacaoException() throws Exception
@@ -384,7 +384,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao)).will(throwException(new Exception()));
-		assertEquals(false, rHServiceManager.atualizarSituacao(situacao));
+		assertEquals(false, rHServiceManager.atualizarSituacao(situacao).isSucesso());
 	}
 
 	public void testRemoverSituacao() throws Exception
@@ -398,7 +398,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		historicoColaboradorManager.expects(once()).method("findByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), ANYTHING).will(returnValue(historicoColaborador));
 		historicoColaboradorManager.expects(once()).method("removeHistoricoAndReajusteAC").with(eq(historicoColaborador));
-		assertEquals(true, rHServiceManager.removerSituacao(situacao));
+		assertEquals(true, rHServiceManager.removerSituacao(situacao).isSucesso());
 	}
 
 	public void testRemoverSituacaoException() throws Exception
@@ -412,7 +412,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		historicoColaboradorManager.expects(once()).method("findByAC").with(ANYTHING, eq(situacao.getEmpregadoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), ANYTHING).will(returnValue(historicoColaborador));
 		historicoColaboradorManager.expects(once()).method("removeHistoricoAndReajusteAC").with(eq(historicoColaborador)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertEquals(false, rHServiceManager.removerSituacao(situacao));
+		assertEquals(false, rHServiceManager.removerSituacao(situacao).isSucesso());
 	}
 	
 	public void testCriarCargo() throws Exception
@@ -425,7 +425,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		cargoManager.expects(once()).method("preparaCargoDoAC").with(eq(tCargo)).will(returnValue(cargo));
 		faixaSalarialManager.expects(once()).method("save").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.criarCargo(tCargo));
+		assertEquals(true, rHServiceManager.criarCargo(tCargo).isSucesso());
 	}
 	
 	public void testAtualizarCargo() throws Exception
@@ -440,7 +440,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		faixaSalarialManager.expects(once()).method("updateAC").with(eq(tCargo));
 		cargoManager.expects(once()).method("updateCBO").with(ANYTHING, ANYTHING);
 		
-		assertEquals(true, rHServiceManager.atualizarCargo(tCargo));
+		assertEquals(true, rHServiceManager.atualizarCargo(tCargo).isSucesso());
 	}
 	
 	public void testRemoverCargo() throws Exception
@@ -456,7 +456,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		faixaSalarialManager.expects(once()).method("findByCargo").with(ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
 		cargoManager.expects(once()).method("remove").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.removerCargo(tCargo));
+		assertEquals(true, rHServiceManager.removerCargo(tCargo).isSucesso());
 	}
 	
 	public void testCriarSituacaoCargo() throws Exception
@@ -469,7 +469,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		faixaSalarialHistoricoManager.expects(once()).method("findIdByDataFaixa").with(ANYTHING).will(returnValue(null));
 		faixaSalarialHistoricoManager.expects(once()).method("save").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.criarSituacaoCargo(tSituacaoCargo));
+		assertEquals(true, rHServiceManager.criarSituacaoCargo(tSituacaoCargo).isSucesso());
 	}
 	
 	public void testAtualizarSituacaoCargo() throws Exception
@@ -482,7 +482,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		faixaSalarialHistoricoManager.expects(once()).method("findIdByDataFaixa").with(ANYTHING).will(returnValue(1L));
 		faixaSalarialHistoricoManager.expects(once()).method("update").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.atualizarSituacaoCargo(tSituacaoCargo));
+		assertEquals(true, rHServiceManager.atualizarSituacaoCargo(tSituacaoCargo).isSucesso());
 	}
 	
 	public void testRemoverSituacaoCargo() throws Exception
@@ -494,7 +494,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		faixaSalarialHistoricoManager.expects(once()).method("findIdByDataFaixa").with(ANYTHING).will(returnValue(1L));
 		faixaSalarialHistoricoManager.expects(once()).method("remove").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.removerSituacaoCargo(tSituacaoCargo));
+		assertEquals(true, rHServiceManager.removerSituacaoCargo(tSituacaoCargo).isSucesso());
 	}
 	
 	public void testCriarAreaOrganizacional() throws Exception
@@ -509,7 +509,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("save").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.criarAreaOrganizacional(area));
+		assertEquals(true, rHServiceManager.criarAreaOrganizacional(area).isSucesso());
 	}
 	
 	public void testCriarAreaOrganizacionalException() throws Exception
@@ -524,7 +524,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
-		assertEquals(false, rHServiceManager.criarAreaOrganizacional(area));
+		assertEquals(false, rHServiceManager.criarAreaOrganizacional(area).isSucesso());
 	}
 	
 	public void testAtualizarAreaOrganizacional() throws Exception
@@ -540,7 +540,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("update").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.atualizarAreaOrganizacional(area));
+		assertEquals(true, rHServiceManager.atualizarAreaOrganizacional(area).isSucesso());
 	}
 	
 	public void testAtualizarAreaOrganizacionalException() throws Exception
@@ -556,7 +556,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
-		assertEquals(false, rHServiceManager.atualizarAreaOrganizacional(area));
+		assertEquals(false, rHServiceManager.atualizarAreaOrganizacional(area).isSucesso());
 	}
 	
 	public void testRemoverAreaOrganizacional() throws Exception
@@ -566,7 +566,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("remove").with(ANYTHING);
 		
-		assertEquals(true, rHServiceManager.removerAreaOrganizacional(area));
+		assertEquals(true, rHServiceManager.removerAreaOrganizacional(area).isSucesso());
 	}
 	
 	public void testRemoverAreaOrganizacionalException() throws Exception
@@ -576,7 +576,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		
-		assertEquals(false, rHServiceManager.removerAreaOrganizacional(area));
+		assertEquals(false, rHServiceManager.removerAreaOrganizacional(area).isSucesso());
 	}
 
 	public void testCriarEstabelecimento() throws Exception
@@ -595,7 +595,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		estabelecimentoManager.expects(once()).method("save").with(ANYTHING);
 
-		assertEquals(true, rHServiceManager.criarEstabelecimento(tEstabelecimento));
+		assertEquals(true, rHServiceManager.criarEstabelecimento(tEstabelecimento).isSucesso());
 	}
 
 	public void testCriarEstabelecimentoException() throws Exception
@@ -614,7 +614,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		estabelecimentoManager.expects(once()).method("save").with(ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 
-		assertEquals(false, rHServiceManager.criarEstabelecimento(tEstabelecimento));
+		assertEquals(false, rHServiceManager.criarEstabelecimento(tEstabelecimento).isSucesso());
 	}
 
 	public void testAtualizarEstabelecimento() throws Exception
@@ -636,7 +636,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
 		estabelecimentoManager.expects(once()).method("update").with(eq(estabelecimento));
 
-		assertEquals(true, rHServiceManager.atualizarEstabelecimento(tEstabelecimento));
+		assertEquals(true, rHServiceManager.atualizarEstabelecimento(tEstabelecimento).isSucesso());
 	}
 
 	public void testAtualizarEstabelecimentoException() throws Exception
@@ -658,7 +658,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		cidadeManager.expects(once()).method("findByCodigoAC").with(eq(tEstabelecimento.getCodigoCidade()), eq(tEstabelecimento.getUf())).will(returnValue(cidade));
 		estabelecimentoManager.expects(once()).method("update").with(eq(estabelecimento)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 
-		assertEquals(false, rHServiceManager.atualizarEstabelecimento(tEstabelecimento));
+		assertEquals(false, rHServiceManager.atualizarEstabelecimento(tEstabelecimento).isSucesso());
 	}
 
 	public void testRemoverEstabelecimento() throws Exception
@@ -670,7 +670,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
 		estabelecimentoManager.expects(once()).method("remove").with(eq(codigoEstabelecimento), eq(empresa.getId())).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.removerEstabelecimento(codigoEstabelecimento, empresa.getCodigoAC(), "XXX"));
+		assertEquals(true, rHServiceManager.removerEstabelecimento(codigoEstabelecimento, empresa.getCodigoAC(), "XXX").isSucesso());
 	}
 
 	public void testCriarIndice() throws Exception
@@ -678,7 +678,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndice tIndice = new TIndice();
 
 		indiceManager.expects(once()).method("save");
-		assertEquals(true, rHServiceManager.criarIndice(tIndice));
+		assertEquals(true, rHServiceManager.criarIndice(tIndice).isSucesso());
 	}
 
 	public void testCriarIndiceException() throws Exception
@@ -686,7 +686,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TIndice tIndice = new TIndice();
 
 		indiceManager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertEquals(false, rHServiceManager.criarIndice(tIndice));
+		assertEquals(false, rHServiceManager.criarIndice(tIndice).isSucesso());
 	}
 
 	public void testAtualizarIndice() throws Exception
@@ -697,7 +697,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndice.getCodigo()), ANYTHING).will(returnValue(indice));
 		indiceManager.expects(once()).method("update");
-		assertEquals(true, rHServiceManager.atualizarIndice(tIndice));
+		assertEquals(true, rHServiceManager.atualizarIndice(tIndice).isSucesso());
 	}
 
 	public void testAtualizarIndiceException() throws Exception
@@ -708,14 +708,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndice.getCodigo()), ANYTHING).will(returnValue(indice));
 		indiceManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertEquals(false, rHServiceManager.atualizarIndice(tIndice));
+		assertEquals(false, rHServiceManager.atualizarIndice(tIndice).isSucesso());
 	}
 
 	public void testRemoverIndice() throws Exception
 	{
 		String codigoIndice = "123";
 		indiceManager.expects(once()).method("remove").with(eq(codigoIndice), eq("XXX")).will(returnValue(true));
-		assertEquals(true, rHServiceManager.removerIndice(codigoIndice, "XXX"));
+		assertEquals(true, rHServiceManager.removerIndice(codigoIndice, "XXX").isSucesso());
 	}
 
 	public void testCriarIndiceHistorico() throws Exception
@@ -729,7 +729,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		indiceHistoricoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(false));
 		indiceHistoricoManager.expects(once()).method("save").with(ANYTHING);
 
-		assertEquals(true, rHServiceManager.criarIndiceHistorico(tIndiceHistorico));
+		assertEquals(true, rHServiceManager.criarIndiceHistorico(tIndiceHistorico).isSucesso());
 	}
 
 	public void testCriarIndiceHistoricoIndiceNull() throws Exception
@@ -739,7 +739,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(null));
 
-		assertEquals(false, rHServiceManager.criarIndiceHistorico(tIndiceHistorico));
+		assertEquals(false, rHServiceManager.criarIndiceHistorico(tIndiceHistorico).isSucesso());
 	}
 
 	public void testCriarIndiceHistoricoVerifyTrue() throws Exception
@@ -753,7 +753,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		indiceHistoricoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(true));
 		indiceHistoricoManager.expects(once()).method("updateValor").with(ANYTHING, ANYTHING, ANYTHING);
 
-		assertEquals(true, rHServiceManager.criarIndiceHistorico(tIndiceHistorico));
+		assertEquals(true, rHServiceManager.criarIndiceHistorico(tIndiceHistorico).isSucesso());
 	}
 
 	public void testRemoverIndiceHistorico() throws Exception
@@ -767,7 +767,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(indice));
 		indiceHistoricoManager.expects(once()).method("remove").with(ANYTHING, eq(indice.getId())).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX"));
+		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX").isSucesso());
 	}
 
 	public void testRemoverIndiceHistoricoSemIndice() throws Exception
@@ -777,7 +777,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		indiceManager.expects(once()).method("findByCodigo").with(eq(tIndiceHistorico.getIndiceCodigo()), ANYTHING).will(returnValue(null));
 
-		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX"));
+		assertEquals(true, rHServiceManager.removerIndiceHistorico("01/01/2000", tIndiceHistorico.getIndiceCodigo(), "XXX").isSucesso());
 	}
 
 //	public void testCancelaHistoricoColaborador() throws Exception
@@ -806,7 +806,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(eq(mensagemFinal), ANYTHING, eq(null), eq(usuarioEmpresas));
 		faixaSalarialHistoricoManager.expects(once()).method("setStatus").with(eq(faixaSalarialHistoricoId), eq(aprovado)).will(returnValue(true));
 
-		assertEquals(true, rHServiceManager.setStatusFaixaSalarialHistorico(faixaSalarialHistoricoId, aprovado, mensagem, empresaCodigoAC, "XXX"));
+		assertEquals(true, rHServiceManager.setStatusFaixaSalarialHistorico(faixaSalarialHistoricoId, aprovado, mensagem, empresaCodigoAC, "XXX").isSucesso());
 	}
 
 	public void testCriarEmpresa() throws Exception
@@ -823,7 +823,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findByCodigoAC");
 		ocorrenciaManager.expects(once()).method("saveFromAC");
 
-		assertTrue(rHServiceManager.criarOcorrencia(ocorrenciaAC));
+		assertTrue(rHServiceManager.criarOcorrencia(ocorrenciaAC).isSucesso());
 	}
 
 	public void testCriarOcorrenciaException()
@@ -831,7 +831,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TOcorrencia ocorrenciaAC = new TOcorrencia();
 		empresaManager.expects(once()).method("findByCodigoAC");
 		ocorrenciaManager.expects(once()).method("saveFromAC").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertFalse(rHServiceManager.criarOcorrencia(ocorrenciaAC));
+		assertFalse(rHServiceManager.criarOcorrencia(ocorrenciaAC).isSucesso());
 	}
 
 	public void testRemoverOcorrencia()
@@ -846,7 +846,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findByCodigoAC").will(returnValue(empresa));
 		ocorrenciaManager.expects(once()).method("removeByCodigoAC").with(eq(codigoAC), eq(empresa.getId())).will(returnValue(true));
 
-		assertTrue(rHServiceManager.removerOcorrencia(ocorrencia));
+		assertTrue(rHServiceManager.removerOcorrencia(ocorrencia).isSucesso());
 	}
 
 	public void testRemoverOcorrenciaException()
@@ -860,7 +860,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findByCodigoAC").will(returnValue(empresa));
 		ocorrenciaManager.expects(once()).method("removeByCodigoAC").with(eq(codigoAC), eq(empresa.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 
-		assertFalse(rHServiceManager.removerOcorrencia(ocorrencia));
+		assertFalse(rHServiceManager.removerOcorrencia(ocorrencia).isSucesso());
 	}
 
 	public void testCriarOcorrenciaEmpregado()
@@ -888,14 +888,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		colaboradorOcorrenciaManager.expects(once()).method("saveOcorrenciasFromAC");
 
-		assertTrue(rHServiceManager.criarOcorrenciaEmpregado(tcolaboradorOcorrencias));
+		assertTrue(rHServiceManager.criarOcorrenciaEmpregado(tcolaboradorOcorrencias).isSucesso());
 	}
 
 	public void testCriarOcorrenciaEmpregadoException()
 	{
 		TOcorrenciaEmpregado[] ocorrenciaEmpregados = new TOcorrenciaEmpregado[0];
 		colaboradorOcorrenciaManager.expects(once()).method("saveOcorrenciasFromAC").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertFalse(rHServiceManager.criarOcorrenciaEmpregado(ocorrenciaEmpregados));
+		assertFalse(rHServiceManager.criarOcorrenciaEmpregado(ocorrenciaEmpregados).isSucesso());
 	}
 
 	public void testRemoverOcorrenciaEmpregado()
@@ -923,14 +923,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		colaboradorOcorrenciaManager.expects(once()).method("removeFromAC");
 
-		assertTrue(rHServiceManager.removerOcorrenciaEmpregado(ocorrenciaEmpregados));
+		assertTrue(rHServiceManager.removerOcorrenciaEmpregado(ocorrenciaEmpregados).isSucesso());
 	}
 
 	public void testRemoverOcorrenciaEmpregadoException()
 	{
 		TOcorrenciaEmpregado[] ocorrenciaEmpregados = new TOcorrenciaEmpregado[0];
 		colaboradorOcorrenciaManager.expects(once()).method("removeFromAC").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
-		assertFalse(rHServiceManager.removerOcorrenciaEmpregado(ocorrenciaEmpregados));
+		assertFalse(rHServiceManager.removerOcorrenciaEmpregado(ocorrenciaEmpregados).isSucesso());
 	}
 
 	public void testGetEmpresas()
@@ -1047,7 +1047,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TSituacao situacao = new TSituacao();
 		String mensagem = "";
 		historicoColaboradorManager.expects(once()).method("cancelarSituacao");
-		assertTrue(rHServiceManager.cancelarSituacao(situacao, mensagem));
+		assertTrue(rHServiceManager.cancelarSituacao(situacao, mensagem).isSucesso());
 	}
 
 	public void testCancelarSituacaoException()
@@ -1055,6 +1055,6 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TSituacao situacao = new TSituacao();
 		String mensagem = "";
 		historicoColaboradorManager.expects(once()).method("cancelarSituacao").will(throwException(new Exception()));
-		assertFalse(rHServiceManager.cancelarSituacao(situacao, mensagem));
+		assertFalse(rHServiceManager.cancelarSituacao(situacao, mensagem).isSucesso());
 	}
 }

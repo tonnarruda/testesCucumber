@@ -6,10 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -91,6 +90,31 @@ public class RHServiceImpl implements RHService
 	private GrupoACManager grupoACManager;
 	private UsuarioManager usuarioManager;
 
+	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
+	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
+	private final String MSG_ERRO_REMOVER_LOTACAO = "Erro ao excluir lotação, existem outros cadastros utilizando essa lotação.";
+	private final String MSG_ERRO_REMOVER_ESTABELECIMENTO = "Erro ao excluir estabelecimento, existem outros cadastros utilizando esse estabelecimento.";
+	private final String MSG_ERRO_REMOVER_INDICE = "Erro ao excluir índice, existem outros cadastros utilizando esse índice.";
+	private final String MSG_ERRO_REMOVER_INDICE_HISTORICO = "Erro ao excluir histórico desse índice, existem outros cadastros utilizando esse histórico.";
+	private final String MSG_ERRO_REMOVER_OCORRENCIA = "Erro ao excluir ocorrência, existem outros cadastros utilizando essa ocorrência.";
+	private final String MSG_ERRO_REMOVER_OCORRENCIA_EMPREGADO = "Erro ao excluir ocorrência do empregado, existem outros cadastros utilizando essa ocorrência.";
+	private final String MSG_ERRO_REMOVER_SITUACAO_CARGO = "Erro ao excluir situação do cargo, existem outros cadastros utilizando essa situação.";
+	private final String MSG_ERRO_REMOVER_CARGO = "Erro ao excluir cargo, existem outros cadastros utilizando esse cargo.";
+	private final String MSG_ERRO_REMOVER_EMPREGADO = "Erro ao excluir empregado, existem outros cadastros utilizando esse empregado.";
+	
+	private String formataException(String parametros, Exception e) 
+	{
+		String msg = DateUtil.formataDiaMesAnoTime(new Date()) + "\n";
+		
+		if(parametros != null)
+			msg += parametros + "\n\n";
+		
+		if(e != null)
+			msg += e.toString() + "\n\n" + e.getCause() + "\n\n" + e.getMessage();
+		
+		return msg;
+	}
+	
 	public String eco(String texto)
 	{
 		return texto;
@@ -253,8 +277,9 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public boolean desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC)
+	public FeedbackWebService desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC)
 	{
+		String parametros = "codigo: " + codigo + " \nempCodigo:" + empCodigo + " \ndataDesligamento: " + dataDesligamento;
 		try
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
@@ -263,12 +288,15 @@ public class RHServiceImpl implements RHService
 			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empCodigo, grupoAC);
 			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(getMensagem(colaborador.getNomeComercial()), "AC Pessoal", getLink(colaborador.getId()), usuarioEmpresas);
 
-			return colaboradorManager.desligaColaboradorAC(codigo, empresa, DateUtil.montaDataByString(dataDesligamento));
+			if(colaboradorManager.desligaColaboradorAC(codigo, empresa, DateUtil.montaDataByString(dataDesligamento)))
+				return new FeedbackWebService(true);
+			else
+				return new FeedbackWebService(false, "Erro: Empregado não encontrado no Fortes RH", formataException(parametros, null));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao desligar empregado.", formataException(parametros, e));
 		}
 	}
 
@@ -282,42 +310,42 @@ public class RHServiceImpl implements RHService
 		return "O Colaborador " + nomeComercial + " foi desligado no AC Pessoal.\n\n Para preencher a Entrevista de Desligamento, acesse a listagem de Colaboradores.";
 	}
 
-	public boolean religarEmpregado(String codigo, String empCodigo, String grupoAC)
+	public FeedbackWebService religarEmpregado(String codigo, String empCodigo, String grupoAC)
 	{
+		String parametros = "codigo: " + codigo + " \nempCodigo: " + empCodigo + " \ngrupoAC: " + grupoAC;
 		try
 		{
 			Long colaboradorId = colaboradorManager.religaColaboradorAC(codigo, empCodigo, grupoAC);
 			usuarioManager.reativaAcessoSistema(colaboradorId);
 			
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao religar empregado.", formataException(parametros, e));
 		}
 	}
 
-	public boolean atualizarEmpregado(TEmpregado empregado)
+	public FeedbackWebService atualizarEmpregado(TEmpregado empregado)
 	{
+		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
 		try
 		{
 			colaboradorManager.updateEmpregado(empregado);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao atualizar empregado.", formataException(parametros, e));
 		}
 	}
 
-	public boolean atualizarEmpregadoAndSituacao(TEmpregado empregado, TSituacao situacao)
+	public FeedbackWebService atualizarEmpregadoAndSituacao(TEmpregado empregado, TSituacao situacao)
 	{
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
+		String parametros = "empregado: " + empregado.getCodigoAC() + " \nsituacao: " + situacao.getData();
+		
 		try
 		{
 			try
@@ -342,18 +370,16 @@ public class RHServiceImpl implements RHService
 				throw new Exception("Erro ao atualizar situação do colaborador.");
 			}
 
-			transactionManager.commit(status);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			transactionManager.rollback(status);
-			return false;
+			return new FeedbackWebService(false, "Erro ao atualizar empregado e situação.",  formataException(parametros, e));
 		}
 	}
 
-	public boolean criarSituacaoEmLote(TSituacao[] situacaos)
+	public FeedbackWebService criarSituacaoEmLote(TSituacao[] situacaos)
 	{
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		try
@@ -364,28 +390,29 @@ public class RHServiceImpl implements RHService
 			}
 			
 			historicoColaboradorManager.saveOrUpdate(historicoColaboradors);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao inserir situações em lote.", formataException(null, e));
 		}
 		
 	}
 	
-	public boolean criarSituacao(TSituacao situacao)
+	public FeedbackWebService criarSituacao(TSituacao situacao)
 	{
+		String parametros = "Situacao data: " + situacao.getData() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC(); 
 		try
 		{
 			HistoricoColaborador historicoColaborador = montaSituacao(situacao);
 			historicoColaboradorManager.save(historicoColaborador);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao inserir situação.", formataException(parametros, e));
 		}
 	}
 
@@ -398,147 +425,207 @@ public class RHServiceImpl implements RHService
 		return historicoColaborador;
 	}
 
-	public boolean atualizarSituacao(TSituacao situacao)
+	public FeedbackWebService atualizarSituacao(TSituacao situacao)
 	{
+		String parametros = "";
+		if(situacao.getId() != null && situacao.getId() != 0)
+			parametros = "Situacao ID: " + situacao.getId();
+		else
+			parametros = "Situacao data: " + situacao.getData() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC();
+		
 		try
 		{
 			historicoColaboradorManager.updateSituacao(situacao);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao atualizar situação.", formataException(parametros, e));
 		}
 	}
 	
-	public boolean removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo, String grupoAC)
+	public FeedbackWebService removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo, String grupoAC)
 	{
+		String parametros = "movimentoSalarialId: " + movimentoSalarialId + "\nempCodigo: " + empCodigo + "\ngrupoAC: " + grupoAC;
 		try
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
 			if(empresa == null || empresa.getId() == null)
-				return false;
+				return new FeedbackWebService(false, "Erro ao excluir a situação, empresa não encontrada.", formataException(parametros, null));
 			
 			historicoColaboradorManager.deleteSituacaoByMovimentoSalarial(movimentoSalarialId.longValue(), empresa.getId());
-			return true;
+			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO_LOTE, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO_LOTE, formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir situação em lote.", formataException(parametros, e));
 		}
 		
 	}
 
-	public boolean removerSituacao(TSituacao situacao)
+	public FeedbackWebService removerSituacao(TSituacao situacao)
 	{
+		String parametros = "situacao data: " + situacao.getDataFormatada() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC();
 		try
 		{
-			HistoricoColaborador historico = historicoColaboradorManager.findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+			HistoricoColaborador historico = historicoColaboradorManager.findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(),  situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 			if(historico != null)
 				historicoColaboradorManager.removeHistoricoAndReajusteAC(historico);
-			return true;
+			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO, formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao remover situação.", formataException(parametros, e));
 		}
-
 	}
 
-	public boolean criarEstabelecimento(TEstabelecimento testabelecimento)
+	public FeedbackWebService criarEstabelecimento(TEstabelecimento testabelecimento)
 	{
+		String parametros = "estabelecimento: " + testabelecimento.getCodigo();
 		try
 		{
 			Estabelecimento estabelecimento = new Estabelecimento();
 			bindEstabelecimento(testabelecimento, estabelecimento);
 			estabelecimento.setEmpresa(empresaManager.findByCodigoAC(testabelecimento.getCodigoEmpresa(), testabelecimento.getGrupoAC()));
 			estabelecimentoManager.save(estabelecimento);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao inserir estabelecimento.", formataException(parametros, e));
 		}
 	}
 
-	public boolean atualizarEstabelecimento(TEstabelecimento testabelecimento)
+	public FeedbackWebService atualizarEstabelecimento(TEstabelecimento testabelecimento)
 	{
+		String parametros = "estabelecimento: " + testabelecimento.getCodigo() + "\nempresa: " + testabelecimento.getCodigoEmpresa() + "\ngrupoAC: " + testabelecimento.getGrupoAC();
 		try
 		{
 			Estabelecimento estabelecimento = estabelecimentoManager.findByCodigo(testabelecimento.getCodigo(), testabelecimento.getCodigoEmpresa(), testabelecimento.getGrupoAC());
 			bindEstabelecimento(testabelecimento, estabelecimento);
 			estabelecimentoManager.update(estabelecimento);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao atualizar estabelecimento.", formataException(parametros, e));
 		}
 	}
 
-	public boolean removerEstabelecimento(String codigo, String empCodigo, String grupoAC)
+	public FeedbackWebService removerEstabelecimento(String codigo, String empCodigo, String grupoAC)
 	{
+		String parametros = "estabelecimento: " + codigo + "\nempresa: " + empCodigo + "\ngrupoAC: " + grupoAC;
 		try
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
-			return estabelecimentoManager.remove(codigo, empresa.getId());
+
+			if(estabelecimentoManager.remove(codigo, empresa.getId()))
+				return new FeedbackWebService(true);
+			else
+				return new FeedbackWebService(false, "Erro: Estabelecimento não encontrado no Fortes RH.", formataException(parametros, null));
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_ESTABELECIMENTO, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_ESTABELECIMENTO, formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir estabelecimento.", formataException(parametros, e));
 		}
 	}
 
-	public boolean criarIndice(TIndice tindice)
+	public FeedbackWebService criarIndice(TIndice tindice)
 	{
+		String parametros = "indice: " + tindice.getCodigo() + "\ngrupoAC: " + tindice.getGrupoAC();
 		try
 		{
 			Indice indice = new Indice();
 			bindIndice(tindice, indice);
 			indiceManager.save(indice);
 
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao inserir índice.", formataException(parametros, e));
 		}
 	}
 
-	public boolean atualizarIndice(TIndice tindice)
+	public FeedbackWebService atualizarIndice(TIndice tindice)
 	{
+		String parametros = "indice: " + tindice.getCodigo() + "\ngrupoAC: " + tindice.getGrupoAC();
 		try
 		{
 			Indice indice = indiceManager.findByCodigo(tindice.getCodigo(), tindice.getGrupoAC());
 			bindIndice(tindice, indice);
 			indiceManager.update(indice);
 
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao atualizar índice.", formataException(parametros, e));
 		}
 	}
 
-	public boolean removerIndice(String codigo, String grupoAC)
+	public FeedbackWebService removerIndice(String codigo, String grupoAC)
 	{
+		String parametros = "indice: " + codigo + "\ngrupoAC: " + grupoAC;
 		try
 		{
-			return indiceManager.remove(codigo, grupoAC);
+			if(indiceManager.remove(codigo, grupoAC))
+				return new FeedbackWebService(true);
+			else
+				return new FeedbackWebService(false, "Erro: Índice não encontrado no Fortes RH.", formataException(parametros, null));
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_INDICE, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_INDICE, formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir índice.", formataException(parametros, e));
 		}
 	}
 
@@ -581,8 +668,9 @@ public class RHServiceImpl implements RHService
 //		return true;
 //	}
 
-	public boolean criarIndiceHistorico(TIndiceHistorico tindiceHistorico)
+	public FeedbackWebService criarIndiceHistorico(TIndiceHistorico tindiceHistorico)
 	{
+		String parametros = "indiceHistorico: " + tindiceHistorico.getIndiceCodigo() + "\ndata: " + tindiceHistorico.getDataFormatada() + "\ngrupoAC: " + tindiceHistorico.getGrupoAC();
 		try
 		{
 			IndiceHistorico indiceHistorico = new IndiceHistorico();
@@ -602,23 +690,39 @@ public class RHServiceImpl implements RHService
 			else
 				indiceHistoricoManager.save(indiceHistorico);
 
-			return true;
+			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_INDICE_HISTORICO, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_INDICE_HISTORICO, formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir o histórico do índice.", formataException(parametros, e));
 		}
 	}
 
-	public boolean removerIndiceHistorico(String data, String indiceCodigo, String grupoAC)
+	public FeedbackWebService removerIndiceHistorico(String data, String indiceCodigo, String grupoAC)
 	{
+		String parametros = "indice: " + indiceCodigo + "\ndata: " + data + "\ngrupoAC: " + grupoAC;
 		Indice indice = indiceManager.findByCodigo(indiceCodigo, grupoAC);
 
 		if (indice != null && indice.getId() != null)
-			return indiceHistoricoManager.remove(DateUtil.montaDataByString(data), indice.getId());
+		{
+			if(indiceHistoricoManager.remove(DateUtil.montaDataByString(data), indice.getId()))
+				return new FeedbackWebService(true);
+			else
+				return new FeedbackWebService(false, "Erro: Histórico do índice não encontrado.", formataException(parametros, null));
+		}
 		else
-			return true; // caso o índice com esse código não exista, ignora
+			return new FeedbackWebService(true);
 	}
 
 	public void bindIndice(TIndice tindice, Indice indice)
@@ -655,8 +759,9 @@ public class RHServiceImpl implements RHService
 		estabelecimento.setEndereco(endereco);
 	}
 
-	public boolean setStatusFaixaSalarialHistorico(Long faixaSalarialHistoricoId, Boolean aprovado, String mensagem, String empresaCodigoAC, String grupoAC)
+	public FeedbackWebService setStatusFaixaSalarialHistorico(Long faixaSalarialHistoricoId, Boolean aprovado, String mensagem, String empresaCodigoAC, String grupoAC)
 	{
+		String parametros = "faixaSalarialHistoricoId: " + faixaSalarialHistoricoId + "\nempresa: " + empresaCodigoAC + "\ngrupoAC: " + grupoAC;
 		if (!aprovado)
 		{
 			FaixaSalarialHistorico faixaSalarialHistorico = faixaSalarialHistoricoManager.findByIdProjection(faixaSalarialHistoricoId);
@@ -667,25 +772,36 @@ public class RHServiceImpl implements RHService
 			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", null, usuarioEmpresas);
 		}
 
-		return faixaSalarialHistoricoManager.setStatus(faixaSalarialHistoricoId, aprovado);
+		if(faixaSalarialHistoricoManager.setStatus(faixaSalarialHistoricoId, aprovado))
+			return new FeedbackWebService(true);
+		else
+			return new FeedbackWebService(false, "Erro: Histórico da faixa salarial não encontrada.", formataException(parametros, null));
 	}
 
-	public boolean cancelarSituacao(TSituacao situacao, String mensagem)
+	public FeedbackWebService cancelarSituacao(TSituacao situacao, String mensagem)
 	{
+		String parametros = "";
+		
+		if(situacao.getId() != null && situacao.getId() != 0)
+			parametros = "Situacao ID: " + situacao.getId();
+		else
+			parametros = "Situacao data: " + situacao.getData() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC();
+		
 		try
 		{
 			historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao cancelar situação.", formataException(parametros, e));
 		}
 	}
 
-	public boolean criarOcorrencia(TOcorrencia tocorrencia)
+	public FeedbackWebService criarOcorrencia(TOcorrencia tocorrencia)
 	{
+		String parametros = "ocorrencia: " + tocorrencia.getCodigo() + "\nempresa: " + tocorrencia.getEmpresa() + "\ngrupoAC: " + tocorrencia.getGrupoAC();
 		try
 		{
 			Ocorrencia ocorrencia = new Ocorrencia();
@@ -697,57 +813,81 @@ public class RHServiceImpl implements RHService
 
 			ocorrenciaManager.saveFromAC(ocorrencia);
 
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao inserir ocorrência.", formataException(parametros, e));
 		}
 	}
 
-	public boolean removerOcorrencia(TOcorrencia tocorrencia)
+	public FeedbackWebService removerOcorrencia(TOcorrencia tocorrencia)
 	{
+		String parametros = "ocorrencia: " + tocorrencia.getCodigo() + "\nempresa: " + tocorrencia.getEmpresa() + "\ngrupoAC: " + tocorrencia.getGrupoAC();
 		try
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(tocorrencia.getEmpresa(), tocorrencia.getGrupoAC());
-			return ocorrenciaManager.removeByCodigoAC(tocorrencia.getCodigo(), empresa.getId());
+			if(ocorrenciaManager.removeByCodigoAC(tocorrencia.getCodigo(), empresa.getId()))
+				return new FeedbackWebService(true);
+			else
+				return new FeedbackWebService(false, "Erro: Ocorrência não encontrada.", formataException(parametros, null));
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_OCORRENCIA, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_OCORRENCIA, formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir ocorrência.", formataException(parametros, e));
 		}
 	}
 
-	public boolean criarOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados)
+	public FeedbackWebService criarOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados)
 	{
 		try
 		{
 			Collection<ColaboradorOcorrencia> colaboradorOcorrencias = bindColaboradorOcorrencias(ocorrenciaEmpregados);
 			colaboradorOcorrenciaManager.saveOcorrenciasFromAC(colaboradorOcorrencias);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao inserir ocorrências do empregado.", formataException(null, e));
 		}
 	}
 
-	public boolean removerOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados)
+	public FeedbackWebService removerOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados)
 	{
 		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = bindColaboradorOcorrencias(ocorrenciaEmpregados);
 
 		try
 		{
 			colaboradorOcorrenciaManager.removeFromAC(colaboradorOcorrencias);
-			return true;
+			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_OCORRENCIA_EMPREGADO, formataException(null, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_OCORRENCIA_EMPREGADO, formataException(null, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir ocorrência do empregado.", formataException(null, e));
 		}
 	}
 
@@ -787,8 +927,9 @@ public class RHServiceImpl implements RHService
 		return colaboradorOcorrencias;
 	}
 
-	public boolean criarAreaOrganizacional(TAreaOrganizacional areaOrganizacional)
+	public FeedbackWebService criarAreaOrganizacional(TAreaOrganizacional areaOrganizacional)
 	{
+		String parametros = "areaOrganizacional: " + areaOrganizacional.getCodigo() + "\nempresa: " + areaOrganizacional.getEmpresaCodigo() + "\ngrupoAC: " + areaOrganizacional.getGrupoAC();
 		try
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(areaOrganizacional.getEmpresaCodigo(), areaOrganizacional.getGrupoAC());
@@ -798,17 +939,18 @@ public class RHServiceImpl implements RHService
 			areaOrganizacionalManager.bind(areaOrganizacionalTmp, areaOrganizacional);
 			
 			areaOrganizacionalManager.save(areaOrganizacionalTmp);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao inserir lotação.", formataException(parametros, e));
 		}
 	}
 
-	public boolean atualizarAreaOrganizacional(TAreaOrganizacional tAreaOrganizacional)
+	public FeedbackWebService atualizarAreaOrganizacional(TAreaOrganizacional tAreaOrganizacional)
 	{
+		String parametros = "areaOrganizacional: " + tAreaOrganizacional.getCodigo() + "\nempresa: " + tAreaOrganizacional.getEmpresaCodigo() + "\ngrupoAC: " + tAreaOrganizacional.getGrupoAC();
 		try
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());
@@ -817,32 +959,44 @@ public class RHServiceImpl implements RHService
 			areaOrganizacionalManager.bind(areaOrganizacionalTmp, tAreaOrganizacional);
 			
 			areaOrganizacionalManager.update(areaOrganizacionalTmp);
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao atualizar lotação.", formataException(parametros, e));
 		}
 	}
 	
-	public boolean removerAreaOrganizacional(TAreaOrganizacional tAreaOrganizacional)
+	public FeedbackWebService removerAreaOrganizacional(TAreaOrganizacional tAreaOrganizacional)
 	{
+		String parametros = "areaOrganizacional: " + tAreaOrganizacional.getCodigo() + "\nempresa: " + tAreaOrganizacional.getEmpresaCodigo() + "\ngrupoAC: " + tAreaOrganizacional.getGrupoAC();
 		try
 		{
-			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tAreaOrganizacional.getCodigo(), tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());
+			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tAreaOrganizacional.getCodigo(), tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());		
 			areaOrganizacionalManager.remove(areaOrganizacionalTmp);
-			return true;
+			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_LOTACAO, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_LOTACAO, formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir lotação.", formataException(parametros, e));
 		}
 	}
 	
-	public boolean criarSituacaoCargo(TSituacaoCargo tSituacaoCargo)
+	public FeedbackWebService criarSituacaoCargo(TSituacaoCargo tSituacaoCargo)
 	{
+		String parametros = "situacaoCargo: " + tSituacaoCargo.getCodigo() + "\nempresa: " + tSituacaoCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacaoCargo.getGrupoAC();
 		try
 		{
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC(), tSituacaoCargo.getGrupoAC());
@@ -857,17 +1011,18 @@ public class RHServiceImpl implements RHService
 			else
 				faixaSalarialHistoricoManager.save(faixaSalarialHistorico);
 			
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir a situação do cargo.", formataException(parametros, e));
 		}
 	}
 
-	public boolean atualizarSituacaoCargo(TSituacaoCargo tSituacaoCargo)
+	public FeedbackWebService atualizarSituacaoCargo(TSituacaoCargo tSituacaoCargo)
 	{
+		String parametros = "situacaoCargo: " + tSituacaoCargo.getCodigo() + "\nempresa: " + tSituacaoCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacaoCargo.getGrupoAC();
 		try
 		{
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC(), tSituacaoCargo.getGrupoAC());
@@ -876,17 +1031,18 @@ public class RHServiceImpl implements RHService
 						
 			faixaSalarialHistoricoManager.update(faixaSalarialHistorico);
 			
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao atualizar situação do cargo.", formataException(parametros, e));
 		}
 	}
 
-	public boolean removerSituacaoCargo(TSituacaoCargo tSituacaoCargo)
+	public FeedbackWebService removerSituacaoCargo(TSituacaoCargo tSituacaoCargo)
 	{
+		String parametros = "situacaoCargo: " + tSituacaoCargo.getCodigo() + "\nempresa: " + tSituacaoCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacaoCargo.getGrupoAC();
 		try
 		{
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacaoCargo.getCodigo(), tSituacaoCargo.getEmpresaCodigoAC(), tSituacaoCargo.getGrupoAC());
@@ -898,17 +1054,28 @@ public class RHServiceImpl implements RHService
 			
 			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico);
 			
-			return true;
+			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO_CARGO, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_SITUACAO_CARGO, formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir situação do cargo.", formataException(parametros, e));
 		}
 	}
 	
-	public boolean criarCargo(TCargo tCargo)
+	public FeedbackWebService criarCargo(TCargo tCargo)
 	{
+		String parametros = "cargo: " + tCargo.getCodigo() + "\nempresa: " + tCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tCargo.getGrupoAC();
 		try
 		{
 			FaixaSalarial faixaSalarial = faixaSalarialManager.montaFaixa(tCargo);
@@ -916,37 +1083,38 @@ public class RHServiceImpl implements RHService
 
 			faixaSalarialManager.save(faixaSalarial);
 
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao inserir cargo.", formataException(parametros, e));
 		}
 	}
 	
-	public boolean atualizarCargo(TCargo tCargo)
+	public FeedbackWebService atualizarCargo(TCargo tCargo)
 	{
+		String parametros = "cargo: " + tCargo.getCodigo() + "\nempresa: " + tCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tCargo.getGrupoAC();
 		try
 		{
-			int i =1;
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
 			
 			tCargo.setId(faixaSalarial.getId());
 			faixaSalarialManager.updateAC(tCargo);
 			cargoManager.updateCBO(faixaSalarial.getCargo().getId(), tCargo);
 			
-			return true;
+			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao atualizar cargo.", formataException(parametros, e));
 		}
 	}
 	
-	public boolean removerCargo(TCargo tCargo)
+	public FeedbackWebService removerCargo(TCargo tCargo)
 	{
+		String parametros = "cargo: " + tCargo.getCodigo() + "\nempresa: " + tCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tCargo.getGrupoAC();
 		try
 		{
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
@@ -956,32 +1124,54 @@ public class RHServiceImpl implements RHService
 			if(faixas.isEmpty())
 				cargoManager.remove(faixaSalarial.getCargo());
 			
-			return true;
+			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_CARGO, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_CARGO, formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return new FeedbackWebService(false, "Erro ao excluir cargo.", formataException(parametros, e));
 		}
 	}
 	
 	public FeedbackWebService removerEmpregado(TEmpregado empregado)
 	{
+		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupoAC: " + empregado.getGrupoAC();
+		
 		if(StringUtils.isEmpty(empregado.getCodigoAC()) || StringUtils.isEmpty(empregado.getEmpresaCodigoAC()) ||  StringUtils.isEmpty(empregado.getGrupoAC()))
-			return new FeedbackWebService(false, "Dados do empregado invalidos", empregado.getChaveAC_RH());
+			return new FeedbackWebService(false, "Dados do empregado invalidos", formataException(parametros, null));
 		
 		try {
 			Colaborador colaborador = colaboradorManager.findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());		
 
 			if(colaborador == null)
-				return new FeedbackWebService(true, "Empregado não localizado no Fortes RH.", empregado.getChaveAC_RH());
+				return new FeedbackWebService(true);
 			
 			colaboradorManager.removeColaboradorDependencias(colaborador);
-			return new FeedbackWebService(true, "colaborador deletado com sucesso.", "");
+			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_EMPREGADO, formataException(parametros, e));
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_EMPREGADO, formataException(parametros, e));
 		}
 		catch (Exception e) 
 		{
-			return new FeedbackWebService(false, "Erro ao deletar empregado no Fortes RH.", e.getMessage());
+			return new FeedbackWebService(false, "Erro ao excluir empregado.", formataException(parametros, e));
 		}
 	}
 
@@ -1097,6 +1287,4 @@ public class RHServiceImpl implements RHService
 	public void setUsuarioManager(UsuarioManager usuarioManager) {
 		this.usuarioManager = usuarioManager;
 	}
-
-
 }
