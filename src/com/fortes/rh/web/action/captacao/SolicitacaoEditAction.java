@@ -231,7 +231,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
            	solicitacao.setLiberador(null);
         
         solicitacaoManager.save(solicitacao, emailsCheck);
-
+        
         return Action.SUCCESS;
     }
 

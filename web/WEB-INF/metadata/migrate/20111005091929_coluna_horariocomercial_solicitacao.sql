@@ -1,0 +1,1 @@
+alter table solicitacao add column horariocomercial varchar(20) not null default '';--.go

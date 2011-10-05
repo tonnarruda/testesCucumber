@@ -420,6 +420,12 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				colaborador.setCamposExtras(camposExtras);
 			}
 			
+			if (solicitacao != null && solicitacao.getId() != null)
+			{
+				solicitacao = solicitacaoManager.findByIdProjection(solicitacao.getId());
+				colaborador.setRegimeRevezamento(solicitacao.getHorarioComercial());
+			}
+			
 			colaborador.setNome(candidato.getNome());
 			// OBS: não sugerimos mais o nome Comercial, porque pode quebrar o insert (limitação do AC)
 			colaborador.setContato(candidato.getContato());

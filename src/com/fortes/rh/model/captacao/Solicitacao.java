@@ -53,6 +53,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private Double remuneracao;
 	private Integer idadeMinima;
 	private Integer idadeMaxima;
+	private String horarioComercial = "";
 	@Column(length=5)
 	private String sexo;
 	@Lob
@@ -82,7 +83,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	@ManyToOne
 	private Empresa empresa;
-
+	
 	@Transient
 	private String valorPromocao;
 
@@ -613,6 +614,14 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public void setLiberador(Usuario liberador) {
 		this.liberador = liberador;
+	}
+
+	public String getHorarioComercial() {
+		return horarioComercial;
+	}
+
+	public void setHorarioComercial(String horarioComercial) {
+		this.horarioComercial = horarioComercial;
 	}
 
 }

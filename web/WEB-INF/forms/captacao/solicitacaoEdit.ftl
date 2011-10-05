@@ -119,7 +119,7 @@
 	
 	</script>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol'))"/>
 </head>
 <body>
 
@@ -129,6 +129,7 @@
 		<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
 		
 		<@ww.textfield label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome"/>
+		<@ww.textfield label="Horário comercial" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" maxlength="20" required="true"/>
 
 		<#if !clone && somenteLeitura && solicitacao.estabelecimento?exists && solicitacao.estabelecimento.id?exists>
 			<@ww.textfield readonly="true" label="Estabelecimento" name="solicitacao.estabelecimento.nome" id="estabelecimento" required="true" cssStyle="width: 347px;background: #EBEBEB;"/>

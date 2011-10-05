@@ -251,6 +251,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 		Solicitacao s1 = getEntity();
 		s1.setLiberador(usuarioDao.save(liberador));
+		s1.setHorarioComercial("8h às 18h");
 		solicitacaoDao.save(s1);
 
 		Solicitacao solicitacao = solicitacaoDao.findByIdProjectionForUpdate(s1.getId());

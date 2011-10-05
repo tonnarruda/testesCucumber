@@ -189,6 +189,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("s.id"), "id");
+		p.add(Projections.property("s.horarioComercial"), "horarioComercial");
 		p.add(Projections.property("s.escolaridade"), "escolaridade");
 		p.add(Projections.property("s.idadeMinima"), "idadeMinima");
 		p.add(Projections.property("s.idadeMaxima"), "idadeMaxima");
@@ -223,6 +224,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 
 		p.add(Projections.property("s.id"), "id");
 		p.add(Projections.property("s.descricao"), "descricao");
+		p.add(Projections.property("s.horarioComercial"), "horarioComercial");
 		p.add(Projections.property("s.escolaridade"), "escolaridade");
 		p.add(Projections.property("s.idadeMinima"), "idadeMinima");
 		p.add(Projections.property("s.idadeMaxima"), "idadeMaxima");
