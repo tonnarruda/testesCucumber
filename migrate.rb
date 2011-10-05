@@ -3,16 +3,20 @@ require 'pg'
 require 'term/ansicolor'
 include Term::ANSIColor
 
+$db_name = "fortesrh"
 def exec_sql sql
   begin
-    conn = PGconn.connect( :dbname => "fortesrh", :user => "postgres")
+    puts $db_name
+    conn = PGconn.connect( :dbname => $db_name, :user => "postgres")
     conn.exec(sql)
 	ensure
 	   conn.finish if conn
   end
 end	
 
-if ARGV.empty?
+if ARGV.empty? || ARGV[0] == '--db'
+  $db_name = ARGV[1] if ARGV[0] == '--db'
+  
 	result = exec_sql "select name from migrations order by name;"
 	@migrations = result.map{|r| r['name']}
 	

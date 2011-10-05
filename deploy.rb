@@ -40,7 +40,7 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
 		
 		if config['run_migrates']
     		conn.upload 'migrate.rb', "#{app_path}/migrate.rb"
-    		conn.exec "ruby #{app_path}/migrate.rb"
+    		conn.exec "ruby #{app_path}/migrate.rb --db #{config['db_name']}"
     		conn.exec "rm -f #{app_path}/migrate.rb"
 		end
 		
