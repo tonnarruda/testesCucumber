@@ -23,6 +23,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu devo ver o título "Inserir Solicitação de Pessoal"
     E eu preencho o campo (JS) "Data" com "10/06/2011"
     E eu preencho "Descrição" com "Vaga java"
+    E eu preencho "Horário comercial" com "8h às 18h"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu seleciono "Financeiro" de "Área Organizacional"
     E eu seleciono "Contador I" de "Cargo/Faixa"
