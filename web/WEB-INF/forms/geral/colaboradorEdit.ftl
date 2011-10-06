@@ -545,6 +545,7 @@
 		<@ww.hidden name="colaborador.empresa.id" />
 		<@ww.hidden name="colaborador.estabelecimento.id" />
 		<@ww.hidden name="solicitacao.id" />
+		<@ww.hidden name="colaborador.solicitacao.id"/>
 
 		<@ww.hidden name="colaborador.pessoal.naturalidade" />
 		<@ww.hidden name="colaborador.pessoal.profissaoPai" />

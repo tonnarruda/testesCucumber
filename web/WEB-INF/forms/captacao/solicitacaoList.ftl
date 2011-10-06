@@ -186,8 +186,9 @@
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">		
 			<a href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Candidatos da Seleção" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 		</@authz.authorize>
-		
 		</@display.column>
+
+		<@display.column title="Código" property="id" class="${classe}"/>
 		<@display.column title="Cargo" class="${classe}">
 			<#if solicitacao.obsSuspensao?exists && solicitacao.obsSuspensao?trim != "">
 				<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${solicitacao.obsSuspensao?j_string}');return false">${solicitacao.faixaSalarial.cargo.nome}</span>
@@ -204,7 +205,7 @@
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;" class="${classe}"/>
 
 		<#-- <@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO"> -->
-			<@display.column title="Aprovada" style="width:43px;" class="${classe}">
+			<@display.column title="Aprov." style="width:43px;" class="${classe}">
 				<#if solicitacao.liberada> Sim <#else> Não </#if>
 			</@display.column>
 		<#--/@authz.authorize -->

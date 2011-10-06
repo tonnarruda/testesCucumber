@@ -492,6 +492,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.funcao = historicoColaborador.getFuncao();
 		this.naoIntegraAc = colaborador.isNaoIntegraAc();
 		this.camposExtras = colaborador.getCamposExtras();
+		this.solicitacao = colaborador.getSolicitacao();
 	}
 
 	public Colaborador(String esNome, String aoNome, String reNome, String coNome, String cgNome, String fsNome)

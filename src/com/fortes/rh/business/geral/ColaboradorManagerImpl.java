@@ -441,6 +441,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (colaborador.getPessoal().getCtps() != null && colaborador.getPessoal().getCtps().getCtpsUf() != null
 				&& colaborador.getPessoal().getCtps().getCtpsUf().getId() == null)
 			colaborador.getPessoal().getCtps().setCtpsUf(null);
+		
+		if(colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() == null)
+			colaborador.setSolicitacao(null);
 
 		colaborador.setEmpresa(empresa);
 
