@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.NestedRuntimeException;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -46,6 +48,8 @@ import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
@@ -73,6 +77,7 @@ import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
+import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -128,6 +133,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private UsuarioMensagemManager usuarioMensagemManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
+	private PeriodoExperienciaManager periodoExperienciaManager;
+	private AvaliacaoManager avaliacaoManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -151,6 +158,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private Collection<ColaboradorQuestionario> avaliacaoDesempenhos;
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarioAvaloacaoExperiencias;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+	private Collection<PeriodoExperiencia> periodoExperiencias;
+	private Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes;
+	private Map<String, Collection<Avaliacao>> periodoExperienciaAvaliacoes;
 
 	// Utilizados no insert e update para a chamada ao metodo saveDetalhes();
 	private Collection<Formacao> formacaos;
@@ -292,6 +302,19 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		areaOrganizacionals = areaOrganizacionalManager.montaFamiliaOrdemDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
 
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		
+		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+		
+		periodoExperienciaAvaliacoes = new HashMap<String, Collection<Avaliacao>>();
+		Collection<Avaliacao> avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, 'A', null);
+		
+		for (Avaliacao avaliacao : avaliacoes) 
+		{
+			if (!periodoExperienciaAvaliacoes.containsKey(avaliacao.getPeriodoExperiencia().getId().toString()))
+				periodoExperienciaAvaliacoes.put(avaliacao.getPeriodoExperiencia().getId().toString(), new ArrayList<Avaliacao>());
+			
+			periodoExperienciaAvaliacoes.get(avaliacao.getPeriodoExperiencia().getId().toString()).add(avaliacao);
+		}
 	}
 
 	public String prepareInsert() throws Exception
@@ -645,6 +668,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				colaborador.setCamposExtras(null);
 				
 			setDadosHistoricoColaborador();
+			
+			
 
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador);
 		}
@@ -1593,5 +1618,31 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setVincularCandidatoMesmoCpf(boolean vincularCandidatoMesmoCpf) {
 		this.vincularCandidatoMesmoCpf = vincularCandidatoMesmoCpf;
+	}
+
+	public Collection<PeriodoExperiencia> getPeriodoExperiencias() {
+		return periodoExperiencias;
+	}
+
+	public void setPeriodoExperienciaManager(
+			PeriodoExperienciaManager periodoExperienciaManager) {
+		this.periodoExperienciaManager = periodoExperienciaManager;
+	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
+	}
+
+	public Map<String, Collection<Avaliacao>> getPeriodoExperienciaAvaliacoes() {
+		return periodoExperienciaAvaliacoes;
+	}
+
+	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorAvaliacoes() {
+		return colaboradorAvaliacoes;
+	}
+
+	public void setColaboradorAvaliacoes(
+			Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes) {
+		this.colaboradorAvaliacoes = colaboradorAvaliacoes;
 	}
 }

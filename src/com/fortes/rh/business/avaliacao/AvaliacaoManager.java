@@ -11,7 +11,7 @@ import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 
 public interface AvaliacaoManager extends GenericManager<Avaliacao>
 {
-	Collection<Avaliacao> findAllSelect(Long id, Boolean ativo, char modeloAvaliacao, String titulo);
+	Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo);
 	Collection<QuestionarioRelatorio> getQuestionarioRelatorio(Avaliacao avaliacao);
 	void enviaLembrete();
 	Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId);

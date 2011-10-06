@@ -39,7 +39,7 @@
 	<script type="text/javascript" src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type="text/javascript" src="jsr_class.js"></script>
+	<#-- <script type="text/javascript" src="jsr_class.js"></script> -->
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/areaOrganizacional.js"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js"/>"></script>
@@ -65,8 +65,6 @@
     </#if>
 
 	<script type="text/javascript">
-	
-		
 		function populaAmbiente(estabelecimentoId, ambienteId)
 		{
 			if(estabelecimentoId != "null")
@@ -125,6 +123,7 @@
 		{
 			document.getElementById('nomeComercial').value = document.getElementById('nomeColab').value.substr(0,30).trim();
 		}
+		
 		function sugerirDataHistorico()
 		{
 			if(document.getElementById('dt_hist').value == "  /  /    ")
@@ -152,7 +151,15 @@
 		        }
 			});
 			
-			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');			
+			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
+			
+			<#if periodoExperienciaAvaliacoes?exists>
+				<#list periodoExperienciaAvaliacoes?keys as periodo>
+				    <#list periodoExperienciaAvaliacoes.get(periodo) as avaliacao>
+				    	$('#modeloPeriodo' + ${periodo}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
+				    </#list>
+				</#list>
+			</#if>
 		});
 		
 		function verificaCpf(data)
@@ -242,9 +249,9 @@
 			</#if>
 		</#list>
 		
-		<#assign totalAbas = 6/>
+		<#assign totalAbas = 7/>
 	<#else>
-		<#assign totalAbas = 5/>
+		<#assign totalAbas = 6/>
 	</#if>
 
 
@@ -278,9 +285,10 @@
 		<div id="aba3"><a href="javascript: abas(3, '', ${edicao}, ${totalAbas})">Formação Escolar</a></div>
 		<div id="aba4"><a href="javascript: abas(4, '', ${edicao}, ${totalAbas})">Experiências</a></div>
 		<div id="aba5"><a href="javascript: abas(5, '', ${edicao}, ${totalAbas})">Documentos</a></div>
+		<div id="aba6"><a href="javascript: abas(6, '', ${edicao}, ${totalAbas})">Modelos de Avaliação</a></div>
 		
 		<#if habilitaCampoExtra>
-			<div id="aba6"><a href="javascript: abas(6, '', ${edicao}, ${totalAbas})">Extra</a></div>
+			<div id="aba7"><a href="javascript: abas(7, '', ${edicao}, ${totalAbas})">Extra</a></div>
 		</#if>
 	</div>
 
@@ -503,11 +511,25 @@
 			<@ww.textfield label="Número" name="colaborador.pessoal.pis" id="pis" cssClass="mascaraPis" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,'{,}'));" maxLength="11" />
 	      </div>
 
+		<div id="content6" style="display: none;">
+			<#assign i = 0 />
+			<@display.table name="periodoExperiencias" id="periodoExperiencia" class="dados">
+				<@display.column title="Dias" property="dias" style="width:80px;" />
+				<@display.column title="Modelo do Acompanhamento do Período de Experiência">
+					<@ww.hidden name="colaboradorAvaliacoes[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
+					<@ww.select theme="simple" name="colaboradorAvaliacoes[${i}].avaliacao.id" id="modeloPeriodo${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
+				</@display.column>
+				
+				<#assign i = i + 1 />
+			</@display.table>
+	    </div>
+
 		<#if habilitaCampoExtra>
-			<div id="content6" style="display: none;">
+			<div id="content7" style="display: none;">
 				<#include "camposExtras.ftl" />
 		    </div>
 		</#if>
+		
 		<@ww.hidden name="colaborador.camposExtras.id" />			
 	    
 		<@ww.hidden name="colaborador.cursos" id="colaborador.cursos" />
