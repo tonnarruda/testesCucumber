@@ -30,7 +30,7 @@ public class ConhecimentoDWR
 	{
 		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>();
 		
-		if(empresaId == -1)//Caso a empresa passada seja -1, vai trazer todos os conhecimentos dando distinct pelo nome
+		if(empresaId == null || empresaId == -1)//Caso a empresa passada seja -1, vai trazer todos os conhecimentos dando distinct pelo nome
 			conhecimentos =  conhecimentoManager.findAllSelectDistinctNome();
 		else
 			conhecimentos =  conhecimentoManager.findAllSelect(empresaId);			

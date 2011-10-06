@@ -339,7 +339,7 @@ public class CandidatoListAction extends MyActionSupportList
 		
 		cargosCheckList = cargoManager.populaCheckBox(empresaId);
 
-		if(montaFiltroBySolicitacao)
+		if(solicitacao != null && solicitacao.getId() != null && montaFiltroBySolicitacao)
 		{
 			solicitacao = solicitacaoManager.findByIdProjection(solicitacao.getId());
 

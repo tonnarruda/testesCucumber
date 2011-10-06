@@ -3,9 +3,13 @@
 		<@ww.hidden name="solicitacao.id"/>
 	</#if>
 	<@display.table name="candidatos" id="candidato" class="dados" >
-		<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;">
-			<input type="checkbox" value="${candidato.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
-		</@display.column>
+
+		<#if solicitacao?exists && solicitacao.id?exists>
+			<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;">
+				<input type="checkbox" value="${candidato.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
+			</@display.column>
+		</#if>
+		
 		<@display.column title="Nome">
 			<a title="Ver Informação" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}&palavras=${palavrasChave}&forma=${formas}"/>', 580, 750)">
 			${candidato.nome}
