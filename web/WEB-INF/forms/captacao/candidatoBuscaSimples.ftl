@@ -3,7 +3,13 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Inserir Candidatos na Solicitação</title>
+	
+	<#if solicitacao?exists && solicitacao.id?exists>
+		<title>Inserir Candidatos na Solicitação</title>
+	<#else>
+		<title>Triagem de currículos</title>
+	</#if>
+	
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
@@ -86,11 +92,13 @@
 			
 			<@ww.select label="Ordenar Por" name="ordenar" id="ordenar" list=r"#{'dataAtualizacao':'Data de Atualização','nome':'Nome'}" cssStyle="width: 170px;" />			
 			<@ww.textfield label="Quantidade de registros a serem listados"name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6" required="true" />
-			
-			<@ww.checkbox label="Trazer apenas candidatos que nunca participaram de processos seletivos" id="somenteCandidatosSemSolicitacao" name="somenteCandidatosSemSolicitacao" labelPosition="left"/>
+
+			<#if solicitacao?exists && solicitacao.id?exists>			
+				<@ww.checkbox label="Trazer apenas candidatos que nunca participaram de processos seletivos" id="somenteCandidatosSemSolicitacao" name="somenteCandidatosSemSolicitacao" labelPosition="left"/>
+				<@ww.hidden name="solicitacao.id"/>
+			</#if>
 
 			<@ww.hidden name="filtro" value="true"/>
-			<@ww.hidden name="solicitacao.id"/>
 			
 			<div class="buttonGroup">
 				<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
@@ -98,18 +106,21 @@
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 
-	<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V">
-	</button>
+	<#if solicitacao?exists && solicitacao.id?exists>
+		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V"></button>
+	</#if>
 
 	<#if candidatos?exists >
 		<br>
 		
 		<#include "formListCandidatoSolicitacaoBusca.ftl" />
 
-		<div class="buttonGroup">
-			<button onclick="prepareEnviarForm();" class="btnInserirSelecionados"></button>
-			<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar"></button>
-		</div>
+		<#if solicitacao?exists && solicitacao.id?exists>
+			<div class="buttonGroup">
+				<button onclick="prepareEnviarForm();" class="btnInserirSelecionados"></button>
+				<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar"></button>
+			</div>
+		</#if>
 	</#if>
 </body>
 </html>

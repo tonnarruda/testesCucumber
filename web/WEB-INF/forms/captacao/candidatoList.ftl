@@ -119,6 +119,7 @@
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
 		<button class="btnInserirCurriculoEscaneado" onclick="window.location='prepareInsertCurriculoPlus.action'" accesskey="P"></button>
 		<button class="btnInserirCurriculoDigitado" onclick="window.location='prepareInsertCurriculoTexto.action'" ></button>
+		<button class="btnTriagem" onclick="window.location='prepareBusca.action'"></button>
 	</div>
 </body>
 </html>

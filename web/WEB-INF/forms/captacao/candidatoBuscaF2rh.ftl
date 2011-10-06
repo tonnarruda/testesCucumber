@@ -3,7 +3,12 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Inserir Candidatos na Solicitação</title>
+
+	<#if solicitacao?exists && solicitacao.id?exists>
+		<title>Inserir Candidatos na Solicitação</title>
+	<#else>
+		<title>Triagem de currículos</title>
+	</#if>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
@@ -116,7 +121,10 @@
 			</div>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
-		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" ></button>
+		
+		<#if solicitacao?exists && solicitacao.id?exists>
+			<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" ></button>
+		</#if>
 		<br>
 
 	<#if curriculos?exists && 0 < curriculos?size>
@@ -127,9 +135,11 @@
 
 			<@display.table name="curriculos" id="curriculo" class="dados" >
 			
-				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;">
-					<input type="checkbox" value="${curriculo.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
-				</@display.column>
+				<#if solicitacao?exists && solicitacao.id?exists>			
+					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;">
+						<input type="checkbox" value="${curriculo.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
+					</@display.column>
+				</#if>
 			
 				<@display.column title="Nome" style="width: 250px;">
 					<a title="Ver Currículo" href="javascript:popup('http://www.f2rh.com.br/curriculos/${curriculo.id?string?replace(".", "")?replace(",","")}?s=${curriculo.s}', 780, 750)">
@@ -166,8 +176,10 @@
 		</div>
 
 		<div class="buttonGroup">
-			<button onclick="prepareEnviarForm();" class="btnInserirSelecionados"></button>
-			<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar"></button>
+			<#if solicitacao?exists && solicitacao.id?exists>
+				<button onclick="prepareEnviarForm();" class="btnInserirSelecionados"></button>
+				<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar"></button>
+			</#if>
 		</div>
 	</#if>
 </body>

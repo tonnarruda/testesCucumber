@@ -7,10 +7,14 @@
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
 
-	<#if BDS?exists && !BDS>
+	<#if solicitacao?exists && solicitacao.id?exists>
 		<title>Inserir Candidatos na Solicitação</title>
 	<#else>
-		<title>Exportar Candidatos para BDS</title>
+		<#if BDS?exists && BDS>
+			<title>Exportar Candidatos para BDS</title>
+		<#else>
+			<title>Triagem de currículos</title>
+		</#if>
 	</#if>
 
 	<#if BDS?exists && BDS>
@@ -141,7 +145,7 @@
 			</#if>
 
 			<@ww.hidden name="BDS"/>
-			<#if BDS?exists && !BDS>
+			<#if BDS?exists && !BDS && solicitacao?exists && solicitacao.id?exists>
 				<@ww.hidden name="solicitacao.id"/>
 			</#if>
 
@@ -188,7 +192,7 @@
 			<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList"/>
 			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" />
 			<br>
-			<#if solicitacao?exists && solicitacao.experiencia?exists>
+			<#if solicitacao?exists && solicitacao.id?exists && solicitacao.experiencia?exists>
 			<br>
 				${solicitacao.experiencia}
 			<br>
@@ -212,7 +216,9 @@
 			<@ww.select label="Ordenar Por" name="ordenar" id="ordenar" list=r"#{'dataAtualizacao':'Data de Atualização','nome':'Nome'}" cssStyle="width: 170px;" />			
 			<@ww.textfield label="Quantidade de registros a serem listados"name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6" required="true" />
 			
-			<@ww.checkbox label="Trazer apenas candidatos que nunca participaram de processos seletivos" id="somenteCandidatosSemSolicitacao" name="somenteCandidatosSemSolicitacao" labelPosition="left"/>
+			<#if solicitacao?exists && solicitacao.id?exists>			
+				<@ww.checkbox label="Trazer apenas candidatos que nunca participaram de processos seletivos" id="somenteCandidatosSemSolicitacao" name="somenteCandidatosSemSolicitacao" labelPosition="left"/>
+			</#if>
 			
 			<div class="buttonGroup">
 				<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
@@ -221,7 +227,7 @@
 
 	<#include "../util/bottomFiltro.ftl" />
 
-	<#if BDS?exists && !BDS>
+	<#if BDS?exists && !BDS && solicitacao?exists && solicitacao.id?exists>
 		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V">
 		</button>
 	</#if>
@@ -231,14 +237,12 @@
 
 		<#include "formListCandidatoSolicitacaoBusca.ftl" />
 
-		<div class="buttonGroup">
-			<button onclick="${actionInserir}" class="btnInserirSelecionados" accesskey="I">
-			</button>
-			<#if BDS?exists && !BDS>
-				<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V">
-				</button>
-			</#if>
-		</div>
+		<#if solicitacao?exists && solicitacao.id?exists>
+			<div class="buttonGroup">
+				<button onclick="${actionInserir}" class="btnInserirSelecionados" accesskey="I"></button>
+				<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V"></button>
+			</div>
+		</#if>
 	</#if>
 </body>
 </html>
