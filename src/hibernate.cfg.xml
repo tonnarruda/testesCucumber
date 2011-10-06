@@ -38,6 +38,7 @@
     <mapping class="com.fortes.rh.model.geral.HistoricoBeneficio" />
     <mapping class="com.fortes.rh.model.geral.Bairro" />
     <mapping class="com.fortes.rh.model.geral.DocumentoAnexo" />
+    <mapping class="com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao" />
     <!-- CAPTACAO DE TALENTOS -->
     <mapping class="com.fortes.rh.model.captacao.Candidato" />
     <mapping class="com.fortes.rh.model.captacao.HistoricoCandidato" />

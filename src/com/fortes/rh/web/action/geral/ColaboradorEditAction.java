@@ -30,6 +30,7 @@ import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
+import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
@@ -135,6 +136,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	private PeriodoExperienciaManager periodoExperienciaManager;
 	private AvaliacaoManager avaliacaoManager;
+	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -523,11 +525,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			if (colaboradorManager.insert(colaborador, salarioColaborador, idCandidato, formacaos, idiomas, experiencias, solicitacao, getEmpresaSistema()))
 			{
-			// Transferindo solicitações médicas do candidato
+				// Transferindo solicitações médicas do candidato
 				solicitacaoExameManager.transferir(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
 				
 				if (candidatoSolicitacaoId != null)
-					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);				
+					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);
+				
+				colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes);
 				
 				addActionMessage("Colaborador \"" + colaborador.getNome() + "\"  cadastrado com sucesso.");
 				
@@ -558,6 +562,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			String message = e.getMessage() != null ? e.getMessage() : "Erro ao gravar as informações do colaborador!"; 
 			addActionError(message);
 
@@ -669,9 +674,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				
 			setDadosHistoricoColaborador();
 			
-			
-
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador);
+			
+			colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador);
+			colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes);
 		}
 //		catch (NestedRuntimeException e)
 //		{
@@ -1644,5 +1650,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setColaboradorAvaliacoes(
 			Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes) {
 		this.colaboradorAvaliacoes = colaboradorAvaliacoes;
+	}
+
+	public void setColaboradorPeriodoExperienciaAvaliacaoManager(
+			ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) {
+		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
 	}
 }

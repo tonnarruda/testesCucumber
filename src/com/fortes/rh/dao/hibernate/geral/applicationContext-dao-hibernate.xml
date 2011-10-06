@@ -207,6 +207,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="colaboradorPeriodoExperienciaAvaliacaoDaoTarget" class="com.fortes.rh.dao.hibernate.geral.ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
 
 

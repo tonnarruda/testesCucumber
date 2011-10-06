@@ -330,6 +330,14 @@
       <ref bean="quantidadeLimiteColaboradoresPorCargoDaoTarget" />
     </property>
   </bean>
+  <bean id="colaboradorPeriodoExperienciaAvaliacaoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao</value>
+    </property>
+    <property name="target">
+      <ref bean="colaboradorPeriodoExperienciaAvaliacaoDaoTarget" />
+    </property>
+  </bean>
 </beans>
 
 

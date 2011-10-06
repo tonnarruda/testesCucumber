@@ -767,6 +767,19 @@
       <ref bean="quantidadeLimiteColaboradoresPorCargoManagerTarget" />
     </property>
   </bean>
+  <bean id="colaboradorPeriodoExperienciaAvaliacaoManagerTarget" class="com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManagerImpl">
+    <property name="dao">
+      <ref bean="colaboradorPeriodoExperienciaAvaliacaoDao" />
+    </property>
+  </bean>
+  <bean id="colaboradorPeriodoExperienciaAvaliacaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="colaboradorPeriodoExperienciaAvaliacaoManagerTarget" />
+    </property>
+  </bean>
 </beans>
 
 

@@ -81,6 +81,7 @@ import com.fortes.rh.test.business.geral.ColaboradorIdiomaManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorManagerAuditaTest;
 import com.fortes.rh.test.business.geral.ColaboradorManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorOcorrenciaManagerTest;
+import com.fortes.rh.test.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManagerTest;
 import com.fortes.rh.test.business.geral.ComoFicouSabendoVagaManagerTest;
 import com.fortes.rh.test.business.geral.ConfiguracaoLimiteColaboradorManagerTest;
 import com.fortes.rh.test.business.geral.ConfiguracaoPerformanceManagerTest;
@@ -216,6 +217,7 @@ import com.fortes.rh.test.dao.hibernate.geral.CodigoCBODaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorIdiomaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ColaboradorOcorrenciaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ComoFicouSabendoVagaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoCampoExtraDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoLimiteColaboradorDaoHibernateTest;
@@ -826,6 +828,8 @@ public class AllUnitTests extends TestSuite
 
         suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
         suite.addTestSuite(AbsenteismoCollectionTest.class);
+        suite.addTestSuite(ColaboradorPeriodoExperienciaAvaliacaoManagerTest.class);
+        suite.addTestSuite(ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest.class);
 
         //contatoTest embedded Colaborador
         suite.addTestSuite(DependenteDaoHibernateTest.class);

@@ -9,6 +9,7 @@ public class Principal
 	public static String NOME_CLASSE = "ConfiguracaoNivelCompetenciaColaborador";
 	public static String NOME_CLASSE_MINUSCULO = "configuracaoNivelCompetenciaColaborador";
 	public static String NOME_PACOTE = "captacao";
+	public static boolean GERAR_TODOS_ARQUIVOS = true;//gera todos os arquivos ou somente entidade, manager e dao 
 	
 	private static final char separator = java.io.File.separatorChar;
 	
@@ -28,26 +29,38 @@ public class Principal
 			gerador.criarClass("business", NOME_CLASSE + "Manager.java", "manager.java", "src");
 			gerador.criarClass("business", NOME_CLASSE + "ManagerImpl.java", "managerImpl.java", "src");
 			
-			gerador.criarClass("web" + separator + "action", NOME_CLASSE + "EditAction.java", "action.java", "src");
-			gerador.criarClass("web" + separator + "action", "xwork-" + NOME_CLASSE  + ".xml", "xworkAction.xml", "src");			
+			if(GERAR_TODOS_ARQUIVOS)
+			{
+				gerador.criarClass("web" + separator + "action", NOME_CLASSE + "EditAction.java", "action.java", "src");
+				gerador.criarClass("web" + separator + "action", "xwork-" + NOME_CLASSE  + ".xml", "xworkAction.xml", "src");							
+			}
 
 			//classes de testes
 			gerador.criarClass("test" + separator + "dao" + separator + "hibernate", NOME_CLASSE + "DaoHibernateTest.java", "daoHibernateTest.java", "test");
 			gerador.criarClass("test" + separator + "business", NOME_CLASSE + "ManagerTest.java", "managerTest.java", "test");
-			gerador.criarClass("test" + separator + "web" + separator + "action", NOME_CLASSE + "EditActionTest.java", "actionTest.java", "test");
+			if(GERAR_TODOS_ARQUIVOS)
+				gerador.criarClass("test" + separator + "web" + separator + "action", NOME_CLASSE + "EditActionTest.java", "actionTest.java", "test");
+			
 			gerador.criarClass("test" + separator + "factory", NOME_CLASSE + "Factory.java", "factory.java", "test");
 
-			gerador.criarFTL(NOME_CLASSE_MINUSCULO + "Edit.ftl", "edit.txt");
-			gerador.criarFTL(NOME_CLASSE_MINUSCULO + "List.ftl", "list.txt");
+			if(GERAR_TODOS_ARQUIVOS)
+			{
+				gerador.criarFTL(NOME_CLASSE_MINUSCULO + "Edit.ftl", "edit.txt");
+				gerador.criarFTL(NOME_CLASSE_MINUSCULO + "List.ftl", "list.txt");				
+			}
 
 			System.out.println("------------------------------------------------------------------------");
 			System.out.println("Arquivos gerados com sucesso...");
+			if(!GERAR_TODOS_ARQUIVOS)
+				System.out.println("NÃO FOI GERADO Action e ftl...(configuração GERAR_TODOS_ARQUIVOS)");
 			
 			gerador.editarXml("business", "applicationContext-business", "appContext-business", "</beans>");
 			gerador.editarXml("dao", "applicationContext-dao", "appContext-dao", "</beans>");
 			gerador.editarXml("dao" + separator + "hibernate", "applicationContext-dao-hibernate", "appContext-daoHibernate", "</beans>");
 			gerador.editarXml(null, "hibernate.cfg", "hib.cfg", "</session-factory>");
-			gerador.editarXml(null, "xwork", "xw", "</xwork>");
+			
+			if(GERAR_TODOS_ARQUIVOS)
+				gerador.editarXml(null, "xwork", "xw", "</xwork>");
 			
 			//saida no console
 			System.out.println("Arquivos editados com sucesso...");
