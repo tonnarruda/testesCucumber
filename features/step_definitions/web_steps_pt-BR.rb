@@ -469,8 +469,15 @@ Dado /^que exista o EPI "([^"]*)" da categoria "([^"]*)"$/ do |epi_nome, tipoepi
   insert :epi do
     nome epi_nome
     fardamento true
+    fabricante 'apiguana'
     tipoepi :nome => tipoepi_nome
     empresa :nome => 'Empresa Padrão'
+  end
+  
+  insert :epihistorico do
+    data '01/02/2011'
+    ca 'a0a1a2a3'
+    epi :nome => epi_nome
   end
 end
 

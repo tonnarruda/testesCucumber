@@ -11,12 +11,15 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 {
 	public void saveConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes) 
 	{
-		for (ColaboradorPeriodoExperienciaAvaliacao colabPerExpAvaliacao : colaboradorAvaliacoes) 
+		if(colaboradorAvaliacoes != null)
 		{
-			if (colabPerExpAvaliacao.getAvaliacao() != null && colabPerExpAvaliacao.getAvaliacao().getId() != null)
+			for (ColaboradorPeriodoExperienciaAvaliacao colabPerExpAvaliacao : colaboradorAvaliacoes) 
 			{
-				colabPerExpAvaliacao.setColaborador(colaborador);
-				getDao().save(colabPerExpAvaliacao);
+				if (colabPerExpAvaliacao.getAvaliacao() != null && colabPerExpAvaliacao.getAvaliacao().getId() != null)
+				{
+					colabPerExpAvaliacao.setColaborador(colaborador);
+					getDao().save(colabPerExpAvaliacao);
+				}
 			}
 		}
 	}

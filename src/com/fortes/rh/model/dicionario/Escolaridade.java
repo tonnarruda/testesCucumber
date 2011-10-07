@@ -66,18 +66,35 @@ public class Escolaridade extends LinkedHashMap<String, String> {
 		try {
 			HashMap<String, String> convert = new HashMap<String, String>();
 			convert.put(ANALFABETO, "Não Alfabetizado");
-			convert.put(PRIMARIO_EM_ANDAMENTO, "Ensino Fundamental em andamento");
-			convert.put(PRIMARIO_COMPLETO, "Ensino Fundamental completo");
-			convert.put(GINASIO_EM_ANDAMENTO, "Ensino Fundamental em andamento");
-			convert.put(GINASIO_COMPLETO, "Ensino Fundamental completo");
-			convert.put(COLEGIAL_EM_ANDAMENTO, "Ensino Médio em andamento");
-			convert.put(COLEGIAL_COMPLETO, "Ensino Médio completo");
-			convert.put(SUPERIOR_EM_ANDAMENTO, "Superior em andamento");
-			convert.put(SUPERIOR_COMPLETO, "Superior completo");
+			convert.put(PRIMARIO_EM_ANDAMENTO, "Ensino Fundamental (1º Grau) Incompleto");
+			convert.put(PRIMARIO_COMPLETO, "Ensino Fundamental (1º Grau) Completo");
+			convert.put(GINASIO_EM_ANDAMENTO, "Ensino Fundamental (1º Grau) Incompleto");
+			convert.put(GINASIO_COMPLETO, "Ensino Fundamental (1º Grau) Completo");
+			convert.put(COLEGIAL_EM_ANDAMENTO, "Ensino Médio (2º Grau) Incompleto");
+			convert.put(COLEGIAL_COMPLETO, "Ensino Médio (2º Grau) Completo");
+			convert.put(SUPERIOR_EM_ANDAMENTO, "Superior Incompleto");
+			convert.put(SUPERIOR_COMPLETO, "Superior Completo");
 			convert.put(ESPECIALIZACAO, "Pós-graduação");
 			convert.put(MESTRADO, "Mestrado");
 			convert.put(DOUTORADO, "Doutorado");
 
+//			F2RH
+//			Não Alfabetizado
+//			Ensino Fundamental (1º Grau) Incompleto
+//			Ensino Fundamental (1º Grau) Completo
+//			Ensino Médio (2º Grau) Incompleto
+//			Ensino Médio Técnico (2º Grau) Incompleto
+//			Ensino Médio (2º Grau) Completo
+//			Ensino Médio Técnico (2º Grau) Completo
+//			Superior Incompleto
+//			Superior Completo
+//			Pós-graduação Incompleta
+//			Pós-graduação Completa
+//			Mestrado Incompleto
+//			Mestrado Completo
+//			Doutorado Incompleto
+//			Doutorado Completo
+			
 			return convert.get(chave);
 
 		} catch (Exception e) {

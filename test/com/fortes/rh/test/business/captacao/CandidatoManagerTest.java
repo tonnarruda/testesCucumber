@@ -1544,7 +1544,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		
 		String[] camposInformados = new String[]{"",
 				"",
-				"escolaridade=Superior completo",
+				"escolaridade=Superior Completo",
 				"idioma=Italiano",
 				"data_cad_ini=" + hojeFormatado + "",
 				"data_cad_fim=" + hojeFormatado + "",
