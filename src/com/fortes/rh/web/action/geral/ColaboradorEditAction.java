@@ -162,7 +162,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	private Collection<PeriodoExperiencia> periodoExperiencias;
 	private Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes;
-	private Map<String, Collection<Avaliacao>> periodoExperienciaAvaliacoes;
+	private Collection<Avaliacao> avaliacoes;
 
 	// Utilizados no insert e update para a chamada ao metodo saveDetalhes();
 	private Collection<Formacao> formacaos;
@@ -307,16 +307,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		
 		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 		
-		periodoExperienciaAvaliacoes = new HashMap<String, Collection<Avaliacao>>();
-		Collection<Avaliacao> avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, 'A', null);
-		
-		for (Avaliacao avaliacao : avaliacoes) 
-		{
-			if (!periodoExperienciaAvaliacoes.containsKey(avaliacao.getPeriodoExperiencia().getId().toString()))
-				periodoExperienciaAvaliacoes.put(avaliacao.getPeriodoExperiencia().getId().toString(), new ArrayList<Avaliacao>());
-			
-			periodoExperienciaAvaliacoes.get(avaliacao.getPeriodoExperiencia().getId().toString()).add(avaliacao);
-		}
+		avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, 'A', null);
 	}
 
 	public String prepareInsert() throws Exception
@@ -1639,10 +1630,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.avaliacaoManager = avaliacaoManager;
 	}
 
-	public Map<String, Collection<Avaliacao>> getPeriodoExperienciaAvaliacoes() {
-		return periodoExperienciaAvaliacoes;
-	}
-
 	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorAvaliacoes() {
 		return colaboradorAvaliacoes;
 	}
@@ -1655,5 +1642,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(
 			ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) {
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
+	}
+
+	public Collection<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
 	}
 }

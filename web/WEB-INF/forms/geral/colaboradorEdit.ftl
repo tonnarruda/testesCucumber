@@ -153,11 +153,9 @@
 			
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 			
-			<#if periodoExperienciaAvaliacoes?exists>
-				<#list periodoExperienciaAvaliacoes?keys as periodo>
-				    <#list periodoExperienciaAvaliacoes.get(periodo) as avaliacao>
-				    	$('#modeloPeriodo' + ${periodo}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
-				    </#list>
+			<#if avaliacoes?exists>
+				<#list avaliacoes as avaliacao>
+			    	$('#modeloPeriodo' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
 				</#list>
 			</#if>
 		});
