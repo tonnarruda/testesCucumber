@@ -106,6 +106,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private boolean ordenarPorAspecto;
 	private boolean exibeResultadoAutoavaliacao;
 	private Boolean compartilharColaboradores;
+	private boolean respostaColaborador;
 
 	public String prepareInsert() throws Exception
 	{
@@ -327,7 +328,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		
-		return Action.SUCCESS;
+		if (respostaColaborador)
+			return "sucessoIndex";
+		else
+			return Action.SUCCESS;
 	}
 
 	public String updateAvaliacaoExperiencia()
@@ -685,5 +689,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setExibeResultadoAutoavaliacao(boolean exibeResultadoAutoavaliacao) {
 		this.exibeResultadoAutoavaliacao = exibeResultadoAutoavaliacao;
+	}
+
+	public boolean isRespostaColaborador() {
+		return respostaColaborador;
+	}
+
+	public void setRespostaColaborador(boolean respostaColaborador) {
+		this.respostaColaborador = respostaColaborador;
 	}
 }

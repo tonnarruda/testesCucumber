@@ -664,7 +664,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 		StringBuilder body = new StringBuilder();
 		body.append("Sr(a) " + nomeUsuario + ", <br>");
-		body.append("sua senha do sistema Fortesrh é : " + senha + "<br>");
+		body.append("sua senha do sistema FortesRH é : " + senha + "<br>");
 		body.append("Acesse o RH em:<br>");
 		body.append("<a href='" + link + "'>RH</a>");
 
@@ -1301,7 +1301,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		
 		String subject = "Candidatos cadastros no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes);
 		
-		StringBuilder body = new StringBuilder("Candidatos cadastros no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes) + "<br>");
+		StringBuilder body = new StringBuilder("Candidatos cadastrados no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes) + "<br>");
 		body.append( "<table>" +
 					"<thead><tr>" +
 					"<th>Empresa</th>" +

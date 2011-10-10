@@ -21,6 +21,10 @@
 		</#if>
 	</#if>
 
+	<#if respostaColaborador>
+		<#assign desabilitarAvaliacaoSelect="true"/>
+	</#if>
+
 	<#if colaboradorQuestionario?exists && colaboradorQuestionario.respondidaEm?exists>
 		<#assign data = colaboradorQuestionario.respondidaEm?date/>
 	<#else>
@@ -49,7 +53,7 @@
 	
 		<#if colaborador?exists && colaborador.id?exists>
 			<@ww.form name="formAvaliacao" action="prepareInsertAvaliacaoExperiencia.action" method="POST">
-				<@ww.select label="Avaliação do Período de Experiência" name="colaboradorQuestionario.avaliacao.id" id="cidade" list="avaliacaoExperiencias" listKey="id" listValue="titulo" cssStyle="width: 245px;" headerKey="" headerValue="Selecione..."  onchange="this.form.submit();" disabled="${desabilitarAvaliacaoSelect}"/>
+				<@ww.select label="Avaliação do Período de Experiência" name="colaboradorQuestionario.avaliacao.id" id="cidade" list="avaliacaoExperiencias" listKey="id" listValue="titulo" cssStyle="width: 480px;" headerKey="" headerValue="Selecione..."  onchange="this.form.submit();" disabled="${desabilitarAvaliacaoSelect}"/>
 				
 				<@ww.hidden name="colaboradorQuestionario.candidato.id" />
 				<@ww.hidden name="colaboradorQuestionario.colaborador.id" />
@@ -67,6 +71,7 @@
 			</#if>
 			
 			<@ww.hidden name="solicitacao.id" />
+			<@ww.hidden name="respostaColaborador" />
 			<@ww.token/>
 		</@ww.form>
 
@@ -75,11 +80,14 @@
 	<#else>
 		<div class="buttonGroup">
 	</#if>
-			<#if colaborador?exists && colaborador.id?exists>
-				<button class="btnCancelar" onclick="window.location='periodoExperienciaQuestionarioList.action?colaborador.id=${colaborador.id}'"></button>		
-			<#else>
-				<button class="btnCancelar" onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'"></button>		
-			</#if>
-		</div>
+
+		<#if colaborador?exists && colaborador.id?exists>
+			<#if !respostaColaborador>
+				<button class="btnCancelar" onclick="window.location='periodoExperienciaQuestionarioList.action?colaborador.id=${colaborador.id}'"></button>
+			</#if>		
+		<#else>
+			<button class="btnCancelar" onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'"></button>		
+		</#if>
+	</div>
 </body>
 </html>

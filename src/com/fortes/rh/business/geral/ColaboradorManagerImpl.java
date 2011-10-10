@@ -649,7 +649,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		StringBuilder body = new StringBuilder();
 		body.append("Sr(a) " + nomeUsuario + ", <br>");
-		body.append("sua senha do sistema Fortesrh é : " + senha + "<br>");
+		body.append("sua senha do sistema FortesRH é : " + senha + "<br>");
 		body.append("Acesse o RH em:<br>");
 		body.append("<a href='" + link + "'>RH</a>");
 

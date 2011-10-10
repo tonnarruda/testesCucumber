@@ -155,7 +155,15 @@
 			
 			<#if avaliacoes?exists>
 				<#list avaliacoes as avaliacao>
-			    	$('#modeloPeriodo' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
+					<#if avaliacao.periodoExperiencia?exists && avaliacao.periodoExperiencia.id?exists>
+				    	$('#modeloPeriodo' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
+					</#if>
+				</#list>
+			</#if>
+
+			<#if colaboradorAvaliacoes?exists>
+				<#list colaboradorAvaliacoes as colaboradorAvaliacao>
+				    $('#modeloPeriodo' + ${colaboradorAvaliacao.periodoExperiencia.id}).val(${colaboradorAvaliacao.avaliacao.id});
 				</#list>
 			</#if>
 		});
