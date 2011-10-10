@@ -66,4 +66,6 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	Double getMediaPeformance(Long avaliadoId, Long avaliacaoDesempenhoId);
 
 	Integer getQtdavaliadores(Long avaliacaoDesempenhoId);
+
+	ColaboradorQuestionario findByColaboradorAvaliacao(Long colaboradorId, Long avaliacaoId);
 }

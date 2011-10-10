@@ -438,6 +438,11 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	public Integer getQtdavaliadores(Long avaliacaoDesempenhoId){
 		return getDao().getQtdavaliadores(avaliacaoDesempenhoId);
 	}
-
 	
+	public ColaboradorQuestionario findByColaboradorAvaliacao(Colaborador colaborador, Avaliacao avaliacao) {
+		if (colaborador != null && colaborador.getId() != null && avaliacao != null && avaliacao.getId() != null)
+			return getDao().findByColaboradorAvaliacao(colaborador.getId(), avaliacao.getId());
+		
+		return null;
+	}
 }

@@ -877,6 +877,38 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		
 		assertEquals(new Integer(2), colaboradorQuestionarioDao.getQtdavaliadores(avaliacaoDesempenho.getId()));
 	}
+	
+	public void testFindByColaboradorAvaliacao()
+	{
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("Joao");
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("Maria");
+		colaboradorDao.save(maria);
+
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(joao);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setColaborador(joao);
+		colaboradorQuestionario2.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario3.setColaborador(maria);
+		colaboradorQuestionario3.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+		
+		assertEquals(colaboradorQuestionario2, colaboradorQuestionarioDao.findByColaboradorAvaliacao(joao.getId(), avaliacao.getId()));
+		assertEquals(colaboradorQuestionario3, colaboradorQuestionarioDao.findByColaboradorAvaliacao(maria.getId(), avaliacao.getId()));
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{

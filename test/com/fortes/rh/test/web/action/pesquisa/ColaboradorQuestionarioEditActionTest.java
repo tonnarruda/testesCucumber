@@ -336,6 +336,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		
 		colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").will(returnValue(colaborador));
 		avaliacaoManager.expects(once()).method("find").will(returnValue(new ArrayList<Avaliacao>()));
+		colaboradorQuestionarioManager.expects(once()).method("findByColaboradorAvaliacao").will(returnValue(null));
 		colaboradorQuestionarioManager.expects(once()).method("populaQuestionario").will(returnValue(colaboradorRespostas));
 		perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq(colaborador.getNome()));
 		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(10L), ANYTHING).will(returnValue(perguntas));
@@ -350,6 +351,24 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		// 2 respostas para perg multi
 		assertEquals(2,((Pergunta)action.getPerguntas().toArray()[1]).getColaboradorRespostas().size());
 	}
+	
+	public void testPrepareInsertAvaliacaoExperienciaComUpdate()
+	{
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(111L);
+		colaboradorQuestionario.setColaborador(colaborador);
+		action.setColaboradorQuestionario(colaboradorQuestionario);
+		
+		colaboradorQuestionarioManager.expects(once()).method("findByColaboradorAvaliacao").will(returnValue(colaboradorQuestionario));
+		
+		colaboradorQuestionarioManager.expects(once()).method("findById").will(returnValue(colaboradorQuestionario));
+		colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").will(returnValue(colaborador));
+		avaliacaoManager.expects(once()).method("find").will(returnValue(new ArrayList<Avaliacao>()));
+		colaboradorRespostaManager.expects(once()).method("findByColaboradorQuestionario").will(returnValue(new ArrayList<ColaboradorResposta>()));
+		
+		assertEquals("success", action.prepareInsertAvaliacaoExperiencia());
+	}
+	
 	public void testPrepareUpdateAvaliacaoExperiencia()
 	{
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);

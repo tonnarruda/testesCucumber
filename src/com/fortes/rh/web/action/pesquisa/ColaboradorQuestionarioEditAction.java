@@ -226,6 +226,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	public String prepareInsertAvaliacaoExperiencia()
 	{
+		ColaboradorQuestionario colaboradorQuestionarioTemp = colaboradorQuestionarioManager.findByColaboradorAvaliacao(colaboradorQuestionario.getColaborador(), colaboradorQuestionario.getAvaliacao());
+		if (colaboradorQuestionarioTemp != null)
+		{
+			colaboradorQuestionario = colaboradorQuestionarioTemp;
+			return prepareUpdateAvaliacaoExperiencia();
+		}
+		
 		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
 		avaliacaoExperiencias = avaliacaoManager.find(new String[]{"ativo", "tipoModeloAvaliacao"}, new Object[]{true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA}, new String[]{"titulo"});
 		
@@ -341,7 +348,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		ajustaSolicitacao();
 		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		
-		return Action.SUCCESS;
+		if (respostaColaborador)
+			return "sucessoIndex";
+		else
+			return Action.SUCCESS;
 	}
 	
 	private Collection<ColaboradorResposta> getColaboradorRespostasDasPerguntas() 
