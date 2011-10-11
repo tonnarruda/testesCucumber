@@ -51,6 +51,7 @@ import com.fortes.rh.test.business.captacao.NivelCompetenciaManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoBDSManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest;
 import com.fortes.rh.test.business.cargosalario.CargoManagerTest;
+import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerAuditaTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest;
 import com.fortes.rh.test.business.cargosalario.GrupoOcupacionalManagerTest;
@@ -58,6 +59,7 @@ import com.fortes.rh.test.business.cargosalario.HistoricoColaboradorManagerTest;
 import com.fortes.rh.test.business.cargosalario.IndiceHistoricoManagerTest;
 import com.fortes.rh.test.business.cargosalario.IndiceManagerTest;
 import com.fortes.rh.test.business.cargosalario.ReajusteColaboradorManagerTest;
+import com.fortes.rh.test.business.cargosalario.TabelaReajusteColaboradorManagerAuditaTest;
 import com.fortes.rh.test.business.cargosalario.TabelaReajusteColaboradorManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.CertificacaoManagerTest;
@@ -667,6 +669,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(FaixaSalarialHistoricoManagerTest.class);
         suite.addTestSuite(FaixaSalarialHistoricoListActionTest.class);
         suite.addTestSuite(FaixaSalarialHistoricoEditActionTest.class);
+        suite.addTestSuite(FaixaSalarialHistoricoManagerAuditaTest.class);
 
         suite.addTestSuite(GrupoOcupacionalManagerTest.class);
         suite.addTestSuite(GrupoOcupacionalDaoHibernateTest.class);
@@ -687,6 +690,7 @@ public class AllUnitTests extends TestSuite
 
         suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);
+        suite.addTestSuite(TabelaReajusteColaboradorManagerAuditaTest.class);
         suite.addTestSuite(IndiceEditActionTest.class);
         suite.addTestSuite(IndiceListActionTest.class);
         suite.addTestSuite(IndiceDaoHibernateTest.class);

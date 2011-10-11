@@ -14,6 +14,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SalarioUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -232,6 +233,7 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
     	return "";
     }
 
+    @NaoAudita
     public String getDescricaoIndice()
     {
     	String nomeDoIndice = this.getNomeDoIndice();
@@ -239,13 +241,13 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 		
 		return this.quantidade + "x " + nomeDoIndice + " (" + MathUtil.formataValor(valorDoIndice) + ")";
     }
-
+    @NaoAudita
 	private Double getValorDoIndice() {
 		if (this.indice != null)
 			return this.indice.getValorDoHistoricoAtual();
 		return new Double(0);
 	}
-
+    @NaoAudita
 	private String getNomeDoIndice() {
 		if (this.indice != null)
 			return this.indice.getNome();
@@ -330,14 +332,14 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 	{
 		this.status = status;
 	}
-	
+	@NaoAudita
 	public String getNomeDoCargoDaFaixaSalarial() {
 		FaixaSalarial faixa = this.getFaixaSalarial();
 		if (faixa != null)
 			return faixa.getNomeDoCargo();
 		return "";
 	}
-	
+	@NaoAudita
 	private String getNomeDaFaixaSalarial() {
 		FaixaSalarial faixa = this.getFaixaSalarial();
 		if (faixa != null)
