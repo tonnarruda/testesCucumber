@@ -193,7 +193,10 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("left join Candidato c on c.id = cnc.candidato_id ");
 		sql.append("where cnc.faixasalarial_id = :faixaSalarialId ");
 		sql.append("and cnc.configuracaonivelcompetenciacolaborador_id is null ");
-		sql.append("and (c.id in (:candidatosIds) or c.id is null) ");		
+		
+		if(!candidatosIds.isEmpty())
+			sql.append("and (c.id in (:candidatosIds) or c.id is null) ");		
+		
 		sql.append("order by c.id nulls first, c.nome ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
@@ -201,7 +204,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.setCharacter("tipoConhecimento", TipoCompetencia.CONHECIMENTO);
 		query.setCharacter("tipoHabilidade", TipoCompetencia.HABILIDADE);
 		query.setLong("faixaSalarialId", faixaSalarialId);
-		query.setParameterList("candidatosIds", candidatosIds, Hibernate.LONG);
+		
+		if(!candidatosIds.isEmpty())
+			query.setParameterList("candidatosIds", candidatosIds, Hibernate.LONG);
 		
 		Collection<Object[]> resultado = query.list();
 		
