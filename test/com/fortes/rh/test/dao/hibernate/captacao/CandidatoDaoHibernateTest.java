@@ -60,6 +60,7 @@ import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.EtapaSeletivaFactory;
+import com.fortes.rh.test.factory.captacao.ExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.HistoricoCandidatoFactory;
 import com.fortes.rh.test.factory.captacao.IdiomaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
@@ -2286,6 +2287,75 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoDao.migrarBairro(bairro.getNome(), bairroDestino.getNome());
 		Candidato candidatoTmp = candidatoDao.findByIdProjection(candidato.getId());
 		assertEquals(candidatoTmp.getEndereco().getBairro(), bairroDestino.getNome());
+	}
+	
+	public void testTriagemAutomatica()
+	{
+		Map<String, Integer> pesos = new HashMap<String, Integer>();
+		pesos.put("escolaridade", 2);
+		pesos.put("cidade", 1);
+		pesos.put("sexo", 1);
+		pesos.put("idade", 1);
+		pesos.put("cargo", 3);
+		pesos.put("tempoExperiencia", 2);
+		pesos.put("pretensaoSalarial", 2);
+		
+		Cargo motorista = CargoFactory.getEntity(2L);
+		motorista.setNome("motorista");
+		cargoDao.save(motorista);
+
+		Cargo cobrador = CargoFactory.getEntity(3L);
+		cobrador.setNome("cobrador");
+		cargoDao.save(cobrador);
+		
+		Estado ceara = EstadoFactory.getEntity();
+		estadoDao.save(ceara);
+		
+		Cidade caucaia = CidadeFactory.getEntity();
+		caucaia.setUf(ceara);
+		cidadeDao.save(caucaia);
+		
+		Candidato joao = CandidatoFactory.getCandidato();
+		joao.setNome("joao");
+		joao.setPessoalEscolaridade("05");
+		joao.setPessoalSexo('M');
+		joao.setPessoalDataNascimento(DateUtil.criarDataMesAno(1, 1, 1980));
+		joao.setPretencaoSalarial(1000.0);
+		joao.setEnderecoCidadeId(caucaia.getId());
+		candidatoDao.save(joao);
+		
+		Experiencia expJoao1 = ExperienciaFactory.getEntity();
+		expJoao1.setCandidato(joao);
+		expJoao1.setCargo(motorista);
+		expJoao1.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2009));
+		expJoao1.setDataDesligamento(DateUtil.criarDataMesAno(1, 1, 2010));
+		experienciaDao.save(expJoao1);
+
+		Candidato maria = CandidatoFactory.getCandidato();
+		maria.setNome("maria");
+		maria.setPessoalEscolaridade("07");
+		maria.setPessoalSexo('F');
+		maria.setPessoalDataNascimento(DateUtil.criarDataMesAno(1, 1, 1983));
+		maria.setEnderecoCidadeId(caucaia.getId());
+		maria.setPretencaoSalarial(1200.0);
+		candidatoDao.save(maria);
+		
+		Experiencia expMaria1 = ExperienciaFactory.getEntity();
+		expMaria1.setCandidato(maria);
+		expMaria1.setCargo(cobrador);
+		expMaria1.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2009));
+		experienciaDao.save(expMaria1);
+		
+		Candidato candBusca = CandidatoFactory.getCandidato();
+		candBusca.setPessoalEscolaridade("02");
+		candBusca.setPessoalSexo('F');
+		candBusca.setEnderecoCidadeId(caucaia.getId());
+		candBusca.setPretencaoSalarial(1500.0);
+		candidatoDao.save(candBusca);
+		
+		candidatoDao.findByCandidatoId(joao.getId());
+		Collection<Candidato> candidatos = candidatoDao.triagemAutomatica(candBusca, new Long[]{2L,3L}, 20, 30, 1, pesos);
+		assertTrue(candidatos.size() >= 2);
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)

@@ -1360,4 +1360,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	{
 			getDao().updateExamePalografico(candidato);
 	}
+
+	public Collection<Candidato> triagemAutomatica(Candidato candidato, Long[] cargosIds, Integer idadeMinima, Integer idadeMaxima, Integer tempoExperiencia, Map<String, Integer> pesos) 
+	{
+		return getDao().triagemAutomatica(candidato, cargosIds, idadeMinima, idadeMaxima, tempoExperiencia, pesos);
+	}
 }

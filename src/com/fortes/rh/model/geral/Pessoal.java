@@ -11,6 +11,7 @@ import javax.persistence.Embedded;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -77,6 +78,10 @@ public class Pessoal implements Serializable
 	private String escolaridade;
 	@Column(length=5)
 	private String estadoCivil;
+	
+	@Transient
+	private int idade;
+	
 	//Usado no iReport
 	@NaoAudita
 	public String getEscolaridadeDic()

@@ -7,6 +7,8 @@ package com.fortes.rh.dao.hibernate.captacao;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -36,6 +38,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.model.type.File;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
@@ -1146,5 +1149,135 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.setString("examePalografico",candidato.getExamePalografico());
 		
 		query.executeUpdate();
+	}
+
+	public Collection<Candidato> triagemAutomatica(Candidato candidato, Long[] cargosIds, Integer idadeMinima, Integer idadeMaxima, Integer tempoExperiencia, Map<String, Integer> pesos) 
+	{
+		double divisao = 1;
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("select distinct (c.id), c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cid.nome as nomeCidade, e.sigla, ( ");
+		
+		if(cargosIds != null && cargosIds.length != 0 && tempoExperiencia != null && pesos.get("tempoExperiencia") != 0 )
+		{
+			sql.append("CASE when c.id = ");
+			sql.append("(select candSub.id from candidato candSub ");
+			sql.append("join experiencia e on e.candidato_id = candSub.id ");
+			sql.append("where e.cargo_id in (:cargosIds) ");
+			sql.append("and c.id = candSub.id ");
+			sql.append("group by candSub.id ");
+			sql.append("having (sum( (case when e.datadesligamento is null then current_date else e.datadesligamento end) - e.dataadmissao)/365.0) * 12 >= :tempoExperiencia) then :pesoTempoExperiencia else 0 end + ");
+			divisao += pesos.get("tempoExperiencia");
+		}
+			
+		if(idadeMinima != null && idadeMinima != 0 && idadeMaxima != null && idadeMaxima != 0 && pesos.get("idade") != 0)
+		{
+			sql.append("case when extract(year from age(c.dataNascimento)) between :idadeMinima and :idadeMaxima then :pesoIdade else 0 end + ");
+			divisao += pesos.get("idade");
+		}
+		
+		if(candidato != null && candidato.getEndereco() != null && candidato.getEndereco().getCidade() != null && candidato.getEndereco().getCidade().getId() != null && pesos.get("cidade") != 0)
+		{
+			sql.append("CASE cid.id WHEN :cidadeId THEN :pesoCidade ELSE 0  END + ");
+			divisao += pesos.get("cidade");
+		}
+		
+		if(cargosIds != null && cargosIds.length != 0 && pesos.get("cargo") != 0)
+		{
+			sql.append("CASE when cc.cargos_id in (:cargosIds) THEN :pesoCargo ELSE 0  END + ");
+			divisao += pesos.get("cargo");
+		}
+		
+		if(candidato != null && candidato.getPessoal() != null && candidato.getPessoal().getEscolaridade() != null && !candidato.getPessoal().getEscolaridade().equals("") && pesos.get("escolaridade") != 0)
+		{
+			sql.append("CASE WHEN CAST(c.escolaridade AS integer) >= :escolaridade THEN :pesoEscolaridade ELSE 0 END + "); 
+			divisao += pesos.get("escolaridade");
+		}
+
+		if(candidato != null && candidato.getPretencaoSalarial() != null && candidato.getPretencaoSalarial() > 0 && pesos.get("pretensaoSalarial") != 0)
+		{
+			sql.append("CASE when c.pretencaoSalarial <= :pretensaoSalarial THEN :pesoPretensaoSalarial ELSE 0  END + "); 
+			divisao += pesos.get("pretensaoSalarial");
+		}
+
+		if(pesos.get("sexo") > 1)
+			divisao += pesos.get("sexo") - 1;
+
+		sql.append("CASE c.sexo WHEN :sexo THEN :pesoSexo ELSE 0 END ");
+		sql.append(" )/:divisao as compatibilidade "); 
+		
+		sql.append("from candidato c ");
+		sql.append("join candidato_cargo cc on cc.candidato_id = c.id ");
+		sql.append("join estado e on e.id = c.uf_id ");
+		sql.append("join cidade as cid on cid.id = c.cidade_id ");
+		sql.append("group by c.id, c.nome, c.datanascimento, c.sexo, cid.id, e.sigla, c.escolaridade, cc.cargos_id, c.pretencaoSalarial, cid.nome "); 
+		sql.append("order by compatibilidade desc , c.nome");
+
+		Query query = getSession().createSQLQuery(sql.toString());
+		
+		if(cargosIds != null && cargosIds.length != 0 && tempoExperiencia != null && pesos.get("tempoExperiencia") != 0 )
+		{
+			query.setInteger("tempoExperiencia", tempoExperiencia);
+			query.setInteger("pesoTempoExperiencia", pesos.get("tempoExperiencia"));
+		}
+			
+		if(idadeMinima != null && idadeMinima != 0 && idadeMaxima != null && idadeMaxima != 0 && pesos.get("idade") != 0)
+		{
+			query.setInteger("idadeMinima", idadeMinima);
+			query.setInteger("idadeMaxima", idadeMaxima);
+			query.setInteger("pesoIdade", pesos.get("idade"));
+		}
+		
+		if(candidato != null && candidato.getEndereco() != null && candidato.getEndereco().getCidade() != null && candidato.getEndereco().getCidade().getId() != null && pesos.get("cidade") != 0)
+		{
+			query.setLong("cidadeId", candidato.getEndereco().getCidade().getId());
+			query.setInteger("pesoCidade", pesos.get("cidade"));
+		}
+		
+		if(cargosIds != null && cargosIds.length != 0 && pesos.get("cargo") != 0)
+		{
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			query.setInteger("pesoCargo", pesos.get("cargo"));
+		}
+		
+		if(candidato != null && candidato.getPessoal() != null && candidato.getPessoal().getEscolaridade() != null && !candidato.getPessoal().getEscolaridade().equals("") && pesos.get("escolaridade") != 0)
+		{
+			query.setInteger("escolaridade", Integer.parseInt(candidato.getPessoal().getEscolaridade()));
+			query.setInteger("pesoEscolaridade", pesos.get("escolaridade"));
+		}
+
+		if(candidato != null && candidato.getPretencaoSalarial() != null && candidato.getPretencaoSalarial() > 0 && pesos.get("pretensaoSalarial") != 0)
+		{
+			query.setDouble("pretensaoSalarial", candidato.getPretencaoSalarial());
+			query.setInteger("pesoPretensaoSalarial", pesos.get("pretensaoSalarial"));
+		}
+		
+		query.setCharacter("sexo", candidato.getPessoal().getSexo());
+		query.setInteger("pesoSexo", pesos.get("sexo"));
+		
+		query.setDouble("divisao", divisao);
+		
+		Collection<Object[]> resultado = query.list();
+		
+		Collection<Candidato> lista = new ArrayList<Candidato>();
+		Candidato cand;
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			cand = new Candidato();
+			cand.setId(((BigInteger)res[0]).longValue());
+			cand.setNome((String)res[1]);
+			cand.setPessoalDataNascimento((Date) res[2]);
+			cand.setPessoalSexo((Character) res[3]);
+			cand.setPretencaoSalarial((Double) res[4]);
+			cand.setPessoalEscolaridade((String) res[5]);
+			cand.setEnderecoCidadeNome((String) res[6]);
+			cand.setEnderecoUfSigla((String) res[7]);
+			cand.setPercentualCompatibilidade(((Double) res[8])*100);
+			lista.add(cand);
+		}
+
+		return lista;	
 	}
 }

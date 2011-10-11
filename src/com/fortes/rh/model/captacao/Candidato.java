@@ -123,6 +123,8 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	
 	@Transient
 	private int qtdCurriculosCadastrados;
+	@Transient
+	private double percentualCompatibilidade;
 
 	@ManyToOne
 	private ComoFicouSabendoVaga comoFicouSabendoVaga;
@@ -564,6 +566,16 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 			endereco.setUf(new Estado());
 
 		endereco.getUf().setId(enderecoUfId);
+	}
+	public void setEnderecoUfSigla(String enderecoUfSigla)
+	{
+		if (endereco == null)
+			endereco = new Endereco();
+		
+		if(endereco.getUf() == null)
+			endereco.setUf(new Estado());
+		
+		endereco.getUf().setSigla(enderecoUfSigla);
 	}
 	public void setEnderecoCidadeId(Long enderecoCidadeId)
 	{
@@ -1157,5 +1169,13 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 		}
 		
 		return null;
+	}
+
+	public double getPercentualCompatibilidade() {
+		return percentualCompatibilidade;
+	}
+
+	public void setPercentualCompatibilidade(double percentualCompatibilidade) {
+		this.percentualCompatibilidade = percentualCompatibilidade;
 	}
 }

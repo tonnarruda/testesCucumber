@@ -209,6 +209,8 @@ public class CandidatoListAction extends MyActionSupportList
 	private Boolean compartilharCandidatos;
 	private Integer qtdRegistros = 100;
 	private char statusSolicitacao;
+	
+	private Map<String, Integer> pesos;
 
 	public String list() throws Exception
 	{
@@ -370,6 +372,26 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	public String prepareTriagemAutomatica() throws Exception
+	{
+		prepareBuscaCandidato();
+		
+		pesos = new HashMap<String, Integer>();
+		pesos.put("escolaridade", 2);
+		pesos.put("cidade", 1);
+		pesos.put("sexo", 1);
+		pesos.put("idade", 1);
+		pesos.put("cargo", 3);
+		pesos.put("tempoExperiencia", 2);
+		pesos.put("pretensaoSalarial", 2);
+	
+		if (!msgAlert.equals(""))
+			addActionMessage(msgAlert);
+		
+		setShowFilter(true);
+
+		return Action.SUCCESS;
+	}
 	
 	private void montaFiltroF2rh() 
 	{
@@ -524,6 +546,21 @@ public class CandidatoListAction extends MyActionSupportList
 			setShowFilter(false);
 		}
 
+		return Action.SUCCESS;
+	}
+	
+	public String triagemAutomatica() throws Exception
+	{
+		candidatos = candidatoManager.triagemAutomatica(candidato, LongUtil.arrayStringToArrayLong(cargosCheck), idadeMin.equals("")?0:Integer.parseInt(idadeMin), idadeMax.equals("")?0:Integer.parseInt(idadeMax), tempoExperiencia.equals("")?0:Integer.parseInt(tempoExperiencia), pesos);
+
+		if(candidatos == null || candidatos.size() == 0)
+			addActionMessage("Não existem candidatos a serem listados!");
+		else {
+			setShowFilter(false);
+		}
+
+		prepareTriagemAutomatica();
+		
 		return Action.SUCCESS;
 	}
 
@@ -1572,6 +1609,14 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setStatusSolicitacao(char statusSolicitacao) {
 		this.statusSolicitacao = statusSolicitacao;
+	}
+
+	public Map<String, Integer> getPesos() {
+		return pesos;
+	}
+
+	public void setPesos(Map<String, Integer> pesos) {
+		this.pesos = pesos;
 	}
 
 }
