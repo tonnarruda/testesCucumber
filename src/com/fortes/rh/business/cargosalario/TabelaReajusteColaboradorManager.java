@@ -9,16 +9,26 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.spring.aop.callback.TabelaReajusteColaboradorAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
+import com.fortes.security.auditoria.Modulo;
 
+@Modulo("Tabela Reajuste Colaborador")
 public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaReajusteColaborador>
 {
+	@Audita(operacao="Remoção", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
 	public void remove(TabelaReajusteColaborador tabelaReajusteColaborador);
 
-	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors);
-
+	@Audita(operacao="Aplicar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
 	public void aplicar(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, Exception, ColecaoVaziaException;
 
+	@Audita(operacao="Cancelar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
 	public void cancelar(Long tabelaReajusteId, Empresa empresa) throws Exception;
+
+	@Audita(operacao="Atualização", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
+	public void update(TabelaReajusteColaborador tabelaReajusteColaborador);
+
+	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors);
 
 	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId);
 
@@ -31,6 +41,4 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public TabelaReajusteColaborador findByIdProjection(Long tabelaReajusteColaboradorId);
 
 	public void verificaDataHistoricoColaborador(Long tabelaReajusteColaboradorId, Date data) throws Exception;
-	
-	public void update(TabelaReajusteColaborador tabelaReajusteColaborador);
 }

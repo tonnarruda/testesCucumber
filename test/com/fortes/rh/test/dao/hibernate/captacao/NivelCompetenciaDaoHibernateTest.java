@@ -401,6 +401,8 @@ private ColaboradorManager colaboradorManager;
 		jose.setNome("jose");
 		candidatoDao.save(jose);
 		
+		Collection<Long> candidatosIds = Arrays.asList(joao.getId(), jose.getId());
+		
 		ConfiguracaoNivelCompetencia configFaixa1 = new ConfiguracaoNivelCompetencia();
 		configFaixa1.setFaixaSalarial(faixaSalarial);
 		configFaixa1.setNivelCompetencia(nivel1);
@@ -440,7 +442,7 @@ private ColaboradorManager colaboradorManager;
 		configuracaoNivelCompetenciaDao.save(configJose1);
 		
 		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId()); // Arranjo para teste de consulta SQL
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaCandidato(faixaSalarial.getId());
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaCandidato(faixaSalarial.getId(), candidatosIds);
 		
 		assertEquals(5, configs.size());
 		//a ordem é importante para o manager

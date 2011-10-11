@@ -29,6 +29,7 @@ import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -289,6 +290,7 @@ public class Cargo extends AbstractModel implements Serializable
 		return nomeMercado;
 	}
 
+	@NaoAudita
 	public String getDescEscolaridade()
 	{
 		Escolaridade esc = new Escolaridade();
@@ -326,6 +328,7 @@ public class Cargo extends AbstractModel implements Serializable
 		this.cboCodigo = cboCodigo;
 	}
 
+	@NaoAudita
 	public String getDescAreaFormacao()
 	{
 		StringBuilder descricao = new StringBuilder();
@@ -338,7 +341,8 @@ public class Cargo extends AbstractModel implements Serializable
 
 		return descricao.toString();
 	}
-
+	
+	@NaoAudita
 	public String getDescEtapaSeletiva()
 	{
 		StringBuilder etapas = new StringBuilder();
@@ -352,6 +356,7 @@ public class Cargo extends AbstractModel implements Serializable
 		return etapas.toString();
 	}
 	
+	@NaoAudita
 	public String getNomeMercadoComEmpresa()
 	{
 		if(this.empresa != null && this.empresa.getNome() != null)
@@ -360,6 +365,7 @@ public class Cargo extends AbstractModel implements Serializable
 			return this.nomeMercado;
 	}
 
+	@NaoAudita
 	public String getDescAreaOrganizacioal()
 	{
 		StringBuilder descricao = new StringBuilder();
@@ -373,6 +379,7 @@ public class Cargo extends AbstractModel implements Serializable
 		return descricao.toString();
 	}
 
+	@NaoAudita
 	public String getDescConhecimento()
 	{
 		StringBuilder descricao = new StringBuilder();
@@ -389,6 +396,7 @@ public class Cargo extends AbstractModel implements Serializable
 		return descricao.toString();
 	}
 
+	@NaoAudita
 	public String getDescHabilidade()
 	{
 		StringBuilder descricao = new StringBuilder();
@@ -403,6 +411,7 @@ public class Cargo extends AbstractModel implements Serializable
 		return descricao.toString();
 	}
 	
+	@NaoAudita
 	public String getDescAtitude()
 	{
 		StringBuilder descricao = new StringBuilder();
@@ -417,6 +426,7 @@ public class Cargo extends AbstractModel implements Serializable
 		return descricao.toString();
 	}
 
+	@NaoAudita
 	public String getDescFaixaSalarial()
 	{
 		StringBuilder descricao = new StringBuilder();

@@ -1,5 +1,6 @@
 package com.fortes.rh.test.business.captacao;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManagerImpl;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
@@ -35,6 +37,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 	private ConfiguracaoNivelCompetenciaManagerImpl configuracaoNivelCompetenciaManager = new ConfiguracaoNivelCompetenciaManagerImpl();
 	private Mock configuracaoNivelCompetenciaDao;
 	private Mock nivelCompetenciaManager;
+	private Mock candidatoSolicitacaoManager;
+	
 	
 	protected void setUp() throws Exception
     {
@@ -44,6 +48,9 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 
         nivelCompetenciaManager = new Mock(NivelCompetenciaManager.class);
         configuracaoNivelCompetenciaManager.setNivelCompetenciaManager((NivelCompetenciaManager) nivelCompetenciaManager.proxy());
+
+        candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
+        configuracaoNivelCompetenciaManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
     }
 
 	public void testSaveByFaixa()
@@ -205,6 +212,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		Candidato maria = CandidatoFactory.getCandidato(2L);
 		maria.setNome("maria");
 		
+		Collection<Long> candidatosIds= Arrays.asList(joao.getId(), maria.getId());
+		
 		ConfiguracaoNivelCompetencia configFaixa1Java = criaConfigCompetencia("java", faixaSalarial, nivelBom, TipoCompetencia.ATITUDE, null);
 		ConfiguracaoNivelCompetencia configFaixa1Delphi = criaConfigCompetencia("delphi", faixaSalarial, nivelPessimo, TipoCompetencia.CONHECIMENTO, null);
 		ConfiguracaoNivelCompetencia configFaixa1BD = criaConfigCompetencia("BD", faixaSalarial, nivelPessimo, TipoCompetencia.CONHECIMENTO, null);
@@ -216,10 +225,11 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = Arrays.asList(configFaixa1Java, configFaixa1Delphi, configFaixa1BD, configCandidatoJoao1, configCandidatoJoao2, configCandidatoMaria1);
 		
-		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaCandidato").with(eq(faixaSalarial.getId())).will(returnValue(configuracaoNivelCompetencias));
+		candidatoSolicitacaoManager.expects(once()).method("getCandidatosBySolicitacao").with(ANYTHING).will(returnValue(candidatosIds));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaCandidato").with(eq(faixaSalarial.getId()), eq(candidatosIds)).will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(nivelCompetencias));
 
-		Collection<ConfiguracaoNivelCompetenciaVO> matrizes = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(empresa.getId(), faixaSalarial.getId());
+		Collection<ConfiguracaoNivelCompetenciaVO> matrizes = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(empresa.getId(), faixaSalarial.getId(), null);
 		assertEquals(2, matrizes.size());
 		
 		ConfiguracaoNivelCompetenciaVO matrizJoao = (ConfiguracaoNivelCompetenciaVO) matrizes.toArray()[0];

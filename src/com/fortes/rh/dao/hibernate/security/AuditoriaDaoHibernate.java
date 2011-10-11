@@ -90,7 +90,7 @@ public class AuditoriaDaoHibernate extends GenericDaoHibernate<Auditoria> implem
 
 		getFind(parametros, criteria, empresaId);
 
-		criteria.addOrder(Order.asc("a.data"));
+		criteria.addOrder(Order.desc("a.data"));
 		criteria.setFirstResult(((page - 1) * pagingSize));
 		criteria.setMaxResults(pagingSize);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Auditoria.class));

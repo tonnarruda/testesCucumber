@@ -1,11 +1,13 @@
 package com.fortes.rh.security.spring.aop.callback;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
@@ -93,6 +95,24 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		String dados = new GeraDadosAuditados(null, dadosColab).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
+	}
+	
+	public Auditavel desligaColaboradorAC(MetodoInterceptado metodo) throws Throwable 
+	{
+		metodo.processa();
+
+		String codigoAC = (String) metodo.getParametros()[0];
+		Empresa empresa = (Empresa) metodo.getParametros()[1];
+		Date dataDesligamento = (Date) metodo.getParametros()[2];
+		
+		Map<String, Object> desligamento = new LinkedHashMap<String, Object>();
+		desligamento.put("Colaborador codigoAC", codigoAC);
+		desligamento.put("Empresa codigoAC", empresa.getCodigoAC());
+		desligamento.put("Data Desligamento", dataDesligamento);
+		
+		String dados = new GeraDadosAuditados(null, desligamento).gera();
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), codigoAC + " " + empresa.getCodigoAC(), dados);
 	}
 	
 	private Colaborador carregaEntidade(MetodoInterceptado metodo, Colaborador colaborador) {

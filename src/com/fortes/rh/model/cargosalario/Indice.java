@@ -13,6 +13,7 @@ import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -101,6 +102,7 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 	{
 		this.nome = nome;
 	}
+	@NaoAudita
 	public Collection<IndiceHistorico> getIndiceHistoricos()
 	{
 		return indiceHistoricos;
@@ -109,7 +111,7 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 	{
 		this.indiceHistoricos = indiceHistoricos;
 	}
-
+	@NaoAudita
 	public IndiceHistorico getIndiceHistoricoAtual()
 	{
 		return indiceHistoricoAtual;
@@ -118,7 +120,7 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 	{
 		this.indiceHistoricoAtual = indiceHistoricoAtual;
 	}
-
+	@NaoAudita
 	public Double getValorDoHistoricoAtual() {
 		if (getIndiceHistoricoAtual() != null)
 			return this.getIndiceHistoricoAtual().getValor();

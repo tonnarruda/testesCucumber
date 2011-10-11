@@ -58,8 +58,11 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias);
 	public void enviarEmailCadastro(Colaborador colaborador, Empresa empresa) throws AddressException, MessagingException;
+	//TODO Auditoria não ta passando
+	@Audita(operacao="Desligamento no AC", auditor=ColaboradorAuditorCallbackImpl.class)
 	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
 	public Long religaColaboradorAC(String codigoAC, String empCodigo, String grupoAC);
+	
 	public Colaborador findColaboradorUsuarioByCpf(String cpf,Long empresaId);
 	public void enviaEmailEsqueciMinhaSenha(Colaborador colaborador, Empresa empresa);
 	public String recuperaSenha(String cpf,Empresa empresa);
