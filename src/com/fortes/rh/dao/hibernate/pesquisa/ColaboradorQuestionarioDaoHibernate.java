@@ -803,4 +803,27 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		return (Integer) criteria.uniqueResult();
 	}
+
+	public ColaboradorQuestionario findByColaboradorAvaliacao(Long colaboradorId, Long avaliacaoId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("cq.id"), "id");
+		p.add(Projections.property("cq.colaborador.id"), "projectionColaboradorId");
+		p.add(Projections.property("cq.avaliacao.id"), "projectionAvaliacaoId");
+		
+		criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
+	    criteria.add(Expression.eq("cq.avaliacao.id", avaliacaoId));
+
+		criteria.setProjection(Projections.distinct(p));
+		
+	    criteria.addOrder(Order.desc("cq.id"));
+	    criteria.setMaxResults(1);
+	    
+	    criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (ColaboradorQuestionario) criteria.uniqueResult();
+	}
 }

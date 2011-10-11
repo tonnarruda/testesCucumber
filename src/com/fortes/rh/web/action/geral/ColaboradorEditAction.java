@@ -378,6 +378,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 		valorCalculado = historicoColaborador.getSalarioCalculado();
 
+		colaboradorAvaliacoes = colaboradorPeriodoExperienciaAvaliacaoManager.findByColaborador(colaborador.getId()); 
+		
 		return Action.SUCCESS;
 	}
 	

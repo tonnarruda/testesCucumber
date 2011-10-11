@@ -11,4 +11,8 @@ public interface ColaboradorPeriodoExperienciaAvaliacaoManager extends GenericMa
 	void saveConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes);
 
 	void removeConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador);
+
+	Collection<ColaboradorPeriodoExperienciaAvaliacao> findByColaborador(Long colaboradorId);
+
+	void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo();
 }

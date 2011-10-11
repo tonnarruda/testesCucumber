@@ -396,7 +396,12 @@
 				/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action*=ROLE_REL_ACOMP_PERIODO_EXPERIENCIA
 				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
 				/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action*=ROLE_MOV_PERIODOEXPERIENCIA
+				
+				/avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER
+				/avaliacao/avaliacaoExperiencia/insertAvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER
+				/avaliacao/avaliacaoExperiencia/updateAvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER
 				/avaliacao/avaliacaoExperiencia/*AvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA
+				
 				/avaliacao/avaliacaoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
 				/avaliacao/perguntaAvaliacao/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
 				

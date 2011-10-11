@@ -70,4 +70,27 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjec
 		
 		assertNull(exception);
 	}
+	
+	public void testFindByColaborador()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		
+		ColaboradorPeriodoExperienciaAvaliacao config1 = new ColaboradorPeriodoExperienciaAvaliacao();
+		config1.setColaborador(colaborador);
+		config1.setPeriodoExperiencia(PeriodoExperienciaFactory.getEntity(1L));
+		config1.setAvaliacao(AvaliacaoFactory.getEntity(1L));
+		
+		Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes = Arrays.asList(config1);
+		colaboradorPeriodoExperienciaAvaliacaoDao.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(colaboradorAvaliacoes));
+		
+		assertEquals(1, colaboradorPeriodoExperienciaAvaliacaoManager.findByColaborador(colaborador.getId()).size());
+	}
+	
+	public void testRemoveConfiguracaoAvaliacaoPeriodoExperiencia()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		
+		colaboradorPeriodoExperienciaAvaliacaoDao.expects(once()).method("removeByColaborador").with(eq(colaborador.getId()));
+		colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador);
+	}
 }
