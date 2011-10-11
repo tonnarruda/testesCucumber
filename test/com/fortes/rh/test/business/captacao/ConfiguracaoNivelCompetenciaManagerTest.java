@@ -212,6 +212,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		Candidato maria = CandidatoFactory.getCandidato(2L);
 		maria.setNome("maria");
 		
+		Collection<Long> candidatosIds= Arrays.asList(joao.getId(), maria.getId());
+		
 		ConfiguracaoNivelCompetencia configFaixa1Java = criaConfigCompetencia("java", faixaSalarial, nivelBom, TipoCompetencia.ATITUDE, null);
 		ConfiguracaoNivelCompetencia configFaixa1Delphi = criaConfigCompetencia("delphi", faixaSalarial, nivelPessimo, TipoCompetencia.CONHECIMENTO, null);
 		ConfiguracaoNivelCompetencia configFaixa1BD = criaConfigCompetencia("BD", faixaSalarial, nivelPessimo, TipoCompetencia.CONHECIMENTO, null);
@@ -223,7 +225,6 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = Arrays.asList(configFaixa1Java, configFaixa1Delphi, configFaixa1BD, configCandidatoJoao1, configCandidatoJoao2, configCandidatoMaria1);
 		
-		Collection<Long> candidatosIds = new ArrayList<Long>();
 		candidatoSolicitacaoManager.expects(once()).method("getCandidatosBySolicitacao").with(ANYTHING).will(returnValue(candidatosIds));
 		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaCandidato").with(eq(faixaSalarial.getId()), eq(candidatosIds)).will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(nivelCompetencias));
