@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.ant.task.emma.report.Quantidade;
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.model.type.FileUtil;
@@ -57,8 +58,10 @@ import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.CurriculoCandidatoRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
@@ -164,6 +167,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private String formas;
 	private String tempoExperiencia;
 	private String deficiencia;
+	private Long cargoId;
 
 	private String[] candidatosId;
 
@@ -270,12 +274,12 @@ public class CandidatoListAction extends MyActionSupportList
 		if(solicitacao != null && solicitacao.getId() != null)
 		{
 			solicitacao = solicitacaoManager.findByIdProjection(solicitacao.getId());
-
+			
 			if(solicitacao.getCidade() != null && solicitacao.getCidade().getUf() != null)
 			{
 				uf = solicitacao.getCidade().getUf().getId();
 				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
-				cidade = solicitacao.getCidade().getId();
+				cidade = (cidade==null?solicitacao.getCidade().getId():cidade);
             	Collection<Bairro> bairroList = bairroManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"cidade.id"}, new Object[]{solicitacao.getCidade().getId()}, new String[]{"nome"});
             	bairrosCheckList = CheckListBoxUtil.populaCheckListBox(bairroList, "getId", "getNome");
             	Collection<Bairro> marcados = bairroManager.getBairrosBySolicitacao(solicitacao.getId());
@@ -285,9 +289,9 @@ public class CandidatoListAction extends MyActionSupportList
 			if (!filtro)
 			{
 				escolaridade = solicitacao.getEscolaridade();
-				sexo = solicitacao.getSexo();
-				idadeMin = StringUtil.valueOf(solicitacao.getIdadeMinima());
-				idadeMax = StringUtil.valueOf(solicitacao.getIdadeMaxima());
+				sexo = (sexo==null?solicitacao.getSexo():sexo);
+				idadeMin = ((idadeMin==null || idadeMin.equals(""))?StringUtil.valueOf(solicitacao.getIdadeMinima()):idadeMin);
+				idadeMax = ((idadeMax==null ||idadeMax.equals(""))?StringUtil.valueOf(solicitacao.getIdadeMaxima()):idadeMax);
 
 				for (CheckBox cb : cargosCheckList)
 				{
@@ -297,6 +301,7 @@ public class CandidatoListAction extends MyActionSupportList
 						break;
 					}
 				}
+				cargoId = solicitacao.getFaixaSalarial().getCargo().getId();
 
 				Collection<AreaInteresse> areasInteresse = areaInteresseManager.findAreasInteresseByAreaOrganizacional(solicitacao.getAreaOrganizacional());
 
@@ -375,6 +380,15 @@ public class CandidatoListAction extends MyActionSupportList
 	public String prepareTriagemAutomatica() throws Exception
 	{
 		prepareBuscaCandidato();
+		
+		if(qtdRegistros == null)
+			qtdRegistros = 50;
+		
+		if(candidato.getEndereco() != null && candidato.getEndereco().getUf()!= null)
+		{
+			uf = candidato.getEndereco().getUf().getId();
+			cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+		}
 		
 		pesos = new HashMap<String, Integer>();
 		pesos.put("escolaridade", 2);
@@ -499,7 +513,6 @@ public class CandidatoListAction extends MyActionSupportList
 				parametros.put("experiencias", experienciasCheckLong);
 		}else
 			parametros.put("experiencias", experienciasCheckLong);
-		
 
 		if (BDS)
 			empresaId = getEmpresaSistema().getId();
@@ -551,7 +564,20 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	public String triagemAutomatica() throws Exception
 	{
-		candidatos = candidatoManager.triagemAutomatica(candidato, LongUtil.arrayStringToArrayLong(cargosCheck), idadeMin.equals("")?0:Integer.parseInt(idadeMin), idadeMax.equals("")?0:Integer.parseInt(idadeMax), tempoExperiencia.equals("")?0:Integer.parseInt(tempoExperiencia), pesos);
+		if(candidato.getPessoal() == null)
+			candidato.setPessoal(new Pessoal());
+		
+		candidato.getPessoal().setSexo(sexo.charAt(0));
+
+		if(candidato.getEndereco() == null)
+			candidato.setEndereco(new Endereco());
+		
+		if(candidato.getEndereco().getCidade() == null)
+			candidato.getEndereco().setCidade(new Cidade());
+
+		candidato.getEndereco().getCidade().setId(cidade);
+
+		candidatos = candidatoManager.triagemAutomatica(candidato, new Long[]{cargoId}, idadeMin.equals("")?0:Integer.parseInt(idadeMin), idadeMax.equals("")?0:Integer.parseInt(idadeMax), tempoExperiencia.equals("")?0:Integer.parseInt(tempoExperiencia), pesos, qtdRegistros, empresaId);
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
@@ -1617,6 +1643,14 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setPesos(Map<String, Integer> pesos) {
 		this.pesos = pesos;
+	}
+
+	public void setCargoId(Long cargoId) {
+		this.cargoId = cargoId;
+	}
+
+	public Long getCargoId() {
+		return cargoId;
 	}
 
 }

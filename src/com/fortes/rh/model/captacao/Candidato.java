@@ -125,6 +125,8 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private int qtdCurriculosCadastrados;
 	@Transient
 	private double percentualCompatibilidade;
+	@Transient
+	private int tempoExperiencia;
 
 	@ManyToOne
 	private ComoFicouSabendoVaga comoFicouSabendoVaga;
@@ -1177,5 +1179,13 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setPercentualCompatibilidade(double percentualCompatibilidade) {
 		this.percentualCompatibilidade = percentualCompatibilidade;
+	}
+
+	public int getTempoExperiencia() {
+		return tempoExperiencia;
+	}
+
+	public void setTempoExperiencia(int tempoExperiencia) {
+		this.tempoExperiencia = tempoExperiencia;
 	}
 }

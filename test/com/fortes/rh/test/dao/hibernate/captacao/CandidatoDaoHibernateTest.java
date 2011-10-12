@@ -2354,7 +2354,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoDao.save(candBusca);
 		
 		candidatoDao.findByCandidatoId(joao.getId());
-		Collection<Candidato> candidatos = candidatoDao.triagemAutomatica(candBusca, new Long[]{2L,3L}, 20, 30, 1, pesos);
+		Collection<Candidato> candidatos = candidatoDao.triagemAutomatica(candBusca, new Long[]{2L,3L}, 20, 30, 1, pesos, 10, null);
 		assertTrue(candidatos.size() >= 2);
 	}
 

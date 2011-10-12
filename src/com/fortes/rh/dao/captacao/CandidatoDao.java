@@ -49,5 +49,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<Candidato> findQtdCadastradosByOrigem(Date dataIni, Date dataFim);
 	public Collection<String> getComoFicouSabendoVagas();
 	public void updateExamePalografico(Candidato candidato);
-	public Collection<Candidato> triagemAutomatica(Candidato candidato, Long[] cargosIds, Integer idadeMinima, Integer idadeMaxima, Integer tempoExperiencia, Map<String, Integer> pesos);
+	public Collection<Candidato> triagemAutomatica(Candidato candidato, Long[] cargosIds, Integer idadeMinima, Integer idadeMaxima, Integer tempoExperiencia, Map<String, Integer> pesos, Integer qtdRegistros, Long empresaId);
 }

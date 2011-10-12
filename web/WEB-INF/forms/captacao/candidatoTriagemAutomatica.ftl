@@ -37,7 +37,7 @@
 	</#if>
 
 <#include "../ftl/showFilterImports.ftl" />
-<#assign validarCampos="return validaFormularioEPeriodo('formBusca', false, false)"/>
+<#assign validarCampos="return validaFormularioEPeriodo('formBusca', new Array('qtdRegistros', 'cargoId'), false)"/>
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 </head>
@@ -51,7 +51,7 @@
 		<@ww.form name="formBusca" id="formBusca" action="triagemAutomatica.action" onsubmit="${validarCampos}" method="POST">
 
 			<#if BDS?exists && !BDS>
-				<@ww.select label="Empresa" name="candidato.empresa.id" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
+				<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
 			</#if>
 
 			<@ww.hidden name="BDS"/>
@@ -63,12 +63,12 @@
 			<@ww.select label="Escolaridade mínima" name="candidato.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 220px;" headerKey="" headerValue=""/>
 			<@ww.textfield label="Peso" name="pesos['cidade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 			<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
-			<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade" list="cidades" cssStyle="width: 250px;" headerKey="" headerValue="" />
+			<@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 200px;" headerKey="" headerValue="Selecione um Estado..." liClass="liLeft" />
 
 			<li style="clear:both;"></li>
 
 			<@ww.textfield label="Peso" name="pesos['sexo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-			<@ww.select label="Sexo" name="candidato.sexo" id="sexo" list="sexos" cssStyle="width: 130px;"/>
+			<@ww.select label="Sexo" name="sexo" id="sexo" list="sexos" cssStyle="width: 130px;"/>
 
 			<@ww.textfield label="Peso" name="pesos['idade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 			<li>
@@ -78,14 +78,12 @@
 			</li>
 			<@ww.textfield name="idadeMin" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress="return somenteNumeros(event,'');"/>
 			<@ww.label value="a" liClass="liLeft" />
-			<@ww.textfield name="idadeMax" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress="return somenteNumeros(event,'');"/>
+			<@ww.textfield name="idadeMax" id="idadeMax" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress="return somenteNumeros(event,'');"/>
 			<@ww.label value="anos"/><div style="clear: both"></div>
 
 			<@ww.textfield label="Peso" name="pesos['cargo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
+			<@ww.select label="Cargo" id="cargoId" name="cargoId" required="true" list="cargosCheckList" cssStyle="width: 220px;" listKey="id" listValue="nome" headerKey="cargoId" headerValue=""/>
 			
-			<br clear="all"/>
-
 			<@ww.textfield label="Peso" name="pesos['tempoExperiencia']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 			<@ww.textfield label="Experiência em meses" name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 
@@ -93,6 +91,8 @@
 			
 			<@ww.textfield label="Peso" name="pesos['pretensaoSalarial']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 			<@ww.textfield label="Pretensão Salarial" name="candidato.pretencaoSalarial" onkeypress = "return(somenteNumeros(event,','));" cssStyle="width:85px; text-align:right;" maxLength="12" />
+			
+			<@ww.textfield label="Quantidade de registros a serem listados"name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6" required="true" />
 			
 			<div class="buttonGroup">
 				<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
@@ -127,14 +127,15 @@
 			${candidato.nome}
 			</a>
 		</@display.column>
-		<@display.column property="pessoal.idade" title="Idade" style="width: 50px;" />
-		<@display.column property="pessoal.sexo" title="Sexo" style="width: 50px;" />
-		<@display.column property="pessoal.escolaridadeDescricao" title="Escolaridade" style="width: 200px;"/>
+		<@display.column property="pessoal.sexo" title="Sexo" style="width: 30px; text-align: center;" />
+		<@display.column property="pessoal.idade" title="Idade" style="width: 30px; text-align: center;" />
 		<@display.column title="Cidade/UF" >
 			<#if candidato.endereco.cidade.nome?exists>
 			${candidato.endereco.cidade.nome}/${candidato.endereco.uf.sigla}
 			</#if>
 		</@display.column>
+		<@display.column property="pessoal.escolaridadeDescricao" title="Escolaridade" style="width: 180px;"/>
+		<@display.column property="tempoExperiencia" title="Experiencia (mêses)" style="width: 65px; text-align: center;"/>
 		<@display.column title="Pretensão Salarial" style="text-align: right;">
 			<#if candidato.pretencaoSalarial?exists> ${candidato.pretencaoSalarial?string(",##0.00")}</#if>
 		</@display.column>

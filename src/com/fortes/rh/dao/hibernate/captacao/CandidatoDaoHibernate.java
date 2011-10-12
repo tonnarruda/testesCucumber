@@ -1151,22 +1151,37 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.executeUpdate();
 	}
 
-	public Collection<Candidato> triagemAutomatica(Candidato candidato, Long[] cargosIds, Integer idadeMinima, Integer idadeMaxima, Integer tempoExperiencia, Map<String, Integer> pesos) 
+	public Collection<Candidato> triagemAutomatica(Candidato candidato, Long[] cargosIds, Integer idadeMinima, Integer idadeMaxima, Integer tempoExperiencia, Map<String, Integer> pesos, Integer qtdRegistros, Long empresaId) 
 	{
 		double divisao = 1;
+		StringBuilder sqlSub = new StringBuilder();
+
+		sqlSub.append(" from candidato candSub  ");
+		sqlSub.append("join experiencia e on e.candidato_id = candSub.id ");
+		sqlSub.append("where e.cargo_id in (:cargosIds) ");
+		sqlSub.append("and c.id = candSub.id ");
+		sqlSub.append("group by candSub.id ");
+		
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select distinct (c.id), c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cid.nome as nomeCidade, e.sigla, ( ");
+		sql.append("select distinct (c.id), c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cid.nome as nomeCidade, e.sigla, ");
 		
-		if(cargosIds != null && cargosIds.length != 0 && tempoExperiencia != null && pesos.get("tempoExperiencia") != 0 )
+		sql.append("cast ( ");
+		sql.append("CASE when ");
+		sql.append("(select (sum( (case when e.datadesligamento is null then current_date else e.datadesligamento end) - e.dataadmissao)/365.0) * 12 ");
+		sql.append(sqlSub);
+		sql.append(") >= 1 then ");
+		sql.append("(select (sum( (case when e.datadesligamento is null then current_date else e.datadesligamento end) - e.dataadmissao)/365.0) * 12 ");
+		sql.append(sqlSub);
+		sql.append(" ) else 0 end ");
+		sql.append(" as integer), ( ");
+		
+		if(cargosIds != null && cargosIds.length != 0 && tempoExperiencia != null && tempoExperiencia > 0 && pesos.get("tempoExperiencia") != 0 )
 		{
-			sql.append("CASE when c.id = ");
-			sql.append("(select candSub.id from candidato candSub ");
-			sql.append("join experiencia e on e.candidato_id = candSub.id ");
-			sql.append("where e.cargo_id in (:cargosIds) ");
-			sql.append("and c.id = candSub.id ");
-			sql.append("group by candSub.id ");
-			sql.append("having (sum( (case when e.datadesligamento is null then current_date else e.datadesligamento end) - e.dataadmissao)/365.0) * 12 >= :tempoExperiencia) then :pesoTempoExperiencia else 0 end + ");
+			sql.append(" CASE when c.id = ");
+			sql.append("(select candSub.id ");
+			sql.append(sqlSub);
+			sql.append(" having (sum( (case when e.datadesligamento is null then current_date else e.datadesligamento end) - e.dataadmissao)/365.0) * 12 >= :tempoExperiencia) then :pesoTempoExperiencia else 0 end + ");
 			divisao += pesos.get("tempoExperiencia");
 		}
 			
@@ -1210,12 +1225,18 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		sql.append("join candidato_cargo cc on cc.candidato_id = c.id ");
 		sql.append("join estado e on e.id = c.uf_id ");
 		sql.append("join cidade as cid on cid.id = c.cidade_id ");
+		
+		if(empresaId != null && empresaId != -1)
+			sql.append("where c.empresa_id = :empresaId ");
+			
 		sql.append("group by c.id, c.nome, c.datanascimento, c.sexo, cid.id, e.sigla, c.escolaridade, cc.cargos_id, c.pretencaoSalarial, cid.nome "); 
-		sql.append("order by compatibilidade desc , c.nome");
+		sql.append("order by compatibilidade desc , c.nome ");
+
+		sql.append("limit :qtdRegistros ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		
-		if(cargosIds != null && cargosIds.length != 0 && tempoExperiencia != null && pesos.get("tempoExperiencia") != 0 )
+		if(cargosIds != null && cargosIds.length != 0 && tempoExperiencia != null && tempoExperiencia > 0 && pesos.get("tempoExperiencia") != 0 )
 		{
 			query.setInteger("tempoExperiencia", tempoExperiencia);
 			query.setInteger("pesoTempoExperiencia", pesos.get("tempoExperiencia"));
@@ -1252,8 +1273,13 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			query.setInteger("pesoPretensaoSalarial", pesos.get("pretensaoSalarial"));
 		}
 		
+		if(empresaId != null && empresaId != -1)
+			query.setLong("empresaId", empresaId);
+			
+		
 		query.setCharacter("sexo", candidato.getPessoal().getSexo());
 		query.setInteger("pesoSexo", pesos.get("sexo"));
+		query.setInteger("qtdRegistros", qtdRegistros);
 		
 		query.setDouble("divisao", divisao);
 		
@@ -1274,7 +1300,11 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			cand.setPessoalEscolaridade((String) res[5]);
 			cand.setEnderecoCidadeNome((String) res[6]);
 			cand.setEnderecoUfSigla((String) res[7]);
-			cand.setPercentualCompatibilidade(((Double) res[8])*100);
+			
+			
+			cand.setTempoExperiencia((Integer) res[8]);
+			
+			cand.setPercentualCompatibilidade(((Double) res[9])*100);
 			lista.add(cand);
 		}
 

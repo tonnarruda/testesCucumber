@@ -68,5 +68,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public String getComoFicouSabendoVagas();
 	public void updateExamePalografico(Candidato candidato);
 	public String getTextoExamePalografico(File ocrTexto) throws Exception;
-	Collection<Candidato> triagemAutomatica(Candidato candidato, Long[] cargosIds, Integer idadeMinima, Integer idadeMaxima, Integer tempoExperiencia, Map<String, Integer> pesos);
+	Collection<Candidato> triagemAutomatica(Candidato candidato, Long[] cargosIds, Integer idadeMinima, Integer idadeMaxima, Integer tempoExperiencia, Map<String, Integer> pesos, Integer qtdRegistros, Long empresaId);
 }
