@@ -271,7 +271,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 		experienciasCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
 
-		if(solicitacao != null && solicitacao.getId() != null)
+		if(!filtro && solicitacao != null && solicitacao.getId() != null)
 		{
 			solicitacao = solicitacaoManager.findByIdProjection(solicitacao.getId());
 			
@@ -286,34 +286,31 @@ public class CandidatoListAction extends MyActionSupportList
 				bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, marcados, "getId");
             }
 
-			if (!filtro)
+			escolaridade = solicitacao.getEscolaridade();
+			sexo = (sexo==null?solicitacao.getSexo():sexo);
+			idadeMin = ((idadeMin==null || idadeMin.equals(""))?StringUtil.valueOf(solicitacao.getIdadeMinima()):idadeMin);
+			idadeMax = ((idadeMax==null ||idadeMax.equals(""))?StringUtil.valueOf(solicitacao.getIdadeMaxima()):idadeMax);
+
+			for (CheckBox cb : cargosCheckList)
 			{
-				escolaridade = solicitacao.getEscolaridade();
-				sexo = (sexo==null?solicitacao.getSexo():sexo);
-				idadeMin = ((idadeMin==null || idadeMin.equals(""))?StringUtil.valueOf(solicitacao.getIdadeMinima()):idadeMin);
-				idadeMax = ((idadeMax==null ||idadeMax.equals(""))?StringUtil.valueOf(solicitacao.getIdadeMaxima()):idadeMax);
-
-				for (CheckBox cb : cargosCheckList)
+				if (cb.getId().equals(solicitacao.getFaixaSalarial().getCargo().getId()))
 				{
-					if (cb.getId().equals(solicitacao.getFaixaSalarial().getCargo().getId()))
-					{
-						cb.setSelecionado(true);
-						break;
-					}
+					cb.setSelecionado(true);
+					break;
 				}
-				cargoId = solicitacao.getFaixaSalarial().getCargo().getId();
+			}
+			cargoId = solicitacao.getFaixaSalarial().getCargo().getId();
 
-				Collection<AreaInteresse> areasInteresse = areaInteresseManager.findAreasInteresseByAreaOrganizacional(solicitacao.getAreaOrganizacional());
+			Collection<AreaInteresse> areasInteresse = areaInteresseManager.findAreasInteresseByAreaOrganizacional(solicitacao.getAreaOrganizacional());
 
-				for (CheckBox cb : areasCheckList)
-				{
-					AreaInteresse areaAux = new AreaInteresse();
-					areaAux.setId(cb.getId());
-					areaAux.setNome(cb.getNome());
+			for (CheckBox cb : areasCheckList)
+			{
+				AreaInteresse areaAux = new AreaInteresse();
+				areaAux.setId(cb.getId());
+				areaAux.setNome(cb.getNome());
 
-					if(!areasInteresse.isEmpty() && areasInteresse.contains(areaAux))
-						cb.setSelecionado(true);
-				}
+				if(!areasInteresse.isEmpty() && areasInteresse.contains(areaAux))
+					cb.setSelecionado(true);
 			}
 		}
 		
