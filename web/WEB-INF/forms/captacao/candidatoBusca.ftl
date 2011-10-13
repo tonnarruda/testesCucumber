@@ -220,6 +220,8 @@
 				<@ww.checkbox label="Trazer apenas candidatos que nunca participaram de processos seletivos" id="somenteCandidatosSemSolicitacao" name="somenteCandidatosSemSolicitacao" labelPosition="left"/>
 			</#if>
 			
+			<@ww.hidden name="filtro" value="true"/>
+			
 			<div class="buttonGroup">
 				<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
 			</div>
