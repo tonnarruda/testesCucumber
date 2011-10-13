@@ -246,6 +246,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("ao.id"), "projectionAreaId");
 		p.add(Projections.property("ao.nome"), "nomeArea");
 		p.add(Projections.property("c.nome"), "nomeCargo");
+		p.add(Projections.property("c.id"), "projectionFaixaSalarialCargoId");
 		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
 		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
 		p.add(Projections.property("u.id"), "projectionSolicitanteId");
@@ -254,7 +255,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("es.id"), "projectionEstabelecimentoId");
 		p.add(Projections.property("es.nome"), "projectionEstabelecimentoNome");
 		p.add(Projections.property("ci.id"), "projectionCidadeId");
+		p.add(Projections.property("ci.nome"), "projectionCidadeNome");
 		p.add(Projections.property("est.id"), "projectionCidadeUf");
+		p.add(Projections.property("est.sigla"), "projectionCidadeUfSigla");
 		p.add(Projections.property("a.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("a.titulo"), "projectionAvaliacaoTitulo");
 

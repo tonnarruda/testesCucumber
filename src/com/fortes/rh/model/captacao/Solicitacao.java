@@ -148,6 +148,14 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		this.cidade.setId(projectionCidadeId);
 	}
 
+	public void setProjectionCidadeNome(String projectionCidadeNome)
+	{
+		if(this.cidade == null)
+			this.cidade = new Cidade();
+		
+		this.cidade.setNome(projectionCidadeNome);
+	}
+
 	public void setProjectionCidadeUf(Long projectionCidadeUf)
 	{
 		if(this.cidade == null)
@@ -157,6 +165,17 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 			this.getCidade().setUf(new Estado());
 
 		this.getCidade().getUf().setId(projectionCidadeUf);
+	}
+
+	public void setProjectionCidadeUfSigla(String projectionCidadeUfSigla)
+	{
+		if(this.cidade == null)
+			this.cidade = new Cidade();
+		
+		if(this.cidade.getUf() == null)
+			this.getCidade().setUf(new Estado());
+		
+		this.getCidade().getUf().setSigla(projectionCidadeUfSigla);
 	}
 
 	public void setProjectionMotivoSolicitacaoId(Long projectionMotivoSolicitacaoId)
@@ -215,6 +234,16 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 			getFaixaSalarial().setCargo(new Cargo());
 
 		getFaixaSalarial().getCargo().setNome(nomeCargo);
+	}
+
+	public void setProjectionFaixaSalarialCargoId(Long cargoId)
+	{
+		if(faixaSalarial == null)
+			setFaixaSalarial(new FaixaSalarial());
+		if(faixaSalarial.getCargo() == null)
+			getFaixaSalarial().setCargo(new Cargo());
+		
+		getFaixaSalarial().getCargo().setId(cargoId);
 	}
 
 	public void setNomeArea(String nomeArea)

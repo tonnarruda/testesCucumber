@@ -5,6 +5,9 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+		
+		#menuBusca a.ativaTriagemAutomatica{color: #FFCB03;}
 	</style>
 
 	<#if solicitacao?exists && solicitacao.id?exists>
@@ -18,12 +21,40 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js"/>'></script>
+	<script type='text/javascript'>
+		$(function() {
+			$("input[name='ativaParam']").click(function() {
+				var marcado = $(this).is(":checked");
+				$(this).parent().parent().find("input:text").attr("disabled", !marcado);
+			});
+		});
+		
+		function triar() 
+		{
+			$("input:text").css("background-color", "#FFF");
+			var valido = true;
+		
+			$("input[name='ativaParam']").each(function() {
+				var marcado = $(this).is(":checked");
+				var peso = $(this).parent().parent().find(".peso");
+				
+				if (marcado && $(peso).val() == "") {
+					$(peso).css("background-color", "#FFEEC2");
+					valido = false;
+				}
+			});
+			
+			if (!valido) {
+				jAlert("Informe os pesos indicados");
+				return false;
+			
+			} else {
+				return validaFormularioEPeriodo('formBusca', new Array('percentualMinimo'), false);
+			}
+		}
+	</script>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
-	</style>
-	<style type="text/css">#menuBusca a.ativaTriagemAutomatica{color: #FFCB03;}</style>
 
 	<#if dataCadIni?exists>
 		<#assign dataIni = dataCadIni?date/>
@@ -37,7 +68,6 @@
 	</#if>
 
 <#include "../ftl/showFilterImports.ftl" />
-<#assign validarCampos="return validaFormularioEPeriodo('formBusca', new Array('qtdRegistros', 'cargoId'), false)"/>
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 </head>
@@ -48,54 +78,124 @@
 	</#if>
 
 	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="formBusca" id="formBusca" action="triagemAutomatica.action" onsubmit="${validarCampos}" method="POST">
-
-			<#if BDS?exists && !BDS>
-				<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
-			</#if>
-
+		<@ww.form name="formBusca" id="formBusca" action="triagemAutomatica.action" method="POST">
+			
 			<@ww.hidden name="BDS"/>
+
 			<#if BDS?exists && !BDS && solicitacao?exists && solicitacao.id?exists>
 				<@ww.hidden name="solicitacao.id"/>
 			</#if>
 
-			<@ww.textfield label="Peso" name="pesos['escolaridade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-			<@ww.select label="Escolaridade mínima" name="candidato.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 220px;" headerKey="" headerValue=""/>
-			<@ww.textfield label="Peso" name="pesos['cidade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-			<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
-			<@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 200px;" headerKey="" headerValue="Selecione um Estado..." liClass="liLeft" />
+			<table cellpadding="3" cellspacing="2">
+				<thead>
+					<tr>
+						<th>&nbsp;</th>
+						<th>Peso</th>
+						<th>Parâmetro</th>
+						<th>Valor</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td align="center">
+							<input type="checkbox" checked="checked" name="ativaParam" />
+						</td>
+						<td align="center">
+							<@ww.textfield theme="simple" name="pesos['escolaridade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+						</td>
+						<td>Escolaridade</td>
+						<td>
+							<@ww.hidden name="solicitacao.escolaridade"/>
+							${escolaridades.get('${solicitacao.escolaridade}')}
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input type="checkbox" checked="checked" name="ativaParam" />
+						</td>
+						<td align="center">
+							<@ww.textfield theme="simple" name="pesos['cidade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+						</td>
+						<td>Cidade</td>
+						<td>
+							<@ww.hidden name="solicitacao.cidade.id"/>
+							${solicitacao.cidade.nome}/${solicitacao.cidade.uf.sigla}
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input type="checkbox" checked="checked" name="ativaParam" />
+						</td>
+						<td align="center">
+							<@ww.textfield theme="simple" name="pesos['sexo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+						</td>
+						<td>Sexo</td>
+						<td>
+							<@ww.hidden name="solicitacao.sexo"/>
+							${sexos.get('${solicitacao.sexo}')}
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input type="checkbox" checked="checked" name="ativaParam" />
+						</td>
+						<td align="center">
+							<@ww.textfield theme="simple" name="pesos['idade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+						</td>
+						<td>Faixa etária</td>
+						<td>
+							<@ww.hidden name="solicitacao.idadeMinima"/>
+							<@ww.hidden name="solicitacao.idadeMaxima"/>
+							${solicitacao.idadeMinima} a ${solicitacao.idadeMaxima} anos
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input type="checkbox" checked="checked" name="ativaParam" />
+						</td>
+						<td align="center">
+							<@ww.textfield theme="simple" name="pesos['cargo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+						</td>
+						<td>Cargo</td>
+						<td>
+							<@ww.hidden name="solicitacao.faixaSalarial.cargo.id"/>
+							${solicitacao.faixaSalarial.descricao}
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input type="checkbox" checked="checked" name="ativaParam" />
+						</td>
+						<td align="center">
+							<@ww.textfield theme="simple" name="pesos['pretensaoSalarial']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+						</td>
+						<td>Remuneração</td>
+						<td>
+							<@ww.hidden name="solicitacao.remuneracao"/>
+							${solicitacao.remuneracao?string(",##0.00")}
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input type="checkbox" checked="checked" name="ativaParam" />
+						</td>
+						<td align="center">
+							<@ww.textfield theme="simple" name="pesos['tempoExperiencia']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+						</td>
+						<td>Experiência em meses</td>
+						<td>
+							<@ww.textfield name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress="return somenteNumeros(event,''));"/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-			<li style="clear:both;"></li>
-
-			<@ww.textfield label="Peso" name="pesos['sexo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-			<@ww.select label="Sexo" name="sexo" id="sexo" list="sexos" cssStyle="width: 130px;"/>
-
-			<@ww.textfield label="Peso" name="pesos['idade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-			<li>
-				<span>
-				Idade Preferencial:
-				</span>
-			</li>
-			<@ww.textfield name="idadeMin" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress="return somenteNumeros(event,'');"/>
-			<@ww.label value="a" liClass="liLeft" />
-			<@ww.textfield name="idadeMax" id="idadeMax" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress="return somenteNumeros(event,'');"/>
-			<@ww.label value="anos"/><div style="clear: both"></div>
-
-			<@ww.textfield label="Peso" name="pesos['cargo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-			<@ww.select label="Cargo" id="cargoId" name="cargoId" required="true" list="cargosCheckList" cssStyle="width: 220px;" listKey="id" listValue="nome" headerKey="cargoId" headerValue=""/>
+			<li style="clear:both;"><br /></li>
 			
-			<@ww.textfield label="Peso" name="pesos['tempoExperiencia']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-			<@ww.textfield label="Experiência em meses" name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
-
-			<br clear="all"/>
-			
-			<@ww.textfield label="Peso" name="pesos['pretensaoSalarial']" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-			<@ww.textfield label="Pretensão Salarial" name="candidato.pretencaoSalarial" onkeypress = "return(somenteNumeros(event,','));" cssStyle="width:85px; text-align:right;" maxLength="12" />
-			
-			<@ww.textfield label="Quantidade de registros a serem listados"name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6" required="true" />
+			<@ww.textfield label="Percentual Mínimo de Compatibilidade" name="percentualMinimo" id="percentualMinimo" onkeypress = "return(somenteNumeros(event,''));" maxLength="3" required="true" cssStyle="width: 30px; text-align:right;" />
 			
 			<div class="buttonGroup">
-				<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
+				<input type="button" value="" class="btnPesquisar grayBGE" onclick="triar();">
 			</div>
 		</@ww.form>
 
@@ -135,7 +235,7 @@
 			</#if>
 		</@display.column>
 		<@display.column property="pessoal.escolaridadeDescricao" title="Escolaridade" style="width: 180px;"/>
-		<@display.column property="tempoExperiencia" title="Experiencia (mêses)" style="width: 65px; text-align: center;"/>
+		<@display.column property="tempoExperiencia" title="Experiencia (meses)" style="width: 65px; text-align: center;"/>
 		<@display.column title="Pretensão Salarial" style="text-align: right;">
 			<#if candidato.pretencaoSalarial?exists> ${candidato.pretencaoSalarial?string(",##0.00")}</#if>
 		</@display.column>

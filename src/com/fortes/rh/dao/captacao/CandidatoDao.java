@@ -13,6 +13,7 @@ import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 
 public interface CandidatoDao extends GenericDao<Candidato>
@@ -49,5 +50,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<Candidato> findQtdCadastradosByOrigem(Date dataIni, Date dataFim);
 	public Collection<String> getComoFicouSabendoVagas();
 	public void updateExamePalografico(Candidato candidato);
-	public Collection<Candidato> triagemAutomatica(Candidato candidato, Long[] cargosIds, Integer idadeMinima, Integer idadeMaxima, Integer tempoExperiencia, Map<String, Integer> pesos, Integer qtdRegistros, Long empresaId);
+	public Collection<Candidato> triagemAutomatica(Solicitacao solicitacao, Integer tempoExperiencia, Map<String, Integer> pesos, Integer percentualMinimo);
 }

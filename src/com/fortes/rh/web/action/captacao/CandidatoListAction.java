@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.fortes.ant.task.emma.report.Quantidade;
 import com.fortes.f2rh.Curriculo;
 import com.fortes.f2rh.F2rhFacade;
 import com.fortes.model.type.FileUtil;
@@ -50,6 +49,7 @@ import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.Estado;
 import com.fortes.rh.model.dicionario.NivelIdioma;
+import com.fortes.rh.model.dicionario.PesosTriagemAutomatica;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
@@ -58,10 +58,8 @@ import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.CurriculoCandidatoRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
@@ -212,6 +210,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	private Boolean compartilharCandidatos;
 	private Integer qtdRegistros = 100;
+	private Integer percentualMinimo;
 	private char statusSolicitacao;
 	
 	private Map<String, Integer> pesos;
@@ -249,7 +248,7 @@ public class CandidatoListAction extends MyActionSupportList
 	{
 		if(empresaId == null)		
 			empresaId = getEmpresaSistema().getId();
-		else if(empresaId.equals(-1L))//todas as empresa
+		else if(empresaId.equals(-1L))//todas as empresas
 			empresaId = null;
 		
 		deficiencias = new Deficiencia();
@@ -376,29 +375,17 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	public String prepareTriagemAutomatica() throws Exception
 	{
-		prepareBuscaCandidato();
+		if(solicitacao != null && solicitacao.getId() != null)
+			solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
 		
-		if(qtdRegistros == null)
-			qtdRegistros = 50;
+		tempoExperiencia = (tempoExperiencia == null) ? "12" : tempoExperiencia;
+		qtdRegistros = (qtdRegistros == null) ? 100 : qtdRegistros;
+		percentualMinimo = (percentualMinimo == null) ? 75 : percentualMinimo;
 		
-		if(candidato.getEndereco() != null && candidato.getEndereco().getUf()!= null)
-		{
-			uf = candidato.getEndereco().getUf().getId();
-			cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
-		}
-		
-		pesos = new HashMap<String, Integer>();
-		pesos.put("escolaridade", 2);
-		pesos.put("cidade", 1);
-		pesos.put("sexo", 1);
-		pesos.put("idade", 1);
-		pesos.put("cargo", 3);
-		pesos.put("tempoExperiencia", 2);
-		pesos.put("pretensaoSalarial", 2);
+		pesos = (pesos == null) ? new PesosTriagemAutomatica() : pesos;
+		escolaridades = new Escolaridade();
+		sexos = new Sexo();
 	
-		if (!msgAlert.equals(""))
-			addActionMessage(msgAlert);
-		
 		setShowFilter(true);
 
 		return Action.SUCCESS;
@@ -561,26 +548,12 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	public String triagemAutomatica() throws Exception
 	{
-		if(candidato.getPessoal() == null)
-			candidato.setPessoal(new Pessoal());
-		
-		candidato.getPessoal().setSexo(sexo.charAt(0));
-
-		if(candidato.getEndereco() == null)
-			candidato.setEndereco(new Endereco());
-		
-		if(candidato.getEndereco().getCidade() == null)
-			candidato.getEndereco().setCidade(new Cidade());
-
-		candidato.getEndereco().getCidade().setId(cidade);
-
-		candidatos = candidatoManager.triagemAutomatica(candidato, new Long[]{cargoId}, idadeMin.equals("")?0:Integer.parseInt(idadeMin), idadeMax.equals("")?0:Integer.parseInt(idadeMax), tempoExperiencia.equals("")?0:Integer.parseInt(tempoExperiencia), pesos, qtdRegistros, empresaId);
+		candidatos = candidatoManager.triagemAutomatica(solicitacao, tempoExperiencia.equals("")?0:Integer.parseInt(tempoExperiencia), pesos, percentualMinimo);
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
-		else {
+		else
 			setShowFilter(false);
-		}
 
 		prepareTriagemAutomatica();
 		
@@ -1634,14 +1607,6 @@ public class CandidatoListAction extends MyActionSupportList
 		this.statusSolicitacao = statusSolicitacao;
 	}
 
-	public Map<String, Integer> getPesos() {
-		return pesos;
-	}
-
-	public void setPesos(Map<String, Integer> pesos) {
-		this.pesos = pesos;
-	}
-
 	public void setCargoId(Long cargoId) {
 		this.cargoId = cargoId;
 	}
@@ -1650,4 +1615,19 @@ public class CandidatoListAction extends MyActionSupportList
 		return cargoId;
 	}
 
+	public Integer getPercentualMinimo() {
+		return percentualMinimo;
+	}
+
+	public void setPercentualMinimo(Integer percentualMinimo) {
+		this.percentualMinimo = percentualMinimo;
+	}
+
+	public Map<String, Integer> getPesos() {
+		return pesos;
+	}
+
+	public void setPesos(Map<String, Integer> pesos) {
+		this.pesos = pesos;
+	}
 }

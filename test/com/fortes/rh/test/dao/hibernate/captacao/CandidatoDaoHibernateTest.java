@@ -19,6 +19,7 @@ import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
 import com.fortes.rh.dao.captacao.IdiomaDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.BairroDao;
@@ -38,8 +39,10 @@ import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.PesosTriagemAutomatica;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -65,6 +68,7 @@ import com.fortes.rh.test.factory.captacao.HistoricoCandidatoFactory;
 import com.fortes.rh.test.factory.captacao.IdiomaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.geral.AreaInteresseFactory;
 import com.fortes.rh.test.factory.geral.CandidatoIdiomaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
@@ -93,6 +97,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 	private EtapaSeletivaDao etapaSeletivaDao;
 	private ColaboradorDao colaboradorDao;
+	private FaixaSalarialDao faixaSalarialDao;
 
 	public void setHistoricoCandidatoDao(HistoricoCandidatoDao historicoCandidatoDao)
 	{
@@ -2291,22 +2296,20 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	
 	public void testTriagemAutomatica()
 	{
-		Map<String, Integer> pesos = new HashMap<String, Integer>();
-		pesos.put("escolaridade", 2);
-		pesos.put("cidade", 1);
-		pesos.put("sexo", 1);
-		pesos.put("idade", 1);
-		pesos.put("cargo", 3);
-		pesos.put("tempoExperiencia", 2);
-		pesos.put("pretensaoSalarial", 2);
+		PesosTriagemAutomatica pesos = new PesosTriagemAutomatica();
+		
+		Cargo cobrador = CargoFactory.getEntity(3L);
+		cobrador.setNome("cobrador");
+		cargoDao.save(cobrador);
 		
 		Cargo motorista = CargoFactory.getEntity(2L);
 		motorista.setNome("motorista");
 		cargoDao.save(motorista);
 
-		Cargo cobrador = CargoFactory.getEntity(3L);
-		cobrador.setNome("cobrador");
-		cargoDao.save(cobrador);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(motorista);
+		faixaSalarial.setNome("I");
+		faixaSalarialDao.save(faixaSalarial);
 		
 		Estado ceara = EstadoFactory.getEntity();
 		estadoDao.save(ceara);
@@ -2346,15 +2349,15 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		expMaria1.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2009));
 		experienciaDao.save(expMaria1);
 		
-		Candidato candBusca = CandidatoFactory.getCandidato();
-		candBusca.setPessoalEscolaridade("02");
-		candBusca.setPessoalSexo('F');
-		candBusca.setEnderecoCidadeId(caucaia.getId());
-		candBusca.setPretencaoSalarial(1500.0);
-		candidatoDao.save(candBusca);
+		Solicitacao solicitacaoBusca = SolicitacaoFactory.getSolicitacao();
+		solicitacaoBusca.setEscolaridade("02");
+		solicitacaoBusca.setSexo("F");
+		solicitacaoBusca.setProjectionCidadeId(caucaia.getId());
+		solicitacaoBusca.setRemuneracao(1500.0);
+		solicitacaoBusca.setFaixaSalarial(faixaSalarial);
 		
 		candidatoDao.findByCandidatoId(joao.getId());
-		Collection<Candidato> candidatos = candidatoDao.triagemAutomatica(candBusca, new Long[]{2L,3L}, 20, 30, 1, pesos, 10, null);
+		Collection<Candidato> candidatos = candidatoDao.triagemAutomatica(solicitacaoBusca, 1, pesos, 10);
 		assertTrue(candidatos.size() >= 2);
 	}
 
@@ -2420,6 +2423,10 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
 		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
+		this.faixaSalarialDao = faixaSalarialDao;
 	}
 
 }
