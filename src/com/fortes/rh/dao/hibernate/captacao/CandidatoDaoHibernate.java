@@ -1152,7 +1152,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 	public Collection<Candidato> triagemAutomatica(Solicitacao solicitacao, Integer tempoExperiencia, Map<String, Integer> pesos, Integer percentualMinimo) 
 	{
-		double divisao = 1;
+		double divisao = 2; // cargo e sexo 
 		StringBuilder sqlSub = new StringBuilder();
 
 		sqlSub.append(" from candidato candSub  ");
@@ -1197,12 +1197,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			divisao += pesos.get("cidade");
 		}
 		
-		if(pesos.get("cargo") != 0)
-		{
-			sql.append("CASE when cc.cargos_id in (:cargoId) THEN :pesoCargo ELSE 0  END + ");
-			divisao += pesos.get("cargo");
-		}
-		
 		if(solicitacao != null && solicitacao.getEscolaridade() != null && !solicitacao.getEscolaridade().equals("") && pesos.get("escolaridade") != 0)
 		{
 			sql.append("CASE WHEN CAST(c.escolaridade AS integer) >= :escolaridade THEN :pesoEscolaridade ELSE 0 END + "); 
@@ -1218,8 +1212,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		if(pesos.get("sexo") > 1)
 			divisao += pesos.get("sexo") - 1;
 
-		sql.append("CASE c.sexo WHEN :sexo THEN :pesoSexo ELSE 0 END ");
-		sql.append(" )/:divisao as compatibilidade "); 
+		sql.append("CASE c.sexo WHEN :sexo THEN :pesoSexo ELSE 0 END + ");
+		sql.append("CASE when cc.cargos_id in (:cargoId) THEN :pesoCargo ELSE 0  END ");
+
+		sql.append(" )/:divisao as compatibilidade ");  
 		
 		sql.append("from candidato c ");
 		sql.append("join candidato_cargo cc on cc.candidato_id = c.id ");

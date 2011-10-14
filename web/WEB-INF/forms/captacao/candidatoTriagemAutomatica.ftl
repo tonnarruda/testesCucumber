@@ -98,6 +98,19 @@
 				<tbody>
 					<tr>
 						<td align="center">
+							<input type="checkbox" checked="checked" disabled="disabled" name="ativaParam" />
+						</td>
+						<td align="center">
+							<@ww.textfield theme="simple" name="pesos['cargo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+						</td>
+						<td>Cargo</td>
+						<td>
+							<@ww.hidden name="solicitacao.faixaSalarial.cargo.id"/>
+							${solicitacao.faixaSalarial.descricao}
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
 							<input type="checkbox" checked="checked" name="ativaParam" />
 						</td>
 						<td align="center">
@@ -154,19 +167,6 @@
 							<input type="checkbox" checked="checked" name="ativaParam" />
 						</td>
 						<td align="center">
-							<@ww.textfield theme="simple" name="pesos['cargo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
-						</td>
-						<td>Cargo</td>
-						<td>
-							<@ww.hidden name="solicitacao.faixaSalarial.cargo.id"/>
-							${solicitacao.faixaSalarial.descricao}
-						</td>
-					</tr>
-					<tr>
-						<td align="center">
-							<input type="checkbox" checked="checked" name="ativaParam" />
-						</td>
-						<td align="center">
 							<@ww.textfield theme="simple" name="pesos['pretensaoSalarial']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 						</td>
 						<td>Remuneração</td>
@@ -192,7 +192,9 @@
 
 			<li style="clear:both;"><br /></li>
 			
-			<@ww.textfield label="Percentual Mínimo de Compatibilidade" name="percentualMinimo" id="percentualMinimo" onkeypress = "return(somenteNumeros(event,''));" maxLength="3" required="true" cssStyle="width: 30px; text-align:right;" />
+			<label>Percentual Mínimo de Compatibilidade: *<label>
+			<@ww.textfield theme="simple" name="percentualMinimo" id="percentualMinimo" onkeypress = "return(somenteNumeros(event,''));" maxLength="3" required="true" cssStyle="width: 30px; text-align:right;" />
+			%
 			
 			<div class="buttonGroup">
 				<input type="button" value="" class="btnPesquisar grayBGE" onclick="triar();">
