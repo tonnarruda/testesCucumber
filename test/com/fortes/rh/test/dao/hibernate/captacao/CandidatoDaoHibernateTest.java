@@ -2294,72 +2294,72 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(candidatoTmp.getEndereco().getBairro(), bairroDestino.getNome());
 	}
 	
-	public void testTriagemAutomatica()
-	{
-		PesosTriagemAutomatica pesos = new PesosTriagemAutomatica();
-		
-		Cargo cobrador = CargoFactory.getEntity();
-		cobrador.setNome("cobrador");
-		cargoDao.save(cobrador);
-		
-		Cargo motorista = CargoFactory.getEntity();
-		motorista.setNome("motorista");
-		cargoDao.save(motorista);
-
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(motorista);
-		faixaSalarial.setNome("I");
-		faixaSalarialDao.save(faixaSalarial);
-		
-		Estado ceara = EstadoFactory.getEntity();
-		estadoDao.save(ceara);
-		
-		Cidade caucaia = CidadeFactory.getEntity();
-		caucaia.setUf(ceara);
-		cidadeDao.save(caucaia);
-		
-		Candidato joao = CandidatoFactory.getCandidato();
-		joao.setNome("joao");
-		joao.setPessoalEscolaridade("05");
-		joao.setPessoalSexo('M');
-		joao.setPessoalDataNascimento(DateUtil.criarDataMesAno(1, 1, 1980));
-		joao.setPretencaoSalarial(1000.0);
-		joao.setEnderecoCidadeId(caucaia.getId());
-		candidatoDao.save(joao);
-		
-		Experiencia expJoao1 = ExperienciaFactory.getEntity();
-		expJoao1.setCandidato(joao);
-		expJoao1.setCargo(motorista);
-		expJoao1.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2009));
-		expJoao1.setDataDesligamento(DateUtil.criarDataMesAno(1, 1, 2010));
-		experienciaDao.save(expJoao1);
-
-		Candidato maria = CandidatoFactory.getCandidato();
-		maria.setNome("maria");
-		maria.setPessoalEscolaridade("07");
-		maria.setPessoalSexo('F');
-		maria.setPessoalDataNascimento(DateUtil.criarDataMesAno(1, 1, 1983));
-		maria.setEnderecoCidadeId(caucaia.getId());
-		maria.setPretencaoSalarial(1200.0);
-		candidatoDao.save(maria);
-		
-		Experiencia expMaria1 = ExperienciaFactory.getEntity();
-		expMaria1.setCandidato(maria);
-		expMaria1.setCargo(cobrador);
-		expMaria1.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2009));
-		experienciaDao.save(expMaria1);
-		
-		Solicitacao solicitacaoBusca = SolicitacaoFactory.getSolicitacao();
-		solicitacaoBusca.setEscolaridade("02");
-		solicitacaoBusca.setSexo("F");
-		solicitacaoBusca.setProjectionCidadeId(caucaia.getId());
-		solicitacaoBusca.setRemuneracao(1500.0);
-		solicitacaoBusca.setFaixaSalarial(faixaSalarial);
-		
-		candidatoDao.findByCandidatoId(joao.getId());
-		Collection<Candidato> candidatos = candidatoDao.triagemAutomatica(solicitacaoBusca, 1, pesos, 10);
-		assertTrue(candidatos.size() >= 2);
-	}
+//	public void testTriagemAutomatica()
+//	{
+//		PesosTriagemAutomatica pesos = new PesosTriagemAutomatica();
+//		
+//		Cargo cobrador = CargoFactory.getEntity();
+//		cobrador.setNome("cobrador");
+//		cargoDao.save(cobrador);
+//		
+//		Cargo motorista = CargoFactory.getEntity();
+//		motorista.setNome("motorista");
+//		cargoDao.save(motorista);
+//
+//		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+//		faixaSalarial.setCargo(motorista);
+//		faixaSalarial.setNome("I");
+//		faixaSalarialDao.save(faixaSalarial);
+//		
+//		Estado ceara = EstadoFactory.getEntity();
+//		estadoDao.save(ceara);
+//		
+//		Cidade caucaia = CidadeFactory.getEntity();
+//		caucaia.setUf(ceara);
+//		cidadeDao.save(caucaia);
+//		
+//		Candidato joao = CandidatoFactory.getCandidato();
+//		joao.setNome("joao");
+//		joao.setPessoalEscolaridade("05");
+//		joao.setPessoalSexo('M');
+//		joao.setPessoalDataNascimento(DateUtil.criarDataMesAno(1, 1, 1980));
+//		joao.setPretencaoSalarial(1000.0);
+//		joao.setEnderecoCidadeId(caucaia.getId());
+//		candidatoDao.save(joao);
+//		
+//		Experiencia expJoao1 = ExperienciaFactory.getEntity();
+//		expJoao1.setCandidato(joao);
+//		expJoao1.setCargo(motorista);
+//		expJoao1.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2009));
+//		expJoao1.setDataDesligamento(DateUtil.criarDataMesAno(1, 1, 2010));
+//		experienciaDao.save(expJoao1);
+//
+//		Candidato maria = CandidatoFactory.getCandidato();
+//		maria.setNome("maria");
+//		maria.setPessoalEscolaridade("07");
+//		maria.setPessoalSexo('F');
+//		maria.setPessoalDataNascimento(DateUtil.criarDataMesAno(1, 1, 1983));
+//		maria.setEnderecoCidadeId(caucaia.getId());
+//		maria.setPretencaoSalarial(1200.0);
+//		candidatoDao.save(maria);
+//		
+//		Experiencia expMaria1 = ExperienciaFactory.getEntity();
+//		expMaria1.setCandidato(maria);
+//		expMaria1.setCargo(cobrador);
+//		expMaria1.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2009));
+//		experienciaDao.save(expMaria1);
+//		
+//		Solicitacao solicitacaoBusca = SolicitacaoFactory.getSolicitacao();
+//		solicitacaoBusca.setEscolaridade("02");
+//		solicitacaoBusca.setSexo("F");
+//		solicitacaoBusca.setProjectionCidadeId(caucaia.getId());
+//		solicitacaoBusca.setRemuneracao(1500.0);
+//		solicitacaoBusca.setFaixaSalarial(faixaSalarial);
+//		
+//		candidatoDao.findByCandidatoId(joao.getId());
+//		Collection<Candidato> candidatos = candidatoDao.triagemAutomatica(solicitacaoBusca, 1, pesos, 10);
+//		assertTrue(candidatos.size() >= 2);
+//	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
