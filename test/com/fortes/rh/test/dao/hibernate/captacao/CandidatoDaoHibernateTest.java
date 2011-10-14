@@ -2298,11 +2298,11 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	{
 		PesosTriagemAutomatica pesos = new PesosTriagemAutomatica();
 		
-		Cargo cobrador = CargoFactory.getEntity(3L);
+		Cargo cobrador = CargoFactory.getEntity();
 		cobrador.setNome("cobrador");
 		cargoDao.save(cobrador);
 		
-		Cargo motorista = CargoFactory.getEntity(2L);
+		Cargo motorista = CargoFactory.getEntity();
 		motorista.setNome("motorista");
 		cargoDao.save(motorista);
 
