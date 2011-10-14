@@ -91,8 +91,8 @@
 					<tr>
 						<th>&nbsp;</th>
 						<th>Peso</th>
-						<th>Parâmetro</th>
-						<th>Valor</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
 					</tr>
 				</thead>
 				<tbody>
