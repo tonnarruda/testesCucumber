@@ -20,13 +20,10 @@ public class OcorrenciaListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public String list() throws Exception {
-		String[] keys = new String[]{"empresa.id"};
-		Object[] values = new Object[]{getEmpresaSistema().getId()};
-		String[] orders = new String[]{"descricao asc"};
-
-		setTotalSize(ocorrenciaManager.getCount(keys, values));
-		ocorrencias = ocorrenciaManager.find(getPage(), getPagingSize(), keys, values, orders);
+	public String list() throws Exception 
+	{
+		setTotalSize(ocorrenciaManager.getCount(ocorrencia, getEmpresaSistema().getId()));
+		ocorrencias = ocorrenciaManager.find(getPage(), getPagingSize(), ocorrencia, getEmpresaSistema().getId());
 
 		return Action.SUCCESS;
 	}

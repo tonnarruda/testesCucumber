@@ -131,4 +131,12 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 	{
 		return getDao().findOcorrenciasComAbseteismo(empresaId);
 	}
+
+	public Collection<Ocorrencia> find(int page, int pagingSize, Ocorrencia ocorrencia, Long empresaId) {
+		return getDao().find(page, pagingSize, ocorrencia, empresaId);
+	}
+
+	public Integer getCount(Ocorrencia ocorrencia, Long empresaId) {
+		return getDao().getCount(ocorrencia, empresaId);
+	}
 }

@@ -6,11 +6,24 @@
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
 </style>
+	<#include "../ftl/showFilterImports.ftl" />
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	
 <title>Tipos de Ocorrências</title>
 </head>
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
+	<#include "../util/topFiltro.ftl" />
+		<@ww.form name="formBusca" action="list.action" method="POST" id="formBusca">
+			<@ww.textfield label="Descrição" name="ocorrencia.descricao" cssStyle="width: 350px;"/>
+			
+			<@ww.hidden id="pagina" name="page"/>
+			<@ww.hidden id="showFilter" name="showFilter"/>
+			<input type="button" value="" onclick="document.getElementById('pagina').value = 1; document.formBusca.submit();"  class="btnPesquisar grayBGE">
+		</@ww.form>
+	<#include "../util/bottomFiltro.ftl" />
+	<br>
 	<@display.table name="ocorrencias" id="ocorrencia" class="dados">
 		<@display.column title="Ações" class="acao">
 			<a href="prepareUpdate.action?ocorrencia.id=${ocorrencia.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
