@@ -1152,121 +1152,106 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 	public Collection<Candidato> triagemAutomatica(Solicitacao solicitacao, Integer tempoExperiencia, Map<String, Integer> pesos, Integer percentualMinimo) 
 	{
-		double divisao = 1;
-		StringBuilder sqlSub = new StringBuilder();
-
-		sqlSub.append(" from candidato candSub  ");
-		sqlSub.append("join experiencia e on e.candidato_id = candSub.id ");
-		sqlSub.append("where e.cargo_id in (:cargoId) ");
-		sqlSub.append("and c.id = candSub.id ");
-		sqlSub.append("group by candSub.id ");
-		
+		double divisao = pesos.get("cargo");
 		StringBuilder sql = new StringBuilder();
-
-		sql.append("select distinct (c.id), c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cid.nome as nomeCidade, e.sigla, ");
-		sql.append("cast ( ");
-		sql.append("CASE when ");
-		sql.append("(select (sum( (case when e.datadesligamento is null then current_date else e.datadesligamento end) - e.dataadmissao)/365.0) * 12 ");
-		sql.append(sqlSub);
-		sql.append(") >= 1 then ");
-		sql.append("(select (sum( (case when e.datadesligamento is null then current_date else e.datadesligamento end) - e.dataadmissao)/365.0) * 12 ");
-		sql.append(sqlSub);
-		sql.append(" ) else 0 end ");
-		sql.append(" as integer), ( ");
+		
+		sql.append("select distinct c.id, c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cid.nome as nomeCidade, e.sigla, ");
+		sql.append("cast(coalesce(sum((extract('day' from coalesce(ex.datadesligamento, now()) - ex.dataadmissao ) / 365 )* 12), 0) as integer), (");
 		
 		Long cargoId = solicitacao.getFaixaSalarial().getCargo().getId();
+		Long empresaId = solicitacao.getEmpresa().getId();
 			
-		if(tempoExperiencia != null && tempoExperiencia > 0 && pesos.get("tempoExperiencia") != 0 )
+		if(tempoExperiencia != null && tempoExperiencia > 0 && pesos.containsKey("tempoExperiencia"))
 		{
-			sql.append(" CASE when c.id = ");
-			sql.append("(select candSub.id ");
-			sql.append(sqlSub);
-			sql.append(" having (sum( (case when e.datadesligamento is null then current_date else e.datadesligamento end) - e.dataadmissao)/365.0) * 12 >= :tempoExperiencia) then :pesoTempoExperiencia else 0 end + ");
+			sql.append("case when sum((extract('day' from coalesce(ex.datadesligamento, now()) - ex.dataadmissao ) / 365 )* 12)  >= :tempoExperiencia then :pesoTempoExperiencia else 0 end + ");
 			divisao += pesos.get("tempoExperiencia");
 		}
 			
-		if(solicitacao.getIdadeMinima() != null && solicitacao.getIdadeMinima() != 0 && solicitacao.getIdadeMaxima() != null && solicitacao.getIdadeMaxima() != 0 && pesos.get("idade") != 0)
+		if(solicitacao.getIdadeMinima() != null && solicitacao.getIdadeMinima() != 0 && solicitacao.getIdadeMaxima() != null && solicitacao.getIdadeMaxima() != 0 && pesos.containsKey("idade"))
 		{
 			sql.append("case when extract(year from age(c.dataNascimento)) between :idadeMinima and :idadeMaxima then :pesoIdade else 0 end + ");
 			divisao += pesos.get("idade");
 		}
 		
-		if(solicitacao != null && solicitacao.getCidade() != null && solicitacao.getCidade().getId() != null && pesos.get("cidade") != 0)
+		if(solicitacao != null && solicitacao.getCidade() != null && solicitacao.getCidade().getId() != null && pesos.containsKey("cidade"))
 		{
 			sql.append("CASE cid.id WHEN :cidadeId THEN :pesoCidade ELSE 0  END + ");
 			divisao += pesos.get("cidade");
 		}
 		
-		if(solicitacao != null && solicitacao.getEscolaridade() != null && !solicitacao.getEscolaridade().equals("") && pesos.get("escolaridade") != 0)
+		if(solicitacao != null && solicitacao.getEscolaridade() != null && !solicitacao.getEscolaridade().equals("") && pesos.containsKey("escolaridade"))
 		{
 			sql.append("CASE WHEN CAST(c.escolaridade AS integer) >= :escolaridade THEN :pesoEscolaridade ELSE 0 END + "); 
 			divisao += pesos.get("escolaridade");
 		}
 
-		if(solicitacao != null && solicitacao.getRemuneracao() != null && solicitacao.getRemuneracao() > 0 && pesos.get("pretensaoSalarial") != 0)
+		if(solicitacao != null && solicitacao.getRemuneracao() != null && solicitacao.getRemuneracao() > 0 && pesos.containsKey("pretensaoSalarial"))
 		{
 			sql.append("CASE when c.pretencaoSalarial <= :pretensaoSalarial THEN :pesoPretensaoSalarial*(CAST (c.pretencaoSalarial AS double precision)/:pretensaoSalarial) ELSE 0  END + "); 
 			divisao += pesos.get("pretensaoSalarial");
 		}
 
-		if(solicitacao != null && solicitacao.getSexo() != "I" && pesos.get("sexo") > 0)
+		if(solicitacao != null && solicitacao.getSexo() != "I" && pesos.containsKey("sexo"))
 		{
 			sql.append("CASE c.sexo WHEN :sexo THEN :pesoSexo ELSE 0 END + ");
 			divisao += pesos.get("sexo");
 		}
 
 		sql.append("CASE when cc.cargos_id in (:cargoId) THEN :pesoCargo ELSE 0  END ");
-
-		sql.append(" )/:divisao as compatibilidade ");  
+		
+		sql.append(" )/:divisao as compatibilidade "); 
 		
 		sql.append("from candidato c ");
-		sql.append("join candidato_cargo cc on cc.candidato_id = c.id ");
-		sql.append("join estado e on e.id = c.uf_id ");
-		sql.append("join cidade as cid on cid.id = c.cidade_id ");
+		sql.append("left join experiencia ex on ex.candidato_id=c.id ");
+		sql.append("left join candidato_cargo cc on cc.candidato_id = c.id and cc.cargos_id = :cargoId ");
+		sql.append("left join estado e on e.id = c.uf_id ");
+		sql.append("left join cidade as cid on cid.id = c.cidade_id ");
+		sql.append("where c.blacklist = false ");
+		sql.append("and c.empresa_id = :empresaId ");
+		sql.append("group by c.id, c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cc.cargos_id, cid.id, cid.nome, e.sigla ");
+		sql.append("order by compatibilidade desc, c.nome");
 		
-		sql.append("group by c.id, c.nome, c.datanascimento, c.sexo, cid.id, e.sigla, c.escolaridade, cc.cargos_id, c.pretencaoSalarial, cid.nome "); 
-		sql.append("order by compatibilidade desc, c.nome ");
-
 		Query query = getSession().createSQLQuery(sql.toString());
 		
-		if(tempoExperiencia != null && tempoExperiencia > 0 && pesos.get("tempoExperiencia") != 0 )
+		if(tempoExperiencia != null && tempoExperiencia > 0 && pesos.containsKey("tempoExperiencia"))
 		{
 			query.setInteger("tempoExperiencia", tempoExperiencia);
 			query.setInteger("pesoTempoExperiencia", pesos.get("tempoExperiencia"));
 		}
 			
-		if(solicitacao.getIdadeMinima() != null && solicitacao.getIdadeMinima() != 0 && solicitacao.getIdadeMaxima() != null && solicitacao.getIdadeMaxima() != 0 && pesos.get("idade") != 0)
+		if(solicitacao.getIdadeMinima() != null && solicitacao.getIdadeMinima() != 0 && solicitacao.getIdadeMaxima() != null && solicitacao.getIdadeMaxima() != 0 && pesos.containsKey("idade"))
 		{
 			query.setInteger("idadeMinima", solicitacao.getIdadeMinima());
 			query.setInteger("idadeMaxima", solicitacao.getIdadeMaxima());
 			query.setInteger("pesoIdade", pesos.get("idade"));
 		}
 		
-		if(solicitacao != null && solicitacao.getCidade() != null && solicitacao.getCidade().getId() != null && pesos.get("cidade") != 0)
+		if(solicitacao != null && solicitacao.getCidade() != null && solicitacao.getCidade().getId() != null && pesos.containsKey("cidade"))
 		{
 			query.setLong("cidadeId", solicitacao.getCidade().getId());
 			query.setInteger("pesoCidade", pesos.get("cidade"));
 		}
 		
-		if(solicitacao != null && solicitacao.getEscolaridade() != null && !solicitacao.getEscolaridade().equals("") && pesos.get("escolaridade") != 0)
+		if(solicitacao != null && solicitacao.getEscolaridade() != null && !solicitacao.getEscolaridade().equals("") && pesos.containsKey("escolaridade"))
 		{
 			query.setInteger("escolaridade", Integer.parseInt(solicitacao.getEscolaridade()));
 			query.setInteger("pesoEscolaridade", pesos.get("escolaridade"));
 		}
 
-		if(solicitacao != null && solicitacao.getRemuneracao() != null && solicitacao.getRemuneracao() > 0 && pesos.get("pretensaoSalarial") != 0)
+		if(solicitacao != null && solicitacao.getRemuneracao() != null && solicitacao.getRemuneracao() > 0 && pesos.containsKey("pretensaoSalarial"))
 		{
 			query.setDouble("pretensaoSalarial", solicitacao.getRemuneracao());
 			query.setInteger("pesoPretensaoSalarial", pesos.get("pretensaoSalarial"));
 		}
 		
-		if(solicitacao != null && solicitacao.getSexo() != "I" && pesos.get("sexo") > 0)
+		if(solicitacao != null && solicitacao.getSexo() != "I" && pesos.containsKey("sexo"))
 		{
 			query.setString("sexo", solicitacao.getSexo());
 			query.setInteger("pesoSexo", pesos.get("sexo"));
 		}
 		
 		query.setLong("cargoId", cargoId);
+		query.setLong("empresaId", empresaId);
 		query.setInteger("pesoCargo", pesos.get("cargo"));
 		
 		query.setDouble("divisao", divisao);
