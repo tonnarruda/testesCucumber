@@ -12,6 +12,7 @@ public class ConfiguracaoNivelCompetenciaVO
 
 	private String nome;
 	private Integer totalPontos;
+	private Integer totalGapExcedenteAoCargo = 0;
 	private Integer totalPontosFaixa;
 	private Collection<MatrizCompetenciaNivelConfiguracao> matrizes;
 
@@ -77,6 +78,13 @@ public class ConfiguracaoNivelCompetenciaVO
 		return "";
 	}
 	
+	public String getTotalGapExcedenteCargoDescricao() {
+		if (totalPontos != null && totalPontosFaixa != null)
+			return totalPontos - totalGapExcedenteAoCargo + " / " + totalPontosFaixa + " = " + MathUtil.formataValor(( (totalPontos.doubleValue() - totalGapExcedenteAoCargo.doubleValue()) / totalPontosFaixa.doubleValue()) * 100.0) + " %";
+		
+		return "";
+	}
+	
 	public void configuraNivelCandidato(String competenciaDescricao, NivelCompetencia nivelCompetencia) 
 	{
 		for (MatrizCompetenciaNivelConfiguracao competenciaNivel : matrizes) 
@@ -90,8 +98,15 @@ public class ConfiguracaoNivelCompetenciaVO
 				}
 				
 				if(competenciaNivel.getNivel().equals("gap"))
+				{
 					competenciaNivel.setGap(nivelCompetencia.getOrdem() - competenciaNivel.getNivelDaFaixa());
+					if(competenciaNivel.getGap() != null && competenciaNivel.getGap() > 0)
+						this.totalGapExcedenteAoCargo += competenciaNivel.getGap(); 
+				}
 			}
 		}
+	}
+	public Integer getTotalGapExcedenteAoCargo() {
+		return totalGapExcedenteAoCargo;
 	}
 }
