@@ -27,6 +27,13 @@
 				var marcado = $(this).is(":checked");
 				$(this).parent().parent().find("input:text").attr("disabled", !marcado);
 			});
+			
+			$(".peso").each(function() {
+				if ($(this).val() == "") {
+					$(this).parent().parent().find("input:checkbox").attr("checked", false);
+					$(this).attr("disabled", true);
+				}
+			});
 		});
 		
 		function triar() 
@@ -45,7 +52,7 @@
 			});
 			
 			if (!valido) {
-				jAlert("Informe os pesos indicados");
+				jAlert("Informe corretamente os pesos indicados");
 				return false;
 			
 			} else {
@@ -84,6 +91,7 @@
 
 			<#if BDS?exists && !BDS && solicitacao?exists && solicitacao.id?exists>
 				<@ww.hidden name="solicitacao.id"/>
+				<@ww.hidden name="solicitacao.empresa.id"/>
 			</#if>
 
 			<table cellpadding="3" cellspacing="2">
@@ -119,7 +127,9 @@
 						<td>Escolaridade</td>
 						<td>
 							<@ww.hidden name="solicitacao.escolaridade"/>
-							${escolaridades.get('${solicitacao.escolaridade}')}
+							<#if solicitacao.escolaridade?exists && solicitacao.escolaridade != "">
+								${escolaridades.get('${solicitacao.escolaridade}')}
+							</#if>
 						</td>
 					</tr>
 					<tr>
@@ -132,7 +142,9 @@
 						<td>Cidade</td>
 						<td>
 							<@ww.hidden name="solicitacao.cidade.id"/>
-							${solicitacao.cidade.nome}/${solicitacao.cidade.uf.sigla}
+							<#if solicitacao.cidade?exists && solicitacao.cidade.nome?exists && solicitacao.cidade.uf?exists && solicitacao.cidade.uf.sigla?exists>
+								${solicitacao.cidade.nome}/${solicitacao.cidade.uf.sigla}
+							</#if>
 						</td>
 					</tr>
 					<tr>
@@ -159,7 +171,9 @@
 						<td>
 							<@ww.hidden name="solicitacao.idadeMinima"/>
 							<@ww.hidden name="solicitacao.idadeMaxima"/>
-							${solicitacao.idadeMinima} a ${solicitacao.idadeMaxima} anos
+							<#if solicitacao.idadeMinima?exists && solicitacao.idadeMaxima?exists>
+								${solicitacao.idadeMinima} a ${solicitacao.idadeMaxima} anos
+							</#if>
 						</td>
 					</tr>
 					<tr>
@@ -184,7 +198,7 @@
 						</td>
 						<td>Experiência em meses</td>
 						<td>
-							<@ww.textfield name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress="return somenteNumeros(event,''));"/>
+							<@ww.textfield name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress="return somenteNumeros(event,'');"/>
 						</td>
 					</tr>
 				</tbody>
@@ -193,7 +207,7 @@
 			<li style="clear:both;"><br /></li>
 			
 			<label>Percentual Mínimo de Compatibilidade: *<label>
-			<@ww.textfield theme="simple" name="percentualMinimo" id="percentualMinimo" onkeypress = "return(somenteNumeros(event,''));" maxLength="3" required="true" cssStyle="width: 30px; text-align:right;" />
+			<@ww.textfield theme="simple" name="percentualMinimo" id="percentualMinimo" onkeypress = "return somenteNumeros(event,'');" maxLength="3" required="true" cssStyle="width: 30px; text-align:right;" />
 			%
 			
 			<div class="buttonGroup">
@@ -242,7 +256,19 @@
 			<#if candidato.pretencaoSalarial?exists> ${candidato.pretencaoSalarial?string(",##0.00")}</#if>
 		</@display.column>
 		<@display.column title="Compatibilidade" style="text-align: right;">
-			<#if candidato.percentualCompatibilidade?exists> ${candidato.percentualCompatibilidade?string(",##0.00")}%</#if>
+			<#if candidato.percentualCompatibilidade?exists> 
+				<#if 90 <= candidato.percentualCompatibilidade?int>
+					<#assign color="green"/>
+				<#elseif 50 <= candidato.percentualCompatibilidade?int> 
+					<#assign color="orange"/>
+				<#else>
+					<#assign color="red"/>
+				</#if>
+				
+				<div style="background-color: ${color}; width: ${candidato.percentualCompatibilidade?int}px; height: 3px;"></div>
+				<div style="clear: both"></div>
+				${candidato.percentualCompatibilidade?string(",##0.00")}%
+			</#if>
 		</@display.column>
 		
 	</@display.table>

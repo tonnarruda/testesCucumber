@@ -382,9 +382,12 @@ public class CandidatoListAction extends MyActionSupportList
 		qtdRegistros = (qtdRegistros == null) ? 100 : qtdRegistros;
 		percentualMinimo = (percentualMinimo == null) ? 75 : percentualMinimo;
 		
-		pesos = (pesos == null) ? new PesosTriagemAutomatica() : pesos;
 		escolaridades = new Escolaridade();
 		sexos = new Sexo();
+
+		if (pesos == null && ActionContext.getContext().getSession().containsKey("pesos"))
+			pesos = (Map<String, Integer>) ActionContext.getContext().getSession().get("pesos");
+		pesos = (pesos == null) ? new PesosTriagemAutomatica() : pesos;
 	
 		setShowFilter(true);
 
@@ -548,7 +551,9 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	public String triagemAutomatica() throws Exception
 	{
-		candidatos = candidatoManager.triagemAutomatica(solicitacao, tempoExperiencia.equals("")?0:Integer.parseInt(tempoExperiencia), pesos, percentualMinimo);
+		ActionContext.getContext().getSession().put("pesos", pesos);
+		
+		candidatos = candidatoManager.triagemAutomatica(solicitacao, StringUtil.isBlank(tempoExperiencia)?0:Integer.parseInt(tempoExperiencia), pesos, percentualMinimo);
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
