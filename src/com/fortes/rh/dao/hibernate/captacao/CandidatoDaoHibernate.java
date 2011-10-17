@@ -1152,7 +1152,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 	public Collection<Candidato> triagemAutomatica(Solicitacao solicitacao, Integer tempoExperiencia, Map<String, Integer> pesos, Integer percentualMinimo) 
 	{
-		double divisao = 2; // cargo e sexo 
+		double divisao = 1;
 		StringBuilder sqlSub = new StringBuilder();
 
 		sqlSub.append(" from candidato candSub  ");
@@ -1205,14 +1205,16 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		if(solicitacao != null && solicitacao.getRemuneracao() != null && solicitacao.getRemuneracao() > 0 && pesos.get("pretensaoSalarial") != 0)
 		{
-			sql.append("CASE when c.pretencaoSalarial <= :pretensaoSalarial THEN :pesoPretensaoSalarial ELSE 0  END + "); 
+			sql.append("CASE when c.pretencaoSalarial <= :pretensaoSalarial THEN :pesoPretensaoSalarial*(CAST (c.pretencaoSalarial AS double precision)/:pretensaoSalarial) ELSE 0  END + "); 
 			divisao += pesos.get("pretensaoSalarial");
 		}
 
-		if(pesos.get("sexo") > 1)
-			divisao += pesos.get("sexo") - 1;
+		if(solicitacao != null && solicitacao.getSexo() != "I" && pesos.get("sexo") > 0)
+		{
+			sql.append("CASE c.sexo WHEN :sexo THEN :pesoSexo ELSE 0 END + ");
+			divisao += pesos.get("sexo");
+		}
 
-		sql.append("CASE c.sexo WHEN :sexo THEN :pesoSexo ELSE 0 END + ");
 		sql.append("CASE when cc.cargos_id in (:cargoId) THEN :pesoCargo ELSE 0  END ");
 
 		sql.append(" )/:divisao as compatibilidade ");  
@@ -1223,7 +1225,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		sql.append("join cidade as cid on cid.id = c.cidade_id ");
 		
 		sql.append("group by c.id, c.nome, c.datanascimento, c.sexo, cid.id, e.sigla, c.escolaridade, cc.cargos_id, c.pretencaoSalarial, cid.nome "); 
-		sql.append("order by compatibilidade desc , c.nome ");
+		sql.append("order by compatibilidade desc, c.nome ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		
@@ -1246,12 +1248,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			query.setInteger("pesoCidade", pesos.get("cidade"));
 		}
 		
-		if(pesos.get("cargo") != 0)
-		{
-			query.setLong("cargoId", cargoId);
-			query.setInteger("pesoCargo", pesos.get("cargo"));
-		}
-		
 		if(solicitacao != null && solicitacao.getEscolaridade() != null && !solicitacao.getEscolaridade().equals("") && pesos.get("escolaridade") != 0)
 		{
 			query.setInteger("escolaridade", Integer.parseInt(solicitacao.getEscolaridade()));
@@ -1264,8 +1260,14 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			query.setInteger("pesoPretensaoSalarial", pesos.get("pretensaoSalarial"));
 		}
 		
-		query.setString("sexo", solicitacao.getSexo());
-		query.setInteger("pesoSexo", pesos.get("sexo"));
+		if(solicitacao != null && solicitacao.getSexo() != "I" && pesos.get("sexo") > 0)
+		{
+			query.setString("sexo", solicitacao.getSexo());
+			query.setInteger("pesoSexo", pesos.get("sexo"));
+		}
+		
+		query.setLong("cargoId", cargoId);
+		query.setInteger("pesoCargo", pesos.get("cargo"));
 		
 		query.setDouble("divisao", divisao);
 		

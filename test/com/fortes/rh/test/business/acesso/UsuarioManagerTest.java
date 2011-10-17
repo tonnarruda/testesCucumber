@@ -272,7 +272,8 @@ public class UsuarioManagerTest extends MockObjectTestCase
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
-    	usuarioEmpresaManager.expects(once()).method("findAllBySelectUsuarioEmpresa").with(eq(empresa.getId())).will(returnValue(null));
+    	Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
+    	usuarioEmpresaManager.expects(once()).method("findAllBySelectUsuarioEmpresa").with(eq(empresa.getId())).will(returnValue(usuarioEmpresas));
 
     	assertEquals(0, usuarioManager.populaCheckOrderNome(empresa.getId()).size());
     }
