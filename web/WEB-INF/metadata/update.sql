@@ -18152,3 +18152,26 @@ update papel set url='' where url = '--';--.go
 insert into migrations values('20110920141058');--.go
 
 update parametrosdosistema set appversao = '1.1.57.48';--.go
+-- versao 1.1.58.49
+
+update auditoria set operacao='Inserção' where operacao='save';--.go
+update auditoria set operacao='Remoção' where operacao='remove';--.go
+update auditoria set operacao='Atualização' where operacao='update';--.go
+insert into migrations values('20110926135752');--.go
+alter table solicitacao add column horariocomercial varchar(20) not null default '';--.go
+insert into migrations values('20111005091929');--.go
+update papel set nome='Aprovar Solicitação', papelmae_id=359 where id=56;--.go
+insert into migrations values('20111005140219');--.go
+CREATE TABLE colaboradorperiodoexperienciaavaliacao (
+    id bigint NOT NULL,
+    colaborador_id bigint,
+    periodoexperiencia_id bigint,	
+    avaliacao_id bigint
+);--.go
+ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_pkey PRIMARY KEY (id);--.go
+ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
+ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_periodoexperiencia_fk FOREIGN KEY (periodoexperiencia_id) REFERENCES periodoexperiencia(id);--.go
+ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);--.go
+CREATE SEQUENCE colaboradorperiodoexperienciaavaliacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20111006150646');--.go
+update parametrosdosistema set appversao = '1.1.58.49';--.go

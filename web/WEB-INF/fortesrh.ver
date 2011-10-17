@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.58.49" data="17/10/2011">
+		- CeS > Cadastros > Candidatos: Novo botão Triagem, redireciona para Triagem de currículos.
+		- CeS > Cadastros > Áreas Organizacionais: Impressão da listagem de Área Organizacional.
+		- CeS > Movimentações > Solicitações de Pessoal > Triagem: Nova busca automática de candidatos.
+		- CeS > Movimentações > Solicitações de Pessoal: Novas colunas na listagem: Código, Motivo.
+		- CeS > Movimentações > Solicitações de Pessoal: Novo campo [Horário comercial].
+		- CeS > Movimentações > Solicitações de Pessoal > Impressão > Novos campos: Código, Descrição e Data. 
+		- Aval. Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Nova opção seleção de empresa no filtro.
+		- Aval. Desempenho > Relatórios > Colaborador ver o resultado do seu teste.
+		- Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Impressão da Entrevista de Desligamento respondida.
+		- Info. Funcionais > Cadastros > Colaboradores > Nova aba [Modelos de Avaliação] para configuração do Acompanhamento do Período de Experiência.
+		- Periodo de Experiência: Nova funcionalidade envio de aviso no vencimento das avaliações de experiência configuradas.
+		- Info. Funcionais > Relatórios > Tournover: Apresentar no cabeçalho do relatório quais as áreas que foram selecionadas no filtro.
+		- SESMT > Relatórios > EPI: Nova Busca por colaborador e filtro para agrupar por "EPI" ou "Colaborador".
+		- SESMT > Movimentos > Solicitações de EPI > Inserir: Nova coluna Fabricante na listagem.
+		- Utilitários > Auditoria: Novo campo [Dados] no filtro.
+		- Opção de clonar por empresa: Pesquisa, Avaliação, Questionário.
+	</Versao>
 	<Versao id="1.1.57.48" data="23/09/2011">
 		- ReS > Relatórios > Colaboradores por Cargo: Novo filtro por Colocação do colaborador e nova coluna de colocação no relatório.
 		- Pesquisas > Movimentações > Pesquisas > Clonar: Nova opção de clonagem para mais de uma empresa.		
