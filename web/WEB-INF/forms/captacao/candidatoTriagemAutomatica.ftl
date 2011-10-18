@@ -8,6 +8,7 @@
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 		
 		#menuBusca a.ativaTriagemAutomatica{color: #FFCB03;}
+		.cinza { color: #BBB; }
 	</style>
 
 	<#if solicitacao?exists && solicitacao.id?exists>
@@ -33,6 +34,11 @@
 					$(this).parent().parent().find("input:checkbox").attr("checked", false);
 					$(this).attr("disabled", true);
 				}
+			});
+			
+			$("#tbl-params * :hidden").each(function() {
+				if ($(this).val() == "" || ($(this).attr("name") == "solicitacao.sexo" && $(this).val() == "I"))
+					$(this).parent().parent().find("input:checkbox, input:text").attr("disabled", true).val("");
 			});
 		});
 		
@@ -94,7 +100,7 @@
 				<@ww.hidden name="solicitacao.empresa.id"/>
 			</#if>
 
-			<table cellpadding="3" cellspacing="2">
+			<table cellpadding="3" cellspacing="2" id="tbl-params">
 				<thead>
 					<tr>
 						<th>&nbsp;</th>
@@ -126,9 +132,11 @@
 						</td>
 						<td>Escolaridade</td>
 						<td>
-							<@ww.hidden name="solicitacao.escolaridade"/>
+							<@ww.hidden name="solicitacao.escolaridade" id="escolaridade"/>
 							<#if solicitacao.escolaridade?exists && solicitacao.escolaridade != "">
 								${escolaridades.get('${solicitacao.escolaridade}')}
+							<#else>
+								<span class="cinza">&lt;indefinido&gt;</span>
 							</#if>
 						</td>
 					</tr>
@@ -141,9 +149,11 @@
 						</td>
 						<td>Cidade</td>
 						<td>
-							<@ww.hidden name="solicitacao.cidade.id"/>
+							<@ww.hidden name="solicitacao.cidade.id" id="cidade"/>
 							<#if solicitacao.cidade?exists && solicitacao.cidade.nome?exists && solicitacao.cidade.uf?exists && solicitacao.cidade.uf.sigla?exists>
 								${solicitacao.cidade.nome}/${solicitacao.cidade.uf.sigla}
+							<#else>
+								<span class="cinza">&lt;indefinido&gt;</span>
 							</#if>
 						</td>
 					</tr>
@@ -156,8 +166,12 @@
 						</td>
 						<td>Sexo</td>
 						<td>
-							<@ww.hidden name="solicitacao.sexo"/>
-							${sexos.get('${solicitacao.sexo}')}
+							<@ww.hidden name="solicitacao.sexo" id="sexo"/>
+							<#if solicitacao.sexo?exists && solicitacao.sexo != "I">
+								${sexos.get('${solicitacao.sexo}')}
+							<#else>
+								<span class="cinza">&lt;indefinido&gt;</span>
+							</#if>
 						</td>
 					</tr>
 					<tr>
@@ -169,10 +183,12 @@
 						</td>
 						<td>Faixa etária</td>
 						<td>
-							<@ww.hidden name="solicitacao.idadeMinima"/>
-							<@ww.hidden name="solicitacao.idadeMaxima"/>
+							<@ww.hidden name="solicitacao.idadeMinima" id="idadeMinima"/>
+							<@ww.hidden name="solicitacao.idadeMaxima" id="idadeMaxima"/>
 							<#if solicitacao.idadeMinima?exists && solicitacao.idadeMaxima?exists>
 								${solicitacao.idadeMinima} a ${solicitacao.idadeMaxima} anos
+							<#else>
+								<span class="cinza">&lt;indefinido&gt;</span>
 							</#if>
 						</td>
 					</tr>
@@ -185,8 +201,12 @@
 						</td>
 						<td>Remuneração</td>
 						<td>
-							<@ww.hidden name="solicitacao.remuneracao"/>
-							${solicitacao.remuneracao?string(",##0.00")}
+							<@ww.hidden name="solicitacao.remuneracao" id="remuneracao"/>
+							<#if solicitacao.remuneracao?exists>
+								${solicitacao.remuneracao?string(",##0.00")}
+							<#else>
+								<span class="cinza">&lt;indefinido&gt;</span>
+							</#if>
 						</td>
 					</tr>
 					<tr>

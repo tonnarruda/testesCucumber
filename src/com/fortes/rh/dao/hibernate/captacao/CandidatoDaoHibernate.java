@@ -1156,7 +1156,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("select distinct c.id, c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cid.nome as nomeCidade, e.sigla, ");
-		sql.append("cast(coalesce(sum((extract('day' from coalesce(ex.datadesligamento, now()) - ex.dataadmissao ) / 365 )* 12), 0) as integer), (");
+		sql.append("cast(coalesce(sum((extract('day' from coalesce(ex.datadesligamento, now()) - ex.dataadmissao ) / 365 )* 12), 0) as integer) as experiencia, (");
 		
 		Long cargoId = solicitacao.getFaixaSalarial().getCargo().getId();
 		Long empresaId = solicitacao.getEmpresa().getId();
@@ -1202,14 +1202,14 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		sql.append(" )/:divisao as compatibilidade "); 
 		
 		sql.append("from candidato c ");
-		sql.append("left join experiencia ex on ex.candidato_id=c.id ");
+		sql.append("left join experiencia ex on ex.candidato_id=c.id and ex.cargo_id = :cargoId ");
 		sql.append("left join candidato_cargo cc on cc.candidato_id = c.id and cc.cargos_id = :cargoId ");
 		sql.append("left join estado e on e.id = c.uf_id ");
 		sql.append("left join cidade as cid on cid.id = c.cidade_id ");
 		sql.append("where c.blacklist = false ");
 		sql.append("and c.empresa_id = :empresaId ");
 		sql.append("group by c.id, c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cc.cargos_id, cid.id, cid.nome, e.sigla ");
-		sql.append("order by compatibilidade desc, c.nome");
+		sql.append("order by compatibilidade desc, experiencia desc");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		
