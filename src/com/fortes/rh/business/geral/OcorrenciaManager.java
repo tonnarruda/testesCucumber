@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
-import com.fortes.web.tags.CheckBox;
 
 public interface OcorrenciaManager extends GenericManager<Ocorrencia>
 {
@@ -17,4 +16,6 @@ public interface OcorrenciaManager extends GenericManager<Ocorrencia>
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId); 
 	Collection<Ocorrencia> findAllSelect(Long[] empresaIds);
 	Collection<Ocorrencia> findOcorrenciasComAbseteismo(Long empresaId);
+	Collection<Ocorrencia> find(int page, int pagingSize, Ocorrencia ocorrencia, Long empresaId);
+	Integer getCount(Ocorrencia ocorrencia, Long empresaId);
 }

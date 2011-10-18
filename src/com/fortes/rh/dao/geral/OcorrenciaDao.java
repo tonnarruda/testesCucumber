@@ -12,4 +12,6 @@ public interface OcorrenciaDao extends GenericDao<Ocorrencia>
 	public Collection<Ocorrencia> findSincronizarOcorrenciaInteresse(Long empresaOrigemId);
 	Collection<Ocorrencia> findAllSelect(Long[] empresaIds);
 	Collection<Ocorrencia> findOcorrenciasComAbseteismo(Long empresaId);
+	Collection<Ocorrencia> find(int page, int pagingSize, Ocorrencia ocorrencia, Long empresaId);
+	Integer getCount(Ocorrencia ocorrencia, Long empresaId);
 }

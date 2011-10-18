@@ -720,7 +720,8 @@ CREATE TABLE solicitacao (
     faixasalarial_id bigint,
     descricao character varying(100),
     avaliacao_id bigint,
-    liberador_id bigint
+    liberador_id bigint,
+    horariocomercial varchar(20)
 );
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_areaorganizacional_fk FOREIGN KEY (areaorganizacional_id) REFERENCES areaorganizacional(id);
@@ -2419,3 +2420,15 @@ ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompete
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_candidato_fk FOREIGN KEY (candidato_id) REFERENCES candidato(id);
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_configuracaoNivelCompetenciaColaborador_fk FOREIGN KEY (configuracaoNivelCompetenciaColaborador_id) REFERENCES configuracaoNivelCompetenciaColaborador(id);
 CREATE SEQUENCE configuracaoNivelCompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE colaboradorperiodoexperienciaavaliacao (
+    id bigint NOT NULL,
+    colaborador_id bigint,
+    periodoexperiencia_id bigint,	
+    avaliacao_id bigint
+);
+ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_pkey PRIMARY KEY (id);
+ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
+ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_periodoexperiencia_fk FOREIGN KEY (periodoexperiencia_id) REFERENCES periodoexperiencia(id);
+ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);
+CREATE SEQUENCE colaboradorperiodoexperienciaavaliacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;

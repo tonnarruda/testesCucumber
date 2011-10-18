@@ -2,16 +2,20 @@ package com.fortes.rh.dao.hibernate.geral;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Ocorrencia;
 
 public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> implements OcorrenciaDao
@@ -99,6 +103,53 @@ public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> impl
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();
+	}
+
+	public Collection<Ocorrencia> find(int page, int pagingSize, Ocorrencia ocorrencia, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "o");
+
+		montaConsulta(criteria, ocorrencia, empresaId);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("o.id"), "id");
+		p.add(Projections.property("o.descricao"), "descricao");
+		p.add(Projections.property("o.pontuacao"), "pontuacao");
+		p.add(Projections.property("o.absenteismo"), "absenteismo");
+		p.add(Projections.property("o.codigoAC"), "codigoAC");
+		p.add(Projections.property("o.integraAC"), "integraAC");
+		criteria.setProjection(p);
+
+		criteria.addOrder(Order.asc("o.descricao"));
+
+		if(pagingSize > 0)
+		{
+			criteria.setFirstResult(((page - 1) * pagingSize));
+			criteria.setMaxResults(pagingSize);
+		}
+
+		criteria.setProjection(Projections.distinct(p));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+
+	private void montaConsulta(Criteria criteria, Ocorrencia ocorrencia, Long empresaId) 
+	{
+		criteria.add(Expression.eq("o.empresa.id", empresaId));
+
+		if(ocorrencia != null && StringUtils.isNotEmpty(ocorrencia.getDescricao()))
+			criteria.add(Expression.ilike("o.descricao", "%"+ ocorrencia.getDescricao() +"%"));
+	}
+
+	public Integer getCount(Ocorrencia ocorrencia, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "o");
+		criteria.setProjection(Projections.rowCount());
+		
+		montaConsulta(criteria, ocorrencia, empresaId);
+		
+		return (Integer) criteria.uniqueResult();
 	}
 	
 }

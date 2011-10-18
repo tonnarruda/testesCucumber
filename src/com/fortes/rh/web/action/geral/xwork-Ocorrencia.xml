@@ -4,14 +4,22 @@
 <xwork>
 	<package name="ocorrencia" extends="default" namespace="/geral/ocorrencia">
 		<action name="list" class="com.fortes.rh.web.action.geral.OcorrenciaListAction" method="list">
-			<interceptor-ref name="defaultListStack"/>
+			<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">ocorrencia.descricao</param>
+	    	</interceptor-ref>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.geral.OcorrenciaListAction" method="delete">
-			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultDeleteStack">
+				<param name="scope.session">ocorrencia.descricao</param>
+			</interceptor-ref>
 			<result name="success" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>
 		</action>
+		
+		<action name="updateFilter" class="com.fortes.rh.web.action.cargosalario.CargoListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>	
 		
 		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaEdit.ftl</result>

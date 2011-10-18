@@ -104,6 +104,40 @@ public class OcorrenciaDaoHibernateTest extends GenericDaoHibernateTest<Ocorrenc
 
 		assertEquals(1, ocorrenciaDao.findAllSelect(new Long[]{vega.getId()}).size());
 	}
+	
+	public void testFind()
+	{
+		Empresa vega = EmpresaFactory.getEmpresa();
+		empresaDao.save(vega);
+		
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		ocorrencia.setEmpresa(vega);
+		ocorrencia.setDescricao("Falta De Sapato");
+		ocorrenciaDao.save(ocorrencia);
+		
+		assertEquals(1, ocorrenciaDao.find(1, 10, ocorrencia, vega.getId()).size());
+		
+		Ocorrencia ocorrenciaBusca = OcorrenciaFactory.getEntity();
+		ocorrenciaBusca.setDescricao(" De Sa");
+		assertEquals(1, ocorrenciaDao.find(1, 10, ocorrenciaBusca, vega.getId()).size());
+	}
+	
+	public void testCount()
+	{
+		Empresa vega = EmpresaFactory.getEmpresa();
+		empresaDao.save(vega);
+		
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		ocorrencia.setEmpresa(vega);
+		ocorrencia.setDescricao("Falta De Sapato");
+		ocorrenciaDao.save(ocorrencia);
+		
+		assertEquals(new Integer(1), ocorrenciaDao.getCount(ocorrencia, vega.getId()));
+		
+		Ocorrencia ocorrenciaBusca = OcorrenciaFactory.getEntity();
+		ocorrenciaBusca.setDescricao(" De Sa");
+		assertEquals(new Integer(1), ocorrenciaDao.getCount(ocorrenciaBusca, vega.getId()));
+	}
 
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
