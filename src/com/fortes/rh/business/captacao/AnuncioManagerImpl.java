@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.AnuncioDao;
 import com.fortes.rh.model.captacao.Anuncio;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EmpresaBds;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -62,9 +63,16 @@ public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> 
 		return emails;
 	}
 
-	public Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaIdExterno)
+	public Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaIdExterno, Long candidatoIdExterno)
 	{
-		return getDao().findAnunciosSolicitacaoAberta(empresaIdExterno);
+		Collection<Anuncio> anuncios = getDao().findAnunciosSolicitacaoAberta(empresaIdExterno);
+		
+		for (Anuncio anuncio : anuncios)
+			for (CandidatoSolicitacao candSolicitacao : anuncio.getSolicitacao().getCandidatoSolicitacaos()) 
+				if(candidatoIdExterno != null && candidatoIdExterno.equals(candSolicitacao.getCandidato().getId()))
+					anuncio.setCandidatoCadastrado(true);
+			
+		return anuncios;
 	}
 
 	public void removeBySolicitacao(Long solicitacaoId)

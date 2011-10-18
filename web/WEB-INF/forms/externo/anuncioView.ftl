@@ -30,10 +30,13 @@
 	<pre>${anuncio.cabecalhoFormatado}</pre><br><br>
 
 	<div class="buttonGroup">
-		<button onclick="window.location='enviarCurriculo.action?candidato.id=&anuncio.id=${anuncio.id}&solicitacao.id=${anuncio.solicitacao.id}'" class="btnQueroMeCandidatar" accesskey="E">
-		</button>
-		<button onclick="window.location='prepareListAnuncio.action'" class="btnVoltar" accesskey="V">
-		</button>
+		<#if anuncio.responderAvaliacaoModuloExterno && anuncio.solicitacao.avaliacao?exists && anuncio.solicitacao.avaliacao.id?exists>			
+			<button onclick="window.location='prepareInsertAvaliacaoSolicitacao.action?anuncioId=${anuncio.id}&solicitacao.id=${anuncio.solicitacao.id}&colaboradorQuestionario.avaliacao.id=${anuncio.solicitacao.avaliacao.id}&candidato.id=${SESSION_CANDIDATO_ID}&moduloExterno=true'" class="btnQueroMeCandidatar" accesskey="E"></button>
+		<#else>
+			<button onclick="window.location='enviarCurriculo.action?anuncio.id=${anuncio.id}&solicitacao.id=${anuncio.solicitacao.id}'" class="btnQueroMeCandidatar" accesskey="E"></button>
+		</#if>
+		
+		<button onclick="window.location='prepareListAnuncio.action'" class="btnVoltar" accesskey="V"></button>
 	</div>
 </body>
 </html>

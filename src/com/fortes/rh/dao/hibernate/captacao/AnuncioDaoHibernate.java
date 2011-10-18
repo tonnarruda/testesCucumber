@@ -21,11 +21,11 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 	{
 		Criteria criteria = getSession().createCriteria(Anuncio.class, "a");
 		criteria.createAlias("a.solicitacao", "s");
+		criteria.createAlias("s.candidatoSolicitacaos", "cs", Criteria.LEFT_JOIN);
 
 		criteria.add(Expression.eq("s.encerrada", false));
 		criteria.add(Expression.eq("s.empresa.id", empresaIdExterno));
 		criteria.add(Expression.eq("a.exibirModuloExterno", true ));
-		
 
 		criteria.addOrder(Order.asc("a.titulo"));
 
@@ -62,6 +62,8 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		p.add(Projections.property("a.mostraIdade"), "mostraIdade");
 		p.add(Projections.property("a.solicitacao.id"), "projectionSolicitacaoId");
 		p.add(Projections.property("a.exibirModuloExterno"), "exibirModuloExterno");
+		p.add(Projections.property("a.responderAvaliacaoModuloExterno"), "responderAvaliacaoModuloExterno");
+
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("a.id", anuncioId));
@@ -87,8 +89,9 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		p.add(Projections.property("a.mostraCargo"), "mostraCargo");
 		p.add(Projections.property("a.mostraSexo"), "mostraSexo");
 		p.add(Projections.property("a.mostraIdade"), "mostraIdade");
-		p.add(Projections.property("a.solicitacao.id"), "projectionSolicitacaoId");
+		p.add(Projections.property("a.solicitacao"), "solicitacao");
 		p.add(Projections.property("a.exibirModuloExterno"), "exibirModuloExterno");
+		p.add(Projections.property("a.responderAvaliacaoModuloExterno"), "responderAvaliacaoModuloExterno");
 			
 		criteria.setProjection(p);
 		

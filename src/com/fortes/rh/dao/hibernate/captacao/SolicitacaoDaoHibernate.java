@@ -288,11 +288,13 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.faixaSalarial", "fs", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.areaOrganizacional", "ao", Criteria.LEFT_JOIN);
+		criteria.createCriteria("s.avaliacao", "a", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("s.id"), "id");
 		p.add(Projections.property("s.descricao"), "descricao");
+		p.add(Projections.property("a.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("ao.id"), "projectionAreaId");
 		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
 

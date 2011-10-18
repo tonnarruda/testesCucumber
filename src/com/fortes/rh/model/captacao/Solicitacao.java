@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -74,6 +75,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private Usuario liberador;
 	@OneToOne (mappedBy="solicitacao", fetch = FetchType.LAZY)
 	private Anuncio anuncio;
+	@OneToMany (mappedBy="solicitacao", fetch = FetchType.LAZY)
+	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Bairro> bairros;
@@ -653,4 +656,11 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		this.horarioComercial = horarioComercial;
 	}
 
+	public Collection<CandidatoSolicitacao> getCandidatoSolicitacaos() {
+		return candidatoSolicitacaos;
+	}
+
+	public void setCandidatoSolicitacaos(Collection<CandidatoSolicitacao> candidatoSolicitacaos) {
+		this.candidatoSolicitacaos = candidatoSolicitacaos;
+	}
 }

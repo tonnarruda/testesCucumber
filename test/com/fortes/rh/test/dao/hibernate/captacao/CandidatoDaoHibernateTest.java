@@ -2363,7 +2363,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
-		this.empresaDao = empresaDao;
+		 this.empresaDao = empresaDao;
 	}
 
 	public void setCandidatoDao(CandidatoDao candidatoDao)

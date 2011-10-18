@@ -40,30 +40,41 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 
-	<@ww.div cssClass="divInfo" cssStyle="width: 500px;">
+	<#if !moduloExterno>
+		<#assign class="divInfo"/>
+	<#else>
+		<#assign class=""/>
+	</#if>
 	
+	<@ww.div cssClass="${class}" cssStyle="width: 500px;">
 		<#if colaborador?exists && colaborador.id?exists>
 			<h4>Colaborador: ${colaborador.nome}</h4>
-		<#else>
-			<h4>
-				Candidato: ${candidato.nome}<br>
-				Avaliação: ${colaboradorQuestionario.avaliacao.titulo}
-			</h4>
-		</#if>
-	
-		<#if colaborador?exists && colaborador.id?exists>
+		
 			<@ww.form name="formAvaliacao" action="prepareInsertAvaliacaoExperiencia.action" method="POST">
 				<@ww.select label="Avaliação do Período de Experiência" name="colaboradorQuestionario.avaliacao.id" id="cidade" list="avaliacaoExperiencias" listKey="id" listValue="titulo" cssStyle="width: 480px;" headerKey="" headerValue="Selecione..."  onchange="this.form.submit();" disabled="${desabilitarAvaliacaoSelect}"/>
 				
 				<@ww.hidden name="colaboradorQuestionario.candidato.id" />
 				<@ww.hidden name="colaboradorQuestionario.colaborador.id" />
 			</@ww.form>
+		<#else>
+			<h4>
+				<#if !moduloExterno>
+					Candidato: ${candidato.nome}<br />
+				</#if>
+				Avaliação: ${colaboradorQuestionario.avaliacao.titulo}
+			</h4>
 		</#if>
-	</@ww.div><br/>	
+	</@ww.div>
 	
 	<#if perguntas?exists && 0 < perguntas?size>
 		<@ww.form name="form" action="${formAction}" method="POST">
-			<@ww.datepicker label="Data" id="data" name="colaboradorQuestionario.respondidaEm" required="true" cssClass="mascaraData" value="${data}"/>
+			<#if !moduloExterno>
+				<br />
+				<@ww.datepicker label="Data" id="data" name="colaboradorQuestionario.respondidaEm" required="true" cssClass="mascaraData" value="${data}"/>
+			<#else>
+				<@ww.hidden id="data" name="colaboradorQuestionario.respondidaEm" value="${data}"/>
+			</#if>
+			
 			<#include "../avaliacao/includePerguntasAvaliacao.ftl" />
 
 			<#if candidato?exists && candidato.id?exists>
@@ -84,7 +95,9 @@
 		<#if colaborador?exists && colaborador.id?exists>
 			<#if !respostaColaborador>
 				<button class="btnCancelar" onclick="window.location='periodoExperienciaQuestionarioList.action?colaborador.id=${colaborador.id}'"></button>
-			</#if>		
+			</#if>
+		<#elseif moduloExterno>
+			<button class="btnCancelar" onclick="window.location='prepareListAnuncio.action'"></button>
 		<#else>
 			<button class="btnCancelar" onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'"></button>		
 		</#if>

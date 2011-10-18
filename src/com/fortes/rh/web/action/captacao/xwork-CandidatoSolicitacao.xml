@@ -42,7 +42,6 @@
 			<result name="success" type="redirect">list.action?solicitacao.id=${solicitacao.id}</result>
 		</action>
 		
-		
 		<action name="prepareInsertAvaliacaoSolicitacao" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="prepareInsertAvaliacaoSolicitacao">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/prepareAvaliacaoExperiencia.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/prepareAvaliacaoExperiencia.ftl</result>
