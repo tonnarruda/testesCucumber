@@ -227,8 +227,8 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
     {
         Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
         criteria.createCriteria("cs.candidato", "c");
-        criteria.createCriteria("c.endereco.cidade", "ci");
-        criteria.createCriteria("c.endereco.uf", "u");
+        criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
+        criteria.createCriteria("c.endereco.uf", "u", Criteria.LEFT_JOIN);
 
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("cs.id"), "id");

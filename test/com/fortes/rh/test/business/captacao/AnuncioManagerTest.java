@@ -83,7 +83,7 @@ public class AnuncioManagerTest extends MockObjectTestCase
 
 		anuncioDao.expects(once()).method("findAnunciosSolicitacaoAberta").with(eq(1L)).will(returnValue(anuncios));
 
-		assertEquals(anuncios, anuncioManager.findAnunciosSolicitacaoAberta(1L));
+		assertEquals(anuncios, anuncioManager.findAnunciosSolicitacaoAberta(1L, null));
 	}
 	
 	public void testFindByIdProjection() throws Exception

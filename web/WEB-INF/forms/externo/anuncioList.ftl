@@ -1,6 +1,12 @@
 <html>
 <head>
 <@ww.head/>
+
+<style type="text/css">
+ul.lista-anuncios { list-style-type: square; }
+ul.lista-anuncios li { margin: 10px; }
+</style>
+
 </head>
 <body>
 
@@ -26,17 +32,27 @@
 			<a href="logoutExterno.action?empresaId=${SESSION_EMPRESA}">Sair</a>
 		</td>
 	</tr>
-	<tr><td colspan="3"><hr><b>Vagas Abertas:</b><br><br></td></tr>
+	<tr><td colspan="3"><hr><b>Vagas Abertas:</b><br></td></tr>
 	<#if (anuncios?exists && anuncios?size > 0)>
-		<#list anuncios as anuncio>
-			<tr>
-				<td colspan="3" width="400px" >
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="verAnuncio.action?anuncio.id=${anuncio.id}">${anuncio.titulo} - ${anuncio.solicitacao.quantidade} vaga(s)</a>
-				</td>
-			</tr>
-			<#assign primeira = false>
-		</#list>
+		<tr>
+			<td colspan="3" width="400px">
+				<ul class="lista-anuncios">
+					<#list anuncios as anuncio>
+						<li>
+							<#if anuncio.candidatoCadastrado>
+								<strong>${anuncio.titulo}</strong>
+								(Candidato já inserido na seleção)
+							<#else>
+								<a href="verAnuncio.action?anuncio.id=${anuncio.id}" style="font-weight: bold">${anuncio.titulo}</a>
+							</#if>
+							<br>
+							${anuncio.solicitacao.quantidade} vaga(s)
+							<#assign primeira = false>
+						</li>
+					</#list>
+				</ul>
+			</td>
+		</tr>
 	<#else>
 		<tr><td colspan="3"><div align='center'><br><br><b>Não há vagas no momento.</b></div></td></tr>
 	</#if>
@@ -52,7 +68,6 @@
 			jAlert('Agradecemos seu interesse. Seu currículo será analisado e, se aprovado, entraremos em contato.');
 		</script>
 	</#if>	
-
 
 </body>
 </html>

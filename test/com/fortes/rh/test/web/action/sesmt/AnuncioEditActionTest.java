@@ -65,7 +65,6 @@ public class AnuncioEditActionTest extends MockObjectTestCase
 		Anuncio anuncio = anuncio();
 		solicitacao(anuncio);
 		
-		anuncioManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(anuncio));
 		anuncioManager.expects(once()).method("findBySolicitacao").with(ANYTHING).will(returnValue(anuncio));
 		assertEquals("success", action.prepareUpdate());
 	}

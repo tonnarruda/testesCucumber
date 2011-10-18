@@ -12,7 +12,7 @@ public interface AnuncioManager extends GenericManager<Anuncio>
 
 	String[] montaEmails(String emailAvulso, String[] empresasCheck);
 
-	Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaIdExterno);
+	Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaIdExterno, Long candidatoIdExterno);
 
 	void removeBySolicitacao(Long solicitacaoId);
 

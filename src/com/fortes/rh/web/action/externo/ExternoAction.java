@@ -180,7 +180,8 @@ public class ExternoAction extends MyActionSupport
 			return Action.INPUT;
 
 		Long sessionEmpresa = (Long) session.get("SESSION_EMPRESA");
-		anuncios = anuncioManager.findAnunciosSolicitacaoAberta(sessionEmpresa);
+		Long sessionCandidatoId = (Long) session.get("SESSION_CANDIDATO_ID");
+		anuncios = anuncioManager.findAnunciosSolicitacaoAberta(sessionEmpresa, sessionCandidatoId);
 
 		if (msg != null)
 		{

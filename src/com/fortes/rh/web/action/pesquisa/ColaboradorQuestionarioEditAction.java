@@ -99,6 +99,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Collection<Empresa> empresas;
 	
 	private Long empresaId;
+	private Long anuncioId;
 	
 	private TipoQuestionario tipoQuestionario = new TipoQuestionario();
 	private Solicitacao solicitacao;
@@ -107,6 +108,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private boolean exibeResultadoAutoavaliacao;
 	private Boolean compartilharColaboradores;
 	private boolean respostaColaborador;
+	private boolean moduloExterno;
 
 	public String prepareInsert() throws Exception
 	{
@@ -707,5 +709,21 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setRespostaColaborador(boolean respostaColaborador) {
 		this.respostaColaborador = respostaColaborador;
+	}
+
+	public boolean isModuloExterno() {
+		return moduloExterno;
+	}
+
+	public void setModuloExterno(boolean moduloExterno) {
+		this.moduloExterno = moduloExterno;
+	}
+
+	public Long getAnuncioId() {
+		return anuncioId;
+	}
+
+	public void setAnuncioId(Long anuncioId) {
+		this.anuncioId = anuncioId;
 	}
 }

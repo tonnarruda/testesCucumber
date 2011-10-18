@@ -62,7 +62,7 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 		solicitacao = solicitacaoManager.findByIdProjectionAreaFaixaSalarial(solicitacao.getId());
 		if (anuncio == null)
 			anuncio = new Anuncio();
-		anuncio.setTitulo(solicitacao.getDescricao());
+		anuncio.setSolicitacao(solicitacao);
 		prepare();
 			
 		return Action.SUCCESS;
@@ -75,9 +75,7 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String prepareUpdate() throws Exception
 	{
-		prepare();
 		anuncio = anuncioManager.findBySolicitacao(solicitacao.getId());
-
 		return Action.SUCCESS;
 	}
 

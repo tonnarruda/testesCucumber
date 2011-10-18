@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -35,6 +36,10 @@ public class Anuncio extends AbstractModel implements Serializable
     private boolean mostraSexo;
     private boolean mostraIdade;
     private boolean exibirModuloExterno;
+    private boolean responderAvaliacaoModuloExterno;
+   
+    @Transient
+    private boolean candidatoCadastrado;
 
 	public void setProjectionSolicitacaoId(Long projectionSolicitacaoId)
 	{
@@ -156,4 +161,19 @@ public class Anuncio extends AbstractModel implements Serializable
 		this.exibirModuloExterno = exibirModuloExterno;
 	}
 
+	public boolean isCandidatoCadastrado() {
+		return candidatoCadastrado;
+	}
+
+	public void setCandidatoCadastrado(boolean candidatoCadastrado) {
+		this.candidatoCadastrado = candidatoCadastrado;
+	}
+
+	public boolean isResponderAvaliacaoModuloExterno() {
+		return responderAvaliacaoModuloExterno;
+	}
+
+	public void setResponderAvaliacaoModuloExterno(boolean responderAvaliacaoModuloExterno) {
+		this.responderAvaliacaoModuloExterno = responderAvaliacaoModuloExterno;
+	}
 }
