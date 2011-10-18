@@ -73,9 +73,9 @@
 						<div class="gogDivTituloX">Indicadores de T&D</div>
 						<div class="gogDivFormularioX">
 							<dl>
-								<dt>Custo médio da hora de treinamento (R$)</dt>
+								<dt>Investimento médio da hora de treinamento (R$)</dt>
 								<dd>${indicadorTreinamento.custoMedioHoraFmt}</dd>
-								<dt>Custo per capita (R$)</dt>
+								<dt>Investimento per capita (R$)</dt>
 								<dd>${indicadorTreinamento.custoPerCapitaFmt}</dd>
 								<dt>Horas de treinamento per capita</dt>
 								<dd>${indicadorTreinamento.horasPerCapitaFmt}</dd>

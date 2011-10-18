@@ -441,7 +441,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		assertEquals(1, indicadores.size());
 		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = (IndicadorDuracaoPreenchimentoVaga) indicadores.toArray()[0];
 		
-		assertEquals("deve retornar a média de dias", 10.0, indicadorDuracaoPreenchimentoVaga.getMediaDias());
+		assertEquals("deve retornar a média de dias", 14.0, indicadorDuracaoPreenchimentoVaga.getMediaDias());
 		assertEquals("deve retornar qtd contratados", 2, indicadorDuracaoPreenchimentoVaga.getQtdContratados().intValue());
 	}
 	

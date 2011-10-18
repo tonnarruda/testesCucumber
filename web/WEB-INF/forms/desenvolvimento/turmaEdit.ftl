@@ -74,7 +74,7 @@
 		<@ww.textfield required="true" label="Descrição" name="turma.descricao" id="desc" cssStyle="width: 637px;" maxLength="100"/>
 		<@ww.textfield label="Horário" maxLength="20" name="turma.horario" id="horario" liClass="liLeft" />
 		<@ww.textfield required="true" label="Instrutor" size="55" name="turma.instrutor" id="inst" maxLength="100" liClass="liLeft"/>
-		<@ww.textfield required="true" label="Custo (R$)" size="12" name="turma.custo" id="custo" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" />
+		<@ww.textfield required="true" label="Investimento (R$)" size="12" name="turma.custo" id="custo" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" />
 
 		<@ww.textfield label="Instituição" maxLength="100" name="turma.instituicao" id="instituicao"  cssStyle="width: 437px;" liClass="liLeft"/>
 		<@ww.textfield label="Qtd. Prevista de Participantes" name="turma.qtdParticipantesPrevistos" id="qtdParticipantesPrevistos" cssStyle="width:30px; text-align:right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>

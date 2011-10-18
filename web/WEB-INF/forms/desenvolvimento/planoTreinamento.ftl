@@ -124,7 +124,7 @@
 			<@display.column property="instrutor" title="Instrutor" style="width: 100px;"/>
 			<@display.column property="curso.cargaHoraria" title="CH" style="width: 30px;"/>
 			<@display.column property="qtdPessoas" title="Participantes" style="width: 100px;" style="text-align:right;"/>
-			<@display.column property="custoFormatado" title="Custo" style="width: 80px;" style="text-align:right;"/>
+			<@display.column property="custoFormatado" title="Investimento" style="width: 80px;" style="text-align:right;"/>
 
 			<@display.footer>
 		  		<tr>
