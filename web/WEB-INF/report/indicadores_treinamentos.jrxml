@@ -195,7 +195,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<text><![CDATA[Custo médio da hora de treinamento (R$)]]></text>
+				<text><![CDATA[Investimento médio da hora de treinamento (R$)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -208,7 +208,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<text><![CDATA[Custo per capita (R$)]]></text>
+				<text><![CDATA[Investimento per capita (R$)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement

@@ -525,7 +525,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Custo (R$)]]></text>
+				<text><![CDATA[Investimento (R$)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
