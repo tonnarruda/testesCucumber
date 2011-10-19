@@ -8,19 +8,30 @@
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
-	<@ww.form name="form" action="updateModulos.action" method="POST">
-	
-		<div>Permissões</div>
-		<div class="listaOpcoes">
+	<#if exibirPerfil?exists>
+		<@ww.form name="form" action="updateModulos.action" method="POST">
+			
+			Módulos do RH configurados no AG.<br><br>
 			<ul>
-				<#if exibirPerfil?exists>
-					${exibirPerfil}
-				</#if>
+				<li>Recrut. e Seleção <#if modulosNaoConfigurados?contains("357")>[Não configurada]</#if></li>
+				<li>Cargos e Salários <#if modulosNaoConfigurados?contains("361")>[Não configurada]</#if></li>
+				<li>Pesquisa <#if modulosNaoConfigurados?contains("353")>[Não configurada]</#if></li>
+				<li>Avaliação de Desempenho <#if modulosNaoConfigurados?contains("382")>[Não configurada]</#if></li>
+				<li>Treina. e Desenvolvimento <#if modulosNaoConfigurados?contains("365")>[Não configurada]</#if></li>
+				<li>Info. Funcionais</li>
+				<li>SESMT <#if modulosNaoConfigurados?contains("75")>[Não configurada]</#if></li>
 			</ul>
-		</div>
-	
-	<@ww.token/>
-	</@ww.form>
+			<br>
+			<div>Permissões</div>
+			<div class="listaOpcoes">
+				<ul>
+					${exibirPerfil}
+				</ul>
+			</div>
+		
+		<@ww.token/>
+		</@ww.form>
+	</#if>
 
 	<div class="buttonGroup">
 		<button onclick="document.form.submit();" class="btnGravar">

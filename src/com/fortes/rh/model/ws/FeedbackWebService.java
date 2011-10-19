@@ -1,6 +1,11 @@
 package com.fortes.rh.model.ws;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.fortes.rh.util.DateUtil;
 
 public class FeedbackWebService implements Serializable
 {
@@ -11,6 +16,12 @@ public class FeedbackWebService implements Serializable
 	public FeedbackWebService()
 	{
 		
+	}
+	
+	public FeedbackWebService(boolean sucesso) 
+	{
+		super();
+		this.sucesso = sucesso;
 	}
 	
 	public FeedbackWebService(boolean sucesso, String mensagem, String exception) 

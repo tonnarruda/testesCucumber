@@ -69,6 +69,15 @@ public class DateUtil
 		return dataDiaMesAno;
 	}
 
+	public static String formataDiaMesAnoTime(Date data)
+	{
+		if(data == null)
+			return "";
+		
+		SimpleDateFormat formatar = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		return formatar.format(data);
+	}
+
 	public static String formataAnoMesDia(Date data)
 	{
 		if(data == null)

@@ -24,7 +24,7 @@ public class ColaboradorDesligamentoServiceTest
 		RHService client = (RHService) factory.create(serviceModel, serviceUrl);
 
 		// Invocando o serviço.
-		boolean retorno = client.desligarEmpregado("000184", "0003", "01/01/2000", "XXX");
+		boolean retorno = client.desligarEmpregado("000184", "0003", "01/01/2000", "XXX").isSucesso();
 
 		System.out.println("Retorno do metodo " + retorno);
 	}

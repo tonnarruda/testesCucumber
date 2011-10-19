@@ -41,24 +41,12 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.emailPass"), "emailPass");
 		p.add(Projections.property("p.id"), "projectionPerfilPadraoId");
 		p.add(Projections.property("p.nome"), "projectionPerfilPadraoNome");
+		p.add(Projections.property("ps.modulos"), "modulos");
 		criteria.setProjection(p);
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ParametrosDoSistema.class));
 
 		return (ParametrosDoSistema) criteria.add(Expression.eq("ps.id", id)).uniqueResult();
-	}
-
-	public String findModulos(Long id)
-	{
-		Criteria criteria = getSession().createCriteria(ParametrosDoSistema.class,"ps");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ps.modulos"), "modulos");
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("ps.id", id));
-
-		return (String) criteria.uniqueResult();
 	}
 
 	public void updateModulos(String papeis)

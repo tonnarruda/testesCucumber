@@ -29,6 +29,11 @@ public class DateUtilTest extends TestCase
 		assertEquals("01/01/2007", DateUtil.formataDiaMesAno(new Date(107,0,01)));
 	}
 
+	public void testFormataDiaMesAnoTime()
+	{
+		assertEquals("01/01/2007 00:00:00", DateUtil.formataDiaMesAnoTime(new Date(107,0,01)));
+	}
+
 	public void testFormataDate(){
 		assertEquals("01/01/2007", DateUtil.formataDate(new Date(107,0,1), "dd/MM/yyyy"));
 	}
