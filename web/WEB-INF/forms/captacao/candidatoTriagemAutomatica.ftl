@@ -22,6 +22,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.cookie.js"/>'></script>
 	<script type='text/javascript'>
 		$(function() {
 			$("input[name='ativaParam']").click(function() {
@@ -40,6 +41,12 @@
 				if ($(this).val() == "" || ($(this).attr("name") == "solicitacao.sexo" && $(this).val() == "I"))
 					$(this).parent().parent().find("input:checkbox, input:text").attr("disabled", true).val("");
 			});
+			
+			<#if !candidatos?exists>
+				$(".peso").each(function() {
+					 $("#" + $(this).attr("id")).val($.cookie($(this).attr("id")));
+				});
+			</#if>
 		});
 		
 		function triar() 
@@ -64,6 +71,15 @@
 			} else {
 				return validaFormularioEPeriodo('formBusca', new Array('percentualMinimo'), false);
 			}
+		}
+		
+		function gravarPesos()
+		{
+			$(".peso").each(function() {
+				$.cookie($(this).attr("id"), $(this).val(), { expires: 90 });
+			});
+			
+			jAlert("Pesos memorizados com sucesso");
 		}
 	</script>
 
@@ -115,7 +131,7 @@
 							<input type="checkbox" checked="checked" disabled="disabled" name="ativaParam" />
 						</td>
 						<td align="center">
-							<@ww.textfield theme="simple" name="pesos['cargo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+							<@ww.textfield theme="simple" name="pesos['cargo']" id="pesoCargo" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 						</td>
 						<td>Cargo</td>
 						<td>
@@ -128,11 +144,11 @@
 							<input type="checkbox" checked="checked" name="ativaParam" />
 						</td>
 						<td align="center">
-							<@ww.textfield theme="simple" name="pesos['escolaridade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+							<@ww.textfield theme="simple" name="pesos['escolaridade']" id="pesoEscolaridade" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 						</td>
 						<td>Escolaridade</td>
 						<td>
-							<@ww.hidden name="solicitacao.escolaridade" id="escolaridade"/>
+							<@ww.hidden name="solicitacao.escolaridade"/>
 							<#if solicitacao.escolaridade?exists && solicitacao.escolaridade != "">
 								${escolaridades.get('${solicitacao.escolaridade}')}
 							<#else>
@@ -145,11 +161,11 @@
 							<input type="checkbox" checked="checked" name="ativaParam" />
 						</td>
 						<td align="center">
-							<@ww.textfield theme="simple" name="pesos['cidade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+							<@ww.textfield theme="simple" name="pesos['cidade']" id="pesoCidade" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 						</td>
 						<td>Cidade</td>
 						<td>
-							<@ww.hidden name="solicitacao.cidade.id" id="cidade"/>
+							<@ww.hidden name="solicitacao.cidade.id"/>
 							<#if solicitacao.cidade?exists && solicitacao.cidade.nome?exists && solicitacao.cidade.uf?exists && solicitacao.cidade.uf.sigla?exists>
 								${solicitacao.cidade.nome}/${solicitacao.cidade.uf.sigla}
 							<#else>
@@ -162,11 +178,11 @@
 							<input type="checkbox" checked="checked" name="ativaParam" />
 						</td>
 						<td align="center">
-							<@ww.textfield theme="simple" name="pesos['sexo']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+							<@ww.textfield theme="simple" name="pesos['sexo']" id="pesoSexo" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 						</td>
 						<td>Sexo</td>
 						<td>
-							<@ww.hidden name="solicitacao.sexo" id="sexo"/>
+							<@ww.hidden name="solicitacao.sexo"/>
 							<#if solicitacao.sexo?exists && solicitacao.sexo != "I">
 								${sexos.get('${solicitacao.sexo}')}
 							<#else>
@@ -179,12 +195,12 @@
 							<input type="checkbox" checked="checked" name="ativaParam" />
 						</td>
 						<td align="center">
-							<@ww.textfield theme="simple" name="pesos['idade']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+							<@ww.textfield theme="simple" name="pesos['idade']" id="pesoIdade" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 						</td>
 						<td>Faixa etária</td>
 						<td>
-							<@ww.hidden name="solicitacao.idadeMinima" id="idadeMinima"/>
-							<@ww.hidden name="solicitacao.idadeMaxima" id="idadeMaxima"/>
+							<@ww.hidden name="solicitacao.idadeMinima"/>
+							<@ww.hidden name="solicitacao.idadeMaxima"/>
 							<#if solicitacao.idadeMinima?exists && solicitacao.idadeMaxima?exists>
 								${solicitacao.idadeMinima} a ${solicitacao.idadeMaxima} anos
 							<#else>
@@ -197,11 +213,11 @@
 							<input type="checkbox" checked="checked" name="ativaParam" />
 						</td>
 						<td align="center">
-							<@ww.textfield theme="simple" name="pesos['pretensaoSalarial']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+							<@ww.textfield theme="simple" name="pesos['pretensaoSalarial']" id="pesoPretensaoSalarial" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 						</td>
 						<td>Remuneração</td>
 						<td>
-							<@ww.hidden name="solicitacao.remuneracao" id="remuneracao"/>
+							<@ww.hidden name="solicitacao.remuneracao"/>
 							<#if solicitacao.remuneracao?exists>
 								${solicitacao.remuneracao?string(",##0.00")}
 							<#else>
@@ -214,7 +230,7 @@
 							<input type="checkbox" checked="checked" name="ativaParam" />
 						</td>
 						<td align="center">
-							<@ww.textfield theme="simple" name="pesos['tempoExperiencia']" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
+							<@ww.textfield theme="simple" name="pesos['tempoExperiencia']" id="pesoTempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" cssClass="peso" maxLength="2" onkeypress="return somenteNumeros(event,'');"/>
 						</td>
 						<td>Experiência em meses</td>
 						<td>
@@ -232,6 +248,7 @@
 			
 			<div class="buttonGroup">
 				<input type="button" value="" class="btnPesquisar grayBGE" onclick="triar();">
+				<a href="javascript:;" onclick="gravarPesos()" style="text-decoration: underline;">Memorizar pesos para este computador</a>
 			</div>
 		</@ww.form>
 
