@@ -1,6 +1,7 @@
 package com.fortes.rh.business.cargosalario;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.cargosalario.FaturamentoMensal;
@@ -9,4 +10,6 @@ public interface FaturamentoMensalManager extends GenericManager<FaturamentoMens
 {
 
 	Collection<FaturamentoMensal> findAllSelect(Long empresaId);
+
+	Collection<Object[]> findByPeriodo(Date inicio, Date fim, Long empresaId);
 }

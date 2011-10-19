@@ -17,6 +17,7 @@ import org.apache.commons.beanutils.BeanComparator;
 import org.springframework.core.NestedRuntimeException;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -61,6 +62,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private CargoManager cargoManager;
+	private FaturamentoMensalManager faturamentoMensalManager;
 
 	private Collection<HistoricoColaborador> historicoColaboradors;
 
@@ -98,6 +100,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfDeficiencia = "";
 	private String grfDesligamento = "";
 	private String grfEvolucaoFolha = "";
+	private String grfEvolucaoFaturamento = "";
 	private String grfEvolucaoAbsenteismo = "";
 	private String grfEvolucaoTurnover = "";
 	private String grfPromocaoHorizontal = "";
@@ -207,9 +210,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		 * Grafico de Evolucao Salarial
 		 */
 		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(DateUtil.criarDataMesAno(dataMesAnoIni), DateUtil.criarDataMesAno(dataMesAnoFim), empresa.getId(), areasIds);
+		Collection<Object[]> graficoEvolucaoFaturamento   = faturamentoMensalManager.findByPeriodo(DateUtil.criarDataMesAno(dataMesAnoIni), DateUtil.criarDataMesAno(dataMesAnoFim), empresa.getId());
 		
 		grfSalarioAreas  = StringUtil.toJSON(graficoSalarioArea, null);
 		grfEvolucaoFolha = StringUtil.toJSON(graficoEvolucaoFolha, null);
+		grfEvolucaoFaturamento = StringUtil.toJSON(graficoEvolucaoFaturamento, null);
 
 		valorTotalFolha  = 0.0;
 		for (DataGrafico dataGrafico : graficoSalarioArea) 
@@ -819,5 +824,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setAplicaDissidio(boolean aplicaDissidio) {
 		this.aplicaDissidio = aplicaDissidio;
+	}
+
+	public String getGrfEvolucaoFaturamento() {
+		return grfEvolucaoFaturamento;
+	}
+
+	public void setFaturamentoMensalManager(FaturamentoMensalManager faturamentoMensalManager) {
+		this.faturamentoMensalManager = faturamentoMensalManager;
 	}
 }
