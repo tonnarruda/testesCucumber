@@ -15,7 +15,7 @@ rhhomologacao:
   tomcat_home: /home/web/temp/apache-tomcat-6.0.29
   fortes_home_properties: name=FORTES_HOME_HOMOLOGACAO
   app_name: fortesrhhomologacao
-  db_name: fortesrhhomolog
+  db_name: homologacao
   run_migrates: true
   backup_folder: /home/web/fortes/RHHOMOLOGACAO
   repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
