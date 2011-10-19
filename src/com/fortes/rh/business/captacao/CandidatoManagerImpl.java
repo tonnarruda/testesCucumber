@@ -590,11 +590,14 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setOrigem(OrigemCandidato.CADASTRADO);
 		candidato.setEmpresa(colaborador.getEmpresa());
 		
-
 		Contato contato = new Contato();
-	   	contato.setDdd(colaborador.getContato().getDdd());
-	   	contato.setEmail(colaborador.getContato().getEmail());
-	   	contato.setFoneFixo(colaborador.getContato().getFoneFixo());
+		if(colaborador.getContato() != null)
+		{
+			contato.setDdd(colaborador.getContato().getDdd());
+			contato.setEmail(colaborador.getContato().getEmail());
+			contato.setFoneFixo(colaborador.getContato().getFoneFixo());			
+		}
+		
 	   	candidato.setContato(contato);
 
 	   	SocioEconomica socioEconomica = new SocioEconomica();

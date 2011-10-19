@@ -205,5 +205,19 @@
       <ref bean="faixaSalarialHistoricoManagerTarget" />
     </property>
   </bean>
+  <bean id="faturamentoMensalManagerTarget" class="com.fortes.rh.business.cargosalario.FaturamentoMensalManagerImpl">
+    <property name="dao">
+      <ref bean="faturamentoMensalDao" />
+    </property>
+  </bean>
+  <bean id="faturamentoMensalManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.cargosalario.FaturamentoMensalManager</value>
+    </property>
+    <property name="target">
+      <ref bean="faturamentoMensalManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 

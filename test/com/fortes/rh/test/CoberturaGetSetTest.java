@@ -47,6 +47,7 @@ import com.fortes.rh.model.captacao.relatorio.SolicitacaoPessoalRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -304,6 +305,7 @@ import com.fortes.rh.web.action.cargosalario.FaixaSalarialEditAction;
 import com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction;
 import com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoListAction;
 import com.fortes.rh.web.action.cargosalario.FaixaSalarialListAction;
+import com.fortes.rh.web.action.cargosalario.FaturamentoMensalEditAction;
 import com.fortes.rh.web.action.cargosalario.GrupoOcupacionalEditAction;
 import com.fortes.rh.web.action.cargosalario.GrupoOcupacionalListAction;
 import com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction;
@@ -932,6 +934,8 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new ConfiguracaoNivelCompetencia());
 		cobreGetSet(new NivelCompetencia());
 		cobreGetSet(new NivelCompetenciaEditAction());
+		cobreGetSet(new FaturamentoMensal());
+		cobreGetSet(new FaturamentoMensalEditAction());
 
 	}
 	

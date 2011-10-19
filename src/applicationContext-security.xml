@@ -307,6 +307,7 @@
 				/cargosalario/historicoColaborador/*/**=ROLE_CAD_COLABORADOR
 				/cargosalario/indice/*/**=ROLE_CAD_INDICE
 				/cargosalario/indiceHistorico/*/**=ROLE_CAD_INDICE
+				/cargosalario/faturamentoMensal/*/**=ROLE_FATURAMENTO
 
 				/desenvolvimento/turma/prepareImprimirTurmaSemPlano*/**=ROLE_REL_SEM_INDICACAO
 				/desenvolvimento/turma/prepareImprimirTurma*/**=ROLE_REL_PLANO

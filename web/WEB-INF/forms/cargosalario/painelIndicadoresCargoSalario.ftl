@@ -122,6 +122,8 @@
 				$("#salarioAreas").bind("plotclick", pieClick);
 				
 				var folha = ${grfEvolucaoFolha};
+				var faturamento = ${grfEvolucaoFaturamento};
+				
 			    var options = {
 				    series: {
 	                   lines: { show: true },
@@ -138,7 +140,7 @@
 			        	 tickFormatter: function (v) {return formataNumero(v);}
 			        }
 			    };			    
-			    var plot = $.plot($("#evolucaoFolha"), [folha], options);
+			    var plot = $.plot($("#evolucaoFolha"), [{label: 'Evolução Salarial', data: folha}, {label: 'Faturamento', data: faturamento }], options);
 
 				var previousPoint = null;				
 				$("#evolucaoFolha").bind("plothover", function (event, pos, item) {
@@ -337,7 +339,7 @@
 		<div style="clear: both"></div>
 
 		<div class="fieldGraph bigger">
-			<h1>Evolução Salarial</h1>
+			<h1>Evolução Salarial - Faturamento</h1>
 	   		<div id="evolucaoFolha" style="margin: 25px;height:300px;"></div>
 	    </div>
 
