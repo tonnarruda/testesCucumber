@@ -11,7 +11,7 @@
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
-	
+	* Utilizado no Painel de Indicadores de C&S<br><br>
 	<@display.table name="faturamentoMensals" id="faturamentoMensal" class="dados"  style="width:300px;">
 		<@display.column title="Ações" class="acao">
 			<a href="prepareUpdate.action?faturamentoMensal.id=${faturamentoMensal.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
