@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.rh.config.backup.BackupService;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
@@ -17,6 +18,7 @@ public class BackupAction extends MyActionSupport {
 	
 	private String filename;
 	private InputStream inputStream;
+	private BackupService backupService;
 	
 	String dbBackupDir = ArquivoUtil.getDbBackupPath();
 
@@ -26,6 +28,16 @@ public class BackupAction extends MyActionSupport {
 	 */
 	public String show() {
 		return Action.SUCCESS;
+	}
+
+	public String gerar() {
+		try {
+			backupService.backupAndSendMail();			
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Action.INPUT;			
+		}
 	}
 	
 	/**
@@ -61,6 +73,10 @@ public class BackupAction extends MyActionSupport {
 	}
 	public void setFilename(String filename) {
 		this.filename = filename;
+	}
+
+	public void setBackupService(BackupService backupService) {
+		this.backupService = backupService;
 	}
 	
 }
