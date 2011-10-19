@@ -42,5 +42,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="faturamentoMensalDaoTarget" class="com.fortes.rh.dao.hibernate.cargosalario.FaturamentoMensalDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 

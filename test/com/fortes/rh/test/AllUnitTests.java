@@ -54,6 +54,7 @@ import com.fortes.rh.test.business.cargosalario.CargoManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerAuditaTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest;
+import com.fortes.rh.test.business.cargosalario.FaturamentoMensalManagerTest;
 import com.fortes.rh.test.business.cargosalario.GrupoOcupacionalManagerTest;
 import com.fortes.rh.test.business.cargosalario.HistoricoColaboradorManagerTest;
 import com.fortes.rh.test.business.cargosalario.IndiceHistoricoManagerTest;
@@ -190,6 +191,7 @@ import com.fortes.rh.test.dao.hibernate.captacao.SolicitacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.CargoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.FaixaSalarialDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.FaixaSalarialHistoricoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.cargosalario.FaturamentoMensalDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.GrupoOcupacionalDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.HistoricoColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.IndiceDaoHibernateTest;
@@ -410,6 +412,7 @@ import com.fortes.rh.test.web.action.captacao.indicador.IndicadorTurnOverListAct
 import com.fortes.rh.test.web.action.cargosalario.CargoEditActionTest;
 import com.fortes.rh.test.web.action.cargosalario.FaixaSalarialHistoricoEditActionTest;
 import com.fortes.rh.test.web.action.cargosalario.FaixaSalarialHistoricoListActionTest;
+import com.fortes.rh.test.web.action.cargosalario.FaturamentoMensalEditActionTest;
 import com.fortes.rh.test.web.action.cargosalario.IndiceEditActionTest;
 import com.fortes.rh.test.web.action.cargosalario.IndiceHistoricoEditActionTest;
 import com.fortes.rh.test.web.action.cargosalario.IndiceHistoricoListActionTest;
@@ -704,6 +707,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ConfiguracaoLimiteColaboradorManagerTest.class);
         suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
         suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
+        suite.addTestSuite(FaturamentoMensalEditActionTest.class);
+        suite.addTestSuite(FaturamentoMensalManagerTest.class);
+        suite.addTestSuite(FaturamentoMensalDaoHibernateTest.class);
 
         //DESENVOLVIMENTO
         suite.addTestSuite(CursoDaoHibernateTest.class);
