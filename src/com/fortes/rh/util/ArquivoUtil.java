@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -33,7 +34,6 @@ import org.mozilla.universalchardet.UniversalDetector;
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.ibm.icu.text.CharsetDetector;
 import com.ibm.icu.text.CharsetMatch;
 import com.opensymphony.webwork.ServletActionContext;
@@ -64,6 +64,18 @@ public class ArquivoUtil
 	
 	public static String getLoggingPath() {
 		return ArquivoUtil.getRhHome() + java.io.File.separatorChar + "logging";
+	}
+	
+	/**
+	 * Retorna lista de arquivos de backup apenas.
+	 */
+	public static java.io.File[] listBackupFiles(java.io.File dbBackupDir)
+	{
+		return dbBackupDir.listFiles(new FilenameFilter() {
+			public boolean accept(java.io.File dir, String name) {
+				return name.endsWith(".backup");
+			}
+		});
 	}
 	
 	public static String getDbBackupPath() {
