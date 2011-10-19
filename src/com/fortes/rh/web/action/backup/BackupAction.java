@@ -19,6 +19,7 @@ public class BackupAction extends MyActionSupport {
 	private String filename;
 	private InputStream inputStream;
 	private BackupService backupService;
+	private String arquivos = "";
 	
 	String dbBackupDir = ArquivoUtil.getDbBackupPath();
 
@@ -32,6 +33,15 @@ public class BackupAction extends MyActionSupport {
 
 	public String gerar() {
 		try {
+			File dbBackupDir = new File(ArquivoUtil.getDbBackupPath());
+			File[] bkps = ArquivoUtil.listBackupFiles(dbBackupDir);
+			
+			if(bkps != null)
+			{
+				for (File file : bkps) 
+					arquivos += file.getName() + "<br>";				
+			}
+			
 			backupService.backupAndSendMail();			
 			return Action.SUCCESS;
 		} catch (Exception e) {
@@ -77,6 +87,10 @@ public class BackupAction extends MyActionSupport {
 
 	public void setBackupService(BackupService backupService) {
 		this.backupService = backupService;
+	}
+
+	public String getArquivos() {
+		return arquivos;
 	}
 	
 }

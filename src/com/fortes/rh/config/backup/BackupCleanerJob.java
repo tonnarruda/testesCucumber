@@ -38,7 +38,8 @@ public class BackupCleanerJob implements Job {
 	 */
 	public void execute(JobExecutionContext ctx) throws JobExecutionException {
 		File[] files = this.listBackupFiles();
-		this.cleanOldBackupFiles(files);
+		if(files != null && files.length > 1)
+			this.cleanOldBackupFiles(files);
 	}
 	/**
 	 * Retorna lista de arquivos de backup apenas.

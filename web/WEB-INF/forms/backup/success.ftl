@@ -9,6 +9,10 @@
 		<@ww.actionerror />
 		<div>
 			Backup foi gerado com sucesso!
+			<br><br>
+			Backups armazenados na pasta ..\RH\backup_db:
+			<br>			
+			${arquivos}
 		</div>
 	</body>
 </html>
