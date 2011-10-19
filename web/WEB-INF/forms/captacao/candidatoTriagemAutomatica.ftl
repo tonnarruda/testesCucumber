@@ -49,7 +49,7 @@
 		
 			$("input[name='ativaParam']").each(function() {
 				var marcado = $(this).is(":checked");
-				var peso = $(this).parent().parent().find(".peso");
+				var peso = $(this).parent().parent().find(".peso:enabled");
 				
 				if (marcado && $(peso).val() == "") {
 					$(peso).css("background-color", "#FFEEC2");

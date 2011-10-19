@@ -380,7 +380,7 @@ public class CandidatoListAction extends MyActionSupportList
 		
 		tempoExperiencia = (tempoExperiencia == null) ? "12" : tempoExperiencia;
 		qtdRegistros = (qtdRegistros == null) ? 100 : qtdRegistros;
-		percentualMinimo = (percentualMinimo == null) ? 75 : percentualMinimo;
+		percentualMinimo = (percentualMinimo == null) ? 50 : percentualMinimo;
 		
 		escolaridades = new Escolaridade();
 		sexos = new Sexo();
