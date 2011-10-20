@@ -44,7 +44,8 @@
 			
 			<#if !candidatos?exists>
 				$(".peso").each(function() {
-					 $("#" + $(this).attr("id")).val($.cookie($(this).attr("id")));
+					if ($.cookie($(this).attr("id")))
+					 	$("#" + $(this).attr("id")).val($.cookie($(this).attr("id")));
 				});
 			</#if>
 		});
