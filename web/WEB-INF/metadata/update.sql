@@ -18175,3 +18175,26 @@ ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorper
 CREATE SEQUENCE colaboradorperiodoexperienciaavaliacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 insert into migrations values('20111006150646');--.go
 update parametrosdosistema set appversao = '1.1.58.49';--.go
+-- versao 1.1.59.50
+
+alter table anuncio add column responderAvaliacaoModuloExterno boolean default false;--.go
+insert into migrations values('20111018085250');--.go
+CREATE TABLE faturamentoMensal (
+id bigint NOT NULL,
+mesAno date,
+valor double precision,
+empresa_id bigint
+);--.go
+
+ALTER TABLE faturamentoMensal ADD CONSTRAINT faturamentoMensal_pkey PRIMARY KEY(id);--.go
+ALTER TABLE faturamentoMensal ADD CONSTRAINT faturamentoMensal_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE faturamentoMensal_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20111019102813');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (526, 'ROLE_FATURAMENTO', 'Faturamentos', '/cargosalario/faturamentoMensal/list.action', 5, true, 363);--.go
+alter sequence papel_sequence restart with 527;--.go
+insert into migrations values('20111019113531');--.go
+update parametrosdosistema set acversaowebservicecompativel='1.1.46.1';--.go
+insert into migrations values('20111020090531');--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=526 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into migrations values('20111020093135');--.go
+update parametrosdosistema set appversao = '1.1.59.50';--.go

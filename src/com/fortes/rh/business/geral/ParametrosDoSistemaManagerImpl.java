@@ -88,21 +88,16 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 		return acPessoalClientSistema.idACIntegrado(empresa);
 	}
 
-	public String findModulos(Long id)
-	{
-		return getDao().findModulos(id);
-	}
-
 	public void updateModulos(String papeis)
 	{
 		String papeisCodificados = StringUtil.encodeString(papeis);
 		getDao().updateModulos(papeisCodificados);
 	}
 
-	public String[] getModulosDecodificados()
+	public String[] getModulosDecodificados(ParametrosDoSistema parametros)
 	{
 		String permissoesDecodificadas = "";
-		String modulos = this.findModulos(1L);
+		String modulos = parametros.getModulos();
 
 		if (StringUtils.isNotBlank(modulos))
 		{

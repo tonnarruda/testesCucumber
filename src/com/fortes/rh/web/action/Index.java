@@ -120,7 +120,6 @@ public class Index extends ActionSupport
 			if (parametrosDoSistemaManager.isIdiomaCorreto())
 				idiomaIncorreto = true;
 			
-			validaIntegracaoAC();
 			
 			validaAvaliacoesDesempenho();
 			
@@ -132,6 +131,8 @@ public class Index extends ActionSupport
 			
 			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_PERIODOEXPERIENCIA"}) )
 				avaliacaos = avaliacaoManager.findPeriodoExperienciaIsNull(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, empresaId);
+			
+			validaIntegracaoAC();
 			
 			if (StringUtils.isNotBlank(actionMsg))
 				addActionMessage(actionMsg);

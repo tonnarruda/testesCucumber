@@ -1,0 +1,1 @@
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=526 WHERE atualizaPapeisIdsAPartirDe is null;--.go

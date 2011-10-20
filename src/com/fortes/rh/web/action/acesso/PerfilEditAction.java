@@ -9,6 +9,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
@@ -26,6 +27,8 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	private Perfil perfil = new Perfil();;
 	private String[] permissoes;
 	private String exibirPerfil;
+
+	private Collection<Long> modulosNaoConfigurados;
 
 	
 	private void prepare() throws Exception
@@ -71,6 +74,8 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L))
 		{
+			//TODO remprot msgAC
+			//modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados(parametrosDoSistemaManager.findByIdProjection(1L).getServidorRemprot());
 			permissoes = perfilManager.montaPermissoes(perfil);
 			exibirPerfil = papelManager.getPerfilOrganizado(permissoes, true);
 		}
@@ -163,5 +168,9 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Collection<Long> getModulosNaoConfigurados() {
+		return modulosNaoConfigurados;
 	}
 }
