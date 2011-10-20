@@ -29,7 +29,7 @@
 
 	<field name="colaborador.estabelecimento.nome" class="java.lang.String"/>
 	<field name="saida" class="java.util.Date"/>
-	<field name="extintor.descricao" class="java.lang.String"/>
+	<field name="servicosRelatorio" class="java.lang.String"/>
 	<field name="extintor.localizacao" class="java.lang.String"/>
 	<field name="extintor.numeroCilindro" class="java.lang.Integer"/>
 	<field name="extintor.tipoDicAbreviado" class="java.lang.String"/>
@@ -78,20 +78,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="205"
-						y="24"
-						width="150"
-						height="16"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Extintor]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="360"
+						x="204"
 						y="24"
 						width="159"
 						height="16"
@@ -104,7 +91,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="524"
+						x="368"
 						y="24"
 						width="142"
 						height="16"
@@ -117,7 +104,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="678"
+						x="515"
 						y="24"
 						width="101"
 						height="16"
@@ -140,6 +127,19 @@
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Data do Retorno]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="621"
+						y="24"
+						width="155"
+						height="16"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Serviços]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -175,20 +175,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="205"
-						y="0"
-						width="150"
-						height="17"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{extintor.descricao}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="360"
+						x="204"
 						y="0"
 						width="159"
 						height="17"
@@ -201,7 +188,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="678"
+						x="515"
 						y="0"
 						width="101"
 						height="17"
@@ -214,7 +201,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="524"
+						x="368"
 						y="0"
 						width="142"
 						height="17"
@@ -237,6 +224,19 @@
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{retorno}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="621"
+						y="0"
+						width="155"
+						height="17"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{servicosRelatorio}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

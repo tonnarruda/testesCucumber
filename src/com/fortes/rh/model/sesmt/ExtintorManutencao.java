@@ -24,26 +24,6 @@ import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
 @SequenceGenerator(name="sequence", sequenceName="extintormanutencao_sequence", allocationSize=1)
 public class ExtintorManutencao extends AbstractModel implements Serializable
 {
-	public ExtintorManutencao(Long id, Date saida, Date vencimento, String localizacao, Integer numeroCilindro, String tipo)
-	{
-		super();
-		this.setId(id);
-		this.saida = saida;
-		this.vencimento = vencimento;
-		
-		if(this.extintor == null)
-			this.extintor = new Extintor();
-		
-		this.extintor.setLocalizacao(localizacao);
-		this.extintor.setNumeroCilindro(numeroCilindro);
-		this.extintor.setTipo(tipo);
-	}
-
-	public ExtintorManutencao()
-	{
-		super();
-	}
-
 	@Temporal(DATE)
 	private Date saida;
 	@Transient
@@ -66,7 +46,30 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 
 	@ManyToMany(fetch=LAZY, targetEntity=ExtintorManutencaoServico.class)
 	private Collection<ExtintorManutencaoServico> servicos;
+	
+	@Transient
+	private String servicosRelatorio;
 
+	public ExtintorManutencao(Long id, Date saida, Date vencimento, String localizacao, Integer numeroCilindro, String tipo)
+	{
+		super();
+		this.setId(id);
+		this.saida = saida;
+		this.vencimento = vencimento;
+		
+		if(this.extintor == null)
+			this.extintor = new Extintor();
+		
+		this.extintor.setLocalizacao(localizacao);
+		this.extintor.setNumeroCilindro(numeroCilindro);
+		this.extintor.setTipo(tipo);
+	}
+
+	public ExtintorManutencao()
+	{
+		super();
+	}
+	
 	public String getMotivoDic()
 	{
 		if (motivo == null)
@@ -153,5 +156,13 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 	public void setVencimento(Date vencimento)
 	{
 		this.vencimento = vencimento;
+	}
+
+	public String getServicosRelatorio() {
+		return servicosRelatorio;
+	}
+
+	public void setServicosRelatorio(String servicosRelatorio) {
+		this.servicosRelatorio = servicosRelatorio;
 	}
 }

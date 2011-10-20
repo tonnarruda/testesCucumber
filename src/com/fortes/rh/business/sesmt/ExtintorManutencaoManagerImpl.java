@@ -8,12 +8,31 @@ import com.fortes.rh.dao.sesmt.ExtintorManutencaoDao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.model.sesmt.ExtintorManutencaoServico;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.StringUtil;
 
 public class ExtintorManutencaoManagerImpl extends GenericManagerImpl<ExtintorManutencao, ExtintorManutencaoDao> implements ExtintorManutencaoManager
 {
 	public Collection<ExtintorManutencao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean somenteSemRetorno, String localizacao)
 	{
-		return getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId,  extintorId, inicio, fim, somenteSemRetorno, localizacao);
+		Collection<ExtintorManutencao> consultaExtintorManutencao = getDao().findAllSelect(page, pagingSize, empresaId, estabelecimentoId,  extintorId, inicio, fim, somenteSemRetorno, localizacao);
+		
+		for (ExtintorManutencao extintorManutencao : consultaExtintorManutencao) 
+		{
+			String extintorManutencaoServicosString = "";
+
+			if (extintorManutencao.getServicos()!=null)
+			{
+				Collection<ExtintorManutencaoServico> extintorManutencaoServicos = extintorManutencao.getServicos();
+			
+				for (ExtintorManutencaoServico extintorManutencaoItem : extintorManutencaoServicos) 
+					extintorManutencaoServicosString += extintorManutencaoItem.getDescricao() + ", ";
+
+			}
+			
+			extintorManutencao.setServicosRelatorio(StringUtil.isBlank(extintorManutencaoServicosString) ? "" : extintorManutencaoServicosString.substring(0, extintorManutencaoServicosString.length()-2));
+		}
+		
+		return consultaExtintorManutencao;
 	}
 
 	public Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean somenteSemRetorno)
