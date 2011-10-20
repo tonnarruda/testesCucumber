@@ -76,7 +76,7 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">matriz_colaboradores_competencias.pdf</param>
 			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioMatrizCompetenciasColaborador.ftl</result>
 		</action>
 		<action name="imprimirMatrizCompetenciasCandidatos" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="imprimirMatrizCompetenciasCandidatos">
 			<result name="success" type="jasper">

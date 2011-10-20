@@ -139,7 +139,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			}
 			
 			// Adiciona coluna para o gap
-			matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), "gap", false, false));
+			matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), "GAP", false, false));
 		}
 
 		Long idColaboradorAnterior = null;
@@ -172,7 +172,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				vo.somaTotalPontos(ordem);
 				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(competencia, ordem + " - " + nivel, isConfiguracaoFaixa, true));
 				//Configura o gap
-				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(competencia, "gap", false, false, (ordem - ordemFaixa)));
+				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(competencia, "GAP", false, false, (ordem - ordemFaixa)));
+				
+				if((ordem - ordemFaixa) > 0)
+					vo.setTotalGapExcedenteAoCargo(ordem - ordemFaixa); 
+				
 				idColaboradorAnterior = configNivelCompetenciaColaborador.getColaboradorId();
 			}
 		}
@@ -210,7 +214,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 				//monta coluna GAP
 				totalPontosFaixa += configuracaoCompetencia.getNivelCompetencia().getOrdem();
-				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(configuracaoCompetencia.getNivelCompetencia().getOrdem(), configuracaoCompetencia.getCompetenciaDescricao(), "gap", false, false));
+				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(configuracaoCompetencia.getNivelCompetencia().getOrdem(), configuracaoCompetencia.getCompetenciaDescricao(), "GAP", false, false));
 			}
 			else
 			{

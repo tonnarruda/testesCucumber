@@ -188,7 +188,7 @@
 					<textElement>
 						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Índice de assertividade relativo ao cargo: " + $F{totalGapExcedenteCargoDescricao}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Índice de assertividade desconsiderando GAP positivo: " + $F{totalGapExcedenteCargoDescricao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

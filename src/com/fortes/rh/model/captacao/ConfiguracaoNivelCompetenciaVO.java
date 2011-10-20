@@ -97,7 +97,7 @@ public class ConfiguracaoNivelCompetenciaVO
 					somaTotalPontos(nivelCompetencia.getOrdem());
 				}
 				
-				if(competenciaNivel.getNivel().equals("gap"))
+				if(competenciaNivel.getNivel().equals("GAP"))
 				{
 					competenciaNivel.setGap(nivelCompetencia.getOrdem() - competenciaNivel.getNivelDaFaixa());
 					if(competenciaNivel.getGap() != null && competenciaNivel.getGap() > 0)
@@ -108,5 +108,8 @@ public class ConfiguracaoNivelCompetenciaVO
 	}
 	public Integer getTotalGapExcedenteAoCargo() {
 		return totalGapExcedenteAoCargo;
+	}
+	public void setTotalGapExcedenteAoCargo(Integer totalGapExcedenteAoCargo) {
+		this.totalGapExcedenteAoCargo = totalGapExcedenteAoCargo;
 	}
 }
