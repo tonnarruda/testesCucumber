@@ -12,17 +12,29 @@ import com.fortes.rh.util.DateUtil;
 public class FaturamentoMensalManagerImpl extends GenericManagerImpl<FaturamentoMensal, FaturamentoMensalDao> implements FaturamentoMensalManager
 {
 
-	public Collection<FaturamentoMensal> findAllSelect(Long empresaId) {
+	public Collection<FaturamentoMensal> findAllSelect(Long empresaId) 
+	{
 		return getDao().findAllSelect(empresaId);
 	}
 
 	public Collection<Object[]> findByPeriodo(Date inicio, Date fim, Long empresaId) 
 	{
+		FaturamentoMensal ultimoFaturamento = getDao().findAtual(inicio);
 		Collection<FaturamentoMensal> faturamentos = getDao().findByPeriodo(inicio, fim, empresaId);
 		Collection<Object[]> graficoEvolucaoFaturamento = new ArrayList<Object[]>();
 
-		for (FaturamentoMensal faturamento : faturamentos)
-			graficoEvolucaoFaturamento.add(new Object[]{DateUtil.getUltimoDiaMes(faturamento.getMesAno()).getTime(), faturamento.getValor()});			
+		Date mesAno = inicio;
+		double faturamentoAtual = (ultimoFaturamento != null && ultimoFaturamento.getValor() != null) ? ultimoFaturamento.getValor() : 0;
+		
+		while (mesAno.before(fim))
+		{
+			for (FaturamentoMensal faturamento : faturamentos)
+				if (DateUtil.equalsMesAno(mesAno, faturamento.getMesAno()))
+					faturamentoAtual = faturamento.getValor();
+					
+			graficoEvolucaoFaturamento.add(new Object[]{DateUtil.getUltimoDiaMes(mesAno).getTime(), faturamentoAtual});			
+			mesAno = DateUtil.incrementaMes(mesAno, 1);
+		}
 
 		return graficoEvolucaoFaturamento;
 	}

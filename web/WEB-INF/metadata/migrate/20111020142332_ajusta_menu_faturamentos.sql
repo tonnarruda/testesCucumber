@@ -1,0 +1,1 @@
+update papel set nome = 'Faturamento Mensal' where id = 526;--.go

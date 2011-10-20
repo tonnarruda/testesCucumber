@@ -56,4 +56,24 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		
 		return criteria.list();
 	}
+
+	public FaturamentoMensal findAtual(Date data) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "id");
+		p.add(Projections.property("f.mesAno"), "mesAno");
+		p.add(Projections.property("f.valor"), "valor");
+		p.add(Projections.property("f.empresa.id"), "projectionEmpresaId");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.le("f.mesAno", data));		
+		
+		criteria.addOrder(Order.desc("f.mesAno"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		criteria.setMaxResults(1);
+		
+		return (FaturamentoMensal) criteria.uniqueResult();
+	}
 }
