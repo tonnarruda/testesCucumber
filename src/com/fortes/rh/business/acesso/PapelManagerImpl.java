@@ -32,9 +32,11 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
 		String[] permissoes = parametrosDoSistemaManager.getModulosDecodificados(parametros);
 
-		Collection<Long> modulosConfigurados = Autenticador.getModulosNaoConfigurados(parametros.getServidorRemprot());
-
-		this.listaFull = getDao().findNotIn(modulosConfigurados);
+		//TODO remprot msgAG
+//		Collection<Long> modulosConfigurados = Autenticador.getModulosNaoConfigurados(parametros.getServidorRemprot());
+//
+//		this.listaFull = getDao().findNotIn(modulosConfigurados);
+		this.listaFull = findAll(new String[]{"ordem"});
 		Collection<Papel> papeisPermitidos = new ArrayList<Papel>();
 
 		if (acessoModulos)

@@ -51,7 +51,8 @@ public class PapelManagerTest extends MockObjectTestCase
 		papeis.add(p3);
 		papeis.add(p4);
 
-		papelDao.expects(once()).method("findNotIn").will(returnValue(papeis));
+//		papelDao.expects(once()).method("findNotIn").will(returnValue(papeis));
+		papelDao.expects(once()).method("findAll").will(returnValue(papeis));
 		
 		String[] permissoes = new String[]{"1","2","3"};
 		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));

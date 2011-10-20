@@ -875,8 +875,8 @@ CREATE TABLE anuncio (
     mostrasexo boolean NOT NULL,
     mostraidade boolean NOT NULL,
     exibirmoduloexterno boolean default false,
-    solicitacao_id bigint
-    
+    solicitacao_id bigint,
+    responderAvaliacaoModuloExterno boolean default false
 );
 ALTER TABLE anuncio ADD CONSTRAINT anuncio_pkey PRIMARY KEY (id);
 ALTER TABLE anuncio ADD CONSTRAINT anuncio_solicitacao_uk UNIQUE (solicitacao_id);
@@ -2432,3 +2432,14 @@ ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorper
 ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_periodoexperiencia_fk FOREIGN KEY (periodoexperiencia_id) REFERENCES periodoexperiencia(id);
 ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorperiodoexperienciaavaliacao_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);
 CREATE SEQUENCE colaboradorperiodoexperienciaavaliacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE faturamentoMensal (
+id bigint NOT NULL,
+mesAno date,
+valor double precision,
+empresa_id bigint
+);
+
+ALTER TABLE faturamentoMensal ADD CONSTRAINT faturamentoMensal_pkey PRIMARY KEY(id);
+ALTER TABLE faturamentoMensal ADD CONSTRAINT faturamentoMensal_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE faturamentoMensal_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;

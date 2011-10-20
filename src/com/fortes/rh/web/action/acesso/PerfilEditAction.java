@@ -74,7 +74,8 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L))
 		{
-			modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados(parametrosDoSistemaManager.findByIdProjection(1L).getServidorRemprot());
+			//TODO remprot msgAC
+			//modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados(parametrosDoSistemaManager.findByIdProjection(1L).getServidorRemprot());
 			permissoes = perfilManager.montaPermissoes(perfil);
 			exibirPerfil = papelManager.getPerfilOrganizado(permissoes, true);
 		}

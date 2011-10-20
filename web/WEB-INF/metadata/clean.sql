@@ -1,10 +1,10 @@
-update empresabds set email='franciscobarroso@grupofortes.com.br';
-update candidato set email='franciscobarroso@grupofortes.com.br';
-update colaborador set email='franciscobarroso@grupofortes.com.br';
-update parametrosdosistema set emailUser='franciscobarroso@grupofortes.com.br';
-update empresa set emailRemetente='franciscobarroso@grupofortes.com.br';
-update empresa set emailRespSetorPessoal='franciscobarroso@grupofortes.com.br';
-update empresa set emailresprh='franciscobarroso@grupofortes.com.br';
+update empresabds set email='franciscobarroso@entetecnologia.com.br';
+update candidato set email='franciscobarroso@entetecnologia.com.br';
+update colaborador set email='franciscobarroso@entetecnologia.com.br';
+update parametrosdosistema set emailUser='franciscobarroso@entetecnologia.com.br';
+update empresa set emailRemetente='franciscobarroso@entetecnologia.com.br';
+update empresa set emailRespSetorPessoal='franciscobarroso@entetecnologia.com.br';
+update empresa set emailresprh='franciscobarroso@entetecnologia.com.br';
 update areaorganizacional set emailsnotificacoes = null;
 update usuario set senha='MTIzNA==';
 update historicocolaborador set salario=5555.00;

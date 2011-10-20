@@ -10,7 +10,7 @@
 	<@ww.actionmessage />
 	<#if exibirPerfil?exists>
 		<@ww.form name="form" action="updateModulos.action" method="POST">
-			
+			<#--//TODO remprot msgAC
 			Módulos do RH configurados no AG.<br><br>
 			<ul>
 				<li>Recrut. e Seleção <#if modulosNaoConfigurados?contains("357")>[Não configurada]</#if></li>
@@ -21,6 +21,7 @@
 				<li>Info. Funcionais</li>
 				<li>SESMT <#if modulosNaoConfigurados?contains("75")>[Não configurada]</#if></li>
 			</ul>
+			-->
 			<br>
 			<div>Permissões</div>
 			<div class="listaOpcoes">
