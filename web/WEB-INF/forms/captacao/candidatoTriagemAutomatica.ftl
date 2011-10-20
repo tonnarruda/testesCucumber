@@ -51,6 +51,10 @@
 		
 		function triar() 
 		{
+			$(".peso").each(function() {
+				$.cookie($(this).attr("id"), $(this).val(), { expires: 90 });
+			});
+		
 			$("input:text").css("background-color", "#FFF");
 			var valido = true;
 		
@@ -71,15 +75,6 @@
 			} else {
 				return validaFormularioEPeriodo('formBusca', new Array('percentualMinimo'), false);
 			}
-		}
-		
-		function gravarPesos()
-		{
-			$(".peso").each(function() {
-				$.cookie($(this).attr("id"), $(this).val(), { expires: 90 });
-			});
-			
-			jAlert("Pesos memorizados com sucesso");
 		}
 	</script>
 
@@ -248,7 +243,6 @@
 			
 			<div class="buttonGroup">
 				<input type="button" value="" class="btnPesquisar grayBGE" onclick="triar();">
-				<a href="javascript:;" onclick="gravarPesos()" style="text-decoration: underline;">Memorizar pesos para este computador</a>
 			</div>
 		</@ww.form>
 
