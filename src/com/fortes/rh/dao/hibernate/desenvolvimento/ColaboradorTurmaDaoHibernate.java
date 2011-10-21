@@ -547,7 +547,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	{
 		StringBuilder sql = new StringBuilder();		
 		sql.append("select ");
-		sql.append("	co.id as colaborador, ");
+		sql.append("	distinct co.id as colaborador, ");
 		sql.append("	co.nome as colaboradornome, ");
 		sql.append("	co.matricula as colaboradormatricula, ");
 		sql.append("	e.id as estabelecimentoId, ");

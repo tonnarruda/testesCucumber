@@ -2069,6 +2069,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			nomeCpf += " (" + nomeComercial + ")";
 		if(pessoal != null && pessoal.getCpf() != null)
 			nomeCpf += " - " + pessoal.getCpfFormatado();
+		if(isDesligado())
+			nomeCpf += " (Desligado)";
 
 		return nomeCpf;
 	}

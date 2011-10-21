@@ -184,7 +184,7 @@
 				<h4> Colaborador: ${solicitacaoEpi.colaborador.nome} </h4>
 				<@ww.hidden name="solicitacaoEpi.colaborador.id" />
 			<#else>
-				<@ww.select label="Colaborador" name="solicitacaoEpi.colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="nomeCpf" />
+				<@ww.select label="Colaborador" name="solicitacaoEpi.colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="NomeCpf" />
 			</#if>
 			<@ww.datepicker label="Data" id="data" name="solicitacaoEpi.data" required="true" cssClass="mascaraData" value="${data}"/>
 

@@ -31,10 +31,10 @@ public class ExtintorInspecaoManagerImpl extends GenericManagerImpl<ExtintorInsp
 			Collection<ExtintorInspecaoItem> extintorInspecaoItems = extintorInspecao.getItens();
 			
 				for (ExtintorInspecaoItem extintorInspecaoItem : extintorInspecaoItems) 
-					extintorInspecaoItemsString += extintorInspecaoItem.getDescricao() + " \n";
+					extintorInspecaoItemsString += extintorInspecaoItem.getDescricao() + ", ";
 
 			}
-			extintorInspecao.setItensRelatorio(extintorInspecaoItemsString);
+			extintorInspecao.setItensRelatorio(StringUtil.isBlank(extintorInspecaoItemsString) ? "" : extintorInspecaoItemsString.substring(0, extintorInspecaoItemsString.length()-2));
 		}
 		
 		return consultaExtintorInpecao;

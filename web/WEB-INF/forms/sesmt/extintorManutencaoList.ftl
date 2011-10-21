@@ -101,6 +101,11 @@
 		<@display.column property="extintor.localizacao" title="Localização" style="width:280px;"/>
 		<@display.column property="extintor.numeroCilindro" title="Cilindro" style="width:100px;"/>
 		<@display.column property="extintor.tipoDicAbreviado" title="Tipo" style="width:60px;"/>
+		<@display.column title="Obs." style="text-align: center;width: 50px">
+			<#if extintorManutencao.observacao?exists && extintorManutencao.observacao?trim != "">
+				<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${extintorManutencao.observacao?j_string}');return false">...</span>
+			</#if>
+		</@display.column>
 	</@display.table>
 
 	<div class="buttonGroup">
