@@ -266,18 +266,18 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	assertEquals("input", action.relatorioColaboradorSemTreinamento());
     }
 
-    public void testRelatorioColaboradorComTreinamento() throws Exception
-    {
-    	Curso curso = CursoFactory.getEntity(1L);
-    	curso.setNome("Como Raparigar");
-    	action.setCurso(curso);
-    	
-    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));    	
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	cursoManager.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(curso));
-    	
-    	assertEquals("success", action.relatorioColaboradorComTreinamento());
-    }
+//    public void testRelatorioColaboradorComTreinamento() throws Exception
+//    {
+//    	Curso curso = CursoFactory.getEntity(1L);
+//    	curso.setNome("Como Raparigar");
+//    	action.setCurso(curso);
+//    	
+//    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));    	
+//    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
+//    	cursoManager.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(curso));
+//    	
+//    	assertEquals("success", action.relatorioColaboradorComTreinamento());
+//    }
     
     public void testRelatorioColaboradorComTreinamentoException() throws Exception
     {
