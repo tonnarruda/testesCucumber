@@ -584,24 +584,24 @@ public class AllUnitTests extends TestSuite
         TestSuite suite = new TestSuite();
 
         //ACESSO
-//        suite.addTestSuite(PapelManagerTest.class);
+        suite.addTestSuite(PapelManagerTest.class);
 
         suite.addTestSuite(PapelDaoHibernateTest.class);
-//        suite.addTestSuite(PerfilDaoHibernateTest.class);
-//        suite.addTestSuite(PerfilManagerTest.class);
-//        suite.addTestSuite(UsuarioDaoHibernateTest.class);
-//        suite.addTestSuite(UsuarioManagerTest.class);
-//        suite.addTestSuite(UsuarioEditActionTest.class);
-//        suite.addTestSuite(UsuarioEmpresaDaoHibernateTest.class);
-//        suite.addTestSuite(UsuarioEmpresaManagerTest.class);
-//
-//        //CAPTAÇÃO
-//        suite.addTestSuite(ConfiguracaoImpressaoCurriculoDaoHibernateTest.class);
-//        suite.addTestSuite(ConfiguracaoImpressaoCurriculoManagerTest.class);
-//        suite.addTestSuite(AnuncioListActionTest.class);
-//        suite.addTestSuite(AnuncioManagerTest.class);
-//        suite.addTestSuite(AnuncioDaoHibernateTest.class);
-//        suite.addTestSuite(CandidatoDaoHibernateTest.class);
+        suite.addTestSuite(PerfilDaoHibernateTest.class);
+        suite.addTestSuite(PerfilManagerTest.class);
+        suite.addTestSuite(UsuarioDaoHibernateTest.class);
+        suite.addTestSuite(UsuarioManagerTest.class);
+        suite.addTestSuite(UsuarioEditActionTest.class);
+        suite.addTestSuite(UsuarioEmpresaDaoHibernateTest.class);
+        suite.addTestSuite(UsuarioEmpresaManagerTest.class);
+
+        //CAPTAÇÃO
+        suite.addTestSuite(ConfiguracaoImpressaoCurriculoDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoImpressaoCurriculoManagerTest.class);
+        suite.addTestSuite(AnuncioListActionTest.class);
+        suite.addTestSuite(AnuncioManagerTest.class);
+        suite.addTestSuite(AnuncioDaoHibernateTest.class);
+        suite.addTestSuite(CandidatoDaoHibernateTest.class);
 //        suite.addTestSuite(CandidatoManagerTest.class);
 //        suite.addTestSuite(CandidatoEditActionTest.class);
 //        suite.addTestSuite(CandidatoListActionTest.class);
