@@ -691,27 +691,27 @@ public class AllUnitTests extends TestSuite
 //        suite.addTestSuite(ReajusteColaboradorManagerTest.class);
 //        suite.addTestSuite(ReajusteColaboradorEditActionTest.class);
 //
-//        suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
-//        suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);
-//        suite.addTestSuite(TabelaReajusteColaboradorManagerAuditaTest.class);
-//        suite.addTestSuite(IndiceEditActionTest.class);
-//        suite.addTestSuite(IndiceListActionTest.class);
-//        suite.addTestSuite(IndiceDaoHibernateTest.class);
-//        suite.addTestSuite(IndiceManagerTest.class);
-//        suite.addTestSuite(IndiceHistoricoDaoHibernateTest.class);
-//        suite.addTestSuite(IndiceHistoricoManagerTest.class);
-//        suite.addTestSuite(IndiceHistoricoEditActionTest.class);
-//        suite.addTestSuite(IndiceHistoricoListActionTest.class);
-//
-//        suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
-//        suite.addTestSuite(ConfiguracaoLimiteColaboradorManagerTest.class);
-//        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
-//        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
-//        suite.addTestSuite(FaturamentoMensalEditActionTest.class);
-//        suite.addTestSuite(FaturamentoMensalManagerTest.class);
-//        suite.addTestSuite(FaturamentoMensalDaoHibernateTest.class);
-//
-//        //DESENVOLVIMENTO
+        suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);
+        suite.addTestSuite(TabelaReajusteColaboradorManagerAuditaTest.class);
+        suite.addTestSuite(IndiceEditActionTest.class);
+        suite.addTestSuite(IndiceListActionTest.class);
+        suite.addTestSuite(IndiceDaoHibernateTest.class);
+        suite.addTestSuite(IndiceManagerTest.class);
+        suite.addTestSuite(IndiceHistoricoDaoHibernateTest.class);
+        suite.addTestSuite(IndiceHistoricoManagerTest.class);
+        suite.addTestSuite(IndiceHistoricoEditActionTest.class);
+        suite.addTestSuite(IndiceHistoricoListActionTest.class);
+
+        suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoLimiteColaboradorManagerTest.class);
+        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
+        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
+        suite.addTestSuite(FaturamentoMensalEditActionTest.class);
+        suite.addTestSuite(FaturamentoMensalManagerTest.class);
+        suite.addTestSuite(FaturamentoMensalDaoHibernateTest.class);
+
+        //DESENVOLVIMENTO
         suite.addTestSuite(CursoDaoHibernateTest.class);
         suite.addTestSuite(CursoManagerTest.class);
         suite.addTestSuite(CursoEditActionTest.class);
