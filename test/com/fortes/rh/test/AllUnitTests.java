@@ -724,11 +724,11 @@ public class AllUnitTests extends TestSuite
 //
 //        suite.addTestSuite(TurmaTest.class);
 //        suite.addTestSuite(TurmaDaoHibernateTest.class);
-//        suite.addTestSuite(TurmaEditActionTest.class);
-//        suite.addTestSuite(TurmaListActionTest.class);
-//        suite.addTestSuite(TurmaManagerTest.class);
-//
-//        suite.addTestSuite(DNTDaoHibernateTest.class);
+        suite.addTestSuite(TurmaEditActionTest.class);
+        suite.addTestSuite(TurmaListActionTest.class);
+        suite.addTestSuite(TurmaManagerTest.class);
+
+        suite.addTestSuite(DNTDaoHibernateTest.class);
         suite.addTestSuite(DNTManagerTest.class);
         suite.addTestSuite(DNTEditActionTest.class);
         suite.addTestSuite(DNTListActionTest.class);
