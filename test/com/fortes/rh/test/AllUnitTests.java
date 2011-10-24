@@ -691,17 +691,17 @@ public class AllUnitTests extends TestSuite
 //        suite.addTestSuite(ReajusteColaboradorManagerTest.class);
 //        suite.addTestSuite(ReajusteColaboradorEditActionTest.class);
 //
-        suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
-        suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);
-        suite.addTestSuite(TabelaReajusteColaboradorManagerAuditaTest.class);
-        suite.addTestSuite(IndiceEditActionTest.class);
-        suite.addTestSuite(IndiceListActionTest.class);
-        suite.addTestSuite(IndiceDaoHibernateTest.class);
-        suite.addTestSuite(IndiceManagerTest.class);
-        suite.addTestSuite(IndiceHistoricoDaoHibernateTest.class);
-        suite.addTestSuite(IndiceHistoricoManagerTest.class);
-        suite.addTestSuite(IndiceHistoricoEditActionTest.class);
-        suite.addTestSuite(IndiceHistoricoListActionTest.class);
+//        suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
+//        suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);
+//        suite.addTestSuite(TabelaReajusteColaboradorManagerAuditaTest.class);
+//        suite.addTestSuite(IndiceEditActionTest.class);
+//        suite.addTestSuite(IndiceListActionTest.class);
+//        suite.addTestSuite(IndiceDaoHibernateTest.class);
+//        suite.addTestSuite(IndiceManagerTest.class);
+//        suite.addTestSuite(IndiceHistoricoDaoHibernateTest.class);
+//        suite.addTestSuite(IndiceHistoricoManagerTest.class);
+//        suite.addTestSuite(IndiceHistoricoEditActionTest.class);
+//        suite.addTestSuite(IndiceHistoricoListActionTest.class);
 
         suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(ConfiguracaoLimiteColaboradorManagerTest.class);
