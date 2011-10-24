@@ -43,10 +43,12 @@ public class FaturamentoMensalManagerTest extends MockObjectTestCase
 		
 		FaturamentoMensal janeiro = FaturamentoMensalFactory.getEntity(1L);
 		janeiro.setMesAno(inicio);
+		janeiro.setValor(1000000.0);
 		
 		Collection<FaturamentoMensal> faturamentoMensals = Arrays.asList(janeiro);
 		
 		faturamentoMensalDao.expects(once()).method("findByPeriodo").with(eq(inicio), eq(fim),eq(empresaId)).will(returnValue(faturamentoMensals));
-		assertEquals(1, faturamentoMensalManager.findByPeriodo(inicio, fim, empresaId).size());
+		faturamentoMensalDao.expects(once()).method("findAtual").with(eq(inicio)).will(returnValue(null));
+		assertEquals(9, faturamentoMensalManager.findByPeriodo(inicio, fim, empresaId).size());
 	}
 }
