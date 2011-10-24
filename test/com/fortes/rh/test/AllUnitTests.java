@@ -736,7 +736,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ColaboradorTurmaEditActionTest.class);
         suite.addTestSuite(ColaboradorTurmaListActionTest.class);
         suite.addTestSuite(ColaboradorTurmaManagerTest.class);
-        suite.addTestSuite(ColaboradorTurmaDaoHibernateTest.class);
+//        suite.addTestSuite(ColaboradorTurmaDaoHibernateTest.class);
 //
 //        suite.addTestSuite(ColaboradorPresencaEditActionTest.class);
 //        suite.addTestSuite(ColaboradorPresencaListActionTest.class);
