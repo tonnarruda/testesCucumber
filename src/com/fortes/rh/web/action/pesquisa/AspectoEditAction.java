@@ -76,7 +76,7 @@ public class AspectoEditAction extends MyActionSupportEdit implements ModelDrive
 	{
 		try
 		{
-			aspectoManager.update(aspecto, getEmpresaSistema().getId());
+			aspectoManager.update(aspecto);
 			return Action.SUCCESS;
 		}
 		catch (Exception e)

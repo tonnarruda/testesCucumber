@@ -15,6 +15,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -44,6 +45,7 @@ public class EtapaSeletiva extends AbstractModel implements Serializable
 		this.empresa.setId(empresaId);
 	}
 
+	@ChaveDaAuditoria
 	public String getNome()
 	{
 		return nome;

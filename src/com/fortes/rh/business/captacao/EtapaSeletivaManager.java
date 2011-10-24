@@ -9,17 +9,20 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.relatorio.ProcessoSeletivoRelatorio;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.spring.aop.callback.EtapaSeletivaAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 import com.fortes.web.tags.CheckBox;
 
 public interface EtapaSeletivaManager extends GenericManager<EtapaSeletiva>
 {
+	@Audita(operacao="Atualização", auditor=EtapaSeletivaAuditorCallbackImpl.class)
+	void update(EtapaSeletiva etapaSeletiva, Empresa empresa);
+	@Audita(operacao="Remoção", auditor=EtapaSeletivaAuditorCallbackImpl.class)
+	public void remove(EtapaSeletiva etapaSeletiva, Empresa empresa);
+
 	int sugerirOrdem(Long empresaId);
 
 	EtapaSeletiva findPrimeiraEtapa(Long empresaId);
-
-	public void update(EtapaSeletiva etapaSeletiva, Empresa empresa);
-
-	public void remove(EtapaSeletiva etapaSeletiva, Empresa empresa);
 
 	Collection<EtapaSeletiva> findAllSelect(Long empresaId);
 

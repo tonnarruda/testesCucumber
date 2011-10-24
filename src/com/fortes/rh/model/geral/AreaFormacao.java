@@ -10,6 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -17,6 +18,7 @@ import com.fortes.model.AbstractModel;
 public class AreaFormacao extends AbstractModel implements Serializable
 {
     @Column(length=100)
+    @ChaveDaAuditoria
     private String nome;
 
 	public AreaFormacao()

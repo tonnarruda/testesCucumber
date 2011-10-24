@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="questionario_sequence", allocationSize=1)//TODO utilizamos a sequence do questionario para não alterar as consultas, Francisco
@@ -20,6 +21,7 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	@Transient private static final long serialVersionUID = 1L;
 
 	@Column(length=100)
+	@ChaveDaAuditoria
     private String titulo;
 	
 	@Lob

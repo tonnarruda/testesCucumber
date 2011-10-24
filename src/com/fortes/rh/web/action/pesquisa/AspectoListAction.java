@@ -41,7 +41,7 @@ public class AspectoListAction extends MyActionSupportList
 	{
 		try
 		{
-			aspectoManager.delete(aspecto.getId(), getEmpresaSistema().getId());
+			aspectoManager.remove(aspecto.getId());
 			//usei uma outra variavel e não setactionmsg pq estava ficando com a msg duplicada
 			msg = "Aspecto excluído com sucesso.";
 		}

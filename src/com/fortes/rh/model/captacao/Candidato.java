@@ -44,6 +44,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 import com.fortes.thumb.GeradorDeThumbnailUtils;
 
@@ -161,6 +162,7 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	}
 
 	//F2RH, listagem de candidato na solicitacao
+	@NaoAudita
 	public String getS() {
 		return StringUtil.montaTokenF2rh(this.nome);
 	}
@@ -632,6 +634,7 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 		endereco.getUf().setSigla(sigla);
 	}
 
+	@ChaveDaAuditoria
 	public String getNome()
 	{
 		return nome;

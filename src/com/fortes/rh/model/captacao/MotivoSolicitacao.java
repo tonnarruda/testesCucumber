@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -14,6 +15,7 @@ import com.fortes.model.AbstractModel;
 public class MotivoSolicitacao extends AbstractModel implements Serializable
 {
     @Column(length=100)
+    @ChaveDaAuditoria
     private String descricao;
     
     private boolean turnover;

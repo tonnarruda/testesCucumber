@@ -18,6 +18,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
@@ -27,6 +28,7 @@ public class Pergunta extends AbstractModel implements Serializable, Cloneable
 {
     private Integer ordem;
     @Lob
+    @ChaveDaAuditoria
     private String texto;
     private boolean comentario;
     @Lob

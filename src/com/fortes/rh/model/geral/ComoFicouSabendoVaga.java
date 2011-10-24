@@ -7,12 +7,14 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="comoFicouSabendoVaga_sequence", allocationSize=1)
 public class ComoFicouSabendoVaga extends AbstractModel implements Serializable
 {
+	@ChaveDaAuditoria
 	private String nome;
 	@Transient
 	private Integer qtd;

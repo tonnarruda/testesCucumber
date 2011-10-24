@@ -12,13 +12,15 @@ import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="aspecto_sequence", allocationSize=1)
 public class Aspecto extends AbstractModel implements Serializable, Cloneable
 {
-    @Column(length=100)
+	@ChaveDaAuditoria
+	@Column(length=100)
     private String nome;
     @ManyToOne
     private Questionario questionario;

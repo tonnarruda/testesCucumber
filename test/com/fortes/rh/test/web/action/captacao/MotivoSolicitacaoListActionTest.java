@@ -61,9 +61,7 @@ public class MotivoSolicitacaoListActionTest extends MockObjectTestCase
 
     	action.setMotivoSolicitacao(ms);
 
-    	Long[] ids = {ms.getId()};
-
-    	manager.expects(once()).method("remove").with(eq(ids));
+    	manager.expects(once()).method("remove").with(eq(ms.getId()));
 
     	assertEquals("success", action.delete());
     }
