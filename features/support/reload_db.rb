@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'pg'
-require 'ruby-debug'
 
 $db_name = "fortesrh"
 $data = File.read("./web/WEB-INF/metadata/create_data.sql").gsub(/-- BEGIN_TEST_IGNORE.*?-- END_TEST_IGNORE/m, '')
