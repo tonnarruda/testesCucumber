@@ -153,7 +153,7 @@
 
 		<dirname file="ci.xml" property="current.dir" />
 		<junit haltonfailure="true" haltonerror="true"
-			fork="yes" dir="${current.dir}" maxmemory="1024m">
+			fork="yes" dir="${current.dir}" maxmemory="512m">
 
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${coverage.xml.dir}/cobertura.ser" />
 			<sysproperty key="basedir" value="." />
@@ -188,7 +188,7 @@
 
 		<dirname file="ci.xml" property="current.dir" />
 		<junit haltonfailure="true" haltonerror="true"
-			fork="true" dir="${current.dir}" maxmemory="1024m"
+			fork="true" dir="${current.dir}" maxmemory="512m"
 			forkmode="once">
 			<jvmarg value="-javaagent:${jmockit.dir}" />
             <jvmarg value="-Xms40m" />
@@ -205,7 +205,7 @@
 		</junit>
 	</target>
 
-	<target name="integrate-server" depends="test-coverage">
+	<target name="integrate-server" depends="coverage">
 		<echo message="Integração concluída com sucesso." />
 	</target>
 
