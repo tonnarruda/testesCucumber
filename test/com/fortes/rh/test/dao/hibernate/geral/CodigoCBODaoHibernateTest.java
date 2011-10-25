@@ -23,9 +23,9 @@ public class CodigoCBODaoHibernateTest extends BaseDaoHibernateTest
 	
 	public void testFindDescricaoByCodigo() {
 		
-		String descricao = codigoCBODao.findDescricaoByCodigo("764305");
+		String descricao = codigoCBODao.findDescricaoByCodigo("519805");
 		
-		assertEquals("descricao do codigo", "Acabador de calçados", descricao);
+		assertEquals("descricao do codigo", "Profissional do sexo", descricao);
 	}
 	
 	public void setCodigoCBODao(CodigoCBODao codigoCBODao){

@@ -16,14 +16,14 @@ public class CidDaoHibernateTest extends BaseDaoHibernateTest
 
 	public void testBuscandoCidsEDescricao() {
 		
-		Collection<Cid> cids = cidDao.buscaCids("A05", "Intoxica");
+		Collection<Cid> cids = cidDao.buscaCids("A01", "Febre ti");
 		
-		assertEquals("registros encontrados", 6, cids.size());
+		assertEquals("registros encontrados", 1, cids.size());
 	}
 	
 	public void testBuscandoCidsEDescricaoComAcento() {
 		
-		Collection<Cid> cids = cidDao.buscaCids("", "DEpendênciá de Aspirador");
+		Collection<Cid> cids = cidDao.buscaCids("", "Paratifóide A");
 		
 		assertEquals(1, cids.size());
 	}
