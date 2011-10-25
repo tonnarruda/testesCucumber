@@ -205,7 +205,7 @@
 		</junit>
 	</target>
 
-	<target name="integrate-server" depends="coverage">
+	<target name="integrate-server" depends="test-coverage">
 		<echo message="Integração concluída com sucesso." />
 	</target>
 
