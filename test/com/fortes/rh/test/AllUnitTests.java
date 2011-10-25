@@ -712,8 +712,8 @@ public class AllUnitTests extends TestSuite
 //        suite.addTestSuite(FaturamentoMensalDaoHibernateTest.class);
 //
 //        //DESENVOLVIMENTO
-//        suite.addTestSuite(CursoDaoHibernateTest.class);
-//        suite.addTestSuite(CursoManagerTest.class);
+        suite.addTestSuite(CursoDaoHibernateTest.class);
+        suite.addTestSuite(CursoManagerTest.class);
         suite.addTestSuite(CursoEditActionTest.class);
         suite.addTestSuite(CursoListActionTest.class);
 
