@@ -7,7 +7,7 @@ import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
 
-public class LiberaQuestionarioAuditorCallbackImpl implements AuditorCallback {
+public class QuestionarioAuditorCallbackImpl implements AuditorCallback {
 
 	private Questionario questionario;
 	

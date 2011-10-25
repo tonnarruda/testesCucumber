@@ -17,7 +17,7 @@ import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TSituacao;
-import com.fortes.rh.security.spring.aop.callback.InsertFaixaSalarialAuditorCallbackImpl;
+import com.fortes.rh.security.spring.aop.callback.FaixaSalarialAuditorCallbackImpl;
 import com.fortes.rh.security.spring.aop.callback.TabelaReajusteColaboradorAuditorCallbackImpl;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;

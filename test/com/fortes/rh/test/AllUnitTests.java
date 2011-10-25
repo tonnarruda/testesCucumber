@@ -27,6 +27,7 @@ import com.fortes.rh.test.business.acesso.PapelManagerTest;
 import com.fortes.rh.test.business.acesso.PerfilManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
+import com.fortes.rh.test.business.auditoria.ManagerAuditaTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
 import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest;
@@ -51,7 +52,6 @@ import com.fortes.rh.test.business.captacao.NivelCompetenciaManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoBDSManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest;
 import com.fortes.rh.test.business.cargosalario.CargoManagerTest;
-import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerAuditaTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaturamentoMensalManagerTest;
@@ -60,7 +60,6 @@ import com.fortes.rh.test.business.cargosalario.HistoricoColaboradorManagerTest;
 import com.fortes.rh.test.business.cargosalario.IndiceHistoricoManagerTest;
 import com.fortes.rh.test.business.cargosalario.IndiceManagerTest;
 import com.fortes.rh.test.business.cargosalario.ReajusteColaboradorManagerTest;
-import com.fortes.rh.test.business.cargosalario.TabelaReajusteColaboradorManagerAuditaTest;
 import com.fortes.rh.test.business.cargosalario.TabelaReajusteColaboradorManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.CertificacaoManagerTest;
@@ -72,16 +71,13 @@ import com.fortes.rh.test.business.desenvolvimento.DiaTurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.TurmaManagerTest;
 import com.fortes.rh.test.business.geral.AreaFormacaoManagerTest;
 import com.fortes.rh.test.business.geral.AreaInteresseManagerTest;
-import com.fortes.rh.test.business.geral.AreaOrganizacionalManagerAuditaTest;
 import com.fortes.rh.test.business.geral.AreaOrganizacionalManagerTest;
 import com.fortes.rh.test.business.geral.BairroManagerTest;
 import com.fortes.rh.test.business.geral.BeneficioManagerTest;
 import com.fortes.rh.test.business.geral.CamposExtrasManagerTest;
-import com.fortes.rh.test.business.geral.CargoManagerAuditaTest;
 import com.fortes.rh.test.business.geral.CidadeManagerTest;
 import com.fortes.rh.test.business.geral.ClienteManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorIdiomaManagerTest;
-import com.fortes.rh.test.business.geral.ColaboradorManagerAuditaTest;
 import com.fortes.rh.test.business.geral.ColaboradorManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorOcorrenciaManagerTest;
 import com.fortes.rh.test.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManagerTest;
@@ -99,9 +95,7 @@ import com.fortes.rh.test.business.geral.GrupoACManagerTest;
 import com.fortes.rh.test.business.geral.GrupoGastoManagerTest;
 import com.fortes.rh.test.business.geral.HistoricoBeneficioManagerTest;
 import com.fortes.rh.test.business.geral.HistoricoColaboradorBeneficioManagerTest;
-import com.fortes.rh.test.business.geral.HistoricoColaboradorManagerAuditaTest;
 import com.fortes.rh.test.business.geral.ImportadorGastosACTest;
-import com.fortes.rh.test.business.geral.IndiceManagerAuditaTest;
 import com.fortes.rh.test.business.geral.MensagemManagerTest;
 import com.fortes.rh.test.business.geral.MotivoDemissaoManagerTest;
 import com.fortes.rh.test.business.geral.OcorrenciaManagerTest;
@@ -672,7 +666,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(FaixaSalarialHistoricoManagerTest.class);
         suite.addTestSuite(FaixaSalarialHistoricoListActionTest.class);
         suite.addTestSuite(FaixaSalarialHistoricoEditActionTest.class);
-        suite.addTestSuite(FaixaSalarialHistoricoManagerAuditaTest.class);
 
         suite.addTestSuite(GrupoOcupacionalManagerTest.class);
         suite.addTestSuite(GrupoOcupacionalDaoHibernateTest.class);
@@ -693,7 +686,6 @@ public class AllUnitTests extends TestSuite
 
         suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);
-        suite.addTestSuite(TabelaReajusteColaboradorManagerAuditaTest.class);
         suite.addTestSuite(IndiceEditActionTest.class);
         suite.addTestSuite(IndiceListActionTest.class);
         suite.addTestSuite(IndiceDaoHibernateTest.class);
@@ -1280,11 +1272,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(DateFormatJsonValueProcessorTest.class);
         suite.addTestSuite(AbstractModelJsonValueProcessorTest.class);
         
-        suite.addTestSuite(ColaboradorManagerAuditaTest.class);
-        suite.addTestSuite(HistoricoColaboradorManagerAuditaTest.class);
-        suite.addTestSuite(AreaOrganizacionalManagerAuditaTest.class);
-        suite.addTestSuite(CargoManagerAuditaTest.class);
-        suite.addTestSuite(IndiceManagerAuditaTest.class);
+        suite.addTestSuite(ManagerAuditaTest.class);
         
         suite.addTestSuite(F2rhFacadeTest.class);
         
