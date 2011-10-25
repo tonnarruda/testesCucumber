@@ -101,7 +101,7 @@
 	<target name="recreate-bd">
 		<exec failonerror="true" executable="ruby"
 			output="reload_db.log">
-			<arg value="${project.dir}/features/support/reload_db.rb --start" />
+			<arg value="${project.dir}/features/support/reload_db.rb" />
 		</exec>
 	</target>
 	
