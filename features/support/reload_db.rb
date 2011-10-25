@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'pg'
 require 'ruby-debug'
 
