@@ -706,7 +706,7 @@ public class AllUnitTests extends TestSuite
 //        suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
 //        suite.addTestSuite(ConfiguracaoLimiteColaboradorManagerTest.class);
 //        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
-        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
+//        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
         
 //        suite.addTestSuite(FaturamentoMensalEditActionTest.class);
         
