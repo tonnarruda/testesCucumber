@@ -8047,9 +8047,9 @@ insert into codigoCBO (codigo, descricao) values ('317105','Programador de inter
 insert into codigoCBO (codigo, descricao) values ('317120','Programador de multimídia');
 insert into codigoCBO (codigo, descricao) values ('317115','Programador de máquinas - ferramenta com comando numérico');
 insert into codigoCBO (codigo, descricao) values ('317110','Programador de sistemas de informaçao');
+insert into codigoCBO (codigo, descricao) values ('766155','Programador visual gráfico');
 
 -- BEGIN_TEST_IGNORE
-insert into codigoCBO (codigo, descricao) values ('766155','Programador visual gráfico');
 insert into codigoCBO (codigo, descricao) values ('318805','Projetista de móveis');
 insert into codigoCBO (codigo, descricao) values ('374135','Projetista de sistemas de áudio');
 insert into codigoCBO (codigo, descricao) values ('374120','Projetista de som');

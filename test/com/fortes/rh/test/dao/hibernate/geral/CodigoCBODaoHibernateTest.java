@@ -16,9 +16,9 @@ public class CodigoCBODaoHibernateTest extends BaseDaoHibernateTest
 
 	public void testBuscandoCBOsPorCodigoEDescricao() {
 		
-		Collection<AutoCompleteVO> cbos = codigoCBODao.buscaCodigosCBO("Acabador");
+		Collection<AutoCompleteVO> cbos = codigoCBODao.buscaCodigosCBO("Programador");
 		
-		assertEquals("registros encontrados", 3, cbos.size());
+		assertEquals("registros encontrados", 5, cbos.size());
 	}
 	
 	public void testFindDescricaoByCodigo() {
