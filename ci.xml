@@ -153,7 +153,7 @@
 
 		<dirname file="ci.xml" property="current.dir" />
 		<junit haltonfailure="true" haltonerror="true"
-			fork="yes" dir="${current.dir}" maxmemory="512m">
+			fork="yes" dir="${current.dir}" maxmemory="1024m">
 
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${coverage.xml.dir}/cobertura.ser" />
 			<sysproperty key="basedir" value="." />
@@ -188,7 +188,7 @@
 
 		<dirname file="ci.xml" property="current.dir" />
 		<junit haltonfailure="true" haltonerror="true"
-			fork="true" dir="${current.dir}" maxmemory="512m"
+			fork="true" dir="${current.dir}" maxmemory="1024m"
 			forkmode="once">
 			<jvmarg value="-javaagent:${jmockit.dir}" />
             <jvmarg value="-Xms40m" />
