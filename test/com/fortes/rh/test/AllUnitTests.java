@@ -703,11 +703,11 @@ public class AllUnitTests extends TestSuite
 //        suite.addTestSuite(IndiceHistoricoEditActionTest.class);
 //        suite.addTestSuite(IndiceHistoricoListActionTest.class);
 
-//        suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
-//        suite.addTestSuite(ConfiguracaoLimiteColaboradorManagerTest.class);
-//        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
-//        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
-//        suite.addTestSuite(FaturamentoMensalEditActionTest.class);
+        suite.addTestSuite(ConfiguracaoLimiteColaboradorDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoLimiteColaboradorManagerTest.class);
+        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest.class);
+        suite.addTestSuite(QuantidadeLimiteColaboradoresPorCargoManagerTest.class);
+        suite.addTestSuite(FaturamentoMensalEditActionTest.class);
         suite.addTestSuite(FaturamentoMensalManagerTest.class);
         suite.addTestSuite(FaturamentoMensalDaoHibernateTest.class);
 
