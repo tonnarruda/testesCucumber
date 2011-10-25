@@ -105,7 +105,7 @@
 		</exec>
 	</target>
 
-	<target name="build">
+	<target name="build" depends="recreate-and-update-bd">
 		<mkdir dir="${build.dir}" />
 		<delete includeemptydirs="true">
 			<fileset dir="${build.dir}" includes="**/*/**" />
