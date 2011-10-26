@@ -14,17 +14,17 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
-import com.fortes.rh.security.spring.aop.callback.AuditorCallbackImpl;
+import com.fortes.rh.security.spring.aop.callback.AreaOrganizacionalAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 import com.fortes.web.tags.CheckBox;
 
 public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizacional>
 {
-	@Audita(operacao="Inserção", auditor=AuditorCallbackImpl.class)
+	@Audita(operacao="Inserção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
 	public void insertLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
-	@Audita(operacao="Atualização", auditor=AuditorCallbackImpl.class)
+	@Audita(operacao="Atualização", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
 	public void editarLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
-	@Audita(operacao="Remoção", auditor=AuditorCallbackImpl.class)
+	@Audita(operacao="Remoção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
 	public void deleteLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
 	
 	public Collection getNaoFamilia(Collection areas, Long id);

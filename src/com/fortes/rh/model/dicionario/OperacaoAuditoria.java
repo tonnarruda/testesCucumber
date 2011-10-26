@@ -46,8 +46,8 @@ public enum OperacaoAuditoria
 		return descricao;
 	}
 	
-	public GeraDadosAuditados getDadosAuditados(MetodoInterceptado metodo) {
-		return null;
+	public GeraDadosAuditados getDadosAuditados(MetodoInterceptado metodo) throws Exception {
+		throw new Exception("Auditoria não implementada para a operação de " + metodo.getOperacao());
 	}
 	
 	@SuppressWarnings("unchecked")

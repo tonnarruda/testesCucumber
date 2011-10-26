@@ -13,13 +13,13 @@ public class AuditorCallbackImpl implements AuditorCallback {
 	{
 		GeraDadosAuditados dadosAuditados = null;
 		
-		if (metodo.getOperacao().equals("Inserção"))
+		if (metodo.getOperacao().equals(OperacaoAuditoria.INSERCAO.getDescricao()))
 			dadosAuditados = OperacaoAuditoria.INSERCAO.getDadosAuditados(metodo);
 		
-		else if (metodo.getOperacao().equals("Atualização"))
+		else if (metodo.getOperacao().equals(OperacaoAuditoria.ATUALIZACAO.getDescricao()))
 			dadosAuditados = OperacaoAuditoria.ATUALIZACAO.getDadosAuditados(metodo);
 
-		else if (metodo.getOperacao().equals("Remoção"))
+		else if (metodo.getOperacao().equals(OperacaoAuditoria.REMOCAO.getDescricao()))
 			dadosAuditados = OperacaoAuditoria.REMOCAO.getDadosAuditados(metodo);
 		
 		metodo.processa();
