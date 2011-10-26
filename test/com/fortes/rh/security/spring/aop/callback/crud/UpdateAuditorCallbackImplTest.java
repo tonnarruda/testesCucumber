@@ -9,9 +9,9 @@ import net.vidageek.mirror.dsl.Mirror;
 import org.aopalliance.intercept.MethodInvocation;
 
 import com.fortes.rh.model.sesmt.Evento;
+import com.fortes.rh.security.spring.aop.MetodoInterceptadoImpl;
 import com.fortes.rh.security.spring.aop.SomeManager;
 import com.fortes.rh.security.spring.aop.SomeManagerImpl;
-import com.fortes.rh.security.spring.aop.callback.MetodoInterceptadoImpl;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;

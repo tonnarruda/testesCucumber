@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.Auditavel;

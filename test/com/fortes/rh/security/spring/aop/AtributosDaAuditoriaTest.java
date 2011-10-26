@@ -9,7 +9,6 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.model.sesmt.Evento;
-import com.fortes.rh.security.spring.aop.callback.MetodoInterceptadoImpl;
 
 public class AtributosDaAuditoriaTest extends MockObjectTestCase {
 

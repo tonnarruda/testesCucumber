@@ -1,9 +1,9 @@
 package com.fortes.rh.security.spring.aop.callback.crud;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidade;
-import com.fortes.rh.security.spring.aop.callback.AuditavelImpl;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;

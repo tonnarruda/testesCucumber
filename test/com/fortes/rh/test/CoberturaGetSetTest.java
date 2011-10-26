@@ -553,7 +553,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new MotivoHistoricoColaborador());
 		cobreGetSet(new NaturezaExame());
 		cobreGetSet(new NivelIdioma());
-		cobreGetSet(new OperacaoAuditoria());
+//		cobreGetSet(new OperacaoAuditoria());
 		cobreGetSet(new OrigemAnexo());
 		cobreGetSet(new OrigemCandidato());
 		cobreGetSet(new Sexo());

@@ -23,7 +23,7 @@ public class ManagerAuditaTest extends MockObjectTestCase
     		Class<?>[] callbacks = getClasses("com.fortes.rh.security.spring.aop.callback");
     		
     		for (Class<?> auditorCallback : callbacks) {
-    			if (!auditorCallback.getSimpleName().contains("AuditorCallbackImpl") || auditorCallback.getName().startsWith("com.fortes.rh.security.spring.aop.callback.crud"))
+    			if (auditorCallback.getSimpleName().equals("AuditorCallbackImpl") || auditorCallback.getName().startsWith("com.fortes.rh.security.spring.aop.callback.crud"))
     				continue;
     			
     			Class<?> manager = findManager(auditorCallback.getSimpleName().replace("AuditorCallbackImpl", ""));    			

@@ -2,6 +2,7 @@ package com.fortes.rh.security.spring.aop.callback;
 
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;

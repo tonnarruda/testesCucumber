@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.Pergunta;
+import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;

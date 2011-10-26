@@ -300,7 +300,6 @@ import com.fortes.rh.test.dicionario.MotivoExtintorManutencaoTest;
 import com.fortes.rh.test.dicionario.MotivoHistoricoColaboradorTest;
 import com.fortes.rh.test.dicionario.MotivoSolicitacaoExameTest;
 import com.fortes.rh.test.dicionario.NivelIdiomaTest;
-import com.fortes.rh.test.dicionario.OperacaoAuditoriaTest;
 import com.fortes.rh.test.dicionario.OrigemCandidatoTest;
 import com.fortes.rh.test.dicionario.SexoTest;
 import com.fortes.rh.test.dicionario.SituacaoColaboradorTest;
@@ -1157,7 +1156,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(MesTest.class);
         suite.addTestSuite(MotivoHistoricoColaboradorTest.class);
         suite.addTestSuite(NivelIdiomaTest.class);
-        suite.addTestSuite(OperacaoAuditoriaTest.class);
         suite.addTestSuite(OrigemCandidatoTest.class);
         suite.addTestSuite(SexoTest.class);
         suite.addTestSuite(SituacaoColaboradorTest.class);

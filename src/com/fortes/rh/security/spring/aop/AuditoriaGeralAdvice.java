@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.security.SecurityManager;
-import com.fortes.rh.security.spring.aop.callback.MetodoInterceptadoImpl;
 import com.fortes.rh.security.spring.aop.callback.crud.CrudAuditorCallbackImpl;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;

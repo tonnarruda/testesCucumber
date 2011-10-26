@@ -49,6 +49,9 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void desligaColaborador( boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId) throws Exception;
 	@Audita(operacao="Religamento", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void religaColaborador(Long colaboradorId) throws Exception;
+	//TODO Auditoria não ta passando
+	@Audita(operacao="Desligamento no AC", auditor=ColaboradorAuditorCallbackImpl.class)
+	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
 
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
@@ -58,9 +61,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias);
 	public void enviarEmailCadastro(Colaborador colaborador, Empresa empresa) throws AddressException, MessagingException;
-	//TODO Auditoria não ta passando
-	@Audita(operacao="Desligamento no AC", auditor=ColaboradorAuditorCallbackImpl.class)
-	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
 	public Long religaColaboradorAC(String codigoAC, String empCodigo, String grupoAC);
 	
 	public Colaborador findColaboradorUsuarioByCpf(String cpf,Long empresaId);

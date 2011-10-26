@@ -17,6 +17,7 @@ public class GeraDadosAuditados {
 	
 	private Object resultado;
 	private Object[] parametros;
+	private String chave;
 	
 	private GeraDadosAuditados() {
 		this.jsonConfig = new JsonConfig(); 
@@ -45,6 +46,13 @@ public class GeraDadosAuditados {
 		this();
 		this.parametros = parametros;
 		this.resultado = resultado;
+	}
+
+	public GeraDadosAuditados(Object[] parametros, Object resultado, String chave) {
+		this();
+		this.parametros = parametros;
+		this.resultado = resultado;
+		this.chave = chave;
 	}
 	
 	/**
@@ -100,5 +108,12 @@ public class GeraDadosAuditados {
 			 dados += "[DADOS ATUALIZADOS]\n" + this.geraJson(resultado);
 		return dados;
 	}
-	
+
+	public String getChave() {
+		return chave;
+	}
+
+	public void setChave(String chave) {
+		this.chave = chave;
+	}
 }

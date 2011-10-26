@@ -1,4 +1,4 @@
-package com.fortes.rh.security.spring.aop.callback;
+package com.fortes.rh.security.spring.aop;
 
 import java.lang.reflect.Method;
 

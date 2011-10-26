@@ -11,7 +11,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.business.sesmt.EventoManagerImpl;
 import com.fortes.rh.model.sesmt.Evento;
-import com.fortes.rh.security.spring.aop.callback.MetodoInterceptadoImpl;
+import com.fortes.rh.security.spring.aop.MetodoInterceptadoImpl;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
