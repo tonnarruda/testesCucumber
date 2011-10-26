@@ -36,7 +36,7 @@ public class AreaInteresseListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		areaInteresseManager.remove(new Long[]{areaInteresse.getId()});
+		areaInteresseManager.remove(areaInteresse.getId());
 		addActionMessage("Área de Interesse excluída com sucesso.");
 
 		return Action.SUCCESS;

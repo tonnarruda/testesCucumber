@@ -16,19 +16,9 @@ import com.fortes.web.tags.CheckBox;
 
 public class AspectoManagerImpl extends GenericManagerImpl<Aspecto, AspectoDao> implements AspectoManager
 {
-	public void delete(Long id, Long empresaId) throws Exception
-	{
-		getDao().remove(id);
-	}
-
 	public Aspecto findByIdProjection(Long aspectoId)
 	{
 		return getDao().findByIdProjection(aspectoId);
-	}
-
-	public void update(Aspecto aspecto, Long empresaId) throws Exception
-	{
-		getDao().update(aspecto);
 	}
 
 	public Collection<Aspecto> findByQuestionario(Long questionarioId)

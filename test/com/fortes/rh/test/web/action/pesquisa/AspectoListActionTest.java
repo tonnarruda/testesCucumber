@@ -55,7 +55,7 @@ public class AspectoListActionTest extends MockObjectTestCase
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
     	aspectoListAction.setQuestionario(questionario);
 
-    	aspectoManager.expects(once()).method("delete").with(ANYTHING,ANYTHING);
+    	aspectoManager.expects(once()).method("remove").with(ANYTHING);
     	aspectoManager.expects(once()).method("findByQuestionario").with(eq(questionario.getId())).will(returnValue(AspectoFactory.getCollection(1L)));
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
 
@@ -63,7 +63,7 @@ public class AspectoListActionTest extends MockObjectTestCase
     	assertNull(aspectoListAction.getActionErr());
     	assertEquals(questionario, aspectoListAction.getQuestionario());
 
-    	aspectoManager.expects(once()).method("delete").with(ANYTHING,ANYTHING).will(throwException(new Exception("erro")));
+    	aspectoManager.expects(once()).method("remove").with(ANYTHING);
     	aspectoManager.expects(once()).method("findByQuestionario").with(eq(questionario.getId())).will(returnValue(AspectoFactory.getCollection(1L)));
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
     	

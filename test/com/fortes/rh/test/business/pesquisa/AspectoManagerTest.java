@@ -39,13 +39,12 @@ public class AspectoManagerTest extends MockObjectTestCase
     public void testUpdate() throws Exception
     {
         Aspecto aspecto = AspectoFactory.getEntity(1L);
-        Long empresaId = 1L;
 
         Exception exception = null;
         try
         {
             aspectoDao.expects(once()).method("update").with(eq(aspecto));
-            aspectoManager.update(aspecto, empresaId);
+            aspectoManager.update(aspecto);
         }
         catch (Exception e)
         {
@@ -57,13 +56,12 @@ public class AspectoManagerTest extends MockObjectTestCase
     public void testUpdateException() throws Exception
     {
         Aspecto aspecto = AspectoFactory.getEntity(1L);
-        Long empresaId = 1L;
 
         Exception exception = null;
         try
         {
             aspectoDao.expects(once()).method("update").with(eq(aspecto)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(aspecto.getId(),""))));
-            aspectoManager.update(aspecto, empresaId);
+            aspectoManager.update(aspecto);
         }
         catch (Exception e)
         {
@@ -76,13 +74,12 @@ public class AspectoManagerTest extends MockObjectTestCase
     public void testDelete() throws Exception
     {
         Long aspectoId = 1L;
-        Long empresaId = 1L;
 
         Exception exception = null;
         try
         {
             aspectoDao.expects(once()).method("remove").with(eq(aspectoId));
-            aspectoManager.delete(aspectoId, empresaId);
+            aspectoManager.remove(aspectoId);
         }
         catch (Exception e)
         {
@@ -94,13 +91,12 @@ public class AspectoManagerTest extends MockObjectTestCase
     public void testDeleteEmpresaException() throws Exception
     {
         Long aspectoId = 1L;
-        Long empresaId = 1L;
 
         Exception exception = null;
         try
         {
             aspectoDao.expects(once()).method("remove").with(eq(aspectoId)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(aspectoId,""))));
-            aspectoManager.delete(aspectoId, empresaId);
+            aspectoManager.remove(aspectoId);
         }
         catch (Exception e)
         {

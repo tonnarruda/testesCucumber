@@ -12,8 +12,6 @@ import com.fortes.web.tags.CheckBox;
 
 public interface AspectoManager extends GenericManager<Aspecto>
 {
-	void update(Aspecto aspecto, Long empresaId) throws Exception;
-	void delete(Long grupoId, Long empresaId) throws Exception;
 	Aspecto findByIdProjection(Long aspectoId);
 	Collection<Aspecto> findByQuestionario(Long questionarioId);
 	Collection<Aspecto> agruparPerguntasByAspecto(Collection<Aspecto> aspectos, Collection<Pergunta> perguntas, int ordemInicial);

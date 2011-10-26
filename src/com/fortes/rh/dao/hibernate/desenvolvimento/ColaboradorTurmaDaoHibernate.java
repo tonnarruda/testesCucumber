@@ -571,7 +571,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("	c.cargaHoraria, ");
 		sql.append("	c.conteudoProgramatico, ");
 		sql.append("	t.horario, ");
-		sql.append("	t.instrutor ");
+		sql.append("	t.instrutor, ");
+		sql.append("	a.nome ");
 		sql.append("from Colaboradorturma ct  ");
 		sql.append("left join colaborador co on co.id = ct.colaborador_id ");
 		sql.append("left join empresa emp on emp.id = co.empresa_id ");

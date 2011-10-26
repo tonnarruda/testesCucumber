@@ -27,7 +27,7 @@ public class MotivoSolicitacaoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		motivoSolicitacaoManager.remove(new Long[]{motivoSolicitacao.getId()});
+		motivoSolicitacaoManager.remove(motivoSolicitacao.getId());
 		addActionMessage("Motivo de Solicitação excluído com sucesso.");
 
 		return Action.SUCCESS;

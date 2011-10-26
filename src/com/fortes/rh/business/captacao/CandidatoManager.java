@@ -18,16 +18,22 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.spring.aop.callback.CandidatoAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 
 public interface CandidatoManager extends GenericManager<Candidato>
 {
-    public Candidato findByCPF(String cpf, Long empresaId);
+	@Audita(operacao="Atualização", auditor=CandidatoAuditorCallbackImpl.class)
+	public void update(Candidato candidato);
+	@Audita(operacao="Remoção", auditor=CandidatoAuditorCallbackImpl.class)
+	public void removeCandidato(Candidato candidato) throws Exception;
+
+	public Candidato findByCPF(String cpf, Long empresaId);
     //public void importa(File xmlFile);
 	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
 	public Integer getCount(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
 	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresa, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception;
 	public File getFoto(Long id) throws Exception;
-	public void removeCandidato(Candidato candidato) throws Exception;
 	public void updateSenha(Candidato candidato);
 	public boolean exportaCandidatosBDS(Empresa empresa, Collection<Candidato> candidatos, String[] empresasCheck, String emailAvulso, String anuncioBDS) throws Throwable;
 	public Collection<Candidato> findCandidatosById(Long[] longs);
@@ -51,7 +57,6 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public int getTotalSize();
 	public Collection<Candidato> getCandidatosByExperiencia(Map<String, Object> parametros, long empresaId);
 	public Candidato findByCandidatoId(Long candidatoId);
-	public void update(Candidato candidato);
 	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, char statusSolicitacao) throws ColecaoVaziaException;
 	public Collection<Candidato> findByNomeCpf(Candidato candidato, Long empresaId);
 	public void migrarBairro(String bairro, String bairroDestino);

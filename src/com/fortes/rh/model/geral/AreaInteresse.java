@@ -15,6 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
 @Entity
@@ -51,6 +52,7 @@ public class AreaInteresse extends AbstractModel implements Serializable
 		this.areasOrganizacionais = areasOrganizacionais;
 	}
 
+	@ChaveDaAuditoria
 	public String getNome()
 	{
 		return nome;

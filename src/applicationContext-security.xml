@@ -371,7 +371,7 @@
 				/sesmt/clinicaAutorizada/*/**=ROLE_CAD_CLINICA_AUTORIZADA
 				/sesmt/prontuario/*/**=ROLE_CAD_PRONTUARIO
 				/sesmt/solicitacaoExame/*/**=ROLE_CAD_SOLICITACAOEXAME
-				/sesmt/solicitacaoEpi/list.action*=ROLE_CAD_ENTREGAEPI
+				/sesmt/solicitacaoEpi/list.action*=ROLE_CAD_ENTREGAEPI,ROLE_CAD_SOLICITACAOEPI
 				/sesmt/solicitacaoEpi/prepareEntrega.action*=ROLE_CAD_ENTREGAEPI
 				/sesmt/solicitacaoEpi/entrega.action*=ROLE_CAD_ENTREGAEPI
 				/sesmt/solicitacaoEpi/*/**=ROLE_CAD_SOLICITACAOEPI

@@ -86,18 +86,11 @@ public class AspectoEditActionTest extends MockObjectTestCase
 		aspectoAction.setAspecto(aspecto);
 		aspectoAction.setEmpresaSistema(empresa);
 
-		aspectoManager.expects(once()).method("update").with(eq(aspecto),eq(empresa.getId()));
+		aspectoManager.expects(once()).method("update").with(eq(aspecto));
 
 		assertEquals("success", aspectoAction.update());
 		assertEquals(aspecto, aspectoAction.getAspecto());
 		assertNull(aspectoAction.getActionErr());
-
-		aspectoManager.expects(once()).method("update").with(eq(aspecto),eq(empresa.getId())).will(throwException(new Exception("erro")));
-
-		assertEquals("input", aspectoAction.update());
-		assertEquals(aspecto, aspectoAction.getAspecto());
-		assertNotNull(aspectoAction.getActionErr());
-
     }
 
     public void testGets() throws Exception
