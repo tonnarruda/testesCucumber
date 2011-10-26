@@ -161,7 +161,7 @@
 				</#list>
 			</#if>
 
-			<#if colaboradorAvaliacoes?exists>
+			<#if colaboradorAvaliacoes?exists && colaboradorAvaliacoes.id?exists>
 				<#list colaboradorAvaliacoes as colaboradorAvaliacao>
 				    $('#modeloPeriodo' + ${colaboradorAvaliacao.periodoExperiencia.id}).val(${colaboradorAvaliacao.avaliacao.id});
 				</#list>
