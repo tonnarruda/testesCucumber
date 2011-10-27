@@ -17,3 +17,4 @@ features/.idea/
 Thumbs.db
 .externalToolBuilders/
 ruby/Gemfile.lock
+.rvmrc
