@@ -16,8 +16,8 @@ public class TipoExtintor extends LinkedHashMap<String, String>
 	{
 		put(AGUA_GAS, "AG - Água Gás (Classe A)");
 		put(AGUA_PRESS, "AP - Água Pressurizada (Classe A)");
-		put(PO_QUIMICO_SECO, "PQS - Pó Químico Seco (Classes B e C)");
-		put(PO_QUIMICO_SECO_ABC, "PQS - Pó Químico Seco (Classes A,B e C)");
+		put(PO_QUIMICO_SECO, "BC/PQS - Pó Químico Seco (Classes B e C)");
+		put(PO_QUIMICO_SECO_ABC, "ABC/PQS - Pó Químico Seco (Classes A,B e C)");
 		put(CO2, "CO2 - Dióxido de Carbono (Classes B e C)");
 	}
 }

@@ -12,13 +12,15 @@
 	<#assign validarCampos="return validaFormulario('form', null, new Array('inicio','fim'), true)"/>
 
 	<#include "../ftl/showFilterImports.ftl" />
-
+	<script type="text/javascript">
+		$(function() { $('#tipo').val('${tipoBusca}'); });
+	</script>
 </head>
 <body>
 
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
-
+		
 		<@ww.select label="Tipo" id="tipo" required="true" name="tipoBusca" list=r"#{'T':'Todos','1':'AG','2':'AP','4':'CO2','3':'PQS'}" />
 		<@ww.textfield label="Número do cilindro" name="numeroBusca" id="numeroBusca" cssStyle="width:50px;text-align:right;" maxLength="40" onkeypress="return(somenteNumeros(event,''));"/>
 		<@ww.select label="Ativo" name="ativo" id="ativo" list=r"#{'T':'Todos','S':'Sim','N':'Não'}" />

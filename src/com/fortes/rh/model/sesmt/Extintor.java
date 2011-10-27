@@ -98,8 +98,7 @@ public class Extintor extends AbstractModel implements Serializable
 			return "";
 
 		String tipoDic = (String)new TipoExtintor().get(tipo);
-		if (tipoDic.length() > 3)
-			tipoDic = tipoDic.substring(0, 3).trim();
+		tipoDic = tipoDic.split("-")[0].trim();
 
 		return tipoDic;
 	}
