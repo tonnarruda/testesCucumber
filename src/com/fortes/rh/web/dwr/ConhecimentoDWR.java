@@ -35,7 +35,7 @@ public class ConhecimentoDWR
 		else
 			conhecimentos =  conhecimentoManager.findAllSelect(empresaId);			
 				
-		return new CollectionUtil<Conhecimento>().convertCollectionToMap(conhecimentos,"getNome","getNome");
+		return new CollectionUtil<Conhecimento>().convertCollectionToMap(conhecimentos,"getId","getNome");
 	}
 
 	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager)

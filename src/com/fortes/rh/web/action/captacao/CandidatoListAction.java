@@ -341,6 +341,7 @@ public class CandidatoListAction extends MyActionSupportList
 			empresaId = getEmpresaSistema().getId();
 		
 		cargosCheckList = cargoManager.populaCheckBox(empresaId);
+		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(empresaId);
 
 		if(solicitacao != null && solicitacao.getId() != null && montaFiltroBySolicitacao)
 		{
@@ -365,7 +366,6 @@ public class CandidatoListAction extends MyActionSupportList
 			conhecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(conhecimentosCheckList, conhecimentosCheck);
 		}
 
-		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(empresaId);
 		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
 
 		setShowFilter(true);

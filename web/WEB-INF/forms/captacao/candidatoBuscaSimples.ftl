@@ -26,11 +26,23 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js"/>'></script>
 
 	<script type='text/javascript'>
+		$(function() {
+			$('#empresaSelect').change(function() {
+				populaCargosConhecimentos($(this).val());
+			});
+		});
+	
 		function populaCargosConhecimentos(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
+			CargoDWR.getByEmpresa(createListCargo, empresaId);
 			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId);
+		}
+		
+		function createListCargo(data)
+		{
+			addChecks('cargosCheck',data);
 		}
 		
 		function createListConhecimentos(data)
