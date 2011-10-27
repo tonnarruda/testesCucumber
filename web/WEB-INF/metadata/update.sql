@@ -18198,3 +18198,8 @@ insert into migrations values('20111020090531');--.go
 UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=526 WHERE atualizaPapeisIdsAPartirDe is null;--.go
 insert into migrations values('20111020093135');--.go
 update parametrosdosistema set appversao = '1.1.59.50';--.go
+-- versao 1.1.59.51
+
+update papel set nome = 'Faturamento Mensal' where id = 526;--.go
+insert into migrations values('20111020142332');--.go
+update parametrosdosistema set appversao = '1.1.59.51';--.go

@@ -33,7 +33,7 @@ public class ExtintorEditAction extends MyActionSupportList
 	private Map<String,String> tipos = new TipoExtintor();
 
 	private char ativo = 'T';
-	private String tipoBusca;
+	private String tipoBusca = "";
 	private Integer numeroBusca;
 	private String fabricantes = "";
 	private String localizacoes = "";
