@@ -130,12 +130,14 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public String verSolicitacoes() throws Exception
     {
+		empresa = getEmpresaSistema();
+		
 		compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_SOLICITACAO");
+		empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), getUsuarioLogado().getId(), "ROLE_MOV_SOLICITACAO");
 		
     	candidato = candidatoManager.findByCandidatoId(candidato.getId());
 
-    	solicitacaos = solicitacaoManager.findSolicitacaoList(getEmpresaSistema().getId(), false, true, false);
+    	solicitacaos = solicitacaoManager.findSolicitacaoList(empresa.getId(), false, true, false);
 
     	solicitacaosCheck = CheckListBoxUtil.populaCheckListBox(solicitacaos, "getId", "getDescricaoFormatada");
     	return Action.SUCCESS;
