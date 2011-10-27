@@ -1,3 +1,4 @@
+
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
@@ -13,7 +14,11 @@
 
 	<#include "../ftl/showFilterImports.ftl" />
 	<script type="text/javascript">
-		$(function() { $('#tipo').val('${tipoBusca}'); });
+		$(function() { 
+			<#if tipoBusca?exists>
+				$('#tipo').val('${tipoBusca}');
+			</#if> 
+		});
 	</script>
 </head>
 <body>

@@ -13,7 +13,7 @@ public class TipoExtintorTest extends TestCase
 		assertEquals(5, tipo.size());
 		assertEquals("AG - Água Gás (Classe A)", tipo.get("1"));
 		assertEquals("AP - Água Pressurizada (Classe A)", tipo.get("2"));
-		assertEquals("BC/PQS - Pó Químico Seco (Classes B e C)", tipo.get("3"));
+		assertEquals("PQS - Pó Químico Seco (Classes B e C)", tipo.get("3"));
 		assertEquals("ABC/PQS - Pó Químico Seco (Classes A,B e C)", tipo.get("4"));
 		assertEquals("CO2 - Dióxido de Carbono (Classes B e C)", tipo.get("5"));
 		
