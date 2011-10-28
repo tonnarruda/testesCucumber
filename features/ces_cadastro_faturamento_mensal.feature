@@ -5,7 +5,7 @@ Funcionalidade: Cadastrar Faturamento
   Cenário: Cadastro de Faturamentos
     Dado que eu esteja logado
 
-    Quando eu acesso o menu "C&S > Movimentações > Faturamentos"
+    Quando eu acesso o menu "C&S > Movimentações > Faturamento Mensal"
     Então eu devo ver o título "Faturamentos"
     E eu clico no botão "Inserir"
     Então eu devo ver o título "Inserir Faturamento"
