@@ -1368,4 +1368,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	{
 		return getDao().triagemAutomatica(solicitacao, tempoExperiencia, pesos, percentualMinimo);
 	}
+
+	public int findQtdCadastrados(Long empresaId, Date dataDe, Date dataAte) {
+		return getDao().findQtdCadastrados(empresaId, dataDe, dataAte);
+	}
 }

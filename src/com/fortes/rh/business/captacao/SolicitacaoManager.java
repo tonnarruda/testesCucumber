@@ -12,6 +12,7 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Empresa;
 
 public interface SolicitacaoManager extends GenericManager<Solicitacao>
@@ -38,4 +39,5 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	void emailParaSolicitante(Usuario solicitante, Solicitacao solicitacao, Empresa empresa);
 	Solicitacao save(Solicitacao solicitacao, String[] emailsCheck);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
+	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim);
 }

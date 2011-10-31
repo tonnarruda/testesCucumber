@@ -6,12 +6,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
@@ -29,13 +32,15 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private Solicitacao solicitacao;
 	private Collection indicadorDuracaoPreenchimentoVagas;
 	private IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga;
+	private SolicitacaoManager solicitacaoManager;
+	private CandidatoManager candidatoManager;
 
 	private Date dataDe;
 	private Date dataAte;
 	private String[] areasCheck;
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
-
+	private Collection<FaixaSalarial> faixaSalarials;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -47,6 +52,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	private String reportFilter;
 	private String reportTitle;
+	private int qtdCandidatosCadastrados;
 	
 	private char statusSolicitacao;
 	
@@ -55,6 +61,20 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 
+		return Action.SUCCESS;
+	}
+	
+	public String painel() throws Exception
+	{
+		Date hoje = new Date();
+		if (dataAte == null)
+			dataAte = hoje;
+		if (dataDe == null)
+			dataDe = DateUtil.retornaDataAnteriorQtdMeses(hoje, 2, true);
+		
+		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), dataDe, dataAte);
+		qtdCandidatosCadastrados = candidatoManager.findQtdCadastrados(getEmpresaSistema().getId(), dataDe, dataAte);
+		
 		return Action.SUCCESS;
 	}
 
@@ -268,6 +288,22 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	public void setStatusSolicitacao(char statusSolicitacao) {
 		this.statusSolicitacao = statusSolicitacao;
+	}
+
+	public Collection<FaixaSalarial> getFaixaSalarials() {
+		return faixaSalarials;
+	}
+
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+		this.solicitacaoManager = solicitacaoManager;
+	}
+
+	public int getQtdCandidatosCadastrados() {
+		return qtdCandidatosCadastrados;
+	}
+
+	public void setCandidatoManager(CandidatoManager candidatoManager) {
+		this.candidatoManager = candidatoManager;
 	}
 	
 }

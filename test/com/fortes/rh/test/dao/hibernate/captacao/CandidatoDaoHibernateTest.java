@@ -100,30 +100,6 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	private ColaboradorDao colaboradorDao;
 	private FaixaSalarialDao faixaSalarialDao;
 
-	public void setHistoricoCandidatoDao(HistoricoCandidatoDao historicoCandidatoDao)
-	{
-		this.historicoCandidatoDao = historicoCandidatoDao;
-	}
-
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
-	{
-		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
-	{
-		this.estabelecimentoDao = estabelecimentoDao;
-	}
-
-	public void setCandidatoIdiomaDao(CandidatoIdiomaDao candidatoIdiomaDao)
-	{
-		this.candidatoIdiomaDao = candidatoIdiomaDao;
-	}
-
-	public void setIdiomaDao(IdiomaDao idiomaDao)
-	{
-		this.idiomaDao = idiomaDao;
-	}
 
 	public Candidato getEntity()
 	{
@@ -2368,6 +2344,35 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertTrue(candidatos.size() >= 2);
 	}
 
+
+	public void testFindQtdCadastrados() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Date hoje = new Date();
+		
+		Candidato c1 = getCandidato();
+		c1.setEmpresa(empresa);
+		c1.setDataCadastro(hoje);
+		candidatoDao.save(c1);
+
+		Candidato c2 = getCandidato();
+		c2.setEmpresa(empresa);
+		c2.setDataCadastro(hoje);
+		candidatoDao.save(c2);
+
+		assertEquals(2, candidatoDao.findQtdCadastrados(empresa.getId(), hoje, hoje));
+
+		c2.setDataCadastro(DateUtil.incrementaDias(hoje, 5));
+		candidatoDao.save(c2);
+		
+		assertEquals(1, candidatoDao.findQtdCadastrados(empresa.getId(), hoje, hoje));
+
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		assertEquals(0, candidatoDao.findQtdCadastrados(empresa2.getId(), hoje, hoje));
+		
+	}
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		 this.empresaDao = empresaDao;
@@ -2436,4 +2441,29 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		this.faixaSalarialDao = faixaSalarialDao;
 	}
 
+
+	public void setHistoricoCandidatoDao(HistoricoCandidatoDao historicoCandidatoDao)
+	{
+		this.historicoCandidatoDao = historicoCandidatoDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
+	{
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
+	{
+		this.estabelecimentoDao = estabelecimentoDao;
+	}
+
+	public void setCandidatoIdiomaDao(CandidatoIdiomaDao candidatoIdiomaDao)
+	{
+		this.candidatoIdiomaDao = candidatoIdiomaDao;
+	}
+
+	public void setIdiomaDao(IdiomaDao idiomaDao)
+	{
+		this.idiomaDao = idiomaDao;
+	}
 }

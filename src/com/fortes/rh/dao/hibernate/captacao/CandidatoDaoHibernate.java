@@ -41,6 +41,7 @@ import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Sexo;
@@ -1286,4 +1287,21 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		return lista;	
 	}
+
+	public int findQtdCadastrados(Long empresaId, Date dataDe, Date dataAte) 
+	{
+		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.count("c.id"));
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.between("c.dataCadastro", dataDe, dataAte));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
+		return (Integer) criteria.uniqueResult();
+		}
 }
