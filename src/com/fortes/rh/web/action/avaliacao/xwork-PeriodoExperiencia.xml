@@ -77,13 +77,14 @@
 		</action>
 		<action name="imprimeRelatorioRankingPerformancePeriodoDeExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioRankingPerformancePeriodoDeExperiencia">
 		  	<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/rankingPerformaceExperiencia.jasper</param>
+				<param name="location">WEB-INF/report/rankingPerformanceAvDesempenho.jasper</param>
 				<param name="dataSource">colaboradores</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">rankingPerformaceExperiencia.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
+		
 		<action name="imprimeRelatorioRankingPerformancePeriodoDeExperienciaXLS" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioRankingPerformancePeriodoDeExperiencia">
 			<result name="success" type="xls">
 				<param name="dataSource">colaboradores</param>
@@ -96,6 +97,8 @@
 			</result>		
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
+		
+		<!-- 
 		<action name="impRankPerformAvDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="impRankPerformAvDesempenho">
 		  	<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/rankingPerformanceAvDesempenho.jasper</param>
@@ -105,6 +108,6 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
-
+ 		-->
 	</package>
 </xwork>
