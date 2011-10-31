@@ -199,13 +199,14 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 	}
 
-	public void deleteLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
+	public void deleteLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws IntegraACException, Exception
 	{
 		AreaOrganizacional areaTmp = getDao().findAreaOrganizacionalCodigoAc(areaOrganizacional.getId());
 		remove(new Long[]{areaTmp.getId()});
 		// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterarmos o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
 
+		
 		if(empresa.isAcIntegra())
 			acPessoalClientLotacao.deleteLotacao(areaTmp, empresa);
 	}

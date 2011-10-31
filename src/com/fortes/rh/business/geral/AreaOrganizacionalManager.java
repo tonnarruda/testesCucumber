@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
@@ -25,7 +26,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	@Audita(operacao="Atualização", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
 	public void editarLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
 	@Audita(operacao="Remoção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
-	public void deleteLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
+	public void deleteLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws IntegraACException, Exception;
 	
 	public Collection getNaoFamilia(Collection areas, Long id);
 	public boolean verificaMaternidade(Long areaOrganizacionalId);

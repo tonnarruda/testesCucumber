@@ -6,7 +6,10 @@ package com.fortes.rh.web.action.geral;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -58,13 +61,23 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		if(getEmpresaSistema().getId().equals(areaOrganizacional.getEmpresa().getId()))
-		{
-			areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, getEmpresaSistema());
-			addActionMessage("Área Organizacional excluída com sucesso.");
+		try {
+			if(getEmpresaSistema().getId().equals(areaOrganizacional.getEmpresa().getId()))
+			{
+				areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, getEmpresaSistema());
+				addActionMessage("Área Organizacional excluída com sucesso.");
+			}
+			else
+				addActionError("A Área Organizacional solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
+		
+		} catch (IntegraACException e) {
+			addActionError(e.getMessage());
+			e.printStackTrace();
+		
+		} catch (Exception e) {
+			addActionError("Não foi possível excluir a Área Organizacional.");
+			e.printStackTrace();
 		}
-		else
-			addActionError("A Área Organizacional solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
 
 		return Action.SUCCESS;
 	}
