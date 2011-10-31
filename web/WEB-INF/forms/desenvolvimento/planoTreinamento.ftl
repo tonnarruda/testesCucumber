@@ -63,6 +63,31 @@
 				document.getElementById("dataFim").value = dataFinal;
 			}
 		}
+		
+		
+		$(function(){
+			$('.btnEnviarEmail').click(function(){
+				var turmaId = $(this).attr('id').split('_')[1];
+				alert(turmaId); return false;
+			
+				DWRUtil.useLoadingMessage('Enviando...');
+			    DWREngine.setErrorHandler(errorMsg);
+			    TurmaDWR.enviarAviso(enviarAviso, turmaId);
+			});
+			
+		});
+
+		function enviarAviso(data)
+		{
+			alert(data);
+		}
+
+		function errorMsg(msg)
+		{
+			jAlert("Envio de email falhou.");
+		}
+		
+		
 	</script>
 
 	<#include "../ftl/showFilterImports.ftl" />
@@ -103,6 +128,7 @@
 		<@display.table name="turmas" id="turma" class="dados" >
 			<@display.column title="Ações" media="html" class="acao">
 				<a href="prepareUpdate.action?turma.id=${turma.id}&planoTreinamento=true"><img border="0" title="<@ww.text name="list.edit.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+				<a href="javascript:;" id="btnEnviarEmail_${turma.id}" class="btnEnviarEmail"><img border="0" title="Enviar aviso por email" src="<@ww.url value="/imgs/icon_email.gif"/>"></a>
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?turma.id=${turma.id}&planoTreinamento=true'});"><img border="0" title="<@ww.text name="list.del.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 				<a href="../colaboradorTurma/list.action?turma.id=${turma.id}&planoTreinamento=true"><img border="0" title="Colaboradores Inscritos na Turma" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 

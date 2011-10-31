@@ -63,6 +63,9 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 
         return turma;
     }
+    
+    
+//    public Colaborador 
 
     public Collection<Turma> getTurmaFinalizadas(Long cursoId)
 	{

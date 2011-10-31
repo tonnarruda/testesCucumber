@@ -117,6 +117,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.imgAniversarianteUrl"), "imgAniversarianteUrl");
 		p.add(Projections.property("e.mensagemCartaoAniversariante"), "mensagemCartaoAniversariante");
 		p.add(Projections.property("e.enviarEmailAniversariante"), "enviarEmailAniversariante");
+		p.add(Projections.property("e.emailRemetente"), "emailRemetente");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("e.id", id));

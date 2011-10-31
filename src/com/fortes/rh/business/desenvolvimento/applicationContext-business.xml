@@ -46,6 +46,9 @@
     <property name="certificacaoManager">
       <ref bean="certificacaoManager" />
     </property>
+    <property name="mail">
+      <ref bean="mail" />
+    </property>
   </bean>
   <bean id="colaboradorTurmaManager" parent="parentManager">
     <property name="proxyInterfaces">

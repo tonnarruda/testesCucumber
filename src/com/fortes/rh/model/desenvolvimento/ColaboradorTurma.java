@@ -20,6 +20,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 
@@ -400,6 +401,15 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	{
 		inicializaColaborador();
 		colaborador.setNome(colaboradorNome);
+	}
+	
+	public void setColaboradorEmail(String colaboradorEmail)
+	{
+		inicializaColaborador();
+		if(colaborador.getContato() == null)
+			colaborador.setContato(new Contato());
+		
+		colaborador.getContato().setEmail(colaboradorEmail);
 	}
 
 	public void setColaboradorMatricula(String matricula) 
