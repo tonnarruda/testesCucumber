@@ -244,24 +244,12 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		try 
 		{
 			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck);
-			reportTitle = "Relatório de Performace de Avaliação de Desempenho";
+			reportTitle = "Ranking de Performance de Avaliação de Desempenho";
 
-			String msgAval = "";
-			if(avaliacaoCheck != null && avaliacaoCheck.length == 1)
-			{
-				avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(StringUtil.stringToLong(avaliacaoCheck)[0]);
-				String avalAnonima = "";
-				if(avaliacaoDesempenho.isAnonima())
-					avalAnonima = " (Anônima)";
-				
-				msgAval = "Avaliação: " + avaliacaoDesempenho.getTitulo() + avalAnonima;
-				reportTitle = "Relatório de Ranking de Performace de Avaliação de Desempenho";
-			}
-
-			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n" + msgAval;
+			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim);
 
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
-			parametros.put("exibirNomeAvaliacao", !msgAval.equals(""));
+		
 		}
 		catch (Exception e)
 		{
