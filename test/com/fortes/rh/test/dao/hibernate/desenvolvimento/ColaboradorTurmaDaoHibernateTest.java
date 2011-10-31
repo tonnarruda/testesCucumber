@@ -173,6 +173,55 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	assertEquals(1, retorno.size());
     }
     
+    public void testFindColaboradoresComEmailByTurma()
+    {
+    	Turma java = TurmaFactory.getEntity();
+    	turmaDao.save(java);
+    	
+    	Colaborador joao = ColaboradorFactory.getEntity();
+    	joao.setDesligado(false);
+    	joao.setEmailColaborador("b@b.com.br");
+    	colaboradorDao.save(joao);
+    	
+    	Colaborador maria = ColaboradorFactory.getEntity();
+    	maria.setDesligado(true);
+    	maria.setEmailColaborador("teste@b.com.br");
+    	colaboradorDao.save(maria);
+    	
+    	Colaborador pedro = ColaboradorFactory.getEntity();
+    	pedro.setDesligado(false);
+    	pedro.setEmailColaborador("");
+    	colaboradorDao.save(pedro);
+    	
+    	Colaborador debora = ColaboradorFactory.getEntity();
+    	debora.setDesligado(false);
+    	debora.setEmailColaborador(null);
+    	colaboradorDao.save(debora);
+    	
+    	ColaboradorTurma colaboradorTurmaJoao = getEntity();
+    	colaboradorTurmaJoao.setColaborador(joao);
+    	colaboradorTurmaJoao.setTurma(java);
+    	colaboradorTurmaDao.save(colaboradorTurmaJoao);
+    	
+    	ColaboradorTurma colaboradorTurmaMaria = getEntity();
+    	colaboradorTurmaMaria.setColaborador(maria);
+    	colaboradorTurmaMaria.setTurma(java);
+    	colaboradorTurmaDao.save(colaboradorTurmaMaria);
+    	
+    	ColaboradorTurma colaboradorTurmaPedro = getEntity();
+    	colaboradorTurmaPedro.setColaborador(pedro);
+    	colaboradorTurmaPedro.setTurma(java);
+    	colaboradorTurmaDao.save(colaboradorTurmaPedro);
+    	
+    	ColaboradorTurma colaboradorTurmaDebora = getEntity();
+    	colaboradorTurmaDebora.setColaborador(debora);
+    	colaboradorTurmaDebora.setTurma(java);
+    	colaboradorTurmaDao.save(colaboradorTurmaDebora);
+    	
+    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColaboradoresComEmailByTurma(java.getId());
+    	assertEquals(1, retorno.size());
+    }
+    
     public void testFindEmpresaDoColaborador()
     {
     	Empresa empresa = EmpresaFactory.getEmpresa();

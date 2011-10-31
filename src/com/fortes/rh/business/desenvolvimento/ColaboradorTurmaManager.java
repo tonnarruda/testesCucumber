@@ -18,6 +18,7 @@ import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRela
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("unchecked")
 public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma>
@@ -65,4 +66,5 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId);
 	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean realizada);
 	public String checaColaboradorInscritoEmOutraTurma(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Long turmaId);
+	public void enviarAvisoEmail(Turma turma, Long empresaId);
 }

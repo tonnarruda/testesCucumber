@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 
 
@@ -35,4 +36,5 @@ public interface TurmaManager extends GenericManager<Turma>
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 	public Collection<Turma> findByCursos(Long[] cursoIds);
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada);
+	//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId);
 }

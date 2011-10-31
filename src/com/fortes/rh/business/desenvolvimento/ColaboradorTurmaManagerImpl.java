@@ -37,6 +37,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.ibm.icu.math.BigDecimal;
 
@@ -54,6 +55,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private CertificacaoManager certificacaoManager;
+	private Mail mail;
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{
@@ -1075,6 +1077,31 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean realizada) 
 	{
 		return getDao().findColaboradoresComCustoTreinamentos(colaboradorId, dataIni, dataFim, realizada);
+	}
+	
+	public void enviarAvisoEmail(Turma turma, Long empresaId) 
+	{
+		Empresa empresa = empresaManager.findByIdProjection(empresaId);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresComEmailByTurma(turma.getId()); 
+
+		String subject = "[Fortes RH] Lembrete: Curso " + turma.getCurso().getNome();
+		String  body =  "#COLABORADOR# ,você está matriculado no seguinte curso.<br>";
+				body += "Curso: " + turma.getCurso().getNome() + "<br>";
+				body += "Turma: " + turma.getDescricao() + "<br>";
+				body += "Período: " + DateUtil.formataDiaMesAno(turma.getDataPrevIni()) + " - " + DateUtil.formataDiaMesAno(turma.getDataPrevFim()) + "<br>";
+				body += "Horário: " + turma.getHorario() + "<br>";
+		
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+		{
+            try
+            {mail.send(empresa, subject, null, body.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome()), colaboradorTurma.getColaborador().getContato().getEmail());}
+            catch (Exception e)
+            {e.printStackTrace();}
+		}
+	}
+	
+	public void setMail(Mail mail) {
+		this.mail = mail;
 	}
 	
 }

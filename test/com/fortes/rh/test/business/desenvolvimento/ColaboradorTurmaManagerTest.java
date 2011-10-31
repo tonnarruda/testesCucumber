@@ -12,9 +12,10 @@ import mockit.Mockit;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+
+import org.jmock.cglib.MockObjectTestCase;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
@@ -60,6 +61,7 @@ import com.fortes.rh.test.factory.desenvolvimento.DntFactory;
 import com.fortes.rh.test.factory.desenvolvimento.PrioridadeTreinamentoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorTurmaManagerTest extends MockObjectTestCase
@@ -77,6 +79,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	private Mock certificacaoManager;
 	Mock turmaManager;
 	Mock colaboradorPresencaManager;
+	private Mock mail;
 
 	protected void setUp() throws Exception
 	{
@@ -114,6 +117,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 		colaboradorPresencaManager = new Mock(ColaboradorPresencaManager.class);
 		
+        mail = mock(Mail.class);
+        colaboradorTurmaManager.setMail((Mail) mail.proxy());
+        
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		
 	}
@@ -278,6 +284,35 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> retornos = colaboradorTurmaManager.findByTurma(turma.getId(), null);
 
 		assertEquals(1, retornos.size());
+	}
+	
+	public void testEnviarAvisoEmail()
+	{
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		Curso curso = CursoFactory.getEntity(1L);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turma.setId(1L);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmailColaborador("adsf@asdf.com");
+		
+		ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
+		colaboradorTurma.setId(1L);
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setTurma(turma);
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma);
+		
+		empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
+		colaboradorTurmaDao.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId())).will(returnValue(colaboradorTurmas));
+		mail.expects(once()).method("send");
+		
+		colaboradorTurmaManager.enviarAvisoEmail(turma, empresa.getId());
 	}
 
 	public void testGetDadosTurma() throws Exception

@@ -977,4 +977,27 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			return (Double) valor;
 	}
 
+	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId) 
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		criteria = criteria.createCriteria("ct.colaborador", "c", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ct.id"), "id");
+		p.add(Projections.property("c.id"), "colaboradorId");
+		p.add(Projections.property("c.nome"), "colaboradorNome");
+		p.add(Projections.property("c.contato.email"), "colaboradorEmail");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("ct.turma.id", turmaId));
+		criteria.add(Expression.eq("c.desligado", false));
+		criteria.add(Expression.not(Expression.eq("c.contato.email", "")));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+
+		return criteria.list();
+	}
+
 }

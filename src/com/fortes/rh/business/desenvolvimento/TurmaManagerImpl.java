@@ -17,6 +17,7 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CollectionUtil;
@@ -275,6 +276,11 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 
 		return (respondidas == null) ? false : (respondidas.size() > 0);
 	}
+	
+//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId) {
+//		getDao().findByIdProjection(turmaId)
+//		return null;
+//	}
 
 	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
 	{

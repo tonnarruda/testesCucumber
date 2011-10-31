@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.util.CollectionUtil;
@@ -12,6 +13,7 @@ import com.fortes.rh.util.DateUtil;
 public class TurmaDWR
 {
 	private TurmaManager turmaManager;
+	private ColaboradorTurmaManager colaboradorTurmaManager; 
 
 	public Map getTurmas(String cursoId)
 	{
@@ -21,6 +23,15 @@ public class TurmaDWR
 		Collection<Turma> turmas = turmaManager.findToList(new String[]{"id", "descricao"}, new String[]{"id", "descricao"}, new String[]{"curso.id"},new Object[]{new Long(cursoId)}, new String[]{"descricao"});
 
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricao");
+	}
+	
+	
+	public String enviarAviso(Long turmaId, Long empresaId)
+	{
+		Turma turma = turmaManager.findByIdProjection(turmaId);
+		
+		colaboradorTurmaManager.enviarAvisoEmail(turma, empresaId);
+		return "Email enviado com sucesso.";
 	}
 
 	public Map getTurmasByFiltro(String dataIni, String dataFim, char realizada, Long empresaId)throws Exception
@@ -90,6 +101,11 @@ public class TurmaDWR
 	public void setTurmaManager(TurmaManager turmaManager)
 	{
 		this.turmaManager = turmaManager;
+	}
+
+
+	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
+		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
 }
