@@ -44,7 +44,7 @@
 		<@display.column property="descricao" title="Descrição" style="width:300px;"/>
 		<@display.column property="localizacao" title="Localização" style="width:200px;"/>
 		<@display.column property="numeroCilindro" title="Cilindro" style="width:60px;"/>
-		<@display.column property="tipoDicAbreviado" title="Tipo" style="width:70px;"/>
+		<@display.column property="tipoDic" title="Tipo" style="width:70px;"/>
 	</@display.table>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
