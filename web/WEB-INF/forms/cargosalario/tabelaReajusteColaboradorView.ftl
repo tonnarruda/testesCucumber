@@ -131,6 +131,7 @@
 							<td align="right"><b>SUB-TOTAL</b></td>
 							<td colspan=3 align="right" width=360> <b>${subTotalSalarioAtual?string(",##0.00")}</b></td>
 							<td colspan=3 align="right" width=360> <b>${subTotalSalarioProposto?string(",##0.00")}</b></td>
+							<td align="right"> &nbsp; </td>
 							<td align="right"> <b>${(subTotalSalarioProposto - subTotalSalarioAtual)?string(",##0.00")}</b></td>
 							<td align="right"> <b>${((((subTotalSalarioProposto - subTotalSalarioAtual) / subTotalSalarioAtual)) * 100)?string(",##0.00")}%</b></td>
 						</tr>
@@ -227,7 +228,8 @@
 				<td></td>
 				<td align="right"><b>SUB-TOTAL</b></td>
 				<td colspan=3 align="right" width=360> <b>${subTotalSalarioAtual?string(",##0.00")}</b></td>
-				<td colspan=4 align="right" width=360> <b>${subTotalSalarioProposto?string(",##0.00")}</b></td>
+				<td colspan=3 align="right" width=360> <b>${subTotalSalarioProposto?string(",##0.00")}</b></td>
+				<td align="right"> &nbsp; </td>
 				<td align="right"> <b>${(subTotalSalarioProposto - subTotalSalarioAtual)?string(",##0.00")}</b></td>
 				<#if (subTotalSalarioAtual > 0)>
 					<td align="right"> <b>${((((subTotalSalarioProposto - subTotalSalarioAtual) / subTotalSalarioAtual)) * 100)?string(",##0.00")}%</b></td>
