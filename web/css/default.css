@@ -294,6 +294,7 @@ ul {
 
 input,textarea,select,fieldset {
 	border: 1px solid #7E9DB9;
+	background-color: #FFFFFF;
 }
 
 .listaOpcoes input {

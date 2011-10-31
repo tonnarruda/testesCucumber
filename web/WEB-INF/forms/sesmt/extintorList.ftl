@@ -37,14 +37,14 @@
 	<br/>
 
 	<@display.table name="extintors" id="extintor" class="dados">
-		<@display.column title="Ações" class="acao">
+		<@display.column title="Ações" class="acao" style="width:80px;">
 			<a href="prepareUpdate.action?extintor.id=${extintor.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?extintor.id=${extintor.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
-		<@display.column property="descricao" title="Descrição" style="width:300px;"/>
-		<@display.column property="localizacao" title="Localização" style="width:200px;"/>
-		<@display.column property="numeroCilindro" title="Cilindro" style="width:60px;"/>
-		<@display.column property="tipoDic" title="Tipo" style="width:70px;"/>
+		<@display.column property="descricao" title="Descrição" style="width:200px;"/>
+		<@display.column property="localizacao" title="Localização" style="width:160px;"/>
+		<@display.column property="numeroCilindro" title="Cilindro" style="width:10px;"/>
+		<@display.column property="tipoDic" title="Tipo" style="width:150px;"/>
 	</@display.table>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
