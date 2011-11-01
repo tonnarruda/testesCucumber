@@ -15,6 +15,7 @@ import com.fortes.rh.dao.geral.UsuarioMensagemDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
@@ -189,7 +190,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		mensagemManager.expects(once()).method("save").with(ANYTHING).will(returnValue(mensagem));
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas);
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, null, TipoMensagem.INDIFERENTE);
 	}
 
 	public void testSaveMensagemAndUsuarioMensagemRespAreaOrganizacional() throws Exception

@@ -5,12 +5,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 
 @SuppressWarnings("serial")
 @Entity
@@ -22,6 +25,10 @@ public class Mensagem extends AbstractModel implements Serializable
 	@Column(length=200)
 	private String link;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Colaborador colaborador;
+	private char tipo = TipoMensagem.INDIFERENTE;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 
@@ -78,5 +85,21 @@ public class Mensagem extends AbstractModel implements Serializable
 	public void setLink(String link)
 	{
 		this.link = link;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public char getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(char tipo) {
+		this.tipo = tipo;
 	}
 }

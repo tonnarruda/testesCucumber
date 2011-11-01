@@ -8,6 +8,6 @@ import com.fortes.rh.model.geral.Mensagem;
 public interface MensagemManager extends GenericManager<Mensagem>
 {
 	String formataMensagemCancelamentoFaixaSalarialHistorico(String mensagem, FaixaSalarialHistorico faixaSalarialHistorico);
-
 	String formataMensagemCancelamentoHistoricoColaborador(String mensagem, HistoricoColaborador historicoColaborador);
+	void removeMensagemDesligamento(Long colaboradorId);
 }

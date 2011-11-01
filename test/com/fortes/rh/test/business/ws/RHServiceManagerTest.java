@@ -256,7 +256,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), ANYTHING).will(returnValue(empresa));
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaboradorCodigoAC), eq(empresa)).will(returnValue(colaborador));
 		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC), eq("XXX")).will(returnValue(new ArrayList<UsuarioEmpresa>()));
-		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING);
+		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresa), ANYTHING).will(returnValue(true));
 
 		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
@@ -797,7 +797,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		faixaSalarialHistoricoManager.expects(once()).method("findByIdProjection").with(eq(faixaSalarialHistorico.getId())).will(returnValue(faixaSalarialHistorico));
 		mensagemManager.expects(once()).method("formataMensagemCancelamentoFaixaSalarialHistorico").with(eq(mensagem), eq(faixaSalarialHistorico)).will(returnValue(mensagemFinal));
 		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC), eq("XXX")).will(returnValue(usuarioEmpresas));
-		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(eq(mensagemFinal), ANYTHING, eq(null), eq(usuarioEmpresas));
+		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		faixaSalarialHistoricoManager.expects(once()).method("setStatus").with(eq(faixaSalarialHistoricoId), eq(aprovado)).will(returnValue(true));
 
 		assertEquals(true, rHServiceManager.setStatusFaixaSalarialHistorico(faixaSalarialHistoricoId, aprovado, mensagem, empresaCodigoAC, "XXX").isSucesso());

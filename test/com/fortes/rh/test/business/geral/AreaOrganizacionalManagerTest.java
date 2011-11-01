@@ -18,6 +18,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -563,7 +564,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		assertNull(exception);
 	}
 
-	public void testDeleteLotacaoAcComExcecao()
+	public void testDeleteLotacaoAcComExcecao() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setAcIntegra(true);
@@ -575,14 +576,14 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areaOrganizacionalDao.expects(once()).method("findAreaOrganizacionalCodigoAc").with(eq(areaOrganizacional.getId())).will(returnValue(areaOrganizacional));
 		areaOrganizacionalDao.expects(once()).method("remove").with(eq(areaIds)).isVoid();
 		areaOrganizacionalDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		acPessoalClientLotacao.expects(once()).method("deleteLotacao").with(eq(areaOrganizacional), eq(empresa)).will(throwException(new Exception("Erro")));
+		acPessoalClientLotacao.expects(once()).method("deleteLotacao").with(eq(areaOrganizacional), eq(empresa)).will(throwException(new IntegraACException("Erro")));
 
 		Exception exception = null;
 		try
 		{
 			areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, empresa);
 		}
-		catch (Exception e)
+		catch (IntegraACException e)
 		{
 			exception = e;
 		}

@@ -38,6 +38,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
@@ -286,7 +287,7 @@ public class RHServiceImpl implements RHService
 			Colaborador colaborador = colaboradorManager.findByCodigoAC(codigo, empresa);
 
 			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empCodigo, grupoAC);
-			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(getMensagem(colaborador.getNomeComercial()), "AC Pessoal", getLink(colaborador.getId()), usuarioEmpresas);
+			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(getMensagem(colaborador.getNomeComercial()), "AC Pessoal", getLink(colaborador.getId()), usuarioEmpresas, colaborador, TipoMensagem.DESLIGAMENTO);
 
 			if(colaboradorManager.desligaColaboradorAC(codigo, empresa, DateUtil.montaDataByString(dataDesligamento)))
 				return new FeedbackWebService(true);
@@ -769,7 +770,7 @@ public class RHServiceImpl implements RHService
 			String mensagemFinal = mensagemManager.formataMensagemCancelamentoFaixaSalarialHistorico(mensagem, faixaSalarialHistorico);
 
 			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, grupoAC);
-			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", null, usuarioEmpresas);
+			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.DESLIGAMENTO);
 		}
 
 		if(faixaSalarialHistoricoManager.setStatus(faixaSalarialHistoricoId, aprovado))
