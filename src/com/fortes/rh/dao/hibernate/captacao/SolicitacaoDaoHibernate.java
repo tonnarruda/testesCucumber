@@ -26,6 +26,7 @@ import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
+import com.fortes.rh.model.geral.Colaborador;
 
 @SuppressWarnings("unchecked")
 public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> implements SolicitacaoDao
@@ -550,6 +551,32 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
 		criteria.addOrder(Order.desc("qtdVagasAbertas"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
+		
+		return criteria.list();
+	}
+
+	public Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.solicitacao", "s");
+		criteria.createCriteria("s.faixaSalarial", "f");
+		criteria.createCriteria("f.cargo", "ca");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.count("c.id"), "qtdContratados"));
+		p.add(Projections.alias(Projections.groupProperty("f.id"), "id"));
+		p.add(Projections.alias(Projections.groupProperty("f.nome"), "nome"));
+		p.add(Projections.alias(Projections.groupProperty("ca.nome"), "nomeCargo"));
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.between("s.data", dataIni, dataFim));
+		criteria.add(Expression.eq("s.empresa.id", empresaId));
+		
+		criteria.addOrder(Order.desc("qtdContratados"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));

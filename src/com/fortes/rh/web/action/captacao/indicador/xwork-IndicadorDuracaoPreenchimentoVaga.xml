@@ -3,6 +3,9 @@
 
 <xwork>
 	<package name="indicadorDuracaoPreenchimentoVaga" extends="default" namespace="/indicador/duracaoPreenchimentoVaga">
+		<action name="updateFilter" class="com.fortes.rh.web.action.captacao.indicador.IndicadorDuracaoPreenchimentoVagaListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
 		<action name="painel" class="com.fortes.rh.web.action.captacao.indicador.IndicadorDuracaoPreenchimentoVagaListAction" method="painel">
 			<result name="success" type="freemarker">/WEB-INF/forms/indicador/painelRecrutamento.ftl</result>
 		</action>

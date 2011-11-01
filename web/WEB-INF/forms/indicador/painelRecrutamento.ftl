@@ -35,6 +35,21 @@
 				});
 				$('#totalVagas').text(totalVagas);
 				
+				var contratadosFaixa = ${grfContratadosFaixa};
+				console.log(contratadosFaixa);
+				
+				montaPie(contratadosFaixa, "#vagasPorCargo", {
+					radiusLabel:0.9, 
+					percentMin: 0.02, 
+					pieLeft: 0, 
+					noColumns: 2, 
+					container: '#vagasPorCargoLegenda',
+					hoverable: true,
+        			clickable: true,
+					legendLabelFormatter: function(label, series) {
+						return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
+					}
+				});
 			});
 			
 			function validaForm()
@@ -106,6 +121,7 @@
 	    <div class="fieldGraph">
 			<h1>Vagas Preenc. por Cargo</h1>
 	    	<div id="vagasPorCargo" class="graph"></div>
+		    <div id="vagasPorCargoLegenda"></div>
 	    </div>
 	    <div class="fieldGraph">
 			<h1>Vagas Preenc. por Área</h1>

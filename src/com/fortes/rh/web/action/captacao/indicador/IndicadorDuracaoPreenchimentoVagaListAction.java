@@ -16,10 +16,12 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -41,6 +43,8 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Collection<FaixaSalarial> faixaSalarials;
+	private Collection<FaixaSalarial> faixaSalarialsContratados;
+
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -55,6 +59,8 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private int qtdCandidatosCadastrados;
 	
 	private char statusSolicitacao;
+
+	private String grfContratadosFaixa;
 	
 	public String prepare() throws Exception
 	{
@@ -74,6 +80,12 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		
 		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), dataDe, dataAte);
 		qtdCandidatosCadastrados = candidatoManager.findQtdCadastrados(getEmpresaSistema().getId(), dataDe, dataAte);
+
+		Collection<DataGrafico> graficoContratadosFaixa = new ArrayList<DataGrafico>();
+		faixaSalarialsContratados = solicitacaoManager.findQtdContratadosFaixa(getEmpresaSistema().getId(), dataDe, dataAte);
+		for (FaixaSalarial faixaSalarial : faixaSalarialsContratados)
+			graficoContratadosFaixa.add(new DataGrafico(null, faixaSalarial.getDescricao(), faixaSalarial.getQtdContratados(), ""));
+		grfContratadosFaixa = StringUtil.toJSON(graficoContratadosFaixa, null);
 		
 		return Action.SUCCESS;
 	}
@@ -305,5 +317,12 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	public void setCandidatoManager(CandidatoManager candidatoManager) {
 		this.candidatoManager = candidatoManager;
 	}
-	
+
+	public Collection<FaixaSalarial> getFaixaSalarialsContratados() {
+		return faixaSalarialsContratados;
+	}
+
+	public String getGrfContratadosFaixa() {
+		return grfContratadosFaixa;
+	}
 }

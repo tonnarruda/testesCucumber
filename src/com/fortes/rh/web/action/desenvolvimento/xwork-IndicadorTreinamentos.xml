@@ -3,6 +3,10 @@
 
 <xwork>
 	<package name="indicadoresTreinamento" extends="default" namespace="/desenvolvimento/indicadores">
+		<action name="updateFilter" class="com.fortes.rh.web.action.desenvolvimento.IndicadorTreinamentosListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
+	
 		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.IndicadorTreinamentosListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/indicadorTreinamentoList.ftl</result>
 		</action>

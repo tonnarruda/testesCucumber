@@ -24,6 +24,7 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -417,6 +418,19 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
     	assertEquals(list, solicitacaoManager.getIndicadorQtdCandidatos(dataDe, dataAte, areasOrganizacionais,estabelecimentos));
     }
+
+	public void testFindQtdContratadosFaixa(){
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Date dataDe = DateUtil.criarDataMesAno(1, 11, 2010);
+		Date dataAte = DateUtil.criarDataMesAno(1, 11, 2011);
+		
+		Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
+		
+		solicitacaoDao.expects(once()).method("findQtdContratadosFaixa").with(eq(empresa.getId()), eq(dataDe), eq(dataAte)).will(returnValue(faixas));
+		
+		assertEquals(faixas, solicitacaoManager.findQtdContratadosFaixa(empresa.getId(), dataDe, dataAte));
+	}
 	
 	// TODO . Por que ta dando pau pra mockar o Mail? 
 	// Ver em CandidatoManagerTest funciona.
