@@ -214,7 +214,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         	solicitacao.setBairros(bairrosTmp);
         }
 
-        solicitacao.setData(new Date());
         Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
         solicitacao.setSolicitante(usuarioLogado);
         solicitacao.setEmpresa(getEmpresaSistema());

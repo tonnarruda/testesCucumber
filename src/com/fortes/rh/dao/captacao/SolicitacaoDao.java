@@ -13,6 +13,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 
 public interface SolicitacaoDao extends GenericDao<Solicitacao>
 {
@@ -31,4 +32,5 @@ public interface SolicitacaoDao extends GenericDao<Solicitacao>
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
+	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim);
 }

@@ -23,6 +23,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 
@@ -524,6 +525,34 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Solicitacao.class));
+		
+		return criteria.list();
+	}
+
+	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
+		criteria.createCriteria("s.faixaSalarial", "f");
+		criteria.createCriteria("f.cargo", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.sum("s.quantidade"), "qtdVagasAbertas"));
+		
+		p.add(Projections.alias(Projections.groupProperty("f.nome"), "nome"));
+		p.add(Projections.alias(Projections.groupProperty("c.nome"), "nomeCargo"));
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.between("s.data", dataIni, dataFim));
+		criteria.add(Expression.eq("s.suspensa", false));
+		criteria.add(Expression.eq("s.encerrada", false));
+		criteria.add(Expression.eq("s.liberada", true));
+		criteria.add(Expression.eq("s.empresa.id", empresaId));
+		
+		criteria.addOrder(Order.desc("qtdVagasAbertas"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
 		
 		return criteria.list();
 	}

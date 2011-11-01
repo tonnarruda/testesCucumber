@@ -200,6 +200,7 @@
 				/security/auditoria/*/**=ROLE_UTI_AUDITORIA
 
 				/indicador/duracaoPreenchimentoVaga/prepare*/**=ROLE_IND
+				/indicador/duracaoPreenchimentoVaga/painel.action*=ROLE_IND
 				/indicador/indicadorTurnOver*/**=ROLE_REL_TURNOVER
 
 				/logging/*/**=ROLE_LOGGING

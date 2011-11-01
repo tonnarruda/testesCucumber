@@ -32,7 +32,7 @@
 	<field name="servicosRelatorio" class="java.lang.String"/>
 	<field name="extintor.localizacao" class="java.lang.String"/>
 	<field name="extintor.numeroCilindro" class="java.lang.Integer"/>
-	<field name="extintor.tipoDicAbreviado" class="java.lang.String"/>
+	<field name="extintor.tipoDic" class="java.lang.String"/>
 	<field name="retorno" class="java.util.Date"/>
 	<field name="observacao" class="java.lang.String"/>
 
@@ -80,9 +80,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="167"
+						x="154"
 						y="24"
-						width="159"
+						width="127"
 						height="16"
 						key="staticText-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -93,9 +93,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="331"
+						x="285"
 						y="24"
-						width="77"
+						width="65"
 						height="16"
 						key="staticText-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -106,9 +106,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="412"
+						x="354"
 						y="24"
-						width="78"
+						width="204"
 						height="16"
 						key="staticText-15"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -121,7 +121,7 @@
 					<reportElement
 						x="83"
 						y="24"
-						width="80"
+						width="66"
 						height="16"
 						key="staticText-16"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -132,9 +132,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="494"
+						x="565"
 						y="24"
-						width="139"
+						width="115"
 						height="16"
 						key="staticText-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -145,9 +145,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="637"
+						x="687"
 						y="24"
-						width="145"
+						width="88"
 						height="16"
 						key="staticText-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -190,9 +190,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="167"
+						x="154"
 						y="0"
-						width="159"
+						width="127"
 						height="17"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -203,22 +203,22 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="412"
+						x="354"
 						y="0"
-						width="78"
+						width="204"
 						height="17"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{extintor.tipoDicAbreviado}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{extintor.tipoDic}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="331"
+						x="285"
 						y="0"
-						width="77"
+						width="65"
 						height="17"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -231,7 +231,7 @@
 					<reportElement
 						x="83"
 						y="0"
-						width="80"
+						width="66"
 						height="17"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -242,9 +242,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="494"
+						x="565"
 						y="0"
-						width="139"
+						width="115"
 						height="17"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -255,9 +255,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="637"
+						x="687"
 						y="0"
-						width="145"
+						width="88"
 						height="17"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>

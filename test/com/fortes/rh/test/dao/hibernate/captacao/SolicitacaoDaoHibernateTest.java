@@ -147,6 +147,38 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 		assertEquals(1, solicitacaos.size());
 	}
+	
+	public void testFindQtdVagasDisponiveis()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo = cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		
+		Date hoje = new Date();
+		
+		Solicitacao solicitacao = getEntity();
+		solicitacao.setEncerrada(false);
+		solicitacao.setSuspensa(false);
+		solicitacao.setLiberada(true);
+		solicitacao.setData(hoje);
+		solicitacao.setEmpresa(empresa);		
+		
+		solicitacao.setFaixaSalarial(faixaSalarial);
+		solicitacao.setQuantidade(4);
+		
+		solicitacaoDao.save(solicitacao);
+		
+		
+		Collection<FaixaSalarial> faixas = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), hoje, hoje);
+		
+		assertEquals(1, faixas.size());
+	}
 
 	public void testFindAllByVisualizacaoAbertaComCargo()
 	{

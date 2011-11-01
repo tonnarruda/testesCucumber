@@ -17,6 +17,7 @@ import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -270,5 +271,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public Collection<Solicitacao> findAllByCandidato(Long candidatoId) {
 		return getDao().findAllByCandidato(candidatoId);
+	}
+
+	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim) {
+		return getDao().findQtdVagasDisponiveis(empresaId, dataIni, dataFim);
 	}
 }
