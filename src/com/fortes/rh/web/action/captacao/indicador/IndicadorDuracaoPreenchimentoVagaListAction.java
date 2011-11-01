@@ -64,14 +64,6 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private String grfContratadosMotivo = "";
 	private String grfDivulgacaoVaga = "";
 	
-	public String prepare() throws Exception
-	{
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-
-		return Action.SUCCESS;
-	}
-	
 	public String painel() throws Exception
 	{
 		Date hoje = new Date();
@@ -82,6 +74,12 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		
 		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), dataDe, dataAte);
 		qtdCandidatosCadastrados = candidatoManager.findQtdCadastrados(getEmpresaSistema().getId(), dataDe, dataAte);
+		
+		try {
+			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, null, null, getEmpresaSistema().getId());
+		} catch (Exception e) {
+			
+		}
 
 		Collection<DataGrafico> graficoContratadosFaixa = solicitacaoManager.findQtdContratadosPorFaixa(getEmpresaSistema().getId(), dataDe, dataAte);
 		grfContratadosFaixa = StringUtil.toJSON(graficoContratadosFaixa, null);
@@ -101,6 +99,14 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	public String prepareMotivo() throws Exception
 	{
 		prepare();
+		return Action.SUCCESS;
+	}
+	
+	public String prepare() throws Exception
+	{
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+
 		return Action.SUCCESS;
 	}
 

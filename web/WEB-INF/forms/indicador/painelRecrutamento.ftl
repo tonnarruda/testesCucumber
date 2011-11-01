@@ -121,8 +121,17 @@
 	    
 		<div class="fieldGraph bigger">
 			<h1>Duração para Preenchimento de Vaga</h1>
-	   		<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
-			<div style="clear: both"></div>
+			<div style="height:300px; overflow:scroll; overflow-x: hidden;">
+		   		<@display.table name="indicadorDuracaoPreenchimentoVagas" id="indicador" class="dados" style="width: 945px;">
+					<@display.column property="cargo.nome" title="Cargo"/>
+					<@display.column property="qtdVagas" title="Vagas" style="width: 80px; text-align: right;"/>
+					<@display.column property="qtdCandidatos" title="Candidatos" style="width: 80px; text-align: right;"/>
+					<@display.column property="qtdContratados" title="Contratados" style="width: 80px; text-align: right;"/>
+					<@display.column title="Média Dias" style="width: 80px; text-align: right;">
+						${indicador.mediaDias?string(",##0.#")}
+					</@display.column>
+				</@display.table>
+			</div>
 	    </div>
 	 
 	    <div class="fieldGraph">
