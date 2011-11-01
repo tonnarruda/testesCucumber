@@ -5,6 +5,7 @@ import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
 
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -12,7 +13,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 {
 	private AcPessoalClient acPessoalClient;
 
-	public boolean deleteLotacao(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
+	public boolean deleteLotacao(AreaOrganizacional areaOrganizacional, Empresa empresa) throws IntegraACException
 	{
 		try
 		{
@@ -34,7 +35,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new Exception("Erro ao remover Lotação no AC Pessoal.");
+			throw new IntegraACException("Erro ao remover Lotação no AC Pessoal.");
 		}
 	}
 

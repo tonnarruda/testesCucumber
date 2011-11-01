@@ -34,6 +34,7 @@ import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
+import com.fortes.rh.dao.geral.MensagemDao;
 import com.fortes.rh.dao.geral.MotivoDemissaoDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
@@ -62,6 +63,7 @@ import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
@@ -74,6 +76,7 @@ import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
+import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
@@ -109,6 +112,7 @@ import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.geral.MensagemFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
@@ -144,6 +148,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 	private OcorrenciaDao ocorrenciaDao;
 	private ColaboradorOcorrenciaDao colaboradorOcorrenciaDao;
+	private MensagemDao mensagemDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -378,7 +383,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorRetorno = colaboradorDao.findByIdProjectionUsuario(colaborador.getId());
 		assertNull(colaboradorRetorno.getUsuario().getId());
 	}
-
+	
 	public void testFindAniversariantesByEmpresa() throws Exception 
 	{
 		Empresa empresa = new Empresa();
@@ -4081,6 +4086,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void setColaboradorOcorrenciaDao(ColaboradorOcorrenciaDao colaboradorOcorrenciaDao) {
 		this.colaboradorOcorrenciaDao = colaboradorOcorrenciaDao;
+	}
+
+	public void setMensagemDao(MensagemDao mensagemDao) {
+		this.mensagemDao = mensagemDao;
 	}
 
 }

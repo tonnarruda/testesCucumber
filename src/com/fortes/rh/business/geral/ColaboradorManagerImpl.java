@@ -62,6 +62,7 @@ import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Bairro;
@@ -101,6 +102,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private ExperienciaManager experienciaManager;
 	private ColaboradorIdiomaManager colaboradorIdiomaManager;
 	private CandidatoManager candidatoManager;
+	private MensagemManager mensagemManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private Mail mail;
@@ -617,8 +619,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Long religaColaboradorAC(String codigoAC, String empresaCodigo, String grupoAC)
 	{
 		Long colaboradorId = getDao().findByCodigoAC(codigoAC, empresaCodigo, grupoAC).getId();
-		
+
 		candidatoManager.reabilitaByColaborador(colaboradorId);
+		mensagemManager.removeMensagemDesligamento(colaboradorId);
 		getDao().religaColaborador(colaboradorId);
 
 		return colaboradorId;
@@ -1202,7 +1205,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresaId, "ROLE_VISUALIZAR_MSG");
 		
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "geral/colaborador/prepareUpdate.action?colaborador.id=" + colaboradorOriginal.getId(), usuarioEmpresas);
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "geral/colaborador/prepareUpdate.action?colaborador.id=" + colaboradorOriginal.getId(), usuarioEmpresas, null, TipoMensagem.ENDERECO);
 	}
 	
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId)
@@ -2046,5 +2049,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
+	}
+
+	public void setMensagemManager(MensagemManager mensagemManager) {
+		this.mensagemManager = mensagemManager;
 	}
 }

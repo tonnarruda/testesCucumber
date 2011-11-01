@@ -14,6 +14,8 @@ import com.fortes.rh.dao.geral.UsuarioMensagemDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.dicionario.TipoMensagem;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
@@ -71,7 +73,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 	}
 
-	public void saveMensagemAndUsuarioMensagem(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas)
+	public void saveMensagemAndUsuarioMensagem(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem)
 	{
 		Mensagem mensagem = new Mensagem();
 		mensagem.setData(new Date());
@@ -79,6 +81,8 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		mensagem.setTexto(msg);
 		mensagem.setRemetente(remetente);
 		mensagem.setLink(link);
+		mensagem.setColaborador(colaborador);
+		mensagem.setTipo(tipoMensagem);
 
 		mensagem = mensagemManager.save(mensagem);
 
@@ -105,7 +109,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 					&& usuarioEmpresa.getUsuario().getId().equals(usuarioEmpresaAreaOrganizacional.getUsuario().getId()))
 						usuariosResponsaveisAreaOrganizacionaisComRole.add(usuarioEmpresa);
 			
-		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionaisComRole);
+		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionaisComRole, null, TipoMensagem.INDIFERENTE);
 	}
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager)

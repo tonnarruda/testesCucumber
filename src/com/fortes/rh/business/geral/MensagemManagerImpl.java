@@ -101,4 +101,8 @@ public class MensagemManagerImpl extends GenericManagerImpl<Mensagem, MensagemDa
 		return mensagemFinal.toString();
 	}
 
+	public void removeMensagemDesligamento(Long colaboradorId) 
+	{
+		getDao().removeMensagemDesligamento(colaboradorId);
+	}
 }

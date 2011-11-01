@@ -5,15 +5,19 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.MensagemDao;
 import com.fortes.rh.dao.geral.UsuarioMensagemDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.dicionario.TipoMensagem;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.MensagemFactory;
 import com.fortes.rh.test.factory.geral.UsuarioMensagemFactory;
@@ -24,6 +28,7 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 	private MensagemDao mensagemDao;
 	private EmpresaDao empresaDao;
 	private UsuarioMensagemDao usuarioMensagemDao;
+	private ColaboradorDao colaboradorDao;
 
 	public UsuarioMensagem getEntity()
 	{
@@ -41,7 +46,12 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 
 	public void testListaUsuarioMensagem()
 	{
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colab);
+		
 		Mensagem mensagem = MensagemFactory.getEntity();
+		mensagem.setColaborador(colab);
+		mensagem.setTipo(TipoMensagem.DESLIGAMENTO);
 		mensagem = mensagemDao.save(mensagem);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -204,6 +214,10 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 	public void setUsuarioDao(UsuarioDao usuarioDao)
 	{
 		this.usuarioDao = usuarioDao;
+	}
+
+	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+		this.colaboradorDao = colaboradorDao;
 	}
 
 }
