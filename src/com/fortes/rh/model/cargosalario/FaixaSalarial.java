@@ -35,18 +35,19 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	@Column(length=12)
 	private String codigoAC;
 
-	@Transient
-	private String descricao;
-	@Transient
-	private int qtdVagasAbertas;
-	@Transient
-	private FaixaSalarialHistorico faixaSalarialHistoricoAtual;
-
 	@OneToMany(mappedBy="faixaSalarial",fetch=FetchType.LAZY)
 	private Collection<FaixaSalarialHistorico> faixaSalarialHistoricos;
 	@ManyToMany(fetch=FetchType.LAZY)
 	private Collection<Certificacao> certificacaos;
 
+	@Transient
+	private String descricao;
+	@Transient
+	private int qtdVagasAbertas;
+	@Transient
+	private int qtdContratados;
+	@Transient
+	private FaixaSalarialHistorico faixaSalarialHistoricoAtual;
 	@Transient
 	private String empresaCodigoAC;
 	@Transient
@@ -336,5 +337,12 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	public void setQtdVagasAbertas(int qtdVagasAbertas) {
 		this.qtdVagasAbertas = qtdVagasAbertas;
 	}
-	
+
+	public int getQtdContratados() {
+		return qtdContratados;
+	}
+
+	public void setQtdContratados(int qtdContratados) {
+		this.qtdContratados = qtdContratados;
+	}
 }

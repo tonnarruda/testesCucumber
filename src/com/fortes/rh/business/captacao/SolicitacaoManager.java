@@ -40,4 +40,5 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Solicitacao save(Solicitacao solicitacao, String[] emailsCheck);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
 	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim);
+	Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Date dataIni,	Date dataFim);
 }

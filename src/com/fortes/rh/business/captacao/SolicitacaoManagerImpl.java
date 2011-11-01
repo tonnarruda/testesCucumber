@@ -276,4 +276,8 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim) {
 		return getDao().findQtdVagasDisponiveis(empresaId, dataIni, dataFim);
 	}
+
+	public Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Date dataIni, Date dataFim) {
+		return getDao().findQtdContratadosFaixa(empresaId, dataIni, dataFim);
+	}
 }

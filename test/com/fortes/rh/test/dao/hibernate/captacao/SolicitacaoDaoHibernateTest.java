@@ -180,6 +180,55 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		assertEquals(1, faixas.size());
 	}
 
+	public void testFindQtdContratadosFaixa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo = cargoDao.save(cargo);
+		
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
+		faixa1.setCargo(cargo);
+		faixa1 = faixaSalarialDao.save(faixa1);
+
+		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity();
+		faixa2.setCargo(cargo);
+		faixa2 = faixaSalarialDao.save(faixa2);
+		
+		Date hoje = new Date();
+		
+		Solicitacao solicitacao1 = getEntity();
+		solicitacao1.setData(hoje);
+		solicitacao1.setEmpresa(empresa);		
+		solicitacao1.setFaixaSalarial(faixa1);
+		solicitacaoDao.save(solicitacao1);
+
+		Solicitacao solicitacao2 = getEntity();
+		solicitacao2.setData(hoje);
+		solicitacao2.setEmpresa(empresa);		
+		solicitacao2.setFaixaSalarial(faixa2);
+		solicitacaoDao.save(solicitacao2);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setSolicitacao(solicitacao1);
+		colaboradorDao.save(joao);
+
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setSolicitacao(solicitacao1);
+		colaboradorDao.save(maria);
+
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setSolicitacao(solicitacao2);
+		colaboradorDao.save(pedro);
+		
+		Collection<FaixaSalarial> faixas = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), hoje, hoje);
+		
+		assertEquals(2, faixas.size());
+		assertEquals(2, ((FaixaSalarial) (faixas.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((FaixaSalarial) (faixas.toArray()[1])).getQtdContratados());
+	}
+
 	public void testFindAllByVisualizacaoAbertaComCargo()
 	{
 		Usuario solicitante = UsuarioFactory.getEntity();
