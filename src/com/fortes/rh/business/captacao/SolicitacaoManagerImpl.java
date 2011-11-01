@@ -5,6 +5,7 @@
 
 package com.fortes.rh.business.captacao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -15,12 +16,15 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
@@ -277,7 +281,33 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().findQtdVagasDisponiveis(empresaId, dataIni, dataFim);
 	}
 
-	public Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Date dataIni, Date dataFim) {
-		return getDao().findQtdContratadosFaixa(empresaId, dataIni, dataFim);
+	public Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Date dataIni, Date dataFim) {
+		Collection<DataGrafico> graficoContratadosFaixa = new ArrayList<DataGrafico>();
+		Collection<FaixaSalarial> faixasSalariaisContratados = getDao().findQtdContratadosFaixa(empresaId, dataIni, dataFim);
+		
+		for (FaixaSalarial faixaSalarial : faixasSalariaisContratados)
+			graficoContratadosFaixa.add(new DataGrafico(null, faixaSalarial.getDescricao(), faixaSalarial.getQtdContratados(), ""));
+		
+		return graficoContratadosFaixa;
+	}
+
+	public Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Date dataIni, Date dataFim) {
+		Collection<DataGrafico> graficoContratadosArea = new ArrayList<DataGrafico>();
+		Collection<AreaOrganizacional> areasContratados = getDao().findQtdContratadosArea(empresaId, dataIni, dataFim);
+		
+		for (AreaOrganizacional area : areasContratados)
+			graficoContratadosArea.add(new DataGrafico(null, area.getNome(), area.getQtdContratados(), ""));
+		
+		return graficoContratadosArea;
+	}
+
+	public Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Date dataIni, Date dataFim) {
+		Collection<DataGrafico> graficoContratadosMotivo = new ArrayList<DataGrafico>();
+		Collection<MotivoSolicitacao> motivos = getDao().findQtdContratadosMotivo(empresaId, dataIni, dataFim);
+		
+		for (MotivoSolicitacao motivo : motivos)
+			graficoContratadosMotivo.add(new DataGrafico(null, motivo.getDescricao(), motivo.getQtdContratados(), ""));
+		
+		return graficoContratadosMotivo;
 	}
 }

@@ -18,6 +18,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.spring.aop.callback.CandidatoAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 
@@ -75,4 +76,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public String getTextoExamePalografico(File ocrTexto) throws Exception;
 	Collection<Candidato> triagemAutomatica(Solicitacao solicitacao, Integer tempoExperiencia, Map<String, Integer> pesos, Integer percentualMinimo);
 	public int findQtdCadastrados(Long empresaId, Date dataDe, Date dataAte);
+	public Collection<DataGrafico> countComoFicouSabendoVagas(Long empresaId, Date dataIni, Date dataFim);
 }

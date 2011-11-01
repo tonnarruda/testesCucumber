@@ -43,7 +43,6 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Collection<FaixaSalarial> faixaSalarials;
-	private Collection<FaixaSalarial> faixaSalarialsContratados;
 
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 
@@ -60,7 +59,10 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	
 	private char statusSolicitacao;
 
-	private String grfContratadosFaixa;
+	private String grfContratadosFaixa = "";
+	private String grfContratadosArea = "";
+	private String grfContratadosMotivo = "";
+	private String grfDivulgacaoVaga = "";
 	
 	public String prepare() throws Exception
 	{
@@ -81,11 +83,17 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), dataDe, dataAte);
 		qtdCandidatosCadastrados = candidatoManager.findQtdCadastrados(getEmpresaSistema().getId(), dataDe, dataAte);
 
-		Collection<DataGrafico> graficoContratadosFaixa = new ArrayList<DataGrafico>();
-		faixaSalarialsContratados = solicitacaoManager.findQtdContratadosFaixa(getEmpresaSistema().getId(), dataDe, dataAte);
-		for (FaixaSalarial faixaSalarial : faixaSalarialsContratados)
-			graficoContratadosFaixa.add(new DataGrafico(null, faixaSalarial.getDescricao(), faixaSalarial.getQtdContratados(), ""));
+		Collection<DataGrafico> graficoContratadosFaixa = solicitacaoManager.findQtdContratadosPorFaixa(getEmpresaSistema().getId(), dataDe, dataAte);
 		grfContratadosFaixa = StringUtil.toJSON(graficoContratadosFaixa, null);
+
+		Collection<DataGrafico> graficoContratadosArea = solicitacaoManager.findQtdContratadosPorArea(getEmpresaSistema().getId(), dataDe, dataAte);
+		grfContratadosArea = StringUtil.toJSON(graficoContratadosArea, null);
+
+		Collection<DataGrafico> graficoContratadosMotivo = solicitacaoManager.findQtdContratadosPorMotivo(getEmpresaSistema().getId(), dataDe, dataAte);
+		grfContratadosMotivo = StringUtil.toJSON(graficoContratadosMotivo, null);
+		
+		Collection<DataGrafico> graficoDivulgacaoVaga = candidatoManager.countComoFicouSabendoVagas(getEmpresaSistema().getId(), dataDe, dataAte);
+		grfDivulgacaoVaga = StringUtil.toJSON(graficoDivulgacaoVaga, null);
 		
 		return Action.SUCCESS;
 	}
@@ -318,11 +326,19 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		this.candidatoManager = candidatoManager;
 	}
 
-	public Collection<FaixaSalarial> getFaixaSalarialsContratados() {
-		return faixaSalarialsContratados;
-	}
-
 	public String getGrfContratadosFaixa() {
 		return grfContratadosFaixa;
+	}
+
+	public String getGrfContratadosArea() {
+		return grfContratadosArea;
+	}
+
+	public String getGrfContratadosMotivo() {
+		return grfContratadosMotivo;
+	}
+
+	public String getGrfDivulgacaoVaga() {
+		return grfDivulgacaoVaga;
 	}
 }

@@ -228,6 +228,94 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		assertEquals(2, ((FaixaSalarial) (faixas.toArray()[0])).getQtdContratados());
 		assertEquals(1, ((FaixaSalarial) (faixas.toArray()[1])).getQtdContratados());
 	}
+	
+	public void testFindQtdContratadosArea()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area1);
+
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area2);
+		
+		Date hoje = new Date();
+		
+		Solicitacao solicitacao1 = getEntity();
+		solicitacao1.setData(hoje);
+		solicitacao1.setEmpresa(empresa);		
+		solicitacao1.setAreaOrganizacional(area1);
+		solicitacaoDao.save(solicitacao1);
+		
+		Solicitacao solicitacao2 = getEntity();
+		solicitacao2.setData(hoje);
+		solicitacao2.setEmpresa(empresa);		
+		solicitacao2.setAreaOrganizacional(area2);
+		solicitacaoDao.save(solicitacao2);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setSolicitacao(solicitacao1);
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setSolicitacao(solicitacao1);
+		colaboradorDao.save(maria);
+		
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setSolicitacao(solicitacao2);
+		colaboradorDao.save(pedro);
+		
+		Collection<AreaOrganizacional> areas = solicitacaoDao.findQtdContratadosArea(empresa.getId(), hoje, hoje);
+		
+		assertEquals(2, areas.size());
+		assertEquals(2, ((AreaOrganizacional) (areas.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((AreaOrganizacional) (areas.toArray()[1])).getQtdContratados());
+	}
+	
+	public void testFindQtdContratadosMotivo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		MotivoSolicitacao motivo1 = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacaoDao.save(motivo1);
+
+		MotivoSolicitacao motivo2 = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacaoDao.save(motivo2);
+		
+		Date hoje = new Date();
+		
+		Solicitacao solicitacao1 = getEntity();
+		solicitacao1.setData(hoje);
+		solicitacao1.setEmpresa(empresa);		
+		solicitacao1.setMotivoSolicitacao(motivo1);
+		solicitacaoDao.save(solicitacao1);
+		
+		Solicitacao solicitacao2 = getEntity();
+		solicitacao2.setData(hoje);
+		solicitacao2.setEmpresa(empresa);		
+		solicitacao2.setMotivoSolicitacao(motivo2);
+		solicitacaoDao.save(solicitacao2);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setSolicitacao(solicitacao1);
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setSolicitacao(solicitacao1);
+		colaboradorDao.save(maria);
+		
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setSolicitacao(solicitacao2);
+		colaboradorDao.save(pedro);
+		
+		Collection<MotivoSolicitacao> motivos = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), hoje, hoje);
+		
+		assertEquals(2, motivos.size());
+		assertEquals(2, ((MotivoSolicitacao) (motivos.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((MotivoSolicitacao) (motivos.toArray()[1])).getQtdContratados());
+	}
 
 	public void testFindAllByVisualizacaoAbertaComCargo()
 	{

@@ -21,11 +21,13 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 
 @SuppressWarnings("unchecked")
@@ -580,6 +582,54 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
+		
+		return criteria.list();
+	}
+	
+	public Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.solicitacao", "s");
+		criteria.createCriteria("s.areaOrganizacional", "a");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.count("c.id"), "qtdContratados"));
+		p.add(Projections.alias(Projections.groupProperty("a.id"), "id"));
+		p.add(Projections.alias(Projections.groupProperty("a.nome"), "nome"));
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.between("s.data", dataIni, dataFim));
+		criteria.add(Expression.eq("s.empresa.id", empresaId));
+		
+		criteria.addOrder(Order.desc("qtdContratados"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		
+		return criteria.list();
+	}
+	
+	public Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.solicitacao", "s");
+		criteria.createCriteria("s.motivoSolicitacao", "m");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.count("c.id"), "qtdContratados"));
+		p.add(Projections.alias(Projections.groupProperty("m.id"), "id"));
+		p.add(Projections.alias(Projections.groupProperty("m.descricao"), "descricao"));
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.between("s.data", dataIni, dataFim));
+		criteria.add(Expression.eq("s.empresa.id", empresaId));
+		
+		criteria.addOrder(Order.desc("qtdContratados"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(MotivoSolicitacao.class));
 		
 		return criteria.list();
 	}

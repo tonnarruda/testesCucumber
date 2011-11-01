@@ -11,9 +11,11 @@ import java.util.List;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 
 public interface SolicitacaoDao extends GenericDao<Solicitacao>
 {
@@ -34,4 +36,6 @@ public interface SolicitacaoDao extends GenericDao<Solicitacao>
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
 	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim);
 	Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Date dataIni, Date dataFim);
+	Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Date dataIni, Date dataFim);
+	Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Date dataIni, Date dataFim);
 }

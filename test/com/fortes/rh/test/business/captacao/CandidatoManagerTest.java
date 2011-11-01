@@ -66,6 +66,7 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.test.MockFileUtils;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -1604,6 +1605,19 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		candidatoDao.expects(once()).method("findByCPF").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Candidato()));
 		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
 		assertEquals(1, candidatos.size());
+	}
+	
+	public void testCountComoFicouSabendoVagas(){
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Date dataDe = DateUtil.criarDataMesAno(1, 11, 2010);
+		Date dataAte = DateUtil.criarDataMesAno(1, 11, 2011);
+		
+		Collection<DataGrafico> vagas = new ArrayList<DataGrafico>();
+		
+		candidatoDao.expects(once()).method("countComoFicouSabendoVagas").with(eq(empresa.getId()), eq(dataDe), eq(dataAte)).will(returnValue(vagas));
+		
+		assertEquals(vagas, candidatoManager.countComoFicouSabendoVagas(empresa.getId(), dataDe, dataAte));
 	}
 	
 	//TODO remprot

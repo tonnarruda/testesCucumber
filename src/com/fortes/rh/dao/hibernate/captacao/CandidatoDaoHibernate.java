@@ -46,6 +46,7 @@ import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
+import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.ArquivoUtil;
 
 @SuppressWarnings({ "deprecation", "unchecked" })
@@ -1136,6 +1137,26 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
         criteria.add(Expression.isNotNull("c.comoFicouSabendoVaga"));
 
         return criteria.list();
+	}
+	
+	public Collection<ComoFicouSabendoVaga> countComoFicouSabendoVagas(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+		criteria.createCriteria("c.comoFicouSabendoVaga", "como", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.groupProperty("como.nome"), "nome"));
+		p.add(Projections.alias(Projections.count("c.id"), "qtd"));
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.isNotNull("c.comoFicouSabendoVaga.id"));
+		criteria.add(Expression.between("c.dataAtualizacao", dataIni, dataFim));
+		
+		criteria.addOrder(Order.desc("qtd"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ComoFicouSabendoVaga.class));
+		
+		return criteria.list();
 	}
 
 	public void updateExamePalografico(Candidato candidato) 

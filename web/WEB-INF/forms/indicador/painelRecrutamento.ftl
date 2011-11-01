@@ -10,6 +10,7 @@
 		@import url('<@ww.url value="/css/indicadores.css"/>');
 		
 		.formula { margin: 7px 5px; }
+		.graph li { padding: 13px; }
 	</style>
 	
 
@@ -36,20 +37,32 @@
 				$('#totalVagas').text(totalVagas);
 				
 				var contratadosFaixa = ${grfContratadosFaixa};
-				console.log(contratadosFaixa);
-				
-				montaPie(contratadosFaixa, "#vagasPorCargo", {
-					radiusLabel:0.9, 
-					percentMin: 0.02, 
-					pieLeft: 0, 
-					noColumns: 2, 
-					container: '#vagasPorCargoLegenda',
-					hoverable: true,
-        			clickable: true,
-					legendLabelFormatter: function(label, series) {
-						return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
-					}
+				var totalVagasPreenchidasCargo = 0;
+				$(contratadosFaixa).each(function() {
+				    totalVagasPreenchidasCargo += parseInt(this.data);
 				});
+				$('#totalVagasPreenchidasCargo').text(totalVagasPreenchidasCargo);
+
+				var contratadosArea = ${grfContratadosArea};
+				var totalVagasPreenchidasArea = 0;
+				$(contratadosArea).each(function() {
+				    totalVagasPreenchidasArea += parseInt(this.data);
+				});
+				$('#totalVagasPreenchidasArea').text(totalVagasPreenchidasArea);
+
+				var contratadosMotivo = ${grfContratadosMotivo};
+				var totalVagasPreenchidasMotivo = 0;
+				$(contratadosMotivo).each(function() {
+				    totalVagasPreenchidasMotivo += parseInt(this.data);
+				});
+				$('#totalVagasPreenchidasMotivo').text(totalVagasPreenchidasMotivo);
+
+				var divulgacaoVaga = ${grfDivulgacaoVaga};
+				
+				montaPie(contratadosFaixa, "#vagasPorCargo", {combinePercentMin: 0.05, percentMin: 0.05});
+				montaPie(contratadosArea, "#vagasPorArea", {combinePercentMin: 0.05, percentMin: 0.05});
+				montaPie(contratadosMotivo, "#vagasPorMotivo", {combinePercentMin: 0.05, percentMin: 0.05});
+				montaPie(divulgacaoVaga, "#divulgacaoVaga", {combinePercentMin: 0.05, percentMin: 0.05});
 			});
 			
 			function validaForm()
@@ -59,12 +72,6 @@
 		</script>
 	
 		<#include "../ftl/mascarasImports.ftl" />
-	
-		<style type="text/css">
-			.graph li{
-				padding: 13px;
-			}
-		</style>
 	
 		<#if dataDe?exists>
 			<#assign dateIni = dataDe?date/>
@@ -80,7 +87,7 @@
 	</head>
 	<body>
 		<#include "../util/topFiltro.ftl" />
-			<@ww.form name="formBusca" id="formBusca" action="painelIndicadores.action" method="POST">
+			<@ww.form name="formBusca" id="formBusca" action="painel.action" method="post">
 				Período:*<br>
 				<@ww.datepicker name="dataDe" id="dataDe"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 				<@ww.label value="a" liClass="liLeft" />
@@ -119,24 +126,21 @@
 	    </div>
 	 
 	    <div class="fieldGraph">
-			<h1>Vagas Preenc. por Cargo</h1>
+			<h1>Vagas Preenchidas por Cargo (total: <span id="totalVagasPreenchidasCargo"></span>)</h1>
 	    	<div id="vagasPorCargo" class="graph"></div>
-		    <div id="vagasPorCargoLegenda"></div>
 	    </div>
 	    <div class="fieldGraph">
-			<h1>Vagas Preenc. por Área</h1>
+			<h1>Vagas Preenchidas por Área (total: <span id="totalVagasPreenchidasArea"></span>)</h1>
 	    	<div id="vagasPorArea" class="graph"></div>
 	    </div>
 	    
 		<div class="fieldGraph">
-			<h1>Vagas Preenc. por Motivo</h1>
-		    <div id="vagasPorMotivo" class="graph" >
-		    	
-		    </div>
+			<h1>Vagas Preenchidas por Motivo (total: <span id="totalVagasPreenchidasMotivo"></span>)</h1>
+		    <div id="vagasPorMotivo" class="graph" ></div>
 		</div>
    		<div class="fieldGraph">
 			<h1>Estatística de Divulgação de Vagas</h1>
-	    	<div id="estatistica" class="graph"></div>
+	    	<div id="divulgacaoVaga" class="graph"></div>
 	    </div>
 	    
 	    <div style="clear: both"></div>

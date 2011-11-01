@@ -65,6 +65,8 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	
 	@Transient
 	private Integer colaboradorCount;
+	@Transient
+	private int qtdContratados;
 	
 	public AreaOrganizacional(String nome){
 		this.nome = nome;
@@ -420,5 +422,13 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 	public void setAtitudes(Collection<Atitude> atitudes) {
 		this.atitudes = atitudes;
+	}
+
+	public int getQtdContratados() {
+		return qtdContratados;
+	}
+
+	public void setQtdContratados(int qtdContratados) {
+		this.qtdContratados = qtdContratados;
 	}
 }

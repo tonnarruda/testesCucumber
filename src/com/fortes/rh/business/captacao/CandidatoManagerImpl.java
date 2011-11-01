@@ -47,6 +47,7 @@ import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Idioma;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -57,6 +58,7 @@ import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -64,6 +66,7 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -1371,5 +1374,15 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public int findQtdCadastrados(Long empresaId, Date dataDe, Date dataAte) {
 		return getDao().findQtdCadastrados(empresaId, dataDe, dataAte);
+	}
+
+	public Collection<DataGrafico> countComoFicouSabendoVagas(Long empresaId, Date dataIni, Date dataFim) {
+		Collection<DataGrafico> graficoDivulgacaoVaga = new ArrayList<DataGrafico>();
+		Collection<ComoFicouSabendoVaga> vagas = getDao().countComoFicouSabendoVagas(empresaId, dataIni, dataFim);
+		
+		for (ComoFicouSabendoVaga vaga : vagas)
+			graficoDivulgacaoVaga.add(new DataGrafico(null, vaga.getNome(), vaga.getQtd(), ""));
+		
+		return graficoDivulgacaoVaga;
 	}
 }

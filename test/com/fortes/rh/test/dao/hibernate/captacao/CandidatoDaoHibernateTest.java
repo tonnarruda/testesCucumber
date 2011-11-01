@@ -26,6 +26,7 @@ import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.BairroDao;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.geral.ComoFicouSabendoVagaDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.EstadoDao;
@@ -50,6 +51,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -99,7 +101,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	private EtapaSeletivaDao etapaSeletivaDao;
 	private ColaboradorDao colaboradorDao;
 	private FaixaSalarialDao faixaSalarialDao;
-
+	private ComoFicouSabendoVagaDao comoFicouSabendoVagaDao;
 
 	public Candidato getEntity()
 	{
@@ -153,6 +155,46 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(2, candidatos.size());
 		assertEquals(2, ((Candidato)candidatos.toArray()[0]).getQtdCurriculosCadastrados());//qtd de cadastrados no F2RH
 		assertEquals(1, ((Candidato)candidatos.toArray()[1]).getQtdCurriculosCadastrados());//qtd de cadastrados no sistema(CADASTRADO)
+	}
+	
+	public void testCountComoFicouSabendoVagas()
+	{
+		Date hoje = new Date();
+
+		ComoFicouSabendoVaga revista = new ComoFicouSabendoVaga();
+		revista.setNome("revista");
+		comoFicouSabendoVagaDao.save(revista);
+		
+		ComoFicouSabendoVaga jornal = new ComoFicouSabendoVaga();
+		jornal.setNome("jornal");
+		comoFicouSabendoVagaDao.save(jornal);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Candidato pedro = getCandidato();
+		pedro.setEmpresa(empresa);
+		pedro.setDataAtualizacao(hoje);
+		pedro.setComoFicouSabendoVaga(jornal);
+		candidatoDao.save(pedro);
+		
+		Candidato maria = getCandidato();
+		maria.setEmpresa(empresa);
+		maria.setDataAtualizacao(hoje);
+		maria.setComoFicouSabendoVaga(jornal);
+		candidatoDao.save(maria);
+		
+		Candidato joao = getCandidato();
+		joao.setEmpresa(empresa);
+		joao.setDataAtualizacao(hoje);
+		joao.setComoFicouSabendoVaga(revista);
+		candidatoDao.save(joao);
+		
+		Collection<ComoFicouSabendoVaga> vagas = candidatoDao.countComoFicouSabendoVagas(empresa.getId(), hoje, hoje);
+		
+		assertEquals(2, vagas.size());
+		assertEquals("jornal", ((ComoFicouSabendoVaga)vagas.toArray()[0]).getNome());
+		assertEquals("revista", ((ComoFicouSabendoVaga)vagas.toArray()[1]).getNome());
 	}
 
 	public void testFindByCandidatoId()
@@ -2465,5 +2507,10 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	public void setIdiomaDao(IdiomaDao idiomaDao)
 	{
 		this.idiomaDao = idiomaDao;
+	}
+
+	public void setComoFicouSabendoVagaDao(
+			ComoFicouSabendoVagaDao comoFicouSabendoVagaDao) {
+		this.comoFicouSabendoVagaDao = comoFicouSabendoVagaDao;
 	}
 }

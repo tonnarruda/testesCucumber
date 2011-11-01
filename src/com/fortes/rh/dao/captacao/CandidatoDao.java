@@ -15,6 +15,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
+import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 
 public interface CandidatoDao extends GenericDao<Candidato>
 {
@@ -52,4 +53,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public void updateExamePalografico(Candidato candidato);
 	public Collection<Candidato> triagemAutomatica(Solicitacao solicitacao, Integer tempoExperiencia, Map<String, Integer> pesos, Integer percentualMinimo);
 	public int findQtdCadastrados(Long empresaId, Date dataDe, Date dataAte);
+	public Collection<ComoFicouSabendoVaga> countComoFicouSabendoVagas(Long empresaId, Date dataIni, Date dataFim);
 }

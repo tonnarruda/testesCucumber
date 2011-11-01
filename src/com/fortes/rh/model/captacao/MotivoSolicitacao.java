@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
@@ -19,6 +20,9 @@ public class MotivoSolicitacao extends AbstractModel implements Serializable
     private String descricao;
     
     private boolean turnover;
+    
+    @Transient
+    private int qtdContratados;
 
 	public String getDescricao()
 	{
@@ -38,5 +42,13 @@ public class MotivoSolicitacao extends AbstractModel implements Serializable
 	public void setTurnover(boolean turnover) 
 	{
 		this.turnover = turnover;
+	}
+
+	public int getQtdContratados() {
+		return qtdContratados;
+	}
+
+	public void setQtdContratados(int qtdContratados) {
+		this.qtdContratados = qtdContratados;
 	}
 }

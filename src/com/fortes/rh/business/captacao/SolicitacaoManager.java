@@ -14,6 +14,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.relatorio.DataGrafico;
 
 public interface SolicitacaoManager extends GenericManager<Solicitacao>
 {
@@ -40,5 +41,7 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Solicitacao save(Solicitacao solicitacao, String[] emailsCheck);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
 	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim);
-	Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Date dataIni,	Date dataFim);
+	Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Date dataIni, Date dataFim);
+	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Date dataIni, Date dataFim);
+	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Date dataIni, Date dataFim);
 }
