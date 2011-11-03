@@ -99,8 +99,10 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	
 	private void enviaLembrete(Collection<Colaborador> colaboradores, Empresa empresa, Integer diaLembrete, Integer diasAvaliacao, Date dataAvaliacao) 
 	{
-		Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId(), "RECEBE_MSG_PERIODOEXPERIENCIA");		
 		Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperienciaGerencial = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId(), "GERENCIA_MSG_PERIODOEXPERIENCIA");		
+
+		Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId(), "RECEBE_MSG_PERIODOEXPERIENCIA");		
+		usuarioEmpresasPeriodoExperiencia.removeAll(usuarioEmpresasPeriodoExperienciaGerencial);
 		
 		String data = DateUtil.formataDiaMesAno(dataAvaliacao);
 		
