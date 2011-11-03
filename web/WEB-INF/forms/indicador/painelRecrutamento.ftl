@@ -124,9 +124,27 @@
 			<div style="height:300px; overflow:scroll; overflow-x: hidden;">
 		   		<@display.table name="indicadorDuracaoPreenchimentoVagas" id="indicador" class="dados" style="width: 945px;">
 					<@display.column property="cargo.nome" title="Cargo"/>
-					<@display.column property="qtdVagas" title="Vagas" style="width: 80px; text-align: right;"/>
-					<@display.column property="qtdCandidatos" title="Candidatos" style="width: 80px; text-align: right;"/>
-					<@display.column property="qtdContratados" title="Contratados" style="width: 80px; text-align: right;"/>
+					<@display.column title="Vagas" style="width: 80px; text-align: right;">
+						<#if indicador.qtdVagas?exists>
+							${indicador.qtdVagas}
+						<#else>
+							0
+						</#if>
+					</@display.column>
+					<@display.column title="Candidatos" style="width: 80px; text-align: right;">
+						<#if indicador.qtdCandidatos?exists>
+							${indicador.qtdCandidatos}
+						<#else>
+							0
+						</#if>
+					</@display.column>
+					<@display.column title="Contratados" style="width: 80px; text-align: right;">
+						<#if indicador.qtdContratados?exists>
+							${indicador.qtdContratados}
+						<#else>
+							0
+						</#if>
+					</@display.column>
 					<@display.column title="Média Dias" style="width: 80px; text-align: right;">
 						${indicador.mediaDias?string(",##0.#")}
 					</@display.column>
