@@ -18203,4 +18203,3 @@ update parametrosdosistema set appversao = '1.1.59.50';--.go
 update papel set nome = 'Faturamento Mensal' where id = 526;--.go
 insert into migrations values('20111020142332');--.go
 update parametrosdosistema set appversao = '1.1.59.51';--.go
-insert into migrations values('20111101152828');--.go
