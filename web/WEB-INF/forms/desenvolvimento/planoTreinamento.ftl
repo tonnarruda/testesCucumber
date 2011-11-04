@@ -1,5 +1,6 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -65,17 +66,12 @@
 		}
 		
 		
-		$(function(){
-			$('.btnEnviarEmail').click(function(){
-				var turmaId = $(this).attr('id').split('_')[1];
-				alert(turmaId); return false;
-			
-				DWRUtil.useLoadingMessage('Enviando...');
-			    DWREngine.setErrorHandler(errorMsg);
-			    TurmaDWR.enviarAviso(enviarAviso, turmaId);
-			});
-			
-		});
+		function enviarEmail(turmaId)
+		{
+			DWRUtil.useLoadingMessage('Enviando...');
+			DWREngine.setErrorHandler(errorMsg);
+			TurmaDWR.enviarAviso(enviarAviso, turmaId, <@authz.authentication operation="empresaId"/>);
+		}
 
 		function enviarAviso(data)
 		{
@@ -125,10 +121,10 @@
 	<#if turmas?exists && 0 < turmas?size >
 		<#assign totalParticipantes = 0/>
 		<#assign totalCustos = 0/>
-		<@display.table name="turmas" id="turma" class="dados" >
-			<@display.column title="Ações" media="html" class="acao">
+		<@display.table name="turmas" id="turma" class="dados">
+			<@display.column title="Ações" media="html" class="acao" style="width: 95px;">
 				<a href="prepareUpdate.action?turma.id=${turma.id}&planoTreinamento=true"><img border="0" title="<@ww.text name="list.edit.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-				<a href="javascript:;" id="btnEnviarEmail_${turma.id}" class="btnEnviarEmail"><img border="0" title="Enviar aviso por email" src="<@ww.url value="/imgs/icon_email.gif"/>"></a>
+				<a href="#" onclick="enviarEmail(${turma.id});" ><img border="0" title="Enviar aviso por email" src="<@ww.url value="/imgs/icon_email.gif"/>"></a>
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?turma.id=${turma.id}&planoTreinamento=true'});"><img border="0" title="<@ww.text name="list.del.hint"/> Turma" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 				<a href="../colaboradorTurma/list.action?turma.id=${turma.id}&planoTreinamento=true"><img border="0" title="Colaboradores Inscritos na Turma" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 
@@ -149,8 +145,8 @@
 			<@display.column property="horario" title="Horário" style="width: 90px;"/>
 			<@display.column property="instrutor" title="Instrutor" style="width: 100px;"/>
 			<@display.column property="curso.cargaHoraria" title="CH" style="width: 30px;"/>
-			<@display.column property="qtdPessoas" title="Participantes" style="width: 100px;" style="text-align:right;"/>
-			<@display.column property="custoFormatado" title="Investimento" style="width: 80px;" style="text-align:right;"/>
+			<@display.column property="qtdPessoas" title="Partic." style="width: 100px;" style="text-align:right;"/>
+			<@display.column property="custoFormatado" title="Invest." style="width: 80px;" style="text-align:right;"/>
 
 			<@display.footer>
 		  		<tr>
