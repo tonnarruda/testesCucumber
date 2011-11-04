@@ -57,7 +57,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			AvaliacaoDesempenho avaliacaoDesempenhoClone = (AvaliacaoDesempenho) avaliacaoDesempenho.clone();
 			
 			// se for para outra empresa o modelo deve ser clonado
-			if (empresaId != avaliacaoDesempenhoClone.getAvaliacao().getEmpresa().getId())
+			if (!empresaId.equals(avaliacaoDesempenhoClone.getAvaliacao().getEmpresa().getId()))
 			{
 				Empresa empresa = new Empresa();
 				empresa.setId(empresaId);
