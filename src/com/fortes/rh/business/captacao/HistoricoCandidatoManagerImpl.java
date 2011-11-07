@@ -107,6 +107,11 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 		return getDao().findByPeriodo(parametros);
 	}
 
+	public int findQtdAtendidos(Long empresaId, Date dataIni, Date dataFim)
+	{
+		return getDao().findQtdAtendidos(empresaId, dataIni, dataFim);
+	}
+
 	public Collection<ProdutividadeRelatorio> getProdutividade(String ano, Long empresaId)
 	{
 		Collection<ProdutividadeRelatorio> resultado = new ArrayList<ProdutividadeRelatorio>();

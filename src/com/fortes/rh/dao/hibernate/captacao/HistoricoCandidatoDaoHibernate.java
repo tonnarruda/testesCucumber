@@ -135,6 +135,25 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 
 		return criteria.list();
 	}
+	
+	public int findQtdAtendidos(Long empresaId, Date dataDe, Date dataAte) 
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
+		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
+		criteria.createCriteria("cs.candidato", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.countDistinct("cs.candidato.id"));
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.between("hc.data", dataDe, dataAte));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
+		return (Integer) criteria.uniqueResult();
+	}
 
 	public Collection<HistoricoCandidato> findQtdParticipantes(String ano, Long cargoId, Long[] etapaIds)
 	{	

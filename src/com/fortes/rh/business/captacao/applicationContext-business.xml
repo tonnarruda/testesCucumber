@@ -48,6 +48,9 @@
     <property name="estadoManager">
       <ref bean="estadoManager" />
     </property>
+    <property name="historicoCandidatoManager">
+      <ref bean="historicoCandidatoManager" />
+    </property>
   </bean>
   <bean id="candidatoManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -111,41 +111,41 @@
 			<h1>Indicadores de R&S</h1>
 	    	<div id="indicadores" class="graph">
 	    		<ul>
-	    			<li>Nº de Currículos Recebidos/Cadastrados:	</li>
-	    			<li>Nº de Candidatos Atendidos:	</li>
-	    			<li>Nº de Vagas Preenchidas:	</li>
-	    			<li>Nº de Candidatos Atendidos p/ Preenchimento de uma Vaga:	</li>
+	    			<li>Nº de Currículos Recebidos/Cadastrados:	${qtdCandidatosCadastrados}</li>
+	    			<li>Nº de Candidatos Atendidos:	${qtdCandidatosAtendidos}</li>
+	    			<li>Nº de Vagas Preenchidas: ${qtdVagasPreenchidas}</li>
+	    			<li>Nº de Candidatos Atendidos p/ Preench. de uma Vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
 	    		</ul>
 	    	</div>
 	    </div>
 	    
 		<div class="fieldGraph bigger">
-			<h1>Duração para Preenchimento de Vaga</h1>
+			<h1>Estatística de Preenchimento de Vaga</h1>
 			<div style="height:300px; overflow:scroll; overflow-x: hidden;">
 		   		<@display.table name="indicadorDuracaoPreenchimentoVagas" id="indicador" class="dados" style="width: 945px;">
 					<@display.column property="cargo.nome" title="Cargo"/>
-					<@display.column title="Vagas" style="width: 80px; text-align: right;">
+					<@display.column title="Vagas Disponíveis" style="width: 120px; text-align: right;">
 						<#if indicador.qtdVagas?exists>
 							${indicador.qtdVagas}
 						<#else>
 							0
 						</#if>
 					</@display.column>
-					<@display.column title="Candidatos" style="width: 80px; text-align: right;">
+					<@display.column title="Candidatos Atendidos" style="width: 135px; text-align: right;">
 						<#if indicador.qtdCandidatos?exists>
 							${indicador.qtdCandidatos}
 						<#else>
 							0
 						</#if>
 					</@display.column>
-					<@display.column title="Contratados" style="width: 80px; text-align: right;">
+					<@display.column title="Vagas Preenchidas" style="width: 125px; text-align: right;">
 						<#if indicador.qtdContratados?exists>
 							${indicador.qtdContratados}
 						<#else>
 							0
 						</#if>
 					</@display.column>
-					<@display.column title="Média Dias" style="width: 80px; text-align: right;">
+					<@display.column title="Média de Dias" style="width: 95px; text-align: right;">
 						${indicador.mediaDias?string(",##0.#")}
 					</@display.column>
 				</@display.table>

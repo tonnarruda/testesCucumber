@@ -30,4 +30,6 @@ public interface HistoricoCandidatoDao extends GenericDao<HistoricoCandidato>
 	boolean updateAgenda(Long id, Date data, String horaIni, String horaFim, String observacao);
 
 	Collection<HistoricoCandidato> getEventos(String responsavel, Long empresaId,  Date dataIni, Date dataFim);
+	
+	int findQtdAtendidos(Long empresaId, Date dataDe, Date dataAte);
 }
