@@ -165,7 +165,7 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 
 		ExtintorManutencao retorno = (ExtintorManutencao) extintorManutencaoVencidas.toArray()[0];
 		assertEquals(DateUtil.formataDiaMesAno(dataDaRecarga), DateUtil.formataDiaMesAno(retorno.getSaida()));
-		assertEquals(DateUtil.formataDiaMesAno(DateUtil.criarDataMesAno(9, 06, 2009)), DateUtil.formataDiaMesAno(retorno.getVencimento()));
+		assertEquals(DateUtil.formataDiaMesAno(DateUtil.criarDataMesAno(10, 06, 2009)), DateUtil.formataDiaMesAno(retorno.getVencimento()));
 	}
 	
 	public void testFindManutencaoTesteHidrostaticoVencidas()
@@ -198,7 +198,7 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 		
 		ExtintorManutencao retorno = (ExtintorManutencao) extintorManutencaoVencidas.toArray()[0];
 		assertEquals(DateUtil.formataDiaMesAno(dataDaRecarga), DateUtil.formataDiaMesAno(retorno.getSaida()));
-		assertEquals(DateUtil.formataDiaMesAno(DateUtil.criarDataMesAno(9, 06, 2009)), DateUtil.formataDiaMesAno(retorno.getVencimento()));
+		assertEquals(DateUtil.formataDiaMesAno(DateUtil.criarDataMesAno(10, 06, 2009)), DateUtil.formataDiaMesAno(retorno.getVencimento()));
 	}
 	
 	public void testFindManutencaoVencidasVerificaDatas()
