@@ -1,11 +1,14 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
@@ -20,9 +23,6 @@ import com.fortes.security.auditoria.NaoAudita;
 @SequenceGenerator(name="sequence", sequenceName="extintor_sequence", allocationSize=1)
 public class Extintor extends AbstractModel implements Serializable
 {
-	@Column(length=50)
-	private String localizacao;
-
 	@Column(length=1)
 	private String tipo;
 
@@ -38,6 +38,12 @@ public class Extintor extends AbstractModel implements Serializable
 	private Integer periodoMaxInspecao;
 	private Integer periodoMaxHidrostatico;
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="extintor", cascade=CascadeType.ALL)
+	private Collection<HistoricoExtintor> historicoExtintores;
+	
+	@Transient
+	private HistoricoExtintor historicoExtintor;
+
 	@Transient
 	private String descricao;
 
@@ -45,21 +51,12 @@ public class Extintor extends AbstractModel implements Serializable
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Empresa empresa;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	private Estabelecimento estabelecimento;
 	
 	public Extintor()
 	{
 		super();
 	}
 
-	public Extintor(Estabelecimento estabelecimento)
-	{
-		super();
-		this.setEstabelecimento(estabelecimento);
-	}
-	
 	// usado apenas pelo ExtintorDWR para preencher uma descrição
 	public Extintor(String descricao)
 	{
@@ -84,7 +81,7 @@ public class Extintor extends AbstractModel implements Serializable
 		if (this.descricao != null)
 			return this.descricao;
 		
-		String descricao = getTipoDicAbreviado() + " - " + localizacao;
+		String descricao = getTipoDicAbreviado();
 		
 		if (numeroCilindro != null)
 			descricao += " - " + numeroCilindro;
@@ -109,6 +106,25 @@ public class Extintor extends AbstractModel implements Serializable
 		if (this.empresa == null)
 			this.empresa = new Empresa();
 		this.empresa.setId(empresaIdProjection);
+	}
+
+	public void setLocalizacaoProjection(String localizacao)
+	{
+		if (this.historicoExtintor == null)
+			this.historicoExtintor = new HistoricoExtintor();
+		
+		this.historicoExtintor.setLocalizacao(localizacao);
+	}
+
+	public void setEstabelecimentoIdProjection(Long estabelecimentoId)
+	{
+		if (this.historicoExtintor == null)
+			this.historicoExtintor = new HistoricoExtintor();
+		
+		if (this.historicoExtintor.getEstabelecimento() == null)
+			this.historicoExtintor.setEstabelecimento(new Estabelecimento());
+					
+		this.historicoExtintor.getEstabelecimento().setId(estabelecimentoId);
 	}
 
 	public boolean isAtivo()
@@ -141,16 +157,6 @@ public class Extintor extends AbstractModel implements Serializable
 		this.empresa = empresa;
 	}
 
-	public Estabelecimento getEstabelecimento()
-	{
-		return estabelecimento;
-	}
-
-	public void setEstabelecimento(Estabelecimento estabelecimento)
-	{
-		this.estabelecimento = estabelecimento;
-	}
-
 	public String getFabricante()
 	{
 		return fabricante;
@@ -159,16 +165,6 @@ public class Extintor extends AbstractModel implements Serializable
 	public void setFabricante(String fabricante)
 	{
 		this.fabricante = fabricante;
-	}
-
-	public String getLocalizacao()
-	{
-		return localizacao;
-	}
-
-	public void setLocalizacao(String localizacao)
-	{
-		this.localizacao = localizacao;
 	}
 
 	public Integer getNumeroCilindro()
@@ -219,5 +215,22 @@ public class Extintor extends AbstractModel implements Serializable
 	public void setTipo(String tipo)
 	{
 		this.tipo = tipo;
+	}
+
+	public Collection<HistoricoExtintor> getHistoricoExtintores() {
+		return historicoExtintores;
+	}
+
+	public void setHistoricoExtintores(
+			Collection<HistoricoExtintor> historicoExtintores) {
+		this.historicoExtintores = historicoExtintores;
+	}
+
+	public HistoricoExtintor getHistoricoExtintor() {
+		return historicoExtintor;
+	}
+
+	public void setHistoricoExtintor(HistoricoExtintor historicoExtintor) {
+		this.historicoExtintor = historicoExtintor;
 	}
 }

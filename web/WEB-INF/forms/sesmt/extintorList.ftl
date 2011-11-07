@@ -42,7 +42,7 @@
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?extintor.id=${extintor.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="descricao" title="Descrição" style="width:170px;"/>
-		<@display.column property="localizacao" title="Localização" style="width:140px;"/>
+		<@display.column property="historicoExtintor.localizacao" title="Localização" style="width:140px;"/>
 		<@display.column property="numeroCilindro" title="Cilindro" style="width:10px;"/>
 		<@display.column property="tipoDic" title="Tipo" style="width:160px;"/>
 	</@display.table>

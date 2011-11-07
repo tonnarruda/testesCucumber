@@ -68,7 +68,7 @@ public class ExtintorDaoHibernateTest extends GenericDaoHibernateTest<Extintor>
 		Extintor extintor = ExtintorFactory.getEntity();
 		extintor.setEmpresa(empresa);
 		extintor.setNumeroCilindro(555);
-		extintor.setLocalizacao("Sala do SESMT");
+//		extintor.setLocalizacao("Sala do SESMT");
 		extintor.setTipo(TipoExtintor.AGUA_GAS);
 		extintor.setAtivo(true);
 		extintorDao.save(extintor);
@@ -76,7 +76,7 @@ public class ExtintorDaoHibernateTest extends GenericDaoHibernateTest<Extintor>
 		Extintor extintor2 = ExtintorFactory.getEntity();
 		extintor2.setEmpresa(empresa);
 		extintor2.setNumeroCilindro(1243);
-		extintor2.setLocalizacao("Administração");
+//		extintor2.setLocalizacao("Administração");
 		extintor2.setTipo(TipoExtintor.AGUA_GAS);
 		extintor2.setAtivo(true);
 		extintorDao.save(extintor2);
@@ -84,7 +84,7 @@ public class ExtintorDaoHibernateTest extends GenericDaoHibernateTest<Extintor>
 		Extintor extintor3 = ExtintorFactory.getEntity();
 		extintor3.setEmpresa(empresa);
 		extintor3.setNumeroCilindro(111);
-		extintor3.setLocalizacao("Recepção");
+//		extintor3.setLocalizacao("Recepção");
 		extintor3.setTipo(TipoExtintor.AGUA_GAS);
 		extintor3.setAtivo(true);
 		extintorDao.save(extintor3);

@@ -126,6 +126,7 @@
     <mapping class="com.fortes.rh.model.sesmt.Afastamento" />
     <mapping class="com.fortes.rh.model.sesmt.ColaboradorAfastamento" />
     <mapping class="com.fortes.rh.model.sesmt.Extintor" />
+    <mapping class="com.fortes.rh.model.sesmt.HistoricoExtintor" />
     <mapping class="com.fortes.rh.model.sesmt.ExtintorInspecao" />
     <mapping class="com.fortes.rh.model.sesmt.ExtintorInspecaoItem" />
     <mapping class="com.fortes.rh.model.sesmt.ExtintorManutencao" />
