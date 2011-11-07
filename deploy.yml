@@ -30,7 +30,7 @@ rhcomercial_informatica:
   fortes_home_properties: name=FORTES_HOME_COMERCIAL
   app_name: fortesrhcomercial
   db_name: fortesrhcomercial
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_58_49/fortesrh.war
+  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_59_51/fortesrh.war
   environment:
     FORTES_HOME_COMERCIAL: /home/fortes/rhcomercial
     JRE_HOME: /usr
@@ -42,7 +42,7 @@ rhoficial_informatica:
   tomcat_home: /usr/local/apache-tomcat-6.0.26
   app_name: fortesrh
   db_name: fortesrh
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_57_48/fortesrh.war
+  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_59_51/fortesrh.war
   environment:
     FORTES_HOME: /home/fortes
     JRE_HOME: /usr	
