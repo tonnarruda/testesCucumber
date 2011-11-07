@@ -38,6 +38,9 @@
 	<variable name="totalQtd" class="java.lang.Integer" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{qtd}]]></variableExpression>
 	</variable>
+	<variable name="totalPercentual" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{percentual}]]></variableExpression>
+	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -90,7 +93,7 @@
 					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Quantidade]]></text>
+				<text><![CDATA[Quantidade*]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -208,7 +211,7 @@
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="401"
+						x="399"
 						y="3"
 						width="65"
 						height="11"
@@ -217,21 +220,8 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{totalQtd}.toString() + "*"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{totalQtd}.toString()]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="468"
-						y="3"
-						width="68"
-						height="11"
-						key="staticText-11"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica" size="8" isBold="false"/>
-					</textElement>
-				<text><![CDATA[100,00 %]]></text>
-				</staticText>
 				<staticText>
 					<reportElement
 						x="6"
@@ -244,6 +234,36 @@
 						<font pdfFontName="Helvetica" size="6" isBold="false"/>
 					</textElement>
 				<text><![CDATA[*OBS: Foram considerados apenas os candidatos que responderam o campo "Como Ficou Sabendo da Vaga"]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="470"
+						y="3"
+						width="66"
+						height="11"
+						key="staticText-13">
+							<printWhenExpression><![CDATA[new Boolean($V{totalPercentual}.doubleValue()!=0.0)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[100,00 %]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="470"
+						y="3"
+						width="66"
+						height="11"
+						key="staticText-14">
+							<printWhenExpression><![CDATA[new Boolean($V{totalPercentual}.doubleValue()==0.0)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[0,00 %]]></text>
 				</staticText>
 			</band>
 		</summary>
