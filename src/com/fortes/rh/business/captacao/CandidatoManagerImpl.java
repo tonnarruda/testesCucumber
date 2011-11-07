@@ -82,6 +82,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, CandidatoDao> implements CandidatoManager
 {
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private HistoricoCandidatoManager historicoCandidatoManager;
 	private AnuncioManager anuncioManager;
 	private Mail mail;
 	private FormacaoManager formacaoManager;
@@ -1279,14 +1280,6 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   	
 	}
 
-	public void setEstadoManager(EstadoManager estadoManager) {
-		this.estadoManager = estadoManager;
-	}
-
-	public void setCidadeManager(CidadeManager cidadeManager) {
-		this.cidadeManager = cidadeManager;
-	}
-
 	public void habilitaByColaborador(Long colaboradorId) 
 	{
 		getDao().updateDisponivelAndContratadoByColaborador(true, false, colaboradorId);
@@ -1384,5 +1377,21 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			graficoDivulgacaoVaga.add(new DataGrafico(null, vaga.getNome(), vaga.getQtd(), ""));
 		
 		return graficoDivulgacaoVaga;
+	}
+
+	public int findQtdAtendidos(Long empresaId, Date dataIni, Date dataFim) {
+		return historicoCandidatoManager.findQtdAtendidos(empresaId, dataIni, dataFim);
+	}
+	
+	public void setEstadoManager(EstadoManager estadoManager) {
+		this.estadoManager = estadoManager;
+	}
+
+	public void setCidadeManager(CidadeManager cidadeManager) {
+		this.cidadeManager = cidadeManager;
+	}
+	
+	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager) {
+		this.historicoCandidatoManager = historicoCandidatoManager;
 	}
 }

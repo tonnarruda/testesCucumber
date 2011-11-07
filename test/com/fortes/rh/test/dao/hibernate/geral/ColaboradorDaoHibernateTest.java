@@ -63,7 +63,6 @@ import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
-import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
@@ -76,7 +75,6 @@ import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
-import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
@@ -112,7 +110,6 @@ import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
-import com.fortes.rh.test.factory.geral.MensagemFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
@@ -3944,6 +3941,38 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(hoje, colabJoao.getDataAdmissao());
 	}
 
+	public void testFindQtdVagasPreenchidas() {
+		
+		Date hoje = DateUtil.criarDataMesAno(29, 8, 2011);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+		
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setDataAdmissao(hoje);
+		pedro.setSolicitacao(solicitacao);
+		pedro.setEmpresa(empresa);
+		colaboradorDao.save(pedro);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setDataAdmissao(hoje);
+		maria.setSolicitacao(solicitacao);
+		maria.setEmpresa(empresa);
+		colaboradorDao.save(maria);
+		
+		Colaborador jose = ColaboradorFactory.getEntity();
+		jose.setDataAdmissao(hoje);
+		jose.setEmpresa(empresa);
+		colaboradorDao.save(jose);
+		
+		int qtd = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), hoje, hoje);
+		
+		assertEquals(2, qtd);
+	}
+	
 	private HistoricoColaborador inicializaHistorico(Date data, Colaborador colaborador, FaixaSalarial faixaSalarial) 
 	{
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();

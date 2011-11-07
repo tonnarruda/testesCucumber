@@ -77,4 +77,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	Collection<Candidato> triagemAutomatica(Solicitacao solicitacao, Integer tempoExperiencia, Map<String, Integer> pesos, Integer percentualMinimo);
 	public int findQtdCadastrados(Long empresaId, Date dataDe, Date dataAte);
 	public Collection<DataGrafico> countComoFicouSabendoVagas(Long empresaId, Date dataIni, Date dataFim);
+	public int findQtdAtendidos(Long empresaId, Date dataIni, Date dataFim);
 }

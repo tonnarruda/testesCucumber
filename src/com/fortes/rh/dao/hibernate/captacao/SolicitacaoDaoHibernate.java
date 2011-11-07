@@ -575,7 +575,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.between("s.data", dataIni, dataFim));
+		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
 		criteria.addOrder(Order.desc("qtdContratados"));
@@ -599,7 +599,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.between("s.data", dataIni, dataFim));
+		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
 		criteria.addOrder(Order.desc("qtdContratados"));
@@ -623,7 +623,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.between("s.data", dataIni, dataFim));
+		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
 		criteria.addOrder(Order.desc("qtdContratados"));

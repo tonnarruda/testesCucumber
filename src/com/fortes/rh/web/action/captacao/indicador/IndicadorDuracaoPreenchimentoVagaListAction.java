@@ -10,6 +10,7 @@ import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -36,6 +37,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga;
 	private SolicitacaoManager solicitacaoManager;
 	private CandidatoManager candidatoManager;
+	private ColaboradorManager colaboradorManager;
 
 	private Date dataDe;
 	private Date dataAte;
@@ -56,6 +58,9 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private String reportFilter;
 	private String reportTitle;
 	private int qtdCandidatosCadastrados;
+	private int qtdCandidatosAtendidos;
+	private int qtdVagasPreenchidas;
+	private double qtdCandidatosAtendidosPorVaga;
 	
 	private char statusSolicitacao;
 
@@ -63,6 +68,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private String grfContratadosArea = "";
 	private String grfContratadosMotivo = "";
 	private String grfDivulgacaoVaga = "";
+
 	
 	public String painel() throws Exception
 	{
@@ -74,6 +80,9 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		
 		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), dataDe, dataAte);
 		qtdCandidatosCadastrados = candidatoManager.findQtdCadastrados(getEmpresaSistema().getId(), dataDe, dataAte);
+		qtdCandidatosAtendidos = candidatoManager.findQtdAtendidos(getEmpresaSistema().getId(), dataDe, dataAte);
+		qtdVagasPreenchidas = colaboradorManager.findQtdVagasPreenchidas(getEmpresaSistema().getId(), dataDe, dataAte);
+		qtdCandidatosAtendidosPorVaga = (qtdVagasPreenchidas > 0) ? (double)qtdCandidatosAtendidos/qtdVagasPreenchidas : 0; 
 		
 		try {
 			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, null, null, getEmpresaSistema().getId());
@@ -346,5 +355,21 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	public String getGrfDivulgacaoVaga() {
 		return grfDivulgacaoVaga;
+	}
+
+	public int getQtdCandidatosAtendidos() {
+		return qtdCandidatosAtendidos;
+	}
+
+	public int getQtdVagasPreenchidas() {
+		return qtdVagasPreenchidas;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
+	}
+
+	public double getQtdCandidatosAtendidosPorVaga() {
+		return qtdCandidatosAtendidosPorVaga;
 	}
 }

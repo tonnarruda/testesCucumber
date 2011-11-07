@@ -170,4 +170,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void enviaEmailAniversariantes() throws Exception;
 	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao);
 	public Collection<CartaoAcompanhamentoExperienciaVO> montaCartoesPeriodoExperiencia(Long[] colaboradoresIds, Long[] dias, String observacao) throws Exception;
+	public int findQtdVagasPreenchidas(Long empresaId, Date dataIni, Date dataFim);
 }
