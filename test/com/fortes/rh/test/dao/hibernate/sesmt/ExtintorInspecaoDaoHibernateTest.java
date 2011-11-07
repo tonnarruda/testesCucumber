@@ -234,7 +234,7 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 
 		ExtintorInspecao retorno = (ExtintorInspecao) extintorInspecaos.toArray()[0];
 		assertEquals(DateUtil.formataDiaMesAno(dataDaInspecao), DateUtil.formataDiaMesAno(retorno.getData()));
-		assertEquals(DateUtil.formataDiaMesAno(DateUtil.criarDataMesAno(9, 06, 2009)), DateUtil.formataDiaMesAno(retorno.getVencimento()));
+		assertEquals(DateUtil.formataDiaMesAno(DateUtil.criarDataMesAno(10, 06, 2009)), DateUtil.formataDiaMesAno(retorno.getVencimento()));
 	}
 	
 	public void testFindInspecoesVencidasVerificaDatas()

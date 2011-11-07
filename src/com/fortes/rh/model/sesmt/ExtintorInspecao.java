@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -50,12 +51,13 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 	private Collection<ExtintorInspecaoItem> itens;
 
 	
-	public ExtintorInspecao(Long id, Date data, Date vencimento, String localizacao, Integer numeroCilindro, String tipo)
+	public ExtintorInspecao(Long id, Date data, Integer periodoMax, String localizacao, Integer numeroCilindro, String tipo)
 	{
 		super();
 		this.setId(id);
 		this.data = data;
-		this.vencimento = vencimento;
+		if(periodoMax != null)
+			this.vencimento = DateUtil.incrementaMes(data, periodoMax);
 		
 		if(this.extintor == null)
 			this.extintor = new Extintor();

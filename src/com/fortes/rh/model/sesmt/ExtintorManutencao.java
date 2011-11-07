@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -50,12 +51,13 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 	@Transient
 	private String servicosRelatorio;
 
-	public ExtintorManutencao(Long id, Date saida, Date vencimento, String localizacao, Integer numeroCilindro, String tipo)
+	public ExtintorManutencao(Long id, Date saida, Integer periodoMax, String localizacao, Integer numeroCilindro, String tipo)
 	{
 		super();
 		this.setId(id);
 		this.saida = saida;
-		this.vencimento = vencimento;
+		if(periodoMax != null)
+			this.vencimento = DateUtil.incrementaMes(saida, periodoMax);
 		
 		if(this.extintor == null)
 			this.extintor = new Extintor();
