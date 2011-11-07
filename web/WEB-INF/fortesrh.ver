@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.60.52" data="07/11/2011">
+		- TeD > Cadastros > Cursos/Treinamentos > Turmas: Enviar aviso por email.
+		- Ao cancelar o desligamento do colaborador, a mensagem de aviso de desligamento será removida da caixa de mensagem. 
+	</Versao>
 	<Versao id="1.1.59.51" data="27/10/2011">
 		- SESMT > Movimentações > Extintores > Inspeção e Manutenção: Nova coluna [Observação] na listagem e ajuste no relatório da listagem.
 		- SESMT > Cadastros > Extintores > Alteração do [Tipo] PQS Pó Químico Seco (Classes A,B e C) por ABC/PQS Pó Químico Seco (Classes A,B e C)
