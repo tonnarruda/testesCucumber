@@ -15,10 +15,12 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.model.sesmt.ExtintorManutencaoServico;
+import com.fortes.rh.model.sesmt.HistoricoExtintor;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorManutencaoFactory;
+import com.fortes.rh.test.factory.sesmt.HistoricoExtintorFactory;
 import com.fortes.rh.web.action.sesmt.ExtintorManutencaoEditAction;
 
 public class ExtintorManutencaoEditActionTest extends MockObjectTestCase
@@ -90,10 +92,18 @@ public class ExtintorManutencaoEditActionTest extends MockObjectTestCase
 
 	public void testPrepareUpdate() throws Exception
 	{
-		ExtintorManutencao extintorManutencao = ExtintorManutencaoFactory.getEntity(1L);
 		Extintor extintor = ExtintorFactory.getEntity(1L);
-		extintor.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+
+		HistoricoExtintor historico = HistoricoExtintorFactory.getEntity();
+		historico.setExtintor(extintor);
+		historico.setEstabelecimento(estabelecimento);
+		
+		extintor.setHistoricoExtintor(historico);
+		
+		ExtintorManutencao extintorManutencao = ExtintorManutencaoFactory.getEntity(1L);
 		extintorManutencao.setExtintor(extintor);
+		
 		action.setExtintorManutencao(extintorManutencao);
 
 		extintorManutencaoServicoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<ExtintorManutencaoServico>()));
@@ -141,10 +151,18 @@ public class ExtintorManutencaoEditActionTest extends MockObjectTestCase
 
 	public void testUpdateException() throws Exception
 	{
-		ExtintorManutencao extintorManutencao = ExtintorManutencaoFactory.getEntity(1L);
 		Extintor extintor = ExtintorFactory.getEntity(1L);
-		extintor.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+
+		HistoricoExtintor historico = HistoricoExtintorFactory.getEntity();
+		historico.setExtintor(extintor);
+		historico.setEstabelecimento(estabelecimento);
+		
+		extintor.setHistoricoExtintor(historico);
+		
+		ExtintorManutencao extintorManutencao = ExtintorManutencaoFactory.getEntity(1L);
 		extintorManutencao.setExtintor(extintor);
+		
 		action.setExtintorManutencao(extintorManutencao);
 
 		manager.expects(once()).method("saveOrUpdate").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));

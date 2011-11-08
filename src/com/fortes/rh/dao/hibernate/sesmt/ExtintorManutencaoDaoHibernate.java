@@ -6,14 +6,18 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorManutencaoDao;
 import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
+import com.fortes.rh.model.sesmt.HistoricoExtintor;
 
 @SuppressWarnings("unchecked")
 public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<ExtintorManutencao> implements ExtintorManutencaoDao
@@ -40,27 +44,34 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 
 	private Criteria montaConsultaFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno, String localizacao)
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "manutencao");
-		criteria.createCriteria("manutencao.extintor", "extintor");
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "m");
+		criteria.createCriteria("m.extintor", "e");
+		criteria.createCriteria("e.historicoExtintores", "he");
+		
+		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
+													.setProjection( Projections.max("data") )
+													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
 
 		if (isCount)
 			criteria.setProjection(Projections.rowCount());
 		else
 		{
-			criteria.setFetchMode("extintor", FetchMode.JOIN);
-			criteria.addOrder(Order.asc("manutencao.saida"));
+			criteria.setFetchMode("e", FetchMode.JOIN);
+			criteria.addOrder(Order.asc("m.saida"));
 		}
 
-		criteria.add(Expression.eq("extintor.empresa.id", empresaId));
+		criteria.add( Property.forName("he.data").eq(maxData) );
+		
+		criteria.add(Expression.eq("e.empresa.id", empresaId));
 
 		if (estabelecimentoId != null)
-			criteria.add(Expression.eq("extintor.estabelecimento.id", estabelecimentoId));
+			criteria.add(Expression.eq("he.estabelecimento.id", estabelecimentoId));
 
 		if (extintorId != null)
-			criteria.add(Expression.eq("extintor.id", extintorId));
+			criteria.add(Expression.eq("e.id", extintorId));
 		
 		if (localizacao != null)
-			criteria.add(Expression.like("extintor.localizacao", "%" + localizacao + "%").ignoreCase());
+			criteria.add(Expression.like("he.localizacao", "%" + localizacao + "%").ignoreCase());
 
 		if (inicio != null)
 		{
@@ -88,21 +99,28 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 		}
 		
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ExtintorManutencao(em.id, em.saida, e. " + periodoMax + ", e.localizacao, e.numeroCilindro, e.tipo) ");
+		hql.append("select new ExtintorManutencao(em.id, em.saida, e. " + periodoMax + ", he.localizacao, e.numeroCilindro, e.tipo) ");
 
 		hql.append("from ExtintorManutencao as em ");
 		hql.append("left join em.extintor as e ");
-		hql.append("where e.estabelecimento.id = :estabelecimentoId ");
+		hql.append("inner join e.historicoExtintores as he ");
+		hql.append("where he.estabelecimento.id = :estabelecimentoId ");
 		hql.append("and e.ativo = true ");
 		hql.append("and (:vencimento - em.saida) >= (e. " + periodoMax + " * 30) ");
 		hql.append("and em.servicos.id = :manutencaoServicoVencidoId ");
+		
 		hql.append("and em.saida = (select max(em2.saida) ");
 		hql.append("                 from ExtintorManutencao as em2 ");
 		hql.append("                 where em2.extintor.id = e.id ");
 		hql.append("                 and em2.servicos.id = :manutencaoServicoVencidoId ");
 		hql.append("                  ) ");
+
+		hql.append("and he.data = (select max(he2.data) ");
+		hql.append("                 from HistoricoExtintor as he2 ");
+		hql.append("                 where he2.extintor.id = e.id ");
+		hql.append("                  ) ");
 		
-		hql.append("order by e.localizacao, (em.saida + (e. " + periodoMax + " * 30)) ");
+		hql.append("order by he.localizacao, (em.saida + (e. " + periodoMax + " * 30)) ");
 
 		Query query = getSession().createQuery(hql.toString());
 

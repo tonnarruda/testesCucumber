@@ -8,7 +8,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	<@ww.head/>
 	<#if historicoAmbiente.id?exists>
-		<title>Editar de Histórico Ambiente - ${ambiente.nome}</title>
+		<title>Edição de Histórico de Ambiente - ${ambiente.nome}</title>
 		<#assign formAction="update.action"/>
 		<#assign accessKey="A"/>
 	<#else>

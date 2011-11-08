@@ -673,6 +673,19 @@
       <ref bean="extintorManagerTarget" />
     </property>
   </bean>
+  <bean id="historicoExtintorManagerTarget" class="com.fortes.rh.business.sesmt.HistoricoExtintorManagerImpl">
+    <property name="dao">
+      <ref bean="historicoExtintorDao" />
+    </property>
+  </bean>
+  <bean id="historicoExtintorManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.HistoricoExtintorManager</value>
+    </property>
+    <property name="target">
+      <ref bean="historicoExtintorManagerTarget" />
+    </property>
+  </bean>
   <bean id="extintorInspecaoManagerTarget" class="com.fortes.rh.business.sesmt.ExtintorInspecaoManagerImpl">
     <property name="dao">
       <ref bean="extintorInspecaoDao" />

@@ -12,13 +12,17 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
 import com.fortes.rh.business.sesmt.ExtintorManutencaoManager;
+import com.fortes.rh.business.sesmt.HistoricoExtintorManager;
 import com.fortes.rh.model.dicionario.TipoExtintor;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
+import com.fortes.rh.model.sesmt.HistoricoExtintor;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorInspecaoFactory;
+import com.fortes.rh.test.factory.sesmt.HistoricoExtintorFactory;
 import com.fortes.rh.web.action.sesmt.ExtintorEditAction;
 
 public class ExtintorEditActionTest extends MockObjectTestCase
@@ -28,6 +32,7 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 	private Mock estabelecimentoManager;
 	private Mock extintorInspecaoManager;
 	private Mock extintorManutencaoManager;
+	private Mock historicoExtintorManager;
 	
 	protected void setUp() throws Exception
 	{
@@ -44,6 +49,9 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		
 		extintorManutencaoManager = new Mock(ExtintorManutencaoManager.class);
 		action.setExtintorManutencaoManager((ExtintorManutencaoManager) extintorManutencaoManager.proxy());
+
+		historicoExtintorManager = new Mock(HistoricoExtintorManager.class);
+		action.setHistoricoExtintorManager((HistoricoExtintorManager) historicoExtintorManager.proxy());
 
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		action.setExtintor(new Extintor());
@@ -82,6 +90,7 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
 		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
 		manager.expects(once()).method("findById").with(eq(extintor.getId())).will(returnValue(extintor));
+		historicoExtintorManager.expects(once()).method("findByExtintor").with(eq(extintor.getId())).will(returnValue(new ArrayList<HistoricoExtintor>()));
 
 		assertEquals("success", action.prepare());
 		assertNotNull(action.getEstabelecimentos());
@@ -93,7 +102,14 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		action.setExtintor(extintor);
 		action.setAtivo('S');
 
+		HistoricoExtintor historico = HistoricoExtintorFactory.getEntity();
+		historico.setExtintor(extintor);
+		historico.setLocalizacao("Loc");
+		historico.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		action.setHistoricoExtintor(historico);
+		
 		manager.expects(once()).method("save").with(eq(extintor)).will(returnValue(extintor));
+		historicoExtintorManager.expects(once()).method("save").with(eq(historico));
 
 		assertEquals("success", action.insert());
 	}
@@ -111,9 +127,16 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		action.setExtintorInspecao(extintorInspecao);
 		action.setDataHidro(hoje);
 		
+		HistoricoExtintor historico = HistoricoExtintorFactory.getEntity();
+		historico.setExtintor(extintor);
+		historico.setLocalizacao("Loc");
+		historico.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		action.setHistoricoExtintor(historico);
+		
 		extintorInspecaoManager.expects(once()).method("saveOrUpdate").with(ANYTHING, ANYTHING);
 		extintorManutencaoManager.expects(once()).method("save").with(ANYTHING, ANYTHING);
 		manager.expects(once()).method("save").with(eq(extintor)).will(returnValue(extintor));
+		historicoExtintorManager.expects(once()).method("save").with(eq(historico));
 		
 		assertEquals("success", action.insert());
 	}
@@ -144,6 +167,7 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("getFabricantes").with(ANYTHING).will(returnValue("extint"));
 		manager.expects(once()).method("getLocalizacoes").with(ANYTHING).will(returnValue("extint"));
 		manager.expects(once()).method("findById").with(eq(extintor.getId())).will(returnValue(extintor));
+		historicoExtintorManager.expects(once()).method("findByExtintor").with(eq(extintor.getId())).will(returnValue(new ArrayList<HistoricoExtintor>()));
 
 		assertEquals("input", action.update());
 	}

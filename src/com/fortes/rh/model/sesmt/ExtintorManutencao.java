@@ -62,7 +62,7 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 		if(this.extintor == null)
 			this.extintor = new Extintor();
 		
-		this.extintor.setLocalizacao(localizacao);
+		this.extintor.setLocalizacaoProjection(localizacao);
 		this.extintor.setNumeroCilindro(numeroCilindro);
 		this.extintor.setTipo(tipo);
 	}

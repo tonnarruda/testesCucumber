@@ -41,16 +41,16 @@ public class Extintor extends AbstractModel implements Serializable
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="extintor", cascade=CascadeType.ALL)
 	private Collection<HistoricoExtintor> historicoExtintores;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Empresa empresa;
+
+	private boolean ativo=true;
+
 	@Transient
 	private HistoricoExtintor historicoExtintor;
 
 	@Transient
 	private String descricao;
-
-	private boolean ativo=true;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	private Empresa empresa;
 	
 	public Extintor()
 	{

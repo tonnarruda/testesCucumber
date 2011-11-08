@@ -283,6 +283,7 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Afastamento.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-ColaboradorAfastamento.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Extintor.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-HistoricoExtintor.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-ExtintorInspecao.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-ExtintorManutencao.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-MedicaoRisco.xml" />

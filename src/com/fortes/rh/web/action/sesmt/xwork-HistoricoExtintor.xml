@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="historicoExtintor" extends="default" namespace="/sesmt/historicoExtintor">
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.HistoricoExtintorEditAction" method="delete">
+			<result name="success" type="redirect">../extintor/prepareUpdate.action?extintor.id=${extintor.id}</result>
+		</action>
+		<action name="prepare" class="com.fortes.rh.web.action.sesmt.HistoricoExtintorEditAction" method="prepare">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoExtintorEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.HistoricoExtintorEditAction" method="insert">
+			<result name="success" type="redirect">../extintor/prepareUpdate.action?extintor.id=${extintor.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/historicoExtintorEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.HistoricoExtintorEditAction" method="update">
+			<result name="success" type="redirect">../extintor/prepareUpdate.action?extintor.id=${extintor.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/historicoExtintorEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

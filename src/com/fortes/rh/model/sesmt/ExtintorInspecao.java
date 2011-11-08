@@ -62,7 +62,7 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 		if(this.extintor == null)
 			this.extintor = new Extintor();
 		
-		this.extintor.setLocalizacao(localizacao);
+		this.extintor.setLocalizacaoProjection(localizacao);
 		this.extintor.setNumeroCilindro(numeroCilindro);
 		this.extintor.setTipo(tipo);
 	}
@@ -76,7 +76,28 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 	{
 		if (extintor == null)
 			extintor = new Extintor();
-		extintor.setLocalizacao(extintorLocalizacao);
+		extintor.setLocalizacaoProjection(extintorLocalizacao);
+	}
+
+	public void setProjectionExtintorEstabelecimentoId(Long extintorEstabelecimentoId)
+	{
+		if (extintor == null)
+			extintor = new Extintor();
+		extintor.setEstabelecimentoIdProjection(extintorEstabelecimentoId);
+	}
+
+	public void setProjectionExtintorNumeroCilindro(Integer extintorNumeroCilindro)
+	{
+		if (extintor == null)
+			extintor = new Extintor();
+		extintor.setNumeroCilindro(extintorNumeroCilindro);
+	}
+
+	public void setProjectionExtintorTipo(String extintorTipo)
+	{
+		if (extintor == null)
+			extintor = new Extintor();
+		extintor.setTipo(extintorTipo);
 	}
 
 	public Date getData()

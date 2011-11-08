@@ -9,11 +9,13 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
 import com.fortes.rh.business.sesmt.ExtintorManutencaoManager;
+import com.fortes.rh.business.sesmt.HistoricoExtintorManager;
 import com.fortes.rh.model.dicionario.TipoExtintor;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
+import com.fortes.rh.model.sesmt.HistoricoExtintor;
 import com.fortes.rh.model.sesmt.relatorio.ManutencaoAndInspecaoRelatorio;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -23,12 +25,15 @@ public class ExtintorEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 
 	private ExtintorManager extintorManager;
+	private HistoricoExtintorManager historicoExtintorManager;
 	private ExtintorManutencaoManager extintorManutencaoManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	private ExtintorInspecaoManager extintorInspecaoManager;
 
 	private Extintor extintor;
 	private Collection<Extintor> extintors;
 	private Collection<Estabelecimento> estabelecimentos;
+	private Collection<HistoricoExtintor> historicoExtintores;
 
 	private Map<String,String> tipos = new TipoExtintor();
 
@@ -45,9 +50,9 @@ public class ExtintorEditAction extends MyActionSupportList
 	private boolean testeHidrostaticoVencido;
 	
 	private ExtintorInspecao extintorInspecao;
-	private ExtintorInspecaoManager extintorInspecaoManager;
-	
 	private ExtintorManutencao extintorManutencao;
+	private HistoricoExtintor historicoExtintor;
+	
 	private Date dataHidro;
 	private Date dataRecarga;
 	
@@ -60,8 +65,11 @@ public class ExtintorEditAction extends MyActionSupportList
 		fabricantes = extintorManager.getFabricantes(getEmpresaSistema().getId());
 		localizacoes = extintorManager.getLocalizacoes(getEmpresaSistema().getId());
 
-		if(extintor != null && extintor.getId() != null)
+		if (extintor != null && extintor.getId() != null) 
+		{
 			extintor = (Extintor) extintorManager.findById(extintor.getId());
+			historicoExtintores = historicoExtintorManager.findByExtintor(extintor.getId());
+		}
 
 		return SUCCESS;
 	}
@@ -73,6 +81,7 @@ public class ExtintorEditAction extends MyActionSupportList
 			extintor.setEmpresa(getEmpresaSistema());
 			extintorManager.save(extintor);
 			
+			cadastrarHistorico();
 			cadastrarInspecao();
 			cadastrarManutencoes();
 
@@ -86,6 +95,13 @@ public class ExtintorEditAction extends MyActionSupportList
 		}
 	}
 
+	private void cadastrarHistorico() throws Exception 
+	{
+		historicoExtintor.setExtintor(extintor);
+		historicoExtintor.setData(new Date());
+		historicoExtintorManager.save(historicoExtintor);
+	}
+	
 	private void cadastrarInspecao() throws Exception 
 	{
 		if(extintorInspecao != null && extintorInspecao.getData() != null)
@@ -161,8 +177,8 @@ public class ExtintorEditAction extends MyActionSupportList
 	{		
 		try
 		{
-			dataSource = extintorManager.relatorioManutencaoAndInspecao(extintor.getEstabelecimento().getId(), dataVencimento, inspecaoVencida, cargaVencida, testeHidrostaticoVencido);
-			parametros = RelatorioUtil.getParametrosRelatorio("Extintores - Manutenção e Inspeção", getEmpresaSistema(), extintorManager.montaLabelFiltro(extintor.getEstabelecimento().getId(), dataVencimento));
+			dataSource = extintorManager.relatorioManutencaoAndInspecao(extintor.getHistoricoExtintor().getEstabelecimento().getId(), dataVencimento, inspecaoVencida, cargaVencida, testeHidrostaticoVencido);
+			parametros = RelatorioUtil.getParametrosRelatorio("Extintores - Manutenção e Inspeção", getEmpresaSistema(), extintorManager.montaLabelFiltro(extintor.getHistoricoExtintor().getEstabelecimento().getId(), dataVencimento));
 		}
 		catch (Exception e)
 		{
@@ -321,11 +337,29 @@ public class ExtintorEditAction extends MyActionSupportList
 	public void setExtintorManutencaoManager(ExtintorManutencaoManager extintorManutencaoManager) {
 		this.extintorManutencaoManager = extintorManutencaoManager;
 	}
+	
 	public void setDataHidro(Date dataHidro) {
 		this.dataHidro = dataHidro;
 	}
 
 	public void setDataRecarga(Date dataRecarga) {
 		this.dataRecarga = dataRecarga;
+	}
+
+	public Collection<HistoricoExtintor> getHistoricoExtintores() {
+		return historicoExtintores;
+	}
+
+	public void setHistoricoExtintorManager(
+			HistoricoExtintorManager historicoExtintorManager) {
+		this.historicoExtintorManager = historicoExtintorManager;
+	}
+
+	public HistoricoExtintor getHistoricoExtintor() {
+		return historicoExtintor;
+	}
+
+	public void setHistoricoExtintor(HistoricoExtintor historicoExtintor) {
+		this.historicoExtintor = historicoExtintor;
 	}
 }

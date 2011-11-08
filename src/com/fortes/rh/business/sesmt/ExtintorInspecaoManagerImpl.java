@@ -73,4 +73,8 @@ public class ExtintorInspecaoManagerImpl extends GenericManagerImpl<ExtintorInsp
 	{
 		return getDao().findInspecoesVencidas(estabelecimentoId, dataVencimento);
 	}
+
+	public ExtintorInspecao findByIdProjection(Long extintorInspecaoId) {
+		return getDao().findByIdProjection(extintorInspecaoId);
+	}
 }

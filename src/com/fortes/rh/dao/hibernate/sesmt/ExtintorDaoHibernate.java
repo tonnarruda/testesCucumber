@@ -89,20 +89,29 @@ public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implemen
 	public Collection<Extintor> findByEstabelecimento(Long estabelecimentoId, Boolean ativo)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "e");
+		criteria.createCriteria("e.historicoExtintores", "he");
+		criteria.createCriteria("he.estabelecimento", "est");
 
+		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
+													.setProjection( Projections.max("data") )
+													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
+		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
-		p.add(Projections.property("e.localizacao"), "localizacao");
+		p.add(Projections.property("he.localizacao"), "localizacaoProjection");
+		p.add(Projections.property("est.id"), "estabelecimentoIdProjection");
 		p.add(Projections.property("e.numeroCilindro"), "numeroCilindro");
 		p.add(Projections.property("e.tipo"), "tipo");
 
 		criteria.setProjection(p);
 		criteria.addOrder(Order.asc("e.tipo"));
-		criteria.addOrder(Order.asc("e.localizacao"));
+		criteria.addOrder(Order.asc("he.localizacao"));
 		criteria.addOrder(Order.asc("e.numeroCilindro"));
+		
+		criteria.add( Property.forName("he.data").eq(maxData) );
 
 		if (estabelecimentoId != null && !estabelecimentoId.equals(""))
-		criteria.add(Expression.eq("e.estabelecimento.id", estabelecimentoId));
+			criteria.add(Expression.eq("he.estabelecimento.id", estabelecimentoId));
 
 		if (ativo != null)
 			criteria.add(Expression.eq("e.ativo", ativo));
@@ -130,13 +139,14 @@ public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implemen
 	public Collection<String> findLocalizacoesDistinctByEmpresa(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "e");
+		criteria.createCriteria("e.historicoExtintores","he");
 		
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("e.localizacao"), "localizacao");
+		p.add(Projections.property("he.localizacao"), "localizacao");
 		
 		criteria.setProjection(p);
 		criteria.setProjection(Projections.distinct(p));
-		criteria.addOrder(Order.asc("e.localizacao"));
+		criteria.addOrder(Order.asc("he.localizacao"));
 		
 		criteria.add(Expression.eq("e.empresa.id", empresaId));
 		return criteria.list();

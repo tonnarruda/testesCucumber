@@ -15,10 +15,12 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
 import com.fortes.rh.model.sesmt.ExtintorInspecaoItem;
+import com.fortes.rh.model.sesmt.HistoricoExtintor;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorInspecaoFactory;
+import com.fortes.rh.test.factory.sesmt.HistoricoExtintorFactory;
 import com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction;
 
 public class ExtintorInspecaoEditActionTest extends MockObjectTestCase
@@ -91,16 +93,23 @@ public class ExtintorInspecaoEditActionTest extends MockObjectTestCase
 
 	public void testPrepareUpdate() throws Exception
 	{
-		ExtintorInspecao extintorInspecao = ExtintorInspecaoFactory.getEntity(1L);
 		Extintor extintor = ExtintorFactory.getEntity(1L);
-		extintor.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		
+		HistoricoExtintor historico = HistoricoExtintorFactory.getEntity();
+		historico.setExtintor(extintor);
+		historico.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+
+		extintor.setHistoricoExtintor(historico);
+		
+		ExtintorInspecao extintorInspecao = ExtintorInspecaoFactory.getEntity(1L);
 		extintorInspecao.setExtintor(extintor);
+		
 		action.setExtintorInspecao(extintorInspecao);
 
 		extintorInspecaoItemManager.expects(once()).method("findAll").will(returnValue(new ArrayList<ExtintorInspecaoItem>()));
 		manager.expects(once()).method("getEmpresasResponsaveis");
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
-		manager.expects(once()).method("findById").with(eq(extintorInspecao.getId())).will(returnValue(extintorInspecao));
+		manager.expects(once()).method("findByIdProjection").with(eq(extintorInspecao.getId())).will(returnValue(extintorInspecao));
 		extintorManager.expects(once()).method("findByEstabelecimento").will(returnValue(new ArrayList<Extintor>()));
 
 		assertEquals("success", action.prepareUpdate());
@@ -145,15 +154,22 @@ public class ExtintorInspecaoEditActionTest extends MockObjectTestCase
 
 	public void testUpdateException() throws Exception
 	{
-		ExtintorInspecao extintorInspecao = ExtintorInspecaoFactory.getEntity(1L);
 		Extintor extintor = ExtintorFactory.getEntity(1L);
-		extintor.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		
+		HistoricoExtintor historico = HistoricoExtintorFactory.getEntity();
+		historico.setExtintor(extintor);
+		historico.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+
+		extintor.setHistoricoExtintor(historico);
+		
+		ExtintorInspecao extintorInspecao = ExtintorInspecaoFactory.getEntity(1L);
 		extintorInspecao.setExtintor(extintor);
+		
 		action.setExtintorInspecao(extintorInspecao);
 
 		manager.expects(once()).method("saveOrUpdate").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
-		manager.expects(once()).method("findById").with(eq(extintorInspecao.getId())).will(returnValue(extintorInspecao));
+		manager.expects(once()).method("findByIdProjection").with(eq(extintorInspecao.getId())).will(returnValue(extintorInspecao));
 		extintorInspecaoItemManager.expects(once()).method("findAll");
 		manager.expects(once()).method("getEmpresasResponsaveis");
 		extintorManager.expects(once()).method("findByEstabelecimento");

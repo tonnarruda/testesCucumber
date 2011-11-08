@@ -13,4 +13,5 @@ public interface ExtintorInspecaoManager extends GenericManager<ExtintorInspecao
 	ExtintorInspecao saveOrUpdate(ExtintorInspecao extintorInspecao, String[] itemChecks) throws Exception;
 	String getEmpresasResponsaveis(Long empresaId);
 	Collection<ExtintorInspecao> findInspecoesVencidas(Long estabelecimentoId, Date dataVencimento);
+	ExtintorInspecao findByIdProjection(Long extintorInspecaoId);
 }

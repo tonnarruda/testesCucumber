@@ -180,6 +180,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="historicoExtintorDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.HistoricoExtintorDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   <bean id="extintorInspecaoDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.ExtintorInspecaoDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />

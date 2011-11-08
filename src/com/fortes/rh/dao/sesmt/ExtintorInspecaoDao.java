@@ -12,4 +12,5 @@ public interface ExtintorInspecaoDao extends GenericDao<ExtintorInspecao>
 	Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade);
 	Collection<String> findEmpresasResponsaveisDistinct(Long empresaId);
 	Collection<ExtintorInspecao> findInspecoesVencidas(Long estabelecimentoId, Date dataVencimento);
+	ExtintorInspecao findByIdProjection(Long extintorInspecaoId);
 }

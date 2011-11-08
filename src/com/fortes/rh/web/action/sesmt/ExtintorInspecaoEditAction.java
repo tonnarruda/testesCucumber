@@ -57,8 +57,8 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 
 		if(extintorInspecao != null && extintorInspecao.getId() != null)
 		{
-			extintorInspecao = extintorInspecaoManager.findById(extintorInspecao.getId());
-			estabelecimento = extintorInspecao.getExtintor().getEstabelecimento();
+			extintorInspecao = extintorInspecaoManager.findByIdProjection(extintorInspecao.getId());
+			estabelecimento = extintorInspecao.getExtintor().getHistoricoExtintor().getEstabelecimento();
 			extintors = extintorManager.findByEstabelecimento(estabelecimento.getId(), true);
 		}
 	}

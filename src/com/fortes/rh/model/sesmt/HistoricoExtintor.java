@@ -33,6 +33,20 @@ public class HistoricoExtintor extends AbstractModel implements Serializable
 	public Extintor getExtintor() {
 		return extintor;
 	}
+	
+	public void setProjectionEstabelecimentoId(Long estabelecimentoId) {
+		if (this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setId(estabelecimentoId);
+	}
+
+	public void setProjectionEstabelecimentoNome(String estabelecimentoNome) {
+		if (this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setNome(estabelecimentoNome);
+	}
 
 	public void setExtintor(Extintor extintor) {
 		this.extintor = extintor;

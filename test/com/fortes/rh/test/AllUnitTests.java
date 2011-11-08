@@ -142,6 +142,7 @@ import com.fortes.rh.test.business.sesmt.ExtintorManagerTest;
 import com.fortes.rh.test.business.sesmt.ExtintorManutencaoManagerTest;
 import com.fortes.rh.test.business.sesmt.FuncaoManagerTest;
 import com.fortes.rh.test.business.sesmt.HistoricoAmbienteManagerTest;
+import com.fortes.rh.test.business.sesmt.HistoricoExtintorManagerTest;
 import com.fortes.rh.test.business.sesmt.HistoricoFuncaoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicaoRiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicoCoordenadorManagerTest;
@@ -279,6 +280,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.ExtintorInspecaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ExtintorManutencaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.FuncaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoAmbienteDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoExtintorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoFuncaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.MedicaoRiscoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.MedicoCoordenadorDaoHibernateTest;
@@ -1067,6 +1069,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ExtintorManagerTest.class);
         suite.addTestSuite(ExtintorEditActionTest.class);
         suite.addTestSuite(ExtintorDWRTest.class);
+
+        suite.addTestSuite(HistoricoExtintorDaoHibernateTest.class);
+        suite.addTestSuite(HistoricoExtintorManagerTest.class);
 
         suite.addTestSuite(ExtintorInspecaoDaoHibernateTest.class);
         suite.addTestSuite(ExtintorInspecaoManagerTest.class);

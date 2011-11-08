@@ -389,6 +389,7 @@
 				/sesmt/colaboradorAfastamento/*/**=ROLE_CAD_AFASTAMENTO
 				/sesmt/cat/*/**=ROLE_CAT
 				/sesmt/extintor/*/**=ROLE_CAD_EXTINTOR
+				/sesmt/historicoExtintor/*/**=ROLE_CAD_EXTINTOR
 				/sesmt/extintorInspecao/*/**=ROLE_CAD_EXTINTOR
 				/sesmt/extintorManutencao/*/**=ROLE_CAD_EXTINTOR
 				/sesmt/medicaoRisco/*/**=ROLE_CAD_MEDICAORISCO

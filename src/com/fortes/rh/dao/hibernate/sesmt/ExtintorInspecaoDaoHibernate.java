@@ -6,14 +6,19 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
+import com.fortes.rh.model.sesmt.HistoricoExtintor;
 
 @SuppressWarnings("unchecked")
 public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorInspecao> implements ExtintorInspecaoDao
@@ -40,27 +45,47 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 
 	private Criteria montaConsultaFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade, String localizacao)
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "inspecao");
-		criteria.createCriteria("inspecao.extintor", "extintor");
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "i");
+		criteria.createCriteria("i.extintor", "e");
+		criteria.createCriteria("e.historicoExtintores", "he");
 				
+		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
+													.setProjection( Projections.max("data") )
+													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
+		
 		if (isCount)
+		{
 			criteria.setProjection(Projections.rowCount());
+			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		}
 		else
 		{
-			criteria.setFetchMode("extintor", FetchMode.JOIN);
-			criteria.addOrder(Order.asc("inspecao.data"));
+			ProjectionList p = Projections.projectionList().create();
+			p.add(Projections.property("i.id"), "id");
+			p.add(Projections.property("i.observacao"), "observacao");
+			p.add(Projections.property("i.data"), "data");
+			p.add(Projections.property("he.localizacao"), "projectionExtintorLocalizacao");
+			p.add(Projections.property("he.estabelecimento.id"), "projectionExtintorEstabelecimentoId");
+			p.add(Projections.property("e.numeroCilindro"), "projectionExtintorNumeroCilindro");
+			p.add(Projections.property("e.tipo"), "projectionExtintorTipo");
+			
+			criteria.setProjection(p);
+			criteria.setFetchMode("e", FetchMode.JOIN);
+			criteria.addOrder(Order.asc("i.data"));
+			criteria.setResultTransformer(new AliasToBeanResultTransformer(ExtintorInspecao.class));
 		}
-
-		criteria.add(Expression.eq("extintor.empresa.id", empresaId));
+		
+		criteria.add( Property.forName("he.data").eq(maxData) );
+		criteria.add(Expression.eq("e.empresa.id", empresaId));
 
 		if (estabelecimentoId != null)
-			criteria.add(Expression.eq("extintor.estabelecimento.id", estabelecimentoId));
+			criteria.add(Expression.eq("he.estabelecimento.id", estabelecimentoId));
 
 		if (extintorId != null)
-			criteria.add(Expression.eq("extintor.id", extintorId));
+			criteria.add(Expression.eq("e.id", extintorId));
 		
 		if (localizacao != null)
-			criteria.add(Expression.like("extintor.localizacao", "%" + localizacao + "%").ignoreCase());
+			criteria.add(Expression.like("he.localizacao", "%" + localizacao + "%").ignoreCase());
 
 		if (inicio != null)
 		{
@@ -78,8 +103,6 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 			criteria.add(Expression.isNotEmpty("itens"));
 		}
 		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-						
 		return criteria;
 	}
 
@@ -102,11 +125,12 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 	public Collection<ExtintorInspecao> findInspecoesVencidas(Long estabelecimentoId, Date dataVencimento)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ExtintorInspecao(ei.id, ei.data, e.periodoMaxInspecao, e.localizacao, e.numeroCilindro, e.tipo) ");
+		hql.append("select new ExtintorInspecao(ei.id, ei.data, e.periodoMaxInspecao, he.localizacao, e.numeroCilindro, e.tipo) ");
 
 		hql.append("from ExtintorInspecao as ei ");
 		hql.append("left join ei.extintor as e ");
-		hql.append("where e.estabelecimento.id = :estabelecimentoId ");
+		hql.append("inner join e.historicoExtintores as he ");
+		hql.append("where he.estabelecimento.id = :estabelecimentoId ");
 		hql.append("and e.ativo = :ativo ");
 		hql.append("and (:vencimento - ei.data) >= (e.periodoMaxInspecao * 30) ");
 
@@ -114,7 +138,11 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 		hql.append("                 from ExtintorInspecao as ei2 ");
 		hql.append("                 where ei2.extintor.id = e.id) ");
 		
-		hql.append("order by e.localizacao, (ei.data + (e.periodoMaxInspecao * 30))");
+		hql.append("and he.data = (select max(he2.data) ");
+		hql.append("                 from HistoricoExtintor as he2 ");
+		hql.append("                 where he2.extintor.id = e.id) ");
+		
+		hql.append("order by he.localizacao, (ei.data + (e.periodoMaxInspecao * 30))");
 
 		Query query = getSession().createQuery(hql.toString());
 
@@ -123,5 +151,36 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 		query.setBoolean("ativo", true);
 
 		return query.list();
+	}
+
+	public ExtintorInspecao findByIdProjection(Long extintorInspecaoId) {
+		
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ei");
+		criteria.createCriteria("ei.extintor", "e");
+		criteria.createCriteria("e.historicoExtintores", "he");
+		criteria.createCriteria("he.estabelecimento", "est");
+
+		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
+													.setProjection( Projections.max("data") )
+													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ei.id"), "id");
+		p.add(Projections.property("ei.observacao"), "observacao");
+		p.add(Projections.property("ei.data"), "data");
+		p.add(Projections.property("he.localizacao"), "projectionExtintorLocalizacao");
+		p.add(Projections.property("he.estabelecimento.id"), "projectionExtintorEstabelecimentoId");
+		p.add(Projections.property("e.numeroCilindro"), "projectionExtintorNumeroCilindro");
+		p.add(Projections.property("e.tipo"), "projectionExtintorTipo");
+
+		criteria.setProjection(p);
+		
+		criteria.add( Property.forName("he.data").eq(maxData) );
+
+		criteria.add(Expression.eq("ei.id", extintorInspecaoId));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (ExtintorInspecao) criteria.uniqueResult();
 	}
 }
