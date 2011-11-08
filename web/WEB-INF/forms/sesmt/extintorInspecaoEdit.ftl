@@ -17,6 +17,14 @@
 			border: 1px solid #7E9DB9;
 			overflow: auto;
 		}
+		.ui-autocomplete a {
+			display: block;
+			padding: 3px;
+		}
+		#ui-active-menuitem {
+			color: #000;
+			background: #EEE;
+		}
 		.ui-button-icon-only {
 			border: none;
 			background: #EEE;
@@ -24,6 +32,7 @@
 			width: 18px;
 			height: 18px;
 			border: 1px solid #7E9DB9;
+			border-left: none;
 			vertical-align: bottom;
 			background-image: url(../../imgs/ui-icons_222222_256x240.png);
 			background-position: -64px -16px;
@@ -70,7 +79,7 @@
 	<script type="text/javascript">
 		var empresasResponsaveis = [${empresasResponsaveis}];
 		$(function() {
-			$("#empresaResponsavel").autocomplete( {source:[empresasResponsaveis]} );
+			$("#empresaResponsavel").autocomplete( {source: empresasResponsaveis} );
 			
 			$( "#extintor" ).combobox();
 			

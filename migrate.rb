@@ -30,7 +30,6 @@ if ARGV.empty? || ARGV[0] == '--db'
 	    rescue Exception => e
 	      puts "[#{red("ERRO".center(9))}]"
 	      puts red e.message
-	      exit 1
 	    end  
 	  end 
 	end	
