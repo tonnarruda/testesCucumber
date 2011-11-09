@@ -12,4 +12,9 @@ public class HistoricoExtintorManagerImpl extends GenericManagerImpl<HistoricoEx
 	{
 		return getDao().findByExtintor(extintorId);
 	}
+
+	public void removeByExtintor(Long extintorId) 
+	{
+		getDao().removeByExtintor(extintorId);
+	}
 }

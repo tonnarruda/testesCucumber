@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.hibernate.HibernateException;
+import org.hibernate.exception.ConstraintViolationException;
+
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
@@ -162,8 +165,16 @@ public class ExtintorEditAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		extintorManager.remove(new Long[]{extintor.getId()});
+		try
+		{
+			extintorManager.remove(extintor.getId());
+		}
+		catch (Exception e)
+		{
+			addActionError("Não foi possível remover este extintor");
+		}
 
+		list();
 		return SUCCESS;
 	}
 

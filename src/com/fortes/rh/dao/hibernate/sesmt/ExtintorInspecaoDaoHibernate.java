@@ -153,9 +153,10 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 		return query.list();
 	}
 
-	public ExtintorInspecao findByIdProjection(Long extintorInspecaoId) {
-		
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "ei");
+	public ExtintorInspecao findByIdProjection(Long extintorInspecaoId) 
+	{
+		Criteria criteria = getSession().createCriteria(ExtintorInspecao.class, "ei");
+		criteria.createCriteria("ei.itens", "i", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ei.extintor", "e");
 		criteria.createCriteria("e.historicoExtintores", "he");
 		criteria.createCriteria("he.estabelecimento", "est");
@@ -172,11 +173,11 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 		p.add(Projections.property("he.estabelecimento.id"), "projectionExtintorEstabelecimentoId");
 		p.add(Projections.property("e.numeroCilindro"), "projectionExtintorNumeroCilindro");
 		p.add(Projections.property("e.tipo"), "projectionExtintorTipo");
+		p.add(Projections.property("ei.itens"), "itens");
 
-		criteria.setProjection(p);
+		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add( Property.forName("he.data").eq(maxData) );
-
 		criteria.add(Expression.eq("ei.id", extintorInspecaoId));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));

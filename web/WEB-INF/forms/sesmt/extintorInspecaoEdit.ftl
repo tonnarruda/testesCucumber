@@ -134,7 +134,7 @@
 			<#assign checked = "" />
 			<#assign alinharDiv = "divEsq" />
 
-			<#if extintorInspecao.id?exists>
+			<#if extintorInspecao.itens?exists>
 				<#list extintorInspecao.itens as itemCheck>
 					<#if itemCheck.id == item.id>
 						<#assign checked  = "checked = \"checked\"" />

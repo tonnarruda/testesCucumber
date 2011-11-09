@@ -8,4 +8,5 @@ import com.fortes.rh.model.sesmt.HistoricoExtintor;
 public interface HistoricoExtintorManager extends GenericManager<HistoricoExtintor>
 {
 	Collection<HistoricoExtintor> findByExtintor(Long extintorId);
+	void removeByExtintor(Long extintorId);
 }

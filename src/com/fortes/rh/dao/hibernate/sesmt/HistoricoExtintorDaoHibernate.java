@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.sesmt;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -37,5 +38,13 @@ public class HistoricoExtintorDaoHibernate extends GenericDaoHibernate<Historico
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoExtintor.class));
 		
 		return criteria.list();
+	}
+
+	public void removeByExtintor(Long extintorId) 
+	{
+		Query query = getSession().createQuery("delete from HistoricoExtintor hist where hist.extintor.id=:extintorId");
+		query.setLong("extintorId", extintorId);
+		
+		query.executeUpdate();
 	}
 }

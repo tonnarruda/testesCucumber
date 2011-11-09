@@ -18,6 +18,7 @@ import com.fortes.rh.util.StringUtil;
 
 public class ExtintorManagerImpl extends GenericManagerImpl<Extintor, ExtintorDao> implements ExtintorManager
 {
+	private HistoricoExtintorManager historicoExtintorManager;
 	private ExtintorInspecaoManager extintorInspecaoManager;
 	private ExtintorManutencaoManager extintorManutencaoManager;
 	private EstabelecimentoManager estabelecimentoManager;
@@ -105,6 +106,18 @@ public class ExtintorManagerImpl extends GenericManagerImpl<Extintor, ExtintorDa
 		
 		return relatorio;
 	}
+	
+	public String montaLabelFiltro(Long estabelecimentoId, Date dataVencimento)
+	{
+		Estabelecimento estabelecimento = estabelecimentoManager.findEstabelecimentoCodigoAc(estabelecimentoId);
+		return "Estabelecimento: " + estabelecimento.getNome() + "\nVencimentos até: " + DateUtil.formataDiaMesAno(dataVencimento);
+	}
+	
+	public void remove(Long extintorId)
+	{
+		historicoExtintorManager.removeByExtintor(extintorId);
+		getDao().remove(extintorId);
+	}
 
 	public void setExtintorInspecaoManager(ExtintorInspecaoManager extintorInspecaoManager)
 	{
@@ -116,14 +129,13 @@ public class ExtintorManagerImpl extends GenericManagerImpl<Extintor, ExtintorDa
 		this.extintorManutencaoManager = extintorManutencaoManager;
 	}
 
-	public String montaLabelFiltro(Long estabelecimentoId, Date dataVencimento)
-	{
-		Estabelecimento estabelecimento = estabelecimentoManager.findEstabelecimentoCodigoAc(estabelecimentoId);
-		return "Estabelecimento: " + estabelecimento.getNome() + "\nVencimentos até: " + DateUtil.formataDiaMesAno(dataVencimento);
-	}
-
 	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
 	{
 		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public void setHistoricoExtintorManager(
+			HistoricoExtintorManager historicoExtintorManager) {
+		this.historicoExtintorManager = historicoExtintorManager;
 	}
 }

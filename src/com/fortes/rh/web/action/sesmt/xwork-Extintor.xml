@@ -13,8 +13,7 @@
 			<interceptor-ref name="defaultDeleteStack">
 				<param name="scope.session">tipoBusca,numeroBusca,ativo</param>
 			</interceptor-ref>
-			<result name="success" type="redirect">list.action</result>
-			<result name="error" type="redirect">list.action</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorList.ftl</result>
 		</action>
 		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="updateFilter">
 	      	<interceptor-ref name="showFilterStack" />			

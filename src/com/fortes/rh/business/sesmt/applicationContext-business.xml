@@ -655,6 +655,9 @@
     <property name="dao">
       <ref bean="extintorDao" />
     </property>
+    <property name="historicoExtintorManager">
+      <ref bean="historicoExtintorManager" />
+    </property>
     <property name="extintorManutencaoManager">
       <ref bean="extintorManutencaoManager" />
     </property>
