@@ -282,6 +282,51 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 
 		assertEquals(1, historicos.size());
 	}
+	
+	public void testFindQtdAtendidos()
+	{
+		Date hoje = DateUtil.criarDataMesAno(01, 01, 1980);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Candidato joao = CandidatoFactory.getCandidato();
+		joao.setNome("joao");
+		joao.setEmpresa(empresa);
+		candidatoDao.save(joao);
+
+		Candidato maria = CandidatoFactory.getCandidato();
+		maria.setNome("maria");
+		maria.setEmpresa(empresa);
+		candidatoDao.save(maria);
+		
+		CandidatoSolicitacao candSolJoao = new CandidatoSolicitacao();
+		candSolJoao.setCandidato(joao);
+		candidatoSolicitacaoDao.save(candSolJoao);
+
+		CandidatoSolicitacao candSolMaria = new CandidatoSolicitacao();
+		candSolMaria.setCandidato(maria);
+		candidatoSolicitacaoDao.save(candSolMaria);
+
+		HistoricoCandidato historicoCandidato = new HistoricoCandidato();
+		historicoCandidato.setCandidatoSolicitacao(candSolJoao);
+		historicoCandidato.setData(hoje);
+		historicoCandidato = historicoCandidatoDao.save(historicoCandidato);
+
+		HistoricoCandidato historicoCandidato2 = new HistoricoCandidato();
+		historicoCandidato2.setCandidatoSolicitacao(candSolJoao);
+		historicoCandidato2.setData(hoje);
+		historicoCandidato2 = historicoCandidatoDao.save(historicoCandidato2);
+
+		HistoricoCandidato historicoCandidato3 = new HistoricoCandidato();
+		historicoCandidato3.setCandidatoSolicitacao(candSolMaria);
+		historicoCandidato3.setData(hoje);
+		historicoCandidato3 = historicoCandidatoDao.save(historicoCandidato3);
+
+		int qtd = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), hoje, hoje);
+
+		assertEquals(2, qtd);
+	}
 
 	public void testFindByIdProjection()
 	{

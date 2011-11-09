@@ -2026,6 +2026,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		return vos;
 	}
+	
+	public int findQtdVagasPreenchidas(Long empresaId, Date dataIni, Date dataFim) {
+		return getDao().findQtdVagasPreenchidas(empresaId, dataIni, dataFim);
+	}
+
 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
@@ -2054,4 +2059,5 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setMensagemManager(MensagemManager mensagemManager) {
 		this.mensagemManager = mensagemManager;
 	}
+
 }

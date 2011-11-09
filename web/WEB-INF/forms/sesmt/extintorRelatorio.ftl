@@ -17,8 +17,8 @@
 		<@ww.actionerror />
 		<@ww.actionmessage />
 		<@ww.form name="form" action="relatorioManutencaoAndInspecao.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.select label="Estabelecimento" id="estabelecimento" name="extintor.estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey=""  cssStyle="width:240px;"/>
-			<@ww.datepicker label="Vencimentos até" id="data" name="dataVencimento" cssClass="mascaraData" value="${date}"/>
+			<@ww.select label="Estabelecimento" id="estabelecimento" name="extintor.estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey=""  cssStyle="width:240px;" required="true"/>
+			<@ww.datepicker label="Vencimentos até" id="data" name="dataVencimento" cssClass="mascaraData" value="${date}" required="true"/>
 			
 		<li>
 			<fieldset class="fieldsetPadrao">

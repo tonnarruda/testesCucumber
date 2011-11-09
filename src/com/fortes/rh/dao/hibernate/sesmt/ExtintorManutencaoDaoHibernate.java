@@ -88,7 +88,7 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 		}
 		
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ExtintorManutencao(em.id, em.saida, (em.saida + (e. " + periodoMax + " * 30)), e.localizacao, e.numeroCilindro, e.tipo) ");
+		hql.append("select new ExtintorManutencao(em.id, em.saida, e. " + periodoMax + ", e.localizacao, e.numeroCilindro, e.tipo) ");
 
 		hql.append("from ExtintorManutencao as em ");
 		hql.append("left join em.extintor as e ");

@@ -102,7 +102,7 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 	public Collection<ExtintorInspecao> findInspecoesVencidas(Long estabelecimentoId, Date dataVencimento)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ExtintorInspecao(ei.id, ei.data, (ei.data + (e.periodoMaxInspecao * 30)), e.localizacao, e.numeroCilindro, e.tipo) ");
+		hql.append("select new ExtintorInspecao(ei.id, ei.data, e.periodoMaxInspecao, e.localizacao, e.numeroCilindro, e.tipo) ");
 
 		hql.append("from ExtintorInspecao as ei ");
 		hql.append("left join ei.extintor as e ");

@@ -1324,5 +1324,5 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
 		return (Integer) criteria.uniqueResult();
-		}
+	}
 }
