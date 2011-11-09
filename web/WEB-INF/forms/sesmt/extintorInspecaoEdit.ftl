@@ -37,6 +37,14 @@
 			background-image: url(../../imgs/ui-icons_222222_256x240.png);
 			background-position: -64px -16px;
 		}
+		.divEsq {
+			float: left;
+			width: 49%;
+		}
+		.divDir {
+			float: right;
+			width: 49%;
+		}
 	</style>
 
 	<#if extintorInspecao.id?exists>
@@ -54,16 +62,6 @@
 		<#assign date = extintorInspecao.data?date/>
 	</#if>
 
-	<style type="text/css">
-		.divEsq {
-			float: left;
-			width: 49%;
-		}
-		.divDir {
-			float: right;
-			width: 49%;
-		}
-	</style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>

@@ -556,7 +556,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			String message = e.getMessage() != null ? e.getMessage() : "Erro ao gravar as informações do colaborador!"; 
+			
+			String message = "Erro ao gravar as informações do colaborador!";
+			
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+			
 			addActionError(message);
 
 			colaborador.setId(null);
