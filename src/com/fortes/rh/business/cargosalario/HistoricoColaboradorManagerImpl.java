@@ -1300,6 +1300,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		{			
 			if (historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getEmpresa().isAcIntegra() && historicoColaborador.getColaborador().getCodigoAC() != null && !historicoColaborador.getColaborador().getCodigoAC().equals(""))
 			{
+				colaboradoresIdsList.remove(historicoColaborador.getColaborador().getCodigoAC().toString());
 				colaboradoresIdsList.add(historicoColaborador.getColaborador().getCodigoAC().toString());
 				
 				Long empresaId = historicoColaborador.getColaborador().getEmpresa().getId();

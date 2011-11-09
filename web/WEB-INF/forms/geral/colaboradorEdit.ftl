@@ -163,7 +163,9 @@
 
 			<#if colaboradorAvaliacoes?exists>
 				<#list colaboradorAvaliacoes as colaboradorAvaliacao>
-				    $('#modeloPeriodo' + ${colaboradorAvaliacao.periodoExperiencia.id}).val(${colaboradorAvaliacao.avaliacao.id});
+					<#if colaboradorAvaliacao.periodoExperiencia?exists && colaboradorAvaliacao.periodoExperiencia.id?exists && colaboradorAvaliacao.avaliacao?exists && colaboradorAvaliacao.avaliacao.id?exists>
+					    $('#modeloPeriodo' + ${colaboradorAvaliacao.periodoExperiencia.id}).val(${colaboradorAvaliacao.avaliacao.id});
+					</#if>
 				</#list>
 			</#if>
 		});
