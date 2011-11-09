@@ -1,6 +1,51 @@
 <html>
 <head>
 	<@ww.head/>
+	<style type="text/css">
+		@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
+	</style>
+	<style type="text/css">
+		.ui-autocomplete-input {
+			height: 16px;
+			width: 280px;
+			padding: 0 !important;
+		}
+		.ui-autocomplete[role=listbox] {
+			max-width: 300px;
+			max-height: 200px;
+			background: #FFF;
+			border: 1px solid #7E9DB9;
+			overflow: auto;
+		}
+		.ui-autocomplete a {
+			display: block;
+			padding: 3px;
+		}
+		#ui-active-menuitem {
+			color: #000;
+			background: #EEE;
+		}
+		.ui-button-icon-only {
+			border: none;
+			background: #EEE;
+			padding: 0;
+			width: 18px;
+			height: 18px;
+			border: 1px solid #7E9DB9;
+			border-left: none;
+			vertical-align: bottom;
+			background-image: url(../../imgs/ui-icons_222222_256x240.png);
+			background-position: -64px -16px;
+		}
+		.divEsq {
+			float: left;
+			width: 49%;
+		}
+		.divDir {
+			float: right;
+			width: 49%;
+		}
+	</style>
 	<#if extintorManutencao.id?exists>
 		<title>Editar Manutenção de Extintor</title>
 		<#assign formAction="update.action"/>
@@ -25,22 +70,31 @@
 		<#assign msgSelecione = "Selecione..." />
 	</#if>
 
-	<style type="text/css">
-		.divEsq {
-			float: left;
-			width: 49%;
-		}
-		.divDir {
-			float: right;
-			width: 49%;
-		}
-	</style>
-
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-
+	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.core.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.widget.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.button.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.position.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.1.8.16.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/combobox.js"/>"></script>
+	
 	<script type="text/javascript">
+	
+	
+		$(function() {
+			
+			$( "#extintor" ).combobox();
+			
+			$("#check11").change(function() {
+				$('#outroMotivo').toggle($(this).is(':checked'));
+			});
+			
+			$('#outroMotivo').toggle($('#check11').is(':checked'));
+		});
+	
 
 		function populaExtintores()
 	    {
