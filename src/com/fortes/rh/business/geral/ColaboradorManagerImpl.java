@@ -408,7 +408,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 		else
 		{
-			throw new Exception("Não foi possível contratar este colaborador no AC Pessoal.");
+			//ta mó GAMBI, futrique muito não (chico barroso)
+			String strException = "Não foi possível contratar este colaborador no AC Pessoal.";
+			Throwable cause = new Throwable(strException);
+			Exception exception = new Exception(strException, cause );
+			throw exception;
 		}
 	}
 
