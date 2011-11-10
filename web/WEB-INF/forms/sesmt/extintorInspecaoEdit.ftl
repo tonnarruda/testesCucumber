@@ -1,4 +1,4 @@
-<html>
+ <html>
 <head>
 	<@ww.head/>
 	<style type="text/css">
@@ -98,12 +98,19 @@
 
 	    function createListExtintores(data)
 	    {
+	    	$('.ui-autocomplete-input').eq(0).val($(data).data('-1'));
+	    	
 			DWRUtil.removeAllOptions("extintor");
 			DWRUtil.addOptions("extintor", data);
 	    }
+	    
+	    function gravar()
+	    {
+			$('.ui-autocomplete-input').eq(0).css('background-color', ($('#extintor').val() == -1) ? '#FFEEC2' : '#FFFFFF');
+	    		
+	    	return validaFormulario('form', new Array('estabelecimento','extintor','data'), new Array('data'));
+	    }
     </script>
-
-	<#assign validarCampos="return validaFormulario('form', new Array('estabelecimento','extintor','data'), new Array('data'))"/>
 
 	<#assign msgSelecione = "Selecione o estabelecimento." />
 	<#if extintors?exists >
@@ -117,7 +124,7 @@
 	<@ww.form name="form" action="${formAction}" validate="true" method="POST">
 
 		<@ww.select label="Estabelecimento" id="estabelecimento" required="true" name="estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" onchange="javascript:populaExtintores();" cssStyle="width:300px;"/>
-		<@ww.select label="Extintor" id="extintor" required="true" name="extintorInspecao.extintor.id" list="extintors" listKey="id" listValue="descricao" headerValue="${msgSelecione}" headerKey="" />
+		<@ww.select label="Extintor" id="extintor" required="true" name="extintorInspecao.extintor.id" list="extintors" listKey="id" listValue="descricao" headerValue="${msgSelecione}" headerKey="-1" />
 
 		<@ww.textfield label="Empresa responsável" name="extintorInspecao.empresaResponsavel" id="empresaResponsavel"/>
 
@@ -164,7 +171,7 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos}" class="btnGravar"></button>
+		<button onclick="javascript:gravar();" class="btnGravar"></button>
 		<button onclick="window.location='list.action'" class="btnVoltar" ></button>
 	</div>
 </body>

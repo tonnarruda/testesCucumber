@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import org.hibernate.HibernateException;
-import org.hibernate.exception.ConstraintViolationException;
-
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ExtintorInspecaoManager;
 import com.fortes.rh.business.sesmt.ExtintorManager;
@@ -188,8 +185,8 @@ public class ExtintorEditAction extends MyActionSupportList
 	{		
 		try
 		{
-			dataSource = extintorManager.relatorioManutencaoAndInspecao(extintor.getHistoricoExtintor().getEstabelecimento().getId(), dataVencimento, inspecaoVencida, cargaVencida, testeHidrostaticoVencido);
-			parametros = RelatorioUtil.getParametrosRelatorio("Extintores - Manutenção e Inspeção", getEmpresaSistema(), extintorManager.montaLabelFiltro(extintor.getHistoricoExtintor().getEstabelecimento().getId(), dataVencimento));
+			dataSource = extintorManager.relatorioManutencaoAndInspecao(historicoExtintor.getEstabelecimento().getId(), dataVencimento, inspecaoVencida, cargaVencida, testeHidrostaticoVencido);
+			parametros = RelatorioUtil.getParametrosRelatorio("Extintores - Manutenção e Inspeção", getEmpresaSistema(), extintorManager.montaLabelFiltro(historicoExtintor.getEstabelecimento().getId(), dataVencimento));
 		}
 		catch (Exception e)
 		{

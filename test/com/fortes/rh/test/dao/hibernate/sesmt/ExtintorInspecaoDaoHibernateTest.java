@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -228,6 +229,10 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintorInspecao3.setExtintor(extintor3);
 		extintorInspecaoDao.save(extintorInspecao3);
 
+		ExtintorInspecaoItem extintorInspecaoItem = new ExtintorInspecaoItem();
+		extintorInspecaoItem.setDescricao("teste");
+		extintorInspecaoItemDao.save(extintorInspecaoItem);
+		
 		Collection<String> empresas = extintorInspecaoDao.findEmpresasResponsaveisDistinct(empresa.getId());
 		assertEquals(2, empresas.size());
 		assertEquals(extintorInspecao2.getEmpresaResponsavel(), empresas.toArray()[0]);
@@ -324,8 +329,40 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		assertEquals(extintorInspecaoVencida, extintorInspecaos.toArray()[0]);
 	}
 
-	public void testFindByIdProjection(){
+	public void testFindByIdProjection()
+	{
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
 		
+		Extintor extintor = ExtintorFactory.getEntity();
+		extintor.setAtivo(true);
+		extintorDao.save(extintor);
+		
+		HistoricoExtintor historico = HistoricoExtintorFactory.getEntity();
+		historico.setEstabelecimento(estabelecimento);
+		historico.setExtintor(extintor);
+		historicoExtintorDao.save(historico);
+
+		ExtintorInspecaoItem item1 = new ExtintorInspecaoItem();
+		item1.setDescricao("teste");
+		extintorInspecaoItemDao.save(item1);
+
+		ExtintorInspecaoItem item2 = new ExtintorInspecaoItem();
+		item2.setDescricao("teste");
+		extintorInspecaoItemDao.save(item2);
+		
+		Collection<ExtintorInspecaoItem> itens = Arrays.asList(item1, item2);
+		
+		ExtintorInspecao inspecao = ExtintorInspecaoFactory.getEntity();
+		inspecao.setExtintor(extintor);
+		inspecao.setData(DateUtil.criarDataMesAno(2, 8, 2009));
+		inspecao.setItens(itens);
+		extintorInspecaoDao.save(inspecao);
+		
+		ExtintorInspecao extintorInspecao = extintorInspecaoDao.findByIdProjection(inspecao.getId());
+		
+		assertEquals(2, extintorInspecao.getItens().size());
+		assertNotNull(extintorInspecao.getExtintor().getUltimoHistorico());
 	}
 	
 	public void setEmpresaDao(EmpresaDao empresaDao)

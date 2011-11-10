@@ -1,6 +1,8 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -45,9 +47,6 @@ public class Extintor extends AbstractModel implements Serializable
 	private Empresa empresa;
 
 	private boolean ativo=true;
-
-	@Transient
-	private HistoricoExtintor historicoExtintor;
 
 	@Transient
 	private String descricao;
@@ -110,23 +109,23 @@ public class Extintor extends AbstractModel implements Serializable
 
 	public void setLocalizacaoProjection(String localizacao)
 	{
-		if (this.historicoExtintor == null)
-			this.historicoExtintor = new HistoricoExtintor();
+		if (this.getUltimoHistorico() == null)
+			this.setUltimoHistorico(new HistoricoExtintor());
 		
-		this.historicoExtintor.setLocalizacao(localizacao);
+		this.getUltimoHistorico().setLocalizacao(localizacao);
 	}
 
 	public void setEstabelecimentoIdProjection(Long estabelecimentoId)
 	{
-		if (this.historicoExtintor == null)
-			this.historicoExtintor = new HistoricoExtintor();
-		
-		if (this.historicoExtintor.getEstabelecimento() == null)
-			this.historicoExtintor.setEstabelecimento(new Estabelecimento());
-					
-		this.historicoExtintor.getEstabelecimento().setId(estabelecimentoId);
-	}
+		if (this.getUltimoHistorico() == null)
+			this.setUltimoHistorico(new HistoricoExtintor());
 
+		if (this.getUltimoHistorico().getEstabelecimento() == null)
+			this.getUltimoHistorico().setEstabelecimento(new Estabelecimento());
+		
+		this.getUltimoHistorico().getEstabelecimento().setId(estabelecimentoId);
+	}
+	
 	public boolean isAtivo()
 	{
 		return ativo;
@@ -216,21 +215,26 @@ public class Extintor extends AbstractModel implements Serializable
 	{
 		this.tipo = tipo;
 	}
+	
+	public String getLocalizacao()
+	{
+		return getUltimoHistorico().getLocalizacao();
+	}
 
 	public Collection<HistoricoExtintor> getHistoricoExtintores() {
 		return historicoExtintores;
 	}
 
-	public void setHistoricoExtintores(
-			Collection<HistoricoExtintor> historicoExtintores) {
+	public void setHistoricoExtintores(Collection<HistoricoExtintor> historicoExtintores) {
 		this.historicoExtintores = historicoExtintores;
 	}
-
-	public HistoricoExtintor getHistoricoExtintor() {
-		return historicoExtintor;
+	
+	public HistoricoExtintor getUltimoHistorico() {
+		return (this.historicoExtintores == null || this.historicoExtintores.isEmpty()) ? null : (HistoricoExtintor) this.historicoExtintores.toArray()[0];
 	}
-
-	public void setHistoricoExtintor(HistoricoExtintor historicoExtintor) {
-		this.historicoExtintor = historicoExtintor;
+	
+	public void setUltimoHistorico(HistoricoExtintor historico) {
+		this.historicoExtintores = new ArrayList<HistoricoExtintor>();
+		this.historicoExtintores.add(historico);
 	}
 }

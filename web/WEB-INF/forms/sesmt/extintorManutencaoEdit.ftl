@@ -106,8 +106,17 @@
 
 	    function createListExtintores(data)
 	    {
+	      $('.ui-autocomplete-input').eq(0).val($(data).data('-1'));
+	    
 	      DWRUtil.removeAllOptions("extintor");
 	      DWRUtil.addOptions("extintor", data);
+	    }
+	    
+	    function gravar()
+	    {
+			$('.ui-autocomplete-input').eq(0).css('background-color', ($('#extintor').val() == -1) ? '#FFEEC2' : '#FFFFFF');
+	    		
+	    	return validaFormularioEPeriodo('form', new Array('estabelecimento','extintor','saida'), new Array('saida','retorno'))
 	    }
 
 	    function desabilitaOutroMotivo()
@@ -127,8 +136,6 @@
 	    }
     </script>
 
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('estabelecimento','extintor','saida'), new Array('saida','retorno'))"/>
-
 </head>
 <body>
 	<@ww.actionerror />
@@ -136,7 +143,7 @@
 
 	<@ww.form name="form" action="${formAction}" validate="true" method="POST">
 		<@ww.select label="Estabelecimento" id="estabelecimento" required="true" name="estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" onchange="javascript:populaExtintores();" cssStyle="width:240px;"/>
-		<@ww.select label="Extintor" id="extintor" required="true" name="extintorManutencao.extintor.id" list="extintors" listKey="id" listValue="descricao" headerValue="${msgSelecione}" headerKey="" cssStyle="width:240px;"/>
+		<@ww.select label="Extintor" id="extintor" required="true" name="extintorManutencao.extintor.id" list="extintors" listKey="id" listValue="descricao" headerValue="${msgSelecione}" headerKey="-1" cssStyle="width:240px;"/>
 
 		<@ww.datepicker label="Data de Saída" id="saida" name="extintorManutencao.saida" required="true" cssClass="mascaraData validaDataIni" value="${dateSaida}" liClass="liLeft"/>
 		<@ww.datepicker label="Data de Retorno" id="retorno" name="extintorManutencao.retorno" cssClass="mascaraData validaDataFim" value="${dateRetorno}"/>
@@ -181,7 +188,7 @@
 </@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos}" class="btnGravar"></button>
+		<button onclick="javascript:gravar();" class="btnGravar"></button>
 		<button onclick="window.location='list.action'" class="btnVoltar" ></button>
 	</div>
 

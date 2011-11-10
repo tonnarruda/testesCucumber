@@ -10,12 +10,12 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.sesmt.ExtintorDao;
 import com.fortes.rh.dao.sesmt.ExtintorManutencaoDao;
+import com.fortes.rh.dao.sesmt.ExtintorManutencaoServicoDao;
 import com.fortes.rh.dao.sesmt.HistoricoExtintorDao;
 import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
-import com.fortes.rh.model.sesmt.ExtintorInspecao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.model.sesmt.ExtintorManutencaoServico;
 import com.fortes.rh.model.sesmt.HistoricoExtintor;
@@ -23,7 +23,6 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorFactory;
-import com.fortes.rh.test.factory.sesmt.ExtintorInspecaoFactory;
 import com.fortes.rh.test.factory.sesmt.ExtintorManutencaoFactory;
 import com.fortes.rh.test.factory.sesmt.HistoricoExtintorFactory;
 import com.fortes.rh.util.DateUtil;
@@ -33,6 +32,7 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 	private ExtintorManutencaoDao extintorManutencaoDao;
 	private ExtintorDao extintorDao;
 	private HistoricoExtintorDao historicoExtintorDao;
+	private ExtintorManutencaoServicoDao extintorManutencaoServicoDao;
 	private EmpresaDao empresaDao;
 	private EstabelecimentoDao estabelecimentoDao;
 
@@ -302,6 +302,41 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(1, extintorManutencaoVencidas.size());
 	}
 	
+	public void testFindByIdProjection()
+	{
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Extintor extintor = ExtintorFactory.getEntity();
+		extintor.setAtivo(true);
+		extintorDao.save(extintor);
+		
+		HistoricoExtintor historico = HistoricoExtintorFactory.getEntity();
+		historico.setEstabelecimento(estabelecimento);
+		historico.setExtintor(extintor);
+		historicoExtintorDao.save(historico);
+
+		ExtintorManutencaoServico servico1 = new ExtintorManutencaoServico();
+		servico1.setDescricao("teste");
+		extintorManutencaoServicoDao.save(servico1);
+
+		ExtintorManutencaoServico servico2 = new ExtintorManutencaoServico();
+		servico2.setDescricao("teste 2");
+		extintorManutencaoServicoDao.save(servico2);
+		
+		Collection<ExtintorManutencaoServico> servicos = Arrays.asList(servico1, servico2);
+		
+		ExtintorManutencao manutencao = ExtintorManutencaoFactory.getEntity();
+		manutencao.setExtintor(extintor);
+		manutencao.setServicos(servicos);
+		extintorManutencaoDao.save(manutencao);
+		
+		ExtintorManutencao extintorManutencao = extintorManutencaoDao.findByIdProjection(manutencao.getId());
+		
+		assertEquals(2, extintorManutencao.getServicos().size());
+		assertNotNull(extintorManutencao.getExtintor().getUltimoHistorico());
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;
@@ -319,5 +354,9 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 
 	public void setHistoricoExtintorDao(HistoricoExtintorDao historicoExtintorDao) {
 		this.historicoExtintorDao = historicoExtintorDao;
+	}
+
+	public void setExtintorManutencaoServicoDao(ExtintorManutencaoServicoDao extintorManutencaoServicoDao) {
+		this.extintorManutencaoServicoDao = extintorManutencaoServicoDao;
 	}
 }

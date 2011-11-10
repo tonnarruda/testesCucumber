@@ -245,9 +245,9 @@
 						isPrintRepeatedValues="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font size="9"/>
+						<font size="5"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{extintor.localizacao}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[""+$F{extintor.localizacao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

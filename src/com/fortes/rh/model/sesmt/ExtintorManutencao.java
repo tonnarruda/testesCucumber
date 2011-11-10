@@ -4,6 +4,7 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.TemporalType.DATE;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -27,8 +28,6 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 {
 	@Temporal(DATE)
 	private Date saida;
-	@Transient
-	private Date vencimento;
 
 	@Temporal(DATE)
 	private Date retorno;
@@ -49,7 +48,15 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 	private Collection<ExtintorManutencaoServico> servicos;
 	
 	@Transient
+	private Date vencimento;
+	
+	@Transient
 	private String servicosRelatorio;
+	
+	public ExtintorManutencao()
+	{
+		super();
+	}
 
 	public ExtintorManutencao(Long id, Date saida, Integer periodoMax, String localizacao, Integer numeroCilindro, String tipo)
 	{
@@ -59,19 +66,17 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 		if(periodoMax != null)
 			this.vencimento = DateUtil.incrementaMes(saida, periodoMax);
 		
-		if(this.extintor == null)
+		if (this.extintor == null)
 			this.extintor = new Extintor();
 		
-		this.extintor.setLocalizacaoProjection(localizacao);
+		if (this.extintor.getUltimoHistorico() == null)
+			this.extintor.setHistoricoExtintores(Arrays.asList(new HistoricoExtintor()));
+
+		this.extintor.getUltimoHistorico().setLocalizacao(localizacao);
 		this.extintor.setNumeroCilindro(numeroCilindro);
 		this.extintor.setTipo(tipo);
 	}
 
-	public ExtintorManutencao()
-	{
-		super();
-	}
-	
 	public String getMotivoDic()
 	{
 		if (motivo == null)
@@ -80,6 +85,20 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 		return (String)new MotivoExtintorManutencao().get(motivo);
 	}
 
+	public void setProjectionExtintorNumeroCilindro(Integer extintorNumeroCilindro)
+	{
+		if (extintor == null)
+			extintor = new Extintor();
+		extintor.setNumeroCilindro(extintorNumeroCilindro);
+	}
+
+	public void setProjectionExtintorTipo(String extintorTipo)
+	{
+		if (extintor == null)
+			extintor = new Extintor();
+		extintor.setTipo(extintorTipo);
+	}
+	
 	public Extintor getExtintor()
 	{
 		return extintor;

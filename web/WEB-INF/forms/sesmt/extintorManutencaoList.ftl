@@ -98,7 +98,7 @@
 		</@display.column>
 		<@display.column property="saida" title="Data Saída" format="{0,date,dd/MM/yyyy}" style="width:50px; text-align:center"/>
 		<@display.column property="retorno" title="Data Retorno" format="{0,date,dd/MM/yyyy}" style="width:50px; text-align:center"/>
-		<@display.column property="extintor.localizacao" title="Localização" style="width:200px;"/>
+		<@display.column property="extintor.ultimoHistorico.localizacao" title="Localização" style="width:200px;"/>
 		<@display.column property="extintor.numeroCilindro" title="Cilindro" style="width:40px;"/>
 		<@display.column property="extintor.tipoDic" title="Tipo" style="width:180px;"/>
 		<@display.column title="Obs." style="text-align: center;width: 50px">

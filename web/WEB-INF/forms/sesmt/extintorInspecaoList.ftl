@@ -86,10 +86,7 @@
 		        }
 			});
 				
-				});
-				
-		
-	    
+		});
     </script>
 
     <#if inicio?exists >
@@ -147,7 +144,7 @@
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?extintorInspecao.id=${extintorInspecao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="data" title="Data da Inspeção" format="{0,date,dd/MM/yyyy}" style="width:80px;" class="${extintorInspecao.tipoDeRegularidade}"/>
-		<@display.column property="extintor.historicoExtintor.localizacao" title="Localização" style="width:190px;" class="${extintorInspecao.tipoDeRegularidade}"/>
+		<@display.column property="extintor.ultimoHistorico.localizacao" title="Localização" style="width:190px;" class="${extintorInspecao.tipoDeRegularidade}"/>
 		<@display.column property="extintor.numeroCilindro" title="Cilindro" style="width:40px;" class="${extintorInspecao.tipoDeRegularidade}"/>
 		<@display.column property="extintor.tipoDic" title="Tipo" style="width:180px;" class="${extintorInspecao.tipoDeRegularidade}"/>
 		<@display.column title="Obs." style="text-align: center;width: 50px">

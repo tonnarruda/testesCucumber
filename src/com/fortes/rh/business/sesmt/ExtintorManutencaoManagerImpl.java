@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ExtintorManutencaoDao;
+import com.fortes.rh.model.sesmt.ExtintorInspecao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.model.sesmt.ExtintorManutencaoServico;
 import com.fortes.rh.util.CollectionUtil;
@@ -69,4 +70,8 @@ public class ExtintorManutencaoManagerImpl extends GenericManagerImpl<ExtintorMa
 	{
 		return getDao().findManutencaoVencida(estabelecimentoId, dataVencimento, motivo);
 	}
+
+	public ExtintorManutencao findByIdProjection(Long extintorManutencaoId) {
+		return getDao().findByIdProjection(extintorManutencaoId);	}
+
 }

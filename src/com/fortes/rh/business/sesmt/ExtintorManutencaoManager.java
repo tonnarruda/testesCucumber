@@ -13,4 +13,5 @@ public interface ExtintorManutencaoManager extends GenericManager<ExtintorManute
 	ExtintorManutencao saveOrUpdate(ExtintorManutencao extintorManutencao, String[] servicoChecks)throws Exception;
 	Collection<ExtintorManutencao> findManutencaoVencida(Long estabelecimentoId, Date dataVencimento, String motivo);
 	void save(ExtintorManutencao extintorManutencao, String[] servicoChecks) throws Exception;
+	ExtintorManutencao findByIdProjection(Long extintorManutencaoId);
 }

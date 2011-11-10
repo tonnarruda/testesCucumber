@@ -4,6 +4,7 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.TemporalType.DATE;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -50,6 +51,10 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 	@ManyToMany(fetch=LAZY, targetEntity=ExtintorInspecaoItem.class)
 	private Collection<ExtintorInspecaoItem> itens;
 
+	public ExtintorInspecao()
+	{
+		super();
+	}
 	
 	public ExtintorInspecao(Long id, Date data, Integer periodoMax, String localizacao, Integer numeroCilindro, String tipo)
 	{
@@ -59,31 +64,15 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 		if(periodoMax != null)
 			this.vencimento = DateUtil.incrementaMes(data, periodoMax);
 		
-		if(this.extintor == null)
+		if (this.extintor == null)
 			this.extintor = new Extintor();
 		
-		this.extintor.setLocalizacaoProjection(localizacao);
+		if (this.extintor.getUltimoHistorico() == null)
+			this.extintor.setHistoricoExtintores(Arrays.asList(new HistoricoExtintor()));
+
+		this.extintor.getUltimoHistorico().setLocalizacao(localizacao);
 		this.extintor.setNumeroCilindro(numeroCilindro);
 		this.extintor.setTipo(tipo);
-	}
-
-	public ExtintorInspecao()
-	{
-		super();
-	}
-	
-	public void setProjectionExtintorLocalizacao(String extintorLocalizacao)
-	{
-		if (extintor == null)
-			extintor = new Extintor();
-		extintor.setLocalizacaoProjection(extintorLocalizacao);
-	}
-
-	public void setProjectionExtintorEstabelecimentoId(Long extintorEstabelecimentoId)
-	{
-		if (extintor == null)
-			extintor = new Extintor();
-		extintor.setEstabelecimentoIdProjection(extintorEstabelecimentoId);
 	}
 
 	public void setProjectionExtintorNumeroCilindro(Integer extintorNumeroCilindro)

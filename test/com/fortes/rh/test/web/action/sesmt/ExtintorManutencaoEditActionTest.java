@@ -99,7 +99,7 @@ public class ExtintorManutencaoEditActionTest extends MockObjectTestCase
 		historico.setExtintor(extintor);
 		historico.setEstabelecimento(estabelecimento);
 		
-		extintor.setHistoricoExtintor(historico);
+		extintor.setUltimoHistorico(historico);
 		
 		ExtintorManutencao extintorManutencao = ExtintorManutencaoFactory.getEntity(1L);
 		extintorManutencao.setExtintor(extintor);
@@ -158,7 +158,7 @@ public class ExtintorManutencaoEditActionTest extends MockObjectTestCase
 		historico.setExtintor(extintor);
 		historico.setEstabelecimento(estabelecimento);
 		
-		extintor.setHistoricoExtintor(historico);
+		extintor.setUltimoHistorico(historico);
 		
 		ExtintorManutencao extintorManutencao = ExtintorManutencaoFactory.getEntity(1L);
 		extintorManutencao.setExtintor(extintor);

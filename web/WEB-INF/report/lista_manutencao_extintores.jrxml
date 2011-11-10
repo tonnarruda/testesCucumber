@@ -30,7 +30,7 @@
 	<field name="colaborador.estabelecimento.nome" class="java.lang.String"/>
 	<field name="saida" class="java.util.Date"/>
 	<field name="servicosRelatorio" class="java.lang.String"/>
-	<field name="extintor.localizacao" class="java.lang.String"/>
+	<field name="extintor.ultimoHistorico.localizacao" class="java.lang.String"/>
 	<field name="extintor.numeroCilindro" class="java.lang.Integer"/>
 	<field name="extintor.tipoDic" class="java.lang.String"/>
 	<field name="retorno" class="java.util.Date"/>
@@ -199,7 +199,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{extintor.localizacao}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{extintor.ultimoHistorico.localizacao}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

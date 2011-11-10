@@ -76,13 +76,13 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 		if (inicio != null)
 		{
 			if (fim != null)
-				criteria.add(Expression.between("saida", inicio, fim));
+				criteria.add(Expression.between("m.saida", inicio, fim));
 			else
-				criteria.add(Expression.eq("saida", inicio));
+				criteria.add(Expression.eq("m.saida", inicio));
 		}
 
 		if (semRetorno)
-			criteria.add(Expression.isNull("retorno"));
+			criteria.add(Expression.isNull("m.retorno"));
 
 		return criteria;
 	}
@@ -129,5 +129,21 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 		query.setLong("manutencaoServicoVencidoId", manutencaoServicoVencidoId);
 
 		return query.list();
+	}
+
+	public ExtintorManutencao findByIdProjection(Long extintorManutencaoId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "em");
+		criteria.createCriteria("em.extintor", "e");
+		criteria.createCriteria("e.historicoExtintores", "he");
+
+		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
+													.setProjection( Projections.max("data") )
+													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
+		
+		criteria.add( Property.forName("he.data").eq(maxData) );
+		criteria.add(Expression.eq("em.id", extintorManutencaoId));
+
+		return (ExtintorManutencao) criteria.uniqueResult();
 	}
 }

@@ -13,7 +13,6 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
@@ -60,19 +59,8 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 		}
 		else
 		{
-			ProjectionList p = Projections.projectionList().create();
-			p.add(Projections.property("i.id"), "id");
-			p.add(Projections.property("i.observacao"), "observacao");
-			p.add(Projections.property("i.data"), "data");
-			p.add(Projections.property("he.localizacao"), "projectionExtintorLocalizacao");
-			p.add(Projections.property("he.estabelecimento.id"), "projectionExtintorEstabelecimentoId");
-			p.add(Projections.property("e.numeroCilindro"), "projectionExtintorNumeroCilindro");
-			p.add(Projections.property("e.tipo"), "projectionExtintorTipo");
-			
-			criteria.setProjection(p);
 			criteria.setFetchMode("e", FetchMode.JOIN);
 			criteria.addOrder(Order.asc("i.data"));
-			criteria.setResultTransformer(new AliasToBeanResultTransformer(ExtintorInspecao.class));
 		}
 		
 		criteria.add( Property.forName("he.data").eq(maxData) );
@@ -156,31 +144,15 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 	public ExtintorInspecao findByIdProjection(Long extintorInspecaoId) 
 	{
 		Criteria criteria = getSession().createCriteria(ExtintorInspecao.class, "ei");
-		criteria.createCriteria("ei.itens", "i", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ei.extintor", "e");
 		criteria.createCriteria("e.historicoExtintores", "he");
-		criteria.createCriteria("he.estabelecimento", "est");
 
 		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
 													.setProjection( Projections.max("data") )
 													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
 		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ei.id"), "id");
-		p.add(Projections.property("ei.observacao"), "observacao");
-		p.add(Projections.property("ei.data"), "data");
-		p.add(Projections.property("he.localizacao"), "projectionExtintorLocalizacao");
-		p.add(Projections.property("he.estabelecimento.id"), "projectionExtintorEstabelecimentoId");
-		p.add(Projections.property("e.numeroCilindro"), "projectionExtintorNumeroCilindro");
-		p.add(Projections.property("e.tipo"), "projectionExtintorTipo");
-		p.add(Projections.property("ei.itens"), "itens");
-
-		criteria.setProjection(Projections.distinct(p));
-		
 		criteria.add( Property.forName("he.data").eq(maxData) );
 		criteria.add(Expression.eq("ei.id", extintorInspecaoId));
-
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return (ExtintorInspecao) criteria.uniqueResult();
 	}
