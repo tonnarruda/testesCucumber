@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.60.52" data="07/11/2011">
+		- TeD > Cadastros > Cursos/Treinamentos > Turmas: Enviar aviso por email.
+		- Ao cancelar o desligamento do colaborador, a mensagem de aviso de desligamento será removida da caixa de mensagem. 
+	</Versao>
 	<Versao id="1.1.59.51" data="27/10/2011">
 		- SESMT > Movimentações > Extintores > Inspeção e Manutenção: Nova coluna [Observação] na listagem e ajuste no relatório da listagem.
 		- SESMT > Cadastros > Extintores > Alteração do [Tipo] PQS Pó Químico Seco (Classes A,B e C) por ABC/PQS Pó Químico Seco (Classes A,B e C)
 		- Melhorias no processo de auditoria.
 	</Versao>
 	<Versao id="1.1.59.50" data="20/10/2011">
-		- ATENÇÃO: Novo WebService do AC Pessoal versão: 1.1.46.1. Obs.: Essa versão do Fortes RH só vai funcionar com a nova versão do WS.  
+		- ATENÇÃO: Novo WebService do AC Pessoal versão: 1.1.46.1. Obs.: Essa versão do Fortes RH só irá funcionar com essa nova versão do WebService.  
 		- CeS > Movimentações > Faturamentos: Novo cadastro de faturamentos da empresa, utilizado no Painel de Indicadores de CeS.
 	</Versao>
 	<Versao id="1.1.58.49" data="17/10/2011">
 		- CeS > Cadastros > Candidatos: Novo botão Triagem, redireciona para Triagem de currículos.
-		- CeS > Cadastros > Áreas Organizacionais: Impressão da listagem de Área Organizacional.
 		- CeS > Movimentações > Solicitações de Pessoal > Triagem: Nova busca automática de candidatos.
 		- CeS > Movimentações > Solicitações de Pessoal: Novas colunas na listagem: Código, Motivo.
 		- CeS > Movimentações > Solicitações de Pessoal: Novo campo [Horário comercial].
 		- CeS > Movimentações > Solicitações de Pessoal > Impressão > Novos campos: Código, Descrição e Data. 
+		- ReS > Cadastros > Áreas Organizacionais: Impressão da listagem de Área Organizacional.
 		- Aval. Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Nova opção seleção de empresa no filtro.
 		- Aval. Desempenho > Relatórios > Colaborador ver o resultado do seu teste.
 		- Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Impressão da Entrevista de Desligamento respondida.

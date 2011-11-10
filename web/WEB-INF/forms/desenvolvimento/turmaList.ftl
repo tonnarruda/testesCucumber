@@ -42,7 +42,7 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	<@display.table name="turmas" id="turma" class="dados" >
-		<@display.column title="Ações" style="width:155px">
+		<@display.column title="Ações" style="width:170px">
 			<@ww.hidden name="turma.id" value="" />
 			<a href="../colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			<a href="prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>

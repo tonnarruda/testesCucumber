@@ -18203,3 +18203,11 @@ update parametrosdosistema set appversao = '1.1.59.50';--.go
 update papel set nome = 'Faturamento Mensal' where id = 526;--.go
 insert into migrations values('20111020142332');--.go
 update parametrosdosistema set appversao = '1.1.59.51';--.go
+-- versao 1.1.60.52
+
+insert into migrations values('20111027154152');--.go
+alter table mensagem add column tipo character varying(1);--.go
+alter table mensagem add column colaborador_id bigint;--.go
+ALTER TABLE ONLY mensagem ADD CONSTRAINT mensagem_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
+insert into migrations values('20111101152828');--.go
+update parametrosdosistema set appversao = '1.1.60.52';--.go

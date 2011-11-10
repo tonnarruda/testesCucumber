@@ -83,7 +83,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			query.setBoolean("entregue", entregue);
 
 		if (StringUtils.isNotBlank(matriculaBusca))
-			query.setString("matricula", matriculaBusca.toLowerCase());
+			query.setString("matricula", "%" + matriculaBusca.toLowerCase() + "%");
 
 		if (StringUtils.isNotBlank(nomeBusca))
 			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");

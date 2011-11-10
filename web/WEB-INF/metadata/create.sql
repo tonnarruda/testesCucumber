@@ -1594,11 +1594,13 @@ CREATE TABLE mensagem (
     remetente character varying(100),
     link character varying(200),
     data timestamp,
-    texto text
+    texto text,
+    tipo character varying(1),
+    colaborador_id bigint
 );
 ALTER TABLE mensagem ADD CONSTRAINT mensagem_pkey PRIMARY KEY (id);
 CREATE SEQUENCE mensagem_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
-
+ALTER TABLE ONLY mensagem ADD CONSTRAINT mensagem_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
 
 CREATE TABLE usuariomensagem (
     id bigint NOT NULL,
