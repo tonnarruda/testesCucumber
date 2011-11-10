@@ -40,8 +40,8 @@
 	<title>Colaboradores</title>
 </head>
 <body>
-	<@ww.actionerror/>
 	<@ww.actionmessage/>
+	<@ww.actionerror/>
 
 	<#if !nomeBusca?exists>
 		<#assign nomeBusca="">

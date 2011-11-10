@@ -1,10 +1,9 @@
 package com.fortes.rh.web.action.geral;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +22,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Mes;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
@@ -49,7 +49,6 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
-import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -187,9 +186,13 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		colaboradorManager.remove(colaborador, getEmpresaSistema());
+		try {
+			colaboradorManager.remove(colaborador, getEmpresaSistema());
+		} catch (InvocationTargetException e) {
+			addActionError(e.getTargetException().getMessage());
+			return "error";
+		}
 		addActionMessage("Colaborador excluído com sucesso.");
-
 		return Action.SUCCESS;
 	}
 

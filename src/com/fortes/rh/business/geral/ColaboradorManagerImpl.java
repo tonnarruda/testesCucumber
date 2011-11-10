@@ -37,6 +37,7 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
@@ -1422,7 +1423,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if(empresa.isAcIntegra())
 		{
 			if( ! acPessoalClientColaborador.remove(colaboradorTmp, empresa))
-				throw new Exception("Não foi possível remover o colaborador no AC Pessoal.");
+				throw new IntegraACException("Não foi possível remover o colaborador no AC Pessoal.");
 		}
 	}
 

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.61.53" data="10/11/2011">
+		- ReS > Painel de Indicadores: Novo Painel de Indicadores de ReS.
+		- SESMT > Movimentações > Extintores > Manutenção > Inserir Manutenção de Extintor: Nova forma de busca no campo Extintor.  
+	</Versao>
 	<Versao id="1.1.60.52" data="07/11/2011">
 		- TeD > Cadastros > Cursos/Treinamentos > Turmas: Enviar aviso por email.
 		- Ao cancelar o desligamento do colaborador, a mensagem de aviso de desligamento será removida da caixa de mensagem. 
