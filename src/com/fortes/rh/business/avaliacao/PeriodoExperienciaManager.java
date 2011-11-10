@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.web.tags.CheckBox;
 
 public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperiencia> 
@@ -12,4 +14,5 @@ public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperie
 	String findRodapeDiasDoPeriodoDeExperiencia(Collection<PeriodoExperiencia> periodoExperiencias);
 	Collection<CheckBox> populaCheckBox(Long empresaId);
 	Collection<CheckBox> populaCheckBoxDistinctDias(Long empresaId);
+	Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal);
 }

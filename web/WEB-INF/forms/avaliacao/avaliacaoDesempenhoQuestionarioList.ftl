@@ -78,7 +78,7 @@
 	<@ww.form name="form" action="avaliacaoDesempenhoQuestionarioList.action" onsubmit="${validarCampos}" method="POST">
 
 		<@ww.select label="Empresa" name="empresaId" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa" onchange="populaAvaliacaoDesempenho();" disabled="${desabilita}"/>
-		<@ww.select label="Avaliação de Desempenho" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 245px;" headerKey="" headerValue="Selecione..." onchange="${funcaoAvaliacao}"/>
+		<@ww.select label="Avaliação de Desempenho" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 500px;" headerKey="" headerValue="Selecione..." onchange="${funcaoAvaliacao}"/>
 		<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO">
 			<@ww.select label="Avaliador" name="avaliador.id" id="avaliador" list="avaliadors" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="Selecione..."/>
 		</@authz.authorize>

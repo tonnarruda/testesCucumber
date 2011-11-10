@@ -20,6 +20,7 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
+import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -56,13 +57,16 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Avaliacao avaliacao;
 	private Collection<Avaliacao> avaliacoes;
-
+	private Collection<FaixaPerformanceAvaliacaoDesempenho> faixaPerformanceAvaliacaoDesempenhos;
+	
 	private Pergunta pergunta;
 	private Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
 	
 	private Date dataReferencia;
 	private Date periodoIni;
 	private Date periodoFim;
+	private String[] percentualInicial;
+	private String[] percentualFinal;
 	private Collection<Empresa> empresas;
 	private Empresa empresa;
 	
@@ -178,6 +182,16 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 		
 	}
+
+	public String prepareRelatorioPerformanceAvaliacaoDesempenho() throws Exception
+	{
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), getUsuarioLogado().getId(), null);
+
+		avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
+		
+		return Action.SUCCESS;
+	}
 	
 	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto() throws Exception 
     {
@@ -256,6 +270,29 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
 			prepareRelatorioRankingPerformance();
+			return Action.INPUT;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimeRelatorioPerformanceAvaliacaoDesempenho() throws Exception 
+	{
+		try 
+		{
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, new String[]{avaliacao.getId()+""}, areasCheck, estabelecimentoCheck, colaboradorsCheck);
+			
+			faixaPerformanceAvaliacaoDesempenhos = periodoExperienciaManager.agrupaFaixaAvaliacao(colaboradores, percentualInicial, percentualFinal);
+			
+			reportTitle = " Performance de Avaliação de Desempenho";
+			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim);
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
+		}
+		catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			prepareRelatorioPerformanceAvaliacaoDesempenho();
 			return Action.INPUT;
 		}
 		
@@ -618,5 +655,25 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public String[] getPercentualInicial() {
+		return percentualInicial;
+	}
+
+	public void setPercentualInicial(String[] percentualInicial) {
+		this.percentualInicial = percentualInicial;
+	}
+
+	public String[] getPercentualFinal() {
+		return percentualFinal;
+	}
+
+	public void setPercentualFinal(String[] percentualFinal) {
+		this.percentualFinal = percentualFinal;
+	}
+
+	public Collection<FaixaPerformanceAvaliacaoDesempenho> getFaixaPerformanceAvaliacaoDesempenhos() {
+		return faixaPerformanceAvaliacaoDesempenhos;
 	}
 }

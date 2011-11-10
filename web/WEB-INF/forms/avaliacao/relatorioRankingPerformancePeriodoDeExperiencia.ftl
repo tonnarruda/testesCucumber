@@ -32,11 +32,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#empresaId').change(function() {
-										$('#listCheckBoxcolaboradorsCheck').empty();
-			 
-										getAvaliacoes(this.value); 
-										getEstabelecimentos(this.value);
-										getAreasOrganizacionais(this.value);
+													getAreasOrganizacionais(this.value);
 									});
 			
 			$("input[name='avaliacaoCheck']").live('click', function() { getColaboradores(); });
