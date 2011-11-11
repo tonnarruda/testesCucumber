@@ -14,5 +14,5 @@ public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperie
 	String findRodapeDiasDoPeriodoDeExperiencia(Collection<PeriodoExperiencia> periodoExperiencias);
 	Collection<CheckBox> populaCheckBox(Long empresaId);
 	Collection<CheckBox> populaCheckBoxDistinctDias(Long empresaId);
-	Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal);
+	Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal) throws Exception;
 }

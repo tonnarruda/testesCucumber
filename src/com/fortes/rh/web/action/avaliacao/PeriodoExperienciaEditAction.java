@@ -27,16 +27,14 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.pesquisa.Pergunta;
-import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
 
 public class PeriodoExperienciaEditAction extends MyActionSupportList
 {
@@ -280,7 +278,9 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, new String[]{avaliacao.getId()+""}, areasCheck, estabelecimentoCheck, colaboradorsCheck);
+			Collection<AvaliacaoDesempenho> avaliacaoDesempenhoIds = avaliacaoDesempenhoManager.findIdsAvaliacaoDesempenho(avaliacao.getId());
+			CollectionUtil<AvaliacaoDesempenho> clu = new CollectionUtil<AvaliacaoDesempenho>();
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, clu.convertCollectionToArrayIdsString(avaliacaoDesempenhoIds), areasCheck, estabelecimentoCheck, colaboradorsCheck);
 			
 			faixaPerformanceAvaliacaoDesempenhos = periodoExperienciaManager.agrupaFaixaAvaliacao(colaboradores, percentualInicial, percentualFinal);
 			
@@ -290,7 +290,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		}
 		catch (Exception e)
 		{
-			addActionMessage(e.getMessage());
+			addActionError(e.getMessage());
 			e.printStackTrace();
 			prepareRelatorioPerformanceAvaliacaoDesempenho();
 			return Action.INPUT;

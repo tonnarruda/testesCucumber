@@ -36,7 +36,7 @@ public class FaixaPerformanceAvaliacaoDesempenho
 	{
 		for (FaixaPerformanceAvaliacaoDesempenho faixa : faixas) 
 		{
-			if(faixa.percentIni <= colaborador.getPerformanceDouble() && faixa.percentFim >= colaborador.getPerformanceDouble())
+			if(faixa.percentIni <= (colaborador.getPerformanceDouble()*100) && faixa.percentFim >= (colaborador.getPerformanceDouble()*100))
 				faixa.quantidade++;
 		}
 		

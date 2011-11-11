@@ -78,13 +78,13 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		return new ArrayList<CheckBox>();
 	}
 
-	public Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal) 
+	public Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal) throws Exception 
 	{
 		Collection<FaixaPerformanceAvaliacaoDesempenho> faixas = new ArrayList<FaixaPerformanceAvaliacaoDesempenho>();
 		
 		for (int i = 0; i < percentualInicial.length; i++) 
 		{
-			if(StringUtils.isEmpty(percentualInicial[i]) || StringUtils.isEmpty(percentualFinal[i]))
+			if(percentualInicial == null || percentualFinal == null || StringUtils.isEmpty(percentualInicial[i]) || StringUtils.isEmpty(percentualFinal[i]))
 				continue;
 				
 			double percentIni = Double.valueOf(percentualInicial[i]);
@@ -94,6 +94,9 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 				faixas.add(new FaixaPerformanceAvaliacaoDesempenho(percentIni, percentFim, colaboradores.size()));
 		}
 
+		if(faixas.isEmpty())
+			throw new Exception("Não existem colaboradores dentro das faixas solicitadas.");
+		
 		for (Colaborador colaborador : colaboradores)
 		{
 			FaixaPerformanceAvaliacaoDesempenho.selecionaColaborador(colaborador, faixas);

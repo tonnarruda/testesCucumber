@@ -6,7 +6,7 @@
 
 	<title>Performance das Avaliações de Desempenho</title>
 
-	<#assign validarCamposAvaliacaoDesempenho="return validaFormularioEPeriodo('form', new Array('periodoIni','periodoFim'), new Array('periodoIni','periodoFim'))"/>
+	<#assign validarCamposAvaliacaoDesempenho="return validaFormularioEPeriodo('form', new Array('avaliacaoId','periodoIni','periodoFim'), new Array('avaliacaoId','periodoIni','periodoFim'))"/>
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<#if periodoIni?exists>
@@ -19,9 +19,6 @@
 	<#else>
 		<#assign periodoFimFormatado = ""/>
 	</#if>
-
-					
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
@@ -36,7 +33,7 @@
 			var campo = "<li>";
 			campo += "<input type='text' name='percentualInicial'  value='" + valor + "' />";
 			campo += " a ";
-			campo += "<input type='text' name='percentualFim'  value='" + valor + "' />";
+			campo += "<input type='text' name='percentualFinal'  value='" + valor + "' />";
 			campo += " <img title='Remover' src="+ imgDel +" onclick='javascript:$(this).parent().remove();' style='cursor:pointer;'/>";
 			campo += "</li>";
 			
@@ -71,7 +68,7 @@
 		
 		<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 		<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
-		<@ww.select label="Avaliação" name="avaliacao.id" id="avaliacaoId" listKey="id" listValue="titulo" list="avaliacoes" headerKey="-1" headerValue="Seleciona"/>
+		<@ww.select label="Avaliação" name="avaliacao.id" id="avaliacaoId" required="true" listKey="id" listValue="titulo" list="avaliacoes" headerKey="" headerValue="Selecione"/>
 		<@ww.select label="Filtrar apenas Colaboradores da Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa"/>
 
 		<label>Agrupar resultado entre as faixas(%):</label>

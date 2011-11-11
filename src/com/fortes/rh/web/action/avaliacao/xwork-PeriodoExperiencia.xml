@@ -82,20 +82,18 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
-
 		<action name="prepareRelatorioPerformanceAvaliacaoDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioPerformanceAvaliacaoDesempenho">
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPerformanceAvaliacaoDesempenho.ftl</result>
 		</action>
 		<action name="imprimeRelatorioPerformanceAvaliacaoDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPerformanceAvaliacaoDesempenho">
 		  	<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/performaceAvaliacaoDesempenho.jasper</param>
+				<param name="location">WEB-INF/report/performanceAvaliacaoDesempenho.jasper</param>
 				<param name="dataSource">faixaPerformanceAvaliacaoDesempenhos</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">PerformaceAvaliacaoDesempenho.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPerformanceAvaliacaoDesempenho.ftl</result>
 		</action>
-
 		<action name="imprimeRelatorioRankingPerformancePeriodoDeExperienciaXLS" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioRankingPerformancePeriodoDeExperiencia">
 			<result name="success" type="xls">
 				<param name="dataSource">colaboradores</param>

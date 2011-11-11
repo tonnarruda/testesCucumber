@@ -38,25 +38,25 @@ public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 		assertEquals(periodoExperiencias, periodoExperienciaManager.findAllSelect(empresaId, false));
 	}
 	
-	public void testAgrupaFaixaAvaliacao()
+	public void testAgrupaFaixaAvaliacao() throws Exception
 	{
-		Colaborador joao = new Colaborador("joao", "", "", null, 40.0, "");
-		Colaborador toin = new Colaborador("toin", "", "", null, 70.0, "");
-		Colaborador pedro = new Colaborador("pedro", "", "", null, 10.21, "");
-		Colaborador maria = new Colaborador("maria", "", "", null, 50.0, "");
-		Colaborador jurema = new Colaborador("jurema", "", "", null, 90.0, "");
-		Colaborador babau = new Colaborador("babau", "", "", null, 100.0, "");
+		Colaborador joao = new Colaborador("joao", "", "", null, 0.40, "");
+		Colaborador toin = new Colaborador("toin", "", "", null, 0.70, "");
+		Colaborador pedro = new Colaborador("pedro", "", "", null, 0.10, "");
+		Colaborador maria = new Colaborador("maria", "", "", null, 0.50, "");
+		Colaborador jurema = new Colaborador("jurema", "", "", null, 0.90, "");
+		Colaborador babau = new Colaborador("babau", "", "", null, 1.0, "");
 		
 		Collection<Colaborador> colaboradores = Arrays.asList(joao, toin, pedro, maria, jurema, babau);
 		
-		String[] percentualInicial = new String[]{"10.21", "31", null, "51",  "", null, "11"};
+		String[] percentualInicial = new String[]{"10", "31", null, "51",  "", null, "11"};
 		String[] percentualFinal = new String[]  {"30", "50", "",   "100", "", "",   "2", null};
 		
 		Collection<FaixaPerformanceAvaliacaoDesempenho> faixas = periodoExperienciaManager.agrupaFaixaAvaliacao(colaboradores, percentualInicial, percentualFinal);
 		assertEquals(3, faixas.size());
 		
 		FaixaPerformanceAvaliacaoDesempenho faixa_10_30 = (FaixaPerformanceAvaliacaoDesempenho)faixas.toArray()[0];
-		assertEquals("De 10.21% à 30.0%", faixa_10_30.getFaixa());
+		assertEquals("De 10.0% à 30.0%", faixa_10_30.getFaixa());
 		assertEquals(1, faixa_10_30.getQuantidade());
 		assertEquals("16.67", faixa_10_30.getPercentual());
 		
