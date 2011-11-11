@@ -338,24 +338,27 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintor.setAtivo(true);
 		extintorDao.save(extintor);
 		
+		Date data = DateUtil.criarDataMesAno(10, 11, 2011);
+		
 		HistoricoExtintor historico = HistoricoExtintorFactory.getEntity();
 		historico.setEstabelecimento(estabelecimento);
 		historico.setExtintor(extintor);
+		historico.setLocalizacao("teste");
+		historico.setData(data);
 		historicoExtintorDao.save(historico);
 
 		ExtintorInspecaoItem item1 = new ExtintorInspecaoItem();
-		item1.setDescricao("teste");
+		item1.setDescricao("teste 1");
 		extintorInspecaoItemDao.save(item1);
 
 		ExtintorInspecaoItem item2 = new ExtintorInspecaoItem();
-		item2.setDescricao("teste");
+		item2.setDescricao("teste 2");
 		extintorInspecaoItemDao.save(item2);
 		
 		Collection<ExtintorInspecaoItem> itens = Arrays.asList(item1, item2);
 		
 		ExtintorInspecao inspecao = ExtintorInspecaoFactory.getEntity();
 		inspecao.setExtintor(extintor);
-		inspecao.setData(DateUtil.criarDataMesAno(2, 8, 2009));
 		inspecao.setItens(itens);
 		extintorInspecaoDao.save(inspecao);
 		

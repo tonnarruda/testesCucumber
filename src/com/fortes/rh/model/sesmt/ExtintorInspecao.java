@@ -74,6 +74,19 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 		this.extintor.setNumeroCilindro(numeroCilindro);
 		this.extintor.setTipo(tipo);
 	}
+	
+	public ExtintorInspecao(ExtintorInspecao extintorInspecao, HistoricoExtintor historicoExtintor)
+	{
+		this.setData(extintorInspecao.getData());
+		this.setVencimento(extintorInspecao.getVencimento());
+		this.setEmpresaResponsavel(extintorInspecao.getEmpresaResponsavel());
+		this.setOutroMotivo(extintorInspecao.getOutroMotivo());
+		this.setObservacao(extintorInspecao.getObservacao());
+		this.setExtintor(extintorInspecao.getExtintor());
+		this.setItens(extintorInspecao.getItens());
+		
+		this.getExtintor().setUltimoHistorico(historicoExtintor);
+	}
 
 	public void setProjectionExtintorNumeroCilindro(Integer extintorNumeroCilindro)
 	{

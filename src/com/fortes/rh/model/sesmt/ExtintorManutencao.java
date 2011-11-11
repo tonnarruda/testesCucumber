@@ -77,6 +77,20 @@ public class ExtintorManutencao extends AbstractModel implements Serializable
 		this.extintor.setTipo(tipo);
 	}
 
+	public ExtintorManutencao(ExtintorManutencao extintorManutencao, HistoricoExtintor historicoExtintor)
+	{
+		this.setSaida(extintorManutencao.getSaida());
+		this.setRetorno(extintorManutencao.getRetorno());
+		this.setMotivo(extintorManutencao.getMotivo());
+		this.setVencimento(extintorManutencao.getVencimento());
+		this.setOutroMotivo(extintorManutencao.getOutroMotivo());
+		this.setObservacao(extintorManutencao.getObservacao());
+		this.setExtintor(extintorManutencao.getExtintor());
+		this.setServicos(extintorManutencao.getServicos());
+		
+		this.getExtintor().setUltimoHistorico(historicoExtintor);
+	}
+	
 	public String getMotivoDic()
 	{
 		if (motivo == null)

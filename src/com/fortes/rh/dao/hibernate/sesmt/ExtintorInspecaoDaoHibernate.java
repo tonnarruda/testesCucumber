@@ -143,17 +143,17 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 
 	public ExtintorInspecao findByIdProjection(Long extintorInspecaoId) 
 	{
-		Criteria criteria = getSession().createCriteria(ExtintorInspecao.class, "ei");
-		criteria.createCriteria("ei.extintor", "e");
-		criteria.createCriteria("e.historicoExtintores", "he");
-
-		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
-													.setProjection( Projections.max("data") )
-													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
+		Query query = getSession().createQuery("SELECT new ExtintorInspecao(ei, he) FROM ExtintorInspecao ei " +
+												"LEFT JOIN ei.itens i " +
+												"LEFT JOIN ei.extintor e " +
+												"LEFT JOIN e.historicoExtintores he " +
+												"LEFT JOIN he.estabelecimento est " +
+												"WHERE ei.id = :extintorInspecaoId " +
+												"AND he.data = (SELECT MAX(he2.data) FROM HistoricoExtintor he2 WHERE he2.extintor.id = e.id) " +
+												"GROUP BY ei.id, he.id");
 		
-		criteria.add( Property.forName("he.data").eq(maxData) );
-		criteria.add(Expression.eq("ei.id", extintorInspecaoId));
-
-		return (ExtintorInspecao) criteria.uniqueResult();
+		query.setLong("extintorInspecaoId", extintorInspecaoId);
+		
+		return (ExtintorInspecao) query.uniqueResult();
 	}
 }

@@ -16,6 +16,7 @@ import org.hibernate.criterion.Restrictions;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorManutencaoDao;
 import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
+import com.fortes.rh.model.sesmt.ExtintorInspecao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.model.sesmt.HistoricoExtintor;
 
@@ -133,17 +134,17 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 
 	public ExtintorManutencao findByIdProjection(Long extintorManutencaoId) 
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "em");
-		criteria.createCriteria("em.extintor", "e");
-		criteria.createCriteria("e.historicoExtintores", "he");
+		Query query = getSession().createQuery("SELECT new ExtintorManutencao(em, he) FROM ExtintorManutencao em " +
+				"LEFT JOIN em.servicos s " +
+				"LEFT JOIN em.extintor e " +
+				"LEFT JOIN e.historicoExtintores he " +
+				"LEFT JOIN he.estabelecimento est " +
+				"WHERE em.id = :extintorManutencaoId " +
+				"AND he.data = (SELECT MAX(he2.data) FROM HistoricoExtintor he2 WHERE he2.extintor.id = e.id) " +
+				"GROUP BY em.id, he.id");
 
-		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
-													.setProjection( Projections.max("data") )
-													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
+		query.setLong("extintorManutencaoId", extintorManutencaoId);
 		
-		criteria.add( Property.forName("he.data").eq(maxData) );
-		criteria.add(Expression.eq("em.id", extintorManutencaoId));
-
-		return (ExtintorManutencao) criteria.uniqueResult();
+		return (ExtintorManutencao) query.uniqueResult();
 	}
 }

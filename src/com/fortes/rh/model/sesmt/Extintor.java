@@ -2,7 +2,6 @@ package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -40,7 +39,7 @@ public class Extintor extends AbstractModel implements Serializable
 	private Integer periodoMaxInspecao;
 	private Integer periodoMaxHidrostatico;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="extintor", cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="extintor")
 	private Collection<HistoricoExtintor> historicoExtintores;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -222,7 +221,7 @@ public class Extintor extends AbstractModel implements Serializable
 	}
 
 	public Collection<HistoricoExtintor> getHistoricoExtintores() {
-		return historicoExtintores;
+		return this.historicoExtintores;
 	}
 
 	public void setHistoricoExtintores(Collection<HistoricoExtintor> historicoExtintores) {

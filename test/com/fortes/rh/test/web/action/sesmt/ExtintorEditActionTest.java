@@ -78,6 +78,10 @@ public class ExtintorEditActionTest extends MockObjectTestCase
 		action.setExtintor(extintor);
 
 		manager.expects(once()).method("remove");
+		
+		manager.expects(once()).method("getCount").will(returnValue(1));
+		manager.expects(once()).method("findAllSelect");
+		
 		assertEquals(action.delete(), "success");
 	}
 
