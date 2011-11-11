@@ -18211,3 +18211,11 @@ alter table mensagem add column colaborador_id bigint;--.go
 ALTER TABLE ONLY mensagem ADD CONSTRAINT mensagem_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
 insert into migrations values('20111101152828');--.go
 update parametrosdosistema set appversao = '1.1.60.52';--.go
+-- versao 1.1.61.53
+
+update papel set papelmae_id=360, ordem=5 where id=73;--.go
+update papel set papelmae_id=360, ordem=6 where id=69;--.go
+
+update papel set nome='Painel de Indicadores', url='/indicador/duracaoPreenchimentoVaga/painel.action' where id=461;--.go
+insert into migrations values('20111104144924');--.go
+update parametrosdosistema set appversao = '1.1.61.53';--.go
