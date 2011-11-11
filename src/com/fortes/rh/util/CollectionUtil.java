@@ -106,6 +106,36 @@ public final class CollectionUtil<T>
 		return null;
 	}
 
+	/** Responsável por converter um Collection informado em array de Longs com os id's convertendo para array de String*/
+	public String[] convertCollectionToArrayIdsString(Collection<T> coll)
+	{
+		if(coll != null)
+		{
+			try
+			{
+				Method mKey = null;
+				String[] ids = new String[coll.size()];
+				
+				int count = 0;
+				for(T clazz: coll)
+				{
+					mKey   = clazz.getClass().getMethod("getId");
+					ids[count] = ((Long) mKey.invoke(clazz,new Object[]{})).toString();
+					count++;
+				}
+				
+				return ids;
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		return null;
+	}
+
 	/** Responsável por converter um Collection informado em array de String*/
 	public String[] convertCollectionToArrayString(Collection<T> coll, String metodoGet)
 	{

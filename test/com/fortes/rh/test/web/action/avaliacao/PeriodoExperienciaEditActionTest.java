@@ -20,11 +20,13 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -128,6 +130,51 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("update").with(eq(periodoExperiencia)).isVoid();
 
 		assertEquals("success", action.update());
+	}
+	
+	public void testImpPerformAvDesempenho() throws Exception
+	{
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacao.setId(1L);
+		avaliacao.setTitulo("titulo");
+		action.setAvaliacao(avaliacao);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setId(2L);
+		avaliacaoDesempenho.setAvaliacao(avaliacao);
+		
+		Collection<AvaliacaoDesempenho> avaliacaoDesempenhoIds = new ArrayList<AvaliacaoDesempenho>();
+		avaliacaoDesempenhoIds.add(avaliacaoDesempenho);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setId(10L);
+		empresa.setNome("Ente");
+		action.setEmpresa(empresa);
+		
+		Date periodo = new Date();
+		action.setPeriodoIni(periodo);
+		action.setPeriodoFim(periodo);
+		
+		String[] percentualInicio = new String[]{"10"};
+		action.setPercentualInicial(percentualInicio);
+		String[] percentualFinal = new String[]{"30"};
+		action.setPercentualFinal(percentualFinal);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		
+		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+		colaboradors.add(colaborador);
+		
+		FaixaPerformanceAvaliacaoDesempenho faixaPerformanceAvaliacaoDesempenho = new FaixaPerformanceAvaliacaoDesempenho(10.0, 30.0, 2);
+		
+		Collection<FaixaPerformanceAvaliacaoDesempenho> faixaPerformanceAvaliacaoDesempenhos = new ArrayList<FaixaPerformanceAvaliacaoDesempenho>();
+		faixaPerformanceAvaliacaoDesempenhos.add(faixaPerformanceAvaliacaoDesempenho);
+		
+		avaliacaoDesempenhoManager.expects(once()).method("findIdsAvaliacaoDesempenho").will(returnValue(avaliacaoDesempenhoIds));
+		colaboradorManager.expects(once()).method("findColabPeriodoExperiencia").will(returnValue(colaboradors));
+		manager.expects(once()).method("agrupaFaixaAvaliacao").will(returnValue(faixaPerformanceAvaliacaoDesempenhos));
+		
+		assertEquals("success",action.imprimeRelatorioPerformanceAvaliacaoDesempenho());
 	}
 	
     public void testImpRankPerformAvDesempenho() throws Exception

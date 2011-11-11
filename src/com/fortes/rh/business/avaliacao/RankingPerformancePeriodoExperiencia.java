@@ -3,9 +3,13 @@ package com.fortes.rh.business.avaliacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.web.tags.CheckBox;
 
@@ -72,5 +76,11 @@ public class RankingPerformancePeriodoExperiencia extends GenericManagerImpl<Per
 		}
 
 		return new ArrayList<CheckBox>();
+	}
+
+
+	//TODO Sei la pq tem aqui e la na PeriodoExperienciaManagerImpl (Um dia vamos refatorar, qualquer informação do individuo que fez isso ligue para o 190)
+	public Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal) throws Exception  {
+		return null;
 	}
 }
