@@ -16,5 +16,12 @@
 		<action name="updateCamposCandidato" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="updateCamposCandidato">
 			<result name="success" type="redirect">listCamposCandidato.action</result>
 		</action>
+
+		<action name="prepareDeleteSemCodigoAC" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="prepareDeleteSemCodigoAC">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/listSemCodigoAC.ftl</result>
+		</action>
+		<action name="deleteSemCodigoAC" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="deleteSemCodigoAC">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/listSemCodigoAC.ftl</result>
+		</action>
 	</package>
 </xwork>
