@@ -284,7 +284,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			
 			faixaPerformanceAvaliacaoDesempenhos = periodoExperienciaManager.agrupaFaixaAvaliacao(colaboradores, percentualInicial, percentualFinal);
 			
-			reportTitle = " Performance de Avaliação de Desempenho";
+			reportTitle = "Resultado da avaliação agrupado por faixa";
 			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim);
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
 		}
