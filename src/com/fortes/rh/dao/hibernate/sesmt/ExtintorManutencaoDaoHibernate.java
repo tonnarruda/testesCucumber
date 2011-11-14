@@ -3,91 +3,103 @@ package com.fortes.rh.dao.hibernate.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Query;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorManutencaoDao;
 import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
-import com.fortes.rh.model.sesmt.ExtintorInspecao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
-import com.fortes.rh.model.sesmt.HistoricoExtintor;
 
 @SuppressWarnings("unchecked")
 public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<ExtintorManutencao> implements ExtintorManutencaoDao
 {
 	public Collection<ExtintorManutencao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno, String localizacao)
 	{
-		Criteria criteria = montaConsultaFind(false, empresaId, estabelecimentoId, extintorId, inicio, fim, semRetorno, localizacao);
+		Query query = montaQueryFind(false, empresaId, estabelecimentoId, extintorId, inicio, fim, semRetorno, localizacao);
 
 		if(pagingSize != 0)
         {
-			criteria.setFirstResult(((page - 1) * pagingSize));
-			criteria.setMaxResults(pagingSize);
+			query.setFirstResult(((page - 1) * pagingSize));
+			query.setMaxResults(pagingSize);
         }
 
-		return criteria.list();
+		return query.list();
 	}
 
 	public Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno)
 	{
-		Criteria criteria = montaConsultaFind(true, empresaId, estabelecimentoId, extintorId, inicio, fim, semRetorno, null);
+		Query query = montaQueryFind(true, empresaId, estabelecimentoId, extintorId, inicio, fim, semRetorno, null);
 
-		return (Integer)criteria.uniqueResult();
+		return (Integer)query.uniqueResult();
 	}
 
-	private Criteria montaConsultaFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno, String localizacao)
+	private Query montaQueryFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, boolean semRetorno, String localizacao)
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "m");
-		criteria.createCriteria("m.extintor", "e");
-		criteria.createCriteria("e.historicoExtintores", "he");
+		StringBuffer hql = new StringBuffer();
 		
-		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
-													.setProjection( Projections.max("data") )
-													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
-
+		hql.append("SELECT ");
+		
 		if (isCount)
-			criteria.setProjection(Projections.rowCount());
+			hql.append("COUNT(*) ");
 		else
-		{
-			criteria.setFetchMode("e", FetchMode.JOIN);
-			criteria.addOrder(Order.asc("m.saida"));
-		}
-
-		criteria.add( Property.forName("he.data").eq(maxData) );
+			hql.append("new ExtintorManutencao(em, he) ");
+				
+		hql.append("FROM ExtintorManutencao em ");
+		hql.append("LEFT JOIN em.servicos s ");
+		hql.append("LEFT JOIN em.extintor e ");
+		hql.append("LEFT JOIN e.historicoExtintores he ");
+		hql.append("LEFT JOIN he.estabelecimento est ");
+		hql.append("WHERE he.data = (SELECT MAX(he2.data) FROM HistoricoExtintor he2 WHERE he2.extintor.id = e.id) ");
+		hql.append("AND e.empresa.id = :empresaId ");
 		
-		criteria.add(Expression.eq("e.empresa.id", empresaId));
-
 		if (estabelecimentoId != null)
-			criteria.add(Expression.eq("he.estabelecimento.id", estabelecimentoId));
+			hql.append("AND he.estabelecimento.id = :estabelecimentoId ");
 
 		if (extintorId != null)
-			criteria.add(Expression.eq("e.id", extintorId));
+			hql.append("AND e.id = :extintorId ");
 		
 		if (localizacao != null)
-			criteria.add(Expression.like("he.localizacao", "%" + localizacao + "%").ignoreCase());
-
+			hql.append("AND LOWER(he.localizacao) LIKE :localizacao ");
+		
 		if (inicio != null)
 		{
 			if (fim != null)
-				criteria.add(Expression.between("m.saida", inicio, fim));
+				hql.append("AND em.saida BETWEEN :inicio AND :fim ");
 			else
-				criteria.add(Expression.eq("m.saida", inicio));
+				hql.append("AND em.saida = :inicio ");
 		}
-
+		
 		if (semRetorno)
-			criteria.add(Expression.isNull("m.retorno"));
-
-		return criteria;
+			hql.append("AND em.retorno IS NULL ");
+		
+		if (!isCount)
+		{
+			hql.append("GROUP BY em.id, he.id ");
+			hql.append("ORDER BY em.saida");
+		}
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		
+		if (estabelecimentoId != null)
+			query.setLong("estabelecimentoId", estabelecimentoId);
+		
+		if (extintorId != null)
+			query.setLong("extintorId", extintorId);
+		
+		if (localizacao != null)
+			query.setString("localizacao", "%" + localizacao.toLowerCase() + "%");
+		
+		if (inicio != null)
+		{
+			query.setDate("inicio", inicio);
+			if (fim != null)
+				query.setDate("fim", fim);
+		}
+		
+		return query;
 	}
-
+	
 	public Collection<ExtintorManutencao> findManutencaoVencida(Long estabelecimentoId, Date dataVencimento, String motivo)
 	{
 		String periodoMax = "periodoMaxRecarga";

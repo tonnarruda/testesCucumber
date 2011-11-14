@@ -77,6 +77,7 @@ public class ExtintorInspecao extends AbstractModel implements Serializable
 	
 	public ExtintorInspecao(ExtintorInspecao extintorInspecao, HistoricoExtintor historicoExtintor)
 	{
+		this.setId(extintorInspecao.getId());
 		this.setData(extintorInspecao.getData());
 		this.setVencimento(extintorInspecao.getVencimento());
 		this.setEmpresaResponsavel(extintorInspecao.getEmpresaResponsavel());

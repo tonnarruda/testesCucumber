@@ -4,94 +4,107 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Query;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
-import com.fortes.rh.model.sesmt.HistoricoExtintor;
 
 @SuppressWarnings("unchecked")
 public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorInspecao> implements ExtintorInspecaoDao
 {
 	public Collection<ExtintorInspecao> findAllSelect(int page, int pagingSize, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade, String localizacao)
 	{
-		Criteria criteria = montaConsultaFind(false, empresaId, estabelecimentoId, extintorId, inicio, fim, regularidade, localizacao);
-
+		Query query = montaQueryFind(false, empresaId, estabelecimentoId, extintorId, inicio, fim, regularidade, localizacao);
+		
 		if(pagingSize != 0)
         {
-			criteria.setFirstResult(((page - 1) * pagingSize));
-			criteria.setMaxResults(pagingSize);
+			query.setFirstResult(((page - 1) * pagingSize));
+			query.setMaxResults(pagingSize);
         }
 
-		return criteria.list();
+		return query.list();
 	}
 
 	public Integer getCount(Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade)
 	{
-		Criteria criteria = montaConsultaFind(true, empresaId, estabelecimentoId, extintorId, inicio, fim, regularidade, null);
+		Query query = montaQueryFind(true, empresaId, estabelecimentoId, extintorId, inicio, fim, regularidade, null);
 
-		return (Integer)criteria.uniqueResult();
+		return (Integer)query.uniqueResult();
 	}
 
-	private Criteria montaConsultaFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade, String localizacao)
+	private Query montaQueryFind(boolean isCount, Long empresaId, Long estabelecimentoId, Long extintorId, Date inicio, Date fim, char regularidade, String localizacao)
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "i");
-		criteria.createCriteria("i.extintor", "e");
-		criteria.createCriteria("e.historicoExtintores", "he");
-				
-		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
-													.setProjection( Projections.max("data") )
-													.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
+		StringBuffer hql = new StringBuffer();
+		
+		hql.append("SELECT ");
 		
 		if (isCount)
-		{
-			criteria.setProjection(Projections.rowCount());
-			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		}
+			hql.append("COUNT(*) ");
 		else
-		{
-			criteria.setFetchMode("e", FetchMode.JOIN);
-			criteria.addOrder(Order.asc("i.data"));
-		}
+			hql.append("new ExtintorInspecao(ei, he) ");
+				
+		hql.append("FROM ExtintorInspecao ei ");
+		hql.append("LEFT JOIN ei.itens i ");
+		hql.append("LEFT JOIN ei.extintor e ");
+		hql.append("LEFT JOIN e.historicoExtintores he ");
+		hql.append("LEFT JOIN he.estabelecimento est ");
+		hql.append("WHERE he.data = (SELECT MAX(he2.data) FROM HistoricoExtintor he2 WHERE he2.extintor.id = e.id) ");
+		hql.append("AND e.empresa.id = :empresaId ");
 		
-		criteria.add( Property.forName("he.data").eq(maxData) );
-		criteria.add(Expression.eq("e.empresa.id", empresaId));
-
 		if (estabelecimentoId != null)
-			criteria.add(Expression.eq("he.estabelecimento.id", estabelecimentoId));
+			hql.append("AND he.estabelecimento.id = :estabelecimentoId ");
 
 		if (extintorId != null)
-			criteria.add(Expression.eq("e.id", extintorId));
+			hql.append("AND e.id = :extintorId ");
 		
 		if (localizacao != null)
-			criteria.add(Expression.like("he.localizacao", "%" + localizacao + "%").ignoreCase());
-
+			hql.append("AND LOWER(he.localizacao) LIKE :localizacao ");
+		
 		if (inicio != null)
 		{
 			if (fim != null)
-				criteria.add(Expression.between("data", inicio, fim));
+				hql.append("AND ei.data BETWEEN :inicio AND :fim ");
 			else
-				criteria.add(Expression.eq("data", inicio));
+				hql.append("AND ei.data = :inicio ");
 		}
+		
+		if (regularidade == '1')
+			hql.append("AND ei.itens IS EMPTY ");
 
-		if(regularidade == '1') {
-			criteria.add(Expression.isEmpty("itens"));
+		if (regularidade == '2')
+			hql.append("AND ei.itens IS NOT EMPTY ");
+		
+		if (!isCount)
+		{
+			hql.append("GROUP BY ei.id, he.id ");
+			hql.append("ORDER BY ei.data");
 		}
 		
-		if(regularidade == '2') {
-			criteria.add(Expression.isNotEmpty("itens"));
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		
+		if (estabelecimentoId != null)
+			query.setLong("estabelecimentoId", estabelecimentoId);
+		
+		if (extintorId != null)
+			query.setLong("extintorId", extintorId);
+		
+		if (localizacao != null)
+			query.setString("localizacao", "%" + localizacao.toLowerCase() + "%");
+		
+		if (inicio != null)
+		{
+			query.setDate("inicio", inicio);
+			if (fim != null)
+				query.setDate("fim", fim);
 		}
 		
-		return criteria;
+		return query;
 	}
 
 	public Collection<String> findEmpresasResponsaveisDistinct(Long empresaId)
@@ -144,13 +157,13 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 	public ExtintorInspecao findByIdProjection(Long extintorInspecaoId) 
 	{
 		Query query = getSession().createQuery("SELECT new ExtintorInspecao(ei, he) FROM ExtintorInspecao ei " +
-												"LEFT JOIN ei.itens i " +
-												"LEFT JOIN ei.extintor e " +
-												"LEFT JOIN e.historicoExtintores he " +
-												"LEFT JOIN he.estabelecimento est " +
-												"WHERE ei.id = :extintorInspecaoId " +
-												"AND he.data = (SELECT MAX(he2.data) FROM HistoricoExtintor he2 WHERE he2.extintor.id = e.id) " +
-												"GROUP BY ei.id, he.id");
+				"LEFT JOIN ei.itens i " +
+				"LEFT JOIN ei.extintor e " +
+				"LEFT JOIN e.historicoExtintores he " +
+				"LEFT JOIN he.estabelecimento est " +
+				"WHERE ei.id = :extintorInspecaoId " +
+				"AND he.data = (SELECT MAX(he2.data) FROM HistoricoExtintor he2 WHERE he2.extintor.id = e.id) " +
+		"GROUP BY ei.id, he.id");
 		
 		query.setLong("extintorInspecaoId", extintorInspecaoId);
 		
