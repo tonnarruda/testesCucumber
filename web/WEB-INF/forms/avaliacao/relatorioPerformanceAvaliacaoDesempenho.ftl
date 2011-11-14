@@ -4,7 +4,7 @@
 <head>
 <@ww.head/>
 
-	<title>Performance das Avaliações de Desempenho</title>
+	<title>Relatório de Auto Avaliação</title>
 
 	<#assign validarCamposAvaliacaoDesempenho="return validaFormularioEPeriodo('form', new Array('avaliacaoId','periodoIni','periodoFim'), new Array('avaliacaoId','periodoIni','periodoFim'))"/>
 	<#include "../ftl/mascarasImports.ftl" />

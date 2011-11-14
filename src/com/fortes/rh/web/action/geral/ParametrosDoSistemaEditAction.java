@@ -70,6 +70,11 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 	
+	public String prepareDeleteSemCodigoAC() throws Exception
+	{
+		return Action.SUCCESS;
+	}
+	
 	public String updateCamposCandidato() throws Exception
 	{
 		ParametrosDoSistema parametrosDoSistemaTmp = parametrosDoSistemaManager.findById(1L);
