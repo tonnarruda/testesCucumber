@@ -6112,7 +6112,7 @@ INSERT INTO extintorinspecaoitem VALUES(9, 'Gatilho');
 INSERT INTO extintorinspecaoitem VALUES(10, 'Mangueira');
 INSERT INTO extintorInspecaoItem (id, descricao) VALUES (11, 'Outro');
 
-alter sequence extintormanutencaoservico_sequence restart with 12;
+alter sequence extintorinspecaoitem_sequence restart with 12;
 
 INSERT INTO extintormanutencaoservico VALUES(1, 'Recarga');
 INSERT INTO extintormanutencaoservico VALUES(2, 'Pintura');
