@@ -74,7 +74,7 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 		
 		if (!isCount)
 		{
-			hql.append("GROUP BY em.id, he.id ");
+			hql.append("GROUP BY em.id, he.id, em.saida ");
 			hql.append("ORDER BY em.saida");
 		}
 		
