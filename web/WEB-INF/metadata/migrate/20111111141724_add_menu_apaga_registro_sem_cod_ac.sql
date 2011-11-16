@@ -1,2 +1,2 @@
 insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (529, 'LIST_SEM_CODIGOAC', 'Apaga Reg. sem Código AC', '/geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action', 9, true, 37);--.go
-alter sequence papel_sequence restart with 529;--.go
+alter sequence papel_sequence restart with 530;--.go

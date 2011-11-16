@@ -6112,6 +6112,8 @@ INSERT INTO extintorinspecaoitem VALUES(9, 'Gatilho');
 INSERT INTO extintorinspecaoitem VALUES(10, 'Mangueira');
 INSERT INTO extintorInspecaoItem (id, descricao) VALUES (11, 'Outro');
 
+alter sequence extintormanutencaoservico_sequence restart with 12;
+
 INSERT INTO extintormanutencaoservico VALUES(1, 'Recarga');
 INSERT INTO extintormanutencaoservico VALUES(2, 'Pintura');
 INSERT INTO extintormanutencaoservico VALUES(3, 'Teste Hidrostático');
@@ -6122,6 +6124,8 @@ INSERT INTO extintormanutencaoservico VALUES(7, 'Substituição de Difusor');
 INSERT INTO extintormanutencaoservico VALUES(8, 'Válvula Completa');
 INSERT INTO extintormanutencaoservico VALUES(9, 'Mangote');
 INSERT INTO extintormanutencaoservico VALUES(10, 'Válvula Cilindro Adicional');
+
+alter sequence extintormanutencaoservico_sequence restart with 11;
 
 insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (1,'f','f','texto1','Campo de Texto 1', 1,'texto',1);
 insert into configuracaocampoextra (id,ativocolaborador,ativocandidato,nome,descricao,ordem,tipo,posicao) values (2,'f','f','texto2','Campo de Texto 2', 1,'texto',2);
