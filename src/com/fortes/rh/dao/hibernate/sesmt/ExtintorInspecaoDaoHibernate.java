@@ -81,7 +81,7 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 		
 		if (!isCount)
 		{
-			hql.append("GROUP BY ei.id, he.id ");
+			hql.append("GROUP BY ei.id, he.id, ei.data ");
 			hql.append("ORDER BY ei.data");
 		}
 		
@@ -163,7 +163,7 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 				"LEFT JOIN he.estabelecimento est " +
 				"WHERE ei.id = :extintorInspecaoId " +
 				"AND he.data = (SELECT MAX(he2.data) FROM HistoricoExtintor he2 WHERE he2.extintor.id = e.id) " +
-		"GROUP BY ei.id, he.id");
+		"GROUP BY ei.id, he.id ");
 		
 		query.setLong("extintorInspecaoId", extintorInspecaoId);
 		
