@@ -147,9 +147,15 @@
 					});
 				</#if>
 				
+				// valida os multicheckboxes
 				arrayMultiplos = ['cargosCheck', 'areasCheck', 'conhecimentosCheck'];
 				arrayObrigatorios = arrayObrigatorios.map(function(item) {
 					return $.inArray(item, arrayMultiplos) ? item : '@' + item;
+				});
+				
+				// valida os itens que constituem subformularios
+				arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
+					return value != 'formacao' && value != 'idioma' && value != 'expProfissional';
 				});
 				
 				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
