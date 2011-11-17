@@ -8,10 +8,13 @@ import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
@@ -29,6 +32,8 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	private AvaliacaoManager avaliacaoManager;
 	private PerguntaManager perguntaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
 	private Avaliacao avaliacaoExperiencia;
 	
@@ -41,6 +46,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	
 	private Map<String, Object> parametros;
 	private Collection<QuestionarioRelatorio> dataSource;
+	private Collection<Empresa> empresas;
 	
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -57,10 +63,12 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	private boolean exibirCabecalho;
 	private boolean agruparPorAspectos;
 	private Collection<ResultadoQuestionario> resultados;
-
+	private boolean compartilharColaboradores;
 	
 	public String prepareResultado()
 	{
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), getUsuarioLogado().getId(), null);
 		avaliacaoExperiencias = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, TipoModeloAvaliacao.DESEMPENHO, null);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
@@ -253,5 +261,17 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
 	public void setExibirComentarios(boolean exibirComentarios) {
 		this.exibirComentarios = exibirComentarios;
+	}
+
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }
