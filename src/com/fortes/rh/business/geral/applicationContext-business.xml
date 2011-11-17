@@ -122,6 +122,9 @@
     <property name="usuarioMensagemManager">
       <ref bean="usuarioMensagemManager" />
     </property>
+    <property name="mensagemManager">
+      <ref bean="mensagemManager" />
+    </property>
     <property name="camposExtrasManager">
       <ref bean="camposExtrasManager" />
     </property>
