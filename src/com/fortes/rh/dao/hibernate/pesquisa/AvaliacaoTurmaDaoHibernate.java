@@ -12,6 +12,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.AvaliacaoTurmaDao;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 
 @SuppressWarnings("unchecked")
@@ -148,6 +149,30 @@ public class AvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<AvaliacaoTur
 
 		if(ativa != null)
 			criteria.add(Expression.eq("e.ativa", ativa));
+
+		criteria.addOrder(Order.asc("q.titulo"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+	
+	public Collection<AvaliacaoTurma> findByTurma(Long turmaId) 
+	{
+		Criteria criteria = getSession().createCriteria(Turma.class, "t");
+		criteria.createCriteria("t.avaliacaoTurmas", "a");
+		criteria.createCriteria("a.questionario", "q");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("q.id"), "projectionQuestionarioId");
+		p.add(Projections.property("q.titulo"), "projectionQuestionarioTitulo");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("t.id", turmaId));
 
 		criteria.addOrder(Order.asc("q.titulo"));
 

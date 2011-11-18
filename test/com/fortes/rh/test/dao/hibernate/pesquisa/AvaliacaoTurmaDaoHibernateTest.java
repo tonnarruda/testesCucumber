@@ -1,31 +1,36 @@
 package com.fortes.rh.test.dao.hibernate.pesquisa;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.AvaliacaoTurmaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 
 public class AvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest<AvaliacaoTurma>
 {
-	private AvaliacaoTurma avaliacaoTurma;
 	private AvaliacaoTurmaDao avaliacaoTurmaDao;
+	private TurmaDao turmaDao;
 	private QuestionarioDao questionarioDao;
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
 	private EmpresaDao empresaDao;
-	private Questionario questionario;
 	
+	private AvaliacaoTurma avaliacaoTurma;
+	private Questionario questionario;
 	
 	@Override
 	public AvaliacaoTurma getEntity()
@@ -126,8 +131,6 @@ public class AvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest<Aval
 		assertEquals(new Integer(2), avaliacaoTurmaDao.getCount(empresa.getId()));
 	}
 
-
-
 	public void testGetCount() throws Exception
 	{
 		Empresa empresa = criaEmpresa();
@@ -141,6 +144,44 @@ public class AvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest<Aval
 		criarAvaliacao(questionario2, 9999L);
 		
 		assertEquals(2, avaliacaoTurmaDao.findAllSelect(empresa.getId(), true).size());
+	}
+	
+	public void testFindByTurma() throws Exception
+	{
+		Empresa empresa = criaEmpresa();
+		
+		Questionario questionario1 = criaQuestionario(empresa, 3331L, "Titulo 1");
+		questionarioDao.save(questionario1);
+		
+		Questionario questionario2 = criaQuestionario(empresa, 3333L, "Titulo 2");
+		questionarioDao.save(questionario2);
+		
+		AvaliacaoTurma avaliacaoTurma1 = new AvaliacaoTurma();
+		avaliacaoTurma1.setAtiva(true);
+		avaliacaoTurma1.setQuestionario(questionario1);
+		avaliacaoTurmaDao.save(avaliacaoTurma1);
+
+		AvaliacaoTurma avaliacaoTurma2 = new AvaliacaoTurma();
+		avaliacaoTurma2.setAtiva(true);
+		avaliacaoTurma2.setQuestionario(questionario2);
+		avaliacaoTurmaDao.save(avaliacaoTurma2);
+
+		AvaliacaoTurma avaliacaoTurma3 = new AvaliacaoTurma();
+		avaliacaoTurma3.setAtiva(true);
+		avaliacaoTurma3.setQuestionario(questionario2);
+		avaliacaoTurmaDao.save(avaliacaoTurma3);
+		
+		Collection<AvaliacaoTurma> avaliacaoTurmas = Arrays.asList(avaliacaoTurma1, avaliacaoTurma3);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setAvaliacaoTurmas(avaliacaoTurmas);
+		turmaDao.save(turma);
+		
+		Collection<AvaliacaoTurma> aTurmas = avaliacaoTurmaDao.findByTurma(turma.getId());
+		
+		assertEquals(2, aTurmas.size());
+		assertEquals("Titulo 1", ((AvaliacaoTurma) aTurmas.toArray()[0]).getQuestionarioTitulo());
+		assertEquals("Titulo 2", ((AvaliacaoTurma) aTurmas.toArray()[1]).getQuestionarioTitulo());
 	}
 
 	private Empresa criaEmpresa() 
@@ -187,5 +228,9 @@ public class AvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest<Aval
 
 	public void setQuestionarioDao(QuestionarioDao questionarioDao) {
 		this.questionarioDao = questionarioDao;
+	}
+
+	public void setTurmaDao(TurmaDao turmaDao) {
+		this.turmaDao = turmaDao;
 	}
 }

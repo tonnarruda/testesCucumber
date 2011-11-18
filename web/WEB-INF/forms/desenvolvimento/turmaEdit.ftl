@@ -13,57 +13,68 @@
 
 	<#include "../ftl/mascarasImports.ftl" />
 
-<script language="javascript">
-	var diasIds = "";
-	function populaDias(frm)
-	{
-		var dIni = document.getElementById('prevIni');
-		var dFim = document.getElementById('prevFim');
+	<#if turma?exists && turma.id?exists>
+		<title>Editar Turma - ${turma.curso.nome}</title>
+		<#assign formAction="update.action"/>
+		<#assign accessKey="A"/>
+	<#else>
+		<title>Inserir Turma</title>
+		<#assign formAction="insert.action"/>
+		<#assign accessKey="I"/>
+	</#if>
 
-		if(validaDate(dIni) && validaDate(dFim))
+	<#if avaliacaoRespondida == true>
+		<#assign somenteLeitura = true/>
+	<#else>
+		<#assign somenteLeitura = false/>
+	</#if>
+
+	<script language="javascript">
+		var diasIds = "";
+		function populaDias(frm)
 		{
-			if(dIni.value != "  /  /    " && dFim.value != "  /  /    ")
+			var dIni = document.getElementById('prevIni');
+			var dFim = document.getElementById('prevFim');
+	
+			if(validaDate(dIni) && validaDate(dFim))
 			{
-				diasIds = getArrayCheckeds(frm, "diasCheck");
-				DWRUtil.useLoadingMessage('Carregando...');
-				DiaTurmaDWR.getDias(montaListDias, dIni.value, dFim.value);
+				if(dIni.value != "  /  /    " && dFim.value != "  /  /    ")
+				{
+					diasIds = getArrayCheckeds(frm, "diasCheck");
+					DWRUtil.useLoadingMessage('Carregando...');
+					DiaTurmaDWR.getDias(montaListDias, dIni.value, dFim.value);
+				}
 			}
 		}
-	}
-
-	function montaListDias(data)
-	{
-		if(data != null)
+	
+		function montaListDias(data)
 		{
-			addChecks('diasCheck',data)
-			marcaCheckListBoxString(diasIds);
+			if(data != null)
+			{
+				addChecks('diasCheck',data)
+				marcaCheckListBoxString(diasIds);
+			}
+			else
+				jAlert("Data Inválida.");
 		}
-		else
-			jAlert("Data Inválida.");
-	}
-
-	function marcaCheckListBoxString(checks)
-	{
-		for(var count = 0; count < checks.length; count++)
+	
+		function marcaCheckListBoxString(checks)
 		{
-			elemento = document.getElementById("checkGroupdiasCheck"+checks[count]);
-			if(elemento != null)
-				elemento.checked = true;
+			for(var count = 0; count < checks.length; count++)
+			{
+				elemento = document.getElementById("checkGroupdiasCheck"+checks[count]);
+				if(elemento != null)
+					elemento.checked = true;
+			}
 		}
-	}
-</script>
-
-
+		
+		$(function() {
+			<#if somenteLeitura>
+				$("input[name='avaliacaoTurmasCheck']").attr('disabled', 'disabled');
+			</#if>
+		});
+	</script>
 <@ww.head/>
-<#if turma?exists && turma.id?exists>
-	<title>Editar Turma - ${turma.curso.nome}</title>
-	<#assign formAction="update.action"/>
-	<#assign accessKey="A"/>
-<#else>
-	<title>Inserir Turma</title>
-	<#assign formAction="insert.action"/>
-	<#assign accessKey="I"/>
-</#if>
 
 <#assign validarCampos="return validaFormularioEPeriodo('form', new Array('curso','desc','inst','custo','prevIni','prevFim'), new Array('prevIni', 'prevFim'))"/>
 </head>
@@ -103,13 +114,8 @@
 			<@frt.checkListBox name="diasCheck" label="Dias Previstos" list="diasCheckList" readonly=false valueString=true/>
 		</#if>
 
-		<#if avaliacaoRespondida == true>
-			<#assign somenteLeitura = "true"/>
-			<@ww.hidden name="turma.avaliacaoTurma.id" />
-		<#else>
-			<#assign somenteLeitura = "false"/>
-		</#if>
-		<@ww.select disabled="${somenteLeitura}" label="Questionário de Avaliação de Curso" name="turma.avaliacaoTurma.id" list="avaliacaoTurmas" listKey="id" listValue="questionario.titulo" headerValue="Selecione..." headerKey=""/>
+		<#-- <@ww.select disabled="${somenteLeitura}" label="Questionário de Avaliação de Curso" name="turma.avaliacaoTurma.id" list="avaliacaoTurmas" listKey="id" listValue="questionario.titulo" headerValue="Selecione..." headerKey=""/> -->
+		<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList"/>
 
 		<@ww.hidden name="turma.id" />
 		<@ww.hidden name="turma.empresa.id" />

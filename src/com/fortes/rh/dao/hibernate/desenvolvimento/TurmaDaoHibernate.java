@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
@@ -26,46 +27,42 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 
     public Turma findByIdProjection(Long turmaId)
     {
-        Criteria criteria = getSession().createCriteria(Turma.class,"t");
-        criteria.createCriteria("t.curso", "c");
-        criteria.createCriteria("t.empresa", "e");
-        criteria.createCriteria("t.avaliacaoTurma", "a", Criteria.LEFT_JOIN);
+    	Criteria criteria = getSession().createCriteria(Turma.class, "t");
+    	criteria.createCriteria("t.curso", "c");
+    	criteria.createCriteria("t.empresa", "e");
+    	criteria.createCriteria("t.avaliacaoTurmas", "a", Criteria.LEFT_JOIN);
 
-        ProjectionList p = Projections.projectionList().create();
+    	ProjectionList p = Projections.projectionList().create();
 
-        p.add(Projections.property("t.id"), "id");
-        p.add(Projections.property("t.descricao"), "descricao");
-        p.add(Projections.property("t.dataPrevIni"), "dataPrevIni");
-        p.add(Projections.property("t.dataPrevFim"), "dataPrevFim");
-        p.add(Projections.property("t.instrutor"), "instrutor");
-        p.add(Projections.property("t.custo"), "custo");
-        p.add(Projections.property("t.horario"), "horario");
-        p.add(Projections.property("t.instituicao"), "instituicao");
-        p.add(Projections.property("t.qtdParticipantesPrevistos"), "qtdParticipantesPrevistos");
-        p.add(Projections.property("t.realizada"), "realizada");
-        p.add(Projections.property("c.id"), "cursoId");
-        p.add(Projections.property("c.nome"), "cursoNome");
-        p.add(Projections.property("c.cargaHoraria"), "projectionCursoCargaHoraria");
-        p.add(Projections.property("e.id"), "projectionEmpresaId");
-        p.add(Projections.property("a.id"), "projectionAvaliacaoTurmaId");
-        p.add(Projections.property("a.questionario.id"), "projectionAvaliacaoTurmaQuestionarioId");
+    	p.add(Projections.property("t.id"), "id");
+    	p.add(Projections.property("t.descricao"), "descricao");
+    	p.add(Projections.property("t.dataPrevIni"), "dataPrevIni");
+    	p.add(Projections.property("t.dataPrevFim"), "dataPrevFim");
+    	p.add(Projections.property("t.instrutor"), "instrutor");
+    	p.add(Projections.property("t.custo"), "custo");
+    	p.add(Projections.property("t.horario"), "horario");
+    	p.add(Projections.property("t.instituicao"), "instituicao");
+    	p.add(Projections.property("t.qtdParticipantesPrevistos"), "qtdParticipantesPrevistos");
+    	p.add(Projections.property("t.realizada"), "realizada");
+    	p.add(Projections.property("c.id"), "cursoId");
+    	p.add(Projections.property("c.nome"), "cursoNome");
+    	p.add(Projections.property("c.cargaHoraria"), "projectionCursoCargaHoraria");
+    	p.add(Projections.property("e.id"), "projectionEmpresaId");
 
-        criteria.setProjection(p);
-        criteria.add(Expression.eq("t.id", turmaId));
+    	criteria.setProjection(p);
+    	criteria.add(Expression.eq("t.id", turmaId));
 
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        criteria.setResultTransformer(new AliasToBeanResultTransformer(Turma.class));
+    	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+    	criteria.setResultTransformer(new AliasToBeanResultTransformer(Turma.class));
 
-        Turma turma = new Turma();
-        Collection<Turma> turmas = criteria.list();
-        if(turmas != null && !turmas.isEmpty())
-            turma = (Turma) turmas.toArray()[0];
+    	Turma turma = new Turma();
+    	Collection<Turma> turmas = criteria.list();
+    	if(turmas != null && !turmas.isEmpty())
+    		turma = (Turma) turmas.toArray()[0];
 
-        return turma;
+    	return turma;
     }
     
-    
-//    public Colaborador 
 
     public Collection<Turma> getTurmaFinalizadas(Long cursoId)
 	{
@@ -188,7 +185,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	{
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
         criteria.createCriteria("t.curso", "c");
-        criteria.createCriteria("t.avaliacaoTurma", "a", Criteria.LEFT_JOIN);
+        criteria.createCriteria("t.avaliacaoTurmas", "a", Criteria.LEFT_JOIN);
         criteria.createCriteria("a.questionario", "q", Criteria.LEFT_JOIN);
 
         ProjectionList p = Projections.projectionList().create();
@@ -197,7 +194,6 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         p.add(Projections.property("t.dataPrevIni"), "dataPrevIni");
         p.add(Projections.property("t.dataPrevFim"), "dataPrevFim");
         p.add(Projections.property("t.empresa.id"), "projectionEmpresaId");
-        p.add(Projections.property("q.id"), "projectionAvaliacaoTurmaQuestionarioId");
 
         p.add(Projections.property("t.instrutor"), "instrutor");
         p.add(Projections.property("t.realizada"), "realizada");
@@ -227,6 +223,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 
 		criteria.addOrder(Order.desc("t.dataPrevIni"));
 		criteria.addOrder(Order.asc("t.descricao"));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Turma.class));
 
@@ -237,16 +234,15 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	{
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
 		criteria.createCriteria("t.curso", "c");
-		criteria.createCriteria("t.avaliacaoTurma", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("t.avaliacaoTurmas", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("a.questionario", "q", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("t.id"), "id");
+		p.add(Projections.groupProperty("t.id"), "id");
 		p.add(Projections.property("t.descricao"), "descricao");
 		p.add(Projections.property("t.dataPrevIni"), "dataPrevIni");
 		p.add(Projections.property("t.dataPrevFim"), "dataPrevFim");
 		p.add(Projections.property("t.empresa.id"), "projectionEmpresaId");
-		p.add(Projections.property("q.id"), "projectionAvaliacaoTurmaQuestionarioId");
 
 		p.add(Projections.property("t.instrutor"), "instrutor");
 		p.add(Projections.property("t.realizada"), "realizada");

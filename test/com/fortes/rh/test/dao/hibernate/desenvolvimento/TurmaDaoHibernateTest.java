@@ -218,9 +218,14 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma.setCurso(curso);
 		turmaDao.save(turma);
 		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa);
+		turma2.setCurso(curso);
+		turmaDao.save(turma2);
+		
 		Collection<Turma> turmas = turmaDao.findAllSelect(curso.getId());
 		
-		assertEquals(1, turmas.size());
+		assertEquals(2, turmas.size());
 	}
 	
 	public void testFindPlanosDeTreinamentoTemVazio()

@@ -51,10 +51,13 @@
 			<a href="preparePresenca.action?turma.id=${turma.id}&curso.id=${curso.id}&voltarPara=list.action"><img border="0" title="Lista de Frequência" src="<@ww.url value="/imgs/check.gif"/>"></a>
 			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?turma.id=${turma.id}&turma.empresa.id=${turma.empresa.id}&curso.id=${curso.id}&curso.nome=${curso.nome}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<a href="imprimirConfirmacaoCertificado.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="Relatório de Realização de Curso" src="<@ww.url value="/imgs/report.gif"/>"></a>
+			
+			<#-- 
 			<#if turma.avaliacaoTurma.questionario.id?exists>
 				<a href="../../pesquisa/questionario/imprimir.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&filtroQuestionario=${turma.id?string?replace(".", "")?replace(",","")}"><img border="0" title="Imprimir Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 				<a href="../../pesquisa/questionario/prepareResultado.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&turmaId=${turma.id}&cursoId=${curso.id}"><img border="0" title="Relatório da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
 			</#if >
+			-->
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
 

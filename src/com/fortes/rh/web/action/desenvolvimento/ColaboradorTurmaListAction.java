@@ -143,19 +143,19 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), empresaId);
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 
-		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
-
-		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
-		{
-			for (ColaboradorTurma ct : colaboradorTurmas)
-			{
-				if (ct.getColaborador().equals(colaboradorQuestionario.getColaborador()))
-				{
-					ct.setRespondeuAvaliacaoTurma(true);
-					break;
-				}
-			}
-		}
+//		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
+//
+//		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
+//		{
+//			for (ColaboradorTurma ct : colaboradorTurmas)
+//			{
+//				if (ct.getColaborador().equals(colaboradorQuestionario.getColaborador()))
+//				{
+//					ct.setRespondeuAvaliacaoTurma(true);
+//					break;
+//				}
+//			}
+//		}
 
 		return Action.SUCCESS;
 	}

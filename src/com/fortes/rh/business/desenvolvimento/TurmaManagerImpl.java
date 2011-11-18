@@ -17,7 +17,6 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CollectionUtil;
@@ -116,10 +115,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	public void updateTudo(Turma turma, String[] diasCheck) throws Exception
 	{
 		boolean result = false;
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
+		
 		try
 		{
 			update(turma);
@@ -129,11 +125,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			{
 				diaTurmaManager.saveDiasTurma(turma, diasCheck);
 			}
-				transactionManager.commit(status);
 		}
 		catch(Exception e)
 		{
-			transactionManager.rollback(status);
 			throw e;
 		}
 
@@ -151,7 +145,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			Turma turmaClonada = (Turma) turma.clone();
 			turmaClonada.setEmpresaId(empresaDestinoId);
 			turmaClonada.setId(null);
-			turmaClonada.setAvaliacaoTurma(null);
+			turmaClonada.setAvaliacaoTurmas(null);
 			
 			if(cursoIdTmp.equals(turma.getCurso().getId()))
 			{

@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -20,7 +21,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
-import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MathUtil;
 
@@ -48,24 +48,21 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	private Curso curso;
 	private boolean realizada = false;
 	private Integer qtdParticipantesPrevistos;
-	@Transient
-	private Double diasEstimadosParaAprovacao;
-	@ManyToOne
-	private AvaliacaoTurma avaliacaoTurma;
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<AvaliacaoTurma> avaliacaoTurmas;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
+	private Collection<ColaboradorTurma> colaboradorTurmas;
 
 	// Utilizado na Matriz de Qualificação
 	@Transient
 	private Integer pontuacao;
-
 	@Transient
 	private Integer qtdPessoas;
-
+	@Transient
+	private Double diasEstimadosParaAprovacao;
 	//utilizado para não deixar informações sejam alteradas após alguma frequencia ser informada
 	@Transient
 	private Boolean temPresenca;
-
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
-	private Collection<ColaboradorTurma> colaboradorTurmas;
 
 	public Turma()
 	{
@@ -96,27 +93,6 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	{
 		if(curso == null)
 			curso = new Curso();
-	}
-
-	//Projection
-	public void setProjectionAvaliacaoTurmaId(Long avaliacaoTurmaId)
-	{
-		if (this.avaliacaoTurma == null)
-			this.avaliacaoTurma = new AvaliacaoTurma();
-
-		this.avaliacaoTurma.setId(avaliacaoTurmaId);
-	}
-
-	public void setProjectionAvaliacaoTurmaQuestionarioId(Long questionarioId)
-	{
-		if (this.avaliacaoTurma == null)
-			this.avaliacaoTurma = new AvaliacaoTurma();
-
-		if (this.avaliacaoTurma.getQuestionario() == null)
-			this.avaliacaoTurma.setQuestionario(new Questionario());
-
-		this.avaliacaoTurma.getQuestionario().setId(questionarioId);
-
 	}
 
 	public Object clone()
@@ -321,6 +297,15 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 		this.qtdParticipantesPrevistos = qtdParticipantesPrevistos;
 	}
 
+	public void setEmpresaId(Long empresaDestinoId) 
+	{
+		if(empresa == null)
+			empresa = new Empresa();
+		
+		empresa.setId(empresaDestinoId);
+		
+	}
+	
 	public boolean getRealizada()
 	{
 		return realizada;
@@ -373,16 +358,6 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 		return custoFmt;
 	}
 
-	public AvaliacaoTurma getAvaliacaoTurma()
-	{
-		return avaliacaoTurma;
-	}
-
-	public void setAvaliacaoTurma(AvaliacaoTurma avaliacaoTurma)
-	{
-		this.avaliacaoTurma = avaliacaoTurma;
-	}
-
 	public Double getDiasEstimadosParaAprovacao() {
 		return diasEstimadosParaAprovacao;
 	}
@@ -391,13 +366,11 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 		this.diasEstimadosParaAprovacao = diasEstimadosParaAprovacao;
 	}
 
-	public void setEmpresaId(Long empresaDestinoId) 
-	{
-		if(empresa == null)
-			empresa = new Empresa();
-		
-		empresa.setId(empresaDestinoId);
-		
+	public Collection<AvaliacaoTurma> getAvaliacaoTurmas() {
+		return avaliacaoTurmas;
 	}
 
+	public void setAvaliacaoTurmas(Collection<AvaliacaoTurma> avaliacaoTurmas) {
+		this.avaliacaoTurmas = avaliacaoTurmas;
+	}
 }

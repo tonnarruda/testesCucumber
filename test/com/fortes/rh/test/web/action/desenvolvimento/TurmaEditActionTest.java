@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -160,6 +161,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").with(eq(turma.getId())).will(returnValue(true));
 
     	cursoManager.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(cursos));
+    	avaliacaoTurmaManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(avaliacaoTurmas));
     	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(true)).will(returnValue(avaliacaoTurmas));
 
     	assertEquals("success", action.prepareUpdate());
@@ -169,27 +171,26 @@ public class TurmaEditActionTest extends MockObjectTestCase
     public void testInsert() throws Exception
     {
     	Turma turma = TurmaFactory.getEntity(1L);
-    	AvaliacaoTurma avaliacaoTurma = new AvaliacaoTurma();
-    	avaliacaoTurma.setId(234L);
-    	turma.setAvaliacaoTurma(avaliacaoTurma);
+    	
+    	action.setAvaliacaoTurmasCheck(new String[] { "234" });
     	action.setTurma(turma);
 
-    	avaliacaoTurmaManager.expects(once()).method("findById").with(eq(234L)).will(returnValue(avaliacaoTurma));
     	turmaManager.expects(once()).method("salvarTudo").with(ANYTHING, ANYTHING);
     	
     	assertEquals("success", action.insert());
-    	assertEquals(234L, action.getTurma().getAvaliacaoTurma().getId().longValue());
+    	
+    	AvaliacaoTurma aTurma = (AvaliacaoTurma)action.getTurma().getAvaliacaoTurmas().toArray()[0]; 
+    	
+    	assertEquals(234L, aTurma.getId().longValue());
     }
 
     public void testUpdate() throws Exception
     {
     	Turma turma = TurmaFactory.getEntity(10L);
-    	AvaliacaoTurma avaliacaoTurma = new AvaliacaoTurma();
-    	avaliacaoTurma.setId(234L);
-    	turma.setAvaliacaoTurma(avaliacaoTurma);
+    	
+    	action.setAvaliacaoTurmasCheck(new String[] { "234" });
     	action.setTurma(turma);
     	
-    	avaliacaoTurmaManager.expects(once()).method("findById").with(eq(234L)).will(returnValue(avaliacaoTurma));
     	colaboradorTurmaManager.expects(once()).method("saveUpdate").with(ANYTHING, ANYTHING);
     	turmaManager.expects(once()).method("updateTudo").with(ANYTHING, ANYTHING);
     	

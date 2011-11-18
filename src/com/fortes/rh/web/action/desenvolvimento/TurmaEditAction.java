@@ -123,12 +123,14 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private Date dataIni;
 	private Date dataFim;
 
+	private String[] colaboradoresCheck;
 	private Collection<CheckBox> colaboradoresCheckList;
+	private String[] avaliacaoTurmasCheck;
+	private Collection<CheckBox> avaliacaoTurmasCheckList;
+	
 	private Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 	private Collection<AproveitamentoAvaliacaoCurso> aproveitamentos;
 	private Collection<CertificacaoTreinamentosRelatorio> certificacaoTreinamentos = new ArrayList<CertificacaoTreinamentosRelatorio>();
-
-	private String[] colaboradoresCheck;
 
 	private String dataCompleta;
 	private String responsavel;
@@ -185,7 +187,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			turma = (Turma) turmaManager.findByIdProjection(turma.getId());
 
 		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
+		
 		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(getEmpresaSistema().getId(), true);
+		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");
 	}
 
 	public String prepareInsert() throws Exception
@@ -206,11 +210,13 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		avaliacaoRespondida = turmaManager.verificaAvaliacaoDeTurmaRespondida(turma.getId());
 
-		diasCheckList = CheckListBoxUtil.populaCheckListBox(diaTurmaManager.montaListaDias((Date) turma.getDataPrevIni().clone(), turma.getDataPrevFim()),
-				"getId", "getDescricao");
+		diasCheckList = CheckListBoxUtil.populaCheckListBox(diaTurmaManager.montaListaDias((Date) turma.getDataPrevIni().clone(), turma.getDataPrevFim()), "getId", "getDescricao");
 		Collection<DiaTurma> diasTurmaMarcados = diaTurmaManager.find(new String[] { "turma.id" }, new Object[] { turma.getId() });
 		diasCheckList = CheckListBoxUtil.marcaCheckListBoxString(diasCheckList, diasTurmaMarcados, "getDescricao");
 
+		Collection<AvaliacaoTurma> avaliacaoTurmasMarcadas = avaliacaoTurmaManager.findByTurma(turma.getId());
+		avaliacaoTurmasCheckList = CheckListBoxUtil.marcaCheckListBoxString(avaliacaoTurmasCheckList, avaliacaoTurmasMarcadas, "getQuestionarioTitulo");
+				
 		turma.setTemPresenca(colaboradorPresencaManager.existPresencaByTurma(turma.getId()));
 
 		return Action.SUCCESS;
@@ -229,10 +235,10 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		turma.setEmpresa(getEmpresaSistema());
 
-		if (turma.getAvaliacaoTurma() != null && turma.getAvaliacaoTurma().getId() != null)
-			avaliacaoTurma = avaliacaoTurmaManager.findById(turma.getAvaliacaoTurma().getId());
-
-		turma.setAvaliacaoTurma(avaliacaoTurma);
+		CollectionUtil<AvaliacaoTurma> cUtil = new CollectionUtil<AvaliacaoTurma>();
+		avaliacaoTurmas = cUtil.convertArrayStringToCollection(AvaliacaoTurma.class, avaliacaoTurmasCheck);
+		
+		turma.setAvaliacaoTurmas(avaliacaoTurmas);
 		turmaManager.salvarTudo(turma, diasCheck);
 
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
@@ -242,10 +248,10 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
 
-		if (turma.getAvaliacaoTurma() != null && turma.getAvaliacaoTurma().getId() != null)
-			avaliacaoTurma = avaliacaoTurmaManager.findById(turma.getAvaliacaoTurma().getId());
-
-		turma.setAvaliacaoTurma(avaliacaoTurma);
+		CollectionUtil<AvaliacaoTurma> cUtil = new CollectionUtil<AvaliacaoTurma>();
+		avaliacaoTurmas = cUtil.convertArrayStringToCollection(AvaliacaoTurma.class, avaliacaoTurmasCheck);
+		
+		turma.setAvaliacaoTurmas(avaliacaoTurmas);
 		turmaManager.updateTudo(turma, diasCheck);
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
@@ -1164,5 +1170,22 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void setRealizada(char realizada) {
 		this.realizada = realizada;
+	}
+
+	public String[] getAvaliacaoTurmasCheck() {
+		return avaliacaoTurmasCheck;
+	}
+
+	public void setAvaliacaoTurmasCheck(String[] avaliacaoTurmasCheck) {
+		this.avaliacaoTurmasCheck = avaliacaoTurmasCheck;
+	}
+
+	public Collection<CheckBox> getAvaliacaoTurmasCheckList() {
+		return avaliacaoTurmasCheckList;
+	}
+
+	public void setAvaliacaoTurmasCheckList(
+			Collection<CheckBox> avaliacaoTurmasCheckList) {
+		this.avaliacaoTurmasCheckList = avaliacaoTurmasCheckList;
 	}
 }

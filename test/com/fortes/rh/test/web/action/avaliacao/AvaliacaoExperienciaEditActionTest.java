@@ -11,9 +11,13 @@ import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 import com.fortes.rh.security.SecurityUtil;
@@ -32,6 +36,8 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
 	private Mock manager;
 	private Mock perguntaManager;
 	private Mock areaOrganizacionalManager;
+	private Mock empresaManager;
+	private Mock parametrosDoSistemaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -42,6 +48,12 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
 		
 		perguntaManager = mock(PerguntaManager.class);
 		action.setPerguntaManager((PerguntaManager) perguntaManager.proxy());
+		
+		empresaManager = mock(EmpresaManager.class);
+		action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+		
+		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
+		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 		
 		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
@@ -88,9 +100,15 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
     	manager.expects(once()).method("findById").with(eq(avaliacaoExperiencia.getId())).will(returnValue(avaliacaoExperiencia));
     	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(avaliacaoExperiencia.getId()), ANYTHING, ANYTHING, eq(true)).will(returnValue(new ArrayList<Pergunta>()));
     	
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharColaboradores(true);
+    	
     	//prepareResultado
     	manager.expects(once()).method("findAllSelect").with(eq(1L), ANYTHING, eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
+    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
+    	
     	assertEquals("input", action.imprimeResultado());
     }
 	public void testImprimeResultadoException() throws Exception
@@ -105,9 +123,15 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
     	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(avaliacaoExperiencia.getId()), ANYTHING, ANYTHING, eq(true)).will(returnValue(perguntas));
     	manager.expects(once()).method("montaResultado").will(throwException(new Exception()));
     	
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharColaboradores(true);
+    	
     	//prepareResultado
     	manager.expects(once()).method("findAllSelect").with(eq(1L), ANYTHING, eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
+    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
+
     	assertEquals("input", action.imprimeResultado());
     }
 	
@@ -141,5 +165,9 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
 		action.getParametros();
 		action.getUrlVoltar();
 		action.getAvaliacaoExperiencias();
+	}
+
+	public void setEmpresaManager(Mock empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

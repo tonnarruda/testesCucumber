@@ -194,4 +194,8 @@ public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma
 	{
 		return getDao().findAllSelect(empresaId, ativa);
 	}
+
+	public Collection<AvaliacaoTurma> findByTurma(Long turmaId) {
+		return getDao().findByTurma(turmaId);
+	}
 }
