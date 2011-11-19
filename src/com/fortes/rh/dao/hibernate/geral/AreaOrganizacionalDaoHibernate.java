@@ -418,4 +418,30 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		CollectionUtil<AreaOrganizacional> cul = new CollectionUtil<AreaOrganizacional>();
 		return cul.convertCollectionToArrayIds(criteria.list());
 	}
+
+	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"a");
+		criteria.createCriteria("a.areaMae", "am", Criteria.LEFT_JOIN);
+		criteria.createCriteria("a.empresa", "e");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.nome"), "nome");
+		p.add(Projections.property("am.nome"), "nomeAreaMae");
+		p.add(Projections.property("e.nome"), "nome");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.isEmpty("a.codigoAC"));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("e.id", empresaId));
+
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.addOrder(Order.asc("a.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		return criteria.list();
+	}
 }

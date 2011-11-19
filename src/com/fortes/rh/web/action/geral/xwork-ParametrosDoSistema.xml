@@ -19,9 +19,11 @@
 
 		<action name="prepareDeleteSemCodigoAC" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="prepareDeleteSemCodigoAC">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/listSemCodigoAC.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/semAcessoListSemCodigoAC.ftl</result>
 		</action>
 		<action name="deleteSemCodigoAC" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="deleteSemCodigoAC">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/listSemCodigoAC.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/semAcessoListSemCodigoAC.ftl</result>
 		</action>
 	</package>
 </xwork>

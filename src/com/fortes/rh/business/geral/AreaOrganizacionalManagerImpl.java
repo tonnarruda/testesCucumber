@@ -631,5 +631,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return cul.distinctCollection(familia).toArray(new Long[]{});
 	}
 
+	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId) {
+		return null;
+	}
+
 
 }

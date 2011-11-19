@@ -7,22 +7,32 @@ import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.acesso.PerfilManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
 	
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private PerfilManager perfilManager;
 
+	private Collection<AreaOrganizacional> areaOrganizacionals;
+	private Empresa empresa;
+	
 	private ParametrosDoSistema parametrosDoSistema;
 
 	private Collection<Perfil> perfils;
@@ -72,7 +82,14 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public String prepareDeleteSemCodigoAC() throws Exception
 	{
+		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+		if(usuarioLogado.getId() != 1L)
+			return Action.INPUT;
+		
+		areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
+		
 		return Action.SUCCESS;
+		
 	}
 	
 	public String updateCamposCandidato() throws Exception
@@ -146,6 +163,22 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras() {
 		return configuracaoCampoExtras;
+	}
+
+	public Collection<AreaOrganizacional> getAreaOrganizacionals() {
+		return areaOrganizacionals;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 }
