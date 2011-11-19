@@ -25,9 +25,9 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 //
 //	void removeRespostas(Colaborador colaborador, Collection<Pergunta> perguntas);
 
-	List<Object[]> countRespostas(Long[] perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId);
+	List<Object[]> countRespostas(Long[] perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId);
 
-	Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario);
+	Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario, Long empresaId);
 
 	Collection<ColaboradorResposta> findRespostasColaborador(Long colaboradorQuestionarioId, Boolean aplicarPorAspecto);
 
@@ -40,7 +40,7 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 
 	Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId);
 
-	List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId);
+	List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId);
 	
 	Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId);
 

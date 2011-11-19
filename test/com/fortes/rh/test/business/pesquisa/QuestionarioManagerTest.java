@@ -578,9 +578,9 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
     	respostaManager.expects(once()).method("findInPerguntaIds").with(ANYTHING).will(returnValue(respostas));
-    	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradorRespostas));
-    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
-    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
 
     	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, null, null, null, null, null, null, questionario);
     	assertEquals(2, resultado.size());

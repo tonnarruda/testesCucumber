@@ -79,11 +79,14 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
     	Avaliacao avaliacaoExperiencia = AvaliacaoFactory.getEntity(1L);
     	action.setAvaliacaoExperiencia(avaliacaoExperiencia);
 
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	action.setEmpresa(empresa);
+    	
     	Collection<Pergunta> perguntas = PerguntaFactory.getCollection(1L);
 
     	manager.expects(once()).method("findById").with(eq(avaliacaoExperiencia.getId())).will(returnValue(avaliacaoExperiencia));
     	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(avaliacaoExperiencia.getId()), ANYTHING, ANYTHING, eq(true)).will(returnValue(perguntas));
-    	manager.expects(once()).method("montaResultado").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<ResultadoQuestionario>()));
+    	manager.expects(once()).method("montaResultado").will(returnValue(new ArrayList<ResultadoQuestionario>()));
 
     	assertEquals("success", action.imprimeResultado());
     	assertNotNull(action.getPerguntas());
@@ -116,6 +119,9 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
     	action.setAgruparPorAspectos(true);
     	Avaliacao avaliacaoExperiencia = AvaliacaoFactory.getEntity(1L);
     	action.setAvaliacaoExperiencia(avaliacaoExperiencia);
+
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	action.setEmpresa(empresa);
     	
     	Collection<Pergunta> perguntas = PerguntaFactory.getCollection(1L);
 

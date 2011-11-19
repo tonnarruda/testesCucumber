@@ -337,19 +337,19 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");
         Collection<ResultadoQuestionario> resultadoQuestionarios = null;
         Collection<Resposta> respostas = respostaManager.findInPerguntaIds(perguntasIds);
-        Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findInPerguntaIds(perguntasIds, estabelecimentosIds, areaIds, periodoIni, periodoFim, turmaId, questionario);
+        Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findInPerguntaIds(perguntasIds, estabelecimentosIds, areaIds, periodoIni, periodoFim, turmaId, questionario, null);
 
         if(colaboradorRespostas.isEmpty())
         	throw new Exception("Nenhuma pergunta foi respondida.");
 
-        Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areaIds, periodoIni, periodoFim, turmaId);
+        Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areaIds, periodoIni, periodoFim, turmaId, null);
         
         if(questionario.isAnonimo())
         	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
         else
         	questionario.setTotalColab(countColaborador(colaboradorRespostas)); 
         
-        Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areaIds, periodoIni, periodoFim, turmaId, questionario.getTotalColab());
+        Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areaIds, periodoIni, periodoFim, turmaId, questionario.getTotalColab(), null);
         percentuaisDeRespostas.addAll(calculaPercentualRespostasMultiplas);
         
     	resultadoQuestionarios = montaResultadosQuestionarios(perguntas, respostas, colaboradorRespostas, percentuaisDeRespostas, questionario.isAnonimo());

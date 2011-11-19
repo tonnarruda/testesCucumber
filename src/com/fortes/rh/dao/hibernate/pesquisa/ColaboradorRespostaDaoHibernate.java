@@ -24,8 +24,9 @@ import com.fortes.rh.model.pesquisa.Questionario;
 @SuppressWarnings("unchecked")
 public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<ColaboradorResposta> implements ColaboradorRespostaDao
 {
-	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId)
+	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId)
 	{
+		String whereEmpresa = "";
 		String whereAreas = "";
 		String whereAreasSub = "";
 		String whereEstabelecimentos = "";
@@ -38,6 +39,9 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		String whereTurmaSub = "";
 		String whereTurma = "";
 
+		if(empresaId != null && empresaId != -1)
+			whereEmpresa = "and c.empresa.id = :empresaId ";
+		
 		if(perguntasIds != null && perguntasIds.length > 0)
 			wherePerguntas = "and p.id in (:perguntasIds) ";
 		if(areasIds != null && areasIds.length > 0)
@@ -83,6 +87,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 							"left join cr.resposta as r "	+
 							"left join cr.pergunta as p "	+
 							"left join cr.colaboradorQuestionario as cq "	+
+							"left join cq.colaborador as c "	+
 							"where p.tipo = :tipoPergunta "+
 							"and cr.resposta.id is not null " +
 							wherePerguntas +
@@ -91,6 +96,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 							wherePeriodoIni +
 							wherePeriodoFim +
 							whereTurma +
+							whereEmpresa +
 							"group by r.ordem, p.id, r.id "+
 							"order by r.ordem ";
 
@@ -103,6 +109,9 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(areasIds != null && areasIds.length > 0)
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 
+		if(empresaId != null && empresaId != -1)
+			query.setLong("empresaId", empresaId);
+		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 
@@ -117,8 +126,9 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 
-	public List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId)
+	public List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId)
 	{
+		String whereEmpresa = "";
 		String whereAreas = "";
 		String whereEstabelecimentos = "";
 		String wherePerguntas = "";
@@ -126,6 +136,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		String wherePeriodoFim = "";
 		String whereTurma = "";
 		
+		if(empresaId != null && empresaId != -1)
+			whereEmpresa = "and c.empresa.id = :empresaId ";
 		if(perguntasIds != null && perguntasIds.length > 0)
 			wherePerguntas = "and p.id in (:perguntasIds) ";
 		if(areasIds != null && areasIds.length > 0)
@@ -146,6 +158,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		"left join cr.resposta as r "	+
 		"left join cr.pergunta as p "	+
 		"left join cr.colaboradorQuestionario as cq "	+
+		"left join cq.colaborador as c "	+
 		"where p.tipo = :tipoPergunta "+
 		"and cr.resposta.id is not null " +
 		wherePerguntas +
@@ -154,6 +167,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		wherePeriodoIni +
 		wherePeriodoFim +
 		whereTurma +
+		whereEmpresa +
 		"group by r.ordem, p.id, r.id "+
 		"order by r.ordem ";
 		
@@ -166,6 +180,9 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(areasIds != null && areasIds.length > 0)
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 
+		if(empresaId != null && empresaId != -1)
+			query.setLong("empresaId", empresaId);
+		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 		
@@ -180,7 +197,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 	
-	public Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario)
+	public Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cr");
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
@@ -214,6 +231,9 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		if(areasIds != null && areasIds.length > 0)
 			criteria.add(Expression.in("a.id", areasIds));
+		
+		if(empresaId != null && empresaId != -1)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			criteria.add(Expression.in("e.id", estabelecimentosIds));

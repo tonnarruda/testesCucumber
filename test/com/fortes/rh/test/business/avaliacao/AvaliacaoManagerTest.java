@@ -197,9 +197,9 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
     	Avaliacao avaliacao = AvaliacaoFactory.getEntity(3L);
     	
     	respostaManager.expects(once()).method("findInPerguntaIds").with(ANYTHING).will(returnValue(respostas));
-    	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradorRespostas));
-    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
-    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
     	
     	questionarioManager.expects(once()).method("countColaborador").with(eq(colaboradorRespostas)).will(returnValue(10));
     	
@@ -211,7 +211,7 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
     	
     	questionarioManager.expects(once()).method("montaResultadosQuestionarios").will(returnValue(resultadoQuestionarios));
     	
-    	Collection<ResultadoQuestionario> resultado = avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao);
+    	Collection<ResultadoQuestionario> resultado = avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null);
     	assertEquals(2, resultado.size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
     }
@@ -221,11 +221,11 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity(3L);
 		
 		respostaManager.expects(once()).method("findInPerguntaIds").with(ANYTHING).will(returnValue(new ArrayList<Resposta>()));
-		colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorResposta>()));
+		colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(new ArrayList<ColaboradorResposta>()));
 		Exception exception=null;
 		
 		try {
-			avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao);
+			avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null);
 		} catch (Exception e) {
 			exception=e;
 		}

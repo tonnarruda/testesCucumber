@@ -49,6 +49,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	private Collection<QuestionarioRelatorio> dataSource;
 	private Collection<Empresa> empresas;
 	private Long[] empresaIds;//repassado para o DWR
+	private Empresa empresa;
 	
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -108,7 +109,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	    	Long[] perguntasIds = clu.convertCollectionToArrayIds(perguntas);
 	    	Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
 	
-    		resultados = avaliacaoManager.montaResultado(perguntas, perguntasIds, areaIds, periodoIni, periodoFim, avaliacaoExperiencia);
+    		resultados = avaliacaoManager.montaResultado(perguntas, perguntasIds, areaIds, periodoIni, periodoFim, avaliacaoExperiencia, empresa.getId());
     		parametros.put("TOTAL_COLAB_RESP", avaliacaoExperiencia.getTotalColab());
 		}
 		catch (Exception e)
@@ -283,5 +284,13 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
 	public Long[] getEmpresaIds() {
 		return empresaIds;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 }
