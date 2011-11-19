@@ -239,4 +239,42 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
 	}
+	
+	public void testFindSemCodigoAC() {
+		
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1 = empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2 = empresaDao.save(empresa2);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimento1.setCodigoAC("1");
+		estabelecimento1.setEmpresa(empresa1);
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimento2.setCodigoAC("");
+		estabelecimento2.setEmpresa(empresa1);
+		estabelecimentoDao.save(estabelecimento2);
+		
+		Estabelecimento estabelecimento3 = EstabelecimentoFactory.getEntity();
+		estabelecimento3.setCodigoAC(null);
+		estabelecimento3.setEmpresa(empresa1);
+		estabelecimentoDao.save(estabelecimento3);
+		
+		Estabelecimento estabelecimento4 = EstabelecimentoFactory.getEntity();
+		estabelecimento4.setCodigoAC("4");
+		estabelecimento4.setEmpresa(empresa2);
+		estabelecimentoDao.save(estabelecimento4);
+		
+		Estabelecimento estabelecimento5 = EstabelecimentoFactory.getEntity();
+		estabelecimento5.setCodigoAC(null);
+		estabelecimento5.setEmpresa(empresa2);
+		estabelecimentoDao.save(estabelecimento5);
+		
+		assertEquals(2, estabelecimentoDao.findSemCodigoAC(empresa1.getId()).size());
+		assertEquals(1, estabelecimentoDao.findSemCodigoAC(empresa2.getId()).size());
+		
+	}
 }

@@ -98,4 +98,8 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 		else
 			return resultado;
 	}
+
+	public Collection<Estabelecimento> findSemCodigoAC(Long empresaId) {
+		return getDao().findSemCodigoAC(empresaId);
+	}
 }

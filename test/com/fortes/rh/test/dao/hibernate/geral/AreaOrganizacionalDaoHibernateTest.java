@@ -170,12 +170,8 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 	public void testFindSemCodigoAC()
 	{
-		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
-		grupoACDao.save(grupoAC);
-		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("24342333");
-		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
 
 		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();

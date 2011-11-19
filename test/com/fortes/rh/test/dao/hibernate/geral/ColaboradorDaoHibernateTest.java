@@ -3973,6 +3973,39 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, qtd);
 	}
 	
+	public void testFindSemCodigoAC() {
+		
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1 = empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2 = empresaDao.save(empresa2);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa1);
+		colaborador1.setCodigoAC("1");
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa1);
+		colaborador2.setCodigoAC("");
+		colaboradorDao.save(colaborador2);
+		
+		Colaborador colaborador3 = ColaboradorFactory.getEntity();
+		colaborador3.setEmpresa(empresa1);
+		colaborador3.setCodigoAC(null);
+		colaboradorDao.save(colaborador3);
+		
+		Colaborador colaborador4 = ColaboradorFactory.getEntity();
+		colaborador4.setEmpresa(empresa2);
+		colaborador4.setCodigoAC(null);
+		colaboradorDao.save(colaborador4);
+		
+		assertEquals(2, colaboradorDao.findSemCodigoAC(empresa1.getId()).size());
+		assertEquals(1, colaboradorDao.findSemCodigoAC(empresa2.getId()).size());
+//		assertEquals(4, colaboradorDao.findSemCodigoAC(null).size());
+	}
+	
 	private HistoricoColaborador inicializaHistorico(Date data, Colaborador colaborador, FaixaSalarial faixaSalarial) 
 	{
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();

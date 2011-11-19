@@ -171,4 +171,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao);
 	public Collection<CartaoAcompanhamentoExperienciaVO> montaCartoesPeriodoExperiencia(Long[] colaboradoresIds, Long[] dias, String observacao) throws Exception;
 	public int findQtdVagasPreenchidas(Long empresaId, Date dataIni, Date dataFim);
+	public Collection<Colaborador> findSemCodigoAC(Long empresaId);
 }

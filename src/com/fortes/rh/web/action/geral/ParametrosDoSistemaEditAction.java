@@ -8,13 +8,17 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.StringUtil;
@@ -29,8 +33,12 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private PerfilManager perfilManager;
+	private ColaboradorManager colaboradorManager;
+	private EstabelecimentoManager estabelecimentoManager ;
 
+	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
+	private Collection<Colaborador> colaboradors;
 	private Empresa empresa;
 	
 	private ParametrosDoSistema parametrosDoSistema;
@@ -43,6 +51,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private boolean habilitaCampoExtra;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+
+
 	
 	public String prepareUpdate() throws Exception
 	{
@@ -83,11 +93,14 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	public String prepareDeleteSemCodigoAC() throws Exception
 	{
 		empresa = getEmpresaSistema();
+		
 		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 		if(usuarioLogado.getId() != 1L)
 			return Action.INPUT;
 		
+		estabelecimentos = estabelecimentoManager.findSemCodigoAC(empresa.getId());
 		areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
+		colaboradors = colaboradorManager.findSemCodigoAC(empresa.getId());
 		
 		return Action.SUCCESS;
 		
@@ -180,6 +193,22 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public Collection<Colaborador> getColaboradors() {
+		return colaboradors;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public Collection<Estabelecimento> getEstabelecimentos() {
+		return estabelecimentos;
 	}
 
 }

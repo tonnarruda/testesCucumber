@@ -12,8 +12,10 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
 
+@SuppressWarnings("unchecked")
 public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecimento> implements EstabelecimentoDao
 {
 	/**
@@ -48,7 +50,6 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		return (Estabelecimento) query.uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Estabelecimento> findAllSelect(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Estabelecimento.class,"e");
@@ -175,5 +176,29 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Estabelecimento.class));
 
 		return criteria.list();
+	}
+
+	public Collection<Estabelecimento> findSemCodigoAC(Long empresaId) {
+		Criteria criteria = getSession().createCriteria(Estabelecimento.class, "es");
+		criteria.createCriteria("es.empresa", "em");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("es.id"), "id");
+		p.add(Projections.property("es.nome"), "nome");
+		p.add(Projections.property("em.nome"), "empresaNome");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.or(Expression.isNull("es.codigoAC"), Expression.eq("es.codigoAC","")));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("em.id", empresaId));
+
+		criteria.addOrder(Order.asc("em.nome"));
+		criteria.addOrder(Order.asc("es.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		
+		return criteria.list();	
 	}
 }
