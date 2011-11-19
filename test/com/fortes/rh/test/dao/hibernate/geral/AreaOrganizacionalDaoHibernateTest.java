@@ -147,7 +147,7 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 		assertEquals(2, areasRetorno.size());
 	}
-
+	
 	public void testFindAreaOrganizacionalByCodigoAc()
 	{
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
@@ -157,15 +157,43 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		empresa.setCodigoAC("24342333");
 		empresa.setGrupoAC(grupoAC.getCodigo());
 		empresa = empresaDao.save(empresa);
-
+		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional.setCodigoAC("010203");
 		areaOrganizacional.setEmpresa(empresa);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
-
+		
 		AreaOrganizacional areaOrganizacionalRetorno = areaOrganizacionalDao.findAreaOrganizacionalByCodigoAc(areaOrganizacional.getCodigoAC(), empresa.getCodigoAC(), "XXX");
-
+		
 		assertEquals(areaOrganizacional, areaOrganizacionalRetorno);
+	}
+
+	public void testFindSemCodigoAC()
+	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("24342333");
+		empresa.setGrupoAC(grupoAC.getCodigo());
+		empresa = empresaDao.save(empresa);
+
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		area1.setEmpresa(empresa);
+		area1.setCodigoAC(null);
+		areaOrganizacionalDao.save(area1);
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		area2.setEmpresa(empresa);
+		area2.setCodigoAC("df3r433");
+		areaOrganizacionalDao.save(area2);
+		
+		AreaOrganizacional area3 = AreaOrganizacionalFactory.getEntity();
+		area3.setEmpresa(empresa);
+		area3.setCodigoAC("");
+		areaOrganizacionalDao.save(area3);
+
+		assertEquals(2, areaOrganizacionalDao.findSemCodigoAC(empresa.getId()).size());
 	}
 
 	public void testFindAllList()

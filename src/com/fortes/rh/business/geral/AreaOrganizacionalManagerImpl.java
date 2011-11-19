@@ -632,7 +632,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	}
 
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId) {
-		return null;
+		return getDao().findSemCodigoAC(empresaId);
 	}
 
 

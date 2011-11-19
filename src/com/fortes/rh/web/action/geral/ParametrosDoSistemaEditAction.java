@@ -82,6 +82,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public String prepareDeleteSemCodigoAC() throws Exception
 	{
+		empresa = getEmpresaSistema();
 		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 		if(usuarioLogado.getId() != 1L)
 			return Action.INPUT;
