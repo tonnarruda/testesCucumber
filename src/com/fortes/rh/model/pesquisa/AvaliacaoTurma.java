@@ -152,6 +152,14 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
 
     	this.questionario.getEmpresa().setEmailRespRH(projectionEmailRespRH);
     }
+    
+    public String getQuestionarioTitulo()
+    {
+    	if (this.questionario == null)
+    		this.questionario = new Questionario();
+    	
+    	return this.questionario.getTitulo();
+    }
 
 	@Override
 	public Object clone()
