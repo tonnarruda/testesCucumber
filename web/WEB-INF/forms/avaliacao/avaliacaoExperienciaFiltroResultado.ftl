@@ -12,6 +12,7 @@
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AspectoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PerguntaDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
@@ -31,6 +32,13 @@
 	</#if>
 	
 	<script type='text/javascript'>
+		var empresaIds = new Array();
+		<#if empresaIds?exists>
+			<#list empresaIds as empresaId>
+				empresaIds.push(${empresaId});
+			</#list>
+		</#if>
+		
 		function populaPesquisaAspecto(questionarioId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -47,6 +55,23 @@
 		{
 			addChecks('aspectosCheck',data)
 		}
+		
+		function createListArea(data)
+		{
+			addChecks('areasCheck',data);
+		}
+		
+		function populaArea(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
+		}
+		
+		$(document).ready(function($)
+		{
+			var empresa = $('#empresa').val();
+			populaArea(empresa);
+		});
 	</script>
 	
 </head>
@@ -59,7 +84,7 @@
 			<@ww.datepicker label="Período" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 			<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
 
-			<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa"/>
+			<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa" onchange="populaArea(this.value);"/>
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
 			<@frt.checkListBox label="Exibir apenas os Aspectos" name="aspectosCheck" id="aspectosCheck" list="aspectosCheckList" />
 			<@frt.checkListBox label="Exibir apenas as Perguntas" name="perguntasCheck" id="perguntasCheck" list="perguntasCheckList"/>

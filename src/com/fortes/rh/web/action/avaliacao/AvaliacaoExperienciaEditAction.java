@@ -47,6 +47,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	private Map<String, Object> parametros;
 	private Collection<QuestionarioRelatorio> dataSource;
 	private Collection<Empresa> empresas;
+	private Long[] empresaIds;//repassado para o DWR
 	
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -69,9 +70,13 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), getUsuarioLogado().getId(), null);
+		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
+		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
+
 		avaliacaoExperiencias = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, TipoModeloAvaliacao.DESEMPENHO, null);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+    	
 		return SUCCESS;
 	}
 	
@@ -273,5 +278,9 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Long[] getEmpresaIds() {
+		return empresaIds;
 	}
 }
