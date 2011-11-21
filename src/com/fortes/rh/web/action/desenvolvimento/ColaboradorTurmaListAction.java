@@ -64,6 +64,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<Colaborador> colaboradors;
+	private Collection<ColaboradorQuestionario> colaboradorQuestionarios; 
 	private Turma turma;
 	private ColaboradorTurma colaboradorTurma;
 	private Curso curso;
@@ -139,23 +140,11 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		
 		populaEmpresa("ROLE_MOV_TURMA");	
 		
-		turma = turmaManager.findByIdProjection(turma.getId());
+		turma = turmaManager.findById(turma.getId()); // precisa da colecao de avaliacaoTurmas
 		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), empresaId);
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 
-//		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
-//
-//		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
-//		{
-//			for (ColaboradorTurma ct : colaboradorTurmas)
-//			{
-//				if (ct.getColaborador().equals(colaboradorQuestionario.getColaborador()))
-//				{
-//					ct.setRespondeuAvaliacaoTurma(true);
-//					break;
-//				}
-//			}
-//		}
+		colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
 
 		return Action.SUCCESS;
 	}
@@ -795,5 +784,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
+	}
+
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
+		return colaboradorQuestionarios;
 	}
 }

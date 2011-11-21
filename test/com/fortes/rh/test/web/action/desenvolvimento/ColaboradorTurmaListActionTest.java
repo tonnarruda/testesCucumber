@@ -147,7 +147,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 
     	Turma turma = TurmaFactory.getEntity(1L);
     	action.setTurma(turma);
-    	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
+    	turmaManager.expects(once()).method("findById").with(eq(turma.getId())).will(returnValue(turma));
 
     	Colaborador colaborador = ColaboradorFactory.getEntity();
     	colaborador.setNome("colabTurmaAprovado");
@@ -167,7 +167,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	
     	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
-//    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(colaboradorQuestionarioCollection));
+    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(colaboradorQuestionarioCollection));
     	
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
     	parametrosDoSistema.setCompartilharCandidatos(true);
@@ -551,7 +551,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	//list
     	Turma turma = TurmaFactory.getEntity(1L);
     	action.setTurma(turma);
-    	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
+    	turmaManager.expects(once()).method("findById").with(eq(turma.getId())).will(returnValue(turma));
 
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
 
@@ -563,7 +563,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
     	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
-//    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+    	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 
     	assertEquals("input", action.delete());
     }

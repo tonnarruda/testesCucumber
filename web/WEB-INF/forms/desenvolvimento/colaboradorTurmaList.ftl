@@ -6,6 +6,11 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		
+		.avaliacoes { display: none; }
+		.avaliacoes ul { list-style: none; }
+		.avaliacoes ul li { margin: 5px; }
+		.avaliacoes ul li a { text-decoration: none; }
 	</style>
 	
 	<title>Colaboradores Inscritos no curso de ${turma.curso.nome}, Turma - ${turma.descricao}</title>
@@ -16,21 +21,53 @@
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
     
     <script type="text/javascript">
-	function abrirMenuRespostas(e, colaboradorId) 
-	{
-		var html = "";
-		html += "<div title='Respostas das avaliações' style='padding-left: 15px;'><ul style='list-style-type:circle;'>";
+		var avaliacoes = new Array();
 		<#if turma.avaliacaoTurmas?exists>
 			<#list turma.avaliacaoTurmas as avaliacaoTurma>
-				html += "<li><a href='../../pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${avaliacaoTurma.questionario.id}&colaborador.id=" + colaboradorId + "&turmaId=${turma.id}&voltarPara=../../desenvolvimento/colaboradorTurma/list.action?turma.id=${turma.id}'>";
-				html += "${avaliacaoTurma.questionario.titulo}";
-				html += "</a></li>";
+				avaliacoes.push({ turmaId: ${turma.id}, questionarioId: ${avaliacaoTurma.questionario.id}, questionarioTitulo: '${avaliacaoTurma.questionario.titulo}' });
 			</#list>
 		</#if>
-		html += "</ul></div>";
 		
-		$(html).dialog({ modal: true, width: 600, position: [e.pageX, e.pageY] });
-	}
+		var respondidas = new Array();
+		<#if colaboradorQuestionarios?exists>
+			<#list colaboradorQuestionarios as colabQuestionario>
+				respondidas.push(${colabQuestionario.questionario.id} + "_" + ${colabQuestionario.colaborador.id});
+			</#list>
+		</#if>
+
+		function abrirMenuRespostas(e, colaboradorId) 
+		{
+			$('.avaliacoes').empty();
+		
+			var popupAvaliacoes = "<ul>";
+			
+			$(avaliacoes).each(function(i, avaliacao) {
+				popupAvaliacoes += "<li id='"+ avaliacao.questionarioId + "_" + colaboradorId + "'>";
+				popupAvaliacoes += "<a href='../../pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=" + avaliacao.questionarioId + "&colaborador.id=" + colaboradorId + "&turmaId=" + avaliacao.turmaId + "&voltarPara=../../desenvolvimento/colaboradorTurma/list.action?turma.id=" + avaliacao.turmaId + "'>";
+				popupAvaliacoes += "<img align='absmiddle'/>&nbsp;&nbsp; " + avaliacao.questionarioTitulo;
+				popupAvaliacoes += "</a></li>\n";
+			});
+			
+			popupAvaliacoes += "</ul></div>";
+		
+			$('.avaliacoes').html(popupAvaliacoes);
+		
+			$('.avaliacoes').dialog({ modal: true, 
+										width: 600, 
+										position: [e.pageX, e.pageY], 
+										open: function(event, ui) {
+
+											$('.avaliacoes img').attr('src', '<@ww.url value="/imgs/page_new.gif"/>');
+											$('.avaliacoes a').attr('title', 'Responder a avaliação da turma por este colaborador');
+
+											$(respondidas).each(function() {
+												$('#' + this + ' img').attr('src', '<@ww.url value="/imgs/page_edit.gif"/>');
+												$('#' + this + ' a').attr('title', 'Revisar as respostas de avaliação da turma deste colaborador');
+											});
+											
+										} 
+									});
+		}
     </script>
 </head>
 <body>
@@ -59,24 +96,14 @@
 			<@display.column title="Ações" class="acao">
 
 				<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO">
-					<#-- 
-					<#if turma.avaliacaoTurma.questionario.id?exists>
-						<#if colaboradorTurma.respondeuAvaliacaoTurma == true>
-							<a href="../../pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&colaborador.id=${colaboradorTurma.colaborador.id}&turmaId=${turma.id}&voltarPara=../../desenvolvimento/colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Revisar as respostas de avaliação da turma deste colaborador" src="<@ww.url value="/imgs/page_edit.gif"/>"></a>
-						<#else>
-							<a href="../../pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&colaborador.id=${colaboradorTurma.colaborador.id}&turmaId=${turma.id}&voltarPara=../../desenvolvimento/colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Responder a avaliação da turma por este colaborador" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
-						</#if>
-					</#if>
-					-->
 					<#if turma.avaliacaoTurmas?exists && 0 < turma.avaliacaoTurmas?size>
-						<a href="javascript:;" onclick="abrirMenuRespostas(event, ${colaboradorTurma.colaborador.id});"><img border="0" title="Revisar as respostas de avaliação da turma deste colaborador" src="<@ww.url value="/imgs/page_edit.gif"/>"></a> 
+						<a href="javascript:;" onclick="abrirMenuRespostas(event, ${colaboradorTurma.colaborador.id});"><img border="0" title="Revisar as respostas de avaliação da turma deste colaborador" src="<@ww.url value="/imgs/page_edit.gif"/>"/></a> 
 					<#else>
-						<img border="0" title="Não existem avaliações definidas para esta turma" src="<@ww.url value="/imgs/page_edit.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);>
+						<a href="javascript:;"><img border="0" title="Não existem avaliações definidas para esta turma" src="<@ww.url value="/imgs/page_edit.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"/></a>
 					</#if>
-					
 				</@authz.authorize>	
 					
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../colaboradorTurma/delete.action?colaboradorTurma.id=${colaboradorTurma.id}&colaboradorTurma.colaborador.id=${colaboradorTurma.colaborador.id}&turma.id=${turma.id}&planoTreinamento=${planoTreinamento?string}&empresaId=' + $('#empresaId').val()});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../colaboradorTurma/delete.action?colaboradorTurma.id=${colaboradorTurma.id}&colaboradorTurma.colaborador.id=${colaboradorTurma.colaborador.id}&turma.id=${turma.id}&planoTreinamento=${planoTreinamento?string}&empresaId=' + $('#empresaId').val()});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 
 			<@display.column property="colaborador.nome" title="Nome" style="width: 300px;"/>
@@ -84,7 +111,6 @@
 			<@display.column property="colaborador.historicoColaborador.estabelecimento.nome" title="Estabelecimento" style="width: 100px;"/>
 			<@display.column property="colaborador.empresa.nome" title="Empresa" style="width: 120px;"/>
 			<@display.column property="colaborador.areaOrganizacional.descricao" title="Área" style="width: 200px;"/>
-
 		</@display.table>
 	</#if>
 
@@ -101,5 +127,7 @@
 		</#if>
 		<button class="btnVoltar" onclick="window.location='${urlVoltar}'"></button>
 	</div>
+	
+	<div class='avaliacoes' title='Respostas das avaliações'></div>
 </body>
 </html>

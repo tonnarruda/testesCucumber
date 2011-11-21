@@ -333,9 +333,17 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 
 	public void testUpdateRealizada() throws Exception
 	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
 		Turma turma = TurmaFactory.getEntity();
 		turma.setRealizada(true);
-		turma = turmaDao.save(turma);
+		turma.setEmpresa(empresa);
+		turma.setCurso(curso);
+		turmaDao.save(turma);
 		
 		turmaDao.updateRealizada(turma.getId(), false);
 		

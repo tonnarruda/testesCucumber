@@ -24,13 +24,11 @@ import com.fortes.rh.model.geral.Colaborador;
 @SuppressWarnings("unchecked")
 public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements TurmaDao
 {
-
     public Turma findByIdProjection(Long turmaId)
     {
     	Criteria criteria = getSession().createCriteria(Turma.class, "t");
     	criteria.createCriteria("t.curso", "c");
     	criteria.createCriteria("t.empresa", "e");
-    	criteria.createCriteria("t.avaliacaoTurmas", "a", Criteria.LEFT_JOIN);
 
     	ProjectionList p = Projections.projectionList().create();
 
@@ -55,12 +53,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
     	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
     	criteria.setResultTransformer(new AliasToBeanResultTransformer(Turma.class));
 
-    	Turma turma = new Turma();
-    	Collection<Turma> turmas = criteria.list();
-    	if(turmas != null && !turmas.isEmpty())
-    		turma = (Turma) turmas.toArray()[0];
-
-    	return turma;
+    	return (Turma) criteria.uniqueResult();
     }
     
 
