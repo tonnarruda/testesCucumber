@@ -39,4 +39,5 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	FaixaSalarial montaFaixa(TCargo tCargo);
 	void updateAC(TCargo tCargo);
 	TCargo[] getFaixasAC();
+	Collection<FaixaSalarial> findSemCodigoAC(Long empresaId);
 }

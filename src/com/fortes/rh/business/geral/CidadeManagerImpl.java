@@ -42,4 +42,8 @@ public class CidadeManagerImpl extends GenericManagerImpl<Cidade, CidadeDao> imp
 	{
 		return getDao().findByNome(nome, estadoId);
 	}
+
+	public Collection<Cidade> findSemCodigoAC() {
+		return getDao().findSemCodigoAC();
+	}
 }

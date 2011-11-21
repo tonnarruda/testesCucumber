@@ -91,4 +91,8 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		else
 			return findAll(new String[] {"nome"});
 	}
+
+	public Collection<Indice> findSemCodigoAC() {
+		return getDao().findSemCodigoAC();
+	}
 }

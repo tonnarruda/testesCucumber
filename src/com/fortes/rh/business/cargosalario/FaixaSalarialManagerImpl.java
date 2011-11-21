@@ -329,4 +329,8 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
+	public Collection<FaixaSalarial> findSemCodigoAC(Long empresaId) {
+		return getDao().findSemCodigoAC(empresaId);
+	}
+
 }

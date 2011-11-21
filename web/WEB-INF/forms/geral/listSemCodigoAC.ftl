@@ -10,10 +10,20 @@
 </head>
 <body>
 
+	Cidades
+	<@display.table name="cidades" id="cidade" class="dados" >
+		<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkCidade\", this.checked);' />" style="width: 30px; text-align: center;">
+			<input type="checkbox" class="checkCidade" value="${cidade.id}" name="cidadeIds" />
+		</@display.column>
+		
+		<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
+		<@display.column property="nome" title="Cidade"/>
+	</@display.table>
+	
 	Estabelecimentos
 	<@display.table name="estabelecimentos" id="estabelecimento" class="dados" >
 		<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkEstabelecimento\", this.checked);' />" style="width: 30px; text-align: center;">
-			<input type="checkbox" class="checkEstabelecimentos" value="${estabelecimento.id}" name="estabelecimentoIds" />
+			<input type="checkbox" class="checkEstabelecimento" value="${estabelecimento.id}" name="estabelecimentoIds" />
 		</@display.column>
 		
 		<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
@@ -44,6 +54,26 @@
 		<@display.column property="nome" title="Colaborador"/>
 	</@display.table>
 	
+	Faixas Salariais
+	<@display.table name="faixaSalarials" id="faixaSalarial" class="dados" >
+		<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkFaixaSalarial\", this.checked);' />" style="width: 30px; text-align: center;">
+			<input type="checkbox" class="checkFaixaSalarial" value="${faixaSalarial.id}" name="faixaSalarialIds" />
+		</@display.column>
+		
+		<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
+		<@display.column property="empresaNome" title="Empresa"/>
+		<@display.column property="nome" title="Faixas Salariais"/>
+	</@display.table>
+
+	Índices
+	<@display.table name="indices" id="indice" class="dados" >
+		<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkIndice\", this.checked);' />" style="width: 30px; text-align: center;">
+			<input type="checkbox" class="checkIndice" value="${indice.id}" name="indiceIds" />
+		</@display.column>
+		
+		<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
+		<@display.column property="nome" title="Índices"/>
+	</@display.table>
 	<div class="buttonGroup">
 	<button class="btnInserir" onclick="window.location='prepareInsert.action'" >
 	</button>
