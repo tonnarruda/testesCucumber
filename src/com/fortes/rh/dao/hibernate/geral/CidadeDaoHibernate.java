@@ -13,11 +13,12 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.CidadeDao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 
+@SuppressWarnings("unchecked")
 public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements CidadeDao
 {
-	@SuppressWarnings("unchecked")
 	public Collection<Cidade> findAllSelect(Long estadoId)
 	{
 		Criteria criteria = getSession().createCriteria(Cidade.class, "c");
@@ -37,7 +38,6 @@ public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements C
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Cidade> findAllByUf(String uf)
 	{
 		Criteria criteria = getSession().createCriteria(Cidade.class, "c");
@@ -117,5 +117,24 @@ public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements C
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cidade.class));
 
 		return (Cidade) criteria.uniqueResult();
+	}
+
+	public Collection<Cidade> findSemCodigoAC() {
+		
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.or(Expression.isNull("c.codigoAC"), Expression.eq("c.codigoAC","")));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+
+		return criteria.list();	
 	}
 }

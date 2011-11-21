@@ -25,4 +25,5 @@ public interface IndiceManager extends GenericManager<Indice>
 	Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC);
 	Indice findHistorico(Long indiceId, Date dataHistorico);
 	Collection<Indice> findAll(Empresa empresa);
+	Collection<Indice> findSemCodigoAC();
 }

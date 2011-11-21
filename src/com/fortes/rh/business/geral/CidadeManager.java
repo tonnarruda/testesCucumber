@@ -14,4 +14,5 @@ public interface CidadeManager extends GenericManager<Cidade>
 	Cidade findByIdProjection(Long id);
 	Collection<Cidade> findByEstado(Estado estado);
 	Cidade findByNome(String nome, Long estadoId);
+	Collection<Cidade> findSemCodigoAC();
 }

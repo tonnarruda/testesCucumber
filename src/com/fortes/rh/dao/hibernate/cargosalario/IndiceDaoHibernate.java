@@ -1,10 +1,12 @@
 package com.fortes.rh.dao.hibernate.cargosalario;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -13,6 +15,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
 
+@SuppressWarnings("unchecked")
 public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements IndiceDao
 {
 	public Indice findByIdProjection(Long indiceId)
@@ -100,6 +103,24 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		criteria.setMaxResults(1);
 
 		return (Indice) criteria.uniqueResult();
+	}
+
+	public Collection<Indice> findSemCodigoAC() {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "i");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("i.id"), "id");
+		p.add(Projections.property("i.nome"), "nome");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.or(Expression.isNull("i.codigoAC"), Expression.eq("i.codigoAC","")));
+
+		criteria.addOrder(Order.asc("i.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();	
 	}
 
 }

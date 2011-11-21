@@ -317,4 +317,29 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		
 		return tCargos;
 	}
+
+	public Collection<FaixaSalarial> findSemCodigoAC(Long empresaId) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "fs");
+		criteria.createCriteria("fs.cargo", "c");
+		criteria.createCriteria("c.empresa", "e");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("fs.id"), "id");
+		p.add(Projections.property("fs.nome"), "nome");
+		p.add(Projections.property("e.nome"), "empresaNome");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.or(Expression.isNull("fs.codigoAC"), Expression.eq("fs.codigoAC","")));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("e.id", empresaId));
+
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.addOrder(Order.asc("fs.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();	
+	}
 }

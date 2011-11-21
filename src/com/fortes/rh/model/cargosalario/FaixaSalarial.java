@@ -52,6 +52,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	private String empresaCodigoAC;
 	@Transient
 	private String empresaGrupoAC;
+	@Transient
+	private String empresaNome;
 
 	public FaixaSalarial()
 	{
@@ -344,5 +346,13 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 
 	public void setQtdContratados(int qtdContratados) {
 		this.qtdContratados = qtdContratados;
+	}
+
+	public String getEmpresaNome() {
+		return empresaNome;
+	}
+
+	public void setEmpresaNome(String empresaNome) {
+		this.empresaNome = empresaNome;
 	}
 }

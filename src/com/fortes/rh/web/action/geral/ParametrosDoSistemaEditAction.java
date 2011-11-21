@@ -7,20 +7,27 @@ import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.acesso.PerfilManager;
+import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
+import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
@@ -35,12 +42,18 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private PerfilManager perfilManager;
 	private ColaboradorManager colaboradorManager;
 	private EstabelecimentoManager estabelecimentoManager ;
+	private CidadeManager cidadeManager  ;
+	private FaixaSalarialManager faixaSalarialManager;
+	private IndiceManager indiceManager;
 
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
 	private Collection<Colaborador> colaboradors;
-	private Empresa empresa;
+	private Collection<Cidade> cidades;
+	private Collection<FaixaSalarial> faixaSalarials;
+	private Collection<Indice> indices ;
 	
+	private Empresa empresa;
 	private ParametrosDoSistema parametrosDoSistema;
 
 	private Collection<Perfil> perfils;
@@ -101,6 +114,9 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		estabelecimentos = estabelecimentoManager.findSemCodigoAC(empresa.getId());
 		areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
 		colaboradors = colaboradorManager.findSemCodigoAC(empresa.getId());
+		cidades = cidadeManager.findSemCodigoAC();
+		faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
+		indices = indiceManager.findSemCodigoAC();
 		
 		return Action.SUCCESS;
 		
@@ -209,6 +225,30 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public Collection<Estabelecimento> getEstabelecimentos() {
 		return estabelecimentos;
+	}
+
+	public Collection<Cidade> getCidades() {
+		return cidades;
+	}
+
+	public void setCidadeManager(CidadeManager cidadeManager) {
+		this.cidadeManager = cidadeManager;
+	}
+
+	public Collection<FaixaSalarial> getFaixaSalarials() {
+		return faixaSalarials;
+	}
+
+	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
+		this.faixaSalarialManager = faixaSalarialManager;
+	}
+
+	public void setIndiceManager(IndiceManager indiceManager) {
+		this.indiceManager = indiceManager;
+	}
+
+	public Collection<Indice> getIndices() {
+		return indices;
 	}
 
 }

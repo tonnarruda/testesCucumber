@@ -1,5 +1,6 @@
 package com.fortes.rh.dao.cargosalario;
 
+import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
@@ -16,4 +17,6 @@ public interface IndiceDao extends GenericDao<Indice>
 	Indice findHistoricoAtual(Long indiceId, Date dataHistorico);
 
 	Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC);
+
+	Collection<Indice> findSemCodigoAC();
 }

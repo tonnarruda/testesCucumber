@@ -372,6 +372,51 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		assertEquals(cargoDestino.getId(), faixaSalarialDao.findByFaixaSalarialId(faixaSalarial.getId()).getCargo().getId());
 
 	}
+	
+	public void testFindSemCodigoAC() {
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1 = empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2 = empresaDao.save(empresa2);
+		
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setEmpresa(empresa1);
+		cargoDao.save(cargo1);
+		
+		Cargo cargo2 = CargoFactory.getEntity();
+		cargo2.setEmpresa(empresa2);
+		cargoDao.save(cargo2);
+		
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1.setCargo(cargo1);
+		faixaSalarial1.setCodigoAC("1");
+		faixaSalarialDao.save(faixaSalarial1);
+		
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		faixaSalarial2.setCodigoAC("");
+		faixaSalarial2.setCargo(cargo1);
+		faixaSalarialDao.save(faixaSalarial2);
+		
+		FaixaSalarial faixaSalarial3 = FaixaSalarialFactory.getEntity();
+		faixaSalarial3.setCodigoAC(null);
+		faixaSalarial3.setCargo(cargo1);
+		faixaSalarialDao.save(faixaSalarial3);
+		
+		FaixaSalarial faixaSalarial4 = FaixaSalarialFactory.getEntity();
+		faixaSalarial4.setCodigoAC("4");
+		faixaSalarial4.setCargo(cargo2);
+		faixaSalarialDao.save(faixaSalarial4);
+		
+		FaixaSalarial faixaSalarial5 = FaixaSalarialFactory.getEntity();
+		faixaSalarial5.setCodigoAC(null);
+		faixaSalarial5.setCargo(cargo2);
+		faixaSalarialDao.save(faixaSalarial5);
+		
+		assertEquals(2, faixaSalarialDao.findSemCodigoAC(empresa1.getId()).size());
+		assertEquals(1, faixaSalarialDao.findSemCodigoAC(empresa2.getId()).size());
+		
+	}
 
     public GenericDao<FaixaSalarial> getGenericDao()
     {

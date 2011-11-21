@@ -93,6 +93,23 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		
 		assertEquals(indice, indiceRetorno);
 	}
+
+	public void testFindSemCodigoAC() {
+		
+		Indice indice1 = IndiceFactory.getEntity();
+		indice1.setCodigoAC("1");
+		indiceDao.save(indice1);
+		
+		Indice indice2 = IndiceFactory.getEntity();
+		indice2.setCodigoAC("");
+		indiceDao.save(indice2);
+		
+		Indice indice3 = IndiceFactory.getEntity();
+		indice3.setCodigoAC(null);
+		indiceDao.save(indice3);
+		
+		assertEquals(2, indiceDao.findSemCodigoAC().size());		
+	}
 	
 	public void setIndiceDao(IndiceDao indiceDao)
 	{
