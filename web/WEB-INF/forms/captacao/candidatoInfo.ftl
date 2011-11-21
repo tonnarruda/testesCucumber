@@ -231,7 +231,7 @@
 			<br>
 				<#--p><input type="checkbox" name="imprimirHC" id="impHC" /> <label for="impHC">Imprimir HistÃ³rico</label></p>
 				<p><input type="checkbox" name="imprimirAS" id="impAS" /> <label for="impAS">Imprimir Assinatura</label></p-->
-				<button class="btnImprimirPdfB" onclick="openbox('Configurar ImpressÃ£o', '');" ></button>
+				<button class="btnImprimirPdfB" onclick="openbox('Configurar Impressão', '');" ></button>
 			<br>
 		</@authz.authorize>
 	</div>

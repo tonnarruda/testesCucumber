@@ -133,7 +133,7 @@ public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements C
 		criteria.add(Expression.or(Expression.isNull("c.codigoAC"), Expression.eq("c.codigoAC","")));
 		
 		criteria.addOrder(Order.asc("c.nome"));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();	
 	}

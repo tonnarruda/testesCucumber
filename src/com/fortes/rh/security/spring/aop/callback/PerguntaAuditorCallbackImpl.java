@@ -7,6 +7,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -27,7 +28,7 @@ public class PerguntaAuditorCallbackImpl implements AuditorCallback {
 		
 		String dados = new GeraDadosAuditados(null, pergunta).gera();
 		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), pergunta.getTexto(), dados);
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), StringUtil.subStr(pergunta.getTexto(), 100), dados);
 	}
 	
 	public Auditavel atualizarPergunta(MetodoInterceptado metodo) throws Throwable {
@@ -39,7 +40,7 @@ public class PerguntaAuditorCallbackImpl implements AuditorCallback {
 		
 		String dados = new GeraDadosAuditados(new Object[]{perguntaAnterior}, pergunta).gera();
 		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), pergunta.getTexto(), dados);
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), StringUtil.subStr(pergunta.getTexto(), 100), dados);
 	}
 	
 	public Auditavel removerPergunta(MetodoInterceptado metodo) throws Throwable {

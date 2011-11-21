@@ -108,34 +108,28 @@ public class CidadeDaoHibernateTest extends GenericDaoHibernateTest<Cidade>
 		
 		Estado estado = EstadoFactory.getEntity();
 		estado.setSigla("XY");
-		estado = estadoDao.save(estado);
+		estadoDao.save(estado);
 		
-		Cidade cidade1 = CidadeFactory.getEntity(1L);
+		Cidade cidade1 = CidadeFactory.getEntity();
 		cidade1.setUf(estado);
 		cidade1.setCodigoAC("00123");
-		cidade1 = cidadeDao.save(cidade1);
+		cidadeDao.save(cidade1);
 		
-		Cidade cidade2 = CidadeFactory.getEntity(2L);
+		Cidade cidade2 = CidadeFactory.getEntity();
 		cidade2.setUf(estado);
 		cidade2.setCodigoAC("");
-		cidade2 = cidadeDao.save(cidade2);
+		cidadeDao.save(cidade2);
 		
-		Cidade cidade3 = CidadeFactory.getEntity(3L);
+		Cidade cidade3 = CidadeFactory.getEntity();
 		cidade3.setUf(estado);
 		cidade3.setCodigoAC(null);
-		cidade3 = cidadeDao.save(cidade3);
+		cidadeDao.save(cidade3);
 		
 		Collection<Cidade> cidades = cidadeDao.findSemCodigoAC();
 		
-		Long[] ids = new CollectionUtil<Cidade>().convertCollectionToArrayIds(cidades);
-		
-		List<Long> lista = Arrays.asList(ids);
-		
-		assertFalse(lista.contains(1L));
-		assertTrue(lista.contains(2L));
-		assertTrue(lista.contains(3L));
-//		assertEquals(2, cidadeDao.findSemCodigoAC().size());
-		
+		assertFalse(cidades.contains(cidade1));
+		assertTrue(cidades.contains(cidade2));
+		assertTrue(cidades.contains(cidade3));
 		
 	}
 	

@@ -28,7 +28,6 @@ public class Pergunta extends AbstractModel implements Serializable, Cloneable
 {
     private Integer ordem;
     @Lob
-    @ChaveDaAuditoria
     private String texto;
     private boolean comentario;
     @Lob
