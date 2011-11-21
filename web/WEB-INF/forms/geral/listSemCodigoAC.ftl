@@ -65,7 +65,15 @@
 		<@display.column property="nome" title="Faixas Salariais"/>
 	</@display.table>
 
-	
+	Índices
+	<@display.table name="indices" id="indice" class="dados" >
+		<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkIndice\", this.checked);' />" style="width: 30px; text-align: center;">
+			<input type="checkbox" class="checkIndice" value="${indice.id}" name="indiceIds" />
+		</@display.column>
+		
+		<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
+		<@display.column property="nome" title="Índices"/>
+	</@display.table>
 	<div class="buttonGroup">
 	<button class="btnInserir" onclick="window.location='prepareInsert.action'" >
 	</button>
