@@ -10,7 +10,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-<script type="text/javascript">
+	<script type="text/javascript">
 		function enviarEmail(turmaId)
 		{
 			DWRUtil.useLoadingMessage('Enviando...');
@@ -47,12 +47,22 @@
 			<a href="../colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			<a href="prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="enviarEmail(${turma.id});" ><img border="0" title="Enviar aviso por email" src="<@ww.url value="/imgs/icon_email.gif"/>"></a>
-			<a href="prepareAproveitamento.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="Avaliações dos Alunos" src="<@ww.url value="/imgs/favourites.gif"/>"></a>
+			
+			<#if avaliacaoCursos?exists && 0 < avaliacaoCursos?size>
+				<a href="prepareAproveitamento.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="Avaliações dos Alunos" src="<@ww.url value="/imgs/favourites.gif"/>"></a>
+			<#else>
+				<a href="javascript:;"><img border="0" title="Não existem avaliações definidas para este curso" src="<@ww.url value="/imgs/favourites.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"/></a>
+			</#if>
+			
 			<a href="preparePresenca.action?turma.id=${turma.id}&curso.id=${curso.id}&voltarPara=list.action"><img border="0" title="Lista de Frequência" src="<@ww.url value="/imgs/check.gif"/>"></a>
 			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?turma.id=${turma.id}&turma.empresa.id=${turma.empresa.id}&curso.id=${curso.id}&curso.nome=${curso.nome}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<a href="imprimirConfirmacaoCertificado.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="Relatório de Realização de Curso" src="<@ww.url value="/imgs/report.gif"/>"></a>
 			
-			<#-- 
+			<#if turma.avaliacaoTurmas?exists && 0 < turma.avaliacaoTurmas?size>
+				
+			</#if>
+			
+			<#--  
 			<#if turma.avaliacaoTurma.questionario.id?exists>
 				<a href="../../pesquisa/questionario/imprimir.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&filtroQuestionario=${turma.id?string?replace(".", "")?replace(",","")}"><img border="0" title="Imprimir Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 				<a href="../../pesquisa/questionario/prepareResultado.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&turmaId=${turma.id}&cursoId=${curso.id}"><img border="0" title="Relatório da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>

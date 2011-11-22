@@ -7,9 +7,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
@@ -29,6 +31,7 @@ public class TurmaListAction extends MyActionSupportList
 	private TurmaManager turmaManager;
 	private CursoManager cursoManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private AvaliacaoCursoManager avaliacaoCursoManager;
 
 	private Collection<Turma> turmas;
 
@@ -39,6 +42,7 @@ public class TurmaListAction extends MyActionSupportList
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<ColaboradorTurma> dataSource;
 	private Collection<Curso> cursos;
+	private Collection<AvaliacaoCurso> avaliacaoCursos;
 
 	// Indica se a requisição veio do plano de treinamento
 	private boolean planoTreinamento;
@@ -131,6 +135,7 @@ public class TurmaListAction extends MyActionSupportList
 		}
 
 		curso = cursoManager.findByIdProjection(curso.getId());
+		avaliacaoCursos = avaliacaoCursoManager.findByCurso(curso.getId());
 
 		if (!msgAlert.equals(""))
 			addActionMessage("Colaborador(es) já inscritos no curso <br>" + msgAlert + "<br>");
@@ -343,5 +348,13 @@ public class TurmaListAction extends MyActionSupportList
 
 	public char getRealizada() {
 		return realizada;
+	}
+
+	public Collection<AvaliacaoCurso> getAvaliacaoCursos() {
+		return avaliacaoCursos;
+	}
+
+	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager) {
+		this.avaliacaoCursoManager = avaliacaoCursoManager;
 	}
 }
