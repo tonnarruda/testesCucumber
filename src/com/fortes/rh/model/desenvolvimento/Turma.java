@@ -59,6 +59,8 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	@Transient
 	private Integer qtdPessoas;
 	@Transient
+	private Integer qtdAvaliacoes;
+	@Transient
 	private Double diasEstimadosParaAprovacao;
 	//utilizado para não deixar informações sejam alteradas após alguma frequencia ser informada
 	@Transient
@@ -372,5 +374,13 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 	public void setAvaliacaoTurmas(Collection<AvaliacaoTurma> avaliacaoTurmas) {
 		this.avaliacaoTurmas = avaliacaoTurmas;
+	}
+
+	public Integer getQtdAvaliacoes() {
+		return qtdAvaliacoes;
+	}
+
+	public void setQtdAvaliacoes(Integer qtdAvaliacoes) {
+		this.qtdAvaliacoes = qtdAvaliacoes;
 	}
 }

@@ -61,13 +61,15 @@
 			<#if turma.avaliacaoTurmas?exists && 0 < turma.avaliacaoTurmas?size>
 				
 			</#if>
+			  
+			<#if turma.qtdAvaliacoes?exists && 0 < turma.qtdAvaliacoes>
+				<a href="../../pesquisa/questionario/imprimir.action?questionario.id=${turma.id}&filtroQuestionario=${turma.id?string?replace(".", "")?replace(",","")}"><img border="0" title="Imprimir Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="../../pesquisa/questionario/prepareResultado.action?questionario.id=${turma.id}&turmaId=${turma.id}&cursoId=${curso.id}"><img border="0" title="Relatório da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
+			<#else>
+				<a href="javascript:;"><img border="0" title="Não há avaliações para serem impressas nessa turma" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"></a>
+				<a href="javascript:;"><img border="0" title="Não há avaliações para o relatório dessa turma" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"></a>
+			</#if>
 			
-			<#--  
-			<#if turma.avaliacaoTurma.questionario.id?exists>
-				<a href="../../pesquisa/questionario/imprimir.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&filtroQuestionario=${turma.id?string?replace(".", "")?replace(",","")}"><img border="0" title="Imprimir Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
-				<a href="../../pesquisa/questionario/prepareResultado.action?questionario.id=${turma.avaliacaoTurma.questionario.id}&turmaId=${turma.id}&cursoId=${curso.id}"><img border="0" title="Relatório da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
-			</#if >
-			-->
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
 
