@@ -18,4 +18,5 @@ public interface OcorrenciaManager extends GenericManager<Ocorrencia>
 	Collection<Ocorrencia> findOcorrenciasComAbseteismo(Long empresaId);
 	Collection<Ocorrencia> find(int page, int pagingSize, Ocorrencia ocorrencia, Long empresaId);
 	Integer getCount(Ocorrencia ocorrencia, Long empresaId);
+	Collection<Ocorrencia> findSemCodigoAC(Long empresaId);
 }

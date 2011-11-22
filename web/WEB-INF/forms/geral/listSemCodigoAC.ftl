@@ -6,7 +6,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
-	<title>Excluir Registros (código AC)</title>
+	<title>Excluir Registros Sem Código AC)</title>
 </head>
 <body>
 
@@ -61,7 +61,7 @@
 		</@display.column>
 		
 		<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
-		<@display.column property="empresaNome" title="Empresa"/>
+		<@display.column property="cargo.empresa.nome" title="Empresa"/>
 		<@display.column property="nome" title="Faixas Salariais"/>
 	</@display.table>
 
@@ -74,9 +74,31 @@
 		<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
 		<@display.column property="nome" title="Índices"/>
 	</@display.table>
+
+	Gastos
+	<@display.table name="gastos" id="gasto" class="dados" >
+		<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkGasto\", this.checked);' />" style="width: 30px; text-align: center;">
+			<input type="checkbox" class="checkGasto" value="${gasto.id}" name="gastoIds" />
+		</@display.column>
+		
+		<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
+		<@display.column property="empresa.nome" title="Empresa"/>
+		<@display.column property="nome" title="Gasto"/>
+	</@display.table>
+	
+	Ocorrências
+	<@display.table name="ocorrencias" id="ocorrencia" class="dados" >
+		<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkOcorrencia\", this.checked);' />" style="width: 30px; text-align: center;">
+			<input type="checkbox" class="checkOcorrencia" value="${ocorrencia.id}" name="ocorrenciaIds" />
+		</@display.column>
+		
+		<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
+		<@display.column property="empresa.nome" title="Empresa"/>
+		<@display.column property="descricao" title="Ocorrência"/>
+	</@display.table>
+	
 	<div class="buttonGroup">
-	<button class="btnInserir" onclick="window.location='prepareInsert.action'" >
-	</button>
-</div>
+	<button class="btnInserir" onclick="window.location='prepareInsert.action'" ></button>
+	</div>
 </body>
 </html>

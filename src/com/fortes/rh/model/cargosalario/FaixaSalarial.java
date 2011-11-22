@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("serial")
 @Entity
@@ -52,8 +53,6 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	private String empresaCodigoAC;
 	@Transient
 	private String empresaGrupoAC;
-	@Transient
-	private String empresaNome;
 
 	public FaixaSalarial()
 	{
@@ -348,11 +347,13 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		this.qtdContratados = qtdContratados;
 	}
 
-	public String getEmpresaNome() {
-		return empresaNome;
-	}
-
 	public void setEmpresaNome(String empresaNome) {
-		this.empresaNome = empresaNome;
+		
+		if(this.cargo == null)
+			this.cargo = new Cargo();
+		if(this.cargo.getEmpresa() == null)
+			this.cargo.setEmpresa(new Empresa());
+		
+		this.cargo.getEmpresa().setNome(empresaNome);
 	}
 }

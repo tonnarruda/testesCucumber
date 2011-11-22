@@ -1,5 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.cargosalario;
 
+import java.util.Collection;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
@@ -108,7 +110,11 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		indice3.setCodigoAC(null);
 		indiceDao.save(indice3);
 		
-		assertEquals(2, indiceDao.findSemCodigoAC().size());		
+		Collection<Indice> indices = indiceDao.findSemCodigoAC();
+		
+		assertFalse(indices.contains(indice1));		
+		assertTrue(indices.contains(indice2));		
+		assertTrue(indices.contains(indice3));		
 	}
 	
 	public void setIndiceDao(IndiceDao indiceDao)

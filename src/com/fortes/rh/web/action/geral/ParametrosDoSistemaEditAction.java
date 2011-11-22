@@ -14,6 +14,8 @@ import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GastoManager;
+import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
@@ -25,9 +27,10 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Gasto;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
@@ -45,6 +48,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private CidadeManager cidadeManager  ;
 	private FaixaSalarialManager faixaSalarialManager;
 	private IndiceManager indiceManager;
+	private GastoManager gastoManager;
+	private OcorrenciaManager ocorrenciaManager;
 
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
@@ -52,6 +57,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private Collection<Cidade> cidades;
 	private Collection<FaixaSalarial> faixaSalarials;
 	private Collection<Indice> indices ;
+	private Collection<Gasto> gastos;
+	private Collection<Ocorrencia> ocorrencias ;
 	
 	private Empresa empresa;
 	private ParametrosDoSistema parametrosDoSistema;
@@ -117,6 +124,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		cidades = cidadeManager.findSemCodigoAC();
 		faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
 		indices = indiceManager.findSemCodigoAC();
+		gastos = gastoManager.findSemCodigoAC(empresa.getId());
+		ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
 		
 		return Action.SUCCESS;
 		
@@ -249,6 +258,22 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public Collection<Indice> getIndices() {
 		return indices;
+	}
+
+	public void setGastoManager(GastoManager gastoManager) {
+		this.gastoManager = gastoManager;
+	}
+
+	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager) {
+		this.ocorrenciaManager = ocorrenciaManager;
+	}
+
+	public Collection<Gasto> getGastos() {
+		return gastos;
+	}
+
+	public Collection<Ocorrencia> getOcorrencias() {
+		return ocorrencias;
 	}
 
 }

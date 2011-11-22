@@ -12,7 +12,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
 
 @SuppressWarnings("unchecked")
@@ -179,14 +178,14 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 	}
 
 	public Collection<Estabelecimento> findSemCodigoAC(Long empresaId) {
-		Criteria criteria = getSession().createCriteria(Estabelecimento.class, "es");
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "es");
 		criteria.createCriteria("es.empresa", "em");
 
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("es.id"), "id");
 		p.add(Projections.property("es.nome"), "nome");
-		p.add(Projections.property("em.nome"), "empresaNome");
+		p.add(Projections.property("em.nome"), "projectionEmpresaNome");
 
 		criteria.setProjection(p);
 		
@@ -197,7 +196,7 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 
 		criteria.addOrder(Order.asc("em.nome"));
 		criteria.addOrder(Order.asc("es.nome"));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();	
 	}

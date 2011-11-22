@@ -3629,7 +3629,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId) {
 
-		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.createCriteria("c.empresa", "e");
 
 		ProjectionList p = Projections.projectionList().create();
@@ -3647,7 +3647,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		criteria.addOrder(Order.asc("e.nome"));
 		criteria.addOrder(Order.asc("c.nome"));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();	
 	}

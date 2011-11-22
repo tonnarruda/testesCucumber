@@ -139,6 +139,43 @@ public class OcorrenciaDaoHibernateTest extends GenericDaoHibernateTest<Ocorrenc
 		assertEquals(new Integer(1), ocorrenciaDao.getCount(ocorrenciaBusca, vega.getId()));
 	}
 
+	public void testFindSemCodigoAC() {
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1 = empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2 = empresaDao.save(empresa2);
+		
+		Ocorrencia ocorrencia1 = OcorrenciaFactory.getEntity();
+		ocorrencia1.setEmpresa(empresa1);
+		ocorrencia1.setCodigoAC("1");
+		ocorrenciaDao.save(ocorrencia1);
+		
+		Ocorrencia ocorrencia2 = OcorrenciaFactory.getEntity();
+		ocorrencia2.setEmpresa(empresa1);
+		ocorrencia2.setCodigoAC("");
+		ocorrenciaDao.save(ocorrencia2);
+		
+		Ocorrencia ocorrencia3 = OcorrenciaFactory.getEntity();
+		ocorrencia3.setEmpresa(empresa1);
+		ocorrencia3.setCodigoAC(null);
+		ocorrenciaDao.save(ocorrencia3);
+		
+		Ocorrencia ocorrencia4 = OcorrenciaFactory.getEntity();
+		ocorrencia4.setEmpresa(empresa2);
+		ocorrencia4.setCodigoAC(null);
+		ocorrenciaDao.save(ocorrencia4);
+		
+		Ocorrencia ocorrencia5 = OcorrenciaFactory.getEntity();
+		ocorrencia5.setEmpresa(empresa2);
+		ocorrencia5.setCodigoAC("5");
+		ocorrenciaDao.save(ocorrencia5);
+		
+		assertEquals(2, ocorrenciaDao.findSemCodigoAC(empresa1.getId()).size());
+		assertEquals(1, ocorrenciaDao.findSemCodigoAC(empresa2.getId()).size());
+		
+	}
+	
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
 	}

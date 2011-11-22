@@ -18,4 +18,6 @@ public interface GastoManager extends GenericManager<Gasto>
 	public Collection<Gasto> findByEmpresa(Long empresaId);
 
 	Gasto findByIdProjection(Long gastoId);
+
+	Collection<Gasto> findSemCodigoAC(Long empresaId);
 }

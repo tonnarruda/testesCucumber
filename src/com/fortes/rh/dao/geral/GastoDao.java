@@ -17,4 +17,6 @@ public interface GastoDao extends GenericDao<Gasto>
 	void updateGrupoGastoByGastos(Long grupoGastoId, Long[] gastosIds);
 
 	Gasto findByIdProjection(Long gastoId);
+
+	Collection<Gasto> findSemCodigoAC(Long empresaId);
 }

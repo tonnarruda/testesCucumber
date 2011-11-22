@@ -35,6 +35,13 @@ public class Gasto extends AbstractModel implements Serializable
 		this.empresa.setId(projectionEmpresaId);
 	}
 
+    public void setProjectionEmpresaNome(String projectionEmpresaNome)
+    {
+    	if (this.empresa == null)
+    		this.empresa = new Empresa();
+    	this.empresa.setNome(projectionEmpresaNome);
+    }
+    
     public GrupoGasto getGrupoGasto()
 	{
 		return grupoGasto;

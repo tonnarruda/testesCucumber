@@ -22,6 +22,10 @@ public class GastoManagerImpl extends GenericManagerImpl<Gasto, GastoDao> implem
 			getDao().updateGrupoGastoByGastos(grupoGastoAgrupar.getId(), LongUtil.arrayStringToArrayLong(gastosCheck));
 		}
 	}
+	
+	public Collection<Gasto> findSemCodigoAC(Long empresaId) {
+		return getDao().findSemCodigoAC(empresaId);
+	}
 
 	public Collection<Gasto> findGastosDoGrupo(Long id)
 	{

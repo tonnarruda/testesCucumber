@@ -421,7 +421,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId) 
 	{
-		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"a");
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"a");
 		criteria.createCriteria("a.areaMae", "am", Criteria.LEFT_JOIN);
 		criteria.createCriteria("a.empresa", "e");
 
@@ -441,7 +441,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		criteria.addOrder(Order.asc("e.nome"));
 		criteria.addOrder(Order.asc("a.nome"));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		return criteria.list();
 	}
 }

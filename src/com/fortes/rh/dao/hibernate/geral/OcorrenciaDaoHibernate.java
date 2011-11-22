@@ -4,20 +4,19 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Ocorrencia;
 
+
+@SuppressWarnings("unchecked")
 public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> implements OcorrenciaDao
 {
 	public boolean removeByCodigoAC(String codigo, Long empresaId)
@@ -150,6 +149,30 @@ public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> impl
 		montaConsulta(criteria, ocorrencia, empresaId);
 		
 		return (Integer) criteria.uniqueResult();
+	}
+
+	public Collection<Ocorrencia> findSemCodigoAC(Long empresaId) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "o");
+		criteria.createCriteria("o.empresa", "e");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("o.id"), "id");
+		p.add(Projections.property("o.descricao"), "descricao");
+		p.add(Projections.property("e.nome"), "projectionEmpresaNome");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.or(Expression.isNull("o.codigoAC"), Expression.eq("o.codigoAC","")));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("e.id", empresaId));
+
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.addOrder(Order.asc("o.descricao"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();	
 	}
 	
 }

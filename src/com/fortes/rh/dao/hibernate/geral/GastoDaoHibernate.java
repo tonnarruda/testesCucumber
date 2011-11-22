@@ -16,9 +16,9 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.GastoDao;
 import com.fortes.rh.model.geral.Gasto;
 
+@SuppressWarnings("unchecked")
 public class GastoDaoHibernate extends GenericDaoHibernate<Gasto> implements GastoDao
 {
-	@SuppressWarnings("unchecked")
 	public Collection<Gasto> getGastosSemGrupo(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Gasto.class);
@@ -35,7 +35,6 @@ public class GastoDaoHibernate extends GenericDaoHibernate<Gasto> implements Gas
 			return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Gasto> findGastosDoGrupo(Long id)
 	{
 		Criteria criteria = getSession().createCriteria(Gasto.class, "g");
@@ -57,7 +56,6 @@ public class GastoDaoHibernate extends GenericDaoHibernate<Gasto> implements Gas
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Gasto> findByEmpresa(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Gasto.class, "g");
@@ -110,5 +108,29 @@ public class GastoDaoHibernate extends GenericDaoHibernate<Gasto> implements Gas
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Gasto.class));
 
 		return (Gasto) criteria.uniqueResult();
+	}
+
+	public Collection<Gasto> findSemCodigoAC(Long empresaId) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "g");
+		criteria.createCriteria("g.empresa", "e");
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("g.id"), "id");
+		p.add(Projections.property("g.nome"), "nome");
+		p.add(Projections.property("e.nome"), "projectionEmpresaNome");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.or(Expression.isNull("g.codigoAc"), Expression.eq("g.codigoAc","")));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("e.id", empresaId));
+
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.addOrder(Order.asc("g.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();	
 	}
 }

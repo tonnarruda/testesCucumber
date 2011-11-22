@@ -137,4 +137,42 @@ public class GastoDaoHibernateTest extends GenericDaoHibernateTest<Gasto>
 		
 		assertEquals(1, gastoDao.getGastosSemGrupo(empresa.getId()).size());
 	}
+	
+	public void testFindSemCodigoAC() {
+		
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1 = empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2 = empresaDao.save(empresa2);
+		
+		Gasto gasto1 = getEntity();
+		gasto1.setEmpresa(empresa1);
+		gasto1.setCodigoAc("");
+		gastoDao.save(gasto1);
+		
+		Gasto gasto2 = getEntity();
+		gasto2.setEmpresa(empresa1);
+		gasto2.setCodigoAc("1");
+		gastoDao.save(gasto2);
+		
+		Gasto gasto3 = getEntity();
+		gasto3.setEmpresa(empresa1);
+		gasto3.setCodigoAc(null);
+		gastoDao.save(gasto3);
+		
+		Gasto gasto4 = getEntity();
+		gasto4.setEmpresa(empresa2);
+		gasto4.setCodigoAc(null);
+		gastoDao.save(gasto4);
+		
+		Gasto gasto5 = getEntity();
+		gasto5.setEmpresa(empresa2);
+		gasto5.setCodigoAc("5");
+		gastoDao.save(gasto5);
+		
+		assertEquals(2, gastoDao.findSemCodigoAC(empresa1.getId()).size());
+		assertEquals(1, gastoDao.findSemCodigoAC(empresa2.getId()).size());
+		
+	}
 }
