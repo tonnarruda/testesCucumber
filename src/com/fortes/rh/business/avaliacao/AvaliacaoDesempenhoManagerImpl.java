@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -241,5 +243,23 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
 		this.avaliacaoManager = avaliacaoManager;
+	}
+
+	public void liberarEmLote(String[] avaliacoesCheck, Empresa empresa) throws Exception 
+	{
+		if(avaliacoesCheck != null)
+		{
+			for (String avaliacaoId : avaliacoesCheck) 
+			{
+				if(StringUtils.isNotEmpty(avaliacaoId))
+				{
+					AvaliacaoDesempenho avaliacaoDesempenho = new AvaliacaoDesempenho();
+					avaliacaoDesempenho.setId(Long.parseLong(avaliacaoId));
+	
+					liberar(avaliacaoDesempenho);
+					enviarLembrete(avaliacaoDesempenho.getId(), empresa);
+				}
+			}
+		}
 	}
 }

@@ -30,4 +30,13 @@ public class AvaliacaoDesempenhoDWRTest extends MockObjectTestCase
 		
 		assertEquals(0, avaliacaoDesempenhoDWR.getAvaliacoesByEmpresa(empresaId).size());
 	}
+	
+	public void testGetAvaliacoesByTitulo()
+	{
+		Long empresaId = 1L;
+		String titulo = "teste";
+		avaliacaoDesempenhoManager.expects(once()).method("findTituloModeloAvaliacao").with(eq(empresaId), eq(titulo), eq(null)).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
+		
+		assertEquals(0, avaliacaoDesempenhoDWR.getAvaliacoesByTitulo(empresaId, titulo).size());
+	}
 }

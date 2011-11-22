@@ -64,6 +64,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] colaboradorsCheck;
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> avaliacoesCheckList = new ArrayList<CheckBox>();
+	private String[] avaliacoesCheck;
 	
 	private String nomeBusca;
 	private Long empresaId;
@@ -344,6 +346,22 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		}
 
 		return SUCCESS;
+	}
+	
+	public String liberarEmLote() throws Exception
+	{
+		try 
+		{
+			avaliacaoDesempenhoManager.liberarEmLote(avaliacoesCheck, getEmpresaSistema());
+			addActionMessage("Avaliações liberada com sucesso.");
+		}
+		catch (Exception e) 
+		{
+			addActionError("Não foi possível as Avaliações.");
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
 	}
 	
 	public String liberar() 
@@ -677,5 +695,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public void setAvaliacoesCheck(String[] avaliacoesCheck) {
+		this.avaliacoesCheck = avaliacoesCheck;
+	}
+
+	public Collection<CheckBox> getAvaliacoesCheckList() {
+		return avaliacoesCheckList;
 	}
 }

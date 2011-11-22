@@ -24,4 +24,5 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	void gerarAutoAvaliacoes(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> participantes);
 	Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId);
 	Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa, char tipoModeloAvaliacao);
+	void liberarEmLote(String[] avaliacoesCheck, Empresa empresa) throws Exception;
 }
