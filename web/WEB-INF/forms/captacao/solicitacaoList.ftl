@@ -143,7 +143,7 @@
 			<#assign imgEncerra="flag_red.gif"/>
 			<#assign actionEncerra="encerrarSolicitacao.action"/>
 		</#if>
-		<@display.column title="Ações" media="html" class="acao" style="width: 300px; text-align:left;">
+		<@display.column title="Ações" media="html" class="acao" style="width: 160px; text-align:left;">
 			<a href="imprimirSolicitacaoPessoal.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.print.hint"/>" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<@authz.authorize ifNotGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 				<#if !solicitacao.liberada && !solicitacao.encerrada>

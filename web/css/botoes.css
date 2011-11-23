@@ -543,6 +543,11 @@
 	width: 214px !important;
 }
 
+.btnLiberarAvalEmLote{
+	background-image:url(../imgs/btnLiberarAvalEmLote.gif);
+	width: 214px !important;
+}
+
 .btnExcluir,
 .btnExcluirDesabilitado,
 .btnProxima,
@@ -653,7 +658,8 @@
 .btnAutoAvaliacoesEmLote,
 .btnAutoAvaliacoesEmLoteDesabilitado,
 .btnSim,
-.btnNao
+.btnNao,
+.btnLiberarAvalEmLote
 {
 	border: 0;
 	background-repeat: no-repeat;

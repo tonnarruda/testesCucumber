@@ -46,14 +46,6 @@
 		}
 		a:active {text-decoration: none}
 		
-		#splash{
-			width: 462px;
-			height: 572px;
-			padding: 0;
-		}
-		#splash img{
-			border: 0;
-		}
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js"/>'></script>
@@ -63,25 +55,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.cookie.js"/>'></script>
 	
 	<script type='text/javascript'>
-		$(function () {
-			$( "#splash" ).dialog({
-				autoOpen: false,
-				modal: true,
-				zIndex: 9999,
-				title: 'Ente Tecnologia',
-				minWidth: 462,
-				minHeight: 572,
-			  	close: function() { 
-			  		
-			  	}
-			});
-			
-			if($.cookie("pgInicialSplashEnte") != 'false')
-			{
-				$("#splash").dialog("open");
-				$.cookie("pgInicialSplashEnte", false, { expires: 30 });
-			}
-		});
 		
 		function marcarMensagemLida(usuarioMensagemId)
 		{
@@ -234,12 +207,6 @@
 			</div>
 		</#if>
 	</@authz.authorize>
-
-	<div id="splash">
-		<a href="http://www.entetecnologia.com.br/" target="_blank" >
-			<img border="0" title="Acesse o novo site"  src="<@ww.url includeParams="none" value="/imgs/splashEnte.jpg"/>">
-		</a>
-	</div>
 
 	<script type="text/javascript">
 		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">

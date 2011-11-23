@@ -109,7 +109,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria = criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("c.candidatoCurriculos", "cc", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 

@@ -1288,4 +1288,8 @@ public class RHServiceImpl implements RHService
 	public void setUsuarioManager(UsuarioManager usuarioManager) {
 		this.usuarioManager = usuarioManager;
 	}
+
+	public FeedbackWebService atualizarCodigoEmpregado(String grupoAC, String empresa, String codigo, String codigoNovo) {
+		return new FeedbackWebService(true);
+	}
 }
