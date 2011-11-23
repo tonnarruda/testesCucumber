@@ -85,7 +85,7 @@
 	
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
-		<button class="btnImprimirPdf" onclick="$('#liberarEmLoteDialog').dialog({ modal: true, width: 530 });">
+		<button class="btnLiberarAvalEmLote" onclick="$('#liberarEmLoteDialog').dialog({ modal: true, width: 530 });">
 	</div>
 	
 	<div id="formDialog">
