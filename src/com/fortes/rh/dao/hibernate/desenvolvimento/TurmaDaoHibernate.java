@@ -236,7 +236,8 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		p.add(Projections.groupProperty("t.dataPrevIni"), "dataPrevIni");
 		p.add(Projections.groupProperty("t.dataPrevFim"), "dataPrevFim");
 		p.add(Projections.groupProperty("t.empresa.id"), "projectionEmpresaId");
-
+		p.add(Projections.alias(Projections.count("a.id"), "qtdAvaliacoes"));
+		
 		p.add(Projections.groupProperty("t.instrutor"), "instrutor");
 		p.add(Projections.groupProperty("t.realizada"), "realizada");
 

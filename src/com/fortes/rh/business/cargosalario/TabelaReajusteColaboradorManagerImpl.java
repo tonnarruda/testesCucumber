@@ -122,6 +122,8 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 
 			if(empresa.isAcIntegra() && !reajuste.getColaborador().isNaoIntegraAc())
 				historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
+			else
+				historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 
 			if(historicoColaboradorManager.verifyExists(new String[]{"data", "colaborador.id"}, new Object[]{historicoColaborador.getData(), historicoColaborador.getColaborador().getId()}))
 				throw new Exception("Colaborador já possui um histórico na data do Planejamento de Realinhamento.");

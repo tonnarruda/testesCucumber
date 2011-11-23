@@ -10,11 +10,16 @@
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 	
 		#formDialog { display: none; width: 600px; }
+		#liberarEmLoteDialog { display: none; width: 600px; }
+		.buscaEmLote li{list-style:none;}
 	</style>
 
 	<title>Avaliações de Desempenho</title>
 	
 	<#include "../ftl/showFilterImports.ftl" />
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript'>
@@ -23,9 +28,21 @@
 			$('#avaliacaoDesempenhoId').val(avaliacaoDesempenhoId);
 			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
 		}
+		
+		function buscarAvaliacoes()
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			AvaliacaoDesempenhoDWR.getAvaliacoesByTitulo(createListAvaliacaoDesmpenho, <@authz.authentication operation="empresaId"/>, $('#tituloBuscaEmLote').val());
+		}
+
+		function createListAvaliacaoDesmpenho(data)
+		{
+			addChecks('avaliacoesCheck',data)
+		}
 	</script>
 	
 	<#assign validarCampos="return validaFormulario('formBusca', null, null)"/>
+	<#assign validarFormModalLiberar="return validaFormulario('formModalLiberar', new Array('@avaliacoesCheck'), null)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
 <body>
@@ -68,6 +85,7 @@
 	
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnImprimirPdf" onclick="$('#liberarEmLoteDialog').dialog({ modal: true, width: 530 });">
 	</div>
 	
 	<div id="formDialog">
@@ -76,6 +94,19 @@
 			* Caso nenhuma empresa seja selecionada, a avaliação será clonada apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
 			<@ww.hidden name="avaliacaoDesempenho.id" id="avaliacaoDesempenhoId"/>
 			<button class="btnClonar" type="submit"></button>
+		</@ww.form>
+	</div>
+	
+	<div id="liberarEmLoteDialog"  title='Liberar Avaliações em lote'>
+		<div class="buscaEmLote">
+			<@ww.textfield label="Título" name="tituloBuscaEmLote" id="tituloBuscaEmLote" liClass="liLeft" cssStyle="width: 350px;"/>
+			<button onclick="return buscarAvaliacoes();" class="btnPesquisar">
+		</div>
+		<div style="clear: both"/>
+
+		<@ww.form name="formModalLiberar" id="formModalLiberar" onsubmit="${validarFormModalLiberar}" action="liberarEmLote.action" method="POST">
+			<@frt.checkListBox label="Avaliações" name="avaliacoesCheck" list="avaliacoesCheckList" form="document.getElementById('formModalLiberar')"/>
+			<input type="submit" value="" class="btnEnviar">
 		</@ww.form>
 	</div>
 </body>
