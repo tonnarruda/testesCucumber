@@ -98,7 +98,7 @@
 	<@ww.form id="frmExperiencia" name="frmExperiencia" onsubmit="limpaData(this);" action="/captacao/experiencia/${formActionExp}" method="POST" cssStyle="width:99%; padding:5px;">
 		<@ww.textfield label="Empresa" name="experiencia.empresa" theme="css_xhtml"  cssClass="inputNome" maxLength="100" id="exp_empresa" required="true"/>
 	 	<@ww.select label="Cargo" name="experiencia.cargo.id" theme="css_xhtml" id="cargoNomeId" list="nomeCargos" cssClass="inputNome" listKey="id" listValue="nomeMercado" disabled="${selectCargoDesativado}" headerKey="" headerValue="Selecione..." onchange="this.form.cargoNomeMercado.value = options[selectedIndex].text;" required="true"/>
-	 	<@ww.checkbox label="Outro Cargo" onclick="ativaOuDesativa('nomeCargo');ativaOuDesativa('cargoNomeId');" name="checkNomeCargo" labelPosition="left" theme="css_xhtml" id="chk"/>
+	 	<@ww.checkbox label="Outro Cargo" onclick="ativaOuDesativa('nomeCargo');ativaOuDesativa('cargoNomeId');" name="checkNomeCargo" theme="css_xhtml" id="chk" />
 		<@ww.textfield disabled="${nomeCargoDesativado}" name="experiencia.nomeMercado" theme="css_xhtml" cssClass="inputNome" maxLength="100" id="nomeCargo"/>
 
 		<#--Veja complemento destes datepickers no final da página-->

@@ -33,6 +33,7 @@ import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.exception.FormatoArquivoInvalidoException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Conhecimento;
@@ -575,6 +576,17 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			candidato.setCargos(cargoManager.populaCargos(cargosCheck));
 			candidato = candidatoManager.saveCandidatoCurriculo(candidato, imagens, ocrTexto);
 			return Action.SUCCESS;
+		}
+		catch (FormatoArquivoInvalidoException e)
+		{
+			if (candidato.getId() == null)
+				prepareInsertCurriculoPlus();
+			
+			CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
+			
+			addActionError(e.getMessage());
+			e.printStackTrace();
+			return Action.INPUT;
 		}
 		catch (Exception e)
 		{

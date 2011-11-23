@@ -11,9 +11,11 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
@@ -30,6 +32,7 @@ public class TurmaListActionTest extends MockObjectTestCase
 	private Mock turmaManager;
 	private Mock colaboradorTurmaManager;
 	private Mock cursoManager;
+	private Mock avaliacaoCursoManager;
 
     protected void setUp() throws Exception
     {
@@ -38,7 +41,9 @@ public class TurmaListActionTest extends MockObjectTestCase
         turmaManager = new Mock(TurmaManager.class);
         colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
         cursoManager = new Mock(CursoManager.class);
+        avaliacaoCursoManager = new Mock(AvaliacaoCursoManager.class);
 
+        action.setAvaliacaoCursoManager((AvaliacaoCursoManager) avaliacaoCursoManager.proxy());
         action.setColaboradorTurmaManager((ColaboradorTurmaManager) colaboradorTurmaManager.proxy());
         action.setTurmaManager((TurmaManager) turmaManager.proxy());
         action.setCursoManager((CursoManager) cursoManager.proxy());
@@ -124,6 +129,7 @@ public class TurmaListActionTest extends MockObjectTestCase
     	turmaManager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(0));
     	turmaManager.expects(once()).method("findTurmas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Turma>()));
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(new Curso()));
+    	avaliacaoCursoManager.expects(once()).method("findByCurso");
 
     	assertEquals("input", action.imprimirConfirmacaoCertificado());
     }
@@ -138,6 +144,7 @@ public class TurmaListActionTest extends MockObjectTestCase
     	turmaManager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(0));
     	turmaManager.expects(once()).method("findTurmas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Turma>()));
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(new Curso()));
+    	avaliacaoCursoManager.expects(once()).method("findByCurso");
     	action.setMsgAlert("teste");
 
     	assertEquals("success", action.list());
