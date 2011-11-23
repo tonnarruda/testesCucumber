@@ -13,6 +13,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GastoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
@@ -50,6 +51,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private IndiceManager indiceManager;
 	private GastoManager gastoManager;
 	private OcorrenciaManager ocorrenciaManager;
+	private EmpresaManager empresaManager;
 
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
@@ -59,11 +61,20 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private Collection<Indice> indices ;
 	private Collection<Gasto> gastos;
 	private Collection<Ocorrencia> ocorrencias ;
+	private Collection<Perfil> perfils;
+	private Collection<Empresa> empresas;
+	
+	private Long[] estabelecimentoIds;
+	private Long[] areaIds;
+	private Long[] colaboradorIds;
+	private Long[] cidadeIds;
+	private Long[] faixaSalarialIds;
+	private Long[] indiceIds;
+	private Long[] gastoIds;
+	private Long[] ocorrenciaIds;
 	
 	private Empresa empresa;
 	private ParametrosDoSistema parametrosDoSistema;
-
-	private Collection<Perfil> perfils;
 
 	private String[] camposCandidatoObrigatorios;
 	private String[] camposCandidatoVisivels;
@@ -71,6 +82,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private boolean habilitaCampoExtra;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+
+
 
 
 	
@@ -114,6 +127,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	{
 		empresa = getEmpresaSistema();
 		
+		empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+
 		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 		if(usuarioLogado.getId() != 1L)
 			return Action.INPUT;
@@ -129,6 +144,11 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		
 		return Action.SUCCESS;
 		
+	}
+	
+	public String deleteSemCodigoAC() throws Exception
+	{
+		return null;
 	}
 	
 	public String updateCamposCandidato() throws Exception
@@ -276,4 +296,47 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return ocorrencias;
 	}
 
+	public void setEstabelecimentoIds(Long[] estabelecimentoIds) {
+		this.estabelecimentoIds = estabelecimentoIds;
+	}
+
+	public void setAreaIds(Long[] areaIds) {
+		this.areaIds = areaIds;
+	}
+
+	public void setColaboradorIds(Long[] colaboradorIds) {
+		this.colaboradorIds = colaboradorIds;
+	}
+
+	public void setCidadeIds(Long[] cidadeIds) {
+		this.cidadeIds = cidadeIds;
+	}
+
+	public void setFaixaSalarialIds(Long[] faixaSalarialIds) {
+		this.faixaSalarialIds = faixaSalarialIds;
+	}
+
+	public void setIndiceIds(Long[] indiceIds) {
+		this.indiceIds = indiceIds;
+	}
+
+	public void setGastoIds(Long[] gastoIds) {
+		this.gastoIds = gastoIds;
+	}
+
+	public void setOcorrenciaIds(Long[] ocorrenciaIds) {
+		this.ocorrenciaIds = ocorrenciaIds;
+	}
+
+	public void setEmpresas(Collection<Empresa> empresas) {
+		this.empresas = empresas;
+	}
+	
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
 }

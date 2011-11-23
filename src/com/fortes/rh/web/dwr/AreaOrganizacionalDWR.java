@@ -73,6 +73,10 @@ public class AreaOrganizacionalDWR
 		
 		return emailsResponsaveis;
 	}
+
+	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId){
+		return areaOrganizacionalManager.findSemCodigoAC(empresaId);
+	}
 	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
