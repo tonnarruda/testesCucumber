@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.dwr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -11,8 +12,11 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
+import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.web.dwr.TurmaDWR;
@@ -21,6 +25,7 @@ public class TurmaDWRTest extends MockObjectTestCase
 {
 	private TurmaDWR turmaDWR;
 	private Mock turmaManager;
+	private Mock avaliacaoTurmaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -29,6 +34,9 @@ public class TurmaDWRTest extends MockObjectTestCase
 
 		turmaManager = new Mock(TurmaManager.class);
 		turmaDWR.setTurmaManager((TurmaManager) turmaManager.proxy());
+
+		avaliacaoTurmaManager = new Mock(AvaliacaoTurmaManager.class);
+		turmaDWR.setAvaliacaoTurmaManager((AvaliacaoTurmaManager) avaliacaoTurmaManager.proxy());
 	}
 
 	public void testGetTurmas()
@@ -94,6 +102,23 @@ public class TurmaDWRTest extends MockObjectTestCase
 		Map retorno = turmaDWR.getTurmasFinalizadas(curso.getId().toString());
 
 		assertEquals(turmas.size(), retorno.size());
+	}
+	
+	public void testFindAvaliacaoTurmas()
+	{
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setId(1L);
+
+		AvaliacaoTurma av1 = AvaliacaoTurmaFactory.getEntity(111L);
+		AvaliacaoTurma av2 = AvaliacaoTurmaFactory.getEntity(222L);
+		
+		Collection<AvaliacaoTurma> avaliacaoTurmas = Arrays.asList(av1, av2);
+		
+		avaliacaoTurmaManager.expects(once()).method("findByTurma").with(eq(1L)).will(returnValue(avaliacaoTurmas));
+
+		Collection<AvaliacaoTurma> retorno = turmaDWR.getAvaliacaoTurmas(1L);
+
+		assertEquals(avaliacaoTurmas.size(), retorno.size());
 	}
 	
 	public void testGetTurmasByFiltro() throws Exception

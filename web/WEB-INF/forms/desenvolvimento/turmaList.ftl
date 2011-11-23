@@ -4,12 +4,21 @@
 <html>
 <head>
 <@ww.head/>
-<style type="text/css">
-	@import url('<@ww.url value="/css/displaytag.css"/>');
-</style>
+	<style type="text/css">
+		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		
+		.popup { display: none; }
+		.popup ul { list-style: none; }
+		.popup ul li { margin: 5px; }
+		.popup ul li a { text-decoration: none; }
+	</style>
+
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+		
 	<script type="text/javascript">
 		function enviarEmail(turmaId)
 		{
@@ -26,6 +35,43 @@
 		function errorMsg(msg)
 		{
 			jAlert("Envio de email falhou.");
+		}
+		
+		function getMenuAvaliacoes(event, turmaId, cursoId, acao)
+		{
+			TurmaDWR.getAvaliacaoTurmas(turmaId, {
+				callback: function(dados) {
+					$('.popup').empty();
+					
+					var link, urlIcone;
+					var popupAvaliacoes = "<ul>";
+					
+					$(dados).each(function(i, avaliacaoTurma) {
+						if (acao == 'imprimir')
+						{
+							link = "../../pesquisa/questionario/imprimir.action?questionario.id=" + avaliacaoTurma.questionario.id + "&filtroQuestionario=" + avaliacaoTurma.turma.id;
+							urlIcone = "<@ww.url includeParams="none" value="/imgs/printer.gif"/>";
+						}
+						else
+						{
+							link = "../../pesquisa/questionario/prepareResultado.action?questionario.id=" + avaliacaoTurma.questionario.id + "&turmaId=" + avaliacaoTurma.turma.id + "&cursoId=" + cursoId;
+							urlIcone = "<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>";
+						}
+					
+						popupAvaliacoes += "<li>";
+						popupAvaliacoes += "<a href='" + link + "'>";
+						popupAvaliacoes += "<img src='" + urlIcone + "' align='absmiddle'/>&nbsp; " + avaliacaoTurma.questionarioTitulo;
+						popupAvaliacoes += "</a>";
+						popupAvaliacoes += "</li>\n";
+					});
+					
+					popupAvaliacoes += "</ul>";
+					
+					$('.popup').html(popupAvaliacoes);
+					
+					$('.popup').dialog({ modal: true, width: 600, position: [event.pageX, event.pageY] });
+				}
+			});
 		}
 	</script>
 <title>Turmas - ${curso.nome}</title>
@@ -58,16 +104,12 @@
 			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?turma.id=${turma.id}&turma.empresa.id=${turma.empresa.id}&curso.id=${curso.id}&curso.nome=${curso.nome}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<a href="imprimirConfirmacaoCertificado.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="Relatório de Realização de Curso" src="<@ww.url value="/imgs/report.gif"/>"></a>
 			
-			<#if turma.avaliacaoTurmas?exists && 0 < turma.avaliacaoTurmas?size>
-				
-			</#if>
-			  
 			<#if turma.qtdAvaliacoes?exists && 0 < turma.qtdAvaliacoes>
-				<a href="../../pesquisa/questionario/imprimir.action?questionario.id=${turma.id}&filtroQuestionario=${turma.id?string?replace(".", "")?replace(",","")}"><img border="0" title="Imprimir Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
-				<a href="../../pesquisa/questionario/prepareResultado.action?questionario.id=${turma.id}&turmaId=${turma.id}&cursoId=${curso.id}"><img border="0" title="Relatório da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
+				<a href="javascript:;" onclick="getMenuAvaliacoes(event, ${turma.id}, ${curso.id}, 'imprimir')"><img border="0" title="Imprimir Avaliações" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="javascript:;" onclick="getMenuAvaliacoes(event, ${turma.id}, ${curso.id}, 'relatorio')"><img border="0" title="Relatório das Avaliações" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
 			<#else>
-				<a href="javascript:;"><img border="0" title="Não há avaliações para serem impressas nessa turma" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"></a>
-				<a href="javascript:;"><img border="0" title="Não há avaliações para o relatório dessa turma" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"></a>
+				<a href="javascript:;"><img border="0" title="Não há avaliações a serem impressas nessa turma" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"></a>
+				<a href="javascript:;"><img border="0" title="Não há avaliações para relatório nessa turma" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"></a>
 			</#if>
 			
 		</@display.column>
@@ -80,9 +122,9 @@
 
 		<@display.column title="Realizada" style="text-align:center; width:50px">
 			<#if turma.realizada>
-			Sim
+				Sim
 			<#else>
-			Não
+				Não
 			</#if>
 		</@display.column>
 	</@display.table>
@@ -97,5 +139,6 @@
 		</button>
 	</div>
 
+	<div class='popup' title='Avaliações'>></div>
 </body>
 </html>

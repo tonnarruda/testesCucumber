@@ -48,7 +48,7 @@
 				popupAvaliacoes += "</a></li>\n";
 			});
 			
-			popupAvaliacoes += "</ul></div>";
+			popupAvaliacoes += "</ul>";
 		
 			$('.avaliacoes').html(popupAvaliacoes);
 		
@@ -97,7 +97,7 @@
 
 				<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO">
 					<#if turma.avaliacaoTurmas?exists && 0 < turma.avaliacaoTurmas?size>
-						<a href="javascript:;" onclick="abrirMenuRespostas(event, ${colaboradorTurma.colaborador.id});"><img border="0" title="Revisar as respostas de avaliação da turma deste colaborador" src="<@ww.url value="/imgs/page_edit.gif"/>"/></a> 
+						<a href="javascript:;" onclick="abrirMenuRespostas(event, ${colaboradorTurma.colaborador.id});"><img border="0" title="Avaliações" src="<@ww.url value="/imgs/page_edit.gif"/>"/></a> 
 					<#else>
 						<a href="javascript:;"><img border="0" title="Não existem avaliações definidas para esta turma" src="<@ww.url value="/imgs/page_edit.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"/></a>
 					</#if>

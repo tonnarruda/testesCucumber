@@ -6,13 +6,16 @@ import java.util.Map;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
 public class TurmaDWR
 {
 	private TurmaManager turmaManager;
+	private AvaliacaoTurmaManager avaliacaoTurmaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager; 
 
 	public Map getTurmas(String cursoId)
@@ -82,6 +85,11 @@ public class TurmaDWR
 		}
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricao");
 	}
+	
+	public Collection<AvaliacaoTurma> getAvaliacaoTurmas(Long turmaId) 
+	{
+		return avaliacaoTurmaManager.findByTurma(turmaId);
+	}
 
 	public boolean updateRealizada(Long turmaId, boolean realizada) throws Exception
 	{
@@ -106,6 +114,11 @@ public class TurmaDWR
 
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
+	}
+
+
+	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) {
+		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
 	}
 
 }

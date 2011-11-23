@@ -135,6 +135,9 @@
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.Cargo"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.NivelCompetencia"/>
+		<convert converter="bean" match="com.fortes.rh.model.pesquisa.AvaliacaoTurma"/>
+		<convert converter="bean" match="com.fortes.rh.model.pesquisa.Questionario"/>
+		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Turma"/>
     </allow>
 
 </dwr>

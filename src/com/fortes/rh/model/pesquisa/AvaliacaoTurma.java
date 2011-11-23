@@ -6,11 +6,13 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("serial")
@@ -22,6 +24,10 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
 	private Questionario questionario;
 	private boolean ativa = true;
 
+	@Transient
+	private Turma turma ;
+	
+	
 	public AvaliacaoTurma()
 	{
 	}
@@ -48,14 +54,22 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
 	}
 
     //Projections
+    public void setProjectionTurmaId(Long projectionTurmaId)
+    {
+    	if(this.turma == null)
+    		this.turma = new Turma();
+
+    	this.turma.setId(projectionTurmaId);
+    }
+
     public void setProjectionQuestionarioId(Long projectionQuestionarioId)
     {
     	if(this.questionario == null)
     		this.questionario = new Questionario();
-
+    	
     	this.questionario.setId(projectionQuestionarioId);
     }
-
+    
     public void setProjectionQuestionarioCabecalho(String projectionQuestionarioCabecalho)
     {
     	if(this.questionario == null)
@@ -200,5 +214,13 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
 	public void setAtiva(boolean ativa)
 	{
 		this.ativa = ativa;
+	}
+
+	public Turma getTurma() {
+		return turma;
+	}
+
+	public void setTurma(Turma turma) {
+		this.turma = turma;
 	}
 }
