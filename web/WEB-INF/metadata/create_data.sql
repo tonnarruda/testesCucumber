@@ -186,6 +186,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (490,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (513, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperiencia.action', 3, true, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (491, 'ROLE_REL_ACOMP_RANKING_PERIODO_EXPERIENCIA', 'Ranking de Performance das Avaliações de Desempenho','/avaliacao/periodoExperiencia/prepareRelatorioRankingPerformancePeriodoDeExperiencia.action', 4, true,486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (521, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Cartões de Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action', 5, true, 486);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (528, 'ROLE_REL_ACOMP_PERFORMANCE', 'Relatório de Auto Avaliação', '/avaliacao/periodoExperiencia/prepareRelatorioPerformanceAvaliacaoDesempenho.action', 6, true,486);
 
 -- Fim Info. Funcionais
 -- Modulo Indicadores
@@ -21093,9 +21094,17 @@ insert into migrations values('20111020093135');
 insert into migrations values('20111020142332');
 insert into migrations values('20111027154152');
 insert into migrations values('20111101152828');
+insert into migrations values('20111107140843');
+insert into migrations values('20111108091303');
+insert into migrations values('20111108091407');
+insert into migrations values('20111110152043');
+insert into migrations values('20111117110508');
+insert into migrations values('20111117111103');
+insert into migrations values('20111117111551');
+insert into migrations values('20111122133637');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.61.53', '', '25', false,false, 2, '1.1.46.1', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.62.54', '', '25', false,false, 2, '1.1.46.1', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'

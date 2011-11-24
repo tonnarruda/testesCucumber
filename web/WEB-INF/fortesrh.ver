@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.62.54" data="24/11/2011">
+		- Aval. Desempenho > Relatórios > Relatório de Auto Avaliação: Novo relatório.
+		- Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Novo filtro por empresa.
+		- Aval. Desempenho > Movimentações > Avaliações Desempenho: Nova ferramenta de liberação em lote das avaliações.
+		- TeD > Cadastros > Cursos/Treinamentos > Turmas: Possibilidade de seleção de mais de um questionário de avaliação para uma turma.
+		- SESMT > Cadastros > Extintores > Editar Extintor: Implementação do Histórico de Extintores.  
+	</Versao>
 	<Versao id="1.1.61.53" data="10/11/2011">
 		- ReS > Painel de Indicadores: Novo Painel de Indicadores de ReS.
 		- SESMT > Movimentações > Extintores > Manutenção > Inserir Manutenção de Extintor: Nova forma de busca no campo Extintor.  

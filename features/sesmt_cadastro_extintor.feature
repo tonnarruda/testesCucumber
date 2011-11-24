@@ -26,12 +26,27 @@ Funcionalidade: Extintor
     Então eu devo ver o título "Extintores"
     E eu clico em editar "escada2"
     Então eu devo ver o título "Editar Extintor"
+    E eu devo ver "escada2"
+    
+    Então eu clico em editar "escada2" 
     E o campo "Localização" deve conter "escada2"
     E eu preencho "Localização" com "escada3"
     E eu clico no botão "Gravar"
-    Então eu devo ver o título "Extintores"
+    Então eu devo ver o título "Editar Extintor"
     E eu devo ver "escada3"
 
+    Então eu clico no botão "Inserir"
+    E eu devo ver o título "Inserir Histórico para o Extintor AP"
+    E eu preencho o campo (JS) "dataHist" com "24/11/2011"
+    E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
+    E eu preencho "Localização" com "escada4"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Editar Extintor"
+    Então eu devo ver "escada3"
+    E eu devo ver "escada4"
+    E eu clico no botão "Cancelar"
+
+    Então eu devo ver o título "Extintores"
     E eu clico em excluir "escada3"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     Então eu devo ver o título "Extintores"

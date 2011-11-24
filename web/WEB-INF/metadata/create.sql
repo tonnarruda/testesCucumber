@@ -1341,14 +1341,19 @@ CREATE TABLE turma (
 	horario character varying(20),
 	realizada boolean,
 	qtdparticipantesprevistos Integer,
-    curso_id bigint,
-    avaliacaoturma_id bigint
+    curso_id bigint
 );
 ALTER TABLE turma ADD CONSTRAINT turma_pkey PRIMARY KEY (id);
 ALTER TABLE turma ADD CONSTRAINT turma_curso_fk FOREIGN KEY (curso_id) REFERENCES curso(id);
 ALTER TABLE turma ADD CONSTRAINT turma_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
-ALTER TABLE turma ADD CONSTRAINT turma_avaliacaoturma_fk FOREIGN KEY (avaliacaoturma_id) REFERENCES avaliacaoturma(id);
 CREATE SEQUENCE turma_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE turma_avaliacaoturma (
+    turma_id bigint NOT NULL,
+    avaliacaoturmas_id bigint NOT NULL
+);
+ALTER TABLE turma_avaliacaoturma ADD CONSTRAINT turma_avaliacaoturma_avaliacaoturma_fk FOREIGN KEY (avaliacaoturmas_id) REFERENCES avaliacaoturma(id);
+ALTER TABLE turma_avaliacaoturma ADD CONSTRAINT turma_avaliacaoturma_turma_fk FOREIGN KEY (turma_id) REFERENCES turma(id);
 
 CREATE TABLE diaturma (
     id bigint NOT NULL,
@@ -1963,7 +1968,6 @@ END' LANGUAGE plpgsql;
 
 CREATE TABLE extintor (
 	id bigint NOT NULL,
-	localizacao character varying(50),
 	tipo character varying(1),
 	numeroCilindro int,
 	capacidade character varying(10),
@@ -1972,14 +1976,24 @@ CREATE TABLE extintor (
 	periodoMaxInspecao int,
 	periodoMaxHidrostatico int,
 	ativo boolean,
-	empresa_id bigint,
-	estabelecimento_id bigint
+	empresa_id bigint
 );
 
 ALTER TABLE extintor ADD CONSTRAINT extintor_pkey PRIMARY KEY(id);
 ALTER TABLE extintor ADD CONSTRAINT extintor_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
-ALTER TABLE extintor ADD CONSTRAINT extintor_estabelecimento_fk FOREIGN KEY (estabelecimento_id) REFERENCES estabelecimento(id);
 CREATE SEQUENCE extintor_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE SEQUENCE historicoextintor_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+CREATE TABLE historicoextintor (
+	id bigint NOT NULL DEFAULT nextval('historicoextintor_sequence'),
+	extintor_id bigint NOT NULL,
+	estabelecimento_id bigint NOT NULL,
+	localizacao character varying(50),
+	data Date NOT NULL
+);
+ALTER TABLE historicoextintor ADD CONSTRAINT historicoextintor_pkey PRIMARY KEY (id);
+ALTER TABLE historicoextintor ADD CONSTRAINT historicoextintor_extintor_fk FOREIGN KEY (extintor_id) REFERENCES extintor(id);
+ALTER TABLE historicoextintor ADD CONSTRAINT historicoextintor_estabelecimento_fk FOREIGN KEY (estabelecimento_id) REFERENCES estabelecimento(id);
 
 CREATE TABLE extintorinspecao (
 	id bigint NOT NULL,
