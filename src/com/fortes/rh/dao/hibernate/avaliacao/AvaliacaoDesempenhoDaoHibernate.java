@@ -123,7 +123,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		query.executeUpdate();
 	}
 	
-	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String tituloBusca, Long avaliacaoId) {
+	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
 		criteria.createCriteria("a.avaliacao", "avaliacao");
 		criteria.createCriteria("avaliacao.empresa", "emp");
@@ -149,6 +149,9 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		
 		if(avaliacaoId != null)
 			criteria.add(Expression.eq("avaliacao.id", avaliacaoId));
+
+		if(liberada != null)
+			criteria.add(Expression.eq("a.liberada", liberada));
 
 		criteria.addOrder(Order.asc("a.titulo"));
 

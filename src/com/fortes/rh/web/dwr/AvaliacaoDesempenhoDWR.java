@@ -42,9 +42,10 @@ public class AvaliacaoDesempenhoDWR
 		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacaoDesempenhos, "getId", ((empresaId == null || empresaId.equals(-1L)) ? "getTituloComEmpresa" : "getTitulo"));
 	}
 	
-	public Map<Long, String> getAvaliacoesByTitulo(Long empresaId, String titulo)
+	@SuppressWarnings("unchecked")
+	public Map<Long, String> getAvaliacoesNaoLiberadasByTitulo(Long empresaId, String titulo)
 	{
-		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(empresaId, titulo, null);
+		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(empresaId, titulo, null, false);
 		return CollectionUtil.convertCollectionToMap(avaliacaoDesempenhos, "getId", "getTitulo", AvaliacaoDesempenho.class);
 	}
 

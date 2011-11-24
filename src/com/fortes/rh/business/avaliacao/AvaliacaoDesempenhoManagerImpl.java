@@ -207,9 +207,9 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	{
 		return getDao().findIdsAvaliacaoDesempenho(avaliacaoId);
 	}
-	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String nomeBusca, Long avaliacaoId) 
+	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada) 
 	{
-		return getDao().findTituloModeloAvaliacao(empresaId, nomeBusca, avaliacaoId);
+		return getDao().findTituloModeloAvaliacao(empresaId, nomeBusca, avaliacaoId, liberada);
 	}
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)

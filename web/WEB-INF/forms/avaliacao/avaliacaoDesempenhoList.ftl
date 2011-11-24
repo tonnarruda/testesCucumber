@@ -32,7 +32,7 @@
 		function buscarAvaliacoes()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			AvaliacaoDesempenhoDWR.getAvaliacoesByTitulo(createListAvaliacaoDesmpenho, <@authz.authentication operation="empresaId"/>, $('#tituloBuscaEmLote').val());
+			AvaliacaoDesempenhoDWR.getAvaliacoesNaoLiberadasByTitulo(createListAvaliacaoDesmpenho, <@authz.authentication operation="empresaId"/>, $('#tituloBuscaEmLote').val());
 		}
 
 		function createListAvaliacaoDesmpenho(data)
@@ -106,7 +106,7 @@
 
 		<@ww.form name="formModalLiberar" id="formModalLiberar" onsubmit="${validarFormModalLiberar}" action="liberarEmLote.action" method="POST">
 			<@frt.checkListBox label="Avaliações" name="avaliacoesCheck" list="avaliacoesCheckList" form="document.getElementById('formModalLiberar')"/>
-			<input type="submit" value="" class="btnEnviar">
+			<input type="submit" value="" class="btnLiberar">
 		</@ww.form>
 	</div>
 </body>
