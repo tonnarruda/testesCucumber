@@ -47,3 +47,16 @@ rhoficial_informatica:
   environment:
     FORTES_HOME: /home/fortes
     JRE_HOME: /usr	
+	
+rh_pae:
+  host: 184.106.64.61
+  user: root
+  password: rhuniforO0vuDXg37
+  tomcat_home: /var/lib/tomcat6
+  fortes_home_properties: name=FORTES_UNIFOR
+  app_name: unifor
+  db_name: unifor
+  backup_folder: /usr/fortes/unifor
+  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_61_53/fortesrh.war
+  environment:
+    FORTES_UNIFOR: /usr/fortes/unifor
