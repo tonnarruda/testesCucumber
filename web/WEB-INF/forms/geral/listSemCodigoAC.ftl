@@ -7,10 +7,6 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	
 	<script type="text/javascript">
 		function excluir()
 		{
@@ -22,14 +18,39 @@
 		
 	</script>
 	
-	<title>Excluir Registros Sem Código AC)</title>
+	<title>Excluir Registros Sem Código AC</title>
 </head>
 <body>
 	<@ww.actionerror />
-	<@ww.form name="form" action="" method="POST">
 
-		<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa" />
+		<@ww.form name="pesquisar" action="prepareDeleteSemCodigoAC.action" method="POST" id="pesquisar">
+			<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" />
+			<input type="submit" value="" class="btnPesquisar">
+		</@ww.form>
 		<br/>
+		
+		<@ww.form name="form" action="" method="POST">
+		Ocorrências
+		<@display.table name="ocorrencias" id="ocorrencia" class="dados" >
+			<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkOcorrencia\", this.checked);' />" style="width: 30px; text-align: center;">
+				<input type="checkbox" class="checkOcorrencia" value="${ocorrencia.id}" name="ocorrenciaIds" />
+			</@display.column>
+			
+			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
+			<@display.column property="empresa.nome" title="Empresa"/>
+			<@display.column property="descricao" title="Ocorrência"/>
+		</@display.table>
+			
+		Colaboradores
+		<@display.table name="colaboradors" id="colaborador" class="dados" >
+			<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkColaborador\", this.checked);' />" style="width: 30px; text-align: center;">
+				<input type="checkbox" class="checkColaborador" value="${colaborador.id}" name="colaboradorIds" />
+			</@display.column>
+			
+			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
+			<@display.column property="empresa.nome" title="Empresa"/>
+			<@display.column property="nome" title="Colaborador"/>
+		</@display.table>
 		
 		Cidades
 		<@display.table name="cidades" id="cidade" class="dados" >
@@ -63,17 +84,6 @@
 			<@display.column property="areaMae.nome" title="Área Mãe"/>
 			<@display.column property="nome" title="Área"/>
 		</@display.table>
-	
-		Colaboradores
-		<@display.table name="colaboradors" id="colaborador" class="dados" >
-			<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkColaborador\", this.checked);' />" style="width: 30px; text-align: center;">
-				<input type="checkbox" class="checkColaborador" value="${colaborador.id}" name="colaboradorIds" />
-			</@display.column>
-			
-			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
-			<@display.column property="empresa.nome" title="Empresa"/>
-			<@display.column property="nome" title="Colaborador"/>
-		</@display.table>
 		
 		Faixas Salariais
 		<@display.table name="faixaSalarials" id="faixaSalarial" class="dados" >
@@ -94,28 +104,6 @@
 			
 			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
 			<@display.column property="nome" title="Índices"/>
-		</@display.table>
-	
-		Gastos
-		<@display.table name="gastos" id="gasto" class="dados" >
-			<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkGasto\", this.checked);' />" style="width: 30px; text-align: center;">
-				<input type="checkbox" class="checkGasto" value="${gasto.id}" name="gastoIds" />
-			</@display.column>
-			
-			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
-			<@display.column property="empresa.nome" title="Empresa"/>
-			<@display.column property="nome" title="Gasto"/>
-		</@display.table>
-		
-		Ocorrências
-		<@display.table name="ocorrencias" id="ocorrencia" class="dados" >
-			<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkOcorrencia\", this.checked);' />" style="width: 30px; text-align: center;">
-				<input type="checkbox" class="checkOcorrencia" value="${ocorrencia.id}" name="ocorrenciaIds" />
-			</@display.column>
-			
-			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
-			<@display.column property="empresa.nome" title="Empresa"/>
-			<@display.column property="descricao" title="Ocorrência"/>
 		</@display.table>
 	
 	</@ww.form>

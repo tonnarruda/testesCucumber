@@ -41,6 +41,12 @@ public class ParametrosDoSistemaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(ps.getId(), parametrosDoSistema.getId());
 	}
 	
+	public void testFindTabelasRelacionadas()
+	{
+		assertTrue(parametrosDoSistemaDao.findTabelasRelacionadas("colaborador_id").size() > 1);
+		assertTrue(parametrosDoSistemaDao.findTabelasRelacionadas("babau_id").size() == 0);
+	}
+	
 	public void testUpdateModulos()
 	{
 		ParametrosDoSistema ps = ParametrosDoSistemaFactory.getEntity();
@@ -58,6 +64,11 @@ public class ParametrosDoSistemaDaoHibernateTest extends GenericDaoHibernateTest
 		parametrosDoSistemaDao.save(ps);
 		
 		parametrosDoSistemaDao.disablePapeisIds();
+	}
+	
+	public void testFindRelacionamentoByTabela()
+	{
+		assertTrue(parametrosDoSistemaDao.findRelacionamentoByTabela(new Long[] {1L}, "cidade", "uf_id").size() >= 0);
 	}
 
 }

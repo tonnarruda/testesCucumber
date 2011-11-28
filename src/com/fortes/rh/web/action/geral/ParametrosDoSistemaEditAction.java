@@ -12,12 +12,14 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GastoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.exception.RelacionamentoException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -52,6 +54,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private GastoManager gastoManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private EmpresaManager empresaManager;
+	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
@@ -64,15 +67,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private Collection<Perfil> perfils;
 	private Collection<Empresa> empresas;
 	
-	private Long[] estabelecimentoIds;
-	private Long[] areaIds;
-	private Long[] colaboradorIds;
-	private Long[] cidadeIds;
-	private Long[] faixaSalarialIds;
-	private Long[] indiceIds;
-	private Long[] gastoIds;
-	private Long[] ocorrenciaIds;
-	
 	private Empresa empresa;
 	private ParametrosDoSistema parametrosDoSistema;
 
@@ -83,9 +77,13 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 
-
-
-
+	private Long[] cidadeIds;
+	private Long[] estabelecimentoIds;
+	private Long[] areaIds;
+	private Long[] colaboradorIds;
+	private Long[] faixaSalarialIds;
+	private Long[] indiceIds;
+	private Long[] ocorrenciaIds;
 	
 	public String prepareUpdate() throws Exception
 	{
@@ -125,7 +123,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public String prepareDeleteSemCodigoAC() throws Exception
 	{
-		empresa = getEmpresaSistema();
+		if(empresa == null || empresa.getId() == null)
+			empresa = getEmpresaSistema();
 		
 		empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
 
@@ -139,7 +138,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		cidades = cidadeManager.findSemCodigoAC();
 		faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
 		indices = indiceManager.findSemCodigoAC();
-		gastos = gastoManager.findSemCodigoAC(empresa.getId());
 		ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
 		
 		return Action.SUCCESS;
@@ -148,7 +146,22 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public String deleteSemCodigoAC() throws Exception
 	{
-		return null;
+		try {
+			colaboradorOcorrenciaManager.deleteOcorrencias(ocorrenciaIds);
+			
+//			select table_name from information_schema.columns as col where col.column_name = 'colaborador_id' 
+//				and table_name not in ('historicocolaborador', 'colaboradoridioma')
+//				order by table_name
+			parametrosDoSistemaManager.verificaRelacionamento(colaboradorIds, "colaborador_id", "colaborador");
+			colaboradorManager.deleteColaboradorSituacao(colaboradorIds);
+			
+		} catch (RelacionamentoException e) {
+			
+		} catch (Exception e) {
+			
+		}
+		
+		return Action.SUCCESS;
 	}
 	
 	public String updateCamposCandidato() throws Exception
@@ -296,6 +309,27 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		return ocorrencias;
 	}
 
+	public void setEmpresas(Collection<Empresa> empresas) {
+		this.empresas = empresas;
+	}
+	
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public void setAreaOrganizacionals(
+			Collection<AreaOrganizacional> areaOrganizacionals) {
+		this.areaOrganizacionals = areaOrganizacionals;
+	}
+
+	public void setCidadeIds(Long[] cidadeIds) {
+		this.cidadeIds = cidadeIds;
+	}
+
 	public void setEstabelecimentoIds(Long[] estabelecimentoIds) {
 		this.estabelecimentoIds = estabelecimentoIds;
 	}
@@ -308,10 +342,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		this.colaboradorIds = colaboradorIds;
 	}
 
-	public void setCidadeIds(Long[] cidadeIds) {
-		this.cidadeIds = cidadeIds;
-	}
-
 	public void setFaixaSalarialIds(Long[] faixaSalarialIds) {
 		this.faixaSalarialIds = faixaSalarialIds;
 	}
@@ -320,23 +350,12 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		this.indiceIds = indiceIds;
 	}
 
-	public void setGastoIds(Long[] gastoIds) {
-		this.gastoIds = gastoIds;
-	}
-
 	public void setOcorrenciaIds(Long[] ocorrenciaIds) {
 		this.ocorrenciaIds = ocorrenciaIds;
 	}
 
-	public void setEmpresas(Collection<Empresa> empresas) {
-		this.empresas = empresas;
-	}
-	
-	public Collection<Empresa> getEmpresas() {
-		return empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
+	public void setColaboradorOcorrenciaManager(
+			ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
+		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
 	}
 }
