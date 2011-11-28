@@ -282,7 +282,8 @@ public class ArquivoUtil
 	public static String convertToLatin1Compatible(byte[] bytes)
 	{
 		String charSetName = ArquivoUtil.retornaTipoCharSet(bytes);
-		Charset charsetFrom = Charset.forName(ArquivoUtil.retornaTipoCharSet(bytes));
+		Charset charsetFrom = Charset.defaultCharset();//Era assim Charset charsetFrom = Charset.forName(charSetName);
+													   //alterei para resolver o zig do Big5 no windows com java1.5_15
 		Charset charsetTo = Charset.forName("ISO-8859-1");
 
 		ByteBuffer inputBuffer = ByteBuffer.wrap(bytes);
