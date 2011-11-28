@@ -6,7 +6,7 @@ Funcionalidade: Indicador Estatísticas de Vagas por Motivo
     Dado que eu esteja logado
     Dado que exista o estabelecimento "centro"
     Dado que exista a área organizacional "geral"
-    Quando eu acesso o menu "R&S > Indicadores > Estatísticas de Vagas por Motivo"
+    Quando eu acesso o menu "R&S > Relatórios > Estatísticas de Vagas por Motivo"
     Então eu devo ver o título "Estatísticas de Vagas por Motivo"
     E eu clico no botão "Relatorio"
     Então eu devo ver o alert do valida campos e clico no ok

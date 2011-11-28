@@ -18219,3 +18219,53 @@ update papel set papelmae_id=360, ordem=6 where id=69;--.go
 update papel set nome='Painel de Indicadores', url='/indicador/duracaoPreenchimentoVaga/painel.action' where id=461;--.go
 insert into migrations values('20111104144924');--.go
 update parametrosdosistema set appversao = '1.1.61.53';--.go
+-- versao 1.1.62.54
+
+CREATE SEQUENCE historicoextintor_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+CREATE TABLE historicoextintor (
+	id bigint NOT NULL DEFAULT nextval('historicoextintor_sequence'),
+	extintor_id bigint NOT NULL,
+	estabelecimento_id bigint NOT NULL,
+	localizacao character varying(50),
+	data Date NOT NULL
+);--.go
+
+ALTER TABLE historicoextintor ADD CONSTRAINT historicoextintor_pkey PRIMARY KEY (id);--.go
+ALTER TABLE historicoextintor ADD CONSTRAINT historicoextintor_extintor_fk FOREIGN KEY (extintor_id) REFERENCES extintor(id);--.go
+ALTER TABLE historicoextintor ADD CONSTRAINT historicoextintor_estabelecimento_fk FOREIGN KEY (estabelecimento_id) REFERENCES estabelecimento(id);--.go
+insert into migrations values('20111107140843');--.go
+INSERT INTO historicoextintor (extintor_id, estabelecimento_id, localizacao, data) 
+SELECT 
+e.id, 
+e.estabelecimento_id, 
+e.localizacao, 
+LEAST ( CURRENT_DATE, 
+       (SELECT MIN(em.saida) FROM extintormanutencao em WHERE em.extintor_id = e.id), 
+       (SELECT MIN(ei.data) FROM extintorinspecao ei WHERE ei.extintor_id = e.id)
+      ) 
+FROM extintor e;--.go
+insert into migrations values('20111108091303');--.go
+ALTER TABLE extintor DROP COLUMN estabelecimento_id;--.go 
+ALTER TABLE extintor DROP COLUMN localizacao;--.go
+insert into migrations values('20111108091407');--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (528, 'ROLE_REL_ACOMP_PERFORMANCE', 'Relatório de Auto Avaliação', '/avaliacao/periodoExperiencia/prepareRelatorioPerformanceAvaliacaoDesempenho.action', 6, true,486);--.go
+alter sequence papel_sequence restart with 529;--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=528 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into migrations values('20111110152043');--.go
+CREATE TABLE turma_avaliacaoturma (
+    turma_id bigint NOT NULL,
+    avaliacaoturmas_id bigint NOT NULL
+);--.go
+ALTER TABLE turma_avaliacaoturma ADD CONSTRAINT turma_avaliacaoturma_avaliacaoturma_fk FOREIGN KEY (avaliacaoturmas_id) REFERENCES avaliacaoturma(id); --.go
+ALTER TABLE turma_avaliacaoturma ADD CONSTRAINT turma_avaliacaoturma_turma_fk FOREIGN KEY (turma_id) REFERENCES turma(id); --.go
+
+insert into migrations values('20111117110508');--.go
+INSERT INTO turma_avaliacaoturma (turma_id, avaliacaoturmas_id) 
+SELECT t.id, t.avaliacaoturma_id FROM turma t WHERE t.avaliacaoturma_id is not null;--.go
+insert into migrations values('20111117111103');--.go
+ALTER TABLE turma DROP COLUMN avaliacaoturma_id;--.go 
+insert into migrations values('20111117111551');--.go
+update historicocolaborador set status = 1 where status = 0;--.go
+insert into migrations values('20111122133637');--.go
+update parametrosdosistema set appversao = '1.1.62.54';--.go

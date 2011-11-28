@@ -527,11 +527,17 @@ end
 
 Dado /^que exista um extintor localizado em "([^"]*)"$/ do |extintor_localizacao|
   insert :extintor do
-    estabelecimento :nome => 'Estabelecimento Padrão'
-    localizacao extintor_localizacao
+    numerocilindro 123
     tipo '1'
     ativo true
     empresa :nome => 'Empresa Padrão'
+  end
+
+  insert :historicoextintor do
+    estabelecimento :nome => 'Estabelecimento Padrão'
+    localizacao extintor_localizacao
+    data '24/11/2011'
+    extintor :numerocilindro => 123
   end
 end
 

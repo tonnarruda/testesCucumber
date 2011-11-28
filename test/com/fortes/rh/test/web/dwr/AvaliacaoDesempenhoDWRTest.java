@@ -31,12 +31,12 @@ public class AvaliacaoDesempenhoDWRTest extends MockObjectTestCase
 		assertEquals(0, avaliacaoDesempenhoDWR.getAvaliacoesByEmpresa(empresaId).size());
 	}
 	
-	public void testGetAvaliacoesByTitulo()
+	public void testGetAvaliacoesNaoLiberadasByTitulo()
 	{
 		Long empresaId = 1L;
 		String titulo = "teste";
-		avaliacaoDesempenhoManager.expects(once()).method("findTituloModeloAvaliacao").with(eq(empresaId), eq(titulo), eq(null)).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
+		avaliacaoDesempenhoManager.expects(once()).method("findTituloModeloAvaliacao").with(eq(empresaId), eq(titulo), eq(null), eq(false)).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
 		
-		assertEquals(0, avaliacaoDesempenhoDWR.getAvaliacoesByTitulo(empresaId, titulo).size());
+		assertEquals(0, avaliacaoDesempenhoDWR.getAvaliacoesNaoLiberadasByTitulo(empresaId, titulo).size());
 	}
 }

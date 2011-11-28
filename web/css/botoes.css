@@ -548,6 +548,11 @@
 	width: 214px !important;
 }
 
+.btnLiberar{
+	background-image:url(../imgs/btnLiberar.gif);
+	width: 70px !important;
+}
+
 .btnExcluir,
 .btnExcluirDesabilitado,
 .btnProxima,
@@ -659,7 +664,8 @@
 .btnAutoAvaliacoesEmLoteDesabilitado,
 .btnSim,
 .btnNao,
-.btnLiberarAvalEmLote
+.btnLiberarAvalEmLote,
+.btnLiberar 
 {
 	border: 0;
 	background-repeat: no-repeat;
