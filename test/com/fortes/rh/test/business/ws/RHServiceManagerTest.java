@@ -271,7 +271,45 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		usuarioManager.expects(once()).method("reativaAcessoSistema").withAnyArguments();
 		assertEquals(true, rHServiceManager.religarEmpregado(colaboradorCodigoAC, empresaCodigoAC, "XXX").isSucesso());
 	}
+	
+	public void testAtualizarCodigoEmpregado_naoEncontrado() throws Exception
+	{
+		String empresaCodigoAC = "123456";
+		String grupoAC = "121";
+		String colaboradorCodigoAC = "123123";
 
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setId(null);
+		colaborador.setCodigoAC(colaboradorCodigoAC);
+		
+		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq(grupoAC)).will(returnValue(colaborador));
+	
+		FeedbackWebService retorno = rHServiceManager.atualizarCodigoEmpregado(grupoAC, empresaCodigoAC, colaboradorCodigoAC, "455878");
+		assertEquals(false, retorno.isSucesso());
+		assertEquals(   "Colaborador não encontrado no RH.\n"+
+						"empCodigo: 123456\n"+
+						"grupoAC: 121\n"+
+						"codigo empregado: 123123\n"+
+						"novo codigo empregado: 455878", retorno.getException());
+	}
+
+	public void testAtualizarCodigoEmpregado() throws Exception
+	{
+		String empresaCodigoAC = "123456";
+		String grupoAC = "121";
+		String colaboradorCodigoAC = "123123";
+		String codigoNovo = "455878";
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNomeComercial("nomeComercial");
+		colaborador.setCodigoAC(colaboradorCodigoAC);
+		
+		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq(grupoAC)).will(returnValue(colaborador));
+		colaboradorManager.expects(once()).method("setCodigoColaboradorAC").with(eq(codigoNovo), eq(colaborador.getId())).will(returnValue(true));
+	
+		assertEquals(true, rHServiceManager.atualizarCodigoEmpregado(grupoAC, empresaCodigoAC, colaboradorCodigoAC, codigoNovo).isSucesso());
+	}
+	
 	public void testAtualizarEmpregadoAndSituacao() throws Exception
 	{
 		String empresaCodigoAC = "12345";
