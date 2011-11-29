@@ -61,7 +61,7 @@
 
 				<option value="NAO_REALIZADO" ${selectedNaoRealizado}>Não Realizado</option>
 				<option value="NORMAL" ${selectedNormal}>Normal</option>
-				<option value="ANORMAL" ${selectedAnormal}>Anormal</option>
+				<option value="ANORMAL" ${selectedAnormal}>Alterado</option>
 
 				</select>
 			</@display.column>

@@ -99,7 +99,7 @@
 		
 		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" />
 		
-		<@ww.select label="Resultado do Exame" id="resultado" name="resultado" list=r"#{'':'Todos','NORMAL':'Normal','ANORMAL':'Anormal','NAO_REALIZADO':'Não Informado'}" />
+		<@ww.select label="Resultado do Exame" id="resultado" name="resultado" list=r"#{'':'Todos','NORMAL':'Normal','ANORMAL':'Alterado','NAO_REALIZADO':'Não Informado'}" />
 		
 		<@ww.hidden id="pagina" name="page"/>
 		<input type="submit" value="" onclick="document.getElementById('pagina').value = 1;" class="btnPesquisar grayBGE" />
@@ -111,7 +111,7 @@
 	<@ww.actionmessage />
 	
 	&nbsp;&nbsp;<span style='background-color: #002EB8;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Normal
-	&nbsp;&nbsp;<span style='background-color: #EF030F;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Anormal
+	&nbsp;&nbsp;<span style='background-color: #EF030F;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Alterado
 	&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Informado
 	
 	<br/><br/>

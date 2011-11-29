@@ -57,7 +57,7 @@
 					<table class="loginExternoForm" cellpadding="8">
 					<tr>
 						<td colspan="4" align="center">
-							<img border="0" src="<@ww.url value="/imgs/liberar.gif"/>">&nbsp;&nbsp;<b>Identifique-se</b>
+							<img border="0" src="<@ww.url value="/imgs/bloquear.gif"/>">&nbsp;&nbsp;<b>Identifique-se</b>
 						</td>
 					</tr>
 					<tr>
