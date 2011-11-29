@@ -146,6 +146,7 @@ import com.fortes.rh.test.business.sesmt.HistoricoExtintorManagerTest;
 import com.fortes.rh.test.business.sesmt.HistoricoFuncaoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicaoRiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicoCoordenadorManagerTest;
+import com.fortes.rh.test.business.sesmt.NaturezaLesaoManagerTest;
 import com.fortes.rh.test.business.sesmt.PcmsoManagerTest;
 import com.fortes.rh.test.business.sesmt.ProntuarioManagerTest;
 import com.fortes.rh.test.business.sesmt.RealizacaoExameManagerTest;
@@ -284,6 +285,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoExtintorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoFuncaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.MedicaoRiscoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.MedicoCoordenadorDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.NaturezaLesaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ProntuarioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RealizacaoExameDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RiscoAmbienteDaoHibernateTest;
@@ -523,6 +525,7 @@ import com.fortes.rh.test.web.action.sesmt.IndicadorTreinamentosListActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedicaoRiscoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedicoCoordenadorEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedicoCoordenadorListActionTest;
+import com.fortes.rh.test.web.action.sesmt.NaturezaLesaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.PcmsoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.PppEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.PpraEditActionTest;
@@ -908,6 +911,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ResultadoQuestionarioTest.class);
 
         //SESMT
+        suite.addTestSuite(NaturezaLesaoDaoHibernateTest.class);
+        suite.addTestSuite(NaturezaLesaoEditActionTest.class);
+        suite.addTestSuite(NaturezaLesaoManagerTest.class);
+        
         suite.addTestSuite(ProntuarioDaoHibernateTest.class);
         suite.addTestSuite(ProntuarioManagerTest.class);
         suite.addTestSuite(ProntuarioEditActionTest.class);

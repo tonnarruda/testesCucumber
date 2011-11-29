@@ -346,6 +346,15 @@
       <ref bean="agendaDaoTarget" />
     </property>
   </bean>
+  <bean id="naturezaLesaoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.NaturezaLesaoDao</value>
+    </property>
+    <property name="target">
+      <ref bean="naturezaLesaoDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 

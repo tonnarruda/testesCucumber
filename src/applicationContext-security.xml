@@ -354,6 +354,7 @@
 
 				/sesmt/fichaMedica/*/**= ROLE_CAD_FICHAMEDICA
 				/sesmt/funcao/*/**=ROLE_FUNCAO
+				/sesmt/naturezaLesao/*/**=ROLE_CAD_NATUREZALESAO
 				/sesmt/LTCAT/*/**=ROLE_LTCAT
 				/sesmt/ppra/*/**=ROLE_PPRA
 				/sesmt/ppp/*/**=ROLE_PPP
