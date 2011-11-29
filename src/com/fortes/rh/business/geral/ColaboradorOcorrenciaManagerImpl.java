@@ -28,7 +28,6 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 {
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
-	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia;
 
@@ -260,10 +259,6 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		this.acPessoalClientColaboradorOcorrencia = acPessoalClientColaboradorOcorrencia;
 	}
 
-	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
-		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
-	}
-
 	public Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Long empresaId, Collection<Long> areasIds) 
 	{
 		Collection<Object[]>  graficoEvolucaoAbsenteismo = new ArrayList<Object[]>();
@@ -284,5 +279,11 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		}
 		
 		return graficoEvolucaoAbsenteismo;
+	}
+
+	public void deleteOcorrencias(Long[] ocorrenciaIds) 
+	{
+		getDao().deleteByOcorrencia(ocorrenciaIds);
+		ocorrenciaManager.remove(ocorrenciaIds);
 	}
 }

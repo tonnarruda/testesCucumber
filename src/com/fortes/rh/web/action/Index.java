@@ -60,6 +60,7 @@ public class Index extends ActionSupport
 
 	private Collection<Pesquisa> pesquisasColaborador = new ArrayList<Pesquisa>();
 	private Collection<Questionario> questionarios;
+	private Collection<Questionario> questionariosTeD;
 	private Collection<UsuarioMensagem> mensagems;
 	private Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 	private Collection<ColaboradorQuestionario> avaliacoesDesempenhoPendentes = new ArrayList<ColaboradorQuestionario>();
@@ -82,7 +83,7 @@ public class Index extends ActionSupport
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager; 
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
-	
+
 	public String index()
 	{
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -108,7 +109,9 @@ public class Index extends ActionSupport
 			empresaId = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).getId();
 
 			questionarios = questionarioManager.findQuestionarioPorUsuario(usuarioId);
-
+			
+			questionariosTeD = questionarioManager.findQuestionarioByTurmaRealizadaPorUsuario(usuarioId);
+			
 			colaborador = colaboradorManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), empresaId);
 
 			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_MSG"}) )
@@ -406,5 +409,10 @@ public class Index extends ActionSupport
 	public void setAuthenticationProvider(MyDaoAuthenticationProvider authenticationProvider) {
 		this.authenticationProvider = authenticationProvider;
 	}
+
+	public Collection<Questionario> getQuestionariosTeD() {
+		return questionariosTeD;
+	}
+
 
 }

@@ -154,16 +154,19 @@ public class OcorrenciaDaoHibernateTest extends GenericDaoHibernateTest<Ocorrenc
 		Ocorrencia ocorrencia2 = OcorrenciaFactory.getEntity();
 		ocorrencia2.setEmpresa(empresa1);
 		ocorrencia2.setCodigoAC("");
+		ocorrencia2.setIntegraAC(true);
 		ocorrenciaDao.save(ocorrencia2);
 		
 		Ocorrencia ocorrencia3 = OcorrenciaFactory.getEntity();
 		ocorrencia3.setEmpresa(empresa1);
 		ocorrencia3.setCodigoAC(null);
+		ocorrencia3.setIntegraAC(true);
 		ocorrenciaDao.save(ocorrencia3);
 		
 		Ocorrencia ocorrencia4 = OcorrenciaFactory.getEntity();
 		ocorrencia4.setEmpresa(empresa2);
 		ocorrencia4.setCodigoAC(null);
+		ocorrencia4.setIntegraAC(true);
 		ocorrenciaDao.save(ocorrencia4);
 		
 		Ocorrencia ocorrencia5 = OcorrenciaFactory.getEntity();

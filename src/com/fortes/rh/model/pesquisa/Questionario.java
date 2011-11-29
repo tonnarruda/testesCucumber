@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.DateUtil;
 
@@ -58,7 +59,8 @@ public class Questionario extends AbstractModel implements Serializable, Cloneab
 	private int quantidadeDeResposta;
 	@Transient
 	private int totalColab;
-	
+	@Transient
+	private Turma turma;
 
 	public int getTotalColab()
 	{
@@ -79,6 +81,14 @@ public class Questionario extends AbstractModel implements Serializable, Cloneab
     	this.empresa.setId(projectionEmpresaId);
     }
 
+    public void setProjectionTurmaId(Long projectionTurmaId)
+    {
+    	if(this.turma == null)
+    		this.turma = new Turma();
+    	
+    	this.turma.setId(projectionTurmaId);
+    }
+    
     public void setProjectionFichaMedicaRodape(String rodape)
     {
     	if (StringUtils.isNotBlank(rodape))
@@ -261,5 +271,13 @@ public class Questionario extends AbstractModel implements Serializable, Cloneab
 
 	public void setFichaMedica(FichaMedica fichaMedica) {
 		this.fichaMedica = fichaMedica;
+	}
+
+	public Turma getTurma() {
+		return turma;
+	}
+
+	public void setTurma(Turma turma) {
+		this.turma = turma;
 	}
 }

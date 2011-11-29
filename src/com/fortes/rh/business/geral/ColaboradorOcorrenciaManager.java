@@ -22,4 +22,5 @@ public interface ColaboradorOcorrenciaManager extends GenericManager<Colaborador
 	boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni);
 	Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasId) throws Exception;
 	Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Long empresaId, Collection<Long> areasIds);
+	void deleteOcorrencias(Long[] ocorrenciaIds);
 }
