@@ -348,12 +348,13 @@
 				/pesquisa/colaboradorQuestionario/*/**= ROLE_MOV_QUESTIONARIO
 				
 				/pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario*/**=ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO,ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO
-				/pesquisa/colaboradorResposta/prepareResponderQuestionario.action*=ROLE_USER
-				/pesquisa/colaboradorResposta/salvaQuestionarioRespondido.action*=ROLE_USER
+				/pesquisa/colaboradorResposta/prepareResponderQuestionario.action*/**=ROLE_USER
+				/pesquisa/colaboradorResposta/salvaQuestionarioRespondido.action*/**=ROLE_USER
 				/pesquisa/colaboradorResposta/*/**=ROLE_MOV_QUESTIONARIO, ROLE_CAD_COLABORADOR
 
 				/sesmt/fichaMedica/*/**= ROLE_CAD_FICHAMEDICA
 				/sesmt/funcao/*/**=ROLE_FUNCAO
+				/sesmt/naturezaLesao/*/**=ROLE_CAD_NATUREZALESAO
 				/sesmt/LTCAT/*/**=ROLE_LTCAT
 				/sesmt/ppra/*/**=ROLE_PPRA
 				/sesmt/ppp/*/**=ROLE_PPP

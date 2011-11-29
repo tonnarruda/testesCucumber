@@ -164,9 +164,9 @@ public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> impl
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.or(Expression.isNull("o.codigoAC"), Expression.eq("o.codigoAC","")));
+		criteria.add(Expression.eq("o.integraAC", true));
 		
-		if(empresaId != null)
-			criteria.add(Expression.eq("e.id", empresaId));
+		criteria.add(Expression.eq("e.id", empresaId));
 
 		criteria.addOrder(Order.asc("e.nome"));
 		criteria.addOrder(Order.asc("o.descricao"));

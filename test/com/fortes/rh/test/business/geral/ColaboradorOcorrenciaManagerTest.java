@@ -473,6 +473,28 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		assertEquals(0.0714, absenteismoAbr.getAbsenteismo());
 	}
 	
+	public void testDeleteOcorrencias()
+	{
+		Long[] ocorrenciaIds = new Long[] {1L, 2L};
+		
+		colaboradorOcorrenciaDao.expects(once()).method("deleteByOcorrencia").with(eq(ocorrenciaIds)) .isVoid();
+		ocorrenciaManager.expects(once()).method("remove").isVoid();
+		
+		Exception exception = null;
+
+		try
+		{
+			colaboradorOcorrenciaManager.deleteOcorrencias(ocorrenciaIds);
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+
+		assertNull(exception);
+
+	}
+	
 	public void testMontaAbsenteismoException()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);

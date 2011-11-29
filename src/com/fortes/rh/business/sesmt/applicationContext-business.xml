@@ -802,4 +802,18 @@
       <ref bean="agendaManagerTarget" />
     </property>
   </bean>
+  <bean id="naturezaLesaoManagerTarget" class="com.fortes.rh.business.sesmt.NaturezaLesaoManagerImpl">
+    <property name="dao">
+      <ref bean="naturezaLesaoDao" />
+    </property>
+  </bean>
+  <bean id="naturezaLesaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.NaturezaLesaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="naturezaLesaoManagerTarget" />
+    </property>
+  </bean>
 </beans>
+

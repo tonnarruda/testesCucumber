@@ -10,8 +10,10 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.ParametrosDoSistemaDao;
+import com.fortes.rh.exception.RelacionamentoException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.Relacionamento;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientSistema;
 
@@ -135,4 +137,28 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 		Collection<String> obrigatorios = CollectionUtils.subtract(Arrays.asList(parametrosDoSistema.getCamposCandidatoObrigatorio().split(",")) , Arrays.asList(camposExtras));
 		parametrosDoSistema.setCamposCandidatoObrigatorio(StringUtils.join(obrigatorios.iterator(), ","));
 	}
+
+	public void verificaRelacionamento(Long[] ids, String relacionamento, String entidade) throws Exception 
+	{
+		StringBuffer tabelasRelacionadas = new StringBuffer("");
+		
+		if(ids != null && ids.length > 0)
+		{
+			Collection<String> tabelas = getDao().findTabelasRelacionadas(relacionamento);
+			
+			for (String tabela : tabelas) 
+			{
+				Collection<Relacionamento> relacionamentos = getDao().findRelacionamentoByTabela(ids, tabela, relacionamento);
+				for (Relacionamento chave : relacionamentos) 
+				{
+					tabelasRelacionadas.append(entidade + " [" + chave.getRelacionamentoId() + "] possui dependência com tabela: " + tabela + " ["+ chave.getTabelaId() + "]\n");
+				}
+				
+			}
+			
+			if(StringUtils.isNotEmpty(tabelasRelacionadas.toString()))
+				throw new RelacionamentoException(tabelasRelacionadas.toString()); 
+		}
+	}
+
 }

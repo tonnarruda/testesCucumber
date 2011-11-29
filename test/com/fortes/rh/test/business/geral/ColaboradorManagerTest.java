@@ -367,6 +367,14 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         assertEquals(colaborador, colaboradorManager.findColaboradorByIdProjection(colaborador.getId()));
     }
+    
+    public void testDeleteColaboradorSituacao()
+    {
+    	Long[] colaboradorIds = new Long[]{12L, 23L, 56L, 78L};
+		Collection<String> tabelasRelacionadas = Arrays.asList("cat", "afastamento");
+		
+		colaboradorManager.deleteColaboradorSituacao(colaboradorIds);
+    }
 
     public void testFindByCargoIdsEstabelecimentoIds()
     {

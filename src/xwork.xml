@@ -311,7 +311,9 @@
   <include file="/com/fortes/rh/web/action/geral/xwork-ConfiguracaoLimiteColaborador.xml" />
   <include file="/com/fortes/rh/web/action/captacao/xwork-NivelCompetencia.xml" />
   <include file="/com/fortes/rh/web/action/cargosalario/xwork-FaturamentoMensal.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-NaturezaLesao.xml" />
 </xwork>
+
 
 
 

@@ -69,7 +69,7 @@
 		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" />
 		
 		<@ww.div id="divRelatResumidoResultado">
-			<@ww.select label="Resultado do Exame" id="resultado" name="resultado" list=r"#{'':'Todos','NORMAL':'Normal','ANORMAL':'Anormal','NAO_REALIZADO':'Não Informado'}" />
+			<@ww.select label="Resultado do Exame" id="resultado" name="resultado" list=r"#{'':'Todos','NORMAL':'Normal','ANORMAL':'Alterado','NAO_REALIZADO':'Não Informado'}" />
 		</@ww.div>
 		
 		<div class="buttonGroup">

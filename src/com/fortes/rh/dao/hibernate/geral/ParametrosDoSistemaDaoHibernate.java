@@ -1,6 +1,12 @@
 package com.fortes.rh.dao.hibernate.geral;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
@@ -10,6 +16,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ParametrosDoSistemaDao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.Relacionamento;
 
 public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<ParametrosDoSistema> implements ParametrosDoSistemaDao
 {
@@ -63,5 +70,35 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		Query query = getSession().createQuery(hql);
 		
 		query.executeUpdate();
+	}
+
+	public Collection<String> findTabelasRelacionadas(String relacionamento) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select table_name from information_schema.columns as col where col.column_name = '"+relacionamento+"' order by table_name");
+
+		Query query = getSession().createSQLQuery(sql.toString());
+
+		return query.list();	
+	}
+	
+	public Collection<Relacionamento> findRelacionamentoByTabela(Long[] ids, String tabela, String relacionamento) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select id, " + relacionamento + " from " + tabela + " where " + relacionamento + " in (:ids)");
+		
+		Query query = getSession().createSQLQuery(sql.toString());		
+		query.setParameterList("ids", ids, Hibernate.LONG);
+		Collection<Object[]> resultado = query.list();
+		
+		Collection<Relacionamento> lista = new ArrayList<Relacionamento>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			lista.add(new Relacionamento(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue()));
+		}
+		
+		return lista;
 	}
 }

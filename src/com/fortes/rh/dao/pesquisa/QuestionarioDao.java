@@ -15,4 +15,5 @@ public interface QuestionarioDao extends GenericDao<Questionario>
 	Collection<Questionario> findQuestionarioNaoLiberados(Date questionarioInicio);
 	Collection<Questionario> findQuestionarioPorUsuario(Long usuarioId);
 	Collection<Questionario> findQuestionario(Long colaboradorId);
+	Collection<Questionario> findQuestionarioByTurmaRealizadaPorUsuario(Long usuarioId);
 }

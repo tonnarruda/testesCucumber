@@ -3,7 +3,7 @@ package com.fortes.rh.model.dicionario;
 
 public enum ResultadoExame
 {
-	NORMAL("Normal"),ANORMAL("Anormal"),NAO_REALIZADO("Não Informado");
+	NORMAL("Normal"),ANORMAL("Alterado"),NAO_REALIZADO("Não Informado");
 
 	ResultadoExame(String descricao)
 	{

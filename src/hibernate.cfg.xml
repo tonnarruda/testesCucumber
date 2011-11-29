@@ -158,7 +158,9 @@
     <mapping class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia" />
       <mapping class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador" />
       <mapping class="com.fortes.rh.model.cargosalario.FaturamentoMensal" />
+      <mapping class="com.fortes.rh.model.sesmt.NaturezaLesao" />
   </session-factory>
+
 
 
 

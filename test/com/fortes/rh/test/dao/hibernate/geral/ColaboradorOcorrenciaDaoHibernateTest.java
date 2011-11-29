@@ -84,6 +84,28 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 
 		assertEquals(1, retorno.size());
 	}
+	
+	public void testDeleteByOcorrencia()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		ocorrenciaDao.save(ocorrencia);
+		
+		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia.setColaborador(colaborador);
+		colaboradorOcorrencia.setOcorrencia(ocorrencia);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
+		
+		Collection<ColaboradorOcorrencia> retorno = colaboradorOcorrenciaDao.findByColaborador(colaborador.getId());
+		assertEquals(1, retorno.size());
+		
+		colaboradorOcorrenciaDao.deleteByOcorrencia(new Long[]{ocorrencia.getId()});
+		
+		retorno = colaboradorOcorrenciaDao.findByColaborador(colaborador.getId());
+		assertEquals(0, retorno.size());
+	}
 
 	public void testFiltrar()
 	{

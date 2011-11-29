@@ -5,11 +5,13 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
+import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -18,6 +20,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
@@ -30,6 +33,7 @@ public class QuestionarioDaoHibernateTest extends GenericDaoHibernateTest<Questi
 	private UsuarioDao usuarioDao;
 	private ColaboradorDao colaboradorDao;
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
+	private TurmaDao turmaDao;
 
 	public Questionario getEntity()
 	{
@@ -179,6 +183,35 @@ public class QuestionarioDaoHibernateTest extends GenericDaoHibernateTest<Questi
 		
 		assertEquals(questionario, questionarios.toArray()[0]);
 	}
+	
+	public void testFindQuestionarioByTurmaRealizadaPorUsuario()
+	{
+		Questionario questionario = preparaQuestionario();
+		questionario.setLiberado(true);
+		questionario = questionarioDao.save(questionario);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setUsuario(usuario);
+		colaborador = colaboradorDao.save(colaborador);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setRealizada(true);
+		turmaDao.save(turma);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario.setRespondida(false);
+		colaboradorQuestionario.setTurma(turma);
+		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		Collection<Questionario> questionarios = questionarioDao.findQuestionarioByTurmaRealizadaPorUsuario(usuario.getId());
+		
+		assertEquals(questionario, questionarios.toArray()[0]);
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
@@ -198,6 +231,10 @@ public class QuestionarioDaoHibernateTest extends GenericDaoHibernateTest<Questi
 	public void setUsuarioDao(UsuarioDao usuarioDao)
 	{
 		this.usuarioDao = usuarioDao;
+	}
+
+	public void setTurmaDao(TurmaDao turmaDao) {
+		this.turmaDao = turmaDao;
 	}
 
 }
