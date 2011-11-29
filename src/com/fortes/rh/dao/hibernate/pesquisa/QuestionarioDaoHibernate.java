@@ -14,6 +14,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.pesquisa.Questionario;
 
+@SuppressWarnings("unchecked")
 public class QuestionarioDaoHibernate extends GenericDaoHibernate<Questionario> implements QuestionarioDao
 {
 	public Questionario findByIdProjection(Long questionarioId)
@@ -86,7 +87,6 @@ public class QuestionarioDaoHibernate extends GenericDaoHibernate<Questionario> 
 		query.executeUpdate();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Questionario> findQuestionarioNaoLiberados(Date questionarioInicio)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "q");
@@ -112,7 +112,6 @@ public class QuestionarioDaoHibernate extends GenericDaoHibernate<Questionario> 
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Questionario> findQuestionarioPorUsuario(Long usuarioId)
 	{
 		return montaQuery("c.usuario.id", usuarioId);
@@ -145,6 +144,32 @@ public class QuestionarioDaoHibernate extends GenericDaoHibernate<Questionario> 
 		criteria.add(Expression.eq("q.liberado", true));
 		criteria.add(Expression.le("q.dataInicio", hoje));
 		criteria.add(Expression.ge("q.dataFim", hoje));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
+
+	public Collection<Questionario> findQuestionarioByTurmaRealizadaPorUsuario(Long usuarioId) {
+		
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "q");
+		criteria.createCriteria("q.colaboradorQuestionarios", "cq", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.turma", "t");
+		criteria.createCriteria("cq.colaborador", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("q.id"), "id");
+		p.add(Projections.property("q.titulo"), "titulo");
+		p.add(Projections.property("t.id"), "projectionTurmaId");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cq.respondida", false));
+		criteria.add(Expression.eq("q.liberado", true));
+		criteria.add(Expression.eq("c.usuario.id", usuarioId));
+		criteria.add(Expression.eq("t.realizada", true));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
