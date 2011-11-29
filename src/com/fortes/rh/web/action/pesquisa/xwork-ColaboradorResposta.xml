@@ -9,6 +9,9 @@
 		<action name="prepareResponderQuestionarioPorOutroUsuario" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="prepareResponderQuestionarioPorOutroUsuario">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/responderPesquisa.ftl</result>
 		</action>
+		<action name="prepareResponderQuestionarioEmLote" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="prepareResponderQuestionarioEmLote">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/responderPesquisaEmLote.ftl</result>
+		</action>
 		<action name="prepareResponderEntrevista" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="prepareResponderQuestionario">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/responderPesquisa.ftl</result>
 		</action>

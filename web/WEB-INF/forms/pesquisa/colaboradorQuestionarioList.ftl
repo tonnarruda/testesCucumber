@@ -107,6 +107,8 @@
 		<#if exibirBotaoConcluir>
 			<button onclick="window.location='../pesquisa/list.action'" id="btnVoltar" class="btnConcluir" ></button>
 		</#if>
+		
+		<button onclick="window.location='../colaboradorResposta/prepareResponderQuestionarioEmLote.action?questionario.id=${questionario.id}'" id="btnAvancar" class="btnResponderPorColaboradores"></button>
 	</div>
 </body>
 </html>

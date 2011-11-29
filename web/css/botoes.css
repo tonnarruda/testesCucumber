@@ -553,6 +553,11 @@
 	width: 70px !important;
 }
 
+.btnResponderPorColaboradores{
+	background-image:url(../imgs/btnResponderPorColaboradores.gif);
+	width: 222px !important;
+}
+
 .btnExcluir,
 .btnExcluirDesabilitado,
 .btnProxima,
@@ -665,7 +670,8 @@
 .btnSim,
 .btnNao,
 .btnLiberarAvalEmLote,
-.btnLiberar 
+.btnLiberar, 
+.btnResponderPorColaboradores
 {
 	border: 0;
 	background-repeat: no-repeat;

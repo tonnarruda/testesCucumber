@@ -38,6 +38,7 @@ import com.fortes.rh.dao.geral.MensagemDao;
 import com.fortes.rh.dao.geral.MotivoDemissaoDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
+import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.model.acesso.Perfil;
@@ -81,6 +82,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -112,6 +114,7 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
+import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colaborador> {
@@ -138,6 +141,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private PerfilDao perfilDao;
 	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
+	private QuestionarioDao questionarioDao;
 	private CamposExtrasDao camposExtrasDao;
 	private GrupoACDao grupoACDao;
 	private MotivoSolicitacaoDao motivoSolicitacaoDao;
@@ -3637,6 +3641,33 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		// avaliadores
 		assertEquals(1, colaboradorDao.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null).size());
 	}
+	
+	public void testFindByQuestionarioNaoRespondido() {
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("Joao");
+		colaboradorDao.save(joao);
+		
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionarioDao.save(questionario);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(joao);
+		colaboradorQuestionario.setRespondida(false);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario.setAvaliacaoDesempenho(null);
+		colaboradorQuestionario.setAvaliacao(null);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+
+		ColaboradorQuestionario colaboradorQuestionarioRespondido = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioRespondido.setColaborador(joao);
+		colaboradorQuestionarioRespondido.setRespondida(true);
+		colaboradorQuestionarioRespondido.setQuestionario(questionario);
+		colaboradorQuestionarioRespondido.setAvaliacaoDesempenho(null);
+		colaboradorQuestionarioRespondido.setAvaliacao(null);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioRespondido);
+		
+		assertEquals(1, colaboradorDao.findByQuestionarioNaoRespondido(questionario.getId()).size());
+	}
 
 	public void testFindParticipantesDistinctByAvaliacaoDesempenho() {
 		Colaborador avaliado = ColaboradorFactory.getEntity();
@@ -4152,6 +4183,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void setMensagemDao(MensagemDao mensagemDao) {
 		this.mensagemDao = mensagemDao;
+	}
+
+	public QuestionarioDao getQuestionarioDao() {
+		return questionarioDao;
+	}
+
+	public void setQuestionarioDao(QuestionarioDao questionarioDao) {
+		this.questionarioDao = questionarioDao;
 	}
 
 }

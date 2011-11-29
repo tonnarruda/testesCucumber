@@ -64,8 +64,9 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     private char vinculo;
 
     private Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+    private Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 
-    private Long turmaId;
+	private Long turmaId;
     
     private boolean respondePorOutroUsuario;
 
@@ -112,6 +113,14 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     	respondePorOutroUsuario = true; //flag para o ftl (obrigatoriedade de campos subjetivos e etc.)
     	
     	return prepareResponderQuestionario();
+    }
+    
+    public String prepareResponderQuestionarioEmLote() throws Exception
+    {
+    	questionario = questionarioManager.findResponderQuestionario(questionario);
+    	colaboradors = colaboradorManager.findByQuestionarioNaoRespondido(questionario.getId());
+    	
+    	return Action.SUCCESS;
     }
     public String prepareResponderQuestionario() throws Exception
     {
@@ -467,5 +476,9 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 
 	public void setExibirImprimir(boolean exibirImprimir) {
 		this.exibirImprimir = exibirImprimir;
+	}
+
+    public Collection<Colaborador> getColaboradors() {
+		return colaboradors;
 	}
 }

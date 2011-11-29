@@ -114,4 +114,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findColaboradoresByIds(Long[] colaboradoresIds);
 	public int findQtdVagasPreenchidas(Long empresaId, Date dataIni, Date dataFim);
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId);
+	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId);
 }

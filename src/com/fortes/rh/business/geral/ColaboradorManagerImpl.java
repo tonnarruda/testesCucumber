@@ -2068,4 +2068,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.mensagemManager = mensagemManager;
 	}
 
+	public Collection<Colaborador> findByQuestionarioNaoRespondido( Long questionarioId) { 
+		return getDao().findByQuestionarioNaoRespondido(questionarioId);
+	}
+
 }

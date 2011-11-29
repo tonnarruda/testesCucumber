@@ -3651,4 +3651,26 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return criteria.list();	
 	}
+
+	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId)
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
+		criteria.createCriteria("cq.colaborador", "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("c.id")), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("cq.questionario.id", questionarioId));
+		criteria.add(Expression.eq("cq.respondida", false));
+		criteria.add(Expression.isNull("cq.avaliacao.id"));
+		criteria.add(Expression.isNull("cq.avaliacaoDesempenho.id"));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+		
+		return criteria.list();
+	}
 }
