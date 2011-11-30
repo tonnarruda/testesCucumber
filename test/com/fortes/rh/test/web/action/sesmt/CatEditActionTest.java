@@ -13,7 +13,10 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.CatManager;
+import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.NaturezaLesaoManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -33,7 +36,10 @@ public class CatEditActionTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock estabelecimentoManager;
 	private Mock areaOrganizacionalManager;
-
+	private Mock epiManager;
+    private Mock ambienteManager;
+    private Mock naturezaLesaoManager;
+    
     protected void setUp() throws Exception
     {
         super.setUp();
@@ -47,6 +53,13 @@ public class CatEditActionTest extends MockObjectTestCase
         action.setEstabelecimentoManager((EstabelecimentoManager)estabelecimentoManager.proxy());
         areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
         action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        
+        epiManager = mock(EpiManager.class);
+        action.setEpiManager((EpiManager) epiManager.proxy());
+        ambienteManager = mock(AmbienteManager.class);
+        action.setAmbienteManager((AmbienteManager) ambienteManager.proxy());
+        naturezaLesaoManager = mock(NaturezaLesaoManager.class);
+        action.setNaturezaLesaoManager((NaturezaLesaoManager) naturezaLesaoManager.proxy());
 
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
         action.setInicio(new Date());
@@ -73,6 +86,9 @@ public class CatEditActionTest extends MockObjectTestCase
 
 		action.setColaborador(colaborador);
 
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L));
+		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
+		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
     	manager.expects(once()).method("findById").with(eq(cat.getId())).will(returnValue(cat));
 
     	assertEquals(action.prepareInsert(), "success");
@@ -92,6 +108,9 @@ public class CatEditActionTest extends MockObjectTestCase
 
 		action.setColaborador(colaborador);
 
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L));
+		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
+		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
     	manager.expects(once()).method("findById").with(eq(cat.getId())).will(returnValue(cat));
 
     	assertEquals(action.prepareUpdate(), "success");
@@ -195,6 +214,10 @@ public class CatEditActionTest extends MockObjectTestCase
 		Collection<Colaborador> colecao = new ArrayList<Colaborador>();
 		colecao.add(colaborador);
 
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L));
+		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
+		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
+
 		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING).will(returnValue(colecao));
 
 		assertEquals("success", action.filtrarColaboradores());
@@ -208,6 +231,10 @@ public class CatEditActionTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setPessoal(pessoal);
 		action.setColaborador(colaborador);
+
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L));
+		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
+		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
 
 		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
 

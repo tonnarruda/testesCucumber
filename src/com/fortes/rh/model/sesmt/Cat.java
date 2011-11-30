@@ -1,11 +1,14 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -22,15 +25,31 @@ public class Cat extends AbstractModel implements Serializable
 {
     @ManyToOne
     private Colaborador colaborador;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Ambiente ambiente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private NaturezaLesao naturezaLesao;
+    @ManyToMany(fetch=FetchType.LAZY)
+    private Collection<Epi> epis;
     @Temporal(TemporalType.DATE)
     private Date data;
+    @Column(length=5)
+    private String horario;
+    @Column(length=100)
+    private String parteAtingida;
+    private Integer tipoAcidente;
+    private boolean foiTreinadoParaFuncao;
+    private boolean usavaEPI;
+    private boolean emitiuCAT;
     @Column(length=20)
     private String numeroCat;
-    @Lob
-    private String observacao;
-    
     private boolean gerouAfastamento;
-
+    private Integer qtdDiasAfastado;
+    @Lob
+    private String observacao;//descricao do acidente
+    @Lob
+    private String conclusao;
+    
     public Cat()
 	{
 	}
@@ -117,6 +136,94 @@ public class Cat extends AbstractModel implements Serializable
 			dataFmt += DateUtil.formataDiaMesAno(data);
 
 		return dataFmt;
+	}
+
+	public Ambiente getAmbiente() {
+		return ambiente;
+	}
+
+	public void setAmbiente(Ambiente ambiente) {
+		this.ambiente = ambiente;
+	}
+
+	public NaturezaLesao getNaturezaLesao() {
+		return naturezaLesao;
+	}
+
+	public void setNaturezaLesao(NaturezaLesao naturezaLesao) {
+		this.naturezaLesao = naturezaLesao;
+	}
+
+	public Collection<Epi> getEpis() {
+		return epis;
+	}
+
+	public void setEpis(Collection<Epi> epis) {
+		this.epis = epis;
+	}
+
+	public String getHorario() {
+		return horario;
+	}
+
+	public void setHorario(String horario) {
+		this.horario = horario;
+	}
+
+	public String getParteAtingida() {
+		return parteAtingida;
+	}
+
+	public void setParteAtingida(String parteAtingida) {
+		this.parteAtingida = parteAtingida;
+	}
+
+	public int getTipoAcidente() {
+		return tipoAcidente;
+	}
+
+	public void setTipoAcidente(int tipoAcidente) {
+		this.tipoAcidente = tipoAcidente;
+	}
+
+	public boolean isFoiTreinadoParaFuncao() {
+		return foiTreinadoParaFuncao;
+	}
+
+	public void setFoiTreinadoParaFuncao(boolean foiTreinadoParaFuncao) {
+		this.foiTreinadoParaFuncao = foiTreinadoParaFuncao;
+	}
+
+	public boolean isUsavaEPI() {
+		return usavaEPI;
+	}
+
+	public void setUsavaEPI(boolean usavaEPI) {
+		this.usavaEPI = usavaEPI;
+	}
+
+	public boolean isEmitiuCAT() {
+		return emitiuCAT;
+	}
+
+	public void setEmitiuCAT(boolean emitiuCAT) {
+		this.emitiuCAT = emitiuCAT;
+	}
+
+	public Integer getQtdDiasAfastado() {
+		return qtdDiasAfastado;
+	}
+
+	public void setQtdDiasAfastado(Integer qtdDiasAfastado) {
+		this.qtdDiasAfastado = qtdDiasAfastado;
+	}
+
+	public String getConclusao() {
+		return conclusao;
+	}
+
+	public void setConclusao(String conclusao) {
+		this.conclusao = conclusao;
 	}
 	
 }

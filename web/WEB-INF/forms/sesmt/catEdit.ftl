@@ -1,3 +1,4 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -27,7 +28,7 @@
 	<#if !edicao?exists>
 		<@ww.form name="formFiltro" action="filtrarColaboradores.action" method="POST">
 		<li>
-			<@ww.div cssClass="divInfo" cssStyle="width: 500px;">
+			<@ww.div cssClass="divInfo" cssStyle="width: 490px;">
 				<ul>
 					<@ww.textfield label="Nome" name="colaborador.nome" id="nomeColaborador" cssStyle="width: 300px;"/>
 					<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matriculaBusca" liClass="liLeft" cssStyle="width: 60px;"/>
@@ -56,13 +57,27 @@
 			</#if>
 
 			<#if (colaboradors?exists && colaboradors?size > 0)>
-					<@ww.select label="Colaborador" name="cat.colaborador.id" id="colaborador" required="true" list="colaboradors" listKey="id" listValue="nomeCpfMatricula"/>
+				<@ww.select label="Colaborador" name="cat.colaborador.id" id="colaborador" required="true" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" cssStyle="width:502px;"/>
 			</#if>
+			<@ww.datepicker label="Data de Emissão" required="true" id="data" name="cat.data" value="${data}" cssClass="mascaraData" liClass="liLeft"/>
+			<@ww.textfield label="Horário" id="horario" name="cat.horario" cssStyle="width:40px;" maxLength="5" liClass="liLeft" cssClass="mascaraHora"/>
+			<@ww.select label="Local do Acidente" name="cat.ambiente.id" id="ambiente" list="ambientes" listKey="id" listValue="nome" cssStyle="width:316px;"/>
+			<@ww.select label="Natureza da Lesão" name="cat.naturezaLesao.id" id="naturezaLesao" list="naturezaLesaos" listKey="id" listValue="descricao" cssStyle="width:502px;"/>
+			<@ww.textfield label="Parte do Corpo Atingida" id = "parteAtingida" name="cat.parteAtingida" cssStyle="width:160px;" maxLength="100" liClass="liLeft"/>
+			<@ww.select label="Tipo de Acidente" name="cat.tipoAcidente" id="tipoAcidente" list="tipoAcidentes" cssStyle="width:334px;"  headerKey="" headerValue=""/>
 
-			<@ww.datepicker label="Data de Emissão" required="true" id="data" name="cat.data" value="${data}" cssClass="mascaraData"/>
-			<@ww.textfield label="Número" required="true" id = "numero" name="cat.numeroCat" cssStyle="width:80px;" maxLength="20"/>
-			<@ww.textarea label="Observação" name="cat.observacao" cssClass="inputNome"/>
-			<@ww.checkbox label="Gerou Afastamento (informação utilizada no PCMSO)" id="afastamento" name="cat.gerouAfastamento" labelPosition="left" />
+			<@ww.checkbox label="Foi Treinado para a Função?" id="treinado" name="cat.foiTreinadoParaFuncao" labelPosition="left" />
+			
+			<@ww.checkbox label="Usava EPI?" id="usavaEPI" name="cat.usavaEPI" labelPosition="left"/>
+			<@frt.checkListBox label="EPIs" name="episChecked" id="epi" list="episCheckList"/>
+			
+			<@ww.checkbox label="Gerou Afastamento?" id="afastamento" name="cat.gerouAfastamento" labelPosition="left" liClass="liLeft"/>
+			<@ww.textfield label="Quantidade de Dias Afastados" id="qtdDiasAfastado" name="cat.qtdDiasAfastado" cssStyle="width:40px;" maxLength="3"/>
+
+			<@ww.checkbox label="Emitiu CAT?" id="emitiuCAT" name="cat.emitiuCAT" labelPosition="left" />
+			<@ww.textfield label="Número CAT" required="true" id = "numero" name="cat.numeroCat" cssStyle="width:145px;" maxLength="20"/>
+			<@ww.textarea label="Descrição do Acidente" name="cat.observacao" cssStyle="width:500px;" />
+			<@ww.textarea label="Conclusão da Comissão" name="cat.conclusao" cssStyle="width:500px;" />
 			
 			<@ww.hidden label="Id" name="cat.id" />
 		</@ww.form>

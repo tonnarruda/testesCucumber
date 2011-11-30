@@ -311,6 +311,7 @@ import com.fortes.rh.test.dicionario.SituacaoFormacaoTest;
 import com.fortes.rh.test.dicionario.SituacaoSolicitacaoTest;
 import com.fortes.rh.test.dicionario.StatusCandidatoSolicitacaoTest;
 import com.fortes.rh.test.dicionario.StatusRetornoACTest;
+import com.fortes.rh.test.dicionario.TipoAcidenteTest;
 import com.fortes.rh.test.dicionario.TipoAplicacaoIndiceTest;
 import com.fortes.rh.test.dicionario.TipoAvaliacaoCursoTest;
 import com.fortes.rh.test.dicionario.TipoAvaliacaoTest;
@@ -1183,6 +1184,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(TipoExtintorTest.class);
         suite.addTestSuite(MotivoSolicitacaoExameTest.class);
         suite.addTestSuite(AptoTest.class);
+        suite.addTestSuite(TipoAcidenteTest.class);
         suite.addTestSuite(TipoAvaliacaoCursoTest.class);
         suite.addTestSuite(StatusCandidatoSolicitacaoTest.class);
 

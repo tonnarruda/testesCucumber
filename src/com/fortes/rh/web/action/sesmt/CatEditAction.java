@@ -5,16 +5,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.CatManager;
+import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.NaturezaLesaoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.dicionario.TipoAcidente;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
+import com.fortes.rh.model.sesmt.NaturezaLesao;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -29,6 +36,9 @@ public class CatEditAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EpiManager epiManager;
+	private AmbienteManager ambienteManager;
+	private NaturezaLesaoManager naturezaLesaoManager;
 
 	private Colaborador colaborador;
 	private Cat cat;
@@ -44,7 +54,14 @@ public class CatEditAction extends MyActionSupportList
 	private String[] areasCheck;
 	private Collection<Colaborador> colaboradors;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
+	private Long[] episChecked;
+	private Collection<CheckBox> episCheckList = new HashSet<CheckBox>();
 
+	private Collection<Ambiente> ambientes;
+	private Collection<NaturezaLesao> naturezaLesaos;
+	
+	private Map<Integer, String> tipoAcidentes;
+	
 	public String list() throws Exception
 	{
 		if (!validaPeriodo())
@@ -87,6 +104,10 @@ public class CatEditAction extends MyActionSupportList
 		if(cat != null && cat.getId() != null)
 			cat = (Cat) catManager.findById(cat.getId());
 
+		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		ambientes = ambienteManager.findByEmpresa(getEmpresaSistema().getId());
+		naturezaLesaos = naturezaLesaoManager.findAllSelect(getEmpresaSistema().getId());
+		tipoAcidentes = new TipoAcidente();
 	}
 
 	public String prepareInsert() throws Exception
@@ -288,5 +309,37 @@ public class CatEditAction extends MyActionSupportList
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setEpiManager(EpiManager epiManager) {
+		this.epiManager = epiManager;
+	}
+
+	public void setEpisChecked(Long[] episChecked) {
+		this.episChecked = episChecked;
+	}
+
+	public Collection<CheckBox> getEpisCheckList() {
+		return episCheckList;
+	}
+
+	public void setAmbienteManager(AmbienteManager ambienteManager) {
+		this.ambienteManager = ambienteManager;
+	}
+
+	public Collection<Ambiente> getAmbientes() {
+		return ambientes;
+	}
+
+	public void setNaturezaLesaoManager(NaturezaLesaoManager naturezaLesaoManager) {
+		this.naturezaLesaoManager = naturezaLesaoManager;
+	}
+
+	public Collection<NaturezaLesao> getNaturezaLesaos() {
+		return naturezaLesaos;
+	}
+
+	public Map<Integer, String> getTipoAcidentes() {
+		return tipoAcidentes;
 	}
 }
