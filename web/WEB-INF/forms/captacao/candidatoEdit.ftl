@@ -526,7 +526,7 @@
 			<li>
 				<@ww.div id="wwgrp_fone"  cssClass="campo">
 					<ul>
-						<@ww.textfield label="DDD" name="candidato.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
+						<@ww.textfield label="DDD" name="candidato.contato.ddd" id="ddd" onkeypress="return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
 						<@ww.textfield label="Telefone" name="candidato.contato.foneFixo" id="fone" onkeypress="return(somenteNumeros(event,''));"  cssStyle="width: 60px;" maxLength="8"  liClass="liLeft" />
 					</ul>
 				</@ww.div>

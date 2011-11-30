@@ -20,6 +20,36 @@
 	</#if>
 
 	<#include "../ftl/mascarasImports.ftl" />
+	<script type='text/javascript'>
+		$(function() {
+			$("#emitiuCAT, #afastamento").attr('checked', true);
+			$("#emitiuCAT , #afastamento").click(function() {
+				liberaCampo($(this));
+			});
+			
+			$("#usavaEPI").click(function() {
+				liberaMultiSelect();
+			});
+			
+			liberaCampo($("#emitiuCAT"));
+			liberaCampo($("#afastamento"));
+			
+			liberaMultiSelect();	
+		});
+		
+		function liberaMultiSelect(){
+			if ($("#usavaEPI").attr('checked')){
+				$(".listCheckBoxContainer [name='episChecked']").removeAttr('disabled');
+				$(".listCheckBoxContainer").css('background-color', '#FFF');
+			} else {
+				$(".listCheckBoxContainer [name='episChecked']").attr('disabled', 'disabled');
+				$(".listCheckBoxContainer").css('background-color', '#ECECEC');
+			}
+			
+		} 
+		
+		
+	</script>
 </head>
 <body>
 	<@ww.actionerror />
@@ -48,7 +78,7 @@
 
 	<#if (colaboradors?exists && colaboradors?size > 0) || (edicao?exists)>
 
-		<@ww.form name="form" action="${formAction}" method="POST" onsubmit="${validarCampos}" validate="true">
+		<@ww.form name="form" id="form" action="${formAction}" method="POST" onsubmit="${validarCampos}" validate="true">
 
 			<#if cat.colaborador?exists>
 				<b>Colaborador: ${cat.colaborador.nome}</b>
@@ -69,13 +99,15 @@
 			<@ww.checkbox label="Foi Treinado para a Função?" id="treinado" name="cat.foiTreinadoParaFuncao" labelPosition="left" />
 			
 			<@ww.checkbox label="Usava EPI?" id="usavaEPI" name="cat.usavaEPI" labelPosition="left"/>
-			<@frt.checkListBox label="EPIs" name="episChecked" id="epi" list="episCheckList"/>
+			<@frt.checkListBox form="document.getElementById('form')" label="EPIs" name="episChecked" id="epi" list="episCheckList"/>
 			
-			<@ww.checkbox label="Gerou Afastamento?" id="afastamento" name="cat.gerouAfastamento" labelPosition="left" liClass="liLeft"/>
-			<@ww.textfield label="Quantidade de Dias Afastados" id="qtdDiasAfastado" name="cat.qtdDiasAfastado" cssStyle="width:40px;" maxLength="3"/>
+			<@ww.checkbox label="" id="afastamento" name="cat.gerouAfastamento" theme="simple"/>
+			Gerou Afastamento? / Qtd. de dias Afastados: <@ww.textfield label="" id="qtdDiasAfastado" name="cat.qtdDiasAfastado" cssStyle="width:25px;" maxLength="3" theme="simple"  onkeypress="return(somenteNumeros(event,''));"/>
+			
+			<br>
+			<@ww.checkbox label="" id="emitiuCAT" name="cat.emitiuCAT" theme="simple"/>
+			Emitiu CAT? / Número CAT: <@ww.textfield label="" required="true" id = "numero" name="cat.numeroCat" cssStyle="width:152px;" maxLength="20"  theme="simple"/>
 
-			<@ww.checkbox label="Emitiu CAT?" id="emitiuCAT" name="cat.emitiuCAT" labelPosition="left" />
-			<@ww.textfield label="Número CAT" required="true" id = "numero" name="cat.numeroCat" cssStyle="width:145px;" maxLength="20"/>
 			<@ww.textarea label="Descrição do Acidente" name="cat.observacao" cssStyle="width:500px;" />
 			<@ww.textarea label="Conclusão da Comissão" name="cat.conclusao" cssStyle="width:500px;" />
 			

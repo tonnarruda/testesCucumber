@@ -1103,4 +1103,15 @@ function arrayDiff(ara1, ara2) {
 	}
 	return aRes ;
 }	   
+
+function liberaCampo(checkbox) {
+	if (checkbox.attr('checked'))
+		checkbox.next().removeAttr('disabled').css('background-color', '#FFF');
+	else
+		desabilita(checkbox.next());
+}
+
+function desabilita(campo) {
+	campo.attr('disabled','disabled').css('background-color', '#ECECEC');
+}
 	   
