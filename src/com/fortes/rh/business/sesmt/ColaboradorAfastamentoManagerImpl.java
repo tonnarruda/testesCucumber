@@ -2,6 +2,7 @@ package com.fortes.rh.business.sesmt;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,8 +18,10 @@ import com.fortes.rh.model.dicionario.OpcaoImportacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
@@ -183,6 +186,17 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 			mapDescricaoAfastamento.put(descricao, afastamento);
 		}
 		return mapDescricaoAfastamento;
+	}
+	
+	public Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		Collection<DataGrafico> graficoAfastamentosPorMotivo = new ArrayList<DataGrafico>();
+		Collection<Afastamento> qtdAfastamentosPorMotivo = getDao().findQtdAfastamentosPorMotivo(empresaId, dataIni, dataFim);
+		
+		for (Afastamento afastamento : qtdAfastamentosPorMotivo)
+			graficoAfastamentosPorMotivo.add(new DataGrafico(null, afastamento.getDescricao(), afastamento.getQtd(), ""));
+		
+		return graficoAfastamentosPorMotivo;
 	}
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)

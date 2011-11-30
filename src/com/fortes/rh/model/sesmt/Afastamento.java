@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
@@ -18,6 +19,9 @@ public class Afastamento extends AbstractModel implements Serializable
 	private String descricao;
 
 	private boolean inss;
+	
+	@Transient
+	private int qtd;
 
 	public String getInssFmt()
 	{
@@ -40,5 +44,13 @@ public class Afastamento extends AbstractModel implements Serializable
 	public void setInss(boolean inss)
 	{
 		this.inss = inss;
+	}
+
+	public int getQtd() {
+		return qtd;
+	}
+
+	public void setQtd(int qtd) {
+		this.qtd = qtd;
 	}
 }

@@ -17,7 +17,10 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ColaboradorAfastamentoDao;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
+import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 
 /**
@@ -162,6 +165,26 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAfastamento.class));
+		
+		return criteria.list();
+	}
+	
+	public Collection<Afastamento> findQtdAfastamentosPorMotivo(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ca");
+		criteria.createCriteria("ca.afastamento", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("ca.colaborador", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.groupProperty("a.descricao"), "descricao"));
+		p.add(Projections.alias(Projections.count("ca.id"), "qtd"));
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.between("ca.inicio", dataIni, dataFim));
+		
+		criteria.addOrder(Order.desc("qtd"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Afastamento.class));
 		
 		return criteria.list();
 	}

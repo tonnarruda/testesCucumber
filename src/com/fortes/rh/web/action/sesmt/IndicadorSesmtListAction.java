@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.business.sesmt.CatManager;
+import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
@@ -15,6 +16,7 @@ import com.opensymphony.xwork.Action;
 public class IndicadorSesmtListAction extends MyActionSupportList
 {
 	private CatManager catManager;
+	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
 	
 	private Date dataDe;
 	private Date dataAte;
@@ -22,6 +24,7 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 	private int qtdDiasSemAcidentes;
 	
 	private String grfQtdCatsPorDiaSemana = "";
+	private String grfQtdAfastamentosPorMotivo = "";
 	
 	public String painel()
 	{
@@ -37,6 +40,9 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 		
 		Collection<DataGrafico> graficoQtdCatsPorDiaSemana = catManager.findQtdCatsPorDiaSemana(empresaId, dataDe, dataAte);
 		grfQtdCatsPorDiaSemana = StringUtil.toJSON(graficoQtdCatsPorDiaSemana, null);
+
+		Collection<DataGrafico> graficoQtdAfastamentosPorMotivo = colaboradorAfastamentoManager.findQtdCatsPorDiaSemana(empresaId, dataDe, dataAte);
+		grfQtdAfastamentosPorMotivo = StringUtil.toJSON(graficoQtdAfastamentosPorMotivo, null);
 		
 		return Action.SUCCESS;
 	}
@@ -67,5 +73,17 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 
 	public void setDataAte(Date dataAte) {
 		this.dataAte = dataAte;
+	}
+
+	public String getGrfQtdAfastamentosPorMotivo() {
+		return grfQtdAfastamentosPorMotivo;
+	}
+
+	public void setGrfQtdAfastamentosPorMotivo(String grfQtdAfastamentosPorMotivo) {
+		this.grfQtdAfastamentosPorMotivo = grfQtdAfastamentosPorMotivo;
+	}
+
+	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
+		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
 	}
 }
