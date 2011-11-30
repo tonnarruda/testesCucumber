@@ -139,4 +139,15 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		return query.list();
 		
 	}
+
+	public Cat findUltimoCat(Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder("from Cat cat where cat.colaborador.empresa.id = :empresaId order by cat.data desc");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setMaxResults(1);
+
+		return (Cat) query.uniqueResult();
+	}
 }

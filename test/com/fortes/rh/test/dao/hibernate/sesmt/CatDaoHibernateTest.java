@@ -130,6 +130,44 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		
 		assertEquals(1, resultado.size());
 	}
+	
+	public void testGetQdtDiasSemAcidentes()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+
+		Colaborador ana = ColaboradorFactory.getEntity();
+		ana.setNome("Ana");
+		ana.setEmpresa(empresa);
+		colaboradorDao.save(ana);
+
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setNome("Pedro");
+		pedro.setEmpresa(empresa2);
+		colaboradorDao.save(pedro);
+
+		Cat cat = new Cat();
+		cat.setData(DateUtil.criarDataMesAno(1, 1, 2011));
+		cat.setColaborador(ana);
+		catDao.save(cat);
+
+		Cat cat2 = new Cat();
+		cat2.setData(DateUtil.criarDataMesAno(1, 2, 2011));
+		cat2.setColaborador(ana);
+		catDao.save(cat2);
+
+		Cat cat3 = new Cat();
+		cat3.setData(DateUtil.criarDataMesAno(1, 3, 2011));
+		cat3.setColaborador(pedro);
+		catDao.save(cat3);
+		
+		Cat ultimoCat = catDao.findUltimoCat(empresa.getId());
+		
+		assertEquals(DateUtil.criarDataMesAno(1, 2, 2011), ultimoCat.getData());
+	}
 
 	public GenericDao<Cat> getGenericDao()
 	{

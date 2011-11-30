@@ -396,6 +396,7 @@
 				/sesmt/medicaoRisco/*/**=ROLE_CAD_MEDICAORISCO
 				/sesmt/evento/*/**=ROLE_CAD_EVENTO
 				/sesmt/agenda/*/**=ROLE_CAD_AGENDA
+				/sesmt/indicadores/painel.action*=ROLE_SESMT_PAINEL_IND
 				
 				/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action*=ROLE_REL_ACOMP_PERIODO_EXPERIENCIA
 				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA

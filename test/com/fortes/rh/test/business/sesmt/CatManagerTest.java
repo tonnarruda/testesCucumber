@@ -14,9 +14,11 @@ import com.fortes.rh.dao.sesmt.CatDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 
@@ -132,5 +134,22 @@ public class CatManagerTest extends MockObjectTestCase
 		assertEquals(2, cat2.getTotal().intValue());
 		assertEquals(1, cat2.getTotalComAfastamento().intValue());
 		assertEquals(1, cat2.getTotalSemAfastamento().intValue());
+	}
+	
+	public void testFindQtdDiasSemAcidentes()
+	{
+		Date data = DateUtil.criarDataMesAno(1, 1, 2011);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Cat cat = new Cat();
+		cat.setData(data);
+		
+		catDao.expects(once()).method("findUltimoCat").with(ANYTHING).will(returnValue(cat));
+
+		int qtdDiasSemAcidentes = DateUtil.diferencaEntreDatas(data, new Date());
+		int qtdDiasSemAcidentesTeste = catManager.findQtdDiasSemAcidentes(empresa.getId());
+		
+		assertEquals(qtdDiasSemAcidentes, qtdDiasSemAcidentesTeste);
 	}
 }

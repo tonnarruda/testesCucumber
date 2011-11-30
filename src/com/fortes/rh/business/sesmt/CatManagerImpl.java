@@ -120,10 +120,14 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		return catsAnuais;
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
+	public int findQtdDiasSemAcidentes(Long empresaId) 
+	{
+		Cat ultimoCat = getDao().findUltimoCat(empresaId); 
+		
+		return ultimoCat != null ? DateUtil.diferencaEntreDatas(ultimoCat.getData(), new Date()) : 0;
+	}
+	
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
-
-	
 }

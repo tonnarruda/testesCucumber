@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="indicadores" extends="default" namespace="/sesmt/indicadores">
+		<action name="updateFilter" class="com.fortes.rh.web.action.acesso.UsuarioListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
+		<action name="painel" class="com.fortes.rh.web.action.sesmt.IndicadorSesmtListAction" method="painel">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/painelSesmt.ftl</result>
+		</action>
+	</package>
+</xwork>

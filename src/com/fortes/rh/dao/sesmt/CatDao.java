@@ -13,4 +13,5 @@ public interface CatDao extends GenericDao<Cat>
 	Collection<Cat> findCatsColaboradorByDate(Colaborador colaborador, Date data);
 	Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, Long[] estabelecimentoIds, String nomeBusca, Long[] areaIds);
 	Collection<Object[]> getCatsRelatorio(Long estabelecimentoId, Date inicio, Date fim);
+	Cat findUltimoCat(Long empresaId);
 }
