@@ -172,9 +172,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<CartaoAcompanhamentoExperienciaVO> montaCartoesPeriodoExperiencia(Long[] colaboradoresIds, Long[] dias, String observacao) throws Exception;
 	public int findQtdVagasPreenchidas(Long empresaId, Date dataIni, Date dataFim);
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId);
-<<<<<<< HEAD
 	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId);
-=======
 	public void deleteColaboradorSituacao(Long[] colaboradorIds);
->>>>>>> 74ee96b83cb1f0f16c07bdc90ccded0cec700afd
 }
