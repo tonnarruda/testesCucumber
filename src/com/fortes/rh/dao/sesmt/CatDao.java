@@ -2,6 +2,7 @@ package com.fortes.rh.dao.sesmt;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.geral.Colaborador;
@@ -14,4 +15,5 @@ public interface CatDao extends GenericDao<Cat>
 	Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, Long[] estabelecimentoIds, String nomeBusca, Long[] areaIds);
 	Collection<Object[]> getCatsRelatorio(Long estabelecimentoId, Date inicio, Date fim);
 	Cat findUltimoCat(Long empresaId);
+	Map<Integer,Integer> findQtdPorDiaSemana(Long empresaId, Date dataIni, Date dataFim);
 }

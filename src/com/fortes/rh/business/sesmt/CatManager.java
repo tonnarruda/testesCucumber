@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
 
@@ -17,4 +18,5 @@ public interface CatManager extends GenericManager<Cat>
 	Collection<CatRelatorioAnual> getRelatorioAnual(Long estabelecimentoId, Date dataFim);
 	public Collection<Cat> findRelatorioCats (Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca) throws ColecaoVaziaException;
 	int findQtdDiasSemAcidentes(Long empresaId);
+	Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataDe, Date dataAte);
 }

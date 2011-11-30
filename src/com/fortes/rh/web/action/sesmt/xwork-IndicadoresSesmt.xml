@@ -3,7 +3,7 @@
 
 <xwork>
 	<package name="indicadores" extends="default" namespace="/sesmt/indicadores">
-		<action name="updateFilter" class="com.fortes.rh.web.action.acesso.UsuarioListAction" method="updateFilter">
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.IndicadorSesmtListAction" method="updateFilter">
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
 		<action name="painel" class="com.fortes.rh.web.action.sesmt.IndicadorSesmtListAction" method="painel">

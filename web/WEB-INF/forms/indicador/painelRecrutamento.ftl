@@ -67,7 +67,7 @@
 			
 			function validaForm()
 			{
-				return validaFormularioEPeriodo('form', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));
+				return validaFormularioEPeriodo('formBusca', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));
 			}
 		</script>
 	

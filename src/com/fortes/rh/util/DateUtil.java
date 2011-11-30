@@ -153,6 +153,12 @@ public class DateUtil
 		return nomes[mes];
 	}
 
+	public static String getNomeDiaSemana(int diaSemana)
+	{
+		String[] nomes = {"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"};
+		return nomes[diaSemana];
+	}
+
 	public static String getNomeMesCompleto(int mes)
 	{
 		String[] nomes = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};

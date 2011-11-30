@@ -19,17 +19,33 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
 		
-		<#include "../ftl/showFilterImports.ftl" />
-		
 		<title>Painel de Indicadores de SESMT</title>
 
 		<script type="text/javascript">
 			$(function () {
-				
+				montaPie(${grfQtdCatsPorDiaSemana}, "#catsDiaSemana", {combinePercentMin: 0.05, percentMin: 0.05});
 			});
+			
+			function validaForm()
+			{
+				return validaFormularioEPeriodo('formBusca', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));
+			}
 		</script>
 	
+		
+		<#if dataDe?exists>
+			<#assign dateIni = dataDe?date/>
+		<#else>
+			<#assign dateIni = ""/>
+		</#if>
+		<#if dataAte?exists>
+			<#assign dateFim = dataAte?date/>
+		<#else>
+			<#assign dateFim = ""/>
+		</#if>
+		
 		<#include "../ftl/mascarasImports.ftl" />
+		<#include "../ftl/showFilterImports.ftl" />
 	</head>
 	
 	<body>
@@ -39,8 +55,13 @@
 	   	<br clear="all"/>
 	   	
 		<#include "../util/topFiltro.ftl" />
-			<@ww.form name="formBusca" id="formBusca" action="painelIndicadores.action" method="POST">
+			<@ww.form name="formBusca" id="formBusca" action="painel.action" method="POST">
+				Período:*<br>
+				<@ww.datepicker name="dataDe" id="dataDe" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
+				<@ww.label value="a" liClass="liLeft" />
+				<@ww.datepicker name="dataAte" id="dataAte" value="${dateFim}" cssClass="mascaraData validaDataFim" />
 				
+				<button onclick="return validaForm();" class="btnPesquisar grayBGE"></button>
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 

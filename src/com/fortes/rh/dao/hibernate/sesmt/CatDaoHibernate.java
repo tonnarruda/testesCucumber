@@ -2,8 +2,13 @@ package com.fortes.rh.dao.hibernate.sesmt;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -16,6 +21,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.CatDao;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Cat;
@@ -149,5 +155,31 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		query.setMaxResults(1);
 
 		return (Cat) query.uniqueResult();
+	}
+	
+	public Map<Integer,Integer> findQtdPorDiaSemana(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		StringBuilder sql = new StringBuilder("select cast(extract(dow from cat.data) as integer) as diaSemana, cast(count(*) as integer) as qtd ");
+		sql.append("from cat "); 
+		sql.append("inner join colaborador col on cat.colaborador_id = col.id "); 
+		sql.append("where col.empresa_id = :empresaId and cat.data between :dataIni and :dataFim ");
+		sql.append("group by extract(dow from cat.data)");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		
+		Collection<Object[]> resultado = query.list();
+		
+		Map<Integer,Integer> qtds = new HashMap<Integer, Integer>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			qtds.put((Integer)res[0], (Integer)res[1]);
+		}
+
+		return qtds;
 	}
 }

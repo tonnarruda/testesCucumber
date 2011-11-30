@@ -13,6 +13,7 @@ import com.fortes.rh.dao.sesmt.CatDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
 import com.fortes.rh.util.DateUtil;
@@ -125,6 +126,17 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		Cat ultimoCat = getDao().findUltimoCat(empresaId); 
 		
 		return ultimoCat != null ? DateUtil.diferencaEntreDatas(ultimoCat.getData(), new Date()) : 0;
+	}
+	
+	public Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		Collection<DataGrafico> graficoCatsPorDiaSemana = new ArrayList<DataGrafico>();
+		Map<Integer,Integer> qtdCatsPorDiaSemana = getDao().findQtdPorDiaSemana(empresaId, dataIni, dataFim);
+		
+		for (Map.Entry<Integer, Integer> qtd : qtdCatsPorDiaSemana.entrySet())
+			graficoCatsPorDiaSemana.add(new DataGrafico(null, DateUtil.getNomeDiaSemana(qtd.getKey()), qtd.getValue(), ""));
+		
+		return graficoCatsPorDiaSemana;
 	}
 	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {

@@ -2,6 +2,7 @@ package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -167,6 +168,49 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		Cat ultimoCat = catDao.findUltimoCat(empresa.getId());
 		
 		assertEquals(DateUtil.criarDataMesAno(1, 2, 2011), ultimoCat.getData());
+	}
+	
+	public void testFindQtdPorDiaSemana()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Colaborador ana = ColaboradorFactory.getEntity();
+		ana.setNome("Ana");
+		ana.setEmpresa(empresa);
+		colaboradorDao.save(ana);
+
+		Cat cat = new Cat();
+		cat.setData(DateUtil.criarDataMesAno(1, 11, 2011));
+		cat.setColaborador(ana);
+		catDao.save(cat);
+
+		Cat cat2 = new Cat();
+		cat2.setData(DateUtil.criarDataMesAno(2, 11, 2011));
+		cat2.setColaborador(ana);
+		catDao.save(cat2);
+
+		Cat cat3 = new Cat();
+		cat3.setData(DateUtil.criarDataMesAno(2, 11, 2011));
+		cat3.setColaborador(ana);
+		catDao.save(cat3);
+
+		Cat cat4 = new Cat();
+		cat4.setData(DateUtil.criarDataMesAno(5, 11, 2011));
+		cat4.setColaborador(ana);
+		catDao.save(cat4);
+
+		Cat cat5 = new Cat();
+		cat5.setData(DateUtil.criarDataMesAno(15, 11, 2011));
+		cat5.setColaborador(ana);
+		catDao.save(cat5);
+		
+		catDao.findUltimoCat(empresa.getId());
+		Map<Integer,Integer> qtds = catDao.findQtdPorDiaSemana(empresa.getId(), DateUtil.criarDataMesAno(1, 11, 2011), DateUtil.criarDataMesAno(14, 11, 2011));
+		
+		assertEquals(new Integer(1), qtds.get(2));
+		assertEquals(new Integer(2), qtds.get(3));
+		assertEquals(new Integer(1), qtds.get(6));
 	}
 
 	public GenericDao<Cat> getGenericDao()
