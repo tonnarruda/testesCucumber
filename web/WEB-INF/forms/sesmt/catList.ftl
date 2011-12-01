@@ -6,7 +6,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
-	<title>CAT - Comunicação de Acidente de Trabalho</title>
+	<title>Ficha de Investigação de Acidente(CAT)</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>

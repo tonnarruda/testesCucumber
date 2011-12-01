@@ -119,6 +119,20 @@ public class CatEditAction extends MyActionSupportList
 		return SUCCESS;
 	}
 
+	private void beforeInsertUpdate() throws Exception
+	{
+		CollectionUtil<Epi> cUtil = new CollectionUtil<Epi>();
+		Collection<Epi> epis = cUtil.convertArrayStringToCollection(Epi.class, episChecked);
+		
+		cat.setEpis(epis);
+		
+		if (cat.getAmbiente() == null || cat.getAmbiente().getId() == null)
+			cat.setAmbiente(null);
+		
+		if (cat.getNaturezaLesao() == null || cat.getNaturezaLesao().getId() == null)
+			cat.setNaturezaLesao(null);
+	}
+	
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
@@ -129,16 +143,17 @@ public class CatEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
+		beforeInsertUpdate();
+		
 		catManager.save(cat);
+		
 		return SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		CollectionUtil<Epi> cUtil = new CollectionUtil<Epi>();
-		Collection<Epi> epis = cUtil.convertArrayStringToCollection(Epi.class, episChecked);
+		beforeInsertUpdate();
 		
-		cat.setEpis(epis);
 		catManager.update(cat);
 		
 		return SUCCESS;

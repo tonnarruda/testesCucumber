@@ -1,0 +1,1 @@
+update cat set emitiucat = true where numerocat is not null;--.go

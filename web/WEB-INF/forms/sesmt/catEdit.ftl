@@ -3,12 +3,12 @@
 <head>
 <@ww.head/>
 <#if cat.id?exists>
-	<title>Editar Comunicação de Acidente de Trabalho</title>
+	<title>Editar Ficha de Investigação de Acidente(CAT)</title>
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 	<#assign edicao=true>
 <#else>
-	<title>Inserir Comunicação de Acidente de Trabalho</title>
+	<title>Inserir Ficha de Investigação de Acidente(CAT)</title>
 	<#assign formAction="insert.action"/>
 	<#assign accessKey="I"/>
 </#if>
@@ -90,10 +90,10 @@
 			</#if>
 			<@ww.datepicker label="Data de Emissão" required="true" id="data" name="cat.data" value="${data}" cssClass="mascaraData" liClass="liLeft"/>
 			<@ww.textfield label="Horário" required="true" id="horario" name="cat.horario" cssStyle="width:40px;" maxLength="5" liClass="liLeft" cssClass="mascaraHora"/>
-			<@ww.select label="Local do Acidente" name="cat.ambiente.id" id="ambiente" list="ambientes" listKey="id" listValue="nome" cssStyle="width:307px;"/>
-			<@ww.select label="Natureza da Lesão" name="cat.naturezaLesao.id" id="naturezaLesao" list="naturezaLesaos" listKey="id" listValue="descricao" cssStyle="width:502px;"/>
+			<@ww.select label="Local do Acidente (Ambiente)" name="cat.ambiente.id" id="ambiente" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:307px;"/>
+			<@ww.select label="Natureza da Lesão" name="cat.naturezaLesao.id" id="naturezaLesao" list="naturezaLesaos" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width:502px;"/>
 			<@ww.textfield label="Parte do Corpo Atingida" id = "parteAtingida" name="cat.parteAtingida" cssStyle="width:160px;" maxLength="100" liClass="liLeft"/>
-			<@ww.select label="Tipo de Acidente" name="cat.tipoAcidente" id="tipoAcidente" list="tipoAcidentes" cssStyle="width:334px;"  headerKey="" headerValue="Selecione um tipo de acidente..." />
+			<@ww.select label="Tipo de Acidente" name="cat.tipoAcidente" id="tipoAcidente" list="tipoAcidentes" cssStyle="width:334px;"  headerKey="" headerValue="Selecione..." />
 
 			<@ww.checkbox label="Foi Treinado para a Função?" id="treinado" name="cat.foiTreinadoParaFuncao" labelPosition="left" />
 			
