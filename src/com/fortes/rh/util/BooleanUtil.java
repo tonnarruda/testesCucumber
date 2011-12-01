@@ -25,4 +25,14 @@ public class BooleanUtil
 			return 'N';
 	}
 
+	public static String getDescricao(char ativa) 
+	{
+		if (ativa == 'S' || ativa == 's' )
+			return "Sim";
+		if (ativa == 'N' || ativa == 'n')
+			return "Não";
+		
+		return "Todas";
+	}
+
 }
