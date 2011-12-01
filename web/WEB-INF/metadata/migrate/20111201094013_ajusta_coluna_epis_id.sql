@@ -1,0 +1,1 @@
+alter table cat_epi rename column epi_id to epis_id;--.go
