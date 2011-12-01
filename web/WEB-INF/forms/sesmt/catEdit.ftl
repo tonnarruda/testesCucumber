@@ -22,8 +22,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	<script type='text/javascript'>
 		$(function() {
-			$("#emitiuCAT, #afastamento").attr('checked', true);
-			$("#emitiuCAT , #afastamento").click(function() {
+			$("#emitiuCAT , #gerouAfastamento").click(function() {
 				liberaCampo($(this));
 			});
 			
@@ -32,7 +31,7 @@
 			});
 			
 			liberaCampo($("#emitiuCAT"));
-			liberaCampo($("#afastamento"));
+			liberaCampo($("#gerouAfastamento"));
 			
 			liberaMultiSelect();	
 		});
@@ -74,7 +73,7 @@
 		</@ww.form>
 	</#if>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('data','numero'), new Array('data'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('data', 'horario'), new Array('data'))"/>
 
 	<#if (colaboradors?exists && colaboradors?size > 0) || (edicao?exists)>
 
@@ -90,18 +89,18 @@
 				<@ww.select label="Colaborador" name="cat.colaborador.id" id="colaborador" required="true" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" cssStyle="width:502px;"/>
 			</#if>
 			<@ww.datepicker label="Data de Emissão" required="true" id="data" name="cat.data" value="${data}" cssClass="mascaraData" liClass="liLeft"/>
-			<@ww.textfield label="Horário" id="horario" name="cat.horario" cssStyle="width:40px;" maxLength="5" liClass="liLeft" cssClass="mascaraHora"/>
-			<@ww.select label="Local do Acidente" name="cat.ambiente.id" id="ambiente" list="ambientes" listKey="id" listValue="nome" cssStyle="width:316px;"/>
+			<@ww.textfield label="Horário" required="true" id="horario" name="cat.horario" cssStyle="width:40px;" maxLength="5" liClass="liLeft" cssClass="mascaraHora"/>
+			<@ww.select label="Local do Acidente" name="cat.ambiente.id" id="ambiente" list="ambientes" listKey="id" listValue="nome" cssStyle="width:307px;"/>
 			<@ww.select label="Natureza da Lesão" name="cat.naturezaLesao.id" id="naturezaLesao" list="naturezaLesaos" listKey="id" listValue="descricao" cssStyle="width:502px;"/>
 			<@ww.textfield label="Parte do Corpo Atingida" id = "parteAtingida" name="cat.parteAtingida" cssStyle="width:160px;" maxLength="100" liClass="liLeft"/>
-			<@ww.select label="Tipo de Acidente" name="cat.tipoAcidente" id="tipoAcidente" list="tipoAcidentes" cssStyle="width:334px;"  headerKey="" headerValue=""/>
+			<@ww.select label="Tipo de Acidente" name="cat.tipoAcidente" id="tipoAcidente" list="tipoAcidentes" cssStyle="width:334px;"  headerKey="" headerValue="Selecione um tipo de acidente..." />
 
 			<@ww.checkbox label="Foi Treinado para a Função?" id="treinado" name="cat.foiTreinadoParaFuncao" labelPosition="left" />
 			
 			<@ww.checkbox label="Usava EPI?" id="usavaEPI" name="cat.usavaEPI" labelPosition="left"/>
-			<@frt.checkListBox form="document.getElementById('form')" label="EPIs" name="episChecked" id="epi" list="episCheckList"/>
+			<@frt.checkListBox form="document.getElementById('form')" label="EPIs" name="episChecked" id="episChecked" list="episCheckList"/>
 			
-			<@ww.checkbox label="" id="afastamento" name="cat.gerouAfastamento" theme="simple"/>
+			<@ww.checkbox label="" id="gerouAfastamento" name="cat.gerouAfastamento" theme="simple"/>
 			Gerou Afastamento? / Qtd. de dias Afastados: <@ww.textfield label="" id="qtdDiasAfastado" name="cat.qtdDiasAfastado" cssStyle="width:25px;" maxLength="3" theme="simple"  onkeypress="return(somenteNumeros(event,''));"/>
 			
 			<br>

@@ -178,11 +178,11 @@ public class Cat extends AbstractModel implements Serializable
 		this.parteAtingida = parteAtingida;
 	}
 
-	public int getTipoAcidente() {
+	public Integer getTipoAcidente() {
 		return tipoAcidente;
 	}
 
-	public void setTipoAcidente(int tipoAcidente) {
+	public void setTipoAcidente(Integer tipoAcidente) {
 		this.tipoAcidente = tipoAcidente;
 	}
 
