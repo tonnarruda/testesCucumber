@@ -74,6 +74,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 
 	public Collection<ColaboradorAfastamento> findRelatorioAfastamentos(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, boolean ordenaColaboradorPorNome, boolean ordenaPorCid, char afastadoPeloINSS) throws ColecaoVaziaException
 	{
+		//cuidado com os parametros desse metodo eles são unha e carne com o relatorio gerado, os parametros são fundamentais
 		Collection<ColaboradorAfastamento> colaboradorAfastamentos = findAllSelect(0, 0, empresaId, nomeBusca, estabelecimentoCheck, areasCheck, colaboradorAfastamento, "ASC", ordenaColaboradorPorNome, ordenaPorCid, afastadoPeloINSS);
 
 		if (colaboradorAfastamentos == null || colaboradorAfastamentos.isEmpty())

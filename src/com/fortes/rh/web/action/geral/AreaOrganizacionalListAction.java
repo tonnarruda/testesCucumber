@@ -26,7 +26,7 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	private Map<String,Object> parametros;
 
 	private boolean integradoAC;
-	private char ativa;
+	private char ativa = 'S';
 
 	public String list() throws Exception
 	{

@@ -39,8 +39,7 @@
 		<@ww.select label="Ordenar por" name="ordenaColaboradorPorNome" id="ordenaColaboradorPorNome" list=r"#{true:'Nome',false:'Data'}" required="true"/>
 
 		<@ww.select label="INSS" name="afastadoPeloINSS" id="afastadoPeloINSS" list=r"#{'T':'Todos','A':'Afastados','N':'Não afastados'}" required="true"/>
-
-		<@ww.checkbox label="Agrupar por CID" id="agruparPorCid" name="agruparPorCid" labelPosition="left"/>
+		<@ww.select label="Agrupar por" name="agruparPor" list=r"#{'N':'','C':'CID','M':'Mês'}" />
 
 		<div class="buttonGroup">
 			<button class="btnRelatorio" onclick="${validarCampos}"></button>
