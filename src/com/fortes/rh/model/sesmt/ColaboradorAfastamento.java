@@ -183,4 +183,9 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	{
 		this.cid = cid;
 	}
+	
+	public String getMesAno()
+	{
+		return DateUtil.formataMesAno(inicio);
+	}
 }

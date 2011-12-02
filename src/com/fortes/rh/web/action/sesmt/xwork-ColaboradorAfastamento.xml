@@ -58,6 +58,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">afastamentos.pdf</param>
 			</result>
+			<result name="afastamentos_por_mes" type="jasper">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="location">/WEB-INF/report/afastamentosmes.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">afastamentos.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
 		</action>
 	</package>

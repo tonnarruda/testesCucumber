@@ -21,8 +21,10 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
+import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.NaturezaLesao;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -54,7 +56,7 @@ public class CatEditAction extends MyActionSupportList
 	private String[] areasCheck;
 	private Collection<Colaborador> colaboradors;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
-	private Long[] episChecked;
+	private String[] episChecked;
 	private Collection<CheckBox> episCheckList = new HashSet<CheckBox>();
 
 	private Collection<Ambiente> ambientes;
@@ -105,6 +107,7 @@ public class CatEditAction extends MyActionSupportList
 			cat = (Cat) catManager.findById(cat.getId());
 
 		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		
 		ambientes = ambienteManager.findByEmpresa(getEmpresaSistema().getId());
 		naturezaLesaos = naturezaLesaoManager.findAllSelect(getEmpresaSistema().getId());
 		tipoAcidentes = new TipoAcidente();
@@ -119,6 +122,8 @@ public class CatEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
+		episCheckList = CheckListBoxUtil.marcaCheckListBox(episCheckList, cat.getEpis(), "getId");
+		
 		return SUCCESS;
 	}
 
@@ -130,7 +135,12 @@ public class CatEditAction extends MyActionSupportList
 
 	public String update() throws Exception
 	{
+		CollectionUtil<Epi> cUtil = new CollectionUtil<Epi>();
+		Collection<Epi> epis = cUtil.convertArrayStringToCollection(Epi.class, episChecked);
+		
+		cat.setEpis(epis);
 		catManager.update(cat);
+		
 		return SUCCESS;
 	}
 
@@ -315,7 +325,7 @@ public class CatEditAction extends MyActionSupportList
 		this.epiManager = epiManager;
 	}
 
-	public void setEpisChecked(Long[] episChecked) {
+	public void setEpisChecked(String[] episChecked) {
 		this.episChecked = episChecked;
 	}
 

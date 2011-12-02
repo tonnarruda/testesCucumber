@@ -40,6 +40,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private boolean agruparPorCid;
+	private char agruparPor;
 	
 	public String list() throws Exception
 	{
@@ -96,6 +97,8 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			if (!validaPeriodo())
 				return INPUT;
 			
+			agruparPorCid = agruparPor == 'C';
+			//cuidado com os parametros desse metodo eles são unha e carne com o relatorio gerado, os parametros são fundamentais
 			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, areasCheck, colaboradorAfastamento, ordenaColaboradorPorNome, agruparPorCid, afastadoPeloINSS);
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
 		}
@@ -106,7 +109,12 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			return INPUT;
 		}
 
-		return agruparPorCid ? "afastamentos_por_cid" : "afastamentos";
+		if(agruparPor == 'M')
+			return "afastamentos_por_mes";
+		else if(agruparPor == 'C')
+			return "afastamentos_por_cid";
+		else
+			return "afastamentos";
 	}
 
 	private String getPeriodoFormatado()
@@ -223,6 +231,14 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 
 	public void setAgruparPorCid(boolean agruparPorCid) {
 		this.agruparPorCid = agruparPorCid;
+	}
+
+	public char getAgruparPor() {
+		return agruparPor;
+	}
+
+	public void setAgruparPor(char agruparPor) {
+		this.agruparPor = agruparPor;
 	}
 
 

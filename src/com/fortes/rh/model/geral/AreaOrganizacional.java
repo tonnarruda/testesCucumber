@@ -22,6 +22,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 
@@ -379,6 +380,11 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		}
 	}
 
+	public String getDescricaoAtiva()
+	{
+		return BooleanUtil.getDescricao(BooleanUtil.setValueCombo(ativo));
+	}
+	
 	public boolean isAtivo()
 	{
 		return ativo;
