@@ -19,4 +19,5 @@ public interface CatManager extends GenericManager<Cat>
 	public Collection<Cat> findRelatorioCats (Long empresaId, Date inicio, Date fim, String[] estabelecimentosCheck, String nomeBusca) throws ColecaoVaziaException;
 	int findQtdDiasSemAcidentes(Long empresaId);
 	Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataDe, Date dataAte);
+	Collection<DataGrafico> findQtdCatsPorHorario(Long empresaId, Date dataDe, Date dataAte);
 }

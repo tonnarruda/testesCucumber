@@ -24,6 +24,7 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 	private int qtdDiasSemAcidentes;
 	
 	private String grfQtdCatsPorDiaSemana = "";
+	private String grfQtdCatsPorHorario = "";
 	private String grfQtdAfastamentosPorMotivo = "";
 	
 	public String painel()
@@ -40,6 +41,9 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 		
 		Collection<DataGrafico> graficoQtdCatsPorDiaSemana = catManager.findQtdCatsPorDiaSemana(empresaId, dataDe, dataAte);
 		grfQtdCatsPorDiaSemana = StringUtil.toJSON(graficoQtdCatsPorDiaSemana, null);
+
+		Collection<DataGrafico> graficoQtdCatsPorHorario = catManager.findQtdCatsPorHorario(empresaId, dataDe, dataAte);
+		grfQtdCatsPorHorario = StringUtil.toJSON(graficoQtdCatsPorHorario, null);
 
 		Collection<DataGrafico> graficoQtdAfastamentosPorMotivo = colaboradorAfastamentoManager.findQtdCatsPorDiaSemana(empresaId, dataDe, dataAte);
 		grfQtdAfastamentosPorMotivo = StringUtil.toJSON(graficoQtdAfastamentosPorMotivo, null);
@@ -85,5 +89,9 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 
 	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
 		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
+	}
+
+	public String getGrfQtdCatsPorHorario() {
+		return grfQtdCatsPorHorario;
 	}
 }
