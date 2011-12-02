@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="afastamentoscid"
+		 name="afastamentosmes"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Landscape"
@@ -33,6 +33,7 @@
 	<field name="colaborador.areaOrganizacional.descricao" class="java.lang.String"/>
 	<field name="afastamento.descricao" class="java.lang.String"/>
 	<field name="dias" class="java.lang.Integer"/>
+	<field name="mesAno" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -40,9 +41,12 @@
 	<variable name="contColaborador" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
 	</variable>
+	<variable name="contGrpMesAno" class="java.lang.Integer" resetType="Group" resetGroup="grpCid" calculation="Count">
+		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
+	</variable>
 
 		<group  name="grpCid" >
-			<groupExpression><![CDATA[$F{cid}.toUpperCase()]]></groupExpression>
+			<groupExpression><![CDATA[$F{mesAno}]]></groupExpression>
 			<groupHeader>
 			<band height="15"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -56,12 +60,38 @@
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cid}.equals("") ? " - " : $F{cid}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{mesAno}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="15"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="635"
+						y="1"
+						width="122"
+						height="13"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Total por mês/ano:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="758"
+						y="1"
+						width="19"
+						height="13"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{contGrpMesAno}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -134,14 +164,14 @@
 					<reportElement
 						x="0"
 						y="9"
-						width="45"
+						width="74"
 						height="13"
 						key="staticText-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[CID]]></text>
+				<text><![CDATA[Mês/Ano]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -307,7 +337,7 @@
 				</rectangle>
 				<staticText>
 					<reportElement
-						x="631"
+						x="635"
 						y="2"
 						width="122"
 						height="13"
@@ -320,7 +350,7 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="754"
+						x="758"
 						y="2"
 						width="19"
 						height="13"

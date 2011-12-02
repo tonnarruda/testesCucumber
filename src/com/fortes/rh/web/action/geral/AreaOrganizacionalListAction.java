@@ -6,11 +6,10 @@ package com.fortes.rh.web.action.geral;
 import java.util.Collection;
 import java.util.Map;
 
-import org.springframework.dao.DataIntegrityViolationException;
-
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -27,11 +26,12 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	private Map<String,Object> parametros;
 
 	private boolean integradoAC;
+	private char ativa = 'S';
 
 	public String list() throws Exception
 	{
 		//foi retirado a paginação pois não dava para ordenar(Francisco, 03/06/09)
-		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), areaOrganizacional.isAtivo());
+		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativa));
 
 		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllList(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
 		areasTmp = areaOrganizacionalManager.montaFamilia(areasTmp);
@@ -46,8 +46,8 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	
 	public String imprimirLista() throws Exception
 	{
-		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), areaOrganizacional.isAtivo());
-		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Areas Organizacionais", getEmpresaSistema(),"Ativas: " + (areaOrganizacional.isAtivo() ? "Sim" : "Não"));
+		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativa));
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Areas Organizacionais", getEmpresaSistema(),"Ativas: " + BooleanUtil.getDescricao(ativa));
 		
 		if (areaOrganizacionals.isEmpty()) 
 		{
@@ -118,4 +118,13 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	public Map<String, Object> getParametros() {
 		return parametros;
 	}
+
+	public char getAtiva() {
+		return ativa;
+	}
+
+	public void setAtiva(char ativa) {
+		this.ativa = ativa;
+	}
+
 }

@@ -44,6 +44,7 @@
 				<param name="location">WEB-INF/report/areas_organizacionais_resumida.jasper</param>
 				<param name="dataSource">areaOrganizacionals</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">areas_organizacionais.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalList.ftl</result>
 		</action>
