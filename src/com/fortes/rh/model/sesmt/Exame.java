@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
@@ -24,6 +25,11 @@ public class Exame extends AbstractModel implements Serializable
     private boolean periodico = true;
 
     private int periodicidade;
+    
+    @Transient
+    private int qtdNormal;
+    @Transient
+    private int qtdAnormal;
 
     public Exame()
     {
@@ -42,36 +48,64 @@ public class Exame extends AbstractModel implements Serializable
 			this.empresa = new Empresa();
 		this.empresa.setId(empresaIdProjection);
 	}
-	public String getNome()
+	
+    public String getNome()
 	{
 		return nome;
 	}
+	
 	public void setNome(String nome)
 	{
 		this.nome = nome;
 	}
+	
 	public int getPeriodicidade()
 	{
 		return periodicidade;
 	}
+	
 	public void setPeriodicidade(int periodicidade)
 	{
 		this.periodicidade = periodicidade;
 	}
+	
 	public Empresa getEmpresa()
 	{
 		return empresa;
 	}
+	
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
 	}
+	
 	public boolean isPeriodico()
 	{
 		return periodico;
 	}
+	
 	public void setPeriodico(boolean periodico)
 	{
 		this.periodico = periodico;
+	}
+
+	public int getQtdNormal() 
+	{
+		return qtdNormal;
+	}
+
+	public void setQtdNormal(int qtdNormal) 
+	{
+		this.qtdNormal = qtdNormal;
+	}
+
+	public int getQtdAnormal() 
+	{
+		return qtdAnormal;
+	}
+
+	public void setQtdAnormal(int qtdAnormal) 
+	{
+		this.qtdAnormal = qtdAnormal;
 	}
 }

@@ -1,7 +1,10 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -15,6 +18,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RealizacaoExameDao;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
 
@@ -102,5 +106,71 @@ public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoE
 		query.setString("result", ResultadoExame.NORMAL.toString());
 		query.setParameterList("ids", realizacaoExameIds, Hibernate.LONG);
 		query.executeUpdate();
+	}
+	
+	public Integer findQtdRealizados(Long empresaId, Date dataIni, Date dataFim)
+	{
+		Criteria criteria = getSession().createCriteria(ExameSolicitacaoExame.class, "ese");
+		criteria.createCriteria("ese.realizacaoExame", "re");
+		criteria.createCriteria("ese.solicitacaoExame", "se");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.count("ese.id"));
+
+		criteria.setProjection(p);
+		criteria.add(Expression.between("re.data", dataIni, dataFim));
+		criteria.add(Expression.eq("se.empresa.id", empresaId));
+		criteria.add(Expression.ne("re.resultado", ResultadoExame.NAO_REALIZADO.toString()));
+
+        return (Integer) criteria.uniqueResult();
+	}
+	
+	public Collection<Exame> findQtdPorExame(Long empresaId, Date dataIni, Date dataFim)
+	{
+		StringBuilder sql = new StringBuilder("select e.id, e.nome, ");
+
+		sql.append("(select count(*) from examesolicitacaoexame ese "); 
+		sql.append("inner join realizacaoexame re on ese.realizacaoexame_id = re.id "); 
+		sql.append("inner join solicitacaoexame se on ese.solicitacaoexame_id = se.id "); 
+		sql.append("where re.data between :dataIni and :dataFim "); 
+		sql.append("and se.empresa_id = :empresaId "); 
+		sql.append("and re.resultado = :resultadoNormal "); 
+		sql.append("and ese.exame_id = e.id ) as qtdNormal, "); 
+
+		sql.append("(select count(*) from examesolicitacaoexame ese "); 
+		sql.append("inner join realizacaoexame re on ese.realizacaoexame_id = re.id "); 
+		sql.append("inner join solicitacaoexame se on ese.solicitacaoexame_id = se.id "); 
+		sql.append("where re.data between :dataIni and :dataFim "); 
+		sql.append("and se.empresa_id = :empresaId "); 
+		sql.append("and re.resultado = :resultadoAnormal "); 
+		sql.append("and ese.exame_id = e.id ) as qtdAnormal "); 
+
+		sql.append("from exame e ");
+		sql.append("where e.empresa_id = :empresaId ");
+		sql.append("order by qtdNormal desc");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		query.setString("resultadoNormal", ResultadoExame.NORMAL.toString());
+		query.setString("resultadoAnormal", ResultadoExame.ANORMAL.toString());
+		
+		Collection<Object[]> resultado = query.list();
+		
+		Collection<Exame> exames = new ArrayList<Exame>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			Exame exame = new Exame();
+			exame.setId(((BigInteger)res[0]).longValue());
+			exame.setNome((String)res[1]);
+			exame.setQtdNormal(((BigInteger)res[2]).intValue());
+			exame.setQtdAnormal(((BigInteger)res[3]).intValue());
+			exames.add(exame);
+		}
+
+        return exames;
 	}
 }

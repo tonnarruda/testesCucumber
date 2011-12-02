@@ -21,4 +21,5 @@ public interface ColaboradorAfastamentoManager extends GenericManager<Colaborado
 	Integer getCountTiposAfastamentosCriados();
 	Collection<ColaboradorAfastamento> findByColaborador(Long colaboradorId);
 	Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataIni, Date dataFim);
+	Integer findQtdAfastamentosInss(Long empresaId, Date dataIni, Date dataFim, boolean inss);
 }

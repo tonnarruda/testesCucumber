@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -55,6 +56,10 @@ public class ProntuarioManagerImpl extends GenericManagerImpl<Prontuario, Prontu
 			return prontuarioRelatorio;
 		else
 			throw new ColecaoVaziaException("O colaborador informado não possui registros de prontuário.");
+	}
+	
+	public Integer findQtdByEmpresa(Long empresaId, Date dataIni, Date dataFim) {
+		return getDao().findQtdByEmpresa(empresaId, dataIni, dataFim);
 	}
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)

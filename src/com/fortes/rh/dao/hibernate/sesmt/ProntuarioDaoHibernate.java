@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -37,5 +38,20 @@ public class ProntuarioDaoHibernate extends GenericDaoHibernate<Prontuario> impl
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
+	}
+
+	public Integer findQtdByEmpresa(Long empresaId, Date dataIni, Date dataFim)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"p");
+		criteria.createCriteria("p.colaborador", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.count("p.id"));
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.between("p.data", dataIni, dataFim));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		return (Integer) criteria.uniqueResult();
 	}
 }

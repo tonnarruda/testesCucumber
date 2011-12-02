@@ -17,9 +17,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ColaboradorAfastamentoDao;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
-import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 
@@ -187,5 +185,22 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Afastamento.class));
 		
 		return criteria.list();
+	}
+
+	public Integer findQtdAfastamentosInss(Long empresaId, Date dataIni, Date dataFim, boolean inss) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ca");
+		criteria.createCriteria("ca.afastamento", "a");
+		criteria.createCriteria("ca.colaborador", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.count("ca.id"));
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("a.inss", inss));
+		criteria.add(Expression.between("ca.inicio", dataIni, dataFim));
+		
+		return (Integer) criteria.uniqueResult();
 	}
 }

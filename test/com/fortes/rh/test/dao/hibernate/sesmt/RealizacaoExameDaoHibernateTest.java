@@ -34,6 +34,7 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.test.factory.sesmt.RealizacaoExameFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class RealizacaoExameDaoHibernateTest extends GenericDaoHibernateTest<RealizacaoExame>
 {
@@ -239,6 +240,167 @@ public class RealizacaoExameDaoHibernateTest extends GenericDaoHibernateTest<Rea
 		
 		assertEquals(1, resultado.size());
 		assertEquals(MotivoSolicitacaoExame.PERIODICO, ((Object[]) resultado.toArray()[0])[1].toString());
+	}
+	
+	public void testFindQtdRealizados()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Exame exame1 = ExameFactory.getEntity();
+		exameDao.save(exame1);
+
+		Exame exame2 = ExameFactory.getEntity();
+		exameDao.save(exame2);
+		
+		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame1.setColaborador(colaborador);
+		solicitacaoExame1.setEmpresa(empresa);
+		solicitacaoExameDao.save(solicitacaoExame1);
+		
+		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame2.setColaborador(colaborador);
+		solicitacaoExame2.setEmpresa(empresa);
+		solicitacaoExameDao.save(solicitacaoExame2);
+		
+		RealizacaoExame realizacaoExame1 = RealizacaoExameFactory.getEntity();
+		realizacaoExame1.setResultado(ResultadoExame.NAO_REALIZADO.toString());
+		realizacaoExame1.setData(DateUtil.criarDataMesAno(1, 1, 2011));
+		realizacaoExameDao.save(realizacaoExame1);
+		
+		RealizacaoExame realizacaoExame2 = RealizacaoExameFactory.getEntity();
+		realizacaoExame2.setResultado(ResultadoExame.ANORMAL.toString());
+		realizacaoExame2.setData(DateUtil.criarDataMesAno(2, 1, 2011));
+		realizacaoExameDao.save(realizacaoExame2);
+
+		RealizacaoExame realizacaoExame3 = RealizacaoExameFactory.getEntity();
+		realizacaoExame3.setResultado(ResultadoExame.NORMAL.toString());
+		realizacaoExame3.setData(DateUtil.criarDataMesAno(3, 1, 2011));
+		realizacaoExameDao.save(realizacaoExame3);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame1 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame1.setRealizacaoExame(realizacaoExame1);
+		exameSolicitacaoExame1.setSolicitacaoExame(solicitacaoExame2);
+		exameSolicitacaoExame1.setExame(exame1);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame1);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame2 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame2.setRealizacaoExame(realizacaoExame2);
+		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame2);
+		exameSolicitacaoExame2.setExame(exame2);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
+
+		ExameSolicitacaoExame exameSolicitacaoExame3 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame3.setRealizacaoExame(realizacaoExame2);
+		exameSolicitacaoExame3.setSolicitacaoExame(solicitacaoExame2);
+		exameSolicitacaoExame3.setExame(exame2);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame3);
+		
+		assertEquals(new Integer(2), realizacaoExameDao.findQtdRealizados(empresa.getId(), DateUtil.criarDataMesAno(1, 1, 2011), DateUtil.criarDataMesAno(30, 1, 2011)));
+	}
+	
+	public void testFindQtdPorExame()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Exame exame1 = ExameFactory.getEntity();
+		exame1.setNome("Exame 1");
+		exame1.setEmpresa(empresa);
+		exameDao.save(exame1);
+
+		Exame exame2 = ExameFactory.getEntity();
+		exame2.setNome("Exame 2");
+		exame2.setEmpresa(empresa);
+		exameDao.save(exame2);
+		
+		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame1.setColaborador(colaborador);
+		solicitacaoExame1.setEmpresa(empresa);
+		solicitacaoExameDao.save(solicitacaoExame1);
+		
+		RealizacaoExame realizacaoExame1 = RealizacaoExameFactory.getEntity();
+		realizacaoExame1.setResultado(ResultadoExame.NORMAL.toString());
+		realizacaoExame1.setData(DateUtil.criarDataMesAno(1, 1, 2011));
+		realizacaoExameDao.save(realizacaoExame1);
+		
+		RealizacaoExame realizacaoExame2 = RealizacaoExameFactory.getEntity();
+		realizacaoExame2.setResultado(ResultadoExame.NORMAL.toString());
+		realizacaoExame2.setData(DateUtil.criarDataMesAno(2, 1, 2011));
+		realizacaoExameDao.save(realizacaoExame2);
+
+		RealizacaoExame realizacaoExame3 = RealizacaoExameFactory.getEntity();
+		realizacaoExame3.setResultado(ResultadoExame.NORMAL.toString());
+		realizacaoExame3.setData(DateUtil.criarDataMesAno(3, 1, 2011));
+		realizacaoExameDao.save(realizacaoExame3);
+
+		RealizacaoExame realizacaoExame4 = RealizacaoExameFactory.getEntity();
+		realizacaoExame4.setResultado(ResultadoExame.ANORMAL.toString());
+		realizacaoExame4.setData(DateUtil.criarDataMesAno(1, 1, 2011));
+		realizacaoExameDao.save(realizacaoExame4);
+		
+		RealizacaoExame realizacaoExame5 = RealizacaoExameFactory.getEntity();
+		realizacaoExame5.setResultado(ResultadoExame.ANORMAL.toString());
+		realizacaoExame5.setData(DateUtil.criarDataMesAno(2, 1, 2011));
+		realizacaoExameDao.save(realizacaoExame5);
+		
+		RealizacaoExame realizacaoExame6 = RealizacaoExameFactory.getEntity();
+		realizacaoExame6.setResultado(ResultadoExame.ANORMAL.toString());
+		realizacaoExame6.setData(DateUtil.criarDataMesAno(3, 1, 2011));
+		realizacaoExameDao.save(realizacaoExame6);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame1 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame1.setRealizacaoExame(realizacaoExame1);
+		exameSolicitacaoExame1.setSolicitacaoExame(solicitacaoExame1);
+		exameSolicitacaoExame1.setExame(exame1);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame1);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame2 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame2.setRealizacaoExame(realizacaoExame2);
+		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame1);
+		exameSolicitacaoExame2.setExame(exame2);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
+
+		ExameSolicitacaoExame exameSolicitacaoExame3 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame3.setRealizacaoExame(realizacaoExame3);
+		exameSolicitacaoExame3.setSolicitacaoExame(solicitacaoExame1);
+		exameSolicitacaoExame3.setExame(exame2);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame3);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame4 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame4.setRealizacaoExame(realizacaoExame4);
+		exameSolicitacaoExame4.setSolicitacaoExame(solicitacaoExame1);
+		exameSolicitacaoExame4.setExame(exame1);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame4);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame5 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame5.setRealizacaoExame(realizacaoExame5);
+		exameSolicitacaoExame5.setSolicitacaoExame(solicitacaoExame1);
+		exameSolicitacaoExame5.setExame(exame1);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame5);
+
+		ExameSolicitacaoExame exameSolicitacaoExame6 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame6.setRealizacaoExame(realizacaoExame6);
+		exameSolicitacaoExame6.setSolicitacaoExame(solicitacaoExame1);
+		exameSolicitacaoExame6.setExame(exame2);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame6);
+		
+		realizacaoExameDao.findRealizadosByColaborador(empresa.getId(), colaborador.getId()); // só para realizar flush (Não usa session do Hibernate)
+		Collection<Exame> exames = realizacaoExameDao.findQtdPorExame(empresa.getId(), DateUtil.criarDataMesAno(1, 1, 2011), DateUtil.criarDataMesAno(30, 1, 2011));
+		
+		assertEquals("Exame 2", ((Exame)exames.toArray()[0]).getNome());
+		assertEquals(2, ((Exame)exames.toArray()[0]).getQtdNormal());
+		assertEquals(1, ((Exame)exames.toArray()[0]).getQtdAnormal());
+		
+		assertEquals("Exame 1", ((Exame)exames.toArray()[1]).getNome());
+		assertEquals(1, ((Exame)exames.toArray()[1]).getQtdNormal());
+		assertEquals(2, ((Exame)exames.toArray()[1]).getQtdAnormal());
 	}
 
 	public void setSolicitacaoExameDao(SolicitacaoExameDao solicitacaoExameDao)

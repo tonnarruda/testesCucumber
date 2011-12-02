@@ -26,6 +26,27 @@
 				montaPie(${grfQtdCatsPorDiaSemana}, "#catsDiaSemana", {combinePercentMin: 0.05, percentMin: 0.05});
 				montaPie(${grfQtdCatsPorHorario}, "#catsHorario", {combinePercentMin: 0.05, percentMin: 0.05});
 				montaPie(${grfQtdAfastamentosPorMotivo}, "#afastamentosMotivo", {combinePercentMin: 0.05, percentMin: 0.05});
+				
+				var examesNormais = ${grfResultadosExamesNormais};
+		        var examesAnormais = ${grfResultadosExamesAnormais};
+			    
+			    $.plot($("#resultadosExames"), 
+			    		[
+					        {label: 'Normal', data: examesNormais, bars:{align : "left", barWidth: 0.5} },
+					        {label: 'Alterado', data: examesAnormais, bars:{align : "right", barWidth: 0.5} }
+					    ], 
+			    		{
+			    			series: {
+				                bars: {
+				                    show: true, 
+				                 	align: 'center'
+				                }
+					      }
+				    	,
+				        xaxis: {
+				        	ticks: examesNormais.map(function(item) { return item[0] })
+				        }
+				 });
 			});
 			
 			function validaForm()
@@ -86,10 +107,10 @@
 			<h1>Estatísticas do SESMT</h1>
 	    	<div class="graph">
 	    		<ul>
-	    			<li>Nº de Exames Realizados: </li>
-	    			<li>Nº de Registros de Prontuários:	</li>
-	    			<li>Nº de Afastamentos pelo INSS: </li>
-	    			<li>Nº de Afastamentos (não afastados pelo INSS): </li>
+	    			<li>Nº de Exames Realizados: ${qtdExamesRealizados}</li>
+	    			<li>Nº de Registros de Prontuários:	${qtdProntuarios}</li>
+	    			<li>Nº de Afastamentos pelo INSS: ${qtdAfastamentosInss}</li>
+	    			<li>Nº de Afastamentos (não afastados pelo INSS): ${qtdAfastamentosNaoInss}</li>
 	    		</ul>
 	    	</div>
 	    </div>

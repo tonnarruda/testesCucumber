@@ -21,7 +21,6 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
@@ -198,6 +197,11 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 			graficoAfastamentosPorMotivo.add(new DataGrafico(null, afastamento.getDescricao(), afastamento.getQtd(), ""));
 		
 		return graficoAfastamentosPorMotivo;
+	}
+	
+	public Integer findQtdAfastamentosInss(Long empresaId, Date dataIni, Date dataFim, boolean inss) 
+	{
+		return getDao().findQtdAfastamentosInss(empresaId, dataIni, dataFim, inss);
 	}
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
