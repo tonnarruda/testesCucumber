@@ -139,6 +139,17 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		return graficoCatsPorDiaSemana;
 	}
 	
+	public Collection<DataGrafico> findQtdCatsPorHorario(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		Collection<DataGrafico> graficoCatsPorHorario = new ArrayList<DataGrafico>();
+		Map<String,Integer> qtdCatsPorHorario = getDao().findQtdPorHorario(empresaId, dataIni, dataFim);
+		
+		for (Map.Entry<String, Integer> qtd : qtdCatsPorHorario.entrySet())
+			graficoCatsPorHorario.add(new DataGrafico(null, qtd.getKey() == null ? "Não definido" : qtd.getKey() + "h", qtd.getValue(), ""));
+		
+		return graficoCatsPorHorario;
+	}
+	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}

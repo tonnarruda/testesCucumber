@@ -213,6 +213,54 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		assertEquals(new Integer(1), qtds.get(6));
 	}
 
+	public void testFindQtdPorHorario()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador ana = ColaboradorFactory.getEntity();
+		ana.setNome("Ana");
+		ana.setEmpresa(empresa);
+		colaboradorDao.save(ana);
+		
+		Cat cat = new Cat();
+		cat.setData(DateUtil.criarDataMesAno(1, 11, 2011));
+		cat.setColaborador(ana);
+		cat.setHorario("01:30");
+		catDao.save(cat);
+		
+		Cat cat2 = new Cat();
+		cat2.setData(DateUtil.criarDataMesAno(2, 11, 2011));
+		cat2.setColaborador(ana);
+		cat2.setHorario("02:15");
+		catDao.save(cat2);
+		
+		Cat cat3 = new Cat();
+		cat3.setData(DateUtil.criarDataMesAno(2, 11, 2011));
+		cat3.setColaborador(ana);
+		cat3.setHorario("02:30");
+		catDao.save(cat3);
+		
+		Cat cat4 = new Cat();
+		cat4.setData(DateUtil.criarDataMesAno(5, 11, 2011));
+		cat4.setColaborador(ana);
+		cat4.setHorario("03:30");
+		catDao.save(cat4);
+		
+		Cat cat5 = new Cat();
+		cat5.setData(DateUtil.criarDataMesAno(15, 11, 2011));
+		cat5.setColaborador(ana);
+		catDao.save(cat5);
+		
+		catDao.findUltimoCat(empresa.getId());
+		Map<String,Integer> qtds = catDao.findQtdPorHorario(empresa.getId(), DateUtil.criarDataMesAno(1, 11, 2011), DateUtil.criarDataMesAno(15, 11, 2011));
+		
+		assertEquals(new Integer(1), qtds.get("01"));
+		assertEquals(new Integer(2), qtds.get("02"));
+		assertEquals(new Integer(1), qtds.get("03"));
+		assertEquals(new Integer(1), qtds.get(null));
+	}
+
 	public GenericDao<Cat> getGenericDao()
 	{
 		return catDao;

@@ -16,4 +16,5 @@ public interface CatDao extends GenericDao<Cat>
 	Collection<Object[]> getCatsRelatorio(Long estabelecimentoId, Date inicio, Date fim);
 	Cat findUltimoCat(Long empresaId);
 	Map<Integer,Integer> findQtdPorDiaSemana(Long empresaId, Date dataIni, Date dataFim);
+	Map<String,Integer> findQtdPorHorario(Long empresaId, Date dataIni, Date dataFim);
 }

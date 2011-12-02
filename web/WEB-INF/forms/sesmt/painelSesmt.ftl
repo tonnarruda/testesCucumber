@@ -24,6 +24,7 @@
 		<script type="text/javascript">
 			$(function () {
 				montaPie(${grfQtdCatsPorDiaSemana}, "#catsDiaSemana", {combinePercentMin: 0.05, percentMin: 0.05});
+				montaPie(${grfQtdCatsPorHorario}, "#catsHorario", {combinePercentMin: 0.05, percentMin: 0.05});
 				montaPie(${grfQtdAfastamentosPorMotivo}, "#afastamentosMotivo", {combinePercentMin: 0.05, percentMin: 0.05});
 			});
 			

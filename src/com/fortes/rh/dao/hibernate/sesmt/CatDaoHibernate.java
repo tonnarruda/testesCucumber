@@ -182,4 +182,31 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 
 		return qtds;
 	}
+
+	public Map<String,Integer> findQtdPorHorario(Long empresaId, Date dataIni, Date dataFim) 
+	{
+		StringBuilder sql = new StringBuilder("select substring(cat.horario, 0, 3) as hora, cast(count(*) as integer) as qtd ");
+		sql.append("from cat "); 
+		sql.append("inner join colaborador col on cat.colaborador_id = col.id "); 
+		sql.append("where col.empresa_id = :empresaId and cat.data between :dataIni and :dataFim ");
+		sql.append("group by hora ");
+		sql.append("order by hora ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		
+		Collection<Object[]> resultado = query.list();
+		
+		Map<String,Integer> qtds = new HashMap<String, Integer>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			qtds.put((String)res[0], (Integer)res[1]);
+		}
+		
+		return qtds;
+	}
 }
