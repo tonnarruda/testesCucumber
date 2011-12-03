@@ -18269,3 +18269,52 @@ insert into migrations values('20111117111551');--.go
 update historicocolaborador set status = 1 where status = 0;--.go
 insert into migrations values('20111122133637');--.go
 update parametrosdosistema set appversao = '1.1.62.54';--.go
+-- versao 1.1.63.55
+
+CREATE TABLE naturezaLesao (
+id bigint NOT NULL,
+descricao character varying(100),
+empresa_id bigint NOT NULL  
+);--.go
+ALTER TABLE naturezaLesao ADD CONSTRAINT naturezaLesao_pkey PRIMARY KEY(id);--.go
+ALTER TABLE naturezaLesao ADD CONSTRAINT naturezaLesao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE naturezaLesao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20111129172602');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (530, 'ROLE_CAD_NATUREZALESAO', 'Natureza da Lesão', '/sesmt/naturezaLesao/list.action', 14, true, 385);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 530);--.go
+alter sequence papel_sequence restart with 531; --.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=530 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into migrations values('20111129172743');--.go
+alter table cat add column ambiente_id bigint;--.go
+alter table cat add column naturezaLesao_id bigint;--.go
+alter table cat add column horario character varying(5);--.go
+alter table cat add column parteAtingida character varying(100);--.go
+alter table cat add column foiTreinadoParaFuncao boolean default false;--.go
+alter table cat add column usavaEPI boolean default false;--.go
+alter table cat add column emitiuCAT boolean default false;--.go
+alter table cat add column qtdDiasAfastado integer;--.go
+alter table cat add column conclusao text;--.go
+alter table cat add column tipoAcidente integer;--.go
+
+ALTER TABLE cat ADD CONSTRAINT cat_ambiente_fk FOREIGN KEY (ambiente_id) REFERENCES ambiente(id);--.go
+ALTER TABLE cat ADD CONSTRAINT cat_naturezaLesao_fk FOREIGN KEY (naturezaLesao_id) REFERENCES naturezaLesao(id);--.go
+insert into migrations values('20111130103744');--.go
+CREATE TABLE cat_epi (
+    cat_id bigint NOT NULL,
+    epis_id bigint NOT NULL
+);--.go
+ALTER TABLE cat_epi ADD CONSTRAINT cat_epi_cat_fk FOREIGN KEY (cat_id) REFERENCES cat(id);--.go
+ALTER TABLE cat_epi ADD CONSTRAINT cat_epi_epi_fk FOREIGN KEY (epis_id) REFERENCES epi(id);--.go
+insert into migrations values('20111130104116');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (531, 'ROLE_SESMT_PAINEL_IND', 'Painel de Indicadores', '/sesmt/indicadores/painel.action', 6, true, 75); --.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 531); --.go
+alter sequence papel_sequence restart with 532; --.go
+
+insert into migrations values('20111130114811');--.go
+
+insert into migrations values('20111201094013');--.go
+update papel set nome = 'Ficha de Investigação de Acidente(CAT)' where id in (443,488);--.go
+insert into migrations values('20111201144635');--.go
+update cat set emitiucat = true where numerocat is not null;--.go
+insert into migrations values('20111201150059');--.go
+update parametrosdosistema set appversao = '1.1.63.55';--.go

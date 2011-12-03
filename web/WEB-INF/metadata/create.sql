@@ -1102,16 +1102,37 @@ ALTER TABLE engenheiroresponsavel ADD CONSTRAINT engenheiroresponsavel_empresa_f
 CREATE SEQUENCE engenheiroresponsavel_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 
+CREATE TABLE naturezaLesao (
+id bigint NOT NULL,
+descricao character varying(100),
+empresa_id bigint NOT NULL  
+);
+ALTER TABLE naturezaLesao ADD CONSTRAINT naturezaLesao_pkey PRIMARY KEY(id);
+ALTER TABLE naturezaLesao ADD CONSTRAINT naturezaLesao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE naturezaLesao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
 CREATE TABLE cat (
     id bigint NOT NULL,
     data date,
     numerocat character varying(20),
     observacao text,
     gerouafastamento boolean DEFAULT false,
-    colaborador_id bigint
+    colaborador_id bigint,
+    ambiente_id bigint,
+	naturezaLesao_id bigint,
+	horario character varying(5),
+	parteAtingida character varying(100),
+	foiTreinadoParaFuncao boolean default false,
+	usavaEPI boolean default false,
+	emitiuCAT boolean default false,
+	qtdDiasAfastado integer,
+	conclusao text,
+	tipoAcidente integer
 );
 ALTER TABLE cat ADD CONSTRAINT cat_pkey PRIMARY KEY (id);
 ALTER TABLE cat ADD CONSTRAINT cat_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
+ALTER TABLE cat ADD CONSTRAINT cat_ambiente_fk FOREIGN KEY (ambiente_id) REFERENCES ambiente(id);
+ALTER TABLE cat ADD CONSTRAINT cat_naturezaLesao_fk FOREIGN KEY (naturezaLesao_id) REFERENCES naturezaLesao(id);
 CREATE SEQUENCE cat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 
@@ -1245,6 +1266,12 @@ ALTER TABLE risco ADD CONSTRAINT risco_pkey PRIMARY KEY (id);
 ALTER TABLE risco ADD CONSTRAINT risco_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE risco_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
+CREATE TABLE cat_epi (
+    cat_id bigint NOT NULL,
+    epis_id bigint NOT NULL
+);--.go
+ALTER TABLE cat_epi ADD CONSTRAINT cat_epi_cat_fk FOREIGN KEY (cat_id) REFERENCES cat(id);--.go
+ALTER TABLE cat_epi ADD CONSTRAINT cat_epi_epi_fk FOREIGN KEY (epis_id) REFERENCES epi(id);--.go
 
 CREATE TABLE risco_epi (
     risco_id bigint NOT NULL,

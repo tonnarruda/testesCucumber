@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.63.55" data="02/12/2011">
+		- ReS > Cadastros > Áreas Organizacionais: Ajuste na impressão da listagem de Área Organizacional, filtro por ativa [Todas, Ativa, Inativa].
+		- SESMT > Relatórios > Afastamentos: Nova opção de agrupamento por mês.	
+		- SESMT > Movimentações > Reformulação do cadastro de CAT, novo nome: Ficha de Investigação de Acidente(CAT).
+		- SESMT > Painel de Indicadores: Novo Painel de Indicadores de SESMT.
+		- SESMT > Cadastros > Natureza da Lesão.
+		- Integração AC e RH > Edição do código AC do empregado.
+	</Versao>
 	<Versao id="1.1.62.54" data="24/11/2011">
 		- Aval. Desempenho > Relatórios > Relatório de Auto Avaliação: Novo relatório.
 		- Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Novo filtro por empresa.
