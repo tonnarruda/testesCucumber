@@ -27,26 +27,7 @@
 				montaPie(${grfQtdCatsPorHorario}, "#catsHorario", {combinePercentMin: 0.05, percentMin: 0.05});
 				montaPie(${grfQtdAfastamentosPorMotivo}, "#afastamentosMotivo", {combinePercentMin: 0.05, percentMin: 0.05});
 				
-				var examesNormais = ${grfResultadosExamesNormais};
-		        var examesAnormais = ${grfResultadosExamesAnormais};
-			    
-			    $.plot($("#resultadosExames"), 
-			    		[
-					        {label: 'Normal', data: examesNormais, bars:{align : "left", barWidth: 0.5} },
-					        {label: 'Alterado', data: examesAnormais, bars:{align : "right", barWidth: 0.5} }
-					    ], 
-			    		{
-			    			series: {
-				                bars: {
-				                    show: true, 
-				                 	align: 'center'
-				                }
-					      }
-				    	,
-				        xaxis: {
-				        	ticks: examesNormais.map(function(item) { return item[0] })
-				        }
-				 });
+				
 			});
 			
 			function validaForm()
@@ -115,10 +96,6 @@
 	    	</div>
 	    </div>
 	    
-		<div class="fieldGraph bigger">
-			<h1>Estatísticas de Resultados de Exames</h1>
-	   		<div id="resultadosExames" class="graph2"></div>
-	   	</div>
 	    
 	    <div style="clear: both"></div>
 		<a name="pagebottom"></a>
