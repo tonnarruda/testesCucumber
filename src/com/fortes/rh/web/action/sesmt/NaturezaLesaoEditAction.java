@@ -59,12 +59,12 @@ public class NaturezaLesaoEditAction extends MyActionSupportList
 		try
 		{
 			naturezaLesaoManager.remove(naturezaLesao.getId());
-			addActionMessage("Natureza de Lesão excluída com sucesso.");
+			addActionMessage("Natureza da Lesão excluída com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir esta Natureza de Lesão.");
+			addActionError("Não foi possível excluir esta Natureza da Lesão.");
 		}
 
 		return list();
