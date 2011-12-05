@@ -18,7 +18,7 @@ Funcionalidade: Inspeção de Extintores
     Então eu clico no botão "Inserir"
     Então eu devo ver o título "Inserir Inspeção de Extintor"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
-    E eu seleciono "AG - 123" de "Extintor"
+    E eu preencho o select autocomplete (JS) "ui-autocomplete-input" com "AG - 123"
     E eu preencho "Empresa responsável" com "extintudo"
     E eu preencho o campo (JS) "data" com "28/07/2011"
     E eu marco "Lacre"

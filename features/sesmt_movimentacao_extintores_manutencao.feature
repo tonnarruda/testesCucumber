@@ -18,7 +18,7 @@ Funcionalidade: Manutenção de Extintores
     Então eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Manutenção de Extintor"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
-    E eu seleciono "AG - garagem" de "Extintor"
+    E eu preencho o select autocomplete (JS) "ui-autocomplete-input" com "AG - 123"
     E eu preencho o campo (JS) "saida" com "28/07/2011"
     E eu preencho o campo (JS) "retorno" com "01/08/2011"
     E eu seleciono "Prazo de recarga vencido" de "Motivo"

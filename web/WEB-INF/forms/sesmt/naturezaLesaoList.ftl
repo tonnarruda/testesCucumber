@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>Natureza de Lesão</title>
+	<title>Natureza da Lesão</title>
 </head>
 <body>
 	<@ww.actionmessage />
@@ -15,7 +15,7 @@
 	<@display.table name="naturezaLesaos" id="naturezaLesao" class="dados">
 		<@display.column title="Ações" class="acao">
 			<a href="prepareUpdate.action?naturezaLesao.id=${naturezaLesao.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="if (confirm('Confirma exclusão?')) window.location='delete.action?naturezaLesao.id=${naturezaLesao.id}'"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?naturezaLesao.id=${naturezaLesao.id}&page=${page}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Descrição" property="descricao" />
 	</@display.table>

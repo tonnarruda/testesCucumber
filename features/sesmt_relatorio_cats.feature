@@ -5,8 +5,8 @@ Funcionalidade: Relatório de CATs
   Cenário: Relatório de CATs
 
     Dado que eu esteja logado
-    Quando eu acesso o menu "SESMT > Relatórios > CATs (Acidentes de Trabalho)"
-    Então eu devo ver o título "CATs (Acidentes de Trabalho)"
+    Quando eu acesso o menu "SESMT > Relatórios > Ficha de Investigação de Acidente(CAT)"
+    Então eu devo ver o título "Ficha de Investigação de Acidente(CAT)"
 
     Então eu preencho o campo (JS) "inicio" com "01/01/2011"
     E eu preencho o campo (JS) "fim" com "29/07/2011"

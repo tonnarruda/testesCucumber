@@ -93,6 +93,12 @@ Quando /^eu preencho o campo \(JS\) "([^"]*)" com "([^"]*)"$/ do |field, value|
   page.execute_script("$('##{field}').val('#{value}')")
 end
 
+Quando /^eu preencho o select autocomplete \(JS\) "([^"]*)" com "([^"]*)"$/ do |field, value|
+  find(:xpath, "//button[@type='button']").click
+  field = get_field(field)
+  page.execute_script("$('.#{field}').val('#{value}').blur()")
+end
+
 Quando /^eu preencho "([^"]*)" para "([^"]*)"$/ do |value, field|
   When %{I fill in "#{value}" for "#{field}"}
 end
