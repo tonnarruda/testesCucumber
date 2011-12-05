@@ -11,6 +11,7 @@ import com.fortes.rh.business.sesmt.ProntuarioManager;
 import com.fortes.rh.business.sesmt.RealizacaoExameManager;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.relatorio.DataGrafico;
+import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -36,8 +37,7 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 	private String grfQtdCatsPorDiaSemana = "";
 	private String grfQtdCatsPorHorario = "";
 	private String grfQtdAfastamentosPorMotivo = "";
-	private String grfResultadosExamesNormais = "";
-	private String grfResultadosExamesAnormais = "";
+	private Collection<Exame> exames;
 	
 	public String painel()
 	{
@@ -64,9 +64,7 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 		Collection<DataGrafico> graficoQtdAfastamentosPorMotivo = colaboradorAfastamentoManager.findQtdCatsPorDiaSemana(empresaId, dataDe, dataAte);
 		grfQtdAfastamentosPorMotivo = StringUtil.toJSON(graficoQtdAfastamentosPorMotivo, null);
 		
-		Map<String, Collection<Object[]>> graficosResultadosExames = realizacaoExameManager.montaGraficoExamesRealizados(empresaId, dataDe, dataAte);
-		grfResultadosExamesNormais = StringUtil.toJSON(graficosResultadosExames.get(ResultadoExame.NORMAL.toString()), null);
-		grfResultadosExamesAnormais = StringUtil.toJSON(graficosResultadosExames.get(ResultadoExame.ANORMAL.toString()), null);
+		exames = realizacaoExameManager.findQtdPorExame(empresaId, dataDe, dataAte);
 		
 		return Action.SUCCESS;
 	}
@@ -139,11 +137,7 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 		return qtdAfastamentosNaoInss;
 	}
 
-	public String getGrfResultadosExamesNormais() {
-		return grfResultadosExamesNormais;
-	}
-
-	public String getGrfResultadosExamesAnormais() {
-		return grfResultadosExamesAnormais;
+	public Collection<Exame> getExames() {
+		return exames;
 	}
 }
