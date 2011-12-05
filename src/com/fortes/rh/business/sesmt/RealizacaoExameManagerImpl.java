@@ -3,7 +3,6 @@ package com.fortes.rh.business.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -177,23 +176,8 @@ public class RealizacaoExameManagerImpl extends GenericManagerImpl<RealizacaoExa
 		return getDao().findQtdRealizados(empresaId, dataIni, dataFim);
 	}
 
-	public Map<String, Collection<Object[]>> montaGraficoExamesRealizados(Long empresaId, Date dataIni, Date dataFim) 
+	public Collection<Exame> findQtdPorExame(Long empresaId, Date dataIni, Date dataFim) 
 	{
-		Map<String, Collection<Object[]>> dados = new HashMap<String, Collection<Object[]>>();
-		Collection<Object[]> examesNormais = new ArrayList<Object[]>();
-		Collection<Object[]> examesAnormais = new ArrayList<Object[]>();
-		
-		Collection<Exame> exames = getDao().findQtdPorExame(empresaId, dataIni, dataFim);		
-		
-		for (Exame exame : exames)
-		{
-			examesNormais.add(new Object[]{exame.getNome(), exame.getQtdNormal()});
-			examesAnormais.add(new Object[]{exame.getNome(), exame.getQtdAnormal()});
-		}
-
-		dados.put(ResultadoExame.NORMAL.toString(), examesNormais);
-		dados.put(ResultadoExame.ANORMAL.toString(), examesAnormais);
-		
-		return dados;
+		return getDao().findQtdPorExame(empresaId, dataIni, dataFim);
 	}
 }

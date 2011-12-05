@@ -1,5 +1,6 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+<#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 	<head>
 		<@ww.head/>
@@ -17,6 +18,7 @@
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.categories.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
 		
 		<title>Painel de Indicadores de SESMT</title>
@@ -26,8 +28,6 @@
 				montaPie(${grfQtdCatsPorDiaSemana}, "#catsDiaSemana", {combinePercentMin: 0.05, percentMin: 0.05});
 				montaPie(${grfQtdCatsPorHorario}, "#catsHorario", {combinePercentMin: 0.05, percentMin: 0.05});
 				montaPie(${grfQtdAfastamentosPorMotivo}, "#afastamentosMotivo", {combinePercentMin: 0.05, percentMin: 0.05});
-				
-				
 			});
 			
 			function validaForm()
@@ -95,9 +95,20 @@
 	    		</ul>
 	    	</div>
 	    </div>
-	    
-	    
 	    <div style="clear: both"></div>
+	    	    
+		<div class="fieldGraph bigger">
+			<h1>Estatísticas de Resultados de Exames</h1>
+	   		<div style="height:300px; overflow:scroll; overflow-x: hidden;">
+		   		<@display.table name="exames" id="exame" class="dados" style="width: 945px;">
+					<@display.column property="nome" title="Exame"/>
+					<@display.column property="qtdNormal" title="Qtd. Normal" style="width: 100px; text-align: right;"/>
+					<@display.column property="qtdAnormal" title="Qtd. Alterado" style="width: 100px; text-align: right;"/>
+				</@display.table>
+			</div>
+	   	</div>
+	    <div style="clear: both"></div>
+	    
 		<a name="pagebottom"></a>
 	</body>
 </html>
