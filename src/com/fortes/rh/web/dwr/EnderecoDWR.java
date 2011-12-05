@@ -32,9 +32,6 @@ public class EnderecoDWR {
 
 	private String getUrlParaCep(String cep) 
 	{
-		return "http://query.yahooapis.com/v1/public/yql?" +
-				"q=select%20*%20from%20brazil.correios.ceplivre%20where%20cep%3D%22" +
-				cep +
-				"%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+		return "www.bronzebusiness.com.br/webservices/wscep.asmx/cep?strcep=" + cep;
 	}
 }
