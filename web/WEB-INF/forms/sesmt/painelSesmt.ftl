@@ -18,7 +18,6 @@
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.categories.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
 		
 		<title>Painel de Indicadores de SESMT</title>
@@ -60,6 +59,8 @@
 	   	
 		<#include "../util/topFiltro.ftl" />
 			<@ww.form name="formBusca" id="formBusca" action="painel.action" method="POST">
+				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" />
+			
 				Período:*<br>
 				<@ww.datepicker name="dataDe" id="dataDe" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 				<@ww.label value="a" liClass="liLeft" />
