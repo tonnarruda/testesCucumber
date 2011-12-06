@@ -26,6 +26,8 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
 
 	@Transient
 	private Turma turma ;
+	@Transient
+	private Integer qtdColaboradorQuestionario ;
 	
 	
 	public AvaliacaoTurma()
@@ -223,4 +225,13 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
 	public void setTurma(Turma turma) {
 		this.turma = turma;
 	}
+
+	public Integer getQtdColaboradorQuestionario() {
+		return qtdColaboradorQuestionario;
+	}
+
+	public void setQtdColaboradorQuestionario(Integer qtdColaboradorQuestionario) {
+		this.qtdColaboradorQuestionario = qtdColaboradorQuestionario;
+	}
+
 }

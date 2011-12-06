@@ -44,6 +44,7 @@
 					$('.popup').empty();
 					
 					var link, urlIcone;
+					var onClick = "";
 					var popupAvaliacoes = "<ul>";
 					
 					$(dados).each(function(i, avaliacaoTurma) {
@@ -54,12 +55,17 @@
 						}
 						else
 						{
-							link = "../../pesquisa/questionario/prepareResultado.action?questionario.id=" + avaliacaoTurma.questionario.id + "&turmaId=" + avaliacaoTurma.turma.id + "&cursoId=" + cursoId;
+							if(avaliacaoTurma.qtdColaboradorQuestionario > 0){
+								link = "../../pesquisa/questionario/prepareResultado.action?questionario.id=" + avaliacaoTurma.questionario.id + "&turmaId=" + avaliacaoTurma.turma.id + "&cursoId=" + cursoId;
+							} else {
+								link = "#";
+								onClick = 'jAlert("Não existe questionário respondido para esta avaliação.")';
+							}
 							urlIcone = "<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>";
 						}
 					
 						popupAvaliacoes += "<li>";
-						popupAvaliacoes += "<a href='" + link + "'>";
+						popupAvaliacoes += "<a href='" + link + "' onclick='" + onClick+ " ' >";
 						popupAvaliacoes += "<img src='" + urlIcone + "' align='absmiddle'/>&nbsp; " + avaliacaoTurma.questionarioTitulo;
 						popupAvaliacoes += "</a>";
 						popupAvaliacoes += "</li>\n";
