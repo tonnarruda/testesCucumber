@@ -581,7 +581,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		colaboradorQuestionarioManager.removeByColaboradorETurma(colaboradorTurma.getColaborador().getId(), colaboradorTurma.getTurma().getId());
 	}
 
-	public Collection<ColaboradorTurma> montaColunas(Collection<ColaboradorTurma> colaboradorTurmas, boolean exibirNomeComercial, boolean exibirCargo, boolean exibirEstabelecimento, boolean exibirAssinatura)
+	public Collection<ColaboradorTurma> montaColunas(Collection<ColaboradorTurma> colaboradorTurmas, boolean exibirNomeComercial, boolean exibirCargo, boolean exibirEstabelecimento, boolean exibirAssinatura, boolean exibirArea)
 	{
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
 		{
@@ -598,6 +598,18 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 					colaboradorTurma.setColuna02RelatorioPresenca(colaboradorTurma.getColaborador().getHistoricoColaborador().getEstabelecimento().getNome());
 				else
 					colaboradorTurma.setColuna03RelatorioPresenca(colaboradorTurma.getColaborador().getHistoricoColaborador().getEstabelecimento().getNome());
+			
+			if(exibirArea)
+			{
+				String area = "";
+				if(colaboradorTurma.getColaborador().getHistoricoColaborador().getAreaOrganizacional() != null && colaboradorTurma.getColaborador().getHistoricoColaborador().getAreaOrganizacional().getNome() != null)
+					area = colaboradorTurma.getColaborador().getHistoricoColaborador().getAreaOrganizacional().getNome();
+				
+				if(colaboradorTurma.getColuna02RelatorioPresenca() == null)
+					colaboradorTurma.setColuna02RelatorioPresenca(area);
+				else
+					colaboradorTurma.setColuna03RelatorioPresenca(area);
+			}
 
 			if(exibirAssinatura)
 				if(colaboradorTurma.getColuna02RelatorioPresenca() == null)
