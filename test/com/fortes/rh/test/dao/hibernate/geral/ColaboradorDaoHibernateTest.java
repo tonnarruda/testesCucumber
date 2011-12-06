@@ -3694,6 +3694,97 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		assertEquals(1, colaboradorDao.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true).size());
 	}
+	
+	public void testQtdDemitidosEm90Dias() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Date dataDe = DateUtil.montaDataByString("20/01/2010");
+		Date dataAte = DateUtil.montaDataByString("11/11/2010");
+		
+		Colaborador mariaNaoDesligada = ColaboradorFactory.getEntity();
+		mariaNaoDesligada.setEmpresa(empresa);
+		mariaNaoDesligada.setDesligado(false);
+		colaboradorDao.save(mariaNaoDesligada);
+		
+		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataDe, dataAte));
+		
+		Colaborador joaoDesligadoAntesDoPeriodo = ColaboradorFactory.getEntity();
+		joaoDesligadoAntesDoPeriodo.setEmpresa(empresa);
+		joaoDesligadoAntesDoPeriodo.setDesligado(true);
+		joaoDesligadoAntesDoPeriodo.setDataDesligamento(DateUtil.montaDataByString("01/01/2000"));
+		colaboradorDao.save(joaoDesligadoAntesDoPeriodo);
+		
+		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataDe, dataAte));
+		
+		Colaborador marciaDesligadoDepoisPeriodo = ColaboradorFactory.getEntity();
+		marciaDesligadoDepoisPeriodo.setEmpresa(empresa);
+		marciaDesligadoDepoisPeriodo.setDesligado(true);
+		marciaDesligadoDepoisPeriodo.setDataDesligamento(DateUtil.montaDataByString("22/12/2022"));
+		colaboradorDao.save(marciaDesligadoDepoisPeriodo);
+		
+		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataDe, dataAte));
+
+		Colaborador pedroDesligadoNoPeriodo = ColaboradorFactory.getEntity();
+		pedroDesligadoNoPeriodo.setEmpresa(empresa);
+		pedroDesligadoNoPeriodo.setDesligado(true);
+		pedroDesligadoNoPeriodo.setDataDesligamento(DateUtil.montaDataByString("20/01/2010"));
+		colaboradorDao.save(pedroDesligadoNoPeriodo);
+		
+		Colaborador toinDesligadoNoPeriodo = ColaboradorFactory.getEntity();
+		toinDesligadoNoPeriodo.setEmpresa(empresa);
+		toinDesligadoNoPeriodo.setDesligado(true);
+		toinDesligadoNoPeriodo.setDataDesligamento(DateUtil.montaDataByString("11/11/2010"));
+		colaboradorDao.save(toinDesligadoNoPeriodo);
+		
+		Colaborador bebelDesligadoNoPeriodo = ColaboradorFactory.getEntity();
+		bebelDesligadoNoPeriodo.setEmpresa(empresa);
+		bebelDesligadoNoPeriodo.setDesligado(true);
+		bebelDesligadoNoPeriodo.setDataDesligamento(DateUtil.montaDataByString("20/09/2010"));
+		colaboradorDao.save(bebelDesligadoNoPeriodo);
+		
+		assertEquals(3, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataDe, dataAte));
+	}
+	
+	public void testQtdAdmitidosPeriodo() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Date dataDe = DateUtil.montaDataByString("20/01/2010");
+		Date dataAte = DateUtil.montaDataByString("11/11/2010");
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setEmpresa(empresa);
+		maria.setDataAdmissao(DateUtil.montaDataByString("01/01/2000"));
+		colaboradorDao.save(maria);
+		
+		Colaborador bebel = ColaboradorFactory.getEntity();
+		bebel.setEmpresa(empresa);
+		bebel.setDesligado(true);
+		bebel.setDataAdmissao(DateUtil.montaDataByString("22/12/2022"));
+		colaboradorDao.save(bebel);
+		
+		assertEquals(0, colaboradorDao.qtdAdmitidosPeriodo(empresa.getId(), dataDe, dataAte));
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setEmpresa(empresa);
+		joao.setDataAdmissao(DateUtil.montaDataByString("20/01/2010"));
+		colaboradorDao.save(joao);
+		
+		Colaborador marcia = ColaboradorFactory.getEntity();
+		marcia.setEmpresa(empresa);
+		marcia.setDataAdmissao(DateUtil.montaDataByString("01/10/2010"));
+		colaboradorDao.save(marcia);
+		
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setEmpresa(empresa);
+		pedro.setDataAdmissao(DateUtil.montaDataByString("11/11/2010"));
+		colaboradorDao.save(pedro);
+		
+		assertEquals(3, colaboradorDao.qtdAdmitidosPeriodo(empresa.getId(), dataDe, dataAte));
+	}
 
 	public void testGetColaboradoresByTurmas() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
