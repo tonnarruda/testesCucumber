@@ -93,7 +93,7 @@
 						<br />
 					</div>
 					<div class="gogDivDir">
-						<div class="gogDivTituloX">Vagas x Inscritos</div>
+						<div class="gogDivTituloX">Qtd. prevista de participantes x Inscritos</div>
 						<div class="gogDivFormularioX">
 							<div id="frequencia" class="graph" ></div>
 						</div>

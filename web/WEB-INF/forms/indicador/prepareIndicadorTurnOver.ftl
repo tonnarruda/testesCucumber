@@ -7,8 +7,52 @@
 <title>Turnover (rotatividade de colaboradores)</title>
 <#include "../ftl/mascarasImports.ftl" />
 
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+
 <#assign validarCampos="return validaFormularioEPeriodoMesAno('form', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));"/>
-<script>
+
+<script type='text/javascript'>
+	function populaEstabelecimento(empresaId){
+		DWRUtil.useLoadingMessage('Carregando...');
+		EstabelecimentoDWR.getByEmpresa(createListEstabelecimento, empresaId);
+	}
+
+	function createListEstabelecimento(data){
+		addChecks('estabelecimentosCheck',data);
+	}
+	
+	function populaCargo(empresaId){
+		DWRUtil.useLoadingMessage('Carregando...');
+		CargoDWR.getByEmpresa(createListCargo, empresaId);
+	}
+
+	function createListCargo(data){
+		addChecks('cargosCheck',data);
+	}
+	
+	function populaArea(empresaId){
+		DWRUtil.useLoadingMessage('Carregando...');
+		AreaOrganizacionalDWR.getByEmpresa(createListArea, empresaId);
+	}
+
+	function createListArea(data){
+		addChecks('areasCheck',data);
+	}
+	
+	$(document).ready(function($)
+	{
+		var empresa = $('#empresa').val();
+		
+		populaArea(empresa);
+		populaCargo(empresa);
+		populaEstabelecimento(empresa);
+	});
+
+
 	function filtrarOpt(){
 		value =	document.getElementById('optFiltro').value;
 		if(value == "1") {
@@ -34,6 +78,8 @@ Ele é calculado pela fórmula [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Col
 <br/>
 
 <@ww.form name="form" action="list.action" validate="true" method="POST">
+	<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" onchange="populaArea(this.value);populaEstabelecimento(this.value);populaCargo(this.value);" />
+
 	<div>Período (Mês/Ano)*:</div>
 	<@ww.textfield name="dataDe" id="dataDe" required="true"  cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
 	<@ww.label value="a" liClass="liLeft"/>

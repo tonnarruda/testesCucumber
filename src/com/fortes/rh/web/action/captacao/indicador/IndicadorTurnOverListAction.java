@@ -10,16 +10,20 @@ import java.util.Map;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
-import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class IndicadorTurnOverListAction extends MyActionSupportList
 {
@@ -38,20 +42,21 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	private EstabelecimentoManager estabelecimentoManager;
 	private ColaboradorManager colaboradorManager;
 	private CargoManager cargoManager;
+	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<TurnOverCollection> dataSource;
+	private Collection<Empresa> empresas;
+	private Empresa empresa;
 	private int filtrarPor = 1;
 
 	public String prepare() throws Exception
 	{
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
-		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		if(empresa == null || empresa.getId() == null)
+			empresa = getEmpresaSistema();
 		
-		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
-		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
-		CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
+		empresas = empresaManager.findEmpresasPermitidas(parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores(), empresa.getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_TURNOVER");
 
 		return Action.SUCCESS;
 	}
@@ -60,6 +65,9 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	{
 		Date dataIni = DateUtil.criarDataMesAno(dataDe);
 		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataAte));
+
+		if(empresa == null || empresa.getId() == null)
+			empresa = getEmpresaSistema();
 		
 		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)
 		{
@@ -70,8 +78,10 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		
 		try 
 		{
+			empresa = empresaManager.findByIdProjection(empresa.getId());//os managers/parametroRelatorio precisam da empresa com turnoverPorSolicitacao, logoUrl
+			
 			TurnOverCollection turnOverCollection = new TurnOverCollection();
-			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, getEmpresaSistema(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
+			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, empresa, LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
 			dataSource = Arrays.asList(turnOverCollection);
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;
@@ -91,7 +101,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 					filtro +=  "\nTodos os Cargos";
 			}
 			
-			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", getEmpresaSistema(), filtro);
+			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", empresa, filtro);
 			
 			return Action.SUCCESS;
 		
@@ -230,5 +240,25 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	public void setFiltrarPor(int filtrarPor) {
 		this.filtrarPor = filtrarPor;
+	}
+
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }
