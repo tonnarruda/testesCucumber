@@ -197,6 +197,17 @@ public class Empresa extends AbstractModel implements Serializable
 	{
 		return endereco;
 	}
+	
+	public String getEnderecoCidadeUf()
+	{
+		String end = endereco; 
+		if (this.cidade != null)
+			end += " - " + this.cidade.getNome();
+		if (this.uf != null)
+			end += " - " + this.uf.getSigla();
+			
+		return  end;
+	}
 
 	public void setEndereco(String endereco)
 	{

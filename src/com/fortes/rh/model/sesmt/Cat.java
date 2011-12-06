@@ -15,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.dicionario.TipoAcidente;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.DateUtil;
 
@@ -37,6 +38,8 @@ public class Cat extends AbstractModel implements Serializable
     private String horario;
     @Column(length=100)
     private String parteAtingida;
+    @Column(length=100)
+    private String fonteLesao;
     private Integer tipoAcidente;
     private boolean foiTreinadoParaFuncao;
     private boolean usavaEPI;
@@ -89,43 +92,54 @@ public class Cat extends AbstractModel implements Serializable
 	{
 		return colaborador;
 	}
+	
 	public void setColaborador(Colaborador colaborador)
 	{
 		this.colaborador = colaborador;
 	}
+	
 	public Date getData()
 	{
 		return data;
 	}
+	
 	public void setData(Date data)
 	{
 		this.data = data;
 	}
+	
 	public String getNumeroCat()
 	{
 		return numeroCat;
 	}
+	
 	public void setNumeroCat(String numeroCat)
 	{
 		this.numeroCat = numeroCat;
 	}
+	
 	public String getObservacao()
 	{
 		return observacao;
 	}
+	
 	public void setObservacao(String observacao)
 	{
 		this.observacao = observacao;
 	}
 
-	public String getGerouAfastamentoFormatado() {
+	public String getGerouAfastamentoFormatado() 
+	{
 		return gerouAfastamento ? "Sim" : "Não";
 	}
-	public boolean getGerouAfastamento() {
+	
+	public boolean getGerouAfastamento() 
+	{
 		return gerouAfastamento;
 	}
 
-	public void setGerouAfastamento(boolean gerouAfastamento) {
+	public void setGerouAfastamento(boolean gerouAfastamento) 
+	{
 		this.gerouAfastamento = gerouAfastamento;
 	}
 
@@ -138,92 +152,137 @@ public class Cat extends AbstractModel implements Serializable
 		return dataFmt;
 	}
 
-	public Ambiente getAmbiente() {
+	public Ambiente getAmbiente() 
+	{
 		return ambiente;
 	}
 
-	public void setAmbiente(Ambiente ambiente) {
+	public void setAmbiente(Ambiente ambiente) 
+	{
 		this.ambiente = ambiente;
 	}
 
-	public NaturezaLesao getNaturezaLesao() {
+	public NaturezaLesao getNaturezaLesao() 
+	{
 		return naturezaLesao;
 	}
 
-	public void setNaturezaLesao(NaturezaLesao naturezaLesao) {
+	public void setNaturezaLesao(NaturezaLesao naturezaLesao) 
+	{
 		this.naturezaLesao = naturezaLesao;
 	}
 
-	public Collection<Epi> getEpis() {
+	public Collection<Epi> getEpis() 
+	{
 		return epis;
 	}
+	
+	public String getEpisFormatado() 
+	{
+		StringBuffer retorno = new StringBuffer();
+		for (Epi epi : epis) 
+		{
+			retorno.append(", " + epi.getNome());
+		}		
+		
+		return retorno.length() >= 2 ? retorno.substring(2) : "";
+	}
 
-	public void setEpis(Collection<Epi> epis) {
+	public void setEpis(Collection<Epi> epis) 
+	{
 		this.epis = epis;
 	}
 
-	public String getHorario() {
+	public String getHorario() 
+	{
 		return horario;
 	}
 
-	public void setHorario(String horario) {
+	public void setHorario(String horario) 
+	{
 		this.horario = horario;
 	}
 
-	public String getParteAtingida() {
+	public String getParteAtingida() 
+	{
 		return parteAtingida;
 	}
 
-	public void setParteAtingida(String parteAtingida) {
+	public void setParteAtingida(String parteAtingida) 
+	{
 		this.parteAtingida = parteAtingida;
 	}
 
-	public Integer getTipoAcidente() {
+	public Integer getTipoAcidente() 
+	{
 		return tipoAcidente;
 	}
+	
+	public String getTipoAcidenteDescricao() 
+	{
+		return new TipoAcidente().get(tipoAcidente);
+	}
 
-	public void setTipoAcidente(Integer tipoAcidente) {
+	public void setTipoAcidente(Integer tipoAcidente) 
+	{
 		this.tipoAcidente = tipoAcidente;
 	}
 
-	public boolean isFoiTreinadoParaFuncao() {
+	public boolean isFoiTreinadoParaFuncao() 
+	{
 		return foiTreinadoParaFuncao;
 	}
 
-	public void setFoiTreinadoParaFuncao(boolean foiTreinadoParaFuncao) {
+	public void setFoiTreinadoParaFuncao(boolean foiTreinadoParaFuncao) 
+	{
 		this.foiTreinadoParaFuncao = foiTreinadoParaFuncao;
 	}
 
-	public boolean isUsavaEPI() {
+	public boolean isUsavaEPI() 
+	{
 		return usavaEPI;
 	}
 
-	public void setUsavaEPI(boolean usavaEPI) {
+	public void setUsavaEPI(boolean usavaEPI) 
+	{
 		this.usavaEPI = usavaEPI;
 	}
 
-	public boolean isEmitiuCAT() {
+	public boolean isEmitiuCAT() 
+	{
 		return emitiuCAT;
 	}
 
-	public void setEmitiuCAT(boolean emitiuCAT) {
+	public void setEmitiuCAT(boolean emitiuCAT) 
+	{
 		this.emitiuCAT = emitiuCAT;
 	}
 
-	public Integer getQtdDiasAfastado() {
+	public Integer getQtdDiasAfastado() 
+	{
 		return qtdDiasAfastado;
 	}
 
-	public void setQtdDiasAfastado(Integer qtdDiasAfastado) {
+	public void setQtdDiasAfastado(Integer qtdDiasAfastado) 
+	{
 		this.qtdDiasAfastado = qtdDiasAfastado;
 	}
 
-	public String getConclusao() {
+	public String getConclusao() 
+	{
 		return conclusao;
 	}
 
-	public void setConclusao(String conclusao) {
+	public void setConclusao(String conclusao) 
+	{
 		this.conclusao = conclusao;
 	}
-	
+
+	public String getFonteLesao() {
+		return fonteLesao;
+	}
+
+	public void setFonteLesao(String fonteLesao) {
+		this.fonteLesao = fonteLesao;
+	}
 }

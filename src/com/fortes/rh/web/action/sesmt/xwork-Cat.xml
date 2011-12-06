@@ -40,6 +40,15 @@
 		<action name="prepareRelatorioCats" class="com.fortes.rh.web.action.sesmt.CatEditAction" method="prepareRelatorioCats">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioCats.ftl</result>
 		</action>
+		<action name="imprimirFichaInvestigacaoAcidente" class="com.fortes.rh.web.action.sesmt.CatEditAction" method="imprimirFichaInvestigacaoAcidente">
+			<result name="success" type="jasper">
+				<param name="dataSource">cat</param>
+				<param name="location">/WEB-INF/report/fichaInvestigacaoAcidente.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">fichaInvestigacaoAcidente.pdf</param>
+			</result>
+			<result name="input" type="redirect">list.action</result>
+		</action>
 		<action name="relatorioCats" class="com.fortes.rh.web.action.sesmt.CatEditAction" method="relatorioCats">
 			<result name="success" type="jasper">
 				<param name="dataSource">Cats</param>

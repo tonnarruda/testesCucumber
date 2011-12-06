@@ -1,0 +1,1 @@
+alter table cat add column fontelesao character varying(100);--.go
