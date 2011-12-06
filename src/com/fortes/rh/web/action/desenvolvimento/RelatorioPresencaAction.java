@@ -43,6 +43,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 	private boolean exibirNomeComercial;
 	private boolean exibirCargo;
 	private boolean exibirEstabelecimento;
+	private boolean exibirArea;
 	private boolean exibirAssinatura;
 	private boolean exibirNota;
 	private boolean exibirConteudoProgramatico;
@@ -62,7 +63,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		try
 		{
 			colaboradorTurmas = colaboradorTurmaManager.findByTurma(colaboradorTurma.getTurma().getId(), null);
-			colaboradorTurmas = colaboradorTurmaManager.montaColunas(colaboradorTurmas, exibirNomeComercial, exibirCargo, exibirEstabelecimento, exibirAssinatura);
+			colaboradorTurmas = colaboradorTurmaManager.montaColunas(colaboradorTurmas, exibirNomeComercial, exibirCargo, exibirEstabelecimento, exibirAssinatura, exibirArea);
 
 			listaDePresencas = new ArrayList<ListaDePresenca>();
 			for (String dia : diasCheck)
@@ -133,6 +134,14 @@ public class RelatorioPresencaAction extends MyActionSupport
 				parametros.put("coluna02", "Estabelecimento");
 			else
 				parametros.put("coluna03", "Estabelecimento");
+		}
+		
+		if(exibirArea)
+		{
+			if(parametros.get("coluna02") == null)
+				parametros.put("coluna02", "Área Organizacional");
+			else
+				parametros.put("coluna03", "Área Organizacional");
 		}
 		
 		if(exibirAssinatura)
@@ -343,5 +352,13 @@ public class RelatorioPresencaAction extends MyActionSupport
 	public void setExibirCriteriosAvaliacao(boolean exibirCriteriosAvaliacao)
 	{
 		this.exibirCriteriosAvaliacao = exibirCriteriosAvaliacao;
+	}
+
+	public boolean isExibirArea() {
+		return exibirArea;
+	}
+
+	public void setExibirArea(boolean exibirArea) {
+		this.exibirArea = exibirArea;
 	}
 }

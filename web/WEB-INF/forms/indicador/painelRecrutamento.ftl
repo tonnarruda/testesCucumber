@@ -10,7 +10,7 @@
 		@import url('<@ww.url value="/css/indicadores.css"/>');
 		
 		.formula { margin: 7px 5px; }
-		.graph li { padding: 13px; }
+		.graph li { padding: 10px; }
 	</style>
 	
 
@@ -115,6 +115,7 @@
 	    			<li>Nº de Candidatos Atendidos:	${qtdCandidatosAtendidos}</li>
 	    			<li>Nº de Vagas Preenchidas: ${qtdVagasPreenchidas}</li>
 	    			<li>Nº de Candidatos Atendidos p/ Preench. de uma Vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
+	    			<li>Índice de Eficiência do Processo Seletivo: ${indiceProcSeletivo?string(",##0.##")}</li>
 	    		</ul>
 	    	</div>
 	    </div>

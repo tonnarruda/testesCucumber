@@ -3,19 +3,22 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ProntuarioManager;
 import com.fortes.rh.business.sesmt.RealizacaoExameManager;
-import com.fortes.rh.model.dicionario.ResultadoExame;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings("serial")
 public class IndicadorSesmtListAction extends MyActionSupportList
@@ -24,6 +27,10 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
 	private RealizacaoExameManager realizacaoExameManager;
 	private ProntuarioManager prontuarioManager;
+	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	
+	private Empresa empresa;
 	
 	private Date dataDe;
 	private Date dataAte;
@@ -37,7 +44,11 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 	private String grfQtdCatsPorDiaSemana = "";
 	private String grfQtdCatsPorHorario = "";
 	private String grfQtdAfastamentosPorMotivo = "";
+	
+	private Collection<Empresa> empresas;
 	private Collection<Exame> exames;
+	
+	private boolean compartilharColaboradores;
 	
 	public String painel()
 	{
@@ -47,24 +58,28 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 		if (dataDe == null)
 			dataDe = DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true);
 		
-		Long empresaId = getEmpresaSistema().getId();
+		if(empresa == null || empresa.getId() == null)
+			empresa = getEmpresaSistema();
 		
-		qtdDiasSemAcidentes = catManager.findQtdDiasSemAcidentes(empresaId);
-		qtdExamesRealizados = realizacaoExameManager.findQtdRealizados(empresaId, dataDe, dataAte);
-		qtdProntuarios = prontuarioManager.findQtdByEmpresa(empresaId, dataDe, dataAte);
-		qtdAfastamentosInss = colaboradorAfastamentoManager.findQtdAfastamentosInss(empresaId, dataDe, dataAte, true);
-		qtdAfastamentosNaoInss = colaboradorAfastamentoManager.findQtdAfastamentosInss(empresaId, dataDe, dataAte, false);
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_SESMT_PAINEL_IND");
 		
-		Collection<DataGrafico> graficoQtdCatsPorDiaSemana = catManager.findQtdCatsPorDiaSemana(empresaId, dataDe, dataAte);
+		qtdDiasSemAcidentes = catManager.findQtdDiasSemAcidentes(empresa.getId());
+		qtdExamesRealizados = realizacaoExameManager.findQtdRealizados(empresa.getId(), dataDe, dataAte);
+		qtdProntuarios = prontuarioManager.findQtdByEmpresa(empresa.getId(), dataDe, dataAte);
+		qtdAfastamentosInss = colaboradorAfastamentoManager.findQtdAfastamentosInss(empresa.getId(), dataDe, dataAte, true);
+		qtdAfastamentosNaoInss = colaboradorAfastamentoManager.findQtdAfastamentosInss(empresa.getId(), dataDe, dataAte, false);
+		
+		Collection<DataGrafico> graficoQtdCatsPorDiaSemana = catManager.findQtdCatsPorDiaSemana(empresa.getId(), dataDe, dataAte);
 		grfQtdCatsPorDiaSemana = StringUtil.toJSON(graficoQtdCatsPorDiaSemana, null);
 
-		Collection<DataGrafico> graficoQtdCatsPorHorario = catManager.findQtdCatsPorHorario(empresaId, dataDe, dataAte);
+		Collection<DataGrafico> graficoQtdCatsPorHorario = catManager.findQtdCatsPorHorario(empresa.getId(), dataDe, dataAte);
 		grfQtdCatsPorHorario = StringUtil.toJSON(graficoQtdCatsPorHorario, null);
 
-		Collection<DataGrafico> graficoQtdAfastamentosPorMotivo = colaboradorAfastamentoManager.findQtdCatsPorDiaSemana(empresaId, dataDe, dataAte);
+		Collection<DataGrafico> graficoQtdAfastamentosPorMotivo = colaboradorAfastamentoManager.findQtdCatsPorDiaSemana(empresa.getId(), dataDe, dataAte);
 		grfQtdAfastamentosPorMotivo = StringUtil.toJSON(graficoQtdAfastamentosPorMotivo, null);
 		
-		exames = realizacaoExameManager.findQtdPorExame(empresaId, dataDe, dataAte);
+		exames = realizacaoExameManager.findQtdPorExame(empresa.getId(), dataDe, dataAte);
 		
 		return Action.SUCCESS;
 	}
@@ -139,5 +154,25 @@ public class IndicadorSesmtListAction extends MyActionSupportList
 
 	public Collection<Exame> getExames() {
 		return exames;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }
