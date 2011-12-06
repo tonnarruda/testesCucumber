@@ -63,6 +63,8 @@
 		{
 			if(document.getElementById('exibirCargo').checked)
 				qtdChecked++;
+			if(document.getElementById('exibirArea').checked)
+				qtdChecked++;
 			if(document.getElementById('exibirEstabelecimento').checked)
 				qtdChecked++;
 			if(document.getElementById('exibirAssinatura').checked)
@@ -135,6 +137,7 @@
 				<ul>
 					<@ww.label value="Exibir colunas extras (selecione duas colunas):*" />
 					<@ww.checkbox label="Cargo" name="exibirCargo" id="exibirCargo" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
+					<@ww.checkbox label="Área Organizacional" name="exibirArea" id="exibirArea" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Estabelecimento" name="exibirEstabelecimento" id="exibirEstabelecimento" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Assinatura" name="exibirAssinatura" id="exibirAssinatura" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 				</ul>

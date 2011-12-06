@@ -61,6 +61,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private int qtdCandidatosAtendidos;
 	private int qtdVagasPreenchidas;
 	private double qtdCandidatosAtendidosPorVaga;
+	private double indiceProcSeletivo;
 	
 	private char statusSolicitacao;
 
@@ -83,6 +84,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		qtdCandidatosAtendidos = candidatoManager.findQtdAtendidos(getEmpresaSistema().getId(), dataDe, dataAte);
 		qtdVagasPreenchidas = colaboradorManager.findQtdVagasPreenchidas(getEmpresaSistema().getId(), dataDe, dataAte);
 		qtdCandidatosAtendidosPorVaga = (qtdVagasPreenchidas > 0) ? (double)qtdCandidatosAtendidos/qtdVagasPreenchidas : 0; 
+		indiceProcSeletivo = colaboradorManager.calculaIndiceProcessoSeletivo(getEmpresaSistema().getId(), dataDe, dataAte);
 		
 		try {
 			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, null, null, getEmpresaSistema().getId());
@@ -371,5 +373,9 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	public double getQtdCandidatosAtendidosPorVaga() {
 		return qtdCandidatosAtendidosPorVaga;
+	}
+
+	public double getIndiceProcSeletivo() {
+		return indiceProcSeletivo;
 	}
 }

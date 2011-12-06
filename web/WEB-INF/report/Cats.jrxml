@@ -35,6 +35,7 @@
 	<field name="dataFormatada" class="java.lang.String"/>
 	<field name="numeroCat" class="java.lang.String"/>
 	<field name="gerouAfastamentoFormatado" class="java.lang.String"/>
+	<field name="colaborador.matricula" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -67,7 +68,7 @@
 			<band height="40"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="0"
+						x="50"
 						y="24"
 						width="200"
 						height="16"
@@ -80,7 +81,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="202"
+						x="252"
 						y="24"
 						width="120"
 						height="16"
@@ -106,9 +107,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="324"
+						x="374"
 						y="24"
-						width="231"
+						width="181"
 						height="16"
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -143,6 +144,19 @@
 					</textElement>
 				<text><![CDATA[ Gerou Afastamento]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						x="1"
+						y="24"
+						width="47"
+						height="16"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Matrícula]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
@@ -165,7 +179,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="0"
+						x="50"
 						y="2"
 						width="200"
 						height="15"
@@ -179,7 +193,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="202"
+						x="252"
 						y="2"
 						width="120"
 						height="15"
@@ -206,9 +220,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="324"
+						x="374"
 						y="2"
-						width="231"
+						width="181"
 						height="15"
 						key="textField-1"
 						positionType="Float"/>
@@ -243,6 +257,21 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{numeroCat}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="1"
+						y="2"
+						width="47"
+						height="15"
+						key="textField-2"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.matricula}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

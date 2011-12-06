@@ -57,7 +57,7 @@ public class Cat extends AbstractModel implements Serializable
 	{
 	}
 
-    public Cat(Long id, Date data, String numeroCat, String observacao, Boolean gerouAfastamento, Long colaboradorId, String colaboradorNome, String estabelecimentoNome, Long areaOrganizacionalId)
+    public Cat(Long id, Date data, String numeroCat, String observacao, Boolean gerouAfastamento, Long colaboradorId, String colaboradorMatricula, String colaboradorNome, String estabelecimentoNome, Long areaOrganizacionalId)
 	{
 		setId(id);
 		this.data = data;
@@ -68,6 +68,7 @@ public class Cat extends AbstractModel implements Serializable
 		this.colaborador = new Colaborador();
 		setColaboradorId(colaboradorId);
 		colaborador.setNome(colaboradorNome);
+		colaborador.setMatricula(colaboradorMatricula);
 		colaborador.setEstabelecimentoNomeProjection(estabelecimentoNome);
 		colaborador.setAreaOrganizacionalId(areaOrganizacionalId);
 	}

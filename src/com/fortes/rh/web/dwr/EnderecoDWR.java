@@ -1,7 +1,11 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+
 
 public class EnderecoDWR {
 
@@ -13,13 +17,30 @@ public class EnderecoDWR {
 		GetMethod get = new GetMethod(getUrlParaCep(cep));
 		try {
 			client.executeMethod( get );
-			String response = get.getResponseBodyAsString();
+		    Pattern pattern = Pattern.compile("<span class=\"respostadestaque\">([\\w\\s\\n\\/\\p{L}]*)</span>");
+		    Matcher matcher = pattern.matcher(get.getResponseBodyAsString());
+
+		    String response = "{\"sucesso\":\"1\",";
+		    
+		    matcher.find();
+		    String match = matcher.group(1);
+	    	response += "\"logradouro\":\"" + match.replaceAll("\\n", "").trim() + "\",";
+	    	
+	    	matcher.find();
+	    	match = matcher.group(1);
+	    	response += "\"bairro\":\"" + match.replaceAll("  ", "").replaceAll("\n", "").replaceAll("\t", "").trim()  + "\",";
+
+	    	matcher.find();
+	    	match = matcher.group(1);
+	    	String cidadeEstado = "\"cidade\":\"" + match.replaceAll("  ", "").replaceAll("\n", "").replaceAll("\t", "").trim();
+	    	response += cidadeEstado.substring(0,cidadeEstado.length() - 3)  + "\",";
+	    	
+	    	response += "\"estado\":\"" + cidadeEstado.substring(cidadeEstado.length() - 2,cidadeEstado.length()) + "\"}";
+	    	
 			return response;
+			
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage(), e);
-		} finally {
-			get.releaseConnection();
+			return "{\"sucesso\":\"0\"}";
 		}
 	}
 
@@ -32,6 +53,6 @@ public class EnderecoDWR {
 
 	private String getUrlParaCep(String cep) 
 	{
-		return "www.bronzebusiness.com.br/webservices/wscep.asmx/cep?strcep=" + cep;
+		return "http://m.correios.com.br/movel/buscaCepConfirma.do?cepEntrada=" + cep + "&tipoCep=&cepTemp=&metodo=buscarCep";
 	}
 }

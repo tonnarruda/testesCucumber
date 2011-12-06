@@ -3,12 +3,15 @@ package com.fortes.rh.dao.hibernate.pesquisa;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.AvaliacaoTurmaDao;
@@ -170,7 +173,10 @@ public class AvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<AvaliacaoTur
 		p.add(Projections.property("a.id"), "id");
 		p.add(Projections.property("q.id"), "projectionQuestionarioId");
 		p.add(Projections.property("q.titulo"), "projectionQuestionarioTitulo");
-
+		p.add(Projections.sqlProjection("(select count(*) from colaboradorquestionario cq where cq.questionario_id = q2_.id) as qtdColaboradorQuestionario" , 
+				                        new String[] {"qtdColaboradorQuestionario"}, 
+				                        new Type[] {Hibernate.INTEGER}));
+		
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("t.id", turmaId));

@@ -41,6 +41,7 @@ public class PppEditAction extends MyActionSupportList
 	private Collection<Colaborador> colaboradors;
 	private String nomeBusca;
 	private String cpfBusca;
+	private boolean imprimirRecibo = false;
 
 	@SuppressWarnings("unchecked")
 	public String list() throws Exception
@@ -85,6 +86,7 @@ public class PppEditAction extends MyActionSupportList
 			parametros = RelatorioUtil.getParametrosRelatorio("PPP", getEmpresaSistema(), "");
 			parametros.put("IDCOLABORADOR", colaborador.getId());
 			parametros.put("IMG_DIR", imgDir);
+			parametros.put("IMPRIMIR_RECIBO", imprimirRecibo);
 			
 			dataSource = funcaoManager.populaRelatorioPpp(colaborador, data, nit, responsavel, observacoes, respostas);
 			
@@ -196,5 +198,13 @@ public class PppEditAction extends MyActionSupportList
 
 	public void setData(Date data) {
 		this.data = data;
+	}
+
+	public boolean isImprimirRecibo() {
+		return imprimirRecibo;
+	}
+
+	public void setImprimirRecibo(boolean imprimirRecibo) {
+		this.imprimirRecibo = imprimirRecibo;
 	}
 }

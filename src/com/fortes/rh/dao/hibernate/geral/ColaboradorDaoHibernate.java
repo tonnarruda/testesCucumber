@@ -3673,4 +3673,35 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return criteria.list();
 	}
+
+	public int qtdDemitidosEm90Dias(Long empresaId, Date dataDe, Date dataAte) 
+	{
+		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
+		hql.append("	where co.empresa.id = :empresaId ");
+		hql.append("	and co.desligado = true ");
+		hql.append("	and co.dataDesligamento between :dataIni and :dataFim ");
+		hql.append("	and (co.dataDesligamento - co.dataAdmissao) <= :qtdDias ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setDate("dataIni", dataDe);
+		query.setDate("dataFim", dataAte);
+		query.setInteger("qtdDias", 90);
+
+		return (Integer) query.uniqueResult();
+	}
+
+	public int qtdAdmitidosPeriodo(Long empresaId, Date dataDe, Date dataAte) 
+	{
+		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
+		hql.append("	where co.empresa.id = :empresaId ");
+		hql.append("	and co.dataAdmissao between :dataIni and :dataFim ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setDate("dataIni", dataDe);
+		query.setDate("dataFim", dataAte);
+
+		return (Integer) query.uniqueResult();
+	}
 }

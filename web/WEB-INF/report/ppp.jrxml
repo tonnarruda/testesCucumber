@@ -29,6 +29,7 @@
 	<parameter name="USUARIO_NOME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="VERSAO_SISTEMA" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="IMG_DIR" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="IMPRIMIR_RECIBO" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="cnpjFormatado" class="java.lang.String"/>
 	<field name="colaborador.empresa.razaoSocial" class="java.lang.String"/>
@@ -59,6 +60,50 @@
 	<field name="colaborador.regimeRevezamento" class="java.lang.String"/>
 
 
+		<group  name="grpRecibo" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="61"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$P{IMPRIMIR_RECIBO}]]></printWhenExpression>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="4"
+						width="529"
+						height="18"
+						key="textField-10"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Eu, " + $F{colaborador.nome} + ", recebi cópia do meu PPP em         /        /       "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="45"
+						width="302"
+						height="15"
+						key="textField-11"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.nome}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupFooter>
+		</group>
 		<group  name="grpObservacao" >
 			<groupExpression><![CDATA[null]]></groupExpression>
 			<groupHeader>
@@ -66,7 +111,7 @@
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="63"  isSplitAllowed="true" >
+			<band height="61"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="3"
@@ -325,7 +370,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[17 - Data da Emissão PPP]]></text>
+				<text><![CDATA[19 - Data da Emissão PPP]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -339,7 +384,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[18 - REPRESENTANTE LEGAL DA EMPRESA]]></text>
+				<text><![CDATA[20 - REPRESENTANTE LEGAL DA EMPRESA]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -383,7 +428,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="6"/>
 					</textElement>
-				<text><![CDATA[18.1 - NIT]]></text>
+				<text><![CDATA[20.1 - NIT]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -397,7 +442,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="6"/>
 					</textElement>
-				<text><![CDATA[18.2 - Nome]]></text>
+				<text><![CDATA[20.2 - Nome]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -585,11 +630,11 @@
 						x="1"
 						y="86"
 						width="534"
-						height="16"
+						height="14"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<text><![CDATA[PERFIL PROFISSIOGRÁFICO PREVIDENCIÁRIO - PPP]]></text>
 				</staticText>
@@ -639,16 +684,18 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="2"
+						y="1"
 						width="535"
-						height="30"
+						height="52"
 						key="staticText-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ANEXO XV
-INSTRUÇÃO NORMATIVA INSS/PRES Nº 27, DE 30 DE ABRIL DE 2008]]></text>
+INSTRUÇÃO NORMATIVA INSS/PRES Nº 27, DE 30 DE ABRIL DE 2008
+INSTRUÇÃO NORMATIVA Nº 20/INSS/PRES, DE 10 DE OUTUBRO DE 2007
+INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -1198,9 +1245,9 @@ INSTRUÇÃO NORMATIVA INSS/PRES Nº 27, DE 30 DE ABRIL DE 2008]]></text>
 				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="241"
-						y="49"
+						y="53"
 						width="53"
-						height="37"
+						height="33"
 						forecolor="#FFFFFF"
 						key="image-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1474,19 +1521,6 @@ INSTRUÇÃO NORMATIVA INSS/PRES Nº 27, DE 30 DE ABRIL DE 2008]]></text>
 						positionType="Float"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<staticText>
-					<reportElement
-						x="0"
-						y="31"
-						width="535"
-						height="16"
-						key="staticText-76"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<text><![CDATA[INSTRUÇÃO NORMATIVA Nº 20/INSSPRES, DE 10 DE OUTUBRO DE 2007]]></text>
-				</staticText>
 				<staticText>
 					<reportElement
 						x="17"

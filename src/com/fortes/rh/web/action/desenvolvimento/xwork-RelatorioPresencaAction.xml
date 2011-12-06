@@ -8,6 +8,7 @@
 				<param name="location">WEB-INF/report/relatorioPresenca.jasper</param>
 				<param name="dataSource">listaDePresencas</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">presenca.pdf</param>
 			</result>
 			<result name="acessonegado" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioPresenca.ftl</result>
 			<result name="error" type="redirect">prepareRelatorio.action</result>

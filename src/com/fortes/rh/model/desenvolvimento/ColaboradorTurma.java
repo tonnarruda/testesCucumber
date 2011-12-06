@@ -204,7 +204,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.colaborador.setNome(colaboradorNome);
 		this.colaborador.setNomeComercial(colaboradorNomeComercial);
 		this.colaborador.setMatricula(colaboradorMatricula);
-
+		//não sei quem usa, ta pegando do historico tb
 		this.colaborador.setAreaOrganizacional(new AreaOrganizacional());
 		this.colaborador.getAreaOrganizacional().setId(areaOrganizacionalId);
 		this.colaborador.getAreaOrganizacional().setNome(areaOrganizacionalNome);
@@ -218,6 +218,10 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		if(this.colaborador.getHistoricoColaborador() == null)
 			this.colaborador.setHistoricoColaborador(new HistoricoColaborador());
 
+		if(this.colaborador.getHistoricoColaborador().getAreaOrganizacional() == null)
+			this.colaborador.getHistoricoColaborador().setAreaOrganizacional(new AreaOrganizacional());
+		this.colaborador.getHistoricoColaborador().getAreaOrganizacional().setNome(areaOrganizacionalNome);
+		
 		if(this.colaborador.getHistoricoColaborador().getEstabelecimento() == null)
 			this.colaborador.getHistoricoColaborador().setEstabelecimento(new Estabelecimento());
 		this.colaborador.getHistoricoColaborador().getEstabelecimento().setNome(estabelecimentoNome);

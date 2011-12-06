@@ -89,6 +89,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
+import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
@@ -2074,5 +2075,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findByQuestionarioNaoRespondido( Long questionarioId) { 
 		return getDao().findByQuestionarioNaoRespondido(questionarioId);
+	}
+
+	public double calculaIndiceProcessoSeletivo(Long empresaId, Date dataDe, Date dataAte) 
+	{
+		//(demitidos em até 90 dias / admitidos no periodo * 100)
+		double qtdDemitidosEm90Dias = getDao().qtdDemitidosEm90Dias(empresaId, dataDe, dataAte);
+		double qtdAdmitidosPeriodo = getDao().qtdAdmitidosPeriodo(empresaId, dataDe, dataAte);
+		
+		if(qtdDemitidosEm90Dias == 0.0)
+			return 100.0;
+		if(qtdAdmitidosPeriodo == 0.0)
+			return 0.0;
+		
+		return MathUtil.round(100 - ((qtdDemitidosEm90Dias / qtdAdmitidosPeriodo) * 100.00) , 2);
 	}
 }
