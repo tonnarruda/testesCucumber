@@ -62,8 +62,7 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 
 	public Collection<Cat> findAllSelect(Long empresaId, Date inicio, Date fim, Long[] estabelecimentoIds, String nomeBusca, Long[] areaIds)
 	{
-
-		StringBuilder hql = new StringBuilder("select new Cat(c.id, c.data, c.numeroCat, c.observacao, c.gerouAfastamento, co.id, co.nome, es.nome, ao.id) ");
+		StringBuilder hql = new StringBuilder("select new Cat(c.id, c.data, c.numeroCat, c.observacao, c.gerouAfastamento, co.id, co.matricula, co.nome, es.nome, ao.id) ");
 
 		hql.append("from Cat c ");
 		hql.append("join c.colaborador co ");

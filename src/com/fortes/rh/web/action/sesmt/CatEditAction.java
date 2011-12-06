@@ -204,7 +204,6 @@ public class CatEditAction extends MyActionSupportList
 	
 	public String prepareRelatorioCats() throws Exception
 	{
-		
 		cats = catManager.findAll();
 		
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
