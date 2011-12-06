@@ -26,7 +26,7 @@ window.jsonCEP = "";
 		if (jQuery("#cidade").length && (jsonCEP != ''))
 		{
 			jQuery("#cidade option").each(function() {
-				if (jQuery(this).text() == jsonCEP.query.results.cep.cidade)
+				if (jQuery(this).text() == jsonCEP.cidade)
 				{
 					jQuery("#cidade").val(jQuery(this).val());
 					jQuery("#cidade").change();

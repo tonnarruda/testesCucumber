@@ -1038,21 +1038,19 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 				 
 				 jsonCEP = jQuery.parseJSON(data);
 				 
-				 if (jsonCEP.query.results.cep.sucesso == 1)
+				 if (jsonCEP.sucesso == 1)
 				 {
-			 		 $logradouro.val((jsonCEP.query.results.cep.tipo_logradouro + " " + jsonCEP.query.results.cep.logradouro).substring(0,40));
+			 		 $logradouro.val(jsonCEP.logradouro);
 					 
 					jQuery("#uf option").each(function() {
-						if (jQuery(this).text() == jsonCEP.query.results.cep.estado_sigla)
+						if (jQuery(this).text() == jsonCEP.estado)
 						{
 							jQuery(this).attr("selected", true);
 							return;
 						}
 					});
-					 
 					 $estado.change();
-					 $bairro.val((jsonCEP.query.results.cep.bairro).substring(0,20));
-	
+					 $bairro.val(jsonCEP.bairro);
 				 }
 				 else
 				 {
