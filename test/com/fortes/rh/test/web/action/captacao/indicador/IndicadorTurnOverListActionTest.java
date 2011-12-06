@@ -12,12 +12,16 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
@@ -38,6 +42,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock parametrosDoSistemaManager;
 	private Mock cargoManager;
+	private Mock empresaManager;
 
     protected void setUp() throws Exception
     {
@@ -46,13 +51,16 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
         estabelecimentoManager = new Mock(EstabelecimentoManager.class);
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         colaboradorManager = new Mock(ColaboradorManager.class);
-        parametrosDoSistemaManager= new Mock(ParametrosDoSistemaManager.class);
-        cargoManager= new Mock(CargoManager.class);
+        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+        cargoManager = new Mock(CargoManager.class);
+        empresaManager = new Mock(EmpresaManager.class);
 
         action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
         action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
         action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
         action.setCargoManager((CargoManager) cargoManager.proxy());
+        action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+        action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 
         MockSpringUtil.mocks.put("parametrosDoSistemaManager", parametrosDoSistemaManager);
         
@@ -73,9 +81,9 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
 
     public void testPrepare() throws Exception
     {
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
+    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+    	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas");
 
     	assertEquals("success", action.prepare());
     }
@@ -85,6 +93,9 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setDataDe("01/2008");
     	action.setDataAte("12/2008");
 
+    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+    	empresaManager.expects(once()).method("findByIdProjection");
+    	
     	Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
     	turnOvers.add(new TurnOver());
     	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(returnValue(turnOvers));
@@ -96,12 +107,15 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     {
     	action.setDataDe("01/2008");
     	action.setDataAte("12/2008");
-
+    	
+    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+    	empresaManager.expects(once()).method("findByIdProjection");
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	ColecaoVaziaException colecaoVaziaException = new ColecaoVaziaException();
     	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(throwException(colecaoVaziaException));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
 
     	assertEquals("input", action.list());
     }
@@ -111,10 +125,10 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setDataDe("01/2008");
     	action.setDataAte("01/2010");
 
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
-
+    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas");
     	assertEquals("input", action.list());
     }
 
