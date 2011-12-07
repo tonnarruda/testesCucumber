@@ -30,6 +30,7 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.webwork.ServletActionContext;
 
 public class CatEditAction extends MyActionSupportList
 {
@@ -190,6 +191,26 @@ public class CatEditAction extends MyActionSupportList
 		}
 		
 		return SUCCESS;
+	}
+
+	public String imprimirFichaInvestigacaoAcidente() throws Exception
+	{
+		try
+		{
+			cat = catManager.findById(cat.getId());
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Ficha de Investigacao de Acidente", getEmpresaSistema(), "Comissão Interna de Prevenção de Acidentes");
+			
+			String pathImg = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separatorChar;
+			parametros.put("IMG_DIR", pathImg);
+			
+			return SUCCESS;
+		}
+		catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			return INPUT;
+		}
 	}
 	
 	private String getPeriodoFormatado()
