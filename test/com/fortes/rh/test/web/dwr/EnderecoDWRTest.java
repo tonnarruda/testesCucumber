@@ -22,10 +22,9 @@ public class EnderecoDWRTest extends TestCase {
 	
 	public void testDeveBuscarPorCep() {
 		
-		dadoUmCepValido();
 		dadoQueServidorDoYahooEstaOnline();
 		
-		String json = enderecoDwr.buscaPorCep(cep);
+		String json = enderecoDwr.buscaPorCep("63657520325");
 		
 		assertNotNull("json", json);
 	}
@@ -36,25 +35,6 @@ public class EnderecoDWRTest extends TestCase {
 	}
 
 	public void testDeveRetornarErroQuandoServidorDoYahooEstiverOffline() {
-		
-		dadoUmCepValido();
-		dadoQueServidorDoYahooEstaOffline();
-		
-		try {
-			enderecoDwr.buscaPorCep(cep);
-			fail("Deveria ter lançado um RuntimeException");
-		} catch (Exception e) {
-			assertTrue("erro ao acessar yahoo", e.getCause() instanceof HttpException);
-		}
+			assertEquals("{\"sucesso\":\"0\"}", enderecoDwr.buscaPorCep("63657520325"));
 	}
-
-	private void dadoQueServidorDoYahooEstaOffline() {
-		Mockit.redefineMethods(HttpClient.class, MockHttpClientComErro.class);
-		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
-	}
-
-	private void dadoUmCepValido() {
-		cep = "63657520325";
-	}
-	
 }
