@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.dicionario.TipoAcidente;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -75,6 +77,49 @@ public class Cat extends AbstractModel implements Serializable
 		colaborador.setMatricula(colaboradorMatricula);
 		colaborador.setEstabelecimentoNomeProjection(estabelecimentoNome);
 		colaborador.setAreaOrganizacionalId(areaOrganizacionalId);
+	}
+    
+    public Cat(Cat cat, String colaboradorNome, String ambienteNome, String funcaoNome, String naturezaLesaoDescricao, String empresaNome, String empresaRazaoSocial, String empresaEndereco, String empresaCidadeNome, String empresaUfSigla)
+	{
+		setId(cat.getId());
+		this.data = cat.getData();
+		this.horario = cat.getHorario();
+		this.local = cat.getLocal();
+		this.emitiuCAT = cat.isEmitiuCAT();
+		this.numeroCat = cat.getNumeroCat();
+		this.gerouAfastamento = cat.getGerouAfastamento();
+		this.foiTreinadoParaFuncao = cat.isFoiTreinadoParaFuncao();
+		this.usavaEPI = cat.isUsavaEPI();
+		this.tipoAcidente = cat.getTipoAcidente();
+		this.parteAtingida = cat.getParteAtingida();
+		this.fonteLesao = cat.getFonteLesao();
+		this.qtdDiasAfastado = cat.getQtdDiasAfastado();
+		this.observacao = cat.getObservacao();
+		this.conclusao = cat.getConclusao();
+		this.epis = cat.getEpis();
+		
+		this.colaborador = new Colaborador();
+		colaborador.setNome(colaboradorNome);
+		
+		Empresa empresa = new Empresa();
+		empresa.setNome(empresaNome);
+		empresa.setRazaoSocial(empresaRazaoSocial);
+		empresa.setEndereco(empresaEndereco);
+		empresa.setProjectionCidadeNome(empresaCidadeNome);
+		colaborador.setEmpresa(empresa);
+		
+		Estado uf = new Estado();
+		uf.setSigla(empresaUfSigla);
+		empresa.setUf(uf);
+		
+		this.ambienteColaborador = new Ambiente();
+		ambienteColaborador.setNome(ambienteNome);
+
+		this.funcaoColaborador = new Funcao();
+		funcaoColaborador.setNome(funcaoNome);
+
+		this.naturezaLesao = new NaturezaLesao();
+		naturezaLesao.setDescricao(naturezaLesaoDescricao);
 	}
 
 	public void setColaboradorId(Long colaboradorId)
