@@ -2090,4 +2090,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		return MathUtil.round(100 - ((qtdDemitidosEm90Dias / qtdAdmitidosPeriodo) * 100.00) , 2);
 	}
+	
+	public Colaborador findFuncaoAmbiente(Long colaboradorId)
+	{
+		return getDao().findFuncaoAmbiente(colaboradorId);
+	}
 }

@@ -117,4 +117,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId);
 	public int qtdDemitidosEm90Dias(Long empresaId, Date dataDe, Date dataAte);
 	public int qtdAdmitidosPeriodo(Long empresaId, Date dataDe, Date dataAte);
+	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 }

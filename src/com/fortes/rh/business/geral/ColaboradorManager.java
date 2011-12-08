@@ -175,4 +175,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId);
 	public void deleteColaboradorSituacao(Long[] colaboradorIds);
 	public double calculaIndiceProcessoSeletivo(Long empresaId, Date dataDe, Date dataAte);
+	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 }

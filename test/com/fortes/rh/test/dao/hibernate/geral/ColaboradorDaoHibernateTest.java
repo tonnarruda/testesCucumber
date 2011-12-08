@@ -1581,6 +1581,38 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Colaborador> colaboradores = colaboradorDao.findByFuncaoAmbiente(funcao.getId(), ambiente.getId());
 		assertEquals(null, colaboradores);
 	}
+	
+	public void testFindFuncaoAmbiente() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador.setNomeComercial("nomeTeste");
+		colaboradorDao.save(colaborador);
+
+		Ambiente ambiente = AmbienteFactory.getEntity();
+		ambiente.setNome("garagem");
+		ambienteDao.save(ambiente);
+
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcao.setNome("manobrista");
+		funcaoDao.save(funcao);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setAmbiente(ambiente);
+		historicoColaborador.setFuncao(funcao);
+		historicoColaboradorDao.save(historicoColaborador);
+
+		Colaborador retorno = colaboradorDao.findFuncaoAmbiente(colaborador.getId());
+
+		assertEquals(retorno.getId(), colaborador.getId());
+		assertEquals(retorno.getNomeComercial(), colaborador.getNomeComercial());
+		assertEquals(retorno.getAmbiente().getNome(), historicoColaborador.getAmbiente().getNome());
+		assertEquals(retorno.getFuncao().getNome(), historicoColaborador.getFuncao().getNome());
+	}
 
 	public void testFindByAreaOrganizacionalIds() {
 		Empresa empresa = EmpresaFactory.getEmpresa();

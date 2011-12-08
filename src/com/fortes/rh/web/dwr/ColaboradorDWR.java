@@ -3,9 +3,9 @@ package com.fortes.rh.web.dwr;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -184,6 +184,29 @@ public class ColaboradorDWR
         Collection<Colaborador> colaboradores = colaboradorManager.findByFuncaoAmbiente(funcaoId, ambienteId);
 
         return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercial", Colaborador.class);
+    }
+    
+    public Map<String, Object> findFuncaoAmbiente(Long colaboradorId)
+    {
+    	Colaborador colaborador = colaboradorManager.findFuncaoAmbiente(colaboradorId);
+    	
+    	Map<String, Object> dados = new HashMap<String, Object>();
+    	dados.put("ambienteNome", "[Não cadastrado]");
+    	dados.put("funcaoNome" ,  "[Não cadastrado]");
+    	
+    	if (colaborador.getAmbiente() != null)
+    	{
+    		dados.put("ambienteNome", colaborador.getAmbiente().getNome());
+    		dados.put("ambienteId", colaborador.getAmbiente().getId());    		
+    	}
+    	
+    	if(colaborador.getFuncao() != null)
+    	{
+    		dados.put("funcaoNome" ,  colaborador.getFuncao().getNome());
+    		dados.put("funcaoId" ,  colaborador.getFuncao().getId());
+    	}
+    	
+    	return dados;
     }
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)

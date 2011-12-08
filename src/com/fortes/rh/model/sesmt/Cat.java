@@ -27,7 +27,9 @@ public class Cat extends AbstractModel implements Serializable
     @ManyToOne
     private Colaborador colaborador;
     @ManyToOne(fetch = FetchType.LAZY)
-    private Ambiente ambiente;
+    private Ambiente ambienteColaborador;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Funcao funcaoColaborador;
     @ManyToOne(fetch = FetchType.LAZY)
     private NaturezaLesao naturezaLesao;
     @ManyToMany(fetch=FetchType.LAZY)
@@ -38,6 +40,8 @@ public class Cat extends AbstractModel implements Serializable
     private String horario;
     @Column(length=100)
     private String parteAtingida;
+    @Column(length=100)
+    private String local;
     @Column(length=100)
     private String fonteLesao;
     private Integer tipoAcidente;
@@ -151,16 +155,6 @@ public class Cat extends AbstractModel implements Serializable
 			dataFmt += DateUtil.formataDiaMesAno(data);
 
 		return dataFmt;
-	}
-
-	public Ambiente getAmbiente() 
-	{
-		return ambiente;
-	}
-
-	public void setAmbiente(Ambiente ambiente) 
-	{
-		this.ambiente = ambiente;
 	}
 
 	public NaturezaLesao getNaturezaLesao() 
@@ -285,5 +279,29 @@ public class Cat extends AbstractModel implements Serializable
 
 	public void setFonteLesao(String fonteLesao) {
 		this.fonteLesao = fonteLesao;
+	}
+
+	public Ambiente getAmbienteColaborador() {
+		return ambienteColaborador;
+	}
+
+	public void setAmbienteColaborador(Ambiente ambienteColaborador) {
+		this.ambienteColaborador = ambienteColaborador;
+	}
+
+	public Funcao getFuncaoColaborador() {
+		return funcaoColaborador;
+	}
+
+	public void setFuncaoColaborador(Funcao funcaoColaborador) {
+		this.funcaoColaborador = funcaoColaborador;
+	}
+
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
 	}
 }

@@ -132,11 +132,16 @@
 		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
+		
+		// CARGO E SALARIO
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.Cargo"/>
+		// CAPTACAO
 		<convert converter="bean" match="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.NivelCompetencia"/>
+		// PESQUISA
 		<convert converter="bean" match="com.fortes.rh.model.pesquisa.AvaliacaoTurma"/>
 		<convert converter="bean" match="com.fortes.rh.model.pesquisa.Questionario"/>
+		// DESENVOLVIMENTO
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Turma"/>
     </allow>
 

@@ -737,6 +737,32 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
+	public Colaborador findFuncaoAmbiente(Long colaboradorId)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(co.id, co.nomeComercial, func, amb) "); 
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as co "); 
+		hql.append("left join hc.ambiente as amb "); 
+		hql.append("left join hc.funcao as func "); 
+		hql.append("where ");
+		hql.append("		co.id = :colaboradorId ");
+		hql.append("		and hc.status = :status ");
+		hql.append("		and hc.data = ("); 
+		hql.append("					select max(hc2.data) "); 
+		hql.append("					from HistoricoColaborador as hc2 ");
+		hql.append("					where hc2.colaborador.id = co.id ");
+		hql.append("					and hc2.data <= :hoje and hc2.status = :status ");
+		hql.append("				 )");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setDate("hoje", new Date());
+		query.setLong("colaboradorId", colaboradorId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		return (Colaborador) query.uniqueResult();
+	}
+
 	public boolean setCodigoColaboradorAC(String codigo, Long id)
 	{
 		String hql = "update Colaborador set codigoac = :codigo where id = :id";

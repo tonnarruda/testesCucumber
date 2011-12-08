@@ -127,9 +127,6 @@ public class CatEditAction extends MyActionSupportList
 		
 		cat.setEpis(epis);
 		
-		if (cat.getAmbiente() == null || cat.getAmbiente().getId() == null)
-			cat.setAmbiente(null);
-		
 		if (cat.getNaturezaLesao() == null || cat.getNaturezaLesao().getId() == null)
 			cat.setNaturezaLesao(null);
 	}
