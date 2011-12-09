@@ -171,6 +171,16 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		if (empresa.getExame() != null && empresa.getExame().getId() == null)
 			empresa.setExame(null);
 		
+		Collection<String> msgs = empresaManager.validaIntegracaoAC(empresa);
+		if (msgs.size() > 2)
+		{
+			setActionMessages(msgs);
+			empresa.setAcIntegra(false);
+			empresaManager.update(empresa);
+			prepareUpdate();
+			return Action.INPUT;
+		}
+		
 		empresaManager.update(empresa);
 
 		if(empresa.equals(getEmpresaSistema()))

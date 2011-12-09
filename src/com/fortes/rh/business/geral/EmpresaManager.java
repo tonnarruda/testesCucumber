@@ -42,4 +42,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Collection<Empresa> findByCartaoAniversario();
 	boolean checkEmpresaIntegradaAc();
 	Collection<Empresa> findComCodigoAC();
+	Collection<String> validaIntegracaoAC(Empresa empresa);
 }
