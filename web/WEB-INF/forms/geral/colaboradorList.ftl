@@ -63,7 +63,7 @@
 			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 353px;"/>
 			<@ww.textfield label="Nome Comercial" name="nomeComercialBusca" id="nomeComercialBusca" cssStyle="width: 353px;"/>
 			
-			<#if integraAc>
+			<#if integraAc && !colaborador.naoIntegraAc>
 				<@ww.select label="Situação" name="situacao" id="situacao" list="situacaosIntegraAC" cssStyle="width: 355px;"/>
 			<#else>
 				<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" cssStyle="width: 355px;"/>
@@ -84,7 +84,7 @@
 		<#assign style=""/>
 		<@display.column title="Ações" media="html" class="acao" style = "width:250px;">
 			<#if !colaborador.desligado>
-				<#if integraAc>
+				<#if integraAc && !colaborador.naoIntegraAc>
 					<img border="0" title="Desligue o colaborador no AC Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<#else>
 					<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Desligar colaborador" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>"></a>
@@ -93,7 +93,7 @@
 				<img border="0" title="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" src="<@ww.url includeParams="none" value="/imgs/entrevistaBalaoDesligaNova.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
 				<#if colaborador.dataDesligamento?exists && !colaborador.motivoDemissao.motivo?exists>
-					<#if integraAc>
+					<#if integraAc && !colaborador.naoIntegraAc>
 						<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Inserir motivo de desligamento" src="<@ww.url includeParams="none" value="/imgs/desligadoAC5.gif"/>"></a>
 					<#else>
 						<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Inserir motivo de desligamento" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>"></a>
