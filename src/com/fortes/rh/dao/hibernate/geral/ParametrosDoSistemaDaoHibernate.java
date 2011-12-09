@@ -71,34 +71,4 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		
 		query.executeUpdate();
 	}
-
-	public Collection<String> findTabelasRelacionadas(String relacionamento) 
-	{
-		StringBuilder sql = new StringBuilder();
-		sql.append("select table_name from information_schema.columns as col where col.column_name = '"+relacionamento+"' order by table_name");
-
-		Query query = getSession().createSQLQuery(sql.toString());
-
-		return query.list();	
-	}
-	
-	public Collection<Relacionamento> findRelacionamentoByTabela(Long[] ids, String tabela, String relacionamento) 
-	{
-		StringBuilder sql = new StringBuilder();
-		sql.append("select id, " + relacionamento + " from " + tabela + " where " + relacionamento + " in (:ids)");
-		
-		Query query = getSession().createSQLQuery(sql.toString());		
-		query.setParameterList("ids", ids, Hibernate.LONG);
-		Collection<Object[]> resultado = query.list();
-		
-		Collection<Relacionamento> lista = new ArrayList<Relacionamento>();
-		
-		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
-		{
-			Object[] res = it.next();
-			lista.add(new Relacionamento(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue()));
-		}
-		
-		return lista;
-	}
 }

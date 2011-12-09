@@ -48,4 +48,8 @@ public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistori
 	{
 		getDao().updateValor(data, indiceId, valor);
 	}
+
+	public void deleteByIndice(Long[] indiceIds) throws Exception {
+		getDao().deleteByIndice(indiceIds);		
+	}
 }

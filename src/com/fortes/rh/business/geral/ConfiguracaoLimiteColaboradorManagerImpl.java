@@ -2,8 +2,13 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.geral.ConfiguracaoLimiteColaboradorDao;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -67,5 +72,9 @@ public class ConfiguracaoLimiteColaboradorManagerImpl extends GenericManagerImpl
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		getDao().deleteByAreaOrganizacional(areaIds);
 	}
 }

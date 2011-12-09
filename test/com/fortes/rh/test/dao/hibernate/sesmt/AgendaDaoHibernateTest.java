@@ -137,4 +137,27 @@ public class AgendaDaoHibernateTest extends GenericDaoHibernateTest<Agenda>
 		Collection<Agenda> agendas = agendaDao.findByPeriodoEvento(dataIni, DateUtil.incrementaMes(dataIni, 9), estabelecimento, evento);
 		assertEquals(3, agendas.size());
 	}
+	
+	public void testDeleteByEstabelecimento() {
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento);
+		
+		Agenda agenda = AgendaFactory.getEntity();
+		agenda.setEstabelecimento(estabelecimento);
+		agendaDao.save(agenda);
+		
+		Exception exception = null;
+		try {
+			agendaDao.deleteByEstabelecimento(new Long[] {estabelecimento.getId()});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
 }

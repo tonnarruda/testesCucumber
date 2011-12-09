@@ -23,4 +23,5 @@ public interface ConhecimentoManager extends GenericManager<Conhecimento>
 	public Collection<Conhecimento> findAllSelectDistinctNome();
 	public Collection<Conhecimento> findByCandidato(Long candidatoId);
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> conhecimentoIds);
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
 }

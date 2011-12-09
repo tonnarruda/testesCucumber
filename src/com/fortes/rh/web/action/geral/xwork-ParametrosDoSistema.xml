@@ -22,8 +22,8 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/semAcessoListSemCodigoAC.ftl</result>
 		</action>
 		<action name="deleteSemCodigoAC" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="deleteSemCodigoAC">
-			<result name="success" type="redirect">prepareDeleteSemCodigoAC.action?empresa.id=${empresa.id}</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/geral/semAcessoListSemCodigoAC.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/listSemCodigoAC.ftl</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/listSemCodigoAC.ftl</result>
 		</action>
 	</package>
 </xwork>

@@ -2032,10 +2032,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		return vos;
 	}
-
-	public void deleteColaboradorSituacao(Long[] colaboradorIds)
-	{
-	}
 	
 	public int findQtdVagasPreenchidas(Long empresaId, Date dataIni, Date dataFim) {
 		return getDao().findQtdVagasPreenchidas(empresaId, dataIni, dataFim);
@@ -2089,5 +2085,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			return 0.0;
 		
 		return MathUtil.round(100 - ((qtdDemitidosEm90Dias / qtdAdmitidosPeriodo) * 100.00) , 2);
+	}
+
+	public void deleteColaborador(Long[] colaboradorIds) throws Exception {
+		if (colaboradorIds != null && colaboradorIds.length > 0) {
+			historicoColaboradorManager.deleteHistoricoColaborador(colaboradorIds);
+			getDao().remove(colaboradorIds);
+		}
 	}
 }

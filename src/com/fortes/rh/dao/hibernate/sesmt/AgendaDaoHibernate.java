@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -91,4 +93,15 @@ public class AgendaDaoHibernate extends GenericDaoHibernate<Agenda> implements A
 
 		return criteria.list();
 	}
+
+	public void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception {
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+		{
+			String hql = "delete Agenda where estabelecimento.id in (:estabelecimentoIds)";
+			Query query = getSession().createQuery(hql);
+
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.executeUpdate();		
+		}
+	}		
 }

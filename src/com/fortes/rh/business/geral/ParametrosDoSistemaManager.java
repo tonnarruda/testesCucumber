@@ -22,5 +22,4 @@ public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoS
 	public String getEmailDoSuporteTecnico();
 	public Boolean isIdiomaCorreto();
 	public void ajustaCamposExtras(ParametrosDoSistema parametrosDoSistema, String[] findAllNomes);
-	public void verificaRelacionamento(Long[] ids, String relacionamento, String entidade) throws Exception;
 }

@@ -4,7 +4,7 @@
 <head>
 	<@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
 	
 	<script type="text/javascript">
@@ -21,15 +21,22 @@
 	<title>Excluir Registros Sem Código AC</title>
 </head>
 <body>
-	<@ww.actionerror />
+	<@ww.actionerror/>
+	<@ww.actionmessage/>
+	<@ww.form name="pesquisar" action="prepareDeleteSemCodigoAC.action" method="POST" id="pesquisar">
+		<#if logErro?exists>
+			<@ww.textarea label="Log de Erro" name="logErro" id="logErro" cssStyle="width:850px;color:red;"/>
+		</#if>
 
-		<@ww.form name="pesquisar" action="prepareDeleteSemCodigoAC.action" method="POST" id="pesquisar">
-			<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" />
-			<input type="submit" value="" class="btnPesquisar">
-		</@ww.form>
-		<br/>
+		<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" />
+		<input type="submit" value="" class="btnPesquisar"/>
 		
-		<@ww.form name="form" action="" method="POST">
+		<input onclick="window.location='../../backup/gerar.action?urlVoltar=../geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action';" class="btnBackup" accesskey="G"/>
+
+	</@ww.form>
+	<br/>
+		
+	<@ww.form name="form" action="" method="POST">
 		Ocorrências
 		<@display.table name="ocorrencias" id="ocorrencia" class="dados" >
 			<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkOcorrencia\", this.checked);' />" style="width: 30px; text-align: center;">
@@ -50,16 +57,6 @@
 			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
 			<@display.column property="empresa.nome" title="Empresa"/>
 			<@display.column property="nome" title="Colaborador"/>
-		</@display.table>
-		
-		Cidades
-		<@display.table name="cidades" id="cidade" class="dados" >
-			<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkCidade\", this.checked);' />" style="width: 30px; text-align: center;">
-				<input type="checkbox" class="checkCidade" value="${cidade.id}" name="cidadeIds" />
-			</@display.column>
-			
-			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
-			<@display.column property="nome" title="Cidade"/>
 		</@display.table>
 		
 		Estabelecimentos

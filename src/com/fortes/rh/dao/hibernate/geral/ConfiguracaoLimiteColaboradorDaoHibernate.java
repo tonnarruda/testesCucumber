@@ -3,6 +3,8 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -51,5 +53,16 @@ public class ConfiguracaoLimiteColaboradorDaoHibernate extends GenericDaoHiberna
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
 		return criteria.list();
+	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		if(areaIds != null && areaIds.length > 0)
+		{
+			String hql = "delete ConfiguracaoLimiteColaborador where areaOrganizacional.id in (:areaIds)";
+			Query query = getSession().createQuery(hql);
+
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			query.executeUpdate();		
+		}
 	}
 }

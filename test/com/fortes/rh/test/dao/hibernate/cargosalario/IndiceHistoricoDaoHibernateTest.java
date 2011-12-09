@@ -186,6 +186,24 @@ public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<Ind
 		assertEquals(true, indiceHistoricoDao.existsAnteriorByDataIndice(DateUtil.criarDataMesAno(01, 01, 2010), indice.getId()));
 	}
 
+	public void testDeleteByIndice() {
+		Indice indice = IndiceFactory.getEntity();
+		indiceDao.save(indice);
+
+		IndiceHistorico indiceHistorico = IndiceHistoricoFactory.getEntity();
+		indiceHistorico.setIndice(indice);
+		indiceHistoricoDao.save(indiceHistorico);
+
+		Exception exception = null;
+		try {
+			indiceHistoricoDao.deleteByIndice(new Long[] {indice.getId()});
+		} catch (Exception e) {
+			exception = e;
+		}
+
+		assertNull(exception);
+	}
+	
 	public void setIndiceHistoricoDao(IndiceHistoricoDao indiceHistoricoDao)
 	{
 		this.indiceHistoricoDao = indiceHistoricoDao;

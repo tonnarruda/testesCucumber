@@ -29,4 +29,8 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 	public void removeColaborador(Colaborador colaborador) {
 		getDao().removeColaborador(colaborador);
 	}
+
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+		getDao().deleteByFaixaSalarial(faixaIds);
+	}
 }

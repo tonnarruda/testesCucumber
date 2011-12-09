@@ -8,6 +8,7 @@ package com.fortes.rh.dao.hibernate.geral;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -16,6 +17,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -97,5 +99,14 @@ public class AreaInteresseDaoHibernate extends GenericDaoHibernate<AreaInteresse
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaInteresse.class));
 
 		return criteria.list();
+	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		if(areaIds != null && areaIds.length > 0)
+		{
+			String[] sql = new String[] {"delete from areainteresse_areaorganizacional where areasorganizacionais_id in ("+StringUtils.join(areaIds, ",")+");"};
+			
+			JDBCConnection.executeQuery(sql);
+		}
 	}
 }

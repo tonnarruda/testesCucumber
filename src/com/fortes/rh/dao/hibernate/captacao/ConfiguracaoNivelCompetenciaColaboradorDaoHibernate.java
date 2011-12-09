@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.captacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Expression;
@@ -99,5 +100,16 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		query.setLong("colaboradorId", colaborador.getId());
 
 		query.executeUpdate();
+	}
+
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+		if(faixaIds != null && faixaIds.length > 0)
+		{
+			String hql = "delete ConfiguracaoNivelCompetenciaColaborador where faixaSalarial.id in (:faixaIds)";
+			Query query = getSession().createQuery(hql);
+
+			query.setParameterList("faixaIds", faixaIds, Hibernate.LONG);
+			query.executeUpdate();		
+		}
 	}
 }

@@ -14,4 +14,5 @@ public interface AgendaManager extends GenericManager<Agenda>
 	Collection<Agenda> findByPeriodoEvento(Date dataIni, Date dataFim, Estabelecimento estabelecimento, Evento evento);
 	Agenda findByIdProjection(Long id);
 	void save(Agenda agenda, Integer qtdPeriodo, Integer periodicidade, Integer tipoPeriodo) throws Exception;
+	void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 }

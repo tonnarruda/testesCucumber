@@ -1533,6 +1533,32 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(1, historicoColaboradorDao.findHistoricoAdmitidos(empresa.getId(), hoje).size());
 	}
 
+	public void testDeleteHistoricoColaborador()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		Date hoje = new Date();
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setData(hoje);
+		historicoColaboradorDao.save(historicoColaborador);
+
+		Exception exception = null;
+		try {
+			historicoColaboradorDao.deleteHistoricoColaborador(new Long[]{colaborador.getId()});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull("Não houve exceção", exception);
+	}
+	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
 	{
 		this.historicoColaboradorDao = historicoColaboradorDao;

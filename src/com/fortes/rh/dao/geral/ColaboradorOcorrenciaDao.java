@@ -18,5 +18,5 @@ public interface ColaboradorOcorrenciaDao extends GenericDao<ColaboradorOcorrenc
 	boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni);
 	Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds);
 	String montaDiasDoPeriodo(Date dataIni, Date dataFim);
-	void deleteByOcorrencia(Long[] ocorrenciaIds);
+	void deleteByOcorrencia(Long[] ocorrenciaIds) throws Exception;
 }

@@ -1184,5 +1184,16 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setLong("colaboradorId", colaboradorId);
 		
 		query.executeUpdate();
-	}	
+	}
+
+	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception{
+		if(colaboradorIds != null && colaboradorIds.length > 0)
+		{
+			String hql = "delete HistoricoColaborador where colaborador.id in (:colaboradorIds)";
+			Query query = getSession().createQuery(hql);
+	
+			query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
+			query.executeUpdate();		
+		}
+	}
 }

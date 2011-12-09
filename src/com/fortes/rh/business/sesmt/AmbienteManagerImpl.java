@@ -180,6 +180,10 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return getDao().getQtdColaboradorByAmbiente(ambienteId, data, sexo);
 	}
 	
+	public void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception {
+		getDao().deleteByEstabelecimento(estabelecimentoIds);
+	}
+	
 	public void setFuncaoManager(FuncaoManager funcaoManager) {
 		this.funcaoManager = funcaoManager;
 	}
@@ -201,4 +205,5 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	{
 		this.historicoAmbienteManager = historicoAmbienteManager;
 	}
+
 }

@@ -16,4 +16,5 @@ public interface IndiceHistoricoManager extends GenericManager<IndiceHistorico>
 	boolean remove(Date data, Long indiceId);
 	boolean existsAnteriorByDataIndice(Date data, Long indiceId);
 	void updateValor(Date data, Long indiceId, Double valor);
+	void deleteByIndice(Long[] indiceIds) throws Exception;
 }

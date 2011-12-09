@@ -1511,4 +1511,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
+
+	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception {
+		getDao().deleteHistoricoColaborador(colaboradorIds);
+	}
 }

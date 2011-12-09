@@ -567,4 +567,9 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	public void setAtitudeManager(AtitudeManager atitudeManager) {
 		this.atitudeManager = atitudeManager;
 	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		getDao().deleteByAreaOrganizacional(areaIds);
+		
+	}
 }

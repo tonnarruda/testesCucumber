@@ -4,14 +4,12 @@
 package com.fortes.rh.business.geral;
 
 import java.util.Collection;
-import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.web.tags.CheckBox;
 
@@ -43,4 +41,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	String getEmpresasNaoListadas(Collection<UsuarioEmpresa> usuarioEmpresas, Collection<Empresa> empresas);
 	Collection<Empresa> findByCartaoAniversario();
 	boolean checkEmpresaIntegradaAc();
+	Collection<Empresa> findComCodigoAC();
 }

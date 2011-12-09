@@ -27,4 +27,5 @@ public interface AmbienteManager extends GenericManager<Ambiente>
 	Collection<CheckBox> populaCheckBox(Long estabelecimentoId);
 	Collection<PpraLtcatRelatorio> montaRelatorioPpraLtcat(Empresa empresa, Long estabelecimentoId, Date data, String[] ambienteCheck, boolean gerarPpra, boolean gerarLtcat) throws Exception;
 	int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo);
+	void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 }

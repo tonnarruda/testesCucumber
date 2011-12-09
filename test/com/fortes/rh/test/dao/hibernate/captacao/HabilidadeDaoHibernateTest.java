@@ -124,6 +124,18 @@ public class HabilidadeDaoHibernateTest extends GenericDaoHibernateTest<Habilida
 		assertTrue(habilidades.isEmpty());
 	}
 
+	public void testDeleteByAreaOrganizacional()
+	{
+		Exception exception = null;
+		
+		try {
+			habilidadeDao.deleteByAreaOrganizacional(new Long[] {11111111112L,1111111111113L});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
 	
 	@Override
 	public Habilidade getEntity()

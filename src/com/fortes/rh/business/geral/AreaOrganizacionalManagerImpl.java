@@ -15,6 +15,10 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.captacao.AtitudeManager;
+import com.fortes.rh.business.captacao.ConhecimentoManager;
+import com.fortes.rh.business.captacao.HabilidadeManager;
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
@@ -635,5 +639,27 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findSemCodigoAC(empresaId);
 	}
 
+	public void deleteAreaOrganizacional(Long[] areaIds) throws Exception {
+
+		if (areaIds != null && areaIds.length > 0) {
+			AreaInteresseManager areaInteresseManager = (AreaInteresseManager) SpringUtil.getBean("areaInteresseManager");
+			ConhecimentoManager conhecimentoManager = (ConhecimentoManager) SpringUtil.getBean("conhecimentoManager");
+			HabilidadeManager habilidadeManager = (HabilidadeManager) SpringUtil.getBean("habilidadeManager");
+			AtitudeManager atitudeManager = (AtitudeManager) SpringUtil.getBean("atitudeManager");
+			ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager = (ConfiguracaoLimiteColaboradorManager) SpringUtil.getBean("configuracaoLimiteColaboradorManager");
+			QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager = (QuantidadeLimiteColaboradoresPorCargoManager) SpringUtil.getBean("quantidadeLimiteColaboradoresPorCargoManager");
+			CargoManager cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
+			
+			areaInteresseManager.deleteByAreaOrganizacional(areaIds);
+			conhecimentoManager.deleteByAreaOrganizacional(areaIds);
+			habilidadeManager.deleteByAreaOrganizacional(areaIds);
+			atitudeManager.deleteByAreaOrganizacional(areaIds);
+			configuracaoLimiteColaboradorManager.deleteByAreaOrganizacional(areaIds);
+			quantidadeLimiteColaboradoresPorCargoManager.deleteByArea(areaIds);
+			cargoManager.deleteByAreaOrganizacional(areaIds);
+			
+			getDao().remove(areaIds);
+		}
+	}
 
 }

@@ -33,4 +33,5 @@ public interface CargoDao extends GenericDao<Cargo>
 	public void updateCBO(Long id, TCargo tCargo);
 	public Collection<Cargo> findAllSelect(Long[] empresaIds);
 	public Collection<Cargo> findByArea(Long areaOrganizacionalId, Long empresaId);
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
 }

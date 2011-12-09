@@ -20,6 +20,7 @@ public class BackupAction extends MyActionSupport {
 	private InputStream inputStream;
 	private BackupService backupService;
 	private String arquivos = "";
+	private String urlVoltar = "";
 	
 	String dbBackupDir = ArquivoUtil.getDbBackupPath();
 
@@ -91,6 +92,14 @@ public class BackupAction extends MyActionSupport {
 
 	public String getArquivos() {
 		return arquivos;
+	}
+
+	public String getUrlVoltar() {
+		return urlVoltar;
+	}
+
+	public void setUrlVoltar(String urlVoltar) {
+		this.urlVoltar = urlVoltar;
 	}
 	
 }

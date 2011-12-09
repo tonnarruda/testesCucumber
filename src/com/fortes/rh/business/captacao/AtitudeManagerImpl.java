@@ -111,8 +111,11 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 		getDao().save(atitude);
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		getDao().deleteByAreaOrganizacional(areaIds);
 	}
 }

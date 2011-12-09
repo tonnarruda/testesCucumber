@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -164,5 +165,16 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 		query.setDouble("valor", valor);
 
 		query.executeUpdate();
+	}
+
+	public void deleteByIndice(Long[] indiceIds) throws Exception {
+		if(indiceIds != null && indiceIds.length > 0)
+		{
+			String hql = "delete IndiceHistorico where indice.id in (:indiceIds)";
+			Query query = getSession().createQuery(hql);
+	
+			query.setParameterList("indiceIds", indiceIds, Hibernate.LONG);
+			query.executeUpdate();		
+		}
 	}
 }

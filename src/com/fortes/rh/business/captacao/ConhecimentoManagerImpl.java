@@ -156,5 +156,10 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 		
 		getDao().save(conhecimento);
 	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		getDao().deleteByAreaOrganizacional(areaIds);
+		
+	}
 	
 }

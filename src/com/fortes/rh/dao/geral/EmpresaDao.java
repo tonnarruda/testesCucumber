@@ -24,4 +24,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	boolean checkEmpresaCodACGrupoAC(Empresa empresa);
 	Collection<Empresa> findByCartaoAniversario();
 	boolean checkEmpresaIntegradaAc();
+	Collection<Empresa> findComCodigoAC();
 }

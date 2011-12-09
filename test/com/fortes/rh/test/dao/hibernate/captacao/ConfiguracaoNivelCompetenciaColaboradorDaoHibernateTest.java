@@ -5,7 +5,6 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
-import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -23,7 +22,6 @@ import com.fortes.rh.util.DateUtil;
 public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends GenericDaoHibernateTest<ConfiguracaoNivelCompetenciaColaborador>
 {
 	private ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao;
-	private ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao;
 	private CargoDao cargoDao;
 	private FaixaSalarialDao faixaSalarialDao;
 	private ColaboradorDao colaboradorDao;
@@ -118,6 +116,25 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		assertNull(configuracaoNivelCompetenciaColaboradorDao.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador2));
 	}
 	
+	public void testDeleteByFaixaSalarial() {
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
+		configuracaoNivelCompetenciaColaborador.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador);
+		
+		Exception exception = null;
+		try {
+			configuracaoNivelCompetenciaColaboradorDao.deleteByFaixaSalarial(new Long[] {faixaSalarial.getId()});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+
 	public void setConfiguracaoNivelCompetenciaColaboradorDao(ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao)
 	{
 		this.configuracaoNivelCompetenciaColaboradorDao = configuracaoNivelCompetenciaColaboradorDao;
@@ -133,10 +150,5 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
 		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setConfiguracaoNivelCompetenciaDao(
-			ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao) {
-		this.configuracaoNivelCompetenciaDao = configuracaoNivelCompetenciaDao;
 	}
 }

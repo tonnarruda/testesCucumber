@@ -13,7 +13,9 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
+import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -23,6 +25,7 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
 
 @SuppressWarnings("unchecked")
@@ -32,6 +35,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	private AcPessoalClientCargo acPessoalClientCargo;
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 
 	@Override
 	@Deprecated
@@ -314,6 +318,20 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return faixaSalarial;
 	}
 
+	public void deleteFaixaSalarial(Long[] faixaIds) throws Exception {
+		
+		if (faixaIds != null && faixaIds.length > 0) {
+			CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBean("certificacaoManager");
+			faixaSalarialHistoricoManager.deleteByFaixaSalarial(faixaIds);
+			certificacaoManager.deleteByFaixaSalarial(faixaIds);
+			configuracaoNivelCompetenciaColaboradorManager.deleteByFaixaSalarial(faixaIds);
+			configuracaoNivelCompetenciaManager.removeByFaixas(faixaIds);
+			
+			getDao().remove(faixaIds);
+		}
+		
+	}
+
 	public void updateAC(TCargo tCargo)
 	{
 		getDao().updateAC(tCargo);
@@ -331,6 +349,11 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 
 	public Collection<FaixaSalarial> findSemCodigoAC(Long empresaId) {
 		return getDao().findSemCodigoAC(empresaId);
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(
+			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 
 }

@@ -23,4 +23,6 @@ public interface IndiceHistoricoDao extends GenericDao<IndiceHistorico>
 	boolean existsAnteriorByDataIndice(Date data, Long indiceId);
 
 	void updateValor(Date data, Long indiceId, Double valor);
+
+	void deleteByIndice(Long[] indiceIds) throws Exception;
 }

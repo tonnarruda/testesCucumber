@@ -18,4 +18,5 @@ public interface AreaInteresseDao extends GenericDao<AreaInteresse>
 	public Collection<AreaInteresse> findAllSelect(Long empresaId);
 	public AreaInteresse findByIdProjection(Long areaInteresseId);
 	public Collection<AreaInteresse> findSincronizarAreasInteresse(Long empresaOrigemId);
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
 }

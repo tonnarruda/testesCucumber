@@ -376,4 +376,9 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return getDao().findIdByDataFaixa(faixaSalarialHistorico);
 	}
 
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+		getDao().deleteByFaixaSalarial(faixaIds);
+		
+	}
+
 }

@@ -21,4 +21,5 @@ public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHisto
 	Collection<FaixaSalarialHistorico> findHistoricosByFaixaSalarialId(Long faixaSalarialId);
 	Long findIdByDataFaixa(FaixaSalarialHistorico faixaSalarialHistorico);
 	Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId);
+	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 }

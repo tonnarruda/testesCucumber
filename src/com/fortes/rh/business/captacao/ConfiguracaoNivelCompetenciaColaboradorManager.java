@@ -15,4 +15,6 @@ public interface ConfiguracaoNivelCompetenciaColaboradorManager extends GenericM
 	void checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) throws Exception;
 
 	void removeColaborador(Colaborador colaborador);
+
+	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 }

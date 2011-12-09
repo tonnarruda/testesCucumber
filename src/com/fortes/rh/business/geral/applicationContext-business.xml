@@ -492,6 +492,9 @@
     <property name="dao">
       <ref bean="estabelecimentoDao" />
     </property>
+    <property name="agendaManager">
+      <ref bean="agendaManager" />
+    </property>
   </bean>
   <bean id="estabelecimentoManager" parent="parentManager">
     <property name="proxyInterfaces">

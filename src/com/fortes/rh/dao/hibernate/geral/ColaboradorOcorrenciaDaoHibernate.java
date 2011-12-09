@@ -268,10 +268,9 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		return absenteismos;
 	}
 
-	public void deleteByOcorrencia(Long[] ocorrenciaIds) 
+	public void deleteByOcorrencia(Long[] ocorrenciaIds) throws Exception 
 	{
-		if(ocorrenciaIds != null && ocorrenciaIds.length > 0)
-		{
+		if(ocorrenciaIds != null && ocorrenciaIds.length > 0){
 			String hql = "delete ColaboradorOcorrencia co where co.ocorrencia.id in (:ocorrenciaIds)";
 			Query query = getSession().createQuery(hql);
 	

@@ -26,4 +26,5 @@ public interface IndiceManager extends GenericManager<Indice>
 	Indice findHistorico(Long indiceId, Date dataHistorico);
 	Collection<Indice> findAll(Empresa empresa);
 	Collection<Indice> findSemCodigoAC();
+	void deleteIndice(Long[] indiceIds) throws Exception;
 }

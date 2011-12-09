@@ -281,9 +281,11 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return graficoEvolucaoAbsenteismo;
 	}
 
-	public void deleteOcorrencias(Long[] ocorrenciaIds) 
-	{
-		getDao().deleteByOcorrencia(ocorrenciaIds);
-		ocorrenciaManager.remove(ocorrenciaIds);
+	public void deleteOcorrencias(Long[] ocorrenciaIds) throws Exception {
+		
+		if(ocorrenciaIds != null && ocorrenciaIds.length > 0){
+			getDao().deleteByOcorrencia(ocorrenciaIds);
+			ocorrenciaManager.remove(ocorrenciaIds);
+		}
 	}
 }

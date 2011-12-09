@@ -12,4 +12,5 @@ public interface ConfiguracaoLimiteColaboradorManager extends GenericManager<Con
 	Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId);
 	Collection<Long> findIdAreas(Long empresaId);
 	void enviaEmail(ConfiguracaoLimiteColaborador configuracaoLimiteColaborador, Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, Empresa empresaSistema);
+	void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
 }
