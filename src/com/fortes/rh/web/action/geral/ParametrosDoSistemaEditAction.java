@@ -1,10 +1,21 @@
 package com.fortes.rh.web.action.geral;
 
 
+import java.sql.BatchUpdateException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.JDBCException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.SQLGrammarException;
+import org.hibernate.util.JDBCExceptionReporter;
+import org.postgresql.util.PSQLException;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.NestedRuntimeException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -136,7 +147,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public String deleteSemCodigoAC() throws Exception
 	{
-		prepareDeleteSemCodigoAC();
 		
 		try {
 			
@@ -147,9 +157,20 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 			faixaSalarialManager.deleteFaixaSalarial(faixaSalarialIds);
 			indiceManager.deleteIndice(indiceIds);
 			
-		} catch (Exception e) {
-			logErro = e.getLocalizedMessage() + '\n' + StringUtils.join(e.getStackTrace(), '\n');
+		} catch (DataIntegrityViolationException e) {
+			SQLException ex = ((BatchUpdateException)e.getCause()).getNextException();
+			logErro = ex.getMessage();
 			return Action.INPUT;
+		} catch (ConstraintViolationException e) {
+			PSQLException ex = ((PSQLException)e.getCause());
+			logErro = ex.getMessage();
+			return Action.INPUT;
+		} catch (Exception e) {
+			logErro = e.getMessage() + '\n' + StringUtils.join(e.getStackTrace(), '\n');
+			return Action.INPUT;
+		}
+		finally{
+			prepareDeleteSemCodigoAC();			
 		}
 		
 		addActionMessage("Entidades excluídas com sucesso.");
