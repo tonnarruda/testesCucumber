@@ -1671,7 +1671,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 					<reportElement
 						x="101"
 						y="405"
-						width="31"
+						width="42"
 						height="13"
 						key="staticText-81"
 						positionType="Float"/>
@@ -1747,9 +1747,9 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="383"
+						x="372"
 						y="405"
-						width="50"
+						width="57"
 						height="13"
 						key="staticText-83"
 						positionType="Float"/>
@@ -1761,7 +1761,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="381"
+						x="371"
 						y="405"
 						width="0"
 						height="26"
@@ -1771,9 +1771,9 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</line>
 				<staticText>
 					<reportElement
-						x="436"
+						x="431"
 						y="405"
-						width="92"
+						width="102"
 						height="13"
 						key="staticText-84"
 						positionType="Float"/>
@@ -1785,7 +1785,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="434"
+						x="429"
 						y="405"
 						width="0"
 						height="26"

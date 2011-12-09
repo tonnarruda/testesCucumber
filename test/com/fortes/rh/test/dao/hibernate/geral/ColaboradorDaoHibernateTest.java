@@ -3817,6 +3817,34 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		assertEquals(3, colaboradorDao.qtdAdmitidosPeriodo(empresa.getId(), dataDe, dataAte));
 	}
+	
+	public void testCountCodigoACDuplicado() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setEmpresa(empresa);
+		maria.setCodigoAC("1111111");
+		colaboradorDao.save(maria);
+		
+		Colaborador bebel = ColaboradorFactory.getEntity();
+		bebel.setEmpresa(empresa);
+		bebel.setCodigoAC("1111111");
+		colaboradorDao.save(bebel);
+		
+		Colaborador xica = ColaboradorFactory.getEntity();
+		xica.setEmpresa(empresa);
+		xica.setCodigoAC("1111112");
+		colaboradorDao.save(xica);
+		
+		Colaborador teteu = ColaboradorFactory.getEntity();
+		teteu.setEmpresa(empresa);
+		teteu.setCodigoAC("1111112");
+		colaboradorDao.save(teteu);
+		
+		assertEquals(2, colaboradorDao.countCodigoACDuplicado(empresa.getId()).size());
+	}
 
 	public void testGetColaboradoresByTurmas() {
 		Empresa empresa = EmpresaFactory.getEmpresa();

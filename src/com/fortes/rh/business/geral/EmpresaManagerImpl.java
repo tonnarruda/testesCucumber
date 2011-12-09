@@ -18,14 +18,22 @@ import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
+import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.TipoEntidade;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -46,6 +54,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private EpiManager epiManager;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private MotivoDemissaoManager motivoDemissaoManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private FaixaSalarialManager faixaSalarialManager;
+	private IndiceManager indiceManager;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -383,6 +394,66 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().checkEmpresaCodACGrupoAC(empresa);
 	}
 
+	public String getEmpresasNaoListadas(Collection<UsuarioEmpresa> usuarioEmpresas, Collection<Empresa> empresasListadas) 
+	{
+		Collection<String> empresasNaoListadas = new ArrayList<String>();
+		for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas) 
+		{
+			if(!empresasListadas.contains(usuarioEmpresa.getEmpresa()))
+				empresasNaoListadas.add(usuarioEmpresa.getEmpresa().getNome());
+		}
+		
+		if(empresasNaoListadas.isEmpty())
+			return null;
+		else
+			return StringUtil.converteCollectionToString(empresasNaoListadas);
+	}
+
+	public Collection<String> validaIntegracaoAC(Empresa empresa) 
+	{
+		Collection<String> msgs = new ArrayList<String>();
+		
+		if (empresa.isAcIntegra())
+		{
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+			
+			Collection<Colaborador> colaboradors = colaboradorManager.findSemCodigoAC(empresa.getId());
+			Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findSemCodigoAC(empresa.getId());
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
+			Collection<FaixaSalarial> faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
+			Collection<Indice> indices = indiceManager.findSemCodigoAC();
+			Collection<Ocorrencia> ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
+			
+			msgs.add("Não foi possível habilitar a integração com o AC Pessoal. Verifique os seguintes itens:");
+
+			if (colaboradors != null && !colaboradors.isEmpty())
+				msgs.add("- Existe(m) " + colaboradors.size() + " colaborador(es) sem código AC.");
+
+			if(colaboradorManager.countCodigoACDuplicado(empresa.getId()))
+				msgs.add("- Existem colaboradores com código AC duplicado.");
+
+			if (estabelecimentos != null && !estabelecimentos.isEmpty())
+				msgs.add("- Existe(m) " + estabelecimentos.size() + " estabelecimento(s) sem código AC.");
+
+			if (areaOrganizacionals != null && !areaOrganizacionals.isEmpty())
+				msgs.add("- Existe(m) " + areaOrganizacionals.size() + " área(s) organizacional(is) sem código AC.");
+
+			if (faixaSalarials != null && !faixaSalarials.isEmpty())
+				msgs.add("- Existe(m) " + faixaSalarials.size() + " faixa(s) salarial(is) sem código AC.");
+
+			if (indices != null && !indices.isEmpty())
+				msgs.add("- Existe(m) " + indices.size() + " índice(s) sem código AC.");
+			
+			if (ocorrencias != null && !ocorrencias.isEmpty())
+				msgs.add("- Existe(m) " + ocorrencias.size() + " ocorrencia(s) sem código AC.");
+			
+			
+			msgs.add("Entre em contato com o suporte técnico.");
+		}
+		
+		return msgs;
+	}
+	
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
 	}
@@ -399,21 +470,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		this.motivoDemissaoManager = motivoDemissaoManager;
 	}
 
-	public String getEmpresasNaoListadas(Collection<UsuarioEmpresa> usuarioEmpresas, Collection<Empresa> empresasListadas) 
-	{
-		Collection<String> empresasNaoListadas = new ArrayList<String>();
-		for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas) 
-		{
-			if(!empresasListadas.contains(usuarioEmpresa.getEmpresa()))
-				empresasNaoListadas.add(usuarioEmpresa.getEmpresa().getNome());
-		}
-		
-		if(empresasNaoListadas.isEmpty())
-			return null;
-		else
-			return StringUtil.converteCollectionToString(empresasNaoListadas);
-	}
-
 	public Collection<Empresa> findByCartaoAniversario() {
 		return getDao().findByCartaoAniversario();
 	}
@@ -424,5 +480,17 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public Collection<Empresa> findComCodigoAC() {
 		return getDao().findComCodigoAC();
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
+		this.faixaSalarialManager = faixaSalarialManager;
+	}
+
+	public void setIndiceManager(IndiceManager indiceManager) {
+		this.indiceManager = indiceManager;
 	}
 }

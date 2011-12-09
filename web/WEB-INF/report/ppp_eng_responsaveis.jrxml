@@ -119,9 +119,9 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="175"
+						x="174"
 						y="0"
-						width="100"
+						width="117"
 						height="13"
 						key="staticText-4"
 						positionType="Float"/>
@@ -129,13 +129,13 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="6"/>
 					</textElement>
-				<text><![CDATA[16.3 - Registro Conselho de Classe]]></text>
+				<text><![CDATA[16.3 - Registro no Conselho de Classe]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="278"
+						x="292"
 						y="0"
-						width="251"
+						width="236"
 						height="13"
 						key="staticText-7"
 						positionType="Float"/>
@@ -147,7 +147,7 @@
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="276"
+						x="291"
 						y="0"
 						width="0"
 						height="13"
@@ -158,6 +158,19 @@
 		</columnHeader>
 		<detail>
 			<band height="16"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="292"
+						y="0"
+						width="236"
+						height="15"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nome}]]></textFieldExpression>
+				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -211,7 +224,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="276"
+						x="291"
 						y="-1"
 						width="0"
 						height="17"
@@ -247,9 +260,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="175"
+						x="174"
 						y="0"
-						width="100"
+						width="117"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -257,19 +270,6 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{crea}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="278"
-						y="0"
-						width="251"
-						height="15"
-						key="textField-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nome}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

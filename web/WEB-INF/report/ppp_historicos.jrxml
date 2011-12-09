@@ -49,7 +49,7 @@
 			<band height="15"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="101"
+						x="108"
 						y="1"
 						width="80"
 						height="13"
@@ -64,7 +64,7 @@
 					<reportElement
 						x="0"
 						y="1"
-						width="94"
+						width="108"
 						height="13"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -75,9 +75,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="186"
+						x="191"
 						y="1"
-						width="68"
+						width="87"
 						height="13"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -88,7 +88,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="285"
+						x="282"
 						y="1"
 						width="80"
 						height="13"
@@ -102,22 +102,22 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="370"
+						x="362"
 						y="1"
-						width="79"
+						width="77"
 						height="13"
 						key="staticText-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="6"/>
 					</textElement>
-				<text><![CDATA[ 13.5 - Funcao]]></text>
+				<text><![CDATA[ 13.5 - Função]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="452"
+						x="439"
 						y="1"
-						width="34"
+						width="43"
 						height="13"
 						key="staticText-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -128,9 +128,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="488"
+						x="483"
 						y="1"
-						width="46"
+						width="51"
 						height="13"
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -150,7 +150,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="99"
+						x="108"
 						y="0"
 						width="0"
 						height="15"
@@ -159,7 +159,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="184"
+						x="188"
 						y="0"
 						width="0"
 						height="15"
@@ -168,7 +168,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="283"
+						x="280"
 						y="0"
 						width="0"
 						height="15"
@@ -177,7 +177,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="368"
+						x="362"
 						y="0"
 						width="0"
 						height="15"
@@ -186,7 +186,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="450"
+						x="439"
 						y="0"
 						width="0"
 						height="15"
@@ -195,7 +195,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="488"
+						x="482"
 						y="0"
 						width="0"
 						height="15"
@@ -238,7 +238,7 @@
 					<reportElement
 						x="2"
 						y="0"
-						width="97"
+						width="106"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -249,7 +249,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="101"
+						x="108"
 						y="0"
 						width="80"
 						height="15"
@@ -262,9 +262,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="186"
+						x="190"
 						y="0"
-						width="96"
+						width="89"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -275,9 +275,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="370"
+						x="362"
 						y="0"
-						width="79"
+						width="77"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -288,7 +288,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="285"
+						x="282"
 						y="0"
 						width="80"
 						height="15"
@@ -302,9 +302,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="452"
+						x="441"
 						y="0"
-						width="34"
+						width="40"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -315,9 +315,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="490"
+						x="483"
 						y="0"
-						width="42"
+						width="51"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -339,7 +339,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="99"
+						x="108"
 						y="0"
 						width="0"
 						height="16"
@@ -349,7 +349,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="184"
+						x="188"
 						y="0"
 						width="0"
 						height="16"
@@ -359,7 +359,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="283"
+						x="280"
 						y="0"
 						width="0"
 						height="16"
@@ -369,7 +369,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="368"
+						x="362"
 						y="0"
 						width="0"
 						height="16"
@@ -379,7 +379,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="450"
+						x="439"
 						y="0"
 						width="0"
 						height="16"
@@ -389,7 +389,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="488"
+						x="482"
 						y="0"
 						width="0"
 						height="16"

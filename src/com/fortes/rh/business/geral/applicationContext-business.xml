@@ -33,6 +33,15 @@
     <property name="configuracaoCampoExtraManager">
       <ref bean="configuracaoCampoExtraManager" />
     </property>
+    <property name="estabelecimentoManager">
+      <ref bean="estabelecimentoManager" />
+    </property>
+    <property name="faixaSalarialManager">
+      <ref bean="faixaSalarialManager" />
+    </property>
+    <property name="indiceManager">
+      <ref bean="indiceManager" />
+    </property>
   </bean>
   <bean id="empresaManager" parent="parentManager">
     <property name="proxyInterfaces">

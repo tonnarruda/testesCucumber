@@ -2100,4 +2100,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().findFuncaoAmbiente(colaboradorId);
 	}
+
+	public boolean countCodigoACDuplicado(Long empresaId) {
+		return getDao().countCodigoACDuplicado(empresaId);
+	}
 }

@@ -176,4 +176,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public double calculaIndiceProcessoSeletivo(Long empresaId, Date dataDe, Date dataAte);
 	public void deleteColaborador(Long[] colaboradorIds) throws Exception;
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
+	public boolean countCodigoACDuplicado(Long empresaId);
 }
