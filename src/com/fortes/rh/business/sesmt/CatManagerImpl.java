@@ -150,6 +150,10 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		return graficoCatsPorHorario;
 	}
 	
+	public Cat findByIdProjection(Long catId) {
+		return getDao().findByIdProjection(catId);
+	}
+	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}

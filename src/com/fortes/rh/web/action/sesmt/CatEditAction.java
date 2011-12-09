@@ -127,8 +127,11 @@ public class CatEditAction extends MyActionSupportList
 		
 		cat.setEpis(epis);
 		
-		if (cat.getAmbiente() == null || cat.getAmbiente().getId() == null)
-			cat.setAmbiente(null);
+		if (cat.getAmbienteColaborador() == null || cat.getAmbienteColaborador().getId() == null)
+			cat.setAmbienteColaborador(null);
+
+		if (cat.getFuncaoColaborador() == null || cat.getFuncaoColaborador().getId() == null)
+			cat.setFuncaoColaborador(null);
 		
 		if (cat.getNaturezaLesao() == null || cat.getNaturezaLesao().getId() == null)
 			cat.setNaturezaLesao(null);
@@ -197,7 +200,7 @@ public class CatEditAction extends MyActionSupportList
 	{
 		try
 		{
-			cat = catManager.findById(cat.getId());
+			cat = catManager.findByIdProjection(cat.getId());
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Ficha de Investigacao de Acidente", getEmpresaSistema(), "Comissão Interna de Prevenção de Acidentes");
 			

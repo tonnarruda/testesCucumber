@@ -2093,4 +2093,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			getDao().remove(colaboradorIds);
 		}
 	}
+	
+	public Colaborador findFuncaoAmbiente(Long colaboradorId)
+	{
+		return getDao().findFuncaoAmbiente(colaboradorId);
+	}
 }

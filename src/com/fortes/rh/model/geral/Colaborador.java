@@ -797,6 +797,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nome = nome;
 		this.desligado = desligado;
 	}
+
+	public Colaborador(Long id, String nomeComercial, Funcao funcao, Ambiente ambiente)
+	{
+		super();
+		this.setId(id);
+		this.nomeComercial = nomeComercial;
+		this.funcao = funcao;
+		this.ambiente = ambiente;
+	}
 	
 	public Colaborador(String nome, String email, Long id)
 	{

@@ -1,5 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -7,22 +9,34 @@ import java.util.Map;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
+import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.dao.geral.EstadoDao;
 import com.fortes.rh.dao.sesmt.CatDao;
+import com.fortes.rh.dao.sesmt.EpiDao;
+import com.fortes.rh.dao.sesmt.NaturezaLesaoDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.sesmt.Cat;
+import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.NaturezaLesao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.sesmt.EpiFactory;
+import com.fortes.rh.test.factory.sesmt.NaturezaLesaoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
@@ -30,9 +44,13 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 	private CatDao catDao;
 	private ColaboradorDao colaboradorDao;
 	private EmpresaDao empresaDao;
+	private CidadeDao cidadeDao;
+	private EstadoDao estadoDao;
 	private EstabelecimentoDao estabelecimentoDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private AreaOrganizacionalDao areaOrganizacionalDao;
+	private NaturezaLesaoDao naturezaLesaoDao;
+	private EpiDao epiDao;
 
 	public Cat getEntity()
 	{
@@ -260,6 +278,59 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 		assertEquals(new Integer(1), qtds.get("03"));
 		assertEquals(new Integer(1), qtds.get(null));
 	}
+	
+	public void testFindByIdProjection()
+	{
+		Estado uf = EstadoFactory.getEntity(1L);
+		uf.setNome("Ceará");
+		estadoDao.save(uf);
+
+		Cidade cidade = CidadeFactory.getEntity();
+		cidade.setNome("Fortaleza");
+		cidade.setUf(uf);
+		cidadeDao.save(cidade);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setEndereco("Rua X, 123");
+		empresa.setCidade(cidade);
+		empresa.setUf(uf);
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Ana");
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+
+		NaturezaLesao naturezaLesao = NaturezaLesaoFactory.getEntity();
+		naturezaLesao.setDescricao("fratura");
+		naturezaLesao.setEmpresa(empresa);
+		naturezaLesaoDao.save(naturezaLesao);
+		
+		Epi epi1 = EpiFactory.getEntity();
+		epiDao.save(epi1);
+
+		Epi epi2 = EpiFactory.getEntity();
+		epiDao.save(epi2);
+		
+		Collection<Epi> epis = Arrays.asList(epi1, epi2);
+		
+		Cat cat = new Cat();
+		cat.setNumeroCat("123456");
+		cat.setObservacao("observacao");
+		cat.setGerouAfastamento(false);
+		cat.setData(new Date());
+		cat.setColaborador(colaborador);
+		cat.setNaturezaLesao(naturezaLesao);
+		cat.setEpis(epis);
+		catDao.save(cat);
+
+		Cat retorno = catDao.findByIdProjection(cat.getId());
+
+		assertEquals(cat.getColaborador().getNome(), retorno.getColaborador().getNome());
+		assertEquals(cat.getColaborador().getEmpresa().getEnderecoCidadeUf(), retorno.getColaborador().getEmpresa().getEnderecoCidadeUf());
+		assertEquals(cat.getNaturezaLesao().getDescricao(), retorno.getNaturezaLesao().getDescricao());
+		assertEquals(2, retorno.getEpis().size());
+	}
 
 	public GenericDao<Cat> getGenericDao()
 	{
@@ -293,5 +364,21 @@ public class CatDaoHibernateTest extends GenericDaoHibernateTest<Cat>
 
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+
+	public void setCidadeDao(CidadeDao cidadeDao) {
+		this.cidadeDao = cidadeDao;
+	}
+
+	public void setEstadoDao(EstadoDao estadoDao) {
+		this.estadoDao = estadoDao;
+	}
+
+	public void setNaturezaLesaoDao(NaturezaLesaoDao naturezaLesaoDao) {
+		this.naturezaLesaoDao = naturezaLesaoDao;
+	}
+
+	public void setEpiDao(EpiDao epiDao) {
+		this.epiDao = epiDao;
 	}
 }

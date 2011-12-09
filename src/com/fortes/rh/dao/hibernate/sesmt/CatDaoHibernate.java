@@ -205,4 +205,23 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		
 		return qtds;
 	}
+
+	public Cat findByIdProjection(Long catId) 
+	{
+		StringBuilder hql = new StringBuilder("select new Cat(cat, col.nome, amb.nome, func.nome, nat.descricao, emp.nome, emp.razaoSocial, emp.endereco, cid.nome, uf.sigla) ");
+		hql.append(" from Cat cat");
+		hql.append(" inner join cat.colaborador col");
+		hql.append(" inner join col.empresa emp");
+		hql.append(" left join emp.cidade cid");
+		hql.append(" left join emp.uf uf");
+		hql.append(" inner join cat.naturezaLesao nat");
+		hql.append(" left join cat.ambienteColaborador amb");
+		hql.append(" left join cat.funcaoColaborador func");
+		hql.append(" where cat.id = :catId");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("catId", catId);
+
+		return  (Cat) query.uniqueResult();
+	}
 }

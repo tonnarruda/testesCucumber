@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.dicionario.TipoAcidente;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -27,7 +29,9 @@ public class Cat extends AbstractModel implements Serializable
     @ManyToOne
     private Colaborador colaborador;
     @ManyToOne(fetch = FetchType.LAZY)
-    private Ambiente ambiente;
+    private Ambiente ambienteColaborador;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Funcao funcaoColaborador;
     @ManyToOne(fetch = FetchType.LAZY)
     private NaturezaLesao naturezaLesao;
     @ManyToMany(fetch=FetchType.LAZY)
@@ -38,6 +42,8 @@ public class Cat extends AbstractModel implements Serializable
     private String horario;
     @Column(length=100)
     private String parteAtingida;
+    @Column(length=100)
+    private String local;
     @Column(length=100)
     private String fonteLesao;
     private Integer tipoAcidente;
@@ -71,6 +77,49 @@ public class Cat extends AbstractModel implements Serializable
 		colaborador.setMatricula(colaboradorMatricula);
 		colaborador.setEstabelecimentoNomeProjection(estabelecimentoNome);
 		colaborador.setAreaOrganizacionalId(areaOrganizacionalId);
+	}
+    
+    public Cat(Cat cat, String colaboradorNome, String ambienteNome, String funcaoNome, String naturezaLesaoDescricao, String empresaNome, String empresaRazaoSocial, String empresaEndereco, String empresaCidadeNome, String empresaUfSigla)
+	{
+		setId(cat.getId());
+		this.data = cat.getData();
+		this.horario = cat.getHorario();
+		this.local = cat.getLocal();
+		this.emitiuCAT = cat.isEmitiuCAT();
+		this.numeroCat = cat.getNumeroCat();
+		this.gerouAfastamento = cat.getGerouAfastamento();
+		this.foiTreinadoParaFuncao = cat.isFoiTreinadoParaFuncao();
+		this.usavaEPI = cat.isUsavaEPI();
+		this.tipoAcidente = cat.getTipoAcidente();
+		this.parteAtingida = cat.getParteAtingida();
+		this.fonteLesao = cat.getFonteLesao();
+		this.qtdDiasAfastado = cat.getQtdDiasAfastado();
+		this.observacao = cat.getObservacao();
+		this.conclusao = cat.getConclusao();
+		this.epis = cat.getEpis();
+		
+		this.colaborador = new Colaborador();
+		colaborador.setNome(colaboradorNome);
+		
+		Empresa empresa = new Empresa();
+		empresa.setNome(empresaNome);
+		empresa.setRazaoSocial(empresaRazaoSocial);
+		empresa.setEndereco(empresaEndereco);
+		empresa.setProjectionCidadeNome(empresaCidadeNome);
+		colaborador.setEmpresa(empresa);
+		
+		Estado uf = new Estado();
+		uf.setSigla(empresaUfSigla);
+		empresa.setUf(uf);
+		
+		this.ambienteColaborador = new Ambiente();
+		ambienteColaborador.setNome(ambienteNome);
+
+		this.funcaoColaborador = new Funcao();
+		funcaoColaborador.setNome(funcaoNome);
+
+		this.naturezaLesao = new NaturezaLesao();
+		naturezaLesao.setDescricao(naturezaLesaoDescricao);
 	}
 
 	public void setColaboradorId(Long colaboradorId)
@@ -151,16 +200,6 @@ public class Cat extends AbstractModel implements Serializable
 			dataFmt += DateUtil.formataDiaMesAno(data);
 
 		return dataFmt;
-	}
-
-	public Ambiente getAmbiente() 
-	{
-		return ambiente;
-	}
-
-	public void setAmbiente(Ambiente ambiente) 
-	{
-		this.ambiente = ambiente;
 	}
 
 	public NaturezaLesao getNaturezaLesao() 
@@ -285,5 +324,29 @@ public class Cat extends AbstractModel implements Serializable
 
 	public void setFonteLesao(String fonteLesao) {
 		this.fonteLesao = fonteLesao;
+	}
+
+	public Ambiente getAmbienteColaborador() {
+		return ambienteColaborador;
+	}
+
+	public void setAmbienteColaborador(Ambiente ambienteColaborador) {
+		this.ambienteColaborador = ambienteColaborador;
+	}
+
+	public Funcao getFuncaoColaborador() {
+		return funcaoColaborador;
+	}
+
+	public void setFuncaoColaborador(Funcao funcaoColaborador) {
+		this.funcaoColaborador = funcaoColaborador;
+	}
+
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
 	}
 }
