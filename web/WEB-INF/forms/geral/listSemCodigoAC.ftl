@@ -28,7 +28,7 @@
 			<@ww.textarea label="Log de Erro" name="logErro" id="logErro" cssStyle="width:850px;color:red;"/>
 		</#if>
 
-		<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" />
+		<@ww.select label="Empresa com código AC" name="empresa.id" id="empresaId" listKey="id" listValue="nomeCodigoAc" list="empresas" cssClass="selectEmpresa" />
 		<input type="submit" value="" class="btnPesquisar"/>
 		
 		<input onclick="window.location='../../backup/gerar.action?urlVoltar=../geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action';" class="btnBackup" accesskey="G"/>
