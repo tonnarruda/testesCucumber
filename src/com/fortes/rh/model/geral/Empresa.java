@@ -213,6 +213,15 @@ public class Empresa extends AbstractModel implements Serializable
 	{
 		this.endereco = endereco;
 	}
+	
+	public String getNomeCodigoAc()
+	{
+		String nome = this.nome; 
+		if (this.codigoAC != null)
+			nome += " - " + this.codigoAC.trim();
+		
+		return  nome;
+	}
 
 	public String getGrauDeRisco()
 	{

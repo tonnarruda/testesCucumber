@@ -358,18 +358,19 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 	}
 
 	public Collection<Empresa> findComCodigoAC() {
-		Criteria criteria = getSession().createCriteria(Empresa.class);
+		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
 		
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("id"), "id");
-		p.add(Projections.property("nome"),"nome");
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"),"nome");
+		p.add(Projections.property("e.codigoAC"),"codigoAC");
 		
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.isNotNull("codigoAC"));
-		criteria.add(Expression.ne("codigoAC", ""));
+		criteria.add(Expression.isNotNull("e.codigoAC"));
+		criteria.add(Expression.ne("e.codigoAC", ""));
 		
-		criteria.addOrder(Order.asc("nome"));
+		criteria.addOrder(Order.asc("e.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();	}
