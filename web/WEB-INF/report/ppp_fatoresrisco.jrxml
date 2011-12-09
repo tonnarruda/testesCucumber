@@ -74,9 +74,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="107"
+						x="101"
 						y="0"
-						width="31"
+						width="49"
 						height="13"
 						key="staticText-2"
 						positionType="Float"/>
