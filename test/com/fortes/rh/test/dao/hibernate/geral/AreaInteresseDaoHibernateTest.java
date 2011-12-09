@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
@@ -124,6 +125,19 @@ public class AreaInteresseDaoHibernateTest extends GenericDaoHibernateTest<AreaI
 		Collection<AreaInteresse> resultado = areaInteresseDao.findSincronizarAreasInteresse(empresa.getId());
 		
 		assertEquals(ai1, (AreaInteresse) resultado.toArray()[0]);
+	}
+	
+	public void testDeleteByAreaOrganizacional()
+	{
+		Exception exception = null;
+		
+		try {
+			areaInteresseDao.deleteByAreaOrganizacional(new Long[] {11111111112L,1111111111113L});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
 	}
 
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)

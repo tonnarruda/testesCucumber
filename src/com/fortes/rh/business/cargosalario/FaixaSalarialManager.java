@@ -40,4 +40,5 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	void updateAC(TCargo tCargo);
 	TCargo[] getFaixasAC();
 	Collection<FaixaSalarial> findSemCodigoAC(Long empresaId);
+	void deleteFaixaSalarial(Long[] faixaIds) throws Exception;
 }

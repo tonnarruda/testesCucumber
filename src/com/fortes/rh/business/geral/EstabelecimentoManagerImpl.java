@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.sesmt.AgendaManager;
+import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CnpjUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimento, EstabelecimentoDao> implements EstabelecimentoManager
 {
+	private AgendaManager agendaManager;
+
 	public boolean remove(String codigo, Long idEmpresa)
 	{
 		return getDao().remove(codigo, idEmpresa);
@@ -101,5 +106,21 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 
 	public Collection<Estabelecimento> findSemCodigoAC(Long empresaId) {
 		return getDao().findSemCodigoAC(empresaId);
+	}
+
+	public void deleteEstabelecimento(Long[] estabelecimentoIds) throws Exception {
+		
+		if (estabelecimentoIds != null && estabelecimentoIds.length > 0) {
+			AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
+			ambienteManager.deleteByEstabelecimento(estabelecimentoIds);
+			agendaManager.deleteByEstabelecimento(estabelecimentoIds);
+			
+			getDao().remove(estabelecimentoIds);
+		}
+		
+	}
+
+	public void setAgendaManager(AgendaManager agendaManager) {
+		this.agendaManager = agendaManager;
 	}
 }

@@ -14,4 +14,5 @@ public interface AmbienteDao extends GenericDao<Ambiente>
 	Ambiente findByIdProjection(Long ambienteId);
 	Collection<Ambiente> findByIds(Collection<Long> ambienteIds, Date data, Long estabelecimentoId);
 	int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo);
+	void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 }

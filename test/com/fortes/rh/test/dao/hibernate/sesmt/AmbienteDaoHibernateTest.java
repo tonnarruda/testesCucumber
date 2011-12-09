@@ -295,6 +295,29 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		assertEquals(2, ambienteDao.getQtdColaboradorByAmbiente(ambiente.getId(), hoje, Sexo.FEMININO));
 	}
 	
+	public void testDeleteByEstabelecimento() {
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento);
+		
+		Ambiente ambiente = AmbienteFactory.getEntity();
+		ambiente.setEstabelecimento(estabelecimento);
+		ambienteDao.save(ambiente);
+		
+		Exception exception = null;
+		try {
+			ambienteDao.deleteByEstabelecimento(new Long[] {estabelecimento.getId()});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+	
 	public GenericDao<Ambiente> getGenericDao()
 	{
 		return ambienteDao;

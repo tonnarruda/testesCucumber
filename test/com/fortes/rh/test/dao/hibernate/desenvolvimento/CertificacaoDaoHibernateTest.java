@@ -81,6 +81,19 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 		
 		assertEquals(new Integer(1), certificacaoDao.getCount(empresa.getId(), "Gerencia"));
 	}
+
+	public void testDeleteByFaixaSalarial()
+	{
+		Exception exception = null;
+		
+		try {
+			certificacaoDao.deleteByFaixaSalarial(new Long[] {999999999999998L,999999999999999L});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
 	
 	public void testFindByIdProjection()
 	{

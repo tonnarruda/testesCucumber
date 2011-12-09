@@ -45,9 +45,9 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 		saveLimites(quantidadeLimiteColaboradoresPorCargos, areaOrganizacional);
 	}
 
-	public void deleteByArea(Long areaId) 
+	public void deleteByArea(Long... areaIds) 
 	{
-		getDao().deleteByArea(areaId);
+		getDao().deleteByArea(areaIds);
 	}
 
 	public void validaLimite(Long areaId, Long faixaId, Long empresaId, Long colaboradorId) throws LimiteColaboradorExceditoException 

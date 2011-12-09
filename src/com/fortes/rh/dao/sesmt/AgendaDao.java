@@ -14,4 +14,5 @@ public interface AgendaDao extends GenericDao<Agenda>
 	Collection<Agenda> findByPeriodo(Date dataIni, Date dataFim, Long empresaId, Estabelecimento estabelecimento);
 	Collection<Agenda> findByPeriodoEvento(Date dataIni, Date dataFim, Estabelecimento estabelecimento, Evento evento);
 	Agenda findByIdProjection(Long id);
+	void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 }

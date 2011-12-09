@@ -356,4 +356,21 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		Query query = getSession().createQuery("select e.acIntegra from Empresa e where e.acIntegra = true");
 		return !query.list().isEmpty();
 	}
+
+	public Collection<Empresa> findComCodigoAC() {
+		Criteria criteria = getSession().createCriteria(Empresa.class);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("id"), "id");
+		p.add(Projections.property("nome"),"nome");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.isNotNull("codigoAC"));
+		criteria.add(Expression.ne("codigoAC", ""));
+		
+		criteria.addOrder(Order.asc("nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();	}
 }

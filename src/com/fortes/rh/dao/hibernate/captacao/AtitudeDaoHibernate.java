@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
@@ -12,6 +13,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.model.captacao.Atitude;
 
@@ -89,5 +91,16 @@ public class AtitudeDaoHibernate extends GenericDaoHibernate<Atitude> implements
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Atitude.class));
 
 		return criteria.list();
+	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		if(areaIds != null && areaIds.length > 0)
+		{
+			String[] sql = new String[] {"delete from atitude_areaorganizacional where areaorganizacionals_id in ("+StringUtils.join(areaIds, ",")+");"};
+
+			JDBCConnection.executeQuery(sql);
+
+		}
+		
 	}
 }

@@ -66,4 +66,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Long[] findIdsAreasDoResponsavel(Long usuarioId, Long empresaId);
 	public Long[] selecionaFamilia(Collection<AreaOrganizacional> areaOrganizacionais, Collection<Long> areasIdsConfiguradas);
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId);
+	public void deleteAreaOrganizacional(Long[] areaIds) throws Exception;
 }

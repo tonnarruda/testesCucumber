@@ -75,4 +75,8 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 	{
 		return getDao().getCount(empresaId, nomeBusca);
 	}
+
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+		getDao().deleteByFaixaSalarial(faixaIds);
+	}
 }

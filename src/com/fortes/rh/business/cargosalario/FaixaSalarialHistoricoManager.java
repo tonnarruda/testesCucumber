@@ -39,4 +39,5 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	FaixaSalarialHistorico bind(TSituacaoCargo tSituacaoCargo, FaixaSalarial faixaSalarial);
 	Long findIdByDataFaixa(FaixaSalarialHistorico faixaSalarialHistorico);
 	Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId);
+	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 }

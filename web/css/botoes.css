@@ -558,6 +558,12 @@
 	width: 222px !important;
 }
 
+.btnBackup
+{
+	background-image:url(../imgs/btnBackup.gif);
+	width: 85px !important;
+}
+
 .btnExcluir,
 .btnExcluirDesabilitado,
 .btnProxima,
@@ -671,7 +677,8 @@
 .btnNao,
 .btnLiberarAvalEmLote,
 .btnLiberar, 
-.btnResponderPorColaboradores
+.btnResponderPorColaboradores,
+.btnBackup
 {
 	border: 0;
 	background-repeat: no-repeat;

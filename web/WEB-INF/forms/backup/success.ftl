@@ -13,6 +13,7 @@
 			Backups armazenados na pasta ..\RH\backup_db:
 			<br>			
 			${arquivos}
+			<button onclick="window.location='${urlVoltar}'" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

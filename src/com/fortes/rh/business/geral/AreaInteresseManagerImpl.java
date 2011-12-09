@@ -75,4 +75,8 @@ public class AreaInteresseManagerImpl extends GenericManagerImpl<AreaInteresse, 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		getDao().deleteByAreaOrganizacional(areaIds);
+	}
 }

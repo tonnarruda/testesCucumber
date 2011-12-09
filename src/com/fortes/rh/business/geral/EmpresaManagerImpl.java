@@ -421,4 +421,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public boolean checkEmpresaIntegradaAc() {
 		return getDao().checkEmpresaIntegradaAc();
 	}
+
+	public Collection<Empresa> findComCodigoAC() {
+		return getDao().findComCodigoAC();
+	}
 }

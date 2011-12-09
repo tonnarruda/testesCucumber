@@ -120,6 +120,19 @@ public class AtitudeDaoHibernateTest extends GenericDaoHibernateTest<Atitude>
 		
 	}
 	
+	public void testDeleteByAreaOrganizacional()
+	{
+		Exception exception = null;
+		
+		try {
+			atitudeDao.deleteByAreaOrganizacional(new Long[] {11111111112L,1111111111113L});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+	
 	@Override
 	public Atitude getEntity()
 	{

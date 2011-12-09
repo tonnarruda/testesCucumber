@@ -95,4 +95,14 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 	public Collection<Indice> findSemCodigoAC() {
 		return getDao().findSemCodigoAC();
 	}
+
+	public void deleteIndice(Long[] indiceIds) throws Exception {
+		
+		if (indiceIds != null && indiceIds.length > 0) {
+			indiceHistoricoManager.deleteByIndice(indiceIds);
+			
+			getDao().remove(indiceIds);
+		}
+		
+	}
 }

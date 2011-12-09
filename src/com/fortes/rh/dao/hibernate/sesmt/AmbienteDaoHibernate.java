@@ -142,4 +142,15 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 
 		return (Integer)query.uniqueResult();
 	}
+
+	public void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception {
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+		{
+			String hql = "delete Ambiente where estabelecimento.id in (:estabelecimentoIds)";
+			Query query = getSession().createQuery(hql);
+
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.executeUpdate();		
+		}
+	}
 }

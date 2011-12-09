@@ -14,6 +14,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
@@ -130,5 +131,14 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
 		
 		return (Integer) criteria.uniqueResult();
+	}
+
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+		if(faixaIds != null && faixaIds.length > 0)
+		{
+			String[] sql = new String[] {"delete from faixasalarial_certificacao where  faixasalarials_id in ("+StringUtils.join(faixaIds, ",")+");"};
+			JDBCConnection.executeQuery(sql);
+
+		}
 	}
 }

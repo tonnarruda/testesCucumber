@@ -116,4 +116,8 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 			AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		getDao().deleteByAreaOrganizacional(areaIds);
+	}
 }

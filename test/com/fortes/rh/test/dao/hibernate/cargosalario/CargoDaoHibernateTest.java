@@ -459,6 +459,20 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(2, retorno.size());
 	}
 
+	
+	public void testDeleteByAreaOrganizacional()
+	{
+		Exception exception = null;
+		
+		try {
+			cargoDao.deleteByAreaOrganizacional(new Long[] {9999999999999999L,9999999999999998L});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+	
 	public GenericDao<Cargo> getGenericDao()
 	{
 		return cargoDao;

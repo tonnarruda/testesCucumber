@@ -8,6 +8,7 @@ package com.fortes.rh.dao.hibernate.cargosalario;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -18,6 +19,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -497,5 +499,13 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cargo.class));
 
 		return criteria.list();
+	}
+
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+		if(areaIds != null && areaIds.length > 0)
+		{
+			String[] sql = new String[] {"delete from cargo_areaorganizacional where areasorganizacionais_id in ("+StringUtils.join(areaIds, ",")+");"};
+			JDBCConnection.executeQuery(sql);
+		}
 	}
 }

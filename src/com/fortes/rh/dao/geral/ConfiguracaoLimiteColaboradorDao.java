@@ -9,4 +9,5 @@ public interface ConfiguracaoLimiteColaboradorDao extends GenericDao<Configuraca
 {
 	Collection<ConfiguracaoLimiteColaborador> findAllSelect(Long empresaId);
 	Collection<Long> findIdAreas(Long empresaId);
+	void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
 }

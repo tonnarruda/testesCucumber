@@ -15,4 +15,6 @@ public interface ConfiguracaoNivelCompetenciaColaboradorDao extends GenericDao<C
 	ConfiguracaoNivelCompetenciaColaborador checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
 
 	void removeColaborador(Colaborador colaborador);
+
+	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 }

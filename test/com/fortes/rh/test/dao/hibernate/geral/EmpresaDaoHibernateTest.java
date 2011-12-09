@@ -310,6 +310,18 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		
 		assertTrue(empresaDao.checkEmpresaIntegradaAc());
 	}
+	
+	public void testFindComCodigoAC() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("001");
+		empresaDao.save(empresa);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		assertTrue("A consulta também traz empresas já cadastrados no banco",empresaDao.findComCodigoAC().size() > 1);
+	}
 
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{

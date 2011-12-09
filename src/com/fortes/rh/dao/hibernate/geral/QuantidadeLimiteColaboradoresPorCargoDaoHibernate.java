@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.geral;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -28,8 +29,6 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDa
 		query.setInteger("limite", limite);
 
 		query.executeUpdate();
-
-		
 	}
 
 	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByArea(Long areaId) 
@@ -53,12 +52,12 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDa
 		return criteria.list();
 	}
 
-	public void deleteByArea(Long areaId) 
+	public void deleteByArea(Long... areaIds) 
 	{
-		String hql = "delete QuantidadeLimiteColaboradoresPorCargo where areaOrganizacional.id = :areaId";
+		String hql = "delete QuantidadeLimiteColaboradoresPorCargo where areaOrganizacional.id in (:areaId)";
 
 		Query query = getSession().createQuery(hql);
-		query.setLong("areaId", areaId);
+		query.setParameterList("areaId", areaIds, Hibernate.LONG);
 
 		query.executeUpdate();
 	}

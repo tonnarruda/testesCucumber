@@ -1,17 +1,23 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ConfiguracaoLimiteColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoLimiteColaboradorFactory;
 
 public class ConfiguracaoLimiteColaboradorDaoHibernateTest extends GenericDaoHibernateTest<ConfiguracaoLimiteColaborador>
@@ -90,6 +96,24 @@ public class ConfiguracaoLimiteColaboradorDaoHibernateTest extends GenericDaoHib
 		assertEquals(2, areasIds.size());
 	}
 	
+
+	public void testDeleteByAreaOrganizacional()
+	{
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		ConfiguracaoLimiteColaborador configuracaoLimiteColaborador = ConfiguracaoLimiteColaboradorFactory.getEntity();
+		configuracaoLimiteColaboradorDao.save(configuracaoLimiteColaborador);
+		
+		Exception exception = null;
+		try {
+			configuracaoLimiteColaboradorDao.deleteByAreaOrganizacional(new Long[]{areaOrganizacional.getId()});
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull("Não houve exceção", exception);
+	}
 	
 	public void setConfiguracaoLimiteColaboradorDao(ConfiguracaoLimiteColaboradorDao configuracaoLimiteColaboradorDao)
 	{

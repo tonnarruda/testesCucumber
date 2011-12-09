@@ -66,4 +66,8 @@ public class AgendaManagerImpl extends GenericManagerImpl<Agenda, AgendaDao> imp
 	{
 		this.transactionManager = transactionManager;
 	}
+
+	public void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception {
+		getDao().deleteByEstabelecimento(estabelecimentoIds);
+	}
 }

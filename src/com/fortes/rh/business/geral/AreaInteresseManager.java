@@ -18,4 +18,5 @@ public interface AreaInteresseManager extends GenericManager<AreaInteresse>
 	public Collection<AreaInteresse> findAllSelect(Long empresaId);
 	public AreaInteresse findByIdProjection(Long areaInteresseId);
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds);
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
 }

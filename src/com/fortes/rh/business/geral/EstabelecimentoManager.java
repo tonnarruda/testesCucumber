@@ -20,4 +20,5 @@ public interface EstabelecimentoManager extends GenericManager<Estabelecimento>
 	Collection<CheckBox> populaCheckBox(Long[] empresaIds);
 	public String nomeEstabelecimentos(Long[] estabelecimentoIds);
 	Collection<Estabelecimento> findSemCodigoAC(Long empresaId);
+	void deleteEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 }

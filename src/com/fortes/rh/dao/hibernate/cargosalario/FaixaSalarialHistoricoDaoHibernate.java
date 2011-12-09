@@ -364,4 +364,15 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 
 		return (Long) criteria.uniqueResult();
 	}
+
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+		if(faixaIds != null && faixaIds.length > 0)
+		{
+			String hql = "delete FaixaSalarialHistorico where faixaSalarial.id in (:faixaIds)";
+			Query query = getSession().createQuery(hql);
+	
+			query.setParameterList("faixaIds", faixaIds, Hibernate.LONG);
+			query.executeUpdate();		
+		}
+	}
 }

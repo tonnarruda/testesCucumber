@@ -18,4 +18,5 @@ public interface ConhecimentoDao extends GenericDao<Conhecimento>
 	Collection<Conhecimento> findAllSelectDistinctNome();
 	Collection<Conhecimento> findByCandidato(Long candidatoId);
 	Collection<Conhecimento> findSincronizarConhecimentos(Long empresaOrigemId);
+	void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
 }
