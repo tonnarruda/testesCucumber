@@ -410,13 +410,24 @@ Dado /^que exista uma turma "([^"]*)" para o curso "([^"]*)"$/ do |turma_descric
    end
 end
 
+Dado /^que exista uma turma "([^"]*)" para o curso "([^"]*)" realizada$/ do |turma_descricao, curso_nome|
+   insert :turma do
+     descricao turma_descricao
+     curso :nome => curso_nome
+     realizada true
+     dataprevini '01/07/2011'
+     dataprevfim '15/07/2011'
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista uma certificacao "([^"]*)" para o curso "([^"]*)"$/ do |certificacao_nome, curso_nome|
    insert :certificacao do
      nome certificacao_nome
      empresa :id=> 1
    end
 
-   insert :certificacao_curso do
+   insert :certificacao_curso, :sem_id => true do
      certificacaos :certificacao, :nome => certificacao_nome
      cursos :curso, :nome => curso_nome
    end

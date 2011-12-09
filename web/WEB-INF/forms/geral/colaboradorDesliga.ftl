@@ -56,7 +56,7 @@
 		<br>
 	
 		<@ww.hidden label="Desligado" name="desligado" fieldValue="true" value="true" />
-		<#if integraAc>
+		<#if integraAc && !colaborador.naoIntegraAc>
 			Data de Desligamento: ${dataDesligamento}<br><br>
 			<@ww.hidden name="dataDesligamento" value="${dataDesligamento}" id="data" />
 		<#else>
