@@ -77,6 +77,63 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 		assertEquals(areaOrganizacional.getCodigoAC(), retorno.getCodigoAC());
 	}
+	
+	public void testFindCodigoACDuplicado()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("24342333");
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		area1.setCodigoAC("001");
+		area1.setEmpresa(empresa);
+		areaOrganizacionalDao.save(area1);
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		area2.setCodigoAC("001");
+		area2.setEmpresa(empresa);
+		areaOrganizacionalDao.save(area2);
+		
+		AreaOrganizacional area3 = AreaOrganizacionalFactory.getEntity();
+		area3.setCodigoAC("003");
+		area3.setEmpresa(empresa);
+		areaOrganizacionalDao.save(area3);
+		
+		AreaOrganizacional area4 = AreaOrganizacionalFactory.getEntity();
+		area4.setCodigoAC("003");
+		area4.setEmpresa(empresa);
+		areaOrganizacionalDao.save(area4);
+		
+		AreaOrganizacional area5 = AreaOrganizacionalFactory.getEntity();
+		area5.setCodigoAC("005");
+		area5.setEmpresa(empresa);
+		areaOrganizacionalDao.save(area5);
+		
+		Empresa outraEmpresa = EmpresaFactory.getEmpresa();
+		outraEmpresa.setCodigoAC("24342333");
+		empresaDao.save(outraEmpresa);
+		
+		AreaOrganizacional areaOutraEmpresa = AreaOrganizacionalFactory.getEntity();
+		areaOutraEmpresa.setCodigoAC("005");
+		areaOutraEmpresa.setEmpresa(outraEmpresa);
+		areaOrganizacionalDao.save(areaOutraEmpresa);
+		
+		assertEquals("001,003", areaOrganizacionalDao.findCodigoACDuplicado(empresa.getId()));
+	}
+	
+	public void testFindCodigoACDuplicadoVazio()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("24342333");
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		area1.setCodigoAC("001");
+		area1.setEmpresa(empresa);
+		areaOrganizacionalDao.save(area1);
+		
+		assertEquals("", areaOrganizacionalDao.findCodigoACDuplicado(empresa.getId()));
+	}
 
 	public void testGetCount()
 	{

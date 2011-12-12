@@ -28,4 +28,5 @@ public interface FaixaSalarialDao extends GenericDao<FaixaSalarial>
 	void updateAC(TCargo tCargo);
 	TCargo[] getFaixasAC();
 	Collection<FaixaSalarial> findSemCodigoAC(Long empresaId);
+	String findCodigoACDuplicado(Long empresaId);
 }

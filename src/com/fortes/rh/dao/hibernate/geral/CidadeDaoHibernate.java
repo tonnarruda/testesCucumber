@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -14,6 +15,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements CidadeDao
@@ -135,5 +137,17 @@ public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements C
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();	
+	}
+
+	public String findCodigoACDuplicado() {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select codigoAC from Cidade "); 
+		hql.append("where codigoAC is not null and codigoAC != '' ");
+		hql.append("group by codigoAC ");
+		hql.append("having count(*) > 1 ");	
+		hql.append("order by codigoAC ");
+	
+		Query query = getSession().createQuery(hql.toString());
+		return  StringUtil.converteCollectionToString(query.list());
 	}
 }

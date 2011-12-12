@@ -117,10 +117,13 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 			
 			getDao().remove(estabelecimentoIds);
 		}
-		
 	}
 
 	public void setAgendaManager(AgendaManager agendaManager) {
 		this.agendaManager = agendaManager;
+	}
+
+	public String findCodigoACDuplicado(Long empresaId) {
+		return getDao().findCodigoACDuplicado(empresaId);
 	}
 }

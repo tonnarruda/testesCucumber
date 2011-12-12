@@ -14,6 +14,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.util.StringUtil;
 
 
 @SuppressWarnings("unchecked")
@@ -173,6 +174,20 @@ public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> impl
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();	
+	}
+
+	public String findCodigoACDuplicado(Long empresaId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select codigoAC from Ocorrencia "); 
+		hql.append("where empresa.id = :empresaId and codigoAC is not null and codigoAC != '' ");
+		hql.append("group by codigoAC ");
+		hql.append("having count(*) > 1 ");	
+		hql.append("order by codigoAC ");
+	
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+
+		return  StringUtil.converteCollectionToString(query.list());
 	}
 	
 }

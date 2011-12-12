@@ -1,23 +1,42 @@
 package com.fortes.rh.test.dao.hibernate.cargosalario;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 
 public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 {
 	private IndiceDao indiceDao;
 	private IndiceHistoricoDao indiceHistoricoDao;
 	private GrupoACDao grupoACDao;
+	private EmpresaDao empresaDao;
+	private CargoDao cargoDao;
+	private FaixaSalarialDao faixaSalarialDao;
+	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
 
 	public Indice getEntity()
 	{
@@ -117,6 +136,94 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		assertTrue(indices.contains(indice3));		
 	}
 	
+	public void testFindCodigoACDuplicadoVazio()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("24342333");
+		empresaDao.save(empresa);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setEmpresa(empresa);
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+
+		Indice indice = IndiceFactory.getEntity();
+		indice.setCodigoAC("123456");
+		indiceDao.save(indice);
+		
+		Indice indice2 = IndiceFactory.getEntity();
+		indice2.setCodigoAC("123457");
+		indiceDao.save(indice2);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setIndice(indice);
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico2.setIndice(indice2);
+		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+		
+		assertEquals("", indiceDao.findCodigoACDuplicado(empresa.getId()));
+	}
+	
+	public void testFindCodigoACDuplicado()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("24342333");
+		empresaDao.save(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setEmpresa(empresa);
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		Indice indice = IndiceFactory.getEntity();
+		indice.setCodigoAC("123456");
+		indiceDao.save(indice);
+		
+		Indice indice2 = IndiceFactory.getEntity();
+		indice2.setCodigoAC("123456");
+		indiceDao.save(indice2);
+
+		Indice indice3 = IndiceFactory.getEntity();
+		indice3.setCodigoAC("123457");
+		indiceDao.save(indice3);
+		
+		Indice indice4 = IndiceFactory.getEntity();
+		indice4.setCodigoAC("123457");
+		indiceDao.save(indice4);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setIndice(indice);
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico2.setIndice(indice2);
+		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico3.setIndice(indice3);
+		faixaSalarialHistorico3.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico4 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico4.setIndice(indice4);
+		faixaSalarialHistorico4.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico4);
+		
+		assertEquals("123456,123457", indiceDao.findCodigoACDuplicado(empresa.getId()));
+	}
+	
 	public void setIndiceDao(IndiceDao indiceDao)
 	{
 		this.indiceDao = indiceDao;
@@ -129,5 +236,21 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
+	}
+
+	public void setEmpresaDao(EmpresaDao empresaDao) {
+		this.empresaDao = empresaDao;
+	}
+
+	public void setCargoDao(CargoDao cargoDao) {
+		this.cargoDao = cargoDao;
+	}
+
+	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
+		this.faixaSalarialDao = faixaSalarialDao;
+	}
+
+	public void setFaixaSalarialHistoricoDao(FaixaSalarialHistoricoDao faixaSalarialHistoricoDao) {
+		this.faixaSalarialHistoricoDao = faixaSalarialHistoricoDao;
 	}
 }

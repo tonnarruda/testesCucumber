@@ -137,4 +137,9 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 	public Collection<Ocorrencia> findSemCodigoAC(Long empresaId) {
 		return getDao().findSemCodigoAC(empresaId);
 	}
+
+	public String findCodigoACDuplicado(Long empresaId) {
+		// TODO Auto-generated method stub
+		return getDao().findCodigoACDuplicado(empresaId);
+	}
 }

@@ -21,6 +21,7 @@ import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrganizacional> implements AreaOrganizacionalDao
@@ -444,5 +445,20 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		criteria.addOrder(Order.asc("a.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		return criteria.list();
+	}
+
+	public String findCodigoACDuplicado(Long empresaId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select codigoAC from AreaOrganizacional "); 
+		hql.append("where empresa.id = :empresaId and codigoAC is not null and codigoAC != '' ");
+		hql.append("group by codigoAC ");
+		hql.append("having count(*) > 1 ");	
+		hql.append("order by codigoAC ");
+	
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+
+		return  StringUtil.converteCollectionToString(query.list());
+
 	}
 }

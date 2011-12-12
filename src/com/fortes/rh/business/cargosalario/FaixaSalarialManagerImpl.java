@@ -356,4 +356,9 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 
+	public String findCodigoACDuplicado(Long empresaId) {
+		// TODO Auto-generated method stub
+		return getDao().findCodigoACDuplicado(empresaId);
+	}
+
 }

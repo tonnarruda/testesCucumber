@@ -14,6 +14,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements IndiceDao
@@ -121,6 +122,23 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();	
+	}
+
+	public String findCodigoACDuplicado(Long empresaId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select i.codigoAC from FaixaSalarialHistorico fsh "); 
+		hql.append("inner join fsh.indice i ");
+		hql.append("inner join fsh.faixaSalarial fs ");
+		hql.append("inner join fs.cargo c ");
+		hql.append("where c.empresa.id = :empresaId and i.codigoAC is not null and i.codigoAC != '' ");
+		hql.append("group by i.codigoAC ");
+		hql.append("having count(*) > 1 ");	
+		hql.append("order by i.codigoAC ");
+	
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+
+		return  StringUtil.converteCollectionToString(query.list());
 	}
 
 }

@@ -7,10 +7,12 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 
 public class OcorrenciaDaoHibernateTest extends GenericDaoHibernateTest<Ocorrencia>
@@ -178,6 +180,27 @@ public class OcorrenciaDaoHibernateTest extends GenericDaoHibernateTest<Ocorrenc
 		assertEquals(1, ocorrenciaDao.findSemCodigoAC(empresa2.getId()).size());
 		
 	}
+	
+	
+	public void testFindCodigoACDuplicado()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("24342333");
+		empresaDao.save(empresa);
+		
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		ocorrencia.setCodigoAC("123");
+		ocorrencia.setEmpresa(empresa);
+		ocorrenciaDao.save(ocorrencia);
+	
+		Ocorrencia ocorrencia2 = OcorrenciaFactory.getEntity();
+		ocorrencia2.setCodigoAC("123");
+		ocorrencia2.setEmpresa(empresa);
+		ocorrenciaDao.save(ocorrencia2);
+		
+		assertEquals("123", ocorrenciaDao.findCodigoACDuplicado(empresa.getId()));
+	}
+	
 	
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;

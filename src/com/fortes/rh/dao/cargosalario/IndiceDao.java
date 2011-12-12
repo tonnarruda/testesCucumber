@@ -19,4 +19,6 @@ public interface IndiceDao extends GenericDao<Indice>
 	Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC);
 
 	Collection<Indice> findSemCodigoAC();
+
+	String findCodigoACDuplicado(Long empresaId);
 }

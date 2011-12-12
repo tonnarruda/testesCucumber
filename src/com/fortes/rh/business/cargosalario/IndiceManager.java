@@ -27,4 +27,5 @@ public interface IndiceManager extends GenericManager<Indice>
 	Collection<Indice> findAll(Empresa empresa);
 	Collection<Indice> findSemCodigoAC();
 	void deleteIndice(Long[] indiceIds) throws Exception;
+	String findCodigoACDuplicado(Long empresaId);
 }

@@ -15,6 +15,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
@@ -22,6 +23,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<FaixaSalarial>
@@ -416,6 +418,52 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		assertEquals(2, faixaSalarialDao.findSemCodigoAC(empresa1.getId()).size());
 		assertEquals(1, faixaSalarialDao.findSemCodigoAC(empresa2.getId()).size());
 		
+	}
+	
+	public void testFindCodigoACDuplicadoVazio()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("24342333");
+		empresaDao.save(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setEmpresa(empresa);
+		cargoDao.save(cargo);	
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCodigoAC("123456");
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		assertEquals("",faixaSalarialDao.findCodigoACDuplicado(empresa.getId()));
+	}
+
+	public void testFindCodigoACDuplicado()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("24342333");
+		empresaDao.save(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setEmpresa(empresa);
+		cargoDao.save(cargo);	
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCodigoAC("123456");
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		faixaSalarial2.setCodigoAC("123456");
+		faixaSalarial2.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial2);
+
+		FaixaSalarial faixaSalarial3 = FaixaSalarialFactory.getEntity();
+		faixaSalarial3.setCodigoAC("1234567");
+		faixaSalarial3.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial3);
+		
+		assertEquals("123456",faixaSalarialDao.findCodigoACDuplicado(empresa.getId()));
 	}
 
     public GenericDao<FaixaSalarial> getGenericDao()

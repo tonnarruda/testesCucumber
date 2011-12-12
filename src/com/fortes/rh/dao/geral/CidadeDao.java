@@ -13,4 +13,5 @@ public interface CidadeDao extends GenericDao<Cidade>
 	Cidade findByIdProjection(Long id);
 	Cidade findByNome(String nome, Long estadoId);
 	Collection<Cidade> findSemCodigoAC();
+	String findCodigoACDuplicado();
 }

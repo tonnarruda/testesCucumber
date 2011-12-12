@@ -105,4 +105,8 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		}
 		
 	}
+
+	public String findCodigoACDuplicado(Long empresaId) {
+		return getDao().findCodigoACDuplicado(empresaId);
+	}
 }

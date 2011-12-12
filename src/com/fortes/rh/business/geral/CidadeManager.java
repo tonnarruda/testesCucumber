@@ -15,4 +15,5 @@ public interface CidadeManager extends GenericManager<Cidade>
 	Collection<Cidade> findByEstado(Estado estado);
 	Cidade findByNome(String nome, Long estadoId);
 	Collection<Cidade> findSemCodigoAC();
+	String findCodigoACDuplicado();
 }

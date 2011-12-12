@@ -662,4 +662,8 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 	}
 
+	public String findCodigoACDuplicado(Long empresaId) {
+		return getDao().findCodigoACDuplicado(empresaId);
+	}
+
 }

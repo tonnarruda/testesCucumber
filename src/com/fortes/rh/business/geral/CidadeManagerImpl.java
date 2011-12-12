@@ -46,4 +46,8 @@ public class CidadeManagerImpl extends GenericManagerImpl<Cidade, CidadeDao> imp
 	public Collection<Cidade> findSemCodigoAC() {
 		return getDao().findSemCodigoAC();
 	}
+
+	public String findCodigoACDuplicado() {
+		return getDao().findCodigoACDuplicado();
+	}
 }

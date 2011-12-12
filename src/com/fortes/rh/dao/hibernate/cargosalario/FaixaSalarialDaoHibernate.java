@@ -17,6 +17,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial> implements FaixaSalarialDao
@@ -341,5 +342,20 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();	
+	}
+
+	public String findCodigoACDuplicado(Long empresaId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select fs.codigoAC from FaixaSalarial as fs "); 
+		hql.append("inner join fs.cargo as c ");
+		hql.append("where c.empresa.id = :empresaId and fs.codigoAC is not null and fs.codigoAC != '' ");
+		hql.append("group by fs.codigoAC ");
+		hql.append("having count(*) > 1 ");	
+		hql.append("order by fs.codigoAC ");
+	
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+
+		return  StringUtil.converteCollectionToString(query.list());
 	}
 }
