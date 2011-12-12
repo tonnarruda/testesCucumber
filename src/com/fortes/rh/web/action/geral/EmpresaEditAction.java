@@ -177,19 +177,24 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			setActionMessages(msgs);
 			empresa.setAcIntegra(false);
 			empresaManager.update(empresa);
+			atualizaEmpresaSessao();
 			prepareUpdate();
 			return Action.INPUT;
 		}
 		
 		empresaManager.update(empresa);
+		atualizaEmpresaSessao();
 
+		return Action.SUCCESS;
+	}
+
+	private void atualizaEmpresaSessao() 
+	{
 		if(empresa.equals(getEmpresaSistema()))
 		{
 			empresa = empresaManager.findById(empresa.getId());
 			SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresa);
 		}
-
-		return Action.SUCCESS;
 	}
 
 	public String showLogo() throws Exception

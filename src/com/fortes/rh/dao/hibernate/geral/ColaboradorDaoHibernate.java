@@ -3731,17 +3731,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 
-	public boolean countCodigoACDuplicado(Long empresaId) {
+	public String findCodigoACDuplicado(Long empresaId) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("select count(*) from Colaborador "); 
+		hql.append("select codigoAC from Colaborador "); 
 		hql.append("where empresa.id = :empresaId and codigoAC is not null and codigoAC != '' ");
 		hql.append("group by codigoAC ");
 		hql.append("having count(*) > 1 ");	
+		hql.append("order by codigoAC ");
 	
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
 
-		List<Object> list = query.list(); 
-		return  list != null && query.list().size() > 0;
+		return  StringUtil.converteCollectionToString(query.list());
 	}
 }

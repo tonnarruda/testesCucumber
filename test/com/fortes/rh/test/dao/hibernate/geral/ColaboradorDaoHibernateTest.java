@@ -3818,7 +3818,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(3, colaboradorDao.qtdAdmitidosPeriodo(empresa.getId(), dataDe, dataAte));
 	}
 	
-	public void testCountCodigoACDuplicado() 
+	public void testFindCodigoACDuplicado() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -3843,9 +3843,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		teteu.setCodigoAC("1111112");
 		colaboradorDao.save(teteu);
 		
-		assertTrue(colaboradorDao.countCodigoACDuplicado(empresa.getId()));
+		assertEquals("1111111,1111112", colaboradorDao.findCodigoACDuplicado(empresa.getId()));
 	}
 
+	public void testFindCodigoACDuplicadoVazio() 
+	{
+		Empresa vega = EmpresaFactory.getEmpresa();
+		empresaDao.save(vega);		
+		assertEquals("", colaboradorDao.findCodigoACDuplicado(vega.getId()));//tem que ser vazio, utilizado na empresaManager
+	}
+	
 	public void testGetColaboradoresByTurmas() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
@@ -29,10 +30,12 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.TipoEntidade;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Gasto;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.util.ArquivoUtil;
@@ -57,6 +60,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private EstabelecimentoManager estabelecimentoManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private IndiceManager indiceManager;
+	private CidadeManager cidadeManager;
+	private GastoManager gastoManager;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -423,14 +428,19 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			Collection<FaixaSalarial> faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
 			Collection<Indice> indices = indiceManager.findSemCodigoAC();
 			Collection<Ocorrencia> ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
+			Collection<Cidade> cidades = cidadeManager.findSemCodigoAC();
+			Collection<Gasto> gastos = gastoManager.findSemCodigoAC(empresa.getId());
+			
+			String colaboradorCodAcDuplicado = colaboradorManager.findCodigoACDuplicado(empresa.getId());
+			
 			
 			msgs.add("Não foi possível habilitar a integração com o AC Pessoal. Verifique os seguintes itens:");
 
 			if (colaboradors != null && !colaboradors.isEmpty())
 				msgs.add("- Existe(m) " + colaboradors.size() + " colaborador(es) sem código AC.");
 
-			if(colaboradorManager.countCodigoACDuplicado(empresa.getId()))
-				msgs.add("- Existem colaboradores com código AC duplicado.");
+			if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) )
+				msgs.add("- Existem colaboradores com código AC duplicado: " + colaboradorCodAcDuplicado);
 
 			if (estabelecimentos != null && !estabelecimentos.isEmpty())
 				msgs.add("- Existe(m) " + estabelecimentos.size() + " estabelecimento(s) sem código AC.");
@@ -446,6 +456,12 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			
 			if (ocorrencias != null && !ocorrencias.isEmpty())
 				msgs.add("- Existe(m) " + ocorrencias.size() + " ocorrencia(s) sem código AC.");
+			
+			if (cidades != null && !cidades.isEmpty())
+				msgs.add("- Existe(m) " + cidades.size() + " cidade(s) sem código AC.");
+			
+			if (gastos != null && !gastos.isEmpty())
+				msgs.add("- Existe(m) " + gastos.size() + " gasto(s) sem código AC.");
 			
 			
 			msgs.add("Entre em contato com o suporte técnico.");
@@ -492,5 +508,13 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setIndiceManager(IndiceManager indiceManager) {
 		this.indiceManager = indiceManager;
+	}
+
+	public void setCidadeManager(CidadeManager cidadeManager) {
+		this.cidadeManager = cidadeManager;
+	}
+
+	public void setGastoManager(GastoManager gastoManager) {
+		this.gastoManager = gastoManager;
 	}
 }
