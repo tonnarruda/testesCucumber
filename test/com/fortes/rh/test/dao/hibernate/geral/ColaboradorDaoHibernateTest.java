@@ -3843,7 +3843,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		teteu.setCodigoAC("1111112");
 		colaboradorDao.save(teteu);
 		
-		assertEquals(2, colaboradorDao.countCodigoACDuplicado(empresa.getId()).size());
+		assertTrue(colaboradorDao.countCodigoACDuplicado(empresa.getId()));
 	}
 
 	public void testGetColaboradoresByTurmas() {
