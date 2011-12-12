@@ -17,12 +17,16 @@
 	<property name="fortesrh.dir.backup" location="${fortesrh.dir}/RH/backup_db" />
 	
 	<!-- Gera time stamp -->
-	<tstamp>
-		<format property="today" pattern="yyyyMMdd" />
-	</tstamp>
-	<!-- Gera nome (e path completo) do arquivo de backup -->
+	<target name="init">
+		<tstamp>
+			<format property="today" pattern="yyyyMMddHHmmss" />
+		</tstamp>
+	</target>
+	
 	<property name="backup.db.file.path"
 		value="${fortesrh.dir.backup}/bkpDBFortesRh_${today}.backup"/>
+	
+	<!-- Gera nome (e path completo) do arquivo de backup -->
 	
 	<target name="create-bd">
 		<runtarget target="carrega-dados-de-configuracao-do-fortesrh"/>
@@ -74,7 +78,7 @@
 		<antcall target="backup-do-banco"></antcall>
 	</target>
 	
-	<target name="backup-do-banco">
+	<target name="backup-do-banco" depends="init">
 		<stopwatch name="backup-banco-time" />
 		
 		<echo message="Efetuando backup do banco de dados.." />
@@ -82,7 +86,7 @@
 		<!-- Cria diretorio de backup -->
 		<mkdir dir="${fortesrh.dir.backup}" />
 		
-		<echo>${backup.db.file.path}</echo>
+		<echo>${fortesrh.dir.backup}/bkpDBFortesRh_${today}.backup</echo>
 		<exec failifexecutionfails="true" failonerror="true"
 			executable="${postgres.dir}/bin/pg_dump"
 			output="${fortesrh.dir}/RH/output_backup_agendado.txt">
@@ -94,19 +98,19 @@
 			<arg value="-Fc" />
 			<arg value="--blobs" />
 			<arg value="-f" />
-			<arg value="${backup.db.file.path}" />
+			<arg value="${fortesrh.dir.backup}/bkpDBFortesRh_${today}.backup" />
 			<arg value="fortesrh" />
 		</exec>
 		
 		<echo message="Verificando se o arquivo foi gerado corretamente.." />
 		
-		<available property="backup.file.present" file="${backup.db.file.path}"
+		<available property="backup.file.present" file="${fortesrh.dir.backup}/bkpDBFortesRh_${today}.backup"
 			type="file" description="Verificando se arquivo de backup do banco de dados foi criado corretamente." />
 		
 		<fail unless="backup.file.present" 
 			message="Erro ao tentar efetuar backup do banco de dados." />
 		
-		<echo message="Arquivo de backup do banco salvo em: ${backup.db.file.path}" />
+		<echo message="Arquivo de backup do banco salvo em: ${fortesrh.dir.backup}/bkpDBFortesRh_${today}.backup" />
 		
 		<stopwatch name="backup-banco-time" action="total" />
 	</target>

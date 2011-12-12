@@ -34,6 +34,9 @@ public class BackupAction extends MyActionSupport {
 
 	public String gerar() {
 		try {
+			
+			backupService.backupAndSendMail();			
+
 			File dbBackupDir = new File(ArquivoUtil.getDbBackupPath());
 			File[] bkps = ArquivoUtil.listBackupFiles(dbBackupDir);
 			
@@ -42,8 +45,6 @@ public class BackupAction extends MyActionSupport {
 				for (File file : bkps) 
 					arquivos += file.getName() + "<br>";				
 			}
-			
-			backupService.backupAndSendMail();			
 			return Action.SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
