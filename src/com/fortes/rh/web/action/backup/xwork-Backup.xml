@@ -16,7 +16,6 @@
 		</action>
 		<action name="gerar" class="com.fortes.rh.web.action.backup.BackupAction" method="gerar">
 			<result name="success" type="freemarker">/WEB-INF/forms/backup/success.ftl</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/backup/input.ftl</result>
 		</action>
 	</package>
 	
