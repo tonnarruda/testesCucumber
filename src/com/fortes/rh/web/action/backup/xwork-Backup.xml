@@ -17,6 +17,9 @@
 		<action name="gerar" class="com.fortes.rh.web.action.backup.BackupAction" method="gerar">
 			<result name="success" type="freemarker">/WEB-INF/forms/backup/success.ftl</result>
 		</action>
+		<action name="list" class="com.fortes.rh.web.action.backup.BackupAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/backup/success.ftl</result>
+		</action>
 	</package>
 	
 </xwork>

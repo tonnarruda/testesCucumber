@@ -20,26 +20,27 @@ public class BackupServiceImplTest extends MockObjectTestCase {
 	}
 
 	public void testDeveriaGerarBackup_e_EnviarEmail() throws JobExecutionException {
-		// dado que
-		seArquivoDeBackupGeradoFor("/Users/rponte/Development/Fortes/RH/backup_db/bkpDBFortesRh_20100707.backup");
-		// quando
+
+		runAntScriptMock.expects(once()).method("addProperty");
+		runAntScriptMock.expects(once()).method("launch").withNoArguments();
+		runAntScriptMock.expects(once()).method("getProperty");
+
+		notificadorDeBackupMock.expects(once()).method("notifica");
 		service.backupAndSendMail();
-		// entao
-		assertQueScriptDeBackupFoiExecutado();
-		assertQueEmailFoiEnviadoAoSuporteTecnico();
+		
+		runAntScriptMock.verify();
+		notificadorDeBackupMock.verify();
 	}
 
 	public void testNaoDeveriaEnviarEmailSeHouveErroDuranteBackup() {
-		// dado que
 		seOcorrerAlgumErroDuranteBackup();
-		// quando
+		runAntScriptMock.expects(once()).method("addProperty");
 		try {
 			service.backupAndSendMail();
 		} catch(Exception e) {
-			// nao faz nada aqui
 			assertTrue("erro", (e instanceof RuntimeException));
 		}
-		// entao
+
 		assertQueEmailNaoFoiEnviadoAoSuporteTecnico();
 	}
 	
@@ -59,28 +60,6 @@ public class BackupServiceImplTest extends MockObjectTestCase {
 					.with(ANYTHING);
 	}
 
-	private void assertQueScriptDeBackupFoiExecutado() {
-		runAntScriptMock.verify();
-	}
-	private void assertQueEmailFoiEnviadoAoSuporteTecnico() {
-		notificadorDeBackupMock.verify();
-	}
-
-	private void seArquivoDeBackupGeradoFor(String arquivoDeBackup) {
-		// arquivo gerado
-		runAntScriptMock
-			.expects(once()).method("launch")
-			.withNoArguments();
-		runAntScriptMock
-			.expects(once()).method("getProperty")
-				.with(eq("backup.db.file.path"))
-					.will(returnValue(arquivoDeBackup));
-		// notificador
-		notificadorDeBackupMock
-			.expects(once())
-				.method("notifica")
-					.with(eq(arquivoDeBackup));
-	}
 
 	private RunAntScript mockRunAntScript() {
 		runAntScriptMock = mock(RunAntScript.class);

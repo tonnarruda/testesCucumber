@@ -14,16 +14,17 @@
 		<@ww.actionerror />
 		<@ww.actionmessage />
 		<div>
-			Backups armazenados na pasta ${backupPath}: <br /><br />
+			Backups armazenados na pasta > ${backupPath} <br /><br />
 		
 			<#if arquivos?exists && 0 < arquivos?size>
 				<@display.table name="arquivos" id="arquivo" class="dados">
-					<@display.column property="name" title="Nome do Arquivo"/>
+					<@display.column title="Nome do Arquivo / Tamanho / Data de modificação">${arquivo}</@display.column>					
 				</@display.table>
 			</#if>
 			
 			<br>			
-			<button onclick="window.location='${urlVoltar}'" class="btnVoltar"></button>
+			<button onclick="window.location='../geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action'" class="btnVoltar"></button>
+			<button onclick="window.location='gerar.action';" class="btnBackup"/></button>
 		</div>
 	</body>
 </html>

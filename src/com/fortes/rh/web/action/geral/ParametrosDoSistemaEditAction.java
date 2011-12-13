@@ -128,6 +128,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	{
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
+		else
+			empresa = empresaManager.findByIdProjection(empresa.getId());
 		
 		empresas = empresaManager.findComCodigoAC();
 

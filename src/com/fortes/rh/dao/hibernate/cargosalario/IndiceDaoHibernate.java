@@ -138,8 +138,7 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 	
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(empresa.getGrupoAC() != null && !empresa.getGrupoAC().equals(""))
-			query.setString("grupoAC", empresa.getGrupoAC());
+		query.setString("grupoAC", empresa.getGrupoAC());
 
 		return  StringUtil.converteCollectionToString(query.list());
 	}

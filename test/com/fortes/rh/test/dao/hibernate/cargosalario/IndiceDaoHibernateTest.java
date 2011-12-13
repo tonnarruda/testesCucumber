@@ -202,7 +202,7 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		assertEquals(0, indiceDao.findSemCodigoAC(ente).size());
 	}
 
-	public void testFindCodigoACDuplicadoVazio()
+	public void testFindCodigoACDuplicado()
 	{
 		GrupoAC grupoAC1 = GrupoACFactory.getEntity();
 		grupoAC1.setCodigo("998");

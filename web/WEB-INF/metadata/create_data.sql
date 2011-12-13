@@ -21115,6 +21115,11 @@ insert into migrations values('20111201094013');
 insert into migrations values('20111201144635');
 insert into migrations values('20111201150059');
 
+insert into migrations values('20110802145553');
+insert into migrations values('20111031134658');
+insert into migrations values('20111104144924');
+insert into migrations values('20111111141724');
+
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
 values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.63.55', '', '25', false,false, 2, '1.1.46.1', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
