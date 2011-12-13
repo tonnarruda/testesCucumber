@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.config.backup.BackupService;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 
@@ -19,8 +22,9 @@ public class BackupAction extends MyActionSupport {
 	private String filename;
 	private InputStream inputStream;
 	private BackupService backupService;
-	private String arquivos = "";
+	private Collection<File> arquivos;
 	private String urlVoltar = "";
+	private String backupPath = "";
 	
 	String dbBackupDir = ArquivoUtil.getDbBackupPath();
 
@@ -32,24 +36,29 @@ public class BackupAction extends MyActionSupport {
 		return Action.SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String gerar() {
 		try {
+			backupPath = ArquivoUtil.getDbBackupPath();
 			
 			backupService.backupAndSendMail();			
 
 			File dbBackupDir = new File(ArquivoUtil.getDbBackupPath());
 			File[] bkps = ArquivoUtil.listBackupFiles(dbBackupDir);
+
+			CollectionUtil<File> cUtil = new CollectionUtil<File>();
+			arquivos = Arrays.asList(bkps); 
+			arquivos = cUtil.sortCollectionStringIgnoreCase(arquivos, "name");
 			
-			if(bkps != null)
-			{
-				for (File file : bkps) 
-					arquivos += file.getName() + "<br>";				
-			}
-			return Action.SUCCESS;
+			
+			addActionMessage("Backup foi gerado com sucesso!");
+		
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Action.INPUT;			
+			addActionError("Erro ao gerar backup, entre em contato com o suporte!");
 		}
+
+		return Action.SUCCESS;
 	}
 	
 	/**
@@ -91,7 +100,7 @@ public class BackupAction extends MyActionSupport {
 		this.backupService = backupService;
 	}
 
-	public String getArquivos() {
+	public Collection<File> getArquivos() {
 		return arquivos;
 	}
 
@@ -101,6 +110,10 @@ public class BackupAction extends MyActionSupport {
 
 	public void setUrlVoltar(String urlVoltar) {
 		this.urlVoltar = urlVoltar;
+	}
+
+	public String getBackupPath() {
+		return backupPath;
 	}
 	
 }

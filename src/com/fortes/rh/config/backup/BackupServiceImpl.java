@@ -1,12 +1,15 @@
 package com.fortes.rh.config.backup;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 import com.fortes.rh.config.backup.notificador.NotificadorDeBackup;
 
 public class BackupServiceImpl implements BackupService {
 
-	private static final String BACKUP_FILE_PATH = "backup.db.file.path";
+	private static final String BACKUP_FILE = "backup.file";
 	
 	private static Logger logger = Logger.getLogger(BackupServiceImpl.class);
 
@@ -31,16 +34,24 @@ public class BackupServiceImpl implements BackupService {
 	 * Efetua backup da aplicação através da chamada de um Ant Script.
 	 */
 	private String backup() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		String today = simpleDateFormat.format(new Date());
+		
 		try {
 			logger.info("Efetuando backup do banco.");
+			
+			runAntScript.addProperty("today", today);
 			runAntScript.launch();
+			
 			logger.info("Backup do banco efetuado com sucesso.");
+		
 		} catch (Exception e) {
 			String msg = "Erro ao tentar efetuar backup do banco: " + e.getMessage();
 			logger.error(msg);
 			throw new RuntimeException(msg, e);
 		}
-		return runAntScript.getProperty(BACKUP_FILE_PATH);
+		
+		return runAntScript.getProperty(BACKUP_FILE) + today + ".backup";
 	}
 	/**
 	 * Envia e-mail para o responsável sobre backup do banco de dados.
