@@ -4173,26 +4173,35 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaborador1.setEmpresa(empresa1);
 		colaborador1.setCodigoAC("1");
+		colaborador1.setNaoIntegraAc(false);
 		colaboradorDao.save(colaborador1);
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaborador2.setEmpresa(empresa1);
 		colaborador2.setCodigoAC("");
+		colaborador2.setNaoIntegraAc(true);
 		colaboradorDao.save(colaborador2);
+		
+		Colaborador colaborador5 = ColaboradorFactory.getEntity();
+		colaborador5.setEmpresa(empresa1);
+		colaborador5.setCodigoAC("");
+		colaborador5.setNaoIntegraAc(false);
+		colaboradorDao.save(colaborador5);
 		
 		Colaborador colaborador3 = ColaboradorFactory.getEntity();
 		colaborador3.setEmpresa(empresa1);
 		colaborador3.setCodigoAC(null);
+		colaborador3.setNaoIntegraAc(false);
 		colaboradorDao.save(colaborador3);
 		
 		Colaborador colaborador4 = ColaboradorFactory.getEntity();
 		colaborador4.setEmpresa(empresa2);
+		colaborador4.setNaoIntegraAc(false);
 		colaborador4.setCodigoAC(null);
 		colaboradorDao.save(colaborador4);
 		
 		assertEquals(2, colaboradorDao.findSemCodigoAC(empresa1.getId()).size());
 		assertEquals(1, colaboradorDao.findSemCodigoAC(empresa2.getId()).size());
-//		assertEquals(4, colaboradorDao.findSemCodigoAC(null).size());
 	}
 	
 	private HistoricoColaborador inicializaHistorico(Date data, Colaborador colaborador, FaixaSalarial faixaSalarial) 

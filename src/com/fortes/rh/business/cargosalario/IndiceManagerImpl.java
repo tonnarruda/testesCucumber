@@ -92,8 +92,8 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 			return findAll(new String[] {"nome"});
 	}
 
-	public Collection<Indice> findSemCodigoAC() {
-		return getDao().findSemCodigoAC();
+	public Collection<Indice> findSemCodigoAC(Empresa empresa) {
+		return getDao().findSemCodigoAC(empresa);
 	}
 
 	public void deleteIndice(Long[] indiceIds) throws Exception {
@@ -106,7 +106,7 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		
 	}
 
-	public String findCodigoACDuplicado(Long empresaId) {
-		return getDao().findCodigoACDuplicado(empresaId);
+	public String findCodigoACDuplicado(Empresa empresa) {
+		return getDao().findCodigoACDuplicado(empresa);
 	}
 }

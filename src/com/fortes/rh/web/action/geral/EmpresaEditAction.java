@@ -166,15 +166,13 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			throw new Exception("Já existe uma empresa com o mesmo código AC no grupo AC especificado");
 		}
 		
-		
 		//evitando problema de vir instância sem o id (TransientObjectException) 
 		if (empresa.getExame() != null && empresa.getExame().getId() == null)
 			empresa.setExame(null);
 		
-		Collection<String> msgs = empresaManager.validaIntegracaoAC(empresa);
-		if (msgs.size() > 2)
+		if (empresaManager.verificaInconcistenciaIntegracaoAC(empresa))
 		{
-			setActionMessages(msgs);
+			setActionMsg("Não foi possível habilitar a integração com o AC Pessoal. Entre em contato com o suporte técnico.");
 			empresa.setAcIntegra(false);
 			empresaManager.update(empresa);
 			atualizaEmpresaSessao();

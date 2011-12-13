@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.geral.Empresa;
 
 public interface IndiceDao extends GenericDao<Indice>
 {
@@ -18,7 +19,7 @@ public interface IndiceDao extends GenericDao<Indice>
 
 	Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC);
 
-	Collection<Indice> findSemCodigoAC();
+	Collection<Indice> findSemCodigoAC(Empresa empresa);
 
-	String findCodigoACDuplicado(Long empresaId);
+	String findCodigoACDuplicado(Empresa empresa);
 }

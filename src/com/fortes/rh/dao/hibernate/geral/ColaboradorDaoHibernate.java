@@ -3667,6 +3667,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.or(Expression.isNull("c.codigoAC"), Expression.eq("c.codigoAC","")));
+		criteria.add(Expression.eq("naoIntegraAc", false));
 		
 		if(empresaId != null)
 			criteria.add(Expression.eq("e.id", empresaId));

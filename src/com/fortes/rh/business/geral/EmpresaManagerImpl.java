@@ -414,11 +414,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			return StringUtil.converteCollectionToString(empresasNaoListadas);
 	}
 
-	public Collection<String> validaIntegracaoAC(Empresa empresa) 
+	public boolean verificaInconcistenciaIntegracaoAC(Empresa empresa) 
 	{
-		Collection<String> msgs = new ArrayList<String>();
-		
-		if (empresa.isAcIntegra())
+		if(empresa.isAcIntegra())
 		{
 			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 			
@@ -426,67 +424,67 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findSemCodigoAC(empresa.getId());
 			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
 			Collection<FaixaSalarial> faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
-			Collection<Indice> indices = indiceManager.findSemCodigoAC();
+			Collection<Indice> indices = indiceManager.findSemCodigoAC(empresa);
 			Collection<Ocorrencia> ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
 			Collection<Cidade> cidades = cidadeManager.findSemCodigoAC();
 			
-			//Collection<Gasto> gastos = gastoManager.findSemCodigoAC(empresa.getId()); Inativos
+			if((colaboradors != null && !colaboradors.isEmpty()) || (estabelecimentos != null && !estabelecimentos.isEmpty()) || (areaOrganizacionals != null && !areaOrganizacionals.isEmpty())
+					|| (faixaSalarials != null && !faixaSalarials.isEmpty()) || (indices != null && !indices.isEmpty()) || (ocorrencias != null && !ocorrencias.isEmpty())
+					|| (cidades != null && !cidades.isEmpty()))
+				return true;
 			
 			String colaboradorCodAcDuplicado = colaboradorManager.findCodigoACDuplicado(empresa.getId());
 			String estabelecimentoCodAcDuplicado = estabelecimentoManager.findCodigoACDuplicado(empresa.getId());
 			String areaCodAcDuplicado = areaOrganizacionalManager.findCodigoACDuplicado(empresa.getId());
 			String faixaSalarialCodAcDuplicado = faixaSalarialManager.findCodigoACDuplicado(empresa.getId());
-			String indiceCodAcDuplicado = indiceManager.findCodigoACDuplicado(empresa.getId());
+			String indiceCodAcDuplicado = indiceManager.findCodigoACDuplicado(empresa);
 			String ocorrenciaCodAcDuplicado = ocorrenciaManager.findCodigoACDuplicado(empresa.getId());
 			String cidadeCodAcDuplicado = cidadeManager.findCodigoACDuplicado();
-			
-			
-			msgs.add("Não foi possível habilitar a integração com o AC Pessoal. Verifique os seguintes itens:");
+				
+			if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) || StringUtils.isNotEmpty(estabelecimentoCodAcDuplicado) ||  StringUtils.isNotEmpty(areaCodAcDuplicado)
+					|| StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) || StringUtils.isNotEmpty(indiceCodAcDuplicado) || StringUtils.isNotEmpty(ocorrenciaCodAcDuplicado)
+					|| StringUtils.isNotEmpty(cidadeCodAcDuplicado)) 
+				return true;
+		}	
+		
+		return false;
+	}
+	
+	public Collection<String> verificaIntegracaoAC(Empresa empresa) 
+	{
+		Collection<String> msgs = new ArrayList<String>();
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		
+		String colaboradorCodAcDuplicado = colaboradorManager.findCodigoACDuplicado(empresa.getId());
+		String estabelecimentoCodAcDuplicado = estabelecimentoManager.findCodigoACDuplicado(empresa.getId());
+		String areaCodAcDuplicado = areaOrganizacionalManager.findCodigoACDuplicado(empresa.getId());
+		String faixaSalarialCodAcDuplicado = faixaSalarialManager.findCodigoACDuplicado(empresa.getId());
+		String indiceCodAcDuplicado = indiceManager.findCodigoACDuplicado(empresa);
+		String ocorrenciaCodAcDuplicado = ocorrenciaManager.findCodigoACDuplicado(empresa.getId());
+		String cidadeCodAcDuplicado = cidadeManager.findCodigoACDuplicado();
+		
+		msgs.add("Verifique os seguintes itens:");
 
-			if (colaboradors != null && !colaboradors.isEmpty())
-				msgs.add("- Existe(m) " + colaboradors.size() + " colaborador(es) sem código AC.");
+		if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) )
+			msgs.add("- Existe(m) colaborador(es) com código AC duplicado: " + colaboradorCodAcDuplicado);
 
-			if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) )
-				msgs.add("- Existe(m) colaborador(es) com código AC duplicado: " + colaboradorCodAcDuplicado);
+		if( StringUtils.isNotEmpty(estabelecimentoCodAcDuplicado) )
+			msgs.add("- Existe(m) estabelecimentos(s) com código AC duplicado: " + estabelecimentoCodAcDuplicado);
 
-			if (estabelecimentos != null && !estabelecimentos.isEmpty())
-				msgs.add("- Existe(m) " + estabelecimentos.size() + " estabelecimento(s) sem código AC.");
+		if( StringUtils.isNotEmpty(areaCodAcDuplicado) )
+			msgs.add("- Existe(m) area(s) organizacional(is) com código AC duplicado: " + areaCodAcDuplicado);
 
-			if( StringUtils.isNotEmpty(estabelecimentoCodAcDuplicado) )
-				msgs.add("- Existe(m) estabelecimentos(s) com código AC duplicado: " + estabelecimentoCodAcDuplicado);
+		if( StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) )
+			msgs.add("- Existe(m) faixa(s) salarial(is) com código AC duplicado: " + faixaSalarialCodAcDuplicado);
 
-			if (areaOrganizacionals != null && !areaOrganizacionals.isEmpty())
-				msgs.add("- Existe(m) " + areaOrganizacionals.size() + " área(s) organizacional(is) sem código AC.");
+		if( StringUtils.isNotEmpty(indiceCodAcDuplicado) )
+			msgs.add("- Existe(m) indice(s) com código AC duplicado: " + indiceCodAcDuplicado);
+		
+		if( StringUtils.isNotEmpty(ocorrenciaCodAcDuplicado) )
+			msgs.add("- Existe(m) ocorrencia(s) com código AC duplicado: " + ocorrenciaCodAcDuplicado);
 
-			if( StringUtils.isNotEmpty(areaCodAcDuplicado) )
-				msgs.add("- Existe(m) area(s) organizacional(is) com código AC duplicado: " + areaCodAcDuplicado);
-
-			if (faixaSalarials != null && !faixaSalarials.isEmpty())
-				msgs.add("- Existe(m) " + faixaSalarials.size() + " faixa(s) salarial(is) sem código AC.");
-			
-			if( StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) )
-				msgs.add("- Existe(m) faixa(s) salarial(is) com código AC duplicado: " + faixaSalarialCodAcDuplicado);
-
-			if (indices != null && !indices.isEmpty())
-				msgs.add("- Existe(m) " + indices.size() + " índice(s) sem código AC.");
-
-			if( StringUtils.isNotEmpty(indiceCodAcDuplicado) )
-				msgs.add("- Existe(m) indice(s) com código AC duplicado: " + indiceCodAcDuplicado);
-			
-			if (ocorrencias != null && !ocorrencias.isEmpty())
-				msgs.add("- Existe(m) " + ocorrencias.size() + " ocorrencia(s) sem código AC.");
-			
-			if( StringUtils.isNotEmpty(ocorrenciaCodAcDuplicado) )
-				msgs.add("- Existe(m) ocorrencia(s) com código AC duplicado: " + ocorrenciaCodAcDuplicado);
-
-			if (cidades != null && !cidades.isEmpty())
-				msgs.add("- Existe(m) " + cidades.size() + " cidade(s) sem código AC.");
-			
-			if( StringUtils.isNotEmpty(cidadeCodAcDuplicado) )
-				msgs.add("- Existe(m) cidade(s) com código AC duplicado: " + cidadeCodAcDuplicado);
-			
-			msgs.add("Entre em contato com o suporte técnico.");
-		}
+		if( StringUtils.isNotEmpty(cidadeCodAcDuplicado) )
+			msgs.add("- Existe(m) cidade(s) com código AC duplicado: " + cidadeCodAcDuplicado);
 		
 		return msgs;
 	}

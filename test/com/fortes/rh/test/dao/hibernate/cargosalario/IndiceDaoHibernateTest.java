@@ -27,6 +27,7 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.geral.GrupoACFactory;
 
 public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 {
@@ -115,113 +116,133 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		assertEquals(indice, indiceRetorno);
 	}
 
-	public void testFindSemCodigoAC() {
-		
-		Indice indice1 = IndiceFactory.getEntity();
-		indice1.setCodigoAC("1");
-		indiceDao.save(indice1);
-		
-		Indice indice2 = IndiceFactory.getEntity();
-		indice2.setCodigoAC("");
-		indiceDao.save(indice2);
-		
-		Indice indice3 = IndiceFactory.getEntity();
-		indice3.setCodigoAC(null);
-		indiceDao.save(indice3);
-		
-		Collection<Indice> indices = indiceDao.findSemCodigoAC();
-		
-		assertFalse(indices.contains(indice1));		
-		assertTrue(indices.contains(indice2));		
-		assertTrue(indices.contains(indice3));		
-	}
-	
-	public void testFindCodigoACDuplicadoVazio()
+	public void testfindSemCodigoAC()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setCodigoAC("24342333");
-		empresaDao.save(empresa);
+		GrupoAC grupoAC1 = GrupoACFactory.getEntity();
+		grupoAC1.setCodigo("998");
+		grupoACDao.save(grupoAC1);
 
-		Cargo cargo = CargoFactory.getEntity();
-		cargo.setEmpresa(empresa);
-		cargoDao.save(cargo);
+		GrupoAC grupoAC2 = GrupoACFactory.getEntity();
+		grupoAC2.setCodigo("999");
+		grupoACDao.save(grupoAC2);
 		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		faixaSalarialDao.save(faixaSalarial);
-
-		Indice indice = IndiceFactory.getEntity();
-		indice.setCodigoAC("123456");
-		indiceDao.save(indice);
-		
-		Indice indice2 = IndiceFactory.getEntity();
-		indice2.setCodigoAC("123457");
-		indiceDao.save(indice2);
-		
-		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
-		faixaSalarialHistorico.setIndice(indice);
-		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
-
-		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
-		faixaSalarialHistorico2.setIndice(indice2);
-		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
-		
-		assertEquals("", indiceDao.findCodigoACDuplicado(empresa.getId()));
-	}
-	
-	public void testFindCodigoACDuplicado()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setCodigoAC("24342333");
-		empresaDao.save(empresa);
-		
-		Cargo cargo = CargoFactory.getEntity();
-		cargo.setEmpresa(empresa);
-		cargoDao.save(cargo);
-		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		faixaSalarialDao.save(faixaSalarial);
+		Empresa ente = EmpresaFactory.getEmpresa();
+		ente.setCodigoAC("000225");
+		ente.setGrupoAC(grupoAC1.getCodigo());
+		empresaDao.save(ente);
 		
 		Indice indice = IndiceFactory.getEntity();
-		indice.setCodigoAC("123456");
+		indice.setCodigoAC("");
+		indice.setGrupoAC(grupoAC1.getCodigo());
 		indiceDao.save(indice);
-		
-		Indice indice2 = IndiceFactory.getEntity();
-		indice2.setCodigoAC("123456");
-		indiceDao.save(indice2);
+
+		Indice indice2Repetido = IndiceFactory.getEntity();
+		indice2Repetido.setCodigoAC("0001");
+		indice2Repetido.setGrupoAC(grupoAC1.getCodigo());
+		indiceDao.save(indice2Repetido);
 
 		Indice indice3 = IndiceFactory.getEntity();
-		indice3.setCodigoAC("123457");
+		indice3.setCodigoAC("0002");
+		indice3.setGrupoAC(grupoAC1.getCodigo());
 		indiceDao.save(indice3);
 		
 		Indice indice4 = IndiceFactory.getEntity();
-		indice4.setCodigoAC("123457");
+		indice4.setCodigoAC("0001");
+		indice4.setGrupoAC(grupoAC2.getCodigo());
 		indiceDao.save(indice4);
 		
-		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
-		faixaSalarialHistorico.setIndice(indice);
-		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		Indice indice5 = IndiceFactory.getEntity();
+		indice5.setCodigoAC("");
+		indice5.setGrupoAC(grupoAC2.getCodigo());
+		indiceDao.save(indice5);
 		
-		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
-		faixaSalarialHistorico2.setIndice(indice2);
-		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+		assertEquals(1, indiceDao.findSemCodigoAC(ente).size());
+	}
+	
+	public void testFindSemCodigoACVazio()
+	{
+		GrupoAC grupoAC1 = GrupoACFactory.getEntity();
+		grupoAC1.setCodigo("998");
+		grupoACDao.save(grupoAC1);
 		
-		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity();
-		faixaSalarialHistorico3.setIndice(indice3);
-		faixaSalarialHistorico3.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
+		GrupoAC grupoAC2 = GrupoACFactory.getEntity();
+		grupoAC2.setCodigo("999");
+		grupoACDao.save(grupoAC2);
 		
-		FaixaSalarialHistorico faixaSalarialHistorico4 = FaixaSalarialHistoricoFactory.getEntity();
-		faixaSalarialHistorico4.setIndice(indice4);
-		faixaSalarialHistorico4.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistoricoDao.save(faixaSalarialHistorico4);
+		Empresa ente = EmpresaFactory.getEmpresa();
+		ente.setCodigoAC("000225");
+		ente.setGrupoAC(grupoAC1.getCodigo());
+		empresaDao.save(ente);
 		
-		assertEquals("123456,123457", indiceDao.findCodigoACDuplicado(empresa.getId()));
+		Indice indice = IndiceFactory.getEntity();
+		indice.setCodigoAC("0001");
+		indice.setGrupoAC(grupoAC1.getCodigo());
+		indiceDao.save(indice);
+		
+		Indice indice2Repetido = IndiceFactory.getEntity();
+		indice2Repetido.setCodigoAC("0001");
+		indice2Repetido.setGrupoAC(grupoAC1.getCodigo());
+		indiceDao.save(indice2Repetido);
+		
+		Indice indice3 = IndiceFactory.getEntity();
+		indice3.setCodigoAC("0002");
+		indice3.setGrupoAC(grupoAC1.getCodigo());
+		indiceDao.save(indice3);
+		
+		Indice indice4 = IndiceFactory.getEntity();
+		indice4.setCodigoAC("0001");
+		indice4.setGrupoAC(grupoAC2.getCodigo());
+		indiceDao.save(indice4);
+		
+		Indice indice5 = IndiceFactory.getEntity();
+		indice5.setCodigoAC("0001");
+		indice5.setGrupoAC(grupoAC2.getCodigo());
+		indiceDao.save(indice5);
+		
+		assertEquals(0, indiceDao.findSemCodigoAC(ente).size());
+	}
+
+	public void testFindCodigoACDuplicadoVazio()
+	{
+		GrupoAC grupoAC1 = GrupoACFactory.getEntity();
+		grupoAC1.setCodigo("998");
+		grupoACDao.save(grupoAC1);
+		
+		GrupoAC grupoAC2 = GrupoACFactory.getEntity();
+		grupoAC2.setCodigo("999");
+		grupoACDao.save(grupoAC2);
+		
+		Empresa ente = EmpresaFactory.getEmpresa();
+		ente.setCodigoAC("000225");
+		ente.setGrupoAC(grupoAC1.getCodigo());
+		empresaDao.save(ente);
+		
+		Indice indice = IndiceFactory.getEntity();
+		indice.setCodigoAC("0001");
+		indice.setGrupoAC(grupoAC1.getCodigo());
+		indiceDao.save(indice);
+		
+		Indice indice2Repetido = IndiceFactory.getEntity();
+		indice2Repetido.setCodigoAC("0001");
+		indice2Repetido.setGrupoAC(grupoAC1.getCodigo());
+		indiceDao.save(indice2Repetido);
+		
+		Indice indice3 = IndiceFactory.getEntity();
+		indice3.setCodigoAC("0002");
+		indice3.setGrupoAC(grupoAC1.getCodigo());
+		indiceDao.save(indice3);
+		
+		Indice indice4 = IndiceFactory.getEntity();
+		indice4.setCodigoAC("0005");
+		indice4.setGrupoAC(grupoAC2.getCodigo());
+		indiceDao.save(indice4);
+		
+		Indice indice5 = IndiceFactory.getEntity();
+		indice5.setCodigoAC("0005");
+		indice5.setGrupoAC(grupoAC2.getCodigo());
+		indiceDao.save(indice5);
+		
+		assertEquals("0001", indiceDao.findCodigoACDuplicado(ente));
 	}
 	
 	public void setIndiceDao(IndiceDao indiceDao)

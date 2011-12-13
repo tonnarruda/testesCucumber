@@ -139,17 +139,20 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
 		colaboradors = colaboradorManager.findSemCodigoAC(empresa.getId());
 		faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
-		indices = indiceManager.findSemCodigoAC();
+		indices = indiceManager.findSemCodigoAC(empresa);
 		ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
+		
+		
+		Collection<String> msgs = empresaManager.verificaIntegracaoAC(empresa);
+		if (msgs.size() > 1)
+			setActionMessages(msgs);
 		
 		return Action.SUCCESS;
 	}
 	
 	public String deleteSemCodigoAC() throws Exception
 	{
-		
 		try {
-			
 			colaboradorOcorrenciaManager.deleteOcorrencias(ocorrenciaIds);
 			colaboradorManager.deleteColaborador(colaboradorIds);
 			estabelecimentoManager.deleteEstabelecimento(estabelecimentoIds);

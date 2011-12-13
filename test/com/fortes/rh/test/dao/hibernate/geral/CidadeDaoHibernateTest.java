@@ -133,6 +133,61 @@ public class CidadeDaoHibernateTest extends GenericDaoHibernateTest<Cidade>
 		
 	}
 	
+	public void testFindCodigoACDuplicado_SEM_Duplicacao() {
+		
+		Estado CE = EstadoFactory.getEntity(1L);
+		CE.setNome("Ceara");
+		estadoDao.save(CE);
+
+		Estado RN = EstadoFactory.getEntity(1L);
+		RN.setNome("Rio Grande do NOrte");
+		estadoDao.save(RN);
+		
+		Cidade fortaleza = CidadeFactory.getEntity();
+		fortaleza.setCodigoAC("0001");
+		fortaleza.setUf(CE);
+		cidadeDao.save(fortaleza);
+
+		Cidade natal = CidadeFactory.getEntity();
+		natal.setCodigoAC("0001");
+		natal.setUf(RN);
+		cidadeDao.save(natal);
+
+		assertEquals("", cidadeDao.findCodigoACDuplicado());
+	}
+	
+	public void testFindCodigoACDuplicado_COM_Duplicacao() {
+		
+		Estado CE = EstadoFactory.getEntity(1L);
+		CE.setNome("Ceara");
+		estadoDao.save(CE);
+		
+		Estado RN = EstadoFactory.getEntity(1L);
+		RN.setNome("Rio Grande do NOrte");
+		estadoDao.save(RN);
+		
+		Cidade fortaleza = CidadeFactory.getEntity();
+		fortaleza.setNome("Fortaleza");
+		fortaleza.setCodigoAC("0001");
+		fortaleza.setUf(CE);
+		cidadeDao.save(fortaleza);
+		
+		Cidade natal = CidadeFactory.getEntity();
+		natal.setNome("Natal");
+		natal.setCodigoAC("0001");
+		natal.setUf(RN);
+		cidadeDao.save(natal);
+		
+		Cidade pipa = CidadeFactory.getEntity();
+		pipa.setNome("Pipa");
+		pipa.setUf(RN);
+		pipa.setCodigoAC("0001");
+		cidadeDao.save(pipa);
+		
+		assertEquals("0001", cidadeDao.findCodigoACDuplicado());
+	}
+	
+	
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{
 		this.cidadeDao = cidadeDao;

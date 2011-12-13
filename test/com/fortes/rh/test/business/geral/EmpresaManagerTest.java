@@ -279,7 +279,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	assertEquals(10, empresaManager.populaCadastrosCheckBox().size());
     }
 
-    public void testValidaIntegracaoAC()
+    public void testVerificaInconcistenciaIntegracaoACComColecoes()
     {
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresa.setAcIntegra(true);
@@ -292,7 +292,23 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	indiceManager.expects(once()).method("findSemCodigoAC").will(returnValue(Arrays.asList(IndiceFactory.getEntity())));
     	OcorrenciaManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId())).will(returnValue(Arrays.asList(OcorrenciaFactory.getEntity())));
     	cidadeManager.expects(once()).method("findSemCodigoAC").will(returnValue(Arrays.asList(CidadeFactory.getEntity())));
-
+    	
+    	assertTrue(empresaManager.verificaInconcistenciaIntegracaoAC(empresa));
+    }
+    public void testVerificaInconcistenciaIntegracaoAC()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setAcIntegra(true);
+    	
+    	MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+    	colaboradorManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId())).will(returnValue(null));
+    	estabelecimentoManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId())).will(returnValue(null));
+    	areaOrganizacionalManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId())).will(returnValue(null));
+    	faixaSalarialManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId())).will(returnValue(null));
+    	indiceManager.expects(once()).method("findSemCodigoAC").will(returnValue(null));
+    	OcorrenciaManager.expects(once()).method("findSemCodigoAC").will(returnValue(null));
+    	cidadeManager.expects(once()).method("findSemCodigoAC").will(returnValue(null));
+    	
     	colaboradorManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("1"));
     	estabelecimentoManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	areaOrganizacionalManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
@@ -301,24 +317,32 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	OcorrenciaManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("3"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
+    	assertTrue(empresaManager.verificaInconcistenciaIntegracaoAC(empresa));
+    }
+    
+    public void testValidaIntegracaoAC()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setAcIntegra(true);
     	
-    	Collection<String> collectionMsgs = empresaManager.validaIntegracaoAC(empresa);
+    	MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+    	colaboradorManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("1"));
+    	estabelecimentoManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
+    	areaOrganizacionalManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
+    	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
+    	indiceManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
+    	OcorrenciaManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("3"));
+    	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
-    	assertEquals(12, collectionMsgs.size());
+    	Collection<String> collectionMsgs = (Collection<String>) empresaManager.verificaIntegracaoAC(empresa);
+    	
+    	assertEquals(4, collectionMsgs.size());
     	
     	String msgs = StringUtil.converteCollectionToString(collectionMsgs);
     	
-    	assertEquals("Não foi possível habilitar a integração com o AC Pessoal. Verifique os seguintes itens:," +
-    			"- Existe(m) 1 colaborador(es) sem código AC.," +
+    	assertEquals("Verifique os seguintes itens:," +
     			"- Existe(m) colaborador(es) com código AC duplicado: 1," +
-    			"- Existe(m) 1 estabelecimento(s) sem código AC.," +
-    			"- Existe(m) 1 área(s) organizacional(is) sem código AC.," +
-    			"- Existe(m) 1 faixa(s) salarial(is) sem código AC.," +
     			"- Existe(m) faixa(s) salarial(is) com código AC duplicado: 2," +
-    			"- Existe(m) 1 índice(s) sem código AC.," +
-    			"- Existe(m) 1 ocorrencia(s) sem código AC.," +
-    			"- Existe(m) ocorrencia(s) com código AC duplicado: 3," +
-    			"- Existe(m) 1 cidade(s) sem código AC.," +
-    			"Entre em contato com o suporte técnico.", msgs);
+    			"- Existe(m) ocorrencia(s) com código AC duplicado: 3", msgs);
     }
 }

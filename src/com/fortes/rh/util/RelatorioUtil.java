@@ -27,8 +27,8 @@ public class RelatorioUtil
     	String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
 
     	String msgRegistro = Autenticador.getMsgPadrao();
-    	Boolean versaoDemo = (Boolean) ActionContext.getContext().getSession().get("REG_LOGS");
-    	if(versaoDemo != null && versaoDemo)
+    	Boolean registrado = (Boolean) ActionContext.getContext().getSession().get("REG_LOGS");
+    	if(registrado != null && registrado)
     		msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());
 
     	Cabecalho cabecalho = new Cabecalho(titulo, empresa.getNome(), filtro, usuario.getNome(), parametrosDoSistema.getAppVersao(), logo, msgRegistro);

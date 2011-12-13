@@ -143,7 +143,7 @@ public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements C
 		StringBuilder hql = new StringBuilder();
 		hql.append("select codigoAC from Cidade "); 
 		hql.append("where codigoAC is not null and codigoAC != '' ");
-		hql.append("group by codigoAC ");
+		hql.append("group by codigoAC, uf.id ");
 		hql.append("having count(*) > 1 ");	
 		hql.append("order by codigoAC ");
 	

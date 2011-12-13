@@ -14,6 +14,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
@@ -106,7 +107,7 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		return (Indice) criteria.uniqueResult();
 	}
 
-	public Collection<Indice> findSemCodigoAC() {
+	public Collection<Indice> findSemCodigoAC(Empresa empresa) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "i");
 
 		ProjectionList p = Projections.projectionList().create();
@@ -117,6 +118,9 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.or(Expression.isNull("i.codigoAC"), Expression.eq("i.codigoAC","")));
+		
+		if(empresa.getGrupoAC() != null && !empresa.getGrupoAC().equals(""))
+			criteria.add(Expression.eq("i.grupoAC", empresa.getGrupoAC()));
 
 		criteria.addOrder(Order.asc("i.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
@@ -124,19 +128,18 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		return criteria.list();	
 	}
 
-	public String findCodigoACDuplicado(Long empresaId) {
+	public String findCodigoACDuplicado(Empresa empresa) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("select i.codigoAC from FaixaSalarialHistorico fsh "); 
-		hql.append("inner join fsh.indice i ");
-		hql.append("inner join fsh.faixaSalarial fs ");
-		hql.append("inner join fs.cargo c ");
-		hql.append("where c.empresa.id = :empresaId and i.codigoAC is not null and i.codigoAC != '' ");
-		hql.append("group by i.codigoAC ");
+		hql.append("select codigoAC from Indice "); 
+		hql.append("where grupoAC = :grupoAC and codigoAC is not null and codigoAC != '' ");
+		hql.append("group by codigoAC, grupoac ");
 		hql.append("having count(*) > 1 ");	
-		hql.append("order by i.codigoAC ");
+		hql.append("order by codigoAC, grupoAC ");
 	
 		Query query = getSession().createQuery(hql.toString());
-		query.setLong("empresaId", empresaId);
+		
+		if(empresa.getGrupoAC() != null && !empresa.getGrupoAC().equals(""))
+			query.setString("grupoAC", empresa.getGrupoAC());
 
 		return  StringUtil.converteCollectionToString(query.list());
 	}
