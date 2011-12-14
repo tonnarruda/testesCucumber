@@ -81,7 +81,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	
 	private String[] selectPrioridades;
 	private String[] colaboradorTurmaHidden;
-	private String[] notas;
+	private String[] notas = new String[]{};
 	
 	private Long[] colaboradoresId;
 	private Long[] colaboradoresTurmaId;
