@@ -466,25 +466,25 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		msgs.add("Verifique os seguintes itens:");
 
 		if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) )
-			msgs.add("- Existe(m) colaborador(es) com código AC duplicado: " + colaboradorCodAcDuplicado);
+			msgs.add("- Existe colaborador duplicado, código AC: " + colaboradorCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(estabelecimentoCodAcDuplicado) )
-			msgs.add("- Existe(m) estabelecimentos(s) com código AC duplicado: " + estabelecimentoCodAcDuplicado);
+			msgs.add("- Existe estabelecimentos duplicado, código AC: " + estabelecimentoCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(areaCodAcDuplicado) )
-			msgs.add("- Existe(m) area(s) organizacional(is) com código AC duplicado: " + areaCodAcDuplicado);
+			msgs.add("- Existe area organizacional duplicado, código AC: " + areaCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) )
-			msgs.add("- Existe(m) faixa(s) salarial(is) com código AC duplicado: " + faixaSalarialCodAcDuplicado);
+			msgs.add("- Existe faixa salarial duplicado, código AC: " + faixaSalarialCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(indiceCodAcDuplicado) )
-			msgs.add("- Existe(m) indice(s) com código AC duplicado: " + indiceCodAcDuplicado);
+			msgs.add("- Existe indice duplicado, código AC: " + indiceCodAcDuplicado);
 		
 		if( StringUtils.isNotEmpty(ocorrenciaCodAcDuplicado) )
-			msgs.add("- Existe(m) ocorrencia(s) com código AC duplicado: " + ocorrenciaCodAcDuplicado);
+			msgs.add("- Existe ocorrencia duplicado, código AC: " + ocorrenciaCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(cidadeCodAcDuplicado) )
-			msgs.add("- Existe(m) cidade(s) com código AC duplicado: " + cidadeCodAcDuplicado);
+			msgs.add("- Existe cidade duplicado, código AC: " + cidadeCodAcDuplicado);
 		
 		return msgs;
 	}

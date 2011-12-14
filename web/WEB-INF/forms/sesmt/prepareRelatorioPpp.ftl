@@ -47,7 +47,7 @@
 		<ul>
 		<@ww.textarea label="Observações" name="observacoes" id="observacoes" cssStyle="width: 450px;clear:both;"/>
 		</ul>
-		<@ww.checkbox label="Imprimir recibo (ass. do colaborador)" name="imprimirRecibo" labelPosition="left"/>
+		<@ww.checkbox label="Imprimir espaço para assinatura do colaborador" name="imprimirRecibo" labelPosition="left"/>
 		
 		<@ww.hidden id="colaboradorId" name="colaborador.id"/>
 	</@ww.form>
