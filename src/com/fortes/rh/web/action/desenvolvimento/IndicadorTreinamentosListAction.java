@@ -99,7 +99,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		this.qtdParticipantesPrevistos = turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 		
 		Collection<DataGrafico> graficoFrequencia = new ArrayList<DataGrafico>();
-		graficoFrequencia.add(new DataGrafico(null, "Vagas", this.qtdParticipantesPrevistos, ""));
+		graficoFrequencia.add(new DataGrafico(null, "Participantes", this.qtdParticipantesPrevistos, ""));
 		graficoFrequencia.add(new DataGrafico(null, "Inscritos", this.qtdTotalInscritosTurmas, ""));
 		grfFrequencia = StringUtil.toJSON(graficoFrequencia, null);
 	}
