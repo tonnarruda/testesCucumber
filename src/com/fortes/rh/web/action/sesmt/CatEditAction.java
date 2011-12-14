@@ -184,7 +184,7 @@ public class CatEditAction extends MyActionSupportList
 				return INPUT;
 			
 			cats = catManager.findRelatorioCats(getEmpresaSistema().getId(), inicio, fim, estabelecimentosCheck, nomeBusca);
-			parametros = RelatorioUtil.getParametrosRelatorio("CAT's", getEmpresaSistema(), getPeriodoFormatado());
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Registros de CAT's", getEmpresaSistema(), getPeriodoFormatado());
 		}
 		catch (ColecaoVaziaException e)
 		{
