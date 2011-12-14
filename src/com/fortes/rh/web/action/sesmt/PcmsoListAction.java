@@ -50,7 +50,9 @@ public class PcmsoListAction extends MyActionSupportList
 		{
 			dataSource = pcmsoManager.montaRelatorio(dataIni, dataFim, estabelecimento, getEmpresaSistema().getId(), exibirAgenda, exibirDistColaboradorSetor, exibirRiscos, exibirEpis, exibirExames, exibirAcidentes);
 			parametros = RelatorioUtil.getParametrosRelatorio("", getEmpresaSistema(), "");			
+			
 			return Action.SUCCESS;
+		
 		} catch (ColecaoVaziaException e)
 		{
 			prepareRelatorio();

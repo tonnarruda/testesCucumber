@@ -11,6 +11,7 @@
 				<param name="location">WEB-INF/report/pcmso.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">pcmso.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/pcmso.ftl</result>
 		</action>

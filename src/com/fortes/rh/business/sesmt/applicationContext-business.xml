@@ -319,6 +319,12 @@
     <property name="historicoAmbienteManager">
       <ref bean="historicoAmbienteManager" />
     </property>
+    <property name="estabelecimentoManager">
+      <ref bean="estabelecimentoManager" />
+    </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
   </bean>
   <bean id="pcmsoManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Agenda;
 import com.fortes.rh.model.sesmt.Evento;
@@ -30,6 +33,8 @@ public class PcmsoManagerImpl implements PcmsoManager
 	private FuncaoManager funcaoManager;
 	private RiscoAmbienteManager riscoAmbienteManager;
 	private HistoricoAmbienteManager historicoAmbienteManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private EmpresaManager empresaManager;
 
 	public Collection<PCMSO> montaRelatorio(Date dataIni, Date dataFim, Estabelecimento estabelecimento, Long empresaId, boolean exibirAgenda, boolean exibirDistColaboradorSetor, boolean exibirRiscos, boolean exibirEpis, boolean exibirExames, boolean exibirAcidentes) throws Exception
 	{
@@ -39,8 +44,9 @@ public class PcmsoManagerImpl implements PcmsoManager
 		Collection<PCMSO> pcmsos = new ArrayList<PCMSO>();
 		
 		PCMSO pcmso = new PCMSO(exibirAgenda, exibirDistColaboradorSetor, exibirRiscos, exibirEpis, exibirExames, exibirAcidentes);
+		montaCabecalho(pcmso, empresaId, estabelecimento.getId());
+		
 		StringBuilder msg = new StringBuilder("");
-
 		msg.append(montaAgenda(pcmso, dataIni, dataFim, estabelecimento, exibirAgenda));
 		msg.append(montaColaboradoresPorSetor(pcmso, dataFim, empresaId, estabelecimento, exibirDistColaboradorSetor));
 		msg.append(montaTabelaAnualExames(pcmso, dataIni, estabelecimento, exibirExames));
@@ -202,6 +208,15 @@ public class PcmsoManagerImpl implements PcmsoManager
 		
 		return "";
 	}
+	
+	private void montaCabecalho(PCMSO pcmso, Long empresaId, Long estabelecimentoId)
+	{
+		Estabelecimento estabelecimento = estabelecimentoManager.findById(estabelecimentoId);
+		Empresa empresa = empresaManager.findById(empresaId);
+		
+		pcmso.setEmpresa(empresa);
+		pcmso.setEstabelecimento(estabelecimento);
+	}
 
 	public void setAgendaManager(AgendaManager agendaManager)
 	{
@@ -236,5 +251,13 @@ public class PcmsoManagerImpl implements PcmsoManager
 
 	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager) {
 		this.historicoAmbienteManager = historicoAmbienteManager;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

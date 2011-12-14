@@ -26,7 +26,7 @@
 			<@ww.hidden name="composicaoSesmt.empresa.id" />
 			<@ww.token/>
 			
-			<@ww.datepicker label="Data" required="true" value="${data}" name="composicaoSesmt.data" id="data" cssClass="mascaraData"/>
+			<@ww.datepicker label="A partir de" required="true" value="${data}" name="composicaoSesmt.data" id="data" cssClass="mascaraData"/>
 			
 			<@ww.textfield label="Qtd. de Técnicos de Segurança" id="qtdTecnicosSeguranca" name="composicaoSesmt.qtdTecnicosSeguranca" maxLength="2" onkeypress="return somenteNumeros(event,'');" cssStyle="width:40px; text-align:right;"/>
 			<@ww.textfield label="Qtd. de Engenheiros de Segurança" id="qtdEngenheirosSeguranca" name="composicaoSesmt.qtdEngenheirosSeguranca" maxLength="2" onkeypress="return somenteNumeros(event,'');" cssStyle="width:40px; text-align:right;"/>

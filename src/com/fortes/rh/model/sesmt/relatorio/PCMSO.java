@@ -3,6 +3,8 @@ package com.fortes.rh.model.sesmt.relatorio;
 import java.util.Collection;
 
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Agenda;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -25,6 +27,10 @@ public class PCMSO
 	private Collection<CatRelatorioAnual> cats;
 	private Collection<HistoricoFuncao> historicoFuncaos;
 	private Collection<HistoricoAmbiente> historicoAmbientes;
+	
+	//cabecalho
+	private Estabelecimento estabelecimento;
+	private Empresa empresa;
 	
 	public PCMSO() {
 	}
@@ -153,5 +159,21 @@ public class PCMSO
 
 	public void setHistoricoAmbientes(Collection<HistoricoAmbiente> historicoAmbientes) {
 		this.historicoAmbientes = historicoAmbientes;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 }
