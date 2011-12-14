@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorTest extends TestCase {
 
@@ -27,6 +28,20 @@ public class ColaboradorTest extends TestCase {
 		
 		colaborador = new Colaborador();
 		assertEquals("", colaborador.getNomeComercialEmpresa());
+	}
+
+	public void testPeriodoFormatado() 
+	{
+		Colaborador colaborador = new Colaborador();
+		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(01, 02, 1999));
+		colaborador.setDataDesligamento(DateUtil.criarDataMesAno(01, 03, 1999));
+		assertEquals("01/02/1999 a 01/03/1999 (1 mês)", colaborador.getPeriodoFormatado());
+
+//		colaborador.setDataDesligamento(DateUtil.criarDataMesAno(10, 02, 1999));
+//		assertEquals("01/02/1999 a 10/02/1999 (10 dias)", colaborador.getPeriodoFormatado());
+
+		colaborador.setDataDesligamento(null);
+		assertEquals("01/02/1999 até o momento ", colaborador.getPeriodoFormatado().substring(0, 25));
 	}
 	
 	public void testDeveriaJaTerSidoUmCandidato() {
