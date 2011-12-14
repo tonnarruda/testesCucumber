@@ -397,6 +397,7 @@
 				/sesmt/evento/*/**=ROLE_CAD_EVENTO
 				/sesmt/agenda/*/**=ROLE_CAD_AGENDA
 				/sesmt/indicadores/painel.action*=ROLE_SESMT_PAINEL_IND
+				/sesmt/composicaoSesmt/*/**=ROLE_COMPOSICAO_SESMT
 				
 				/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action*=ROLE_REL_ACOMP_PERIODO_EXPERIENCIA
 				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA

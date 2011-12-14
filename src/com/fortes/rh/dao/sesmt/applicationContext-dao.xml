@@ -354,7 +354,16 @@
       <ref bean="naturezaLesaoDaoTarget" />
     </property>
   </bean>
+  <bean id="composicaoSesmtDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.ComposicaoSesmtDao</value>
+    </property>
+    <property name="target">
+      <ref bean="composicaoSesmtDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

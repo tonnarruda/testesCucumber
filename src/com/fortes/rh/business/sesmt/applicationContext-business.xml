@@ -815,5 +815,19 @@
       <ref bean="naturezaLesaoManagerTarget" />
     </property>
   </bean>
+  <bean id="composicaoSesmtManagerTarget" class="com.fortes.rh.business.sesmt.ComposicaoSesmtManagerImpl">
+    <property name="dao">
+      <ref bean="composicaoSesmtDao" />
+    </property>
+  </bean>
+  <bean id="composicaoSesmtManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.ComposicaoSesmtManager</value>
+    </property>
+    <property name="target">
+      <ref bean="composicaoSesmtManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 

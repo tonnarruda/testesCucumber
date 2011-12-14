@@ -313,7 +313,9 @@
   <include file="/com/fortes/rh/web/action/cargosalario/xwork-FaturamentoMensal.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-NaturezaLesao.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-IndicadoresSesmt.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-ComposicaoSesmt.xml" />
 </xwork>
+
 
 
 
