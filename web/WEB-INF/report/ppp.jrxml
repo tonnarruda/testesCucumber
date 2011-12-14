@@ -83,7 +83,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Eu, " + $F{colaborador.nome} + ", recebi cópia do meu PPP em         /        /       "]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Eu, " + $F{colaborador.nome} + ", recebi cópia do meu PPP em   ____/____/________"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
