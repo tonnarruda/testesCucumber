@@ -13,6 +13,8 @@ import com.fortes.rh.business.geral.DocumentoAnexoManagerImpl;
 import com.fortes.rh.dao.geral.DocumentoAnexoDao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.geral.DocumentoAnexo;
+import com.fortes.rh.model.geral.TipoDocumento;
+import com.fortes.rh.test.factory.geral.TipoDocumentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.util.ArquivoUtil;
 
@@ -108,6 +110,31 @@ public class DocumentoAnexoManagerTest extends MockObjectTestCase
 		assertNotNull(excecao);
 	}
 
+	public void testAtualizaDocumentoAnexoComDocumentoETipoDocumento()
+	{
+		TipoDocumento tipoDocumento = TipoDocumentoFactory.getEntity();
+		tipoDocumento.setDescricao("Certificado");
+		
+		File documento = new File();
+		
+		DocumentoAnexo documentoAnexo = new DocumentoAnexo();
+		documentoAnexo.setEtapaSeletiva(new EtapaSeletiva());
+		documentoAnexo.setTipoDocumento(tipoDocumento);
+
+		Exception excecao = null;
+
+		try
+		{
+			documentoAnexoDao.expects(once()).method("update").with(ANYTHING);
+			documentoAnexoManager.atualizarDocumentoAnexo("diretorio", documentoAnexo, documento);
+		}
+		catch (Exception e)
+		{
+			excecao = e;
+		}
+		assertNull(excecao);
+	}
+	
 	public void testInserirDocumentoAnexo()
 	{
 		File documento = new File();
@@ -117,6 +144,28 @@ public class DocumentoAnexoManagerTest extends MockObjectTestCase
 
 		Exception excecao = null;
 
+		try
+		{
+			documentoAnexoDao.expects(once()).method("save").with(ANYTHING);
+			documentoAnexoManager.inserirDocumentoAnexo("diretorio", documentoAnexo, documento);
+		}
+		catch (Exception e)
+		{
+			excecao = e;
+		}
+		assertNull(excecao);
+	}
+
+	public void testInserirDocumentoAnexoETipoDocumento()
+	{
+		File documento = new File();
+		
+		DocumentoAnexo documentoAnexo = new DocumentoAnexo();
+		documentoAnexo.setEtapaSeletiva(new EtapaSeletiva());
+		documentoAnexo.setTipoDocumento(new TipoDocumento());
+		
+		Exception excecao = null;
+		
 		try
 		{
 			documentoAnexoDao.expects(once()).method("save").with(ANYTHING);
@@ -155,6 +204,29 @@ public class DocumentoAnexoManagerTest extends MockObjectTestCase
 
 		Exception excecao = null;
 
+		try
+		{
+			documentoAnexoDao.expects(once()).method("remove").with(ANYTHING);
+			documentoAnexoManager.deletarDocumentoAnexo("diretorio", documentoAnexo);
+		}
+		catch (Exception e)
+		{
+			excecao = e;
+		}
+		assertNull(excecao);
+	}
+
+	public void testDeletarDocumentoAnexoETipoDoc()
+	{
+		TipoDocumento tipoDocumento = TipoDocumentoFactory.getEntity();
+		tipoDocumento.setDescricao("Certificado");
+		
+		DocumentoAnexo documentoAnexo = new DocumentoAnexo();
+		documentoAnexo.setTipoDocumento(tipoDocumento);
+		documentoAnexo.setId(1L);
+		
+		Exception excecao = null;
+		
 		try
 		{
 			documentoAnexoDao.expects(once()).method("remove").with(ANYTHING);

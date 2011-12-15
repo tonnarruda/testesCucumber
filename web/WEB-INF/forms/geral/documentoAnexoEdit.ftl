@@ -78,6 +78,7 @@
 	<#if documentoAnexo.origem?string == "C">
 		<@ww.select label="Etapa Seletiva" name="documentoAnexo.etapaSeletiva.id" list="etapaSeletivas" listKey="id" listValue="nome" headerKey="" headerValue="Não informado"/>
 	</#if>
+	<@ww.select label="Tipo do Documento" name="documentoAnexo.tipoDocumento.id" id="tipoDocumentoId" listKey="id" listValue="descricao" list="tipoDocumentos" headerKey="" headerValue="Nenhum"/>
 	<@ww.textarea label="Observação" name="documentoAnexo.observacao" cssClass="inputNome"/>
 	<@ww.hidden name="documentoAnexo.id" />
 	<@ww.hidden name="documentoAnexo.origem" />

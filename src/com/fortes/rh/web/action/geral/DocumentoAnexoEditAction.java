@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
+import com.fortes.rh.business.geral.TipoDocumentoManager;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.geral.DocumentoAnexo;
+import com.fortes.rh.model.geral.TipoDocumento;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.webwork.ServletActionContext;
@@ -19,6 +21,7 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 {
 	private DocumentoAnexoManager documentoAnexoManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
+	private TipoDocumentoManager tipoDocumentoManager;
 
 	private DocumentoAnexo documentoAnexo;
 	private Collection<EtapaSeletiva> etapaSeletivas;
@@ -36,6 +39,7 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 	private int page;
 	private Long etapaSeletivaId;
 	private char visualizar;
+	private Collection<TipoDocumento> tipoDocumentos;
 
 	public String execute() throws Exception
 	{
@@ -44,6 +48,8 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 
 	private void prepare() throws Exception
 	{
+		tipoDocumentos = tipoDocumentoManager.findAll();
+		
 		if(documentoAnexo != null && documentoAnexo.getId() != null)
 		{	
 			documentoAnexo = (DocumentoAnexo) documentoAnexoManager.findById(documentoAnexo.getId());
@@ -285,6 +291,18 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Collection<TipoDocumento> getTipoDocumentos() {
+		return tipoDocumentos;
+	}
+
+	public void setTipoDocumentos(Collection<TipoDocumento> tipoDocumentos) {
+		this.tipoDocumentos = tipoDocumentos;
+	}
+
+	public void setTipoDocumentoManager(TipoDocumentoManager tipoDocumentoManager) {
+		this.tipoDocumentoManager = tipoDocumentoManager;
 	}
 
 	}

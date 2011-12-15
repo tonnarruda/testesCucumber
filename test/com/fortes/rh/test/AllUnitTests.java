@@ -101,6 +101,7 @@ import com.fortes.rh.test.business.geral.MotivoDemissaoManagerTest;
 import com.fortes.rh.test.business.geral.OcorrenciaManagerTest;
 import com.fortes.rh.test.business.geral.ParametrosDoSistemaManagerTest;
 import com.fortes.rh.test.business.geral.QuantidadeLimiteColaboradoresPorCargoManagerTest;
+import com.fortes.rh.test.business.geral.TipoDocumentoManagerTest;
 import com.fortes.rh.test.business.geral.UsuarioMensagemManagerTest;
 import com.fortes.rh.test.business.importacao.ImportacaoColaboradorManagerTest;
 import com.fortes.rh.test.business.pesquisa.AspectoManagerTest;
@@ -240,6 +241,7 @@ import com.fortes.rh.test.dao.hibernate.geral.MotivoDemissaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.OcorrenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ParametrosDoSistemaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.TipoDocumentoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.UsuarioMensagemDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AspectoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaDaoHibernateTest;
@@ -467,6 +469,7 @@ import com.fortes.rh.test.web.action.geral.HistoricoColaboradorListActionTest;
 import com.fortes.rh.test.web.action.geral.MotivoDemissaoListActionTest;
 import com.fortes.rh.test.web.action.geral.OcorrenciaEditActionTest;
 import com.fortes.rh.test.web.action.geral.ParametrosDoSistemaEditActionTest;
+import com.fortes.rh.test.web.action.geral.TipoDocumentoEditActionTest;
 import com.fortes.rh.test.web.action.geral.UsuarioMensagemEditActionTest;
 import com.fortes.rh.test.web.action.geral.UsuarioMensagemListActionTest;
 import com.fortes.rh.test.web.action.pesquisa.AspectoEditActionTest;
@@ -838,7 +841,11 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AbsenteismoCollectionTest.class);
         suite.addTestSuite(ColaboradorPeriodoExperienciaAvaliacaoManagerTest.class);
         suite.addTestSuite(ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest.class);
+        suite.addTestSuite(TipoDocumentoEditActionTest.class);
+        suite.addTestSuite(TipoDocumentoManagerTest.class);
+        suite.addTestSuite(TipoDocumentoDaoHibernateTest.class);
 
+        
         //contatoTest embedded Colaborador
         suite.addTestSuite(DependenteDaoHibernateTest.class);
         suite.addTestSuite(EmpresaDaoHibernateTest.class);

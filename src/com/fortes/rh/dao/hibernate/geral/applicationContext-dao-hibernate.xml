@@ -212,7 +212,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="tipoDocumentoDaoTarget" class="com.fortes.rh.dao.hibernate.geral.TipoDocumentoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

@@ -481,10 +481,11 @@
 			<tr>
 				<td><strong>Documentos do Colaborador</strong><br>
 					<@display.table name="documentoAnexosColaborador" id="documentoAnexo" class="dados" defaultsort=1 style="width:100%" >
-						<@display.column title="Descrição" style="width:540px">
+						<@display.column title="Descrição" style="width:340px">
 							<a href="../../geral/documentoAnexo/showDocumento.action?documentoAnexo.id=${documentoAnexo.id}" title="Visualizar documento" target="_blank">${documentoAnexo.descricao}</a>
 						</@display.column>
-						<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:100px;"/>
+						<@display.column property="tipoDocumento.descricao" title="Tipo do Documento" style="width:150px;"/>
+						<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px; text-align: center;"/>
 						<@display.column title="Obs." style="text-align: center;width: 50px">
 							<#if documentoAnexo.observacao?exists && documentoAnexo.observacao?trim != "">
 								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${documentoAnexo.observacao?j_string}');return false">...</span>
