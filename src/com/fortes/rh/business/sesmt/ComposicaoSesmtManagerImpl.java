@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.model.sesmt.ComposicaoSesmt;
 import com.fortes.business.GenericManagerImpl;
@@ -16,5 +17,9 @@ public class ComposicaoSesmtManagerImpl extends GenericManagerImpl<ComposicaoSes
 
 	public ComposicaoSesmt findByIdProjection(Long composicaoSesmtId) {
 		return getDao().findByIdProjection(composicaoSesmtId);
+	}
+
+	public ComposicaoSesmt findByData(Long empresaId, Date data) {
+		return getDao().findByData(empresaId, data);
 	}
 }

@@ -143,11 +143,13 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
 		indices = indiceManager.findSemCodigoAC(empresa);
 		ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
-		
-		
+
 		Collection<String> msgs = empresaManager.verificaIntegracaoAC(empresa);
 		if (msgs.size() > 1)
 			setActionMessages(msgs);
+		
+		if(!estabelecimentos.isEmpty() || !areaOrganizacionals.isEmpty() || !colaboradors.isEmpty() || !faixaSalarials.isEmpty() || !indices.isEmpty() || !ocorrencias.isEmpty())
+			addActionMessage("- Existem entidades sem código AC");
 		
 		return Action.SUCCESS;
 	}

@@ -31,6 +31,7 @@ public class PcmsoListAction extends MyActionSupportList
 	private boolean exibirEpis;
 	private boolean exibirExames;
 	private boolean exibirAcidentes;
+	private boolean exibirComposicaoSesmt;
 	
 	private Collection<PCMSO> dataSource;
 
@@ -48,7 +49,7 @@ public class PcmsoListAction extends MyActionSupportList
 	{
 		try
 		{
-			dataSource = pcmsoManager.montaRelatorio(dataIni, dataFim, estabelecimento, getEmpresaSistema().getId(), exibirAgenda, exibirDistColaboradorSetor, exibirRiscos, exibirEpis, exibirExames, exibirAcidentes);
+			dataSource = pcmsoManager.montaRelatorio(dataIni, dataFim, estabelecimento, getEmpresaSistema().getId(), exibirAgenda, exibirDistColaboradorSetor, exibirRiscos, exibirEpis, exibirExames, exibirAcidentes, exibirComposicaoSesmt);
 			parametros = RelatorioUtil.getParametrosRelatorio("", getEmpresaSistema(), "");			
 			
 			return Action.SUCCESS;
@@ -166,5 +167,13 @@ public class PcmsoListAction extends MyActionSupportList
 
 	public void setExibirAcidentes(boolean exibirAcidentes) {
 		this.exibirAcidentes = exibirAcidentes;
+	}
+
+	public boolean isExibirComposicaoSesmt() {
+		return exibirComposicaoSesmt;
+	}
+
+	public void setExibirComposicaoSesmt(boolean exibirComposicaoSesmt) {
+		this.exibirComposicaoSesmt = exibirComposicaoSesmt;
 	}
 }

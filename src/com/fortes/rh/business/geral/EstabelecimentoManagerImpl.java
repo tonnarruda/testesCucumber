@@ -126,4 +126,8 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 	public String findCodigoACDuplicado(Long empresaId) {
 		return getDao().findCodigoACDuplicado(empresaId);
 	}
+
+	public Estabelecimento findComEnderecoById(Long estabelecimentoId) {
+		return getDao().findComEnderecoById(estabelecimentoId);
+	}
 }

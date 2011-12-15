@@ -3,23 +3,30 @@ package com.fortes.rh.test.dao.hibernate.geral;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.dao.geral.EstadoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
-import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
-import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.geral.EstadoFactory;
 
 public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Estabelecimento>
 {
 	private EstabelecimentoDao estabelecimentoDao;
 	private EmpresaDao empresaDao;
 	private GrupoACDao grupoACDao;
+	private CidadeDao cidadeDao;
+	private EstadoDao estadoDao;
 
 	public Estabelecimento getEntity()
 	{
@@ -323,4 +330,42 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		assertEquals("123456", estabelecimentoDao.findCodigoACDuplicado(empresa.getId()));
 	}
 
+
+	public void testFindComEnderecoById()
+	{
+		Estado uf = EstadoFactory.getEntity();
+		uf.setSigla("CE");
+		estadoDao.save(uf);
+		
+		Cidade cidade = CidadeFactory.getEntity();
+		cidade.setUf(uf);
+		cidade.setNome("Fortaleza");
+		cidadeDao.save(cidade);
+		
+		Endereco endereco = new Endereco();
+		endereco.setUf(uf);
+		endereco.setCidade(cidade);
+		endereco.setLogradouro("Rua do Trilho");
+		endereco.setNumero("999");
+		endereco.setComplemento("apto 333");
+		endereco.setCep("60140140");
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setNome("matriz");
+		estabelecimento.setComplementoCnpj("0001");
+		estabelecimento.setEndereco(endereco);
+		estabelecimentoDao.save(estabelecimento);
+		
+		Estabelecimento estabelecimentoRetorno = estabelecimentoDao.findComEnderecoById(estabelecimento.getId());
+		
+		assertEquals(estabelecimento, estabelecimentoRetorno);
+	}
+
+	public void setCidadeDao(CidadeDao cidadeDao) {
+		this.cidadeDao = cidadeDao;
+	}
+
+	public void setEstadoDao(EstadoDao estadoDao) {
+		this.estadoDao = estadoDao;
+	}
 }

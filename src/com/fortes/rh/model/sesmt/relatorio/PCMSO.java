@@ -6,6 +6,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Agenda;
+import com.fortes.rh.model.sesmt.ComposicaoSesmt;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 
@@ -19,6 +20,7 @@ public class PCMSO
 	private boolean exibirEpis;
 	private boolean exibirExames;
 	private boolean exibirAcidentes;
+	private boolean exibirComposicaoSesmt;
 	
 	private Collection<Agenda> agendas;
 	private Collection<AreaOrganizacional> setores;
@@ -27,6 +29,7 @@ public class PCMSO
 	private Collection<CatRelatorioAnual> cats;
 	private Collection<HistoricoFuncao> historicoFuncaos;
 	private Collection<HistoricoAmbiente> historicoAmbientes;
+	private Collection<ComposicaoSesmt> composicaoSesmts;
 	
 	//cabecalho
 	private Estabelecimento estabelecimento;
@@ -35,7 +38,7 @@ public class PCMSO
 	public PCMSO() {
 	}
 	
-	public PCMSO(boolean exibirAgenda, boolean exibirDistColaboradorSetor, boolean exibirRiscos, boolean exibirEpis, boolean exibirExames, boolean exibirAcidentes) {
+	public PCMSO(boolean exibirAgenda, boolean exibirDistColaboradorSetor, boolean exibirRiscos, boolean exibirEpis, boolean exibirExames, boolean exibirAcidentes, boolean exibirComposicaoSesmt) {
 		
 		this.exibirAgenda = exibirAgenda;
 		this.exibirDistColaboradorSetor = exibirDistColaboradorSetor;
@@ -43,6 +46,7 @@ public class PCMSO
 		this.exibirEpis = exibirEpis;
 		this.exibirExames = exibirExames;
 		this.exibirAcidentes = exibirAcidentes;
+		this.exibirComposicaoSesmt = exibirComposicaoSesmt;
 	}
 
 	public void setSetores(Collection<AreaOrganizacional> setores) 
@@ -175,5 +179,21 @@ public class PCMSO
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public boolean isExibirComposicaoSesmt() {
+		return exibirComposicaoSesmt;
+	}
+
+	public void setExibirComposicaoSesmt(boolean exibirComposicaoSesmt) {
+		this.exibirComposicaoSesmt = exibirComposicaoSesmt;
+	}
+
+	public Collection<ComposicaoSesmt> getComposicaoSesmts() {
+		return composicaoSesmts;
+	}
+
+	public void setComposicaoSesmts(Collection<ComposicaoSesmt> composicaoSesmts) {
+		this.composicaoSesmts = composicaoSesmts;
 	}
 }

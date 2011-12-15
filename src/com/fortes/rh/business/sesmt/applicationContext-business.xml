@@ -325,6 +325,9 @@
     <property name="empresaManager">
       <ref bean="empresaManager" />
     </property>
+    <property name="composicaoSesmtManager">
+      <ref bean="composicaoSesmtManager" />
+    </property>
   </bean>
   <bean id="pcmsoManager" parent="parentManager">
     <property name="proxyInterfaces">

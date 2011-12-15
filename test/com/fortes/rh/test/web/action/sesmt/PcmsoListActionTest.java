@@ -68,7 +68,7 @@ public class PcmsoListActionTest extends MockObjectTestCase
     	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
     	action.setEstabelecimento(estabelecimento);
 
-    	pcmsoManager.expects(once()).method("montaRelatorio").with(new Constraint[]{eq(dataIni), eq(dataFim), eq(estabelecimento), eq(empresa.getId()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<PCMSO>()));
+    	pcmsoManager.expects(once()).method("montaRelatorio").with(new Constraint[]{eq(dataIni), eq(dataFim), eq(estabelecimento), eq(empresa.getId()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<PCMSO>()));
     	
     	assertEquals(action.gerarRelatorio(), "success");
     	assertNotNull(action.getDataSource());

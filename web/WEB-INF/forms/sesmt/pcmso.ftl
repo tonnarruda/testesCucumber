@@ -48,6 +48,7 @@
 					<@ww.checkbox label="EPIs por Função" name="exibirEpis" labelPosition="left"/>
 					<@ww.checkbox label="Tabela de Exames Realizados" name="exibirExames" labelPosition="left"/>
 					<@ww.checkbox label="Acidentes de Trabalho" name="exibirAcidentes" labelPosition="left"/>
+					<@ww.checkbox label="Composição do SESMT" name="exibirComposicaoSesmt" labelPosition="left"/>
 				</ul>
 			</fieldset>
 		</li>

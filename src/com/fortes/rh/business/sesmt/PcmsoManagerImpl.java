@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Agenda;
+import com.fortes.rh.model.sesmt.ComposicaoSesmt;
 import com.fortes.rh.model.sesmt.Evento;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -35,16 +37,22 @@ public class PcmsoManagerImpl implements PcmsoManager
 	private HistoricoAmbienteManager historicoAmbienteManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private EmpresaManager empresaManager;
+	private ComposicaoSesmtManager composicaoSesmtManager;
 
-	public Collection<PCMSO> montaRelatorio(Date dataIni, Date dataFim, Estabelecimento estabelecimento, Long empresaId, boolean exibirAgenda, boolean exibirDistColaboradorSetor, boolean exibirRiscos, boolean exibirEpis, boolean exibirExames, boolean exibirAcidentes) throws Exception
+	public Collection<PCMSO> montaRelatorio(Date dataIni, Date dataFim, Estabelecimento estabelecimento, Long empresaId, boolean exibirAgenda, boolean exibirDistColaboradorSetor, boolean exibirRiscos, boolean exibirEpis, boolean exibirExames, boolean exibirAcidentes, boolean exibirComposicaoSesmt) throws Exception
 	{
 		if(dataIni.compareTo(dataFim) == 1)
 			throw new ColecaoVaziaException("Data inicial maior que data final.");
 		
 		Collection<PCMSO> pcmsos = new ArrayList<PCMSO>();
 		
-		PCMSO pcmso = new PCMSO(exibirAgenda, exibirDistColaboradorSetor, exibirRiscos, exibirEpis, exibirExames, exibirAcidentes);
-		montaCabecalho(pcmso, empresaId, estabelecimento.getId());
+		estabelecimento = estabelecimentoManager.findComEnderecoById(estabelecimento.getId());
+		Empresa empresa = empresaManager.findByIdProjection(empresaId);
+
+		PCMSO pcmso = new PCMSO(exibirAgenda, exibirDistColaboradorSetor, exibirRiscos, exibirEpis, exibirExames, exibirAcidentes, exibirComposicaoSesmt);
+		pcmso.setEmpresa(empresa);
+		pcmso.setEstabelecimento(estabelecimento);
+		
 		
 		StringBuilder msg = new StringBuilder("");
 		msg.append(montaAgenda(pcmso, dataIni, dataFim, estabelecimento, exibirAgenda));
@@ -53,6 +61,7 @@ public class PcmsoManagerImpl implements PcmsoManager
 		msg.append(montaTabelaAnualCats(pcmso, dataIni, estabelecimento, exibirAcidentes));
 		msg.append(montaEpisFuncao(pcmso, dataIni, estabelecimento, exibirEpis));
 		msg.append(montaRiscosAmbientais(pcmso, dataIni, estabelecimento, exibirRiscos));
+		msg.append(montaComposicaoSesmt(pcmso, dataFim, empresaId, exibirComposicaoSesmt));
 		
 		if(!msg.toString().equals(""))
 			throw new ColecaoVaziaException(msg.toString());
@@ -205,19 +214,19 @@ public class PcmsoManagerImpl implements PcmsoManager
 			
 			pcmso.setAgendas(agendas);
 		}
-		
 		return "";
 	}
 	
-	private void montaCabecalho(PCMSO pcmso, Long empresaId, Long estabelecimentoId)
+	private String montaComposicaoSesmt(PCMSO pcmso, Date data, Long empresaId, boolean exibirComposicaoSesmt)
 	{
-		Estabelecimento estabelecimento = estabelecimentoManager.findById(estabelecimentoId);
-		Empresa empresa = empresaManager.findById(empresaId);
-		
-		pcmso.setEmpresa(empresa);
-		pcmso.setEstabelecimento(estabelecimento);
+		if (exibirComposicaoSesmt)
+		{
+			ComposicaoSesmt composicaoSesmt = composicaoSesmtManager.findByData(empresaId, data);
+			pcmso.setComposicaoSesmts(Arrays.asList(composicaoSesmt));
+		}
+		return "";
 	}
-
+	
 	public void setAgendaManager(AgendaManager agendaManager)
 	{
 		this.agendaManager = agendaManager;
@@ -259,5 +268,9 @@ public class PcmsoManagerImpl implements PcmsoManager
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
+	}
+
+	public void setComposicaoSesmtManager(ComposicaoSesmtManager composicaoSesmtManager) {
+		this.composicaoSesmtManager = composicaoSesmtManager;
 	}
 }
