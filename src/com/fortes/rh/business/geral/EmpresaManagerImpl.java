@@ -35,7 +35,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.geral.Gasto;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.util.ArquivoUtil;

@@ -22,4 +22,5 @@ public interface EstabelecimentoManager extends GenericManager<Estabelecimento>
 	Collection<Estabelecimento> findSemCodigoAC(Long empresaId);
 	void deleteEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 	String findCodigoACDuplicado(Long empresaId);
+	Estabelecimento findComEnderecoById(Long estabelecimentoId);
 }

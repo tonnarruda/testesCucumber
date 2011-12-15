@@ -172,7 +172,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		
 		if (empresaManager.verificaInconcistenciaIntegracaoAC(empresa))
 		{
-			setActionMsg("Não foi possível habilitar a integração com o AC Pessoal. Entre em contato com o suporte técnico.");
+			setActionMsg("Não foi possível habilitar a integração com o AC Pessoal devido a cadastros realizados no período desintegrado.<br />Entre em contato com o suporte técnico.");
 			empresa.setAcIntegra(false);
 			empresaManager.update(empresa);
 			atualizaEmpresaSessao();

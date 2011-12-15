@@ -110,6 +110,9 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
 		p.add(Projections.property("e.nome"), "nome");
+		p.add(Projections.property("e.razaoSocial"), "razaoSocial");
+		p.add(Projections.property("e.cnpj"), "cnpj");
+		p.add(Projections.property("e.cnae"), "cnae");
 		p.add(Projections.property("e.acIntegra"), "acIntegra");
 		p.add(Projections.property("e.grupoAC"), "grupoAC");
 		p.add(Projections.property("e.turnoverPorSolicitacao"), "turnoverPorSolicitacao");

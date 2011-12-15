@@ -341,8 +341,8 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	String msgs = StringUtil.converteCollectionToString(collectionMsgs);
     	
     	assertEquals("Verifique os seguintes itens:," +
-    			"- Existe(m) colaborador(es) com código AC duplicado: 1," +
-    			"- Existe(m) faixa(s) salarial(is) com código AC duplicado: 2," +
-    			"- Existe(m) ocorrencia(s) com código AC duplicado: 3", msgs);
+    			"- Existe colaborador duplicado, código AC: 1," +
+    			"- Existe faixa salarial duplicado, código AC: 2," +
+    			"- Existe ocorrencia duplicado, código AC: 3", msgs);
     }
 }
