@@ -334,7 +334,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	
     	assertEquals("Verifique os seguintes itens:," +
     			"- Existe colaborador duplicado, código AC: 1," +
-    			"- Existe faixa salarial duplicado, código AC: 2," +
-    			"- Existe ocorrencia duplicado, código AC: 3", msgs);
+    			"- Existe faixa salarial duplicada, código AC: 2," +
+    			"- Existe ocorrência duplicada, código AC: 3", msgs);
     }
 }
