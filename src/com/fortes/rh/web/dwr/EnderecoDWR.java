@@ -10,6 +10,9 @@ import org.apache.commons.httpclient.methods.GetMethod;
 public class EnderecoDWR {
 
 	private static final int TIMEOUT = 8000; // 8 sec
+	
+	//inserido dessa forma, pois a expresao que adiciona todos os caracter .(ponto) nao funciona neste caso.
+	private String expressaoRegular = "[\\w\\s\\n\\-\\*\\|\\@\\#\\%\\&\\(\\)\\+\\=\\§\\!\\?\\;\\:\\>\\<\\,\\.\\/\\p{L}]*";
 
 	public String buscaPorCep(String cep) 
 	{
@@ -17,7 +20,7 @@ public class EnderecoDWR {
 		GetMethod get = new GetMethod(getUrlParaCep(cep));
 		try {
 			client.executeMethod( get );
-		    Pattern pattern = Pattern.compile("<span class=\"respostadestaque\">([\\w\\s\\n\\/\\p{L}]*)</span>");
+		    Pattern pattern = Pattern.compile("<span class=\"respostadestaque\">("+ expressaoRegular + ")</span>");
 		    Matcher matcher = pattern.matcher(get.getResponseBodyAsString());
 
 		    String response = "{\"sucesso\":\"1\",";
