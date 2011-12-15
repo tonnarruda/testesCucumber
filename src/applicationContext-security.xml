@@ -262,6 +262,7 @@
 				/geral/configuracaoCampoExtra/*/**=ROLE_CAMPO_EXTRA
 				/geral/grupoAC/*/**=ROLE_CAD_GRUPOAC
 				/geral/configuracaoLimiteColaborador/*/**=ROLE_CONFIG_LIMITE_COLABORADOR
+				/geral/tipoDocumento/*/**=ROLE_TIPO_DOCUMENTO
 
 
 				/captacao/motivoSolicitacao/*/**=ROLE_MOTIVO_SOLICITACAO

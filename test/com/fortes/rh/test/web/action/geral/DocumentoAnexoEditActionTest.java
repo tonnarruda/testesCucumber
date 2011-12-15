@@ -10,8 +10,10 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
+import com.fortes.rh.business.geral.TipoDocumentoManager;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.geral.DocumentoAnexo;
+import com.fortes.rh.model.geral.TipoDocumento;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.geral.DocumentoAnexoEditAction;
@@ -21,14 +23,17 @@ public class DocumentoAnexoEditActionTest extends MockObjectTestCase
 	private DocumentoAnexoEditAction action;
 	private Mock manager;
 	private Mock etapaSeletivaManager;
+	private Mock tipoDocumentoManager;
 
 	protected void setUp()
 	{
 		action = new DocumentoAnexoEditAction();
 		manager = new Mock(DocumentoAnexoManager.class);
 		etapaSeletivaManager = new Mock(EtapaSeletivaManager.class);
+		tipoDocumentoManager = new Mock(TipoDocumentoManager.class);
 		action.setDocumentoAnexoManager((DocumentoAnexoManager) manager.proxy());
 		action.setEtapaSeletivaManager((EtapaSeletivaManager) etapaSeletivaManager.proxy());
+		action.setTipoDocumentoManager((TipoDocumentoManager) tipoDocumentoManager.proxy());
 
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
@@ -40,13 +45,16 @@ public class DocumentoAnexoEditActionTest extends MockObjectTestCase
 
 	public void testPrepareInsertCandidato() throws Exception
 	{
+		tipoDocumentoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<TipoDocumento>()));
 		etapaSeletivaManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<EtapaSeletiva>()));
 		manager.expects(once()).method("getNome").with(ANYTHING, ANYTHING).will(returnValue("teste"));
+		
 		assertEquals("success", action.prepareInsertCandidato());
 	}
 
 	public void testPrepareInsertColaborador() throws Exception
 	{
+		tipoDocumentoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<TipoDocumento>()));
 		manager.expects(once()).method("getNome").with(ANYTHING, ANYTHING).will(returnValue("teste"));
 		assertEquals("success", action.prepareInsertColaborador());
 	}
@@ -124,6 +132,7 @@ public class DocumentoAnexoEditActionTest extends MockObjectTestCase
 
 		action.setDocumentoAnexo(documentoAnexo);
 
+		tipoDocumentoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<TipoDocumento>()));
 		manager.expects(once()).method("getNome").with(eq('Z'), eq(1L)).will(returnValue("bruno"));
 		manager.expects(once()).method("findById").with(eq(documentoAnexo.getId())).will(returnValue(documentoAnexo));
 		etapaSeletivaManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<EtapaSeletiva>()));
@@ -140,6 +149,7 @@ public class DocumentoAnexoEditActionTest extends MockObjectTestCase
 
 		action.setDocumentoAnexo(documentoAnexo);
 		
+		tipoDocumentoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<TipoDocumento>()));
 		manager.expects(once()).method("getNome").with(eq('Z'), eq(1L)).will(returnValue("bruno"));
 		manager.expects(once()).method("findById").with(eq(documentoAnexo.getId())).will(returnValue(documentoAnexo));
 
@@ -162,4 +172,5 @@ public class DocumentoAnexoEditActionTest extends MockObjectTestCase
 		action.setSolicitacaoId(1L);
 		action.getSolicitacaoId();
 	}
+
 }

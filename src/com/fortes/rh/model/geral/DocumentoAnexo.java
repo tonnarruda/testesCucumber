@@ -28,6 +28,8 @@ public class DocumentoAnexo extends AbstractModel implements Serializable
 	private EtapaSeletiva etapaSeletiva;
     @Temporal(TemporalType.DATE)
     private Date data;
+    @ManyToOne
+    private TipoDocumento tipoDocumento;
 	@Lob
 	private String observacao;
 	@Column(length=120)
@@ -52,6 +54,16 @@ public class DocumentoAnexo extends AbstractModel implements Serializable
 	   this.etapaSeletiva.setNome(etapaSeletivaNome);
    }
 
+   public void setProjectionTipoDocumentoDescricao(String tipoDocumentoDescricao)
+   {
+	   if (this.tipoDocumento == null)
+		   this.tipoDocumento = new TipoDocumento();
+	   if (tipoDocumentoDescricao == null) 
+		   tipoDocumentoDescricao = "";
+	   
+	   this.tipoDocumento.setDescricao(tipoDocumentoDescricao);
+   }
+   
 	public Date getData()
 	{
 		return data;
@@ -116,5 +128,13 @@ public class DocumentoAnexo extends AbstractModel implements Serializable
 		.append("id", this.getId())
 		.append("descricao", this.descricao)
 		.append("url", this.url).toString();
+	}
+
+	public TipoDocumento getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(TipoDocumento tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
 	}
 }

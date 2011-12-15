@@ -160,7 +160,9 @@
       <mapping class="com.fortes.rh.model.cargosalario.FaturamentoMensal" />
       <mapping class="com.fortes.rh.model.sesmt.NaturezaLesao" />
       <mapping class="com.fortes.rh.model.sesmt.ComposicaoSesmt" />
+      <mapping class="com.fortes.rh.model.geral.TipoDocumento" />
   </session-factory>
+
 
 
 

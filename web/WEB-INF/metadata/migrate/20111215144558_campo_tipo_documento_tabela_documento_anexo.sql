@@ -1,0 +1,2 @@
+ALTER TABLE documentoanexo ADD COLUMN tipodocumento_id bigint; --.go
+ALTER TABLE ONLY documentoanexo ADD CONSTRAINT documentoanexo_tipodocumento_fk FOREIGN KEY (tipodocumento_id) REFERENCES tipodocumento(id); --.go

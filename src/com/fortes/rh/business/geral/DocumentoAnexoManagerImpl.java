@@ -23,10 +23,8 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	{
 		try
 		{
-			if(documentoAnexo.getEtapaSeletiva() != null)
-				if (documentoAnexo.getEtapaSeletiva().getId() == null)
-					documentoAnexo.setEtapaSeletiva(null);
-
+			setEtapaSeletivaETipoDocumento(documentoAnexo);
+			
 			if(documento != null)
 			{
 				ArquivoUtil.deletaArquivos(diretorio, new String[]{documentoAnexo.getUrl()});
@@ -47,9 +45,7 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	{
 		try
 		{
-			if(documentoAnexo.getEtapaSeletiva() != null)
-				if (documentoAnexo.getEtapaSeletiva().getId() == null)
-					documentoAnexo.setEtapaSeletiva(null);
+			setEtapaSeletivaETipoDocumento(documentoAnexo);
 
 			File file = ArquivoUtil.salvaArquivo(diretorio, documento, true);
 			documentoAnexo.setUrl(file.getName());
@@ -69,8 +65,7 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 		{
 			String documentoAnexoUrl = documentoAnexo.getUrl();
 			
-			if (documentoAnexo.getEtapaSeletiva() != null && documentoAnexo.getEtapaSeletiva().getId() == null)
-				documentoAnexo.setEtapaSeletiva(null);
+			setEtapaSeletivaETipoDocumento(documentoAnexo);
 			
 			getDao().remove(documentoAnexo);
 			
@@ -82,6 +77,14 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 			throw e;
 		}
 
+	}
+
+	private void setEtapaSeletivaETipoDocumento(DocumentoAnexo documentoAnexo) {
+		if(documentoAnexo.getEtapaSeletiva() != null && documentoAnexo.getEtapaSeletiva().getId() == null)
+				documentoAnexo.setEtapaSeletiva(null);
+
+		if(documentoAnexo.getTipoDocumento() != null && documentoAnexo.getTipoDocumento().getId() == null)
+				documentoAnexo.setTipoDocumento(null);
 	}
 
 	public DocumentoAnexo findByIdProjection(Long documentoAnexoId)

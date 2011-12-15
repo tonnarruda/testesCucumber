@@ -807,7 +807,21 @@
       <ref bean="colaboradorPeriodoExperienciaAvaliacaoManagerTarget" />
     </property>
   </bean>
+  <bean id="tipoDocumentoManagerTarget" class="com.fortes.rh.business.geral.TipoDocumentoManagerImpl">
+    <property name="dao">
+      <ref bean="tipoDocumentoDao" />
+    </property>
+  </bean>
+  <bean id="tipoDocumentoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.TipoDocumentoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="tipoDocumentoManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
