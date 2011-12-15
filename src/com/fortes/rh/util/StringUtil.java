@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.StringUtils;
 
 import sun.misc.BASE64Decoder;
@@ -455,5 +457,24 @@ public final class StringUtil
 			return null;
 		else
 			return str.replaceAll("([a-z])([A-Z])", "$1 $2");
+	}
+
+	public static String getHTML(String url) 
+	{
+		String pagina = "";
+		Integer timeout = 8000;
+		HttpClient client = new HttpClient();
+		client.getParams().setParameter("http.socket.timeout", timeout);
+		client.getParams().setParameter("http.connection.timeout", timeout);
+
+		try {
+			GetMethod get = new GetMethod(url);
+			client.executeMethod(get);
+			pagina = get.getResponseBodyAsString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return pagina;
 	}
 }

@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import mockit.Mockit;
 
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethodBase;
 
 import com.fortes.f2rh.test.MockHttpClient;
@@ -22,9 +21,17 @@ public class EnderecoDWRTest extends TestCase {
 	
 	public void testDeveBuscarPorCep() {
 		
-		dadoQueServidorDoYahooEstaOnline();
+//		dadoQueServidorDoYahooEstaOnline();
 		
-		String json = enderecoDwr.buscaPorCep("63657520325");
+		String json = enderecoDwr.buscaPorCep("60743-760");
+		
+		assertNotNull("json", json);
+	}
+	
+	public void testSeparaDadosDoEndereco() 
+	{
+		String paginaRetorno = "";
+		String json = enderecoDwr.buscaPorCep("60743-760");
 		
 		assertNotNull("json", json);
 	}
