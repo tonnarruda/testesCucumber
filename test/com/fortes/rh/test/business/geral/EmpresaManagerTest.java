@@ -12,7 +12,6 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.model.type.File;
-import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -23,14 +22,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.cargosalario.Indice;
-import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Cidade;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -341,8 +333,8 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	String msgs = StringUtil.converteCollectionToString(collectionMsgs);
     	
     	assertEquals("Verifique os seguintes itens:," +
-    			"- Existe(m) colaborador(es) com código AC duplicado: 1," +
-    			"- Existe(m) faixa(s) salarial(is) com código AC duplicado: 2," +
-    			"- Existe(m) ocorrencia(s) com código AC duplicado: 3", msgs);
+    			"- Existe colaborador duplicado, código AC: 1," +
+    			"- Existe faixa salarial duplicado, código AC: 2," +
+    			"- Existe ocorrencia duplicado, código AC: 3", msgs);
     }
 }
