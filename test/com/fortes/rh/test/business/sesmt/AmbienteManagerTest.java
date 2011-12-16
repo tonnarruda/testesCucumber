@@ -265,6 +265,7 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		Date hoje = Calendar.getInstance().getTime();
 		boolean exibirPpra=true;
 		boolean exibirLtcat=true;
+		boolean exibirComposicaoSesmt=true;
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setRazaoSocial("TESTEX S/A Testes Automatizados");
@@ -318,7 +319,7 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		boolean gerarPpra=exibirPpra;
 		boolean gerarLtcat=exibirLtcat;
 		
-		Collection<PpraLtcatRelatorio> relatorios = ambienteManager.montaRelatorioPpraLtcat(empresa, estabelecimento.getId(), data, ambienteCheck, gerarPpra, gerarLtcat);
+		Collection<PpraLtcatRelatorio> relatorios = ambienteManager.montaRelatorioPpraLtcat(empresa, estabelecimento.getId(), data, ambienteCheck, gerarPpra, gerarLtcat, exibirComposicaoSesmt);
 		
 		assertEquals(2, relatorios.size());
 		assertEquals(60, ((PpraLtcatRelatorio) relatorios.toArray()[0]).getCabecalho().getQtdTotal().intValue());

@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="pcmso_composicao_sesmt"
+		 name="composicao_sesmt"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -40,12 +40,12 @@
 				<printWhenExpression><![CDATA[new Boolean($F{qtdTecnicosSeguranca} != null)]]></printWhenExpression>
 				<staticText>
 					<reportElement
-						x="11"
+						x="0"
 						y="0"
-						width="120"
+						width="131"
 						height="14"
 						key="staticText-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -55,10 +55,10 @@
 					<reportElement
 						x="131"
 						y="0"
-						width="139"
+						width="404"
 						height="14"
 						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -78,12 +78,12 @@
 				<printWhenExpression><![CDATA[new Boolean($F{qtdEngenheirosSeguranca} != null)]]></printWhenExpression>
 				<staticText>
 					<reportElement
-						x="11"
+						x="0"
 						y="0"
-						width="120"
+						width="131"
 						height="14"
 						key="staticText-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -93,12 +93,12 @@
 					<reportElement
 						x="131"
 						y="0"
-						width="139"
+						width="404"
 						height="14"
 						key="textField"
 						positionType="Float"
 						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -118,12 +118,12 @@
 				<printWhenExpression><![CDATA[new Boolean($F{qtdAuxiliaresEnfermagem} != null)]]></printWhenExpression>
 				<staticText>
 					<reportElement
-						x="11"
+						x="0"
 						y="0"
-						width="120"
+						width="131"
 						height="14"
 						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -133,12 +133,12 @@
 					<reportElement
 						x="131"
 						y="0"
-						width="139"
+						width="404"
 						height="14"
 						key="textField"
 						positionType="Float"
 						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -158,12 +158,12 @@
 				<printWhenExpression><![CDATA[new Boolean($F{qtdEnfermeiros} != null)]]></printWhenExpression>
 				<staticText>
 					<reportElement
-						x="11"
+						x="0"
 						y="0"
-						width="120"
+						width="131"
 						height="14"
 						key="staticText-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -173,12 +173,12 @@
 					<reportElement
 						x="131"
 						y="0"
-						width="139"
+						width="404"
 						height="14"
 						key="textField-3"
 						positionType="Float"
 						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -200,12 +200,12 @@
 					<reportElement
 						x="131"
 						y="0"
-						width="139"
+						width="404"
 						height="14"
 						key="textField-2"
 						positionType="Float"
 						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -213,12 +213,12 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="11"
+						x="0"
 						y="0"
-						width="120"
+						width="131"
 						height="14"
 						key="staticText-11"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -236,35 +236,21 @@
 			</band>
 		</background>
 		<title>
-			<band height="50"  isSplitAllowed="true" >
-				<image  scaleImage="RetainShape" vAlign="Middle" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="10"
-						y="1"
-						width="67"
-						height="46"
-						key="image-1"
-						stretchType="RelativeToTallestObject"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($P{CABECALHO}.getLogoUrl() != null && !$P{CABECALHO}.getLogoUrl().equals(""))]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<graphicElement stretchType="RelativeToTallestObject"/>
-					<imageExpression class="java.lang.String"><![CDATA[$P{CABECALHO}.getLogoUrl()]]></imageExpression>
-				</image>
+			<band height="16"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="98"
-						y="5"
-						width="420"
-						height="34"
-						key="staticText-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+						x="0"
+						y="0"
+						width="535"
+						height="16"
+						backcolor="#CCCCCC"
+						key="staticText-12"
+						positionType="Float"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Composição do SESMT]]></text>
+				<text><![CDATA[COMPOSIÇÃO DO SESMT]]></text>
 				</staticText>
 			</band>
 		</title>

@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.model.dicionario.GrupoRisco;
+import com.fortes.rh.model.sesmt.ComposicaoSesmt;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -16,6 +17,8 @@ public class PpraLtcatRelatorio
 	private Ppra ppra = null;
 	private Ltcat ltcat = null;
 	private PpraLtcatCabecalho cabecalho;
+
+	private Collection<ComposicaoSesmt> composicaoSesmts;
 
 	public PpraLtcatRelatorio(PpraLtcatCabecalho cabecalho, Ppra ppra,
 								Ltcat ltcat, boolean exibirPpra, boolean exibirLtcat) 
@@ -236,5 +239,13 @@ public class PpraLtcatRelatorio
 	{
 		if (ppra != null)
 			ppra.setTempoExposicao(tempoExposicao);
+	}
+
+	public Collection<ComposicaoSesmt> getComposicaoSesmts() {
+		return composicaoSesmts;
+	}
+
+	public void setComposicaoSesmts(Collection<ComposicaoSesmt> composicaoSesmts) {
+		this.composicaoSesmts = composicaoSesmts;
 	}
 }

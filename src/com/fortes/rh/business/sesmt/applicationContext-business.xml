@@ -108,6 +108,9 @@
     <property name="epiManager">
       <ref bean="epiManager" />
     </property>
+    <property name="composicaoSesmtManager">
+      <ref bean="composicaoSesmtManager" />
+    </property>
   </bean>
   <bean id="ambienteManager" parent="parentManager">
     <property name="proxyInterfaces">
