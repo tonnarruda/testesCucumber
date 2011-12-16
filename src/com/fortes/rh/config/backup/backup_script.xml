@@ -12,9 +12,8 @@
 	<property environment="env" />
 	
 	<!-- Propriedades do FortesRH -->
-	<property name="fortesrh.dir" location="${env.FORTES_HOME}" />
-	<property name="fortesrh.system.conf.file" location="${fortesrh.dir}/RH/system.conf" />
-	<property name="fortesrh.dir.backup" location="${fortesrh.dir}/RH/backup_db" />
+	<property name="fortesrh.system.conf.file" location="${fortesrh.dir}/system.conf" />
+	<property name="fortesrh.dir.backup" location="${fortesrh.dir}/backup_db" />
 	<property name="backup.file" location="${fortesrh.dir.backup}/bkpDBFortesRh_" />
 	
 	<!-- Gera nome (e path completo) do arquivo de backup -->
@@ -84,7 +83,7 @@
 		<echo>${backup.db.file.path}</echo>
 		<exec failifexecutionfails="true" failonerror="true"
 			executable="${postgres.dir}/bin/pg_dump"
-			output="${fortesrh.dir}/RH/output_backup_agendado.txt">
+			output="${fortesrh.dir}/output_backup_agendado.txt">
 			<env key="PGPASSWORD" value="${postgres.password}" />
 			<arg value="-U" />
 			<arg value="${postgres.user}" />

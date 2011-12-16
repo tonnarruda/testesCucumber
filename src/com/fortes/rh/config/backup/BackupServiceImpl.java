@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import com.fortes.rh.config.backup.notificador.NotificadorDeBackup;
+import com.fortes.rh.util.ArquivoUtil;
 
 public class BackupServiceImpl implements BackupService {
 
@@ -41,6 +42,7 @@ public class BackupServiceImpl implements BackupService {
 			logger.info("Efetuando backup do banco.");
 			
 			runAntScript.addProperty("today", today);
+			runAntScript.addProperty("fortesrh.dir",  ArquivoUtil.getRhHome());
 			runAntScript.launch();
 			
 			logger.info("Backup do banco efetuado com sucesso.");
