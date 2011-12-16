@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.ComposicaoSesmt;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -36,6 +38,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	private EpcManager epcManager;
 	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
 	private EpiManager epiManager;
+	private ComposicaoSesmtManager composicaoSesmtManager;
 	
 	private Collection<PpraLtcatRelatorio> relatorios = null;
 	
@@ -48,10 +51,11 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return getDao().findByIds(ambienteIds, data, estabelecimentoId);
 	}
 	
-	public Collection<PpraLtcatRelatorio> montaRelatorioPpraLtcat(Empresa empresa, Long estabelecimentoId, Date data, String[] ambienteCheck, boolean gerarPpra, boolean gerarLtcat) throws ColecaoVaziaException 
+	public Collection<PpraLtcatRelatorio> montaRelatorioPpraLtcat(Empresa empresa, Long estabelecimentoId, Date data, String[] ambienteCheck, boolean gerarPpra, boolean gerarLtcat, boolean exibirComposicaoSesmt) throws ColecaoVaziaException 
 	{
-		exibirPpra = gerarPpra;
-		exibirLtcat = gerarLtcat;
+		this.exibirPpra = gerarPpra;
+		this.exibirLtcat = gerarLtcat;
+		ComposicaoSesmt composicaoSesmt = null;
 		
 		Estabelecimento estabelecimento = estabelecimentoManager.findById(estabelecimentoId);
 		
@@ -62,15 +66,18 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		if (ambientes.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
 		
+		if (exibirComposicaoSesmt)
+			composicaoSesmt = composicaoSesmtManager.findByData(empresa.getId(), data);
+		
 		for (Ambiente ambiente : ambientes)
 		{
-			relatorios.add(this.populaRelatorioPorAmbiente(empresa, estabelecimento, ambiente, data));
+			relatorios.add(this.populaRelatorioPorAmbiente(empresa, estabelecimento, ambiente, data, composicaoSesmt));
 		}
 		
 		return relatorios;
 	}
 	
-	private PpraLtcatRelatorio populaRelatorioPorAmbiente(Empresa empresa, Estabelecimento estabelecimento, Ambiente ambiente, Date data) 
+	private PpraLtcatRelatorio populaRelatorioPorAmbiente(Empresa empresa, Estabelecimento estabelecimento, Ambiente ambiente, Date data, ComposicaoSesmt composicaoSesmt) 
 	{
 		Ppra ppra = new Ppra();
 		Ltcat ltcat = new Ltcat();
@@ -81,6 +88,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		cabecalho.setQtdHomens(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.MASCULINO));
 		cabecalho.setQtdMulheres(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.FEMININO));
 		
+		ppraLtcatRelatorio.setComposicaoSesmts(Arrays.asList(composicaoSesmt));
 		ppraLtcatRelatorio.setTempoExposicao(ambiente.getHistoricoAtual().getTempoExposicao());
 		
 		Collection<Funcao> funcoesDoAmbiente = funcaoManager.findFuncoesDoAmbiente(ambiente.getId(), data);
@@ -204,6 +212,10 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager)
 	{
 		this.historicoAmbienteManager = historicoAmbienteManager;
+	}
+
+	public void setComposicaoSesmtManager(ComposicaoSesmtManager composicaoSesmtManager) {
+		this.composicaoSesmtManager = composicaoSesmtManager;
 	}
 
 }

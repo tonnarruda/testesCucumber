@@ -58,8 +58,10 @@
 		<@ww.datepicker label="Data" id="data" name="data" required="true" cssClass="mascaraData" value="${date}" />
 		<@ww.select label="Estabelecimento" id="estabelecimento" name="estabelecimento.id" required="true" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" onchange="javascript:populaAmbientes();" cssStyle="width:240px;"/>
 		<@frt.checkListBox label="Ambientes" id="ambiente" name="ambienteCheck" list="ambienteCheckList" />
-		<@ww.checkbox label="Gerar PPRA" id="ppra" name="gerarPpra" labelPosition="left"/>
-		<@ww.checkbox label="Gerar LTCAT" id="ltcat" name="gerarLtcat" labelPosition="left"/>
+		<@ww.checkbox label="Exibir Composição do SESMT" id="exibirComposicaoSesmt" name="exibirComposicaoSesmt" labelPosition="left"/>
+		Gerar:
+		<@ww.checkbox label="PPRA" id="ppra" name="gerarPpra" labelPosition="left"/>
+		<@ww.checkbox label="LTCAT" id="ltcat" name="gerarLtcat" labelPosition="left"/>
 	</@ww.form>
 
 	<div class="buttonGroup">
