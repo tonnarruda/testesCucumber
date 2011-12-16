@@ -23,7 +23,7 @@
 			
 			<br>			
 			<button onclick="window.location='../geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action'" class="btnVoltar"></button>
-			<button onclick="loader(true); window.location='gerar.action';" class="btnBackup"/></button>
+			<button onclick="window.location='gerar.action';" class="btnBackup"/></button>
 		</div>
 	</body>
 </html>
