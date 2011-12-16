@@ -275,7 +275,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 	public void testRelatorioColaboradorCargoBuscaRemuneracaoVariavelNoACPessoal() throws Exception
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setAcIntegra(true);
 		
 		Colaborador francisco = ColaboradorFactory.getEntity();
