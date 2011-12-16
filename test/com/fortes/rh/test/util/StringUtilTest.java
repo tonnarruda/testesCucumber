@@ -69,9 +69,14 @@ public class StringUtilTest extends TestCase
 //	public void testGetHTML()
 //	{
 //		String url = "http://m.correios.com.br/movel/buscaCepConfirma.do?cepEntrada=60743-760&tipoCep=&cepTemp=&metodo=buscarCep";
-//		assertEquals(getPagina(), StringUtil.getHTML(url));
+//		
+//		assertTrue(StringUtil.getHTML(url).contains("respostadestaque"));
 //	}
 
+	public void test() {
+		
+	}
+	
 	public void testMontaTokenF2rh()
 	{
 		Calendar calendar = new GregorianCalendar();
@@ -310,18 +315,4 @@ public class StringUtilTest extends TestCase
     	assertFalse(StringUtil.equalsIgnoreCaseAcento("Escobar", "ESCOBARr"));
     }
     
-
-	private String getPagina() {
-		StringBuilder pagina = new StringBuilder();
-		
-		pagina.append("\n");
-		pagina.append("\n");
-		pagina.append("\n");
-		pagina.append("\n");
-		pagina.append("\n");
-		//pagina.append("<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n");
-		
-		
-		return pagina.toString();
-	}
 }

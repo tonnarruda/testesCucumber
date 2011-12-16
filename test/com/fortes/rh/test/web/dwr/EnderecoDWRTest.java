@@ -7,13 +7,11 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
 
 import com.fortes.f2rh.test.MockHttpClient;
-import com.fortes.f2rh.test.MockHttpMethod;
 import com.fortes.rh.web.dwr.EnderecoDWR;
 
 public class EnderecoDWRTest extends TestCase {
 
 	EnderecoDWR enderecoDwr;
-	private String cep;
 	
 	public void setUp() {
 		enderecoDwr = new EnderecoDWR();
@@ -21,16 +19,15 @@ public class EnderecoDWRTest extends TestCase {
 	
 	public void testDeveBuscarPorCep() {
 		
-//		dadoQueServidorDoYahooEstaOnline();
+		dadoQueServidorDoYahooEstaOnline();
 		
 		String json = enderecoDwr.buscaPorCep("60743-760");
 		
-		assertNotNull("json", json);
+		assertEquals("{\"sucesso\":\"1\",\"logradouro\":\"Avenida Heróis do Acre 1-*|@#%&()+=§!?;:><,./\",\"bairro\":\"Passaré*\",\"cidade\":\"Fortaleza\",\"estado\":\"CE\"}",json);
 	}
 	
 	public void testSeparaDadosDoEndereco() 
 	{
-		String paginaRetorno = "";
 		String json = enderecoDwr.buscaPorCep("60743-760");
 		
 		assertNotNull("json", json);
