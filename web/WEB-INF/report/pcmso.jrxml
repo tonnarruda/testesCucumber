@@ -95,9 +95,10 @@
 						key="staticText-3"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="18"/>
+						<font size="14"/>
 					</textElement>
-				<text><![CDATA[PCMSO]]></text>
+				<text><![CDATA[PCMSO - PROGRAMA DE CONTROLE MÉDICO
+DE SAÚDE OCUPACIONAL]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -318,11 +319,11 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="411"  isSplitAllowed="true" >
+			<band height="407"  isSplitAllowed="true" >
 				<subreport  isUsingCache="false">
 					<reportElement
 						x="0"
-						y="5"
+						y="60"
 						width="535"
 						height="53"
 						key="agenda"
@@ -340,7 +341,7 @@
 				<break>
 					<reportElement
 						x="0"
-						y="59"
+						y="114"
 						width="535"
 						height="0"
 						key="element-1"
@@ -351,7 +352,7 @@
 				<subreport  isUsingCache="false">
 					<reportElement
 						x="0"
-						y="62"
+						y="117"
 						width="535"
 						height="53"
 						key="colabPorSetor"
@@ -372,7 +373,7 @@
 				<break>
 					<reportElement
 						x="0"
-						y="117"
+						y="172"
 						width="535"
 						height="0"
 						key="element-3"
@@ -383,7 +384,7 @@
 				<subreport  isUsingCache="false">
 					<reportElement
 						x="0"
-						y="238"
+						y="293"
 						width="535"
 						height="53"
 						key="exames"
@@ -401,7 +402,7 @@
 				<break>
 					<reportElement
 						x="0"
-						y="293"
+						y="348"
 						width="535"
 						height="0"
 						key="element-4"
@@ -412,7 +413,7 @@
 				<subreport  isUsingCache="false">
 					<reportElement
 						x="0"
-						y="296"
+						y="351"
 						width="535"
 						height="53"
 						key="exames-1"
@@ -431,7 +432,7 @@
 					<reportElement
 						mode="Transparent"
 						x="0"
-						y="121"
+						y="176"
 						width="535"
 						height="53"
 						key="colabPorSetor-1"
@@ -449,7 +450,7 @@
 				<break>
 					<reportElement
 						x="0"
-						y="235"
+						y="290"
 						width="535"
 						height="0"
 						key="element-6"
@@ -461,7 +462,7 @@
 					<reportElement
 						mode="Transparent"
 						x="0"
-						y="179"
+						y="234"
 						width="535"
 						height="53"
 						key="colabPorSetor-2"
@@ -479,7 +480,7 @@
 				<break>
 					<reportElement
 						x="0"
-						y="175"
+						y="230"
 						width="535"
 						height="0"
 						key="element-7"
@@ -490,29 +491,23 @@
 				<subreport  isUsingCache="false">
 					<reportElement
 						x="0"
-						y="354"
+						y="2"
 						width="535"
 						height="53"
 						key="exames-2"
 						positionType="Float"
 						isPrintRepeatedValues="false"
-						isRemoveLineWhenBlank="true"/>
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[$F{exibirComposicaoSesmt}]]></printWhenExpression>
+						</reportElement>
 					<subreportParameter  name="REPORT_DATA_SOURCE">
 						<subreportParameterExpression><![CDATA[$F{composicaoSesmts}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter  name="CABECALHO">
 						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "pcmso_composicao_sesmt.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "composicao_sesmt.jasper"]]></subreportExpression>
 				</subreport>
-				<break>
-					<reportElement
-						x="0"
-						y="351"
-						width="535"
-						height="0"
-						key="element-8"/>
-				</break>
 			</band>
 		</detail>
 		<columnFooter>

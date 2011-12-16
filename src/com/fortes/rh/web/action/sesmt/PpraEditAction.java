@@ -33,6 +33,7 @@ public class PpraEditAction extends MyActionSupportEdit
 	private Date data;
 	private boolean gerarPpra;
 	private boolean gerarLtcat;
+	private boolean exibirComposicaoSesmt;
 	
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<PpraLtcatRelatorio> dataSource = new ArrayList<PpraLtcatRelatorio>();
@@ -52,7 +53,7 @@ public class PpraEditAction extends MyActionSupportEdit
 		try
 		{
 			parametros = RelatorioUtil.getParametrosRelatorio("PPRA", getEmpresaSistema(), null);
-			dataSource = ambienteManager.montaRelatorioPpraLtcat(getEmpresaSistema(), estabelecimento.getId(), data, ambienteCheck, gerarPpra, gerarLtcat);
+			dataSource = ambienteManager.montaRelatorioPpraLtcat(getEmpresaSistema(), estabelecimento.getId(), data, ambienteCheck, gerarPpra, gerarLtcat, exibirComposicaoSesmt);
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -134,5 +135,13 @@ public class PpraEditAction extends MyActionSupportEdit
 
 	public Collection<PpraLtcatRelatorio> getDataSource() {
 		return dataSource;
+	}
+
+	public boolean isExibirComposicaoSesmt() {
+		return exibirComposicaoSesmt;
+	}
+
+	public void setExibirComposicaoSesmt(boolean exibirComposicaoSesmt) {
+		this.exibirComposicaoSesmt = exibirComposicaoSesmt;
 	}
 }
