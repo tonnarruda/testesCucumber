@@ -8,13 +8,16 @@ import com.fortes.rh.util.StringUtil;
 
 public class EnderecoDWR {
 
+	 //inserido dessa forma, pois a expresao que adiciona todos os caracter .(ponto) nao funciona neste caso.
+	 private String expressaoRegular = "[\\w\\s\\n\\-\\*\\|\\@\\#\\%\\&\\(\\)\\+\\=\\§\\!\\?\\;\\:\\>\\<\\,\\.\\/\\p{L}]*"; 
+
 	public String buscaPorCep(String cep) 
 	{
 		try {
 			String pagina = StringUtil.getHTML(getUrlParaCep(cep));
 			
-		    Pattern pattern = Pattern.compile("<span class=\"respostadestaque\">([\\/\\w\\s\\n\\p{L}]*)</span>");
-		    Matcher matcher = pattern.matcher(pagina);
+			Pattern pattern = Pattern.compile("<span class=\"respostadestaque\">("+ expressaoRegular + ")</span>");
+			Matcher matcher = pattern.matcher(pagina);
 
 		    String response = "{\"sucesso\":\"1\",";
 		    
