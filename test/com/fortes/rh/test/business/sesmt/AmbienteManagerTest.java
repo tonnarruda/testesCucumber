@@ -9,6 +9,7 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManagerImpl;
+import com.fortes.rh.business.sesmt.ComposicaoSesmtManager;
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
@@ -46,6 +47,7 @@ public class AmbienteManagerTest extends MockObjectTestCase
 	private Mock riscoMedicaoRiscoManager;
 	private Mock epcManager;
 	private Mock epiManager;
+	private Mock composicaoSesmtManager;
 
 	protected void setUp() throws Exception
     {
@@ -70,6 +72,9 @@ public class AmbienteManagerTest extends MockObjectTestCase
         
         epiManager = mock(EpiManager.class);
         ambienteManager.setEpiManager((EpiManager) epiManager.proxy());
+
+        composicaoSesmtManager = mock(ComposicaoSesmtManager.class);
+        ambienteManager.setComposicaoSesmtManager((ComposicaoSesmtManager) composicaoSesmtManager.proxy());
     }
 
 	public void testGetCount()
@@ -307,6 +312,7 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		estabelecimentoManager.expects(once()).method("findById").will(returnValue(estabelecimento));
 		ambienteDao.expects(once()).method("findByIds").will(returnValue(ambientes));
 		
+		composicaoSesmtManager.expects(once()).method("findByData").with(eq(empresa.getId()), ANYTHING);
 		funcaoManager.expects(atLeastOnce()).method("findFuncoesDoAmbiente").will(returnValue(new ArrayList<Funcao>()));
 		ambienteDao.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING,ANYTHING,eq(Sexo.MASCULINO)).will(returnValue(10));
 		ambienteDao.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING,ANYTHING,eq(Sexo.FEMININO)).will(returnValue(50));

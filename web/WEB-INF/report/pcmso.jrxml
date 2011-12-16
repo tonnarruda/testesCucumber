@@ -95,9 +95,10 @@
 						key="staticText-3"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="18"/>
+						<font size="14"/>
 					</textElement>
-				<text><![CDATA[PCMSO]]></text>
+				<text><![CDATA[PCMSO - PROGRAMA DE CONTROLE MÉDICO
+DE SAÚDE OCUPACIONAL]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
