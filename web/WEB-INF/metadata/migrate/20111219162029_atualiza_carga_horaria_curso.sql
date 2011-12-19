@@ -1,0 +1,1 @@
+update curso set cargahoraria = cargahoraria*60;--.go

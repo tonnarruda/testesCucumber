@@ -42,7 +42,7 @@
 	<field name="turma.dataPrevIni" class="java.util.Date"/>
 	<field name="turma.dataPrevFim" class="java.util.Date"/>
 	<field name="turma.custo" class="java.lang.Double"/>
-	<field name="curso.cargaHoraria" class="java.lang.String"/>
+	<field name="curso.cargaHorariaMinutos" class="java.lang.String"/>
 	<field name="curso.nome" class="java.lang.String"/>
 	<field name="colaborador.estabelecimento.nome" class="java.lang.String"/>
 	<field name="custoRateado" class="java.lang.Double"/>
@@ -345,7 +345,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{curso.cargaHoraria}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{curso.cargaHorariaMinutos}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

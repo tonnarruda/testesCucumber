@@ -376,7 +376,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 		parametros.put("CURSO_NOME", colaboradorTurma.getCurso().getNome());
 		parametros.put("CURSO_CONTEUDO", colaboradorTurma.getCurso().getConteudoProgramatico());
-		parametros.put("CURSO_CARGA_HORARIA", colaboradorTurma.getCurso().getCargaHoraria());
+		parametros.put("CURSO_CARGA_HORARIA", colaboradorTurma.getCurso().getCargaHorariaMinutos());
 		parametros.put("TURMA_DESCRICAO", colaboradorTurma.getTurma().getDescricao());
 		parametros.put("TURMA_INSTRUTOR", colaboradorTurma.getTurma().getInstrutor());
 		parametros.put("TURMA_HORARIO", colaboradorTurma.getTurma().getHorario());

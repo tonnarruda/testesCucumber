@@ -118,7 +118,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 			Integer qtdParticipantes = indicadorTreinamento.getQtdColaboradoresInscritos();
 
 			Integer qtdAtivos = colaboradorManager.getCountAtivos(dataIni, dataFim, empresaId);
-			Double horasPerCapita = (qtdHoras.doubleValue() * qtdParticipantes.doubleValue()) / qtdAtivos;
+			Double horasPerCapita = ((qtdHoras.doubleValue()/60) * qtdParticipantes.doubleValue()) / qtdAtivos;
 
 			indicadorTreinamento.setHorasPerCapita(horasPerCapita);
 		}

@@ -96,7 +96,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		parametros.put("turma", 	turma.getDescricao());
 		parametros.put("instrutor", turma.getInstrutor());
 		parametros.put("horario", turma.getHorario());
-		parametros.put("cargaHoraria", turma.getCurso().getCargaHoraria());
+		parametros.put("cargaHoraria", turma.getCurso().getCargaHorariaMinutos());
 		parametros.put("dataPrevIni", DateUtil.formataDiaMesAno(turma.getDataPrevIni()));
 		parametros.put("dataPrevFim", DateUtil.formataDiaMesAno(turma.getDataPrevFim()));
 		parametros.put("SUBREPORT_DIR", path);

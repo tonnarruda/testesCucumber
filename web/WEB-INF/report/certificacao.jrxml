@@ -27,7 +27,7 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="nome" class="java.lang.String"/>
-	<field name="cargaHoraria" class="java.lang.Integer"/>
+	<field name="cargaHorariaMinutos" class="java.lang.String"/>
 	<field name="observacao" class="java.lang.String"/>
 	<field name="competencias" class="java.lang.String"/>
 	<field name="descEscolaridade" class="java.lang.String"/>
@@ -146,7 +146,7 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[(  ($F{cargaHoraria} != null && $F{cargaHoraria}.compareTo(new Integer(0)) == 1 ) ? $F{cargaHoraria} + " horas" : "")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cargaHorariaMinutos}.equals("") ? "" :$F{cargaHorariaMinutos} + " horas" ]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

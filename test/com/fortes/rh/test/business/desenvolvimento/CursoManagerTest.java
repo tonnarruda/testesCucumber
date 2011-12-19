@@ -66,7 +66,7 @@ public class CursoManagerTest extends MockObjectTestCase
 
 		cursoManager.findHorasPerCapita(indicadorTreinamento, new Date(), new Date(), 4L);
 
-		Double calculoHorasPerCapita = ((double)80*20)/3000;
+		Double calculoHorasPerCapita = (((double)80*20)/3000)/60;
 		assertEquals(calculoHorasPerCapita, indicadorTreinamento.getHorasPerCapita());
 
 	}

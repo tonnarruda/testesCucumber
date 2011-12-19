@@ -13,6 +13,7 @@
 </#if>
 <#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
 
+<#include "../ftl/mascarasImports.ftl" />
 </head>
 <body>
 	<#assign linkFiltro=""/>
@@ -23,7 +24,7 @@
 	<@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" id="form" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.textfield label="Nome" name="curso.nome" id="nome" cssClass="inputNome" required="true" liClass="liLeft" cssStyle="width:409px;" maxLength="100"/><br><br><br>
-		<@ww.textfield label="Carga Horária" name="curso.cargaHoraria" maxLength="6" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:75px;text-align: right;"/>
+		<@ww.textfield label="Carga Horária" name="curso.cargaHorariaMinutosFormatado" cssStyle="width:55px;text-align:right" cssClass="mascaraHoraCurso"/>
 		<@ww.textfield label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right;" onblur="validaPercentual()"/>
 		<@ww.textarea label="Conteúdo Programático" name="curso.conteudoProgramatico" cssStyle="width:500px;"/>
 		<@ww.textarea label="Critérios de Avaliação" name="curso.criterioAvaliacao" cssStyle="width:500px;"/>

@@ -38,7 +38,7 @@
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?curso.id=${curso.id}&curso.empresa.id=${curso.empresa.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
-		<@display.column property="cargaHoraria" title="Carga Horária"/>
+		<@display.column property="cargaHorariaMinutos" title="Carga Horária" style="text-align:right;"/>
 	</@display.table>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
