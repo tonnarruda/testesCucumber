@@ -29,7 +29,7 @@ public class Certificado implements Cloneable
 		titulo = turma.getCurso().getNome();
 		data = localidade + ", " + DateUtil.formataDataExtenso(new Date());
 		// expressão #NOMECOLABORADOR# utilizado tambem no setNomeColaborador
-		conteudo = "Certificamos que #NOMECOLABORADOR# participou do curso " + turma.getCurso().getNome().toUpperCase() + " com carga horária de " + turma.getCurso().getCargaHoraria() + " horas-aula.";
+		conteudo = "Certificamos que #NOMECOLABORADOR# participou do curso " + turma.getCurso().getNome().toUpperCase() + " com carga horária de " + turma.getCurso().getCargaHorariaMinutos() + " horas-aula.";
 		ass1 = "Diretor";
 		ass2 = "Instrutor \n(" + turma.getInstrutor() + ")";
 		
@@ -39,17 +39,20 @@ public class Certificado implements Cloneable
 
 	public Certificado(Collection<Curso> cursos, Certificacao certificacao, String localidade, boolean imprimirMoldura, boolean imprimirLogo)
 	{
-		int cargaHorariaTotal = 0;
+		Integer cargaHorariaTotal = 0;
 		for (Curso curso : cursos)
 		{
 			if(curso.getCargaHoraria() != null)
 				cargaHorariaTotal += curso.getCargaHoraria(); 
 		}
 		
+		Curso cursoTemp = new Curso();
+		cursoTemp.setCargaHoraria(cargaHorariaTotal);
+		
 		titulo = certificacao.getNome();
 		data = localidade + ", " + DateUtil.formataDataExtenso(new Date());
 		// expressão #NOMECOLABORADOR# utilizado tambem no setNomeColaborador
-		conteudo = "Certificamos que o(a) colaborador(a) #NOMECOLABORADOR# cumpriu todo o programa de treinamentos " + certificacao.getNome().toUpperCase() + " com carga horária total de " + cargaHorariaTotal + " horas-aula.";
+		conteudo = "Certificamos que o(a) colaborador(a) #NOMECOLABORADOR# cumpriu todo o programa de treinamentos " + certificacao.getNome().toUpperCase() + " com carga horária total de " + cursoTemp.getCargaHorariaMinutos() + " horas-aula.";
 		ass1 = "Diretor";
 
 		this.imprimirMoldura =imprimirMoldura;

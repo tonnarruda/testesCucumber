@@ -59,7 +59,7 @@
 							resultadoCand = true;
 						}
 					}
-					else if(elements[i].name == 'solicitacao.id' && elements[i].type == 'radio' )
+					else if(elements[i].name == 'solicitacaoDestino.id' && elements[i].type == 'radio' )
 					{
 						if (elements[i].checked && resultadoSol == false)
 						{
@@ -94,6 +94,7 @@
 	<br/>
 	<@ww.form name="formCand" action="mover.action" method="POST" >
 		<div id="legendas" align="right"></div>
+		<@ww.hidden name="solicitacao.id"/>
 		<@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" class="dados" defaultsort=2>
 		
 			<#if candidatoSolicitacao.aptoBoolean>
@@ -124,7 +125,7 @@
 
 		<@display.table name="solicitacaos" id="sol" class="dados" >
 			<@display.column title="" style="width: 30px; text-align: center;">
-				<input type="radio" value="${sol.id}" name="solicitacao.id"/>
+				<input type="radio" value="${sol.id}" name="solicitacaoDestino.id"/>
 			</@display.column>
 			<@display.column property="faixaSalarial.cargo.nome" title="Cargo" />
 			<@display.column property="empresa.nome" title="Empresa" />

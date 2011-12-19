@@ -8,7 +8,10 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AgendaManager;
+import com.fortes.rh.business.sesmt.ComposicaoSesmtManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.PcmsoManagerImpl;
@@ -29,6 +32,8 @@ public class PcmsoManagerTest extends MockObjectTestCase
 	private Mock areaOrganizacionalManager;
 	private Mock funcaoManager;
 	private Mock historicoFuncaoManager;
+	private Mock estabelecimentoManager;
+	private Mock empresaManager;
 
 	protected void setUp() throws Exception
     {
@@ -39,11 +44,15 @@ public class PcmsoManagerTest extends MockObjectTestCase
         funcaoManager = new Mock(FuncaoManager.class);
         historicoFuncaoManager = new Mock(HistoricoFuncaoManager.class);
         areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+        estabelecimentoManager = mock(EstabelecimentoManager.class);
+        empresaManager = mock(EmpresaManager.class);
         
         pcmsoManager.setAgendaManager((AgendaManager) agendaManager.proxy());
         pcmsoManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
         pcmsoManager.setFuncaoManager((FuncaoManager) funcaoManager.proxy());
         pcmsoManager.setHistoricoFuncaoManager((HistoricoFuncaoManager) historicoFuncaoManager.proxy());
+        pcmsoManager.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+        pcmsoManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
     }
 
     protected void tearDown() throws Exception
@@ -58,7 +67,12 @@ public class PcmsoManagerTest extends MockObjectTestCase
 		{
     		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 			Long empresaId=1L;
-			pcmsoManager.montaRelatorio(DateUtil.criarDataMesAno(01, 01, 2009), DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, false,false,false,false,false,false);
+			
+			estabelecimentoManager.expects(once()).method("findComEnderecoById").with(eq(estabelecimento.getId()));
+			empresaManager.expects(once()).method("findByIdProjection").with(eq(empresaId));
+			
+			pcmsoManager.montaRelatorio(DateUtil.criarDataMesAno(01, 01, 2009), DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, false,false,false,false,false,false,false);
+		
 		} catch (Exception e)
 		{
 			excep = e;
@@ -80,8 +94,11 @@ public class PcmsoManagerTest extends MockObjectTestCase
     		nomes.add("Joao");
     		nomes.add("Maria");
     		
+    		estabelecimentoManager.expects(once()).method("findComEnderecoById").with(eq(estabelecimento.getId())).will(returnValue(estabelecimento));
+			empresaManager.expects(once()).method("findByIdProjection").with(eq(empresaId));
+    		
     		funcaoManager.expects(once()).method("findColaboradoresSemFuncao").with(eq(dataIni), eq(estabelecimento.getId())).will(returnValue(nomes));
-    		pcmsoManager.montaRelatorio(dataIni, DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, false, false, false, true, false, false);
+    		pcmsoManager.montaRelatorio(dataIni, DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, false, false, false, true, false, false, false);
     	} catch (Exception e)
     	{
     		excep = e;
@@ -100,11 +117,14 @@ public class PcmsoManagerTest extends MockObjectTestCase
     		Long empresaId=1L;
     		Date dataIni = DateUtil.criarDataMesAno(01, 01, 2009);
     		
+    		estabelecimentoManager.expects(once()).method("findComEnderecoById").with(eq(estabelecimento.getId())).will(returnValue(estabelecimento));
+			empresaManager.expects(once()).method("findByIdProjection").with(eq(empresaId));
+    		
     		funcaoManager.expects(once()).method("findColaboradoresSemFuncao").with(eq(dataIni), eq(estabelecimento.getId())).will(returnValue(new ArrayList<String>()));
     		funcaoManager.expects(once()).method("findFuncaoAtualDosColaboradores").with(eq(dataIni), eq(estabelecimento.getId())).will(returnValue(new ArrayList<Long>()));
     		historicoFuncaoManager.expects(once()).method("findEpis").with(ANYTHING, eq(dataIni)).will(returnValue(new ArrayList<HistoricoFuncao>()));
     		
-    		pcmsoManager.montaRelatorio(dataIni, DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, false, false, false, true, false, false);
+    		pcmsoManager.montaRelatorio(dataIni, DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, false, false, false, true, false, false, false);
     	} catch (Exception e)
     	{
     		excep = e;
@@ -127,11 +147,14 @@ public class PcmsoManagerTest extends MockObjectTestCase
     		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
     		historicos.add(historicoFuncao);
     		
+    		estabelecimentoManager.expects(once()).method("findComEnderecoById").with(eq(estabelecimento.getId())).will(returnValue(estabelecimento));
+			empresaManager.expects(once()).method("findByIdProjection").with(eq(empresaId));
+    		
     		funcaoManager.expects(once()).method("findColaboradoresSemFuncao").with(eq(dataIni), eq(estabelecimento.getId())).will(returnValue(new ArrayList<String>()));
     		funcaoManager.expects(once()).method("findFuncaoAtualDosColaboradores").with(eq(dataIni), eq(estabelecimento.getId())).will(returnValue(new ArrayList<Long>()));
     		historicoFuncaoManager.expects(once()).method("findEpis").with(ANYTHING, eq(dataIni)).will(returnValue(historicos));
     		
-    		pcmsoManager.montaRelatorio(dataIni, DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, false, false, false, true, false, false);
+    		pcmsoManager.montaRelatorio(dataIni, DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, false, false, false, true, false, false, false);
     	} catch (Exception e)
     	{
     		excep = e;
@@ -147,7 +170,7 @@ public class PcmsoManagerTest extends MockObjectTestCase
 		{
     		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 			Long empresaId=1L;
-			pcmsoManager.montaRelatorio(DateUtil.criarDataMesAno(02, 02, 2009), DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, true,true,true,true,true,true);
+			pcmsoManager.montaRelatorio(DateUtil.criarDataMesAno(02, 02, 2009), DateUtil.criarDataMesAno(01, 01, 2009), estabelecimento, empresaId, true,true,true,true,true,true, false);
 		} catch (Exception e)
 		{
 			excep = e;

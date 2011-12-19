@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.DocumentoAnexoDao;
 import com.fortes.rh.model.geral.DocumentoAnexo;
+import com.fortes.rh.model.geral.TipoDocumento;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 
 public class DocumentoAnexoDaoHibernateTest extends GenericDaoHibernateTest<DocumentoAnexo>

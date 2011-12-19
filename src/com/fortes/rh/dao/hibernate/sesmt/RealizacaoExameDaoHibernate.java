@@ -127,26 +127,42 @@ public class RealizacaoExameDaoHibernate extends GenericDaoHibernate<RealizacaoE
 	
 	public Collection<Exame> findQtdPorExame(Long empresaId, Date dataIni, Date dataFim)
 	{
+		StringBuilder subQtdNormal = new StringBuilder();
+		subQtdNormal.append("(select count(*) from examesolicitacaoexame ese "); 
+		subQtdNormal.append("inner join realizacaoexame re on ese.realizacaoexame_id = re.id "); 
+		subQtdNormal.append("inner join solicitacaoexame se on ese.solicitacaoexame_id = se.id "); 
+		subQtdNormal.append("where re.data between :dataIni and :dataFim "); 
+		subQtdNormal.append("and se.empresa_id = :empresaId "); 
+		subQtdNormal.append("and re.resultado = :resultadoNormal "); 
+		subQtdNormal.append("and ese.exame_id = e.id ) "); 
+		
+		StringBuilder subQtdAnormal = new StringBuilder();
+		subQtdAnormal.append("(select count(*) from examesolicitacaoexame ese "); 
+		subQtdAnormal.append("inner join realizacaoexame re on ese.realizacaoexame_id = re.id "); 
+		subQtdAnormal.append("inner join solicitacaoexame se on ese.solicitacaoexame_id = se.id "); 
+		subQtdAnormal.append("where re.data between :dataIni and :dataFim "); 
+		subQtdAnormal.append("and se.empresa_id = :empresaId "); 
+		subQtdAnormal.append("and re.resultado = :resultadoAnormal "); 
+		subQtdAnormal.append("and ese.exame_id = e.id ) "); 
+
 		StringBuilder sql = new StringBuilder("select e.id, e.nome, ");
 
-		sql.append("(select count(*) from examesolicitacaoexame ese "); 
-		sql.append("inner join realizacaoexame re on ese.realizacaoexame_id = re.id "); 
-		sql.append("inner join solicitacaoexame se on ese.solicitacaoexame_id = se.id "); 
-		sql.append("where re.data between :dataIni and :dataFim "); 
-		sql.append("and se.empresa_id = :empresaId "); 
-		sql.append("and re.resultado = :resultadoNormal "); 
-		sql.append("and ese.exame_id = e.id ) as qtdNormal, "); 
+		sql.append(subQtdNormal);
+		sql.append(" as qtdNormal,");
 
-		sql.append("(select count(*) from examesolicitacaoexame ese "); 
-		sql.append("inner join realizacaoexame re on ese.realizacaoexame_id = re.id "); 
-		sql.append("inner join solicitacaoexame se on ese.solicitacaoexame_id = se.id "); 
-		sql.append("where re.data between :dataIni and :dataFim "); 
-		sql.append("and se.empresa_id = :empresaId "); 
-		sql.append("and re.resultado = :resultadoAnormal "); 
-		sql.append("and ese.exame_id = e.id ) as qtdAnormal "); 
+		sql.append(subQtdAnormal);
+		sql.append(" as qtdAnormal ");
 
 		sql.append("from exame e ");
 		sql.append("where e.empresa_id = :empresaId ");
+		sql.append("group by e.id, e.nome ");
+		
+		sql.append("having ");
+		sql.append(subQtdNormal);
+		sql.append(" > 0 or");
+		sql.append(subQtdAnormal);
+		sql.append(" > 0 ");
+		
 		sql.append("order by qtdNormal desc");
 		
 		Query query = getSession().createSQLQuery(sql.toString());

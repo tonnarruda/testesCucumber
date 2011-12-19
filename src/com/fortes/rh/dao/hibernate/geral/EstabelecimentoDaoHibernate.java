@@ -155,6 +155,16 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		return (Estabelecimento) criteria.uniqueResult();
 	}
 
+	public Estabelecimento findComEnderecoById(Long estabelecimentoId)
+	{
+		String hql = "select est from Estabelecimento est where est.id = :estabelecimentoId";
+		
+		Query query = getSession().createQuery(hql);
+		query.setLong("estabelecimentoId", estabelecimentoId);
+		
+		return (Estabelecimento) query.uniqueResult();
+	}
+
 	public Collection<Estabelecimento> findAllSelect(Long[] empresaIds)
 	{
 		Criteria criteria = getSession().createCriteria(Estabelecimento.class,"e");

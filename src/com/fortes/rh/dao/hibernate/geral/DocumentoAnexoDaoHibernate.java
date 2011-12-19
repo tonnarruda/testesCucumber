@@ -21,6 +21,7 @@ public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAne
 	{
 		Criteria criteria = getSession().createCriteria(DocumentoAnexo.class, "da");
 		criteria.createCriteria("da.etapaSeletiva","es",Criteria.LEFT_JOIN);
+		criteria.createCriteria("da.tipoDocumento","td",Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("da.id"), "id");
@@ -30,6 +31,7 @@ public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAne
 		p.add(Projections.property("da.url"), "url");
 		p.add(Projections.property("da.origem"), "origem");
 		p.add(Projections.property("da.origemId"), "origemId");
+		p.add(Projections.property("td.descricao"), "projectionTipoDocumentoDescricao");
 		p.add(Projections.property("es.nome"), "projectionEtapaSeletivaNome");
 		criteria.setProjection(p);
 

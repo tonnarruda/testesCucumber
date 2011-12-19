@@ -3,35 +3,31 @@ package com.fortes.rh.web.dwr;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
+import com.fortes.rh.util.StringUtil;
 
 
 public class EnderecoDWR {
 
-	private static final int TIMEOUT = 8000; // 8 sec
-	
-	//inserido dessa forma, pois a expresao que adiciona todos os caracter .(ponto) nao funciona neste caso.
-	private String expressaoRegular = "[\\w\\s\\n\\-\\*\\|\\@\\#\\%\\&\\(\\)\\+\\=\\§\\!\\?\\;\\:\\>\\<\\,\\.\\/\\p{L}]*";
+	 //inserido dessa forma, pois a expresao que adiciona todos os caracter .(ponto) nao funciona neste caso.
+	 private String expressaoRegular = "[\\w\\s\\n\\-\\*\\|\\@\\#\\%\\&\\(\\)\\+\\=\\§\\!\\?\\;\\:\\>\\<\\,\\.\\/\\p{L}]*"; 
 
 	public String buscaPorCep(String cep) 
 	{
-		HttpClient client = createHttpClientWithTimeout(TIMEOUT);
-		GetMethod get = new GetMethod(getUrlParaCep(cep));
 		try {
-			client.executeMethod( get );
-		    Pattern pattern = Pattern.compile("<span class=\"respostadestaque\">("+ expressaoRegular + ")</span>");
-		    Matcher matcher = pattern.matcher(get.getResponseBodyAsString());
+			String pagina = StringUtil.getHTML(getUrlParaCep(cep));
+			
+			Pattern pattern = Pattern.compile("<span class=\"respostadestaque\">("+ expressaoRegular + ")</span>");
+			Matcher matcher = pattern.matcher(pagina);
 
 		    String response = "{\"sucesso\":\"1\",";
 		    
 		    matcher.find();
-		    String match = matcher.group(1);
-	    	response += "\"logradouro\":\"" + match.replaceAll("\\n", "").trim() + "\",";
+		    String match = matcher.group(1).replaceAll("\\n", "").trim();
+	    	response += "\"logradouro\":\"" + match.substring(0, Math.min(match.length(), 40)) + "\",";
 	    	
 	    	matcher.find();
-	    	match = matcher.group(1);
-	    	response += "\"bairro\":\"" + match.replaceAll("  ", "").replaceAll("\n", "").replaceAll("\t", "").trim()  + "\",";
+	    	match = matcher.group(1).replaceAll("  ", "").replaceAll("\n", "").replaceAll("\t", "").trim();
+	    	response += "\"bairro\":\"" + match.substring(0, Math.min(match.length(), 85))  + "\",";
 
 	    	matcher.find();
 	    	match = matcher.group(1);
@@ -45,13 +41,6 @@ public class EnderecoDWR {
 		} catch (Exception e) {
 			return "{\"sucesso\":\"0\"}";
 		}
-	}
-
-	private HttpClient createHttpClientWithTimeout(int timeout) {
-		HttpClient client = new HttpClient();
-		client.getParams().setParameter("http.socket.timeout", timeout);
-		client.getParams().setParameter("http.connection.timeout", timeout);
-		return client;
 	}
 
 	private String getUrlParaCep(String cep) 

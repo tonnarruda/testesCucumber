@@ -321,3 +321,34 @@ function imprimir(divId, configuracao, classFile)
 	WinPrint.print();
 	WinPrint.close();
 }
+
+function loader(exibir) 
+{
+    if (exibir) {
+	    var messageZone = document.getElementById('messageZone');
+	    var iframeZone = document.getElementById('iframeZone');
+	    if (!messageZone)
+	    {
+	
+	      iframeZone = document.createElement('iframe');
+	      iframeZone.setAttribute('id', 'iframeZone');
+		  iframeZone.allowtransparency= "true";
+	
+	      document.body.appendChild(iframeZone);
+	
+	      messageZone = document.createElement('div');
+	      messageZone.setAttribute('id', 'messageZone');
+	
+	      document.body.appendChild(messageZone);
+	    }
+	    else
+	    {
+	      messageZone.style.visibility = 'visible';
+	      iframeZone.style.visibility = 'visible';
+	    }
+	    
+    } else {
+		document.getElementById('messageZone').style.visibility = 'hidden';
+		document.getElementById('iframeZone').style.visibility = 'hidden';
+    }
+}

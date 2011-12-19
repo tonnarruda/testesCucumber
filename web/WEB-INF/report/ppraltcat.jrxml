@@ -30,6 +30,7 @@
 	<field name="ppra" class="com.fortes.rh.model.sesmt.relatorio.Ppra"/>
 	<field name="ltcat" class="com.fortes.rh.model.sesmt.relatorio.Ltcat"/>
 	<field name="cabecalho" class="com.fortes.rh.model.sesmt.relatorio.PpraLtcatCabecalho"/>
+	<field name="composicaoSesmts" class="java.lang.Object"/>
 
 	<variable name="NUM_PAGINA" class="java.lang.Integer" resetType="None" incrementType="Page" calculation="Count">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
@@ -51,11 +52,11 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="167"  isSplitAllowed="true" >
+			<band height="227"  isSplitAllowed="true" >
 				<subreport  isUsingCache="false">
 					<reportElement
 						x="0"
-						y="58"
+						y="116"
 						width="535"
 						height="53"
 						key="ppra"
@@ -72,7 +73,7 @@
 				<subreport  isUsingCache="false">
 					<reportElement
 						x="0"
-						y="114"
+						y="172"
 						width="535"
 						height="53"
 						key="ltcat"
@@ -89,7 +90,7 @@
 				<break>
 					<reportElement
 						x="0"
-						y="112"
+						y="170"
 						width="535"
 						height="0"
 						key="element-1"
@@ -122,6 +123,21 @@
 							<printWhenExpression><![CDATA[new Boolean(!$V{PAGE_NUMBER}.equals(new Integer(1)) || ($V{PAGE_NUMBER}.equals(new Integer(1)) && $V{REPORT_COUNT}.compareTo(new Integer(1)) == 1))]]></printWhenExpression>
 						</reportElement>
 				</break>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="60"
+						width="535"
+						height="53"
+						key="ltcat-1"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{composicaoSesmts}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "composicao_sesmt.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 		</detail>
 		<columnFooter>

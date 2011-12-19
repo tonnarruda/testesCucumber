@@ -468,7 +468,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			msgs.add("- Existe colaborador duplicado, código AC: " + colaboradorCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(estabelecimentoCodAcDuplicado) )
-			msgs.add("- Existe estabelecimentos duplicado, código AC: " + estabelecimentoCodAcDuplicado);
+			msgs.add("- Existe estabelecimento duplicado, código AC: " + estabelecimentoCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(areaCodAcDuplicado) )
 			msgs.add("- Existe área organizacional duplicada, código AC: " + areaCodAcDuplicado);

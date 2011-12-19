@@ -11,7 +11,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -43,6 +45,8 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="curso")
 	private Collection<Turma> turmas;
+	@Transient
+	private String cargaHorariaMinutos;
 
 	public Collection<Turma> getTurmas()
 	{
@@ -172,5 +176,37 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	public Long getEmpresaId()
 	{
 		return this.empresa.getId();
+	}
+	
+	public String getCargaHorariaMinutos() {
+		
+		if(getCargaHoraria() == null)
+			return "";
+		
+		Integer hora = getCargaHoraria()/60;
+		Integer minutos = getCargaHoraria()%60;
+
+		return StringUtils.leftPad(hora.toString(), 4, "") + ":" +StringUtils.leftPad(minutos.toString(), 2, "0");		
+	}
+
+	public String getCargaHorariaMinutosFormatado() {
+		
+		if(getCargaHoraria() == null)
+			return "";
+		
+		Integer hora = getCargaHoraria()/60;
+		Integer minutos = getCargaHoraria()%60;
+		
+		return StringUtils.leftPad(hora.toString(), 4, "0") + ":" +StringUtils.leftPad(minutos.toString(), 2, "0");		
+	}
+	
+	public void setCargaHorariaMinutos(String cargaHorariaMinutos) {
+		if(!cargaHorariaMinutos.equals("    :  ") && !cargaHorariaMinutos.equals("0000:00"))
+		{
+			Integer hora = Integer.parseInt(cargaHorariaMinutos.substring(0, (cargaHorariaMinutos.length()-3)));
+			Integer minutos = Integer.parseInt(cargaHorariaMinutos.substring(cargaHorariaMinutos.length()-2, cargaHorariaMinutos.length()));
+			
+			setCargaHoraria(hora*60 + minutos);
+		}
 	}
 }

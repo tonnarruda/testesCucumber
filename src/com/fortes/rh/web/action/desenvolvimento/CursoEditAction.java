@@ -37,7 +37,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		if(curso != null && curso.getId() != null)
 			curso = (Curso) cursoManager.findById(curso.getId());
-
+		
 		Collection<AvaliacaoCurso> avaliacoes = avaliacaoCursoManager.findAll(new String[]{"titulo"});
 		avaliacaoCursoCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo");
 	}
@@ -64,6 +64,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 	public String insert() throws Exception
 	{
+		
 		CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
 		curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, avaliacaoCursoCheck));
 
@@ -72,6 +73,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 		return Action.SUCCESS;
 	}
+	
 
 	public String update() throws Exception
 	{

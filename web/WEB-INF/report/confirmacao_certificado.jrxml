@@ -29,7 +29,7 @@
 	<parameter name="CURSO_NOME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="TURMA_DESCRICAO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="TURMA_INSTRUTOR" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="CURSO_CARGA_HORARIA" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="CURSO_CARGA_HORARIA" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="TURMA_DATA_PREVI_INI" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="TURMA_DATA_PREVI_FIM" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CURSO_CONTEUDO" isForPrompting="false" class="java.lang.String"/>
@@ -232,7 +232,7 @@
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{CURSO_CARGA_HORARIA}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CURSO_CARGA_HORARIA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

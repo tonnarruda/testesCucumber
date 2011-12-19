@@ -6,9 +6,9 @@ import java.io.IOException;
 public class Principal
 {
 							//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "ComposicaoSesmt";
-	public static String NOME_CLASSE_MINUSCULO = "composicaoSesmt";
-	public static String NOME_PACOTE = "sesmt";
+	public static String NOME_CLASSE = "TipoDocumento";
+	public static String NOME_CLASSE_MINUSCULO = "tipoDocumento";
+	public static String NOME_PACOTE = "geral";
 	public static boolean GERAR_TODOS_ARQUIVOS = true;//gera todos os arquivos ou somente entidade, manager e dao 
 	
 	private static final char separator = java.io.File.separatorChar;

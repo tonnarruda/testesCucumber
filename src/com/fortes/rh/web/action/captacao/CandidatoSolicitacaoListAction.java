@@ -36,6 +36,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	private CandidatoSolicitacao candidatoSolicitacao;
 	private Solicitacao solicitacao;
+	private Solicitacao solicitacaoDestino;
 	private Candidato candidato;
 	private Long[] candidatosId;
 	private String indicadoPor;
@@ -148,7 +149,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	{
 		try
 		{
-			candidatoSolicitacaoManager.moverCandidatos(candidatosId, solicitacao);			
+			candidatoSolicitacaoManager.moverCandidatos(candidatosId, solicitacaoDestino);			
 		} catch (ColecaoVaziaException e)
 		{
 			//faz nada
@@ -328,6 +329,14 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public Solicitacao getSolicitacaoDestino() {
+		return solicitacaoDestino;
+	}
+
+	public void setSolicitacaoDestino(Solicitacao solicitacaoDestino) {
+		this.solicitacaoDestino = solicitacaoDestino;
 	}
 
 }

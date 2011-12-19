@@ -166,6 +166,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (402,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (62, 'ROLE_CAD_OCORRENCIA', 'Tipos de Ocorrência', '/geral/ocorrencia/list.action', 6, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (8, 'ROLE_CAD_COLABORADOR', 'Colaboradores', '/geral/colaborador/list.action', 7, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (412, 'ROLE_CAD_INFO_PESSOAL', 'Atualizar meus dados', '/geral/colaborador/prepareUpdateInfoPessoais.action', 8, true, 374);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (533, 'ROLE_TIPO_DOCUMENTO', 'Tipo do Documento', '/geral/tipoDocumento/list.action', 9, true, 374);
 
 
 -- Modulo Info. Funcionais Movimentacoes
@@ -241,19 +242,21 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (78, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (86, 'ROLE_CAD_EPC', 'EPC', '/sesmt/epc/list.action', 3, true, 385);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (79, 'ROLE_CAD_RISCO', 'Riscos', '/sesmt/risco/list.action', 4, true, 385);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (89, 'ROLE_CAD_ENGENHEIRO_TRABALHO', 'Engenheiros Responsáveis', '/sesmt/engenheiroResponsavel/list.action', 6, true, 385);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (90, 'ROLE_CAD_MEDICO_COORDENADOR', 'Médicos Coordenadores', '/sesmt/medicoCoordenador/list.action', 11, true, 385);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (91, 'ROLE_CAD_CLINICA_AUTORIZADA', 'Clínicas e Médicos Autorizados', '/sesmt/clinicaAutorizada/list.action', 12, true, 385);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (87, 'ROLE_CAD_EXAME', 'Exames', '/sesmt/exame/list.action', 10, true, 385);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (427, 'ROLE_CAD_FICHAMEDICA', 'Modelos de Fichas Médicas', '/sesmt/fichaMedica/list.action', 13, true, 385);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (445, 'ROLE_CAD_EXTINTOR', 'Extintores', '/sesmt/extintor/list.action', 7, true, 385);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (455, 'ROLE_CAD_ELEICAO', 'CIPA', '#', 8, true, 385);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (437, 'ROLE_CAD_ETAPAPROCESSOELEITORAL', 'Etapas do Processo Eleitoral', '/sesmt/etapaProcessoEleitoral/list.action', 1, true, 455);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (438, 'ROLE_CAD_ELEICAO', 'Eleições', '/sesmt/eleicao/list.action', 2, true, 455);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (439, 'ROLE_CAD_ELEICAO', 'Comissões', '/sesmt/comissao/list.action', 3, true, 455);
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (87, 'ROLE_CAD_EXAME', 'Exames', '/sesmt/exame/list.action', 10, true, 385);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (90, 'ROLE_CAD_MEDICO_COORDENADOR', 'Médicos Coordenadores', '/sesmt/medicoCoordenador/list.action', 11, true, 385);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (91, 'ROLE_CAD_CLINICA_AUTORIZADA', 'Clínicas e Médicos Autorizados', '/sesmt/clinicaAutorizada/list.action', 12, true, 385);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (427, 'ROLE_CAD_FICHAMEDICA', 'Modelos de Fichas Médicas', '/sesmt/fichaMedica/list.action', 13, true, 385);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (440, 'ROLE_CAD_AFASTAMENTO', 'Motivos de Afastamentos', '/sesmt/afastamento/list.action', 14, true, 385);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (445, 'ROLE_CAD_EXTINTOR', 'Extintores', '/sesmt/extintor/list.action', 7, true, 385);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 15, true, 385);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (530, 'ROLE_CAD_NATUREZALESAO', 'Natureza da Lesão', '/sesmt/naturezaLesao/list.action', 14, true, 385);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 15, true, 385);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (532, 'ROLE_COMPOSICAO_SESMT', 'Composição do SESMT', '/sesmt/composicaoSesmt/list.action', 16, true, 385);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (531, 'ROLE_SESMT_PAINEL_IND', 'Painel de Indicadores', '/sesmt/indicadores/painel.action', 6, true, 75);
 
@@ -297,7 +300,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 532;
+alter sequence papel_sequence restart with 534;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -472,6 +475,8 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 487);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 488);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 489);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 530);
+insert into perfil_papel(perfil_id, papeis_id) values (1, 532);
+insert into perfil_papel(perfil_id, papeis_id) values (1, 533);
 
 insert into public."perfil" ("id", "nome") values (2, 'Usuário');
 
@@ -21114,14 +21119,23 @@ insert into migrations values('20111130114811');
 insert into migrations values('20111201094013');
 insert into migrations values('20111201144635');
 insert into migrations values('20111201150059');
-
 insert into migrations values('20110802145553');
 insert into migrations values('20111031134658');
 insert into migrations values('20111104144924');
 insert into migrations values('20111111141724');
+insert into migrations values('20111214104255');
+insert into migrations values('20111215140219');
+insert into migrations values('20111205151047');
+insert into migrations values('20111207105449');
+insert into migrations values('20111214105312');
+insert into migrations values('20111206181252');
+insert into migrations values('20111209093538');
+insert into migrations values('20111215113451');
+insert into migrations values('20111219110034');
+insert into migrations values('20111215144558');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.63.55', '', '25', false,false, 2, '1.1.46.1', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.64.56', '', '25', false,false, 2, '1.1.47.1', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'

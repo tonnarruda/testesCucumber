@@ -144,7 +144,7 @@
 			<@display.column property="periodoFormatado" title="Período" style="width: 140px;"/>
 			<@display.column property="horario" title="Horário" style="width: 90px;"/>
 			<@display.column property="instrutor" title="Instrutor" style="width: 100px;"/>
-			<@display.column property="curso.cargaHoraria" title="CH" style="width: 30px;"/>
+			<@display.column property="curso.cargaHorariaMinutos" title="CH" style="width: 30px;"/>
 			<@display.column property="qtdPessoas" title="Partic." style="width: 100px;" style="text-align:right;"/>
 			<@display.column property="custoFormatado" title="Invest." style="width: 80px;" style="text-align:right;"/>
 

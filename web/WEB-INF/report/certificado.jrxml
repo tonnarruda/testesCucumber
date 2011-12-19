@@ -31,7 +31,7 @@
 	<field name="turma.instrutor" class="java.lang.String"/>
 	<field name="turma.dataPrevIni" class="java.util.Date"/>
 	<field name="turma.dataPrevFim" class="java.util.Date"/>
-	<field name="curso.cargaHoraria" class="java.lang.String"/>
+	<field name="curso.cargaHorariaMinutos" class="java.lang.String"/>
 	<field name="turma.instituicao" class="java.lang.String"/>
 
 		<background>
@@ -123,8 +123,11 @@
 				<textFieldExpression   class="java.lang.String"><![CDATA["Certificamos que "+$F{colaborador.nome}+" participou do curso de "+$F{curso.nome}+ 
 " ministrado pelo professor "+$F{turma.instrutor}+" realizado no período de "+
 new SimpleDateFormat("dd/MM/yyyy").format($F{turma.dataPrevIni})+" a "+
-new SimpleDateFormat("dd/MM/yyyy").format($F{turma.dataPrevFim})+" com a carga horária "+
-"de "+$F{curso.cargaHoraria}+" horas-aula, promovido pela Fortes Treinamentos. "]]></textFieldExpression>
+new SimpleDateFormat("dd/MM/yyyy").format($F{turma.dataPrevFim})+ ($F{curso.cargaHorariaMinutos}.equals("") ? "" : "com a carga horária de " 
++ $F{curso.cargaHorariaMinutos} + " horas-aula") + ", promovido pela Fortes Treinamentos. "
+
+
+]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
