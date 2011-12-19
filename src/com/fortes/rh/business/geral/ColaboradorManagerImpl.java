@@ -1672,15 +1672,18 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Collection<Colaborador> colaboradoresComAvaliacoes = getDao().findComAvaliacoesExperiencias(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, menorPeriodo);
 		
 		//autorizado essa ruma de forIf, aprovado
-		StringBuilder avaliacoes;
+		StringBuilder datasAvaliacao;
+		StringBuilder statusAvaliacao;
 		for (Colaborador colaborador : colaboradores)
 		{
-			avaliacoes = new StringBuilder();
+			datasAvaliacao = new StringBuilder();
+			statusAvaliacao = new StringBuilder();
 			
 			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
 			{
 				String dataSugerida = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colaborador.getDataAdmissao(), periodoExperiencia.getDias()));
-				String msg =  dataSugerida + "  " + periodoExperiencia.getDias() + " dias, não respondida";
+				String msg = periodoExperiencia.getDias() + " dias, não respondida";
+
 				if(colaborador.getDiasDeEmpresa() >= (periodoExperiencia.getDias() - gordura))
 				{
 					for (Colaborador colaboradorRespondidas : colaboradoresComAvaliacoes)
@@ -1688,18 +1691,22 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 						if(colaborador.getId().equals(colaboradorRespondidas.getId()))
 						{
 							if(periodoExperiencia.getId().equals(colaboradorRespondidas.getPeriodoExperienciaId()))
-								msg = dataSugerida + "  " + periodoExperiencia.getDias() + " dias, respondida (" + colaboradorRespondidas.getQtdDiasRespondeuAvExperiencia() + " dias)";
+								msg = periodoExperiencia.getDias() + " dias, respondida (" + colaboradorRespondidas.getQtdDiasRespondeuAvExperiencia() + " dias)";
 						}
 					}
 
-					avaliacoes.append(msg + "\n");
+					datasAvaliacao.append(dataSugerida + "\n");
+					statusAvaliacao.append(msg + "\n");
 				}
 			}
 			
-			if(avaliacoes.length() != 0)
-				avaliacoes.replace(avaliacoes.length()-1, avaliacoes.length(), "");
+			if(statusAvaliacao.length() != 0)
+				statusAvaliacao.replace(statusAvaliacao.length()-1, statusAvaliacao.length(), "");
+			if(datasAvaliacao.length() != 0)
+				datasAvaliacao.replace(datasAvaliacao.length()-1, datasAvaliacao.length(), "");
 			
-			colaborador.setDatasDeAvaliacao(avaliacoes.toString());
+			colaborador.setStatusAvaliacao(statusAvaliacao.toString());
+			colaborador.setDatasDeAvaliacao(datasAvaliacao.toString());
 		}
 			
 		if(colaboradores.isEmpty())

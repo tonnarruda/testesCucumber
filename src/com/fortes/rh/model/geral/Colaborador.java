@@ -197,6 +197,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private String datasDeAvaliacao = "";
 	@Transient
+	private String statusAvaliacao = "";
+	@Transient
 	private Long avaliacaoDesempenhoId;
 	@Transient
 	private String avaliacaoDesempenhoTitulo;
@@ -2333,5 +2335,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public String getAvaliacaoDesempenhoTitulo() {
 		return avaliacaoDesempenhoTitulo;
+	}
+
+	public String getStatusAvaliacao() {
+		return statusAvaliacao;
+	}
+
+	public void setStatusAvaliacao(String statusAvaliacao) {
+		this.statusAvaliacao = statusAvaliacao;
 	}
 }

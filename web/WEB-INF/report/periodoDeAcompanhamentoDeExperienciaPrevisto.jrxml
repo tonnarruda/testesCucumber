@@ -31,10 +31,11 @@
 	<field name="nome" class="java.lang.String"/>
 	<field name="areaOrganizacional.responsavel.nome" class="java.lang.String"/>
 	<field name="diasDeEmpresa" class="java.lang.Integer"/>
-	<field name="datasDeAvaliacao" class="java.lang.String"/>
+	<field name="statusAvaliacao" class="java.lang.String"/>
 	<field name="matricula" class="java.lang.String"/>
 	<field name="dataAdmissao" class="java.util.Date"/>
 	<field name="dataAdmissaoFormatada" class="java.lang.String"/>
+	<field name="datasDeAvaliacao" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
@@ -82,7 +83,7 @@
 					<reportElement
 						x="283"
 						y="24"
-						width="186"
+						width="163"
 						height="16"
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -93,16 +94,16 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="578"
+						x="553"
 						y="24"
-						width="202"
+						width="77"
 						height="16"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Datas sugeridas para as Avaliações]]></text>
+				<text><![CDATA[Datas sugeridas]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -119,9 +120,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="472"
+						x="450"
 						y="24"
-						width="103"
+						width="97"
 						height="16"
 						key="staticText-13"
 						stretchType="RelativeToTallestObject"/>
@@ -130,6 +131,19 @@
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Admissão (Dias)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="635"
+						y="24"
+						width="146"
+						height="16"
+						key="staticText-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Avaliações]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -154,7 +168,7 @@
 					<reportElement
 						x="283"
 						y="-1"
-						width="186"
+						width="163"
 						height="17"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -165,16 +179,16 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="578"
+						x="635"
 						y="0"
-						width="202"
+						width="145"
 						height="16"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{datasDeAvaliacao}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{statusAvaliacao}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -204,9 +218,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="472"
+						x="450"
 						y="-1"
-						width="103"
+						width="97"
 						height="17"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -214,6 +228,19 @@
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{dataAdmissaoFormatada} + " (" + $F{diasDeEmpresa} + ")"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="552"
+						y="0"
+						width="78"
+						height="16"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{datasDeAvaliacao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
