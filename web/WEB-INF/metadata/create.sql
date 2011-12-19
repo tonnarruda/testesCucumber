@@ -920,10 +920,12 @@ CREATE TABLE documentoanexo (
     url character varying(120),
     origem character(1) NOT NULL,
     origemid bigint,
-    etapaseletiva_id bigint
+    etapaseletiva_id bigint,
+    tipodocumento_id bigint
 );
 ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_pkey PRIMARY KEY (id);
 ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_etapaseletiva_fk FOREIGN KEY (etapaseletiva_id) REFERENCES etapaseletiva(id);
+ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_tipodocumento_fk FOREIGN KEY (tipodocumento_id) REFERENCES tipodocumento(id);
 CREATE SEQUENCE documentoanexo_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 
@@ -1118,7 +1120,6 @@ CREATE TABLE cat (
     observacao text,
     gerouafastamento boolean DEFAULT false,
     colaborador_id bigint,
-    ambiente_id bigint,
 	naturezaLesao_id bigint,
 	horario character varying(5),
 	parteAtingida character varying(100),
@@ -1127,12 +1128,17 @@ CREATE TABLE cat (
 	emitiuCAT boolean default false,
 	qtdDiasAfastado integer,
 	conclusao text,
-	tipoAcidente integer
+	tipoAcidente integer,
+    ambienteColaborador_id bigint,
+    funcaoColaborador_id bigint,
+    local character varying(100),
+    fontelesao character varying(100)
 );
 ALTER TABLE cat ADD CONSTRAINT cat_pkey PRIMARY KEY (id);
 ALTER TABLE cat ADD CONSTRAINT cat_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
-ALTER TABLE cat ADD CONSTRAINT cat_ambiente_fk FOREIGN KEY (ambiente_id) REFERENCES ambiente(id);
+ALTER TABLE cat ADD CONSTRAINT cat_ambienteColaborador_fk FOREIGN KEY (ambienteColaborador_id) REFERENCES ambiente(id);
 ALTER TABLE cat ADD CONSTRAINT cat_naturezaLesao_fk FOREIGN KEY (naturezaLesao_id) REFERENCES naturezaLesao(id);
+ALTER TABLE cat ADD CONSTRAINT cat_funcaoColaborador_fk FOREIGN KEY (funcaoColaborador_id) REFERENCES funcao(id);
 CREATE SEQUENCE cat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 
@@ -1269,9 +1275,9 @@ CREATE SEQUENCE risco_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVAL
 CREATE TABLE cat_epi (
     cat_id bigint NOT NULL,
     epis_id bigint NOT NULL
-);--.go
-ALTER TABLE cat_epi ADD CONSTRAINT cat_epi_cat_fk FOREIGN KEY (cat_id) REFERENCES cat(id);--.go
-ALTER TABLE cat_epi ADD CONSTRAINT cat_epi_epi_fk FOREIGN KEY (epis_id) REFERENCES epi(id);--.go
+);
+ALTER TABLE cat_epi ADD CONSTRAINT cat_epi_cat_fk FOREIGN KEY (cat_id) REFERENCES cat(id);
+ALTER TABLE cat_epi ADD CONSTRAINT cat_epi_epi_fk FOREIGN KEY (epis_id) REFERENCES epi(id);
 
 CREATE TABLE risco_epi (
     risco_id bigint NOT NULL,
@@ -2477,12 +2483,33 @@ ALTER TABLE colaboradorperiodoexperienciaavaliacao ADD CONSTRAINT colaboradorper
 CREATE SEQUENCE colaboradorperiodoexperienciaavaliacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE faturamentoMensal (
-id bigint NOT NULL,
-mesAno date,
-valor double precision,
-empresa_id bigint
+	id bigint NOT NULL,
+	mesAno date,
+	valor double precision,
+	empresa_id bigint
 );
-
 ALTER TABLE faturamentoMensal ADD CONSTRAINT faturamentoMensal_pkey PRIMARY KEY(id);
 ALTER TABLE faturamentoMensal ADD CONSTRAINT faturamentoMensal_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE faturamentoMensal_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE tipoDocumento (
+	id bigint NOT NULL,
+	descricao character varying(50)
+);
+ALTER TABLE tipoDocumento ADD CONSTRAINT tipoDocumento_pkey PRIMARY KEY(id);
+CREATE SEQUENCE tipoDocumento_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE composicaoSesmt (
+	id bigint NOT NULL,
+	empresa_id bigint,
+	data Date NOT NULL,
+	qtdTecnicosSeguranca integer, 
+	qtdEngenheirosSeguranca integer,
+	qtdAuxiliaresEnfermagem integer,
+	qtdEnfermeiros integer,         
+	qtdMedicos integer              
+);
+ALTER TABLE composicaoSesmt ADD CONSTRAINT composicaoSesmt_pkey PRIMARY KEY(id);
+ALTER TABLE composicaoSesmt ADD CONSTRAINT composicaoSesmt_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE composicaoSesmt_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+

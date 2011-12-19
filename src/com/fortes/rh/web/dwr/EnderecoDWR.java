@@ -22,12 +22,12 @@ public class EnderecoDWR {
 		    String response = "{\"sucesso\":\"1\",";
 		    
 		    matcher.find();
-		    String match = matcher.group(1);
-	    	response += "\"logradouro\":\"" + match.replaceAll("\\n", "").trim() + "\",";
+		    String match = matcher.group(1).replaceAll("\\n", "").trim();
+	    	response += "\"logradouro\":\"" + match.substring(0, Math.min(match.length(), 40)) + "\",";
 	    	
 	    	matcher.find();
-	    	match = matcher.group(1);
-	    	response += "\"bairro\":\"" + match.replaceAll("  ", "").replaceAll("\n", "").replaceAll("\t", "").trim()  + "\",";
+	    	match = matcher.group(1).replaceAll("  ", "").replaceAll("\n", "").replaceAll("\t", "").trim();
+	    	response += "\"bairro\":\"" + match.substring(0, Math.min(match.length(), 85))  + "\",";
 
 	    	matcher.find();
 	    	match = matcher.group(1);

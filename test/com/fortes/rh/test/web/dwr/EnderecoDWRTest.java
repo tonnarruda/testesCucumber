@@ -23,7 +23,7 @@ public class EnderecoDWRTest extends TestCase {
 		
 		String json = enderecoDwr.buscaPorCep("60743-760");
 		
-		assertEquals("{\"sucesso\":\"1\",\"logradouro\":\"Avenida Heróis do Acre 1-*|@#%&()+=§!?;:><,./\",\"bairro\":\"Passaré*\",\"cidade\":\"Fortaleza\",\"estado\":\"CE\"}",json);
+		assertEquals("{\"sucesso\":\"1\",\"logradouro\":\"Avenida Heróis do Acre 1-*|@#%&()+=§!?;:\",\"bairro\":\"Passaré*\",\"cidade\":\"Fortaleza\",\"estado\":\"CE\"}",json);
 	}
 	
 	public void testSeparaDadosDoEndereco() 
