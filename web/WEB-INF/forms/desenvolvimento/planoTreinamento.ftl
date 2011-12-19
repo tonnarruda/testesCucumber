@@ -141,16 +141,17 @@
 			</@display.column>
 			<@display.column property="curso.nome" title="Curso"/>
 			<@display.column property="descricao" title="Turma" style="width: 135px;"/>
-			<@display.column property="periodoFormatado" title="Período" style="width: 140px;"/>
+			<@display.column property="periodoFormatado" title="Período" style="width: 140px"/>
 			<@display.column property="horario" title="Horário" style="width: 90px;"/>
 			<@display.column property="instrutor" title="Instrutor" style="width: 100px;"/>
-			<@display.column property="curso.cargaHorariaMinutos" title="CH" style="width: 30px;"/>
+			<@display.column property="curso.cargaHorariaMinutos" title="CH" style="width: 30px; text-align:right;"/>
 			<@display.column property="qtdPessoas" title="Partic." style="width: 100px;" style="text-align:right;"/>
 			<@display.column property="custoFormatado" title="Invest." style="width: 80px;" style="text-align:right;"/>
 
 			<@display.footer>
 		  		<tr>
-			  		<td colspan="7" >Total : ${turmas?size} turmas</td>
+			  		<td colspan="6" >Total : ${turmas?size} turmas</td>
+			  		<td style="text-align:right;">${totalCargaHoraria}</td>
 			  		<td style="text-align:right;">${totalParticipantes}</td>
 			  		<td style="text-align:right;">${totalCustos?string(",##0.00")}</td>
 		  		</tr>

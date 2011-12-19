@@ -14,6 +14,7 @@ import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
 
@@ -194,16 +195,22 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().getCount(curso, empresaId);
 	}
 
-	public Collection<Long> findTurmas(Long empresaId, Long[] cursoIds)
-	{
-		return getDao().findTurmas(empresaId, cursoIds);
-	}
-
 	public Curso saveClone(Curso curso, Long empresaId) 
 	{
 		curso.setId(null);
 		curso.setEmpresaId(empresaId);
 		
 		return (Curso) getDao().save(curso);
+	}
+
+	public String somaCargaHoraria(Collection<Turma> turmas) {
+		
+		Integer totalCargaHoraria = 0;
+		
+		for (Turma turma : turmas) {
+			totalCargaHoraria += (turma.getCurso().getCargaHoraria() == null ? 0 : turma.getCurso().getCargaHoraria());
+		}
+		
+		return Curso.formataCargaHorariaMinutos(totalCargaHoraria, "");
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 
 public interface CursoManager extends GenericManager<Curso>
@@ -24,7 +25,7 @@ public interface CursoManager extends GenericManager<Curso>
 	public void update(Curso curso, Empresa empresa, String[] avaliacaoCursoIds)throws Exception;
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId);
 	public Integer getCount(Curso curso, Long empresaId);
-	public Collection<Long> findTurmas(Long empresaId, Long[] cursoIds);
 	public Curso saveClone(Curso curso, Long empresaId);
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
+	public String somaCargaHoraria(Collection<Turma> turmas);
 }

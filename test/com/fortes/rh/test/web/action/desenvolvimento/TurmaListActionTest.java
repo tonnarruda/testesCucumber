@@ -15,7 +15,6 @@ import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
-import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
@@ -81,6 +80,7 @@ public class TurmaListActionTest extends MockObjectTestCase
     	Collection<Turma> turmas = new ArrayList<Turma>();
 
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("somaCargaHoraria").with(ANYTHING).will(returnValue("14:30"));
     	turmaManager.expects(once()).method("findPlanosDeTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, eq(filtroPT.getCursoId()), eq(filtroPT.getDataIni()), eq(filtroPT.getDataFim()), eq('S')}).will(returnValue(turmas));
 
     	assertEquals("successFiltroPlanoTreinamento", action.filtroPlanoTreinamento());
@@ -104,6 +104,7 @@ public class TurmaListActionTest extends MockObjectTestCase
     	Collection<Turma> turmas = new ArrayList<Turma>();
 
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("somaCargaHoraria").with(ANYTHING).will(returnValue("14:30"));
     	turmaManager.expects(once()).method("findPlanosDeTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, eq(filtroPT.getCursoId()), eq(filtroPT.getDataIni()), eq(filtroPT.getDataFim()), eq('N')}).will(returnValue(turmas));
 
     	assertEquals("successFiltroPlanoTreinamento", action.filtroPlanoTreinamento());
