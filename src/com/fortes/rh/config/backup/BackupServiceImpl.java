@@ -26,7 +26,6 @@ public class BackupServiceImpl implements BackupService {
 	public void backupAndSendMail() 
 	{
 		init();
-//		String backupFile = "/Users/rponte/Development/Fortes/RH/backup_db/bkpDBFortesRh_20100707.backup";
 		String backupFile = backup();
 		sendMail(backupFile);
 	}

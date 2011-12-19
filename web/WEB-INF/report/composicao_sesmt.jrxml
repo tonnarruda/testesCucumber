@@ -37,7 +37,7 @@
 			<groupExpression><![CDATA[$F{qtdTecnicosSeguranca}]]></groupExpression>
 			<groupHeader>
 			<band height="14"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{qtdTecnicosSeguranca} != null)]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean($F{qtdTecnicosSeguranca} != null && $F{qtdTecnicosSeguranca}.intValue() > 0)]]></printWhenExpression>
 				<staticText>
 					<reportElement
 						x="0"
@@ -75,7 +75,7 @@
 			<groupExpression><![CDATA[$F{qtdEngenheirosSeguranca}]]></groupExpression>
 			<groupHeader>
 			<band height="14"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{qtdEngenheirosSeguranca} != null)]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean($F{qtdEngenheirosSeguranca} != null && $F{qtdEngenheirosSeguranca}.intValue() > 0)]]></printWhenExpression>
 				<staticText>
 					<reportElement
 						x="0"
@@ -115,7 +115,7 @@
 			<groupExpression><![CDATA[$F{qtdAuxiliaresEnfermagem}]]></groupExpression>
 			<groupHeader>
 			<band height="14"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{qtdAuxiliaresEnfermagem} != null)]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean($F{qtdAuxiliaresEnfermagem} != null && $F{qtdAuxiliaresEnfermagem}.intValue() > 0)]]></printWhenExpression>
 				<staticText>
 					<reportElement
 						x="0"
@@ -155,7 +155,7 @@
 			<groupExpression><![CDATA[$F{qtdEnfermeiros}]]></groupExpression>
 			<groupHeader>
 			<band height="14"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{qtdEnfermeiros} != null)]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean($F{qtdEnfermeiros} != null && $F{qtdEnfermeiros}.intValue() > 0)]]></printWhenExpression>
 				<staticText>
 					<reportElement
 						x="0"
@@ -195,7 +195,7 @@
 			<groupExpression><![CDATA[$F{qtdMedicos}]]></groupExpression>
 			<groupHeader>
 			<band height="14"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{qtdMedicos} != null)]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean($F{qtdMedicos} != null && $F{qtdMedicos}.intValue() > 0)]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="131"

@@ -18318,3 +18318,76 @@ insert into migrations values('20111201144635');--.go
 update cat set emitiucat = true where numerocat is not null;--.go
 insert into migrations values('20111201150059');--.go
 update parametrosdosistema set appversao = '1.1.63.55';--.go
+
+-- versao 1.1.64.56
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (532, 'ROLE_COMPOSICAO_SESMT', 'Composição do SESMT', '/sesmt/composicaoSesmt/list.action', 16, true, 385); --.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 532); --.go
+alter sequence papel_sequence restart with 533; --.go
+insert into migrations values('20111214104255');--.go
+
+CREATE TABLE tipoDocumento (
+	id bigint NOT NULL,
+	descricao character varying(50)
+);--.go
+
+ALTER TABLE tipoDocumento ADD CONSTRAINT tipoDocumento_pkey PRIMARY KEY(id);--.go
+CREATE SEQUENCE tipoDocumento_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20111215140219');--.go
+
+update parametrosdosistema set appversao = '1.1.63.55';--.go
+insert into migrations values('20111205151047');--.go
+
+alter table cat drop column ambiente_id;--.go
+alter table cat add column ambienteColaborador_id bigint;--.go
+ALTER TABLE cat ADD CONSTRAINT cat_ambienteColaborador_fk FOREIGN KEY (ambienteColaborador_id) REFERENCES ambiente(id);--.go
+alter table cat add column funcaoColaborador_id bigint;--.go
+ALTER TABLE cat ADD CONSTRAINT cat_funcaoColaborador_fk FOREIGN KEY (funcaoColaborador_id) REFERENCES funcao(id);--.go
+alter table cat add column local character varying(100);--.go
+insert into migrations values('20111207105449');--.go
+
+CREATE TABLE composicaoSesmt (
+	id bigint NOT NULL,
+	empresa_id bigint,
+	data Date NOT NULL,
+	qtdTecnicosSeguranca integer, 
+	qtdEngenheirosSeguranca integer,
+	qtdAuxiliaresEnfermagem integer,
+	qtdEnfermeiros integer,         
+	qtdMedicos integer
+);--.go
+
+ALTER TABLE composicaoSesmt ADD CONSTRAINT composicaoSesmt_pkey PRIMARY KEY(id);--.go
+ALTER TABLE composicaoSesmt ADD CONSTRAINT composicaoSesmt_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE composicaoSesmt_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20111214105312');--.go
+
+alter table cat add column fontelesao character varying(100);--.go
+insert into migrations values('20111206181252');--.go
+
+update cat 
+set   funcaocolaborador_id = hc.funcao_id, ambientecolaborador_id = hc.ambiente_id 
+from  colaborador c 
+inner join historicocolaborador hc on hc.colaborador_id = c.id 
+where cat.colaborador_id = c.id 
+and   hc.data = (select hc2.data 
+                   from historicocolaborador hc2 
+                  where hc2.data <= cat.data 
+                    and hc2.colaborador_id = c.id 
+               order by hc2.data desc 
+                  limit 1);--.go
+insert into migrations values('20111209093538');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (533, 'ROLE_TIPO_DOCUMENTO', 'Tipo do Documento', '/geral/tipoDocumento/list.action', 9, true, 374);--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 533); --.go
+alter sequence papel_sequence restart with 534;--.go
+insert into migrations values('20111215113451');--.go
+
+update parametrosdosistema set acversaowebservicecompativel = '1.1.47.1';--.go
+insert into migrations values('20111219110034');--.go
+
+ALTER TABLE documentoanexo ADD COLUMN tipodocumento_id bigint; --.go
+ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_tipodocumento_fk FOREIGN KEY (tipodocumento_id) REFERENCES tipodocumento(id); --.go
+insert into migrations values('20111215144558');--.go
+
+update parametrosdosistema set appversao = '1.1.64.56';--.go

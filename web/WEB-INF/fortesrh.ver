@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.64.56" data="19/12/2011">
+		- ReS > Cadastros > Candidatos > Anexos: Nova opção de seleção do Tipo do Documento.
+		- ReS > Painel de Indicadores: Novo indicador de índice de eficiência do processo seletivo.
+		- Info. Funcionais > Cadastros > Tipo do Documento: Novo cadastro.
+		- Info. Funcionais > Cadastros > Colaboradores > Anexos: Nova opção de seleção do Tipo do Documento.
+		- Info. Funcionais > Relatórios > Turnover: Novo filtro por empresa.
+		- SESMT > Cadastros > Composição do SESMT: Novo cadastro.
+		- SESMT > Movimentações > Ficha de Investigação de Acidente(CAT): Impressão da ficha de investigação de acidente.
+		- SESMT > Relatórios > PPRA e LTCAT: Nova opção de inclusão da Composição do SESMT no relatório.
+		- SESMT > Relatórios > PCMSO: Nova opção de inclusão da Composição do SESMT no relatório.
+		- SESMT > Painel de Indicadores: Novo indicador de estatísticas de resultados de exames.
+		- SESMT > Painel de Indicadores: Novo filtro por empresa.
+		- Utilitários > Cadastros > Empresas: Validação ao marcar integração com AC Pessoal.
+		- Utilitários > Apaga Reg. Sem Código AC: Nova ferramenta para ajuste de integração.
+		- Utilitários > Apaga Reg. Sem Código AC: Nova ferramenta para backup do banco de dados.
+	</Versao>
 	<Versao id="1.1.63.55" data="02/12/2011">
 		- ReS > Cadastros > Áreas Organizacionais: Ajuste na impressão da listagem de Área Organizacional, filtro por ativa [Todas, Ativa, Inativa].
 		- SESMT > Relatórios > Afastamentos: Nova opção de agrupamento por mês.	
