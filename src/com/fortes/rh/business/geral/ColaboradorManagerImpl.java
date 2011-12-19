@@ -1679,7 +1679,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
 			{
-				String msg = periodoExperiencia.getDias() + " não respondida";
+				String dataSugerida = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colaborador.getDataAdmissao(), periodoExperiencia.getDias()));
+				String msg =  dataSugerida + "  " + periodoExperiencia.getDias() + " dias, não respondida";
 				if(colaborador.getDiasDeEmpresa() >= (periodoExperiencia.getDias() - gordura))
 				{
 					for (Colaborador colaboradorRespondidas : colaboradoresComAvaliacoes)
@@ -1687,7 +1688,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 						if(colaborador.getId().equals(colaboradorRespondidas.getId()))
 						{
 							if(periodoExperiencia.getId().equals(colaboradorRespondidas.getPeriodoExperienciaId()))
-								msg = periodoExperiencia.getDias() + " respondida (" + colaboradorRespondidas.getQtdDiasRespondeuAvExperiencia() + " dias)";
+								msg = dataSugerida + "  " + periodoExperiencia.getDias() + " dias, respondida (" + colaboradorRespondidas.getQtdDiasRespondeuAvExperiencia() + " dias)";
 						}
 					}
 
