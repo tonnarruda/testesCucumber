@@ -37,7 +37,7 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 			descricao = cidManager.findDescricaoByCodigo(colaboradorAfastamento.getCid());
 		}
 		
-		afastamentos = afastamentoManager.findAll();
+		afastamentos = afastamentoManager.findAll(new String[]{"descricao"});
 	}
 
 	public String prepareInsert() throws Exception

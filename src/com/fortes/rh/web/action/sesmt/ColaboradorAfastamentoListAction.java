@@ -50,7 +50,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		setTotalSize(colaboradorAfastamentoManager.getCount(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento));
 		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, null, colaboradorAfastamento, "DESC", false, false, 'T');
 	
-		afastamentos = afastamentoManager.findAll();
+		afastamentos = afastamentoManager.findAll(new String[] {"descricao"});
 
 		return SUCCESS;
 	}
@@ -79,7 +79,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	public String prepareRelatorio() throws Exception
 	{
 
-		afastamentos = afastamentoManager.findAll();
+		afastamentos = afastamentoManager.findAll(new String[] {"descricao"});
 
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");

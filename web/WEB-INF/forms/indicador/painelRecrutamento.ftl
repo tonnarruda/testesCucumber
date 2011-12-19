@@ -18,7 +18,7 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
-		
+		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 		
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -30,6 +30,11 @@
 
 		<script type="text/javascript">
 			$(function () {
+			
+				$('#tooltipHelp').qtip({
+					content: 'Esse índice servirá para que o RH avalie a eficiência no processo seletivo. Ele mostrará o resultado com o percentual de colaboradores que se mantiveram na empresa após o período de experiência. <br />Fórmula utilizada: 100 - (colab. desligados em até 90 dias / nº de admitidos no período * 100)'
+				});
+			
 				totalVagas = 0;
 				$('.qtdVagaCargo').each(function() {
 				    totalVagas = totalVagas + parseInt($(this).text());
@@ -115,7 +120,9 @@
 	    			<li>Nº de Candidatos Atendidos:	${qtdCandidatosAtendidos}</li>
 	    			<li>Nº de Vagas Preenchidas: ${qtdVagasPreenchidas}</li>
 	    			<li>Nº de Candidatos Atendidos p/ Preench. de uma Vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
-	    			<li>Índice de Eficiência do Processo Seletivo: ${indiceProcSeletivo?string(",##0.##")}</li>
+	    			<li>Índice de Eficiência do Processo Seletivo: ${indiceProcSeletivo?string(",##0.##")} 
+	    				<img align='absMiddle' id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
+	    			</li>
 	    		</ul>
 	    	</div>
 	    </div>

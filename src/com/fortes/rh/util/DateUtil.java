@@ -225,6 +225,28 @@ public class DateUtil
 		return idade;
 	}
 
+	public static String getIntervaloEntreDatas(Date startDate, Date endDate)
+	{
+		if (startDate == null)
+			return "";
+		
+		if (endDate == null)
+			endDate = new Date();
+		else if (startDate.after(endDate))
+			return "(Data inicial maior que data final!)";
+
+		long diferencaEmMilisegundos = endDate.getTime() - startDate.getTime();
+		long diferencaEmDias = diferencaEmMilisegundos/1000/60/60/24;
+		
+		if (diferencaEmDias <= 29) {
+			if (diferencaEmDias == 0 || diferencaEmDias == 1) 
+				return "(1 dia)";
+			else 
+				return "("+diferencaEmDias + " dias)";
+		}
+		return getIntervalDateString(startDate, endDate);
+	}
+	
 	public static String getIntervalDateString(Date startDate, Date endDate)
 	{
 		if (startDate == null)

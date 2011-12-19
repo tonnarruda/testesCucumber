@@ -219,8 +219,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	Collection<Colaborador> colabs = colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, null, periodoExperiencias);
     	assertEquals(2, colabs.size());
-    	assertEquals("10 respondida (12 dias)\n30 respondida (33 dias)", ((Colaborador)colabs.toArray()[0]).getDatasDeAvaliacao());
-    	assertEquals("10 respondida (12 dias)", ((Colaborador)colabs.toArray()[1]).getDatasDeAvaliacao());
+    	assertEquals("04/02/2011  10 dias, respondida (12 dias)\n24/02/2011  30 dias, respondida (33 dias)", ((Colaborador)colabs.toArray()[0]).getDatasDeAvaliacao());
+    	assertEquals("04/02/2011  10 dias, respondida (12 dias)", ((Colaborador)colabs.toArray()[1]).getDatasDeAvaliacao());
     }
     
     public void testGetAvaliacoesExperienciaPendentesPeriodo() throws Exception
