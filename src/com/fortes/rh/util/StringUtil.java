@@ -462,7 +462,7 @@ public final class StringUtil
 	public static String getHTML(String url) 
 	{
 		String pagina = "";
-		Integer timeout = 8000;
+		Integer timeout = 15000;
 		HttpClient client = new HttpClient();
 		client.getParams().setParameter("http.socket.timeout", timeout);
 		client.getParams().setParameter("http.connection.timeout", timeout);
