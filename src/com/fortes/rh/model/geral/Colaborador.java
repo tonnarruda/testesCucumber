@@ -1914,7 +1914,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		else
 			result += " até o momento";
 
-		return result + " " + DateUtil.getIntervalDateString(this.dataAdmissao, this.dataDesligamento);
+		return result + " " + DateUtil.getIntervaloEntreDatas(this.dataAdmissao, this.dataDesligamento);
 	}
 	
 	@NaoAudita
