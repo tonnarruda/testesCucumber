@@ -12,7 +12,9 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 
 public class CursoManagerTest extends MockObjectTestCase
 {
@@ -91,4 +93,28 @@ public class CursoManagerTest extends MockObjectTestCase
 		assertEquals(Integer.valueOf(0), cursoManager.getCount(curso, empresaId));
 	}
 
+	public void testSomaCargaHoraria() {
+
+		Curso curso1 = CursoFactory.getEntity();
+		curso1.setCargaHoraria(null);
+		
+		Curso curso2 = CursoFactory.getEntity();
+		curso2.setCargaHoraria(135);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setCurso(curso1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setCurso(curso2);
+		
+		Turma turma3 = TurmaFactory.getEntity();
+		turma3.setCurso(curso2);
+		
+		Collection<Turma> turmas = new ArrayList<Turma>();
+		turmas.add(turma1);
+		turmas.add(turma2);
+		turmas.add(turma3);
+		
+		assertEquals("4:30", cursoManager.somaCargaHoraria(turmas));
+	}
 }

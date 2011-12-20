@@ -56,6 +56,7 @@ public class TurmaListAction extends MyActionSupportList
 	private Date dataIni;
 	private Date dataFim;
 	private char realizada;
+	private String totalCargaHoraria;
 
 	public String filtroPlanoTreinamento() throws Exception
 	{
@@ -63,8 +64,10 @@ public class TurmaListAction extends MyActionSupportList
 
 		cursos = cursoManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
 
-		if(getShowFilter())
+		if(getShowFilter()) {
 			turmas = turmaManager.findPlanosDeTreinamento(0, 0, filtroPlanoTreinamento.getCursoId(), filtroPlanoTreinamento.getDataIni(), filtroPlanoTreinamento.getDataFim(), filtroPlanoTreinamento.getRealizada());
+			totalCargaHoraria = cursoManager.somaCargaHoraria(turmas);
+		}
 		else
 			addActionMessage("Utilize o filtro para buscar as Turmas.");
 
@@ -356,5 +359,9 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager) {
 		this.avaliacaoCursoManager = avaliacaoCursoManager;
+	}
+
+	public String getTotalCargaHoraria() {
+		return totalCargaHoraria;
 	}
 }
