@@ -110,7 +110,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	}
 
 	//TODO BACALHAU, consulta gigante e uns forsss
-	public Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date data, Long[] examesChecks, Long[] estabelecimentosChecks, Long[] areasChecks, Long[] colaboradoresChecks, boolean agruparPorArea, boolean imprimirAfastados, boolean imprimirDesligados) throws Exception
+	public Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date data, Long[] examesChecks, Long[] estabelecimentosChecks, Long[] areasChecks, Long[] colaboradoresChecks, char agruparPor, boolean imprimirAfastados, boolean imprimirDesligados) throws Exception
 	{
 		Collection<ExamesPrevistosRelatorio> examesRealizadosAteData = getDao().findExamesPeriodicosPrevistos(empresaId, data, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
 
@@ -126,11 +126,11 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		examesAVencer = collectionUtil.sortCollectionDate(examesAVencer, "dataProximoExame", "asc");
 		examesAVencer = collectionUtil.sortCollectionStringIgnoreCase(examesAVencer, "colaboradorNome");
 		
-		if (agruparPorArea)
-		{
+		if (agruparPor == 'A'){
 			examesAVencer = areaOrganizacionalManager.setFamiliaAreas(examesAVencer, empresaId);
 			examesAVencer = collectionUtil.sortCollectionStringIgnoreCase(examesAVencer, "areaOrganizacional.nome");			
-		}
+		} else 	if (agruparPor == 'E')
+			examesAVencer = collectionUtil.sortCollectionStringIgnoreCase(examesAVencer, "estabelecimento.nome");			
 		
 		
 		return examesAVencer;
@@ -276,7 +276,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 				    	parametros.put("CABECALHO", cabecalho);
 				    	parametros.put("SUBREPORT_DIR", path);
 				    	
-				    	colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, false, true, false);
+				    	colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, 'N', true, false);
 
 						if (!colecaoExamesPrevistos.isEmpty())
 							ArquivoUtil.montaRelatorio(empresa, subject, body, emailsCollection, parametros, colecaoExamesPrevistos, mail, "exames_previstos.jasper");
