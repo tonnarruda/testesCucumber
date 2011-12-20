@@ -643,10 +643,6 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
             parametros.put("CARGO", colaboradorHistorico.getHistoricoColaborador().getFaixaSalarial().getDescricao());
         }
     }
-    
-    public Collection<Questionario> findQuestionarioByTurmaRealizadaPorUsuario(Long usuarioId) {
-    	return getDao().findQuestionarioByTurmaRealizadaPorUsuario(usuarioId);
-    }
 
     public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
     {

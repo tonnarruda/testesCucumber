@@ -1,8 +1,10 @@
 package com.fortes.rh.test.dao.hibernate.pesquisa;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
@@ -10,15 +12,18 @@ import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.dao.pesquisa.AvaliacaoTurmaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.dao.pesquisa.PesquisaDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
@@ -26,17 +31,20 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -47,6 +55,7 @@ import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
@@ -71,8 +80,11 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	private FaixaSalarialDao faixaSalarialDao;
 	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
 	private SolicitacaoDao solicitacaoDao;
-	private EstabelecimentoDao estabelecimentoDao ;
-	private PesquisaDao pesquisaDao ;
+	private EstabelecimentoDao estabelecimentoDao;
+	private PesquisaDao pesquisaDao;
+	private UsuarioDao usuarioDao;
+	private AvaliacaoTurmaDao avaliacaoTurmaDao;
+	private ColaboradorTurmaDao colaboradorTurmaDao;
 
 	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
 	{
@@ -909,6 +921,47 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(colaboradorQuestionario2, colaboradorQuestionarioDao.findByColaboradorAvaliacao(joao.getId(), avaliacao.getId()));
 		assertEquals(colaboradorQuestionario3, colaboradorQuestionarioDao.findByColaboradorAvaliacao(maria.getId(), avaliacao.getId()));
 	}
+	
+	public void testFindQuestionarioByTurmaRealizadaPorUsuario()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario.setEmpresa(empresa);
+		questionario.setLiberado(true);
+		questionarioDao.save(questionario);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setUsuario(usuario);
+		colaboradorDao.save(colaborador);
+		
+		AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity();
+		avaliacaoTurma.setQuestionario(questionario);
+		avaliacaoTurmaDao.save(avaliacaoTurma);
+
+		Turma turma = TurmaFactory.getEntity();
+		turma.setRealizada(true);
+		turma.setAvaliacaoTurmas(Arrays.asList(avaliacaoTurma));
+		turmaDao.save(turma);
+
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioDao.findQuestionarioByTurmaRealizadaPorUsuario(usuario.getId());
+		
+		ColaboradorQuestionario colaboradorQuestionario = (ColaboradorQuestionario)colaboradorQuestionarios.toArray()[0];
+		
+		assertEquals(questionario.getId(), colaboradorQuestionario.getQuestionario().getId());
+		assertEquals(colaborador.getId(), colaboradorQuestionario.getColaborador().getId());
+		assertEquals(turma.getId(), colaboradorQuestionario.getTurma().getId());
+		assertEquals(Boolean.FALSE, colaboradorQuestionario.getRespondida());
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
@@ -960,5 +1013,17 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 	public void setPesquisaDao(PesquisaDao pesquisaDao) {
 		this.pesquisaDao = pesquisaDao;
+	}
+
+	public void setUsuarioDao(UsuarioDao usuarioDao) {
+		this.usuarioDao = usuarioDao;
+	}
+
+	public void setAvaliacaoTurmaDao(AvaliacaoTurmaDao avaliacaoTurmaDao) {
+		this.avaliacaoTurmaDao = avaliacaoTurmaDao;
+	}
+
+	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao) {
+		this.colaboradorTurmaDao = colaboradorTurmaDao;
 	}
 }

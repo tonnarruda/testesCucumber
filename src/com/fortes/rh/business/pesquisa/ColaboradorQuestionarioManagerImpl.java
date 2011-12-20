@@ -445,4 +445,8 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		
 		return null;
 	}
+
+	public Collection<ColaboradorQuestionario> findQuestionarioByTurmaRealizadaPorUsuario(Long usuarioId) {
+		return getDao().findQuestionarioByTurmaRealizadaPorUsuario(usuarioId);
+	}
 }

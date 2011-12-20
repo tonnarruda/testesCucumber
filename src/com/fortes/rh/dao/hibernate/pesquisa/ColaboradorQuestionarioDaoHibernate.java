@@ -827,4 +827,25 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 		return (ColaboradorQuestionario) criteria.uniqueResult();
 	}
+
+	public Collection<ColaboradorQuestionario> findQuestionarioByTurmaRealizadaPorUsuario(Long usuarioId) {
+		StringBuilder hql = new StringBuilder();
+		
+		hql.append("select new ColaboradorQuestionario(c, q, t) ");
+		hql.append("from ColaboradorTurma ct "); 
+		hql.append("inner join ct.turma t ");
+		hql.append("inner join t.avaliacaoTurmas at "); 
+		hql.append("inner join at.questionario q ");
+		hql.append("inner join ct.colaborador c "); 
+		hql.append("left join c.colaboradorQuestionarios cq with cq.turma.id=t.id ");
+		hql.append("where c.usuario.id = :usuarioId ");
+		hql.append("and t.realizada=true "); 
+		hql.append("and (cq.respondida is null or cq.respondida=false) ");
+		hql.append("order by q.titulo ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("usuarioId", usuarioId);
+
+		return query.list();
+	}
 }

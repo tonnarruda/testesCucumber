@@ -54,5 +54,4 @@ public interface QuestionarioManager extends GenericManager<Questionario>
 	public Collection<Questionario> findQuestionario(Long colaboradorId);
 	public void enviaEmailNaoRespondida(Empresa empresa, Long questionarioId) throws Exception;
 	public Collection<PerguntaFichaMedica> montaPerguntasComRespostas(Collection<Pergunta> perguntas, Collection<ColaboradorResposta> colaboradorRespostas);
-	public Collection<Questionario> findQuestionarioByTurmaRealizadaPorUsuario(Long usuarioId);
 }
