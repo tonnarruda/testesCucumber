@@ -346,7 +346,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("		select max(hc2.data) " );
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("		where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
+//		hql.append("			and hc2.data <= :hoje ");
+		hql.append("			and hc2.status = :status ");
 		hql.append("	) ");
 		hql.append("and ( co.id not in ( ");
 		hql.append("		select ct2.colaborador.id ");
@@ -790,13 +791,14 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("		select max(hc2.data) " );
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("		where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
+//		hql.append("			and hc2.data <= :hoje ");
+		hql.append("			and hc2.status = :status ");
 		hql.append("	) ");
 
 		hql.append("order by t.dataPrevFim desc ");
 		Query query = getSession().createQuery(hql.toString());
 
-		query.setDate("hoje", new Date());
+//		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setLong("empresaId", empresaId);
 		query.setLong("colaboradorId", colaboradorId);
