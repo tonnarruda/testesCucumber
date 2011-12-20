@@ -2751,11 +2751,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		hql.append("and hc.status = :status ");
 		hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador as hc2 where hc2.colaborador.id = co.id ");
-		hql.append("and hc2.data <= :dataAtual  and hc2.status = :status ) ");
+		hql.append("and hc2.status = :status ) ");
 		hql.append("order by co.nome");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setDate("dataAtual", new Date());
+//		query.setDate("dataAtual", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if(nome != null && !nome.trim().equals(""))

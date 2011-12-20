@@ -156,7 +156,8 @@
 
 	<#if colaboradorTurmas?exists>
 		<@ww.form name="formColab" action="insert.action" validate="true" method="POST">
-			<@display.table name="colaboradorTurmas" id="colaboradorTurma" class="dados" defaultsort=2 sort="list">
+			
+			<@display.table name="colaboradorTurmas" id="colaboradorTurma" class="dados" defaultsort=2 sort="list" pagesize=30 excludedParams="turma.id=turma.id&turma.curso.id=turma.curso.id&planoTreinamento=planoTreinamento">
 				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar();' checked='checked'/>" style="width: 30px; text-align: center;">
 					<input type="checkbox" value="${colaboradorTurma.id}" name="colaboradoresId" checked='checked'/>
 				</@display.column>
@@ -164,6 +165,7 @@
 				<@display.column property="colaborador.matricula" title="Matrícula" style="width: 100px;"/>
 				<@display.column property="colaborador.areaOrganizacional.descricao" title="Área" style="width: 300px;"/>
 			</@display.table>
+			<a name="fim">
 
 			<@ww.hidden name="turma.id" />
 			<@ww.hidden name="turma.curso.id" />
