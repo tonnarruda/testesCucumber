@@ -279,7 +279,7 @@ public class ExameListActionTest extends MockObjectTestCase
 		exameManager.expects(atLeastOnce())
 			.method("findRelatorioExamesPrevistos")
 			.with(new Constraint[]{eq(empresaId), ANYTHING, 
-					eq(null),eq(null),eq(null),eq(null),eq('N'),eq(false),eq(false)})
+					eq(null),eq(null),eq(null),eq(null),ANYTHING,eq(false),eq(false)})
 			.will(returnValue(colecaoRelatorio));
 		
 		estabelecimentoManager.expects(never())
@@ -324,7 +324,7 @@ public class ExameListActionTest extends MockObjectTestCase
 	{
 		Long empresaId = 1L;
 		
-		exameManager.expects(once()).method("findRelatorioExamesPrevistos").with(new Constraint[]{eq(empresaId), ANYTHING, eq(null),eq(null),eq(null),eq(null),eq('N'),eq(false),eq(false)}).will(throwException(new ColecaoVaziaException("")));
+		exameManager.expects(once()).method("findRelatorioExamesPrevistos").with(new Constraint[]{eq(empresaId), ANYTHING, eq(null),eq(null),eq(null),eq(null),ANYTHING,eq(false),eq(false)}).will(throwException(new ColecaoVaziaException("")));
 		
 		//prepare
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
