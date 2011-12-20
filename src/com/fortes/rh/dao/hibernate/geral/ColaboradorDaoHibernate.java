@@ -1250,12 +1250,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setInteger(numeroValue + "Fim", numeroFim);
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacional(Collection<Long> areaOrganizacionalIds)
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.nome, co.id, e.id, e.nome) ");
+		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome) ");
 		hql.append("from HistoricoColaborador as hc1 ");
 		hql.append("right join hc1.areaOrganizacional as ao ");
+		hql.append("right join hc1.estabelecimento as es ");
 		hql.append("left join hc1.colaborador as co ");
 		hql.append("left join co.empresa as e ");
 		hql.append("where ");
@@ -1270,15 +1271,22 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	) ");
 		hql.append("	and co.desligado = :desligado");
 
-		hql.append(" and ao.id in (:areaOrganizacionalIds) ");
-		hql.append(" order by e.nome, co.nomeComercial ");
+		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
+			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
+		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
+			hql.append(" and es.id in (:estabelecimentoIds) ");
+		
+		hql.append(" order by e.nome, co.nomeComercial, co.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
 
 		query.setDate("hoje", new Date());
 		query.setBoolean("desligado", false);
 
-		query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
+			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 
 		return query.list();
 	}
@@ -2048,7 +2056,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Expression.eq("c.desligado", false));
 		
 		criteria.addOrder(Order.asc("e.nome"));
-		criteria.addOrder(Order.asc("nomeComercial"));
+		criteria.addOrder(Order.asc("c.nomeComercial"));
+		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 		

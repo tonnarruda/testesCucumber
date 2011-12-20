@@ -1495,9 +1495,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacional(Collection<Long> areaOrganizacionalIds)
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds)
 	{
-		return getDao().findByAreaOrganizacional(areaOrganizacionalIds);
+		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds);
 	}
 
 	public void validaQtdCadastros() throws Exception

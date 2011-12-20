@@ -21,7 +21,7 @@ public class ColaboradorTest extends TestCase {
 		colaborador.setEmpresa(empresa);
 		colaborador.setNome("João da Silva Sauro");
 		
-		assertEquals("Vega - João da Silva Sauro(Sem Nome Comercial)", colaborador.getNomeComercialEmpresa());
+		assertEquals("Vega - (Sem Nome Comercial) João da Silva Sauro", colaborador.getNomeComercialEmpresa());
 		
 		colaborador.setNomeComercial("J Sauro");
 		assertEquals("Vega - J Sauro", colaborador.getNomeComercialEmpresa());
