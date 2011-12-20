@@ -77,7 +77,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	 * @since 16/02/2008
 	 * @return Coleção com os colaboradores das Áreas Organizacionais Informadas
 	 */
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Integer page, Integer pagingSize, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId)
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Integer page, Integer pagingSize, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo)
 	{
 		String whereNome = "";
 		String whereMatricula = "";
@@ -125,7 +125,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("from HistoricoColaborador as hc2 ");
 		hql.append("where hc2.colaborador.id = co.id ");
-		hql.append("and hc2.data <= :hoje and hc2.status = :status) order by co.nome");
+		
+		if(!comHistColaboradorFuturo)
+			hql.append("and hc2.data <= :hoje ");
+		
+		hql.append("and hc2.status = :status) order by co.nome");
 
 		Query query = getSession().createQuery(hql.toString());
 		
@@ -138,7 +142,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(dataAdmissaoFim != null)
 			query.setDate("dataAdmissaoFim", dataAdmissaoFim);
 		
-		query.setDate("hoje", new Date());
+		if(!comHistColaboradorFuturo)
+			query.setDate("hoje", new Date());
+		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		
@@ -174,7 +180,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	 *            : Array de Long com os ID das Áreas Organizacionais
 	 * @return Coleção com os colaboradores das Áreas Organizacionais Informadas
 	 */
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] ids, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId)
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] ids, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo)
 	{
 		Collection<Long> param = new HashSet<Long>();
 		if(ids != null && ids.length > 0)
@@ -183,7 +189,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				param.add(ids[i]);			
 		}
 		
-		return findByAreaOrganizacionalIds(param, page, pagingSize, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId);
+		return findByAreaOrganizacionalIds(param, page, pagingSize, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo);
 	}
 
 	/**
@@ -198,7 +204,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Collection<Long> param = new HashSet<Long>();
 		for (int i = 0; i < ids.length; i++)
 			param.add(ids[i]);
-		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null);
+		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, false);
 	}
 
 	/**
@@ -212,7 +218,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		Collection<Long> param = new HashSet<Long>();
 		param.add(area.getId());
-		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null);
+		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, false);
 	}
 
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario)
