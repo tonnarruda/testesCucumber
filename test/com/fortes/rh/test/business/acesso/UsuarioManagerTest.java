@@ -436,9 +436,10 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	colaboradores.add(colaborador);
     	colaboradorManager.expects(once()).method("findSemUsuarios").with(eq(empresa.getId()), eq(null)).will(returnValue(colaboradores));
     	usuarioDao.expects(once()).method("findByLogin").with(ANYTHING).will(returnValue(null));
-    	usuarioDao.expects(once()).method("save").with(ANYTHING).will(returnValue(usuario));
-    	usuarioEmpresaManager.expects(once()).method("save").with(ANYTHING).will(returnValue(null));
-    	colaboradorManager.expects(once()).method("atualizarUsuario").with(eq(colaborador.getId()), eq(usuario.getId()));
+    	usuarioDao.expects(once()).method("save").with(ANYTHING);
+    	usuarioEmpresaManager.expects(once()).method("findByUsuarioEmpresa").with(ANYTHING, eq(empresa.getId())).will(returnValue(null));
+    	usuarioEmpresaManager.expects(once()).method("save").with(ANYTHING);
+    	colaboradorManager.expects(once()).method("atualizarUsuario").with(eq(colaborador.getId()), ANYTHING);
 
     	Exception ex = null;
     	try
