@@ -213,24 +213,28 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 
 		for (Colaborador colaborador : colaboradores)
 		{
-			Usuario usuario = new Usuario();
-			usuario.setLogin(colaborador.getPessoal().getCpf());
-
-			if(!existeLogin(usuario))
+			Usuario usuario = findByLogin(colaborador.getPessoal().getCpf());
+			if (usuario == null)
 			{
+				usuario = new Usuario();
+				usuario.setLogin(colaborador.getPessoal().getCpf());
 				usuario.setAcessoSistema(true);
 				usuario.setSenha(senhaPadrao);
 				usuario.setNome(colaborador.getNome());
-				usuario = save(usuario);
-
-				UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa();
+				save(usuario);
+			}
+			
+			UsuarioEmpresa usuarioEmpresa = usuarioEmpresaManager.findByUsuarioEmpresa(usuario.getId(), empresa.getId());
+			if (usuarioEmpresa == null)
+			{
+				usuarioEmpresa = new UsuarioEmpresa();
 				usuarioEmpresa.setUsuario(usuario);
 				usuarioEmpresa.setEmpresa(empresa);
 				usuarioEmpresa.setPerfil(perfil);
 				usuarioEmpresaManager.save(usuarioEmpresa);
-
-				colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
 			}
+			
+			colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
 		}
 	}
 
