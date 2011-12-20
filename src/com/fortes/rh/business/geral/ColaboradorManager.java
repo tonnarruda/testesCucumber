@@ -57,7 +57,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
 	public Integer getCount(Map parametros);
 	public Collection findList(int page, int pagingSize, Map parametros);
-	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] longs, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId);
+	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] longs, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean somenteHistoricoAtualEPassado);
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias);
 	public void enviarEmailCadastro(Colaborador colaborador, Empresa empresa) throws AddressException, MessagingException;

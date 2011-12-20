@@ -213,12 +213,12 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("		select max(hc2.data) " );
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("		where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
+		hql.append("			and hc2.status = :status ");
 		hql.append("	) ");
 		hql.append(" order by co.nome asc");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setDate("hoje", new Date());
+		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setLong("turmaId", turmaId);
 		
@@ -543,7 +543,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy, Long... turmaIds)
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy, boolean comHistColaboradorFuturo, Long... turmaIds)
 	{
 		StringBuilder sql = new StringBuilder();		
 		sql.append("select ");
@@ -645,7 +645,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("and hc.data = ( ");
 		sql.append("select max(hc2.data) from historicocolaborador hc2 ");
 		sql.append("	where hc2.colaborador_id = co.id ");
-		sql.append("	and hc2.data <= :hoje ");
+		
+		if(!comHistColaboradorFuturo)
+			sql.append("	and hc2.data <= :hoje ");
+		
 		sql.append("	and hc2.status <> :statusCancelado ) ");
 		
 		sql.append("	order by " + orderBy);
@@ -672,7 +675,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentosId", estabelecimentoIds, Hibernate.LONG);
 
-		query.setDate("hoje", new Date());
+		if(!comHistColaboradorFuturo)
+			query.setDate("hoje", new Date());
+		
 		query.setInteger("statusCancelado", StatusRetornoAC.CANCELADO);
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();

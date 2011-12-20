@@ -80,7 +80,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("where co.id = :colaboradorId ");
 		hql.append("and  ");
 		hql.append("   ( ");
-		hql.append("     hc.data <= :hoje and hc.status = :statusHistColab ");
+		hql.append("     hc.data <= :hoje and hc.status != :statusHistColab ");
 
 		if(tipoBuscaHistoricoColaborador == TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO)
 			hql.append(" or hc.data = (select min(hc3.data) from HistoricoColaborador as hc3 where hc3.colaborador.id=co.id and hc3.data > :hoje ) ");
@@ -94,7 +94,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setLong("colaboradorId", colaboradorId);
 		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CANCELADO);
-		query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
+		query.setInteger("statusHistColab", StatusRetornoAC.CANCELADO);
 		query.setMaxResults(1);
 
 		return (HistoricoColaborador) query.uniqueResult();
