@@ -74,7 +74,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Integer countSemMotivos(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
 	public void migrarBairro(String bairro, String bairroDestino);
 	public Integer getCountAtivosByEstabelecimento(Long estabelecimentoId);
-	public Collection<Colaborador> findByAreaOrganizacional(Collection<Long> areaIds);
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds);
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Long[] perfilIds, Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa);
 	public Collection<Colaborador> findAdmitidos(Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos);

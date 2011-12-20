@@ -753,10 +753,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getFaixaSalarial().setCargo(cargo);
 	}
 
-	public Colaborador(String nome, Long id, Long empresaId, String empresaNome)
+	public Colaborador(String nome, String nomeComercial, Long id, Long empresaId, String empresaNome)
 	{
 		super();
 		this.nome = nome;
+		this.nomeComercial = nomeComercial;
 		this.setId(id);
 		setEmpresaId(empresaId);
 		setEmpresaNome(empresaNome);
@@ -2024,7 +2025,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			descricao.append(this.empresa.getNome());
 			
 			if(StringUtils.isEmpty(this.nomeComercial))
-				descricao.append(" - " + this.nome + "(Sem Nome Comercial)");
+				descricao.append(" - " + "(Sem Nome Comercial) " + this.nome);
 			else
 				descricao.append(" - " + this.nomeComercial);
 		}

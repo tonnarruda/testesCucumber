@@ -45,7 +45,9 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0], 'areaCheck');
-			ColaboradorDWR.getColaboradoresByAreaEmpresas(createListcolaborador, areasIds, empresaId, empresaIds);
+			var estabelecimentoIds = getArrayCheckeds(document.forms[0], 'estabelecimentoCheck');
+			
+			ColaboradorDWR.getByAreaEstabelecimentoEmpresas(createListcolaborador, areasIds, estabelecimentoIds, empresaId, empresaIds);
 		}
 
 		function createListcolaborador(data)
@@ -72,12 +74,13 @@
 		function populaEstabelecimento(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
+			EstabelecimentoDWR.getByEmpresas(function(data){createListEstabelecimento(data, empresaId);
+									}, empresaId, empresaIds);
 		}
 
-		function createListEstabelecimento(data)
+		function createListEstabelecimento(data, empresaId)
 		{
-			addChecks('estabelecimentoCheck',data);
+			addChecks('estabelecimentoCheck',data, "populaColaboradores(" + empresaId + ");");
 		}
 		
 		function populaOcorrencia(empresaId)
@@ -103,23 +106,26 @@
 			addChecks('areaCheck', data, "populaColaboradores(" + empresaId + ");");
 		}
 		
-		$(document).ready(function($)
-		{
-			var empresa = $('#empresa').val();
-			populaChecks(empresa);
-		});
-		
 		function populaChecks(empresa)
 		{
+			$('#wwctrl_areaCheck [type="checkbox"]').attr('checked', false);
+			$('#wwctrl_estabelecimentoCheck [type="checkbox"]').attr('checked', false);
+			
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
 			populaColaboradores(empresa);
 			populaOcorrencia(empresa);
 		}
+		
+		$(document).ready(function($)
+		{
+			var empresa = $('#empresa').val();
+			populaChecks(empresa);
+		});
 	</script>
 </head>
 <body>
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('@estabelecimentoCheck','@colaboradorCheck','@ocorrenciaCheck','dataPrevIni','dataPrevFim'), new Array('dataPrevIni','dataPrevFim'))"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataPrevIni','dataPrevFim'), new Array('dataPrevIni','dataPrevFim'))"/>
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
@@ -129,11 +135,11 @@
 		<@ww.datepicker name="dataIni" id="dataPrevIni" liClass="liLeft" value="${valueDataIni}" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataFim" id="dataPrevFim" value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
+		<@frt.checkListBox name="ocorrenciaCheck" label="Ocorrência" list="ocorrenciaCheckList" width="500" height="120"/>
 		
-		<@frt.checkListBox name="estabelecimentoCheck" label="Estabelecimento*" list="estabelecimentoCheckList" width="400" height="120" />
-		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="400" height="120" onClick="populaColaboradores($('#empresa').val());"/>
-		<@frt.checkListBox name="colaboradorCheck" label="Colaborador*" list="colaboradorCheckList" width="400" height="120"/>
-		<@frt.checkListBox name="ocorrenciaCheck" label="Ocorrência*" list="ocorrenciaCheckList" width="400" height="120"/>
+		<@frt.checkListBox name="estabelecimentoCheck" label="Estabelecimento" list="estabelecimentoCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());"/>
+		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());"/>
+		<@frt.checkListBox name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="500" height="180"/>
 
 		<@ww.checkbox label="Detalhado"  id="detalhes" onchange="mudaPonto(this);" labelPosition="left" name="det"/>
 		<@ww.hidden id = "detalhe" name = "detalhamento" value = "true"/>

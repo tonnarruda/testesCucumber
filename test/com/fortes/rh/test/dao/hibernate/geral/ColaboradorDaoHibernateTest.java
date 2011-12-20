@@ -1749,7 +1749,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(joao, colaboradores.toArray()[0]);
 	}
 
-	public void testFindByAreaOrganizacional() {
+	public void testFindByAreaOrganizacionalEstabelecimento() {
 		Empresa empresa = new Empresa();
 		empresa = empresaDao.save(empresa);
 
@@ -1757,6 +1757,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador1.setEmpresa(empresa);
 		colaborador1.setNome("Pedro Jose");
 		colaboradorDao.save(colaborador1);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
 
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(areaOrganizacional);
@@ -1765,12 +1768,22 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador1.setData(DateUtil.criarDataMesAno(1, 1, 2008));
 		historicoColaborador1.setColaborador(colaborador1);
 		historicoColaborador1.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador1.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoColaborador1);
 
 		Collection<Long> areaIds = new ArrayList<Long>();
 		areaIds.add(areaOrganizacional.getId());
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacional(areaIds);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areaIds, null);
+		assertEquals(1, colaboradores.size());
+
+		Collection<Long> estabelecimentoIds = new ArrayList<Long>();
+		estabelecimentoIds.add(estabelecimento.getId());
+		
+		colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(null, estabelecimentoIds);
+		assertEquals(1, colaboradores.size());
+
+		colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds);
 		assertEquals(1, colaboradores.size());
 	}
 
