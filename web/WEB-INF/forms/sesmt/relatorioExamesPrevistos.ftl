@@ -34,7 +34,7 @@
 		<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
 		<@frt.checkListBox name="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" />
 		
-		<@ww.checkbox label="Agrupar por Área Organizacional" id="agruparPorArea" name="agruparPorArea" labelPosition="left"/>
+		<@ww.select label="Agrupar por" name="agruparPor" list=r"#{'N':'-','A':'Área Organizacional','E':'Estabelecimento'}"/>
 		<@ww.checkbox label="Não imprimir afastado(s)" id="imprimirAfastados" name="imprimirAfastados" labelPosition="left"/>
 		<@ww.checkbox label="Imprimir desligado(s)" id="imprimirDesligados" name="imprimirDesligados" labelPosition="left"/>
 

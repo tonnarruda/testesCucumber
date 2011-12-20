@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.DateUtil;
 
 public class ExamesPrevistosRelatorio
@@ -20,6 +21,7 @@ public class ExamesPrevistosRelatorio
 	private Date dataRealizacaoExame;
 	private Date dataProximoExame;
 	
+	private Estabelecimento estabelecimento;
 	private AreaOrganizacional areaOrganizacional;
 	private String cargoNome;
 	private String motivoSolicitacaoExame;
@@ -30,7 +32,7 @@ public class ExamesPrevistosRelatorio
 	{
 	}
 
-	public ExamesPrevistosRelatorio(Long colaboradorId, Long exameId, Long areaOrganizacionalId, String cargoNome, String colaboradorNome, String colaboradorNomeComercial, String exameNome, Date dataSolicitacaoExame, Date dataRealizacaoExame, Integer solicitacaoExamePeriodicidade, String motivoSolicitacaoExame)
+	public ExamesPrevistosRelatorio(Long colaboradorId, Long exameId, Long areaOrganizacionalId, String cargoNome, String colaboradorNome, String colaboradorNomeComercial, String exameNome, Date dataSolicitacaoExame, Date dataRealizacaoExame, Integer solicitacaoExamePeriodicidade, String motivoSolicitacaoExame, Long estabelecimentoId, String estabelecimentoNome)
 	{
 		this.colaboradorId = colaboradorId;
 		this.exameId = exameId;
@@ -44,6 +46,10 @@ public class ExamesPrevistosRelatorio
 		
 		this.areaOrganizacional = new AreaOrganizacional();
 		this.areaOrganizacional.setId(areaOrganizacionalId);
+		
+		this.estabelecimento = new Estabelecimento();
+		this.estabelecimento.setId(estabelecimentoId);
+		this.estabelecimento.setNome(estabelecimentoNome);
 		
 		this.cargoNome = cargoNome;
 		this.motivoSolicitacaoExame = motivoSolicitacaoExame;
@@ -152,6 +158,14 @@ public class ExamesPrevistosRelatorio
 	
 	public String getMotivoSolicitacaoExame() {
 		return motivoSolicitacaoExame;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
 	}
 
 }
