@@ -73,6 +73,7 @@ public class ExameListAction extends MyActionSupportList
 	private Collection<CheckBox> colaboradoresCheckList = new ArrayList<CheckBox>();
 
 	private Date data;
+	private char agruparPor; 
 	
 	// Relatório de Exames Realizados
 	private Date inicio;
@@ -89,7 +90,6 @@ public class ExameListAction extends MyActionSupportList
 
 	private SolicitacaoExame solicitacaoExame;
 
-	private boolean agruparPorArea;
 	private boolean imprimirAfastados = false;
 	private boolean imprimirDesligados = false;
 
@@ -213,10 +213,17 @@ public class ExameListAction extends MyActionSupportList
 
 		try
 		{
-			colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(getEmpresaSistema().getId(), data, examesIds, estabelecimentosIds, areasIds, colaboradoresIds, agruparPorArea, imprimirAfastados, imprimirDesligados);
+			colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(getEmpresaSistema().getId(), data, examesIds, estabelecimentosIds, areasIds, colaboradoresIds, agruparPor, imprimirAfastados, imprimirDesligados);
 			parametros = RelatorioUtil.getParametrosRelatorio("Exames Previstos até " + DateUtil.formataDiaMesAno(data), getEmpresaSistema(), nomeEstabelecimento );
 			
-			return agruparPorArea ? "successAguparPorArea" : SUCCESS;
+			switch (agruparPor) {
+			case 'A':
+				return "successAguparPorArea";
+			case 'E':
+				return "successAguparPorEstabelecimento";
+			default:
+				return SUCCESS;
+			}
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -518,14 +525,6 @@ public class ExameListAction extends MyActionSupportList
 	public void setSolicitacaoExame(SolicitacaoExame solicitacaoExame) {
 		this.solicitacaoExame = solicitacaoExame;
 	}
-
-	public boolean isAgruparPorArea() {
-		return agruparPorArea;
-	}
-
-	public void setAgruparPorArea(boolean agruparPorArea) {
-		this.agruparPorArea = agruparPorArea;
-	}
 	
 	public boolean isImprimirAfastados() {
 		return imprimirAfastados;
@@ -563,5 +562,13 @@ public class ExameListAction extends MyActionSupportList
 
 	public void setImprimirDesligados(boolean imprimirDesligados) {
 		this.imprimirDesligados = imprimirDesligados;
+	}
+
+	public char getAgruparPor() {
+		return agruparPor;
+	}
+
+	public void setAgruparPor(char agruparPor) {
+		this.agruparPor = agruparPor;
 	}
 }

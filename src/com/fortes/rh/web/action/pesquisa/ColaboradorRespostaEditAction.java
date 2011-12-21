@@ -128,7 +128,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'A')// 'A' = Candidato e 'C' = Colaborador
         {
         	candidato = candidatoManager.findByCandidatoId(candidato.getId());
-        	colaborador = new Colaborador(candidato.getNome(), candidato.getId(), null, null);//Envia dados do Candidato para o ftl encapsulado no Colaborador
+        	colaborador = new Colaborador(candidato.getNome(), "", candidato.getId(), null, null);//Envia dados do Candidato para o ftl encapsulado no Colaborador
 
         	colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioCandidato(questionario.getId(), candidato.getId());
         }

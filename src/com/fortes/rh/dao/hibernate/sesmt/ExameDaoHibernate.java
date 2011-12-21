@@ -95,7 +95,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			whereDesligados = "and co.desligado = :imprimirDesligados  ";
 		
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio(co.id,e.id,ao.id,ca.nome,co.nome,co.nomeComercial,e.nome,se.data,re.data,ese.periodicidade, se.motivo) ");
+		hql.append("select new com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio(co.id,e.id,ao.id,ca.nome,co.nome,co.nomeComercial,e.nome,se.data,re.data,ese.periodicidade, se.motivo, es.id, es.nome) ");
 		hql.append("from SolicitacaoExame se ");
 		hql.append("join se.exameSolicitacaoExames ese ");
 		hql.append("join ese.exame e ");

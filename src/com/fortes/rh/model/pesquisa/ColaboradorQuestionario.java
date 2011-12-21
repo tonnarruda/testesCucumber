@@ -25,7 +25,6 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.DateUtil;
@@ -71,6 +70,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     
     public ColaboradorQuestionario() {
 	}
+
+    public ColaboradorQuestionario(Colaborador colaborador, Questionario questionario, Turma turma) 
+    {
+    	this.setTurma(turma);
+    	this.colaborador = colaborador;
+    	this.questionario = questionario;
+    }
 
     public ColaboradorQuestionario(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Long avaliadorId) {
 		this.avaliacaoDesempenho = avaliacaoDesempenho;

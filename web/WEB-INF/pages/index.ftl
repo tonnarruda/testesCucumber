@@ -121,17 +121,17 @@
 	</#if>
 	<br>
 
-	<#if questionariosTeD?exists>
+	<#if colaboradorQuestionariosTeD?exists>
 		<div class="waDivTituloX">Avaliações de T&D</div>
 		<div class="waDivFormularioX">
 
 			<#if colaborador?exists && colaborador.id?exists>
-				<#list questionariosTeD as questionarioTeD>
-					<p><a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=${colaborador.id}&questionario.id=${questionarioTeD.id}&turmaId=${questionarioTeD.turma.id}&voltarPara=../../index.action">${questionarioTeD.titulo}</a></p>
+				<#list colaboradorQuestionariosTeD as colaboradorQuestionarioTeD>
+					<p><a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=${colaborador.id}&questionario.id=${colaboradorQuestionarioTeD.questionario.id}&turmaId=${colaboradorQuestionarioTeD.turma.id}&voltarPara=../../index.action">${colaboradorQuestionarioTeD.questionario.titulo}</a></p>
 				</#list>
 			</#if>
 			
-			<#if questionariosTeD?size < 1>
+			<#if colaboradorQuestionariosTeD?size < 1>
 				<span>Não existem Avaliações de T&D disponíveis</span>
 			</#if>
 		</div>

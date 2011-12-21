@@ -13,6 +13,7 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
@@ -42,6 +43,7 @@ public class IndexTest extends MockObjectTestCase
 	Index index;
 	Mock questionarioManager;
 	Mock colaboradorManager;
+	Mock colaboradorQuestionarioManager;
 	Mock usuarioMensagemManager;
 	Mock historicoColaboradorManager;
 	Mock faixaSalarialHistoricoManager;
@@ -56,6 +58,9 @@ public class IndexTest extends MockObjectTestCase
 
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		index.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+
+		colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
+		index.setColaboradorQuestionarioManager((ColaboradorQuestionarioManager) colaboradorQuestionarioManager.proxy());
 
 		usuarioMensagemManager = new Mock(UsuarioMensagemManager.class);
 		index.setUsuarioMensagemManager((UsuarioMensagemManager)usuarioMensagemManager.proxy());
@@ -103,7 +108,7 @@ public class IndexTest extends MockObjectTestCase
 		pesquisas.add(pesquisa2);
 
 		questionarioManager.expects(once()).method("findQuestionarioPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
-		questionarioManager.expects(once()).method("findQuestionarioByTurmaRealizadaPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
+		colaboradorQuestionarioManager.expects(once()).method("findQuestionarioByTurmaRealizadaPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
 		colaboradorManager.expects(once()).method("findByUsuario").with(ANYTHING, ANYTHING).will(returnValue(colaborador));
 
 		Mensagem mensagem = MensagemFactory.getEntity(1L);

@@ -60,7 +60,7 @@ public class Index extends ActionSupport
 
 	private Collection<Pesquisa> pesquisasColaborador = new ArrayList<Pesquisa>();
 	private Collection<Questionario> questionarios;
-	private Collection<Questionario> questionariosTeD;
+	private Collection<ColaboradorQuestionario> colaboradorQuestionariosTeD;
 	private Collection<UsuarioMensagem> mensagems;
 	private Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 	private Collection<ColaboradorQuestionario> avaliacoesDesempenhoPendentes = new ArrayList<ColaboradorQuestionario>();
@@ -110,7 +110,7 @@ public class Index extends ActionSupport
 
 			questionarios = questionarioManager.findQuestionarioPorUsuario(usuarioId);
 			
-			questionariosTeD = questionarioManager.findQuestionarioByTurmaRealizadaPorUsuario(usuarioId);
+			colaboradorQuestionariosTeD = colaboradorQuestionarioManager.findQuestionarioByTurmaRealizadaPorUsuario(usuarioId);
 			
 			colaborador = colaboradorManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), empresaId);
 
@@ -410,9 +410,7 @@ public class Index extends ActionSupport
 		this.authenticationProvider = authenticationProvider;
 	}
 
-	public Collection<Questionario> getQuestionariosTeD() {
-		return questionariosTeD;
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionariosTeD() {
+		return colaboradorQuestionariosTeD;
 	}
-
-
 }

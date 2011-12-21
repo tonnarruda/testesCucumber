@@ -68,4 +68,6 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	Integer getQtdavaliadores(Long avaliacaoDesempenhoId);
 
 	ColaboradorQuestionario findByColaboradorAvaliacao(Long colaboradorId, Long avaliacaoId);
+
+	Collection<ColaboradorQuestionario> findQuestionarioByTurmaRealizadaPorUsuario(Long usuarioId);
 }

@@ -65,6 +65,56 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 
 		assertEquals(1, retorno.size());
 	}
+	
+	public void testGetByAreaEstabelecimentoEmpresasPassandoApenasEmpresa()
+	{	
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+
+		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+		colaboradors.add(colaborador);
+		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(colaboradors));
+		
+		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, null, empresa.getId(), new Long[]{});
+		
+		assertEquals(1, retorno.size());
+	}
+	
+	public void testGetByAreaEstabelecimentoEmpresasPassandoArea()
+	{	
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacional.setEmpresa(empresa);
+		
+		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+		colaboradors.add(colaborador);
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		
+		String [] areaIds = {areaOrganizacional.getId().toString()};
+		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(areaIds, null, empresa.getId(), new Long[]{});
+		
+		assertEquals(1, retorno.size());
+	}
+	
+	public void testGetByAreaEstabelecimentoEmpresasPassandoEstabelecimento()
+	{	
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		
+		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+		colaboradors.add(colaborador);
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		
+		String [] estabelecimentoIds = {estabelecimento.getId().toString()};
+		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, estabelecimentoIds, empresa.getId(), new Long[]{});
+		
+		assertEquals(1, retorno.size());
+	}
 
 	public void testGetColaboradoresSemArea()
 	{
@@ -169,14 +219,13 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador1);
 
-		colaboradorManager.expects(once()).method("findByAreaOrganizacional").with(ANYTHING).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
 
 		String [] areaOrganizacionalIds = {areaOrganizacional.getId().toString()};
 
 		Map retorno = colaboradorDWR.getColaboradoresByArea(areaOrganizacionalIds, empresa.getId());
 
 		assertEquals(1, retorno.size());
-
 	}
 
 	public void testGetColaboradoresByAreaSemArea()

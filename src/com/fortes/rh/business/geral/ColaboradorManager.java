@@ -126,7 +126,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	
 	public void migrarBairro(String bairro, String bairroDestino);
 	public Integer getCountAtivosEstabelecimento(Long estabelecimentoId);
-	public Collection<Colaborador> findByAreaOrganizacional(Collection<Long> areaOrganizacionalIds);
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds);
 	public void validaQtdCadastros() throws Exception;
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Collection<Perfil> perfis, Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa) throws Exception;
