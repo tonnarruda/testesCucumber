@@ -18,6 +18,7 @@
 	</Versao>
 	<Versao id="1.1.63.55" data="02/12/2011">
 		- ReS > Cadastros > Áreas Organizacionais: Ajuste na impressão da listagem de Área Organizacional, filtro por ativa [Todas, Ativa, Inativa].
+		- Pesquisas > Movimentações > Pesquisas > Colaboradores > Responder por Colaboradores: Nova tela para maior praticidade no cadastro das respostas dos colaboradores.
 		- SESMT > Relatórios > Afastamentos: Nova opção de agrupamento por mês.	
 		- SESMT > Movimentações > Reformulação do cadastro de CAT, novo nome: Ficha de Investigação de Acidente(CAT).
 		- SESMT > Painel de Indicadores: Novo Painel de Indicadores de SESMT.
