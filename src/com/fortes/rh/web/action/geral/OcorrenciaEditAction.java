@@ -25,7 +25,6 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -152,53 +151,30 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		String msg = null;
 		try
 		{
-			
-			Long[] ocorrenciaCheckLong = StringUtil.stringToLong(ocorrenciaCheck);
-			
-			
+			Collection<Long> ocorrenciaIds = LongUtil.arrayStringToCollectionLong(ocorrenciaCheck);
 			Collection<Long> colaboradorIds = LongUtil.arrayStringToCollectionLong(colaboradorCheck);
 			Collection<Long> areaIds = LongUtil.arrayStringToCollectionLong(areaCheck);
 			Collection<Long> estabelecimentoIds = LongUtil.arrayStringToCollectionLong(estabelecimentoCheck);
 			
-			colaboradoresOcorrencias = colaboradorOcorrenciaManager.babau(empresa, dataIni, dataFim, ocorrenciaCheckLong, areaIds, estabelecimentoIds, colaboradorIds);
-		
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresa, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds);
 
-//			parametros.put("dataIni", dataIni);
-//			parametros.put("dataFim", dataFim);
-//
-//			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrar(ocorrenciaCheckLong, colaboradorCheckLong, estabelecimentoCheckLong, parametros);
-//
-//			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
-//				throw new Exception(ResourceBundle.getBundle("application").getString("error.relatorio.vazio"));
-//
-//			colaboradorOcorrenciaRelatorios = montaRelatorio(colaboradoresOcorrencias);
-//
-//			CollectionUtil<ColaboradorOcorrenciaRelatorio> cu = new CollectionUtil<ColaboradorOcorrenciaRelatorio>();
-//			colaboradorOcorrenciaRelatorios = cu.sortCollectionDesc(colaboradorOcorrenciaRelatorios, "qtdPontos");
-//
-//			parametros.put("PONTUACAO", ponto);
-//			String filtro = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
-//			parametros = RelatorioUtil.getParametrosRelatorio("Ranking de Ocorrências", getEmpresaSistema(), filtro);
-//
-//			System.out.println("#############################################");
-//			System.out.println((ini.getTime() - new Date().getTime() ) / 1000);
+			parametros.put("dataIni", dataIni);
+			parametros.put("dataFim", dataFim);
+
+			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
+				throw new Exception(ResourceBundle.getBundle("application").getString("error.relatorio.vazio"));
+
+			colaboradorOcorrenciaRelatorios = montaRelatorio(colaboradoresOcorrencias);
+
+			CollectionUtil<ColaboradorOcorrenciaRelatorio> cu = new CollectionUtil<ColaboradorOcorrenciaRelatorio>();
+			colaboradorOcorrenciaRelatorios = cu.sortCollectionDesc(colaboradorOcorrenciaRelatorios, "qtdPontos");
+
+			parametros.put("PONTUACAO", ponto);
+			String filtro = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
+			parametros = RelatorioUtil.getParametrosRelatorio("Ranking de Ocorrências", getEmpresaSistema(), filtro);
+			
+			System.out.println((new Date().getTime() - ini.getTime())/1000);
+
 			if(detalhamento)
 				return Action.SUCCESS;
 			else
@@ -253,30 +229,30 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		}
 
 		if(!jaTem){
-//			colaboradorOcorrenciaRelatorios.add(transformaOcorrenciaRelatorio(colaboradorOcorrencia));
+			colaboradorOcorrenciaRelatorios.add(transformaOcorrenciaRelatorio(colaboradorOcorrencia));
 		}
 	}
 
-//	private ColaboradorOcorrenciaRelatorio transformaOcorrenciaRelatorio(ColaboradorOcorrencia colaboradorOcorrencia)
-//	{
-//		ColaboradorOcorrenciaRelatorio colaboradorOcorrenciaRelatorio = new ColaboradorOcorrenciaRelatorio();
-//
-//		colaboradorOcorrenciaRelatorio.setColaborador(colaboradorOcorrencia.getColaborador());
-//
-//		OcorrenciaRelatorio ocorrenciaRelatorio = new OcorrenciaRelatorio();
-//		ocorrenciaRelatorio.setOcorrencia(colaboradorOcorrencia.getOcorrencia());
-//		ocorrenciaRelatorio.setDataFim(colaboradorOcorrencia.getDataFim());
-//		ocorrenciaRelatorio.setDataIni(colaboradorOcorrencia.getDataIni());
-//		ocorrenciaRelatorio.setObservacao(colaboradorOcorrencia.getObservacao());
-//
-//		Collection<OcorrenciaRelatorio> ocorrencias = new ArrayList<OcorrenciaRelatorio>();
-//		ocorrencias.add(ocorrenciaRelatorio);
-//
-//		colaboradorOcorrenciaRelatorio.setOcorrencias(ocorrencias);
-//		colaboradorOcorrenciaRelatorio.setQtdPontos(colaboradorOcorrencia.getOcorrencia().getPontuacao());
-//
-//		return colaboradorOcorrenciaRelatorio;
-//	}
+	private ColaboradorOcorrenciaRelatorio transformaOcorrenciaRelatorio(ColaboradorOcorrencia colaboradorOcorrencia)
+	{
+		ColaboradorOcorrenciaRelatorio colaboradorOcorrenciaRelatorio = new ColaboradorOcorrenciaRelatorio();
+
+		colaboradorOcorrenciaRelatorio.setColaborador(colaboradorOcorrencia.getColaborador());
+
+		OcorrenciaRelatorio ocorrenciaRelatorio = new OcorrenciaRelatorio();
+		ocorrenciaRelatorio.setOcorrencia(colaboradorOcorrencia.getOcorrencia());
+		ocorrenciaRelatorio.setDataFim(colaboradorOcorrencia.getDataFim());
+		ocorrenciaRelatorio.setDataIni(colaboradorOcorrencia.getDataIni());
+		ocorrenciaRelatorio.setObservacao(colaboradorOcorrencia.getObservacao());
+
+		Collection<OcorrenciaRelatorio> ocorrencias = new ArrayList<OcorrenciaRelatorio>();
+		ocorrencias.add(ocorrenciaRelatorio);
+
+		colaboradorOcorrenciaRelatorio.setOcorrencias(ocorrencias);
+		colaboradorOcorrenciaRelatorio.setQtdPontos(colaboradorOcorrencia.getOcorrencia().getPontuacao());
+
+		return colaboradorOcorrenciaRelatorio;
+	}
 
 	public Object getModel()
 	{

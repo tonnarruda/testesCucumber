@@ -11,10 +11,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.criterion.Projections;
-
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.geral.relatorio.OcorrenciaRelatorio;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -22,10 +19,6 @@ import com.fortes.rh.util.DateUtil;
 @SequenceGenerator(name="sequence", sequenceName="colaboradorocorrencia_sequence", allocationSize=1)
 public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 {
-	public ColaboradorOcorrencia() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	@Temporal(TemporalType.DATE)
     private Date dataIni;
@@ -39,6 +32,9 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 	@ManyToOne(fetch=FetchType.LAZY)
     private Ocorrencia ocorrencia;
 
+	public ColaboradorOcorrencia() {
+	}
+
 	//Usado por colaboradorOcorrenciaDaoHibernate no metodo findColaboradorOcorrencia
     public ColaboradorOcorrencia(Long colaboradorOcorrenciaId, Date colaboradorOcorrenciaDataIni, Date colaboradorOcorrenciaDataFim,
 			String colaboradorOcorrenciaObservacao, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial,
@@ -46,8 +42,8 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 	{	
     	setId(colaboradorOcorrenciaId);
 		setOcorrenciaDescricao(ocorrenciaDescricao);
-		setDataIni(dataIni);
-		setDataFim(dataFim);
+		setDataIni(colaboradorOcorrenciaDataIni);
+		setDataFim(colaboradorOcorrenciaDataFim);
 
 		setObservacao(colaboradorOcorrenciaObservacao);
 		setOcorrenciaPontuacao(ocorrenciaPontuacao);

@@ -35,7 +35,7 @@
 	function validaDinamico()
 	{
 		if($('#empresa').val() == "")
-			newConfirm('Essas configurações serão aplicadas para dodas as empresas!', function(){submtDinamico()});
+			newConfirm('Essas configurações serão aplicadas para todas as empresas!', function(){submtDinamico()});
 		else			
 			submtDinamico();
 	}

@@ -289,15 +289,15 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		}
 	}
 
-	public Collection<ColaboradorOcorrencia> babau(Empresa empresa, Date dataIni, Date dataFim, Long[] ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds)
+	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds)
 	{
-		if(colaboradorIds.isEmpty() && (!areaIds.isEmpty() || !estabelecimentoIds.isEmpty()))
-			colaboradorIds = colaboradorManager.findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, false);
+//		if(colaboradorIds.isEmpty() && (!areaIds.isEmpty() || !estabelecimentoIds.isEmpty()))
+//			colaboradorIds = colaboradorManager.findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, false);
 
+		Long empresaId = null;
+		if(empresa != null && empresa.getId() != null )
+			empresaId = empresa.getId();
 		
-		
-		//consulta de ocorrencia com dois in(ocorrenci, colab, data, empresa)
-		//
-		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresa.getId());
+		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaId, areaIds, estabelecimentoIds);
 	}
 }

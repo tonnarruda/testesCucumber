@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -16,6 +17,8 @@ import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
@@ -24,6 +27,7 @@ import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -40,6 +44,7 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 	private OcorrenciaDao ocorrenciaDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private EstabelecimentoDao estabelecimentoDao;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
 	private GrupoACDao grupoACDao;
 
 	public ColaboradorOcorrencia getEntity()
@@ -109,6 +114,53 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		
 		retorno = colaboradorOcorrenciaDao.findByColaborador(colaborador.getId());
 		assertEquals(0, retorno.size());
+	}
+	
+	public void testFindColaboradorOcorrencia()
+	{
+		Date data1 = DateUtil.criarDataMesAno(1, 1, 2011);
+		Date data2 = DateUtil.criarDataMesAno(1, 1, 2012);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Ocorrencia falta = OcorrenciaFactory.getEntity();
+		falta.setDescricao("falta");
+		falta.setPontuacao(5);
+		falta.setEmpresa(empresa);
+		ocorrenciaDao.save(falta);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setDescricao("garagem");
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setEmpresa(empresa);
+		estabelecimento.setNome("matriz");
+		estabelecimentoDao.save(estabelecimento);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("joao");
+		colaboradorDao.save(joao);
+		
+		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity();
+		historicoJoao.setColaborador(joao);
+		historicoJoao.setData(DateUtil.criarDataMesAno(20, 12, 2011));
+		historicoJoao.setAreaOrganizacional(areaOrganizacional);
+		historicoJoao.setEstabelecimento(estabelecimento);
+		historicoJoao.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoJoao);
+		
+		ColaboradorOcorrencia colabOcor = ColaboradorOcorrenciaFactory.getEntity();
+		colabOcor.setColaborador(joao);
+		colabOcor.setOcorrencia(falta);
+		colabOcor.setDataIni(DateUtil.criarDataMesAno(20, 12, 2011));
+		colabOcor.setDataFim(DateUtil.criarDataMesAno(22, 12, 2011));
+		colaboradorOcorrenciaDao.save(colabOcor);
+		
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId()), Arrays.asList(joao.getId()), data1, data2, empresa.getId(), null, null);
+		
+		assertNotNull(colaboradorOcorrencias);
 	}
 
 	public void testFiltrar()
@@ -330,6 +382,10 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
 
 }
