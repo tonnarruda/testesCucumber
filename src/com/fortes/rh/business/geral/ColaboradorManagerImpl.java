@@ -1495,9 +1495,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds)
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, Boolean desligado)
 	{
-		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds);
+		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, desligado);
 	}
 
 	public void validaQtdCadastros() throws Exception
@@ -2111,5 +2111,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public String findCodigoACDuplicado(Long empresaId) {
 		return getDao().findCodigoACDuplicado(empresaId);
+	}
+
+	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado) {
+		return getDao().findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, desligado);
 	}
 }

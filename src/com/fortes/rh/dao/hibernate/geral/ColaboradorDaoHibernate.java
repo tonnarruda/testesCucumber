@@ -1250,10 +1250,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setInteger(numeroValue + "Fim", numeroFim);
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds)
-	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome) ");
+	private Query montaQueryFindByAreaEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, Boolean desligado, StringBuilder hql) {
 		hql.append("from HistoricoColaborador as hc1 ");
 		hql.append("right join hc1.areaOrganizacional as ao ");
 		hql.append("right join hc1.estabelecimento as es ");
@@ -1269,24 +1266,46 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		) ");
 		hql.append("	 	or hc1.data is null ");
 		hql.append("	) ");
-		hql.append("	and co.desligado = :desligado");
-
+		
+		if(desligado != null)
+			hql.append("	and co.desligado = :desligado");
+		
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			hql.append(" and es.id in (:estabelecimentoIds) ");
 		
 		hql.append(" order by e.nome, co.nomeComercial, co.nome ");
-
+		
 		Query query = getSession().createQuery(hql.toString());
-
+		
+		if(desligado != null)
+			query.setBoolean("desligado", desligado);
+		
 		query.setDate("hoje", new Date());
-		query.setBoolean("desligado", false);
-
+		
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		
+		return query;
+	}
+	
+	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, Boolean desligado)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select co.id ");
+		Query query = montaQueryFindByAreaEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, desligado, hql);
+		
+		return query.list();
+	}
+	
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, Boolean desligado)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome) ");
+		Query query = montaQueryFindByAreaEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, desligado, hql);
 
 		return query.list();
 	}

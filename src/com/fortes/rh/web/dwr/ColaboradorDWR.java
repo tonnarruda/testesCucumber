@@ -111,7 +111,7 @@ public class ColaboradorDWR
         Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 
         if(areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
-        	colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null);        	
+        	colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, false);        	
         else
             colaboradores = colaboradorManager.findAllSelect(empresaId, "nomeComercial");
 
@@ -131,7 +131,7 @@ public class ColaboradorDWR
     	}
     	else
     	{
-    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds));        	
+    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), false);        	
     	}
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercialEmpresa", Colaborador.class);

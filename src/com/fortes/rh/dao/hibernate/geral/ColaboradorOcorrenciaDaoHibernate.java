@@ -19,6 +19,9 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.cargosalario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
@@ -277,5 +280,43 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 			query.setParameterList("ocorrenciaIds", ocorrenciaIds, Hibernate.LONG);
 			query.executeUpdate();		
 		}
+	}
+
+	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Long[] ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();
+
+		hql.append("select distinct new ColaboradorOcorrencia(co.id, co.dataIni, co.dataFim, co.observacao, c.id, c.nome, c.nomeComercial, o.pontuacao, o.descricao, e.nome, ao.nome) ");
+		
+		hql.append("from ColaboradorOcorrencia as co ");
+		hql.append("inner join co.ocorrencia as o ");
+		hql.append("inner join co.colaborador as c ");
+		hql.append("left join c.historicoColaboradors as hc ");
+		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("left join hc.estabelecimento as es ");
+		
+		hql.append("where hc.data = (select max(hc2.data) ");
+		hql.append("				from HistoricoColaborador as hc2 "); 
+		hql.append("				where hc2.colaborador_id = hc.colaborador_id ");
+		hql.append("				and hc2.data <= :hoje ");
+		hql.append("				and hc2.status = :statusHistColab) ");
+		hql.append("and hc.colaborador_id in (:colaboradorIds) "); 
+		hql.append("and co.ocorrencia_id in (:ocorrenciaIds) ");
+		hql.append("and co.dataIni >= :dataIni ");
+		hql.append("and co.dataIni <= :dataFim ");
+		hql.append("and co.empresa.id = :empresaId ");
+		hql.append("order by c.nome asc, c.id asc, hc.data desc, co.dataIni asc ");
+
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setParameterList("ocorrenciaIds", ocorrenciaIds, Hibernate.LONG);
+		query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
+		query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
+		query.setDate("hoje", new Date());
+		query.setLong("empresaId", empresaId);
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+
+		return query.list();
 	}
 }

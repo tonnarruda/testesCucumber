@@ -288,4 +288,16 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 			ocorrenciaManager.remove(ocorrenciaIds);
 		}
 	}
+
+	public Collection<ColaboradorOcorrencia> babau(Empresa empresa, Date dataIni, Date dataFim, Long[] ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds)
+	{
+		if(colaboradorIds.isEmpty() && (!areaIds.isEmpty() || !estabelecimentoIds.isEmpty()))
+			colaboradorIds = colaboradorManager.findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, false);
+
+		
+		
+		//consulta de ocorrencia com dois in(ocorrenci, colab, data, empresa)
+		//
+		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresa.getId());
+	}
 }
