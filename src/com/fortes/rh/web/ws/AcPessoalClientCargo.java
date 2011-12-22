@@ -7,6 +7,8 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
+import org.apache.axis.encoding.ser.ArrayDeserializerFactory;
+import org.apache.axis.encoding.ser.ArraySerializerFactory;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
@@ -17,6 +19,8 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
+import com.fortes.rh.model.ws.TSituacao;
 
 public class AcPessoalClientCargo
 {
@@ -30,6 +34,10 @@ public class AcPessoalClientCargo
 			GrupoAC grupoAC = new GrupoAC();
 			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "DelCargo");
 
+			QName qnameAr = new QName(grupoAC.getAcUrlWsdl(),"TFeedbackPessoalWebService");
+            
+            call.registerTypeMapping(TFeedbackPessoalWebService.class, qnameAr, new BeanSerializerFactory(TFeedbackPessoalWebService.class, qnameAr), new BeanDeserializerFactory(TFeedbackPessoalWebService.class, qnameAr));
+            
 			QName qname = new QName(grupoAC.getAcUrlWsdl(),"TCargo");
 	        call.registerTypeMapping(TCargo.class, qname, new BeanSerializerFactory(TCargo.class, qname), new BeanDeserializerFactory(TCargo.class, qname));
 
@@ -39,7 +47,8 @@ public class AcPessoalClientCargo
 			call.addParameter("Empresa",xmlstring,ParameterMode.IN);
 			call.addParameter("Cargos",org.apache.axis.encoding.XMLType.SOAP_ARRAY,ParameterMode.IN);
 
-			call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_BOOLEAN);
+//			call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_BOOLEAN);
+			call.setReturnType(qnameAr);
 
 			TCargo[] cargosAC = new TCargo[codigoACs.length];
 
@@ -53,9 +62,9 @@ public class AcPessoalClientCargo
 			}
 
 			Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), cargosAC};
-			boolean result = (Boolean) call.invoke(param);
+			TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
 
-			return result;
+			return result.getSucesso();
 		}
 		catch (Exception e)
 		{
