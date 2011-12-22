@@ -218,7 +218,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	public String prepareRelatorioDinamico()
 	{
 		Long usuarioId = SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession());
-		prepareEmpresas("ROLE_CAD_COLABORADOR");
+		prepareEmpresas("ROLE_REL_LISTA_COLAB");
 		
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
