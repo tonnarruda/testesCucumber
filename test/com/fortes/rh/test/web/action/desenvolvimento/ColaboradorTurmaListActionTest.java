@@ -165,7 +165,8 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas));
+    	colaboradorTurmaManager.expects(once()).method("getCount").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas.size()));
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), eq(null), eq(1), eq(15)).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(colaboradorQuestionarioCollection));
     	
@@ -561,7 +562,8 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(colaboradorTurmas));
+    	colaboradorTurmaManager.expects(once()).method("getCount").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas.size()));
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId()), eq(null), eq(1), eq(15)).will(returnValue(colaboradorTurmas));
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 

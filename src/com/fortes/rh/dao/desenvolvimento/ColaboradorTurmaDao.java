@@ -24,11 +24,11 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findByTurmaCurso(Long cursoId);
 	Collection<ColaboradorTurma> findByDNTColaboradores(DNT dnt, Collection<Colaborador> colaboradors);
 	Empresa findEmpresaDoColaborador(ColaboradorTurma colaboradorTurma);
-	Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId);
+	Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, Integer page, Integer pagingSize);
 	void updateColaboradorTurmaSetPrioridade(long colaboradorTurma, long prioridadeId);
 	void updateColaboradorTurmaSetAprovacao(Long colaboradorTurmaId, boolean aprovacao) throws Exception;
 	List findCustoRateado();
-	Integer getCount(Long turmaId);
+	Integer getCount(Long turmaId, Long empresaId);
 	Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds);
 	Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Long[] colaboradorTurmaIds);
 	Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId);

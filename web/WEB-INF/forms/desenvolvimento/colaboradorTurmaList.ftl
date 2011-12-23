@@ -1,3 +1,4 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
@@ -17,6 +18,8 @@
 	
     <#include "../ftl/mascarasImports.ftl" />
     <#include "../ftl/showFilterImports.ftl" />
+    
+    <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
     
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
     
@@ -73,15 +76,15 @@
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
-	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	
 	
 	<#if compartilharColaboradores>
 		<#include "../util/topFiltro.ftl" />
 	        <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
 	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores"/>
 	            <@ww.hidden name="turma.id"/>
-	            
-	            <input type="submit" value="" class="btnPesquisar grayBGE" >
+	            <@ww.hidden id="pagina" name="page"/>
+	            <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 	        </@ww.form>
 	    <#include "../util/bottomFiltro.ftl" />
 	    <br>
@@ -112,6 +115,8 @@
 			<@display.column property="colaborador.empresa.nome" title="Empresa" style="width: 120px;"/>
 			<@display.column property="colaborador.areaOrganizacional.descricao" title="Área" style="width: 200px;"/>
 		</@display.table>
+		<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
+	
 	</#if>
 
 	<div class="buttonGroup">

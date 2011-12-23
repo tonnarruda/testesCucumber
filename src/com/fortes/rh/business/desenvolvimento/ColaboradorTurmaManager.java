@@ -36,13 +36,13 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<SomatorioCursoMatriz> getSomaPontuacao(Collection<ColaboradorCursoMatriz> colaboradorCursoMatrizs);
 	public Collection<ColaboradorTurma> findByDNTColaboradores(DNT dnt, Collection<Colaborador> colaboradors);
 	public boolean verifcaExisteNoCurso(Colaborador colaborador, Curso curso, DNT dnt);
-	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId);
+	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, Integer page, Integer pagingSize);
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId);
 	public Map<String, Object> getDadosTurma(Collection<ColaboradorTurma> colaboradorTurmas, Map<String, Object> parametros) throws Exception;
 	public void saveUpdate(Collection<Long> colaboradoresId, boolean aprovado) throws Exception;
 	public Collection<ColaboradorTurma> setCustoRateado(Collection<ColaboradorTurma> colaboradorTurmasLista);
 	public Collection<ColaboradorTurma> setFamiliaAreas(Collection<ColaboradorTurma> colaboradorTurmas, Long empresaId) throws Exception;
-	public Integer getCount(Long turmaId);
+	public Integer getCount(Long turmaId, Long empresaId);
 	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds) throws Exception;
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, char aprovado) throws Exception;
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId);

@@ -11,6 +11,7 @@
 	<title>Cursos</title>
 
 <#include "../ftl/showFilterImports.ftl" />
+<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 </head>
 <body>
@@ -41,8 +42,6 @@
 		<@display.column property="cargaHorariaMinutos" title="Carga Horária" style="text-align:right;"/>
 	</@display.table>
 
-	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-	
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
 	<div class="buttonGroup">

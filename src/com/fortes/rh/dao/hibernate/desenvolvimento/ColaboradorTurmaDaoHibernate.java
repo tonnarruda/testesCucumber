@@ -189,7 +189,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return empresa;
 	}
 
-	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId)
+	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, Integer page, Integer pagingSize)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ColaboradorTurma(ct.id, pt.id, co.id, co.nome, co.nomeComercial, co.matricula, ao.id, ao.nome, ct.aprovado, e.nome, fs.nome, c.nome, emp.id, emp.nome) ");
@@ -215,12 +215,17 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("		where hc2.colaborador.id = co.id ");
 		hql.append("			and hc2.status = :status ");
 		hql.append("	) ");
-		hql.append(" order by co.nome asc");
-
+		hql.append(" order by co.nome asc ");
+		
 		Query query = getSession().createQuery(hql.toString());
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setLong("turmaId", turmaId);
+		
+		if(page != null && pagingSize!=null){
+			query.setFirstResult((page - 1) * pagingSize);
+			query.setMaxResults(pagingSize);
+		}
 		
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
@@ -406,11 +411,22 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 
-	public Integer getCount(Long turmaId)
+	public Integer getCount(Long turmaId, Long empresaId)
 	{
-		String hql = "select count(ct.id) from ColaboradorTurma ct where ct.turma.id = :turmaId";
-		Query query = getSession().createQuery(hql);
+		StringBuilder hql = new StringBuilder();
+		 
+		hql.append("select count(ct.id) from ColaboradorTurma ct " );
+		hql.append("left join ct.colaborador co " );
+		hql.append("where ct.turma.id = :turmaId " );
+		
+		if(empresaId != null)
+			hql.append(" and co.empresa.id = :empresaId");
+		
+		Query query = getSession().createQuery(hql.toString());
 		query.setLong("turmaId", turmaId);
+		
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 
 		return (Integer)query.uniqueResult();
 	}

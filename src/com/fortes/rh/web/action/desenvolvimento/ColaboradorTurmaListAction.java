@@ -141,7 +141,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		populaEmpresa("ROLE_MOV_TURMA");	
 		
 		turma = turmaManager.findById(turma.getId()); // precisa da colecao de avaliacaoTurmas
-		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), empresaId);
+		
+		setTotalSize(colaboradorTurmaManager.getCount(turma.getId(), empresaId));
+		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), empresaId, getPage(), getPagingSize());
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 
 		colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);

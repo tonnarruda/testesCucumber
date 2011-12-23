@@ -344,7 +344,40 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurma2.setTurma(turma);
     	colaboradorTurmaDao.save(colaboradorTurma2);
     	
-    	assertEquals(new Integer(2), colaboradorTurmaDao.getCount(turma.getId()));
+    	assertEquals(new Integer(2), colaboradorTurmaDao.getCount(turma.getId(), null));
+    }
+    
+    public void testGetCountComEmpresa()
+    {
+    	Empresa fortes = EmpresaFactory.getEmpresa(1L);
+    	empresaDao.save(fortes);
+    	
+    	Empresa ente = EmpresaFactory.getEmpresa(2L);
+    	empresaDao.save(ente);
+    	
+       	Turma turma = TurmaFactory.getEntity();
+       	turma.setEmpresa(fortes);
+    	turmaDao.save(turma);
+    	
+    	Colaborador joao = ColaboradorFactory.getEntity();
+    	joao.setEmpresa(fortes);
+    	colaboradorDao.save(joao);
+
+    	Colaborador maria = ColaboradorFactory.getEntity();
+    	maria.setEmpresa(ente);
+    	colaboradorDao.save(maria);
+
+    	ColaboradorTurma mariaTurma = getEntity();
+    	mariaTurma.setColaborador(maria);
+    	mariaTurma.setTurma(turma);
+    	colaboradorTurmaDao.save(mariaTurma);
+    	
+    	ColaboradorTurma joaoTurma = getEntity();
+    	joaoTurma.setColaborador(joao);
+    	joaoTurma.setTurma(turma);
+    	colaboradorTurmaDao.save(joaoTurma);
+    	
+    	assertEquals(new Integer(1), colaboradorTurmaDao.getCount(turma.getId(), fortes.getId()));
     }
     
     public void testFindColaboradorByTurma()
@@ -422,7 +455,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         colaboradorTurma.setColaborador(colaborador);
         colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
 
-        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId(), null);
+        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId(), null, null, null);
 
         ColaboradorTurma colaboradorTurmaRetorno = (ColaboradorTurma) retornos.toArray()[0];
 
