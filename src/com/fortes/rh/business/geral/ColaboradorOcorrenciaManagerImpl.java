@@ -291,9 +291,6 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 
 	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds)
 	{
-//		if(colaboradorIds.isEmpty() && (!areaIds.isEmpty() || !estabelecimentoIds.isEmpty()))
-//			colaboradorIds = colaboradorManager.findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, false);
-
 		Long empresaId = null;
 		if(empresa != null && empresa.getId() != null )
 			empresaId = empresa.getId();

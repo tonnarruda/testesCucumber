@@ -7,19 +7,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.ColaboradorOcorrenciaRelatorio;
-import com.fortes.rh.model.geral.relatorio.OcorrenciaRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -147,8 +146,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 
 	public String buscaOcorrencia() throws Exception
 	{
-		Date ini = new Date();
-		String msg = null;
 		try
 		{
 			Collection<Long> ocorrenciaIds = LongUtil.arrayStringToCollectionLong(ocorrenciaCheck);
@@ -162,96 +159,30 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			parametros.put("dataFim", dataFim);
 
 			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
-				throw new Exception(ResourceBundle.getBundle("application").getString("error.relatorio.vazio"));
+				throw new ColecaoVaziaException("Não existem dados para o relatório");
 
-			colaboradorOcorrenciaRelatorios = montaRelatorio(colaboradoresOcorrencias);
-
-			CollectionUtil<ColaboradorOcorrenciaRelatorio> cu = new CollectionUtil<ColaboradorOcorrenciaRelatorio>();
-			colaboradorOcorrenciaRelatorios = cu.sortCollectionDesc(colaboradorOcorrenciaRelatorios, "qtdPontos");
-
-			parametros.put("PONTUACAO", ponto);
 			String filtro = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
 			parametros = RelatorioUtil.getParametrosRelatorio("Ranking de Ocorrências", getEmpresaSistema(), filtro);
 			
-			System.out.println((new Date().getTime() - ini.getTime())/1000);
-
 			if(detalhamento)
 				return Action.SUCCESS;
 			else
 				return "relatorio_sem_detalhe";
 		}
+		catch (ColecaoVaziaException cE)
+		{
+			addActionMessage(cE.getMessage());
+			prepareRelatorioOcorrencia();
+			return Action.INPUT;
+		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			if(msg != null)
-				addActionMessage(msg);
-			else
-				addActionMessage("Não foi possível gerar o relatório");
-
+			addActionError("Não foi possível gerar o relatório");
 			prepareRelatorioOcorrencia();
 			return Action.INPUT;
 		}
 
-	}
-
-	public Collection<ColaboradorOcorrenciaRelatorio> montaRelatorio(Collection<ColaboradorOcorrencia> colaboradoresOcorrencias)
-	{
-		Collection<ColaboradorOcorrenciaRelatorio> colaboradorOcorrenciaRelatorios = new ArrayList<ColaboradorOcorrenciaRelatorio>();
-
-		for(ColaboradorOcorrencia colaboradorOcorrencia : colaboradoresOcorrencias)
-		{
-			adicionaNaCollecao(colaboradorOcorrenciaRelatorios, colaboradorOcorrencia);
-		}
-
-		return colaboradorOcorrenciaRelatorios;
-	}
-
-
-	public void adicionaNaCollecao(Collection<ColaboradorOcorrenciaRelatorio> colaboradorOcorrenciaRelatorios, ColaboradorOcorrencia colaboradorOcorrencia)
-	{
-		boolean jaTem = false;
-
-		for(ColaboradorOcorrenciaRelatorio colaboradorOcorrenciaRelatorio : colaboradorOcorrenciaRelatorios){
-			if(colaboradorOcorrenciaRelatorio.getColaborador().getId().doubleValue() == colaboradorOcorrencia.getColaborador().getId().doubleValue()){
-
-				OcorrenciaRelatorio ocorrenciaRelatorio = new OcorrenciaRelatorio();
-				ocorrenciaRelatorio.setOcorrencia(colaboradorOcorrencia.getOcorrencia());
-				ocorrenciaRelatorio.setDataFim(colaboradorOcorrencia.getDataFim());
-				ocorrenciaRelatorio.setDataIni(colaboradorOcorrencia.getDataIni());
-				ocorrenciaRelatorio.setObservacao(colaboradorOcorrencia.getObservacao());
-
-				colaboradorOcorrenciaRelatorio.getOcorrencias().add(ocorrenciaRelatorio);
-				colaboradorOcorrenciaRelatorio.setQtdPontos(colaboradorOcorrenciaRelatorio.getQtdPontos() + colaboradorOcorrencia.getOcorrencia().getPontuacao());
-				jaTem = true;
-
-				break;
-			}
-		}
-
-		if(!jaTem){
-			colaboradorOcorrenciaRelatorios.add(transformaOcorrenciaRelatorio(colaboradorOcorrencia));
-		}
-	}
-
-	private ColaboradorOcorrenciaRelatorio transformaOcorrenciaRelatorio(ColaboradorOcorrencia colaboradorOcorrencia)
-	{
-		ColaboradorOcorrenciaRelatorio colaboradorOcorrenciaRelatorio = new ColaboradorOcorrenciaRelatorio();
-
-		colaboradorOcorrenciaRelatorio.setColaborador(colaboradorOcorrencia.getColaborador());
-
-		OcorrenciaRelatorio ocorrenciaRelatorio = new OcorrenciaRelatorio();
-		ocorrenciaRelatorio.setOcorrencia(colaboradorOcorrencia.getOcorrencia());
-		ocorrenciaRelatorio.setDataFim(colaboradorOcorrencia.getDataFim());
-		ocorrenciaRelatorio.setDataIni(colaboradorOcorrencia.getDataIni());
-		ocorrenciaRelatorio.setObservacao(colaboradorOcorrencia.getObservacao());
-
-		Collection<OcorrenciaRelatorio> ocorrencias = new ArrayList<OcorrenciaRelatorio>();
-		ocorrencias.add(ocorrenciaRelatorio);
-
-		colaboradorOcorrenciaRelatorio.setOcorrencias(ocorrencias);
-		colaboradorOcorrenciaRelatorio.setQtdPontos(colaboradorOcorrencia.getOcorrencia().getPontuacao());
-
-		return colaboradorOcorrenciaRelatorio;
 	}
 
 	public Object getModel()

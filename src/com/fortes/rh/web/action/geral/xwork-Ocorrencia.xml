@@ -33,13 +33,15 @@
 		<action name="buscaOcorrencia" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="buscaOcorrencia">
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/ocorrencia.jasper</param>
-				<param name="dataSource">emptyDataSource</param>
+				<param name="dataSource">colaboradoresOcorrencias</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">ocorrenciasDetalhadas.pdf</param>
 			</result>
 			<result name="relatorio_sem_detalhe" type="jasper">
 				<param name="location">WEB-INF/report/ocorrencia_sem_detalhe.jasper</param>
 				<param name="dataSource">emptyDataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">ocorrencias.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaRelatorioFiltro.ftl</result>
 		</action>
