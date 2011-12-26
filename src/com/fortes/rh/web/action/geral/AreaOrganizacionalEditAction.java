@@ -48,7 +48,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		if(areaOrganizacional != null && areaOrganizacional.getId() != null && areaOrganizacional.getNome() == null)
 			areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaOrganizacional.getId());
 
-		areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
+		areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
 		responsaveis = colaboradorManager.findAllSelect(getEmpresaSistema().getId(), "nomeComercial");
 	}
 

@@ -33,7 +33,7 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 		//foi retirado a paginação pois não dava para ordenar(Francisco, 03/06/09)
 		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativa));
 
-		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllList(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
+		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
 		areasTmp = areaOrganizacionalManager.montaFamilia(areasTmp);
 		areaOrganizacionals = areaOrganizacionalManager.getDistinctAreaMae(areasTmp, areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();

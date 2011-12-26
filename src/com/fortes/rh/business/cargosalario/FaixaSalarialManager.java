@@ -25,7 +25,7 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	Collection<FaixaSalarial> findAllSelectByCargo(Long empresaId);
 	FaixaSalarial findByFaixaSalarialId(Long faixaSalarialId);
 	Collection<FaixaSalarial> findFaixaSalarialByCargo(Long cargoId);
-	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo);
+	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo, Long faixaInativaId);
 	public FaixaSalarial findHistoricoAtual(Long faixaSalarialId);
 	boolean verifyExistsNomeByCargo(Long cargoId, String faixaNome);
 	void removeFaixaAndHistoricos(Long[] faixaSalarialIds);

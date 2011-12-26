@@ -83,10 +83,9 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		indices = indiceManager.findAll(getEmpresaSistema());
 		
+		Long faixaInativaId = null;
+		Long areaInativaId = null;
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
-		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO), "cargo.nome");
-		
-		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
 		
 		if(historicoColaborador != null)
 		{
@@ -96,7 +95,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
 				ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 			
-			salarioProcessado = historicoColaborador.getSalarioCalculado();			
+			salarioProcessado = historicoColaborador.getSalarioCalculado();
+			
+			faixaInativaId = historicoColaborador.getFaixaSalarial().getId();
+			areaInativaId = historicoColaborador.getAreaOrganizacional().getId();
 		}
 		else
 		{
@@ -104,6 +106,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			historicoColaborador.setId(null);
 			historicoColaborador.setData(new Date());
 		}
+
+		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId), "cargo.nome");
+		
+		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
 	}
 	
 	public String prepareInsert() throws Exception
