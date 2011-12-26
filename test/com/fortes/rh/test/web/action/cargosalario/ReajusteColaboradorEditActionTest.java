@@ -135,17 +135,17 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
 		
-		areaOrganizacionalManager.expects(once()).method("findAllList")
-		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.TODAS)).will(returnValue(new ArrayList<AreaOrganizacional>()));
-		areaOrganizacionalManager.expects(once()).method("findAllList")
-		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA)).will(returnValue(areaOrganizacionalsPropostas));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa")
+		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa")
+		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA), ANYTHING).will(returnValue(areaOrganizacionalsPropostas));
 		
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
 		
 		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<TabelaReajusteColaborador>()));
 		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
-		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO)).will(returnValue(new ArrayList<Estabelecimento>()));
+		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), ANYTHING).will(returnValue(new ArrayList<Estabelecimento>()));
 	}
 
 	
@@ -192,7 +192,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		funcaoManager.expects(once()).method("findFuncaoByFaixa").will(returnValue(new ArrayList<Funcao>()));
 		ambienteManager.expects(once()).method("findByEstabelecimento").will(returnValue(new ArrayList<Ambiente>()));
-		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO)).will(returnValue(new ArrayList<Estabelecimento>()));
+		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), ANYTHING).will(returnValue(new ArrayList<Estabelecimento>()));
 		manager.expects(once()).method("calculaSalarioProposto").with(eq(reajusteColaborador));
 		
 		assertEquals("success", action.prepareUpdate());
@@ -238,7 +238,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(new AreaOrganizacional()));
 		funcaoManager.expects(once()).method("findFuncaoByFaixa").will(returnValue(new ArrayList<Funcao>()));
 		ambienteManager.expects(once()).method("findByEstabelecimento").will(returnValue(new ArrayList<Ambiente>()));
-		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO)).will(returnValue(new ArrayList<Estabelecimento>()));
+		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), ANYTHING).will(returnValue(new ArrayList<Estabelecimento>()));
 		manager.expects(once()).method("calculaSalarioProposto").with(eq(reajusteColaborador));
 		
 		assertEquals("input", action.update());

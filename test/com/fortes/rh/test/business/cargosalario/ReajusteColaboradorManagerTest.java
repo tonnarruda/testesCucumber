@@ -619,7 +619,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 		reajusteColaboradors.add(reajusteColaborador1);
 		reajusteColaboradors.add(reajusteColaborador2);
 
-		areaOrganizacionalManager.expects(once()).method("findAllList").withAnyArguments().will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").withAnyArguments().will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").withAnyArguments().will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador1.getAreaOrganizacionalProposta().getId())).will(returnValue(areaOrganizacional1));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador2.getAreaOrganizacionalProposta().getId())).will(returnValue(areaOrganizacional2));

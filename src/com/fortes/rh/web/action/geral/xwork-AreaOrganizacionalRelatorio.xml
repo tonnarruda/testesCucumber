@@ -11,6 +11,7 @@
 				<param name="location">WEB-INF/report/areaOrganizacional_filtro.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresAreaOrganizacional.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalRelatorioFiltro.ftl</result>
 		</action>

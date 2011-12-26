@@ -154,11 +154,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             	somenteLeitura = true;
         }
 
-    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
+    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null);
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
-		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO), "cargo.nome");
+		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, null), "cargo.nome");
 
         motivoSolicitacaos = motivoSolicitacaoManager.findAll();
         
@@ -193,7 +193,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	prepare();
 
     	bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, bairroManager.getBairrosBySolicitacao(solicitacao.getId()), "getId");
-    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
+    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
     	solicitacao.setId(null);

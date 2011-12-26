@@ -316,7 +316,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
         faixaSalarial.setCargo(cargo);
         faixaSalarial = faixaSalarialDao.save(faixaSalarial);
 
-        Collection<FaixaSalarial> retorno = faixaSalarialDao.findFaixas(empresa, Cargo.TODOS);
+        Collection<FaixaSalarial> retorno = faixaSalarialDao.findFaixas(empresa, Cargo.TODOS, null);
 
         assertTrue(retorno.size() > 0);
     }
@@ -335,7 +335,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     	faixaSalarial.setCargo(cargo);
     	faixaSalarial = faixaSalarialDao.save(faixaSalarial);
 
-    	Collection<FaixaSalarial> retorno = faixaSalarialDao.findFaixas(empresa, Cargo.ATIVO);
+    	Collection<FaixaSalarial> retorno = faixaSalarialDao.findFaixas(empresa, Cargo.ATIVO, null);
 
     	assertTrue(retorno.size() > 0);
     }

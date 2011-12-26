@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Áreas Organizacionais</title>
+	<title>Colaboradores por Área Organizacional</title>
 
 	<#assign validaDataCamposExtras = ""/>
 	<#if habilitaCampoExtra>

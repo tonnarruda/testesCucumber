@@ -31,7 +31,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection getNaoFamilia(Collection areas, Long id);
 	public boolean verificaMaternidade(Long areaOrganizacionalId);
 	public Integer getCount(String nome, Long empresaId);
-	public Collection<AreaOrganizacional> findAllList(Long empresaId, Boolean ativo);
+	public Collection<AreaOrganizacional> findAllListAndInativa(Long empresaId, Boolean ativo, Long areaInativaId);
 	public Collection<AreaOrganizacional> findAllList(Long usuarioId, Long empresaId, Boolean ativo);
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, String nome, Long empresaId, Boolean ativo);
 	public Collection<CheckBox> populaCheckOrderDescricao(long empresaId);
@@ -39,7 +39,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public AreaOrganizacional findAreaOrganizacionalCodigoAc(Long idAreaOrganizacional);
 	public AreaOrganizacional getAreaMae(Collection<AreaOrganizacional> todasAreas, AreaOrganizacional area);
 	public Collection<AreaOrganizacional> montaFamilia(Collection<AreaOrganizacional> areaOrganizacionals) throws Exception;
-	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo) throws Exception;
+	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long faixaInativaId) throws Exception;
 	public Collection<AreaOrganizacional> getDistinctAreaMae(Collection<AreaOrganizacional> todasAreas, Collection<AreaOrganizacional> areaOrganizacionals);
 	public Collection<AreaOrganizacional> findByCargo(Long cargoId);
 	public Collection<AreaOrganizacional> montaAllSelect(Long empresaId);
@@ -47,7 +47,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Map<String, Object> getParametrosRelatorio(String nomeRelatorio, Empresa empresa, String filtro);
 	public Collection<AreaOrganizacional> getAreasByAreaInteresse(Long areaInteresseId);
 	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC, String grupoAC);
-	public Collection<AreaOrganizacional> montaFamiliaOrdemDescricao(Long empresaId, Boolean ativo) throws Exception;
 	public Collection<AreaOrganizacional> findByConhecimento(Long conhecimentoId);
 	public Collection<AreaOrganizacional> findByHabilidade(Long habilidadeId);
 	public Collection<AreaOrganizacional> findByAtitude(Long atitudeId);

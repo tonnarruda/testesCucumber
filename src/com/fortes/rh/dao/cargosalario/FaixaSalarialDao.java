@@ -18,7 +18,7 @@ public interface FaixaSalarialDao extends GenericDao<FaixaSalarial>
 	FaixaSalarial findByFaixaSalarialId(Long faixaSalarialId);
 	Collection<FaixaSalarial> findFaixaSalarialByCargo(Long cargoId);
 	FaixaSalarial findHistoricoAtual(Long faixaSalarialId, Date dataHistorico);
-	Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo);
+	Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo, Long faixaInativaId);
 	void updateCodigoAC(String codigoAC, Long faixaSalarialId);
 	boolean verifyExistsNomeByCargo(Long cargoId, String faixaNome);
 	FaixaSalarial findFaixaSalarialByCodigoAc(String faixaCodigoAC, String empresaCodigoAC, String grupoAC);

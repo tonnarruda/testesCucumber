@@ -133,7 +133,7 @@ public class FuncaoListActionTest extends MockObjectTestCase
     	colaboradorManager.expects(once()).method("getCount").with(ANYTHING).will(returnValue(totalSize));
     	colaboradorManager.expects(once()).method("findList").with( ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradores));
 
-    	areaOrganizacionalManager.expects(once()).method("findAllList").with(ANYTHING, ANYTHING).will(returnValue(areas));
+    	areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
 
     	assertEquals(action.mudancaFuncaoFiltro(), "success");
     }

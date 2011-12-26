@@ -132,7 +132,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		dadoQueExistemIndicesCadastrados();
 		dadoQueExistemFaixasSalariaisAtivasParaEmpresaDoSistema();
 		dadoQueExistemAreasOrganizacionaisParaEmpresaDoSistema();
-		dadoQueHistoricoDoColaboradorPossuiUmCargo();
+		dadoQueHistoricoDoColaboradorPossuiUmCargoArea();
 		dadoQueExistemFuncoesCadastradas();
 		dadoQueHistoricoDoColaboradorPossuiUmEstabelecimento();
 		dadoQueExistemAmbientesCadastrados();
@@ -296,7 +296,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		dadoQueExistemIndicesCadastrados();
 		dadoQueExistemFaixasSalariaisAtivasParaEmpresaDoSistema();
 		dadoQueExistemAreasOrganizacionaisParaEmpresaDoSistema();
-		dadoQueHistoricoDoColaboradorPossuiUmCargo();
+		dadoQueHistoricoDoColaboradorPossuiUmCargoArea();
 		dadoQueExistemFuncoesCadastradas();
 		dadoQueHistoricoDoColaboradorPossuiUmEstabelecimento();
 		dadoQueExistemAmbientesCadastrados();		
@@ -324,19 +324,23 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 				.will(returnValue(Collections.EMPTY_LIST));
 	}
 
-	private void dadoQueHistoricoDoColaboradorPossuiUmCargo() {
+	private void dadoQueHistoricoDoColaboradorPossuiUmCargoArea() {
 		FaixaSalarial faixa = FaixaSalarialFactory.getEntity(1L);
 		faixa.setCargo(CargoFactory.getEntity(1L));
 		historicoColaborador.setFaixaSalarial(faixa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		
 		action.setHistoricoColaborador(historicoColaborador);
 	}
 
 	private void dadoQueExistemAreasOrganizacionaisParaEmpresaDoSistema() {
-		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA)).will(returnValue(Collections.EMPTY_LIST));
+		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), ANYTHING).will(returnValue(Collections.EMPTY_LIST));
 	}
 
 	private void dadoQueExistemFaixasSalariaisAtivasParaEmpresaDoSistema() {
-		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(empresaDoSistema), eq(Cargo.ATIVO)).will(returnValue(Collections.EMPTY_LIST));
+		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(empresaDoSistema), eq(Cargo.ATIVO), ANYTHING).will(returnValue(Collections.EMPTY_LIST));
 	}
 	
 	private void dadoQueExistemIndicesCadastrados() {

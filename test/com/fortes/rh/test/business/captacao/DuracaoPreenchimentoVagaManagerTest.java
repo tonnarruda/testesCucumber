@@ -83,7 +83,7 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
     	Collection<Estabelecimento> estabelecimentos = new ArrayList<Estabelecimento>();
     	estabelecimentos.add(EstabelecimentoFactory.getEntity(10L));
     	
-		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaId), eq(AreaOrganizacional.TODAS)).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaId), eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
     	estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(estabelecimentos));
     	
     	Collection<IndicadorDuracaoPreenchimentoVaga> indicadores = new ArrayList<IndicadorDuracaoPreenchimentoVaga>();
@@ -138,7 +138,7 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
     	IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = new IndicadorDuracaoPreenchimentoVaga(1L, 1L, 1L, 1L, "Aumento de Quadro", 65);
     	List<IndicadorDuracaoPreenchimentoVaga> indicadores = Arrays.asList(indicadorDuracaoPreenchimentoVaga);
     	
-		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaId), eq(AreaOrganizacional.TODAS)).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaId), eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
     	estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(estabelecimentos));
     	cargoManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(CargoFactory.getEntity(1L)));
     	

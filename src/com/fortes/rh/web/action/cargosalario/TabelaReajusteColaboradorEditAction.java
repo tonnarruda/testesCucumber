@@ -71,7 +71,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		prepare();
 
 		grupoOcupacionals = grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId());
-		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);//busca area somente da empresa de sessaod
+		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);//busca area somente da empresa de sessaod
 
 		Collection<Long> areaOrganizacionalIds = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 		Collection<Long> grupoOcupacionalIds = LongUtil.arrayStringToCollectionLong(grupoOcupacionalsCheck);

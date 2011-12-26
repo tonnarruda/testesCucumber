@@ -37,7 +37,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	private void prepare() throws Exception
 	{
-		areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
+		areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null);
 
 		if(configuracaoLimiteColaborador != null && configuracaoLimiteColaborador.getId() != null)
 		{

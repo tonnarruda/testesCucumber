@@ -132,7 +132,7 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId());
 		FichaEpiRelatorio fichaEpiRelatorio = new FichaEpiRelatorio(colaborador, empresaSistema);
 
-		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllList(empresaSistema.getId(), AreaOrganizacional.TODAS);
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativa(empresaSistema.getId(), AreaOrganizacional.TODAS, null);
 		try
 		{
 			areas = areaOrganizacionalManager.montaFamilia(areas);

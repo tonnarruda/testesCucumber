@@ -144,7 +144,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		//Se tem papel especifico, carrega todas as áreas organizacionais
 		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
 		{
-			areaOrganizacionals = areaOrganizacionalManager.findAllList(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null);
 		}
 		else
 		{
@@ -177,7 +177,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 			reajusteColaborador.getFuncaoAtual().setNome("Não possui");
 
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
-		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO), "cargo.nome");
+		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, null), "cargo.nome");
 
 		salarioCalculado = reajusteColaboradorManager.calculaSalarioProposto(reajusteColaborador);
 
@@ -282,7 +282,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		//Se for o super-usuário ou papel especifico, carrega todas as áreas organizacionais
 		if(usuarioLogado.getId() == 1L || SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
 		{
-			areaOrganizacionals = areaOrganizacionalManager.findAllList(empresaId, AreaOrganizacional.TODAS);
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
 		}
 		else
 		{
@@ -297,7 +297,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		/* areaOrganizacionalsProposta tronou-se necessário porque os gestores de uma determinada área não
 		 * conseguiam cadastrar Solicitação de Reajuste para outros setores que não eram coordenados por eles.
 		 */
-		areaOrganizacionalsPropostas = areaOrganizacionalManager.findAllList(empresaId, AreaOrganizacional.ATIVA);
+		areaOrganizacionalsPropostas = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.ATIVA, null);
 		areaOrganizacionalsPropostas = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsPropostas);
 		areaOrganizacionalsPropostas = areaOrganizacionalsUtil.sortCollectionStringIgnoreCase(areaOrganizacionalsPropostas, "descricao");
 
@@ -310,7 +310,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		estabelecimentos = estabelecimentoManager.findAllSelect(empresaId);
 
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
-		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO), "cargo.nome");
+		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, null), "cargo.nome");
 
 		return Action.SUCCESS;
 	}
