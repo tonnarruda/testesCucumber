@@ -32,7 +32,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public boolean verificaMaternidade(Long areaOrganizacionalId);
 	public Integer getCount(String nome, Long empresaId);
 	public Collection<AreaOrganizacional> findAllListAndInativa(Long empresaId, Boolean ativo, Long areaInativaId);
-	public Collection<AreaOrganizacional> findAllList(Long usuarioId, Long empresaId, Boolean ativo);
+	public Collection<AreaOrganizacional> findAllList(Long usuarioId, Long empresaId, Boolean ativo, Long areaInativaId);
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, String nome, Long empresaId, Boolean ativo);
 	public Collection<CheckBox> populaCheckOrderDescricao(long empresaId);
 	public Collection<AreaOrganizacional> populaAreas(String[] areasCheck);

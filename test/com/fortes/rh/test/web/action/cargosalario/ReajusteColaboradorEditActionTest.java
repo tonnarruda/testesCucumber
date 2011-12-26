@@ -184,7 +184,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByUsuario").will(returnValue(colaboradorLogado));
 		
 		areaOrganizacionalManager.expects(once()).method("findAllList")
-						.with(eq(colaboradorLogado.getId()), eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA)).will(returnValue(new ArrayList<AreaOrganizacional>()));
+						.with(eq(colaboradorLogado.getId()), eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(new ArrayList<AreaOrganizacional>()));
 		
@@ -233,7 +233,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		Colaborador colaboradorLogado = ColaboradorFactory.getEntity(10L);
 		colaboradorManager.expects(once()).method("findByUsuario").will(returnValue(colaboradorLogado));
-		areaOrganizacionalManager.expects(once()).method("findAllList").with(eq(colaboradorLogado.getId()), eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA)).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		areaOrganizacionalManager.expects(once()).method("findAllList").with(eq(colaboradorLogado.getId()), eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(new ArrayList<AreaOrganizacional>()));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(new AreaOrganizacional()));
 		funcaoManager.expects(once()).method("findFuncaoByFaixa").will(returnValue(new ArrayList<Funcao>()));

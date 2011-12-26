@@ -144,13 +144,13 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		//Se tem papel especifico, carrega todas as áreas organizacionais
 		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
 		{
-			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null);
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, reajusteColaborador.getAreaOrganizacionalProposta().getId());
 		}
 		else
 		{
 			Colaborador colaborador = colaboradorManager.findByUsuario(usuarioLogado, getEmpresaSistema().getId());
 			if(colaborador != null && colaborador.getId() != null)
-				areaOrganizacionals = areaOrganizacionalManager.findAllList(colaborador.getId(), getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
+				areaOrganizacionals = areaOrganizacionalManager.findAllList(colaborador.getId(), getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, reajusteColaborador.getAreaOrganizacionalProposta().getId());
 		}
 
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
@@ -177,7 +177,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 			reajusteColaborador.getFuncaoAtual().setNome("Não possui");
 
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
-		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, null), "cargo.nome");
+		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, reajusteColaborador.getFaixaSalarialProposta().getId()), "cargo.nome");
 
 		salarioCalculado = reajusteColaboradorManager.calculaSalarioProposto(reajusteColaborador);
 
@@ -289,7 +289,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 			Colaborador colaborador = colaboradorManager.findByUsuario(usuarioLogado, empresaId);
 			
 			if(colaborador != null && colaborador.getId() != null)
-				areaOrganizacionals = areaOrganizacionalManager.findAllList(colaborador.getId(), empresaId, AreaOrganizacional.TODAS);
+				areaOrganizacionals = areaOrganizacionalManager.findAllList(colaborador.getId(), empresaId, AreaOrganizacional.TODAS, null);
 		}
 
 		CollectionUtil<AreaOrganizacional> areaOrganizacionalsUtil = new CollectionUtil<AreaOrganizacional>();
