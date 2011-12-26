@@ -28,21 +28,15 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="PONTUACAO" isForPrompting="false" class="java.lang.Boolean"/>
 
-	<field name="ocorrencia.descricao" class="java.lang.String"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="ocorrencia.pontuacao" class="java.lang.Integer"/>
-	<field name="dataIni" class="java.util.Date"/>
-	<field name="observacao" class="java.lang.String"/>
-	<field name="qtdPontos" class="java.lang.Integer"/>
 
-	<variable name="somaPontos" class="java.lang.Integer" resetType="Group" resetGroup="colaborador" calculation="Sum">
-		<variableExpression><![CDATA[$F{ocorrencia.pontuacao}]]></variableExpression>
-	</variable>
-	<variable name="soma" class="java.lang.Integer" resetType="Group" resetGroup="colaborador" calculation="Sum">
-		<variableExpression><![CDATA[$F{ocorrencia.pontuacao}]]></variableExpression>
-	</variable>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
+	</variable>
+	<variable name="pontuacao_SUM" class="java.lang.Integer" resetType="Group" resetGroup="colaborador" calculation="Sum">
+		<variableExpression><![CDATA[$F{ocorrencia.pontuacao}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
 
 		<group  name="colaborador" >
@@ -81,7 +75,7 @@
 					<reportElement
 						x="2"
 						y="0"
-						width="439"
+						width="458"
 						height="11"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -92,18 +86,16 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						mode="Transparent"
-						x="447"
+						x="463"
 						y="0"
-						width="88"
+						width="69"
 						height="11"
-						backcolor="#FFFFFF"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
+					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{qtdPontos}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{ocorrencia.pontuacao}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -142,9 +134,10 @@
 						mode="Opaque"
 						x="2"
 						y="57"
-						width="439"
+						width="458"
 						height="11"
-						key="staticText-7"/>
+						key="staticText-7"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
@@ -153,14 +146,15 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="447"
+						x="463"
 						y="57"
-						width="88"
+						width="72"
 						height="11"
-						key="staticText-8"/>
+						key="staticText-8"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Total de pontos]]></text>
 				</staticText>

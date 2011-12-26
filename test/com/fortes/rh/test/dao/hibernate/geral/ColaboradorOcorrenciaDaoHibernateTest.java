@@ -129,6 +129,12 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		falta.setPontuacao(5);
 		falta.setEmpresa(empresa);
 		ocorrenciaDao.save(falta);
+
+		Ocorrencia acidente = OcorrenciaFactory.getEntity();
+		acidente.setDescricao("acidente");
+		acidente.setPontuacao(7);
+		acidente.setEmpresa(empresa);
+		ocorrenciaDao.save(acidente);
 		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional.setDescricao("garagem");
@@ -145,22 +151,35 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		
 		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity();
 		historicoJoao.setColaborador(joao);
-		historicoJoao.setData(DateUtil.criarDataMesAno(20, 12, 2011));
+		historicoJoao.setData(DateUtil.criarDataMesAno(15, 12, 2011));
 		historicoJoao.setAreaOrganizacional(areaOrganizacional);
 		historicoJoao.setEstabelecimento(estabelecimento);
 		historicoJoao.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoJoao);
 		
-		ColaboradorOcorrencia colabOcor = ColaboradorOcorrenciaFactory.getEntity();
-		colabOcor.setColaborador(joao);
-		colabOcor.setOcorrencia(falta);
-		colabOcor.setDataIni(DateUtil.criarDataMesAno(20, 12, 2011));
-		colabOcor.setDataFim(DateUtil.criarDataMesAno(22, 12, 2011));
-		colaboradorOcorrenciaDao.save(colabOcor);
+		ColaboradorOcorrencia colabOcorFalta = ColaboradorOcorrenciaFactory.getEntity();
+		colabOcorFalta.setColaborador(joao);
+		colabOcorFalta.setOcorrencia(falta);
+		colabOcorFalta.setDataIni(DateUtil.criarDataMesAno(17, 12, 2011));
+		colabOcorFalta.setDataFim(DateUtil.criarDataMesAno(19, 12, 2011));
+		colaboradorOcorrenciaDao.save(colabOcorFalta);
+
+		ColaboradorOcorrencia colabOcorAcidente = ColaboradorOcorrenciaFactory.getEntity();
+		colabOcorAcidente.setColaborador(joao);
+		colabOcorAcidente.setOcorrencia(acidente);
+		colabOcorAcidente.setDataIni(DateUtil.criarDataMesAno(20, 12, 2011));
+		colabOcorAcidente.setDataFim(DateUtil.criarDataMesAno(22, 12, 2011));
+		colaboradorOcorrenciaDao.save(colabOcorAcidente);
 		
-		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId()), Arrays.asList(joao.getId()), data1, data2, empresa.getId(), null, null);
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId(), acidente.getId()), Arrays.asList(joao.getId()), data1, data2, empresa.getId(), null, null, false);
+		Collection<ColaboradorOcorrencia> colaboradorOcorrenciasDetalhados = colaboradorOcorrenciaDao.findColaboradorOcorrencia(Arrays.asList(falta.getId(), acidente.getId()), Arrays.asList(joao.getId()), data1, data2, empresa.getId(), null, null, true);
 		
-		assertNotNull(colaboradorOcorrencias);
+		assertEquals(1, colaboradorOcorrencias.size());
+		assertEquals(12, ((ColaboradorOcorrencia)colaboradorOcorrencias.toArray()[0]).getOcorrencia().getPontuacao());
+		
+		assertEquals(2, colaboradorOcorrenciasDetalhados.size());
+		assertEquals(5, ((ColaboradorOcorrencia)colaboradorOcorrenciasDetalhados.toArray()[0]).getOcorrencia().getPontuacao());
+		assertEquals(7, ((ColaboradorOcorrencia)colaboradorOcorrenciasDetalhados.toArray()[1]).getOcorrencia().getPontuacao());
 	}
 
 	public void testFiltrar()
