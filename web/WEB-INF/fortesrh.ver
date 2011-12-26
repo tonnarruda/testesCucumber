@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.64.56" data="19/12/2011">
-		- ReS > Cadastros > Candidatos > Anexos: Nova opção de seleção do Tipo do Documento.
-		- ReS > Painel de Indicadores: Novo indicador de índice de eficiência do processo seletivo.
+	<Versao id="1.1.64.56" data="19/12/2011"><![CDATA[
+		- R&S > Cadastros > Candidatos > Anexos: Nova opção de seleção do Tipo do Documento.
+		- R&S > Painel de Indicadores: Novo indicador de índice de eficiência do processo seletivo.
 		- Info. Funcionais > Cadastros > Tipo do Documento: Novo cadastro.
 		- Info. Funcionais > Cadastros > Colaboradores > Anexos: Nova opção de seleção do Tipo do Documento.
 		- Info. Funcionais > Relatórios > Turnover: Novo filtro por empresa.
@@ -15,47 +15,47 @@
 		- Utilitários > Cadastros > Empresas: Validação ao marcar integração com AC Pessoal.
 		- Utilitários > Apaga Reg. Sem Código AC: Nova ferramenta para ajuste de integração.
 		- Utilitários > Apaga Reg. Sem Código AC: Nova ferramenta para backup do banco de dados.
-	</Versao>
-	<Versao id="1.1.63.55" data="02/12/2011">
-		- ReS > Cadastros > Áreas Organizacionais: Ajuste na impressão da listagem de Área Organizacional, filtro por ativa [Todas, Ativa, Inativa].
+	]]></Versao>
+	<Versao id="1.1.63.55" data="02/12/2011"><![CDATA[
+		- R&S > Cadastros > Áreas Organizacionais: Ajuste na impressão da listagem de Área Organizacional, filtro por ativa [Todas, Ativa, Inativa].
 		- Pesquisas > Movimentações > Pesquisas > Colaboradores > Responder por Colaboradores: Nova tela para maior praticidade no cadastro das respostas dos colaboradores.
 		- SESMT > Relatórios > Afastamentos: Nova opção de agrupamento por mês.	
 		- SESMT > Movimentações > Reformulação do cadastro de CAT, novo nome: Ficha de Investigação de Acidente(CAT).
 		- SESMT > Painel de Indicadores: Novo Painel de Indicadores de SESMT.
 		- SESMT > Cadastros > Natureza da Lesão.
 		- Integração AC e RH > Edição do código AC do empregado.
-	</Versao>
-	<Versao id="1.1.62.54" data="24/11/2011">
+	]]></Versao>
+	<Versao id="1.1.62.54" data="24/11/2011"><![CDATA[
 		- Aval. Desempenho > Relatórios > Relatório de Auto Avaliação: Novo relatório.
 		- Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Novo filtro por empresa.
 		- Aval. Desempenho > Movimentações > Avaliações Desempenho: Nova ferramenta de liberação em lote das avaliações.
-		- TeD > Cadastros > Cursos/Treinamentos > Turmas: Possibilidade de seleção de mais de um questionário de avaliação para uma turma.
+		- T&D > Cadastros > Cursos/Treinamentos > Turmas: Possibilidade de seleção de mais de um questionário de avaliação para uma turma.
 		- SESMT > Cadastros > Extintores > Editar Extintor: Implementação do Histórico de Extintores.  
-	</Versao>
-	<Versao id="1.1.61.53" data="10/11/2011">
-		- ReS > Painel de Indicadores: Novo Painel de Indicadores de ReS.
+	]]></Versao>
+	<Versao id="1.1.61.53" data="10/11/2011"><![CDATA[
+		- R&S > Painel de Indicadores: Novo Painel de Indicadores de ReS.
 		- SESMT > Movimentações > Extintores > Manutenção > Inserir Manutenção de Extintor: Nova forma de busca no campo Extintor.  
-	</Versao>
-	<Versao id="1.1.60.52" data="07/11/2011">
-		- TeD > Cadastros > Cursos/Treinamentos > Turmas: Enviar aviso por email.
+	]]></Versao>
+	<Versao id="1.1.60.52" data="07/11/2011"><![CDATA[
+		- T&D > Cadastros > Cursos/Treinamentos > Turmas: Enviar aviso por email.
 		- Ao cancelar o desligamento do colaborador, a mensagem de aviso de desligamento será removida da caixa de mensagem. 
-	</Versao>
-	<Versao id="1.1.59.51" data="27/10/2011">
+	]]></Versao>
+	<Versao id="1.1.59.51" data="27/10/2011"><![CDATA[
 		- SESMT > Movimentações > Extintores > Inspeção e Manutenção: Nova coluna [Observação] na listagem e ajuste no relatório da listagem.
 		- SESMT > Cadastros > Extintores > Alteração do [Tipo] PQS Pó Químico Seco (Classes A,B e C) por ABC/PQS Pó Químico Seco (Classes A,B e C)
 		- Melhorias no processo de auditoria.
-	</Versao>
-	<Versao id="1.1.59.50" data="20/10/2011">
+	]]></Versao>
+	<Versao id="1.1.59.50" data="20/10/2011"><![CDATA[
 		- ATENÇÃO: Novo WebService do AC Pessoal versão: 1.1.46.1. Obs.: Essa versão do Fortes RH só irá funcionar com essa nova versão do WebService.  
-		- CeS > Movimentações > Faturamentos: Novo cadastro de faturamentos da empresa, utilizado no Painel de Indicadores de CeS.
-	</Versao>
-	<Versao id="1.1.58.49" data="17/10/2011">
-		- CeS > Cadastros > Candidatos: Novo botão Triagem, redireciona para Triagem de currículos.
-		- CeS > Movimentações > Solicitações de Pessoal > Triagem: Nova busca automática de candidatos.
-		- CeS > Movimentações > Solicitações de Pessoal: Novas colunas na listagem: Código, Motivo.
-		- CeS > Movimentações > Solicitações de Pessoal: Novo campo [Horário comercial].
-		- CeS > Movimentações > Solicitações de Pessoal > Impressão > Novos campos: Código, Descrição e Data. 
-		- ReS > Cadastros > Áreas Organizacionais: Impressão da listagem de Área Organizacional.
+		- C&S > Movimentações > Faturamentos: Novo cadastro de faturamentos da empresa, utilizado no Painel de Indicadores de CeS.
+	]]></Versao>
+	<Versao id="1.1.58.49" data="17/10/2011"><![CDATA[
+		- C&S > Cadastros > Candidatos: Novo botão Triagem, redireciona para Triagem de currículos.
+		- C&S > Movimentações > Solicitações de Pessoal > Triagem: Nova busca automática de candidatos.
+		- C&S > Movimentações > Solicitações de Pessoal: Novas colunas na listagem: Código, Motivo.
+		- C&S > Movimentações > Solicitações de Pessoal: Novo campo [Horário comercial].
+		- C&S > Movimentações > Solicitações de Pessoal > Impressão > Novos campos: Código, Descrição e Data. 
+		- R&S > Cadastros > Áreas Organizacionais: Impressão da listagem de Área Organizacional.
 		- Aval. Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Nova opção seleção de empresa no filtro.
 		- Aval. Desempenho > Relatórios > Colaborador ver o resultado do seu teste.
 		- Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Impressão da Entrevista de Desligamento respondida.
@@ -66,34 +66,34 @@
 		- SESMT > Movimentos > Solicitações de EPI > Inserir: Nova coluna Fabricante na listagem.
 		- Utilitários > Auditoria: Novo campo [Dados] no filtro.
 		- Opção de clonar por empresa: Pesquisa, Avaliação, Questionário.
-	</Versao>
-	<Versao id="1.1.57.48" data="23/09/2011">
-		- ReS > Relatórios > Colaboradores por Cargo: Novo filtro por Colocação do colaborador e nova coluna de colocação no relatório.
+	]]></Versao>
+	<Versao id="1.1.57.48" data="23/09/2011"><![CDATA[
+		- R&S > Relatórios > Colaboradores por Cargo: Novo filtro por Colocação do colaborador e nova coluna de colocação no relatório.
 		- Pesquisas > Movimentações > Pesquisas > Clonar: Nova opção de clonagem para mais de uma empresa.		
 		- Aval. Desempenho > Cadastro > Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência > Clonar: Nova opção de clonagem para mais de uma empresa.
 		- Aval. Desempenho > Cadastro > Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência: Nova opção para exibir resultado ao Colaborador em AutoAvaliação.
 		- Aval. Desempenho > Movimentações > Avaliações Desempenho > Clonar: Nova opção de clonagem para mais de uma empresa.
 		- Aval. Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Mudanças no filtro de Avaliação Desempenho e novo filtro por colaborador.
-		- TeD > Cadastros > Modelos de Avaliação de Curso > Clonar: Nova opção de clonagem para mais de uma empresa.
+		- T&D > Cadastros > Modelos de Avaliação de Curso > Clonar: Nova opção de clonagem para mais de uma empresa.
 		- Info. Funcionais > Cadastros > Modelos de Entrevistas de Desligamento > Clonar: Nova opção de clonagem para mais de uma empresa.
 		- SESMT > Cadastros > Modelos de Fichas Médicas > Clonar: Nova opção de clonagem para mais de uma empresa.
 		- Utilitários > Cadastros > Perfis: Novas configurações para exibir informações do candidato.
-	</Versao>
-	<Versao id="1.1.56.47" data="14/09/2011">
-		- ReS > Relatórios > Avaliações de Candidatos: Novo filtro por status da Solicitação de Pessoal.
-		- TeD > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Possibilidade de inserir um colaborador já cadastrado em outra turma do mesmo curso.
+	]]></Versao>
+	<Versao id="1.1.56.47" data="14/09/2011"><![CDATA[
+		- R&S > Relatórios > Avaliações de Candidatos: Novo filtro por status da Solicitação de Pessoal.
+		- T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Possibilidade de inserir um colaborador já cadastrado em outra turma do mesmo curso.
 		- Info. Funcionais > Relatórios > Absenteísmo: Nova opção para selecionar as ocorrências ao gerar relatório.
-	</Versao>
-	<Versao id="1.1.55.47" data="08/09/2011">
-		- CeS > Painel de Indicadores: Novo filtro por Empresa e Áreas Organizacionais.
+	]]></Versao>
+	<Versao id="1.1.55.47" data="08/09/2011"><![CDATA[
+		- C&S > Painel de Indicadores: Novo filtro por Empresa e Áreas Organizacionais.
 		- Utilitários > Cadastros > Empresas: Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo está marcado como Turnover.
-		- ReS > Relatórios > Estatísticas de Vagas por Motivo: Nova filtro para selecionar o status da solicitação.
-	</Versao>
-	<Versao id="1.1.54.46" data="31/08/2011">
-		- ReS > Cadastros > Candidatos > Visualizar Currículo: Nova opção de imprimir Texto Digitalizado.
+		- R&S > Relatórios > Estatísticas de Vagas por Motivo: Nova filtro para selecionar o status da solicitação.
+	]]></Versao>
+	<Versao id="1.1.54.46" data="31/08/2011"><![CDATA[
+		- R&S > Cadastros > Candidatos > Visualizar Currículo: Nova opção de imprimir Texto Digitalizado.
 		- Aval. Desempenho > Movimentações > Avaliações Desempenho > Resultado da Avaliação > Resultado por Critérios > Agrupar perguntas por aspecto: Exibição no relatório o percentual da performance por Aspecto.
 		- Aval. Desempenho > Relatórios > Cartões para Acompanhamento do Período de Experiência: Novo relatório.
-		- TeD > Relatórios > Certificados > Tamanho do Certificado: Nova opção para imprimir declaração.
+		- T&D > Relatórios > Certificados > Tamanho do Certificado: Nova opção para imprimir declaração.
 		- Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Adicionadas Experiências Profissionais do colaborador para pesquisas.
 		- Info. Funcionais > Cadastro > Colaboradores > Incluir em Solicitação: Ao transferir Colaborador para vaga o mesmo é direcionado para vaga em aberto.
 		- Info. Funcionais > Painel de Indicadores: Novo filtro por Empresa e Áreas Organizacionais.
@@ -101,13 +101,13 @@
 		- Utilitários > Cadastros > Empresas: Apagar empresas com o usuário Fortes.
 		- Utilitários > Cadastros > Empresas: Cartão dos Aniversariantes.
 		- Utilitários > Cadastros > Perfis > Impressão: Nova opção de seleção de perfis a serem impressos.
-	</Versao>
-	<Versao id="1.1.53.45" data="19/08/2011">
-		- CeS > Cadastros > Níveis de Competência.
-		- CeS > Cadastros > Cargos > Faixas Salariais > Níveis de Competência > Nova funcionalidade, configuração das Competências da Faixa Salarial.
-		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Competências: Configuração das Competências do Candidato.
-		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Currículo: Comparação das Competências do Candidato com as exigidas pelo Cargo da Solicitação.
-		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Impressão da Matriz comparativa de competências dos Candidatos da Solicitação.
+	]]></Versao>
+	<Versao id="1.1.53.45" data="19/08/2011"><![CDATA[
+		- C&S > Cadastros > Níveis de Competência.
+		- C&S > Cadastros > Cargos > Faixas Salariais > Níveis de Competência > Nova funcionalidade, configuração das Competências da Faixa Salarial.
+		- R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Competências: Configuração das Competências do Candidato.
+		- R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Currículo: Comparação das Competências do Candidato com as exigidas pelo Cargo da Solicitação.
+		- R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Impressão da Matriz comparativa de competências dos Candidatos da Solicitação.
 		- Aval. Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Novo relatório agrupado por Modelo de Avaliação.
 		- Info. Funcionais > Cadastros > Colaboradores > Competências: Configuração das Competências do Colaborador.
 		- Info. Funcionais > Relatórios > Colaboradores com Nível de Competência inferior exigido pelo Cargo/Faixa: Novo relatório.
@@ -115,21 +115,21 @@
 		- SESMT > Movimentos > Solicitações/Atendimentos Médicos > Imprimir ASO: Nova listagem com Exames Complementares e assinatura do médico examinador.
 		- Utilitários > Cadastros > Perfis: Impressão das permissões dos perfis.
 		- Utilitários > Cadastros > Usuários: Impressão dos Perfis dos Usuários por Empresa.  
-	</Versao>
-	<Versao id="1.1.52.44" data="04/08/2011">
-		- CeS > Cadastros > Cargos e Faixas: Impressão da listagem de Cargos.
-		- TeD > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Novo campo [Admitidos entre] no filtro.
-		- TeD > Relatórios > Investimento por Colaborador: Novo relatório.
+	]]></Versao>
+	<Versao id="1.1.52.44" data="04/08/2011"><![CDATA[
+		- C&S > Cadastros > Cargos e Faixas: Impressão da listagem de Cargos.
+		- T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Novo campo [Admitidos entre] no filtro.
+		- T&D > Relatórios > Investimento por Colaborador: Novo relatório.
 		- Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Adicionadas respostas do colaborador para pesquisas.
 		- Info. Funcionais > Cadastros > Atualizar meus dados: Possibilidade de alteração das informações de Formação Escolar, Idiomas e Experiência Profissional.
 		- Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova funcionalidade, exportar para Excel.
 		- Utilitários > Cadastros > Empresa: Configuração da mensagem do módulo externo no campo [Mensagem a ser exibida no módulo externo].
 		- Utilitários > Configurações > Limite de Colab. por Cargo: Nova funcionalidade, permite configurar um limite de Colaboradores cadastrados em um Cargo de uma determinada Área Organizacional.
 		- Utilitários > Configurações > Limite de Colab. por Cargo: Novo relatório, lista a quantidade de Colaboradores cadastrados e limite para os Cargos configurados.
-	</Versao>
-	<Versao id="1.1.51.43" data="14/07/2011">
-		- ReS > Movimentações > Agenda: Impressão da agenda.
-		- CeS > Cadastros > Área Organizacionais: Novo campo [E-mails extras para notificações]. Esses e-mails serão utilizados na solicitação de pessoal [Comunicar responsáveis da Área Organizacional].
+	]]></Versao>
+	<Versao id="1.1.51.43" data="14/07/2011"><![CDATA[
+		- R&S > Movimentações > Agenda: Impressão da agenda.
+		- C&S > Cadastros > Área Organizacionais: Novo campo [E-mails extras para notificações]. Esses e-mails serão utilizados na solicitação de pessoal [Comunicar responsáveis da Área Organizacional].
 		- Pesquisas > Movimentações > Pesquisas: Nova funcionalidade de enviar lembrete de e-mail.
 		- Pesquisas > Movimentações > Pesquisas: Ao imprimir ficha de pesquisa não exibe cabeçalho para pesquisa anônima.
 		- Aval. Desempenho > Movimentações > Avaliações Desempenho: Nova funcionalidade ao liberar avaliação envia lembrete de e-mail.    
@@ -137,161 +137,161 @@
 		- Aval. Desempenho > Movimentações > Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência: Novo Filtro.
 		- SESMT > Relatórios > Exames Previstos: Nova opção imprimir desligado(s).
 		- SESMT > Cadastros > CIPA > Comissões > Reuniões: Impressão do relatório de frequência.
-	</Versao>
-	<Versao id="1.1.50.42" data="08/07/2011">
+	]]></Versao>
+	<Versao id="1.1.50.42" data="08/07/2011"><![CDATA[
 		- SESMT > Movimentações > Afastamentos: Campo CID, listagem com sugestões de  CID´s.
 		- SESMT > Relatórios > Afastamentos: Nova opção de agrupamento por CID.
 		- Notificação na caixa de mensagens quando um colaborador altera seu endereço na tela "Atualizar meus dados".
 		- Utilitários > Alterar Empresa: Possibilidade de troca de empresa sem sair do sistema.
 		- Utilitários > Configurações > Sistema: Novas opções de compartilhamento de candidatos e colaboradores entre empresas.
 		- Utilitários > Cadastros > Usuário: Novo campo [Super Administrador], este usuário será responsável pela edição do perfil dos administradores.
-		- CeS > Movimentações > Ajuste de Situação (Dissídio): Novo filtro por cargo.
+		- C&S > Movimentações > Ajuste de Situação (Dissídio): Novo filtro por cargo.
 		- Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto: Novo título para o relatório de Acompanhamento do Período de Experiência.
 		- Aval. Desempenho > Relatórios > Acompanhamento do Período de Experiência: Novo relatório.
-		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Busca Simples e Busca Avançada, novo campo [Quantidade de registros a serem listados].
-		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Paginação na Busca F2RH.
-	</Versao>
-	<Versao id="1.1.49.41" data="27/06/2011">
-		- CeS > Movimentações > Ajuste de Situação (Dissídio): Ajusta as promoções para o tipo dissídio de acordo com o valor da promoção.
-		- CeS > Relatório > Colaboradores sem Reajuste Salarial: Novo relatório.
-		- CeS > Relatório > Promoções: Novo relatório, promoções verticais e horizontais.
-		- CeS > Painel de Indicadores: Novo gráfico, promoções verticais e horizontais. 
-		- ReS > Movimentações > Exame Palográfico: Nova funcionalidade, análise do exame palográfico do candidato.
-		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Ajuste da busca avançada, não exibe nome dos cargos repetidos. 
-	</Versao>
-	<Versao id="1.1.48.40" data="09/06/2011">
+		- R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Busca Simples e Busca Avançada, novo campo [Quantidade de registros a serem listados].
+		- R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Paginação na Busca F2RH.
+	]]></Versao>
+	<Versao id="1.1.49.41" data="27/06/2011"><![CDATA[
+		- C&S > Movimentações > Ajuste de Situação (Dissídio): Ajusta as promoções para o tipo dissídio de acordo com o valor da promoção.
+		- C&S > Relatório > Colaboradores sem Reajuste Salarial: Novo relatório.
+		- C&S > Relatório > Promoções: Novo relatório, promoções verticais e horizontais.
+		- C&S > Painel de Indicadores: Novo gráfico, promoções verticais e horizontais. 
+		- R&S > Movimentações > Exame Palográfico: Nova funcionalidade, análise do exame palográfico do candidato.
+		- R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Ajuste da busca avançada, não exibe nome dos cargos repetidos. 
+	]]></Versao>
+	<Versao id="1.1.48.40" data="09/06/2011"><![CDATA[
 		- Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações: Novo campo [Motivo do reajuste].
 		- Pesquisas > Movimentações > Pesquisas > Resultado da Pesquisa: Ajuste no relatório, exibição dos comentários por nota.
 		- SESMT > Cadastros > Exames: Novo filtro com campo [Nome].
-		- CeS > Cadastros > Cargos/Faixas > Faixas Salariais: Ajuste na listagem do histórico, exibindo evoluçao do histórico do índice.
+		- C&S > Cadastros > Cargos/Faixas > Faixas Salariais: Ajuste na listagem do histórico, exibindo evoluçao do histórico do índice.
 		- SESMT > Movimentos > Solicitações/Atendimentos Médicos > Resultados: Novo campo [Data Realização]
 		- Página Inicial: Link do Twitter(http://twitter.com/#!/entetecnologia). 
-	</Versao>
-	<Versao id="1.1.47.39" data="02/06/2011">
+	]]></Versao>
+	<Versao id="1.1.47.39" data="02/06/2011"><![CDATA[
 		- Info. Funcionais > Cadastros > Tipos de Ocorrência: Novo campo [Considerar como absenteísmo].
 		- Info. Funcionais > Relatórios > Absenteísmo: Novo relatório.
 		- Info. Funcionais > Painel de Indicadores: Novo gráfico Absenteísmo.
 		- Info. Funcionais > Painel de Indicadores: Novo gráfico Turnover.
 		- Utilitários > Configurações > Sistema: Retirada dos campos [Exame ASO], [Enviar e-mails de confirmação], [Texto para email de candidatos não aptos].
 		- Utilitários > Cadastros > Empresa: Novos campos [Exame ASO], [Enviar e-mails de confirmação], [Texto para email de candidatos não aptos].
-		- CeS > Cadastros > Cargos/Faixas: Novo campo [Ativos] no filtro da listagem.
-		- CeS > Cadastros > Áreas Organizacionais: Novo campo [Ativas] no filtro da listagem.
+		- C&S > Cadastros > Cargos/Faixas: Novo campo [Ativos] no filtro da listagem.
+		- C&S > Cadastros > Áreas Organizacionais: Novo campo [Ativas] no filtro da listagem.
 		- SESMT > Movimentações > Extintores > Inspeção: Novo campo [Localização] no filtro da listagem.
 		- SESMT > Movimentações > Extintores > Manutenção: Novo campo [Localização] no filtro da listagem.
-		- CeS > Movimentações > Planejamentos de Realinhamentos > Inserir Planejamento de Realinhamentos: Novo campo [Dissídio]. 
+		- C&S > Movimentações > Planejamentos de Realinhamentos > Inserir Planejamento de Realinhamentos: Novo campo [Dissídio]. 
 		- Mudança na nomenclatura da escolaridade de:
 		 [nl_s]"Ensino Fundamental incompleto (até 5ºano)" para "Ensino Fundamental em andamento (até 5ºano)",
 		 [nl_s]"Ensino Fundamental incompleto (até 9ºano)" para "Ensino Fundamental em andamento (até 9ºano)",
 		 [nl_s]"Ensino Médio incompleto" para "Ensino Médio em andamento",
 		 [nl_s]"Superior incompleto" para "Superior em andamento".
-	</Versao>
-	<Versao id="1.1.46.38" data="26/05/2011">
+	]]></Versao>
+	<Versao id="1.1.46.38" data="26/05/2011"><![CDATA[
 		- Utilitários > Configurações > Campos Extras: Configuração por Candidato e Colaborador.
 		- Utilitários > Configurações > Campos Extras: Configuração por empresa.
 		- SESMT > Movimentações > Extintores > Manutenção: Novo relatório, Listagem de Manutenção de Extintores.  
 		- SESMT > Cadastros > Extintores: Novos campos [Data da 1ª inspeção], [Data de saída da recarga], [Data de saída do teste hidrostático]. 
-		- ReS > Relatório > Estatística de Divulgação da Vaga: Novo relatório.
-		- ReS > Cadastros > Como Ficou Sabendo da Vaga: Novo cadastro.
+		- R&S > Relatório > Estatística de Divulgação da Vaga: Novo relatório.
+		- R&S > Cadastros > Como Ficou Sabendo da Vaga: Novo cadastro.
 		- Módulo Externo: Nova aba campos Extras.
 		- Módulo Externo: Nova aba Currículo com o campo [Descrição do Currículo].
-		- ReS > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Transf. Candidatos: Listagem agora exibe todos os candidatos. 
+		- R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Transf. Candidatos: Listagem agora exibe todos os candidatos. 
 		- Info. Funcionais > Cadastros > Colaboradores > Listagem de Colaboradores: Relatório dinâmico, novos campos escolaridade, função, ambiente e área organizacional.
-		- CeS > Cadastros > Cargos/Faixas: Novo campo [Complemento dos Conhecimentos].
-	</Versao>
-	<Versao id="1.1.45.37" data="05/05/2011">
+		- C&S > Cadastros > Cargos/Faixas: Novo campo [Complemento dos Conhecimentos].
+	]]></Versao>
+	<Versao id="1.1.45.37" data="05/05/2011"><![CDATA[
 		- Info. Funcionais > Cadastros > Colaboradores: Novo campo no filtro para efetuar busca pelo nome comercial.
-		- TeD > Painel de Indicadores: Aplicação do novo layout na exibição dos graficos.
+		- T&D > Painel de Indicadores: Aplicação do novo layout na exibição dos graficos.
 		- Pesquisas > Movimentações > Pesquisas > Colaboradores: Novas colunas na listagem [Área Organizacional] e [Estabelecimento]. 
 		- Avaliação de Desempenho > Cadastros > Dias do Acompanhamento do Período de Experiência: Novo campo [descrição].
 		- Avaliação de Desempenho > Relatório > Acompanhamento do Período de Experiência: Novo campo [Período de Acompanhamento].
 		- Avaliação de Desempenho > Relatório > Ranking de Performace das Avaliações de Desempenho: Mudança do campo [Modelo de Avaliação] para [Avaliação] e nova informação no relatório, média da performance.
- 		- ReS > Indicadores > Recrutamento e Seleção Duração para Preenchimento de Vaga: Novas informações, quantidade geral de participantes e exibe solicitações mesmo que não tenha contratados.
-	</Versao>
-	<Versao id="1.1.44.36" data="30/04/2011">
-		- CeS > Painel de Indicadores: Salário por Área Organizacional e Evolução Salarial.
+ 		- R&S > Indicadores > Recrutamento e Seleção Duração para Preenchimento de Vaga: Novas informações, quantidade geral de participantes e exibe solicitações mesmo que não tenha contratados.
+	]]></Versao>
+	<Versao id="1.1.44.36" data="30/04/2011"><![CDATA[
+		- C&S > Painel de Indicadores: Salário por Área Organizacional e Evolução Salarial.
 		- Menu: Nova informação Versão do sistema no canto superior direito, link para a página: Histórico de Versões.
 		- SESMT > Movimentações > Entrega de EPIs: Novo campo [Data da entrega].
 		- SESMT > Relatórios > EPIs Entregues: Ajuste no relatório, consulta considerando [Data da entrega]. 
-	</Versao>
-	<Versao id="1.1.43.35" data="18/04/2011">
+	]]></Versao>
+	<Versao id="1.1.43.35" data="18/04/2011"><![CDATA[
 		- Pesquisas > Movimentações > Pesquisas: Novo filtro por [Título] da pesquisa.
 		- Cadastro de Colaborador e Situação do Colaborador: Novo campo [Observação para o Setor Pessoal] quando o sistema estiver integrado com o AC Pessoal.
 		- Info. Funcionais > Indicadores > Turnover(rotatividade): Relatório reformulado.
-		- ReS > Movimentações > Candidatos da Seleção: Liberação da visualização dos candidatos para usuário que tem a permissão: Recrutador(a).
+		- R&S > Movimentações > Candidatos da Seleção: Liberação da visualização dos candidatos para usuário que tem a permissão: Recrutador(a).
 		- Info. Funcionais > Painel de Indicadores: Novos gráficos: Faixa Etária, Estado Civil, Deficiência, Colocação, Formação Escolar, Sexo e Motivos de Desligamentos.
-		- ReS > Movimentações > Candidatos da Seleção > Histórico do Candidato: Nova opção para impressão da listagem de históricos do candidato.
+		- R&S > Movimentações > Candidatos da Seleção > Histórico do Candidato: Nova opção para impressão da listagem de históricos do candidato.
 		- Avaliação de Desempenho > Relatório > Ranking de Performace das Avaliações de Desempenho: Nova opção para exportar relatório para Excel.  
-		- CeS > Relatório > Relatório de Projeção Salarial: Nova opção para exportar relatório para Excel.  
-		- ReS > Indicadores > Recrutamento e Seleção Duração para Preenchimento de Vaga: Nova opção para exportar relatório para Excel.  
-	</Versao>
-	<Versao id="1.1.43.34" data="30/03/2011">
+		- C&S > Relatório > Relatório de Projeção Salarial: Nova opção para exportar relatório para Excel.  
+		- R&S > Indicadores > Recrutamento e Seleção Duração para Preenchimento de Vaga: Nova opção para exportar relatório para Excel.  
+	]]></Versao>
+	<Versao id="1.1.43.34" data="30/03/2011"><![CDATA[
 		- Nova funcionalidade - Utilitários > Configurações > Cadastro de Candidato (externo): Configuração da visualização e obrigatoriedade dos campos do cadastro de Candidato do módulo externo.
 		- Nova funcionalidade - Info. Funcionais > Relatórios > Admitidos: Exportar relatório para o Excel(.xls).
 		- Avaliação de Desempenho > Relatório > Acompanhamento do Período de Experiência: reformulação do relatório, novo campo "Considerar colaboradores com período de acompanhamento de experiência a vencer daqui a X dias".
 		- Avaliação de Desempenho > Cadastros > Avaliação de Desempenho/Acompanhamento do Per. de Experiência: Novo campo quando o tipo de avaliação for "Acompanhamento do Per. de Experiência", Períodos de Acompanhamento de Experiência. 
-	</Versao>
-	<Versao id="1.1.42.33" data="15/03/2011">
+	]]></Versao>
+	<Versao id="1.1.42.33" data="15/03/2011"><![CDATA[
 		- Integração com múltiplos AC Pessoal. 
-	</Versao>
-	<Versao id="1.1.41.32" data="25/02/2011">
+	]]></Versao>
+	<Versao id="1.1.41.32" data="25/02/2011"><![CDATA[
 		- Pesquisas > Movimentações > Incluir Colaboradores na pesquisa. Novo filtro por nome do colaborador.
-		- ReS > Movimentações > Agenda, painel para visualizar e editar Histórico dos Candidatos da Solicitação de Pessoal. 
-	</Versao>
-	<Versao id="1.1.40.31" data="17/02/2011">
+		- R&S > Movimentações > Agenda, painel para visualizar e editar Histórico dos Candidatos da Solicitação de Pessoal. 
+	]]></Versao>
+	<Versao id="1.1.40.31" data="17/02/2011"><![CDATA[
 		- Pesquisas > Correção do gráfico de barras.
-		- CeS > Relatórios > Descrição de Cargos > Reformulação do relatório.
-	</Versao>
-	<Versao id="1.1.39.30" data="11/02/2011">
+		- C&S > Relatórios > Descrição de Cargos > Reformulação do relatório.
+	]]></Versao>
+	<Versao id="1.1.39.30" data="11/02/2011"><![CDATA[
 		- SESMT > Movimentos > Medição dos Riscos nos Ambientes: nova coluna de Estabelecimento na listagem.
 		- Utilitários > Cadastro > Perfis: opçao de exibir Faixa Salarial na listagem de Cargos e Faixas.
 		- Utilitários > Cadastro > Empresas: inclusão do novo campo Logo dos Certificados para o Relatório de Certificados.
-		- CeS > Relatórios > Descrição de Cargos: inclusão dos novos campos Habilidade e Atitude no relatório.
-	</Versao>
-	<Versao id="1.1.38.29" data="27/01/2011">
+		- C&S > Relatórios > Descrição de Cargos: inclusão dos novos campos Habilidade e Atitude no relatório.
+	]]></Versao>
+	<Versao id="1.1.38.29" data="27/01/2011"><![CDATA[
 		- SESMT > Relatório > Exames Realizados, nova opção para gerar relatório resumido.
 		- Utilitários > Perfil > Nova configuração para recebimentos de mensagens na tela principal. 
-	</Versao>
-	<Versao id="1.1.38.28" data="18/01/2011">
+	]]></Versao>
+	<Versao id="1.1.38.28" data="18/01/2011"><![CDATA[
 		- Pesquisas >Movimentações: novo filtro [campos: empresa e respondida] na listagem dos colaboradores da pesquisa.
-		- ReS > Movimentações> Solicitação de Pessoal: novo campo possibilitando que o solicitante da vaga possa enviar avisos para responsáveis da área organizacional. Envio de email para o solicitante no momento da aprovação da vaga.
+		- R&S > Movimentações> Solicitação de Pessoal: novo campo possibilitando que o solicitante da vaga possa enviar avisos para responsáveis da área organizacional. Envio de email para o solicitante no momento da aprovação da vaga.
 		- Link de acesso ao blog do Fortes RH
 		- Avaliação de Desempenho > Relatório > Acompanhamento do Período de Experiência: novo campo no filtro [Desconsiderar colaboradores com mais de X dias sem Acompanhamento do Período de Experiência].
 		- ReS> Cadastro > Candidatos: link dos currículos dos candidatos importados do F2RH.
 		- Envio de email mensal sobre a quantidade de currículos cadastrados.
 		- Modulo Externo: botão Gravar foi movido para a última aba do cadastro.
 		- CeS> Cadastros > Cargos/Faixas : campo CBO, listagem com sugestões de  CBO´s.
-		- TeD > Relatórios: inclusão de totalizadores nos relatórios.
+		- T&D > Relatórios: inclusão de totalizadores nos relatórios.
 		- Info. Funcionais > Cadastros > Colaboradores > Listagem de Colaboradores: relatório dinâmico  com várias opções de filtros.
 		- SESMT > Movimentos > Solicitações/Atendimentos Médicos > Imprimir ASO: melhorias no relatório de ASO com os riscos do ambiente indicados de forma automática.
-	</Versao>
-	<Versao id="1.1.36.26" data="16/12/2010">
-		- ReS > Movimentações> Solicitação de Pessoal:Opção para triar currículos utilizando o site de recolocação F2RH com a opção de importar os currículos para o banco do Fortes RH.
+	]]></Versao>
+	<Versao id="1.1.36.26" data="16/12/2010"><![CDATA[
+		- R&S > Movimentações> Solicitação de Pessoal:Opção para triar currículos utilizando o site de recolocação F2RH com a opção de importar os currículos para o banco do Fortes RH.
 		- Cargos e Salário > Cadastros: novos cadastros de Habilidades e Atitudes, para facilitar o cadastros dos cargos.
-		- ReS > Cadastros > Modelo de Avaliação: foi criada uma nova opção para que o RH possa realizar avaliação de desempenho para candidatos que estão participando do processo seletivo.
+		- R&S > Cadastros > Modelo de Avaliação: foi criada uma nova opção para que o RH possa realizar avaliação de desempenho para candidatos que estão participando do processo seletivo.
 		- Info. Funcionais > Cadastros > Candidatos > Performance Profissional: adicionado as informações referentes aos campos extras.
-	</Versao>
-	<Versao id="1.1.35.25" data="09/12/2010">
+	]]></Versao>
+	<Versao id="1.1.35.25" data="09/12/2010"><![CDATA[
 		- Configuração da tela de performance profissional.
 		- Preenchimento dos campos do endereço de acordo com o CEP.
 		- Permitir alterar campos extras na opção alterar meus dados.
 		- Solicitação de realinhamento: limite de caracteres foi aumentado.
-	</Versao>
-	<Versao id="1.1.34.24" data="02/12/2010">
+	]]></Versao>
+	<Versao id="1.1.34.24" data="02/12/2010"><![CDATA[
 		- Nova funcionalidade: Relatório de colaboradores por cargo trás a exibição da Remuneração Variável do colaborador (eventos da folha).
 		- SESMT: Relatório de atendimentos com médico com controle ordenado por ordem de atendimento (agenda).
 		- Recrutamento e Seleção: opção de importar registros de candidatos do sistema CadCan.
 		- Integração com o sistema de Trafego Urbano: será enviado para o sistema TRU as pesquisas a responder dos colaboradores.
-	</Versao>
-	<Versao id="1.1.34.23" data="26/11/2010">
+	]]></Versao>
+	<Versao id="1.1.34.23" data="26/11/2010"><![CDATA[
 		- Impressão do relatório Performance Funcional.
 		- Novo menu Utilitários > Importar Cadastros: replicar Cursos e Turmas.
-	</Versao>
-	<Versao id="1.1.33.22" data="04/11/2010">
+	]]></Versao>
+	<Versao id="1.1.33.22" data="04/11/2010"><![CDATA[
 		- Legenda (regular e irregular) na tela de inspeção de extintores com filtros para facilitar controle e indicação para manutenção.
 		- Relatórios de inspeção de extintores :  opção para acompanhar extintores que precisam ser enviados para manutenção com opções de itens irregulares.
 		- Novo filtro na listagem de Colaborador: Status no AC Pessoal.
-	</Versao>
-	<Versao id="1.1.32.21" data="20/10/2010">
+	]]></Versao>
+	<Versao id="1.1.32.21" data="20/10/2010"><![CDATA[
 		- Página Inicial: Opção para acessar o suporte da Fortes Informática via Chat.
 		- Relatório Colaborador por Cargo: Opção para exibir por cargo.
 		- Relatório Colaborador por Cargo: Filtro para exibir colaboradores com dados desatualizados.
@@ -300,12 +300,12 @@
 		- Paginação: Totalizador com quantidade de registros.
 		- Relatorio de EPI com prazo a vencer: opção para filtrar por categoria de EPI.
 		- Relatorio de EPI com CA a vencer: opção para filtrar por categoria de EPI.
-	</Versao>
-	<Versao id="1.1.31.20" data="23/09/2010">
+	]]></Versao>
+	<Versao id="1.1.31.20" data="23/09/2010"><![CDATA[
 		- Faixa Salarial: criado campo Descrição no AC Pessoal.
 		- Integração de cargo do AC Pessoal.
-	</Versao>
-	<Versao id="1.1.31.19" data="30/08/2010">
+	]]></Versao>
+	<Versao id="1.1.31.19" data="30/08/2010"><![CDATA[
 		- Relatório de Avaliação de Turma: opção para ocultar nomes dos colaboradores nas respostas e comentários.
 		- Pesquisa: retirada obrigatoriedade dos campos abertos e de multipla escolha.
 		- TeD: relatórios agora consideram frequência mínima do curso ao informar se aluno foi aprovado.
@@ -326,8 +326,8 @@
 		- Modelos de Avaliação de Turma: possibilidade de adicionar um cabeçalho ao questionário.
 		- Cadastro de Solicitação de Pessoal: novo campo Data.
 		- Modelos de Entrevista de Desligamento: possibilidade de adicionar um cabeçalho ao questionário.
-	</Versao>
-	<Versao id="1.1.30.18" data="03/08/2010">
+	]]></Versao>
+	<Versao id="1.1.30.18" data="03/08/2010"><![CDATA[
 		- Novo módulo de Avaliação de Desempenho.
 		- Cadastro de Candidatos: se já existir candidato com o mesmo CPF, é exibido um alerta após preencher o campo.
 		- Melhorias no layout da visualização do currículo de candidato.
@@ -346,30 +346,30 @@
 		- Listagem de Colaboradores: se colaborador estiver desligado, a data de desligamento é exibida ao lado do nome.
 		- Painel de Indicadores: novos gráficos de Frequência e de Vagas x Inscrições.
 		- Criação de aba com campos extras no cadastro de colaboradores. Configuração no menu Utilitários, Campos Extras.
-	</Versao>
-	<Versao id="1.1.29.17" data="01/07/2010">
+	]]></Versao>
+	<Versao id="1.1.29.17" data="01/07/2010"><![CDATA[
 		- Solicitação de Pessoal: funcionalidade "Anunciar Vagas" (para divulgação no módulo externo) reformulada.
 		- Exibição do último login do usuário (acima do menu).
 		- "Modelos de Avaliação do Per. Experiência" renomeado para "Modelos de Avaliação" e movido para o módulo Avaliação.
 		- Modelos de Avaliação: opção de comentário das respostas e novos tipos de resposta "Subjetiva" e "Múltipla Escolha". 
-	</Versao>
-	<Versao id="1.1.28.16" data="10/06/2010">
+	]]></Versao>
+	<Versao id="1.1.28.16" data="10/06/2010"><![CDATA[
 		- Registro de Ocorrências movido da listagem de Colaboradores para o novo menu Info.Funcionais > Movimentações > Ocorrências.
 		- Performance Profissional: novas informações (participações na CIPA, ocorrências, acidentes de trabalho, participação em etapas seletivas etc.).
 		- Relatório de Colaboradores por Cargo: nova coluna "Contratado há".
 		- Relatório de Realinhamentos: exibição do total da folha.
 		- Exibição do currículo do candidato: novos campos "Observações do RH" e "Motivo da Saída" e "Salário" das experiências anteriores.
 		- Extintores: campo Descrição removido.
-	</Versao>
-	<Versao id="1.1.27.15" data="21/05/2010">
+	]]></Versao>
+	<Versao id="1.1.27.15" data="21/05/2010"><![CDATA[
 		- Preenchimento de fichas médicas: novo campo "Data".
 		- Retirada a obrigatoriedade do campo Exposição a agentes nocivos na edição de situação de colaborador.
 		- Relatório de Atendimentos Médicos: opção de agrupar por motivo e mudanças no layout.
 		- Relatório de Rotatividade (turnover) reformulado.
 		- Relatório de Exames Previstos: nome comercial exibido entre parênteses (se houver).
 		- Cadastro de Cargos: alterada a ordem dos campos.
-	</Versao>
-	<Versao id="1.1.27.14" data="05/05/2010">
+	]]></Versao>
+	<Versao id="1.1.27.14" data="05/05/2010"><![CDATA[
 		- Indicador de Duração para Preenchimento de Vagas reformulado.
 		- Solicitações de Pessoal: Opção "Promover" candidato já contratado (permite promover o colaborador associado ao candidato).
 		- Planejamentos de Realinhamento: Nova informação de impacto total na folha. 
@@ -377,15 +377,15 @@
 		- Avaliação do Período de Experiência: Ajustes para Exibir o Cargo e Área Organizacional do colaborador. 
 		- Relatório de Prontuário: inclusão das Consultas médicas e dos Atestados externos do colaborador. 
 		- Ajustes no módulo externo.
-	</Versao>
-	<Versao id="1.1.26.13" data="22/04/2010">
+	]]></Versao>
+	<Versao id="1.1.26.13" data="22/04/2010"><![CDATA[
 		- Situação do Colaborador: campo "Exposição a Agentes Nocivos" agora é obrigatório.
 		- Integração com o AC Pessoal: campo "Nome Comercial" do colaborador foi integrado (aberto para edição no FortesRH e AC Pessoal).
 		- Integração com o AC Pessoal: campo "Exposição a Agentes Nocivos" da situação foi integrado (aberto para edição no FortesRH e AC Pessoal).
 		- Integração com o AC Pessoal: cadastro de Área Organizacional agora é permitido também no AC Pessoal.
 		- Ajustes na edição de Cargo.
-	</Versao>
-	<Versao id="1.1.26.12" data="14/04/2010">
+	]]></Versao>
+	<Versao id="1.1.26.12" data="14/04/2010"><![CDATA[
 		- Nova Funcionalidade: SESMT > "Ambientes e Funções do Colaborador" (permite ao SESMT editar Ambiente e Função em todas as situações de um colaborador).
 		- Nova Funcionalidade: SESMT > "Funções" (possibilita o cadastro de Funções para um determinado cargo dentro do módulo SESMT).
 		- Relatório "Áreas Organizacionais" renomeado para "Colaboradores por Área Organizacional".
@@ -396,16 +396,16 @@
 		- Relatório "Colaboradores x Certificações": Incluída a nota de cada colaborador.
 		- Pesquisas: Nova Impressão de "Colaboradores da Pesquisa".
 		- Relatório de Admitidos: Ajuste para não exibir salário.
-	</Versao>
-	<Versao id="1.1.25.11" data="29/03/2010">
+	]]></Versao>
+	<Versao id="1.1.25.11" data="29/03/2010"><![CDATA[
 		- Reformulação da tela de Solicitação de Pessoal.
 		- Novo relatório: "Admitidos".
 		- Novo relatório: "Situações".
 		- Performance Profissional:  Adicionados resultados das "Avaliação do Período de Experiência".
 		- Nova funcionalidade: Excluir múltiplas mensagens na Caixa de Mensagens da tela principal.
 		- Nova configuração: "Exibir aba documentos no módulo externo".
-	</Versao>
-	<Versao id="1.1.24.10" data="12/03/2010">
+	]]></Versao>
+	<Versao id="1.1.24.10" data="12/03/2010"><![CDATA[
 		- Relatório de Desligamento: opção para exibir também as Observações.
 		- Cadastro de Cargos: após o cadastro já será solicitada a criação da primeira faixa salarial.
 		- Relatório de Exames Previstos: opção para exibir Nome Comercial.
@@ -420,8 +420,8 @@
 		- Ajustes no Relatório de Exames Realizados (para trazer também exames sem resultado).
 		- Ajustes no Currículo Escaneado (para aceitar caracteres especiais do Windows).
 		- Ajustes no Histórico de Treinamentos (para conectar bordas da matriz de treinamentos).
-	</Versao>
-	<Versao id="1.1.23.9" data="25/02/2010">
+	]]></Versao>
+	<Versao id="1.1.23.9" data="25/02/2010"><![CDATA[
 		- Listagem de Candidatos: exibição das colunas "data de cadastro" e "data da última atualização".
 		- Correção de erro na edição de usuários (estava sendo exibido perfil diferente do que o usuário possui).
 		- Histórico de Treinamento: se o curso só possui uma avaliação, a nota é exibida no histórico.
@@ -435,8 +435,8 @@
 		- SESMT > Relatório de Exames Previstos: nova opção para agrupar por Área Organizacional e adicionada nova coluna Cargo.
 		- Acompanhamento do Período de Experiência: nova seção Cadastro de Período de Acompanhamento, novo campo "Alertar para avaliação" nas configurações do sistema, nova seção Cadastro de Avaliação do Período de Experiência.
 		- Impressão de Solicitação de Exames: só são exibidas solicitações para exames que possuem clínica selecionada. O layout foi reduzido para evitar a geração de páginas em branco.
-	</Versao>
-	<Versao id="1.1.22.8" data="02/02/2010">
+	]]></Versao>
+	<Versao id="1.1.22.8" data="02/02/2010"><![CDATA[
 		- As opções do menu Indicadores foram movidas para os módulos, de acordo com seu contexto.
 		- Novo menu Utilitários | Importar Cadastros: replica Áreas Organizacionais, Áreas de Interesse, Conhecimentos e Cargos entre empresas.
 		- Relatório de Pesquisas: campo "Estabelecimento" modificado para "Empresa - Estabelecimento".
@@ -456,15 +456,15 @@
 		- Pesquisas: foi retirada a obrigatoriedade de preenchimento em perguntas subjetivas.
 		- Integração com o AC Pessoal: o campo CBO foi aberto para edição no cadastro de cargos do AC Pessoal.
 		- Nova funcionalidade: Cadastro de Currículo Digitado.
-	</Versao>
-	<Versao id="1.1.21.7" data="12/01/2010">
+	]]></Versao>
+	<Versao id="1.1.21.7" data="12/01/2010"><![CDATA[
 		- Ícone para Impressão de ASO na listagem de atendimentos médicos.
 		- Pesquisa: possibilidade de adicionar colaboradores de outras empresas.
 		- CIPA: impressão de comprovante de inscrição duplicado (vias para colaborador e para empresa).
 		- CIPA: candidatos numerados no Chamado para Eleição.
 		- Atendimentos Médicos: novo motivo de atendimento "Apresentação de Atestado Externo".
-	</Versao>
-	<Versao id="1.1.20.6" data="06/01/2010">
+	]]></Versao>
+	<Versao id="1.1.20.6" data="06/01/2010"><![CDATA[
 		- Novo relatório: EPIs por Função.
 		- Novo relatório: Quantidade de Colaboradores por Função.
 		- Novo relatório: Atendimentos Médicos.
@@ -473,8 +473,8 @@
 		- CIPA: Impressão de comprovante de inscrição.
 		- CIPA: Lista de candidatos numerada para facilitar votação.
 		- Solicitação de Exames foi reformulado e renomeado para Atendimento Médico.
-	</Versao>
-	<Versao id="1.1.19.5" data="16/12/2009">
+	]]></Versao>
+	<Versao id="1.1.19.5" data="16/12/2009"><![CDATA[
 		- Multipla escolha no cadastro de perguntas (Pesquisas, Avaliações de Cursos, Avaliações de Turmas, Entrevistas de Desligamento e Fichas Médicas).
 		- Solicitação de Exames: tamanho reduzido para 4 solicitações por página.
 		- Candidatos da Seleção: novo filtro Nome.
@@ -482,15 +482,15 @@
 		- Novos relatórios: PPRA, LTCAT e PPP.
 		- Relatório de Exames Previstos: ordenação por Nome.
 		- Novo utilitário: exibição de logs de erros.
-	</Versao>
-	<Versao id="1.1.18.4" data="10/11/2009">
+	]]></Versao>
+	<Versao id="1.1.18.4" data="10/11/2009"><![CDATA[
 		- Novo menu, com opções reagrupadas.
 		- Cadastro de candidatos: novos campos na aba Experiência: Salário e Motivo da Saída.
 		- Solicitação de Realinhamento: novo campo Observação.
 		- Cadastro de Clínicas: novos campos Telefone e Horário de Atendimento.
 		- Nova funcionalidade: relatório de fichas médicas.
-	</Versao>
-	<Versao id="1.1.17.3" data="04/11/2009">
+	]]></Versao>
+	<Versao id="1.1.17.3" data="04/11/2009"><![CDATA[
 		- Solicitação de pessoal: novo campo Descrição.
 		- Triagem de candidatos: filtro dividido em básico e avançado.
 		- Triagem de candidatos: possibilidade de filtrar candidatos de outras empresas.
@@ -505,8 +505,8 @@
 		- Cadastro de EPI: eliminado o campo Data de Emissão.
 		- Cadastro de EPI: campo Período Máximo alterado de meses para dias.
 		- Ajustes no relatório de EPIs: agrupamento por EPI ou por Colaborador.
-	</Versao>
-	<Versao id="1.1.16.2" data="17/10/2009">
+	]]></Versao>
+	<Versao id="1.1.16.2" data="17/10/2009"><![CDATA[
 		- Comissões da CIPA: exibição por extenso da data das atas de reuniões.
 		- Ajustes no módulo externo para compatibilidade com o Internet Explorer 8.
 		- SESMT: nova seção Cadastro de CIDs.
@@ -514,8 +514,8 @@
 		- SESMT: nova seção Cadastro de Afastamentos.
 		- SESMT: novo relatório: Afastamentos.
 		- Registro de Ocorrências: integração com o Fortes AC.
-	</Versao>
-	<Versao id="1.1.15.1" data="01/10/2009">
+	]]></Versao>
+	<Versao id="1.1.15.1" data="01/10/2009"><![CDATA[
 		- Atualização do servidor do PostgreSQL da versão 8.2 para a 8.4.
 		- Nova opção na listagem de candidatos: incluir candidato em solicitação.
 		- Eleições da CIPA: novo relatório Calendário do Processo Eleitoral.
@@ -526,20 +526,20 @@
 		- Adicionado filtro na listagem de cursos.
 		- Relatório de Motivos de Desligamento: mudanças no layout.
 		- Ajustes no layout para resolução de tela 800x600.
-	</Versao>
-	<Versao id="1.0.14.0" data="31/08/2009">
+	]]></Versao>
+	<Versao id="1.0.14.0" data="31/08/2009"><![CDATA[
 		- SESMT CIPA: Etapas do Processo Eleitoral
 		- SESMT CIPA: Eleições
 		- SESMT CIPA: Comissões
 		- Transferir bairros
 		- Layout personalizado do módulo externo
-	</Versao>
-	<Versao id="1.0.13.0" data="13/08/2009">
+	]]></Versao>
+	<Versao id="1.0.13.0" data="13/08/2009"><![CDATA[
 		- SESMT: Solicitação de Exames - novo campo: Data.
 		- SESMT: Solicitação de EPIs - novo campo: Data.
 		- Relatório de Motivos de Desligamento: novo agrupador "Motivo não Informado".
-	</Versao>
-	<Versao id="1.0.12.0" data="10/08/2009">
+	]]></Versao>
+	<Versao id="1.0.12.0" data="10/08/2009"><![CDATA[
 		- SESMT: Relatório de Exames Previstos.
 		- SESMT: novos campos no cadastro de Médico Coordenador.
 		- SESMT: possibilidade de registrar Fardamento como EPI.
@@ -548,8 +548,8 @@
 		- SESMT: Entrega de EPI (pelo almoxarifado).
 		- SESMT: Relatório de EPIs com CA a vencer.
 		- SESMT: Relatório de EPIs com prazo a vencer.
-	</Versao>
-	<Versao id="1.0.11.0" data="22/07/2009">
+	]]></Versao>
+	<Versao id="1.0.11.0" data="22/07/2009"><![CDATA[
 		- Pesquisas: impressão do resultado em PDF.
 		- Novo relatório: Aniversariantes do Mês.
 		- Novo relatório: Avaliações de Candidatos.
@@ -562,11 +562,11 @@
 		- SESMT: Relatório de Prontuário.
 		- SESMT: Impressão de ASOs.
 		- SESMT: Realização de Exames.
-	</Versao>
-	<Versao id="1.0.10.1" data="07/07/2009">
+	]]></Versao>
+	<Versao id="1.0.10.1" data="07/07/2009"><![CDATA[
 		- Ajuste na criação de usuários quando o Perfil padrão não foi informado nas configurações do sistema.
-	</Versao>
-	<Versao id="1.0.10.0" data="29/06/2009">
+	]]></Versao>
+	<Versao id="1.0.10.0" data="29/06/2009"><![CDATA[
 		- TeD: Painel de Indicadores.
 		- TeD: Relatório - Histórico de Treinamentos por Colaborador.
 		- TeD: Geração de Certificados e Verso.
@@ -576,39 +576,39 @@
 		- Novo layout da caixa de mensagens.
 		- Currículo do candidato: novo campo Deficiência.
 		- Opção Analfabeto retirada dos campos Escolaridade.
-	</Versao>
-	<Versao id="1.0.9.0" data="19/06/2009">
+	]]></Versao>
+	<Versao id="1.0.9.0" data="19/06/2009"><![CDATA[
 		- Nova opção de configuração: forçar caixa alta nos cadastros do módulo externo.
 		- TeD: Avaliações de Turmas.
 		- TeD: Certificações.
 		- Integração com Office.
-	</Versao>
-	<Versao id="1.0.8.1" data="08/06/2009">
+	]]></Versao>
+	<Versao id="1.0.8.1" data="08/06/2009"><![CDATA[
 		- Candidatos: filtro por indicado.
 		- Opção para transferir faixas entre cargos.
 		- Candidatos da seleção: candidatos não aptos não aparecem mais na criação de etapa em lote.
 		- Novo relatório: Cronograma de Treinamento.
 		- Novo relatório: Plano de Treinamento.
-	</Versao>
-	<Versao id="1.0.8.0" data="02/06/2009">
+	]]></Versao>
+	<Versao id="1.0.8.0" data="02/06/2009"><![CDATA[
 		- Registro de nota do colaborador participante do curso.
 		- Plano de treinamentos.
 		- Lista de frequência.
-	</Versao>
-	<Versao id="1.0.7.1" data="21/05/2009">
+	]]></Versao>
+	<Versao id="1.0.7.1" data="21/05/2009"><![CDATA[
 		- Inclusão de busca por data de cadastro ou atualização no filtro da listagem de candidatos.
-	</Versao>
-	<Versao id="1.0.7.0" data="20/05/2009">
+	]]></Versao>
+	<Versao id="1.0.7.0" data="20/05/2009"><![CDATA[
 		- Ampliação da integração com o AC Pessoal.
 		- Criação automática de usuários.
 		- Edição de login.
 		- Atualização de dados pessoais.
-	</Versao>
-	<Versao id="1.0.6.1" data="29/04/2009">
+	]]></Versao>
+	<Versao id="1.0.6.1" data="29/04/2009"><![CDATA[
 		- Melhoria no filtro de candidatos para solicitação de pessoal.
 		- Nova paginação no histórico dos candidatos da solicitação conservando filtro ao voltar nas páginas.
-	</Versao>
-	<Versao id="1.0.6.0" data="20/02/2009">
+	]]></Versao>
+	<Versao id="1.0.6.0" data="20/02/2009"><![CDATA[
 		- Integração com o AC Pessoal completamente reformulada.
 		- Solicitação de Reajuste foi reformulada e chama-se agora Solicitação de Realinhamento de Cargos e Salários.
 		- Possibilidade de trabalhar com salários propostos por índice ou por cargo, totalmente integrado com o AC Pessoal.
@@ -621,11 +621,11 @@
 		- Criação dos históricos de faixa salarial (para acompanhar a evolução do salário do cargo).
 		- Progressão do Colaborador reformulada (ajustes no gráfico e novos detalhes nos históricos).
 		- Ajustes na Entrevista de Desligamento (possibilidade de edição, obrigatoriedade dos campos retirada etc.).
-	</Versao>
-	<Versao id="1.0.5.1" data="05/02/2009">
+	]]></Versao>
+	<Versao id="1.0.5.1" data="05/02/2009"><![CDATA[
 		- Ajuste na paginação do filtro de candidatos para solicitação de pesssoal.
-	</Versao>
-	<Versao id="1.0.5.0" data="26/11/2008">
+	]]></Versao>
+	<Versao id="1.0.5.0" data="26/11/2008"><![CDATA[
 		- CPF zerado não é mais aceito no cadastro de Colaboradores.
 		- Contratar candidato: campo Data de Nascimento consertado.
 		- Relatório de Área Organizacional reformulado.
@@ -641,14 +641,14 @@
 		- Adicionar colaboradores à pesquisa teve a ordenação consertada.
 		- Pesquisas: permitir excluir colaborador se ainda não respondeu a pesquisa.
 		- Ajustes na geração de PPP.
-	</Versao>
-	<Versao id="1.0.4.0" data="24/11/2008">
+	]]></Versao>
+	<Versao id="1.0.4.0" data="24/11/2008"><![CDATA[
 		- Criação do cadastro de índice.
 		- Exclusão e edição da Entrevista de Desligamento apenas se ninguém respondeu.
 		- Motivos de Demissão alterado para Motivos de Desligamento.
 		- Exibição de todas as áreas no campo Área Proposta na Solicitação de Reajuste.
-	</Versao>
-	<Versao id="1.0.3.0" data="13/11/2008">
+	]]></Versao>
+	<Versao id="1.0.3.0" data="13/11/2008"><![CDATA[
 		- Novo módulo de pesquisas.
 		- Criação da aba documentos nos cadastros de Candidato e Colaborador.
 		- Filtros reformulados.
@@ -659,30 +659,30 @@
 		- Empresas: Testar conexão com o Fortes AC (integração).
 		- Cadastro de Candidatos: CPF é obrigatório apenas no módulo externo.
 		- Currículo escaneado: consertado bug com caracteres UTF-8.
-	</Versao>
-	<Versao id="1.0.2.0" data="21/10/2008">
+	]]></Versao>
+	<Versao id="1.0.2.0" data="21/10/2008"><![CDATA[
 		- Inclusão do campo deficiência no cadastro de candidato.
 		- Inclusão do campo deficiência no cadastro de colaborador.
-	</Versao>
-	<Versao id="1.0.1.5" data="15/10/2008">
+	]]></Versao>
+	<Versao id="1.0.1.5" data="15/10/2008"><![CDATA[
 		- Remoção da obrigatoriedade de CPF para o cadastro de candidato
 		- Correção no cadastro de currículo escaneado para aceitar documentos com codificação UTF8
 		- Correção da exclusão de candidato
-	</Versao>
-	<Versao id="1.0.1.4" data="07/10/2008">
+	]]></Versao>
+	<Versao id="1.0.1.4" data="07/10/2008"><![CDATA[
 		- Correção na inclusão dos colaboradores na turma.
-	</Versao>
-	<Versao id="1.0.1.3" data="30/09/2008">
+	]]></Versao>
+	<Versao id="1.0.1.3" data="30/09/2008"><![CDATA[
 		- Inclusão da verificação de compatibilidade entre o sistema FortesRH e o navegador.
-	</Versao>
-	<Versao id="1.0.1.2" data="18/09/2008">
+	]]></Versao>
+	<Versao id="1.0.1.2" data="18/09/2008"><![CDATA[
 		- Ajuste na consulta das solicitações de pessoal.
 		- Ajuste na atualização das solicitações de pessoal.
-	</Versao>
-	<Versao id="1.0.1.1" data="16/09/2008">
+	]]></Versao>
+	<Versao id="1.0.1.1" data="16/09/2008"><![CDATA[
 		- Ajuste na integração do Colaborador com o AC Pessoal.
-	</Versao>
-	<Versao id="1.0.1.0" data="04/09/2008">
+	]]></Versao>
+	<Versao id="1.0.1.0" data="04/09/2008"><![CDATA[
 		- Colaboradores - Liberada edição de campos se só houver um histórico.
 		- Colaboradores - Adicionado filtro por matrícula.
 		- Solicitação de pessoal - Ao entrar, já exibir solicitações abertas em andamento.
@@ -703,8 +703,8 @@
 		- Cargos - adicionado filtro por Nome e Área Organizacional.
 		- Candidatos - adicionado filtro: Disponíveis/Indisponíveis.
 		- Relatório de Cargos reformulado.
-	</Versao>
-	<Versao id="1.0.0.0" data="22/08/2008">
+	]]></Versao>
+	<Versao id="1.0.0.0" data="22/08/2008"><![CDATA[
 		- Liberação da versão comercial.
-	</Versao>
+	]]></Versao>
 </Versoes>
