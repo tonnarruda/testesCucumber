@@ -17,8 +17,10 @@ import com.fortes.rh.model.sesmt.ExtintorInspecao;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.model.sesmt.HistoricoExtintor;
 import com.fortes.rh.model.sesmt.relatorio.ManutencaoAndInspecaoRelatorio;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.opensymphony.xwork.Action;
 
 public class ExtintorEditAction extends MyActionSupportList
 {
@@ -57,7 +59,7 @@ public class ExtintorEditAction extends MyActionSupportList
 	private Date dataRecarga;
 	
 	private Collection<ManutencaoAndInspecaoRelatorio> dataSource;
-	private Map<String, Object> parametros;
+	private Map<String, Object> parametros;	
 	
 	public String prepare() throws Exception
 	{
@@ -158,6 +160,20 @@ public class ExtintorEditAction extends MyActionSupportList
 		extintors = extintorManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), tipoBusca, numeroBusca, ativo);
 
 		return SUCCESS;
+	}
+	
+	public String imprimirLista() throws Exception
+	{
+		extintors = extintorManager.findAllSelect(0, 0, getEmpresaSistema().getId(), tipoBusca, numeroBusca, ativo);
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Extintores", getEmpresaSistema(),"Ativos: " + BooleanUtil.getDescricao(ativo));
+		if (extintors.isEmpty()) 
+		{
+			addActionMessage("Não existem dados para o filtro informado");
+			list();
+			return Action.INPUT;
+		}
+		
+		return Action.SUCCESS;
 	}
 
 	public String delete() throws Exception
