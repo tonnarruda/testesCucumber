@@ -55,6 +55,13 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 		setEstabelecimentoNome(estabelecimentoNome);
 		setAreaNome(areaOrganizacionalNome);   	
 	}
+    
+    public ColaboradorOcorrencia(Long colaboradorId, String colaboradorNome, int ocorrenciaPontuacao)
+    {
+    	setColaboradorId(colaboradorId);
+    	setColaboradorNome(colaboradorNome);
+    	setOcorrenciaPontuacao(ocorrenciaPontuacao);
+    }
 	
     public void setProjectionDescricao(String projectionDescricao)
     {

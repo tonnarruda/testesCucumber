@@ -817,7 +817,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         String filtro = "";
 
         colaboradorDao.expects(once()).method("findProjecaoSalarialByHistoricoColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradors));
-        areaOrganizacinoalManager.expects(once()).method("findAllList").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+        areaOrganizacinoalManager.expects(once()).method("findAllListAndInativa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
         areaOrganizacinoalManager.expects(once()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
 
@@ -829,7 +829,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findProjecaoSalarialByHistoricoColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradors));
         colaboradorDao.expects(once()).method("findProjecaoSalarialByTabelaReajusteColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradors));
-        areaOrganizacinoalManager.expects(once()).method("findAllList").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+        areaOrganizacinoalManager.expects(once()).method("findAllListAndInativa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
         areaOrganizacinoalManager.expects(once()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
 
@@ -854,7 +854,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
         colaboradors.add(colaborador);
 
-        areaOrganizacinoalManager.expects(once()).method("findAllList").with(ANYTHING, ANYTHING).will(returnValue(areas));
+        areaOrganizacinoalManager.expects(once()).method("findAllListAndInativa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
 
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 
@@ -881,7 +881,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
         colaboradors.add(colaborador);
 
-        areaOrganizacinoalManager.expects(once()).method("findAllList").with(ANYTHING, ANYTHING).will(returnValue(areas));
+        areaOrganizacinoalManager.expects(once()).method("findAllListAndInativa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
 
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 

@@ -289,12 +289,12 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		}
 	}
 
-	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds)
+	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento)
 	{
 		Long empresaId = null;
 		if(empresa != null && empresa.getId() != null )
 			empresaId = empresa.getId();
 		
-		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaId, areaIds, estabelecimentoIds);
+		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaId, areaIds, estabelecimentoIds, detalhamento);
 	}
 }

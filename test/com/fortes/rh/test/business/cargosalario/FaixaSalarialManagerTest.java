@@ -608,9 +608,9 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
 
-		faixaSalarialDao.expects(once()).method("findFaixas").with(ANYTHING, ANYTHING).will(returnValue(faixaSalarials));
+		faixaSalarialDao.expects(once()).method("findFaixas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarials));
 
-		Collection<FaixaSalarial> retorno = faixaSalarialManager.findFaixas(empresa, Cargo.TODOS);
+		Collection<FaixaSalarial> retorno = faixaSalarialManager.findFaixas(empresa, Cargo.TODOS, null);
 
 		assertEquals(faixaSalarials.size(), retorno.size());
 	}

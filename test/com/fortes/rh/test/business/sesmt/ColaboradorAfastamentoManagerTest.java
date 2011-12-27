@@ -82,7 +82,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		Collection<AreaOrganizacional> areaOrganizacionais = new ArrayList<AreaOrganizacional>();
 
 		colaboradorAfastamentoDao.expects(once()).method("findAllSelect").will(returnValue(colecao));
-		areaOrganizacionalManager.expects(once()).method("findAllList").will(returnValue(areaOrganizacionais ));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").will(returnValue(areaOrganizacionais ));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionais));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(areaOrganizacional));
 

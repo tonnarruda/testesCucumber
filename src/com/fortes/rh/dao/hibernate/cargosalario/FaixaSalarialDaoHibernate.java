@@ -150,7 +150,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		return (FaixaSalarial) query.uniqueResult();
 	}
 
-	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo)
+	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo, Long faixaInativaId)
 	{
 		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
 		criteria.createCriteria("fs.cargo", "c");
@@ -165,7 +165,12 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		criteria.add(Expression.eq("c.empresa.id", empresa.getId()));
 
 		if(ativo != null)
-			criteria.add(Expression.eq("c.ativo", ativo));
+		{
+			if(faixaInativaId == null)
+				criteria.add(Expression.eq("c.ativo", ativo));
+			else
+				criteria.add(Expression.or(Expression.eq("c.ativo", ativo), Expression.eq("fs.id", faixaInativaId)));
+		}
 
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.addOrder(Order.asc("fs.nome"));

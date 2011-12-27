@@ -249,7 +249,7 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 		if(filtro.equals("1"))
 		{
 			//monta familia das areas
-			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllList(empresaId, AreaOrganizacional.TODAS);
+			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
 			areas = areaOrganizacionalManager.montaFamilia(areas);
 
 			for (ReajusteColaborador reajusteTmp : reajusteColaboradors)

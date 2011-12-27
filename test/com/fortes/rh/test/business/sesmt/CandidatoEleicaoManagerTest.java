@@ -82,7 +82,7 @@ public class CandidatoEleicaoManagerTest extends MockObjectTestCase
 
         candidatoEleicaoDao.expects(once()).method("findByEleicao").with(ANYTHING,eq(false), ANYTHING).will(returnValue(candidatoEleicaos));
         colaboradorManager.expects(once()).method("findByIdHistoricoAtual").with(ANYTHING).will(returnValue(colaboradors));
-        areaOrganizacionalManager.expects(once()).method("findAllList").with(ANYTHING, ANYTHING).will(returnValue(areas));
+        areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
         areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
         areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(null));
 

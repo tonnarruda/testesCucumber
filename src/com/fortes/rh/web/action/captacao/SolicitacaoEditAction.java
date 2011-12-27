@@ -134,11 +134,15 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	exibeSalario = empresaManager.findExibirSalarioById(getEmpresaSistema().getId());
 
     	this.estados = estadoManager.findAll(new String[]{"sigla"});
-
+		Long faixaInativaId = null;
+		Long areaInativaId = null;
+		
     	if (solicitacao != null && solicitacao.getId() != null)
         {
             solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
             estado = solicitacao.getCidade().getUf();
+            faixaInativaId = solicitacao.getFaixaSalarial().getId();
+            areaInativaId = solicitacao.getAreaOrganizacional().getId();
 
             if(estado != null && estado.getId() != null)
     			cidades = cidadeManager.find(new String[]{"uf.id"}, new Object[]{Long.valueOf(estado.getId())}, new String[]{"nome"});
@@ -154,11 +158,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             	somenteLeitura = true;
         }
 
-    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
+    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
-		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO), "cargo.nome");
+		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId), "cargo.nome");
 
         motivoSolicitacaos = motivoSolicitacaoManager.findAll();
         
@@ -193,7 +197,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	prepare();
 
     	bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, bairroManager.getBairrosBySolicitacao(solicitacao.getId()), "getId");
-    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
+    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
     	solicitacao.setId(null);

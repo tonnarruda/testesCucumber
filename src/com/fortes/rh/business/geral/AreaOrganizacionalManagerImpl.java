@@ -220,19 +220,19 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().verificaMaternidade(areaOrganizacionalId);
 	}
 
-	public Collection<AreaOrganizacional> findAllList(Long empresaId, Boolean ativo)
+	public Collection<AreaOrganizacional> findAllListAndInativa(Long empresaId, Boolean ativo, Long areaInativaId)
 	{
-		return getDao().findAllList(0, 0, null, null, empresaId, ativo);
+		return getDao().findAllList(0, 0, null, null, empresaId, ativo, areaInativaId);
 	}
 
-	public Collection<AreaOrganizacional> findAllList(Long idColaborador, Long empresaId, Boolean ativo)
+	public Collection<AreaOrganizacional> findAllList(Long idColaborador, Long empresaId, Boolean ativo, Long areaInativaId)
 	{
-		return getDao().findAllList(0, 0, idColaborador, null, empresaId, ativo);
+		return getDao().findAllList(0, 0, idColaborador, null, empresaId, ativo, null);
 	}
 
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, String nome, Long empresaId, Boolean ativo)
 	{
-		return getDao().findAllList(page, pagingSize, null, nome, empresaId, ativo);
+		return getDao().findAllList(page, pagingSize, null, nome, empresaId, ativo, null);
 	}
 
 	public Integer getCount(String nome, Long empresaId)
@@ -245,7 +245,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 		try
 		{
-			Collection<AreaOrganizacional> areas = findAllList(empresaId, AreaOrganizacional.TODAS);
+			Collection<AreaOrganizacional> areas = findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
 			areas = montaFamilia(areas);
 			CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricao");
@@ -351,17 +351,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 	}
 
-	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo) throws Exception
-	{
-		Collection<AreaOrganizacional> areaOrganizacionals = findAllList(empresaId, ativo);
-		areaOrganizacionals = montaFamilia(areaOrganizacionals);
-
-		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
-
-		return areaOrganizacionals;
-	}
-
 	public Collection<AreaOrganizacional> getDistinctAreaMae(Collection<AreaOrganizacional> todasAreas, Collection<AreaOrganizacional> areaOrganizacionals)
 	{
 		Collection<AreaOrganizacional> retorno = new ArrayList<AreaOrganizacional>();
@@ -388,7 +377,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public Collection<AreaOrganizacional> montaAllSelect(Long empresaId)
 	{
-		Collection<AreaOrganizacional> areas = findAllList(empresaId, AreaOrganizacional.TODAS);
+		Collection<AreaOrganizacional> areas = findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
 
 		try
 		{
@@ -431,17 +420,17 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, grupoAC);
 	}
 
-	public Collection<AreaOrganizacional> montaFamiliaOrdemDescricao(Long empresaId, Boolean ativo) throws Exception
+	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long faixaInativaId) throws Exception
 	{
-		Collection<AreaOrganizacional> areaOrganizacionals = findAllList(empresaId, ativo);
+		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativa(empresaId, ativo, faixaInativaId);
 		areaOrganizacionals = montaFamilia(areaOrganizacionals);
 
-		CollectionUtil<AreaOrganizacional> areaOrganizacionalUtil = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = areaOrganizacionalUtil.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
+		CollectionUtil<AreaOrganizacional> cUtil = new CollectionUtil<AreaOrganizacional>();
+		areaOrganizacionals = cUtil.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
 
 		return areaOrganizacionals;
 	}
-
+	
 	public Collection<AreaOrganizacional> findByConhecimento(Long conhecimentoId)
 	{
 		return getDao().findByConhecimento(conhecimentoId);
@@ -517,7 +506,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	// 
 	public Collection<ExamesPrevistosRelatorio> setFamiliaAreas(Collection<ExamesPrevistosRelatorio> examesPrevistosRelatorios, Long empresaId) throws Exception
 	{
-		Collection<AreaOrganizacional> areaOrganizacionals = findAllList(empresaId, AreaOrganizacional.TODAS);
+		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
 		areaOrganizacionals = montaFamilia(areaOrganizacionals);
 
 		for (ExamesPrevistosRelatorio examesPrevistosRelatorio: examesPrevistosRelatorios)

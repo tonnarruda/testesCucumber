@@ -108,7 +108,11 @@
 			<button onclick="window.location='../pesquisa/list.action'" id="btnVoltar" class="btnConcluir" ></button>
 		</#if>
 		
-		<button onclick="window.location='../colaboradorResposta/prepareResponderQuestionarioEmLote.action?questionario.id=${questionario.id}'" id="btnAvancar" class="btnResponderPorColaboradores"></button>
+		<#if questionario.liberado>
+			<button onclick="window.location='../colaboradorResposta/prepareResponderQuestionarioEmLote.action?questionario.id=${questionario.id}'" id="btnAvancar" class="btnResponderPorColaboradores"></button>
+		<#else>
+			<img border="0" title="Pesquisa não liberada." src="<@ww.url includeParams="none" value="/imgs/btnResponderPorColaboradores.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);" align="absMiddle"/>
+		</#if>
 	</div>
 </body>
 </html>

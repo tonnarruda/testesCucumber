@@ -279,11 +279,14 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		}
 	}
 
-	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Long empresaId, Collection<Long> areaIds, Collection<Long> estabelecimentoIds) 
+	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Long empresaId, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento) 
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select distinct new ColaboradorOcorrencia(co.id, co.dataIni, co.dataFim, co.observacao, c.id, c.nome, c.nomeComercial, o.pontuacao, o.descricao, es.nome, ao.nome) ");
+		if (detalhamento)
+			hql.append("select distinct new ColaboradorOcorrencia(co.id, co.dataIni, co.dataFim, co.observacao, c.id, c.nome, c.nomeComercial, o.pontuacao, o.descricao, es.nome, ao.nome) ");
+		else
+			hql.append("select distinct new ColaboradorOcorrencia(c.id, c.nome, SUM(o.pontuacao)) ");
 		
 		hql.append("from ColaboradorOcorrencia as co ");
 		hql.append("inner join co.ocorrencia as o ");
@@ -315,7 +318,15 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		hql.append("and co.dataIni >= :dataIni ");
 		hql.append("and co.dataIni <= :dataFim ");
 		hql.append("and o.empresa.id = :empresaId ");
-		hql.append("order by c.nome asc, c.id asc, co.dataIni asc ");
+		
+		if (detalhamento)
+		{
+			hql.append("order by c.nome asc, c.id asc, co.dataIni asc ");
+		} else
+		{
+			hql.append("group by c.nome, c.id ");
+			hql.append("order by c.nome asc ");
+		}
 
 		Query query = getSession().createQuery(hql.toString());
 

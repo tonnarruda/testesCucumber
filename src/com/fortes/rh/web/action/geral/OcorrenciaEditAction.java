@@ -153,7 +153,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			Collection<Long> areaIds = LongUtil.arrayStringToCollectionLong(areaCheck);
 			Collection<Long> estabelecimentoIds = LongUtil.arrayStringToCollectionLong(estabelecimentoCheck);
 			
-			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresa, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds);
+			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresa, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento);
 
 			parametros.put("dataIni", dataIni);
 			parametros.put("dataFim", dataFim);

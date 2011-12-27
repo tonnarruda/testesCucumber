@@ -79,12 +79,12 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, null, nome, empresaId, AreaOrganizacional.TODAS);
+		montaConsulta(criteria, null, nome, empresaId, AreaOrganizacional.TODAS, null);
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long colaboradorId, String nome, Long empresaId, Boolean ativo)
+	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long colaboradorId, String nome, Long empresaId, Boolean ativo, Long areaInativaId)
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"ao");
 
@@ -104,7 +104,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		criteria.setProjection(p);
 
-		montaConsulta(criteria, colaboradorId, nome, empresaId, ativo);
+		montaConsulta(criteria, colaboradorId, nome, empresaId, ativo, areaInativaId);
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
 		criteria.addOrder(Order.asc("ao.nome"));
@@ -119,7 +119,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, Long colaboradorId, String nome, Long empresaId, Boolean ativo)
+	private void montaConsulta(Criteria criteria, Long colaboradorId, String nome, Long empresaId, Boolean ativo, Long areaInativaId)
 	{
 		criteria.createCriteria("areaMae", "am", Criteria.LEFT_JOIN);
 		criteria.createCriteria("responsavel", "r", Criteria.LEFT_JOIN);
@@ -132,7 +132,12 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nome.trim() + "%", Hibernate.STRING));
 
 		if(ativo != null)
-			criteria.add(Expression.eq("ao.ativo",ativo));
+		{
+			if (areaInativaId == null)
+				criteria.add(Expression.eq("ao.ativo",ativo));
+			else
+				criteria.add(Expression.or(Expression.eq("ao.ativo",ativo), Expression.eq("ao.id",areaInativaId)));
+		}
 
 		if(empresaId != null)
 			criteria.add(Expression.eq("ao.empresa.id", empresaId));

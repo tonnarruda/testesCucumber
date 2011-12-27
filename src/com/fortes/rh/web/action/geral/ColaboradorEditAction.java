@@ -262,7 +262,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		estados = estadoManager.findAll(new String[]{"sigla"});
 
 		integraAc = getEmpresaSistema().isAcIntegra();
-
+		Long faixaInativaId = null;
+		Long areaInativaId = null;
+		
 		if(colaborador != null && colaborador.getId() != null)
 		{
 			Long colaboradorId = colaborador.getId();
@@ -289,6 +291,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			if(habilitaCampoExtra && colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
 				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
+			
+			faixaInativaId = historicoColaborador.getFaixaSalarial().getId();
+			areaInativaId = historicoColaborador.getAreaOrganizacional().getId();
 		}
 
 		if (colaborador != null && colaborador.getEndereco() != null && colaborador.getEndereco().getUf() != null)
@@ -299,9 +304,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		escolaridades = new Escolaridade();
 		estadosCivis = new EstadoCivil();
 
-		faixas = faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO);
+		faixas = faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId);
 
-		areaOrganizacionals = areaOrganizacionalManager.montaFamiliaOrdemDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA);
+		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
 
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		
@@ -816,7 +821,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			participacoesNaCipaColaborador = comissaoManager.getParticipacoesDeColaboradorNaCipa(colaborador.getId());
 
 			//Popula areas com areas maes
-			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllList(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 
 			for (HistoricoColaborador historico: historicoColaboradors)

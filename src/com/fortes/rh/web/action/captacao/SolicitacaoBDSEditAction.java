@@ -79,7 +79,7 @@ public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements Mod
 		}
 
 		Long empresaId = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).getId();
-		areas = areaOrganizacionalManager.findAllList(empresaId, AreaOrganizacional.TODAS);
+		areas = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
 
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 		areas = cu1.sortCollectionStringIgnoreCase(areas, "descricao");

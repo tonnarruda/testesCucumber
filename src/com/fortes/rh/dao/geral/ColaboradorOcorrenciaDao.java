@@ -19,5 +19,5 @@ public interface ColaboradorOcorrenciaDao extends GenericDao<ColaboradorOcorrenc
 	Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds);
 	String montaDiasDoPeriodo(Date dataIni, Date dataFim);
 	void deleteByOcorrencia(Long[] ocorrenciaIds) throws Exception;
-	Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Long empresaId, Collection<Long> areaIds, Collection<Long> estabelecimentoIds);
+	Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Long empresaId, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento);
 }

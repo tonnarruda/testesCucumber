@@ -96,7 +96,7 @@ public class FuncaoListAction extends MyActionSupportList
 		if(colaboradors == null || colaboradors.isEmpty())
 			addActionMessage("Não existem mudanças de função a serem listadas!");
 
-		areas = areaOrganizacionalManager.findAllList(getEmpresaSistema().getId(), AreaOrganizacional.TODAS);
+		areas = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
 
 		if(!areas.isEmpty())
 		{

@@ -219,9 +219,9 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
 	}
 
-	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo)
+	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo, Long faixaInativaId)
 	{
-		return getDao().findFaixas(empresa, ativo);
+		return getDao().findFaixas(empresa, ativo, faixaInativaId);
 	}
 
 	public FaixaSalarial findHistoricoAtual(Long faixaSalarialId)

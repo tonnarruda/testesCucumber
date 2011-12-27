@@ -167,7 +167,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		
 //		questionario = turma.getAvaliacaoTurma().getQuestionario();
 
-		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.TODAS);
+		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.TODAS, null);
 		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricao");
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
