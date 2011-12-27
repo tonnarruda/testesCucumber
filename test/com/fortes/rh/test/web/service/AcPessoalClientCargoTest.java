@@ -16,6 +16,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -45,9 +46,29 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
     	String[] codigoACs = {"001","002"};
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
+    	MockCall mock = new MockCall();
+    	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(true, "", ""));
+    	Mockit.redefineMethods(Call.class, mock);
+    	
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
 		assertTrue(acPessoalClientCargo.deleteCargo(codigoACs, empresa));
+    }
+    
+    public void testDeleteCargoErro() throws Exception
+    {
+    	String[] codigoACs = {"001","002"};
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	empresa.setCodigoAC("002022");
+    	
+    	MockCall mock = new MockCall();
+    	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(false, "Msg de Erro do AC", "Exception do AC"));
+    	Mockit.redefineMethods(Call.class, mock);
+    	
+    	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
+    	
+    	//tem que logar no ERROR
+    	assertFalse(acPessoalClientCargo.deleteCargo(codigoACs, empresa));
     }
 
     public void testCriarCargo() throws Exception
@@ -75,7 +96,9 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
     	Cargo cargo = CargoFactory.getEntity(1L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCargo(cargo);
-
+		
+		MockCall mock = new MockCall();
+    	Mockit.redefineMethods(Call.class, mock);
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	assertEquals(RETORNO_STRING, acPessoalClientCargo.updateCargo(faixaSalarial, empresa));
