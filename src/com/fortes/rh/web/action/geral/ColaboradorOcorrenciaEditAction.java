@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.poi.util.StringUtil;
+
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -23,6 +25,7 @@ import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.AbsenteismoCollection;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -159,7 +162,8 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 			if(usuarioLogado.getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
 			{
-				areasIds = areaOrganizacionalManager.findIdsAreasDoResponsavel(usuarioLogado.getId(), getEmpresaSistema().getId());
+				areasIds = findIdsAreasResponsaveis(usuarioLogado);
+				
 				if(areasIds.length == 0)
 					areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
 			}
@@ -176,6 +180,19 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	
+	}
+
+	private Long[] findIdsAreasResponsaveis(Usuario usuarioLogado) 
+	{
+		Long[] areasIds = areaOrganizacionalManager.findIdsAreasDoResponsavel(usuarioLogado.getId(), getEmpresaSistema().getId());
+		if(areasIds.length > 0)
+		{
+			CollectionUtil<Long> cUtil = new CollectionUtil<Long>();
+			Collection<Long> areasIdsFilhas = areaOrganizacionalManager.findIdsAreasFilhas(cUtil.convertArrayToCollection(areasIds));
+			areasIdsFilhas.addAll(cUtil.convertArrayToCollection(areasIds));
+			areasIds = (Long[]) areasIdsFilhas.toArray(new Long[areasIdsFilhas.size()]);
+		}
+		return areasIds;
 	}
 
 	public String delete() throws Exception

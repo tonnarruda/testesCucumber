@@ -12,12 +12,14 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -31,6 +33,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private CursoManager cursoManager;
+	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{
@@ -91,7 +94,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		this.transactionManager = transactionManager;
 	}
 
-	public void salvarTudo(Turma turma, String[] diasCheck) throws Exception
+	public void salvarTudo(Turma turma, String[] diasCheck, Collection<TurmaTipoDespesa> turmaTipoDespesas) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -101,7 +104,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		{
 			save(turma);
 			diaTurmaManager.saveDiasTurma(turma, diasCheck);
-
+			turmaTipoDespesaManager.save(turmaTipoDespesas, turma.getId());
 			transactionManager.commit(status);
 		}
 		catch(Exception e)
@@ -109,17 +112,17 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			transactionManager.rollback(status);
 			throw e;
 		}
-
 	}
 
-	public void updateTudo(Turma turma, String[] diasCheck) throws Exception
+	public void updateTudo(Turma turma, String[] diasCheck, Collection<TurmaTipoDespesa> turmaTipoDespesas) throws Exception
 	{
 		boolean result = false;
 		
 		try
 		{
+			turmaTipoDespesaManager.removeByTurma(turma.getId());
+			turmaTipoDespesaManager.save(turmaTipoDespesas, turma.getId());
 			update(turma);
-
 			result = colaboradorPresencaManager.existPresencaByTurma(turma.getId());
 			if(!result)
 			{
@@ -293,5 +296,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
+	}
+
+	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
+		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
 	}
 }

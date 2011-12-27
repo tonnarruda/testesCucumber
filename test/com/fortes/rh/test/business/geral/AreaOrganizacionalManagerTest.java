@@ -2,6 +2,7 @@ package com.fortes.rh.test.business.geral;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -873,5 +874,36 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		
 		Long[] areasIdsJaConfiguradas = areaOrganizacionalManager.selecionaFamilia(areas, areasIds);
 		assertEquals(8, areasIdsJaConfiguradas.length);
-	} 
+	}
+	
+	public void testFindIdsAreasFilhas() {
+		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(1L);
+		areaAvo.setNome("areaAvo");
+		
+		AreaOrganizacional areaMae1 = AreaOrganizacionalFactory.getEntity(2L);
+		areaMae1.setNome("areaMae1");
+		areaMae1.setAreaMae(areaAvo);
+		
+		AreaOrganizacional areaMae2 = AreaOrganizacionalFactory.getEntity(3L);
+		areaMae2.setNome("areaMae2");
+		areaMae2.setAreaMae(areaAvo);
+		
+		AreaOrganizacional areaFilha1 = AreaOrganizacionalFactory.getEntity(4L);
+		areaFilha1.setNome("areaFilha1");
+		areaFilha1.setAreaMae(areaMae1);
+		
+		AreaOrganizacional areaFilha2 = AreaOrganizacionalFactory.getEntity(5L);
+		areaFilha2.setNome("areaFilha2");
+		areaFilha2.setAreaMae(areaMae2);
+		
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaAvo.getId()))).will(returnValue(Arrays.asList(areaMae1.getId(), areaMae2.getId())));
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaMae1.getId(), areaMae2.getId()))).will(returnValue(Arrays.asList(areaFilha1.getId(), areaFilha2.getId())));
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaFilha1.getId(), areaFilha2.getId()))).will(returnValue(new ArrayList<Long>()));
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaFilha1.getId(), areaFilha2.getId()))).will(returnValue(new ArrayList<Long>()));
+		
+		Collection<Long> areaIds = areaOrganizacionalManager.findIdsAreasFilhas(Arrays.asList(areaAvo.getId()));
+		
+		assertEquals(Arrays.asList(areaMae1.getId(), areaMae2.getId(), areaFilha1.getId(), areaFilha2.getId()), areaIds);
+		
+	}
 }

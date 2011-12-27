@@ -603,6 +603,22 @@ function habilitaCampo(libera, campoId)
 		campo.style.background="#DEDEDE";
 	}
 }
+
+function somenteLeitura(libera, campoId)
+{
+	var campo = document.getElementById(campoId);
+	if(libera)
+	{
+		campo.readOnly = false;
+		campo.style.background="#FFF";
+	}
+	else
+	{
+		campo.readOnly = true;
+		campo.style.background="#DEDEDE";
+	}
+}
+
 function exibeFiltro(urlImg, filtroId)
 {
 	var filtro = document.getElementById(filtroId);
@@ -786,7 +802,9 @@ jQuery.fn.insertAtCaret = function (tagName) {
   };
 
   jQuery(function() {
-
+  	$('.moeda').live('focus', function() {
+		$(this).priceFormat();
+	});
 	jQuery(".currency").each(function(){
 		if(jQuery(this).val() != "")
 		{

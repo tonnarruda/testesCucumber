@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -399,6 +400,46 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 		assertEquals(0, areaOrganizacionalDao.findIdsAreasDoResponsavel(45454L, 151545452L).length);
 	}
+	
+	public void testFindIdsAreasFilhas()
+	{
+		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity();
+		areaAvo.setNome("areaAvo");
+		areaOrganizacionalDao.save(areaAvo);
+		
+		AreaOrganizacional areaMae1 = AreaOrganizacionalFactory.getEntity();
+		areaMae1.setNome("areaMae1");
+		areaMae1.setAreaMae(areaAvo);
+		areaOrganizacionalDao.save(areaMae1);
+		
+		AreaOrganizacional areaMae2 = AreaOrganizacionalFactory.getEntity();
+		areaMae2.setNome("areaMae2");
+		areaMae2.setAreaMae(areaAvo);
+		areaOrganizacionalDao.save(areaMae2);
+		
+		AreaOrganizacional areaFilha1 = AreaOrganizacionalFactory.getEntity();
+		areaFilha1.setNome("areaFilha1");
+		areaFilha1.setAreaMae(areaMae1);
+		areaOrganizacionalDao.save(areaFilha1);
+		
+		AreaOrganizacional areaFilha2 = AreaOrganizacionalFactory.getEntity();
+		areaFilha2.setNome("areaFilha2");
+		areaFilha2.setAreaMae(areaMae2);
+		areaOrganizacionalDao.save(areaFilha2);
+		
+		Collection<Long> resultadoAreaAvo = Arrays.asList(areaMae1.getId(), areaMae2.getId());
+		assertEquals(resultadoAreaAvo, areaOrganizacionalDao.findIdsAreasFilhas(Arrays.asList( areaAvo.getId())));
+
+		Collection<Long> resultadoAreaMae1 = Arrays.asList(areaFilha1.getId());
+		assertEquals(resultadoAreaMae1, areaOrganizacionalDao.findIdsAreasFilhas(Arrays.asList( areaMae1.getId() )));
+		
+		Collection<Long> resultadoAreaMae2 = Arrays.asList(areaFilha2.getId());
+		assertEquals(resultadoAreaMae2, areaOrganizacionalDao.findIdsAreasFilhas(Arrays.asList( areaMae2.getId() )));
+		
+		Collection<Long> resultadoAreaFilha1 = new ArrayList<Long>();
+		assertEquals(resultadoAreaFilha1, areaOrganizacionalDao.findIdsAreasFilhas(Arrays.asList( areaFilha1.getId() )));
+	}
+
 	
 	public void setCargoDao(CargoDao cargoDao)
 	{

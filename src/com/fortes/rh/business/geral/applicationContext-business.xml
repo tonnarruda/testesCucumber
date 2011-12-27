@@ -820,7 +820,35 @@
       <ref bean="tipoDocumentoManagerTarget" />
     </property>
   </bean>
+  <bean id="tipoDespesaManagerTarget" class="com.fortes.rh.business.geral.TipoDespesaManagerImpl">
+    <property name="dao">
+      <ref bean="tipoDespesaDao" />
+    </property>
+  </bean>
+  <bean id="tipoDespesaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.TipoDespesaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="tipoDespesaManagerTarget" />
+    </property>
+  </bean>
+  <bean id="turmaTipoDespesaManagerTarget" class="com.fortes.rh.business.geral.TurmaTipoDespesaManagerImpl">
+    <property name="dao">
+      <ref bean="turmaTipoDespesaDao" />
+    </property>
+  </bean>
+  <bean id="turmaTipoDespesaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.TurmaTipoDespesaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="turmaTipoDespesaManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
+
 
 
 

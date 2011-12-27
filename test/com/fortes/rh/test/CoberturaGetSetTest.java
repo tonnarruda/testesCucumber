@@ -88,7 +88,6 @@ import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.NaturezaExame;
 import com.fortes.rh.model.dicionario.NivelIdioma;
-import com.fortes.rh.model.dicionario.OperacaoAuditoria;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Sexo;
@@ -149,6 +148,9 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
+import com.fortes.rh.model.geral.TipoDespesa;
+import com.fortes.rh.model.geral.TipoDocumento;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.geral.UsuarioMensagem;
 import com.fortes.rh.model.geral.relatorio.AbsenteismoCollection;
 import com.fortes.rh.model.geral.relatorio.ColaboradorOcorrenciaRelatorio;
@@ -390,6 +392,8 @@ import com.fortes.rh.web.action.geral.MotivoDemissaoListAction;
 import com.fortes.rh.web.action.geral.OcorrenciaEditAction;
 import com.fortes.rh.web.action.geral.OcorrenciaListAction;
 import com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction;
+import com.fortes.rh.web.action.geral.TipoDespesaEditAction;
+import com.fortes.rh.web.action.geral.TipoDocumentoEditAction;
 import com.fortes.rh.web.action.geral.UsuarioMensagemEditAction;
 import com.fortes.rh.web.action.geral.UsuarioMensagemListAction;
 import com.fortes.rh.web.action.importacao.ImportacaoAction;
@@ -936,6 +940,11 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new NivelCompetenciaEditAction());
 		cobreGetSet(new FaturamentoMensal());
 		cobreGetSet(new FaturamentoMensalEditAction());
+		cobreGetSet(new TipoDocumento());
+		cobreGetSet(new TipoDocumentoEditAction());
+		cobreGetSet(new TipoDespesa());
+		cobreGetSet(new TipoDespesaEditAction());
+		cobreGetSet(new TurmaTipoDespesa());
 
 	}
 	

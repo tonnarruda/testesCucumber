@@ -418,3 +418,5 @@ pre {
 	filter:alpha(opacity=20);
 	cursor: default;
 }
+
+.moeda { text-align: right; }

@@ -217,7 +217,19 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="tipoDespesaDaoTarget" class="com.fortes.rh.dao.hibernate.geral.TipoDespesaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="turmaTipoDespesaDaoTarget" class="com.fortes.rh.dao.hibernate.geral.TurmaTipoDespesaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
+
 
 
 

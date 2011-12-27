@@ -461,4 +461,17 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return  StringUtil.converteCollectionToString(query.list());
 
 	}
+
+	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds) 
+	{
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "a");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.in("a.areaMae.id", areasIds));
+		
+		return criteria.list();
+	}
 }

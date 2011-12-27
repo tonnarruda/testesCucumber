@@ -527,7 +527,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		assertEquals(new Integer (4), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, empresa.getId()));
 	}
 	
-	public void testiFindByEmpresa()
+	public void testFindByEmpresa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);

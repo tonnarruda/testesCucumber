@@ -65,7 +65,7 @@
 			<@ww.hidden name="pesquisa.questionario.anonimo" />
 		</#if>
 		
-		<@ww.select label="Pesquisa Anônima" disabled="${anonimoDisabled}" title="${anonimoTitle}" name="pesquisa.questionario.anonimo" id="anonima" list=r"#{true:'Sim',false:'Não'}" required="true" headerKey="" headerValue="" onchange="abilitaExibirPerformanceProfissional();"/>
+		<@ww.select label="Pesquisa Anônima" disabled="${anonimoDisabled}" title="${anonimoTitle}" name="pesquisa.questionario.anonimo" id="anonima" headerKey="" headerValue="Selecione..." list=r"#{true:'Sim',false:'Não'}" required="true" onchange="abilitaExibirPerformanceProfissional();"/>
 		<@ww.checkbox label="Exibir em Performance Profissional" id="exibirPerformanceProfissional" name="pesquisa.exibirPerformanceProfissional"  labelPosition="left"/>
 
 		<@ww.hidden name="pesquisa.id" />

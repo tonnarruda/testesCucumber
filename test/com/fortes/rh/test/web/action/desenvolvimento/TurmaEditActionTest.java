@@ -21,6 +21,8 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.TipoDespesaManager;
+import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
@@ -68,6 +70,8 @@ public class TurmaEditActionTest extends MockObjectTestCase
 	private Mock certificacaoManager;
 	private Mock empresaManager;
 	private Mock colaboradorManager;
+	private Mock tipoDespesaManager;
+	private Mock turmaTipoDespesaManager;
 	
 
     protected void setUp() throws Exception
@@ -109,6 +113,12 @@ public class TurmaEditActionTest extends MockObjectTestCase
         
         colaboradorManager = new Mock(ColaboradorManager.class);
         action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+        
+        tipoDespesaManager = new Mock(TipoDespesaManager.class);
+        action.setTipoDespesaManager((TipoDespesaManager) tipoDespesaManager.proxy());
+        
+        turmaTipoDespesaManager = new Mock(TurmaTipoDespesaManager.class);
+        action.setTurmaTipoDespesaManager((TurmaTipoDespesaManager) turmaTipoDespesaManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
@@ -136,6 +146,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
 
     	cursoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(cursos));
     	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(true)).will(returnValue(avaliacaoTurmas));
+    	tipoDespesaManager.expects(once()).method("findAll");
 
     	assertEquals("success", action.prepareInsert());
     	assertEquals(cursos, action.getCursos());
@@ -163,6 +174,8 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(cursos));
     	avaliacaoTurmaManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(avaliacaoTurmas));
     	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(true)).will(returnValue(avaliacaoTurmas));
+    	tipoDespesaManager.expects(once()).method("findAll");
+    	turmaTipoDespesaManager.expects(once()).method("findTipoDespesaTurma").with(eq(turma.getId()));
 
     	assertEquals("success", action.prepareUpdate());
     	assertEquals(diasCheckList, action.getDiasCheckList());
@@ -175,7 +188,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setAvaliacaoTurmasCheck(new String[] { "234" });
     	action.setTurma(turma);
 
-    	turmaManager.expects(once()).method("salvarTudo").with(ANYTHING, ANYTHING);
+    	turmaManager.expects(once()).method("salvarTudo");
     	
     	assertEquals("success", action.insert());
     	
@@ -192,7 +205,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setTurma(turma);
     	
     	colaboradorTurmaManager.expects(once()).method("saveUpdate").with(ANYTHING, ANYTHING);
-    	turmaManager.expects(once()).method("updateTudo").with(ANYTHING, ANYTHING);
+    	turmaManager.expects(once()).method("updateTudo").with(ANYTHING, ANYTHING, ANYTHING);
     	
     	assertEquals("success", action.update());
     }
