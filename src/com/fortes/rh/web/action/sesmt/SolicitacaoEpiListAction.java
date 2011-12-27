@@ -54,6 +54,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private TipoEPIManager tipoEPIManager;
 	
 	private SolicitacaoEpi solicitacaoEpi;
+	private boolean entrega;
 
 	//Relatório EPIs a vencer
 	private Date vencimento;
@@ -375,5 +376,13 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public String[] getColaboradorCheck() {
 		return colaboradorCheck;
+	}
+
+	public boolean isEntrega() {
+		return entrega;
+	}
+
+	public void setEntrega(boolean entrega) {
+		this.entrega = entrega;
 	}
 }

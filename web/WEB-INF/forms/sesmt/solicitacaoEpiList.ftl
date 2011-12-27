@@ -25,7 +25,11 @@
 		<#assign dateFim = ""/>
 	</#if>
 
-	<title>Solicitações de EPI</title>
+	<#if entrega>
+		<title>Entrega de EPIs</title>
+	<#else>
+		<title>Solicitações de EPIs</title>
+	</#if>
 </head>
 <body>
 

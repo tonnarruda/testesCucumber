@@ -11,6 +11,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
+		@import url('<@ww.url includeParams='none' value='/webwork/jscalendar/calendar-blue.css' encode='false'/>');
 		
 		#text {margin:50px auto; width:500px}
 		.hotspot {color:#900; padding-bottom:1px; cursor:pointer}
@@ -94,20 +95,18 @@
 			<#assign dataVencimento = ""/>
 			<li>
 				<@ww.div cssClass="divInfo" name="epiHistorico" id="epiHistorico" style="display:'none';">
+					<h2>Primeiro Histórico</h2>
 					<ul>
-						<h2>Primeiro Histórico</h2>
-						<label for="data" class="desc"> A partir de:<span class="req" id="req" style="display:''">* </span>
+						<label for="data" class="desc"> A partir de:<span class="req" id="req">* </span>
 						<@ww.datepicker name="epiHistorico.data" id="data" value="${dataEpi}" cssClass="mascaraData"/>
-						<label for="CA" class="desc">Número do CA:<span class="req" id="requiredCA" style="display:''">* </span>
+						<label for="CA" class="desc">Número do CA:<span class="req" id="requiredCA">* </span>
 						<@ww.textfield name="epiHistorico.CA" id="CA" maxLength="20" />
-						<label for="vencimentoCA" class="desc">Vencimento do CA:<span class="req" id="requiredVencimentoCA" style="display:''">* </span>
+						<label for="vencimentoCA" class="desc">Vencimento do CA:<span class="req" id="requiredVencimentoCA">* </span>
 						<@ww.datepicker id="vencimentoCA" name="epiHistorico.vencimentoCA" value="${dataVencimento}" cssClass="mascaraData"/>
 						<label for="atenuacao" class="desc" liClass="liLeft">Percentual de Atenuação do Risco:
-						<br>
-						<@ww.textfield id="atenuacao" name="epiHistorico.atenuacao" onkeypress="return(somenteNumeros(event,''));" cssStyle="text-align: right; width: 30px;" maxLength="3" liClass="liLeft"/>
-						<@ww.label value="%" />
+						<@ww.textfield id="atenuacao" name="epiHistorico.atenuacao" onkeypress="return somenteNumeros(event,'');" cssStyle="text-align: right; width: 30px;" maxLength="3" liClass="liLeft" after="%"/>
 						<label for="validadeUso" class="desc">Período Recomendado de uso (em dias):<span class="req" style="display:''">* </span>
-						<@ww.textfield id="validadeUso" name="epiHistorico.validadeUso" onkeypress="return(somenteNumeros(event,''));" cssStyle="text-align: right; width: 40px;" maxLength="4"/>
+						<@ww.textfield id="validadeUso" name="epiHistorico.validadeUso" onkeypress="return somenteNumeros(event,'');" cssStyle="text-align: right; width: 40px;" maxLength="4"/>
 					</ul>
 				</@ww.div>
 			</li>
