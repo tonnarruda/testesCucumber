@@ -161,7 +161,11 @@
       <mapping class="com.fortes.rh.model.sesmt.NaturezaLesao" />
       <mapping class="com.fortes.rh.model.sesmt.ComposicaoSesmt" />
       <mapping class="com.fortes.rh.model.geral.TipoDocumento" />
+      <mapping class="com.fortes.rh.model.geral.TipoDespesa" />
+      <mapping class="com.fortes.rh.model.geral.TurmaTipoDespesa" />
   </session-factory>
+
+
 
 
 

@@ -24,6 +24,7 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -61,6 +63,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 	Mock colaboradorQuestionarioManager;
 	Mock aproveitamentoAvaliacaoCursoManager;
 	Mock cursoManager;
+	Mock turmaTipoDespesaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -88,6 +91,9 @@ public class TurmaManagerTest extends MockObjectTestCase
 		
 		cursoManager = new Mock(CursoManager.class);
 		turmaManager.setCursoManager((CursoManager) cursoManager.proxy());
+
+		turmaTipoDespesaManager = new Mock(TurmaTipoDespesaManager.class);
+		turmaManager.setTurmaTipoDespesaManager((TurmaTipoDespesaManager) turmaTipoDespesaManager.proxy());
 
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
@@ -293,13 +299,14 @@ public class TurmaManagerTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		turmaDao.expects(once()).method("save").with(eq(turma)).isVoid();
 		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
+		turmaTipoDespesaManager.expects(once()).method("save");
 
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
 		Exception ex = null;
 		try
 		{
-			turmaManager.salvarTudo(turma, diasCheck);
+			turmaManager.salvarTudo(turma, diasCheck, null);
 		}
 		catch (Exception e)
 		{
@@ -327,7 +334,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.salvarTudo(turma, diasCheck);
+			turmaManager.salvarTudo(turma, diasCheck, null);
 		}
 		catch (Exception e)
 		{
@@ -349,11 +356,15 @@ public class TurmaManagerTest extends MockObjectTestCase
 		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
 		colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").will(returnValue(false));
 		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
+		
+		Collection<TurmaTipoDespesa> turmaTipoDespesas = new ArrayList<TurmaTipoDespesa>();
+		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
+		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
 
 		Exception ex = null;
 		try
 		{
-			turmaManager.updateTudo(turma, diasCheck);
+			turmaManager.updateTudo(turma, diasCheck, turmaTipoDespesas);
 		}
 		catch (Exception e)
 		{
@@ -376,10 +387,14 @@ public class TurmaManagerTest extends MockObjectTestCase
 		//gera exception
 		turmaManager.setColaboradorPresencaManager(null);
 
+		Collection<TurmaTipoDespesa> turmaTipoDespesas = new ArrayList<TurmaTipoDespesa>();
+		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
+		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
+		
 		Exception ex = null;
 		try
 		{
-			turmaManager.updateTudo(turma, diasCheck);
+			turmaManager.updateTudo(turma, diasCheck, turmaTipoDespesas);
 		}
 		catch (Exception e)
 		{

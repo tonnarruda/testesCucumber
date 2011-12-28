@@ -67,4 +67,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId);
 	public void deleteAreaOrganizacional(Long[] areaIds) throws Exception;
 	public String findCodigoACDuplicado(Long empresaId);
+	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds);
 }

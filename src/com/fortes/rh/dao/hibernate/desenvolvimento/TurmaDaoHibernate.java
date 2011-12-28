@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
@@ -20,7 +19,6 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 
 @SuppressWarnings("unchecked")
 public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements TurmaDao
@@ -469,4 +467,5 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 
 		return criteria.list();
 	}
+
 }

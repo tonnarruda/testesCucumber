@@ -18,6 +18,19 @@
 				$('#tipo').val('${tipoBusca}');
 			</#if> 
 		});
+		
+		function pesquisar()
+		{
+			$('#pagina').val(1);
+			$('#form').attr('action','list.action');
+			$('#form').submit();
+		}
+		
+		function imprimir()
+		{ 
+			$('#form').attr('action','imprimirLista.action');
+			$('#form').submit();
+		}
 	</script>
 </head>
 <body>
@@ -32,7 +45,7 @@
 		<@ww.select label="Ativo" name="ativo" id="ativo" list=r"#{'T':'Todos','S':'Sim','N':'Não'}" />
 
 		<@ww.hidden id="pagina" name="page"/>
-		<input type="submit" value="" onclick="document.getElementById('pagina').value = 1;" class="btnPesquisar grayBGE" />
+		<input type="submit" value="" onclick="pesquisar();" class="btnPesquisar grayBGE" />
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br/>
@@ -49,8 +62,9 @@
 	</@display.table>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
-<div class="buttonGroup">
-<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>
-</div>
+	<div class="buttonGroup">
+		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>
+		<button class="btnImprimir" onclick="imprimir();"></button>
+	</div>
 </body>
 </html>

@@ -83,6 +83,9 @@
     <property name="cursoManager">
       <ref bean="cursoManager" />
     </property>
+    <property name="turmaTipoDespesaManager">
+      <ref bean="turmaTipoDespesaManager" />
+    </property>
   </bean>
   <bean id="turmaManager" parent="parentManager">
     <property name="proxyInterfaces">

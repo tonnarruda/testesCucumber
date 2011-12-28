@@ -9,7 +9,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -30,6 +30,8 @@
 	</#if>
 
 	<script language="javascript">
+		var imgDel = '<@ww.url includeParams="none" value="/imgs/delete.gif"/>';
+	
 		var diasIds = "";
 		function populaDias(frm)
 		{
@@ -68,10 +70,75 @@
 			}
 		}
 		
+		var countTipoDespesa = 0;
+		function adicionarTipoDespesa(tipoDespesa, despesa) 
+		{
+		
+			if (!tipoDespesa)
+				tipoDespesa = '';
+			
+			if (!despesa)
+				despesa = '';
+			
+			var campo = "<li>";
+
+			campo += "<select style='width: 200px !important; text-align: left !important;' class='select' label='Curso' name='turmaTipoDespesas[" + countTipoDespesa + "].tipoDespesa.id' id='tipoDespesa-" + countTipoDespesa + "'>";
+			campo += "<option value='-1'>Selecione...</option>";
+			
+			var tipoDespesas = ${tipoDespesasJSON};
+			$(tipoDespesas).each(function() {
+				var selected = '';
+				if (this.id == tipoDespesa)
+					selected = "selected='selected'";
+					
+				campo += "<option value='" + this.id + "' " + selected + ">" + this.descricao + "</option>";
+			});
+			campo += "</select>";
+			
+			campo += " R$ ";
+			campo += "<input type='text' name='turmaTipoDespesas[" + countTipoDespesa + "].despesa' onblur='somaDespesas()' id='despesa-" + countTipoDespesa + "' size='10' maxlength='10' class='moeda' value='" + despesa + "' />";
+			campo += "<img title='Remover' src="+ imgDel +" onclick='javascript:$(this).parent().remove();somaDespesas();' style='cursor:pointer;'/>";
+			campo += "</li>";
+			
+			$('ul#despesa').append(campo);
+			
+			countTipoDespesa++;
+		}
+		
+		function somaDespesas() {
+			var total = 0;
+
+			$('#despesa * .moeda').each(function (i, item) {
+			    var valor = $(item).val();
+			    
+			    if (valor && valor != '')
+			        total += parseFloat(valor.replace('.','').replace(',','.'));
+			});
+			
+			$('#custo').val(total);
+			$('#custo').trigger("focusin"); 
+			
+			somenteLeitura(total <= 0, 'custo');
+		}
+		
 		$(function() {
 			<#if somenteLeitura>
 				$("input[name='avaliacaoTurmasCheck']").attr('disabled', 'disabled');
 			</#if>
+			
+			<#if turmaTipoDespesas?exists && (turmaTipoDespesas?size > 0)>
+				<#list turmaTipoDespesas as turmaTipoDespesa>
+					adicionarTipoDespesa(${turmaTipoDespesa.tipoDespesa.id}, '${turmaTipoDespesa.despesa}');
+				</#list>
+			</#if>
+			
+			if ($('#despesa').children().size() == 0)
+				adicionarTipoDespesa();
+			
+			$('.select').live('blur', function() {
+				habilitaCampo(($('#despesa * .select').val() != -1)+'', 'despesa-1');
+			});
+			
 		});
 	</script>
 <@ww.head/>
@@ -85,7 +152,7 @@
 		<@ww.textfield required="true" label="Descrição" name="turma.descricao" id="desc" cssStyle="width: 637px;" maxLength="100"/>
 		<@ww.textfield label="Horário" maxLength="20" name="turma.horario" id="horario" liClass="liLeft" />
 		<@ww.textfield required="true" label="Instrutor" size="55" name="turma.instrutor" id="inst" maxLength="100" liClass="liLeft"/>
-		<@ww.textfield required="true" label="Custo (R$)" size="12" name="turma.custo" id="custo" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" />
+		<@ww.textfield required="true" label="Custo (R$)" size="12" name="turma.custo" id="custo" cssClass="moeda" cssStyle="width:85px; text-align:right;" maxLength="12" />
 
 		<@ww.textfield label="Instituição" maxLength="100" name="turma.instituicao" id="instituicao"  cssStyle="width: 437px;" liClass="liLeft"/>
 		<@ww.textfield label="Qtd. Prevista de Participantes" name="turma.qtdParticipantesPrevistos" id="qtdParticipantesPrevistos" cssStyle="width:30px; text-align:right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
@@ -120,6 +187,14 @@
 		<@ww.hidden name="turma.id" />
 		<@ww.hidden name="turma.empresa.id" />
 		<@ww.hidden name="planoTreinamento" />
+
+		<label>Tipo de despesa e valor(R$):</label>
+		<ul id="despesa"></ul>
+		
+		<a href="javascript:;" onclick="javascript:adicionarTipoDespesa();" style="text-decoration: none;">
+			<img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> 
+			Inserir mais uma despesa
+		</a>
 
 	</@ww.form>
 

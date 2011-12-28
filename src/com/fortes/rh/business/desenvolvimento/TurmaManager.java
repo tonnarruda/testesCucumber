@@ -10,14 +10,15 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 
 
 public interface TurmaManager extends GenericManager<Turma>
 {
 	public void removeCascade(Long id) throws Exception;
 	public Turma findByIdProjection(Long turmaId);
-	public void salvarTudo(Turma turma, String[] diasCheck)throws Exception;
-	public void updateTudo(Turma turma, String[] diasCheck) throws Exception;
+	public void salvarTudo(Turma turma, String[] diasCheck, Collection<TurmaTipoDespesa> turmaTipoDespesas)throws Exception;
+	public void updateTudo(Turma turma, String[] diasCheck, Collection<TurmaTipoDespesa> turmaTipoDespesas) throws Exception;
 	public Collection<Turma> getTurmaFinalizadas(Long cursoId);
 	public List filtroRelatorioByAreas(LinkedHashMap parametros);
 	public List filtroRelatorioByColaborador(LinkedHashMap parametros);

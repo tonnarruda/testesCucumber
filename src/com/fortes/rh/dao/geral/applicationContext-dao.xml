@@ -346,7 +346,25 @@
       <ref bean="tipoDocumentoDaoTarget" />
     </property>
   </bean>
+  <bean id="tipoDespesaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.TipoDespesaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="tipoDespesaDaoTarget" />
+    </property>
+  </bean>
+  <bean id="turmaTipoDespesaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.TurmaTipoDespesaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="turmaTipoDespesaDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
+
 
 
 

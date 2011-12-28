@@ -52,5 +52,14 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorRelatorio.ftl</result>
 		</action>
+		<action name="imprimirLista" class="com.fortes.rh.web.action.sesmt.ExtintorEditAction" method="imprimirLista">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/extintores.jasper</param>
+				<param name="dataSource">extintors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">extintores.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/extintorList.ftl</result>
+		</action>
 	</package>
 </xwork>

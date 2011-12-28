@@ -6,8 +6,8 @@ import java.io.IOException;
 public class Principal
 {
 							//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "TipoDocumento";
-	public static String NOME_CLASSE_MINUSCULO = "tipoDocumento";
+	public static String NOME_CLASSE = "TurmaTipoDespesa";
+	public static String NOME_CLASSE_MINUSCULO = "turmaTipoDespesa";
 	public static String NOME_PACOTE = "geral";
 	public static boolean GERAR_TODOS_ARQUIVOS = true;//gera todos os arquivos ou somente entidade, manager e dao 
 	
@@ -98,7 +98,7 @@ public class Principal
 		catch (IOException e)
 		{
 			System.out.println("------------------------------------------------------------------------");
-			System.out.println("ERRO: Refresh(F5) o projeto e use o Override and Update do SVN");
+			System.out.println("ERRO: Refresh(F5) o projeto e use o Override and git pull");
 			e.printStackTrace();
 		}
 	}

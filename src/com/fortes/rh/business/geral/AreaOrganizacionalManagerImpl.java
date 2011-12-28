@@ -655,4 +655,18 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findCodigoACDuplicado(empresaId);
 	}
 
+	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds) 
+	{
+		Collection<Long> areasFilhasIds = new ArrayList<Long>();
+		Collection<Long> filhasIds = getDao().findIdsAreasFilhas(areasIds);
+		
+		while (!filhasIds.isEmpty())
+		{
+			areasFilhasIds.addAll(filhasIds);
+			filhasIds = findIdsAreasFilhas(filhasIds);
+		}
+		
+		return areasFilhasIds;
+	}
+
 }

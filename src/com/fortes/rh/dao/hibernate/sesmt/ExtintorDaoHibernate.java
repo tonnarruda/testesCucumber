@@ -16,6 +16,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorDao;
+import com.fortes.rh.model.dicionario.TipoExtintor;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.HistoricoExtintor;
 
@@ -47,6 +48,7 @@ public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implemen
 			p.add(Projections.property("he.localizacao"), "localizacaoProjection");
 			p.add(Projections.property("e.numeroCilindro"), "numeroCilindro");
 			p.add(Projections.property("e.tipo"), "tipo");
+			p.add(Projections.property("e.ativo"), "ativo");
 
 			criteria.setProjection(p);
 
@@ -62,7 +64,12 @@ public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implemen
 		criteria.add(Expression.eq("e.empresa.id", empresaId));
 
 		if (isNotBlank(tipoBusca))
-			criteria.add(Expression.eq("e.tipo", tipoBusca));
+		{
+			if(tipoBusca.equals(TipoExtintor.PO_QUIMICO_SECO))
+				criteria.add(Expression.or(Expression.eq("e.tipo", TipoExtintor.PO_QUIMICO_SECO), Expression.eq("e.tipo", TipoExtintor.PO_QUIMICO_SECO_ABC)));
+			else
+				criteria.add(Expression.eq("e.tipo", tipoBusca));
+		}
 
 		if (numeroBusca != null)
 			criteria.add(Expression.eq("e.numeroCilindro", numeroBusca));

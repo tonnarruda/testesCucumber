@@ -315,7 +315,10 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-IndicadoresSesmt.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-ComposicaoSesmt.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-TipoDocumento.xml" />
+  <include file="/com/fortes/rh/web/action/geral/xwork-TipoDespesa.xml" />
 </xwork>
+
+
 
 
 
