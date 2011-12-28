@@ -1916,7 +1916,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return turnOvers;
 	}
 
-	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional areaOrganizacional) 
+	public Collection<Object[]> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional areaOrganizacional) 
 	{
 		Collection<Colaborador> colaboradores = getDao().findProjecaoSalarialByHistoricoColaborador(dataBase, null, null, null, null, "99", empresaId);
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByEmpresa(empresaId);
@@ -1945,11 +1945,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			}
 		}
 		
-		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
+		Collection<Object[]> dados = new ArrayList<Object[]>();
 		if(!areaSalario.isEmpty())
 		{
 			for (AreaOrganizacional area : areaSalario.keySet()) 
-				dados.add(new DataGrafico(area.getId(), area.getNome(), areaSalario.get(area), areaOrganizacional.getDescricao()));			
+				dados.add(new Object[] {area.getNome(), areaSalario.get(area), area.getId() });			
 		}
 		
 		return dados;

@@ -202,7 +202,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
 			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
 		
-		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, empresa.getId(), new AreaOrganizacional());
+		Collection<Object[]> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, empresa.getId(), new AreaOrganizacional());
 		
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
 
@@ -217,8 +217,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfEvolucaoFaturamento = StringUtil.toJSON(graficoEvolucaoFaturamento, null);
 
 		valorTotalFolha  = 0.0;
-		for (DataGrafico dataGrafico : graficoSalarioArea) 
-			valorTotalFolha += dataGrafico.getData();
+		for (Object[] dados : graficoSalarioArea) 
+			valorTotalFolha += Double.parseDouble(dados[1].toString());
 		
 		/*
 		 * Grafico de Promocoes
@@ -240,7 +240,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativa(null, null, null);
 		AreaOrganizacional area = areaOrganizacionalManager.getAreaMae(areas, areaOrganizacional);
 		
-		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId(), area);
+		Collection<Object[]> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId(), area);
 		json = StringUtil.toJSON(graficoSalarioArea, null);
 		
 		return Action.SUCCESS;
