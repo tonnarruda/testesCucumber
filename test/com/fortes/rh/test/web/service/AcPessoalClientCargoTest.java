@@ -50,6 +50,7 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
     	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(true, "", ""));
     	Mockit.redefineMethods(Call.class, mock);
     	
+    	acPessoalClient.expects(once()).method("setReturnType");
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
 		assertTrue(acPessoalClientCargo.deleteCargo(codigoACs, empresa));
@@ -65,9 +66,9 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
     	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(false, "Msg de Erro do AC", "Exception do AC"));
     	Mockit.redefineMethods(Call.class, mock);
     	
+    	acPessoalClient.expects(once()).method("setReturnType");
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
     	
-    	//tem que logar no ERROR
     	assertFalse(acPessoalClientCargo.deleteCargo(codigoACs, empresa));
     }
 

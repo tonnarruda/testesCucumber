@@ -7,6 +7,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TOcorrencia;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.util.mockObjects.MockCall;
@@ -67,15 +68,17 @@ public class AcPessoalClientOcorrenciaTest extends MockObjectTestCase
     {
     	TOcorrencia ocorrencia = new TOcorrencia();
     	ocorrencia.setCodigo("123");
+    	
+    	MockCall mock = new MockCall();
+    	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(true, "", ""));
+    	Mockit.redefineMethods(Call.class, mock);
 
+    	acPessoalClient.expects(once()).method("setReturnType");
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
 
-    	// MockCall.invoke() -> RETORNO_BOOLEAN
-    	boolean retorno = true;
-
-    	assertEquals(retorno, acPessoalClientOcorrencia.removerTipoOcorrencia(ocorrencia, empresa));
+    	assertEquals(true, acPessoalClientOcorrencia.removerTipoOcorrencia(ocorrencia, empresa));
     }
 
 

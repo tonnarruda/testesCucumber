@@ -1,13 +1,15 @@
 package com.fortes.rh.web.ws;
 
 import javax.xml.namespace.QName;
-import javax.xml.rpc.Call;
 import javax.xml.rpc.ParameterMode;
+
+import org.apache.axis.client.Call;
 
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 
 public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
 {
@@ -72,9 +74,9 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
         try
         {
         	StringBuilder token = new StringBuilder();
-        	Call call = acPessoalClient.createCall(empresa, token, null, "isRHIntegrado");
+        	GrupoAC grupoAC = new GrupoAC();
+        	Call call = acPessoalClient.createCall(empresa, token, grupoAC, "isRHIntegrado");
 
-            call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_BOOLEAN);
             QName xmlstring = new QName("xs:string");
 
 			call.addParameter("Token",xmlstring,ParameterMode.IN);
@@ -82,8 +84,10 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
 
         	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC()};
 
-            //return true; //(Boolean) call.invoke(param);
-        	return (Boolean) call.invoke(param);
+        	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+        	
+        	TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+        	return result.getSucesso("isRHIntegrado", param, this.getClass());
         }
         catch(Exception e)
         {
