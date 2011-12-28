@@ -48,7 +48,8 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
         try
         {
         	StringBuilder token = new StringBuilder();
-        	Call call = acPessoalClient.createCall(empresa, token, null, "SetLotacao");
+        	GrupoAC grupoAC = new GrupoAC();
+        	Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetLotacao");
 
             QName xmlstring = new QName("xs:string");
 
@@ -60,7 +61,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
         	call.addParameter("Mae",xmlstring,ParameterMode.IN);
 
         	//Seta o tipo de resultado
-        	call.setReturnType(xmlstring);
+        	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
         	String codigoAc = "";
         	if(areaOrganizacional.getCodigoAC() != null && !areaOrganizacional.getCodigoAC().equals(""))
@@ -74,9 +75,10 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
         	Object[] param = new Object[]{token.toString(),empresa.getCodigoAC(), codigoAc, areaOrganizacional.getNome(), codigoMae};
 
         	//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
-            String codigoRetorno = (String) call.invoke(param);
-
-            return codigoRetorno;
+        	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+        	
+        	result.getSucesso("SetLotacao", param, this.getClass());
+            return result.getCodigoretorno();
         }
         catch(Exception e)
         {

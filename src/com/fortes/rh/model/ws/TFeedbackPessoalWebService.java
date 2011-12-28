@@ -11,7 +11,16 @@ public class TFeedbackPessoalWebService implements Serializable
 	private Boolean sucesso = false;
 	private String mensagem;
 	private String exception;
+	private String codigoretorno;
 	
+	public TFeedbackPessoalWebService(Boolean sucesso, String mensagem, String exception, String codigoretorno) {
+		super();
+		this.sucesso = sucesso;
+		this.mensagem = mensagem;
+		this.exception = exception;
+		this.codigoretorno = codigoretorno;
+	}
+
 	public TFeedbackPessoalWebService(Boolean sucesso, String mensagem, String exception) {
 		super();
 		this.sucesso = sucesso;
@@ -36,10 +45,11 @@ public class TFeedbackPessoalWebService implements Serializable
 				
 				Logger logger = Logger.getLogger(classe);
 				logger.error("Erro WebService do AC:");
-				logger.error(metodo);
-				logger.error(paramToJson);
-				logger.error(mensagem);
-				logger.error(exception);				
+				logger.error("funcao: " + metodo);
+				logger.error("parametros: " + paramToJson);
+				logger.error("codigo retornado: " + codigoretorno);
+				logger.error("msg: " + mensagem);
+				logger.error("exception: " + exception);				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,6 +76,14 @@ public class TFeedbackPessoalWebService implements Serializable
 
 	public void setException(String exception) {
 		this.exception = exception;
+	}
+
+	public String getCodigoretorno() {
+		return codigoretorno;
+	}
+
+	public void setCodigoretorno(String codigoretorno) {
+		this.codigoretorno = codigoretorno;
 	}
 	
 }

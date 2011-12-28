@@ -39,14 +39,16 @@ public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
 
 	    	call.addParameter("Token",xmlstring,ParameterMode.IN);
 	    	call.addParameter("Ocorrencia", xmltype, ParameterMode.IN);
-	    	call.setReturnType(xmlstring);
+	    	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 	    	Object[] param = new Object[]{token.toString(),tocorrencia};
 
 	    	//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
-	        String codigoRetorno = (String) call.invoke(param);
+	    	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+        	result.getSucesso("SetTipoOcorrencia", param, this.getClass());
 
-	        return codigoRetorno;
+            return result.getCodigoretorno();
+
 	    }
 	    catch(Exception e)
 	    {
