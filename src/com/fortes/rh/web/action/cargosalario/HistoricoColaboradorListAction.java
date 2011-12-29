@@ -394,7 +394,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		}
 		catch (Exception e)
 		{
-			addActionMessage(e.getMessage());
+			String message = "Não foi possível excluir a Situação.";
+			
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+			
+			addActionMessage(message);
 		}
 
 		return historicoColaboradorList();
