@@ -20,6 +20,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -28,6 +29,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.AreaInteresseFactory;
@@ -38,6 +40,7 @@ import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientLotacao;
 import com.fortes.web.tags.CheckBox;
@@ -857,7 +860,11 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		assertEquals(8, areasIdsJaConfiguradas.length);
 	}
 	
-	public void testFindIdsAreasFilhas() {
+	public void testFindIdsAreasFilhas() 
+	{
+		Usuario usuarioLogado = UsuarioFactory.getEntity(1L);
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
 		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(1L);
 		areaAvo.setNome("areaAvo");
 		
@@ -877,14 +884,16 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areaFilha2.setNome("areaFilha2");
 		areaFilha2.setAreaMae(areaMae2);
 		
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasDoResponsavel").with(eq(usuarioLogado.getId()), eq(empresa.getId())).will(returnValue(new Long[]{areaAvo.getId()}));
 		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaAvo.getId()))).will(returnValue(Arrays.asList(areaMae1.getId(), areaMae2.getId())));
 		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaMae1.getId(), areaMae2.getId()))).will(returnValue(Arrays.asList(areaFilha1.getId(), areaFilha2.getId())));
 		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaFilha1.getId(), areaFilha2.getId()))).will(returnValue(new ArrayList<Long>()));
 		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaFilha1.getId(), areaFilha2.getId()))).will(returnValue(new ArrayList<Long>()));
 		
-		Collection<Long> areaIds = areaOrganizacionalManager.findIdsAreasFilhas(Arrays.asList(areaAvo.getId()));
+		Long[] areaIds = areaOrganizacionalManager.findIdsAreasResponsaveis(usuarioLogado, empresa.getId());
+		CollectionUtil<Long> cUtil = new CollectionUtil<Long>();
+		Collection<Long> areasIds = cUtil.convertArrayToCollection(areaIds);
 		
-		assertEquals(Arrays.asList(areaMae1.getId(), areaMae2.getId(), areaFilha1.getId(), areaFilha2.getId()), areaIds);
-		
+		assertEquals(Arrays.asList(areaMae1.getId(), areaMae2.getId(), areaFilha1.getId(), areaFilha2.getId(), areaAvo.getId()), areasIds);
 	}
 }

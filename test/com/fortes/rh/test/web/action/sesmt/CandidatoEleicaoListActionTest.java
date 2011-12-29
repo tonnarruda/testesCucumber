@@ -93,7 +93,7 @@ public class CandidatoEleicaoListActionTest extends MockObjectTestCase
     	action.setCandidatoEleicao(candidatoEleicao);
     	
     	eleicaoManager.expects(once()).method("findByIdProjection").will(returnValue(action.getEleicao()));
-    	colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(candidatoEleicao.getCandidato().getId())).will(returnValue(candidatoEleicao.getCandidato()));
+    	colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(candidatoEleicao.getCandidato().getId()), ANYTHING).will(returnValue(candidatoEleicao.getCandidato()));
     	
     	action.imprimirComprovanteInscricao();
     }

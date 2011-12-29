@@ -162,7 +162,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 			if(usuarioLogado.getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
 			{
-				areasIds = findIdsAreasResponsaveis(usuarioLogado);
+				areasIds = areaOrganizacionalManager.findIdsAreasResponsaveis(usuarioLogado, getEmpresaSistema().getId());
 				
 				if(areasIds.length == 0)
 					areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
@@ -180,19 +180,6 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	
-	}
-
-	private Long[] findIdsAreasResponsaveis(Usuario usuarioLogado) 
-	{
-		Long[] areasIds = areaOrganizacionalManager.findIdsAreasDoResponsavel(usuarioLogado.getId(), getEmpresaSistema().getId());
-		if(areasIds.length > 0)
-		{
-			CollectionUtil<Long> cUtil = new CollectionUtil<Long>();
-			Collection<Long> areasIdsFilhas = areaOrganizacionalManager.findIdsAreasFilhas(cUtil.convertArrayToCollection(areasIds));
-			areasIdsFilhas.addAll(cUtil.convertArrayToCollection(areasIds));
-			areasIds = (Long[]) areasIdsFilhas.toArray(new Long[areasIdsFilhas.size()]);
-		}
-		return areasIds;
 	}
 
 	public String delete() throws Exception

@@ -149,7 +149,7 @@ public class EpiManagerTest extends MockObjectTestCase
 		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 		areas.add(areaOrganizacional);
 
-		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaborador.getId()), ANYTHING).will(returnValue(colaborador));
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(eq(empresa.getId()), eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areas)).will(returnValue(areas));
 

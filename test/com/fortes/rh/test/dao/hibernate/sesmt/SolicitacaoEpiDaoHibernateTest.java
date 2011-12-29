@@ -19,6 +19,7 @@ import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -266,6 +267,13 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		colaborador.setNome("José");
 		colaboradorDao.save(colaborador);
 
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2010));
+		historicoColaboradorDao.save(historicoColaborador);
+		
+
 		Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
 		
@@ -294,10 +302,16 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Date dataIni=DateUtil.criarDataMesAno(01, 02, 2010);
 		Date dataMeio=DateUtil.criarDataMesAno(13, 03, 2010);
 		Date dataFim=DateUtil.criarDataMesAno(01, 04, 2010);
-		
+
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome("José");
 		colaboradorDao.save(colaborador);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2010));
+		historicoColaboradorDao.save(historicoColaborador);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);

@@ -147,7 +147,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	String respostas = "PG01_RO01_PG02_RO02_PG03_RN10_RCTESETE_PG04_RSTETETETETE";
 
-    	historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
+    	historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
 
     	DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -230,7 +230,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	colaboradorManager.expects(once()).method("respondeuEntrevista").with(ANYTHING);
 
-    	historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
+    	historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
     	colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(eq(questionario.getId()), eq(colaborador.getId()), ANYTHING).will(returnValue(colaboradorQuestionario));
 
     	colaboradorRespostaDao.expects(once()).method("removeByColaboradorQuestionario").with(eq(colaboradorQuestionario.getId()));
@@ -273,7 +273,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	String respostas = "PG01_RO01_PG02_RO02_PG03_RN10_RCTESETE_PG04_RSTETETETETE";
 
-    	historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
+    	historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
 
     	colaboradorQuestionario.setRespondida(true);
 

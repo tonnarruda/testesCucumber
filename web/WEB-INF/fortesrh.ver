@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.65.57" data="29/12/2011"><![CDATA[
+		- VEGA SESMT> Cadastros > Extintores: ter a opção para imprimir a listagem de extintores cadastrados. 
+	]]></Versao>
 	<Versao id="1.1.64.56" data="19/12/2011"><![CDATA[
 		- R&S > Cadastros > Candidatos > Anexos: Nova opção de seleção do Tipo do Documento.
 		- R&S > Painel de Indicadores: Novo indicador de índice de eficiência do processo seletivo.

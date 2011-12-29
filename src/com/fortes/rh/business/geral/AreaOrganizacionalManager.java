@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
@@ -67,5 +68,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId);
 	public void deleteAreaOrganizacional(Long[] areaIds) throws Exception;
 	public String findCodigoACDuplicado(Long empresaId);
-	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds);
+	public Long[] findIdsAreasResponsaveis(Usuario usuarioLogado, Long empresaId);
 }

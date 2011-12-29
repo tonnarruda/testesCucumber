@@ -83,7 +83,7 @@ public class ProntuarioManagerTest extends MockObjectTestCase
 		Collection<Prontuario> prontuarios= new ArrayList<Prontuario>();
 		prontuarios.add(ProntuarioFactory.getEntity(55L));
 
-		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaborador.getId()), ANYTHING).will(returnValue(colaborador));
 		prontuarioDao.expects(once()).method("findByColaborador").with(eq(colaborador)).will(returnValue(prontuarios));
 		realizacaoExameManager.expects(once()).method("findRealizadosByColaborador").will(returnValue(new ArrayList<RealizacaoExame>()));
 		fichaMedicaManager.expects(once()).method("findByColaborador").will(returnValue(new ArrayList<FichaMedica>()));

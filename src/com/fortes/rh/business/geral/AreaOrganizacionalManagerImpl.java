@@ -22,6 +22,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -655,7 +656,20 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findCodigoACDuplicado(empresaId);
 	}
 
-	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds) 
+	public Long[] findIdsAreasResponsaveis(Usuario usuarioLogado, Long empresaId) 
+	{
+		Long[] areasIds = findIdsAreasDoResponsavel(usuarioLogado.getId(), empresaId);
+		if(areasIds.length > 0)
+		{
+			CollectionUtil<Long> cUtil = new CollectionUtil<Long>();
+			Collection<Long> areasIdsFilhas = findIdsAreasFilhas(cUtil.convertArrayToCollection(areasIds));
+			areasIdsFilhas.addAll(cUtil.convertArrayToCollection(areasIds));
+			areasIds = (Long[]) areasIdsFilhas.toArray(new Long[areasIdsFilhas.size()]);
+		}
+		return areasIds;
+	}
+	
+	private Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds) 
 	{
 		Collection<Long> areasFilhasIds = new ArrayList<Long>();
 		Collection<Long> filhasIds = getDao().findIdsAreasFilhas(areasIds);
@@ -668,5 +682,4 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		
 		return areasFilhasIds;
 	}
-
 }
