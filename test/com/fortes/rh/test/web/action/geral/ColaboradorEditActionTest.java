@@ -165,6 +165,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
 		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
 		colaborador.setCamposExtras(camposExtras);
 		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(colaborador));
@@ -180,6 +181,29 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		camposExtrasManager.expects(once()).method("findById").with(eq(colaborador.getCamposExtras().getId())).will(returnValue(camposExtras));
 		
 		assertEquals("success", action.prepareUpdateInfoPessoais());
+	}
+	
+	public void testPrepareUpdateInfoPessoaisEmpresaErrada() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		action.setEmpresaSistema(empresa);
+		
+		Empresa empresaColab = EmpresaFactory.getEmpresa(44L);
+		empresaColab.setNome("babau");
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresaColab);
+		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(colaborador));
+		
+		assertEquals("success", action.prepareUpdateInfoPessoais());
+		assertTrue(((String)action.getActionMessages().toArray()[0]).equals("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa babau para alterar suas informações."));
+	}
+	
+	public void testPrepareUpdateInfoPessoaisEmpresaSemColaborador() throws Exception
+	{
+		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(null));
+		
+		assertEquals("success", action.prepareUpdateInfoPessoais());
+		assertTrue(((String)action.getActionMessages().toArray()[0]).equals("Você não tem Colaborador cadastrado"));
 	}
 	
 	public void testPreparePerformanceFuncional()

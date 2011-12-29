@@ -340,11 +340,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			addActionMessage("Você não tem Colaborador cadastrado");
 		}
+		else if( ! colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))//isso é muito importante, evita que o cara edite o colaborador com os dados errado no AC (Francisco Barroso)
+		{
+			addActionMessage("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa " + colaborador.getEmpresaNome() + " para alterar suas informações.");
+			colaborador = null;
+		}
 		else
 		{
 			escolaridades = new Escolaridade();
 			estadosCivis = new EstadoCivil();
-
+			
 			cidades = cidadeManager.find(new String[]{"uf.id"}, new Object[]{colaborador.getEndereco().getUf().getId()}, new String[]{"nome"});
 			estados = estadoManager.findAll(new String[]{"sigla"});
 			
@@ -354,10 +359,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			if(habilitaCampoExtra && colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
 				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
-
+			
 			session.put("SESSION_IDIOMA", candidatoIdiomaManager.montaListCandidatoIdioma(colaborador.getId()));
 			session.put("SESSION_EXPERIENCIA", experienciaManager.findByColaborador(colaborador.getId()));
-			session.put("SESSION_FORMACAO", formacaoManager.findByColaborador(colaborador.getId()));
+			session.put("SESSION_FORMACAO", formacaoManager.findByColaborador(colaborador.getId()));			
 		}
 
 		return Action.SUCCESS;
