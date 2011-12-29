@@ -20,6 +20,7 @@ import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
@@ -118,7 +119,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public String getNome(Long id);
 	public Colaborador findByIdHistoricoProjection(Long id);
 	public Collection<CheckBox> populaCheckBox(Long empresaId);
-	public Colaborador findByIdDadosBasicos(Long id);
+	public Colaborador findByIdDadosBasicos(Long id, Integer statusRetornoAC);
 	public Collection<Colaborador> findByAreaOrganizacionalIdsNome(Collection<Long> areasIds, Colaborador colaborador);
 	
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds);

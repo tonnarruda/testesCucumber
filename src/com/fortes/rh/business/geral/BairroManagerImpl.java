@@ -26,6 +26,11 @@ public class BairroManagerImpl extends GenericManagerImpl<Bairro, BairroDao> imp
 	{
 		return getDao().list(page, pagingSize, bairro);
 	}
+	
+	public Integer getCount(Bairro bairro)
+	{
+		return getDao().getCount(bairro);
+	}
 
 	public boolean existeBairro(Bairro bairro)
 	{

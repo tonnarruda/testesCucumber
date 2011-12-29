@@ -14,4 +14,5 @@ public interface BairroDao extends GenericDao<Bairro>
 	Collection<Bairro> getBairrosByIds(Long[] bairroIds);
 	Bairro findByIdProjection(Long id);
 	Collection<String> findBairrosNomes();
+	Integer getCount(Bairro bairro);
 }

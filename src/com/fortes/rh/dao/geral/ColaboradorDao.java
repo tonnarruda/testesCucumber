@@ -68,7 +68,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findAniversariantes(Long[] empresaIds, int mes, Long[] areaIds, Long[] estabelecimentoIds);
 	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos);
 	public Colaborador findByIdHistoricoProjection(Long id);
-	public Colaborador findByIdDadosBasicos(Long id);
+	public Colaborador findByIdDadosBasicos(Long id, Integer statusRetornoAC);
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds);
 	public Colaborador findByIdHistoricoAtual(Long colaboradorId);
 	public Integer countSemMotivos(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);

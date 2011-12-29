@@ -64,7 +64,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     		candidatoId = colaboradorId;
     	else
     	{
-    		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorId);
+    		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaboradorId);
     		areaOrganizacional = historicoColaborador.getAreaOrganizacional();
     		estabelecimento = historicoColaborador.getEstabelecimento();
     	}

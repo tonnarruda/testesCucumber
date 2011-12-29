@@ -2738,7 +2738,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador);
 		
-		assertEquals(colaborador, colaboradorDao.findByIdDadosBasicos(colaborador.getId()));
+		assertEquals(colaborador, colaboradorDao.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO));
 	}
 
 	public void testFindAllSelects() {

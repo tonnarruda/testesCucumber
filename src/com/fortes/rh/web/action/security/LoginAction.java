@@ -8,6 +8,7 @@ import com.fortes.rh.config.SetupListener;
 import com.fortes.rh.config.backup.RunAntScript;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
@@ -27,6 +28,9 @@ public class LoginAction extends MyActionSupport
 	{
 		try
 		{
+			if (SecurityUtil.hasLoggedUser())
+				return "index";
+			
 			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 //			if(parametrosDoSistema.getAtualizadoSucesso() != null)
 //				atualizadoSucesso = parametrosDoSistema.getAtualizadoSucesso();

@@ -263,7 +263,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public String update() throws Exception
 	{
 		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
-
+		
 		CollectionUtil<AvaliacaoTurma> cUtil = new CollectionUtil<AvaliacaoTurma>();
 		avaliacaoTurmas = cUtil.convertArrayStringToCollection(AvaliacaoTurma.class, avaliacaoTurmasCheck);
 		

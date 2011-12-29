@@ -32,7 +32,7 @@ public class BairroListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		this.setTotalSize(bairroManager.getCount());
+		this.setTotalSize(bairroManager.getCount(bairro));
 
 		bairros = bairroManager.list(this.getPage(), this.getPagingSize(), bairro);
 		estados = estadoManager.findAll(new String[]{"sigla"});

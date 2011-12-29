@@ -738,7 +738,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	//Construtor usado em findByIdDadosBasicos
-	public Colaborador (Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, AreaOrganizacional areaOrganizacional, Cargo cargo)
+	public Colaborador (Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, Integer statusRetornoAC, AreaOrganizacional areaOrganizacional, Cargo cargo)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -751,6 +751,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			this.setFaixaSalarial(new FaixaSalarial());
 
 		this.getFaixaSalarial().setCargo(cargo);
+
+		if(this.historicoColaborador == null)
+			this.setHistoricoColaborador(new HistoricoColaborador());
+
+		this.historicoColaborador.setStatus(statusRetornoAC);
 	}
 
 	public Colaborador(String nome, String nomeComercial, Long id, Long empresaId, String empresaNome)

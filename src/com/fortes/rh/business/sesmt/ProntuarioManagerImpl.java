@@ -9,6 +9,7 @@ import com.fortes.rh.business.pesquisa.FichaMedicaManager;
 import com.fortes.rh.dao.sesmt.ProntuarioDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -35,7 +36,7 @@ public class ProntuarioManagerImpl extends GenericManagerImpl<Prontuario, Prontu
 
 	public ProntuarioRelatorio findRelatorioProntuario(Empresa empresa, Colaborador colaborador) throws ColecaoVaziaException
 	{
-		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId());
+		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO);
 
 		Collection<Prontuario> prontuarios = findByColaborador(colaborador);
 		CollectionUtil<Prontuario> collectionUtil = new CollectionUtil<Prontuario>();

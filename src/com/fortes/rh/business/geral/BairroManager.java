@@ -17,4 +17,5 @@ public interface BairroManager extends GenericManager<Bairro>
 	public Bairro findByIdProjection(Long id);
 	Collection<Bairro> findByCidade(Cidade cidade);
 	String getArrayBairros();
+	Integer getCount(Bairro bairro);
 }

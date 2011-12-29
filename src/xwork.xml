@@ -145,6 +145,7 @@
       <result name="success">/WEB-INF/pages/acegilogin.jsp</result>
       <result name="input" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
       <result name="not_registered" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
+      <result name="index" type="redirect">index.action</result>
     </action>
     <action name="updateConf" class="com.fortes.rh.web.action.security.LoginAction" method="updateConf">
       <result name="success" type="freemarker">/WEB-INF/pages/bdError.ftl</result>

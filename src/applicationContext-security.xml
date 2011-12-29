@@ -183,7 +183,7 @@
 				/js/**=ROLE_ANONYMOUS,ROLE_USER
 				/webwork/**=ROLE_ANONYMOUS,ROLE_USER
 				/backup/**=ROLE_USER
-				/login.action*=ROLE_ANONYMOUS
+				/login.action*=ROLE_ANONYMOUS,ROLE_USER
 				/logout.action*=ROLE_ANONYMOUS,ROLE_USER
 				/concurrentSessionError.jsp*=ROLE_ANONYMOUS
 				/codigoOperacional.action*=ROLE_ANONYMOUS,ROLE_USER

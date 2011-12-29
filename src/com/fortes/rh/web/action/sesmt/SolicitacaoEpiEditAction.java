@@ -8,6 +8,8 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
+import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
@@ -145,7 +147,11 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			this.colaborador = colaboradorManager.findByIdDadosBasicos(solicitacaoEpi.getColaborador().getId());
+			this.colaborador = colaboradorManager.findByIdDadosBasicos(solicitacaoEpi.getColaborador().getId(), null);
+			
+			if(solicitacaoEpi.isEntregue() && colaborador.getHistoricoColaborador().getStatus() != StatusRetornoAC.CONFIRMADO)
+				throw new FortesException("Não é permitido entregar um EPI para um colaborador ainda não confirmado no AC Pessoal.");
+			
 			solicitacaoEpi.setCargo(colaborador.getFaixaSalarial().getCargo());
 			solicitacaoEpi.setEmpresa(getEmpresaSistema());
 
@@ -153,6 +159,13 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			
 			addActionMessage("Solicitação gravada com sucesso.");
 			return SUCCESS;
+		}
+		catch (FortesException e)
+		{
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			prepare();
+			return INPUT;
 		}
 		catch (Exception e)
 		{

@@ -13,6 +13,7 @@ import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -67,12 +68,13 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 			this.data = new Date();
 	}
 
-	public SolicitacaoEpi(Long id, Date data, boolean entregue, String colaboradorNome, String cargoNome)
+	public SolicitacaoEpi(Long id, Date data, boolean entregue, String colaboradorNome, int statusRetornoAC, String cargoNome)
 	{
 		setId(id);
 		this.data = data;
 		this.entregue = entregue;
 		setColaboradorNome(colaboradorNome);
+		setColaboradorStatus(statusRetornoAC);
 		setCargoNome(cargoNome);
 	}
 
@@ -113,6 +115,17 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 			this.colaborador = new Colaborador();
 
 		this.colaborador.setNome(colaboradorNome);
+	}
+	
+	private void setColaboradorStatus(int colaboradorStatus)
+	{
+		if (this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		if (this.colaborador.getHistoricoColaborador() == null)
+			this.colaborador.setHistoricoColaborador(new HistoricoColaborador());
+		
+		this.colaborador.getHistoricoColaborador().setStatus(colaboradorStatus);
 	}
 
 	public Cargo getCargo()

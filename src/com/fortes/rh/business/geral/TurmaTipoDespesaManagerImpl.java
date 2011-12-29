@@ -10,13 +10,13 @@ public class TurmaTipoDespesaManagerImpl extends GenericManagerImpl<TurmaTipoDes
 {
 	public void save(Collection<TurmaTipoDespesa> turmaTipoDespesas, Long turmaId) 
 	{
-		for (TurmaTipoDespesa turmaTipoDespesa : turmaTipoDespesas) {
-			if(turmaTipoDespesa != null)
-			{
-				turmaTipoDespesa.setProjectionTurmaId(turmaId);
-				save(turmaTipoDespesa);
-			}
-		}
+//		for (TurmaTipoDespesa turmaTipoDespesa : turmaTipoDespesas) {
+//			if(turmaTipoDespesa != null)
+//			{
+//				turmaTipoDespesa.setProjectionTurmaId(turmaId);
+//				save(turmaTipoDespesa);
+//			}
+//		}
 	}
 
 	public void removeByTurma(Long turmaId) 

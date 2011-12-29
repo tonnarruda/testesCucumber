@@ -16,6 +16,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.exception.RemoveCascadeException;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -129,7 +130,7 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 
 	public FichaEpiRelatorio findImprimirFicha(Empresa empresaSistema, Colaborador colaborador)
 	{
-		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId());
+		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO);
 		FichaEpiRelatorio fichaEpiRelatorio = new FichaEpiRelatorio(colaborador, empresaSistema);
 
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativa(empresaSistema.getId(), AreaOrganizacional.TODAS, null);

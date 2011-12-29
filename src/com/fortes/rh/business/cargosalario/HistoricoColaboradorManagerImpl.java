@@ -95,6 +95,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		return getDao().getHistoricoAtual(colaboradorId, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
 	}
+	
+	public HistoricoColaborador getHistoricoAtualOuFuturo(Long colaboradorId)
+	{
+		return getDao().getHistoricoAtual(colaboradorId, TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO);
+	}
 
 	private Collection<Colaborador> distinctColaboradores(Collection<HistoricoColaborador> historicoTmp)
 	{
@@ -1047,11 +1052,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void setMensagemManager(MensagemManager mensagemManager)
 	{
 		this.mensagemManager = mensagemManager;
-	}
-
-	public HistoricoColaborador getHistoricoAtualOuFuturo(Long colaboradorId)
-	{
-		return getDao().getHistoricoAtual(colaboradorId, TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO);
 	}
 	
 	public HistoricoColaborador getHistoricoContratacaoAguardando(Long colaboradorId)

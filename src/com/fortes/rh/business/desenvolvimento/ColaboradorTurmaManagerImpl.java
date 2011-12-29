@@ -558,17 +558,11 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			{
 				if(ccTemp.getColaborador().getId().equals(colaboradoresId[i]) && !turmaId.equals(ccTemp.getTurma().getId()))
 				{
-					if (msgAlert.equals(""))
-						msgAlert = "Os seguintes colaboradores já estão inscritos neste curso: <br>";
-					
 					msgAlert += ccTemp.getColaborador().getNome() + "  (Turma: " + ccTemp.getTurma().getDescricao() + ")<br>";
 					break;
 				}
 			}
 		}
-		
-		if (!msgAlert.equals(""))
-			msgAlert += "<br>Deseja realmente incluir os colaboradores nesta turma?";
 		
 		return msgAlert;
 	}

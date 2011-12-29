@@ -48,12 +48,18 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if (count)
 			hql = new StringBuilder("select count(se.id) ");
 		else
-			hql = new StringBuilder("select new SolicitacaoEpi(se.id, se.data, se.entregue, co.nome, ca.nome) ");
+			hql = new StringBuilder("select new SolicitacaoEpi(se.id, se.data, se.entregue, co.nome, hc.status, ca.nome) ");
 
 		hql.append("from SolicitacaoEpi se ");
-		hql.append("left join se.colaborador co ");
 		hql.append("left join se.cargo ca ");
+		hql.append("left join se.colaborador co ");
+		hql.append("left join co.historicoColaboradors hc ");
 		hql.append("where se.empresa.id = :empresaId ");
+		hql.append("	and hc.data = (");
+		hql.append("		select max(hc2.data) ");
+		hql.append("		from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = co.id ");
+		hql.append("		) ");
 
 		if (StringUtils.isNotBlank(matriculaBusca))
 			hql.append("and lower(co.matricula) like :matricula ");
@@ -71,7 +77,6 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			hql.append("order by se.data DESC, co.nome ASC ");
 
 		Query query = getSession().createQuery(hql.toString());
-
 
 		if (dataIni != null && dataFim != null)
 		{

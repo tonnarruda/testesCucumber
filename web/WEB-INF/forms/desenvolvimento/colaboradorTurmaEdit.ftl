@@ -6,6 +6,7 @@
 	<title>Incluir Colaboradores na Turma - ${colaboradorTurma.turma.descricao}</title>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 	</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
@@ -14,6 +15,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 
 	<script type='text/javascript'>
 		function populaAreas(empresaId)
@@ -63,8 +65,23 @@
 
 		function colabNaOutraTurma(msg)
 		{
+			//newConfirm(msg, function() { document.formColab.submit(); });
 			if (msg != "")
-				newConfirm(msg, function() { document.formColab.submit(); });
+				$('<div>' + msg + '</div>').dialog({title: 'Os seguintes colaboradores já estão inscritos neste curso.<br />Deseja realmente incluí-los nesta turma?',
+													modal: true, 
+													height: 400,
+													width: 700,
+													buttons: [
+													    {
+													        text: "Sim",
+													        click: function() { document.formColab.submit(); }
+													    },
+													    {
+													        text: "Não",
+													        click: function() { $(this).dialog("close"); }
+													    }
+													] 
+													});
 			else 
 				document.formColab.submit();
 		}

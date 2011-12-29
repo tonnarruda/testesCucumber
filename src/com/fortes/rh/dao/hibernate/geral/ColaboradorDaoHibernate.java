@@ -2352,29 +2352,36 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) query.uniqueResult();
 	}
 
-	public Colaborador findByIdDadosBasicos(Long id)
+	public Colaborador findByIdDadosBasicos(Long id, Integer statusRetornoAC)
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, ao, ca) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, hc.status, ao, ca) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as ca ");
 		hql.append("	where co.id = :id ");
-		hql.append("	and hc.status = :status ");
+		
+		if(statusRetornoAC != null)	
+			hql.append("	and hc.status = :status ");
+		
 		hql.append("	and hc.data = (");
 		hql.append("		select max(hc2.data) ");
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
+		
+		if(statusRetornoAC != null)	
+			hql.append("		 and hc2.status = :status ");
+		
 		hql.append("		) ");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setDate("hoje", new Date());
 		query.setLong("id", id);
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(statusRetornoAC != null)	
+			query.setInteger("status", statusRetornoAC);
 
 		return (Colaborador) query.uniqueResult();
 	}

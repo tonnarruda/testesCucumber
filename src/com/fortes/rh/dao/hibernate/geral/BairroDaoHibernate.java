@@ -53,6 +53,23 @@ public class BairroDaoHibernate extends GenericDaoHibernate<Bairro> implements B
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Bairro.class));
 		return criteria.list();
 	}
+	
+	public Integer getCount(Bairro bairro) {
+		Criteria criteria = getSession().createCriteria(Bairro.class, "b");
+		criteria.createCriteria("b.cidade","c");
+
+		// Nome
+		if(bairro != null && bairro.getNome() != null && !bairro.getNome().trim().equals(""))
+			criteria.add(Expression.like("b.nome", "%"+ bairro.getNome() +"%").ignoreCase() );
+
+		// Cidade
+		if(bairro != null && bairro.getCidade() != null && bairro.getCidade().getId() != null)
+			criteria.add(Expression.eq("c.id", bairro.getCidade().getId()));
+		
+		criteria.setProjection(Projections.rowCount());
+
+		return (Integer) criteria.list().get(0);
+	}
 
 	public boolean existeBairro(Bairro bairro)
 	{
@@ -167,5 +184,7 @@ public class BairroDaoHibernate extends GenericDaoHibernate<Bairro> implements B
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return criteria.list();
 	}
+
+
 
 }

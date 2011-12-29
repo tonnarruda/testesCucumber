@@ -13,6 +13,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.CandidatoEleicaoManager;
 import com.fortes.rh.business.sesmt.EleicaoManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.relatorio.LinhaCedulaEleitoralRelatorio;
@@ -161,7 +162,7 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 	public String imprimirComprovanteInscricao() throws Exception
 	{
 		eleicao = eleicaoManager.findByIdProjection(eleicao.getId());
-		colaborador = colaboradorManager.findByIdDadosBasicos(candidatoEleicao.getCandidato().getId());
+		colaborador = colaboradorManager.findByIdDadosBasicos(candidatoEleicao.getCandidato().getId(), StatusRetornoAC.CONFIRMADO);
 		
 		parametros = RelatorioUtil.getParametrosRelatorio("", getEmpresaSistema(), "");
 		candidatoEleicaos = new ArrayList<CandidatoEleicao>();
