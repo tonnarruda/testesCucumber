@@ -350,8 +350,10 @@
 		<div class="fieldGraph">
 			<h1>Salário por Área Organizacional</h1>
 		    <div id="salarioAreas" class="graph"></div>
+			<#-- 
 			<br clear="all"/>
-			<button class="btnImprimir" onclick="imprimirGrafico(this);"></button>
+			<button class="btnImprimir" onclick="imprimirGrafico(this);" style="margin:5px;"></button>
+			-->
 		</div>
 		
 		<div style="clear: both"></div>
@@ -376,8 +378,10 @@
 		
 		<div id="box">
 			<div id='pieBox'></div>
+			<#-- 
 			<br clear="all"/>
-			<button class="btnImprimir" onclick="imprimirGrafico(this);"></button>
+			<button class="btnImprimir" onclick="imprimirGrafico(this);"></button> 
+			-->
 			<div style="clear: both"></div>
 		</div>
 		<div id="aviso"></div>
