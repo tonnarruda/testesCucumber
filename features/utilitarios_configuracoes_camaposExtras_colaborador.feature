@@ -20,7 +20,7 @@ Funcionalidade: Campos Extras para Colaborador
     Quando eu marco "configuracaoCampoExtras[1].ativoColaborador"
     E eu preencho "configuracaoCampoExtras[1].titulo" com "Placa do veículo"
     E eu clico no botão "Gravar"
-    Então eu devo ver "Essas configurações serão aplicadas para dodas as empresas!"
+    Então eu devo ver "Essas configurações serão aplicadas para todas as empresas!"
     Quando eu aperto "OK"
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
@@ -66,7 +66,7 @@ Funcionalidade: Campos Extras para Colaborador
     Quando eu desmarco "configuracaoCampoExtras[1].ativoColaborador"
     Quando eu desmarco "Habilitar campos extras no cadastro de Colaboradores"
     E eu clico no botão "Gravar"
-    Então eu devo ver "Essas configurações serão aplicadas para dodas as empresas!"
+    Então eu devo ver "Essas configurações serão aplicadas para todas as empresas!"
     Quando eu aperto "OK"
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"

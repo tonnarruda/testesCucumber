@@ -10,8 +10,9 @@ Funcionalidade: Relatório de PPRA e LTCAT
     E eu clico no botão "Relatorio"
     E eu devo ver o alert "Selecione o relatório a ser gerado." e clico no ok
 
-    Então eu marco "Gerar PPRA"
-    E eu marco "Gerar LTCAT"
+    Então eu marco "Exibir Composição do SESMT"
+    E eu marco "PPRA"
+    E eu marco "LTCAT"
     E eu clico no botão "Relatorio"
 
     Então eu devo ver o alert do valida campos e clico no ok

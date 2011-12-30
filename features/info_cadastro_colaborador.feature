@@ -76,10 +76,10 @@ Funcionalidade: Cadastrar Colaborador
     Então eu devo ver "Colaborador não pode ser inserido em áreas que possuem sub-áreas."
     
     Quando eu preencho "Nome" com "Silva Barbosa"
-    E eu preencho o campo (JS) "CEP" com "60320-100"
+    E eu preencho o campo (JS) "CEP" com "60320-104"
     E eu saio do campo "CEP"
     E eu espero o campo "Logradouro" ficar habilitado
-    Então o campo "Logradouro" deve conter "Rua Haroldo Torres"
+    Então o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501/502 a 1"
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "cidade" deve ter "Fortaleza" selecionado
     E o campo "bairroNome" deve conter "São Gerardo"

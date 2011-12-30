@@ -18,6 +18,6 @@ Funcionalidade: Relatório de Exames Previstos
     E eu marco "desenvolvimento"
     E eu marco "jackson"
 
-    E eu marco "Agrupar por Área Organizacional"
+    E eu seleciono "Área Organizacional" de "agruparPor"
     E eu marco "Não imprimir afastado(s)"
     E eu marco "Imprimir desligado(s)"

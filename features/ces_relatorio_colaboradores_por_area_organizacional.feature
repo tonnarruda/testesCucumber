@@ -7,7 +7,7 @@ Funcionalidade: Relatório de Colaboradores por Áreas Organizacionais
     Dado que exista o estabelecimento "estabelecimento"
     Dado que exista a área organizacional "geral"
     Quando eu acesso o menu "C&S > Relatórios > Colaboradores por Área Organizacional"
-    Então eu devo ver o título "Relatório de Áreas Organizacionais"
+    Então eu devo ver o título "Colaboradores por Área Organizacional"
     E eu clico no botão "Relatorio"
     E eu devo ver "Não existem dados para o filtro informado."
 
