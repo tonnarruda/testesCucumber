@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.65.57" data="29/12/2011"><![CDATA[
+	<Versao id="1.1.65.57" data="30/12/2011"><![CDATA[
 		- Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto: Adição de novos campos no relatório.
 		- SESMT > Cadastros > Extintores: Nova opção de impressão da listagem de extintores cadastrados.
 		- SESMT > Relatórios > Exames Previstos: Nova opção de agrupamento por estabelecimento.
