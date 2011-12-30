@@ -48,7 +48,7 @@
 	</variable>
 
 		<group  name="grpEstabelecimento" >
-			<groupExpression><![CDATA[$F{estabelecimento.id}]]></groupExpression>
+			<groupExpression><![CDATA[$F{estabelecimento.nome}]]></groupExpression>
 			<groupHeader>
 			<band height="17"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -72,7 +72,7 @@
 			</groupFooter>
 		</group>
 		<group  name="grpAreaOrganizacional" >
-			<groupExpression><![CDATA[]]></groupExpression>
+			<groupExpression><![CDATA[$F{areaOrganizacional.descricao}]]></groupExpression>
 			<groupHeader>
 			<band height="17"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >

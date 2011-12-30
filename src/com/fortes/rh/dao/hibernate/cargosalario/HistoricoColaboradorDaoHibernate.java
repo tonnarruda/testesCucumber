@@ -999,7 +999,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		else if (origemSituacao.equals("AC"))
 			hql.append("and hc.motivo = :motivo ");
 
-		hql.append("order by es.nome,ao.nome,co.nome ");
+		hql.append("order by es.nome, ao.nome, hc.data desc");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
