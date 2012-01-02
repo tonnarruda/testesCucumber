@@ -125,6 +125,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	
 	public void enviaEmailAniversariantes() throws Exception
 	{
@@ -1435,6 +1436,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		experienciaManager.removeColaborador(colaborador);
 		configuracaoNivelCompetenciaManager.removeColaborador(colaborador);
 		configuracaoNivelCompetenciaColaboradorManager.removeColaborador(colaborador);
+		colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador);
 		
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
 		
@@ -2115,5 +2117,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado) {
 		return getDao().findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, desligado);
+	}
+
+	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) {
+		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
 	}
 }

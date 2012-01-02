@@ -147,7 +147,7 @@ public class DateUtilTest extends TestCase
 	public void testGetAno()
 	{
 		//todo ano tem que mudar ehhehehe
-		assertEquals("Test 1", "2011", DateUtil.getAno());
+		assertEquals("Test 1", "2012", DateUtil.getAno());
 	}	
 	
 	public void testGetIntervalDateString()
