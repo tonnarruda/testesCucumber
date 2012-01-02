@@ -7,14 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.JDBCException;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.exception.SQLGrammarException;
-import org.hibernate.util.JDBCExceptionReporter;
 import org.postgresql.util.PSQLException;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.NestedRuntimeException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.acesso.PerfilManager;

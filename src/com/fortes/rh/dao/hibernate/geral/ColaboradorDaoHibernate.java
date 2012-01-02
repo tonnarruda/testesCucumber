@@ -3697,28 +3697,33 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId) {
 
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
-		criteria.createCriteria("c.empresa", "e");
-
-		ProjectionList p = Projections.projectionList().create();
-
-		p.add(Projections.property("c.id"), "id");
-		p.add(Projections.property("c.nome"), "nome");
-		p.add(Projections.property("e.nome"), "empresaNome");
-
-		criteria.setProjection(p);
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as co ");
+		hql.append("inner join co.empresa as e ");
+		hql.append("where hc.data = ( ");
+		hql.append("   select max(hc2.data) ");
+		hql.append("   from HistoricoColaborador as hc2 ");
+		hql.append("   where hc2.colaborador.id = co.id ");
+		hql.append("   and hc2.status = :status ");
+		hql.append("  ) ");
+		hql.append("and (co.codigoAC is null or co.codigoAC = '') ");
+		hql.append("and co.naoIntegraAc = :naoIntegraAc ");
 		
-		criteria.add(Expression.or(Expression.isNull("c.codigoAC"), Expression.eq("c.codigoAC","")));
-		criteria.add(Expression.eq("naoIntegraAc", false));
-		
-		if(empresaId != null)
-			criteria.add(Expression.eq("e.id", empresaId));
+		if (empresaId != null)
+			hql.append("and co.empresa.id = :empresaId ");
 
-		criteria.addOrder(Order.asc("e.nome"));
-		criteria.addOrder(Order.asc("c.nome"));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		hql.append("order by e.nome, co.nome ");
 		
-		return criteria.list();	
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setBoolean("naoIntegraAc", false);
+		if (empresaId != null)
+			query.setLong("empresaId", empresaId);
+		
+		return query.list();
 	}
 
 	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId)
