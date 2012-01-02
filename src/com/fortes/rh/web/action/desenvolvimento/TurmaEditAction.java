@@ -199,8 +199,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
 		
-		tipoDespesas = tipoDespesaManager.findAll();
-		tipoDespesasJSON = StringUtil.toJSON(tipoDespesas, null);
+		tipoDespesas = tipoDespesaManager.findAll(new String[] {"descricao"});
+		//tipoDespesasJSON = StringUtil.toJSON(tipoDespesas, null);
 		
 		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(getEmpresaSistema().getId(), true);
 		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");

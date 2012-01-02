@@ -1,4 +1,5 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -72,7 +73,16 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="relatorioAdmitidos.action" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="0" onchange="populaEstabelecimento(this.value);populaArea(this.value);" disabled="!compartilharColaboradores"/>
+		<#if compartilharColaboradores>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="0" onchange="populaEstabelecimento(this.value);populaArea(this.value);"/>
+		<#else>
+			<@ww.hidden id="empresa" name="empresa.id"/>
+			<li class="wwgrp">
+				<label>Empresa:</label><br />
+				<strong><@authz.authentication operation="empresaNome"/></strong>
+			</li>
+		</#if>
+		
 		<div>Período*:</div>
 		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft"/>

@@ -1,4 +1,5 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
@@ -55,7 +56,16 @@
 	<@ww.actionerror />
 	
 	<@ww.form name="form" action="relatorioAniversariantes.action" method="POST">
-		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);"  disabled="!compartilharColaboradores"/>
+		<#if compartilharColaboradores>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);"/>
+		<#else>
+			<@ww.hidden id="empresa" name="empresa.id"/>
+			<li class="wwgrp">
+				<label>Empresa:</label><br />
+				<strong><@authz.authentication operation="empresaNome"/></strong>
+			</li>
+		</#if>
+		
 		<@ww.select label="Mês" name="mes" list="meses"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>

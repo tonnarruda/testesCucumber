@@ -179,7 +179,16 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="listFiltro.action" onsubmit="validaForm();" method="POST">
 			
-			<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" cssStyle="width: 147px;" listKey="id" listValue="nome" required="true" onchange="populaEstabelecimentosAreasGrupos(this.value)"  disabled="!compartilharColaboradores"/>
+			<#if compartilharColaboradores>
+				<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" cssStyle="width: 147px;" listKey="id" listValue="nome" required="true" onchange="populaEstabelecimentosAreasGrupos(this.value)"/>
+			<#else>
+				<@ww.hidden id="empresa" name="empresaId"/>
+				<li class="wwgrp">
+					<label>Empresa:</label><br />
+					<strong><@authz.authentication operation="empresaNome"/></strong>
+				</li>
+			</#if>
+			
 			<@ww.textfield label="Colaborador" name="colaborador.nome" id="colaborador" cssStyle="width: 300px;"/>
 			<@ww.select id="filtrarPor" label="Filtrar Colaboradores por" name="filtrarPor" list=r"#{'1':'Área Organizacional', '2':'Grupo Ocupacional'}" onchange="filtrarOpt(this.value);"/>
 
