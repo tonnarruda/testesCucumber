@@ -168,8 +168,8 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			StringBuilder token = new StringBuilder();
 			Call call = acPessoalClient.createCall(empresa, token, null, "GetRemuneracoesVariaveis");
 
-			QName qname = new QName("urn:AcPessoal", "TRemuneracaoVariavel");
-			QName qnameArr = new QName("urn:AcPessoal", "TRemuneracoesVariaveis");
+			QName qname = new QName("urn:UnTypesPessoalWebService", "TRemuneracaoVariavel");
+			QName qnameArr = new QName("urn:UnTypesPessoalWebService", "TRemuneracoesVariaveis");
 
 			call.registerTypeMapping(TRemuneracaoVariavel.class, qname , new org.apache.axis.encoding.ser.BeanSerializerFactory(TRemuneracaoVariavel.class, qname ), new org.apache.axis.encoding.ser.BeanDeserializerFactory(TRemuneracaoVariavel.class, qname));
 			call.registerTypeMapping(TRemuneracaoVariavel[].class, qnameArr ,
