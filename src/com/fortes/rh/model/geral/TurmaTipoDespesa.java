@@ -41,7 +41,7 @@ public class TurmaTipoDespesa extends AbstractModel implements Serializable
 		this.despesa = despesa;
 	}
 	public void setDespesa(String despesa) {
-		this.despesa = Double.valueOf(despesa.replace(".","").replace(",","."));
+		this.despesa = Double.parseDouble(despesa);
 	}
 	public void setProjectionTipoDespesaId(Long tipoDespesaId) {
 		

@@ -148,9 +148,8 @@
 				</#if>
 				
 				// valida os multicheckboxes
-				arrayMultiplos = ['cargosCheck', 'areasCheck', 'conhecimentosCheck'];
 				arrayObrigatorios = arrayObrigatorios.map(function(item) {
-					return $.inArray(item, arrayMultiplos) ? item : '@' + item;
+					return (item == 'areasCheck' || item ==  'cargosCheck' || item == 'conhecimentosCheck') ? '@' + item : item;
 				});
 				
 				// valida os itens que constituem subformularios

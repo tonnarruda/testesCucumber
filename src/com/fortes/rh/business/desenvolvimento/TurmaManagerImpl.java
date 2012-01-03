@@ -19,7 +19,6 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -94,7 +93,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		this.transactionManager = transactionManager;
 	}
 
-	public void salvarTudo(Turma turma, String[] diasCheck, Collection<TurmaTipoDespesa> turmaTipoDespesas) throws Exception
+	public void salvarTudo(Turma turma, String[] diasCheck, Map<Long, String> turmaTipoDespesas) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -114,14 +113,14 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 	}
 
-	public void updateTudo(Turma turma, String[] diasCheck, Collection<TurmaTipoDespesa> turmaTipoDespesas) throws Exception
+	public void updateTudo(Turma turma, String[] diasCheck, Map<Long, String> despesas) throws Exception
 	{
 		boolean result = false;
 		
 		try
 		{
 			turmaTipoDespesaManager.removeByTurma(turma.getId());
-			turmaTipoDespesaManager.save(turmaTipoDespesas, turma.getId());
+			turmaTipoDespesaManager.save(despesas, turma.getId());
 			update(turma);
 			result = colaboradorPresencaManager.existPresencaByTurma(turma.getId());
 			if(!result)
