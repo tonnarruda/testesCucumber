@@ -31,6 +31,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.business.geral.ColaboradorManagerImpl;
+import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -108,6 +109,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock avaliacaoDesempenhoManager;
     private Mock configuracaoNivelCompetenciaManager;
     private Mock configuracaoNivelCompetenciaColaboradorManager;
+    private Mock colaboradorPeriodoExperienciaAvaliacaoManager;
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
 	private List<CandidatoIdioma> idiomas;
@@ -168,6 +170,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
 		configuracaoNivelCompetenciaColaboradorManager = new Mock(ConfiguracaoNivelCompetenciaColaboradorManager.class);
 		colaboradorManager.setConfiguracaoNivelCompetenciaColaboradorManager((ConfiguracaoNivelCompetenciaColaboradorManager) configuracaoNivelCompetenciaColaboradorManager.proxy());
+		
+		colaboradorPeriodoExperienciaAvaliacaoManager = new Mock(ColaboradorPeriodoExperienciaAvaliacaoManager.class);
+		colaboradorManager.setColaboradorPeriodoExperienciaAvaliacaoManager((ColaboradorPeriodoExperienciaAvaliacaoManager) colaboradorPeriodoExperienciaAvaliacaoManager.proxy());
 		
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
@@ -735,6 +740,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	historicoColaboradorManager.expects(once()).method("removeColaborador").with(eq(colaborador.getId())).isVoid();
     	configuracaoNivelCompetenciaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
+    	colaboradorPeriodoExperienciaAvaliacaoManager.expects(once()).method("removeConfiguracaoAvaliacaoPeriodoExperiencia").with(eq(colaborador)).isVoid();
     	colaboradorDao.expects(once()).method("remove").with(eq(colaborador.getId())).isVoid();
     	colaboradorDao.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
     	acPessoalClientColaborador.expects(once()).method("remove").with(ANYTHING, ANYTHING).will(returnValue(true));

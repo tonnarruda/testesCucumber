@@ -912,23 +912,6 @@ ALTER TABLE historicocandidato ADD CONSTRAINT historicocandidato_etapaseletiva_f
 CREATE SEQUENCE historicocandidato_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 
-CREATE TABLE documentoanexo (
-    id bigint NOT NULL,
-    descricao character varying(100),
-    data date,
-    observacao text,
-    url character varying(120),
-    origem character(1) NOT NULL,
-    origemid bigint,
-    etapaseletiva_id bigint,
-    tipodocumento_id bigint
-);
-ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_pkey PRIMARY KEY (id);
-ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_etapaseletiva_fk FOREIGN KEY (etapaseletiva_id) REFERENCES etapaseletiva(id);
-ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_tipodocumento_fk FOREIGN KEY (tipodocumento_id) REFERENCES tipodocumento(id);
-CREATE SEQUENCE documentoanexo_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
-
-
 CREATE TABLE empresabds (
     id bigint NOT NULL,
     nome character varying(100),
@@ -2499,6 +2482,22 @@ CREATE TABLE tipoDocumento (
 ALTER TABLE tipoDocumento ADD CONSTRAINT tipoDocumento_pkey PRIMARY KEY(id);
 CREATE SEQUENCE tipoDocumento_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
+CREATE TABLE documentoanexo (
+    id bigint NOT NULL,
+    descricao character varying(100),
+    data date,
+    observacao text,
+    url character varying(120),
+    origem character(1) NOT NULL,
+    origemid bigint,
+    etapaseletiva_id bigint,
+    tipodocumento_id bigint
+);
+ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_pkey PRIMARY KEY (id);
+ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_etapaseletiva_fk FOREIGN KEY (etapaseletiva_id) REFERENCES etapaseletiva(id);
+ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_tipodocumento_fk FOREIGN KEY (tipodocumento_id) REFERENCES tipodocumento(id);
+CREATE SEQUENCE documentoanexo_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
 CREATE TABLE composicaoSesmt (
 	id bigint NOT NULL,
 	empresa_id bigint,
@@ -2513,3 +2512,22 @@ ALTER TABLE composicaoSesmt ADD CONSTRAINT composicaoSesmt_pkey PRIMARY KEY(id);
 ALTER TABLE composicaoSesmt ADD CONSTRAINT composicaoSesmt_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE composicaoSesmt_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
+CREATE TABLE tipoDespesa (
+	id bigint NOT NULL,
+	descricao character varying(50)
+);
+
+ALTER TABLE tipoDespesa ADD CONSTRAINT tipoDespesa_pkey PRIMARY KEY(id);
+CREATE SEQUENCE tipoDespesa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE turmatipodespesa (
+    id bigint NOT NULL,
+	turma_id bigint NOT NULL,
+    tipodespesa_id bigint NOT NULL,
+    despesa double precision
+);
+
+ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turmaTipoDespesa_pkey PRIMARY KEY(id);
+ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma__tipodespesa_fk FOREIGN KEY (turma_id) REFERENCES turma(id);
+ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma_tipodespesa_tipodespesas_fk FOREIGN KEY (tipodespesa_id) REFERENCES tipodespesa(id);
+CREATE SEQUENCE turmaTipoDespesa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;

@@ -212,6 +212,8 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (501,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (464, 'ROLE_IMPORTA_CADASTROS', 'Importar Cadastros', '/geral/empresa/prepareImportarCadastros.action', 8, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (38, 'ROLE_UTI_SENHA', 'Alterar Senha', '/acesso/usuario/prepareUpdateSenhaUsuario.action', 2, true, 37);
 
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (529, 'LIST_SEM_CODIGOAC', 'Apaga Reg. sem Código AC', '/geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action', 9, true, 37);
+
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (41, 'ROLE_CONFIGURACAO', 'Configurações', '#', 3, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (485, 'ROLE_CAMPO_EXTRA', 'Campos Extras', '/geral/configuracaoCampoExtra/prepareUpdate.action', 2, true, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (502, 'ROLE_UTI_CONFIGURACAO', 'Sistema', '/geral/parametrosDoSistema/prepareUpdate.action', 1, true, 41);
@@ -266,7 +268,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (66, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (425, 'ROLE_CAD_PRONTUARIO', 'Registro de Prontuário', '/sesmt/prontuario/list.action', 6, true, 386);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (428, 'ROLE_CAD_FICHAMEDICA', 'Fichas Médicas', '/sesmt/fichaMedica/listPreenchida.action', 7, true, 386);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (433, 'ROLE_CAD_SOLICITACAOEPI', 'Solicitação de EPIs', '/sesmt/solicitacaoEpi/list.action', 2, true, 386);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (435, 'ROLE_CAD_ENTREGAEPI', 'Entrega de EPIs', '/sesmt/solicitacaoEpi/list.action', 3, true, 386);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (435, 'ROLE_CAD_ENTREGAEPI', 'Entrega de EPIs', '/sesmt/solicitacaoEpi/list.action?entrega=true', 3, true, 386);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (441, 'ROLE_CAD_AFASTAMENTO', 'Afastamentos', '/sesmt/colaboradorAfastamento/list.action', 8, true, 386);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (443, 'ROLE_CAT', 'Ficha de Investigação de Acidente(CAT)', '/sesmt/cat/list.action', 9, true, 386);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (457, 'ROLE_CAD_EXTINTOR', 'Extintores', '#', 4, true, 386);
@@ -474,6 +476,7 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 486);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 487);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 488);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 489);
+insert into perfil_papel(perfil_id, papeis_id) values (1, 529);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 530);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 532);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 533);
@@ -21133,9 +21136,15 @@ insert into migrations values('20111209093538');
 insert into migrations values('20111215113451');
 insert into migrations values('20111219110034');
 insert into migrations values('20111215144558');
+insert into migrations values('20111219162029');
+insert into migrations values('20111226095930');
+insert into migrations values('20111226143453');
+insert into migrations values('20111227091605');
+insert into migrations values('20111219110034');
+
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.64.56', '', '25', false,false, 2, '1.1.47.1', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.65.57', '', '25', false, false, 2, '1.1.47.1', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'

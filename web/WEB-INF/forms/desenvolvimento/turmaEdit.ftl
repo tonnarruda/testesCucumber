@@ -4,12 +4,16 @@
 <head>
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
+	@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+	
+	#formDialog { display: none; }
 </style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -27,6 +31,12 @@
 		<#assign somenteLeitura = true/>
 	<#else>
 		<#assign somenteLeitura = false/>
+	</#if>
+
+	<#if turma.custo?exists>
+		<#assign custo = turma.custo/>
+	<#else>
+		<#assign custo = ''/>
 	</#if>
 
 	<script type="text/javascript">
@@ -67,6 +77,11 @@
 					elemento.checked = true;
 			}
 		}
+		
+		function abrirPopupDespesas() 
+		{
+			$('#formDialog').dialog({ modal: true, width: 480 });
+		}
 	</script>
 <@ww.head/>
 
@@ -79,8 +94,15 @@
 		<@ww.textfield required="true" label="Descrição" name="turma.descricao" id="desc" cssStyle="width: 637px;" maxLength="100"/>
 		<@ww.textfield label="Horário" maxLength="20" name="turma.horario" id="horario" liClass="liLeft" />
 		<@ww.textfield required="true" label="Instrutor" size="55" name="turma.instrutor" id="inst" maxLength="100" liClass="liLeft"/>
-		<@ww.textfield required="true" label="Custo (R$)" size="12" name="turma.custo" id="custo" cssClass="moeda" cssStyle="width:85px; text-align:right;" maxLength="12" />
-
+		<li id="wwgrp_custo">
+			<div class="wwlbl" id="wwlbl_custo">
+				<label class="desc" for="custo"> Custo (R$):<span class="req">* </span></label>
+			</div> 
+			<div class="wwctrl" id="wwctrl_custo">
+				<input type="text" id="custo" name="turma.custo" value="${custo}" class="moeda" maxlength="12" size="12" style="width:85px; text-align:right;"/>
+				<a href="javascript:;" onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
+			</div> 
+		</li>
 		<@ww.textfield label="Instituição" maxLength="100" name="turma.instituicao" id="instituicao"  cssStyle="width: 437px;" liClass="liLeft"/>
 		<@ww.textfield label="Qtd. Prevista de Participantes" name="turma.qtdParticipantesPrevistos" id="qtdParticipantesPrevistos" cssStyle="width:30px; text-align:right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 		<@ww.select label="Realizada" name="turma.realizada" list=r"#{true:'Sim',false:'Não'}"/>
@@ -124,6 +146,21 @@
 			</#list>
 		</#if>
 
+		<div id="formDialog" title="Detalhamento dos custos">
+			<br />
+			
+			Total: 
+			<input type="text" id="totalCustos" class="moeda" maxlength="12" size="12" style="width:85px; text-align:right;"/>
+			
+			<br /><br />
+			
+			<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
+				<@display.column property="descricao" title="Descrição"/>
+				<@display.column title="Custo (R$)" style="text-align: center; width:150px;">
+					<input type="text" style="text-align:right; width: 110px;border:1px solid #7E9DB9;"/>
+				</@display.column>
+			</@display.table>
+		</div>
 	</@ww.form>
 
 	<#if planoTreinamento>

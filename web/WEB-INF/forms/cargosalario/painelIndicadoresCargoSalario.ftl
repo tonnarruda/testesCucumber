@@ -1,5 +1,6 @@
 <html>
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<head>
 	<@ww.head/>
@@ -317,9 +318,20 @@
 			}
 		  
 			function imprimirGrafico(btn) {
-				var iframe = $(btn).parent().find("iframe").eq(0).attr('name');
-				eval('window.' + iframe + '.focus()');
-				eval('window.' + iframe + '.print()');
+				var iframe = $(btn).parent().find("iframe").eq(0);
+				
+				var cabecalho = "<div id='cabecalhoGrafico' style='font-size:10px;font-family:arial,sans-serif;'>"
+				cabecalho += "Fortes RH<br />";
+				cabecalho += "Impresso por <@authz.authentication operation="nome"/><br/>";
+				cabecalho += "Licenciado para: <@authz.authentication operation="empresaNome"/>";
+				cabecalho += "</div>";
+				
+				iframe.contents().find('body').prepend(cabecalho);
+				
+				eval('window.' + iframe.attr('name') + '.focus()');
+				eval('window.' + iframe.attr('name') + '.print()');
+				
+				iframe.contents().find('body').find('#cabecalhoGrafico').remove();
 			}
 		</script>
 		
@@ -350,10 +362,8 @@
 		<div class="fieldGraph">
 			<h1>Salário por Área Organizacional</h1>
 		    <div id="salarioAreas" class="graph"></div>
-			<#-- 
 			<br clear="all"/>
 			<button class="btnImprimir" onclick="imprimirGrafico(this);" style="margin:5px;"></button>
-			-->
 		</div>
 		
 		<div style="clear: both"></div>
@@ -378,10 +388,8 @@
 		
 		<div id="box">
 			<div id='pieBox'></div>
-			<#-- 
 			<br clear="all"/>
 			<button class="btnImprimir" onclick="imprimirGrafico(this);"></button> 
-			-->
 			<div style="clear: both"></div>
 		</div>
 		<div id="aviso"></div>

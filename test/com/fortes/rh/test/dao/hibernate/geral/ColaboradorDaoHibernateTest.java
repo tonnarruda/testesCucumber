@@ -4221,11 +4221,19 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
 		empresa2 = empresaDao.save(empresa2);
 		
+		Date data = DateUtil.criarDataMesAno(1, 1, 2012);
+		
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaborador1.setEmpresa(empresa1);
 		colaborador1.setCodigoAC("1");
 		colaborador1.setNaoIntegraAc(false);
 		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador hist1 = new HistoricoColaborador();
+		hist1.setData(data);
+		hist1.setColaborador(colaborador1);
+		hist1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hist1);
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaborador2.setEmpresa(empresa1);
@@ -4233,11 +4241,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setNaoIntegraAc(true);
 		colaboradorDao.save(colaborador2);
 		
+		HistoricoColaborador hist2 = new HistoricoColaborador();
+		hist2.setData(data);
+		hist2.setColaborador(colaborador2);
+		hist2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hist2);
+		
 		Colaborador colaborador5 = ColaboradorFactory.getEntity();
 		colaborador5.setEmpresa(empresa1);
 		colaborador5.setCodigoAC("");
 		colaborador5.setNaoIntegraAc(false);
 		colaboradorDao.save(colaborador5);
+		
+		HistoricoColaborador hist5 = new HistoricoColaborador();
+		hist5.setData(data);
+		hist5.setColaborador(colaborador5);
+		hist5.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hist5);
 		
 		Colaborador colaborador3 = ColaboradorFactory.getEntity();
 		colaborador3.setEmpresa(empresa1);
@@ -4245,11 +4265,35 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador3.setNaoIntegraAc(false);
 		colaboradorDao.save(colaborador3);
 		
+		HistoricoColaborador hist3 = new HistoricoColaborador();
+		hist3.setData(data);
+		hist3.setColaborador(colaborador3);
+		hist3.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hist3);
+		
 		Colaborador colaborador4 = ColaboradorFactory.getEntity();
 		colaborador4.setEmpresa(empresa2);
 		colaborador4.setNaoIntegraAc(false);
 		colaborador4.setCodigoAC(null);
 		colaboradorDao.save(colaborador4);
+		
+		HistoricoColaborador hist4 = new HistoricoColaborador();
+		hist4.setData(data);
+		hist4.setColaborador(colaborador4);
+		hist4.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hist4);
+
+		Colaborador colaborador6 = ColaboradorFactory.getEntity();
+		colaborador6.setEmpresa(empresa2);
+		colaborador6.setNaoIntegraAc(false);
+		colaborador6.setCodigoAC(null);
+		colaboradorDao.save(colaborador6);
+		
+		HistoricoColaborador hist6 = new HistoricoColaborador();
+		hist6.setData(data);
+		hist6.setColaborador(colaborador6);
+		hist6.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaboradorDao.save(hist6);
 		
 		assertEquals(2, colaboradorDao.findSemCodigoAC(empresa1.getId()).size());
 		assertEquals(1, colaboradorDao.findSemCodigoAC(empresa2.getId()).size());

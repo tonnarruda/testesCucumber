@@ -152,6 +152,9 @@
     <property name="configuracaoNivelCompetenciaColaboradorManager">
       <ref bean="configuracaoNivelCompetenciaColaboradorManager" />
     </property>
+    <property name="colaboradorPeriodoExperienciaAvaliacaoManager">
+      <ref bean="colaboradorPeriodoExperienciaAvaliacaoManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

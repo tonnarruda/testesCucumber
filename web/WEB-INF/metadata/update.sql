@@ -18391,3 +18391,41 @@ ALTER TABLE documentoanexo ADD CONSTRAINT documentoanexo_tipodocumento_fk FOREIG
 insert into migrations values('20111215144558');--.go
 
 update parametrosdosistema set appversao = '1.1.64.56';--.go
+
+-- versao 1.1.65.57
+
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (529, 'LIST_SEM_CODIGOAC', 'Apaga Reg. sem Código AC', '/geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action', 9, true, 37);--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 529); --.go
+
+update curso set cargahoraria = cargahoraria*60;--.go
+insert into migrations values('20111219162029');--.go
+
+CREATE TABLE tipoDespesa (
+	id bigint NOT NULL,
+	descricao character varying(50)
+);--.go
+
+ALTER TABLE tipoDespesa ADD CONSTRAINT tipoDespesa_pkey PRIMARY KEY(id);--.go
+CREATE SEQUENCE tipoDespesa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20111226095930');--.go
+
+CREATE TABLE turmatipodespesa (
+    id bigint NOT NULL,
+	turma_id bigint NOT NULL,
+    tipodespesa_id bigint NOT NULL,
+    despesa double precision
+);--.go
+
+ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turmaTipoDespesa_pkey PRIMARY KEY(id);--.go
+ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma__tipodespesa_fk FOREIGN KEY (turma_id) REFERENCES turma(id);--.go
+ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma_tipodespesa_tipodespesas_fk FOREIGN KEY (tipodespesa_id) REFERENCES tipodespesa(id);--.go
+CREATE SEQUENCE turmaTipoDespesa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20111226143453');--.go
+
+update papel set url='/sesmt/solicitacaoEpi/list.action?entrega=true' where id=435; --.go
+insert into migrations values('20111227091605');--.go
+
+update parametrosdosistema set acversaowebservicecompativel = '1.1.47.1';--.go
+insert into migrations values('20111219110034');--.go
+
+update parametrosdosistema set appversao = '1.1.65.57';--.go

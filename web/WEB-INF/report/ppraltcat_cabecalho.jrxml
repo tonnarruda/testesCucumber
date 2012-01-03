@@ -299,7 +299,7 @@ DE RISCOS AMBIENTAIS]]></text>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CABECALHO}.getAmbienteDescricao()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($P{CABECALHO}.getAmbienteDescricao().length() > 1000 ? $P{CABECALHO}.getAmbienteDescricao().substring(0, 1000) + "..." : $P{CABECALHO}.getAmbienteDescricao())]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
