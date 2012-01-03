@@ -14,6 +14,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -80,8 +81,68 @@
 		
 		function abrirPopupDespesas() 
 		{
-			$('#formDialog').dialog({ modal: true, width: 480 });
+			var camposOcultos = '';
+			$('#formDialog').dialog({ 	modal: true, 
+										width: 500,
+										height: 360,
+										buttons: 
+										[
+										    {
+										        text: "Limpar",
+										        click: function() { $('#totalCustos').text('0,00'); $('.despesa').val('');  }
+										    },
+										    {
+										        text: "Gravar",
+										        click: function() { $(this).dialog("close"); }
+										    }
+										] ,
+										open: function(event, ui) 
+										{ 
+											$('#totalCustos').text(float2moeda(somaDespesas()));
+											$('#valoresDespesas').empty();
+										},
+										close: function(event, ui) 
+										{ 
+											$('#custo').val(float2moeda(somaDespesas()));
+										
+											$('.despesa').each(function (i, item) {
+											    var valor = $(item).val();
+											    var nome = $(item).attr('name');
+											    
+											    if (valor && valor != '')
+											        camposOcultos += "<input type='hidden' name='" + nome + "' value='" + moeda2float(valor) + "'/>";
+											});
+										
+											$('#valoresDespesas').html(camposOcultos);
+										}
+									});
 		}
+		
+		function somaDespesas() 
+		{
+			var total = 0;
+
+			$('.despesa').each(function (i, item) {
+			    var valor = $(item).val();
+			    if (valor && valor != '')
+			        total += moeda2float(valor);
+			});
+			
+			return total;
+		}
+		
+		$(function() {
+			$('.despesa').blur(function() {
+				var valor = somaDespesas();
+				$('#totalCustos').text(float2moeda(valor));
+			});
+			
+			$('.despesa').blur();
+			
+			<#list turmaTipoDespesas as turmaTipoDespesa>
+				$('#despesa_' + ${turmaTipoDespesa.tipoDespesa.id}).val('${turmaTipoDespesa.despesa}');
+			</#list>
+		});
 	</script>
 <@ww.head/>
 
@@ -99,7 +160,7 @@
 				<label class="desc" for="custo"> Custo (R$):<span class="req">* </span></label>
 			</div> 
 			<div class="wwctrl" id="wwctrl_custo">
-				<input type="text" id="custo" name="turma.custo" value="${custo}" class="moeda" maxlength="12" size="12" style="width:85px; text-align:right;"/>
+				<input type="text" id="custo" name="turma.custo" value="${custo}" class="moeda" maxlength="12" size="12" style="width:90px; text-align:right;"/>
 				<a href="javascript:;" onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
 			</div> 
 		</li>
@@ -138,6 +199,9 @@
 		<@ww.hidden name="planoTreinamento" />
 		<@ww.hidden name="avaliacaoRespondida" />
 		
+		<#-- Mantem os campos ocultos com os valores das despesas vindos do popup -->
+		<div id="valoresDespesas"></div>
+		
 		<#if somenteLeitura>
 			<#list avaliacaoTurmasCheckList as avaliacaoCheck>
 				<#if avaliacaoCheck.selecionado>
@@ -145,22 +209,6 @@
 				</#if>
 			</#list>
 		</#if>
-
-		<div id="formDialog" title="Detalhamento dos custos">
-			<br />
-			
-			Total: 
-			<input type="text" id="totalCustos" class="moeda" maxlength="12" size="12" style="width:85px; text-align:right;"/>
-			
-			<br /><br />
-			
-			<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
-				<@display.column property="descricao" title="Descrição"/>
-				<@display.column title="Custo (R$)" style="text-align: center; width:150px;">
-					<input type="text" style="text-align:right; width: 110px;border:1px solid #7E9DB9;"/>
-				</@display.column>
-			</@display.table>
-		</div>
 	</@ww.form>
 
 	<#if planoTreinamento>
@@ -172,6 +220,22 @@
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>
 		<button onclick="window.location='${urlVoltar}'" class="btnVoltar"></button>
+	</div>
+	
+	<div id="formDialog" title="Detalhamento dos custos">
+		<br />
+		
+		Total R$  
+		<span id="totalCustos"></span>
+		
+		<br /><br />
+		
+		<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
+			<@display.column property="descricao" title="Descrição"/>
+			<@display.column title="Custo (R$)" style="text-align: center; width:120px;">
+				<input type="text" id="despesa_${tipoDespesa.id}"  name="despesas[${tipoDespesa.id}]" class="despesa moeda" maxlength="12" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
+			</@display.column>
+		</@display.table>
 	</div>
 	
 	<script type="text/javascript">

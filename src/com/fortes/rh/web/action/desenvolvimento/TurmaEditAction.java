@@ -56,7 +56,6 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
@@ -101,8 +100,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private Collection<Empresa> empresas;
 	private Collection<TipoDespesa> tipoDespesas;
 	private Collection<TurmaTipoDespesa> turmaTipoDespesas;
-	
-	private String tipoDespesasJSON;
 	
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -171,7 +168,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private Certificado certificado;
 	private char realizada;
 
-
+	private Map<Long, String> despesas = new HashMap<Long, String>();
+	
 	public AvaliacaoTurma getAvaliacaoTurma()
 	{
 		return avaliacaoTurma;
@@ -198,9 +196,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			turma = (Turma) turmaManager.findByIdProjection(turma.getId());
 
 		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
-		
+	
 		tipoDespesas = tipoDespesaManager.findAll(new String[] {"descricao"});
-		//tipoDespesasJSON = StringUtil.toJSON(tipoDespesas, null);
 		
 		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(getEmpresaSistema().getId(), true);
 		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");
@@ -222,7 +219,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if (!turma.getEmpresa().getId().equals(getEmpresaSistema().getId()))
 			throw new Exception("Permissão negada!");
 
-		turmaTipoDespesas = turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId()); 
+		turmaTipoDespesas = turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId());
 
 		avaliacaoRespondida = turmaManager.verificaAvaliacaoDeTurmaRespondida(turma.getId());
 
@@ -255,7 +252,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		avaliacaoTurmas = cUtil.convertArrayStringToCollection(AvaliacaoTurma.class, avaliacaoTurmasCheck);
 		
 		turma.setAvaliacaoTurmas(avaliacaoTurmas);
-		turmaManager.salvarTudo(turma, diasCheck, turmaTipoDespesas);
+		turmaManager.salvarTudo(turma, diasCheck, despesas);
 
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -268,7 +265,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		avaliacaoTurmas = cUtil.convertArrayStringToCollection(AvaliacaoTurma.class, avaliacaoTurmasCheck);
 		
 		turma.setAvaliacaoTurmas(avaliacaoTurmas);
-		turmaManager.updateTudo(turma, diasCheck, turmaTipoDespesas);
+		turmaManager.updateTudo(turma, diasCheck, despesas);
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -1217,14 +1214,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.tipoDespesas = tipoDespesas;
 	}
 
-	public String getTipoDespesasJSON() {
-		return tipoDespesasJSON;
-	}
-
-	public void setTipoDespesasJSON(String tipoDespesasJSON) {
-		this.tipoDespesasJSON = tipoDespesasJSON;
-	}
-
 	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
 		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
 	}
@@ -1235,5 +1224,13 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void setTurmaTipoDespesas(Collection<TurmaTipoDespesa> turmaTipoDespesas) {
 		this.turmaTipoDespesas = turmaTipoDespesas;
+	}
+
+	public Map<Long, String> getDespesas() {
+		return despesas;
+	}
+
+	public void setDespesas(Map<Long, String> despesas) {
+		this.despesas = despesas;
 	}
 }

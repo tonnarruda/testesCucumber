@@ -1,6 +1,7 @@
 package com.fortes.rh.business.geral;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
@@ -8,15 +9,24 @@ import com.fortes.rh.model.geral.TurmaTipoDespesa;
 
 public class TurmaTipoDespesaManagerImpl extends GenericManagerImpl<TurmaTipoDespesa, TurmaTipoDespesaDao> implements TurmaTipoDespesaManager
 {
-	public void save(Collection<TurmaTipoDespesa> turmaTipoDespesas, Long turmaId) 
+	public void save(Map<Long, String> despesas, Long turmaId) 
 	{
-//		for (TurmaTipoDespesa turmaTipoDespesa : turmaTipoDespesas) {
-//			if(turmaTipoDespesa != null)
-//			{
-//				turmaTipoDespesa.setProjectionTurmaId(turmaId);
-//				save(turmaTipoDespesa);
-//			}
-//		}
+		TurmaTipoDespesa turmaTipoDespesa;
+		Double valor;
+		
+		for (Map.Entry<Long, String> despesa : despesas.entrySet())
+		{
+			valor = Double.parseDouble(despesa.getValue());
+			
+			if (valor > 0)
+			{
+				turmaTipoDespesa = new TurmaTipoDespesa();
+				turmaTipoDespesa.setProjectionTipoDespesaId(despesa.getKey());
+				turmaTipoDespesa.setDespesa(valor);
+				turmaTipoDespesa.setProjectionTurmaId(turmaId);
+				save(turmaTipoDespesa);
+			}
+		}
 	}
 
 	public void removeByTurma(Long turmaId) 
