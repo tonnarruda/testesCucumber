@@ -31,13 +31,7 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		//foi retirado a paginação pois não dava para ordenar(Francisco, 03/06/09)
-		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativa));
-
-		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
-		areasTmp = areaOrganizacionalManager.montaFamilia(areasTmp);
-		areaOrganizacionals = areaOrganizacionalManager.getDistinctAreaMae(areasTmp, areaOrganizacionals);
-		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
+		getAreasOrdenadas();
 
 		integradoAC = getEmpresaSistema().isAcIntegra();
 
@@ -46,7 +40,8 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	
 	public String imprimirLista() throws Exception
 	{
-		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativa));
+		getAreasOrdenadas();
+		
 		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Areas Organizacionais", getEmpresaSistema(),"Ativas: " + BooleanUtil.getDescricao(ativa));
 		
 		if (areaOrganizacionals.isEmpty()) 
@@ -57,6 +52,16 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 		}
 		
 		return Action.SUCCESS;
+	}
+	
+	private void getAreasOrdenadas() throws Exception {
+		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativa));
+		
+		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
+		areasTmp = areaOrganizacionalManager.montaFamilia(areasTmp);
+		areaOrganizacionals = areaOrganizacionalManager.getDistinctAreaMae(areasTmp, areaOrganizacionals);
+		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
 	}
 
 	public String delete() throws Exception
