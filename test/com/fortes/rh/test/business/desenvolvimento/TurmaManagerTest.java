@@ -357,7 +357,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").will(returnValue(false));
 		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
 		
-		Collection<TurmaTipoDespesa> turmaTipoDespesas = new ArrayList<TurmaTipoDespesa>();
+		Map<Long, String> turmaTipoDespesas = new HashMap<Long, String>();
 		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
 		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
 
@@ -387,7 +387,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		//gera exception
 		turmaManager.setColaboradorPresencaManager(null);
 
-		Collection<TurmaTipoDespesa> turmaTipoDespesas = new ArrayList<TurmaTipoDespesa>();
+		Map<Long, String> turmaTipoDespesas = new HashMap<Long, String>();
 		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
 		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
 		
