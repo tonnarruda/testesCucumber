@@ -805,6 +805,15 @@ jQuery.fn.insertAtCaret = function (tagName) {
   	$('.moeda').live('focus', function() {
 		$(this).priceFormat();
 	});
+  	
+  	$('.hora').live('focus', function() {
+			$(this).priceFormat({
+		    	prefix: '',
+		    	centsSeparator: ':',
+		    	thousandsSeparator: ''
+			});
+	});
+  	
 	jQuery(".currency").each(function(){
 		if(jQuery(this).val() != "")
 		{
