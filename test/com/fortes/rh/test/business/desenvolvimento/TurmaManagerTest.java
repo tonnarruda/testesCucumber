@@ -343,7 +343,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		assertNotNull(ex);
 	}
 
-	public void testUpdateTudo()
+	public void testUpdateTurmaDias()
 	{
 		Turma turma = TurmaFactory.getEntity(1L);
 		String[] diasCheck = new String[]{"1"};
@@ -356,10 +356,6 @@ public class TurmaManagerTest extends MockObjectTestCase
 		colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").will(returnValue(false));
 		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
 		
-		Map<Long, String> turmaTipoDespesas = new HashMap<Long, String>();
-		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
-		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
-
 		Exception ex = null;
 		try
 		{
@@ -373,7 +369,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		assertNull(ex);
 	}
 
-	public void testUpdateTudoException()
+	public void testUpdateTurmaDiasException()
 	{
 		Turma turma = TurmaFactory.getEntity(1L);
 		String[] diasCheck = new String[]{"1"};
@@ -385,10 +381,6 @@ public class TurmaManagerTest extends MockObjectTestCase
 		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
 		//gera exception
 		turmaManager.setColaboradorPresencaManager(null);
-
-		Map<Long, String> turmaTipoDespesas = new HashMap<Long, String>();
-		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
-		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
 		
 		Exception ex = null;
 		try

@@ -27,8 +27,8 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private CursoManager cursoManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private ColaboradorPresencaManager colaboradorPresencaManager;
-
 	private TurmaManager turmaManager;
+
 	private JFreeChart chart;
 	private IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
 
@@ -46,6 +46,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private String grfTreinamento="";
 	private String grfFrequencia="";
 	private String grfDesempenho="";
+	private String grfCusto="";
 
 	public String list() throws Exception
 	{
@@ -58,6 +59,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		prepareGraficoFrequencia();
 		prepareGraficoCumprimentoPlanoTreinamento();
 		prepareGraficoDesempenho();
+		prepareGraficoCustoCursoPorTipoDespesa();
 
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setHeader("Pragma", "no-cache");
@@ -115,6 +117,14 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		grfTreinamento = StringUtil.toJSON(grfCumprimentoPlanoTreinamento, null);
 	}
 
+	private void prepareGraficoCustoCursoPorTipoDespesa()
+	{
+		Collection<DataGrafico> grfCustoTipoDespesa = new ArrayList<DataGrafico>();
+		grfCustoTipoDespesa.add(new DataGrafico(null, "Não detalhado", 22220.00 - 20000.00, ""));
+		grfCustoTipoDespesa.add(new DataGrafico(null, "Coffee", 750.00, ""));
+		grfCustoTipoDespesa.add(new DataGrafico(null, "Sala", 1202.00, ""));
+		grfCusto = StringUtil.toJSON(grfCustoTipoDespesa, null);
+	}
 	
 	public void setCursoManager(CursoManager cursoManager)
 	{
@@ -194,6 +204,10 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	public String getGrfDesempenho() {
 		return grfDesempenho;
+	}
+
+	public String getGrfCusto() {
+		return grfCusto;
 	}
 
 }

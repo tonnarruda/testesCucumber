@@ -37,6 +37,7 @@
 			montaPie(${grfTreinamento}, "#treinamento", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfFrequencia}, "#frequencia", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
+			montaPie(${grfCusto}, "#custo", {combinePercentMin: -1, percentMin: 0} );
 		});
 		
 		
@@ -92,6 +93,7 @@
 						</div>
 						<br />
 					</div>
+					
 					<div class="gogDivDir">
 						<div class="gogDivTituloX">Qtd. Prevista de Participantes x Inscritos</div>
 						<div class="gogDivFormularioX">
@@ -105,6 +107,13 @@
 						<br />
 					</div>
 				
+					<div class="gogDivEsq">
+						<div class="gogDivTituloX">Custo do Curso por Tipo de Despesa</div>
+						<div class="gogDivFormularioX">
+							<div id="custo" class="graph" ></div>
+						</div>
+						<br />
+					</div>
 			</@ww.div>
 	
 </body>
