@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import junit.framework.TestCase;
 
 import com.fortes.rh.model.geral.ConfiguracaoPerformance;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.util.StringUtil;
 
 public class StringUtilTest extends TestCase
@@ -26,6 +27,45 @@ public class StringUtilTest extends TestCase
 		String esperado = "Mas quando a branca estrela matutina.Surgiu do espaço e as brisas forasteiras.No verde leque das `gentis` palmeiras.Foram cantar os hinos do arrebol.";
 
 		assertEquals(esperado, StringUtil.removeBreak(texto));
+	}
+	
+	public void testJsonToJava() throws Exception
+	{
+		String json = "[{tipoDespesaId:2, despesa:545.56}, {tipoDespesaId:3, despesa:1044.56}]";
+		Collection<TurmaTipoDespesa> tipoDespesas = (Collection<TurmaTipoDespesa>) StringUtil.simpleJSONtoArrayJava(json, TurmaTipoDespesa.class);
+
+		assertEquals(2, tipoDespesas.size());
+		
+		TurmaTipoDespesa t1 = (TurmaTipoDespesa)tipoDespesas.toArray()[0];
+		assertEquals(545.56, t1.getDespesa());
+		assertEquals(new Long(2), t1.getTipoDespesaId());
+
+		TurmaTipoDespesa t2 = (TurmaTipoDespesa)tipoDespesas.toArray()[1];
+		assertEquals(1044.56, t2.getDespesa());
+		assertEquals(new Long(3), t2.getTipoDespesaId());
+		
+		tipoDespesas = (Collection<TurmaTipoDespesa>) StringUtil.simpleJSONtoArrayJava("[]", TurmaTipoDespesa.class);
+		assertEquals(0, tipoDespesas.size());
+
+		Exception exception = null;
+		try {
+			tipoDespesas = (Collection<TurmaTipoDespesa>) StringUtil.simpleJSONtoArrayJava("", TurmaTipoDespesa.class);			
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNotNull(exception);
+	}
+	
+	public void testJsonToJavaException() throws Exception
+	{
+		
+		Exception exception = null;
+		try {
+			Collection<TurmaTipoDespesa> tipoDespesas = (Collection<TurmaTipoDespesa>) StringUtil.simpleJSONtoArrayJava("", TurmaTipoDespesa.class);			
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertNotNull(exception);
 	}
 	
 	public void testToJson() 

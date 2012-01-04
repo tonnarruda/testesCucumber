@@ -9,12 +9,14 @@
 	#formDialog { display: none; }
 </style>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -79,6 +81,12 @@
 			}
 		}
 		
+		function limpaDespesas()
+		{
+			 $('#totalCustos').text('0,00');
+			 $('.despesa').val('');
+		}
+		
 		function abrirPopupDespesas() 
 		{
 			var camposOcultos = '';
@@ -88,32 +96,68 @@
 										buttons: 
 										[
 										    {
-										        text: "Limpar",
-										        click: function() { $('#totalCustos').text('0,00'); $('.despesa').val('');  }
+										        text: "Gravar",
+										        click: function() { 
+										        	var despesas = new Array();
+
+													$('.despesa').each(function(){
+													    if (this.value && moeda2float(this.value) > 0)
+													        despesas.push({tipoDespesaId:this.name, despesa:moeda2float(this.value)});
+													});
+													
+													var despesasJSON = JSON.stringify(despesas);
+													var despesasTotal = somaDespesas();
+													var turmaId = $('#turmaId').val();
+													
+													if (turmaId != '')
+														TurmaDWR.saveDespesas(despesasJSON, turmaId, despesasTotal);
+													
+													$('#custos').val(despesasJSON);
+													$('#custo').val(float2moeda(despesasTotal));
+													
+													somenteLeitura((despesasTotal <= 0), 'custo');
+													
+										        	$(this).dialog("close"); 
+										        }
 										    },
 										    {
-										        text: "Gravar",
-										        click: function() { $(this).dialog("close"); }
+										        text: "Limpar",
+										        click: function() { limpaDespesas(); }
 										    }
 										] ,
 										open: function(event, ui) 
 										{ 
-											$('#totalCustos').text(float2moeda(somaDespesas()));
-											$('#valoresDespesas').empty();
+											var turmaId = $('#turmaId').val();
+											if (turmaId != '')
+											{
+												TurmaDWR.getDespesas(turmaId, function(turmaTipoDespesas) 
+												{
+													$(turmaTipoDespesas).each(function(i, turmaTipoDespesa) {
+														$("#tipoDespesa :input[name='" + turmaTipoDespesa.tipoDespesa.id + "']").val( float2moeda(turmaTipoDespesa.despesa) );
+													});
+													
+													$('#totalCustos').text(float2moeda(somaDespesas()));
+												});
+											
+											} else 
+											{
+												var custos = $('#custos').val();
+												
+												if (custos != '') 
+												{
+													custos = JSON.parse(custos);
+	
+													$(custos).each(function() {
+														$("#tipoDespesa :input[name='" + this.tipoDespesaId + "']").val( float2moeda(this.despesa) );
+													});
+													
+													$('#totalCustos').text(float2moeda(somaDespesas()));
+												}
+											}
 										},
-										close: function(event, ui) 
-										{ 
-											$('#custo').val(float2moeda(somaDespesas()));
-										
-											$('.despesa').each(function (i, item) {
-											    var valor = $(item).val();
-											    var nome = $(item).attr('name');
-											    
-											    if (valor && valor != '')
-											        camposOcultos += "<input type='hidden' name='" + nome + "' value='" + moeda2float(valor) + "'/>";
-											});
-										
-											$('#valoresDespesas').html(camposOcultos);
+										close: function(event, ui)
+										{
+											limpaDespesas();
 										}
 									});
 		}
@@ -132,16 +176,14 @@
 		}
 		
 		$(function() {
+			<#if contemCustosDetalhados>
+				somenteLeitura(false, 'custo');
+			</#if>
+		
 			$('.despesa').blur(function() {
 				var valor = somaDespesas();
 				$('#totalCustos').text(float2moeda(valor));
 			});
-			
-			$('.despesa').blur();
-			
-			<#list turmaTipoDespesas as turmaTipoDespesa>
-				$('#despesa_' + ${turmaTipoDespesa.tipoDespesa.id}).val('${turmaTipoDespesa.despesa}');
-			</#list>
 		});
 	</script>
 <@ww.head/>
@@ -160,7 +202,7 @@
 				<label class="desc" for="custo"> Custo (R$):<span class="req">* </span></label>
 			</div> 
 			<div class="wwctrl" id="wwctrl_custo">
-				<input type="text" id="custo" name="turma.custo" value="${custo}" class="moeda" maxlength="12" size="12" style="width:90px; text-align:right;"/>
+				<@ww.textfield theme="simple" id="custo" name="turma.custo" class="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
 				<a href="javascript:;" onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
 			</div> 
 		</li>
@@ -194,13 +236,11 @@
 		<#-- <@ww.select disabled="${somenteLeitura}" label="Questionário de Avaliação de Curso" name="turma.avaliacaoTurma.id" list="avaliacaoTurmas" listKey="id" listValue="questionario.titulo" headerValue="Selecione..." headerKey=""/> -->
 		<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList"/>
 
-		<@ww.hidden name="turma.id" />
+		<@ww.hidden name="turma.id" id="turmaId" />
 		<@ww.hidden name="turma.empresa.id" />
 		<@ww.hidden name="planoTreinamento" />
 		<@ww.hidden name="avaliacaoRespondida" />
-		
-		<#-- Mantem os campos ocultos com os valores das despesas vindos do popup -->
-		<div id="valoresDespesas"></div>
+		<@ww.hidden name="custos" id="custos"/>
 		
 		<#if somenteLeitura>
 			<#list avaliacaoTurmasCheckList as avaliacaoCheck>
@@ -233,7 +273,7 @@
 		<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
 			<@display.column property="descricao" title="Descrição"/>
 			<@display.column title="Custo (R$)" style="text-align: center; width:120px;">
-				<input type="text" id="despesa_${tipoDespesa.id}"  name="despesas[${tipoDespesa.id}]" class="despesa moeda" maxlength="12" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
+				<input type="text" name="${tipoDespesa.id}" class="despesa moeda" maxlength="12" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
 			</@display.column>
 		</@display.table>
 	</div>

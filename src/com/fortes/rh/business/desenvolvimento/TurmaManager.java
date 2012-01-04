@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 
 
@@ -16,8 +15,8 @@ public interface TurmaManager extends GenericManager<Turma>
 {
 	public void removeCascade(Long id) throws Exception;
 	public Turma findByIdProjection(Long turmaId);
-	public void salvarTudo(Turma turma, String[] diasCheck, Map<Long, String> turmaTipoDespesas)throws Exception;
-	public void updateTudo(Turma turma, String[] diasCheck, Map<Long, String> despesas) throws Exception;
+	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String despesaJSON)throws Exception;
+	public void updateTurmaDias(Turma turma, String[] diasCheck) throws Exception;
 	public Collection<Turma> getTurmaFinalizadas(Long cursoId);
 	public List filtroRelatorioByAreas(LinkedHashMap parametros);
 	public List filtroRelatorioByColaborador(LinkedHashMap parametros);
@@ -26,6 +25,7 @@ public interface TurmaManager extends GenericManager<Turma>
 	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, char realizada);
 	public Integer countPlanosDeTreinamento(Long cursoId, Date dataIni, Date dataFim, char realizada);
 	public void updateRealizada(Long turmaId, boolean realizada)throws Exception;
+	public void updateCusto(Long turmaId, double totalCusto);
 	public Map<String, Object> getParametrosRelatorioSemTreinamento(Empresa empresa, Map<String, Object> parametros);
 	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, char realizada, Long empresaId);
 	public Boolean realizadaValue(char realizada);

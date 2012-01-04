@@ -93,7 +93,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		this.transactionManager = transactionManager;
 	}
 
-	public void salvarTudo(Turma turma, String[] diasCheck, Map<Long, String> turmaTipoDespesas) throws Exception
+	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String despesaJSON) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -103,7 +103,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		{
 			save(turma);
 			diaTurmaManager.saveDiasTurma(turma, diasCheck);
-			turmaTipoDespesaManager.save(turmaTipoDespesas, turma.getId());
+			turmaTipoDespesaManager.save(despesaJSON, turma.getId());
 			transactionManager.commit(status);
 		}
 		catch(Exception e)
@@ -113,14 +113,12 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 	}
 
-	public void updateTudo(Turma turma, String[] diasCheck, Map<Long, String> despesas) throws Exception
+	public void updateTurmaDias(Turma turma, String[] diasCheck) throws Exception
 	{
 		boolean result = false;
 		
 		try
 		{
-			turmaTipoDespesaManager.removeByTurma(turma.getId());
-			turmaTipoDespesaManager.save(despesas, turma.getId());
 			update(turma);
 			result = colaboradorPresencaManager.existPresencaByTurma(turma.getId());
 			if(!result)
@@ -299,5 +297,10 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 
 	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
 		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
+	}
+
+	public void updateCusto(Long turmaId, double totalCusto) {
+		getDao().updateCusto(turmaId, totalCusto);
+		
 	}
 }

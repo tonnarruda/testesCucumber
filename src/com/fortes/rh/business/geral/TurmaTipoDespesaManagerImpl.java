@@ -1,11 +1,15 @@
 package com.fortes.rh.business.geral;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
+import com.fortes.rh.util.StringUtil;
+import com.opensymphony.webwork.dispatcher.json.JSONException;
 
 public class TurmaTipoDespesaManagerImpl extends GenericManagerImpl<TurmaTipoDespesa, TurmaTipoDespesaDao> implements TurmaTipoDespesaManager
 {
@@ -34,7 +38,27 @@ public class TurmaTipoDespesaManagerImpl extends GenericManagerImpl<TurmaTipoDes
 		getDao().removeByTurma(turmaId);
 	}
 	
-	public Collection<TurmaTipoDespesa> findTipoDespesaTurma(Long turmaId) {
+	public Collection<TurmaTipoDespesa> findTipoDespesaTurma(Long turmaId) 
+	{
 		return getDao().findTipoDespesaTurma(turmaId);
+	}
+
+	public void save(String json, Long turmaId) 
+	{
+		Collection<TurmaTipoDespesa> despesas = new ArrayList<TurmaTipoDespesa>();
+		try {
+			despesas = (Collection<TurmaTipoDespesa>) StringUtil.simpleJSONtoArrayJava(json, TurmaTipoDespesa.class);
+		} catch (JSONException e) {e.printStackTrace();}
+	
+		getDao().removeByTurma(turmaId);
+		
+		Turma turma = new Turma();
+		turma.setId(turmaId);
+		
+		for (TurmaTipoDespesa turmaTipoDespesa : despesas) 
+		{
+			TurmaTipoDespesa despesa = new TurmaTipoDespesa(turma, turmaTipoDespesa.getDespesa(), turmaTipoDespesa.getTipoDespesaId());
+			getDao().save(despesa);
+		}
 	}
 }

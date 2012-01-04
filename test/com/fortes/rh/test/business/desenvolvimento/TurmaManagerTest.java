@@ -33,7 +33,6 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -306,7 +305,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.salvarTudo(turma, diasCheck, null);
+			turmaManager.salvarTurmaDiasCusto(turma, diasCheck, null);
 		}
 		catch (Exception e)
 		{
@@ -334,7 +333,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.salvarTudo(turma, diasCheck, null);
+			turmaManager.salvarTurmaDiasCusto(turma, diasCheck, null);
 		}
 		catch (Exception e)
 		{
@@ -364,7 +363,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.updateTudo(turma, diasCheck, turmaTipoDespesas);
+			turmaManager.updateTurmaDias(turma, diasCheck);
 		}
 		catch (Exception e)
 		{
@@ -394,7 +393,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.updateTudo(turma, diasCheck, turmaTipoDespesas);
+			turmaManager.updateTurmaDias(turma, diasCheck);
 		}
 		catch (Exception e)
 		{
@@ -502,5 +501,4 @@ public class TurmaManagerTest extends MockObjectTestCase
 		
 		turmaManager.sincronizar(empresa.getId(), empresaDestino.getId());
 	}
-
 }

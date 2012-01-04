@@ -329,6 +329,17 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		query.executeUpdate();
 	}
 
+	public void updateCusto(Long turmaId, double custo) {
+		String hql = "update Turma set custo = :custo where id = :turmaId";
+
+		Query query = getSession().createQuery(hql);
+		query.setLong("turmaId", turmaId);
+		query.setDouble("custo", custo);
+
+		query.executeUpdate();
+	}
+
+
 	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, Boolean realizada, Long empresaId)
 	{
         Criteria criteria = getSession().createCriteria(Turma.class,"t");

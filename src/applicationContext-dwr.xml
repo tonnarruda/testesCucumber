@@ -59,6 +59,7 @@
 		<property name="turmaManager" ref="turmaManager"/>
 		<property name="avaliacaoTurmaManager" ref="avaliacaoTurmaManager"/>
 		<property name="colaboradorTurmaManager" ref="colaboradorTurmaManager"/>
+		<property name="turmaTipoDespesaManager" ref="turmaTipoDespesaManager"/>
 	</bean>
 	<bean id="colaboradorDWR" class="com.fortes.rh.web.dwr.ColaboradorDWR">
 		<property name="colaboradorManager" ref="colaboradorManager"/>

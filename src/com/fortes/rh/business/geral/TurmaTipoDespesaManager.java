@@ -11,4 +11,5 @@ public interface TurmaTipoDespesaManager extends GenericManager<TurmaTipoDespesa
 	public void save(Map<Long, String> despesas, Long turmaId);
 	public Collection<TurmaTipoDespesa> findTipoDespesaTurma(Long turmaId);
 	public void removeByTurma(Long turmaId);
+	public void save(String turmaTipoDespesasJSON, Long turmaId);
 }
