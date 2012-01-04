@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -95,10 +96,6 @@
 										buttons: 
 										[
 										    {
-										        text: "Limpar",
-										        click: function() { limpaDespesas(); }
-										    },
-										    {
 										        text: "Gravar",
 										        click: function() { 
 										        	var despesas = new Array();
@@ -108,7 +105,7 @@
 													        despesas.push({tipoDespesaId:this.name, despesa:moeda2float(this.value)});
 													});
 													
-													var despesasJSON = despesas.toSource();
+													var despesasJSON = JSON.stringify(despesas);
 													var despesasTotal = somaDespesas();
 													var turmaId = $('#turmaId').val();
 													
@@ -122,6 +119,10 @@
 													
 										        	$(this).dialog("close"); 
 										        }
+										    },
+										    {
+										        text: "Limpar",
+										        click: function() { limpaDespesas(); }
 										    }
 										] ,
 										open: function(event, ui) 
@@ -132,14 +133,26 @@
 												TurmaDWR.getDespesas(turmaId, function(turmaTipoDespesas) 
 												{
 													$(turmaTipoDespesas).each(function(i, turmaTipoDespesa) {
-														$('#despesa_' + turmaTipoDespesa.tipoDespesa.id).val( float2moeda(turmaTipoDespesa.despesa) );
+														$("#tipoDespesa :input[name='" + turmaTipoDespesa.tipoDespesa.id + "']").val( float2moeda(turmaTipoDespesa.despesa) );
 													});
 													
 													$('#totalCustos').text(float2moeda(somaDespesas()));
 												});
 											
-											} else {
-												$('#custos').val();
+											} else 
+											{
+												var custos = $('#custos').val();
+												
+												if (custos != '') 
+												{
+													custos = JSON.parse(custos);
+	
+													$(custos).each(function() {
+														$("#tipoDespesa :input[name='" + this.tipoDespesaId + "']").val( float2moeda(this.despesa) );
+													});
+													
+													$('#totalCustos').text(float2moeda(somaDespesas()));
+												}
 											}
 										},
 										close: function(event, ui)
@@ -260,7 +273,7 @@
 		<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
 			<@display.column property="descricao" title="Descrição"/>
 			<@display.column title="Custo (R$)" style="text-align: center; width:120px;">
-				<input type="text" id="despesa_${tipoDespesa.id}"  name="${tipoDespesa.id}" class="despesa moeda" maxlength="12" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
+				<input type="text" name="${tipoDespesa.id}" class="despesa moeda" maxlength="12" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
 			</@display.column>
 		</@display.table>
 	</div>
