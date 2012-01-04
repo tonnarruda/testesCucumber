@@ -266,7 +266,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 					{
 						char barra = File.separatorChar;
 						String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
-						path = path + barra + "web" + barra + "WEB-INF" + barra +"report" + barra; 
+						path = path + barra + "WEB-INF" + barra +"report" + barra; 
 						ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
 						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 						String msgRegistro = Autenticador.getMsgAutenticado("");

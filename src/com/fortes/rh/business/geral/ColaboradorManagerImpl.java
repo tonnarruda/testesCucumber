@@ -95,6 +95,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.util.BeanUtils;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings("unchecked")
@@ -139,7 +140,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			char barra = java.io.File.separatorChar;
 			String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
-			path = path + barra + "web" + barra + "WEB-INF" + barra +"report" + barra; 
+			path = path + barra + "WEB-INF" + barra + "report" + barra; 
 
 			Map<String,Object> parametros = new HashMap<String, Object>();
 	    	parametros.put("SUBREPORT_DIR", path);

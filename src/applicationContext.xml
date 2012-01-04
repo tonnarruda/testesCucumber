@@ -212,7 +212,7 @@
   </bean>
   <bean id="cronTriggerEmailCartaoAniversariantes" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="emailCartaoAniversariantes" />
-	<property name="cronExpression" value="0 20 6 * * ?" /> <!-- Todo dia 25 de cada mes as 03:00h am -->
+	<property name="cronExpression" value="0 20 6 * * ?" /> <!-- Todo os dias as 06:20h am -->
   </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
