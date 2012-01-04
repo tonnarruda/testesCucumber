@@ -175,8 +175,8 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		return this.empresa.getId();
 	}
 	
-	public static String formataCargaHorariaMinutos(Integer cargaHoraria, String caracterAntecessorHora) {
-		
+	public static String formataCargaHorariaMinutos(Integer cargaHoraria, String caracterAntecessorHora)
+	{
 		if(cargaHoraria == null)
 			return "";
 		
@@ -190,11 +190,8 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		return formataCargaHorariaMinutos(cargaHoraria, "");		
 	}
 
-	public String getCargaHorariaMinutosFormatado() {
-		return formataCargaHorariaMinutos(cargaHoraria, "0");		
-	}
-	
-	public void setCargaHorariaMinutos(String cargaHorariaMinutos) {
+	public void setCargaHorariaMinutos(String cargaHorariaMinutos) 
+	{
 		if(!cargaHorariaMinutos.equals("    :  ") && !cargaHorariaMinutos.equals("0000:00"))
 		{
 			Integer hora = Integer.parseInt(cargaHorariaMinutos.substring(0, (cargaHorariaMinutos.length()-3)));
