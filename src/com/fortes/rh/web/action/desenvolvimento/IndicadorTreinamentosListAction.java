@@ -119,8 +119,11 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoCustoCursoPorTipoDespesa()
 	{
+		Double custoGeral = turmaManager.somaCustos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		
 		Collection<DataGrafico> grfCustoTipoDespesa = new ArrayList<DataGrafico>();
 		grfCustoTipoDespesa.add(new DataGrafico(null, "Não detalhado", 22220.00 - 20000.00, ""));
+		
 		grfCustoTipoDespesa.add(new DataGrafico(null, "Coffee", 750.00, ""));
 		grfCustoTipoDespesa.add(new DataGrafico(null, "Sala", 1202.00, ""));
 		grfCusto = StringUtil.toJSON(grfCustoTipoDespesa, null);

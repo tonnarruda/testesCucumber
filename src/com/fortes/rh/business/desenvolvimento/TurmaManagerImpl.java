@@ -301,6 +301,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 
 	public void updateCusto(Long turmaId, double totalCusto) {
 		getDao().updateCusto(turmaId, totalCusto);
-		
+	}
+
+	public Double somaCustos(Date dataIni, Date dataFim, Long empresaId) {
+		return getDao().somaCustos(dataIni, dataFim, empresaId);
 	}
 }

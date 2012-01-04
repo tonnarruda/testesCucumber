@@ -479,4 +479,19 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		return criteria.list();
 	}
 
+
+	public Double somaCustos(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(Turma.class,"t");
+
+        criteria.setProjection(Projections.sum("t.custo"));
+        criteria.add(Expression.ge("t.dataPrevIni", dataIni));
+        criteria.add(Expression.le("t.dataPrevFim", dataFim));
+        criteria.add(Expression.eq("t.empresa.id", empresaId));
+
+    	Double valor = (Double) criteria.uniqueResult();
+        
+    	return valor == null ? 0.0 : valor;
+	}
+
 }

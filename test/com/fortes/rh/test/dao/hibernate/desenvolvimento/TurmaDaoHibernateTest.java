@@ -584,6 +584,42 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		assertEquals(turmaC, turmasArray[2]);
 	}
 	
+	public void testSomaCustos()
+	{
+		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
+		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setEmpresa(empresa);
+		turma.setDataPrevIni(dataPrevIni);
+		turma.setDataPrevFim(dataPrevFim);
+		turma.setCusto(1.50);
+		turmaDao.save(turma);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa);
+		turma2.setDataPrevIni(dataPrevIni);
+		turma2.setDataPrevFim(dataPrevFim);
+		turma2.setCusto(3.75);
+		turmaDao.save(turma2);
+		
+		Turma turmaOutraEmpresa = TurmaFactory.getEntity();
+		turmaOutraEmpresa.setEmpresa(empresa2);
+		turmaOutraEmpresa.setDataPrevIni(dataPrevIni);
+		turmaOutraEmpresa.setDataPrevFim(dataPrevFim);
+		turmaOutraEmpresa.setCusto(5550.0);
+		turmaDao.save(turmaOutraEmpresa);
+		
+		assertEquals(5.25, turmaDao.somaCustos(dataPrevIni, dataPrevFim, empresa.getId()));
+		assertEquals(0.0, turmaDao.somaCustos(dataPrevIni, dataPrevFim, 999934L));
+	}
+	
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)
 	{
 		this.colaboradorDao = colaboradorDao;
