@@ -168,6 +168,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			StringBuilder token = new StringBuilder();
 			Call call = acPessoalClient.createCall(empresa, token, null, "GetRemuneracoesVariaveis");
 
+//			urn:UnTypesPessoalWebService
 			QName qname = new QName("urn:AcPessoal", "TRemuneracaoVariavel");
 			QName qnameArr = new QName("urn:AcPessoal", "TRemuneracoesVariaveis");
 
