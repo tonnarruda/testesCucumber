@@ -80,7 +80,7 @@ Distribuição de Colaboradores por Setor]]></text>
 					<reportElement
 						x="0"
 						y="16"
-						width="472"
+						width="453"
 						height="14"
 						key="staticText-2"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -91,9 +91,9 @@ Distribuição de Colaboradores por Setor]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="472"
+						x="453"
 						y="16"
-						width="63"
+						width="82"
 						height="14"
 						key="staticText-3"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -124,7 +124,7 @@ Distribuição de Colaboradores por Setor]]></text>
 					<reportElement
 						x="0"
 						y="-1"
-						width="472"
+						width="453"
 						height="14"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="4" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -135,9 +135,9 @@ Distribuição de Colaboradores por Setor]]></text>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="472"
+						x="453"
 						y="-1"
-						width="63"
+						width="82"
 						height="14"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="4" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -154,7 +154,7 @@ Distribuição de Colaboradores por Setor]]></text>
 					<reportElement
 						x="0"
 						y="-1"
-						width="472"
+						width="453"
 						height="14"
 						key="staticText-4"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" leftPadding="4" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -165,9 +165,9 @@ Distribuição de Colaboradores por Setor]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="472"
+						x="453"
 						y="-1"
-						width="63"
+						width="82"
 						height="14"
 						key="textField"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" rightPadding="4" bottomBorder="Thin" bottomBorderColor="#000000"/>
