@@ -6,12 +6,17 @@ import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
+import net.sf.json.util.JSONStringer;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.StringUtils;
+
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
+import com.opensymphony.webwork.dispatcher.json.JSONException;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -41,6 +46,15 @@ public final class StringUtil
 			jsonConfig.setExcludes(excludes);
 		
 		return JSONSerializer.toJSON(valor, jsonConfig).toString();
+	}
+	
+	public static Object simpleJSONtoArrayJava(String json, Class<?> clazz) throws JSONException 
+	{
+		JSONArray jsonObject = JSONArray.fromObject(json);
+		JsonConfig cfg = new JsonConfig();
+		cfg.setRootClass(clazz);
+		
+		return JSONSerializer.toJava(jsonObject, cfg);			
 	}
 	
 	public static String subStr(String value, int max)

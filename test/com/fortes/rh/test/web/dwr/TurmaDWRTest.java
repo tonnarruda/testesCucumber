@@ -12,13 +12,16 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.geral.TurmaTipoDespesaFactory;
 import com.fortes.rh.web.dwr.TurmaDWR;
 
 public class TurmaDWRTest extends MockObjectTestCase
@@ -26,6 +29,7 @@ public class TurmaDWRTest extends MockObjectTestCase
 	private TurmaDWR turmaDWR;
 	private Mock turmaManager;
 	private Mock avaliacaoTurmaManager;
+	private Mock turmaTipoDespesaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -37,6 +41,9 @@ public class TurmaDWRTest extends MockObjectTestCase
 
 		avaliacaoTurmaManager = new Mock(AvaliacaoTurmaManager.class);
 		turmaDWR.setAvaliacaoTurmaManager((AvaliacaoTurmaManager) avaliacaoTurmaManager.proxy());
+
+		turmaTipoDespesaManager = new Mock(TurmaTipoDespesaManager.class);
+		turmaDWR.setTurmaTipoDespesaManager((TurmaTipoDespesaManager) turmaTipoDespesaManager.proxy());
 	}
 
 	public void testGetTurmas()
@@ -230,4 +237,18 @@ public class TurmaDWRTest extends MockObjectTestCase
 		assertNotNull(ex);
 	}
 
+	public void testGetDespesas()
+	{
+		Turma turma = TurmaFactory.getEntity(1L);
+		
+		TurmaTipoDespesa turmaTipoDespesa = TurmaTipoDespesaFactory.getEntity(1L);
+		
+		Collection<TurmaTipoDespesa> turmaTipoDespesas = Arrays.asList(turmaTipoDespesa);
+
+		turmaTipoDespesaManager.expects(once()).method("findTipoDespesaTurma").with(eq(turma.getId())).will(returnValue(turmaTipoDespesas));
+
+		Collection<TurmaTipoDespesa> retorno = turmaDWR.getDespesas(turma.getId());
+
+		assertEquals(1, retorno.size());
+	}
 }

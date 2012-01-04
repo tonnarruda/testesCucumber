@@ -6,8 +6,10 @@ import java.util.Map;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -16,7 +18,8 @@ public class TurmaDWR
 {
 	private TurmaManager turmaManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager; 
+	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 
 	public Map getTurmas(String cursoId)
 	{
@@ -105,20 +108,35 @@ public class TurmaDWR
 
 		return realizada;
 	}
+	
+	public Collection<TurmaTipoDespesa> getDespesas(Long turmaId)
+	{
+		return turmaTipoDespesaManager.findTipoDespesaTurma(turmaId);
+	}
+	
+	public void saveDespesas(String turmaTipoDespesasJSON, Long turmaId, double totalCusto)
+	{
+		turmaTipoDespesaManager.save(turmaTipoDespesasJSON, turmaId);
+		turmaManager.updateCusto(turmaId, totalCusto);
+	}
 
 	public void setTurmaManager(TurmaManager turmaManager)
 	{
 		this.turmaManager = turmaManager;
 	}
 
-
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
+	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) 
+	{
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
-
-	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) {
+	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) 
+	{
 		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
 	}
 
+	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) 
+	{
+		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
+	}
 }

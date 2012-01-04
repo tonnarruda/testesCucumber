@@ -117,9 +117,6 @@ public class TurmaEditActionTest extends MockObjectTestCase
         tipoDespesaManager = new Mock(TipoDespesaManager.class);
         action.setTipoDespesaManager((TipoDespesaManager) tipoDespesaManager.proxy());
         
-        turmaTipoDespesaManager = new Mock(TurmaTipoDespesaManager.class);
-        action.setTurmaTipoDespesaManager((TurmaTipoDespesaManager) turmaTipoDespesaManager.proxy());
-
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
         Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
@@ -175,7 +172,6 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	avaliacaoTurmaManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(avaliacaoTurmas));
     	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(true)).will(returnValue(avaliacaoTurmas));
     	tipoDespesaManager.expects(once()).method("findAll");
-    	turmaTipoDespesaManager.expects(once()).method("findTipoDespesaTurma").with(eq(turma.getId()));
 
     	assertEquals("success", action.prepareUpdate());
     	assertEquals(diasCheckList, action.getDiasCheckList());

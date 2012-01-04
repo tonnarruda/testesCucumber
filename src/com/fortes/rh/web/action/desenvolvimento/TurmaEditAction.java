@@ -99,7 +99,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private Collection<ColaboradorTurma> colaboradoresTurma = new ArrayList<ColaboradorTurma>();
 	private Collection<Empresa> empresas;
 	private Collection<TipoDespesa> tipoDespesas;
-	private Collection<TurmaTipoDespesa> turmaTipoDespesas;
 	
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -167,6 +166,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private Certificacao certificacao;
 	private Certificado certificado;
 	private char realizada;
+	private String custos;
+	private boolean contemCustosDetalhados = false;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
 	
@@ -208,7 +209,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		prepare();
 		if (filtroPlanoTreinamento != null && filtroPlanoTreinamento.getCursoId() != null)
 			turma.setCursoId(filtroPlanoTreinamento.getCursoId());
-
+		
 		return Action.SUCCESS;
 	}
 
@@ -218,8 +219,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		
 		if (!turma.getEmpresa().getId().equals(getEmpresaSistema().getId()))
 			throw new Exception("Permissão negada!");
-
-		turmaTipoDespesas = turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId());
 
 		avaliacaoRespondida = turmaManager.verificaAvaliacaoDeTurmaRespondida(turma.getId());
 
@@ -231,6 +230,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		avaliacaoTurmasCheckList = CheckListBoxUtil.marcaCheckListBoxString(avaliacaoTurmasCheckList, avaliacaoTurmasMarcadas, "getQuestionarioTitulo");
 				
 		turma.setTemPresenca(colaboradorPresencaManager.existPresencaByTurma(turma.getId()));
+		contemCustosDetalhados = !turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId()).isEmpty();
 
 		return Action.SUCCESS;
 	}
@@ -252,7 +252,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		avaliacaoTurmas = cUtil.convertArrayStringToCollection(AvaliacaoTurma.class, avaliacaoTurmasCheck);
 		
 		turma.setAvaliacaoTurmas(avaliacaoTurmas);
-		turmaManager.salvarTudo(turma, diasCheck, despesas);
+		turmaManager.salvarTurmaDiasCusto(turma, diasCheck, custos);
 
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -265,7 +265,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		avaliacaoTurmas = cUtil.convertArrayStringToCollection(AvaliacaoTurma.class, avaliacaoTurmasCheck);
 		
 		turma.setAvaliacaoTurmas(avaliacaoTurmas);
-		turmaManager.updateTudo(turma, diasCheck, despesas);
+		turmaManager.updateTurmaDias(turma, diasCheck);
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -1214,23 +1214,23 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.tipoDespesas = tipoDespesas;
 	}
 
-	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
-		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
-	}
-
-	public Collection<TurmaTipoDespesa> getTurmaTipoDespesas() {
-		return turmaTipoDespesas;
-	}
-
-	public void setTurmaTipoDespesas(Collection<TurmaTipoDespesa> turmaTipoDespesas) {
-		this.turmaTipoDespesas = turmaTipoDespesas;
-	}
-
 	public Map<Long, String> getDespesas() {
 		return despesas;
 	}
 
 	public void setDespesas(Map<Long, String> despesas) {
 		this.despesas = despesas;
+	}
+
+	public void setCustos(String custos) {
+		this.custos = custos;
+	}
+
+	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
+		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
+	}
+
+	public boolean isContemCustosDetalhados() {
+		return contemCustosDetalhados;
 	}
 }
