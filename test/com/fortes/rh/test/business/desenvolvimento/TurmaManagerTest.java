@@ -344,65 +344,65 @@ public class TurmaManagerTest extends MockObjectTestCase
 		assertNotNull(ex);
 	}
 
-//	public void testUpdateTudo()
-//	{
-//		Turma turma = TurmaFactory.getEntity(1L);
-//		String[] diasCheck = new String[]{"1"};
-//
-//		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
-//		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-//		colaboradorTurmas.add(colaboradorTurma);
-//
-//		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
-//		colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").will(returnValue(false));
-//		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
-//		
-//		Collection<TurmaTipoDespesa> turmaTipoDespesas = new ArrayList<TurmaTipoDespesa>();
-//		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
-//		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
-//
-//		Exception ex = null;
-//		try
-//		{
-//			turmaManager.updateTudo(turma, diasCheck, turmaTipoDespesas);
-//		}
-//		catch (Exception e)
-//		{
-//			ex = e;
-//		}
-//
-//		assertNull(ex);
-//	}
-//
-//	public void testUpdateTudoException()
-//	{
-//		Turma turma = TurmaFactory.getEntity(1L);
-//		String[] diasCheck = new String[]{"1"};
-//
-//		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
-//		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-//		colaboradorTurmas.add(colaboradorTurma);
-//
-//		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
-//		//gera exception
-//		turmaManager.setColaboradorPresencaManager(null);
-//
-//		Collection<TurmaTipoDespesa> turmaTipoDespesas = new ArrayList<TurmaTipoDespesa>();
-//		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
-//		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
-//		
-//		Exception ex = null;
-//		try
-//		{
-//			turmaManager.updateTudo(turma, diasCheck, turmaTipoDespesas);
-//		}
-//		catch (Exception e)
-//		{
-//			ex = e;
-//		}
-//
-//		assertNotNull(ex);
-//	}
+	public void testUpdateTudo()
+	{
+		Turma turma = TurmaFactory.getEntity(1L);
+		String[] diasCheck = new String[]{"1"};
+
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma);
+
+		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
+		colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").will(returnValue(false));
+		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
+		
+		Map<Long, String> turmaTipoDespesas = new HashMap<Long, String>();
+		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
+		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
+
+		Exception ex = null;
+		try
+		{
+			turmaManager.updateTudo(turma, diasCheck, turmaTipoDespesas);
+		}
+		catch (Exception e)
+		{
+			ex = e;
+		}
+
+		assertNull(ex);
+	}
+
+	public void testUpdateTudoException()
+	{
+		Turma turma = TurmaFactory.getEntity(1L);
+		String[] diasCheck = new String[]{"1"};
+
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma);
+
+		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
+		//gera exception
+		turmaManager.setColaboradorPresencaManager(null);
+
+		Map<Long, String> turmaTipoDespesas = new HashMap<Long, String>();
+		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
+		turmaTipoDespesaManager.expects(once()).method("save").with(ANYTHING, eq(turma.getId())).isVoid();
+		
+		Exception ex = null;
+		try
+		{
+			turmaManager.updateTudo(turma, diasCheck, turmaTipoDespesas);
+		}
+		catch (Exception e)
+		{
+			ex = e;
+		}
+
+		assertNotNull(ex);
+	}
 
 	public void testFindByIdProjection()
 	{
