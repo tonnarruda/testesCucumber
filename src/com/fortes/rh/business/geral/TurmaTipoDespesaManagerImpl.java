@@ -2,11 +2,13 @@ package com.fortes.rh.business.geral;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.util.StringUtil;
 import com.opensymphony.webwork.dispatcher.json.JSONException;
@@ -60,5 +62,10 @@ public class TurmaTipoDespesaManagerImpl extends GenericManagerImpl<TurmaTipoDes
 			TurmaTipoDespesa despesa = new TurmaTipoDespesa(turma, turmaTipoDespesa.getDespesa(), turmaTipoDespesa.getTipoDespesaId());
 			getDao().save(despesa);
 		}
+	}
+
+	public Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		return getDao().somaDespesasPorTipo(dataIni, dataFim, empresaId);
 	}
 }

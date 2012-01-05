@@ -303,7 +303,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		getDao().updateCusto(turmaId, totalCusto);
 	}
 
-	public Double somaCustos(Date dataIni, Date dataFim, Long empresaId) {
-		return getDao().somaCustos(dataIni, dataFim, empresaId);
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId) {
+		return getDao().somaCustosNaoDetalhados(dataIni, dataFim, empresaId);
 	}
 }

@@ -8,10 +8,12 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -19,6 +21,7 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 
 @SuppressWarnings("unchecked")
 public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements TurmaDao
@@ -480,14 +483,23 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	}
 
 
-	public Double somaCustos(Date dataIni, Date dataFim, Long empresaId) 
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId) 
 	{
+		DetachedCriteria subQuery = DetachedCriteria.forClass(TurmaTipoDespesa.class, "ttd");
+        
+		ProjectionList pSub = Projections.projectionList().create();
+		pSub.add(Projections.property("ttd.turma.id"), "id");
+        
+		subQuery.setProjection(pSub);
+        subQuery.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
 
         criteria.setProjection(Projections.sum("t.custo"));
         criteria.add(Expression.ge("t.dataPrevIni", dataIni));
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
         criteria.add(Expression.eq("t.empresa.id", empresaId));
+        criteria.add(Subqueries.propertyNotIn("t.id", subQuery));
 
     	Double valor = (Double) criteria.uniqueResult();
         

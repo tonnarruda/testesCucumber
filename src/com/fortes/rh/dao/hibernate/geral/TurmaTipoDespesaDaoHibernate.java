@@ -1,19 +1,23 @@
 package com.fortes.rh.dao.hibernate.geral;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
+import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.TipoDespesa;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 
+@SuppressWarnings("unchecked")
 public class TurmaTipoDespesaDaoHibernate extends GenericDaoHibernate<TurmaTipoDespesa> implements TurmaTipoDespesaDao
 {
 
@@ -42,5 +46,30 @@ public class TurmaTipoDespesaDaoHibernate extends GenericDaoHibernate<TurmaTipoD
 
 		query.setLong("turmaId", turmaId);
 		query.executeUpdate();
+	}
+
+	public Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(TurmaTipoDespesa.class,"ttd");
+		criteria.createCriteria("ttd.turma", "t");
+		criteria.createCriteria("ttd.tipoDespesa", "td");
+
+		ProjectionList p = Projections.projectionList().create();
+        
+		p.add(Projections.alias(Projections.sum("ttd.despesa"), "totalDespesas"));
+		p.add(Projections.alias(Projections.groupProperty("td.id"), "id"));
+		p.add(Projections.alias(Projections.groupProperty("td.descricao"), "descricao"));
+        
+        criteria.setProjection(p);
+        
+        criteria.add(Expression.ge("t.dataPrevIni", dataIni));
+        criteria.add(Expression.le("t.dataPrevFim", dataFim));
+        criteria.add(Expression.eq("t.empresa.id", empresaId));
+        
+        criteria.addOrder(Order.desc("totalDespesas"));
+        
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(TipoDespesa.class));
+
+        return  criteria.list();
 	}
 }

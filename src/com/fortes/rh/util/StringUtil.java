@@ -9,17 +9,15 @@ import java.util.regex.Pattern;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
-import net.sf.json.util.JSONStringer;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.StringUtils;
 
-import com.fortes.rh.model.geral.TurmaTipoDespesa;
-import com.opensymphony.webwork.dispatcher.json.JSONException;
-
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+
+import com.opensymphony.webwork.dispatcher.json.JSONException;
 
 public final class StringUtil
 {

@@ -14,7 +14,9 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
+import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -28,6 +30,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private ColaboradorPresencaManager colaboradorPresencaManager;
 	private TurmaManager turmaManager;
+	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 
 	private JFreeChart chart;
 	private IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
@@ -119,13 +122,15 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoCustoCursoPorTipoDespesa()
 	{
-		Double custoGeral = turmaManager.somaCustos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-		
 		Collection<DataGrafico> grfCustoTipoDespesa = new ArrayList<DataGrafico>();
-		grfCustoTipoDespesa.add(new DataGrafico(null, "Não detalhado", 22220.00 - 20000.00, ""));
+
+		Double custosNaoDetalhados = turmaManager.somaCustosNaoDetalhados(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		grfCustoTipoDespesa.add(new DataGrafico(null, "Não detalhado", custosNaoDetalhados, ""));
 		
-		grfCustoTipoDespesa.add(new DataGrafico(null, "Coffee", 750.00, ""));
-		grfCustoTipoDespesa.add(new DataGrafico(null, "Sala", 1202.00, ""));
+		Collection<TipoDespesa> tipoDespesas = turmaTipoDespesaManager.somaDespesasPorTipo(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		for (TipoDespesa tipoDespesa : tipoDespesas)
+			grfCustoTipoDespesa.add(new DataGrafico(null, tipoDespesa.getDescricao(), tipoDespesa.getTotalDespesas(), ""));
+			
 		grfCusto = StringUtil.toJSON(grfCustoTipoDespesa, null);
 	}
 	
@@ -213,4 +218,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		return grfCusto;
 	}
 
+	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
+		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
+	}
 }

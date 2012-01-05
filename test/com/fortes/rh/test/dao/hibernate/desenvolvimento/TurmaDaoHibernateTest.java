@@ -16,6 +16,8 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.TipoDespesaDao;
+import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -23,6 +25,8 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.TipoDespesa;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -30,6 +34,8 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.geral.TipoDespesaFactory;
+import com.fortes.rh.test.factory.geral.TurmaTipoDespesaFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
@@ -42,6 +48,8 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 	private ColaboradorDao colaboradorDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private ColaboradorTurmaDao colaboradorTurmaDao;
+	private TurmaTipoDespesaDao turmaTipoDespesaDao;
+	private TipoDespesaDao tipoDespesaDao;
 
 	public Turma getEntity()
 	{
@@ -584,7 +592,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		assertEquals(turmaC, turmasArray[2]);
 	}
 	
-	public void testSomaCustos()
+	public void testSomaCustosNaoDetalhados()
 	{
 		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
 		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
@@ -599,15 +607,30 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma.setEmpresa(empresa);
 		turma.setDataPrevIni(dataPrevIni);
 		turma.setDataPrevFim(dataPrevFim);
-		turma.setCusto(1.50);
+		turma.setCusto(15.50);
 		turmaDao.save(turma);
 		
 		Turma turma2 = TurmaFactory.getEntity();
 		turma2.setEmpresa(empresa);
 		turma2.setDataPrevIni(dataPrevIni);
 		turma2.setDataPrevFim(dataPrevFim);
-		turma2.setCusto(3.75);
+		turma2.setCusto(13.75);
 		turmaDao.save(turma2);
+
+		Turma turma3 = TurmaFactory.getEntity();
+		turma3.setEmpresa(empresa);
+		turma3.setDataPrevIni(dataPrevIni);
+		turma3.setDataPrevFim(dataPrevFim);
+		turma3.setCusto(50.00);
+		turmaDao.save(turma3);
+		
+		TipoDespesa tipoDespesa = TipoDespesaFactory.getEntity();
+		tipoDespesaDao.save(tipoDespesa);		
+		
+		TurmaTipoDespesa turmaTipoDespesa = TurmaTipoDespesaFactory.getEntity();
+		turmaTipoDespesa.setTurma(turma3);
+		turmaTipoDespesa.setTipoDespesa(tipoDespesa);
+		turmaTipoDespesaDao.save(turmaTipoDespesa);
 		
 		Turma turmaOutraEmpresa = TurmaFactory.getEntity();
 		turmaOutraEmpresa.setEmpresa(empresa2);
@@ -616,8 +639,8 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turmaOutraEmpresa.setCusto(5550.0);
 		turmaDao.save(turmaOutraEmpresa);
 		
-		assertEquals(5.25, turmaDao.somaCustos(dataPrevIni, dataPrevFim, empresa.getId()));
-		assertEquals(0.0, turmaDao.somaCustos(dataPrevIni, dataPrevFim, 999934L));
+		assertEquals(29.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, empresa.getId()));
+		assertEquals(0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, 999934L));
 	}
 	
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)
@@ -642,6 +665,12 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 	}
 	public void setDiaTurmaDao(DiaTurmaDao diaTurmaDao) {
 		this.diaTurmaDao = diaTurmaDao;
+	}
+	public void setTurmaTipoDespesaDao(TurmaTipoDespesaDao turmaTipoDespesaDao) {
+		this.turmaTipoDespesaDao = turmaTipoDespesaDao;
+	}
+	public void setTipoDespesaDao(TipoDespesaDao tipoDespesaDao) {
+		this.tipoDespesaDao = tipoDespesaDao;
 	}
 
 }

@@ -26,5 +26,5 @@ public interface TurmaDao extends GenericDao<Turma>
 	public Collection<Turma> findByEmpresaOrderByCurso(Long empresaId);
 	public Collection<Turma> findByCursos(Long[] cursoIds);
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmaIds, Date dataIni, Date dataFim, Boolean realizada);
-	public Double somaCustos(Date dataIni, Date dataFim, Long empresaId);
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId);
 }
