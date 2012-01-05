@@ -5,13 +5,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import net.sf.json.JSONException;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.util.StringUtil;
-import com.opensymphony.webwork.dispatcher.json.JSONException;
 
 public class TurmaTipoDespesaManagerImpl extends GenericManagerImpl<TurmaTipoDespesa, TurmaTipoDespesaDao> implements TurmaTipoDespesaManager
 {
