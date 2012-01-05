@@ -6,6 +6,12 @@
 		@import url('<@ww.url includeParams="none" value="/css/painelIndicadoresTreinamentos.css"/>');
 		@import url('<@ww.url value="/css/indicadores.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		
+		.gogDivEsq div.legend > table, .gogDivDir div.legend > table {
+		    border-spacing: 0 !important;
+		    left: 240px;
+		    width: 240px;
+		}
 	</style>
 
 	<title>Painel de Indicadores de T&D</title>
@@ -37,10 +43,13 @@
 			montaPie(${grfTreinamento}, "#treinamento", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfFrequencia}, "#frequencia", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
-			montaPie(${grfCusto}, "#custo", {combinePercentMin: -1, percentMin: 0} );
+			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0, legendLabelFormatter: formataLegendaCusto });
 		});
 		
-		
+		function formataLegendaCusto(label, series)
+		{
+			return '<span class="legend">' + label + ' &#x2013; '+ (isNaN(series.percent) ? 0 : series.percent.toFixed(2)) + '% (R$ '+ series.datapoints.points[1].toFixed(2).replace(/,/g,'#').replace(/\./g,',').replace(/#/g,'.') + ')</span>';
+		}
 	</script>
 
 	<#if indicadorTreinamento?exists && indicadorTreinamento.dataIni?exists>

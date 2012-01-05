@@ -1,5 +1,6 @@
 package com.fortes.rh.test.web.action.sesmt;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import mockit.Mockit;
@@ -11,8 +12,10 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.web.action.desenvolvimento.IndicadorTreinamentosListAction;
 import com.opensymphony.webwork.ServletActionContext;
@@ -25,7 +28,7 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 	private Mock colaboradorTurmaManager;
 	private Mock colaboradorPresencaManager;
 	private Mock turmaManager;
-	
+	private Mock turmaTipoDespesaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -43,6 +46,9 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 
         turmaManager = mock(TurmaManager.class);
         action.setTurmaManager((TurmaManager)turmaManager.proxy());
+
+        turmaTipoDespesaManager = mock(TurmaTipoDespesaManager.class);
+        action.setTurmaTipoDespesaManager((TurmaTipoDespesaManager)turmaTipoDespesaManager.proxy());
         
         Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 	}
@@ -61,6 +67,8 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		cursoManager.expects(once()).method("findHorasPerCapita").with(eq(indicadorTreinamento), ANYTHING, ANYTHING, eq(empresa.getId()));
 		colaboradorTurmaManager.expects(once()).method("findQuantidade").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new Integer(2)));
 		turmaManager.expects(once()).method("quantidadeParticipantesPrevistos").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new Integer(2)));
+		turmaManager.expects(once()).method("somaCustosNaoDetalhados").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new Double(0.0)));
+		turmaTipoDespesaManager.expects(once()).method("somaDespesasPorTipo").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new ArrayList<TipoDespesa>()));
 		cursoManager.expects(once()).method("countTreinamentos").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(3)));
 		cursoManager.expects(once()).method("countTreinamentos").with(ANYTHING, ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new Integer(2)));
 		
