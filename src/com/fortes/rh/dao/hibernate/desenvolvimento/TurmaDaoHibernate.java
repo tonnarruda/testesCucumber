@@ -153,17 +153,19 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmaIds, Date dataIni, Date dataFim, Boolean realizada)
 	{
-		StringBuilder hql = new StringBuilder("select new Turma(c.id, c.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.custo, count(*)) from ColaboradorTurma ct ");
+		StringBuilder hql = new StringBuilder("select new Turma(c.id, c.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.custo, count(*), td.descricao, ttd.despesa) from ColaboradorTurma ct ");
 									hql.append("join ct.turma as t ");
 									hql.append("join t.curso as c ");
+									hql.append("left join t.turmaTipoDespesas as ttd ");
+									hql.append("left join ttd.tipoDespesa as td ");
 									hql.append("where t.dataPrevIni between :dataIni and :dataFim ");
 									hql.append("and t.id in (:turmaIds) ");
 									
 									if(realizada != null)
 										hql.append("and t.realizada = :realizada ");
 									
-									hql.append("group by c.id, c.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.custo ");
-									hql.append("order by c.nome, t.descricao ");
+									hql.append("group by c.id, c.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.custo, td.descricao, ttd.despesa ");
+									hql.append("order by c.nome, t.descricao, td.descricao ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("dataIni", dataIni);

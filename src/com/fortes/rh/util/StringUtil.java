@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
 
@@ -16,8 +17,6 @@ import org.apache.commons.lang.StringUtils;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-
-import com.opensymphony.webwork.dispatcher.json.JSONException;
 
 public final class StringUtil
 {

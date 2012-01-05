@@ -49,6 +49,7 @@
 		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" onClick="getTurmasByFiltro();" width="600" />
 		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas *" list="turmasCheckList" width="600" />
 		<@ww.select id="realizada" label="Turmas Realizadas" name="realizada" list=r"#{'T':'Todas','S':'Sim','N':'Não'}" />
+		<@ww.checkbox label="Detalhar custos" name="exibirCustoDetalhado" labelPosition="left"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

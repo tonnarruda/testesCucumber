@@ -202,7 +202,7 @@
 				<label class="desc" for="custo"> Custo (R$):<span class="req">* </span></label>
 			</div> 
 			<div class="wwctrl" id="wwctrl_custo">
-				<@ww.textfield theme="simple" id="custo" name="turma.custo" class="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
+				<@ww.textfield theme="simple" id="custo" name="turma.custo" cssClass="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
 				<a href="javascript:;" onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
 			</div> 
 		</li>
@@ -273,7 +273,7 @@
 		<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
 			<@display.column property="descricao" title="Descrição"/>
 			<@display.column title="Custo (R$)" style="text-align: center; width:120px;">
-				<input type="text" name="${tipoDespesa.id}" class="despesa moeda" maxlength="12" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
+				<input type="text" name="${tipoDespesa.id}" class="despesa moeda" maxlength="10" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
 			</@display.column>
 		</@display.table>
 	</div>

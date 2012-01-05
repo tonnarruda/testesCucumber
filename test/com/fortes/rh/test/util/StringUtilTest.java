@@ -65,6 +65,7 @@ public class StringUtilTest extends TestCase
 		} catch (Exception e) {
 			exception = e;
 		}
+		
 		assertNotNull(exception);
 	}
 	

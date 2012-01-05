@@ -57,6 +57,7 @@ public class TurmaListAction extends MyActionSupportList
 	private Date dataFim;
 	private char realizada;
 	private String totalCargaHoraria;
+	private boolean exibirCustoDetalhado;
 
 	public String filtroPlanoTreinamento() throws Exception
 	{
@@ -201,6 +202,7 @@ public class TurmaListAction extends MyActionSupportList
 	{
 		turmas = turmaManager.findByTurmasPeriodo(LongUtil.arrayStringToArrayLong(turmasCheck),  dataIni, dataFim, BooleanUtil.getValueCombo(realizada));
 		parametros = RelatorioUtil.getParametrosRelatorio("Relatorio de Investimento", getEmpresaSistema(),  getPeriodoFormatado());
+		parametros.put("EXIBIR_CUSTO_DETALHADO", exibirCustoDetalhado);
 		
 		return Action.SUCCESS;
 	}
@@ -363,5 +365,13 @@ public class TurmaListAction extends MyActionSupportList
 
 	public String getTotalCargaHoraria() {
 		return totalCargaHoraria;
+	}
+
+	public boolean isExibirCustoDetalhado() {
+		return exibirCustoDetalhado;
+	}
+
+	public void setExibirCustoDetalhado(boolean exibirCustoDetalhado) {
+		this.exibirCustoDetalhado = exibirCustoDetalhado;
 	}
 }

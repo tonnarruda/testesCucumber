@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MathUtil;
@@ -52,6 +53,8 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	private Collection<AvaliacaoTurma> avaliacaoTurmas;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
 	private Collection<ColaboradorTurma> colaboradorTurmas;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
+	private Collection<TurmaTipoDespesa> turmaTipoDespesas;
 
 	// Utilizado na Matriz de Qualificação
 	@Transient
@@ -65,12 +68,16 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	//utilizado para não deixar informações sejam alteradas após alguma frequencia ser informada
 	@Transient
 	private Boolean temPresenca;
+	@Transient
+	private String tipoDespesaDescricao;
+	@Transient
+	private Double despesaPorTipo;
 
 	public Turma()
 	{
 	}
 	
-	public Turma(Long cursoId, String cursoNome, Long id, String descricao, Date dataPrevIni, Date dataPrevFim, Double custo, Integer qtdPessoas)
+	public Turma(Long cursoId, String cursoNome, Long id, String descricao, Date dataPrevIni, Date dataPrevFim, Double custo, Integer qtdPessoas, String tipoDespesaDescricao, Double despesaPorTipo)
 	{
 		setCursoId(cursoId);
 		curso.setNome(cursoNome);
@@ -80,6 +87,8 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 		this.dataPrevFim = dataPrevFim;
 		this.custo = custo;
 		this.qtdPessoas = qtdPessoas;
+		this.tipoDespesaDescricao = tipoDespesaDescricao;
+		this.despesaPorTipo = despesaPorTipo;
 	}
 
 	public Turma(Long id, Double diasEstimadosParaAprovacao)
@@ -382,5 +391,21 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 	public void setQtdAvaliacoes(Integer qtdAvaliacoes) {
 		this.qtdAvaliacoes = qtdAvaliacoes;
+	}
+
+	public Collection<TurmaTipoDespesa> getTurmaTipoDespesas() {
+		return turmaTipoDespesas;
+	}
+
+	public void setTurmaTipoDespesas(Collection<TurmaTipoDespesa> turmaTipoDespesas) {
+		this.turmaTipoDespesas = turmaTipoDespesas;
+	}
+
+	public String getTipoDespesaDescricao() {
+		return tipoDespesaDescricao;
+	}
+
+	public Double getDespesaPorTipo() {
+		return despesaPorTipo;
 	}
 }
