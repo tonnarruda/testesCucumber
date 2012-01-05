@@ -273,7 +273,7 @@
 		<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
 			<@display.column property="descricao" title="Descrição"/>
 			<@display.column title="Custo (R$)" style="text-align: center; width:120px;">
-				<input type="text" name="${tipoDespesa.id}" class="despesa moeda" maxlength="12" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
+				<input type="text" name="${tipoDespesa.id}" class="despesa moeda" maxlength="10" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
 			</@display.column>
 		</@display.table>
 	</div>

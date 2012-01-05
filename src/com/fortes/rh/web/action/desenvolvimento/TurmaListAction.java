@@ -201,8 +201,8 @@ public class TurmaListAction extends MyActionSupportList
 	public String imprimirRelatorioInvestimento() throws Exception
 	{
 		turmas = turmaManager.findByTurmasPeriodo(LongUtil.arrayStringToArrayLong(turmasCheck),  dataIni, dataFim, BooleanUtil.getValueCombo(realizada));
-		parametros.put("EXIBIR_CUSTO_DETALHADO", exibirCustoDetalhado);
 		parametros = RelatorioUtil.getParametrosRelatorio("Relatorio de Investimento", getEmpresaSistema(),  getPeriodoFormatado());
+		parametros.put("EXIBIR_CUSTO_DETALHADO", exibirCustoDetalhado);
 		
 		return Action.SUCCESS;
 	}
