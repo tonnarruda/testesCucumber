@@ -38,4 +38,5 @@ public interface TurmaManager extends GenericManager<Turma>
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada);
 	//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId);
 	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId);
+	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long empresaId);
 }

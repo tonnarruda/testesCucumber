@@ -93,6 +93,40 @@ public class FaturamentoMensalDaoHibernateTest extends GenericDaoHibernateTest<F
 		assertEquals(novembro, faturamento);
 	}
 	
+	public void testSomaByPeriodo() {
+		Date dataIni = DateUtil.criarDataMesAno(1, 2, 2000);
+		Date dataFim = DateUtil.criarDataMesAno(1, 11, 2000);
+		Date dataFora = DateUtil.criarDataMesAno(1, 12, 2000);
+		
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		FaturamentoMensal janeiro = new FaturamentoMensal();
+		janeiro.setMesAno(dataIni);
+		janeiro.setValor(200.0);
+		janeiro.setEmpresa(empresa1);
+		faturamentoMensalDao.save(janeiro);
+		
+		FaturamentoMensal novembro = new FaturamentoMensal();
+		novembro.setMesAno(dataFim);
+		novembro.setValor(300.0);
+		novembro.setEmpresa(empresa1);
+		faturamentoMensalDao.save(novembro);
+		
+		FaturamentoMensal dezembro = new FaturamentoMensal();
+		dezembro.setMesAno(dataFora);
+		dezembro.setValor(400.0);
+		dezembro.setEmpresa(empresa1);
+		faturamentoMensalDao.save(dezembro);
+		
+		assertEquals(500.0, faturamentoMensalDao.somaByPeriodo(dataIni, dataFim, empresa1.getId()));
+		assertEquals(0.0, faturamentoMensalDao.somaByPeriodo(dataIni, dataFim, empresa2.getId()));
+		
+	}
+	
 	public void setFaturamentoMensalDao(FaturamentoMensalDao faturamentoMensalDao)
 	{
 		this.faturamentoMensalDao = faturamentoMensalDao;

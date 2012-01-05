@@ -86,6 +86,9 @@
     <property name="turmaTipoDespesaManager">
       <ref bean="turmaTipoDespesaManager" />
     </property>
+    <property name="faturamentoMensalManager">
+      <ref bean="faturamentoMensalManager" />
+    </property>
   </bean>
   <bean id="turmaManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -17,6 +18,7 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
@@ -63,6 +65,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 	Mock aproveitamentoAvaliacaoCursoManager;
 	Mock cursoManager;
 	Mock turmaTipoDespesaManager;
+	Mock faturamentoMensalManager;
 
 	protected void setUp() throws Exception
 	{
@@ -94,6 +97,9 @@ public class TurmaManagerTest extends MockObjectTestCase
 		turmaTipoDespesaManager = new Mock(TurmaTipoDespesaManager.class);
 		turmaManager.setTurmaTipoDespesaManager((TurmaTipoDespesaManager) turmaTipoDespesaManager.proxy());
 
+		faturamentoMensalManager = new Mock(FaturamentoMensalManager.class);
+		turmaManager.setFaturamentoMensalManager((FaturamentoMensalManager) faturamentoMensalManager.proxy());
+		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -492,5 +498,24 @@ public class TurmaManagerTest extends MockObjectTestCase
 		cursoManager.expects(once()).method("saveClone").with(ANYTHING, eq(empresaDestino.getId()));
 		
 		turmaManager.sincronizar(empresa.getId(), empresaDestino.getId());
+	}
+	
+	public void testGetPercentualInvestimento() {
+		
+		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2012);
+		Date dataFim = DateUtil.criarDataMesAno(1, 3, 2012);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		faturamentoMensalManager.expects(once()).method("somaByPeriodo").with(eq(dataIni), eq(dataFim), eq(empresa.getId())).will(returnValue(100.0));
+		turmaDao.expects(once()).method("somaCustos").with(eq(dataIni), eq(dataFim), eq(empresa.getId())).will(returnValue(10.0));
+		
+		assertEquals(10.0, turmaManager.getPercentualInvestimento(dataIni, dataFim, empresa.getId()));
+		
+		faturamentoMensalManager.expects(once()).method("somaByPeriodo").with(eq(dataIni), eq(dataFim), eq(empresa.getId())).will(returnValue(0.0));
+		turmaDao.expects(once()).method("somaCustos").with(eq(dataIni), eq(dataFim), eq(empresa.getId())).will(returnValue(10.0));
+		
+		assertEquals(0.0, turmaManager.getPercentualInvestimento(dataIni, dataFim, empresa.getId()));
+		
 	}
 }

@@ -11,7 +11,6 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
-import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -41,7 +40,6 @@ import com.fortes.rh.util.DateUtil;
 public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 {
 	private TurmaDao turmaDao;
-	private DiaTurmaDao diaTurmaDao;
 	private CursoDao cursoDao;
 	private EmpresaDao empresaDao;
 	private AreaOrganizacionalDao areaOrganizacionalDao;
@@ -65,7 +63,6 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		this.turmaDao = TurmaDao;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void testGetTurmasFinalizadas()
 	{
 		Curso c1 = CursoFactory.getEntity();
@@ -642,6 +639,49 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		assertEquals(29.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, empresa.getId()));
 		assertEquals(0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, 999934L));
 	}
+
+	public void testSomaCustos()
+	{
+		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
+		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setEmpresa(empresa);
+		turma.setDataPrevIni(dataPrevIni);
+		turma.setDataPrevFim(dataPrevFim);
+		turma.setCusto(15.50);
+		turmaDao.save(turma);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa);
+		turma2.setDataPrevIni(dataPrevIni);
+		turma2.setDataPrevFim(dataPrevFim);
+		turma2.setCusto(13.75);
+		turmaDao.save(turma2);
+		
+		Turma turma3 = TurmaFactory.getEntity();
+		turma3.setEmpresa(empresa);
+		turma3.setDataPrevIni(dataPrevIni);
+		turma3.setDataPrevFim(dataPrevFim);
+		turma3.setCusto(50.00);
+		turmaDao.save(turma3);
+				
+		Turma turmaOutraEmpresa = TurmaFactory.getEntity();
+		turmaOutraEmpresa.setEmpresa(empresa2);
+		turmaOutraEmpresa.setDataPrevIni(dataPrevIni);
+		turmaOutraEmpresa.setDataPrevFim(dataPrevFim);
+		turmaOutraEmpresa.setCusto(5550.0);
+		turmaDao.save(turmaOutraEmpresa);
+		
+		assertEquals(79.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, empresa.getId()));
+		assertEquals(0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, 999934L));
+	}
 	
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)
 	{
@@ -662,9 +702,6 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao)
 	{
 		this.colaboradorTurmaDao = colaboradorTurmaDao;
-	}
-	public void setDiaTurmaDao(DiaTurmaDao diaTurmaDao) {
-		this.diaTurmaDao = diaTurmaDao;
 	}
 	public void setTurmaTipoDespesaDao(TurmaTipoDespesaDao turmaTipoDespesaDao) {
 		this.turmaTipoDespesaDao = turmaTipoDespesaDao;

@@ -42,7 +42,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private Integer qtdTreinamentosNaoRealizados;
 	private Integer qtdTotalInscritosTurmas = 0 ;
 	private Integer qtdParticipantesPrevistos= 0 ;
-	private Double percentualFrequencia = 0.0;
 	private Map<String, Object> parametros;
 	private Collection<String> colecao = new ArrayList<String>();
 
@@ -134,6 +133,16 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		grfCusto = StringUtil.toJSON(grfCustoTipoDespesa, null);
 	}
 	
+	public Double getPercentualFrequencia() 
+	{
+		return colaboradorTurmaManager.percentualFrequencia(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+	}
+
+	public Double getPercentualInvestimentoEmTeD() 
+	{
+		return turmaManager.getPercentualInvestimento(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+	}
+	
 	public void setCursoManager(CursoManager cursoManager)
 	{
 		this.cursoManager = cursoManager;
@@ -184,22 +193,17 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	public Integer getQtdParticipantesPrevistos() {
 		return turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 	}
+	
 	public void setQtdParticipantesPrevistos(Integer qtdParticipantesPrevistos) {
 		this.qtdParticipantesPrevistos = qtdParticipantesPrevistos;
 	}
 
-	public void setColaboradorPresencaManager(
-			ColaboradorPresencaManager colaboradorPresencaManager) {
+	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager) {
 		this.colaboradorPresencaManager = colaboradorPresencaManager;
 	}
 
 	public ColaboradorPresencaManager getColaboradorPresencaManager() {
 		return colaboradorPresencaManager;
-	}
-
-	public Double getPercentualFrequencia() 
-	{
-		return colaboradorTurmaManager.percentualFrequencia(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 	}
 
 	public String getGrfTreinamento() {

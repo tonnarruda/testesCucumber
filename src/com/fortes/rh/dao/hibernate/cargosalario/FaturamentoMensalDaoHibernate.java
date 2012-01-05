@@ -14,6 +14,7 @@ import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.FaturamentoMensalDao;
 
+@SuppressWarnings("unchecked")
 public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<FaturamentoMensal> implements FaturamentoMensalDao
 {
 
@@ -75,5 +76,18 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		criteria.setMaxResults(1);
 		
 		return (FaturamentoMensal) criteria.uniqueResult();
+	}
+
+	public Double somaByPeriodo(Date dataIni, Date dataFim, Long empresaId) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
+		
+		criteria.setProjection(Projections.sum("f.valor"));
+		
+		criteria.add(Expression.between("f.mesAno", dataIni, dataFim));		
+		criteria.add(Expression.eq("f.empresa.id", empresaId));
+		
+		Double valor = (Double) criteria.uniqueResult();
+		
+		return valor == null ? 0.0 : valor;
 	}
 }
