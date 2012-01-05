@@ -198,6 +198,47 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		
 		assertEquals(1, turmaDao.findByTurmasPeriodo(turmaIds, DateUtil.montaDataByString("01/01/2010"), DateUtil.montaDataByString("05/05/2010"), true).size());
 	}
+	
+	public void testFindByTurmasPeriodoComDespesa() 
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma1 = criaTurmaAndColaboradorTurma(curso, "04/04/2010", true);
+		
+		TipoDespesa tipoDespesa1 = TipoDespesaFactory.getEntity();
+		tipoDespesa1.setDescricao("Professor");
+		tipoDespesaDao.save(tipoDespesa1);		
+		
+		TurmaTipoDespesa turmaTipoDespesa1 = TurmaTipoDespesaFactory.getEntity();
+		turmaTipoDespesa1.setTurma(turma1);
+		turmaTipoDespesa1.setTipoDespesa(tipoDespesa1);
+		turmaTipoDespesa1.setDespesa(5000.0);
+		turmaTipoDespesaDao.save(turmaTipoDespesa1);
+		
+		TipoDespesa tipoDespesa2 = TipoDespesaFactory.getEntity();
+		tipoDespesa2.setDescricao("Coffee");
+		tipoDespesaDao.save(tipoDespesa2);		
+		
+		TurmaTipoDespesa turmaTipoDespesa2 = TurmaTipoDespesaFactory.getEntity();
+		turmaTipoDespesa2.setTurma(turma1);
+		turmaTipoDespesa2.setTipoDespesa(tipoDespesa2);
+		turmaTipoDespesa2.setDespesa(2200.0);
+		turmaTipoDespesaDao.save(turmaTipoDespesa2);
+		
+		Long[] turmaIds = new Long[]{turma1.getId()};
+		
+		Collection<Turma> turmas = turmaDao.findByTurmasPeriodo(turmaIds, DateUtil.montaDataByString("01/01/2010"), DateUtil.montaDataByString("05/05/2010"), true);
+		assertEquals(2, turmas.size());
+		
+		Turma turmaDespesa1 = (Turma) turmas.toArray()[0];
+		assertEquals("Coffee", turmaDespesa1.getTipoDespesaDescricao());
+		assertEquals(2200.0, turmaDespesa1.getDespesaPorTipo());
+		
+		Turma turmaDespesa2 = (Turma) turmas.toArray()[1];
+		assertEquals("Professor", turmaDespesa2.getTipoDespesaDescricao());
+		assertEquals(5000.0, turmaDespesa2.getDespesaPorTipo());
+	}
 
 	private Turma criaTurmaAndColaboradorTurma(Curso curso, String ini, boolean realizada) 
 	{

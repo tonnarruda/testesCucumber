@@ -48,7 +48,7 @@ public class TipoDespesaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		tipoDespesas = tipoDespesaManager.findAll();
+		tipoDespesas = tipoDespesaManager.findAll(new String[] {"descricao"});
 		return Action.SUCCESS;
 	}
 
