@@ -38,4 +38,9 @@ public class FaturamentoMensalManagerImpl extends GenericManagerImpl<Faturamento
 
 		return graficoEvolucaoFaturamento;
 	}
+
+	public Double somaByPeriodo(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		return getDao().somaByPeriodo(DateUtil.getInicioMesData(dataIni), DateUtil.getUltimoDiaMes(dataFim), empresaId);
+	}
 }

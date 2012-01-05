@@ -10,12 +10,13 @@
 	height: 15px;
 }
 #gogDiv dl {
+	width: 480px;
 	margin: 0;
 	margin-top: -10px;
-	padding: 0;
+	padding: 5px;
 }
 #gogDiv dt {
-	margin-top: 25px;
+	margin-top: 10px;
 	border-bottom: 1px dotted #666666;
 }
 #gogDiv dd {
@@ -24,9 +25,19 @@
 	font-size: 14px;
 	margin-top: -21px;
 }
+.gogDivTotal {
+	width: 100%;
+}
 .gogDivEsq {
 	float: left;
 	width: 49%;
+}
+.gogDivFormulario {
+	background-color: #FFFFFF;
+	border: 1px solid #7E9DB9;
+	color: #454C54;
+	padding: 5px;
+	height: 90px;
 }
 .gogDivDir {
 	float: right;

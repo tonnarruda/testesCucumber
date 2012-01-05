@@ -78,10 +78,18 @@
 	<#include "../util/bottomFiltro.ftl" />
 		</div><br>
 			<@ww.div>
-					<div id="gogDiv">
-					<div class="gogDivEsq">
+				<div id="gogDiv">
+					<div class="gogDivTotal">
 						<div class="gogDivTituloX">Indicadores de T&D</div>
-						<div class="gogDivFormularioX">
+						<div class="gogDivFormulario">
+							<dl style="float:right;">
+								<dt>Total de investimentos dos treinamentos realizados (R$)</dt>
+								<dd>${indicadorTreinamento.custoTotalFmt}</dd>
+								<dt>Percentual de investimentos em relação ao faturamento</dt>
+								<dd>${percentualInvestimentoEmTeD?string(",##0.00")}%</dd>
+								<dt>Percentual de frequência (aprovados) </dt>
+								<dd>${percentualFrequencia?string(",##0.00")}%</dd>
+							</dl>
 							<dl>
 								<dt>Investimento médio da hora de treinamento (R$)</dt>
 								<dd>${indicadorTreinamento.custoMedioHoraFmt}</dd>
@@ -89,21 +97,12 @@
 								<dd>${indicadorTreinamento.custoPerCapitaFmt}</dd>
 								<dt>Horas de treinamento per capita</dt>
 								<dd>${indicadorTreinamento.horasPerCapitaFmt}</dd>
-								<dt>Total de investimentos dos treinamentos realizados (R$)</dt>
-								<dd>${indicadorTreinamento.custoTotalFmt}</dd>
-								<dt>Percentual de frequência (aprovados) </dt>
-								<dd>${percentualFrequencia}%</dd>
 							</dl>
 						</div>
 						<br />
-						<div class="gogDivTituloX">Cumprimento do Plano de Treinamento</div>
-						<div class="gogDivFormularioX">
-							<div id="treinamento" class="graph" ></div>
-						</div>
-						<br />
 					</div>
-					
-					<div class="gogDivDir">
+				
+					<div class="gogDivEsq">
 						<div class="gogDivTituloX">Qtd. Prevista de Participantes x Inscritos</div>
 						<div class="gogDivFormularioX">
 							<div id="frequencia" class="graph" ></div>
@@ -115,14 +114,20 @@
 						</div>
 						<br />
 					</div>
-				
-					<div class="gogDivEsq">
-						<div class="gogDivTituloX">Custo do Curso por Tipo de Despesa</div>
+					
+					<div class="gogDivDir">
+						<div class="gogDivTituloX">Cumprimento do Plano de Treinamento</div>
+						<div class="gogDivFormularioX">
+							<div id="treinamento" class="graph"></div>
+						</div>
+						<br />
+						<div class="gogDivTituloX">Custo por Tipo de Despesa</div>
 						<div class="gogDivFormularioX">
 							<div id="custo" class="graph" ></div>
 						</div>
 						<br />
 					</div>
+				</div>
 			</@ww.div>
 	
 </body>

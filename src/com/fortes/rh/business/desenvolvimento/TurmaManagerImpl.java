@@ -12,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
@@ -33,6 +34,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private CursoManager cursoManager;
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
+	private FaturamentoMensalManager faturamentoMensalManager;
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{
@@ -291,19 +293,38 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findByTurmasPeriodo(turmasCheck,  dataIni, dataFim, realizada);
 	}
 
+	public void updateCusto(Long turmaId, double totalCusto) 
+	{
+		getDao().updateCusto(turmaId, totalCusto);
+	}
+
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		return getDao().somaCustosNaoDetalhados(dataIni, dataFim, empresaId);
+	}
+
+	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long empresaId) 
+	{
+		double percentual = 0.0;
+		
+		Double faturamentoPeriodo = faturamentoMensalManager.somaByPeriodo(dataIni, dataFim, empresaId);
+		Double custos = getDao().somaCustos(dataIni, dataFim, empresaId);
+		
+		if (faturamentoPeriodo > 0)
+			percentual = (custos / faturamentoPeriodo) * 100;
+		
+		return percentual;
+	}
+
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
 	}
-
+	
 	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
 		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
 	}
 
-	public void updateCusto(Long turmaId, double totalCusto) {
-		getDao().updateCusto(turmaId, totalCusto);
-	}
-
-	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId) {
-		return getDao().somaCustosNaoDetalhados(dataIni, dataFim, empresaId);
+	public void setFaturamentoMensalManager(FaturamentoMensalManager faturamentoMensalManager) {
+		this.faturamentoMensalManager = faturamentoMensalManager;
 	}
 }
