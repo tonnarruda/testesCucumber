@@ -131,6 +131,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (23, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (413, 'ROLE_MOV_AVALIACAO_CURSO', 'Avaliações dos Cursos', '/desenvolvimento/avaliacaoCurso/list.action', 3, true, 366);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (419, 'ROLE_AVALIACAO_TURMA', 'Modelos de Avaliação de Turma', '/pesquisa/avaliacaoTurma/list.action', 4, true, 366);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (420, 'ROLE_CAD_CERTIFICACAO', 'Certificações', '/desenvolvimento/certificacao/list.action', 5, true, 366);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (534, 'ROLE_TIPO_DESPESA', 'Tipo de Despesa', '/geral/tipoDespesa/list.action', 6, true, 366);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (367, 'ROLE_T&D_MOV', 'Movimentações', '#', 2, true, 365);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (64, 'ROLE_MOV_CURSO_DNT', 'DNT', '/desenvolvimento/dnt/list.action', 1, true, 463);
@@ -302,7 +303,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 534;
+alter sequence papel_sequence restart with 535;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -480,6 +481,7 @@ insert into perfil_papel(perfil_id, papeis_id) values (1, 529);
 insert into perfil_papel(perfil_id, papeis_id) values(1, 530);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 532);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 533);
+insert into perfil_papel(perfil_id, papeis_id) values (1, 534);
 
 insert into public."perfil" ("id", "nome") values (2, 'Usuário');
 

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.66.58" data="05/01/2012"><![CDATA[
+		- T&D > Cadastros > Cursos/Treinamentos > Turmas: Nova composição de custo para inserção dos valores por tipos de despesas.
+		- T&D > Cadastros > Tipo de despesa: Novo cadastro.
+		- T&D > Relatorios > Relatório de Investimentos de T&D: Nova opção de imprimir o custo detalhado.
+		- T&D > Cadastros > Tipo de despesa: Novo cadastro.
+	]]></Versao>
 	<Versao id="1.1.65.57" data="30/12/2011"><![CDATA[
 		- Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto: Adição de novos campos no relatório.
 		- SESMT > Cadastros > Extintores: Nova opção de impressão da listagem de extintores cadastrados.
