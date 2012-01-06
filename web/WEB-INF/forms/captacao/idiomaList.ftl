@@ -50,9 +50,9 @@
 	
 	<div class="buttonGroup">
 		<#if (idiomasCandidato?size >= idiomas?size)> 
-			<button class="btnInserirDesabilitado grayBG" disabled></button>
+			<button class="btnInserirDesabilitado grayBG" id="inserirIdiomaDesabilitado" disabled></button>
 		<#else>
-			<button class="btnInserir grayBG" onclick="prepareInsertIdioma()" accesskey="I"></button>
+			<button class="btnInserir grayBG" id="inserirIdioma" onclick="prepareInsertIdioma()" accesskey="I"></button>
 		</#if>
 	</div>
 

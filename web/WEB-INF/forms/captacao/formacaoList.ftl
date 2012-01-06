@@ -87,7 +87,7 @@
 	</@display.table>
 
 	<div class="buttonGroup">
-		<button class="btnInserir grayBG" onclick="prepareInsertFormacao()">
+		<button class="btnInserir grayBG" id="inserirFormacao" onclick="prepareInsertFormacao()">
 		</button>
 	</div>
 <br>
