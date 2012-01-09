@@ -32,7 +32,7 @@ public class ImportacaoColaboradorManagerTest extends MockObjectTestCase {
 		 Mockit.redefineMethods(ImportacaoCSVUtil.class, MockImportacaoCSVUtil.class);
 	}
 	
-	public void testImportarDadosPessoaisByCpf() throws IOException
+	public void testImportarDadosPessoaisByCpf() throws Exception
     {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		

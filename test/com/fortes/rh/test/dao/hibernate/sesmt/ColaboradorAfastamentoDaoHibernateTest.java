@@ -310,6 +310,43 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(new Integer(2), colaboradorAfastamentoDao.findQtdAfastamentosInss(empresa.getId(), DateUtil.criarDataMesAno(5, 11, 2011), DateUtil.criarDataMesAno(30, 11, 2011), true));
 		assertEquals(new Integer(3), colaboradorAfastamentoDao.findQtdAfastamentosInss(empresa.getId(), DateUtil.criarDataMesAno(5, 11, 2011), DateUtil.criarDataMesAno(30, 11, 2011), false));
 	}
+	
+	public void testExists()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador ana = ColaboradorFactory.getEntity();
+		ana.setNome("Ana");
+		ana.setEmpresa(empresa);
+		colaboradorDao.save(ana);
+		
+		Afastamento pessoais = AfastamentoFactory.getEntity();
+		pessoais.setDescricao("Problemas pessoais");
+		pessoais.setInss(false);
+		afastamentoDao.save(pessoais);
+		
+		ColaboradorAfastamento colabAfast1 = ColaboradorAfastamentoFactory.getEntity();
+		colabAfast1.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
+		colabAfast1.setFim(DateUtil.criarDataMesAno(5, 11, 2011));
+		colabAfast1.setColaborador(ana);
+		colabAfast1.setObservacao("teste");
+		colabAfast1.setMedicoNome("joao");
+		colabAfast1.setAfastamento(pessoais);
+		colaboradorAfastamentoDao.save(colabAfast1);
+		
+		assertEquals(true, colaboradorAfastamentoDao.exists(colabAfast1));
+		
+		ColaboradorAfastamento colabAfastExists = ColaboradorAfastamentoFactory.getEntity();
+		colabAfastExists.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
+		colabAfastExists.setFim(DateUtil.criarDataMesAno(5, 11, 2011));
+		colabAfastExists.setColaborador(ana);
+		colabAfastExists.setObservacao("mudou");
+		colabAfastExists.setMedicoNome("joao");
+		colabAfastExists.setAfastamento(pessoais);
+		
+		assertEquals(false, colaboradorAfastamentoDao.exists(colabAfastExists));
+	}
 
 	public void setAfastamentoDao(AfastamentoDao afastamentoDao)
 	{

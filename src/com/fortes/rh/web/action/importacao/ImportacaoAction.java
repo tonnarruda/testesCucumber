@@ -10,10 +10,6 @@ import com.fortes.rh.web.action.MyActionSupport;
 
 public class ImportacaoAction extends MyActionSupport
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
@@ -28,6 +24,12 @@ public class ImportacaoAction extends MyActionSupport
 	
 	public String importarAfastamentos()
 	{
+		if(!arquivo.getName().toLowerCase().contains(".csv"))
+		{
+			addActionError("Formato do arquivo invalido.");
+			return INPUT;
+		}
+			
 		java.io.File arquivoCriado = ArquivoUtil.salvaArquivo(null, arquivo, false);
 		
 		try {
@@ -43,7 +45,7 @@ public class ImportacaoAction extends MyActionSupport
 			return INPUT;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addActionError("Erro ao executar a importação.");
+			addActionError("Erro ao executar a importação, verifique o formato e o conteúdo do arquivo CSV.");
 			return INPUT;
 		}
 		

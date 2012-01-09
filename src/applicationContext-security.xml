@@ -429,6 +429,8 @@
 				/geral/codigoCBO/find.action*=ROLE_USER
 				/geral/cid/find.action*=ROLE_USER
 				/desenvolvimento/colaboradorTurma/findNotas.action*=ROLE_USER
+				/importacao/prepareImportarAfastamentos.action*=ROLE_IMPORTACAO_AFASTAMENTO
+				/importacao/importarAfastamentos.action*=ROLE_IMPORTACAO_AFASTAMENTO
 			</value>
 		</property>
 	</bean>

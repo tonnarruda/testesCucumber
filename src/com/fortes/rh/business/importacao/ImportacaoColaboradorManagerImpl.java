@@ -25,7 +25,7 @@ public class ImportacaoColaboradorManagerImpl implements ImportacaoColaboradorMa
 		this.colaboradorManager = colaboradorManager;
 	}
 
-	public void importarDadosPessoaisByCpf(File arquivo, Empresa empresa) throws IOException {
+	public void importarDadosPessoaisByCpf(File arquivo, Empresa empresa) throws Exception {
 		
 		countColaboradoresImportados = 0;
 		countColaboradoresNaoEncontrados = 0;
