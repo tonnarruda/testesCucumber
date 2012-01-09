@@ -5,6 +5,7 @@ Funcionalidade: Cadastrar Curso
   Cenário: Cadastro de Curso
     Dado que exista uma avaliacao de curso "Avaliacao"
     Dado que eu esteja logado
+    Dado que exista um tipo de despesa "_apostilas"
 
     Quando eu acesso o menu "T&D > Cadastros > Cursos/Treinamentos"
     Então eu devo ver o título "Cursos"
@@ -43,6 +44,14 @@ Funcionalidade: Cadastrar Curso
     E eu preencho "Instrutor" com "_jose"
     E eu preencho "Custo (R$)" com "50"
     E eu saio do campo "Custo (R$)"
+
+
+
+    E eu clico no ícone com o título "Detalhamento dos custos"
+    E eu preencho com o valor com "255" do item "_apostilas"
+
+
+
     E eu preencho "Instituição" com "_fortes"
     E eu preencho "Qtd. Prevista de Participantes" com "30"
     E eu seleciono "Não" de "Realizada"

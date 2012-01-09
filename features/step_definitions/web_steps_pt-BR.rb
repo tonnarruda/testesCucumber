@@ -59,6 +59,21 @@ Quando /^eu clico na imagem com o título "([^"]*)"$/ do |titulo|
   find(:xpath, "//img[@title='#{titulo}']").click
 end
 
+Quando /^eu preencho com o valor com "([^"]*)" do item "([^"]*)"$/ do |val, field|
+  field = get_field_input(field)
+  page.execute_script("$('##{field}').val('#{val}')")
+end
+
+def get_field_input field
+  label = (all(:xpath, "//input[contains(class(), 'despesa moeda')]"))[0]
+  field = label[:for] unless label.nil?
+  field
+end
+
+Quando /^eu clico no ícone com o título "([^"]*)"$/ do |titulo|
+  find(:xpath, "//a[@title='#{titulo}']").click
+end
+
 Então /^eu devo ver o título "([^"]*)"$/ do |text|
   Then %{I should see "#{text}" within "#waDivTitulo"}
 end
@@ -377,6 +392,12 @@ Dado /^que exista uma avaliacao de curso "([^"]*)"$/ do |avaliacaocurso_titulo|
    insert :avaliacaocurso do
      titulo avaliacaocurso_titulo
      tipo 'n'
+   end
+end
+
+Dado /^que exista um tipo de despesa "([^"]*)"$/ do |tipodespesa_descricao|
+   insert :tipodespesa do
+     descricao tipodespesa_descricao
    end
 end
 
