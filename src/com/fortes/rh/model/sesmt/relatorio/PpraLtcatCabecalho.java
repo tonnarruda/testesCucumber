@@ -8,11 +8,11 @@ public class PpraLtcatCabecalho
 {
 	private Empresa empresa;
 	private Estabelecimento estabelecimento;
-	private String ambienteNome;
-	private String ambienteDescricao;
+	private String ambienteNome = "";
+	private String ambienteDescricao = "";
 	private Integer qtdHomens=0;
 	private Integer qtdMulheres=0;
-	private String funcoes;
+	private String funcoes = "";
 	
 	public PpraLtcatCabecalho() {
 	}
