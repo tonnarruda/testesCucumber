@@ -966,7 +966,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	/**
 	 * busca por filtros e também pela origem (RH ou AC), se for especificado.
 	 */
-	public Collection<HistoricoColaborador> findByPeriodo(Long empresaId, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasIds, String origemSituacao) {
+	public Collection<HistoricoColaborador> findByPeriodo(Long empresaId, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasIds, String origemSituacao, char agruparPor, boolean imprimirDesligados) {
 		
 		StringBuilder hql = new StringBuilder();
 		
@@ -998,8 +998,14 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 			hql.append("and hc.motivo != :motivo ");
 		else if (origemSituacao.equals("AC"))
 			hql.append("and hc.motivo = :motivo ");
-
-		hql.append("order by es.nome, ao.nome, hc.data desc");
+		
+		if (!imprimirDesligados) 
+			hql.append("and co.desligado = false ");
+		
+		if (agruparPor == 'A') 
+			hql.append("order by es.nome, ao.nome, hc.data desc");
+		else
+			hql.append("order by es.nome, hc.data desc, ao.nome");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
