@@ -59,11 +59,11 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="219"  isSplitAllowed="true" >
+			<band height="205"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="0"
-						y="135"
+						y="120"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -74,7 +74,7 @@
 				<rectangle>
 					<reportElement
 						x="0"
-						y="20"
+						y="5"
 						width="535"
 						height="31"
 						backcolor="#EBEBEB"
@@ -85,7 +85,7 @@
 				<rectangle>
 					<reportElement
 						x="0"
-						y="163"
+						y="148"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -96,7 +96,7 @@
 				<rectangle>
 					<reportElement
 						x="0"
-						y="107"
+						y="92"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -107,7 +107,7 @@
 				<rectangle>
 					<reportElement
 						x="0"
-						y="79"
+						y="64"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -118,7 +118,7 @@
 				<rectangle>
 					<reportElement
 						x="0"
-						y="51"
+						y="36"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -129,7 +129,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="51"
+						y="36"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -144,7 +144,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="79"
+						y="64"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -159,7 +159,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="107"
+						y="92"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -174,7 +174,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="135"
+						y="120"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -189,7 +189,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="163"
+						y="148"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -204,7 +204,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="65"
+						y="50"
 						width="535"
 						height="14"
 						key="textField-1"
@@ -218,7 +218,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="93"
+						y="78"
 						width="535"
 						height="14"
 						key="textField-2"
@@ -232,7 +232,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="121"
+						y="106"
 						width="535"
 						height="14"
 						key="textField-3"
@@ -246,7 +246,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="149"
+						y="134"
 						width="535"
 						height="14"
 						key="textField-4"
@@ -260,7 +260,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="177"
+						y="162"
 						width="535"
 						height="14"
 						key="textField-5"
@@ -274,22 +274,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="0"
-						width="535"
-						height="16"
-						backcolor="#CCCCCC"
-						key="staticText-6"
-						positionType="Float"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
-					</textElement>
-				<text><![CDATA[LTCAT]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="0"
-						y="20"
+						y="5"
 						width="535"
 						height="16"
 						key="staticText-7"
@@ -303,7 +288,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="35"
+						y="20"
 						width="535"
 						height="16"
 						key="staticText-8"
@@ -317,7 +302,7 @@
 				<rectangle>
 					<reportElement
 						x="0"
-						y="191"
+						y="176"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -328,7 +313,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="191"
+						y="176"
 						width="535"
 						height="14"
 						backcolor="#CCCCCC"
@@ -343,7 +328,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="205"
+						y="190"
 						width="535"
 						height="14"
 						key="textField-6"
