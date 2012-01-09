@@ -119,7 +119,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHitorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao, String vinculo) throws Exception;
 
-	public Collection<HistoricoColaborador> montaRelatorioSituacoes(Long empresaId, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasIds, String origemSituacao) throws ColecaoVaziaException, Exception;
+	public Collection<HistoricoColaborador> montaRelatorioSituacoes(Long empresaId, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasIds, String origemSituacao, char agruparPor, boolean imprimirDesligados) throws ColecaoVaziaException, Exception;
 
 	public Collection<HistoricoColaborador> findAllByColaborador(Long colaboradorId);
 	

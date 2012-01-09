@@ -2330,6 +2330,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Date dataFim = new Date();
 		Long[] estabelecimentosIds = new Long[]{1L};
 		Long[] areasIds = new Long[]{1L};
-		historicoColaboradorManager.montaRelatorioSituacoes(1L, dataIni, dataFim, estabelecimentosIds, areasIds, "RH");
+		historicoColaboradorManager.montaRelatorioSituacoes(1L, dataIni, dataFim, estabelecimentosIds, areasIds, "RH", 'A', false);
 	}
 }

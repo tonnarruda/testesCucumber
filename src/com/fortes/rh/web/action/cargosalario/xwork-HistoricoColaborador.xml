@@ -67,8 +67,14 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
 		</action>
 		<action name="relatorioSituacoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="relatorioSituacoes">
-			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/situacoes.jasper</param>
+			<result name="successAgruparPorArea" type="jasper">
+				<param name="location">WEB-INF/report/situacoes_agrupaArea.jasper</param>
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">situacoes.pdf</param>
+			</result>
+			<result name="successAgruparPorData" type="jasper">
+				<param name="location">WEB-INF/report/situacoes_agrupaData.jasper</param>
 				<param name="dataSource">historicoColaboradors</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">situacoes.pdf</param>

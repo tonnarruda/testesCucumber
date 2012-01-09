@@ -33,7 +33,8 @@
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData"/>
 		<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" />
 		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" />
-		
+		<@ww.select label="Agrupar por" name="agruparPor" list=r"#{'A':'Área Organizacional','M':'Mês / Ano'}"/>
+		<@ww.checkbox label="Imprimir desligado(s)" id="imprimirDesligados" name="imprimirDesligados" labelPosition="left"/>
 	</@ww.form>
 
 	<div class="buttonGroup">
