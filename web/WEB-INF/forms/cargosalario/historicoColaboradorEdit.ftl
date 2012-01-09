@@ -111,29 +111,29 @@
 
 		function enviaForm()
 		{
-			tipoSalario = Number(document.getElementById('tipoSalario').value);
+			var tipoSalario = Number(document.getElementById('tipoSalario').value);
+			var camposObrigatorios = new Array('estabelecimento', 'areaOrganizacional', 'faixa', 'tipoSalario');
+			var camposValidos = new Array('salario');
 
-			<#if historicoColaborador?exists && historicoColaborador.id?exists>
-				switch(tipoSalario)
-				{
-					case ${tipoAplicacaoIndice.getCargo()}:
-						return validaFormulario('form', new Array('estabelecimento', 'areaOrganizacional', 'faixa', 'tipoSalario'), new Array('salario'));
-					case ${tipoAplicacaoIndice.getIndice()}:
-						return validaFormulario('form', new Array('estabelecimento', 'areaOrganizacional', 'faixa', 'tipoSalario','indice','quantidade'), new Array('salario'));
-					default:
-						return validaFormulario('form', new Array('estabelecimento', 'areaOrganizacional', 'faixa', 'tipoSalario', 'salario'), new Array('salario'));
-				}
-			<#else>
-				switch(tipoSalario)
-				{
-					case ${tipoAplicacaoIndice.getCargo()}:
-						return validaFormulario('form', new Array('data','estabelecimento', 'areaOrganizacional', 'faixa', 'tipoSalario'), new Array('data','salario'));
-					case ${tipoAplicacaoIndice.getIndice()}:
-						return validaFormulario('form', new Array('data','estabelecimento', 'areaOrganizacional', 'faixa', 'tipoSalario','indice','quantidade'), new Array('data','salario'));
-					default:
-						return validaFormulario('form', new Array('data','estabelecimento', 'areaOrganizacional', 'faixa', 'tipoSalario', 'salario'), new Array('data','salario'));
-				}
+			if (tipoSalario == ${tipoAplicacaoIndice.getIndice()})
+			{
+				camposObrigatorios.push('indice');
+				camposObrigatorios.push('quantidade');
+			}
+			else if (tipoSalario == ${tipoAplicacaoIndice.getValor()})
+				camposObrigatorios.push('salario');
+
+			<#if !historicoColaborador?exists || !historicoColaborador.id?exists>
+				camposObrigatorios.push('data');
+				camposValidos.push('data');
 			</#if>
+			
+			<#if obrigarAmbienteFuncaoColaborador>
+				camposObrigatorios.push('ambiente');
+				camposObrigatorios.push('funcao');
+			</#if>
+
+			return validaFormulario('form', camposObrigatorios, camposValidos);
 		}
 			
 		$(document).ready(function($)
@@ -210,9 +210,9 @@
 		<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areaOrganizacionals" required="true" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" onchange="verificaMaternidade(this.value, 'areaOrganizacional');" disabled="${somenteLeitura}"/>
 
 		<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-			<@ww.select label="Ambiente" name="historicoColaborador.ambiente.id" id="ambiente" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 355px;"/>
+			<@ww.select label="Ambiente" name="historicoColaborador.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncaoColaborador?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 355px;"/>
 			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="populaFuncao(this.value);calculaSalario();" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
-			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1" />
+			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" required="${obrigarAmbienteFuncaoColaborador?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1" />
 		</@authz.authorize>
 		<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="calculaSalario();" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>

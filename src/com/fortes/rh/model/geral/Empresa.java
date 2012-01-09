@@ -58,6 +58,7 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean exibirSalario;
 	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
+    private boolean obrigarAmbienteFuncaoColaborador;
     @Column(length=400)
 	private String mensagemModuloExterno;
     private int maxCandidataCargo;
@@ -445,5 +446,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setTurnoverPorSolicitacao(boolean turnoverPorSolicitacao) {
 		this.turnoverPorSolicitacao = turnoverPorSolicitacao;
+	}
+
+	public boolean isObrigarAmbienteFuncaoColaborador() {
+		return obrigarAmbienteFuncaoColaborador;
+	}
+
+	public void setObrigarAmbienteFuncaoColaborador(boolean obrigarAmbienteFuncaoColaborador) {
+		this.obrigarAmbienteFuncaoColaborador = obrigarAmbienteFuncaoColaborador;
 	}
 }

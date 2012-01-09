@@ -216,26 +216,31 @@
 	<#else>
 		<#assign dataAdm = ""/>
 	</#if>
+	
 	<#if colaborador?exists && colaborador.pessoal?exists && colaborador.pessoal.rgDataExpedicao?exists>
 		<#assign rgDataExpedicao = colaborador.pessoal.rgDataExpedicao?date/>
 	<#else>
 		<#assign rgDataExpedicao = ""/>
 	</#if>
+	
 	<#if colaborador?exists && colaborador.habilitacao?exists && colaborador.habilitacao.emissao?exists>
 		<#assign habEmissao = colaborador.habilitacao.emissao?date/>
 	<#else>
 		<#assign habEmissao = ""/>
 	</#if>
+	
 	<#if colaborador?exists && colaborador.habilitacao?exists && colaborador.habilitacao.vencimento?exists>
 		<#assign dataVenc = colaborador.habilitacao.vencimento?date/>
 	<#else>
 		<#assign dataVenc = ""/>
 	</#if>
+	
 	<#if colaborador?exists && colaborador.pessoal?exists && colaborador.pessoal.ctps?exists && colaborador.pessoal.ctps.ctpsDataExpedicao?exists>
 		<#assign ctpsDataExpedicao = colaborador.pessoal.ctps.ctpsDataExpedicao?date/>
 	<#else>
 		<#assign ctpsDataExpedicao = ""/>
 	</#if>
+	
 	<#if colaborador?exists && colaborador.pessoal.dataNascimento?exists>
 		<#assign dataNasc = colaborador.pessoal.dataNascimento?date/>
 	<#else>
@@ -279,6 +284,11 @@
 
 		function validaFormularioDinamico()
 		{
+			<#if obrigarAmbienteFuncaoColaborador && somenteLeitura == "false">
+				arrayValidacao.push('ambiente');
+				arrayValidacao.push('funcao');
+			</#if>
+			
 			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}));
 		}
 	</script>
@@ -413,9 +423,9 @@
 
 						<h2>Dados da ${msgHistorico} Situação</h2>
 						<#if somenteLeitura == "true">
-							<@ww.textfield label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssStyle="width:71px;" required="true" disabled= "${somenteLeitura}"/>
+							<@ww.textfield label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssStyle="width:71px;" required="true" disabled="${somenteLeitura}"/>
 						<#else>
-							<@ww.datepicker label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssClass="mascaraData" required="true" disabled= "${somenteLeitura}"/>
+							<@ww.datepicker label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssClass="mascaraData" required="true" disabled="${somenteLeitura}"/>
 						</#if>
 
 
@@ -430,18 +440,19 @@
 						
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 						
-							Ambiente: <img id="ambienteTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
+							Ambiente:<#if obrigarAmbienteFuncaoColaborador>*</#if> <img id="ambienteTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
 							<@ww.select name="historicoColaborador.ambiente.id" theme="simple" id="ambiente" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
 							
 							<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="populaFuncao(this.value);calculaSalario();" disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>
-							Função: <img id="funcaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
+							
+							Função:<#if obrigarAmbienteFuncaoColaborador>*</#if> <img id="funcaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
 							<@ww.select name="historicoColaborador.funcao.id" id="funcao" list="funcoes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhuma" disabled= "${somenteLeitura}" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
 						
 						</@authz.authorize>
+						
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="calculaSalario();" disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>
 						</@authz.authorize>
-						
 						
 						<@ww.select label="Exposição a Agentes Nocivos (Código GFIP)" name="historicoColaborador.gfip" id="gfip" list="codigosGFIP" headerKey="" headerValue="Selecione..." disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>
 
