@@ -26,6 +26,7 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["D:\\workspace\\FortesRH\\web\\WEB-INF\\report\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="EXIBIR_COMPOSICAO_SESMT" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="ppra" class="com.fortes.rh.model.sesmt.relatorio.Ppra"/>
 	<field name="ltcat" class="com.fortes.rh.model.sesmt.relatorio.Ltcat"/>
@@ -35,6 +36,291 @@
 	<variable name="NUM_PAGINA" class="java.lang.Integer" resetType="None" incrementType="Page" calculation="Count">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
+
+		<group  name="grpLTCAT" isStartNewPage="true" >
+			<groupExpression><![CDATA[$F{ltcat}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="181"  isSplitAllowed="false" >
+				<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="128"
+						width="535"
+						height="53"
+						key="ltcat"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
+						</reportElement>
+					<subreportParameter  name="LTCAT">
+						<subreportParameterExpression><![CDATA[$F{ltcat}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_LTCAT.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement
+						x="0"
+						y="4"
+						width="54"
+						height="48"
+						key="staticText-14"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="54"
+						y="4"
+						width="427"
+						height="48"
+						key="staticText-15"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+				<text><![CDATA[LTCAT - LAUDO TÉCNICO DAS CONDIÇÕES
+DO AMBIENTE DE TRABALHO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="481"
+						y="4"
+						width="54"
+						height="48"
+						key="staticText-16"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="57"
+						width="535"
+						height="66"
+						key="ltcat-3"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$F{cabecalho}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_cabecalho.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="grpPPRA" >
+			<groupExpression><![CDATA[$F{ppra}]]></groupExpression>
+			<groupHeader>
+			<band height="327"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[new Boolean($F{ppra} != null)]]></printWhenExpression>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="269"
+						width="535"
+						height="53"
+						key="ppra"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[new Boolean($F{ppra} != null)]]></printWhenExpression>
+						</reportElement>
+					<subreportParameter  name="PPRA">
+						<subreportParameterExpression><![CDATA[$F{ppra}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_PPRA.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="211"
+						width="535"
+						height="53"
+						key="ltcat-1"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[$P{EXIBIR_COMPOSICAO_SESMT}]]></printWhenExpression>
+						</reportElement>
+					<subreportParameter  name="REPORT_DATA_SOURCE">
+						<subreportParameterExpression><![CDATA[$F{composicaoSesmts}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "composicao_sesmt.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement
+						x="0"
+						y="2"
+						width="54"
+						height="48"
+						key="staticText-2"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="54"
+						y="2"
+						width="427"
+						height="48"
+						key="staticText-3"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+				<text><![CDATA[PPRA - PROGRAMA DE PREVENÇÃO 
+DE RISCOS AMBIENTAIS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="481"
+						y="2"
+						width="54"
+						height="48"
+						key="staticText-4"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="142"
+						width="535"
+						height="15"
+						key="textField-8"
+						isPrintRepeatedValues="false"/>
+					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getAmbienteDescricao()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="126"
+						width="535"
+						height="16"
+						key="textField-9"
+						positionType="Float"
+						isPrintRepeatedValues="false"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["DESCRIÇÃO DO AMBIENTE - " + $F{cabecalho}.getAmbienteNome()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="157"
+						width="178"
+						height="13"
+						key="textField-10"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Nº. Homens: " + $F{cabecalho}.getQtdHomens()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="356"
+						y="157"
+						width="179"
+						height="13"
+						key="textField-12"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Total: " + $F{cabecalho}.getQtdTotal()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="175"
+						width="535"
+						height="16"
+						key="staticText-13"
+						positionType="Float"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[FUNÇÕES E ATIVIDADES DESEMPENHADAS]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="191"
+						width="535"
+						height="15"
+						key="textField-13"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
+					<textElement isStyledText="true">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="178"
+						y="157"
+						width="178"
+						height="13"
+						key="textField-14"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Nº. Mulheres: " + $F{cabecalho}.getQtdMulheres()]]></textFieldExpression>
+				</textField>
+				<subreport  isUsingCache="false">
+					<reportElement
+						x="0"
+						y="56"
+						width="535"
+						height="66"
+						key="ltcat-2"
+						positionType="Float"
+						isPrintRepeatedValues="false"
+						isRemoveLineWhenBlank="true"/>
+					<subreportParameter  name="CABECALHO">
+						<subreportParameterExpression><![CDATA[$F{cabecalho}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_cabecalho.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -52,96 +338,12 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="227"  isSplitAllowed="true" >
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="116"
-						width="535"
-						height="53"
-						key="ppra"
-						positionType="Float"
-						isPrintRepeatedValues="false"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($F{ppra} != null)]]></printWhenExpression>
-						</reportElement>
-					<subreportParameter  name="PPRA">
-						<subreportParameterExpression><![CDATA[$F{ppra}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_PPRA.jasper"]]></subreportExpression>
-				</subreport>
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="172"
-						width="535"
-						height="53"
-						key="ltcat"
-						positionType="Float"
-						isPrintRepeatedValues="false"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
-						</reportElement>
-					<subreportParameter  name="LTCAT">
-						<subreportParameterExpression><![CDATA[$F{ltcat}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_LTCAT.jasper"]]></subreportExpression>
-				</subreport>
-				<break>
-					<reportElement
-						x="0"
-						y="170"
-						width="535"
-						height="0"
-						key="element-1"
-						positionType="Float">
-							<printWhenExpression><![CDATA[new Boolean($F{ppra} != null && $F{ltcat} != null)]]></printWhenExpression>
-						</reportElement>
-				</break>
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="4"
-						width="535"
-						height="53"
-						key="subreport-1"
-						isPrintRepeatedValues="false"/>
-					<subreportParameter  name="CABECALHO">
-						<subreportParameterExpression><![CDATA[$F{cabecalho}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_cabecalho.jasper"]]></subreportExpression>
-				</subreport>
-				<break>
-					<reportElement
-						x="0"
-						y="2"
-						width="535"
-						height="0"
-						key="element-2"
-						positionType="Float"
-						isPrintRepeatedValues="false">
-							<printWhenExpression><![CDATA[new Boolean(!$V{PAGE_NUMBER}.equals(new Integer(1)) || ($V{PAGE_NUMBER}.equals(new Integer(1)) && $V{REPORT_COUNT}.compareTo(new Integer(1)) == 1))]]></printWhenExpression>
-						</reportElement>
-				</break>
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="60"
-						width="535"
-						height="53"
-						key="ltcat-1"
-						positionType="Float"
-						isPrintRepeatedValues="false"
-						isRemoveLineWhenBlank="true"/>
-					<subreportParameter  name="REPORT_DATA_SOURCE">
-						<subreportParameterExpression><![CDATA[$F{composicaoSesmts}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "composicao_sesmt.jasper"]]></subreportExpression>
-				</subreport>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</detail>
 		<columnFooter>
 			<band height="0"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
 			</band>
 		</columnFooter>
 		<pageFooter>

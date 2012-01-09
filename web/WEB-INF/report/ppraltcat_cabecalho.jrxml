@@ -37,11 +37,15 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="210"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="70"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="0"
-						y="77"
+						y="17"
 						width="535"
 						height="53"
 						key="staticText-5"/>
@@ -54,47 +58,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="7"
-						width="54"
-						height="48"
-						key="staticText-1"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="54"
-						y="7"
-						width="427"
-						height="48"
-						key="staticText-2"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="14"/>
-					</textElement>
-				<text><![CDATA[PPRA - PROGRAMA DE PREVENÇÃO 
-DE RISCOS AMBIENTAIS]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="481"
-						y="7"
-						width="54"
-						height="48"
-						key="staticText-3"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="0"
-						y="61"
+						y="1"
 						width="535"
 						height="16"
 						key="staticText-4"/>
@@ -106,8 +70,21 @@ DE RISCOS AMBIENTAIS]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="56"
-						y="78"
+						x="57"
+						y="18"
+						width="467"
+						height="12"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CABECALHO}.getEmpresa().getRazaoSocial() + " - " + $P{CABECALHO}.getEstabelecimento().getNome()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="57"
+						y="18"
 						width="467"
 						height="12"
 						key="textField-1"/>
@@ -120,7 +97,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<staticText>
 					<reportElement
 						x="5"
-						y="78"
+						y="18"
 						width="50"
 						height="12"
 						key="staticText-6"/>
@@ -133,7 +110,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<staticText>
 					<reportElement
 						x="5"
-						y="91"
+						y="31"
 						width="58"
 						height="12"
 						key="staticText-7"/>
@@ -146,7 +123,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<staticText>
 					<reportElement
 						x="5"
-						y="104"
+						y="44"
 						width="29"
 						height="12"
 						key="staticText-8"/>
@@ -159,7 +136,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<staticText>
 					<reportElement
 						x="5"
-						y="117"
+						y="57"
 						width="40"
 						height="12"
 						key="staticText-9"/>
@@ -172,7 +149,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<staticText>
 					<reportElement
 						x="128"
-						y="104"
+						y="44"
 						width="31"
 						height="12"
 						key="staticText-10"/>
@@ -185,7 +162,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="64"
-						y="91"
+						y="31"
 						width="460"
 						height="12"
 						key="textField-2"/>
@@ -198,7 +175,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="35"
-						y="104"
+						y="44"
 						width="89"
 						height="12"
 						key="textField-3"/>
@@ -211,7 +188,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="160"
-						y="104"
+						y="44"
 						width="134"
 						height="12"
 						key="textField-4"/>
@@ -224,7 +201,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="46"
-						y="117"
+						y="57"
 						width="121"
 						height="12"
 						key="textField-5"/>
@@ -237,7 +214,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="205"
-						y="117"
+						y="57"
 						width="27"
 						height="12"
 						key="textField-6"/>
@@ -250,7 +227,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<staticText>
 					<reportElement
 						x="184"
-						y="117"
+						y="57"
 						width="19"
 						height="12"
 						key="staticText-11"/>
@@ -263,7 +240,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<staticText>
 					<reportElement
 						x="261"
-						y="117"
+						y="57"
 						width="23"
 						height="12"
 						key="staticText-12"/>
@@ -276,7 +253,7 @@ DE RISCOS AMBIENTAIS]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="285"
-						y="117"
+						y="57"
 						width="72"
 						height="12"
 						key="textField-7"/>
@@ -286,112 +263,19 @@ DE RISCOS AMBIENTAIS]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CABECALHO}.getCepFormatado()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="150"
-						width="535"
-						height="13"
-						key="textField-9"
-						positionType="Float"
-						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($P{CABECALHO}.getAmbienteDescricao().length() > 1000 ? $P{CABECALHO}.getAmbienteDescricao().substring(0, 1000) + "..." : $P{CABECALHO}.getAmbienteDescricao())]]></textFieldExpression>
-				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
-						y="134"
-						width="535"
-						height="16"
-						key="textField-8"
-						positionType="Float"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+						x="57"
+						y="18"
+						width="467"
+						height="12"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["DESCRIÇÃO DO AMBIENTE - " + $P{CABECALHO}.getAmbienteNome()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CABECALHO}.getEmpresa().getRazaoSocial() + " - " + $P{CABECALHO}.getEstabelecimento().getNome()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="163"
-						width="172"
-						height="13"
-						key="textField-10"
-						positionType="Float"
-						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Nº. Homens: " + $P{CABECALHO}.getQtdHomens()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="172"
-						y="163"
-						width="170"
-						height="13"
-						key="textField-11"
-						positionType="Float"
-						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Nº. Mulheres: " + $P{CABECALHO}.getQtdMulheres()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="342"
-						y="163"
-						width="193"
-						height="13"
-						key="textField-12"
-						positionType="Float"
-						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Total: " + $P{CABECALHO}.getQtdTotal()]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="0"
-						y="180"
-						width="535"
-						height="16"
-						key="staticText-13"
-						positionType="Float"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
-					</textElement>
-				<text><![CDATA[FUNÇÕES E ATIVIDADES DESEMPENHADAS]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="196"
-						width="535"
-						height="14"
-						key="textField-13"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement isStyledText="true">
-						<font size="10"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CABECALHO}.getFuncoes()]]></textFieldExpression>
-				</textField>
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</columnHeader>
 		<detail>
