@@ -113,16 +113,17 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 	}
 	
 	// usados pela importação de Afastamentos.
-	Map<String, Afastamento> mapDescricaoAfastamento=null; 
-	Integer countAfastamentosImportados=0;
-	Integer countTiposAfastamentosCriados=0;
+	Map<String, Afastamento> mapDescricaoAfastamento = null; 
+	Integer countAfastamentosImportados = 0;
+	Integer countTiposAfastamentosCriados = 0;
 	
 	/**
 	 * Importação de Afastamentos dos Empregados. 
 	 * Recebe Csv no formato:
 	 * Cód. Empregado;Nome Completo;Nome de Escala;Doença(Tipo Afastamento);Data Inicial;Data Final;Médico;Descrição do Tipo
+	 * @throws Exception 
 	 */
-	public void importarCSV(File arquivo, Empresa empresa) throws IOException
+	public void importarCSV(File arquivo, Empresa empresa) throws Exception
 	{
 		countAfastamentosImportados = 0;
 		countTiposAfastamentosCriados = 0;
@@ -139,24 +140,28 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		
 		for (ColaboradorAfastamento colaboradorAfastamento : colaboradorAfastamentos)
 		{
-			setAfastamentoCadastrado(colaboradorAfastamento);
-			
 			String codigoAC = colaboradorAfastamento.getColaborador().getCodigoAC();
 			Colaborador colaborador = colaboradorManager.findByCodigoAC(codigoAC, empresa);
-			
-			colaboradorAfastamento.setColaborador(colaborador);
-			
-			getDao().save(colaboradorAfastamento);
+
+			if(colaborador != null)
+			{
+				setAfastamentoCadastrado(colaboradorAfastamento);
+				colaboradorAfastamento.setColaborador(colaborador);
+				
+				if(!getDao().exists(colaboradorAfastamento))
+				{
+					getDao().save(colaboradorAfastamento);
+					countAfastamentosImportados++;					
+				}
+			}
 		}
 		
-		countAfastamentosImportados = colaboradorAfastamentos.size();
 	}
 	
 	// seta tipo afastamento que já existe no banco
 	private void setAfastamentoCadastrado(ColaboradorAfastamento colaboradorAfastamento) {
 		
 		String afastamentoDescricao = StringUtil.retiraAcento(colaboradorAfastamento.getAfastamento().getDescricao()).toLowerCase();
-		
 		Afastamento afastamento = mapDescricaoAfastamento.get(afastamentoDescricao);
 		
 		// se nao existe com essa descricao, 

@@ -14,4 +14,5 @@ public interface ColaboradorAfastamentoDao extends GenericDao<ColaboradorAfastam
 	Collection<ColaboradorAfastamento> findByColaborador(Long colaboradorId);
 	Collection<Afastamento> findQtdAfastamentosPorMotivo(Long empresaId, Date dataIni, Date dataFim);
 	Integer findQtdAfastamentosInss(Long empresaId, Date dataIni, Date dataFim, boolean inss);
+	boolean exists(ColaboradorAfastamento colaboradorAfastamento);
 }

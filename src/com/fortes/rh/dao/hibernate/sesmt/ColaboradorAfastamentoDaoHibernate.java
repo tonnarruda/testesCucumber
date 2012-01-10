@@ -203,4 +203,28 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		
 		return (Integer) criteria.uniqueResult();
 	}
+
+	public boolean exists(ColaboradorAfastamento colaboradorAfastamento) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ca");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ca.id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("ca.colaborador.id", colaboradorAfastamento.getColaborador().getId()));
+		criteria.add(Expression.eq("ca.afastamento.id", colaboradorAfastamento.getAfastamento().getId()));
+		if(colaboradorAfastamento.getInicio() != null)
+			criteria.add(Expression.eq("ca.inicio", colaboradorAfastamento.getInicio()));
+		if(colaboradorAfastamento.getFim() != null)
+			criteria.add(Expression.eq("ca.fim", colaboradorAfastamento.getFim()));
+		if(colaboradorAfastamento.getObservacao() != null)
+			criteria.add(Expression.eq("ca.observacao", colaboradorAfastamento.getObservacao()));
+		if(colaboradorAfastamento.getMedicoNome() != null)
+			criteria.add(Expression.eq("ca.medicoNome", colaboradorAfastamento.getMedicoNome()));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return !criteria.list().isEmpty();
+	}
 }

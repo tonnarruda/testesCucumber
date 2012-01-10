@@ -2,7 +2,6 @@ package com.fortes.rh.util.importacao;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,27 +24,31 @@ public class ImportacaoCSVUtil
 	private Collection<ColaboradorAfastamento> afastamentos = new ArrayList<ColaboradorAfastamento>();
 	private Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 	
-	public void importarCSV(File file, OpcaoImportacao opcao) throws IOException
+	public void importarCSV(File file, OpcaoImportacao opcao) throws Exception
 	{
 		// ler arquivo
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 		String linha = "";
+		boolean naoAchouLinhaComAfastamento = true;
 		
 		while(br.ready())
 		{
-			String[] campos=null;
+			String[] campos = null;
 			linha = br.readLine();
 			
-			if (valida(linha)) {
-				
+			if (valida(linha)) 
+			{
 				campos = linha.split(delimitador);
-				
 				setCampos(campos, opcao);
+				naoAchouLinhaComAfastamento = false;
 			}
 		}
+		
+		if(naoAchouLinhaComAfastamento)
+			throw new Exception("Afastamentos não encontrados, verifique o arquivo CSV, linhas invalidas.");
 	}
 	
-	private void setCampos(String[] campos, OpcaoImportacao opcaoImportacao)
+	private void setCampos(String[] campos, OpcaoImportacao opcaoImportacao) throws Exception
 	{
 		switch (opcaoImportacao)
 		{
@@ -57,10 +60,11 @@ public class ImportacaoCSVUtil
 	}
 	
 	//Cód. Empregado;Nome Completo;Nome de Escala;Doença;Data Inicial;Data Final;Médico;Descrição do Tipo;
-	private void setAfastamento(String[] campos) {
-		
+	private void setAfastamento(String[] campos) throws Exception
+	{	
+		boolean naoAchouLinhaComAfastamento = true;
 		// linhas válidas começam com o código do empregado. O resto é cabeçalho, etc.
-		if (campos.length >= 8 && StringUtils.isNumeric(campos[0]))
+		if (campos.length == 8 && StringUtils.isNumeric(campos[0]))
 		{
 			ColaboradorAfastamento colaboradorAfastamento = new ColaboradorAfastamento();
 			colaboradorAfastamento.setColaboradorCodigoAC(StringUtil.formataCodigoAC(campos[0]));
@@ -75,7 +79,11 @@ public class ImportacaoCSVUtil
 			colaboradorAfastamento.setObservacao(campos[7]);
 			
 			afastamentos.add(colaboradorAfastamento);
+			naoAchouLinhaComAfastamento = false;
 		}
+		
+		if(naoAchouLinhaComAfastamento)
+			throw new Exception("Afastamentos não encontrados, verifique o arquivo CSV, nenhum afastamentos encontrado.");
 	}
 	
 	
