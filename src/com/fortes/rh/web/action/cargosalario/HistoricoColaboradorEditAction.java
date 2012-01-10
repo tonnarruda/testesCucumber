@@ -75,10 +75,13 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	private boolean integraAc;
 
-	private Date dataPrimeiroHist;	
+	private Date dataPrimeiroHist;
+
+	private boolean obrigarAmbienteFuncaoColaborador;	
 	
 	public void prepare() throws Exception
 	{
+		obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
 		integraAc = getEmpresaSistema().isAcIntegra();
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		indices = indiceManager.findAll(getEmpresaSistema());
@@ -442,6 +445,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
 		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
+	}
+
+	public boolean isObrigarAmbienteFuncaoColaborador() {
+		return obrigarAmbienteFuncaoColaborador;
 	}
 	
 }

@@ -1,0 +1,1 @@
+alter table empresa add column obrigarAmbienteFuncaoColaborador boolean default false;--.go

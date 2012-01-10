@@ -476,6 +476,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.in("a.areaMae.id", areasIds));
+		criteria.addOrder(Order.asc("a.id"));
 		
 		return criteria.list();
 	}

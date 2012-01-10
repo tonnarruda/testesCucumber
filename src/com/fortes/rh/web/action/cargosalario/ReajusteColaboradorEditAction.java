@@ -103,6 +103,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	private Double valorDissidio;
 
 	private boolean exibeSalario;
+	private boolean obrigarAmbienteFuncaoColaborador;
 	private Map<Object, Object> tiposSalarios = new TipoAplicacaoIndice();
 	private TipoAplicacaoIndice tipoSalario = new TipoAplicacaoIndice();
 	private Collection<Indice> indices = new ArrayList<Indice>();
@@ -116,6 +117,8 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 	private void prepare() throws Exception
 	{
+		obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
+		
 		if(reajusteColaborador != null && reajusteColaborador.getId() != null)
 		{
 			reajusteColaborador = (ReajusteColaborador) reajusteColaboradorManager.findByIdProjection(reajusteColaborador.getId());
@@ -195,6 +198,8 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	{
 		try
 		{
+			obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
+			
 			setDadosSolicitacaoReajuste();
 			reajusteColaboradorManager.validaSolicitacaoReajuste(reajusteColaborador);
 			
@@ -273,6 +278,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	public String prepareSolicitacaoReajuste() throws Exception
 	{
 		exibeSalario = getEmpresaSistema().isExibirSalario();
+		obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
 		
 		indices = indiceManager.findAll(getEmpresaSistema());
 
@@ -825,5 +831,9 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	public void setTipoAplicacaoIndice(TipoAplicacaoIndice tipoAplicacaoIndice)
 	{
 		this.tipoAplicacaoIndice = tipoAplicacaoIndice;
+	}
+
+	public boolean isObrigarAmbienteFuncaoColaborador() {
+		return obrigarAmbienteFuncaoColaborador;
 	}
 }

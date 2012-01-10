@@ -120,7 +120,7 @@
 					<reportElement
 						x="7"
 						y="2"
-						width="238"
+						width="228"
 						height="11"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -131,9 +131,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="246"
+						x="239"
 						y="2"
-						width="96"
+						width="103"
 						height="11"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -231,7 +231,7 @@
 					<reportElement
 						x="7"
 						y="14"
-						width="239"
+						width="229"
 						height="11"
 						key="staticText-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -242,9 +242,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="247"
+						x="240"
 						y="14"
-						width="96"
+						width="103"
 						height="11"
 						key="staticText-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -316,7 +316,7 @@
 					<reportElement
 						x="18"
 						y="2"
-						width="226"
+						width="216"
 						height="11"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>

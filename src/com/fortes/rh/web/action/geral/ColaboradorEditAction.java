@@ -204,6 +204,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private HashMap<String, String> codigosGFIP; 
 
 	private boolean integraAc;
+	private boolean obrigarAmbienteFuncaoColaborador;
 	private boolean habilitaCampoExtra;
 	private CamposExtras camposExtras;
 	
@@ -249,6 +250,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			addActionError(e.getMessage());
 		}
 
+		obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
 		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 		if(habilitaCampoExtra)
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
@@ -1665,5 +1667,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public Collection<Avaliacao> getAvaliacoes() {
 		return avaliacoes;
+	}
+
+	public boolean isObrigarAmbienteFuncaoColaborador() {
+		return obrigarAmbienteFuncaoColaborador;
 	}
 }
