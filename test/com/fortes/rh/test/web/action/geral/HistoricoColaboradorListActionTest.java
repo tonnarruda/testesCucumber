@@ -67,7 +67,7 @@ public class HistoricoColaboradorListActionTest extends MockObjectTestCase
 	public void testRelatorioSituacoes()
 	{
 		historicoColaboradorManager.expects(once()).method("montaRelatorioSituacoes").will(returnValue(new ArrayList<HistoricoColaborador>()));
-		assertEquals("success",action.relatorioSituacoes());
+		assertEquals("successAgruparPorData",action.relatorioSituacoes());
 	}
 	public void testRelatorioSituacoesColecaoVaziaException()
 	{

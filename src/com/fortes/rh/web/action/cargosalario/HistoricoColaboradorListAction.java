@@ -82,7 +82,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String dataMesAnoFim;
 	
 	private String origemSituacao = "T";
-	
+	private char agruparPor; 
+	private boolean imprimirDesligados; 
+
 	private Collection<RelatorioPromocoes> dataSource = new ArrayList<RelatorioPromocoes>();
 	private Collection<SituacaoColaborador> dataSourceSituacoesColaborador = new ArrayList<SituacaoColaborador>();
 	private Map<String, Object> parametros = new HashMap<String, Object>();
@@ -418,7 +420,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	{
 		try 
 		{
-			historicoColaboradors = historicoColaboradorManager.montaRelatorioSituacoes(getEmpresaSistema().getId(), dataIni, dataFim, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), origemSituacao);
+			historicoColaboradors = historicoColaboradorManager.montaRelatorioSituacoes(getEmpresaSistema().getId(), dataIni, dataFim, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), origemSituacao, agruparPor, imprimirDesligados);
 			
 			String filtro = "Período : " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Situações", getEmpresaSistema(), filtro);
@@ -442,7 +444,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 		
-		return Action.SUCCESS;
+		return agruparPor == 'A' ? "successAgruparPorArea" : "successAgruparPorData";
 	}
 	
 	public String prepareAjusteDissidio() 
@@ -840,4 +842,21 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public void setFaturamentoMensalManager(FaturamentoMensalManager faturamentoMensalManager) {
 		this.faturamentoMensalManager = faturamentoMensalManager;
 	}
+
+	public char getAgruparPor() {
+		return agruparPor;
+	}
+
+	public void setAgruparPor(char agruparPor) {
+		this.agruparPor = agruparPor;
+	}
+
+	public boolean isImprimirDesligados() {
+		return imprimirDesligados;
+	}
+
+	public void setImprimirDesligados(boolean imprimirDesligados) {
+		this.imprimirDesligados = imprimirDesligados;
+	}
+
 }

@@ -1394,6 +1394,18 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimento = estabelecimentoDao.save(estabelecimento); 
 		
+		Colaborador colaboradorDesligado = ColaboradorFactory.getEntity();
+		colaboradorDesligado.setDesligado(true);
+		colaboradorDesligado.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorDesligado);
+		
+		HistoricoColaborador historicoColaboradorDesligado = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorDesligado.setEstabelecimento(estabelecimento);
+		historicoColaboradorDesligado.setColaborador(colaboradorDesligado);
+		historicoColaboradorDesligado.setData(dataHistorico);
+		historicoColaboradorDesligado.setMotivo(MotivoHistoricoColaborador.IMPORTADO);
+		historicoColaboradorDao.save(historicoColaboradorDesligado);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setEmpresa(empresa);
 		colaboradorDao.save(colaborador);
@@ -1415,14 +1427,22 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Long[] estabelecimentosIds = new Long[]{estabelecimento.getId()};
 		Long[] areasIds = new Long[0];
 		String origemSituacao = "T"; // Qualquer origem (RH ou AC)
+		boolean imprimeDesligado = false; 
 		
-		Collection<HistoricoColaborador> resultado1 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao);
+		Collection<HistoricoColaborador> resultado1 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, 'A', imprimeDesligado);
 		
 		assertEquals(2, resultado1.size());
 		
 		origemSituacao = "AC"; // origem  AC
-		Collection<HistoricoColaborador> resultado2 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao);
+		Collection<HistoricoColaborador> resultado2 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, 'M', imprimeDesligado);
 		assertEquals(1, resultado2.size());
+		
+		imprimeDesligado = true; 
+		
+		Collection<HistoricoColaborador> resultado3 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, 'A', imprimeDesligado);
+		
+		assertEquals(2, resultado3.size());
+		
 	}
 	
 	public void testFindAllByColaboradorBuscandoAmbienteEFuncao()

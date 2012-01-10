@@ -62,6 +62,16 @@
 				$obrigatorios.filter('[class=' + this.value + '][class!=desabilitado]').attr('disabled', true);
 			});
 			
+			$('#bairroNome').click(function(e) {
+				if ($(this).attr('checked'))
+					$('#cidade').attr('checked', true);
+			});
+			
+			$('#cidade').click(function(e) {
+				if ($(this).attr('checked') == false)
+					$('#bairroNome').removeAttr('checked');
+			});
+			
 			$('#marcarTodos').click(function(e) {
 				var marcado = $('#marcarTodos').attr('checked');
 				
@@ -156,12 +166,12 @@
 				<td><input type="checkbox" value="complemento" name="camposCandidatoObrigatorios"  class="endereco"/></td>
 			</tr>
 			<tr>
-				<td colspan="2" class="grupoObrigatorio">Estado/Cidade</td>
-				<td><input type="checkbox" value="cidade" name="camposCandidatoObrigatorios"  class="endereco"/></td>
+				<td colspan="2" class="grupoObrigatorio">Bairro</td>
+				<td><input type="checkbox" id="bairroNome" value="bairroNome" name="camposCandidatoObrigatorios"  class="endereco"/></td>
 			</tr>
 			<tr>
-				<td colspan="2" class="grupoObrigatorio">Bairro</td>
-				<td><input type="checkbox" value="bairroNome" name="camposCandidatoObrigatorios"  class="endereco"/></td>
+				<td colspan="2" class="grupoObrigatorio">Estado/Cidade</td>
+				<td><input type="checkbox" id="cidade" value="cidade" name="camposCandidatoObrigatorios"  class="endereco"/></td>
 			</tr>
 
 			<tr>

@@ -107,7 +107,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		assertNotNull(exception);
 	}
 	
-	public void testImportarAfastamentos() throws IOException
+	public void testImportarAfastamentos() throws Exception
 	{
 		File arquivo = new File("arquivo.csv");
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -122,7 +122,12 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		colaboradorAfastamento2.setColaboradorCodigoAC("000010");
 		colaboradorAfastamento2.setMedicoCrm("Roberta Braga");
 		
-		Collection<ColaboradorAfastamento> colaboradorAfastamentos = Arrays.asList(colaboradorAfastamento1,colaboradorAfastamento2);
+		ColaboradorAfastamento colaboradorAfastamento3 = new ColaboradorAfastamento();
+		colaboradorAfastamento3.setAfastamentoDescricao("babau");
+		colaboradorAfastamento3.setColaboradorCodigoAC("000999");
+		colaboradorAfastamento3.setMedicoCrm("Mariola");
+		
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = Arrays.asList(colaboradorAfastamento1,colaboradorAfastamento2, colaboradorAfastamento3);
 		MockImportacaoCSVUtil.afastamentos = colaboradorAfastamentos;
 		
 		Afastamento afastamentoNaoCadastrado = AfastamentoFactory.getEntity();
@@ -139,10 +144,14 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		colaborador1.setCodigoAC("000391");
 		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
 		colaborador2.setCodigoAC("000010");
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(3L);
+		colaborador3.setCodigoAC("000999");
 		
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq("000391"),eq(empresa)).will(returnValue(colaborador1));
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq("000010"),eq(empresa)).will(returnValue(colaborador2));
+		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq("000999"),eq(empresa)).will(returnValue(null));
 		
+		colaboradorAfastamentoDao.expects(atLeastOnce()).method("exists").will(returnValue(false));
 		colaboradorAfastamentoDao.expects(atLeastOnce()).method("save");
 		
 		colaboradorAfastamentoManager.importarCSV(arquivo, empresa);
