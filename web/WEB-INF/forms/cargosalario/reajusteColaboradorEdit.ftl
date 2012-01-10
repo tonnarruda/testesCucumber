@@ -53,18 +53,26 @@
 
 	function enviaForm()
 	{
+		var camposObrigatorios = new Array('areaProposta', 'tipoSalario');
+		
 		if (document.getElementById('tipoSalario').value == ${tipoSalario.getIndice()})
 		{
-			return validaFormulario('form', new Array('areaProposta', 'tipoSalario','indice','quantidade'), null);
+			camposObrigatorios.push('indice','quantidade');
 		}
 		else if (document.getElementById('tipoSalario').value == ${tipoSalario.getValor()})
 		{
-			return validaFormulario('form', new Array('areaProposta', 'tipoSalario', 'salarioProposto'), null);
+			camposObrigatorios.push('salarioProposto');
 		}
 		else
 		{
-			return validaFormulario('form', new Array('areaProposta', 'tipoSalario', 'faixa'), null);
+			camposObrigatorios.push('faixa');
 		}
+		
+		<#if obrigarAmbienteFuncaoColaborador>
+			camposObrigatorios.push('ambienteProposto','funcaoProposta');
+		</#if>
+		
+		return validaFormulario('form', camposObrigatorios, 'faixa', null);
 	}
 
 </script>
@@ -123,9 +131,9 @@
 						<@ww.select label="Área Organizacional" name="reajusteColaborador.areaOrganizacionalProposta.id" id="areaProposta" required="true" list="areaOrganizacionals" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey=""  onchange="verificaMaternidade(this.value, 'areaProposta');" cssStyle="width:445px;" />
 		
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" list="ambientes" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1"/>
+							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" required="${obrigarAmbienteFuncaoColaborador?string}" list="ambientes" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1"/>
 							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" id="faixa" required="true" onchange="calculaSalario();populaFuncao(this.value);" list="faixaSalarials" listKey="id" listValue="descricao"/>
-							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1" />
+							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncaoColaborador?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1" />
 						</@authz.authorize>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" id="faixa" required="true" onchange="calculaSalario();" list="faixaSalarials" listKey="id" listValue="descricao"/>

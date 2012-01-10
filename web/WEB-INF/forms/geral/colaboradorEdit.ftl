@@ -285,8 +285,7 @@
 		function validaFormularioDinamico()
 		{
 			<#if obrigarAmbienteFuncaoColaborador && somenteLeitura == "false">
-				arrayValidacao.push('ambiente');
-				arrayValidacao.push('funcao');
+				arrayValidacao.push('ambiente','funcao');
 			</#if>
 			
 			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}));

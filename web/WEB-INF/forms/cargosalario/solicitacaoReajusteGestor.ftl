@@ -236,33 +236,35 @@
 
 		function enviaForm()
 		{
+			var camposObrigatorios = new Array('tabelaReajuste', 'areaOrganizacional', 'colaborador','estabelecimentoProposto', 'areaOrganizacionalProposta', 'faixa');
+			
 			<#if exibeSalario>
+				camposObrigatorios.push('tipoSalario');
+				
 				if (document.getElementById('tipoSalario').value == ${tipoSalario.getIndice()})
 				{
-					return validaFormulario('form', new Array('tabelaReajuste', 'areaOrganizacional', 'colaborador','estabelecimentoProposto', 'areaOrganizacionalProposta', 'faixa', 'tipoSalario', 'salarioProposto','indice','quantidade'), null);
+					camposObrigatorios.push('salarioProposto','indice','quantidade');
 				}
 				else if (document.getElementById('tipoSalario').value == ${tipoSalario.getValor()})
 				{
-					return validaFormulario('form', new Array('tabelaReajuste', 'areaOrganizacional', 'colaborador','estabelecimentoProposto', 'areaOrganizacionalProposta', 'faixa', 'tipoSalario', 'salarioProposto'), null);
-				}
-				else
-				{
-					return validaFormulario('form', new Array('tabelaReajuste', 'areaOrganizacional', 'colaborador','estabelecimentoProposto', 'areaOrganizacionalProposta', 'faixa', 'tipoSalario'), null);
+					camposObrigatorios.push('salarioProposto');
 				}
 			<#else>
 				if (document.getElementById('tipoSalario').value == ${tipoSalario.getIndice()})
 				{
-					return validaFormulario('form', new Array('tabelaReajuste', 'areaOrganizacional', 'colaborador','estabelecimentoProposto', 'areaOrganizacionalProposta', 'faixa', 'tipoSalario', 'quantidade'), null);
+					camposObrigatorios.push('tipoSalario', 'quantidade');
 				}
 				else if (document.getElementById('tipoSalario').value == ${tipoSalario.getValor()})
 				{
-					return validaFormulario('form', new Array('tabelaReajuste', 'areaOrganizacional', 'colaborador','estabelecimentoProposto', 'areaOrganizacionalProposta', 'faixa', 'tipoSalario'), null);
-				}
-				else
-				{
-					return validaFormulario('form', new Array('tabelaReajuste', 'areaOrganizacional', 'colaborador','estabelecimentoProposto', 'areaOrganizacionalProposta', 'faixa'), null);
+					camposObrigatorios.push('tipoSalario');
 				}
 			</#if>
+			
+			<#if obrigarAmbienteFuncaoColaborador>
+				camposObrigatorios.push('ambienteProposto','funcaoProposta');
+			</#if>
+			
+			return validaFormulario('form', camposObrigatorios, null);
 		}
 
 </script>
@@ -323,9 +325,9 @@
 						<@ww.select label="Área Organizacional" name="reajusteColaborador.areaOrganizacionalProposta.id" id="areaOrganizacionalProposta" required="true"  headerValue="Selecione..." headerKey="" list="areaOrganizacionalsPropostas" listKey="id" listValue="descricao" onchange="verificaMaternidade(this.value, 'areaOrganizacionalProposta');" cssStyle="width:445px;"/>
 						
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" list="ambientes" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1"/>
+							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" required="${obrigarAmbienteFuncaoColaborador?string}" list="ambientes" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1"/>
 							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" required="true" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" onchange="calculaSalario();populaFuncao(this.value);"/>
-							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" headerValue="Selecione..." headerKey="-1" list="funcoes" listKey="id" listValue="nome"/>
+							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncaoColaborador?string}" headerValue="Selecione..." headerKey="-1" list="funcoes" listKey="id" listValue="nome"/>
 						</@authz.authorize>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" required="true" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" onchange="calculaSalario();"/>

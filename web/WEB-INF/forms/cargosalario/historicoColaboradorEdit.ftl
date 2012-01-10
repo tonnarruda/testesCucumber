@@ -117,8 +117,7 @@
 
 			if (tipoSalario == ${tipoAplicacaoIndice.getIndice()})
 			{
-				camposObrigatorios.push('indice');
-				camposObrigatorios.push('quantidade');
+				camposObrigatorios.push('indice','quantidade');
 			}
 			else if (tipoSalario == ${tipoAplicacaoIndice.getValor()})
 				camposObrigatorios.push('salario');
@@ -129,8 +128,7 @@
 			</#if>
 			
 			<#if obrigarAmbienteFuncaoColaborador>
-				camposObrigatorios.push('ambiente');
-				camposObrigatorios.push('funcao');
+				camposObrigatorios.push('ambiente','funcao');
 			</#if>
 
 			return validaFormulario('form', camposObrigatorios, camposValidos);
