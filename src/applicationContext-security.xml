@@ -391,6 +391,8 @@
 				/sesmt/comissaoReuniao/*/**=ROLE_CAD_ELEICAO
 				/sesmt/comissaoPlanoTrabalho/*/**=ROLE_CAD_ELEICAO
 				/sesmt/afastamento/*/**=ROLE_CAD_AFASTAMENTO
+				/sesmt/colaboradorAfastamento/prepareRelatorioResumoAfastamentos.action*=ROLE_REL_AFASTAMENTO
+				/sesmt/colaboradorAfastamento/relatorioResumoAfastamentos.action*=ROLE_REL_AFASTAMENTO
 				/sesmt/colaboradorAfastamento/*/**=ROLE_CAD_AFASTAMENTO
 				/sesmt/cat/*/**=ROLE_CAT
 				/sesmt/extintor/*/**=ROLE_CAD_EXTINTOR

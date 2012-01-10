@@ -18,28 +18,33 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.xwork.Action;
 
 
 public class ColaboradorAfastamentoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	private ColaboradorAfastamentoManager colaboradorAfastamentoManager = null;
-	private Collection<ColaboradorAfastamento> colaboradorAfastamentos = null;
-	private ColaboradorAfastamento colaboradorAfastamento;
 	private AfastamentoManager afastamentoManager;
-	private char afastadoPeloINSS = 'T';
-
-	private Collection<Afastamento> afastamentos;
-	private String nomeBusca;
-	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
-	private String[] estabelecimentosCheck;
 	private EstabelecimentoManager estabelecimentoManager;
-	private boolean ordenaColaboradorPorNome;
-	private Map<String,Object> parametros = new HashMap<String, Object>();
-	private String[] areasCheck;
-	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+
+	private String[] estabelecimentosCheck;
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private String[] areasCheck; 
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private String[] motivosCheck; 
+	private Collection<CheckBox> motivosCheckList = new ArrayList<CheckBox>();
+	
+	private Collection<ColaboradorAfastamento> colaboradorAfastamentos = null;
+	private Collection<Afastamento> afastamentos;
+	private ColaboradorAfastamento colaboradorAfastamento;
+	private String nomeBusca;
+	private Map<String,Object> parametros = new HashMap<String, Object>();
+	
+	private boolean ordenaColaboradorPorNome;
 	private boolean agruparPorCid;
+	private char afastadoPeloINSS = 'T';
 	private char agruparPor;
 	
 	public String list() throws Exception
@@ -89,7 +94,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		return SUCCESS;
 	}
-
+	
 	public String relatorioAfastamentos() throws Exception
 	{
 		try
@@ -115,6 +120,42 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			return "afastamentos_por_cid";
 		else
 			return "afastamentos";
+	}
+	
+	public String prepareRelatorioResumoAfastamentos() throws Exception
+	{
+		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+		
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+
+		afastamentos = afastamentoManager.findAll(new String[] {"descricao"});
+		motivosCheckList = CheckListBoxUtil.populaCheckListBox(afastamentos, "getId", "getDescricao");
+		motivosCheckList = CheckListBoxUtil.marcaCheckListBox(motivosCheckList, motivosCheck);
+		
+		return SUCCESS;
+	}
+	
+	public String relatorioResumoAfastamentos() throws Exception
+	{
+		try
+		{
+			if (!validaPeriodo())
+				return INPUT;
+			
+			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioResumoAfastamentos(getEmpresaSistema().getId(), estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento);
+			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
+		}
+		catch (ColecaoVaziaException e)
+		{
+			addActionMessage(e.getMessage());
+			prepareRelatorioResumoAfastamentos();
+			return INPUT;
+		}
+
+		return Action.SUCCESS;
 	}
 
 	private String getPeriodoFormatado()
@@ -239,6 +280,14 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 
 	public void setAgruparPor(char agruparPor) {
 		this.agruparPor = agruparPor;
+	}
+
+	public Collection<CheckBox> getMotivosCheckList() {
+		return motivosCheckList;
+	}
+
+	public void setMotivosCheck(String[] motivosCheck) {
+		this.motivosCheck = motivosCheck;
 	}
 
 

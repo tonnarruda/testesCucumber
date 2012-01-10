@@ -1,7 +1,6 @@
 package com.fortes.rh.business.sesmt;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -90,6 +89,16 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		
 		setFamiliaAreas(colaboradorAfastamentos, empresaId);
 
+		return colaboradorAfastamentos;
+	}
+	
+	public Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento) throws ColecaoVaziaException 
+	{
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = getDao().findRelatorioResumoAfastamentos(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(motivosCheck), colaboradorAfastamento);
+		
+		if (colaboradorAfastamentos == null || colaboradorAfastamentos.isEmpty())
+			throw new ColecaoVaziaException("Não há afastamentos para o filtro informado.");
+		
 		return colaboradorAfastamentos;
 	}
 

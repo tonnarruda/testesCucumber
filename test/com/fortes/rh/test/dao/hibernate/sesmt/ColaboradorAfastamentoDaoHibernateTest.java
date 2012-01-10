@@ -11,6 +11,7 @@ import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.sesmt.AfastamentoDao;
 import com.fortes.rh.dao.sesmt.ColaboradorAfastamentoDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -346,6 +347,74 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		colabAfastExists.setAfastamento(pessoais);
 		
 		assertEquals(false, colaboradorAfastamentoDao.exists(colabAfastExists));
+	}
+	
+	public void testFindRelatorioResumoAfastamentos()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Colaborador ana = ColaboradorFactory.getEntity();
+		ana.setNome("Ana");
+		ana.setEmpresa(empresa);
+		colaboradorDao.save(ana);
+		
+		HistoricoColaborador historicoAna = HistoricoColaboradorFactory.getEntity();
+		historicoAna.setData(DateUtil.criarDataMesAno(1, 1, 2009));
+		historicoAna.setColaborador(ana);
+		historicoAna.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoAna);
+		
+		Afastamento pessoais = AfastamentoFactory.getEntity();
+		pessoais.setDescricao("Problemas pessoais");
+		pessoais.setInss(false);
+		afastamentoDao.save(pessoais);
+
+		Afastamento virose = AfastamentoFactory.getEntity();
+		virose.setDescricao("Virose");
+		virose.setInss(true);
+		afastamentoDao.save(virose);
+
+		ColaboradorAfastamento colabAfast1 = ColaboradorAfastamentoFactory.getEntity();
+		colabAfast1.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
+		colabAfast1.setColaborador(ana);
+		colabAfast1.setAfastamento(pessoais);
+		colaboradorAfastamentoDao.save(colabAfast1);
+		
+		ColaboradorAfastamento colabAfast2 = ColaboradorAfastamentoFactory.getEntity();
+		colabAfast2.setInicio(DateUtil.criarDataMesAno(15, 11, 2011));
+		colabAfast2.setColaborador(ana);
+		colabAfast2.setAfastamento(virose);
+		colaboradorAfastamentoDao.save(colabAfast2);
+
+		ColaboradorAfastamento colabAfast3 = ColaboradorAfastamentoFactory.getEntity();
+		colabAfast3.setInicio(DateUtil.criarDataMesAno(10, 11, 2011));
+		colabAfast3.setColaborador(ana);
+		colabAfast3.setAfastamento(virose);
+		colaboradorAfastamentoDao.save(colabAfast3);
+
+		ColaboradorAfastamento colabAfast4 = ColaboradorAfastamentoFactory.getEntity();
+		colabAfast4.setInicio(DateUtil.criarDataMesAno(20, 11, 2011));
+		colabAfast4.setColaborador(ana);
+		colabAfast4.setAfastamento(pessoais);
+		colaboradorAfastamentoDao.save(colabAfast4);
+
+		ColaboradorAfastamento colabAfast5 = ColaboradorAfastamentoFactory.getEntity();
+		colabAfast5.setInicio(DateUtil.criarDataMesAno(10, 11, 2011));
+		colabAfast5.setColaborador(ana);
+		colabAfast5.setAfastamento(pessoais);
+		colaboradorAfastamentoDao.save(colabAfast5);
+		
+		ColaboradorAfastamento colaboradorAfastamento = ColaboradorAfastamentoFactory.getEntity();
+		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
+		colaboradorAfastamento.setFim(DateUtil.criarDataMesAno(30, 11, 2011));
+				
+		assertEquals(5, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId(), virose.getId()}, colaboradorAfastamento).size());
+		assertEquals(2, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {virose.getId()}, colaboradorAfastamento).size());
+		assertEquals(3, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId()}, colaboradorAfastamento).size());
 	}
 
 	public void setAfastamentoDao(AfastamentoDao afastamentoDao)

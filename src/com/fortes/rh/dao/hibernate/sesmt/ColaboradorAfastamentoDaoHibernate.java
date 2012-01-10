@@ -227,4 +227,56 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		
 		return !criteria.list().isEmpty();
 	}
+
+	public Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] motivosIds, ColaboradorAfastamento colaboradorAfastamento) 
+	{
+		StringBuilder hql = new StringBuilder("select new ColaboradorAfastamento(co.matricula, co.nome, co.dataAdmissao, ca.inicio, ca.fim) ");
+		hql.append("from ColaboradorAfastamento ca ");
+		hql.append("join ca.colaborador co ");
+		hql.append("join co.historicoColaboradors hc ");
+		hql.append("left join hc.estabelecimento as es ");
+		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("where co.empresa.id = :empresaId ");
+
+		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			hql.append("and es.id in (:estabelecimentosIds) ");
+		
+		if (areasIds != null && areasIds.length > 0)
+			hql.append("and ao.id in (:areasIds) ");
+
+		if (motivosIds != null && motivosIds.length > 0)
+			hql.append("and ca.afastamento.id in (:motivosIds) ");
+
+		hql.append("and hc.data = ( ");
+		hql.append("select max(hc2.data) " );
+		hql.append("	from HistoricoColaborador as hc2 ");
+		hql.append("	where hc2.colaborador.id = co.id ");
+		hql.append("	and hc2.data <= :dataFim  and hc2.status = :status ");
+		hql.append(") ");
+		hql.append(
+			"AND ( "
+				+ "( ca.fim != null AND (ca.inicio between :dataInicio and :dataFim OR ca.fim between :dataInicio and :dataFim) ) " +
+			" OR (ca.fim = null AND (ca.inicio <= :dataFim) )" +
+			" ) ");
+
+		hql.append("ORDER BY co.nome, ca.inicio");
+		
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setDate("dataInicio", colaboradorAfastamento.getInicio());
+		query.setDate("dataFim", colaboradorAfastamento.getFim());
+		query.setLong("empresaId", empresaId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+
+		if (areasIds != null && areasIds.length > 0)
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if (motivosIds != null && motivosIds.length > 0)
+			query.setParameterList("motivosIds", motivosIds, Hibernate.LONG);
+		
+		return query.list();
+	}
 }

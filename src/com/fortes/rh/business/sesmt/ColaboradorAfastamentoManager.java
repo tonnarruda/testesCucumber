@@ -1,7 +1,6 @@
 package com.fortes.rh.business.sesmt;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -16,6 +15,7 @@ public interface ColaboradorAfastamentoManager extends GenericManager<Colaborado
 	Integer getCount(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, ColaboradorAfastamento colaboradorAfastamento);
 	Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, String ascOuDesc, boolean ordenaColaboradorPorNome, boolean ordenaPorCid, char afastadoPeloINSS) throws Exception;
 	Collection<ColaboradorAfastamento> findRelatorioAfastamentos(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, boolean ordenaColaboradorPorNome, boolean ordenaPorCid, char afastadoPeloINSS) throws ColecaoVaziaException;
+	Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento) throws ColecaoVaziaException;
 	void importarCSV(File arquivo, Empresa empresa) throws Exception;
 	Integer getCountAfastamentosImportados();
 	Integer getCountTiposAfastamentosCriados();

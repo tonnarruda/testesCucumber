@@ -62,6 +62,18 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 		colaborador.setEstabelecimentoNomeProjection(estabelecimentoNome);
 		colaborador.setAreaOrganizacionalId(areaOrganizacionalId);
 	}
+	
+	// usado em findRelatorioResumoAfastamentos
+	public ColaboradorAfastamento(String colaboradorMatricula, String colaboradorNome, Date dataAdmissao, Date inicio, Date fim)
+	{
+		this.inicio = inicio;
+		this.fim = fim;
+		
+		colaborador = new Colaborador();
+		colaborador.setMatricula(colaboradorMatricula);
+		colaborador.setNome(colaboradorNome);
+		colaborador.setDataAdmissao(dataAdmissao);
+	}
 
 	public String getPeriodoFormatado()
 	{

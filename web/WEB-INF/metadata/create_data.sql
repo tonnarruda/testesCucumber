@@ -264,7 +264,9 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (532,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (531, 'ROLE_SESMT_PAINEL_IND', 'Painel de Indicadores', '/sesmt/indicadores/painel.action', 6, true, 75);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (386, 'ROLE_SESMT', 'Movimentações', '#', 3, true, 75);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (450, 'ROLE_CAD_MEDICAORISCO', 'Medição dos Riscos nos Ambientes', '/sesmt/medicaoRisco/list.action', 1, true, 386);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (426, 'ROLE_CAD_SOLICITACAOEXAME', 'Solicitações/Atendimentos Médicos', '/sesmt/solicitacaoExame/list.action', 5, true, 386);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (477, 'ROLE_AMBIENTE', 'Ambientes e Funções do Colaborador', '/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action', 5, true, 386);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (66, 'ROLE_SESMT_MUDANCA_FUNCAO', 'Mudança de Função', '/sesmt/funcao/mudancaFuncaoFiltro.action', 5, true, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (425, 'ROLE_CAD_PRONTUARIO', 'Registro de Prontuário', '/sesmt/prontuario/list.action', 6, true, 386);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (428, 'ROLE_CAD_FICHAMEDICA', 'Fichas Médicas', '/sesmt/fichaMedica/listPreenchida.action', 7, true, 386);
@@ -279,22 +281,20 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (447,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (387, 'ROLE_SESMT', 'Relatórios', '#', 4, true, 75);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (488, 'ROLE_CAT', 'Ficha de Investigação de Acidente(CAT)', '/sesmt/cat/prepareRelatorioCats.action', 16, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (388, 'ROLE_PPRA', 'PPRA e LTCAT', '/sesmt/ppra/prepareRelatorio.action', 1, true, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (389, 'ROLE_CAD_PCMSO', 'PCMSO', '/sesmt/pcmso/prepareRelatorio.action', 7, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (85, 'ROLE_PPP', 'PPP', '/sesmt/ppp/list.action', 2, true, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (429, 'ROLE_REL_PRONTUARIO', 'Prontuário', '/sesmt/prontuario/prepareRelatorioProntuario.action', 8, true, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (431, 'ROLE_REL_EXAMES_PREVISTOS', 'Exames Previstos', '/sesmt/exame/prepareRelatorioExamesPrevistos.action', 10, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (432, 'ROLE_REL_FICHA_EPI', 'Ficha de EPI', '/sesmt/epi/prepareImprimirFicha.action', 3, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (434, 'ROLE_CAD_EPICAVENCER', 'EPIs com CA a Vencer', '/sesmt/epi/prepareImprimirVencimentoCa.action', 4, true, 387);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (489, 'ROLE_REL_EPIVENCIMENTO', 'EPIs Entregues', '/sesmt/solicitacaoEpi/prepareRelatorioEntregaEpi.action', 4, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (436, 'ROLE_REL_EPIVENCIMENTO', 'EPIs com Prazo a Vencer', '/sesmt/solicitacaoEpi/prepareRelatorioVencimentoEpi.action', 5, true, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (442, 'ROLE_CAD_AFASTAMENTO', 'Afastamentos', '/sesmt/colaboradorAfastamento/prepareRelatorioAfastamentos.action', 11, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (448, 'ROLE_CAD_EXTINTOR', 'Extintores - Manutenção e Inspeção', '/sesmt/extintor/prepareRelatorio.action', 6, true, 387);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (389, 'ROLE_CAD_PCMSO', 'PCMSO', '/sesmt/pcmso/prepareRelatorio.action', 7, true, 387);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (429, 'ROLE_REL_PRONTUARIO', 'Prontuário', '/sesmt/prontuario/prepareRelatorioProntuario.action', 8, true, 387);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (431, 'ROLE_REL_EXAMES_PREVISTOS', 'Exames Previstos', '/sesmt/exame/prepareRelatorioExamesPrevistos.action', 10, true, 387);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (442, 'ROLE_CAD_AFASTAMENTO', 'Afastamentos', '/sesmt/colaboradorAfastamento/prepareRelatorioAfastamentos.action', 11, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (449, 'ROLE_CAD_FICHAMEDICA', 'Resultado de Fichas Médicas', '/sesmt/fichaMedica/prepareResultadoFichaMedica.action', 12, true, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (450, 'ROLE_CAD_MEDICAORISCO', 'Medição dos Riscos nos Ambientes', '/sesmt/medicaoRisco/list.action', 1, true, 386);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (477, 'ROLE_AMBIENTE', 'Ambientes e Funções do Colaborador', '/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action', 5, true, 386);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (458, 'ROLE_FUNCAO', 'Distribuição de Colaboradores por Função', '/sesmt/funcao/prepareRelatorioQtdPorFuncao.action', 13, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (459, 'ROLE_CAD_SOLICITACAOEXAME', 'Atendimentos Médicos', '/sesmt/solicitacaoExame/prepareRelatorioAtendimentosMedicos.action', 14, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (460, 'ROLE_CAD_SOLICITACAOEXAME', 'Exames Realizados', '/sesmt/exame/prepareRelatorioExamesRealizados.action', 15, true, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (458, 'ROLE_FUNCAO', 'Distribuição de Colaboradores por Função', '/sesmt/funcao/prepareRelatorioQtdPorFuncao.action', 13, true, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (489, 'ROLE_REL_EPIVENCIMENTO', 'EPIs Entregues', '/sesmt/solicitacaoEpi/prepareRelatorioEntregaEpi.action', 4, true, 387);
 
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/list.action', 5, false, 75);
