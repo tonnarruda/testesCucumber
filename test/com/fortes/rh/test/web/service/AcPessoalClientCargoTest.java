@@ -86,7 +86,11 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
     	faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
 
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
-
+    	MockCall mock = new MockCall();
+    	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(true, "", "", "1"));
+    	Mockit.redefineMethods(Call.class, mock);
+    	
+    	acPessoalClient.expects(once()).method("setReturnType");
     	assertEquals(RETORNO_STRING, acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa));
 
     }
@@ -98,10 +102,13 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCargo(cargo);
 		
-		MockCall mock = new MockCall();
-    	Mockit.redefineMethods(Call.class, mock);
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
-
+    	
+    	MockCall mock = new MockCall();
+    	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(true, "", "", "1"));
+    	Mockit.redefineMethods(Call.class, mock);
+    	
+    	acPessoalClient.expects(once()).method("setReturnType");
     	assertEquals(RETORNO_STRING, acPessoalClientCargo.updateCargo(faixaSalarial, empresa));
     }
 }

@@ -39,6 +39,12 @@ public class AcPessoalClientOcorrenciaTest extends MockObjectTestCase
 
     	// invoke() do MockCall -> RETORNO_STRING
     	String codigoAC = "1";
+       	
+    	MockCall mock = new MockCall();
+    	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(true, "", "", "1"));
+    	Mockit.redefineMethods(Call.class, mock);
+    	
+    	acPessoalClient.expects(once()).method("setReturnType");
 
     	assertEquals(codigoAC, acPessoalClientOcorrencia.criarTipoOcorrencia(ocorrencia, empresa));
     }
