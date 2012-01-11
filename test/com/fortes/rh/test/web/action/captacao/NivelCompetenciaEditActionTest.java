@@ -378,7 +378,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("checarHistoricoMesmaData").with(eq(configuracaoNivelCompetenciaColaborador)).isVoid();
 		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").with(eq(configuracoes), eq(configuracaoNivelCompetenciaColaborador)).isVoid();
 		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("findByIdProjection").with(eq(configuracaoNivelCompetenciaColaborador.getId())).will(returnValue(configuracaoNivelCompetenciaColaborador));
-		configuracaoNivelCompetenciaManager.expects(once()).method("findByColaborador").with(eq(configuracaoNivelCompetenciaColaborador.getId())).will(returnValue(configuracoes));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findByConfiguracaoNivelCompetenciaColaborador").with(eq(configuracaoNivelCompetenciaColaborador.getId())).will(returnValue(configuracoes));
 		
 		manager.expects(once()).method("findByCargoOrEmpresa").with(eq(cargo.getId()), eq(empresa.getId())).will(returnValue(configuracoes));
 		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));

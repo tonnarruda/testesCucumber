@@ -113,7 +113,11 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="enviarForm();" class="btnGravar"></button>
+			<#if niveisCompetenciaFaixaSalariais?exists && 0 < niveisCompetenciaFaixaSalariais?size>
+				<button onclick="enviarForm();" class="btnGravar"></button>
+			<#else>
+				<button class="btnGravarDesabilitado"></button>
+			</#if>
 			<button onclick="window.location='listCompetenciasColaborador.action?colaborador.id=${colaborador.id}';" class="btnVoltar"></button>
 		</div>
 	</body>
