@@ -756,7 +756,7 @@ public class RHServiceImpl implements RHService
 		indiceHistorico.setValor(tindiceHistorico.getValor());
 	}
 
-	private void bindEstabelecimento(TEstabelecimento testabelecimento, Estabelecimento estabelecimento)
+	private void bindEstabelecimento(TEstabelecimento testabelecimento, Estabelecimento estabelecimento) throws Exception
 	{
 		estabelecimento.setNome(testabelecimento.getNome());
 		estabelecimento.setComplementoCnpj(testabelecimento.getComplementoCnpj());
@@ -770,6 +770,8 @@ public class RHServiceImpl implements RHService
 		endereco.setCep(testabelecimento.getCep());
 
 		Cidade cidade = cidadeManager.findByCodigoAC(testabelecimento.getCodigoCidade(), testabelecimento.getUf());
+		if (cidade == null)
+			throw new Exception("Cidade não encontrada no FortesRH");
 
 		endereco.setCidade(cidade);
 		endereco.setUf(cidade.getUf());
