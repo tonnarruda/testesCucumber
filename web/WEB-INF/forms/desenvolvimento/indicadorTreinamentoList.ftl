@@ -43,7 +43,7 @@
 			montaPie(${grfTreinamento}, "#treinamento", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfFrequencia}, "#frequencia", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
-			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0, legendLabelFormatter: formataLegendaCusto });
+			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto });
 		});
 		
 		function formataLegendaCusto(label, series)
