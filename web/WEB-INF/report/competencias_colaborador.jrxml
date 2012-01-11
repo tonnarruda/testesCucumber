@@ -118,9 +118,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="390"
+						x="379"
 						y="21"
-						width="98"
+						width="109"
 						height="11"
 						key="staticText-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -133,7 +133,7 @@
 					<reportElement
 						x="9"
 						y="21"
-						width="278"
+						width="264"
 						height="11"
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -157,7 +157,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="290"
+						x="277"
 						y="21"
 						width="98"
 						height="11"
@@ -192,7 +192,7 @@
 					<reportElement
 						x="9"
 						y="1"
-						width="278"
+						width="264"
 						height="11"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -203,9 +203,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="390"
+						x="379"
 						y="1"
-						width="98"
+						width="109"
 						height="11"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -216,7 +216,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="290"
+						x="277"
 						y="1"
 						width="98"
 						height="11"
