@@ -15,6 +15,7 @@ import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Candidato;
@@ -52,7 +53,8 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	private FaixaSalarialDao faixaSalarialDao;
 	private CandidatoDao candidatoDao;
 	private ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao;
-private ColaboradorManager colaboradorManager;
+	private ColaboradorManager colaboradorManager;
+	private ColaboradorDao colaboradorDao;
 
 	@Override
 	public NivelCompetencia getEntity()
@@ -93,6 +95,117 @@ private ColaboradorManager colaboradorManager;
 		
 		assertEquals(3, nivelCompetenciaDao.findAllSelect(empresa1.getId()).size());
 		assertTrue(nivelCompetenciaDao.findAllSelect(null).size() >= 4);
+	}
+	
+	
+	public void testRemoveByConfiguracaoNivelColaborador()
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		NivelCompetencia nivel = NivelCompetenciaFactory.getEntity();
+		nivel.setEmpresa(empresa1);
+		nivelCompetenciaDao.save(nivel);
+		
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador);
+		
+		Habilidade habilidade = HabilidadeFactory.getEntity();
+		habilidadeDao.save(habilidade);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia.setNivelCompetencia(nivel);
+		configuracaoNivelCompetencia.setCompetenciaId(habilidade.getId());
+		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
+		
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
+		assertEquals(1, configs.size());
+		
+		configuracaoNivelCompetenciaDao.deleteByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
+		
+		configs = configuracaoNivelCompetenciaDao.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
+		assertEquals(0, configs.size());
+	}
+	
+	public void testRemoveByFaixas()
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		NivelCompetencia nivel = NivelCompetenciaFactory.getEntity();
+		nivel.setEmpresa(empresa1);
+		nivelCompetenciaDao.save(nivel);
+		
+		Habilidade habilidade = HabilidadeFactory.getEntity();
+		habilidadeDao.save(habilidade);
+
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia.setNivelCompetencia(nivel);
+		configuracaoNivelCompetencia.setCompetenciaId(habilidade.getId());
+		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
+
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId());
+		assertEquals(1, configs.size());
+		
+		configuracaoNivelCompetenciaDao.removeByFaixas(new Long[]{faixaSalarial.getId()});
+		
+		configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId());
+		assertEquals(0, configs.size());
+	}
+	
+	public void testRemoveColaborador()
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		NivelCompetencia nivel = NivelCompetenciaFactory.getEntity();
+		nivel.setEmpresa(empresa1);
+		nivelCompetenciaDao.save(nivel);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Habilidade habilidade = HabilidadeFactory.getEntity();
+		habilidadeDao.save(habilidade);
+
+		ConfiguracaoNivelCompetenciaColaborador configNivelCompetenciaColaborador1 = new ConfiguracaoNivelCompetenciaColaborador();
+		configNivelCompetenciaColaborador1.setColaborador(colaborador);
+		configuracaoNivelCompetenciaColaboradorDao.save(configNivelCompetenciaColaborador1);
+		
+		ConfiguracaoNivelCompetencia configNivelComp1 = new ConfiguracaoNivelCompetencia();
+		configNivelComp1.setNivelCompetencia(nivel);
+		configNivelComp1.setCompetenciaId(habilidade.getId());
+		configNivelComp1.setConfiguracaoNivelCompetenciaColaborador(configNivelCompetenciaColaborador1);
+		configuracaoNivelCompetenciaDao.save(configNivelComp1);
+
+		ConfiguracaoNivelCompetencia configNivelComp2 = new ConfiguracaoNivelCompetencia();
+		configNivelComp2.setNivelCompetencia(nivel);
+		configNivelComp2.setCompetenciaId(habilidade.getId());
+		configNivelComp2.setConfiguracaoNivelCompetenciaColaborador(configNivelCompetenciaColaborador1);
+		configuracaoNivelCompetenciaDao.save(configNivelComp2);
+		
+		ConfiguracaoNivelCompetenciaColaborador configNivelCompetenciaColaborador2 = new ConfiguracaoNivelCompetenciaColaborador();
+		configNivelCompetenciaColaborador2.setColaborador(colaborador);
+		configuracaoNivelCompetenciaColaboradorDao.save(configNivelCompetenciaColaborador2);
+		
+		ConfiguracaoNivelCompetencia configNivelComp3 = new ConfiguracaoNivelCompetencia();
+		configNivelComp3.setNivelCompetencia(nivel);
+		configNivelComp3.setCompetenciaId(habilidade.getId());
+		configNivelComp3.setConfiguracaoNivelCompetenciaColaborador(configNivelCompetenciaColaborador2);
+		configuracaoNivelCompetenciaDao.save(configNivelComp3);
+		
+		configuracaoNivelCompetenciaDao.removeColaborador(colaborador);
+		
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByConfiguracaoNivelCompetenciaColaborador(configNivelCompetenciaColaborador2.getId());
+		assertEquals(0, configs.size());
+
+		configs = configuracaoNivelCompetenciaDao.findByConfiguracaoNivelCompetenciaColaborador(configNivelCompetenciaColaborador1.getId());
+		assertEquals(0, configs.size());
 	}
 	
 	public void testFindByFaixa()
@@ -224,7 +337,7 @@ private ColaboradorManager colaboradorManager;
 		nivelCompetenciaCandidatoDiferente.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
 		configuracaoNivelCompetenciaDao.save(nivelCompetenciaCandidatoDiferente);
 		
-		assertEquals(2, configuracaoNivelCompetenciaDao.findByColaborador(configuracaoNivelCompetenciaColaborador.getId()).size());
+		assertEquals(2, configuracaoNivelCompetenciaDao.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId()).size());
 	}
 	
 	public void testDeleteConfiguracaoByFaixa()
@@ -502,5 +615,9 @@ private ColaboradorManager colaboradorManager;
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+		this.colaboradorDao = colaboradorDao;
 	}
 }

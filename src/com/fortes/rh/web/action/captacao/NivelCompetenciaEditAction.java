@@ -203,8 +203,11 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public void prepareCompetenciasColaborador()
 	{
 		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
-		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
+		if (niveisCompetenciaFaixaSalariais.isEmpty())
+			addActionMessage("Não existem competências (conhecimentos, habilidades ou atitudes) cadastradas para o cargo.");
+		
+		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
 	}
 	
@@ -227,7 +230,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		colaborador = configuracaoNivelCompetenciaColaborador.getColaborador();
 		faixaSalarial = configuracaoNivelCompetenciaColaborador.getFaixaSalarial();
 		
-		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(configuracaoNivelCompetenciaColaborador.getId());
+		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
 		
 		prepareCompetenciasColaborador();
 		
@@ -254,6 +257,22 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		else
 			prepareInsertCompetenciasColaborador();
 		
+		return Action.SUCCESS;
+	}
+	
+	public String deleteCompetenciasColaborador()
+	{
+		try
+		{
+			configuracaoNivelCompetenciaManager.removeConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
+		}
+		catch (Exception e)
+		{
+			addActionError(e.getMessage());
+			e.printStackTrace();
+		}
+
+		listCompetenciasColaborador();
 		return Action.SUCCESS;
 	}
 	

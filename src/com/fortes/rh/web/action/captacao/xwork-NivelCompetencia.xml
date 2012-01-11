@@ -54,6 +54,9 @@
 		<action name="saveCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
 		</action>
+		<action name="deleteCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="deleteCompetenciasColaborador">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/listCompetenciasColaborador.ftl</result>
+		</action>
 		<action name="prepareRelatorioCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareRelatorioCompetenciasColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioCompetenciasColaborador.ftl</result>
 		</action>

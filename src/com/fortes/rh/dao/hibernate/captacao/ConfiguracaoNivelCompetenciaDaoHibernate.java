@@ -90,7 +90,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long configuracaoNivelCompetenciaColaboradorId) 
+	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId) 
 	{
 		Criteria criteria = createCriteria();
 
@@ -239,5 +239,16 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.setLong("colaboradorId", colaborador.getId());
 
 		query.executeUpdate();
+	}
+
+	public void removeByConfiguracaoNivelColaborador(Long configuracaoNivelColaboradorId) {
+		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id = :configuracaoNivelColaboradorId";
+
+		Query query = getSession().createQuery(queryHQL);
+
+		query.setLong("configuracaoNivelColaboradorId", configuracaoNivelColaboradorId);
+
+		query.executeUpdate();
+		
 	}
 }

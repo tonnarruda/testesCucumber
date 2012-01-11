@@ -20,7 +20,7 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 
 	void saveCompetenciasColaborador(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
 
-	Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long configuracaoNivelCompetenciaColaboradorId);
+	Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId);
 
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId);
 
@@ -33,4 +33,6 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	void removeByFaixas(Long[] faixaSalarialIds);
 
 	void removeColaborador(Colaborador colaborador);
+
+	void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId);
 }
