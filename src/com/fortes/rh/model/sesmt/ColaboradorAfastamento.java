@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Colaborador;
@@ -45,6 +46,15 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	@ManyToOne(fetch=LAZY)
 	private Colaborador colaborador;
 	
+	@Transient
+	private Integer qtdDias = 0;
+	
+	@Transient
+	private Integer mes;
+
+	@Transient
+	private Integer qtdAfastamentos;
+	
 	public ColaboradorAfastamento() { }
 
 	public ColaboradorAfastamento(Long id, Date inicio, Date fim, String afastamentoDescricao, String colaboradorNome, String estabelecimentoNome, Long areaOrganizacionalId, String cid)
@@ -64,10 +74,11 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	}
 	
 	// usado em findRelatorioResumoAfastamentos
-	public ColaboradorAfastamento(String colaboradorMatricula, String colaboradorNome, Date dataAdmissao, Date inicio, Date fim)
+	public ColaboradorAfastamento(String colaboradorMatricula, String colaboradorNome, Date dataAdmissao, Integer mes, Integer qtdDias, Integer qtdAfastamentos)
 	{
-		this.inicio = inicio;
-		this.fim = fim;
+		this.mes = mes;
+		this.qtdDias = qtdDias;
+		this.qtdAfastamentos = qtdAfastamentos;
 		
 		colaborador = new Colaborador();
 		colaborador.setMatricula(colaboradorMatricula);
@@ -198,4 +209,29 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	{
 		return DateUtil.formataMesAno(inicio);
 	}
+
+	public Integer getQtdDias() {
+		return qtdDias;
+	}
+
+	public void setQtdDias(Integer qtdDias) {
+		this.qtdDias = qtdDias;
+	}
+
+	public Integer getMes() {
+		return mes;
+	}
+
+	public void setMes(Integer mes) {
+		this.mes = mes;
+	}
+
+	public Integer getQtdAfastamentos() {
+		return qtdAfastamentos;
+	}
+
+	public void setQtdAfastamentos(Integer qtdAfastamentos) {
+		this.qtdAfastamentos = qtdAfastamentos;
+	}
+
 }

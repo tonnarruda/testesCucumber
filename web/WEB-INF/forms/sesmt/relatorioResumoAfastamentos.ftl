@@ -32,7 +32,7 @@
 
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
 		<@frt.checkListBox name="areasCheck" label="Área Organizacional" list="areasCheckList"/>
-		<@frt.checkListBox name="motivosCheck" label="Motivo" list="motivosCheckList"/>
+		<@frt.checkListBox name="motivosCheck" label="Motivo de Afastamento" list="motivosCheckList"/>
 		
 		<div class="buttonGroup">
 			<button class="btnRelatorio" onclick="${validarCampos}"></button>

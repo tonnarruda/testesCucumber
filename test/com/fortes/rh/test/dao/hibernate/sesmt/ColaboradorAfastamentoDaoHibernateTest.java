@@ -380,6 +380,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 
 		ColaboradorAfastamento colabAfast1 = ColaboradorAfastamentoFactory.getEntity();
 		colabAfast1.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
+		colabAfast1.setFim(DateUtil.criarDataMesAno(6, 11, 2011));
 		colabAfast1.setColaborador(ana);
 		colabAfast1.setAfastamento(pessoais);
 		colaboradorAfastamentoDao.save(colabAfast1);
@@ -397,24 +398,26 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		colaboradorAfastamentoDao.save(colabAfast3);
 
 		ColaboradorAfastamento colabAfast4 = ColaboradorAfastamentoFactory.getEntity();
-		colabAfast4.setInicio(DateUtil.criarDataMesAno(20, 11, 2011));
+		colabAfast4.setInicio(DateUtil.criarDataMesAno(20, 12, 2011));
 		colabAfast4.setColaborador(ana);
 		colabAfast4.setAfastamento(pessoais);
 		colaboradorAfastamentoDao.save(colabAfast4);
 
 		ColaboradorAfastamento colabAfast5 = ColaboradorAfastamentoFactory.getEntity();
-		colabAfast5.setInicio(DateUtil.criarDataMesAno(10, 11, 2011));
+		colabAfast5.setInicio(DateUtil.criarDataMesAno(10, 12, 2011));
 		colabAfast5.setColaborador(ana);
 		colabAfast5.setAfastamento(pessoais);
 		colaboradorAfastamentoDao.save(colabAfast5);
 		
 		ColaboradorAfastamento colaboradorAfastamento = ColaboradorAfastamentoFactory.getEntity();
 		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
-		colaboradorAfastamento.setFim(DateUtil.criarDataMesAno(30, 11, 2011));
+		colaboradorAfastamento.setFim(DateUtil.criarDataMesAno(30, 12, 2011));
 				
-		assertEquals(5, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId(), virose.getId()}, colaboradorAfastamento).size());
-		assertEquals(2, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {virose.getId()}, colaboradorAfastamento).size());
-		assertEquals(3, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId()}, colaboradorAfastamento).size());
+		assertEquals(2, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId(), virose.getId()}, colaboradorAfastamento).size());
+
+		ColaboradorAfastamento colaboradorAfastamentoResult = (ColaboradorAfastamento) colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId(), virose.getId()}, colaboradorAfastamento).toArray()[0];
+		assertEquals(new Integer(4), colaboradorAfastamentoResult.getQtdDias());
+		assertEquals(new Integer(3), colaboradorAfastamentoResult.getQtdAfastamentos());
 	}
 
 	public void setAfastamentoDao(AfastamentoDao afastamentoDao)

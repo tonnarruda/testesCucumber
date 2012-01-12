@@ -230,7 +230,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 
 	public Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] motivosIds, ColaboradorAfastamento colaboradorAfastamento) 
 	{
-		StringBuilder hql = new StringBuilder("select new ColaboradorAfastamento(co.matricula, co.nome, co.dataAdmissao, ca.inicio, ca.fim) ");
+		StringBuilder hql = new StringBuilder("select new ColaboradorAfastamento(co.matricula, co.nome, co.dataAdmissao, cast(extract(month from ca.inicio) as integer), cast(sum(coalesce((ca.fim - ca.inicio + 1), 1)) as integer), cast(count(ca.id) as integer) ) ");
 		hql.append("from ColaboradorAfastamento ca ");
 		hql.append("join ca.colaborador co ");
 		hql.append("join co.historicoColaboradors hc ");
@@ -259,7 +259,8 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 			" OR (ca.fim = null AND (ca.inicio <= :dataFim) )" +
 			" ) ");
 
-		hql.append("ORDER BY co.nome, ca.inicio");
+		hql.append("GROUP BY co.matricula, co.nome, co.dataAdmissao, extract(month from ca.inicio) ");
+		hql.append("ORDER BY co.nome, extract(month from ca.inicio) ");
 		
 		Query query = getSession().createQuery(hql.toString());
 

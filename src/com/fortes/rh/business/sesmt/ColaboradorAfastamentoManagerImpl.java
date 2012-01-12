@@ -20,6 +20,8 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.test.factory.sesmt.ColaboradorAfastamentoFactory;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
@@ -95,6 +97,20 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 	public Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento) throws ColecaoVaziaException 
 	{
 		Collection<ColaboradorAfastamento> colaboradorAfastamentos = getDao().findRelatorioResumoAfastamentos(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(motivosCheck), colaboradorAfastamento);
+		
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setMatricula("000000");
+		colaborador.setNome("Migue");
+		colaborador.setDataAdmissao(DateUtil.criarAnoMesDia(2012, 01, 01));
+		
+		for (int i = 1; i <=12; i++ )
+		{
+			ColaboradorAfastamento colaboradorAfastamentoMatriz = new ColaboradorAfastamento();
+			colaboradorAfastamentoMatriz.setMes(i);
+			colaboradorAfastamentoMatriz.setColaborador(colaborador);
+			colaboradorAfastamentos.add(colaboradorAfastamentoMatriz);
+		}
 		
 		if (colaboradorAfastamentos == null || colaboradorAfastamentos.isEmpty())
 			throw new ColecaoVaziaException("Não há afastamentos para o filtro informado.");

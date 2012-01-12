@@ -72,7 +72,7 @@
 		<action name="relatorioResumoAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="relatorioResumoAfastamentos">
 			<result name="success" type="jasper">
 				<param name="dataSource">colaboradorAfastamentos</param>
-				<param name="location">/WEB-INF/report/resumo_afastamentos.jasper</param>
+				<param name="location">/WEB-INF/report/matriz_colaboradores_afastamentos_sub.jasper</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">resumo_afastamentos.pdf</param>
 			</result>
