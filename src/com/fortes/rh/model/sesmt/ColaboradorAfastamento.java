@@ -50,9 +50,6 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	private Integer qtdDias = 0;
 	
 	@Transient
-	private Integer mes;
-
-	@Transient
 	private Integer qtdAfastamentos;
 	
 	public ColaboradorAfastamento() { }
@@ -74,13 +71,14 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	}
 	
 	// usado em findRelatorioResumoAfastamentos
-	public ColaboradorAfastamento(String colaboradorMatricula, String colaboradorNome, Date dataAdmissao, Integer mes, Integer qtdDias, Integer qtdAfastamentos)
+	public ColaboradorAfastamento(Long colaboradorId, String colaboradorMatricula, String colaboradorNome, Date dataAdmissao, Date inicio, Integer qtdDias, Integer qtdAfastamentos)
 	{
-		this.mes = mes;
+		this.inicio = inicio;
 		this.qtdDias = qtdDias;
 		this.qtdAfastamentos = qtdAfastamentos;
 		
 		colaborador = new Colaborador();
+		colaborador.setId(colaboradorId);
 		colaborador.setMatricula(colaboradorMatricula);
 		colaborador.setNome(colaboradorNome);
 		colaborador.setDataAdmissao(dataAdmissao);
@@ -210,28 +208,23 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 		return DateUtil.formataMesAno(inicio);
 	}
 
-	public Integer getQtdDias() {
+	public Integer getQtdDias() 
+	{
 		return qtdDias;
 	}
 
-	public void setQtdDias(Integer qtdDias) {
+	public void setQtdDias(Integer qtdDias) 
+	{
 		this.qtdDias = qtdDias;
 	}
 
-	public Integer getMes() {
-		return mes;
-	}
-
-	public void setMes(Integer mes) {
-		this.mes = mes;
-	}
-
-	public Integer getQtdAfastamentos() {
+	public Integer getQtdAfastamentos() 
+	{
 		return qtdAfastamentos;
 	}
 
-	public void setQtdAfastamentos(Integer qtdAfastamentos) {
+	public void setQtdAfastamentos(Integer qtdAfastamentos) 
+	{
 		this.qtdAfastamentos = qtdAfastamentos;
 	}
-
 }

@@ -97,21 +97,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 	public Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento) throws ColecaoVaziaException 
 	{
 		Collection<ColaboradorAfastamento> colaboradorAfastamentos = getDao().findRelatorioResumoAfastamentos(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(motivosCheck), colaboradorAfastamento);
-		
-		
-		Colaborador colaborador = new Colaborador();
-		colaborador.setMatricula("000000");
-		colaborador.setNome("Migue");
-		colaborador.setDataAdmissao(DateUtil.criarAnoMesDia(2012, 01, 01));
-		
-		for (int i = 1; i <=12; i++ )
-		{
-			ColaboradorAfastamento colaboradorAfastamentoMatriz = new ColaboradorAfastamento();
-			colaboradorAfastamentoMatriz.setMes(i);
-			colaboradorAfastamentoMatriz.setColaborador(colaborador);
-			colaboradorAfastamentos.add(colaboradorAfastamentoMatriz);
-		}
-		
+	
 		if (colaboradorAfastamentos == null || colaboradorAfastamentos.isEmpty())
 			throw new ColecaoVaziaException("Não há afastamentos para o filtro informado.");
 		

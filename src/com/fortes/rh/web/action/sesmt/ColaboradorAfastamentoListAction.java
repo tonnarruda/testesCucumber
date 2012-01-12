@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,9 +11,11 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.model.sesmt.relatorio.ColaboradorAfastamentoMatriz;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -39,6 +42,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private Collection<ColaboradorAfastamento> colaboradorAfastamentos = null;
 	private Collection<Afastamento> afastamentos;
 	private ColaboradorAfastamento colaboradorAfastamento;
+	private ColaboradorAfastamentoMatriz colaboradorAfastamentoMatriz;
 	private String nomeBusca;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	
@@ -146,6 +150,38 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 				return INPUT;
 			
 			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioResumoAfastamentos(getEmpresaSistema().getId(), estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento);
+			Map<Colaborador, Collection<Date>> datasColaboradores = new HashMap<Colaborador, Collection<Date>>();
+			
+			// agrupa meses onde houveram afastamentos para o colaborador
+			for (ColaboradorAfastamento colaboradorAfastamento : colaboradorAfastamentos) 
+			{
+				if (!datasColaboradores.containsKey(colaboradorAfastamento.getColaborador().getId()))
+					datasColaboradores.put(colaboradorAfastamento.getColaborador(), new ArrayList<Date>());
+				
+				datasColaboradores.get(colaboradorAfastamento.getColaborador()).add(colaboradorAfastamento.getInicio());
+			}
+			
+			// preenche o registro do colaborador com os meses que nao possuem afastamentos
+			Date dataAtual = null;
+			Colaborador colab = null;
+			for (Map.Entry<Colaborador, Collection<Date>> datasColaborador : datasColaboradores.entrySet())
+			{
+				dataAtual = DateUtil.getInicioMesData(colaboradorAfastamento.getInicio());
+				
+				while (dataAtual.before(DateUtil.getUltimoDiaMes(colaboradorAfastamento.getFim())))
+				{
+					if (!datasColaborador.getValue().contains(dataAtual))
+					{
+						colab = datasColaborador.getKey();
+						colaboradorAfastamentos.add(new ColaboradorAfastamento(colab.getId(), colab.getMatricula(), colab.getNome(), colab.getDataAdmissao(), dataAtual, null, null));
+					}
+					dataAtual = DateUtil.incrementaMes(dataAtual, 1);
+				}
+			}
+			
+			colaboradorAfastamentoMatriz = new ColaboradorAfastamentoMatriz();
+			colaboradorAfastamentoMatriz.setColaboradorAfastamentos(colaboradorAfastamentos);
+			
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
 		}
 		catch (ColecaoVaziaException e)
@@ -288,6 +324,10 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 
 	public void setMotivosCheck(String[] motivosCheck) {
 		this.motivosCheck = motivosCheck;
+	}
+
+	public ColaboradorAfastamentoMatriz getColaboradorAfastamentoMatriz() {
+		return colaboradorAfastamentoMatriz;
 	}
 
 
