@@ -266,6 +266,7 @@
 				/geral/configuracaoLimiteColaborador/*/**=ROLE_CONFIG_LIMITE_COLABORADOR
 				/geral/tipoDocumento/*/**=ROLE_TIPO_DOCUMENTO
 				/geral/tipoDespesa/*/**=ROLE_TIPO_DESPESA
+				/geral/providencia/*/**=ROLE_PROVIDENCIA
 
 
 				/captacao/motivoSolicitacao/*/**=ROLE_MOTIVO_SOLICITACAO

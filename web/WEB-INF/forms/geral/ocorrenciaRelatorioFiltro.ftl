@@ -54,22 +54,6 @@
 		{
 			addChecks('colaboradorCheck',data)
 		}
-
-		function valuePonto(ponto)
-		{
-			if(ponto.checked)
-				document.getElementById("ponto").value=true;
-			else
-				document.getElementById("ponto").value=false;
-		}
-
-		function mudaPonto(detalhe)
-		{
-			if(detalhe.checked == true)
-				document.getElementById("detalhe").value = true;
-			else
-				document.getElementById("detalhe").value= false;
-		}
 		
 		function populaEstabelecimento(empresaId)
 		{
@@ -117,8 +101,15 @@
 			populaOcorrencia(empresa);
 		}
 		
-		$(document).ready(function($)
+		$(function()
 		{
+			$('#detalhe').click(function() {
+			  	if($(this).attr('checked'))
+			 		$('#providencia').removeAttr('disabled');
+			 	else
+					$('#providencia').attr("disabled", true);
+			});
+				
 			var empresa = $('#empresa').val();
 			populaChecks(empresa);
 		});
@@ -149,9 +140,8 @@
 		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());"/>
 		<@frt.checkListBox name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="500" height="180"/>
 
-		<@ww.checkbox label="Detalhado"  id="detalhes" onchange="mudaPonto(this);" labelPosition="left" name="det"/>
-		<@ww.hidden id = "detalhe" name = "detalhamento" value = "true"/>
-		<@ww.hidden  id ="ponto" name = "ponto" value = "false" />
+		<@ww.checkbox label="Detalhado" id="detalhe" labelPosition="left" name="detalhamento"/>
+		<@ww.checkbox label="Exibir Providências"  id="providencia" labelPosition="left" name="exibirProvidencia"/>
 
 	</@ww.form>
 

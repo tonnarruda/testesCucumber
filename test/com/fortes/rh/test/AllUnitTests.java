@@ -100,6 +100,7 @@ import com.fortes.rh.test.business.geral.MensagemManagerTest;
 import com.fortes.rh.test.business.geral.MotivoDemissaoManagerTest;
 import com.fortes.rh.test.business.geral.OcorrenciaManagerTest;
 import com.fortes.rh.test.business.geral.ParametrosDoSistemaManagerTest;
+import com.fortes.rh.test.business.geral.ProvidenciaManagerTest;
 import com.fortes.rh.test.business.geral.QuantidadeLimiteColaboradoresPorCargoManagerTest;
 import com.fortes.rh.test.business.geral.TipoDespesaManagerTest;
 import com.fortes.rh.test.business.geral.TipoDocumentoManagerTest;
@@ -242,6 +243,7 @@ import com.fortes.rh.test.dao.hibernate.geral.MensagemDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.MotivoDemissaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.OcorrenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ParametrosDoSistemaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.ProvidenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.QuantidadeLimiteColaboradoresPorCargoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.TipoDespesaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.TipoDocumentoDaoHibernateTest;
@@ -473,6 +475,7 @@ import com.fortes.rh.test.web.action.geral.HistoricoColaboradorListActionTest;
 import com.fortes.rh.test.web.action.geral.MotivoDemissaoListActionTest;
 import com.fortes.rh.test.web.action.geral.OcorrenciaEditActionTest;
 import com.fortes.rh.test.web.action.geral.ParametrosDoSistemaEditActionTest;
+import com.fortes.rh.test.web.action.geral.ProvidenciaEditActionTest;
 import com.fortes.rh.test.web.action.geral.TipoDespesaEditActionTest;
 import com.fortes.rh.test.web.action.geral.TipoDocumentoEditActionTest;
 import com.fortes.rh.test.web.action.geral.UsuarioMensagemEditActionTest;
@@ -841,7 +844,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ComoFicouSabendoVagaDaoHibernateTest.class);
         suite.addTestSuite(ComoFicouSabendoVagaManagerTest.class);
         suite.addTestSuite(ComoFicouSabendoVagaEditActionTest.class);
-
         suite.addTestSuite(ImportacaoColaboradorManagerTest.class);
         suite.addTestSuite(AbsenteismoCollectionTest.class);
         suite.addTestSuite(ColaboradorPeriodoExperienciaAvaliacaoManagerTest.class);
@@ -854,6 +856,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(TipoDespesaDaoHibernateTest.class);
         suite.addTestSuite(TurmaTipoDespesaDaoHibernateTest.class);
         suite.addTestSuite(TurmaTipoDespesaManagerTest.class);
+        suite.addTestSuite(ProvidenciaDaoHibernateTest.class);
+        suite.addTestSuite(ProvidenciaManagerTest.class);
+        suite.addTestSuite(ProvidenciaEditActionTest.class);
 
         
         //contatoTest embedded Colaborador

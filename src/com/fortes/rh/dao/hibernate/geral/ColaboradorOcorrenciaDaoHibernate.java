@@ -284,12 +284,13 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		StringBuilder hql = new StringBuilder();
 
 		if (detalhamento)
-			hql.append("select distinct new ColaboradorOcorrencia(co.id, co.dataIni, co.dataFim, co.observacao, c.id, c.nome, c.nomeComercial, o.pontuacao, o.descricao, es.nome, ao.nome) ");
+			hql.append("select distinct new ColaboradorOcorrencia(co.id, co.dataIni, co.dataFim, co.observacao, c.id, c.nome, c.nomeComercial, o.pontuacao, o.descricao, es.nome, ao.nome, p.descricao) ");
 		else
 			hql.append("select distinct new ColaboradorOcorrencia(c.id, c.nome, SUM(o.pontuacao)) ");
 		
 		hql.append("from ColaboradorOcorrencia as co ");
 		hql.append("inner join co.ocorrencia as o ");
+		hql.append("left join co.providencia as p ");
 		hql.append("inner join co.colaborador as c ");
 		hql.append("left join c.historicoColaboradors as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");

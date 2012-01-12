@@ -7,14 +7,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.util.StringUtil;
-
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
+import com.fortes.rh.business.geral.ProvidenciaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
@@ -22,10 +21,10 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.relatorio.AbsenteismoCollection;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -43,12 +42,15 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private ProvidenciaManager providenciaManager;
 
 	private ColaboradorOcorrencia colaboradorOcorrencia;
 	private Colaborador colaborador;
 	private HistoricoColaborador historicoColab;
 	private Collection<Ocorrencia> ocorrencias;
 	private Ocorrencia ocorrencia;
+	private Collection<Providencia> providencias;
+	private Providencia providencia;
 
 	private Collection<ColaboradorOcorrencia> colaboradorOcorrencias;
 	private Collection<Colaborador> colaboradors;
@@ -76,6 +78,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
 
 		ocorrencias = ocorrenciaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao asc"});
+		providencias = providenciaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 
 		return SUCCESS;
 	}
@@ -98,7 +101,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 			return INPUT;
 		}
-
+		
 		return SUCCESS;
 	}
 
@@ -124,7 +127,10 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 			ocorrencia = ocorrenciaManager.findById(colaboradorOcorrencia.getOcorrencia().getId());
 			colaboradorOcorrencia.setOcorrencia(ocorrencia);
-
+			
+			if(colaboradorOcorrencia.getProvidencia().getId() == null)
+				colaboradorOcorrencia.setProvidencia(null);
+			
 			colaboradorOcorrenciaManager.saveColaboradorOcorrencia(colaboradorOcorrencia, getEmpresaSistema());
 			
 			list();
@@ -379,5 +385,13 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	public void setOcorrenciasCheck(String[] ocorrenciasCheck) {
 		this.ocorrenciasCheck = ocorrenciasCheck;
+	}
+
+	public void setProvidenciaManager(ProvidenciaManager providenciaManager) {
+		this.providenciaManager = providenciaManager;
+	}
+
+	public Collection<Providencia> getProvidencias() {
+		return providencias;
 	}
 }

@@ -163,7 +163,9 @@
       <mapping class="com.fortes.rh.model.geral.TipoDocumento" />
       <mapping class="com.fortes.rh.model.geral.TipoDespesa" />
       <mapping class="com.fortes.rh.model.geral.TurmaTipoDespesa" />
+      <mapping class="com.fortes.rh.model.geral.Providencia" />
   </session-factory>
+
 
 
 

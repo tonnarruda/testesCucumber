@@ -317,7 +317,9 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-ComposicaoSesmt.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-TipoDocumento.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-TipoDespesa.xml" />
+  <include file="/com/fortes/rh/web/action/geral/xwork-Providencia.xml" />
 </xwork>
+
 
 
 
