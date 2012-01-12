@@ -68,15 +68,13 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	private String[] estabelecimentoCheck;
 
 	private boolean detalhamento = true;
-	private boolean ponto = true;
-	//variavel apenas para marcar o checkbox
-	private boolean det = true;
 	private boolean empresaIntegradaComAC;
 	
 	private Empresa empresa;
 	private Long[] empresaIds;//repassado para o DWR
 	private Collection<Empresa> empresas;
 	private Boolean compartilharColaboradores;
+	private Boolean exibirProvidencia;
 
 	public String execute() throws Exception
 	{
@@ -165,7 +163,12 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			parametros = RelatorioUtil.getParametrosRelatorio("Ranking de Ocorrências", getEmpresaSistema(), filtro);
 			
 			if(detalhamento)
-				return Action.SUCCESS;
+			{
+				if(exibirProvidencia)
+					return "providencia";
+				else
+					return Action.SUCCESS;
+			}
 			else
 				return "relatorio_sem_detalhe";
 		}
@@ -377,16 +380,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		this.detalhamento = detalhamento;
 	}
 
-	public boolean isPonto()
-	{
-		return ponto;
-	}
-
-	public void setPonto(boolean ponto)
-	{
-		this.ponto = ponto;
-	}
-
 	public Collection<Colaborador> getColaboradores()
 	{
 		return colaboradores;
@@ -420,16 +413,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	public void setEmptyDataSource(List emptyDataSource)
 	{
 		this.emptyDataSource = emptyDataSource;
-	}
-
-	public boolean isDet()
-	{
-		return det;
-	}
-
-	public void setDet(boolean det)
-	{
-		this.det = det;
 	}
 
 	public Collection<CheckBox> getEstabelecimentoCheckList()
@@ -488,6 +471,14 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
+	}
+
+	public Boolean getExibirProvidencia() {
+		return exibirProvidencia;
+	}
+
+	public void setExibirProvidencia(Boolean exibirProvidencia) {
+		this.exibirProvidencia = exibirProvidencia;
 	}
 
 

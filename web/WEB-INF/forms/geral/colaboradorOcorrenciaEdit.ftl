@@ -47,7 +47,8 @@
 			<@ww.datepicker label="Data de Início" value="${dataIni}" name="colaboradorOcorrencia.dataIni" id="dataIni"  required="true" liClass="liLeft" cssClass="mascaraData" />
 		</#if>
 			<@ww.datepicker label="Data de Término" value="${dataFim}" name="colaboradorOcorrencia.dataFim" id="dataFim" cssClass="mascaraData"/>
-
+	
+		<@ww.select label="Providência" name="colaboradorOcorrencia.providencia.id" id="providencia" list="providencias" cssStyle="width:530px;" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey=""/>
 		<@ww.textarea label="Observações" name="colaboradorOcorrencia.observacao" />
 
 		<@ww.hidden name="colaboradorOcorrencia.id" />

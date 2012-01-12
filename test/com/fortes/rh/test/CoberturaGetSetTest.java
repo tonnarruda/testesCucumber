@@ -147,6 +147,7 @@ import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.geral.TipoDocumento;
@@ -945,6 +946,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new TipoDespesa());
 		cobreGetSet(new TipoDespesaEditAction());
 		cobreGetSet(new TurmaTipoDespesa());
+		cobreGetSet(new Providencia());
 
 	}
 	

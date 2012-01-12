@@ -6,8 +6,8 @@ import java.io.IOException;
 public class Principal
 {
 							//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "TurmaTipoDespesa";
-	public static String NOME_CLASSE_MINUSCULO = "turmaTipoDespesa";
+	public static String NOME_CLASSE = "Providencia";
+	public static String NOME_CLASSE_MINUSCULO = "providencia";
 	public static String NOME_PACOTE = "geral";
 	public static boolean GERAR_TODOS_ARQUIVOS = true;//gera todos os arquivos ou somente entidade, manager e dao 
 	

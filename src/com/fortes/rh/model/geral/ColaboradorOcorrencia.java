@@ -31,6 +31,9 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
     private Colaborador colaborador;
 	@ManyToOne(fetch=FetchType.LAZY)
     private Ocorrencia ocorrencia;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Providencia providencia;
 
 	public ColaboradorOcorrencia() {
 	}
@@ -38,7 +41,8 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 	//Usado por colaboradorOcorrenciaDaoHibernate no metodo findColaboradorOcorrencia
     public ColaboradorOcorrencia(Long colaboradorOcorrenciaId, Date colaboradorOcorrenciaDataIni, Date colaboradorOcorrenciaDataFim,
 			String colaboradorOcorrenciaObservacao, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial,
-			int ocorrenciaPontuacao, String ocorrenciaDescricao, String estabelecimentoNome, String areaOrganizacionalNome)
+			int ocorrenciaPontuacao, String ocorrenciaDescricao, String estabelecimentoNome, String areaOrganizacionalNome,
+			String descricaoProvidencia)
 	{	
     	setId(colaboradorOcorrenciaId);
 		setOcorrenciaDescricao(ocorrenciaDescricao);
@@ -54,6 +58,7 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 
 		setEstabelecimentoNome(estabelecimentoNome);
 		setAreaNome(areaOrganizacionalNome);   	
+		setDescricaoProvidencia(descricaoProvidencia);
 	}
     
     public ColaboradorOcorrencia(Long colaboradorId, String colaboradorNome, int ocorrenciaPontuacao)
@@ -215,6 +220,14 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 	{
 		this.ocorrencia = ocorrencia;
 	}
+	
+    public void setDescricaoProvidencia(String descricaoProvidencia)
+    {
+    	if(getProvidencia() == null)
+    		setProvidencia(new Providencia());
+    	
+    	getProvidencia().setDescricao(descricaoProvidencia);
+    }
 
 	public String getObservacao()
 	{
@@ -224,6 +237,14 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 	public void setObservacao(String observacao)
 	{
 		this.observacao = observacao;
+	}
+
+	public Providencia getProvidencia() {
+		return providencia;
+	}
+
+	public void setProvidencia(Providencia providencia) {
+		this.providencia = providencia;
 	}
 
 }

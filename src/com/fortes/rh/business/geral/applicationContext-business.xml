@@ -849,7 +849,21 @@
       <ref bean="turmaTipoDespesaManagerTarget" />
     </property>
   </bean>
+  <bean id="providenciaManagerTarget" class="com.fortes.rh.business.geral.ProvidenciaManagerImpl">
+    <property name="dao">
+      <ref bean="providenciaDao" />
+    </property>
+  </bean>
+  <bean id="providenciaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.ProvidenciaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="providenciaManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

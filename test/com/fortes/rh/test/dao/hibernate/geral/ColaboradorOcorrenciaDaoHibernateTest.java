@@ -16,6 +16,7 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
+import com.fortes.rh.dao.geral.ProvidenciaDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -25,6 +26,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -34,6 +36,7 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
+import com.fortes.rh.test.factory.geral.ProvidenciaFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorOcorrencia>
@@ -46,6 +49,7 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 	private EstabelecimentoDao estabelecimentoDao;
 	private AreaOrganizacionalDao areaOrganizacionalDao;
 	private GrupoACDao grupoACDao;
+	private ProvidenciaDao providenciaDao;
 
 	public ColaboradorOcorrencia getEntity()
 	{
@@ -157,9 +161,14 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		historicoJoao.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoJoao);
 		
+		Providencia providencia = ProvidenciaFactory.getEntity();
+		providencia.setDescricao("Não faltar mais");
+		providenciaDao.save(providencia);
+		
 		ColaboradorOcorrencia colabOcorFalta = ColaboradorOcorrenciaFactory.getEntity();
 		colabOcorFalta.setColaborador(joao);
 		colabOcorFalta.setOcorrencia(falta);
+		colabOcorFalta.setProvidencia(providencia);
 		colabOcorFalta.setDataIni(DateUtil.criarDataMesAno(17, 12, 2011));
 		colabOcorFalta.setDataFim(DateUtil.criarDataMesAno(19, 12, 2011));
 		colaboradorOcorrenciaDao.save(colabOcorFalta);
@@ -179,6 +188,7 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		
 		assertEquals(2, colaboradorOcorrenciasDetalhados.size());
 		assertEquals(5, ((ColaboradorOcorrencia)colaboradorOcorrenciasDetalhados.toArray()[0]).getOcorrencia().getPontuacao());
+		assertEquals("Não faltar mais", ((ColaboradorOcorrencia)colaboradorOcorrenciasDetalhados.toArray()[0]).getProvidencia().getDescricao());
 		assertEquals(7, ((ColaboradorOcorrencia)colaboradorOcorrenciasDetalhados.toArray()[1]).getOcorrencia().getPontuacao());
 	}
 
@@ -405,6 +415,10 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+
+	public void setProvidenciaDao(ProvidenciaDao providenciaDao) {
+		this.providenciaDao = providenciaDao;
 	}
 
 }

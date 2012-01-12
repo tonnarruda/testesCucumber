@@ -362,7 +362,16 @@
       <ref bean="turmaTipoDespesaDaoTarget" />
     </property>
   </bean>
+  <bean id="providenciaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.ProvidenciaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="providenciaDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
