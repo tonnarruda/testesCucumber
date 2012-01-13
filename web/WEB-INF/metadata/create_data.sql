@@ -168,6 +168,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (62, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (8, 'ROLE_CAD_COLABORADOR', 'Colaboradores', '/geral/colaborador/list.action', 7, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (412, 'ROLE_CAD_INFO_PESSOAL', 'Atualizar meus dados', '/geral/colaborador/prepareUpdateInfoPessoais.action', 8, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (533, 'ROLE_TIPO_DOCUMENTO', 'Tipo do Documento', '/geral/tipoDocumento/list.action', 9, true, 374);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (537, 'ROLE_PROVIDENCIA', 'Providências', '/geral/providencia/list.action', 10, true, 374);
 
 
 -- Modulo Info. Funcionais Movimentacoes
@@ -230,7 +231,8 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (408,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (505, 'ROLE_C&S_PAINEL_IND', 'Painel de Indicadores', '/cargosalario/historicoColaborador/painelIndicadoresCargoSalario.action', 4, true, 361);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (410, 'RECEBE_ALERTA_SETORPESSOAL', 'Recebe Mensagem do AC Pessoal', '', 5, false, 37);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (451, 'ROLE_LOGGING', 'Logs', '/logging/list.action', 8, true, 37);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (451, 'ROLE_LOGGING', 'Logs', '/logging/list.action', 9, true, 37);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (535,'ROLE_IMPORTACAO_AFASTAMENTO', 'Importar Afastamentos', '/importacao/prepareImportarAfastamentos.action', 10, true, 37);
 
 -- Fim Utilitarios
 -- Modulo SESMT
@@ -303,7 +305,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 535;
+alter sequence papel_sequence restart with 538;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -482,6 +484,7 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 530);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 532);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 533);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 534);
+insert into perfil_papel(perfil_id, papeis_id) values (1, 537);
 
 insert into public."perfil" ("id", "nome") values (2, 'Usuário');
 
@@ -21144,9 +21147,15 @@ insert into migrations values('20111226143453');
 insert into migrations values('20111227091605');
 insert into migrations values('20111219110034');
 insert into migrations values('20111226102307');
+insert into migrations values('20120109150913');
+insert into migrations values('20120109152103');
+insert into migrations values('20120112092959');
+insert into migrations values('20120112094049');
+insert into migrations values('20120112110709');
+insert into migrations values('20120112152813');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.65.58', '', '25', false, false, 2, '1.1.47.1', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.66.59', '', '25', false, false, 2, '1.1.47.1', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'

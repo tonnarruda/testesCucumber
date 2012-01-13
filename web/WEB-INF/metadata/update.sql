@@ -18439,3 +18439,42 @@ UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=531 WHERE atualizaPape
 insert into migrations values('20111226102307');--.go
 
 update parametrosdosistema set appversao = '1.1.65.58';--.go
+
+-- versao 1.1.66.59
+
+alter table empresa add column obrigarAmbienteFuncaoColaborador boolean default false;--.go
+insert into migrations values('20120109150913');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (535,'ROLE_IMPORTACAO_AFASTAMENTO', 'Importar Afastamentos', '/importacao/prepareImportarAfastamentos.action', 10, true, 37);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=535 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+alter sequence papel_sequence restart with 536;--.go
+insert into migrations values('20120109152103');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (537, 'ROLE_PROVIDENCIA', 'Providências', '/geral/providencia/list.action', 10, true, 374);--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 537);--.go
+alter sequence papel_sequence restart with 538;--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=537 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into migrations values('20120112092959');--.go
+
+CREATE TABLE providencia (
+id bigint NOT NULL,
+descricao character varying(100),
+empresa_id bigint
+);--.go
+
+ALTER TABLE providencia ADD CONSTRAINT providencia_pkey PRIMARY KEY(id);--.go
+ALTER TABLE providencia ADD CONSTRAINT providencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE providencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20120112094049');--.go
+
+alter table colaboradorocorrencia add column providencia_id bigint;--.go
+ALTER TABLE colaboradorocorrencia ADD CONSTRAINT colaboradorocorrencia_providencia_fk FOREIGN KEY (providencia_id) REFERENCES providencia(id);--.go
+insert into migrations values('20120112110709');--.go
+
+alter table solicitacao add column status character varying(1);--.go
+UPDATE solicitacao SET status='A' WHERE liberada=true;--.go
+UPDATE solicitacao SET status='R' WHERE liberada=false;--.go
+alter table solicitacao drop column liberada;--.go
+insert into migrations values('20120112152813');--.go
+
+update parametrosdosistema set appversao = '1.1.66.59';--.go

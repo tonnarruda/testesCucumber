@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.66.59" data="13/01/2012"><![CDATA[
+		- C&S > Relatórios > Situações: Nova opção de agrupar por mês/ano e imprimir colaboradores desligados.
+		- Info. Funcionais > Cadastros > Providências: Novo cadastro.
+		- Info. Funcionais > Movimentações > Ocorrências: Novo opção de selecionar a providência.
+		- Info. Funcionais > Relatórios > Ocorrências: Novo opção para exibir providências.
+		- SESMT > Relatórios > PPRA e LTCAT: Novo layout de mostragem do ambiente.
+		- Utilitários > Cadastros > Empresas: Nova opção de obrigatoriedade do preenchimento dos campos de ambiente e função no cadastro e realinhamento do colaborador. 
+		- Utilitários > Cadastros > Empresas: Ajuste no nome do campo "Enviar emails de confirmação" para "Enviar emails para candidatos não aptos". 
+		- Utilitários > Importar Afastamentos: Nova opção de importar arquivos CSV gerado pelo TRU. 
+	]]></Versao>
 	<Versao id="1.1.65.58" data="05/01/2012"><![CDATA[
 		- T&D > Cadastros > Tipo de despesa: Novo cadastro.
 		- T&D > Cadastros > Cursos/Treinamentos > Turmas: Nova composição de custo para inserção de valores dos tipos de despesas.

@@ -28,6 +28,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
@@ -165,7 +166,8 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Solicitacao solicitacao = getEntity();
 		solicitacao.setEncerrada(false);
 		solicitacao.setSuspensa(false);
-		solicitacao.setLiberada(true);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
 		solicitacao.setData(hoje);
 		solicitacao.setEmpresa(empresa);		
 		
@@ -374,12 +376,13 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 		Solicitacao solicitacao = getEntity();
 		solicitacao.setEncerrada(true);
-		solicitacao.setLiberada(true);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
 		solicitacao.setSuspensa(true);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
 		solicitacao.setEmpresa(empresa);
 		solicitacao = solicitacaoDao.save(solicitacao);
 
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findSolicitacaoList(empresa.getId(), true, true, true);
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findSolicitacaoList(empresa.getId(), true, StatusAprovacaoSolicitacao.APROVADO, true);
 
 		assertEquals(1, solicitacaos.size());
 	}

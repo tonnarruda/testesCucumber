@@ -7,89 +7,77 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
-	<title>Solicitações de Pessoal</title>
+		<title>Solicitações de Pessoal</title>
+		
+		<#include "../ftl/mascarasImports.ftl" />
+		<#assign validarCamposSuspende = "return validaFormulario('formSuspendeSolicitacao', new Array('obsSuspensao'), null)"/>
+		<#assign validarCamposEncerra = "return validaFormulario('formEncerraSolicitacao', new Array('dataEncerramento'), new Array('dataEncerramento'))"/>
+		
+		<#include "../ftl/showFilterImports.ftl" />
+		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+		
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	
-	<#include "../ftl/mascarasImports.ftl" />
-	<#assign validarCamposSuspende = "return validaFormulario('formSuspendeSolicitacao', new Array('obsSuspensao'), null)"/>
-	<#assign validarCamposEncerra = "return validaFormulario('formEncerraSolicitacao', new Array('dataEncerramento'), new Array('dataEncerramento'))"/>
-	
-	<#include "../ftl/showFilterImports.ftl" />
-	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-
 	<style>
-	.dataEncerramentoDiv
-	{
-		border: 1px solid #B0B0B0;
-		padding: 5px;
-		position:absolute;
-		top:10px;
-		left:50%;
-		margin-left: -90px;
-		background-color:#F0F0F0;
-		width: 180px;
-		top:50%;
-		margin-top:-50px;
-		display:none;
-	}
-	.suspendeDiv
-	{
-		border: 1px solid #B0B0B0;
-		padding: 5px;
-		position:absolute;
-		top:10px;
-		left:25%;
-		margin-left: -10px;
-		background-color:#F0F0F0;
-		width: 445px;
-		top:50%;
-		margin-top:-50px;
-		display:none;
-	}
-	.dataEncerramentoDiv *
-	{
-		font-size: 11px;
-	}
-	#modal
-	{
-		display:none;
-		background:silver none repeat scroll 0%;
-		height:700px;
-		width:100%;
-		left:0px;
-		top:0px;
-		opacity:0.65;
-		-moz-opacity: 0.65;
-		filter: alpha(opacity=65);
-		position:absolute;
-	}
+			@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+			@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+			#formDialog { display: none; width: 600px; }
+		
+		.dataEncerramentoDiv
+		{
+			border: 1px solid #B0B0B0;
+			padding: 5px;
+			position:absolute;
+			top:10px;
+			left:50%;
+			margin-left: -90px;
+			background-color:#F0F0F0;
+			width: 180px;
+			top:50%;
+			margin-top:-50px;
+			display:none;
+		}
+		.suspendeDiv
+		{
+			border: 1px solid #B0B0B0;
+			padding: 5px;
+			position:absolute;
+			top:10px;
+			left:25%;
+			margin-left: -10px;
+			background-color:#F0F0F0;
+			width: 445px;
+			top:50%;
+			margin-top:-50px;
+			display:none;
+		}
+		.dataEncerramentoDiv *
+		{
+			font-size: 11px;
+		}
+		#modal
+		{
+			display:none;
+			background:silver none repeat scroll 0%;
+			height:700px;
+			width:100%;
+			left:0px;
+			top:0px;
+			opacity:0.65;
+			-moz-opacity: 0.65;
+			filter: alpha(opacity=65);
+			position:absolute;
+		}
 	</style>
-
-</head>
-
-<body>
-
-	<@ww.actionmessage />
-	<@ww.actionerror />
-
-	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="form" action="list.action" validate="true" onsubmit="setPage();" method="POST" id="formBusca">
-			<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" /><br>
-			<@ww.select id="cargo" label="Cargo" name="cargo.id" list="cargos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" /><br>
-			<@ww.hidden id="pagina" name="page"/>
-
-			<input type="submit" value="" class="btnPesquisar grayBGE" accesskey="B">
-		</@ww.form>
-	<#include "../util/bottomFiltro.ftl" />
-	<br />
-
-	<div id="legendas" align="right"></div>
-	<br />
-
-	<script>
-		var obj = document.getElementById("legendas");
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Abertas em andamento";
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #002EB8;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Abertas suspensas";
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerradas";
+	<script type='text/javascript'>
+		$(function() {
+			var obj = document.getElementById("legendas");
+			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Abertas em andamento";
+			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #002EB8;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Abertas suspensas";
+			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerradas";
+		});
 
 		function encerraSolicitacao(fraseConfirma, actionEncerra, solicitacaoId)
 		{
@@ -124,7 +112,60 @@
 			document.getElementById("pagina").value=1;
 		}
 		
+		function aprovarSolicitacao(solicitacaoId) 
+		{
+
+			$('#formDialog').dialog({ 	modal: true, 
+										width: 500,
+										height: 360,
+										buttons: 
+										[
+										    {
+										        text: "Aprovar",
+										        click: function() { 
+										        	alert('Aprovou');
+										        }
+										    },
+										    {
+										        text: "Reprovar",
+										        click: function() {
+										        	alert('Reprovou'); 
+											    }
+											}
+										],
+										open: function(event, ui) 
+										{ 
+										},
+										close: function(event, ui)
+										{
+											alert('foi');
+										}
+									});
+		}
+	
 	</script>
+</head>
+
+<body>
+
+	<@ww.actionmessage />
+	<@ww.actionerror />
+
+	<#include "../util/topFiltro.ftl" />
+		<@ww.form name="form" action="list.action" validate="true" onsubmit="setPage();" method="POST" id="formBusca">
+			<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" /><br>
+			<@ww.select id="cargo" label="Cargo" name="cargo.id" list="cargos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" /><br>
+			<@ww.hidden id="pagina" name="page"/>
+
+			<input type="submit" value="" class="btnPesquisar grayBGE" accesskey="B">
+		</@ww.form>
+	<#include "../util/bottomFiltro.ftl" />
+	<br />
+
+	<div id="legendas" align="right"></div>
+	<br />
+	
+	
 
 	<@display.table name="solicitacaos" id="solicitacao" class="dados">
 		<#if solicitacao.encerrada>
@@ -146,7 +187,7 @@
 		<@display.column title="Ações" media="html" class="acao" style="width: 160px; text-align:left;">
 			<a href="imprimirSolicitacaoPessoal.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.print.hint"/>" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<@authz.authorize ifNotGranted="ROLE_MOV_SOLICITACAO_SELECAO">
-				<#if !solicitacao.liberada && !solicitacao.encerrada>
+				<#if solicitacao.status=='R' && !solicitacao.encerrada>
 					<a href="prepareUpdate.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 				<#else>
@@ -186,6 +227,8 @@
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">		
 			<a href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Candidatos da Seleção" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 		</@authz.authorize>
+		<!--<a href="" onclick="aprovarSolicitacao(${solicitacao.id});"><img border="0" title="Aprovar Solicitação" src="<@ww.url value="/imgs/page_edit.gif"/>"/></a>-->
+		
 		</@display.column>
 
 		<@display.column title="Código" property="id" class="${classe}"/>
@@ -205,8 +248,8 @@
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;" class="${classe}"/>
 
 		<#-- <@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO"> -->
-			<@display.column title="Aprov." style="width:33px;" class="${classe}">
-				<#if solicitacao.liberada> Sim <#else> Não </#if>
+			<@display.column title="Status" style="width:33px;" class="${classe}">
+				${solicitacao.statusFormatado}
 			</@display.column>
 		<#--/@authz.authorize -->
 

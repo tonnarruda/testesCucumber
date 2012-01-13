@@ -71,7 +71,8 @@ CREATE TABLE empresa (
 	imgAniversarianteUrl varchar(200),
 	mensagemCartaoAniversariante varchar(300),
 	enviarEmailAniversariante boolean default false,
-	turnoverPorSolicitacao boolean NOT NULL DEFAULT false
+	turnoverPorSolicitacao boolean NOT NULL DEFAULT false,
+	obrigarAmbienteFuncaoColaborador boolean default false
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
@@ -708,7 +709,6 @@ CREATE TABLE solicitacao (
     sexo character varying(5),
     infocomplementares text,
     encerrada boolean NOT NULL,
-    liberada boolean NOT NULL,
     suspensa boolean NOT NULL,
     obssuspensao text,
     motivosolicitacao_id bigint,
@@ -721,7 +721,8 @@ CREATE TABLE solicitacao (
     descricao character varying(100),
     avaliacao_id bigint,
     liberador_id bigint,
-    horariocomercial varchar(20)
+    horariocomercial varchar(20),
+    status character varying(1)
 );
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_areaorganizacional_fk FOREIGN KEY (areaorganizacional_id) REFERENCES areaorganizacional(id);
@@ -972,11 +973,13 @@ CREATE TABLE colaboradorocorrencia (
     datafim date,
     observacao text,
     colaborador_id bigint,
-    ocorrencia_id bigint
+    ocorrencia_id bigint,
+    providencia_id bigint
 );
 ALTER TABLE colaboradorocorrencia ADD CONSTRAINT colaboradorocorrencia_pkey PRIMARY KEY (id);
 ALTER TABLE colaboradorocorrencia ADD CONSTRAINT colaboradorocorrencia_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
 ALTER TABLE colaboradorocorrencia ADD CONSTRAINT colaboradorocorrencia_ocorrencia_fk FOREIGN KEY (ocorrencia_id) REFERENCES ocorrencia(id);
+ALTER TABLE colaboradorocorrencia ADD CONSTRAINT colaboradorocorrencia_providencia_fk FOREIGN KEY (providencia_id) REFERENCES providencia(id);
 CREATE SEQUENCE colaboradorocorrencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE curso (
@@ -2531,3 +2534,13 @@ ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turmaTipoDespesa_pkey PRIMARY KEY(id
 ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma__tipodespesa_fk FOREIGN KEY (turma_id) REFERENCES turma(id);
 ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma_tipodespesa_tipodespesas_fk FOREIGN KEY (tipodespesa_id) REFERENCES tipodespesa(id);
 CREATE SEQUENCE turmaTipoDespesa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE providencia (
+id bigint NOT NULL,
+descricao character varying(100),
+empresa_id bigint
+);
+
+ALTER TABLE providencia ADD CONSTRAINT providencia_pkey PRIMARY KEY(id);
+ALTER TABLE providencia ADD CONSTRAINT providencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE providencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;

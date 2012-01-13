@@ -39,6 +39,8 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -103,6 +105,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private HashMap sexos;
     private HashMap vinculos;
     private HashMap situacoes;
+    private HashMap status;
 
     private Collection<CheckBox> etapaSeletivaCheckList = new ArrayList<CheckBox>();
     private String[] etapaCheck;
@@ -172,6 +175,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         sexos = new Sexo();
         vinculos = new Vinculo();
         situacoes = new SituacaoSolicitacao();
+        status = new StatusAprovacaoSolicitacao();
     }
 
     public String prepareInsert() throws Exception
@@ -228,7 +232,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         if (solicitacao.getAvaliacao() != null && solicitacao.getAvaliacao().getId() == null)
         	solicitacao.setAvaliacao(null);
         
-        if(solicitacao.isLiberada())
+        if(solicitacao.getStatus() == StatusAprovacaoSolicitacao.APROVADO)
            	solicitacao.setLiberador(usuarioLogado);
         else
            	solicitacao.setLiberador(null);
@@ -252,17 +256,16 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
         if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
         {
-        	if(solicitacao.isLiberada() && !solicitacaoAux.isLiberada())
-    		{
-    			solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
-    			solicitacaoManager.emailParaSolicitante(solicitacaoAux.getSolicitante(), solicitacao, getEmpresaSistema());
-    		}
-        	
-        	if(!solicitacao.isLiberada())
-        		solicitacao.setLiberador(null);
+        	if(solicitacao.getStatus() != solicitacaoAux.getStatus())
+        	{
+        		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+        		
+        		if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE)
+        			solicitacaoManager.emailParaSolicitante(solicitacaoAux.getSolicitante(), solicitacao, getEmpresaSistema());
+        	}
         }else
         {
-        	solicitacao.setLiberada(solicitacaoAux.isLiberada());
+        	solicitacao.setStatus(solicitacaoAux.getStatus());
         	solicitacao.setLiberador(solicitacaoAux.getLiberador());
         }
 
@@ -763,5 +766,13 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public void setEmailsCheck(String[] emailsCheck) {
 		this.emailsCheck = emailsCheck;
+	}
+
+	public HashMap getStatus() {
+		return status;
+	}
+
+	public void setStatus(HashMap status) {
+		this.status = status;
 	}
 }

@@ -26,6 +26,7 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
@@ -60,7 +61,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@Lob
 	private String infoComplementares;
 	private boolean encerrada;
-	private boolean liberada;
+	private char status = StatusAprovacaoSolicitacao.ANALISE;
 	@ManyToOne
 	private MotivoSolicitacao motivoSolicitacao;
 	@ManyToOne
@@ -467,16 +468,6 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		 return string.toString();
 	}
 
-	public boolean isLiberada()
-	{
-		return liberada;
-	}
-
-	public void setLiberada(boolean liberada)
-	{
-		this.liberada = liberada;
-	}
-
 	public MotivoSolicitacao getMotivoSolicitacao()
 	{
 		return motivoSolicitacao;
@@ -662,5 +653,17 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public void setCandidatoSolicitacaos(Collection<CandidatoSolicitacao> candidatoSolicitacaos) {
 		this.candidatoSolicitacaos = candidatoSolicitacaos;
+	}
+
+	public String getStatusFormatado() {
+		return StatusAprovacaoSolicitacao.getDescricao(getStatus());
+	}
+	
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
 	}
 }

@@ -317,12 +317,10 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 		historicoExtintorDao.save(historico);
 
 		ExtintorManutencaoServico servico1 = new ExtintorManutencaoServico();
-		servico1.setId(20L);
 		servico1.setDescricao("teste");
 		extintorManutencaoServicoDao.save(servico1);
 
 		ExtintorManutencaoServico servico2 = new ExtintorManutencaoServico();
-		servico2.setId(21L);
 		servico2.setDescricao("teste 2");
 		extintorManutencaoServicoDao.save(servico2);
 		

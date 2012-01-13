@@ -22,7 +22,6 @@ public class SolicitacaoFactory
 		solicitacao.setVinculo("a");
 		solicitacao.setSolicitante(null);
 		solicitacao.setEncerrada(false);
-		solicitacao.setLiberada(true);
 		solicitacao.setEmpresa(null);
 
 		return solicitacao;

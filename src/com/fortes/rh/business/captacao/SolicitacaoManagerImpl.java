@@ -20,6 +20,7 @@ import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -107,9 +108,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		this.anuncioManager = anuncioManager;
 	}
 
-	public Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Boolean liberada, Boolean suspensa)
+	public Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa)
 	{
-		return getDao().findSolicitacaoList(empresaId, encerrada, liberada, suspensa);
+		return getDao().findSolicitacaoList(empresaId, encerrada, status, suspensa);
 	}
 
 	public Solicitacao getValor(Long id)
@@ -159,7 +160,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		
 		try {
 			
-			if (!solicitacao.isLiberada())
+			if (solicitacao.getStatus() == StatusAprovacaoSolicitacao.ANALISE)
 				enviarEmailParaLiberadorSolicitacao(solicitacao, solicitacao.getEmpresa(), emailsAvulsos);
 			
 		} catch (Exception e) {

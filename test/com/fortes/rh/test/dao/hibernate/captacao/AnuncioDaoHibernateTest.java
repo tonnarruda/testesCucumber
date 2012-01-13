@@ -6,6 +6,7 @@ import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -38,7 +39,7 @@ public class AnuncioDaoHibernateTest extends GenericDaoHibernateTest<Anuncio>
 		solicitacao.setIdadeMaxima(50);
 		solicitacao.setIdadeMinima(15);
 		solicitacao.setEncerrada(false);
-		solicitacao.setLiberada(true);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
 		solicitacao.setEmpresa(empresa);
 		solicitacao = solicitacaoDao.save(solicitacao);
 

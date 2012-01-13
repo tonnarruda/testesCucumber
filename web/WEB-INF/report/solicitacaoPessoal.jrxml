@@ -44,7 +44,7 @@
 	<field name="solicitacao.experiencia" class="java.lang.String"/>
 	<field name="motivoSolicitacao" class="java.lang.String"/>
 	<field name="solicitacao.infoComplementares" class="java.lang.String"/>
-	<field name="solicitacao.liberada" class="java.lang.Boolean"/>
+	<field name="solicitacao.statusFormatado" class="java.lang.String"/>
 	<field name="beneficios" class="java.lang.String"/>
 	<field name="solicitacao.estabelecimento.nome" class="java.lang.String"/>
 	<field name="solicitacao.data" class="java.util.Date"/>
@@ -497,7 +497,7 @@
 					<reportElement
 						x="9"
 						y="258"
-						width="100"
+						width="205"
 						height="13"
 						key="textField"
 						positionType="Float"/>
@@ -505,7 +505,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[( $F{solicitacao.liberada}.booleanValue() ? "Sim" : "Não" )]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{solicitacao.statusFormatado}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement

@@ -18,6 +18,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -162,7 +163,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 
 		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(100L)).will(returnValue(candidato));
-		manager.expects(once()).method("findSolicitacaoList").with(eq(1L),eq(false),eq(true),eq(false)).will(returnValue(new ArrayList<Solicitacao>()));
+		manager.expects(once()).method("findSolicitacaoList").with(eq(1L),eq(false),eq(StatusAprovacaoSolicitacao.APROVADO),eq(false)).will(returnValue(new ArrayList<Solicitacao>()));
 		
 		assertEquals("success", action.verSolicitacoes());
     }
