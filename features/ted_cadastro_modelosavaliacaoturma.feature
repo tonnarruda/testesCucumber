@@ -34,7 +34,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Turma
     Então eu devo ver "Inserir Pergunta"
     E eu preencho "aspecto" com "familiar"
     E eu preencho "Pergunta" com "Quantos filhos?"
-    E eu seleciono "Subjetiva" de "Tipo de Resposta"
+    E eu seleciono "Subjetiva" de "Tipos de Respostas"
     E eu clico no botão "Gravar"
     Então eu devo ver "Avaliação da turma - oratória"
 

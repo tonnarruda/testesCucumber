@@ -15,16 +15,14 @@
 		
 		<#include "../ftl/showFilterImports.ftl" />
 		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-		
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	
-	<style>
-			@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-			@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
-			#formDialog { display: none; width: 600px; }
+	<style type="text/css">
 		
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		#formDialog { display: none; width: 600px; }
+	</style>
+	<style>
 		.dataEncerramentoDiv
 		{
 			border: 1px solid #B0B0B0;
@@ -71,6 +69,11 @@
 			position:absolute;
 		}
 	</style>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	
 	<script type='text/javascript'>
 		$(function() {
 			var obj = document.getElementById("legendas");
@@ -112,35 +115,9 @@
 			document.getElementById("pagina").value=1;
 		}
 		
-		function aprovarSolicitacao(solicitacaoId) 
+		function aprovarSolicitacao() 
 		{
-
-			$('#formDialog').dialog({ 	modal: true, 
-										width: 500,
-										height: 360,
-										buttons: 
-										[
-										    {
-										        text: "Aprovar",
-										        click: function() { 
-										        	alert('Aprovou');
-										        }
-										    },
-										    {
-										        text: "Reprovar",
-										        click: function() {
-										        	alert('Reprovou'); 
-											    }
-											}
-										],
-										open: function(event, ui) 
-										{ 
-										},
-										close: function(event, ui)
-										{
-											alert('foi');
-										}
-									});
+			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: '}); 
 		}
 	
 	</script>
@@ -164,8 +141,6 @@
 
 	<div id="legendas" align="right"></div>
 	<br />
-	
-	
 
 	<@display.table name="solicitacaos" id="solicitacao" class="dados">
 		<#if solicitacao.encerrada>
@@ -227,7 +202,7 @@
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">		
 			<a href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Candidatos da Seleção" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 		</@authz.authorize>
-		<!--<a href="" onclick="aprovarSolicitacao(${solicitacao.id});"><img border="0" title="Aprovar Solicitação" src="<@ww.url value="/imgs/page_edit.gif"/>"/></a>-->
+		<a href="javascript:;" onclick="javascript:aprovarSolicitacao()"><img border="0" title="Aprovar Solicitação" src="<@ww.url includeParams="none" value="/imgs/page_edit.gif"/>"></a>
 		
 		</@display.column>
 

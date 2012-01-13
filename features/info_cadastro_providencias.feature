@@ -10,7 +10,7 @@ Funcionalidade: Providências
     Então eu devo ver o título "Inserir Providência"
     E eu clico no botão "Gravar"
     Então eu devo ver o alert do valida campos e clico no ok
-    E eu clico no botão "Cancelar"
+    E eu clico no botão "Voltar"
 
     Então eu devo ver o título "Providências"
     E eu clico no botão "Inserir"
@@ -24,7 +24,7 @@ Funcionalidade: Providências
     E o campo "Descrição" deve conter "não faltar"
     E eu preencho "Descrição" com "evitar acidente"
     E eu clico no botão "Gravar"
-    Então eu devo ver o título "Providencias"
+    Então eu devo ver o título "Providências"
     Então eu não devo ver na listagem "não faltar"
     Então eu devo ver "evitar acidente"
 
