@@ -160,7 +160,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public int getCountAtivos(Date dataBase, Long empresaId, Long[] areasIds);
 	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Empresa empresa, Long[] areasIds, boolean isAdmitidos);
 	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception;
-	public Collection<Object[]> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional area);
+	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional area);
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) throws Exception;
 	public int countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasId, boolean considerarDataAdmissao, Long colaboradorId, boolean isAbsenteismo);
 	public Collection<Object[]> montaGraficoTurnover(Collection<TurnOver> turnOvers);

@@ -1,6 +1,5 @@
 <html>
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
-<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<head>
 	<@ww.head/>
@@ -65,10 +64,10 @@
 
 
 	</style>
-	
-
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 		
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
@@ -98,91 +97,172 @@
 		<script type="text/javascript">
 			$(function () {
 				$("#box").dialog({autoOpen: false});
-								
+			
+			    salarioAreasOrdered = ${grfSalarioAreas}.sort(function (a, b){
+   					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
+				});
+				 
+				montaPie(salarioAreasOrdered, "#salarioAreas", {
+					radiusLabel:0.9, 
+					percentMin: 0.02, 
+					pieLeft: 0, 
+					noColumns: 2, 
+					container: '#salarioAreasLegenda',
+					hoverable: true,
+        			clickable: true,
+					legendLabelFormatter: function(label, series) {
+						return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
+					}
+				});
+				
+				$("#salarioAreas").bind("plothover", plotPieHover);
+				$("#salarioAreas").bind("plotclick", pieClick);
+				
 				var folha = ${grfEvolucaoFolha};
 				var faturamento = ${grfEvolucaoFaturamento};
 				
-			    $.plot($("#evolucaoFolha"), 
-							[
-								{ label: 'Evolução Salarial', data: folha }, 
-								{ label: 'Faturamento', data: faturamento }
-							],
-							{
-								series: {
-									lines: { show: true },
-									points: { show: true }
-								},
-								grid: { hoverable: true },
-								xaxis: { 
-									mode: 'time',
-									ticks: folha.map(function(item) { return item[0]; }),
-									timeformat: '%b/%y ',
-									monthNames: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-								},
-								yaxis: { 
-									tickFormatter: function(v) { return formataNumero(v); }
-								}
-						    });
-				
+			    var options = {
+				    series: {
+	                   lines: { show: true },
+	                   points: { show: true }
+	                },
+	                grid: { hoverable: true },
+			        xaxis: { 
+			        	mode: "time",
+			        	ticks: folha.map(function (item){return item[0]}),
+			        	timeformat: '%b/%y ',
+			        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+			        },
+			        yaxis: { 
+			        	 tickFormatter: function (v) {return formataNumero(v);}
+			        }
+			    };			    
+			    var plot = $.plot($("#evolucaoFolha"), [{label: 'Evolução Salarial', data: folha}, {label: 'Faturamento', data: faturamento }], options);
+
 				var previousPoint = null;				
 				$("#evolucaoFolha").bind("plothover", function (event, pos, item) {
-				    if (item) 
-				    {
-				    	if (previousPoint != item.dataIndex) 
-				    	{
-				    		previousPoint = item.dataIndex;
-				            $("#tooltip").remove();
-				            var y = item.datapoint[1].toFixed(2);		                    
-				            showTooltip(item.pageX, item.pageY, formataNumero(y));
-				        }
-				    }
+		            if (item) 
+		            {
+		            	if (previousPoint != item.dataIndex) 
+		            	{
+                    		previousPoint = item.dataIndex;
+		                    $("#tooltip").remove();
+		                    var y = item.datapoint[1].toFixed(2);		                    
+		                    showTooltip(item.pageX, item.pageY, formataNumero(y));
+	                    }
+		            }
 					else 
 					{
-				    	$("#tooltip").remove();
-				    	previousPoint = null;            
-				    }
+	                	$("#tooltip").remove();
+	                	previousPoint = null;            
+		            }
 				});
-				
-				var promocaoHorizontal = ${grfPromocaoHorizontal};
-				var promocaoVertical = ${grfPromocaoVertical};
-				
-				$.plot($("#faixaSalarial"), 
-						[
-					        { label: 'Horizontal', data: promocaoHorizontal , bars:{align : "right", barWidth: 900000020} },
-					        { label: 'Vertical', data: promocaoVertical, bars:{align : "left", barWidth: 900000000} }
+		        
+		        var promocaoHorizontal = ${grfPromocaoHorizontal};
+		        var promocaoVertical = ${grfPromocaoVertical};
+			    
+			    $.plot($("#faixaSalarial"), 
+			    		[
+					        {label: 'Horizontal', data: promocaoHorizontal , bars:{align : "right", barWidth: 900000020}},
+					        {label: 'Vertical', data: promocaoVertical, bars:{align : "left", barWidth: 900000000} }
 					    ], 
-						{
-				    		series: {
-				            	bars: {
-				                	show: true, 
-				                 	align: 'center'
-								}
-					        },
-					        grid: { hoverable: true },
-					        xaxis: { 
-					         	mode: "time",
-					        	ticks: promocaoHorizontal.map(function(item){return item[0]}),
-					        	timeformat: '%b/%y ',
-					        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-					        }
-					    });
-				
-				
-				$("#faixaSalarial").bind("plothover", function(event, pos, item) {
-				    if (item) 
-				    {
-						previousPoint = item.dataIndex;
-				        $("#tooltip").remove();
-				        var y = item.datapoint[1].toFixed(0);		                    
-				        showTooltip(item.pageX, item.pageY, y);
-				    }
+			    		{series: {
+			                bars: {show: true, 
+			                 	align: 'center'
+			                 },
+				        },
+				        grid: { hoverable: true },
+				        xaxis: { 
+				         	mode: "time",
+				        	ticks: promocaoHorizontal.map(function (item){return item[0]}),
+				        	timeformat: '%b/%y ',
+				        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+				        },
+				    });
+			    
+			    
+			    $("#faixaSalarial").bind("plothover", function (event, pos, item) {
+		            if (item) 
+		            {
+                		previousPoint = item.dataIndex;
+	                    $("#tooltip").remove();
+	                    var y = item.datapoint[1].toFixed(0);		                    
+	                    showTooltip(item.pageX, item.pageY, y);
+		            }
 					else 
 					{
-				    	$("#tooltip").remove();
-				    	previousPoint = null;            
-				    }
+	                	$("#tooltip").remove();
+	                	previousPoint = null;            
+		            }
 				});
 			});
+
+			//CUIDADO com o tamanho do grafico(bug da sombra)http://code.google.com/p/flot/issues/detail?id=5#c110
+
+			var urlFind = "<@ww.url includeParams="none" value="/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action"/>";
+			var dataBase_ = '${dateBase}';
+			
+			function pieClick(event, pos, obj)
+			{
+				if(event.currentTarget.id == "salarioAreas")
+					var areaId_ = salarioAreasOrdered[obj.seriesIndex].id;
+				else
+					var areaId_ = salarioAreasOrderedBox[obj.seriesIndex].id;
+				
+				$.ajax({
+					url: urlFind,
+					dataType: "json",
+					async: false,
+					data: {areaId: areaId_, dataBase: dataBase_},
+					success: function(data){
+						if(data.length == 0)
+						{
+							jAlert("Área Organizacional não possui área filha.");
+							return false;
+						}
+						
+						$('#pieBox').remove();
+						$('#box').prepend("<div id='pieBox'></div>");
+						
+						salarioAreasOrderedBox = data.sort(function (a, b){
+			   					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
+						});
+						
+						montaPie(salarioAreasOrderedBox, "#pieBox", {
+							radiusLabel:0.9,
+							radius: 0.6,  
+							percentMin: 0.02, 
+							noColumns: 1, 
+							hoverable: true,
+		        			clickable: true,
+		        			container: '#pieLegendBox',
+							legendLabelFormatter: function(label, series) {
+								return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
+							}
+						});
+
+						var percent = parseFloat(obj.series.percent).toFixed(2);
+						var descricaoArea = data[0].descricao;
+						
+						$("#box").dialog( "option" , { zIndex: 9999, title: descricaoArea + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', minWidth: 450, minHeight: 300 });
+						$("#box").dialog("open");
+						$("#pieBox").bind("plothover", plotPieHover);
+						$("#pieBox").bind("plotclick", pieClick);
+					}
+				});
+				
+			}		
+			
+			function plotPieHover(event, pos, item) {
+	            if (item) 
+	            {
+            		previousIndex = item.dataIndex;
+                    $("#tooltip").remove();
+                    showTooltip(pos.pageX, pos.pageY, "Clique para exibir áreas filhas");
+	            }
+				else 
+                	$("#tooltip").remove();
+			}
 			
 			function showTooltip(x, y, contents) 
 			{
@@ -223,118 +303,6 @@
 			}
 		</script>
 	
-		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		<script type="text/javascript">
-			google.load("visualization", "1", {packages:["corechart"]});
-			google.setOnLoadCallback(drawChart);
-		
-			var chart;
-			var data;
-			var popupChart;
-			var popupData;
-			var formatter;
-			var salarioAreasOrdered = ${grfSalarioAreas};
-		  
-			function drawChart() {
-				formatter = new google.visualization.NumberFormat({
-				    fractionDigits: 2,
-				    prefix: 'R$ '
-				});
-			
-				data = new google.visualization.DataTable();
-				data.addColumn('string', 'areaNome');
-				data.addColumn('number', 'areaTotalSalarios');
-				data.addColumn('number', 'areaId');
-				data.addRows(salarioAreasOrdered);
-				
-				formatter.format(data, 1);
-		
-				var options = {
-					width: 850, height: 400,
-					is3D: true
-				};
-		
-				chart = new google.visualization.PieChart(document.getElementById('salarioAreas'));
-				chart.draw(data, options);
-		
-				google.visualization.events.addListener(chart, 'select', selectHandler);
-			}
-		  
-			function selectHandler(isPopup) {
-				var selection = chart.getSelection();
-				var dados = data;
-				if (isPopup) {
-					selection = popupChart.getSelection();
-					dados = popupData;
-				}
-				
-				if (selection.length > 0) {
-					var item = selection[0];
-					var areaNome = dados.getValue(item.row, 0);
-					var valor = formataNumero(dados.getValue(item.row, 1));
-					var areaId = dados.getValue(item.row, 2);
-					
-					$.ajax({
-						url: "<@ww.url includeParams="none" value="/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action"/>",
-						dataType: "json",
-						async: false,
-						data: {areaId: areaId, dataBase: '${dateBase}'},
-						success: function(retorno){
-							if(retorno.length == 0)
-							{
-								jAlert("Área Organizacional não possui área filha.");
-								return false;
-							}
-							
-							$('#pieBox').empty();
-							
-							popupData = new google.visualization.DataTable();
-						    popupData.addColumn('string', 'areaNome');
-							popupData.addColumn('number', 'areaTotalSalarios');
-							popupData.addColumn('number', 'areaId');
-						    popupData.addRows(retorno);
-						    
-						    formatter.format(popupData, 1);
-						
-						    var options = {
-						      width: 700, height: 300,
-						      is3D: true
-						    };
-						
-						    popupChart = new google.visualization.PieChart(document.getElementById('pieBox'));
-						    popupChart.draw(popupData, options);
-						    
-						    google.visualization.events.addListener(popupChart, 'select', selectHandlerPopup);
-
-							$("#box").dialog( "option" , { zIndex: 9999, title: areaNome + ' (' + valor + ')', minWidth: 750, minHeight: 330 });
-							$("#box").dialog("open");
-						}
-					});
-				}
-				
-				function selectHandlerPopup() {
-					selectHandler(true);
-				}
-			}
-		  
-			function imprimirGrafico(btn) {
-				var iframe = $(btn).parent().find("iframe").eq(0);
-				
-				var cabecalho = "<div id='cabecalhoGrafico' style='font-size:10px;font-family:arial,sans-serif;'>"
-				cabecalho += "Fortes RH<br />";
-				cabecalho += "Impresso por <@authz.authentication operation="nome"/><br/>";
-				cabecalho += "Licenciado para: <@authz.authentication operation="empresaNome"/>";
-				cabecalho += "</div>";
-				
-				iframe.contents().find('body').prepend(cabecalho);
-				
-				eval('window.' + iframe.attr('name') + '.focus()');
-				eval('window.' + iframe.attr('name') + '.print()');
-				
-				iframe.contents().find('body').find('#cabecalhoGrafico').remove();
-			}
-		</script>
-		
 		<#include "../ftl/mascarasImports.ftl" />
 	
 	</head>
@@ -362,8 +330,7 @@
 		<div class="fieldGraph">
 			<h1>Salário por Área Organizacional</h1>
 		    <div id="salarioAreas" class="graph"></div>
-			<br clear="all"/>
-			<button class="btnImprimir" onclick="imprimirGrafico(this);" style="margin:5px;"></button>
+		    <div id="salarioAreasLegenda"></div>
 		</div>
 		
 		<div style="clear: both"></div>
@@ -387,9 +354,8 @@
 		<a name="pagebottom"></a>
 		
 		<div id="box">
-			<div id='pieBox'></div>
-			<br clear="all"/>
-			<button class="btnImprimir" onclick="imprimirGrafico(this);"></button> 
+			<!--<a href="#" style="float: right;" tabIndex="-1" onclick="voltar()">&lt;&lt; Voltar</a>-->
+			<div id="pieLegendBox"/>
 			<div style="clear: both"></div>
 		</div>
 		<div id="aviso"></div>
