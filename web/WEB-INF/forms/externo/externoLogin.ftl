@@ -9,10 +9,20 @@
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
-
+	</style>
+	
+	<style type="text/css">
 		input
 		{
 			border: 1px solid #FFF !important;
+		}
+		.loginExternoForm
+		{
+			background-color: #E9E9E9;
+    		border: 1px solid #000000;
+		}
+		.loginExternoTable {
+		    border: 4px solid #E9E9E9;
 		}
 	</style>
 
@@ -78,7 +88,7 @@
 					</tr>
 						<td></td>
 						<td>
-							<button onclick="${validarCampos};" accesskey="e" class="botao">
+							<button onclick="${validarCampos};" accesskey="e" class="btnEntrar , botao">
 								Entrar
 							</button>
 							<br><br>
