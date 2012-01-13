@@ -10,6 +10,7 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
@@ -85,12 +86,12 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
 		empresa.setAcIntegra(true);
 		
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
-		solicitacao.setLiberada(false);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
 		solicitacao.setCidade(CidadeFactory.getEntity());
 		solicitacao.setAvaliacao(AvaliacaoFactory.getEntity());
 		
 		Solicitacao solicitacaoAux = SolicitacaoFactory.getSolicitacao();
-		solicitacaoAux.setLiberada(false);
+		solicitacaoAux.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
 		action.setBairrosCheck(new String[]{"1"});
 		action.setSolicitacao(solicitacao);
 		solicitacaoManager.expects(once()).method("findByIdProjectionForUpdate").with(eq(solicitacao.getId())).will(returnValue(solicitacaoAux));
@@ -118,7 +119,7 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
 		solicitacao.setAvaliacao(AvaliacaoFactory.getEntity());
 		
 		Solicitacao solicitacaoAux = SolicitacaoFactory.getSolicitacao();
-		solicitacaoAux.setLiberada(false);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
 		action.setBairrosCheck(new String[]{"1"});
 		action.setSolicitacao(solicitacao);
 		MockSecurityUtil.verifyRole = true;

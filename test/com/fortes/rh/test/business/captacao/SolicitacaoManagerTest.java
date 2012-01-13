@@ -25,6 +25,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
@@ -197,12 +198,12 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		Collection<Solicitacao> coll = new ArrayList<Solicitacao>();
 		Long empresaId = 1L;
 		Boolean encerrada = true;
-		Boolean liberada = true;
+		char status = StatusAprovacaoSolicitacao.APROVADO;
 		Boolean suspensa = true;
 
-		solicitacaoDao.expects(once()).method("findSolicitacaoList").with(eq(empresaId), eq(encerrada), eq(liberada), eq(suspensa)).will(returnValue(coll));
+		solicitacaoDao.expects(once()).method("findSolicitacaoList").with(eq(empresaId), eq(encerrada), eq(status), eq(suspensa)).will(returnValue(coll));
 
-		assertEquals(coll, solicitacaoManager.findSolicitacaoList(empresaId, encerrada, liberada, suspensa));
+		assertEquals(coll, solicitacaoManager.findSolicitacaoList(empresaId, encerrada, status, suspensa));
 
 	}
 

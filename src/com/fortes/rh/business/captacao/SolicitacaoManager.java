@@ -19,7 +19,7 @@ import com.fortes.rh.model.relatorio.DataGrafico;
 public interface SolicitacaoManager extends GenericManager<Solicitacao>
 {
 	boolean removeCascade(Long id);
-	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Boolean liberada, Boolean suspensa);
+	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa);
 	Solicitacao getValor(Long id);
 	void encerraSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception;
 	Solicitacao findByIdProjection(Long solicitacaoId);

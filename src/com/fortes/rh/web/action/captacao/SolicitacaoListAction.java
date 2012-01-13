@@ -24,6 +24,7 @@ import com.fortes.rh.model.captacao.EventoAgenda;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -137,7 +138,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 		
     	candidato = candidatoManager.findByCandidatoId(candidato.getId());
 
-    	solicitacaos = solicitacaoManager.findSolicitacaoList(empresa.getId(), false, true, false);
+    	solicitacaos = solicitacaoManager.findSolicitacaoList(empresa.getId(), false, StatusAprovacaoSolicitacao.APROVADO, false);
 
     	solicitacaosCheck = CheckListBoxUtil.populaCheckListBox(solicitacaos, "getId", "getDescricaoFormatada");
     	return Action.SUCCESS;

@@ -206,7 +206,7 @@
 		<@ww.hidden name="solicitacao.empresa.id" />
 
 		<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
-			<@ww.checkbox label="Aprovar solicitação (para iniciar o processo de seleção de pessoal)" name="solicitacao.liberada" labelPosition="left"/>
+			<@ww.select label="Staus da solicitação (para iniciar o processo de seleção de pessoal)"  name="solicitacao.status"  list="status"/>
 		</@authz.authorize>
 
 	<@ww.token/>

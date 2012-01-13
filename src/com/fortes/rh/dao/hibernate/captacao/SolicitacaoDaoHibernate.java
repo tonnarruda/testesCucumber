@@ -25,6 +25,7 @@ import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -58,7 +59,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("s.encerrada"), "encerrada");
 		p.add(Projections.property("s.suspensa"), "suspensa");
 		p.add(Projections.property("s.obsSuspensao"), "obsSuspensao");
-		p.add(Projections.property("s.liberada"), "liberada");
+		p.add(Projections.property("s.status"), "status");
 		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
 		p.add(Projections.property("an.exibirModuloExterno"), "projectionAnuncioExibirModuloExterno");
 		p.add(Projections.property("ms.descricao"), "projectionMotivoSolicitacaoDescricao");
@@ -108,7 +109,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 			criteria.add(Expression.eq("c.id", cargoId));
 	}
 
-	public Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Boolean liberada, Boolean suspensa)
+	public Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.areaOrganizacional", "a", Criteria.LEFT_JOIN);
@@ -132,8 +133,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 
 		if (encerrada != null)
 			criteria.add(Expression.eq("s.encerrada", encerrada));
-		if (liberada != null)
-			criteria.add(Expression.eq("s.liberada", liberada));
+		if (status != null)
+			criteria.add(Expression.eq("s.status", status));
 		if (suspensa != null)
 			criteria.add(Expression.eq("s.suspensa", suspensa));
 		if (empresaId != null)
@@ -239,7 +240,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("s.infoComplementares"), "infoComplementares");
 		p.add(Projections.property("s.data"), "data");
 		p.add(Projections.property("s.liberador"), "liberador");
-		p.add(Projections.property("s.liberada"), "liberada");
+		p.add(Projections.property("s.status"), "status");
 		p.add(Projections.property("s.encerrada"), "encerrada");
 		p.add(Projections.property("s.suspensa"), "suspensa");
 		p.add(Projections.property("s.obsSuspensao"), "obsSuspensao");
@@ -549,7 +550,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.between("s.data", dataIni, dataFim));
 		criteria.add(Expression.eq("s.suspensa", false));
 		criteria.add(Expression.eq("s.encerrada", false));
-		criteria.add(Expression.eq("s.liberada", true));
+		criteria.add(Expression.eq("s.status", StatusAprovacaoSolicitacao.APROVADO));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
 		criteria.addOrder(Order.desc("qtdVagasAbertas"));

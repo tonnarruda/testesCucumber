@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.util.CollectionUtil;
 
 public class SolicitacaoDWR {
@@ -13,7 +14,7 @@ public class SolicitacaoDWR {
 
 	public Map getSolicitacoes(Long empresaId) 
 	{
-		Collection<Solicitacao> solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, true, false);
+		Collection<Solicitacao> solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, StatusAprovacaoSolicitacao.APROVADO, false);
 		return new CollectionUtil<Solicitacao>().convertCollectionToMap(solicitacaos, "getId", "getDescricaoFormatada");
 	}
 
