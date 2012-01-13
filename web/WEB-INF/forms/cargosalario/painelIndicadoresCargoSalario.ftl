@@ -121,23 +121,27 @@
 				var folha = ${grfEvolucaoFolha};
 				var faturamento = ${grfEvolucaoFaturamento};
 				
-			    var options = {
-				    series: {
-	                   lines: { show: true },
-	                   points: { show: true }
-	                },
-	                grid: { hoverable: true },
-			        xaxis: { 
-			        	mode: "time",
-			        	ticks: folha.map(function (item){return item[0]}),
-			        	timeformat: '%b/%y ',
-			        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-			        },
-			        yaxis: { 
-			        	 tickFormatter: function (v) {return formataNumero(v);}
-			        }
-			    };			    
-			    var plot = $.plot($("#evolucaoFolha"), [{label: 'Evolução Salarial', data: folha}, {label: 'Faturamento', data: faturamento }], options);
+			    var plot = $.plot(	$("#evolucaoFolha"), 
+			    					[
+			    						{label: 'Evolução Salarial', data: folha}, 
+			    						{label: 'Faturamento', data: faturamento }
+			    					], 
+			    					{
+									    series: {
+						                   lines: { show: true },
+						                   points: { show: true }
+						                },
+						                grid: { hoverable: true },
+								        xaxis: { 
+								        	mode: "time",
+								        	ticks: $.map( folha, function(item, i) { return item[0] }),
+								        	timeformat: '%b/%y ',
+								        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+								        },
+								        yaxis: { 
+								        	 tickFormatter: function (v) {return formataNumero(v);}
+								        }
+								    });
 
 				var previousPoint = null;				
 				$("#evolucaoFolha").bind("plothover", function (event, pos, item) {
@@ -166,20 +170,21 @@
 					        {label: 'Horizontal', data: promocaoHorizontal , bars:{align : "right", barWidth: 900000020}},
 					        {label: 'Vertical', data: promocaoVertical, bars:{align : "left", barWidth: 900000000} }
 					    ], 
-			    		{series: {
-			                bars: {show: true, 
-			                 	align: 'center'
-			                 },
-				        },
-				        grid: { hoverable: true },
-				        xaxis: { 
-				         	mode: "time",
-				        	ticks: promocaoHorizontal.map(function (item){return item[0]}),
-				        	timeformat: '%b/%y ',
-				        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-				        },
-				    });
-			    
+			    		{
+			    			series: {
+				                bars: {
+				                	show: true, 
+				                 	align: 'center'
+				                }
+					        },
+					        grid: { hoverable: true },
+					        xaxis: { 
+					         	mode: "time",
+					        	ticks: $.map( promocaoHorizontal, function(item, i) { return item[0] }),
+					        	timeformat: '%b/%y ',
+					        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+					        }
+				    	});
 			    
 			    $("#faixaSalarial").bind("plothover", function (event, pos, item) {
 		            if (item) 
@@ -337,12 +342,12 @@
 
 		<div class="fieldGraph bigger">
 			<h1>Evolução Salarial - Faturamento</h1>
-	   		<div id="evolucaoFolha" style="margin: 25px;height:300px;"></div>
+	   		<div id="evolucaoFolha" style="margin: 25px; height: 300px; width: 900px"></div>
 	    </div>
 
 		<div class="fieldGraph bigger">
 			<h1>Promoção</h1>
-	   		<div id="faixaSalarial" style="margin: 25px;height:300px;"></div>
+	   		<div id="faixaSalarial" style="margin: 25px; height: 300px; width: 900px"></div>
 	   		<div style="margin: 5px;text-align: right;">
 		   		 * Promoção Horizontal: Mudança de Faixa Salarial ou Salário. / Promoção Vertical: Mudança de Cargo.
 	   		</div>
