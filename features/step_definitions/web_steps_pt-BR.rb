@@ -59,9 +59,13 @@ Quando /^eu clico na imagem com o título "([^"]*)"$/ do |titulo|
   find(:xpath, "//img[@title='#{titulo}']").click
 end
 
-Quando /^eu preencho com o valor com "([^"]*)" do item "([^"]*)"$/ do |val, field|
-  field = get_field_input(field)
-  page.execute_script("$('##{field}').val('#{val}')")
+Quando /^eu preencho o campo do item "([^"]*)" com "([^"]*)"$/ do |desc, value|
+  field = find(:xpath, "//td[contains(text(), '#{desc}')]/../td/input[@type='text']")
+  field.set(value)
+end
+
+Quando /^eu clico no botão com o texto "([^"]*)"$/ do |label|
+  find(:xpath, "//button/descendant::*[contains(text(), '#{label}')]").click
 end
 
 def get_field_input field

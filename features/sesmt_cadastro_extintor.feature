@@ -15,7 +15,7 @@ Funcionalidade: Extintor
     Então eu devo ver o título "Extintores"
     E eu clico no botão "Inserir"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
-    E eu seleciono "Água Pressurizada (Classe A)" de "Tipo"
+    E eu seleciono "AP - Água Pressurizada (Classe A)" de "Tipo"
     E eu preencho "Localização" com "escada2"
     E eu preencho "Fabricante" com "extfogo"
     E eu clico no botão "Gravar"

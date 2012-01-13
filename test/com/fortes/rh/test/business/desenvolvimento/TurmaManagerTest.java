@@ -246,6 +246,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
 		colaboradorQuestionarioManager.expects(once()).method("removeByColaboradorETurma").with(eq(null), eq(turma.getId())).isVoid();
 		aproveitamentoAvaliacaoCursoManager.expects(once()).method("removeByTurma").with(ANYTHING).isVoid();
+		turmaTipoDespesaManager.expects(once()).method("removeByTurma").with(ANYTHING).isVoid();
 		colaboradorPresencaManager.expects(once()).method("removeByColaboradorTurma").with(ANYTHING).isVoid();
 		colaboradorTurmaManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 

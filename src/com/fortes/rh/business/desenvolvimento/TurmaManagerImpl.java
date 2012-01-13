@@ -51,6 +51,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		{
 			Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.find(new String[]{"turma.id"}, new Object[]{id});
 			aproveitamentoAvaliacaoCursoManager.removeByTurma(id);
+			turmaTipoDespesaManager.removeByTurma(id);
 			//	Remove todos os relacionamentos com Questionario/Resposta na turma
 			colaboradorQuestionarioManager.removeByColaboradorETurma(null, id);
 			
