@@ -20,6 +20,10 @@ Dado /^que eu esteja logado$/ do
   end
 end
 
+Quando /^eu acesso "([^"]*)"$/ do |path|
+  page.execute_script("window.location = 'http://localhost:8080/fortesrh/#{path}'")
+end
+
 Quando /^eu acesso o menu "([^"]*)"$/ do |menu_path|
   items = menu_path.strip.split(/\s*>\s*/)
   menu_master = items.shift;
