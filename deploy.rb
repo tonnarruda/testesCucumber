@@ -29,6 +29,7 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
 		conn.exec "rm -rf #{app_path}.war"
 		
 		conn.upload config['repository_app'], "#{app_path}.war"
+		#conn.exec "cp #{tomcat_home}/webapps/unifor.war #{app_path}.war"
 		
 		if config['fortes_home_properties'] || config['run_migrates']
 			conn.exec "unzip #{app_path}.war -d #{app_path}", :output=>:none

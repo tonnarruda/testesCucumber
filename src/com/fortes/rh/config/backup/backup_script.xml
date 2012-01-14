@@ -81,6 +81,8 @@
 		<property name="backup.db.file.path" value="${backup.file}${today}.backup"/>
 		
 		<echo>${backup.db.file.path}</echo>
+		<echo>Banco de dados: ${db_name}</echo>
+
 		<exec failifexecutionfails="true" failonerror="true"
 			executable="${postgres.dir}/bin/pg_dump"
 			output="${fortesrh.dir}/output_backup_agendado.txt">
@@ -93,7 +95,7 @@
 			<arg value="--blobs" />
 			<arg value="-f" />
 			<arg value="${backup.db.file.path}" />
-			<arg value="fortesrh" />
+			<arg value="${db_name}" />
 		</exec>
 		
 		<echo message="Verificando se o arquivo foi gerado corretamente.." />

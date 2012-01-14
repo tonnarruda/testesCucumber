@@ -40,6 +40,11 @@ public class BackupServiceImpl implements BackupService {
 		try {
 			logger.info("Efetuando backup do banco.");
 			
+			String dbName = ArquivoUtil.getSystemConf().getProperty("db.name");
+			if(dbName == null || dbName.equals(""))
+				dbName = "fortesrh";
+			
+			runAntScript.addProperty("db_name", dbName);
 			runAntScript.addProperty("today", today);
 			runAntScript.addProperty("fortesrh.dir",  ArquivoUtil.getRhHome());
 			runAntScript.launch();
