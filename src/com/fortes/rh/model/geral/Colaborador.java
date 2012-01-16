@@ -2110,6 +2110,21 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return nomeCpf;
 	}
 
+	@NaoAudita
+	public String getNomeMatricula()
+	{
+		String nomeMatricula = "";
+		if(nome != null)
+			nomeMatricula = nome;
+
+		if(StringUtils.isNotBlank(matricula))
+			nomeMatricula += " - " + matricula;
+		if(desligado)
+			nomeMatricula += " (Desligado)";
+		
+		return nomeMatricula;
+	}
+
 	public Collection<SolicitacaoExame> getSolicitacaoExames()
 	{
 		return solicitacaoExames;

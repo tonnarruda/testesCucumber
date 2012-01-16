@@ -1,7 +1,6 @@
 package com.fortes.rh.test.business.sesmt;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,6 +26,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.AfastamentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockImportacaoCSVUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 
 public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
@@ -89,6 +89,39 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		assertNotNull(colaboradorAfastamentoManager.findRelatorioAfastamentos(1L, "", estabelecimentoCheck, null, colaboradorAfastamento, false, false, 'T'));
 	}
 
+	public void testMontaMatrizResumo() throws Exception
+	{
+		Collection<ColaboradorAfastamento> afastamentos = new ArrayList<ColaboradorAfastamento>();
+		ColaboradorAfastamento colaboradorAfastamentoMock = new ColaboradorAfastamento();
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setId(1L);
+		colaborador.setAreaOrganizacional(areaOrganizacional );
+		
+		colaboradorAfastamentoMock.setColaborador(colaborador);
+		colaboradorAfastamentoMock.setInicio(DateUtil.criarDataMesAno(01, 02, 2000));
+		afastamentos.add(colaboradorAfastamentoMock);
+		
+		colaboradorAfastamentoDao.expects(once()).method("findRelatorioResumoAfastamentos").will(returnValue(afastamentos));
+
+		ColaboradorAfastamento colaboradorAfastamento = new ColaboradorAfastamento();
+		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(01, 01, 2000));
+		colaboradorAfastamento.setFim(DateUtil.criarDataMesAno(01, 05, 2000));
+
+		Collection<ColaboradorAfastamento> retorno = colaboradorAfastamentoManager.montaMatrizResumo(null, null, null, null, colaboradorAfastamento);
+		assertEquals(5, retorno.size());
+		
+		ColaboradorAfastamento afastamento01 = (ColaboradorAfastamento) retorno.toArray()[0];
+		assertEquals(colaborador.getId(), afastamento01.getColaborador().getId());
+		assertEquals(null, afastamento01.getAfastamento());
+		assertEquals(new Integer(0), afastamento01.getQtdDias());
+		
+		ColaboradorAfastamento afastamento02 = (ColaboradorAfastamento) retorno.toArray()[1];
+		assertEquals(colaborador.getId(), afastamento02.getColaborador().getId());
+	}
+	
 	public void testFindRelatorioAfastamentosException()
 	{
 		colaboradorAfastamentoDao.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<ColaboradorAfastamento>()));

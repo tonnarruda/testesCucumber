@@ -29,6 +29,25 @@ public class ColaboradorTest extends TestCase {
 		colaborador = new Colaborador();
 		assertEquals("", colaborador.getNomeComercialEmpresa());
 	}
+	
+	public void testGetNomeMatricula() 
+	{
+		Colaborador colaborador = new Colaborador();
+		colaborador.setNome("João da Silva Sauro");
+		colaborador.setMatricula("5454");
+		colaborador.setDesligado(false);
+		
+		assertEquals("João da Silva Sauro - 5454", colaborador.getNomeMatricula());
+
+		colaborador.setDesligado(true);
+		assertEquals("João da Silva Sauro - 5454 (Desligado)", colaborador.getNomeMatricula());
+
+		colaborador.setMatricula("");
+		assertEquals("João da Silva Sauro (Desligado)", colaborador.getNomeMatricula());
+
+		colaborador.setDesligado(false);
+		assertEquals("João da Silva Sauro", colaborador.getNomeMatricula());
+	}
 
 	public void testPeriodoFormatado() 
 	{

@@ -237,9 +237,9 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		Date dataIni = DateUtil.criarDataMesAno(dataDe);
 		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataAte));
 		
-		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)
+		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)//imundo, tem que ser maior igual
 		{
-			addActionMessage("Não é permitido um período maior do 12 meses para a geração deste relatório");
+			addActionMessage("Não é permitido um período maior que 12 meses para a geração deste relatório");
 			prepareRelatorioAbsenteismo();
 			return Action.INPUT;
 		}

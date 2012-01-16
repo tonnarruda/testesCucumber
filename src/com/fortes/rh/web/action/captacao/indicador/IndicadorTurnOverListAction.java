@@ -69,9 +69,9 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
 		
-		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)
+		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)//imundo, tem que ser maior igual
 		{
-			addActionMessage("Não é permitido um período maior do 12 meses para a geração deste relatório");
+			addActionMessage("Não é permitido um período maior que 12 meses para a geração deste relatório");
 			prepare();
 			return Action.INPUT;
 		}

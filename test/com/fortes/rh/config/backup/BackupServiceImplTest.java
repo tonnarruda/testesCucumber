@@ -23,6 +23,7 @@ public class BackupServiceImplTest extends MockObjectTestCase {
 
 		runAntScriptMock.expects(once()).method("addProperty");
 		runAntScriptMock.expects(once()).method("addProperty");
+		runAntScriptMock.expects(once()).method("addProperty");
 		runAntScriptMock.expects(once()).method("launch").withNoArguments();
 		runAntScriptMock.expects(once()).method("getProperty");
 
@@ -35,6 +36,7 @@ public class BackupServiceImplTest extends MockObjectTestCase {
 
 	public void testNaoDeveriaEnviarEmailSeHouveErroDuranteBackup() {
 		seOcorrerAlgumErroDuranteBackup();
+		runAntScriptMock.expects(once()).method("addProperty");
 		runAntScriptMock.expects(once()).method("addProperty");
 		runAntScriptMock.expects(once()).method("addProperty");
 		try {

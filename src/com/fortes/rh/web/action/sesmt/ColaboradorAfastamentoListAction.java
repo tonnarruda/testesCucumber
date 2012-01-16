@@ -147,37 +147,19 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		try
 		{
 			if (!validaPeriodo())
-				return INPUT;
-			
-			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioResumoAfastamentos(getEmpresaSistema().getId(), estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento);
-			Map<Colaborador, Collection<Date>> datasColaboradores = new HashMap<Colaborador, Collection<Date>>();
-			
-			// agrupa meses onde houveram afastamentos para o colaborador
-			for (ColaboradorAfastamento colaboradorAfastamento : colaboradorAfastamentos) 
 			{
-				if (!datasColaboradores.containsKey(colaboradorAfastamento.getColaborador().getId()))
-					datasColaboradores.put(colaboradorAfastamento.getColaborador(), new ArrayList<Date>());
-				
-				datasColaboradores.get(colaboradorAfastamento.getColaborador()).add(colaboradorAfastamento.getInicio());
+				prepareRelatorioResumoAfastamentos();				
+				return Action.INPUT;
 			}
 			
-			// preenche o registro do colaborador com os meses que nao possuem afastamentos
-			Date dataAtual = null;
-			Colaborador colab = null;
-			for (Map.Entry<Colaborador, Collection<Date>> datasColaborador : datasColaboradores.entrySet())
+			if(DateUtil.mesesEntreDatas(colaboradorAfastamento.getInicio(), colaboradorAfastamento.getFim()) >= 12)//imundo, tem que ser maior igual
 			{
-				dataAtual = DateUtil.getInicioMesData(colaboradorAfastamento.getInicio());
-				
-				while (dataAtual.before(DateUtil.getUltimoDiaMes(colaboradorAfastamento.getFim())))
-				{
-					if (!datasColaborador.getValue().contains(dataAtual))
-					{
-						colab = datasColaborador.getKey();
-						colaboradorAfastamentos.add(new ColaboradorAfastamento(colab.getId(), colab.getMatricula(), colab.getNome(), colab.getDataAdmissao(), dataAtual, null, null));
-					}
-					dataAtual = DateUtil.incrementaMes(dataAtual, 1);
-				}
+				prepareRelatorioResumoAfastamentos();
+				addActionMessage("Não é permitido um período maior que 12 meses para a geração deste relatório");
+				return Action.INPUT;
 			}
+			
+			colaboradorAfastamentos = colaboradorAfastamentoManager.montaMatrizResumo(getEmpresaSistema().getId(), estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento);
 			
 			colaboradorAfastamentoMatriz = new ColaboradorAfastamentoMatriz();
 			colaboradorAfastamentoMatriz.setColaboradorAfastamentos(colaboradorAfastamentos);
