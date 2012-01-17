@@ -262,7 +262,7 @@
 				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formColab);' checked />" style="width: 30px; text-align: center;">
 					<input type="checkbox" value="${colaborador.id}" name="colaboradoresId" checked />
 				</@display.column>
-				<@display.column property="nomeComercial" title="Colaborador"/>
+				<@display.column property="nomeMaisNomeComercial" title="Colaborador"/>
 				<@display.column property="estabelecimento.nome" title="Estabelecimento"/>
 				<@display.column property="areaOrganizacional.descricao" title="Área"/>
 			</@display.table>

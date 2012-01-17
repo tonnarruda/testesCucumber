@@ -42,7 +42,7 @@
 		</#if>
 
 		<@display.column property="matricula" title="Matrícula" style='${style}'/>
-		<@display.column property="nomeComercial" title="Nome Comercial" style='${style}'/>
+		<@display.column property="nomeMaisNomeComercial" title="Nome Comercial" style='${style}'/>
 		<@display.column property="pessoal.cpf" title="CPF" style='${style}'/>
 		<@display.column property="dataAdmissao" title="Data de Admissão" format="{0,date,dd/MM/yyyy}" style='${style}'/>
 	</@display.table>

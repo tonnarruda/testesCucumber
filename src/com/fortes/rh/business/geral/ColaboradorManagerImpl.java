@@ -1459,7 +1459,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		try
 		{
 			Collection<Colaborador> colaboradoresTmp = getDao().findAllSelect(empresaId, "nomeComercial");
-			return CheckListBoxUtil.populaCheckListBox(colaboradoresTmp, "getId", "getNomeComercial");
+			return CheckListBoxUtil.populaCheckListBox(colaboradoresTmp, "getId", "getNomeMaisNomeComercial");
 		}
 		catch (Exception e)
 		{

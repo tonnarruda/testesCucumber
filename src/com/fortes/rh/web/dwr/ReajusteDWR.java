@@ -145,7 +145,7 @@ public class ReajusteDWR
 				colaboradors.addAll(colaboradorLista);
 			}
 
-			retorno = CollectionUtil.convertCollectionToMap(colaboradors, "getId", "getNomeComercial", Colaborador.class);
+			retorno = CollectionUtil.convertCollectionToMap(colaboradors, "getId", "getNomeMaisNomeComercial", Colaborador.class);
 
 			if (retorno.size() == 0)
 				retorno.put("", "Nenhum registro encontrado");
