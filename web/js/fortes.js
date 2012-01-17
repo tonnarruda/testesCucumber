@@ -42,14 +42,11 @@ var BrowserDetect = {
 		{string: navigator.platform, subString: "Linux", identity: "Linux"}
 	]
 };
-
 var browsersCompativeis = {
 	Firefox : { versaoMinima : 4, url : 'http://br.mozdev.org/download/' },
 	Chrome : { versaoMinima : 9, url : 'https://www.google.com/chrome?hl=pt-br' }, 
 	Explorer: { versaoMinima : 8, url : 'http://windows.microsoft.com/pt-BR/internet-explorer/downloads/ie' }
 };
-
-
 BrowserDetect.init( function ( informacaoesDesteBrowser ){
     var versaoMinimaDesteBrowserParaSerCompativelComSistema = browsersCompativeis[ informacaoesDesteBrowser.name ].versaoMinima;
     var isThisBrowserSupportted = ( informacaoesDesteBrowser.version >= versaoMinimaDesteBrowserParaSerCompativelComSistema );
