@@ -1,0 +1,1 @@
+update papel set nome='Apagar Reg. sem Código AC' where id=529; --.go
