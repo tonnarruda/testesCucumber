@@ -2413,18 +2413,20 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Colaborador findByIdHistoricoAtual(Long colaboradorId)
+	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, ");
-		hql.append("ao.id, ao.nome, fs.nome, ca.nome, co.dataAdmissao) ");
+		hql.append("ao.id, ao.nome, fs.nome, ca.nome, co.dataAdmissao, e.nome, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
+		hql.append("left join hc.estabelecimento as e ");
 		hql.append("left join hc.faixaSalarial fs ");
 		hql.append("left join fs.cargo as ca ");
 		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("where co.desligado = false ");
-		hql.append("and co.id = :colaboradorId ");
+		hql.append("where co.id = :colaboradorId ");
+		if(exibirSomenteAtivos)
+			hql.append("and	co.desligado = false ");
 		hql.append("and hc.status = :status ");
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("				from HistoricoColaborador as hc2 ");
@@ -2628,6 +2630,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.matricula"), "matricula");
 		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
+		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
+		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
 
 		criteria.setProjection(p);
 

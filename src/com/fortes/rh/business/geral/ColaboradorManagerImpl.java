@@ -1484,9 +1484,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByAreaOrganizacionalIds(areasIds, null, null, colaborador, null, null, null, false);
 	}
 
-	public Colaborador findByIdHistoricoAtual(Long colaboradorId)
+	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos)
 	{
-		return getDao().findByIdHistoricoAtual(colaboradorId);
+		return getDao().findByIdHistoricoAtual(colaboradorId, exibirSomenteAtivos);
 	}
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds)
 	{

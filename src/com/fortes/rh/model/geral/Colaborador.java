@@ -54,6 +54,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SalarioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 
@@ -711,7 +712,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//usado por findByIdHistoricoAtual 
-	public Colaborador(Long id, String nome, String nomeComercial, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, Date dataAdmissao)
+	public Colaborador(Long id, String nome, String nomeComercial, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, Date dataAdmissao, String estabelecimentoNome, String ddd, String foneFixo, String celular)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -720,7 +721,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setAreaOrganizacionalNome(areaOrganizacionalNome);
 		this.setFaixaSalarialNomeProjection(faixaSalarialNome);
 		this.setCargoNomeProjection(cargoNome);
+		this.setEstabelecimentoNomeProjection(estabelecimentoNome);
 		this.setDataAdmissao(dataAdmissao);
+		this.setContatoDdd(ddd);
+		this.setContatoFoneFixo(foneFixo);
+		this.setContatoCelular(celular);
 	}
 
 	//Construtor usado pela consulta de aniversariantes

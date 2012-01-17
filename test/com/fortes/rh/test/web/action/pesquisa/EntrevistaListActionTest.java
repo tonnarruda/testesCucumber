@@ -128,7 +128,7 @@ public class EntrevistaListActionTest extends MockObjectTestCase
 
     	entrevistaManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(entrevistas));
 
-    	colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
+    	colaboradorManager.expects(once()).method("findByIdHistoricoAtual").with(eq(colaborador.getId()), eq(Boolean.FALSE)).will(returnValue(colaborador));
 
     	assertEquals("success", entrevistaListAction.prepareResponderEntrevista());
     	assertEquals(colaborador, entrevistaListAction.getColaborador());
