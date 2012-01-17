@@ -1,0 +1,1 @@
+alter table solicitacao add column observacaoLiberador text;--.go

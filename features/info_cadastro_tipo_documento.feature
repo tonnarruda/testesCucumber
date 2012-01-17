@@ -10,7 +10,7 @@ Funcionalidade: Tipo do Documento
     Então eu devo ver o título "Inserir Tipo do Documento"
     E eu clico no botão "Gravar"
     Então eu devo ver o alert do valida campos e clico no ok
-    E eu clico no botão "Cancelar"
+    E eu clico no botão "Voltar"
 
     Então eu devo ver o título "Tipo do Documento"
     E eu clico no botão "Inserir"
@@ -24,7 +24,7 @@ Funcionalidade: Tipo do Documento
     E o campo "Descrição" deve conter "txt"
     E eu preencho "Descrição" com "doc"
     E eu clico no botão "Gravar"
-    Então eu devo ver o título "Providencias"
+    Então eu devo ver o título "Tipo do Documento"
     Então eu não devo ver na listagem "txt"
     Então eu devo ver "doc"
 

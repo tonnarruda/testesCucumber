@@ -292,7 +292,7 @@
 		<br>
 		<br>
 		<@ww.textarea label="Pergunta" name="pergunta.texto" id="texto" required="true" cssStyle="height:30px;"/>
-		<@ww.select label="Tipo de Resposta" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();"/>
+		<@ww.select label="Tipos de Respostas" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();"/>
 		<#-- Perguntas Objetivas -->
 		<@ww.div id="divRespostas" cssClass="divTipoResposta">
 			<#if pergunta.id?exists && pergunta.respostas?exists>

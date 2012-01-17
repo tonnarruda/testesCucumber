@@ -223,6 +223,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.createCriteria("s.estabelecimento", "es", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.cidade", "ci", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.avaliacao", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("s.liberador", "l", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ci.uf", "est", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
@@ -240,12 +241,14 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("s.infoComplementares"), "infoComplementares");
 		p.add(Projections.property("s.data"), "data");
 		p.add(Projections.property("s.liberador"), "liberador");
+		p.add(Projections.property("s.observacaoLiberador"), "observacaoLiberador");
 		p.add(Projections.property("s.status"), "status");
 		p.add(Projections.property("s.encerrada"), "encerrada");
 		p.add(Projections.property("s.suspensa"), "suspensa");
 		p.add(Projections.property("s.obsSuspensao"), "obsSuspensao");
 		p.add(Projections.property("s.dataEncerramento"), "dataEncerramento");
 		p.add(Projections.property("e.id"), "projectionEmpresaId");
+		p.add(Projections.property("e.nome"), "projectionEmpresaNome");
 		p.add(Projections.property("m.id"), "projectionMotivoSolicitacaoId");
 		p.add(Projections.property("m.descricao"), "projectionMotivoSolicitacaoDescricao");
 		p.add(Projections.property("ao.id"), "projectionAreaId");
@@ -265,6 +268,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("est.sigla"), "projectionCidadeUfSigla");
 		p.add(Projections.property("a.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("a.titulo"), "projectionAvaliacaoTitulo");
+		p.add(Projections.property("l.nome"), "liberadorNome");
+		p.add(Projections.property("l.id"), "liberadorId");
 
 		criteria.setProjection(p);
 
@@ -321,6 +326,20 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		query.setBoolean("suspender", suspender);
 		query.setString("obsSuspensao", observacao);
 		query.setLong("id", solicitacaoId);
+
+		query.executeUpdate();
+	}
+	
+	public void updateStatusSolicitacao(Solicitacao solicitacao) 
+	{
+		String hql = "update Solicitacao set status = :status, observacaoLiberador = :observacaoLiberador, liberador.id = :liberadorId where id = :solicitacaoId";
+
+		Query query = getSession().createQuery(hql);
+
+		query.setCharacter("status", solicitacao.getStatus());
+		query.setString("observacaoLiberador", solicitacao.getObservacaoLiberador());
+		query.setLong("liberadorId", solicitacao.getLiberador().getId());
+		query.setLong("solicitacaoId", solicitacao.getId());
 
 		query.executeUpdate();
 	}

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
@@ -22,6 +24,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -40,12 +43,12 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
-import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -82,6 +85,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private BairroManager bairroManager;
     private EmpresaManager empresaManager;
     private AvaliacaoManager avaliacaoManager;
+    private ColaboradorManager colaboradorManager;
 
     private Solicitacao solicitacao = new Solicitacao();
     private MotivoSolicitacao motivoSolicitacao;
@@ -111,6 +115,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private String[] etapaCheck;
 
     private String ano;
+    private String nomeLiberador;
 
     private List<SolicitacaoPessoalRelatorio> dataSource = new ArrayList<SolicitacaoPessoalRelatorio>();
     private Map<String,Object> parametros = new HashMap<String, Object>();
@@ -159,6 +164,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             // Campos somente leitura se já houver candidatos na solicitação
             if (candidatoSolicitacaoManager.getCount(new String[] {"solicitacao.id"}, new Object[]{solicitacao.getId()}) > 0)
             	somenteLeitura = true;
+            
+            Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId());
+			nomeLiberador = colaboradorLiberador!=null?colaboradorLiberador.getNomeMaisNomeComercial():solicitacao.getLiberador().getNome();
         }
 
     	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
@@ -236,7 +244,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
            	solicitacao.setLiberador(usuarioLogado);
         else
            	solicitacao.setLiberador(null);
-        
+
         solicitacaoManager.save(solicitacao, emailsCheck);
         
         return Action.SUCCESS;
@@ -254,16 +262,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         else
         	solicitacao.setBairros(null);
 
-        if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
-        {
-        	if(solicitacao.getStatus() != solicitacaoAux.getStatus())
-        	{
-        		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
-        		
-        		if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE)
-        			solicitacaoManager.emailParaSolicitante(solicitacaoAux.getSolicitante(), solicitacao, getEmpresaSistema());
-        	}
-        }else
+       	if(!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
         {
         	solicitacao.setStatus(solicitacaoAux.getStatus());
         	solicitacao.setLiberador(solicitacaoAux.getLiberador());
@@ -286,9 +285,22 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     		solicitacao.setLiberador(null);
         
         solicitacaoManager.update(solicitacao);
-
+        enviaEmailParaSolicitante(solicitacaoAux);
+        
         return Action.SUCCESS;
     }
+
+	private void enviaEmailParaSolicitante(Solicitacao solicitacaoAux) 
+	{
+		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
+        {
+        	if(solicitacao.getStatus() != solicitacaoAux.getStatus())
+        	{
+        		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+       			solicitacaoManager.emailParaSolicitante(solicitacao, getEmpresaSistema(), getUsuarioLogado());
+        	}
+        }
+	}
 
 	private Collection<Bairro> montaCargos() {
 		Collection<Bairro> bairrosTmp = new ArrayList<Bairro>();
@@ -774,5 +786,17 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public void setStatus(HashMap status) {
 		this.status = status;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
+	}
+
+	public String getNomeLiberador() {
+		return nomeLiberador;
+	}
+
+	public void setNomeLiberador(String nomeLiberador) {
+		this.nomeLiberador = nomeLiberador;
 	}
 }

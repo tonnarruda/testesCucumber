@@ -473,6 +473,29 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		assertEquals(s1, solicitacao);
 		assertEquals(false, solicitacao.isSuspensa());
 	}
+
+	public void testUpdateStatusSolicitacao()
+	{
+		Solicitacao solicitacaoSalva = getEntity();
+		solicitacaoSalva.setStatus(StatusAprovacaoSolicitacao.APROVADO);
+		solicitacaoDao.save(solicitacaoSalva);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Solicitacao solicitacaoEnviada = getEntity();
+		solicitacaoEnviada.setId(solicitacaoSalva.getId());
+		solicitacaoEnviada.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
+		solicitacaoEnviada.setObservacaoLiberador("anulada");
+		solicitacaoEnviada.setLiberador(usuario);
+		
+		solicitacaoDao.updateStatusSolicitacao(solicitacaoEnviada);
+		Solicitacao solicitacao = solicitacaoDao.findByIdProjectionForUpdate(solicitacaoSalva.getId());
+		
+		assertEquals(StatusAprovacaoSolicitacao.REPROVADO, solicitacao.getStatus());
+		assertEquals(solicitacaoEnviada.getObservacaoLiberador(), solicitacao.getObservacaoLiberador());
+		assertEquals(usuario.getId(), solicitacao.getLiberador().getId());
+	}
 	
 	public void testMigrarBairro()
 	{

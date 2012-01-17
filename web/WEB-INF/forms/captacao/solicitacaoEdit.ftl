@@ -115,7 +115,12 @@
 				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"
 			}
 		}
-	
+		$(function() {
+			<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
+				$('#statusSolicitcao').removeAttr('disabled');
+				$('#obsAprova').removeAttr('disabled');
+			</@authz.authorize>
+		});
 	</script>
 
 	<#assign validarCampos="return validaFormulario('form', new Array('horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol'))"/>
@@ -200,13 +205,28 @@
 			</@ww.div>
 		</li>
 		<br/>
-		
+
+		<li>
+			<@ww.div cssClass="divInfo">
+				<ul>
+					<#if nomeLiberador?exists>
+						Atulizado por: ${nomeLiberador} 
+						<br><br>					
+					</#if>	
+					Staus da solicitação (Inicia o processo de seleção de pessoal)<br><br>
+					<@ww.select  name="solicitacao.status"  list="status" id="statusSolicitcao" disabled="true" />
+					<@ww.textarea label="Observação" name="solicitacao.observacaoLiberador" id="obsAprova" disabled="true" />
+				</ul>
+			</@ww.div>
+		</li>
+
 		<@ww.hidden name="solicitacao.id" />
 		<@ww.hidden name="solicitacao.solicitante.id" />
 		<@ww.hidden name="solicitacao.empresa.id" />
-
-		<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
-			<@ww.select label="Staus da solicitação (para iniciar o processo de seleção de pessoal)"  name="solicitacao.status"  list="status"/>
+		
+		<@authz.authorize !ifAllGranted="ROLE_LIBERA_SOLICITACAO">
+			<@ww.hidden name="solicitacao.status" />
+			<@ww.hidden name="solicitacao.observacaoLiberador" />
 		</@authz.authorize>
 
 	<@ww.token/>

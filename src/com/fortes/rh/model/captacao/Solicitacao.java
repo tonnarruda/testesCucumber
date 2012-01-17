@@ -60,6 +60,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private String sexo;
 	@Lob
 	private String infoComplementares;
+	@Lob
+	private String observacaoLiberador;
 	private boolean encerrada;
 	private char status = StatusAprovacaoSolicitacao.ANALISE;
 	@ManyToOne
@@ -638,6 +640,20 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	public void setLiberador(Usuario liberador) {
 		this.liberador = liberador;
 	}
+	
+	public void setLiberadorNome(String liberadorNome) {
+		if(this.liberador == null)
+			this.liberador = new Usuario();
+			
+		this.liberador.setNome(liberadorNome);
+	}
+	
+	public void setLiberadorId(Long liberadorId) {
+		if(this.liberador == null)
+			this.liberador = new Usuario();
+		
+		this.liberador.setId(liberadorId);
+	}
 
 	public String getHorarioComercial() {
 		return horarioComercial;
@@ -665,5 +681,13 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public void setStatus(char status) {
 		this.status = status;
+	}
+
+	public String getObservacaoLiberador() {
+		return observacaoLiberador;
+	}
+
+	public void setObservacaoLiberador(String observacaoLiberador) {
+		this.observacaoLiberador = observacaoLiberador;
 	}
 }

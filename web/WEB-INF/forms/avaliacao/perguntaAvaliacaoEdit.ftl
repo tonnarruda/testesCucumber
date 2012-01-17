@@ -238,7 +238,7 @@
 		<@ww.textfield id="peso" label="Peso" name="pergunta.peso" maxLength="4" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;text-align:right;"/>
 		Critério:* <br> <@ww.textfield theme="simple" id="criterio" label="Critério" name="pergunta.texto" required="true" cssStyle="width: 350px;"/>
 		<img id="criterioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
-		<@ww.select label="Tipo de Resposta" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();"/>
+		<@ww.select label="Tipos de Respostas" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();"/>
 		
 		
 		<#-- Perguntas Objetivas -->

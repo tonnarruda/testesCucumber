@@ -212,6 +212,25 @@ public class SolicitacaoListAction extends MyActionSupportList
     	return Action.SUCCESS;
     }
 
+    public String updateStatusSolicitacao() throws Exception
+    {
+    	Solicitacao solicitacaoAux = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
+    	
+    	solicitacao.setLiberador(getUsuarioLogado());
+    	solicitacaoManager.updateStatusSolicitacao(solicitacao);
+    	
+		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
+        {
+        	if(solicitacao.getStatus() != solicitacaoAux.getStatus())
+        	{
+        		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+       			solicitacaoManager.emailParaSolicitante(solicitacao, getEmpresaSistema(), getUsuarioLogado());
+        	}
+        }
+    	
+    	return Action.SUCCESS;
+    }
+
     public Collection<Solicitacao> getSolicitacaos()
     {
         return solicitacaos;
@@ -386,5 +405,4 @@ public class SolicitacaoListAction extends MyActionSupportList
 	public void setDataFim(Date dataFim) {
 		this.dataFim = dataFim;
 	}
-
 }

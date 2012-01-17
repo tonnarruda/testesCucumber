@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -148,6 +150,11 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	{
 		getDao().updateSuspendeSolicitacao(suspender, obsSuspensao, solicitacaoId);
 	}
+	
+	public void updateStatusSolicitacao(Solicitacao solicitacao) 
+	{
+		getDao().updateStatusSolicitacao(solicitacao);
+	}
 
 	public void migrarBairro(Long bairroId, Long bairroDestinoId)
 	{
@@ -159,10 +166,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		super.save(solicitacao);
 		
 		try {
-			
-			if (solicitacao.getStatus() == StatusAprovacaoSolicitacao.ANALISE)
-				enviarEmailParaLiberadorSolicitacao(solicitacao, solicitacao.getEmpresa(), emailsAvulsos);
-			
+			enviarEmailParaLiberadorSolicitacao(solicitacao, solicitacao.getEmpresa(), emailsAvulsos);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -178,6 +182,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		Collection<String> emails = perfilManager.getEmailsByRoleLiberaSolicitacao(empresa.getId());
 		incluiEmails(emails, emailsAvulsos);
 		
+		if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE)
+			emails.add(empresa.getEmailRespRH());
+		
 		if (emails != null && !emails.isEmpty())
 		{
 			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
@@ -185,19 +192,17 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			
 			solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
 		
+			String nomeLiberador = "";
+			if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE)
+		        nomeLiberador = nomeSolicitante;
+			
 			String subject = "Liberação de Solicitação de Pessoal";
 			StringBuilder body = new StringBuilder("Existe uma Solicitação de Pessoal na empresa " + empresa.getNome() + " aguardando liberação.<br>");
 			
 			if (solicitacao.getDescricao() != null)
 				body.append("<p style=\"font-weight:bold;\">" + solicitacao.getDescricao() + "</p>");
 			
-			body.append("<br>Descrição: " + solicitacao.getDescricao());
-			body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
-			body.append("<br>Motivo: " + solicitacao.getMotivoSolicitacao().getDescricao());
-			body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
-			body.append("<br>Solicitante: " + nomeSolicitante);
-			body.append("<br>Acesse o RH para mais detalhes:<br>");
-			body.append("<a href='" + link + "'>RH</a>");
+			montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
 			
 			mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emails));
 		}
@@ -214,28 +219,50 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		}
 	}
 
-	public void emailParaSolicitante(Usuario solicitante, Solicitacao solicitacao , Empresa empresa)
+	public void emailParaSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario)
 	{
 		try {
+			ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
+			String link = parametrosDoSistema.getAppUrl();
+
+			solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
+
 			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+			Colaborador colaboradorSolicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId());
 			
-			Colaborador colaboradorSolicitante = colaboradorManager.findByUsuarioProjection(solicitante.getId());
 			String nomeSolicitante = preparaNome(colaboradorSolicitante);
-			String nomeLiberador = preparaNome(colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId()));
-	
-			StringBuilder body = new StringBuilder();
-			body.append("Solicitação Liberada");
-			body.append("<br>Descrição: " + solicitacao.getDescricao());
-			body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
-			body.append("<br>Solicitante: " + nomeSolicitante);
-			body.append("<br><br>Liberada por: " + nomeLiberador);
-			body.append("<br>Liberada em: " + DateUtil.formataDiaMesAno(new Date()));
+			String nomeLiberador = preparaNome(colaboradorManager.findByUsuarioProjection(usuario.getId()));
 			
-			mail.send(empresa, "Solicitação Liberada", body.toString(), null, colaboradorSolicitante.getContato().getEmail());
+			String subject = "Status da solicitação de pessoal";
+			StringBuilder body = new StringBuilder("<span style='font-weight:bold'>O usuário "+ nomeLiberador + " alterou o status da solicitação " + solicitacao.getDescricao() + " da empresa " + empresa.getNome() + " para " + solicitacao.getStatusFormatado().toLowerCase()  +".</span><br>");
+			
+			montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
+			
+			String emailSolicitante = null;
+			if(colaboradorSolicitante != null && colaboradorSolicitante.getContato() != null)
+				emailSolicitante = colaboradorSolicitante.getContato().getEmail();
+			
+			mail.send(empresa, parametrosDoSistema, subject, body.toString(), new String[]{emailSolicitante, empresa.getEmailRespRH()});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	private void montaCorpoEmailSolicitacao(Solicitacao solicitacao, String link, String nomeSolicitante, String nomeLiberador, StringBuilder body)
+	{
+		body.append("<br>Descrição: " + solicitacao.getDescricao());
+		body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
+		body.append("<br>Motivo: " + solicitacao.getMotivoSolicitacao().getDescricao());
+		body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
+		body.append("<br>Solicitante: " + nomeSolicitante);
+		body.append("<br>Status: " + solicitacao.getStatusFormatado());
+		body.append("<br>Liberador: " + nomeLiberador);
+		body.append("<br>Observação do Liberador: " + StringUtils.trimToEmpty(solicitacao.getObservacaoLiberador()));
+		
+		body.append("<br><br>Acesse o RH para mais detalhes:<br>");
+		body.append("<a href='" + link + "'>RH</a>");
+	}
+	
 	
 	private String preparaNome(Colaborador colaborador) 
 	{

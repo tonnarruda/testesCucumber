@@ -15,9 +15,13 @@ import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
+import com.fortes.rh.security.spring.aop.callback.SolicitacaoAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 
 public interface SolicitacaoManager extends GenericManager<Solicitacao>
 {
+	@Audita(operacao="Altera Status", auditor=SolicitacaoAuditorCallbackImpl.class)
+	void updateStatusSolicitacao(Solicitacao solicitacao);
 	boolean removeCascade(Long id);
 	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa);
 	Solicitacao getValor(Long id);
@@ -37,7 +41,7 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao);
-	void emailParaSolicitante(Usuario solicitante, Solicitacao solicitacao, Empresa empresa);
+	void emailParaSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
 	Solicitacao save(Solicitacao solicitacao, String[] emailsCheck);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
 	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim);
