@@ -128,7 +128,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 			
 			if(colaborador.getId() != null)
 			{
-				colaborador = colaboradorManager.findByIdHistoricoAtual(colaborador.getId());
+				colaborador = colaboradorManager.findByIdHistoricoAtual(colaborador.getId(), Boolean.TRUE);
 				colaboradorManager.setFamiliaAreas(Arrays.asList(colaborador), empresaId);
 				
 				if(!colaborador.getNome().equals(colaborador.getNomeComercial()))

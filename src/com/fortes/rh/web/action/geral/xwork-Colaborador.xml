@@ -33,6 +33,7 @@
 				<param name="location">WEB-INF/report/aniversariantes.jasper</param>
 				<param name="dataSource">colaboradors</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">aniversariantes.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantes.ftl</result>
 		</action>

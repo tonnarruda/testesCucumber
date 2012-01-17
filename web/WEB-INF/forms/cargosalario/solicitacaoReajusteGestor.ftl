@@ -280,7 +280,7 @@
 				<ul>
 					<@ww.select label="Planejamento de Realinhamento" name="tabelaReajusteColaborador.id" id ="tabelaReajuste"  required="true" list="tabelaReajusteColaboradors" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1" />
 					<@ww.select label="Áreas Organizacionais" name="areaOrganizacional.id" id="areaOrganizacional" required="true" list="areaOrganizacionals" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" onchange="populaColaborador(this.value);" cssStyle="width:445px;" />
-					<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" required="true" list="colaboradores" listKey="id" listValue="nomeComercial" headerValue="[Selecione Uma Área]" headerKey="-1" onchange="verficaColaborador(document.getElementById('tabelaReajuste').value, this.value);" />
+					<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" required="true" list="colaboradores" listKey="id" listValue="nomeMaisNomeComercial" headerValue="[Selecione Uma Área]" headerKey="-1" onchange="verficaColaborador(document.getElementById('tabelaReajuste').value, this.value);" />
 				</ul>
 			</div>
 			</li>

@@ -421,6 +421,36 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(2, historicoColaboradores.size());
 	}
 
+	public void testFindSemDissidioByDataPercentual()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		Date data = DateUtil.criarAnoMesDia(2008, 2, 12);
+		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2008, 03, 1), colaborador, estabelecimento1, areaOrganizacional1, faixaSalarial, TipoAplicacaoIndice.VALOR);
+		
+		Collection<HistoricoColaborador> historicoColaboradores = historicoColaboradorDao.findSemDissidioByDataPercentual(data, 2.0, empresa.getId());
+		
+		assertEquals(1, historicoColaboradores.size());
+	}
+
 //TODO NÃO APAGAR RELATORIO DE PROMOÇ~ES EM ESTUDO
 //	public void testGetPromocoes()
 //	{

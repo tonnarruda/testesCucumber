@@ -130,6 +130,9 @@
       <result name="error">/error.jsp</result>
       <result name="message">/message.jsp</result>
     </global-results>
+    <action name="browsersCompativeis" class="com.fortes.rh.web.action.Index" method="browsersCompativeis">
+      <result name="success" type="freemarker">/WEB-INF/pages/browsersCompativeis.ftl</result>
+    </action>
     <action name="index" class="com.fortes.rh.web.action.Index" method="index">
       <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
     </action>

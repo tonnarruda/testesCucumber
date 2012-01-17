@@ -70,7 +70,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findByIdHistoricoProjection(Long id);
 	public Colaborador findByIdDadosBasicos(Long id, Integer statusRetornoAC);
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds);
-	public Colaborador findByIdHistoricoAtual(Long colaboradorId);
+	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos);
 	public Integer countSemMotivos(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
 	public void migrarBairro(String bairro, String bairroDestino);
 	public Integer getCountAtivosByEstabelecimento(Long estabelecimentoId);

@@ -71,7 +71,7 @@
 				Nome do Colaborador: <br><b>${colaboradorTurma.colaborador.nomeComercial?string}</b>
 			</li>
 		<#else>
-			<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" required="true" headerKey="" headerValue="[Selecione...]" list="colaboradors" listKey="id" listValue="nomeComercial"/>
+			<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" required="true" headerKey="" headerValue="[Selecione...]" list="colaboradors" listKey="id" listValue="nomeMaisNomeComercial"/>
 		</#if>
 
 		<@ww.select label="Curso" id="curso" name="colaboradorTurma.curso.id" required="true" headerKey="" headerValue="[Selecione...]" list="cursos" listKey="id" listValue="nome" onchange="populaTurmas();"/>

@@ -53,7 +53,7 @@
 					<subreportParameter  name="CABECALHO">
 						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "cabecalho.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "cabecalho_paisagem.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
 		</pageHeader>

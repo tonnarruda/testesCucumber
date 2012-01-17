@@ -58,8 +58,8 @@ public class EntrevistaListAction extends  MyActionSupportList
 
 		if (colaboradorQuestionario == null) 
 		{
-			entrevistas = entrevistaManager.findAllSelect(getEmpresaSistema().getId(), new Boolean(true));
-			colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
+			entrevistas = entrevistaManager.findAllSelect(getEmpresaSistema().getId(), Boolean.TRUE);
+			colaborador = colaboradorManager.findByIdHistoricoAtual(colaborador.getId(), Boolean.FALSE);
 			return Action.SUCCESS;
 		}
 

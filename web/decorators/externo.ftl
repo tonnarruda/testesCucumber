@@ -94,7 +94,7 @@
 						Bem-vindo(a)&nbsp;
 						${SESSION_CANDIDATO_NOME}&nbsp;
 					<#else>
-						Identifique-se&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;
 					</#if>
 				</span>
 			</div>

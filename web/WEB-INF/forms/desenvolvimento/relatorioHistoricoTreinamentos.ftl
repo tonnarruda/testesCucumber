@@ -55,7 +55,7 @@
 			
 		<@ww.form name="formRelatorio" action="relatorioHistoricoTreinamentos.action" onsubmit="${validarCampos}" method="POST" id="formBusca">
 			
-			<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" required="true" list="colaboradors" listKey="id" listValue="nomeDesligado" headerKey="" headerValue="${headerValue}"/>
+			<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" required="true" list="colaboradors" listKey="id" listValue="nomeComercialDesligado" headerKey="" headerValue="${headerValue}"/>
 			
 			Período:<br>
 			<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>

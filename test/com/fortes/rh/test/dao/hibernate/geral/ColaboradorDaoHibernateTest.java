@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -1991,7 +1992,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(faixaSalarial1.getDescricao(), colaboradorTmp.getHistoricoColaborador().getFaixaSalarial().getDescricao());
 	}
 
-	public void testFindByIdHistoricoAtual() {
+	public void testFindByIdHistoricoAtualIds() {
 		Colaborador colaborador = getColaborador();
 		colaborador.setNome("TESTE");
 		colaboradorDao.save(colaborador);
@@ -2036,6 +2037,52 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaboradorTmp = (Colaborador) colaboradors.toArray()[0];
 		assertEquals(colaborador.getNome(), colaboradorTmp.getNome());
+		assertEquals("Teste I", colaboradorTmp.getFaixaSalarial().getDescricao());
+		assertEquals(areaOrganizacional, colaboradorTmp.getAreaOrganizacional());
+	}
+	public void testFindByIdHistoricoAtual() {
+		Colaborador colaborador = getColaborador();
+		colaborador.setNome("TESTE");
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setNome("Teste");
+		cargoDao.save(cargo1);
+		
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1.setNome("I");
+		faixaSalarial1.setCargo(cargo1);
+		faixaSalarialDao.save(faixaSalarial1);
+		
+		Cargo cargo2 = CargoFactory.getEntity();
+		cargoDao.save(cargo2);
+		
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		faixaSalarial2.setCargo(cargo2);
+		faixaSalarialDao.save(faixaSalarial2);
+		
+		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAtual.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaboradorAtual.setColaborador(colaborador);
+		historicoColaboradorAtual.setFaixaSalarial(faixaSalarial1);
+		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
+		
+		HistoricoColaborador historicoColaboradorAntigo = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAntigo.setData(DateUtil.criarDataMesAno(1, 1, 2007));
+		historicoColaboradorAntigo.setColaborador(colaborador);
+		historicoColaboradorAntigo.setFaixaSalarial(faixaSalarial2);
+		historicoColaboradorAntigo = historicoColaboradorDao.save(historicoColaboradorAntigo);
+		
+		boolean exibirSomenteAtivos = true;
+		
+		Colaborador colaboradorResult = colaboradorDao.findByIdHistoricoAtual(colaborador.getId(), exibirSomenteAtivos);
+		
+		Colaborador colaboradorTmp = colaboradorResult;
+		assertEquals(colaboradorResult.getNome(), colaboradorTmp.getNome());
 		assertEquals("Teste I", colaboradorTmp.getFaixaSalarial().getDescricao());
 		assertEquals(areaOrganizacional, colaboradorTmp.getAreaOrganizacional());
 	}
@@ -2700,6 +2747,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		assertEquals(2, colaboradorDao.findAllSelect(empresa.getId(), "nomeComercial").size());
 	}
+	
+	public void testFindAllSelectByIds() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaborador1.setDesligado(true);
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setDesligado(false);
+		colaboradorDao.save(colaborador2);
+		
+		assertEquals(1, colaboradorDao.findAllSelect(Arrays.asList(colaborador1.getId(), colaborador2.getId()) , true).size());
+	}
 
 	public void testReligaColaborador() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -2739,6 +2803,35 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoColaborador);
 		
 		assertEquals(colaborador, colaboradorDao.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO));
+	}
+	
+	public void testFindColaboradoresByArea() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador.setDataDesligamento(new Date());
+		colaborador.setDesligado(true);
+		colaborador.setObservacaoDemissao("demissao");
+		colaborador.setNome("joao");
+		colaborador.setMatricula("123456");
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setSalario(1000D);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2000));
+		historicoColaborador.setAreaOrganizacional(area);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		assertEquals(1, colaboradorDao.findColaboradoresByArea(new Long[]{area.getId()}, "joao", "123456", empresa.getId()).size());
 	}
 
 	public void testFindAllSelects() {

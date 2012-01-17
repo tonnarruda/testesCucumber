@@ -20,6 +20,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
@@ -245,5 +246,40 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 
 	public void setCidManager(CidManager cidManager) {
 		this.cidManager = cidManager;
+	}
+
+	public Collection<ColaboradorAfastamento> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento) throws ColecaoVaziaException 
+	{
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = findRelatorioResumoAfastamentos(empresaId, estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento);
+		Map<Colaborador, Collection<Date>> datasColaboradores = new HashMap<Colaborador, Collection<Date>>();
+		
+		// agrupa meses onde houveram afastamentos para o colaborador
+		for (ColaboradorAfastamento colabAfastamento : colaboradorAfastamentos) 
+		{
+			if (!datasColaboradores.containsKey(colabAfastamento.getColaborador().getId()))
+				datasColaboradores.put(colabAfastamento.getColaborador(), new ArrayList<Date>());
+			
+			datasColaboradores.get(colabAfastamento.getColaborador()).add(colabAfastamento.getInicio());
+		}
+		
+		// preenche o registro do colaborador com os meses que nao possuem afastamentos
+		Date dataAtual = null;
+		Colaborador colab = null;
+		for (Map.Entry<Colaborador, Collection<Date>> datasColaborador : datasColaboradores.entrySet())
+		{
+			dataAtual = DateUtil.getInicioMesData(colaboradorAfastamento.getInicio());
+			
+			while (dataAtual.before(DateUtil.getUltimoDiaMes(colaboradorAfastamento.getFim())))
+			{
+				if (!datasColaborador.getValue().contains(dataAtual))
+				{
+					colab = datasColaborador.getKey();
+					colaboradorAfastamentos.add(new ColaboradorAfastamento(colab.getId(), colab.getMatricula(), colab.getNome(), colab.getDataAdmissao(), dataAtual, null, null));
+				}
+				dataAtual = DateUtil.incrementaMes(dataAtual, 1);
+			}
+		}
+		
+		return colaboradorAfastamentos;
 	}
 }

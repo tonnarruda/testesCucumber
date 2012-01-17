@@ -29,6 +29,25 @@ public class ColaboradorTest extends TestCase {
 		colaborador = new Colaborador();
 		assertEquals("", colaborador.getNomeComercialEmpresa());
 	}
+	
+	public void testGetNomeMatricula() 
+	{
+		Colaborador colaborador = new Colaborador();
+		colaborador.setNome("João da Silva Sauro");
+		colaborador.setMatricula("5454");
+		colaborador.setDesligado(false);
+		
+		assertEquals("João da Silva Sauro - 5454", colaborador.getNomeMatricula());
+
+		colaborador.setDesligado(true);
+		assertEquals("João da Silva Sauro - 5454 (Desligado)", colaborador.getNomeMatricula());
+
+		colaborador.setMatricula("");
+		assertEquals("João da Silva Sauro (Desligado)", colaborador.getNomeMatricula());
+
+		colaborador.setDesligado(false);
+		assertEquals("João da Silva Sauro", colaborador.getNomeMatricula());
+	}
 
 	public void testPeriodoFormatado() 
 	{
@@ -77,6 +96,25 @@ public class ColaboradorTest extends TestCase {
 		
 		assertTrue("deveria ser candidato", colaborador.jaFoiUmCandidato());
 		
+	}
+	
+	public void testGetNomeMaisNomeComercial() {
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setNome("paulo jose");
+		
+		assertEquals("paulo jose (Sem Nome Comercial)", colaborador.getNomeMaisNomeComercial());
+
+		colaborador.setNome("paulo jose");
+		colaborador.setNomeComercial("paulo");
+		assertEquals("paulo jose (paulo)", colaborador.getNomeMaisNomeComercial());
+
+		colaborador.setNome(null);
+		colaborador.setNomeComercial(null);
+		assertEquals(" (Sem Nome Comercial)", colaborador.getNomeMaisNomeComercial());
+
+		colaborador.setNomeComercial("babau");
+		assertEquals(" (babau)", colaborador.getNomeMaisNomeComercial());
 	}
 	
 	public void testDeveriaNaoSerUmCandidato() { 

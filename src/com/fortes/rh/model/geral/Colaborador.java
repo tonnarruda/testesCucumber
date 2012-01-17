@@ -54,6 +54,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SalarioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 
@@ -360,9 +361,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 	}
 	
-	public Colaborador(Long id, String nomeComercial, Long historicoAreaId, Long historicoEstabelecimentoId)
+	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, Long historicoEstabelecimentoId)
 	{
 		this.setId(id);
+		this.nome = nome;
 		this.nomeComercial = nomeComercial;
 
 		if(this.areaOrganizacional == null)
@@ -397,9 +399,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.historicoColaborador.getFaixaSalarial().getCargo().setNome(cargoNome);
 	}
 
-	public Colaborador(Long id, String nomeComercial, Long historicoAreaId, String historicoAreaNome,Long historicoAreaMaeId, String historicoAreaMaeNome, Long historicoEstabelecimentoId, String historicoEstabelecimentoNome)
+	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, String historicoAreaNome,Long historicoAreaMaeId, String historicoAreaMaeNome, Long historicoEstabelecimentoId, String historicoEstabelecimentoNome)
 	{
 		this.setId(id);
+		this.nome = nome;
 		this.nomeComercial = nomeComercial;
 
 		if(this.areaOrganizacional == null)
@@ -418,9 +421,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.estabelecimento.setNome(historicoEstabelecimentoNome);
 	}
 	// usado em findByAreasOrganizacionaisEstabelecimentos
-	public Colaborador(Long id, String nomeComercial, Long historicoAreaId, String historicoAreaNome,Long historicoAreaMaeId, String historicoAreaMaeNome, Long historicoEstabelecimentoId, String historicoEstabelecimentoNome, Long historicoFaixaSalarialId, String historicoFaixaSalarialNome)
+	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, String historicoAreaNome,Long historicoAreaMaeId, String historicoAreaMaeNome, Long historicoEstabelecimentoId, String historicoEstabelecimentoNome, Long historicoFaixaSalarialId, String historicoFaixaSalarialNome)
 	{
 		this.setId(id);
+		this.nome = nome;
 		this.nomeComercial = nomeComercial;
 		
 		if(this.areaOrganizacional == null)
@@ -711,7 +715,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//usado por findByIdHistoricoAtual 
-	public Colaborador(Long id, String nome, String nomeComercial, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, Date dataAdmissao)
+	public Colaborador(Long id, String nome, String nomeComercial, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, Date dataAdmissao, String estabelecimentoNome, String ddd, String foneFixo, String celular)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -720,7 +724,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setAreaOrganizacionalNome(areaOrganizacionalNome);
 		this.setFaixaSalarialNomeProjection(faixaSalarialNome);
 		this.setCargoNomeProjection(cargoNome);
+		this.setEstabelecimentoNomeProjection(estabelecimentoNome);
 		this.setDataAdmissao(dataAdmissao);
+		this.setContatoDdd(ddd);
+		this.setContatoFoneFixo(foneFixo);
+		this.setContatoCelular(celular);
 	}
 
 	//Construtor usado pela consulta de aniversariantes
@@ -798,11 +806,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	
-	public Colaborador(Long id, String nome, boolean desligado)
+	public Colaborador(Long id, String nome,String nomeComercial,  boolean desligado)
 	{
 		super();
 		this.setId(id);
 		this.nome = nome;
+		this.nomeComercial = nomeComercial;
 		this.desligado = desligado;
 	}
 
@@ -2040,11 +2049,17 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@NaoAudita
 	public String getNomeMaisNomeComercial()
 	{
-		String NomeMaisNomeComercial  = this.nome;
-		if (this.nomeComercial != null)
-			NomeMaisNomeComercial += " (" + this.nomeComercial + ")"; 
+		String nomeMaisNomeComercial  = ""; 
+
+		if(StringUtils.isNotBlank(this.nome))
+			nomeMaisNomeComercial = this.nome;
+		
+		if (StringUtils.isNotBlank(this.nomeComercial))
+			nomeMaisNomeComercial += " (" + this.nomeComercial + ")";
+		else
+			nomeMaisNomeComercial += " (Sem Nome Comercial)";
 			
-		return NomeMaisNomeComercial;
+		return nomeMaisNomeComercial;
 	}
 	
 	public boolean isRespondeuEntrevista()
@@ -2108,6 +2123,21 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			nomeCpf += " (Desligado)";
 
 		return nomeCpf;
+	}
+
+	@NaoAudita
+	public String getNomeMatricula()
+	{
+		String nomeMatricula = "";
+		if(nome != null)
+			nomeMatricula = nome;
+
+		if(StringUtils.isNotBlank(matricula))
+			nomeMatricula += " - " + matricula;
+		if(desligado)
+			nomeMatricula += " (Desligado)";
+		
+		return nomeMatricula;
 	}
 
 	public Collection<SolicitacaoExame> getSolicitacaoExames()

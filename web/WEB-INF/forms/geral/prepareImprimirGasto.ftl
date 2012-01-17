@@ -67,7 +67,7 @@
 	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" onClick="populaColaborador();"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" onClick="populaColaborador();" />
 	<br>
-	<@ww.select label="Colaborador" id="colaboradores" name="colaborador.id" list="colaboradors" listKey="id" listValue="nomeComercial" headerValue="Todos" headerKey=""/>
+	<@ww.select label="Colaborador" id="colaboradores" name="colaborador.id" list="colaboradors" listKey="id" listValue="nomeMaisNomeComercial" headerValue="Todos" headerKey=""/>
 </@ww.form>
 
 <div class="buttonGroup">

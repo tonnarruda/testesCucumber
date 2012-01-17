@@ -22,4 +22,5 @@ public interface ColaboradorAfastamentoManager extends GenericManager<Colaborado
 	Collection<ColaboradorAfastamento> findByColaborador(Long colaboradorId);
 	Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataIni, Date dataFim);
 	Integer findQtdAfastamentosInss(Long empresaId, Date dataIni, Date dataFim, boolean inss);
+	Collection<ColaboradorAfastamento> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento)throws ColecaoVaziaException;
 }

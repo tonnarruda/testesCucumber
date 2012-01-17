@@ -207,6 +207,11 @@ public class Index extends ActionSupport
 			}
 		}
 	}
+	
+	public String browsersCompativeis()
+	{
+		return Action.SUCCESS;
+	}
 
 	public void setCandidatoSolicitacaoManager(
 			CandidatoSolicitacaoManager candidatoSolicitacaoManager) {

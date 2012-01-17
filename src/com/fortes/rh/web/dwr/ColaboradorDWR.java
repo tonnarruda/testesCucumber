@@ -39,7 +39,7 @@ public class ColaboradorDWR
             colaboradores = colaboradorManager.findToList(properties, sets, new String[]{"desligado","empresa.id"}, new Object[]{false,empresaId}, new String[]{"nomeComercial"});
         }
 
-        return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercial", Colaborador.class);
+        return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
     public Map getColaboradoresByAreaNome(String[] areaOrganizacionalIds, String nome, Long empresaId)
@@ -60,7 +60,7 @@ public class ColaboradorDWR
     		colaboradores = colaboradorManager.findByNomeCpfMatricula(colaborador, empresaId, true);
     	}
     	
-    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNome", Colaborador.class);
+    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
     public Map getColaboradoresByAvaliacoes(Long[] avaliacaoIds)
@@ -70,7 +70,7 @@ public class ColaboradorDWR
     	if(avaliacaoIds != null && avaliacaoIds.length > 0)
     		colaboradores = colaboradorManager.findByAvaliacoes(avaliacaoIds);
     	
-    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeDesligado", Colaborador.class);
+    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercialDesligado", Colaborador.class);
     }
 
     public Map getColaboradoresAreaEstabelecimento(String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId)
@@ -103,7 +103,7 @@ public class ColaboradorDWR
 			colaboradores = colaboradorManager.findByEstabelecimento(estabelecimentosId);
     	}
 
-    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercial", Colaborador.class);
+    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
 
     public Map getColaboradoresByArea(String[] areaOrganizacionalIds, Long empresaId)
@@ -115,7 +115,7 @@ public class ColaboradorDWR
         else
             colaboradores = colaboradorManager.findAllSelect(empresaId, "nomeComercial");
 
-        return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercial", Colaborador.class);
+        return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
     public Map getByAreaEstabelecimentoEmpresas(String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds)
@@ -154,7 +154,7 @@ public class ColaboradorDWR
     	
     	colaboradores.addAll(colaboradorManager.findByEstabelecimentoDataAdmissao(estabelecimentoId, data));
     	
-    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNome", Colaborador.class);
+    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
     public Map<Long, String> getAvaliadores(Long avaliacaoDesempenhoId)
@@ -163,7 +163,7 @@ public class ColaboradorDWR
     	colaboradores.add(new Colaborador( -1L, "Selecione..."));
     	colaboradores.addAll(colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, false));
     	
-    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercial", Colaborador.class);
+    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
 
 	public Map find(String nome, String cpf, String matricula, Long empresaId, boolean somenteAtivos)
@@ -185,7 +185,7 @@ public class ColaboradorDWR
     {
         Collection<Colaborador> colaboradores = colaboradorManager.findByFuncaoAmbiente(funcaoId, ambienteId);
 
-        return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercial", Colaborador.class);
+        return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
     public Map<String, Object> findFuncaoAmbiente(Long colaboradorId)

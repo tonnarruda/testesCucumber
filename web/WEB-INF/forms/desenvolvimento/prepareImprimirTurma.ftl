@@ -70,7 +70,7 @@
 	<@ww.select name="dnt.id" id="dnt" list="dnts" listKey="id" required="true" listValue="nome" label="DNT" headerKey="-1" headerValue="Selecione"/>
 	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" onClick="populaColaborador();"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" onClick="populaColaborador();"/>
-	<@ww.select name="colaborador.id" id="colaboradores" list="colaboradors" listKey="id" listValue="nomeComercial" label="Colaborador" headerKey="" headerValue="Todos"/>
+	<@ww.select name="colaborador.id" id="colaboradores" list="colaboradors" listKey="id" listValue="nomeMaisNomeComercial" label="Colaborador" headerKey="" headerValue="Todos"/>
 	<@ww.checkbox onchange="javascript: desableColab(this,'colaboradores');" labelPosition="right" label="Imprimir colaboradores sem Turma" name="semPlano" />
 </@ww.form>
 

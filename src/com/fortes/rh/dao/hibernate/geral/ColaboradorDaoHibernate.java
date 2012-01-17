@@ -420,7 +420,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Colaborador colaborador = new Colaborador();
 
 		StringBuilder hql = new StringBuilder();
-		hql.append("select co.id, co.nomeComercial, ao.id, ao.nome, co.empresa.id ");
+		hql.append("select co.id, co.nomeComercial, ao.id, ao.nome, co.empresa.id, co.nome ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.areaOrganizacional as ao ");
@@ -454,6 +454,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			colaboradorTmp.setAreaOrganizacionalId((Long) array[2]);
 			colaboradorTmp.setAreaOrganizacionalNome((String) array[3]);
 			colaboradorTmp.setEmpresaId((Long) array[4]);
+			colaboradorTmp.setNome((String) array[5]);
 
 			colaboradors.add(colaboradorTmp);
 		}
@@ -655,6 +656,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.contato.email"), "emailColaborador");
@@ -719,7 +721,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			return null;
 
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nomeComercial) "); 
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) "); 
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co "); 
 		hql.append("where ");
@@ -873,7 +875,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findByAreaEstabelecimento(Long areaOrganizacionalId, Long estabelecimentoId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nomeComercial, hc.areaOrganizacional.id, hc.estabelecimento.id) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, hc.areaOrganizacional.id, hc.estabelecimento.id) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("	where hc.areaOrganizacional.id = :areaId ");
@@ -896,7 +898,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome, faixa.id, faixa.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome, faixa.id, faixa.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.areaOrganizacional as a ");
@@ -944,7 +946,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.faixaSalarial as fs ");
@@ -992,7 +994,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findByGrupoOcupacionalIdsEstabelecimentoIds(Collection<Long> grupoOcupacionalIds, Collection<Long> estabelecimentoIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.faixaSalarial as fs ");
@@ -1020,7 +1022,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findByEstabelecimento(Long[] estabelecimentoIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nomeComercial, hc.areaOrganizacional.id, hc.estabelecimento.id) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, hc.areaOrganizacional.id, hc.estabelecimento.id) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("	where hc.estabelecimento.id in (:estabelecimentoIds) ");
@@ -1046,6 +1048,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("u.id"), "usuarioIdProjection");
 		criteria.setProjection(p);
@@ -2091,6 +2094,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.in("c.id", colaboradorIds));
@@ -2413,18 +2417,20 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Colaborador findByIdHistoricoAtual(Long colaboradorId)
+	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, ");
-		hql.append("ao.id, ao.nome, fs.nome, ca.nome, co.dataAdmissao) ");
+		hql.append("ao.id, ao.nome, fs.nome, ca.nome, co.dataAdmissao, e.nome, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
+		hql.append("left join hc.estabelecimento as e ");
 		hql.append("left join hc.faixaSalarial fs ");
 		hql.append("left join fs.cargo as ca ");
 		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("where co.desligado = false ");
-		hql.append("and co.id = :colaboradorId ");
+		hql.append("where co.id = :colaboradorId ");
+		if(exibirSomenteAtivos)
+			hql.append("and	co.desligado = false ");
 		hql.append("and hc.status = :status ");
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("				from HistoricoColaborador as hc2 ");
@@ -2628,6 +2634,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.matricula"), "matricula");
 		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
+		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
+		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
 
 		criteria.setProjection(p);
 
@@ -2676,6 +2685,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		p.add(Projections.distinct(Projections.property("colab.id")), "id");
 		p.add(Projections.property("colab.nome"), "nome");
+		p.add(Projections.property("colab.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("colab.contato.email"), "emailColaborador");
 		criteria.setProjection(p);
 
@@ -2690,35 +2700,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
-	}
-
-	public Collection<Colaborador> findByColaboradores(Long[] colaboradorIds)
-	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new HistoricoColaborador(co.id, co.nome, co.dataAdmissao, c.id, c.nome, fs.id, fs.nome, e.id, e.nome) ");
-
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("left join hc.colaborador as co ");
-		hql.append("left join hc.estabelecimento as e ");
-		hql.append("left join hc.faixaSalarial as fs ");
-		hql.append("left join fs.cargo as c ");
-
-		hql.append("where hc.status = :status ");
-		hql.append("and co.id in (:colaboradorIds) ");
-
-		hql.append("and hc.data = (select max(hc2.data) ");
-		hql.append("			from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :data and hc2.status = :status ) ");
-		hql.append("order by c.nome, fs.nome, co.nome ");
-
-		Query query = getSession().createQuery(hql.toString());
-		query.setDate("data", new Date());
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-
-		query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
-
-		return query.list();
 	}
 
 	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados)
@@ -2772,7 +2753,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findColaboradoresByArea(Long[] areaIds, String nome, String matricula, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.desligado) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.areaOrganizacional as ao where ");
@@ -3577,6 +3558,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.distinct(Projections.property("c.id")), "id");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.desligado"), "desligado");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.in("ad.id", avaliacaoIds));
@@ -3613,7 +3595,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.desligado) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("where hc.data = ( ");
@@ -3734,6 +3716,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.distinct(Projections.property("c.id")), "id");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cq.questionario.id", questionarioId));
