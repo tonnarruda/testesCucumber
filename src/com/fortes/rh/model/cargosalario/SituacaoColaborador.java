@@ -116,6 +116,12 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 		this.colaborador.setNome(projectionColaboradorNome);
 	}
 
+	public void setProjectionColaboradorNomeComercial(String projectionColaboradorNomeComercial)
+	{
+		inicializaColaborador();
+		this.colaborador.setNomeComercial(projectionColaboradorNomeComercial);
+	}
+
 	public void setProjectionColaboradorMatricula(String projectionColaboradorMatricula)
 	{
 		inicializaColaborador();

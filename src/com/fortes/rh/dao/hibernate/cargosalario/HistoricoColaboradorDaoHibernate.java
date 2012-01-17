@@ -301,6 +301,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("sc.areaOrganizacional.id"), "projectionAreaOrganizacionalId");
 		p.add(Projections.property("c.id"), "projectionColaboradorId");
 		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.matricula"), "projectionColaboradorMatricula");
 		criteria.setProjection(p);
 		
@@ -569,6 +570,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
 		p.add(Projections.property("hc.status"), "status");
 		p.add(Projections.property("co.id"), "colaboradorId");
+		p.add(Projections.property("co.nome"), "colaboradorNome");
 		p.add(Projections.property("co.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("co.codigoAC"), "projectionColaboradorCodigoAC");
 		p.add(Projections.property("co.naoIntegraAc"), "projectionColaboradorNaoIntegraAc");
@@ -645,6 +647,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("hc.status"), "status");
 		p.add(Projections.property("hc.data"), "data");
 		p.add(Projections.property("c.codigoAC"), "projectionColaboradorCodigoAC");
+		p.add(Projections.property("c.nome"), "colaboradorNome");
 		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("c.dataAdmissao"), "colaboradorDataAdmissao");
 		p.add(Projections.property("ca.nome"), "cargoNome");
@@ -710,6 +713,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("hc.reajusteColaborador.id"), "projectionReajusteColaboradorId");
 		p.add(Projections.property("c.id"), "colaboradorId");
 		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
+		p.add(Projections.property("c.nome"), "colaboradorNome");
 		p.add(Projections.property("fs.id"), "faixaSalarialId");
 		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
 		p.add(Projections.property("ca.nomeMercado"), "cargoNomeMercado");
@@ -826,6 +830,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("hc.id"), "id");
 		p.add(Projections.property("hc.data"), "data");
 		p.add(Projections.property("c.nome"), "colaboradorNome");
+		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
 
 		criteria.setProjection(p);
 
@@ -1044,6 +1049,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("ca.id"), "cargoId");
 		p.add(Projections.property("ca.nome"), "cargoNome");
 		p.add(Projections.property("c.nome"), "colaboradorNome");
+		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("fun.id"), "funcaoId");
 		p.add(Projections.property("fun.nome"), "funcaoNome");
 		p.add(Projections.property("amb.id"), "ambienteId");

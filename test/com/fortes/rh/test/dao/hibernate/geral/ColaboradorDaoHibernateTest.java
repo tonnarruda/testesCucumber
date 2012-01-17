@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -2746,6 +2747,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		assertEquals(2, colaboradorDao.findAllSelect(empresa.getId(), "nomeComercial").size());
 	}
+	
+	public void testFindAllSelectByIds() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaborador1.setDesligado(true);
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setDesligado(false);
+		colaboradorDao.save(colaborador2);
+		
+		assertEquals(1, colaboradorDao.findAllSelect(Arrays.asList(colaborador1.getId(), colaborador2.getId()) , true).size());
+	}
 
 	public void testReligaColaborador() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -2785,6 +2803,35 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoColaborador);
 		
 		assertEquals(colaborador, colaboradorDao.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO));
+	}
+	
+	public void testFindColaboradoresByArea() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador.setDataDesligamento(new Date());
+		colaborador.setDesligado(true);
+		colaborador.setObservacaoDemissao("demissao");
+		colaborador.setNome("joao");
+		colaborador.setMatricula("123456");
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setSalario(1000D);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2000));
+		historicoColaborador.setAreaOrganizacional(area);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		assertEquals(1, colaboradorDao.findColaboradoresByArea(new Long[]{area.getId()}, "joao", "123456", empresa.getId()).size());
 	}
 
 	public void testFindAllSelects() {

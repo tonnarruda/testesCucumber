@@ -98,6 +98,25 @@ public class ColaboradorTest extends TestCase {
 		
 	}
 	
+	public void testGetNomeMaisNomeComercial() {
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setNome("paulo jose");
+		
+		assertEquals("paulo jose (Sem Nome Comercial)", colaborador.getNomeMaisNomeComercial());
+
+		colaborador.setNome("paulo jose");
+		colaborador.setNomeComercial("paulo");
+		assertEquals("paulo jose (paulo)", colaborador.getNomeMaisNomeComercial());
+
+		colaborador.setNome(null);
+		colaborador.setNomeComercial(null);
+		assertEquals(" (Sem Nome Comercial)", colaborador.getNomeMaisNomeComercial());
+
+		colaborador.setNomeComercial("babau");
+		assertEquals(" (babau)", colaborador.getNomeMaisNomeComercial());
+	}
+	
 	public void testDeveriaNaoSerUmCandidato() { 
 		
 		Colaborador colaborador = new Colaborador();
