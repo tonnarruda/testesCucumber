@@ -23,7 +23,7 @@
 		<a href="http://windows.microsoft.com/pt-BR/internet-explorer/downloads/ie" target="_blank">
 			<img src="imgs/internetexplorer7.jpg"/>
 		</a>
-		<p>Internet Explorer 7 ou superior</p>
+		<p>Internet Explorer 8 ou superior</p>
 	</div>
 
 	<br clear="all"/><br/>

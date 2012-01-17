@@ -1,16 +1,65 @@
-
-if (typeof jQuery != 'undefined') 
-{
-	$(function(){
-		
-		if (location.href.indexOf('browsersCompativeis.action') == -1 
-				&& ($.browser.msie && parseInt($.browser.version) < 7) || ($.browser.mozilla && parseInt($.browser.version) < 4))
-		{
-			var patt = /\/\w*\//g;
-			window.location.href = patt.exec(window.location.pathname) + 'browsersCompativeis.action';
+var BrowserDetect = {
+	init: function ( callback ) {
+		this.browser = this.searchString( this.dataBrowser ) || "browser não encontrado";
+		this.version = this.searchVersion( navigator.userAgent )
+			|| this.searchVersion( navigator.appVersion )
+			|| "versão não encontrada";
+		this.OS = this.searchString(this.dataOS) || "sistema operacional não encontrado";
+		callback({
+			name : this.browser, 
+			version : this.version,
+			OS : this.OS
+		} );
+	},
+	searchString: function (data) {
+		var dataString, dataProp
+		  , i=0, size = data.length;
+		for ( ; i<size; i++ ){
+			dataString = data[i].string;
+			dataProp = data[i].prop;
+			this.versionSearchString = data[i].versionSearch || data[i].identity;
+			if ( dataString ){
+				if (dataString.indexOf(data[i].subString) != -1)
+					return data[i].identity;
+			}
+			else if ( dataProp )
+				return data[i].identity;
 		}
-	});
-}
+	},
+	searchVersion: function (dataString) {
+		var index = dataString.indexOf( this.versionSearchString );
+		if ( index === -1 ) return;
+		return parseFloat( dataString.substring( index + this.versionSearchString.length + 1 ) );
+	},
+	dataBrowser: [
+		{string: navigator.userAgent, subString: "Chrome", identity: "Chrome" },
+		{string: navigator.userAgent, subString: "Firefox", identity: "Firefox" },
+		{string: navigator.userAgent, subString: "MSIE", identity: "Explorer", versionSearch: "MSIE"}
+	],
+	dataOS : [
+		{string: navigator.platform, subString: "Win", identity: "Windows"},
+		{string: navigator.platform, subString: "Mac", identity: "Mac"},
+		{string: navigator.platform, subString: "Linux", identity: "Linux"}
+	]
+};
+
+var browsersCompativeis = {
+	Firefox : { versaoMinima : 4, url : 'http://br.mozdev.org/download/' },
+	Chrome : { versaoMinima : 9, url : 'https://www.google.com/chrome?hl=pt-br' }, 
+	Explorer: { versaoMinima : 8, url : 'http://windows.microsoft.com/pt-BR/internet-explorer/downloads/ie' }
+};
+
+
+BrowserDetect.init( function ( informacaoesDesteBrowser ){
+    var versaoMinimaDesteBrowserParaSerCompativelComSistema = browsersCompativeis[ informacaoesDesteBrowser.name ].versaoMinima;
+    var isThisBrowserSupportted = ( informacaoesDesteBrowser.version >= versaoMinimaDesteBrowserParaSerCompativelComSistema );
+	if (location.href.indexOf('browsersCompativeis.action') == -1 && !isThisBrowserSupportted)
+	{
+		var patt = /\/\w*\//g;
+		window.location.href = patt.exec(window.location.pathname) + 'browsersCompativeis.action';
+	}
+});
+
 
 function marcarDesmarcarListCheckBox(frm, nameCheck, vMarcar)
 {
