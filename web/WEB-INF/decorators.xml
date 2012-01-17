@@ -51,6 +51,7 @@
 	<decorator name="externo" page="externo.ftl">
 		<pattern>/externo/**</pattern>
 		<pattern>/pesquisa/trafego/**</pattern>
+		<pattern>/browsersCompativeis.action*</pattern>
 	</decorator>
 
 	<decorator name="trafego" page="trafego.ftl">

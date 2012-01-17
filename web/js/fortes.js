@@ -1,3 +1,17 @@
+
+if (typeof jQuery != 'undefined') 
+{
+	$(function(){
+		
+		if (location.href.indexOf('browsersCompativeis.action') == -1 
+				&& ($.browser.msie && parseInt($.browser.version) < 7) || ($.browser.mozilla && parseInt($.browser.version) < 4))
+		{
+			var patt = /\/\w*\//g;
+			window.location.href = patt.exec(window.location.pathname) + 'browsersCompativeis.action';
+		}
+	});
+}
+
 function marcarDesmarcarListCheckBox(frm, nameCheck, vMarcar)
 {
 	with(frm)

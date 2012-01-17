@@ -279,7 +279,7 @@ public class ExternoAction extends MyActionSupport
 
 		return Action.SUCCESS;
 	}
-
+	
 	public Candidato getCandidato()
 	{
 		return candidato;
