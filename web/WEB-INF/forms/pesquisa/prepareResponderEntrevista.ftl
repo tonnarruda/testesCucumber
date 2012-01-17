@@ -9,7 +9,10 @@
 <@ww.actionerror />
 
 	<#if colaborador?exists && colaborador.nome?exists>
-		<b>Colaborador: ${colaborador.nome}</b>
+		<b>Colaborador: ${colaborador.nome}</b> <br/>
+		<b>Estabelecimento: ${colaborador.estabelecimento.nome}</b> <br/>
+		<b>Cargo: ${colaborador.faixaSalarial.descricao}</b> <br/>
+		<b>Telefone : ${colaborador.contato.foneContatoFormatado}</b> <br/><br/>
 	</#if>
 
 	<@ww.form name="form" action="../colaboradorResposta/prepareResponderEntrevista.action" onsubmit="${validarCampos}" validate="true" method="POST">
