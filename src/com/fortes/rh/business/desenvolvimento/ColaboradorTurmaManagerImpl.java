@@ -570,9 +570,10 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	@Override
 	public void remove(ColaboradorTurma colaboradorTurma)
 	{
-		super.remove(colaboradorTurma);
 		// Remove os Questionarios/Respostas vinculados ao colaborador nesta turma
 		colaboradorQuestionarioManager.removeByColaboradorETurma(colaboradorTurma.getColaborador().getId(), colaboradorTurma.getTurma().getId());
+		aproveitamentoAvaliacaoCursoManager.removeByTurma(colaboradorTurma.getTurma().getId());
+		super.remove(colaboradorTurma);
 	}
 
 	public Collection<ColaboradorTurma> montaColunas(Collection<ColaboradorTurma> colaboradorTurmas, boolean exibirNomeComercial, boolean exibirCargo, boolean exibirEstabelecimento, boolean exibirAssinatura, boolean exibirArea)

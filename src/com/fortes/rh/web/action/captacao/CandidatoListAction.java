@@ -232,8 +232,21 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		candidatoManager.removeCandidato(candidato);
-		addActionMessage("Candidato excluído com sucesso!");
+		try {
+			candidatoManager.removeCandidato(candidato);
+			addActionMessage("Candidato excluído com sucesso!");
+		} catch (Exception e) {
+			String message = "Erro ao excluir candidato";
+			
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+			
+			addActionError(message);
+
+			list();
+		}
 
 		return Action.SUCCESS;
 	}

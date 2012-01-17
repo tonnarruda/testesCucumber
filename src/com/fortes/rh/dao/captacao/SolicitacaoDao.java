@@ -28,6 +28,7 @@ public interface SolicitacaoDao extends GenericDao<Solicitacao>
 	void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId);
 	Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId);
 	void updateSuspendeSolicitacao(boolean suspender, String observacao, Long solicitacaoId);
+	void updateStatusSolicitacao(Solicitacao solicitacao);
 	void migrarBairro(Long bairroId, Long bairroDestinoId);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);

@@ -117,14 +117,16 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		solicitacao.setCidade(CidadeFactory.getEntity());
 		solicitacao.setAvaliacao(AvaliacaoFactory.getEntity());
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
+		
 		
 		Solicitacao solicitacaoAux = SolicitacaoFactory.getSolicitacao();
-		solicitacao.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
 		action.setBairrosCheck(new String[]{"1"});
 		action.setSolicitacao(solicitacao);
 		MockSecurityUtil.verifyRole = true;
 		solicitacaoManager.expects(once()).method("findByIdProjectionForUpdate").with(eq(solicitacao.getId())).will(returnValue(solicitacaoAux));
-		solicitacaoManager.expects(once()).method("emailParaSolicitante").with(ANYTHING, eq(solicitacao), ANYTHING);
+		solicitacaoManager.expects(once()).method("emailParaSolicitante");
 		solicitacaoManager.expects(once()).method("update").with(eq(solicitacao));
 		
 		System.out.println(MockSecurityUtil.verifyRole);

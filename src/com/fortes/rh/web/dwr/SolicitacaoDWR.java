@@ -1,6 +1,7 @@
 package com.fortes.rh.web.dwr;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -18,6 +19,17 @@ public class SolicitacaoDWR {
 		return new CollectionUtil<Solicitacao>().convertCollectionToMap(solicitacaos, "getId", "getDescricaoFormatada");
 	}
 
+	public Map<String, String> getObsSolicitacao(Long solicitacaoId) 
+	{
+		Solicitacao solicitacao = solicitacaoManager.findById(solicitacaoId);
+		
+		HashMap<String, String> solicitacaoMap = new HashMap<String, String>();
+		solicitacaoMap.put("status", String.valueOf(solicitacao.getStatus()));
+		solicitacaoMap.put("obs", solicitacao.getObservacaoLiberador());
+		
+		return solicitacaoMap;  
+	}
+	
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
 		this.solicitacaoManager = solicitacaoManager;
 	}

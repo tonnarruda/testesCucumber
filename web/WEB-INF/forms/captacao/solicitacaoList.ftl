@@ -12,6 +12,7 @@
 		<#include "../ftl/mascarasImports.ftl" />
 		<#assign validarCamposSuspende = "return validaFormulario('formSuspendeSolicitacao', new Array('obsSuspensao'), null)"/>
 		<#assign validarCamposEncerra = "return validaFormulario('formEncerraSolicitacao', new Array('dataEncerramento'), new Array('dataEncerramento'))"/>
+		<#assign validarCamposUpdateStatus = "$('#gravarStatus').attr('disabled', true); return validaFormulario('formUpdateStatusSolicitacao', new Array(), null)"/>
 		
 		<#include "../ftl/showFilterImports.ftl" />
 		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -20,9 +21,10 @@
 		
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
-		#formDialog { display: none; width: 600px; }
-	</style>
-	<style>
+
+		.alterarStatusDiv { 
+			display: none; 
+		}
 		.dataEncerramentoDiv
 		{
 			border: 1px solid #B0B0B0;
@@ -71,6 +73,7 @@
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	
@@ -115,11 +118,26 @@
 			document.getElementById("pagina").value=1;
 		}
 		
-		function aprovarSolicitacao() 
+		function aprovarSolicitacao(solicitacaoId) 
 		{
-			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: '}); 
+			$('#solicitacaoIdAlterarStatus').val(solicitacaoId);
+		
+			$('#alterarStatusDiv').dialog({ modal: true, 
+											width: 500,
+											height: 300,
+											title: 'Aprovar/Reprovar solicitação',
+										    open: function(event, ui) 
+											{ 
+												if (solicitacaoId != '')
+												{
+													SolicitacaoDWR.getObsSolicitacao(solicitacaoId, function(data){
+														$('#obsAprova').val(data.obs);
+														$('#statusSolicitacao').val(data.status);
+													});
+												}
+											}
+										}); 
 		}
-	
 	</script>
 </head>
 
@@ -196,13 +214,17 @@
 					<a href="#" onclick="newConfirm('${fraseConfirma}', function(){window.location='${actionEncerra}?solicitacao.id=${solicitacao.id}'});"><img border="0" title="${titleEncerra}" src="<@ww.url includeParams="none" value="/imgs/${imgEncerra}"/>"></a>
 					<img border="0" title="Não é possível suspender a solicitação. Esta já foi encerrada." src="<@ww.url includeParams="none" value="/imgs/control_pause.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				</#if>
+				<a href="prepareClonar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
+
 			</@authz.authorize>
-			<a href="prepareClonar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">		
 			<a href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Candidatos da Seleção" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 		</@authz.authorize>
-		<a href="javascript:;" onclick="javascript:aprovarSolicitacao()"><img border="0" title="Aprovar Solicitação" src="<@ww.url includeParams="none" value="/imgs/page_edit.gif"/>"></a>
+	
+		<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
+			<a href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id})"><img border="0" title="Aprovar/Reprovar Solicitação" src="<@ww.url includeParams="none" value="/imgs/page_edit.gif"/>"></a>
+		</@authz.authorize>
 		
 		</@display.column>
 
@@ -247,7 +269,7 @@
 	</div>
 
 	<div id="suspendeDiv" class="suspendeDiv">
-		<@ww.form name="formSuspendeSolicitacao" id="formSuspendeSolicitacao" action="suspenderSolicitacao.action" validate="true" method="POST" onsubmit="${validarCamposSuspende}" >
+		<@ww.form name="formSuspendeSolicitacao" id="formSuspendeSolicitacao" action="suspenderSolicitacao.action" validate="true" method="POST" onsubmit="${validarCamposSuspende}">
 			<@ww.textarea label="Observações sobre a suspensão" name="solicitacao.obsSuspensao" id="obsSuspensao" />
 			<@ww.hidden name="solicitacao.id" id="solicitacaoIdSuspender"/>
 		</@ww.form>
@@ -255,6 +277,15 @@
 		</button>
 		<button onclick="window.location='list.action'" class="btnCancelar grayBG">
 		</button>
+	</div>
+
+	<div id="alterarStatusDiv" class="alterarStatusDiv">
+		<@ww.form name="formUpdateStatusSolicitacao" action="updateStatusSolicitacao.action" method="post" onsubmit="${validarCamposUpdateStatus}">
+			<@ww.textarea label="Observações" name="solicitacao.observacaoLiberador"  id='obsAprova'/>
+			<@ww.select label="Status" name="solicitacao.status" list=r"#{'I':'Em análise', 'A':'Aprovada', 'R':'Reprovada'}" id='statusSolicitacao'/>
+			<@ww.hidden name="solicitacao.id" id="solicitacaoIdAlterarStatus"/>
+		</@ww.form>
+		<button onclick="${validarCamposUpdateStatus};" class="btnGravar grayBG" id="gravarStatus"></button>
 	</div>
 
 	<div class="buttonGroup">
