@@ -49,6 +49,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
     
     private Map<String,Object> parametros = new HashMap<String, Object>();
+    private HashMap status;
 
 	private Collection<Solicitacao> solicitacaos;
 	private Collection<HistoricoCandidato> historicoCandidatos;	
@@ -67,6 +68,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private Cargo cargo = new Cargo();
     
     private String json;
+    private char statusSolicitacaoAnterior;
     private char statusCandSol;
 	private Boolean compartilharCandidatos;
 	
@@ -97,6 +99,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 			addActionMessage("Não existem solicitações a serem visualizadas!");
 
 		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome");
+		status = new StatusAprovacaoSolicitacao();
 		
         return Action.SUCCESS;
     }
@@ -214,20 +217,14 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     public String updateStatusSolicitacao() throws Exception
     {
-    	Solicitacao solicitacaoAux = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
-    	
-    	solicitacao.setLiberador(getUsuarioLogado());
-    	solicitacaoManager.updateStatusSolicitacao(solicitacao);
-    	
-		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
+		if(solicitacao.getStatus() != statusSolicitacaoAnterior && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
         {
-        	if(solicitacao.getStatus() != solicitacaoAux.getStatus())
-        	{
-        		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
-       			solicitacaoManager.emailParaSolicitante(solicitacao, getEmpresaSistema(), getUsuarioLogado());
-        	}
+    		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+        	solicitacaoManager.updateStatusSolicitacao(solicitacao);
+    		
+        	solicitacaoManager.emailSolicitante(solicitacao, getEmpresaSistema(), getUsuarioLogado());
         }
-    	
+		
     	return Action.SUCCESS;
     }
 
@@ -404,5 +401,17 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setDataFim(Date dataFim) {
 		this.dataFim = dataFim;
+	}
+
+	public HashMap getStatus() {
+		return status;
+	}
+
+	public char getStatusSolicitacaoAnterior() {
+		return statusSolicitacaoAnterior;
+	}
+
+	public void setStatusSolicitacaoAnterior(char statusSolicitacaoAnterior) {
+		this.statusSolicitacaoAnterior = statusSolicitacaoAnterior;
 	}
 }

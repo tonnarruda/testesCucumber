@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Solicitações Abertas</title>
+	<title>Lista de candidatos aptos das solicitações abertas</title>
 	<#assign validarCampos="return validaFormulario('form', new Array('@etapaCheck'), null)"/>
 </head>
 

@@ -95,7 +95,59 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="29"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="14"
+						y="15"
+						width="230"
+						height="11"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Candidato]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="246"
+						y="15"
+						width="190"
+						height="11"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Cargo pretendido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="438"
+						y="15"
+						width="96"
+						height="11"
+						key="staticText-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Data Realizada]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="2"
+						y="3"
+						width="532"
+						height="11"
+						key="staticText-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Etapa seletiva]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
@@ -117,7 +169,7 @@
 					<reportElement
 						x="14"
 						y="1"
-						width="239"
+						width="230"
 						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -128,27 +180,27 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="257"
+						x="246"
 						y="1"
-						width="275"
+						width="190"
 						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["(" + $F{solicitacao.faixaSalarial.cargo.nome} + ")"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{solicitacao.faixaSalarial.cargo.nome}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="448"
-						y="-1"
-						width="79"
-						height="15"
+						x="438"
+						y="1"
+						width="96"
+						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{dataString}]]></textFieldExpression>
 				</textField>
