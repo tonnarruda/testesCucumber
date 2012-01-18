@@ -123,7 +123,7 @@
 		});
 	</script>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol'))"/>
+	<#assign validarCampos="$('#gravar').attr('disabled', true); return validaFormulario('form', new Array('horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol'))"/>
 </head>
 <body>
 
@@ -213,7 +213,7 @@
 						Atulizado por: ${nomeLiberador} 
 						<br><br>					
 					</#if>	
-					Staus da solicitação (Inicia o processo de seleção de pessoal)<br><br>
+					Status da solicitação (Inicia o processo de seleção de pessoal)<br><br>
 					<@ww.select  name="solicitacao.status"  list="status" id="statusSolicitcao" disabled="true" />
 					<@ww.textarea label="Observação" name="solicitacao.observacaoLiberador" id="obsAprova" disabled="true" />
 				</ul>
@@ -233,7 +233,7 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}">
+		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}" id="gravar">
 		</button>
 		<#if visualizar?exists && cargo?exists>
 			<button onclick="window.location='list.action?visualizar=${visualizar}&cargo.id=${cargo.id}'" class="btnCancelar" accesskey="V">

@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
@@ -252,8 +250,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     public String update() throws Exception
     {
-    	Solicitacao solicitacaoAux = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
-    	
         if (bairrosCheck != null)
         {
         	Collection<Bairro> bairrosTmp = montaCargos();
@@ -261,46 +257,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         }
         else
         	solicitacao.setBairros(null);
-
-       	if(!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
-        {
-        	solicitacao.setStatus(solicitacaoAux.getStatus());
-        	solicitacao.setLiberador(solicitacaoAux.getLiberador());
-        }
-
-        if (solicitacao.getAreaOrganizacional() == null || solicitacao.getAreaOrganizacional().getId() == null)
-        	solicitacao.setAreaOrganizacional(solicitacaoAux.getAreaOrganizacional());
-        if (solicitacao.getEstabelecimento() == null || solicitacao.getEstabelecimento().getId() == null)
-        	solicitacao.setEstabelecimento(solicitacaoAux.getEstabelecimento());
-        if (solicitacao.getFaixaSalarial() == null || solicitacao.getFaixaSalarial().getId() == null)
-        	solicitacao.setFaixaSalarial(solicitacaoAux.getFaixaSalarial());
-        if (solicitacao.getEmpresa() == null || solicitacao.getEmpresa().getId() == null)
-        	solicitacao.setEmpresa(solicitacaoAux.getEmpresa());
-
-        if (solicitacao.getAvaliacao().getId() == null)
-        	solicitacao.setAvaliacao(null);
-        if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
-        	solicitacao.setCidade(null);
-      	if(solicitacao.getLiberador() == null || solicitacao.getLiberador().getId() == null)
-    		solicitacao.setLiberador(null);
         
-        solicitacaoManager.update(solicitacao);
-        enviaEmailParaSolicitante(solicitacaoAux);
+        solicitacaoManager.updateSolicitacao(solicitacao,getEmpresaSistema(), getUsuarioLogado());
         
         return Action.SUCCESS;
     }
-
-	private void enviaEmailParaSolicitante(Solicitacao solicitacaoAux) 
-	{
-		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
-        {
-        	if(solicitacao.getStatus() != solicitacaoAux.getStatus())
-        	{
-        		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
-       			solicitacaoManager.emailParaSolicitante(solicitacao, getEmpresaSistema(), getUsuarioLogado());
-        	}
-        }
-	}
 
 	private Collection<Bairro> montaCargos() {
 		Collection<Bairro> bairrosTmp = new ArrayList<Bairro>();
@@ -341,7 +302,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public String imprimirRelatorio() throws Exception
     {
-        String titulo = "Relatório de Candidatos Aptos das Solicitações Abertas";
+        String titulo = "Lista de candidatos aptos das solicitações abertas.";
 		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), "");
 
         candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatosBySolicitacaoAberta(etapaCheck, getEmpresaSistema().getId());

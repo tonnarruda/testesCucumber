@@ -78,37 +78,6 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
 		assertNull(exception);
 	}
     
-
-	
-	public void testUpdateNaoValidado()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setAcIntegra(true);
-		
-		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
-		solicitacao.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
-		solicitacao.setCidade(CidadeFactory.getEntity());
-		solicitacao.setAvaliacao(AvaliacaoFactory.getEntity());
-		
-		Solicitacao solicitacaoAux = SolicitacaoFactory.getSolicitacao();
-		solicitacaoAux.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
-		action.setBairrosCheck(new String[]{"1"});
-		action.setSolicitacao(solicitacao);
-		solicitacaoManager.expects(once()).method("findByIdProjectionForUpdate").with(eq(solicitacao.getId())).will(returnValue(solicitacaoAux));
-		solicitacaoManager.expects(once()).method("update").with(eq(solicitacao));
-		
-		Exception exception = null;
-		try
-		{
-			action.update();
-		}
-		catch (Exception e)
-		{
-			exception = e;
-		}
-		assertNull(exception);
-	}
-	
 	public void testUpdate()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -117,19 +86,11 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		solicitacao.setCidade(CidadeFactory.getEntity());
 		solicitacao.setAvaliacao(AvaliacaoFactory.getEntity());
-		solicitacao.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
-		
-		
-		Solicitacao solicitacaoAux = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
+		
 		action.setBairrosCheck(new String[]{"1"});
 		action.setSolicitacao(solicitacao);
-		MockSecurityUtil.verifyRole = true;
-		solicitacaoManager.expects(once()).method("findByIdProjectionForUpdate").with(eq(solicitacao.getId())).will(returnValue(solicitacaoAux));
-		solicitacaoManager.expects(once()).method("emailParaSolicitante");
-		solicitacaoManager.expects(once()).method("update").with(eq(solicitacao));
-		
-		System.out.println(MockSecurityUtil.verifyRole);
+		solicitacaoManager.expects(once()).method("updateSolicitacao").with(eq(solicitacao), ANYTHING, ANYTHING).isVoid();
 		
 		Exception exception = null;
 		try

@@ -118,21 +118,22 @@
 			document.getElementById("pagina").value=1;
 		}
 		
-		function aprovarSolicitacao(solicitacaoId) 
+		function aprovarSolicitacao(solicitacaoId, statusAnterior) 
 		{
 			$('#solicitacaoIdAlterarStatus').val(solicitacaoId);
+			$('#statusSolicitacaoAnterior').val(statusAnterior);
 		
 			$('#alterarStatusDiv').dialog({ modal: true, 
 											width: 500,
 											height: 300,
-											title: 'Aprovar/Reprovar solicitação',
+											title: 'Alterar status',
 										    open: function(event, ui) 
 											{ 
 												if (solicitacaoId != '')
 												{
 													SolicitacaoDWR.getObsSolicitacao(solicitacaoId, function(data){
 														$('#obsAprova').val(data.obs);
-														$('#statusSolicitacao').val(data.status);
+														$('#statusSolicitcao').val(data.status);
 													});
 												}
 											}
@@ -177,7 +178,7 @@
 			<#assign imgEncerra="flag_red.gif"/>
 			<#assign actionEncerra="encerrarSolicitacao.action"/>
 		</#if>
-		<@display.column title="Ações" media="html" class="acao" style="width: 160px; text-align:left;">
+		<@display.column title="Ações" media="html" class="acao" style="width: 170px; text-align:left;">
 			<a href="imprimirSolicitacaoPessoal.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.print.hint"/>" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<@authz.authorize ifNotGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 				<#if solicitacao.status=='R' && !solicitacao.encerrada>
@@ -223,7 +224,7 @@
 		</@authz.authorize>
 	
 		<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
-			<a href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id})"><img border="0" title="Aprovar/Reprovar Solicitação" src="<@ww.url includeParams="none" value="/imgs/page_edit.gif"/>"></a>
+			<a href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id},'${solicitacao.status}')"><img border="0" title="Alterar status" src="<@ww.url includeParams="none" value="/imgs/page_edit.gif"/>"></a>
 		</@authz.authorize>
 		
 		</@display.column>
@@ -244,11 +245,9 @@
 		<@display.column property="areaOrganizacional.nome" title="Área" class="${classe}"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;" class="${classe}"/>
 
-		<#-- <@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO"> -->
-			<@display.column title="Status" style="width:33px;" class="${classe}">
-				${solicitacao.statusFormatado}
-			</@display.column>
-		<#--/@authz.authorize -->
+		<@display.column title="Status" style="width:33px;" class="${classe}">
+			${solicitacao.statusFormatado}
+		</@display.column>
 
 	</@display.table>
 
@@ -281,9 +280,10 @@
 
 	<div id="alterarStatusDiv" class="alterarStatusDiv">
 		<@ww.form name="formUpdateStatusSolicitacao" action="updateStatusSolicitacao.action" method="post" onsubmit="${validarCamposUpdateStatus}">
-			<@ww.textarea label="Observações" name="solicitacao.observacaoLiberador"  id='obsAprova'/>
-			<@ww.select label="Status" name="solicitacao.status" list=r"#{'I':'Em análise', 'A':'Aprovada', 'R':'Reprovada'}" id='statusSolicitacao'/>
+			<@ww.select  label="Status"  name="solicitacao.status"  list="status" id="statusSolicitcao" />
+			<@ww.textarea label="Observações" name="solicitacao.observacaoLiberador" id="obsAprova"/>
 			<@ww.hidden name="solicitacao.id" id="solicitacaoIdAlterarStatus"/>
+			<@ww.hidden name="statusSolicitacaoAnterior" id="statusSolicitacaoAnterior" />
 		</@ww.form>
 		<button onclick="${validarCamposUpdateStatus};" class="btnGravar grayBG" id="gravarStatus"></button>
 	</div>

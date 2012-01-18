@@ -16,6 +16,7 @@ import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
@@ -24,18 +25,25 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.geral.CidadeFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
 @SuppressWarnings("deprecation")
@@ -46,9 +54,10 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	private Mock usuarioManager = null;
 	private Mock candidatoSolicitacaoManager = null;
 	private Mock anuncioManager = null;
-//	private Mock mail = null;
+	//private Mock mail = null;
 	private Mock perfilManager = null;
 	private Mock parametrosDoSistemaManager;
+	private Mock colaboradorManager;
 
 	protected void setUp() throws Exception
 	{
@@ -71,10 +80,11 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		anuncioManager = new Mock(AnuncioManager.class);
 		solicitacaoManager.setAnuncioManager((AnuncioManager) anuncioManager.proxy());
 		
-		
 		perfilManager = mock(PerfilManager.class);
 		solicitacaoManager.setPerfilManager((PerfilManager) perfilManager.proxy());
 
+		colaboradorManager = new Mock(ColaboradorManager.class);
+		
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 	}
@@ -260,6 +270,34 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		solicitacaoDao.expects(once()).method("updateSuspendeSolicitacao").with(eq(true), eq("suspender"), eq(solicitacao.getId()));
 
 		solicitacaoManager.updateSuspendeSolicitacao(true, "suspender", solicitacao.getId());
+	}
+	
+	public void testUpdateSolicitacao() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
+		solicitacao.setCidade(CidadeFactory.getEntity());
+		solicitacao.setAvaliacao(AvaliacaoFactory.getEntity());
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
+		
+		Solicitacao solicitacaoAux = SolicitacaoFactory.getSolicitacao();
+		solicitacaoAux.setStatus(StatusAprovacaoSolicitacao.APROVADO);
+		MockSecurityUtil.verifyRole = false;
+		solicitacaoDao.expects(once()).method("findByIdProjectionForUpdate").with(eq(solicitacao.getId())).will(returnValue(solicitacaoAux));
+		solicitacaoDao.expects(once()).method("update").with(eq(solicitacao));
+		
+		Exception exception = null;
+		try
+		{
+			solicitacaoManager.updateSolicitacao(solicitacao, empresa, UsuarioFactory.getEntity());
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+		assertNull(exception);
 	}
 
 	public void testGetCountComUsuarioValido()
@@ -495,5 +533,47 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 //		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 //		
 //		solicitacaoManager.enviarEmailParaLiberadorSolicitacao(solicitacao, empresa);
+//	}
+//	
+//	public void testEmailSolicitante() throws Exception
+//	{
+//		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+//		parametrosDoSistema.setAppUrl("url");
+//		
+//		Empresa empresa = EmpresaFactory.getEmpresa();
+//		empresa.setEmailRespRH("chico@teste.com");
+//
+//		Usuario solicitante = UsuarioFactory.getEntity(2L);
+//		Usuario liberador = UsuarioFactory.getEntity(3L);
+//		
+//		Contato contato = new Contato();
+//		contato.setEmail("arnaldo@teste.com");
+//		
+//		Colaborador arnaldo = ColaboradorFactory.getEntity(5L);
+//		arnaldo.setUsuario(solicitante);
+//		arnaldo.setNome("Arnaldo Escóssio");
+//		arnaldo.setNomeComercial("Arnaldo");
+//		arnaldo.setContato(contato);
+//		
+//		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(12L);
+//		solicitacao.setSolicitante(solicitante);
+//		solicitacao.setLiberador(liberador);
+//		
+//		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+//		
+//		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+//		solicitacaoDao.expects(once()).method("findByIdProjectionForUpdate").with(eq(solicitacao.getId())).will(returnValue(parametrosDoSistema));
+//		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId())).will(returnValue(arnaldo));
+//		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(solicitacao.getLiberador().getId())).will(returnValue(arnaldo));
+//		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+//		//mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametrosDoSistema),ANYTHING,ANYTHING,ANYTHING}).isVoid();
+//		
+//		Exception exc = null;
+//		try {
+//			solicitacaoManager.emailSolicitante(solicitacao, empresa, solicitante);
+//		} catch (Exception e) {
+//			exc = e;
+//		}
+//		assertNull(exc);
 //	}
 }
