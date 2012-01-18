@@ -1,5 +1,6 @@
 package com.fortes.rh.util;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,14 +25,19 @@ public class RelatorioUtil
 		Usuario usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 
 		String path = ServletActionContext.getServletContext().getRealPath("/WEB-INF/report/") + java.io.File.separator;
-    	String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
+    	String pathLogoRelatorio = "";
+    	
+    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
+    	File logo = new File(pathLogo);
+    	if(logo.exists())
+    		pathLogoRelatorio = pathLogo;
 
     	String msgRegistro = Autenticador.getMsgPadrao();
     	Boolean registrado = (Boolean) ActionContext.getContext().getSession().get("REG_LOGS");
     	if(registrado != null && registrado)
     		msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());
 
-    	Cabecalho cabecalho = new Cabecalho(titulo, empresa.getNome(), filtro, usuario.getNome(), parametrosDoSistema.getAppVersao(), logo, msgRegistro);
+    	Cabecalho cabecalho = new Cabecalho(titulo, empresa.getNome(), filtro, usuario.getNome(), parametrosDoSistema.getAppVersao(), pathLogoRelatorio, msgRegistro);
     	cabecalho.setLicenciadoPara(empresa.getNome());
     	
     	parametros.put("CABECALHO", cabecalho);

@@ -77,7 +77,15 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	{
 		empresa = empresaManager.findByIdProjection(empresa.getId());
 		
-		parametros.put("BACKGROUND", ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl());
+    	String pathBackGroundRelatorio = "";
+    	
+    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl();
+    	java.io.File logo = new java.io.File(pathLogo);
+    	if(logo.exists())
+    		pathBackGroundRelatorio = pathLogo;
+    	
+		parametros.put("BACKGROUND", pathBackGroundRelatorio);
+		
 		parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", "Nome do Aniversariante"));
 		
 		colaboradores = Arrays.asList(new Colaborador());
@@ -130,7 +138,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			empresa.setLogoUrl("fortes.gif");
 		
 		if(StringUtils.isEmpty(empresa.getImgAniversarianteUrl()))
-			empresa.setLogoUrl("aniversariantes.jpg");
+			empresa.setImgAniversarianteUrl("aniversariantes.jpg");
 		
 		//evitando problema de vir instância sem o id (TransientObjectException) 
 		if (empresa.getExame() != null && empresa.getExame().getId() == null)

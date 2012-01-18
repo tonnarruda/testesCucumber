@@ -147,7 +147,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	    	
 			for (Empresa empresa : empresas) 
 			{
-				parametros.put("BACKGROUND", ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl());
+		    	String pathBackGroundRelatorio = "";
+		    	
+		    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl();
+		    	java.io.File logo = new java.io.File(pathLogo);
+		    	if(logo.exists())
+		    		pathBackGroundRelatorio = pathLogo;
+		    	
+				parametros.put("BACKGROUND", pathBackGroundRelatorio);
 				
 				Collection<Colaborador> aniversariantes = getDao().findAniversariantesByEmpresa(empresa.getId(), dia, mes);
 				for (Colaborador aniversariante : aniversariantes)
