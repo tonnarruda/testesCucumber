@@ -28,10 +28,12 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.DataGrafico;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
+import com.opensymphony.xwork.ActionContext;
 
 public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, SolicitacaoDao> implements SolicitacaoManager
 {
@@ -151,6 +153,44 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		getDao().updateSuspendeSolicitacao(suspender, obsSuspensao, solicitacaoId);
 	}
 	
+	public void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario) 
+	{
+		Solicitacao solicitacaoAux = findByIdProjectionForUpdate(solicitacao.getId());
+
+       	if(!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
+        {
+        	solicitacao.setStatus(solicitacaoAux.getStatus());
+        	solicitacao.setLiberador(solicitacaoAux.getLiberador());
+        }
+
+        if (solicitacao.getAreaOrganizacional() == null || solicitacao.getAreaOrganizacional().getId() == null)
+        	solicitacao.setAreaOrganizacional(solicitacaoAux.getAreaOrganizacional());
+        if (solicitacao.getEstabelecimento() == null || solicitacao.getEstabelecimento().getId() == null)
+        	solicitacao.setEstabelecimento(solicitacaoAux.getEstabelecimento());
+        if (solicitacao.getFaixaSalarial() == null || solicitacao.getFaixaSalarial().getId() == null)
+        	solicitacao.setFaixaSalarial(solicitacaoAux.getFaixaSalarial());
+        if (solicitacao.getEmpresa() == null || solicitacao.getEmpresa().getId() == null)
+        	solicitacao.setEmpresa(solicitacaoAux.getEmpresa());
+
+        if (solicitacao.getAvaliacao().getId() == null)
+        	solicitacao.setAvaliacao(null);
+        if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
+        	solicitacao.setCidade(null);
+      	if(solicitacao.getLiberador() == null || solicitacao.getLiberador().getId() == null)
+    		solicitacao.setLiberador(null);
+        
+        update(solicitacao);
+		
+		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
+        {
+        	if(solicitacao.getStatus() != solicitacaoAux.getStatus())
+        	{
+        		solicitacao.setLiberador(usuario);
+       			emailSolicitante(solicitacao, empresa, usuario);
+        	}
+        }
+	}
+	
 	public void updateStatusSolicitacao(Solicitacao solicitacao) 
 	{
 		getDao().updateStatusSolicitacao(solicitacao);
@@ -188,7 +228,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		if (emails != null && !emails.isEmpty())
 		{
 			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-			String nomeSolicitante = preparaNome(colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId()));
+			String nomeSolicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId()).getNomeMaisNomeComercial();
 			
 			solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
 		
@@ -219,19 +259,20 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		}
 	}
 
-	public void emailParaSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario)
+	public void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario)
 	{
 		try {
 			ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
-			String link = parametrosDoSistema.getAppUrl();
 
 			solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
+			String link = parametrosDoSistema.getAppUrl() + "/captacao/solicitacao/prepareUpdate.action?solicitacao.id=" + solicitacao.getId();
 
 			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 			Colaborador colaboradorSolicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId());
+			Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(usuario.getId());
 			
-			String nomeSolicitante = preparaNome(colaboradorSolicitante);
-			String nomeLiberador = preparaNome(colaboradorManager.findByUsuarioProjection(usuario.getId()));
+			String nomeSolicitante = colaboradorSolicitante !=null ? colaboradorSolicitante.getNomeMaisNomeComercial():"";
+			String nomeLiberador = colaboradorSolicitante !=null ? colaboradorLiberador.getNomeMaisNomeComercial():usuario.getNome();
 			
 			String subject = "Status da solicitação de pessoal";
 			StringBuilder body = new StringBuilder("<span style='font-weight:bold'>O usuário "+ nomeLiberador + " alterou o status da solicitação " + solicitacao.getDescricao() + " da empresa " + empresa.getNome() + " para " + solicitacao.getStatusFormatado().toLowerCase()  +".</span><br>");
@@ -263,15 +304,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		body.append("<a href='" + link + "'>RH</a>");
 	}
 	
-	
-	private String preparaNome(Colaborador colaborador) 
-	{
-		if(colaborador == null)
-			return "Usuário sem colaborador";
-		
-		return colaborador.getNome() + " (" + colaborador.getNomeComercial()+ ")";
-	}
-
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao)
 	{
 		return getDao().getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresaId, statusSolicitacao);
@@ -338,4 +370,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		
 		return graficoContratadosMotivo;
 	}
+
+
 }

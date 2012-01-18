@@ -41,11 +41,12 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao);
-	void emailParaSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
+	void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
 	Solicitacao save(Solicitacao solicitacao, String[] emailsCheck);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
 	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Date dataIni, Date dataFim);
+	void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
 }
