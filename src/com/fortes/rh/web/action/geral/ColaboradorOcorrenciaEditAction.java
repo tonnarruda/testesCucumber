@@ -113,7 +113,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			HistoricoColaborador primeiroHistorico = historicoColaboradorManager.getPrimeiroHistorico(colaborador.getId());
 			if(primeiroHistorico.getData().compareTo(colaboradorOcorrencia.getDataIni()) == 1)
 			{
-				msg = "Não é permitido inserir Ocorrência antes da data da primeira situação do colaborador: (" + DateUtil.formataDiaMesAno(primeiroHistorico.getData()) + ")";
+				msg = "Não é permitido inserir ocorrência antes da data da primeira situação do colaborador: (" + DateUtil.formataDiaMesAno(primeiroHistorico.getData()) + ")";
 				throw new Exception();
 			}
 			
@@ -122,7 +122,8 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 			if (jaExisteOcorrenciaNoMesmoDia)
 			{
-				throw new Exception("Já existe esta ocorrência na mesma data para esse colaborador.");
+				msg = "Já existe uma ocorrência na mesma data para esse colaborador.";
+				throw new Exception();
 			}
 
 			ocorrencia = ocorrenciaManager.findById(colaboradorOcorrencia.getOcorrencia().getId());
@@ -152,7 +153,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			if(msg == null)
 				addActionError("Cadastro não pôde ser realizado.");
 			else
-				addActionError(msg);
+				addActionMessage(msg);
 
 			prepare();
 
