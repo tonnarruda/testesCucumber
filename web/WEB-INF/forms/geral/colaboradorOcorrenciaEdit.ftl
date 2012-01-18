@@ -32,6 +32,7 @@
 </head>
 <body>
 	<@ww.actionerror />
+	<@ww.actionmessage />
 	<@ww.form name="form" action="${formAction}" method="POST">
 
 	<div style="font-weight:bold;">Colaborador: ${colaborador.nome}</div>
