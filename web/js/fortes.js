@@ -46,7 +46,8 @@ var BrowserDetect = {
 var browsersCompativeis = {
 	Firefox : { versaoMinima : 4, url : 'http://br.mozdev.org/download/' },
 	Chrome : { versaoMinima : 9, url : 'https://www.google.com/chrome?hl=pt-br' }, 
-	Explorer: { versaoMinima : 8, url : 'http://windows.microsoft.com/pt-BR/internet-explorer/downloads/ie' }
+	Explorer: { versaoMinima : 8, url : 'http://windows.microsoft.com/pt-BR/internet-explorer/downloads/ie' },
+	Safari : { versaoMinima : 4, url : 'http://www.apple.com/br/safari/download/' }
 };
 
 BrowserDetect.init( function ( informacaoesDesteBrowser ){
