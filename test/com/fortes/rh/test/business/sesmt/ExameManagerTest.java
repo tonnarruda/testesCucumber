@@ -12,6 +12,7 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
@@ -34,6 +35,7 @@ public class ExameManagerTest extends MockObjectTestCase
 	private Mock exameDao = null;
 	private Mock parametrosDoSistemaManager;
 	private Mock areaOrganizacionalManager;
+	private Mock colaboradorManager;
 
 	protected void setUp() throws Exception
     {
@@ -46,6 +48,9 @@ public class ExameManagerTest extends MockObjectTestCase
         
         areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
         exameManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+
+        colaboradorManager = mock(ColaboradorManager.class);
+        exameManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
     }
 
 	public void testFindByIdProjection() throws Exception
@@ -284,16 +289,25 @@ public class ExameManagerTest extends MockObjectTestCase
     
     public void testEnviaLembreteExamesPrevistos() throws Exception
     {
-    	ExameManager exameManager = (ExameManager) SpringUtil.getBeanOld("exameManager");
-    	EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
+    	Collection<Empresa> empresas = new ArrayList<Empresa>();
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	empresas.add(empresa);
+    	
+    	Collection<String> emails = new ArrayList<String>();
+    	colaboradorManager.expects(once()).method("findEmailsByPapel").with(ANYTHING, ANYTHING).will(returnValue(emails));
+    	
+    	Exception exception = null;
 		try
 		{
-			exameManager.enviaLembreteExamesPrevistos(empresaManager.findEmailsEmpresa());
+			exameManager.enviaLembreteExamesPrevistos(empresas);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
+			exception = e;
 		}		
+		
+		assertNull(exception);
     }
     
 }
