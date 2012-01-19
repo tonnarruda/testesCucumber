@@ -372,7 +372,7 @@
 	</li>
 	
 	<li id="6" class="cabecalhoBox">
-		<h4><a href="javascript:;"  class="linkBox">Ocorrências</a></h4>
+		<h4><a href="javascript:;"  class="linkBox">Ocorrências <#if pontuacao?exists && 0 < pontuacao>(${pontuacao} <#if pontuacao?exists && pontuacao == 1>ponto<#else>pontos</#if>)</#if></a></h4>
 		<ul id="box6" class="box">
 		<table class="grade">
 			<tr>
@@ -385,6 +385,7 @@
 							</#if>
 						</@display.column>
 						<@display.column property="observacao" title="Observação"/>
+						<@display.column property="ocorrencia.pontuacao" title="Pontuação" style="width:75px;text-align:right;"/>
 					</@display.table>
 				</td>
 			</tr>

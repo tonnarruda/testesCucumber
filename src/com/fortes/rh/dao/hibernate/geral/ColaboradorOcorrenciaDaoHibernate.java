@@ -37,6 +37,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		p.add(Projections.property("co.id"), "id");
 		p.add(Projections.property("c.nomeComercial"),"colaboradorNomeComercial");
 		p.add(Projections.property("o.descricao"), "ocorrenciaDescricao");
+		p.add(Projections.property("o.pontuacao"), "ocorrenciaPontuacao");
 		p.add(Projections.property("co.dataIni"), "dataIni");
 		p.add(Projections.property("co.dataFim"), "dataFim");
 		p.add(Projections.property("co.observacao"), "observacao");
