@@ -8,7 +8,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
 Dado /^que eu esteja logado$/ do
-  unless page.has_selector?('.saudacao')
+  unless page.has_selector?('.saudacao') && page.has_selector?('.nomeUsuario')
     # Evita problema quando o firefox eh instanciado com a janela menor do que o necessario
     page.execute_script("window.resizeTo(screen.width, screen.height);window.moveTo(0,0);window.focus()")
     Dado %{que eu esteja na pagina de login}

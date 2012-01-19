@@ -13,9 +13,14 @@ import com.fortes.rh.util.RelatorioUtil;
 
 public class MotivoDemissaoManagerImpl extends GenericManagerImpl<MotivoDemissao, MotivoDemissaoDao> implements MotivoDemissaoManager
 {
-	public Map<String, Object> getParametrosRelatorio(Empresa empresa, Date dataIni, Date dataFim, Map<String, Object> parametros)
+	private EstabelecimentoManager estabelecimentoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	
+	public Map<String, Object> getParametrosRelatorio(Empresa empresa, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasOrganizacionaisIds, Map<String, Object> parametros)
 	{
-		String filtro = DateUtil.formataDiaMesAno(dataIni) + " - " + DateUtil.formataDiaMesAno(dataFim);
+		String filtro = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
+		filtro += "\nEstabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(estabelecimentosIds);
+        filtro += "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(areasOrganizacionaisIds);
 
 		Map<String, Object> parametrosRelatorio = RelatorioUtil.getParametrosRelatorio("Relatório de Desligamento", empresa, filtro);
 
@@ -46,5 +51,13 @@ public class MotivoDemissaoManagerImpl extends GenericManagerImpl<MotivoDemissao
 		motivoDemissao.setEmpresaId(empresaDestinoId);
 		
 		getDao().save(motivoDemissao);
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

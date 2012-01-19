@@ -239,6 +239,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private boolean checarCandidatoMesmoCpf = true;
 	private boolean vincularCandidatoMesmoCpf;
 	
+	private int pontuacao = 0;
+	
 	private void prepare() throws Exception
 	{
 		try
@@ -811,6 +813,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			cursosColaborador = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(getEmpresaSistema().getId(), colaborador.getId(), null, null);
 			
 			ocorrenciasColaborador = colaboradorOcorrenciaManager.findByColaborador(colaborador.getId());
+			pontuacao = 0;
+			for (ColaboradorOcorrencia colaboradorOcorrencia : ocorrenciasColaborador)
+				pontuacao += colaboradorOcorrencia.getOcorrencia().getPontuacao();
 			
 			afastamentosColaborador = colaboradorAfastamentoManager.findByColaborador(colaborador.getId());
 			experiencias = experienciaManager.findByColaborador(colaborador.getId());
@@ -1671,5 +1676,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public boolean isObrigarAmbienteFuncaoColaborador() {
 		return obrigarAmbienteFuncaoColaborador;
+	}
+
+	public int getPontuacao() {
+		return pontuacao;
 	}
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.2//EN" "http://www.opensymphony.com/xwork/xwork-1.1.2.dtd">
 
 <xwork>
   <include file="webwork-default.xml" />
@@ -13,6 +13,7 @@
       <interceptor name="reference-resolver" class="com.opensymphony.xwork.interceptor.ExternalReferencesInterceptor" />
       <interceptor name="fileUploadToProperty" class="com.fortes.webwork.interceptor.FileUploadToPropertyInterceptor" />
       <interceptor name="validationException" class="com.fortes.webwork.interceptor.ValidationExceptionInterceptor" />
+      <interceptor name="exception" class="com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor"/>
       <interceptor-stack name="showFileStack">
         <interceptor-ref name="reference-resolver" />
         <interceptor-ref name="servlet-config" />
@@ -21,7 +22,6 @@
       </interceptor-stack>
 	  
       <interceptor-stack name="myDefaultWebStackPart1">
-        <interceptor-ref name="exception" />
         <interceptor-ref name="validationException" />
         <interceptor-ref name="reference-resolver" />
         <interceptor-ref name="alias" />
@@ -63,6 +63,7 @@
       <interceptor-stack name="myDefaultWebStack">
       	<interceptor-ref name="myDefaultWebStackPart1" />
     	<interceptor-ref name="myDefaultWebStackPart2" />
+    	<interceptor-ref name="exception" />
       </interceptor-stack>
 
       <interceptor-stack name="tokenWebStack">
@@ -125,11 +126,19 @@
 	  <!-- ########################################################### -->
 		
     </interceptors>
+    
     <default-interceptor-ref name="myDefaultWebStack" />
+    
     <global-results>
       <result name="error">/error.jsp</result>
       <result name="message">/message.jsp</result>
+      <result name="exceptionError">/exception.jsp</result>
     </global-results>
+    
+    <global-exception-mappings>
+      <exception-mapping exception="java.lang.Exception" result="exceptionError"/>
+    </global-exception-mappings>
+    
     <action name="browsersCompativeis" class="com.fortes.rh.web.action.Index" method="browsersCompativeis">
       <result name="success" type="freemarker">/WEB-INF/pages/browsersCompativeis.ftl</result>
     </action>

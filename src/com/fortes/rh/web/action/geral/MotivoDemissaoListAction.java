@@ -145,7 +145,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	public String relatorioMotivoDemissao() throws Exception
 	{
-		parametros = motivoDemissaoManager.getParametrosRelatorio(getEmpresaSistema(), dataIni, dataFim, parametros);
+		parametros = motivoDemissaoManager.getParametrosRelatorio(getEmpresaSistema(), dataIni, dataFim, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), parametros);
 		parametros.put("EXIBIR_OBS", exibirObservacao);
 
 		if(listaColaboradores)
