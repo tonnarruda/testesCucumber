@@ -238,6 +238,8 @@
 				/geral/ocorrencia/*/**=ROLE_CAD_OCORRENCIA
 				/geral/colaborador/prepareUpdateInfoPessoais.action* = ROLE_CAD_INFO_PESSOAL
 				/geral/colaborador/updateInfoPessoais.action* = ROLE_CAD_INFO_PESSOAL
+				/geral/colaborador/prepareRelatorioAniversariantes*/** = ROLE_REL_ANIVERSARIANTES
+				/geral/colaborador/relatorioAniversariantes*/** = ROLE_REL_ANIVERSARIANTES
 				/geral/colaborador/*/**=ROLE_CAD_COLABORADOR
 				/geral/historicoColaboradorBeneficio/*/**=ROLE_CAD_COLABORADOR
 				/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
@@ -282,6 +284,8 @@
 				/captacao/idioma/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
 				/captacao/experiencia/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
 				/captacao/candidatoSolicitacao/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO
+				/captacao/candidato/prepareRelatorioAvaliacaoCandidatos*/** = ROLE_REL_AVALIACAO_CANDIDATOS 
+				/captacao/candidato/relatorioAvaliacaoCandidatos*/** = ROLE_REL_AVALIACAO_CANDIDATOS 
 				/captacao/candidato/*/**=ROLE_CAD_CANDIDATO
 				/captacao/empresaBds/*/**=ROLE_CAD_BDS_EMPRESA
 				/captacao/solicitacao/agenda*/**=ROLE_SOLICITACAO_AGENDA
