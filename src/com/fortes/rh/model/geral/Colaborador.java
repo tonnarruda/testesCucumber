@@ -1597,6 +1597,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return empresa.getNome();
 	}
 
+	@NaoAudita
+	public String getEstabelecimentoNome()
+	{
+		if(estabelecimento == null || estabelecimento.getNome()==null)
+			return "";
+		
+		return estabelecimento.getNome();
+	}
+
 	private void criarEmpresa() {
 		if (empresa == null)
 			empresa = new Empresa();

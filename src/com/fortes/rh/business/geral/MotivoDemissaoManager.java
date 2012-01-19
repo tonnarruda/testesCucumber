@@ -10,7 +10,7 @@ import com.fortes.rh.model.geral.MotivoDemissao;
 
 public interface MotivoDemissaoManager extends GenericManager<MotivoDemissao>
 {
-	Map<String, Object> getParametrosRelatorio(Empresa empresa, Date dataIni, Date dataFim, Map<String, Object> parametros);
+	Map<String, Object> getParametrosRelatorio(Empresa empresa, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasOrganizacionaisIds, Map<String, Object> parametros);
 
 	Collection<MotivoDemissao> findAllSelect(Long empresaId);
 
