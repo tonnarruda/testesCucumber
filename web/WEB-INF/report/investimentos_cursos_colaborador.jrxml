@@ -34,6 +34,8 @@
 	<field name="curso.nome" class="java.lang.String"/>
 	<field name="curso.empresa.nome" class="java.lang.String"/>
 	<field name="turma.realizada" class="java.lang.Boolean"/>
+	<field name="curso.cargaHorariaMinutos" class="java.lang.String"/>
+	<field name="curso.CargaHoraria" class="java.lang.Integer"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpEmpresa" calculation="Count">
 		<variableExpression><![CDATA[$F{turma.descricao}]]></variableExpression>
@@ -43,6 +45,12 @@
 	</variable>
 	<variable name="totalGeral" class="java.lang.Double" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{custoRateado}]]></variableExpression>
+	</variable>
+	<variable name="totalCargaHoraria" class="java.lang.Integer" resetType="Group" resetGroup="grpEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{curso.CargaHoraria}]]></variableExpression>
+	</variable>
+	<variable name="totalGeralCargaHoraria" class="java.lang.Integer" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{curso.CargaHoraria}]]></variableExpression>
 	</variable>
 
 		<group  name="grpEmpresa" isReprintHeaderOnEachPage="true" >
@@ -68,7 +76,7 @@
 			<band height="15"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="443"
+						x="345"
 						y="3"
 						width="40"
 						height="11"
@@ -81,9 +89,9 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="486"
+						x="475"
 						y="3"
-						width="47"
+						width="58"
 						height="11"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -91,6 +99,19 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalPorEmpresa}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="387"
+						y="3"
+						width="43"
+						height="11"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($V{totalCargaHoraria}.intValue()/60)+":"+((($V{totalCargaHoraria}.intValue()%60)+"0").substring(0,2))]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -120,7 +141,7 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="26"  isSplitAllowed="true" >
+			<band height="34"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="0"
@@ -137,8 +158,8 @@
 				<staticText>
 					<reportElement
 						x="7"
-						y="14"
-						width="328"
+						y="22"
+						width="272"
 						height="11"
 						key="staticText-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -149,8 +170,8 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="337"
-						y="14"
+						x="281"
+						y="22"
 						width="104"
 						height="11"
 						key="staticText-13"/>
@@ -162,21 +183,22 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="485"
-						y="14"
-						width="48"
-						height="11"
+						x="474"
+						y="11"
+						width="59"
+						height="22"
 						key="staticText-14"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Investimento (R$)]]></text>
+				<text><![CDATA[Investimento /
+Colaborador]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="443"
-						y="14"
+						x="432"
+						y="22"
 						width="40"
 						height="11"
 						key="staticText-17"/>
@@ -185,6 +207,19 @@
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Realizado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="387"
+						y="11"
+						width="43"
+						height="22"
+						key="staticText-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Carga Horária]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -209,7 +244,7 @@
 					<reportElement
 						x="7"
 						y="1"
-						width="328"
+						width="272"
 						height="11"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -220,7 +255,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="337"
+						x="281"
 						y="1"
 						width="104"
 						height="11"
@@ -233,9 +268,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="486"
+						x="475"
 						y="1"
-						width="47"
+						width="58"
 						height="11"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -246,7 +281,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="443"
+						x="432"
 						y="1"
 						width="40"
 						height="11"
@@ -256,6 +291,19 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{turma.realizada}.booleanValue() ? "Sim" : "Não"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="387"
+						y="1"
+						width="43"
+						height="11"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{curso.cargaHorariaMinutos}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -297,7 +345,7 @@
 			<band height="15"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="427"
+						x="329"
 						y="2"
 						width="56"
 						height="11"
@@ -310,9 +358,9 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="486"
+						x="475"
 						y="2"
-						width="47"
+						width="58"
 						height="11"
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -320,6 +368,19 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{totalGeral}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="387"
+						y="2"
+						width="43"
+						height="11"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($V{totalGeralCargaHoraria}.intValue()/60)+":"+((($V{totalGeralCargaHoraria}.intValue()%60)+"0").substring(0,2))]]></textFieldExpression>
 				</textField>
 			</band>
 		</summary>

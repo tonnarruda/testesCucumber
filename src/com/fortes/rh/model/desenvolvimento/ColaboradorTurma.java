@@ -337,12 +337,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.valorAvaliacao = valorAvaliacao;
 	}
 
-	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String empresaNome, String cursoNome, String turmaDescricao, Date dataPrevIni, Date dataPrevFim, boolean turmaRealizada, Double custoRateado)
+	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String empresaNome, String cursoNome, Integer cursoCargaHoraria, String turmaDescricao, Date dataPrevIni, Date dataPrevFim, boolean turmaRealizada, Double custoRateado)
 	{
 		this.setColaboradorId(colaboradorId);
 		this.setColaboradorNome(colaboradorNome);
 		
 		this.setCursoNome(cursoNome);
+		this.setProjectionCursoCargaHoraria(cursoCargaHoraria);
 		if(this.curso.getEmpresa() == null)
 			curso.setEmpresa(new Empresa());
 		this.curso.getEmpresa().setNome(empresaNome);
