@@ -481,7 +481,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	{
 		StringBuilder hql = new StringBuilder();
 	
-		hql.append("select new ColaboradorTurma(colab.id, colab.nome, emp.nome, curso.nome, turma.descricao, turma.dataPrevIni, turma.dataPrevFim, turma.realizada, ");
+		hql.append("select new ColaboradorTurma(colab.id, colab.nome, emp.nome, curso.nome, curso.cargaHoraria, turma.descricao, turma.dataPrevIni, turma.dataPrevFim, turma.realizada, ");
 		hql.append(                            "(select (turma.custo / count(ct.turma.id)) from ColaboradorTurma ct where ct.turma.id = turma.id group by ct.turma.id)) " );
 		hql.append("from ColaboradorTurma as colabTurma ");
 		hql.append("left join colabTurma.turma as turma ");
