@@ -24,15 +24,14 @@ public class TurmaTipoDespesaDaoHibernate extends GenericDaoHibernate<TurmaTipoD
 	public Collection<TurmaTipoDespesa> findTipoDespesaTurma(Long turmaId) {
 		
 		Criteria criteria = getSession().createCriteria(TurmaTipoDespesa.class, "t");
-
+		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("t.tipoDespesa.id"), "projectionTipoDespesaId");
 		p.add(Projections.property("t.despesa"), "despesa");
 
 		criteria.setProjection(p);
-
 		criteria.add(Expression.eq("t.turma.id", turmaId));
-
+	
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(TurmaTipoDespesa.class));
 
 		return criteria.list();

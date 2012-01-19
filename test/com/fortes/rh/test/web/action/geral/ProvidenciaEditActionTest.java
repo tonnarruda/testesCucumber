@@ -8,7 +8,9 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.ProvidenciaManager;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Providencia;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ProvidenciaFactory;
 import com.fortes.rh.web.action.geral.ProvidenciaEditAction;
 
@@ -36,27 +38,36 @@ public class ProvidenciaEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<Providencia>()));
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
+		manager.expects(once()).method("find").will(returnValue(new ArrayList<Providencia>()));
 		assertEquals("success", action.list());
 		assertNotNull(action.getProvidencias());
 	}
 
 	public void testDelete() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
 		Providencia providencia = ProvidenciaFactory.getEntity(1L);
 		action.setProvidencia(providencia);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<Providencia>()));
+		manager.expects(once()).method("find").will(returnValue(new ArrayList<Providencia>()));
 		assertEquals("success", action.delete());
 	}
 	
 	public void testDeleteException() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
 		Providencia providencia = ProvidenciaFactory.getEntity(1L);
 		action.setProvidencia(providencia);
 		
-		manager.expects(once()).method("findAll");
+		manager.expects(once()).method("find");
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		assertEquals("success", action.delete());
 	}
