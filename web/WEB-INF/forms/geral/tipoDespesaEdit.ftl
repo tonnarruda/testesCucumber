@@ -15,6 +15,7 @@
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.hidden name="tipoDespesa.id" />
+			<@ww.hidden name="tipoDespesa.empresa.id" />
 			<@ww.textfield label="Descrição" name="tipoDespesa.descricao" id="descricao" cssStyle="width: 282px;" maxLength="40" required="true"/>
 			<@ww.token/>
 		</@ww.form>

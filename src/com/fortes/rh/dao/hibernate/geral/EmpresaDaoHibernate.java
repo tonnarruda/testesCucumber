@@ -203,7 +203,6 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from estabelecimento where empresa_id = " + id + ";",
 				"delete from etapaseletiva where empresa_id = " + id + ";",
 				"delete from usuarioempresa where empresa_id = " + id + ";",
-				"delete from empresa where id = " + id + ";",
 				"delete from historicoambiente where ambiente_id in (select id from ambiente where empresa_id = " + id + ");",
 				"delete from historicocolaborador where ambiente_id in (select id from ambiente where empresa_id = " + id + ");",
 				"delete from medicaorisco where ambiente_id in (select id from ambiente where empresa_id = " + id + ");",
@@ -235,6 +234,9 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from solicitacaoepi where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
 				"delete from solicitacaoexame where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
 				"delete from colaboradorturma where curso_id in (select id from curso where empresa_id = " + id + ");",
+				"delete from turmatipodespesa where turma_id in (select id from turma where empresa_id =  " + id + ");",
+				"delete from turmatipodespesa where tipodespesa_id in (select id from tipodespesa where empresa_id =  " + id + ");",
+				"delete from tipodespesa where empresa_id =  " + id + ";",
 				"delete from turma where curso_id in (select id from curso where empresa_id = " + id + ");",
 				"delete from colaboradorturma where dnt_id in (select id from dnt where empresa_id = " + id + ");",
 				"delete from candidatoeleicao where eleicao_id in (select id from eleicao where empresa_id = " + id + ");",
@@ -266,7 +268,8 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from diaturma where turma_id in (select id from turma where empresa_id = " + id + ");",
 				"delete from nivelcompetencia where empresa_id = " + id + ";",
 				"delete from colaborador where empresa_id = " + id + ";",
-				"delete from naturezalesao where empresa_id = " + id + ";"
+				"delete from naturezalesao where empresa_id = " + id + ";",
+				"delete from empresa where id = " + id + ";"
 		};
 		
 		JDBCConnection.executeQuery(sqls);
