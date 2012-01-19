@@ -81,13 +81,13 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
 
     	action.setListaColaboradores(true);
 
-    	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
+    	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
     	colaboradorManager.expects(atLeastOnce()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
 
     	assertEquals("success", action.relatorioMotivoDemissao());
 
     	action.setListaColaboradores(false);
-    	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
+    	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
     	colaboradorManager.expects(atLeastOnce()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
     	assertEquals("successBasico", action.relatorioMotivoDemissao());
     	assertEquals("Relatório de Motivos de Desligamento", ((Cabecalho)action.getParametros().get("CABECALHO")).getTitulo());

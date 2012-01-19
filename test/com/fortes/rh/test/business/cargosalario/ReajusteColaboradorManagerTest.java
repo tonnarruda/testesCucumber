@@ -726,7 +726,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 		Cabecalho cabecalho = (Cabecalho) parametros.get("CABECALHO");
 		assertEquals("xxx" + File.separatorChar, parametros.get("SUBREPORT_DIR"));
 		assertEquals(empresa.getNome(), cabecalho.getNomeEmpresa());
-		assertEquals(ArquivoUtil.getPathLogoEmpresa() + "logo", cabecalho.getLogoUrl());
+		assertEquals("", cabecalho.getLogoUrl()); //Arquivo nao existe
 	}
 
 	public void testUpdateFromHistoricoColaborador()

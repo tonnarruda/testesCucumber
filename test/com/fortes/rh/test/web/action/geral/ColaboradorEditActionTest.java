@@ -43,6 +43,7 @@ import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.sesmt.Cat;
@@ -56,6 +57,7 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorIdiomaFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.geral.ColaboradorEditAction;
@@ -246,9 +248,14 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> cursosColaborador = new ArrayList<ColaboradorTurma>();
 		cursosColaborador.add(colaboradorTurma);
 
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		ocorrencia.setDescricao("Abandono do local de trabalho");
+		ocorrencia.setPontuacao(10);
+		
 		ColaboradorOcorrencia colaboradorOcorrencia = new ColaboradorOcorrencia();
 		colaboradorOcorrencia.setId(1L);
 		colaboradorOcorrencia.setColaborador(colaborador);
+		colaboradorOcorrencia.setOcorrencia(ocorrencia);
 
 		Collection<ColaboradorOcorrencia> ocorrenciasColaborador = new ArrayList<ColaboradorOcorrencia>();
 		ocorrenciasColaborador.add(colaboradorOcorrencia);

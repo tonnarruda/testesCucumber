@@ -162,7 +162,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Cabecalho cabecalho = (Cabecalho) parametros.get("CABECALHO");
 
 		assertEquals("teste", cabecalho.getNomeEmpresa());
-		assertEquals(ArquivoUtil.getPathLogoEmpresa() + "logo.jpg", cabecalho.getLogoUrl());
+		assertEquals("", cabecalho.getLogoUrl()); //Arquivo nao existe
 		assertEquals("1.1.1", cabecalho.getVersaoSistema());
 		assertEquals("xxx" + File.separatorChar, parametros.get("SUBREPORT_DIR"));
 	}
