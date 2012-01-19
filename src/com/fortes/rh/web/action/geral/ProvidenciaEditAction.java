@@ -65,7 +65,7 @@ public class ProvidenciaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		providencias = providenciaManager.findAll(new String[] {"descricao"});
+		providencias = providenciaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		return Action.SUCCESS;
 	}
 

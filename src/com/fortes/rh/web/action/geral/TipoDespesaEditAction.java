@@ -36,6 +36,7 @@ public class TipoDespesaEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
+		tipoDespesa.setEmpresa(getEmpresaSistema());
 		tipoDespesaManager.save(tipoDespesa);
 		return Action.SUCCESS;
 	}
@@ -48,7 +49,7 @@ public class TipoDespesaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		tipoDespesas = tipoDespesaManager.findAll(new String[] {"descricao"});
+		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		return Action.SUCCESS;
 	}
 
