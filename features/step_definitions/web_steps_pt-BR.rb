@@ -406,6 +406,7 @@ end
 Dado /^que exista um tipo de despesa "([^"]*)"$/ do |tipodespesa_descricao|
    insert :tipodespesa do
      descricao tipodespesa_descricao
+     empresa :id => 1
    end
 end
 
