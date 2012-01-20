@@ -22,6 +22,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -95,7 +96,10 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	    		return Action.INPUT;
 	    	}
 	   	   	
-	    	parametros = RelatorioUtil.getParametrosRelatorio("Avaliação do Período de Experiência", getEmpresaSistema(), avaliacaoExperiencia.getTitulo());
+	    	TipoModeloAvaliacao tipo = new TipoModeloAvaliacao();
+	    	String tipoRelatorio = tipo.get(avaliacaoExperiencia.getTipoModeloAvaliacao());
+	    	
+	    	parametros = RelatorioUtil.getParametrosRelatorio(tipoRelatorio, getEmpresaSistema(), avaliacaoExperiencia.getTitulo());
 	    	parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);
 	    	parametros.put("EXIBIR_CABECALHO", exibirCabecalho);
 	    	parametros.put("EXIBIR_RESPOSTAS_SUBJETIVAS", true);

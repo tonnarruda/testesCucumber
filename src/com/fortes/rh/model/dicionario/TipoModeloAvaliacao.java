@@ -14,9 +14,9 @@ public class TipoModeloAvaliacao extends LinkedHashMap<Character, String>
 	public TipoModeloAvaliacao()
 	{
 		put(SOLICITACAO, "Solicitação");
-		put(DESEMPENHO, "Desempenho");
+		put(DESEMPENHO, "Avaliação de Desempenho");
 		put(ACOMPANHAMENTO_EXPERIENCIA, "Acompanhamento de Experiência");
-		put(AVALIACAO_DESEMPENHO, "Avaliação Desempenho");
+		put(AVALIACAO_DESEMPENHO, "Avaliação de Desempenho");
 	}
 
 	public char getSolicitacao() {
