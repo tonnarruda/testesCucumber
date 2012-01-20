@@ -115,7 +115,7 @@
 				<#if 1 < historicoExtintores.size()>
 					<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoExtintor/delete.action?historicoExtintor.id=${historico.id}&extintor.id=${extintor.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#else>
-					<a href="#"><img border="0" src="/fortesrh/imgs/delete.gif?historicoExtintor.id=${historico.id}" title="Não é possível excluir o último histórico." class="disabledImg"></a>
+					<a href="#"><img border="0" src="<@ww.url value="/imgs/delete.gif?historicoExtintor.id=${historico.id}"/>" title="Não é possível excluir o último histórico." class="disabledImg"></a>
 				</#if>
 			</@display.column>	
 			<@display.column title="Data" style="text-align: center; width: 90px;">

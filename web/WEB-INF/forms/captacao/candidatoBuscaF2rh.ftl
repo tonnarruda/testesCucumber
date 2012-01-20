@@ -169,7 +169,7 @@
 			Página <input name="inputPage" value="${page}" id="inputPage" class="inputPage" maxlength="4" onkeydown='enviaBusca(this.value, event);' onkeypress="somenteNumeros(event,'');" type="text">&nbsp;&nbsp;&nbsp;
 
 			<#if 100 <= totalSize>	
-				<a href='javascript:;' onclick='enviaBuscaLink(${page + 1});' title="Próxima página"><img src="<@ww.url value="/fortesrh/imgs/proxima.gif"/>"></a>&nbsp;&nbsp;&nbsp;
+				<a href='javascript:;' onclick='enviaBuscaLink(${page + 1});' title="Próxima página"><img src="<@ww.url value="/imgs/proxima.gif"/>"></a>&nbsp;&nbsp;&nbsp;
 			<#else>
 				<img src="<@ww.url value="/imgs/proxima.gif"/>" class="desabilitaImg">&nbsp;&nbsp;&nbsp;
 			</#if>
