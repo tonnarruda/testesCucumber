@@ -277,7 +277,7 @@
 					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Investimento/Partic.(R$)]]></text>
+				<text><![CDATA[Invest/Particip]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
