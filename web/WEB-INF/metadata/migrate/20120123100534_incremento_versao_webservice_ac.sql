@@ -1,0 +1,1 @@
+update parametrosdosistema set acversaowebservicecompativel = '1.1.48.1';--.go
