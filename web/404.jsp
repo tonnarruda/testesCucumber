@@ -1,8 +1,14 @@
+<%@ page isErrorPage="true" %>
+<%@ page contentType="text/html" %>
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix='ww' uri='webwork' %>
 <html>
 <head>
-	<title>Acesso Negado</title>
-	<%@page contentType="text/html"%>
-	<%@page pageEncoding="UTF-8"%>
+	<title>Página não encontrada</title>
+	
+	<% if (request.getAttribute("javax.servlet.error.status_code") != null && request.getAttribute("javax.servlet.error.status_code").toString().equals("404")) { %>
+		<meta http-equiv="refresh" content="0;url=<ww:url includeParams="none" value="/404.jsp"/>" />
+	<% } %>
 </head>
 <body bgcolor=white>
 <center>
