@@ -32,15 +32,12 @@ public class PapelDaoHibernateTest extends GenericDaoHibernateTest<Papel>
 	public void testFindPapeisAPartirDe()
 	{
 		Papel papel1 = new Papel();
-		papel1.setId(null);
 		papelDao.save(papel1);
 		
 		Papel papel2 = new Papel();
-		papel2.setId(null);
 		papelDao.save(papel2);
 		
 		Papel papel3 = new Papel();
-		papel3.setId(null);
 		papelDao.save(papel3);
 		
 		Collection<Papel> ids = papelDao.findPapeisAPartirDe(papel2.getId());
