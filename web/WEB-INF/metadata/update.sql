@@ -18478,3 +18478,25 @@ alter table solicitacao drop column liberada;--.go
 insert into migrations values('20120112152813');--.go
 
 update parametrosdosistema set appversao = '1.1.66.59';--.go
+
+-- versao 1.1.67.60
+
+alter table solicitacao add column observacaoLiberador text;--.go
+insert into migrations values('20120116091630');--.go
+
+update papel set nome='Apagar Reg. sem Código AC' where id=529; --.go
+insert into migrations values('20120117091806');--.go
+
+update mensagem	set colaborador_id = cast(substring(substring(link from 'colaborador.id=[0-9]*') , 16) as bigint) where colaborador_id is null and link ~ 'colaborador.id';--.go
+insert into migrations values('20120117143404');--.go
+
+delete from turmatipodespesa;--.go
+delete from tipodespesa;--.go
+alter table TipoDespesa add column empresa_id bigint;--.go
+ALTER TABLE TipoDespesa ADD CONSTRAINT TipoDespesa_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+insert into migrations values('20120119082153');--.go
+
+update parametrosdosistema set acversaowebservicecompativel = '1.1.48.1';--.go
+insert into migrations values('20120123100534');--.go
+
+update parametrosdosistema set appversao = '1.1.67.60';--.go

@@ -14,6 +14,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TItemTabelaEmpregados;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.DateUtil;
@@ -50,7 +51,7 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 	        call.addParameter("Token",org.apache.axis.encoding.XMLType.XSD_STRING,ParameterMode.IN);
 	        call.addParameter("Tabela",org.apache.axis.encoding.XMLType.SOAP_ARRAY,ParameterMode.IN);
 
-	        call.setReturnType(org.apache.axis.encoding.XMLType.XSD_BOOLEAN);
+	        acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 	        TItemTabelaEmpregados[] arrayReajuste = new TItemTabelaEmpregados[historicosAc.size()];
 
@@ -97,9 +98,9 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 
 	       	Object[] param = new Object[]{token.toString(), arrayReajuste};
 
-	        boolean result = (Boolean) call.invoke(param);
-	        
-	        if(!result)
+	       	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+	       	boolean retorno = result.getSucesso("SetTabelaRhEmpregados", param, this.getClass()); 
+	       	if(!retorno)
 	        	throw new IntegraACException(exceptionMessage);
 		}
 		catch (Exception exception)
@@ -125,12 +126,12 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 			call.addParameter("token",xmlstring,ParameterMode.IN);
 			call.addParameter("situacoes", org.apache.axis.encoding.XMLType.SOAP_ARRAY, ParameterMode.IN);
 
-			call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_BOOLEAN);
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 			Object[] param = new Object[]{token.toString(), situacao};
-			boolean result = (Boolean) call.invoke(param);
-
-			if (!result)
+			TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+			boolean retorno = result.getSucesso("DelTabelaRhEmpregados", param, this.getClass()); 
+			if(!retorno)
 				throw new Exception();
 		}
 		catch (Exception e)

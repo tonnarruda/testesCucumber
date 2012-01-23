@@ -7,6 +7,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.util.mockObjects.MockCall;
@@ -32,11 +33,16 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends MockObjectTestCase
     public void testCriarColaboradorOcorrencia() throws Exception
     {
     	TOcorrenciaEmpregado ocorrencia = new TOcorrenciaEmpregado();
+
+    	MockCall mock = new MockCall();
+    	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(true, "Msg de Erro do AC", "Exception do AC"));
+    	Mockit.redefineMethods(Call.class, mock);
+    	
+    	acPessoalClient.expects(once()).method("setReturnType");
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
 
-    	// MockCall.invoke() -> RETORNO_BOOLEAN
     	assertTrue(acPessoalClientColaboradorOcorrencia.criarColaboradorOcorrencia(ocorrencia, empresa));
     }
 
@@ -66,14 +72,16 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends MockObjectTestCase
     	TOcorrenciaEmpregado ocorrencia = new TOcorrenciaEmpregado();
     	ocorrencia.setCodigo("123");
 
+    	MockCall mock = new MockCall();
+    	mock.setProperty("TFeedbackPessoalWebService", new TFeedbackPessoalWebService(true, "Msg de Erro do AC", "Exception do AC"));
+    	Mockit.redefineMethods(Call.class, mock);
+    	
+    	acPessoalClient.expects(once()).method("setReturnType");
     	acPessoalClient.expects(once()).method("createCall").will(returnValue(new Call("http://teste")));
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
 
-    	// MockCall.invoke() -> RETORNO_BOOLEAN
-    	boolean retorno = true;
-
-    	assertEquals(retorno, acPessoalClientColaboradorOcorrencia.removerColaboradorOcorrencia(ocorrencia, empresa));
+    	assertEquals(true, acPessoalClientColaboradorOcorrencia.removerColaboradorOcorrencia(ocorrencia, empresa));
     }
 
     public void testRemoverTipoColaboradorOcorrenciaException() throws Exception

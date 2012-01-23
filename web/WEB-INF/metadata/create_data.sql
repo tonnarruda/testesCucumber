@@ -214,7 +214,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (501,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (464, 'ROLE_IMPORTA_CADASTROS', 'Importar Cadastros', '/geral/empresa/prepareImportarCadastros.action', 8, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (38, 'ROLE_UTI_SENHA', 'Alterar Senha', '/acesso/usuario/prepareUpdateSenhaUsuario.action', 2, true, 37);
 
-insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (529, 'LIST_SEM_CODIGOAC', 'Apaga Reg. sem Código AC', '/geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action', 9, true, 37);
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (529, 'LIST_SEM_CODIGOAC', 'Apagar Reg. sem Código AC', '/geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action', 9, true, 37);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (41, 'ROLE_CONFIGURACAO', 'Configurações', '#', 3, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (485, 'ROLE_CAMPO_EXTRA', 'Campos Extras', '/geral/configuracaoCampoExtra/prepareUpdate.action', 2, true, 41);
@@ -21153,9 +21153,14 @@ insert into migrations values('20120112092959');
 insert into migrations values('20120112094049');
 insert into migrations values('20120112110709');
 insert into migrations values('20120112152813');
+insert into migrations values('20120116091630');
+insert into migrations values('20120117091806');
+insert into migrations values('20120117143404');
+insert into migrations values('20120119082153');
+insert into migrations values('20120123100534');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.66.59', '', '25', false, false, 2, '1.1.47.1', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.67.60', '', '25', false, false, 2, '1.1.48.1', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'
