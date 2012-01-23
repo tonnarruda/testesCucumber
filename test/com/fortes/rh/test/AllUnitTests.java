@@ -597,8 +597,8 @@ public class AllUnitTests extends TestSuite
         //ACESSO
         suite.addTestSuite(PapelManagerTest.class);
 
-//        suite.addTestSuite(PapelDaoHibernateTest.class);
-//        suite.addTestSuite(PerfilDaoHibernateTest.class);
+        suite.addTestSuite(PapelDaoHibernateTest.class);
+        suite.addTestSuite(PerfilDaoHibernateTest.class);
         suite.addTestSuite(PerfilManagerTest.class);
         suite.addTestSuite(UsuarioDaoHibernateTest.class);
         suite.addTestSuite(UsuarioManagerTest.class);
