@@ -1,8 +1,14 @@
+<%@ page isErrorPage="true" %>
+<%@ page contentType="text/html" %>
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix='ww' uri='webwork' %>
 <html>
 <head>
 	<title>Acesso Negado</title>
-	<%@page contentType="text/html"%>
-	<%@page pageEncoding="UTF-8"%>
+	
+	<% if (request.getAttribute("javax.servlet.error.status_code") != null && request.getAttribute("javax.servlet.error.status_code").toString().equals("403")) { %>
+		<meta http-equiv="refresh" content="0;url=<ww:url includeParams="none" value="/403.jsp"/>" />
+	<% } %>
 </head>
 <body bgcolor=white>
 <center>
