@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -427,11 +428,12 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorOcorrenciaDao.expects(once()).method("countFaltasByPeriodo").will(returnValue(retornoBD));
 		colaboradorManager.expects(atLeastOnce()).method("countAtivosPeriodo").will(returnValue(10));
 		
-		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", empresa.getId(), null);
+		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", Arrays.asList(empresa.getId()), null);
 		assertEquals(5, absenteismos.size());
 		assertEquals(0.0, ((Object[])absenteismos.toArray()[0])[1]);
 		assertEquals(0.01, ((Object[])absenteismos.toArray()[1])[1]);
 		assertEquals(0.0714, ((Object[])absenteismos.toArray()[3])[1]);
+
 	}
 	
 	public void testMontaAbsenteismo() throws Exception
@@ -450,7 +452,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Date dataIni = DateUtil.montaDataByString("02/01/2011");
 		Date dataFim = DateUtil.montaDataByString("19/05/2011");
 		
-		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, empresa.getId(), null, null, null);
+		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null);
 		assertEquals(5, absenteismos.size());
 		
 		Absenteismo absenteismoJan = (Absenteismo) absenteismos.toArray()[0];
@@ -506,7 +508,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		
 		try
 		{
-			colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, empresa.getId(), null, null, null);
+			colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null);
 		}
 		catch (Exception e)
 		{

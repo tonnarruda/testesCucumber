@@ -81,7 +81,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			empresa = empresaManager.findByIdProjection(empresa.getId());//os managers/parametroRelatorio precisam da empresa com turnoverPorSolicitacao, logoUrl
 			
 			TurnOverCollection turnOverCollection = new TurnOverCollection();
-			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, empresa, LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
+			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa.getId()), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
 			dataSource = Arrays.asList(turnOverCollection);
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;
