@@ -61,6 +61,13 @@ public final class StringUtil
 		return value;
 	}
 	
+	public static String subStr(String value, int max, String suffix)
+	{
+		if(value != null && value.length() > max)
+			value = value.substring(0, max) + suffix;
+		return value;
+	}
+	
 	public static String montaTokenF2rh(String nome)
 	{
 		try {

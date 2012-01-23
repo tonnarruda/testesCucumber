@@ -20,6 +20,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -86,6 +87,11 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;
 
+			if (estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
+				filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck)), 90, "...");
+			else
+				filtro +=  "\nTodos os Estabelecimentos";
+			
 			if (filtrarPor == 1)
 			{
 				if (areasCheck != null && areasCheck.length > 0)

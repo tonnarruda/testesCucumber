@@ -179,4 +179,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void deleteColaborador(Long[] colaboradorIds) throws Exception;
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 	public String findCodigoACDuplicado(Long empresaId);
+	public void setCandidatoNull(Long candidatoId);
 }
