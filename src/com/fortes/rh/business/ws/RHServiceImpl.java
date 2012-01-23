@@ -420,15 +420,11 @@ public class RHServiceImpl implements RHService
 	
 	public FeedbackWebService atualizarSituacaoEmLote(TSituacao[] situacaos)
 	{
-		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		try
 		{
 			for (TSituacao tSituacao : situacaos)
-			{
-				historicoColaboradors.add(montaSituacao(tSituacao));
-			}
+				atualizarSituacao(tSituacao);
 			
-			historicoColaboradorManager.saveOrUpdate(historicoColaboradors);
 			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
