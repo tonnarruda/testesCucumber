@@ -19,7 +19,6 @@ public class PapelDaoHibernateTest extends GenericDaoHibernateTest<Papel>
 	{
 		Papel papel = new Papel();
 		
-		papel.setId(null);
 		papel.setNome("nome do papel");
 		papel.setCodigo("0");
 		papel.setOrdem(0);
