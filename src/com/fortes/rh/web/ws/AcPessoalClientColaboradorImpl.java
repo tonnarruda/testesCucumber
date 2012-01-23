@@ -14,6 +14,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 
@@ -40,11 +41,13 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			call.addParameter("Token", xmlstring, ParameterMode.IN);
 			call.addParameter("Empregado", xmltype, ParameterMode.IN);
 
-			call.setReturnType(XSD_BOOLEAN);
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 			Object[] param = new Object[] { token.toString(), empregado };
 
-			if (!(Boolean) call.invoke(param))
+			TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+			boolean retorno = result.getSucesso("atualizarEmpregado", param, this.getClass()); 
+            if(!retorno)
 				throw new Exception();
 
 		} catch (Exception e) {
@@ -73,10 +76,11 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			call.addParameter("Empregado", xmltype, ParameterMode.IN);
 			call.addParameter("Situacao", xmltype2, ParameterMode.IN);
 
-			call.setReturnType(org.apache.axis.encoding.XMLType.XSD_BOOLEAN);
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 			Object[] param = new Object[] { token.toString(), empregado, situacao };
 
-			return (Boolean) call.invoke(param);
+			TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+			return result.getSucesso("contratar", param, this.getClass()); 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -86,7 +90,8 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 	public boolean verificaHistoricoNaFolhaAC(Long historicoColaboradorId, String colaboradorCodigoAC, Empresa empresa) {
 		try {
 			StringBuilder token = new StringBuilder();
-			Call call = acPessoalClient.createCall(empresa, token, null, "GetSepEfo");
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "GetSepEfo");
 
 			QName xmlstring = new QName("xs:string");
 			QName xmlint = new QName("xs:int");
@@ -96,11 +101,12 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			call.addParameter("Empregado", xmlstring, ParameterMode.IN);
 			call.addParameter("RH_SEP_ID", xmlint, ParameterMode.IN);
 
-			call.setReturnType(XSD_BOOLEAN);
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradorCodigoAC, historicoColaboradorId };
 
-			return (Boolean) call.invoke(param);
+			TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+			return result.getSucesso("GetSepEfo", param, this.getClass());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -110,7 +116,8 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 	public boolean remove(Colaborador colaborador, Empresa empresa) {
 		try {
 			StringBuilder token = new StringBuilder();
-			Call call = acPessoalClient.createCall(empresa, token, null, "removerEmpregado");
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "removerEmpregado");
 
 			QName xmlstring = new QName("xs:string");
 			QName xmlint = new QName("xs:int");
@@ -120,11 +127,12 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			call.addParameter("empregado", xmlstring, ParameterMode.IN);
 			call.addParameter("rh_epg_id", xmlint, ParameterMode.IN);
 
-			call.setReturnType(XSD_BOOLEAN);
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaborador.getCodigoAC(), colaborador.getId() };
 
-			return (Boolean) call.invoke(param);
+			TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+			return result.getSucesso("removerEmpregado", param, this.getClass());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -169,8 +177,8 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			Call call = acPessoalClient.createCall(empresa, token, null, "GetRemuneracoesVariaveis");
 
 //			urn:UnTypesPessoalWebService
-			QName qname = new QName("urn:AcPessoal", "TRemuneracaoVariavel");
-			QName qnameArr = new QName("urn:AcPessoal", "TRemuneracoesVariaveis");
+			QName qname = new QName("urn:UnTypesPessoalWebService", "TRemuneracaoVariavel");
+			QName qnameArr = new QName("urn:UnTypesPessoalWebService", "TRemuneracoesVariaveis");
 
 			call.registerTypeMapping(TRemuneracaoVariavel.class, qname , new org.apache.axis.encoding.ser.BeanSerializerFactory(TRemuneracaoVariavel.class, qname ), new org.apache.axis.encoding.ser.BeanDeserializerFactory(TRemuneracaoVariavel.class, qname));
 			call.registerTypeMapping(TRemuneracaoVariavel[].class, qnameArr ,

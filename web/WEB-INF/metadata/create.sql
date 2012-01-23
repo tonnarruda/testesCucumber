@@ -722,7 +722,8 @@ CREATE TABLE solicitacao (
     avaliacao_id bigint,
     liberador_id bigint,
     horariocomercial varchar(20),
-    status character varying(1)
+    status character varying(1),
+    observacaoLiberador text
 );
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_areaorganizacional_fk FOREIGN KEY (areaorganizacional_id) REFERENCES areaorganizacional(id);
@@ -2517,10 +2518,12 @@ CREATE SEQUENCE composicaoSesmt_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE
 
 CREATE TABLE tipoDespesa (
 	id bigint NOT NULL,
-	descricao character varying(50)
+	descricao character varying(50),
+	empresa_id bigint
 );
 
 ALTER TABLE tipoDespesa ADD CONSTRAINT tipoDespesa_pkey PRIMARY KEY(id);
+ALTER TABLE TipoDespesa ADD CONSTRAINT TipoDespesa_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE tipoDespesa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE turmatipodespesa (

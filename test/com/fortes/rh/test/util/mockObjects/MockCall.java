@@ -27,9 +27,13 @@ import org.apache.axis.message.SOAPEnvelope;
 import org.apache.axis.message.SOAPHeaderElement;
 import org.apache.axis.soap.SOAPConstants;
 
+import com.fortes.rh.model.ws.FeedbackWebService;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
+
 public class MockCall
 {
 	private boolean retornoEhDoTipoString;
+	private TFeedbackPessoalWebService TFeedbackPessoalWebService = null;
 
 	public void addAttachmentPart(Object arg0)
 	{
@@ -224,6 +228,8 @@ public class MockCall
 	 */
 	public Object invoke(Object[] arg0) throws RemoteException
 	{
+		if(TFeedbackPessoalWebService != null)
+			return TFeedbackPessoalWebService;
 		
 		return retornoEhDoTipoString ? "1" : true;
 		
@@ -368,6 +374,8 @@ public class MockCall
 
 	public void setProperty(String arg0, Object arg1)
 	{
+		if(arg0.equals("TFeedbackPessoalWebService"))
+			TFeedbackPessoalWebService = (com.fortes.rh.model.ws.TFeedbackPessoalWebService) arg1;
 	}
 
 	public void setRequestMessage(Message arg0)
@@ -455,6 +463,7 @@ public class MockCall
 	{
 
 	}
+
 
 	// public boolean equals(Object obj)
 	// {
