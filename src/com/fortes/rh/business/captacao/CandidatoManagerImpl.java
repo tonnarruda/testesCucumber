@@ -31,6 +31,7 @@ import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -96,6 +97,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	private EtapaSeletivaManager etapaSeletivaManager;
 	private CidadeManager cidadeManager;
 	private EstadoManager estadoManager;
+	private ColaboradorManager colaboradorManager;
 	private int totalSize;
 
 	public int getTotalSize()
@@ -226,9 +228,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void removeCandidato(Candidato candidato) throws Exception
 	{
-		if (candidatoSolicitacaoManager.isCandidatoSolicitacaoByCandidato(candidato.getId()))
-			throw new Exception("Não é possível excluir este candidato, pois ele está participando de uma solicitação.");
-
+		candidatoSolicitacaoManager.removeCandidato(candidato.getId());
+		colaboradorManager.setCandidatoNull(candidato.getId());
 		formacaoManager.removeCandidato(candidato);
 		experienciaManager.removeCandidato(candidato);
 		candidatoIdiomaManager.removeCandidato(candidato);
@@ -1393,5 +1394,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	
 	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager) {
 		this.historicoCandidatoManager = historicoCandidatoManager;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
 	}
 }

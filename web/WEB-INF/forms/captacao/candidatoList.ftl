@@ -5,13 +5,20 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+	
+		#deleteDialog { display: none; }
 	</style>
 	<title>Candidatos</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#include "../ftl/showFilterImports.ftl" />
 	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type="text/javascript">
 		$(function() {
 			$('#help_exibeExterno').qtip({
@@ -19,6 +26,41 @@
 				, style: { width: '100px' }
 			});
 		});
+		
+		function checaDependenciasExclusao(candidatoId, empresaId)
+		{
+			$('#deleteDialog').empty();
+		
+			CandidatoDWR.montaMensagemExclusao(candidatoId, empresaId, function(msg) {
+				if (msg != '')
+				{
+					$('#deleteDialog').html(msg).dialog({ 	modal: true, 
+															width: 700,
+															maxHeight: 360,
+															buttons: 
+															[
+															    {
+															        text: "Confirmar",
+															        click: function() { excluir(candidatoId, empresaId); }
+															    },
+															    {
+															        text: "Cancelar",
+															        click: function() { $(this).dialog("close"); }
+															    }
+															],
+															open: function() {
+														        $(this).closest('.ui-dialog').find('.ui-dialog-buttonpane button:eq(1)').focus(); 
+															}
+														});
+				
+				} else excluir(candidatoId, empresaId);
+			});
+		}
+		
+		function excluir(candidatoId, empresaId)
+		{
+			window.location='delete.action?candidato.id=' + candidatoId + '&candidato.empresa.id=' + empresaId; 
+		}
 	</script>
 	
 	<#if dataCadIni?exists>
@@ -88,7 +130,7 @@
 			</#if>
 			<a href="javascript:popup('infoCandidato.action?candidato.id=${candidato.id}', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
 			<a href="prepareUpdate.action?candidato.id=${candidato.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?candidato.id=${candidato.id}&candidato.empresa.id=${candidato.empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript:checaDependenciasExclusao(${candidato.id}, ${candidato.empresa.id});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			<a href="prepareUpdateCurriculo.action?candidato.id=${candidato.id}"><img border="0" title="Currículo Escaneado" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>"></a>
 			<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidato.id}"><img border="0" title="Documentos do Candidato" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			<a href="../../captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=I"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
@@ -121,5 +163,7 @@
 		<button class="btnInserirCurriculoDigitado" onclick="window.location='prepareInsertCurriculoTexto.action'" ></button>
 		<button class="btnTriagem" onclick="window.location='prepareBusca.action'"></button>
 	</div>
+	
+	<div id="deleteDialog" title="Confirmar exclusão"></div>
 </body>
 </html>

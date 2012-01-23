@@ -27,4 +27,5 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	Collection<CandidatoSolicitacao> findHistoricoAptoByEtapaSolicitacao(Long empresaId, Long[] etapaIds);
 	Collection<Integer> getIdF2RhCandidato(Long solicitacaoId);
 	void setStatusByColaborador(Long colaboradorId, char status);
+	void removeByCandidato(Long candidatoId);
 }

@@ -68,6 +68,7 @@
 		<property name="candidatoManager" ref="candidatoManager"/>
 		<property name="conhecimentoManager" ref="conhecimentoManager"/>
 		<property name="colaboradorManager" ref="colaboradorManager"/>
+		<property name="solicitacaoManager" ref="solicitacaoManager"/>
 	</bean>
 	<bean id="solicitacaoDWR" class="com.fortes.rh.web.dwr.SolicitacaoDWR">
 		<property name="solicitacaoManager" ref="solicitacaoManager"/>
