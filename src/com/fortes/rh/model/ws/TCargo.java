@@ -13,6 +13,7 @@ public class TCargo implements Serializable
 	private String descricaoACPessoal;//ac cargo
 	private String cboCodigo;
 	private String grupoAC;
+	private TFeedbackPessoalWebService feedback;
 
 	public TCargo()
 	{
@@ -124,5 +125,13 @@ public class TCargo implements Serializable
 	public void setCargoId(Long cargoId)
 	{
 		this.cargoId = cargoId;
+	}
+
+	public TFeedbackPessoalWebService getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(TFeedbackPessoalWebService feedback) {
+		this.feedback = feedback;
 	}
 }

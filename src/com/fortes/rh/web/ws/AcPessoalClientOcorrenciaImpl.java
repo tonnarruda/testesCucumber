@@ -11,6 +11,7 @@ import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TOcorrencia;
 
 public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
@@ -38,14 +39,16 @@ public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
 
 	    	call.addParameter("Token",xmlstring,ParameterMode.IN);
 	    	call.addParameter("Ocorrencia", xmltype, ParameterMode.IN);
-	    	call.setReturnType(xmlstring);
+	    	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 	    	Object[] param = new Object[]{token.toString(),tocorrencia};
 
 	    	//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
-	        String codigoRetorno = (String) call.invoke(param);
+	    	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+        	result.getSucesso("SetTipoOcorrencia", param, this.getClass());
 
-	        return codigoRetorno;
+            return result.getCodigoretorno();
+
 	    }
 	    catch(Exception e)
 	    {
@@ -69,12 +72,11 @@ public class AcPessoalClientOcorrenciaImpl implements AcPessoalClientOcorrencia
         //Seta os parâmetros com os tipos e modos
     	call.addParameter("Token",xmlstring,ParameterMode.IN);
     	call.addParameter("Ocorrencia", xmltype, ParameterMode.IN);
-    	call.setReturnType(XSD_BOOLEAN);
+    	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
     	Object[] param = new Object[]{token.toString(), tocorrencia};
 
-    	Boolean retorno = (Boolean) call.invoke(param);
-
-    	return retorno;
+    	TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+    	return result.getSucesso("DelTipoOcorrencia", param, this.getClass());
 	}
 }

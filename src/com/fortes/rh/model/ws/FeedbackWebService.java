@@ -1,11 +1,6 @@
 package com.fortes.rh.model.ws;
 
 import java.io.Serializable;
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.fortes.rh.util.DateUtil;
 
 public class FeedbackWebService implements Serializable
 {

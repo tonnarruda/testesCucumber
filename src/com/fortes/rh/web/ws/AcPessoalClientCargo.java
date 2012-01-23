@@ -10,13 +10,13 @@ import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
-import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 
 public class AcPessoalClientCargo
 {
@@ -29,7 +29,7 @@ public class AcPessoalClientCargo
 			StringBuilder token = new StringBuilder();
 			GrupoAC grupoAC = new GrupoAC();
 			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "DelCargo");
-
+			
 			QName qname = new QName(grupoAC.getAcUrlWsdl(),"TCargo");
 	        call.registerTypeMapping(TCargo.class, qname, new BeanSerializerFactory(TCargo.class, qname), new BeanDeserializerFactory(TCargo.class, qname));
 
@@ -39,7 +39,7 @@ public class AcPessoalClientCargo
 			call.addParameter("Empresa",xmlstring,ParameterMode.IN);
 			call.addParameter("Cargos",org.apache.axis.encoding.XMLType.SOAP_ARRAY,ParameterMode.IN);
 
-			call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_BOOLEAN);
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 			TCargo[] cargosAC = new TCargo[codigoACs.length];
 
@@ -53,14 +53,14 @@ public class AcPessoalClientCargo
 			}
 
 			Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), cargosAC};
-			boolean result = (Boolean) call.invoke(param);
-
-			return result;
+			TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+			
+			return result.getSucesso("DelCargo", param, this.getClass());
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new ColecaoVaziaException("Erro ao remover Cargo no AC Pessoal.");
+			throw new Exception("Erro ao remover Cargo no AC Pessoal.");
 		}
 	}
 
@@ -69,7 +69,8 @@ public class AcPessoalClientCargo
         try
         {
         	StringBuilder token = new StringBuilder();
-        	Call call = acPessoalClient.createCall(empresa, token, null, "SetCargoComSituacao");
+        	GrupoAC grupoAC = new GrupoAC();
+        	Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetCargoComSituacao");
 
             QName xmlstring = new QName("xs:string");
             QName xmldouble = new QName("xs:double");
@@ -88,8 +89,7 @@ public class AcPessoalClientCargo
         	call.addParameter("IndiceQuantidade",xmldouble,ParameterMode.IN);
         	call.addParameter("rh_sca_id",xmlint,ParameterMode.IN);
 
-        	//Seta o tipo de resultado
-        	call.setReturnType(xmlstring);
+        	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
         	DateFormat formata = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -107,11 +107,11 @@ public class AcPessoalClientCargo
         	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),
         			formata.format(faixaSalarialHistorico.getData()),indiceCodicoAC, TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), faixaSalarial.getNomeACPessoal(), valor,
         			faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId()};
+      
+        	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+        	result.getSucesso("SetCargoComSituacao", param, this.getClass());
 
-        	//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
-            String codigoRetorno = (String) call.invoke(param);
-
-            return codigoRetorno;
+            return result.getCodigoretorno();
         }
         catch(Exception e)
         {
@@ -125,7 +125,8 @@ public class AcPessoalClientCargo
 		try
 		{
 			StringBuilder token = new StringBuilder();
-			Call call = acPessoalClient.createCall(empresa, token, null, "SetCargo");
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetCargo");
 
 			QName xmlstring = new QName("xs:string");
 
@@ -136,8 +137,7 @@ public class AcPessoalClientCargo
 			call.addParameter("Nome",xmlstring,ParameterMode.IN);
 			call.addParameter("NomeACPessoal",xmlstring,ParameterMode.IN);
 
-			//Seta o tipo de resultado
-			call.setReturnType(xmlstring);
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 			String codigo = "";
 			if(faixaSalarial.getCodigoAC() != null && !faixaSalarial.getCodigoAC().equals(""))
@@ -147,9 +147,10 @@ public class AcPessoalClientCargo
 			Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), codigo, faixaSalarial.getNome(), faixaSalarial.getNomeACPessoal()};
 
 			//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
-			String codigoRetorno = (String) call.invoke(param);
-
-			return codigoRetorno;
+        	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+        	
+        	result.getSucesso("SetCargo", param, this.getClass());
+			return result.getCodigoretorno();
 		}
 		catch(Exception e)
 		{
@@ -163,7 +164,8 @@ public class AcPessoalClientCargo
         try
         {
         	StringBuilder token = new StringBuilder();
-            Call call = acPessoalClient.createCall(empresa, token, null, "SetRhCargos");
+        	GrupoAC grupoAC = new GrupoAC();
+            Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetRhCargos");
 
             QName xmlstring = new QName("xs:string");
             QName xmldouble = new QName("xs:double");
@@ -181,7 +183,7 @@ public class AcPessoalClientCargo
         	call.addParameter("rh_sca_id",xmlint,ParameterMode.IN);
 
         	//Seta o tipo de resultado
-        	call.setReturnType(xmlstring);
+        	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
         	DateFormat formata = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -200,7 +202,9 @@ public class AcPessoalClientCargo
         			indiceCodicoAC, TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), valor,
         			faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId()};
 
-            if(!(Boolean)call.invoke(param))
+        	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+        	boolean retorno = result.getSucesso("SetRhCargos", param, this.getClass()); 
+            if(!retorno)
             	throw new Exception("Erro ao cadastrar historico da faixa salarial no AC Pessoal");
             
             return true;
@@ -217,7 +221,8 @@ public class AcPessoalClientCargo
 		try
         {
 			StringBuilder token = new StringBuilder();
-            Call call = acPessoalClient.createCall(empresa, token, null, "DelRhCargos");
+			GrupoAC grupoAC = new GrupoAC();
+            Call call = acPessoalClient.createCall(empresa, token, grupoAC, "DelRhCargos");
 
             QName xmlstring = new QName("xs:string");
             QName xmlint = new QName("xs:int");
@@ -226,13 +231,15 @@ public class AcPessoalClientCargo
         	call.addParameter("Token",xmlstring,ParameterMode.IN);
         	call.addParameter("id",xmlint,ParameterMode.IN);
 
-        	//Seta o tipo de resultado
-        	call.setReturnType(xmlstring);
+        	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
         	Object[] param = new Object[]{token.toString(), faixaSalarialHistoricoId};
-
-            if(!(Boolean)call.invoke(param))
+        	
+        	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+        	boolean retorno = result.getSucesso("DelRhCargos", param, this.getClass()); 
+            if(!retorno)
             	throw new Exception("Erro ao deletar historico da faixa salarial no AC Pessoal");
+            
             return true;
         }
         catch(Exception e)

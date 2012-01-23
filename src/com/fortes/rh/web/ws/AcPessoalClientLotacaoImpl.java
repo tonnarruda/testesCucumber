@@ -8,6 +8,8 @@ import org.apache.axis.client.Call;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.GrupoAC;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 
 public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 {
@@ -18,7 +20,8 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 		try
 		{
 			StringBuilder token = new StringBuilder(); 
-			Call call = acPessoalClient.createCall(empresa, token, null, "DelLotacao");
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "DelLotacao");
 
 			QName xmlstring = new QName("xs:string");
 
@@ -26,11 +29,12 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 			call.addParameter("Empresa",xmlstring,ParameterMode.IN);
 			call.addParameter("Codigo",xmlstring,ParameterMode.IN);
 
-			call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_BOOLEAN);
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 			Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), areaOrganizacional.getCodigoAC()};
 
-			return (Boolean) call.invoke(param);
+			TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+			return result.getSucesso("DelLotacao", param, this.getClass());
 		}
 		catch (Exception e)
 		{
@@ -44,7 +48,8 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
         try
         {
         	StringBuilder token = new StringBuilder();
-        	Call call = acPessoalClient.createCall(empresa, token, null, "SetLotacao");
+        	GrupoAC grupoAC = new GrupoAC();
+        	Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetLotacao");
 
             QName xmlstring = new QName("xs:string");
 
@@ -56,7 +61,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
         	call.addParameter("Mae",xmlstring,ParameterMode.IN);
 
         	//Seta o tipo de resultado
-        	call.setReturnType(xmlstring);
+        	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
         	String codigoAc = "";
         	if(areaOrganizacional.getCodigoAC() != null && !areaOrganizacional.getCodigoAC().equals(""))
@@ -70,9 +75,10 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
         	Object[] param = new Object[]{token.toString(),empresa.getCodigoAC(), codigoAc, areaOrganizacional.getNome(), codigoMae};
 
         	//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
-            String codigoRetorno = (String) call.invoke(param);
-
-            return codigoRetorno;
+        	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+        	
+        	result.getSucesso("SetLotacao", param, this.getClass());
+            return result.getCodigoretorno();
         }
         catch(Exception e)
         {

@@ -11,6 +11,7 @@ import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 
 public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClientColaboradorOcorrencia
@@ -34,12 +35,13 @@ public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClient
 	    	call.addParameter("Token",xmlstring,ParameterMode.IN);
 	    	call.addParameter("OcorrenciaEmpregado", xmltype, ParameterMode.IN);
 
-	    	call.setReturnType(XSD_BOOLEAN);
+	    	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 	    	//Seta os valores e invoca o serviço não passa codigo para inserir
 	    	Object[] param = new Object[]{token.toString(), ocorrenciaEmpregado};
 
-	        return (Boolean) call.invoke(param);
+	    	TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+	    	return result.getSucesso("SetOcorrenciaEmpregado", param, this.getClass());
 	    }
 	    catch(Exception e)
 	    {
@@ -65,11 +67,12 @@ public class AcPessoalClientColaboradorOcorrenciaImpl implements AcPessoalClient
 	    	call.addParameter("Token",xmlstring,ParameterMode.IN);
 	    	call.addParameter("OcorrenciaEmpregado", xmltype, ParameterMode.IN);
 
-	    	call.setReturnType(XSD_BOOLEAN);
+	    	acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
 	    	Object[] param = new Object[]{token.toString(), ocorrenciaEmpregado};
 
-	        return (Boolean) call.invoke(param);
+	    	TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+	    	return result.getSucesso("DelOcorrenciaEmpregado", param, this.getClass());
 	    }
 	    catch(Exception e)
 	    {

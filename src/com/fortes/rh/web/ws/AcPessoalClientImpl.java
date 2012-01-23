@@ -8,10 +8,13 @@ import javax.xml.rpc.ParameterMode;
 import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.client.Service;
+import org.apache.axis.encoding.ser.BeanDeserializerFactory;
+import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 
 public class AcPessoalClientImpl implements AcPessoalClient
 {
@@ -48,6 +51,13 @@ public class AcPessoalClientImpl implements AcPessoalClient
 		
 		return call;
 	}
+	
+	public void setReturnType(org.apache.axis.client.Call call, String acUrlWsdl) 
+	{
+		QName qnameFeedBack = new QName(acUrlWsdl, "TFeedbackPessoalWebService");
+        call.registerTypeMapping(TFeedbackPessoalWebService.class, qnameFeedBack, new BeanSerializerFactory(TFeedbackPessoalWebService.class, qnameFeedBack), new BeanDeserializerFactory(TFeedbackPessoalWebService.class, qnameFeedBack));
+    	call.setReturnType(qnameFeedBack);
+	}
 
 	public void setService(Service service)
 	{
@@ -57,4 +67,5 @@ public class AcPessoalClientImpl implements AcPessoalClient
 	public void setGrupoACManager(GrupoACManager grupoACManager) {
 		this.grupoACManager = grupoACManager;
 	}
+
 }
