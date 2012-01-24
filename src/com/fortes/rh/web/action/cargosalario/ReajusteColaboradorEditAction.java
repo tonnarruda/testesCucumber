@@ -68,7 +68,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	private Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-	private Collection<AreaOrganizacional> areaOrganizacionalsPropostas = new ArrayList<AreaOrganizacional>();
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
 	private Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
 	private Collection<Funcao> funcaos = new ArrayList<Funcao>();
@@ -300,13 +299,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		}
 
 		CollectionUtil<AreaOrganizacional> areaOrganizacionalsUtil = new CollectionUtil<AreaOrganizacional>();
-
-		/* areaOrganizacionalsProposta tronou-se necessário porque os gestores de uma determinada área não
-		 * conseguiam cadastrar Solicitação de Reajuste para outros setores que não eram coordenados por eles.
-		 */
-		areaOrganizacionalsPropostas = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.ATIVA, null);
-		areaOrganizacionalsPropostas = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsPropostas);
-		areaOrganizacionalsPropostas = areaOrganizacionalsUtil.sortCollectionStringIgnoreCase(areaOrganizacionalsPropostas, "descricao");
 
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		areaOrganizacionalsUtil = new CollectionUtil<AreaOrganizacional>();
@@ -707,16 +699,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
 	{
 		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	public Collection<AreaOrganizacional> getAreaOrganizacionalsPropostas()
-	{
-		return areaOrganizacionalsPropostas;
-	}
-
-	public void setAreaOrganizacionalsPropostas(Collection<AreaOrganizacional> areaOrganizacionalsPropostas)
-	{
-		this.areaOrganizacionalsPropostas = areaOrganizacionalsPropostas;
 	}
 
 	public boolean isExibeSalario()

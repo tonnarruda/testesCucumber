@@ -137,10 +137,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas")
 		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas")
-		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA), ANYTHING).will(returnValue(areaOrganizacionalsPropostas));
 		
-		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
 		
 		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<TabelaReajusteColaborador>()));
@@ -286,8 +283,6 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		action.setValorDissidio(10d);
 		action.getFiltrarPor();
 		action.setFiltrarPor(' ');
-		action.getAreaOrganizacionalsPropostas();
-		action.setAreaOrganizacionalsPropostas(new ArrayList<AreaOrganizacional>());
 		action.isExibeSalario();
 		action.getTipoSalario();
 		action.setTipoSalario(new TipoAplicacaoIndice());

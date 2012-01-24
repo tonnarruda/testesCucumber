@@ -1,6 +1,8 @@
 package com.fortes.rh.web.dwr;
 
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +47,18 @@ public class AreaOrganizacionalDWR
 		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresa");
 
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresa");
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<Long, String> findAllListAndInativas(Long empresaId, Long areaOrganizacionalInativaId) throws Exception
+	{
+		CollectionUtil<AreaOrganizacional> areaOrganizacionalsUtil = new CollectionUtil<AreaOrganizacional>();
+		
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, Arrays.asList(areaOrganizacionalInativaId));
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		areaOrganizacionals = areaOrganizacionalsUtil.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
+		
+		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricao");
 	}
 
 	@SuppressWarnings("unchecked")
