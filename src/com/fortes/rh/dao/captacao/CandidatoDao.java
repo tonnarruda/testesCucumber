@@ -54,4 +54,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<Candidato> triagemAutomatica(Solicitacao solicitacao, Integer tempoExperiencia, Map<String, Integer> pesos, Integer percentualMinimo);
 	public int findQtdCadastrados(Long empresaId, Date dataDe, Date dataAte);
 	public Collection<ComoFicouSabendoVaga> countComoFicouSabendoVagas(Long empresaId, Date dataIni, Date dataFim);
+	public void removeAreaInteresseConhecimentoCargo(Long candidatoId);
 }

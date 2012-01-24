@@ -848,4 +848,13 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 		return query.list();
 	}
+
+	public void removeByCandidato(Long candidatoId) {
+		
+		String queryHQL = "delete from ColaboradorResposta cr where cr.colaboradorQuestionario.id in (select cq.id from ColaboradorQuestionario cq where cq.candidato.id = :candidatoId)";
+		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+	
+		queryHQL = "delete from ColaboradorQuestionario cq where cq.candidato.id = :candidatoId";
+		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+	}
 }

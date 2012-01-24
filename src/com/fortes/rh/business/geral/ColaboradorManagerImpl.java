@@ -95,7 +95,6 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.util.BeanUtils;
-import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings("unchecked")

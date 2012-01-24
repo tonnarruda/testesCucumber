@@ -35,13 +35,13 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.model.type.File;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Sexo;
@@ -1323,5 +1323,16 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
 		return (Integer) criteria.uniqueResult();
+	}
+
+	public void removeAreaInteresseConhecimentoCargo(Long candidatoId) 
+	{
+		String[] sqls = new String[]{
+		"delete from candidato_areainteresse where candidato_id= " + candidatoId + "; ", 
+		"delete from candidato_conhecimento where candidato_id= " + candidatoId + "; ", 
+		"delete from candidato_cargo where candidato_id=" + candidatoId + "; "
+		};
+		
+		JDBCConnection.executeQuery(sqls);
 	}
 }

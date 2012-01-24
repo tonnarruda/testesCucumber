@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -49,4 +50,5 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	Integer getQtdavaliadores(Long avaliacaoDesempenhoId);
 	ColaboradorQuestionario findByColaboradorAvaliacao(Colaborador colaborador, Avaliacao avaliacao);
 	Collection<ColaboradorQuestionario> findQuestionarioByTurmaRealizadaPorUsuario(Long usuarioId);
+	void removeByCandidato(Long candidatoId);
 }

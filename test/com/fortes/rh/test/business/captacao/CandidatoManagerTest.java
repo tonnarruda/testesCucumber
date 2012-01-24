@@ -31,12 +31,16 @@ import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
 import com.fortes.rh.business.captacao.CandidatoManagerImpl;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.BairroManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoCurriculo;
@@ -102,6 +106,10 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	private Mock bairroManager = null;
 	private Mock candidatoCurriculoManager = null;
 	private Mock empresaManager;
+	private Mock colaboradorQuestionarioManager;
+	private Mock colaboradorManager;
+	private Mock solicitacaoExameManager;
+	private Mock configuracaoNivelCompetenciaManager;
 
     protected void setUp() throws Exception
     {
@@ -120,6 +128,8 @@ public class CandidatoManagerTest extends MockObjectTestCase
         bairroManager= new Mock(BairroManager.class);
         candidatoCurriculoManager = new Mock(CandidatoCurriculoManager.class);
         empresaManager = new Mock(EmpresaManager.class); 
+        solicitacaoExameManager = new Mock(SolicitacaoExameManager.class); 
+        configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class); 
         
         candidatoManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
         candidatoManager.setDao((CandidatoDao) candidatoDao.proxy());
@@ -133,7 +143,12 @@ public class CandidatoManagerTest extends MockObjectTestCase
         candidatoManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
         candidatoManager.setBairroManager((BairroManager) bairroManager.proxy());
         candidatoManager.setCandidatoCurriculoManager((CandidatoCurriculoManager) candidatoCurriculoManager.proxy());
+        candidatoManager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
+        candidatoManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
 		
+        colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
+        colaboradorManager = new Mock(ColaboradorManager.class);
+        
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
         Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
     }
@@ -432,12 +447,19 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
 		candidatoSolicitacao.setCandidato(candidato);
 
-		candidatoSolicitacaoManager.expects(once()).method("isCandidatoSolicitacaoByCandidato").with(eq(candidato.getId())).will(returnValue(false));
-
+		MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
+		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+		
+		candidatoSolicitacaoManager.expects(once()).method("removeCandidato").with(eq(candidato.getId())).isVoid();
+		colaboradorManager.expects(once()).method("setCandidatoNull").with(eq(candidato.getId())).isVoid();
+		colaboradorQuestionarioManager.expects(once()).method("removeByCandidato").with(eq(candidato.getId())).isVoid();
+		solicitacaoExameManager.expects(once()).method("removeByCandidato").with(eq(candidato.getId())).isVoid();
+		configuracaoNivelCompetenciaManager.expects(once()).method("removeByCandidato").with(eq(candidato.getId())).isVoid();
 		formacaoManager.expects(once()).method("removeCandidato").with(eq(candidato));
 		experienciaManager.expects(once()).method("removeCandidato").with(eq(candidato));
 		candidatoIdiomaManager.expects(once()).method("removeCandidato").with(eq(candidato));
 		candidatoCurriculoManager.expects(once()).method("removeCandidato").with(eq(candidato));
+		candidatoDao.expects(once()).method("removeAreaInteresseConhecimentoCargo").with(eq(candidato.getId()));
 		candidatoDao.expects(once()).method("remove").with(eq(candidato.getId()));
 
 		Exception exception = null;
@@ -455,30 +477,6 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 	}
 
-	public void testRemoveCandidatoNaSolicitacao() throws Exception
-	{
-		Candidato candidato = CandidatoFactory.getCandidato();
-
-		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao.setCandidato(candidato);
-
-		candidatoSolicitacaoManager.expects(once()).method("isCandidatoSolicitacaoByCandidato").with(eq(candidato.getId())).will(returnValue(true));
-
-		Exception exception = null;
-
-		try
-		{
-			candidatoManager.removeCandidato(candidato);
-		}
-		catch (Exception e)
-		{
-			exception = e;
-		}
-
-		assertNotNull(exception);
-
-	}
-
 	public void testRemoveCandidatoException() throws Exception
 	{
 		Candidato candidato = CandidatoFactory.getCandidato();
@@ -486,8 +484,14 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
 		candidatoSolicitacao.setCandidato(candidato);
 
-		candidatoSolicitacaoManager.expects(once()).method("isCandidatoSolicitacaoByCandidato").with(eq(candidato.getId())).will(returnValue(false));
-
+		MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
+		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+		
+		candidatoSolicitacaoManager.expects(once()).method("removeCandidato").with(eq(candidato.getId())).isVoid();
+		colaboradorManager.expects(once()).method("setCandidatoNull").with(eq(candidato.getId())).isVoid();
+		colaboradorQuestionarioManager.expects(once()).method("removeByCandidato").with(eq(candidato.getId())).isVoid();
+		solicitacaoExameManager.expects(once()).method("removeByCandidato").with(eq(candidato.getId())).isVoid();
+		configuracaoNivelCompetenciaManager.expects(once()).method("removeByCandidato").with(eq(candidato.getId())).isVoid();
 		formacaoManager.expects(once()).method("removeCandidato").with(eq(candidato));
 		experienciaManager.expects(once()).method("removeCandidato").with(eq(candidato));
 		candidatoIdiomaManager.expects(once()).method("removeCandidato").with(eq(candidato));

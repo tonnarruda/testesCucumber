@@ -260,4 +260,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		getDao().removeByConfiguracaoNivelColaborador(configuracaoNivelColaboradorId);
 		configuracaoNivelCompetenciaColaboradorManager.remove(configuracaoNivelColaboradorId);
 	}
+
+	public void removeByCandidato(Long candidatoId) {
+		getDao().removeByCandidato(candidatoId);		
+	}
 }

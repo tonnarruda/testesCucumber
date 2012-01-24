@@ -483,11 +483,14 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 
 	public void removeByCandidato(Long candidatoId) 
 	{
-		String hql = "delete from CandidatoSolicitacao where candidato.id = :candidatoId";
-
+		String hql = "delete from HistoricoCandidato hs where hs.candidatoSolicitacao.id in (select id from CandidatoSolicitacao c where c.candidato.id = :candidatoId)";
 		Query query = getSession().createQuery(hql);
 		query.setLong("candidatoId", candidatoId);
-		
+		query.executeUpdate();
+
+		hql = "delete from CandidatoSolicitacao where candidato.id = :candidatoId";
+		query = getSession().createQuery(hql);
+		query.setLong("candidatoId", candidatoId);
 		query.executeUpdate();
 	}
 }

@@ -35,6 +35,9 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FormatoArquivoInvalidoException;
@@ -48,7 +51,6 @@ import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Idioma;
-import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -97,7 +99,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	private EtapaSeletivaManager etapaSeletivaManager;
 	private CidadeManager cidadeManager;
 	private EstadoManager estadoManager;
-	private ColaboradorManager colaboradorManager;
+	private SolicitacaoExameManager solicitacaoExameManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private int totalSize;
 
 	public int getTotalSize()
@@ -228,15 +231,21 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void removeCandidato(Candidato candidato) throws Exception
 	{
+		ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+		ColaboradorManager colaboradorManager= (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		
 		candidatoSolicitacaoManager.removeCandidato(candidato.getId());
 		colaboradorManager.setCandidatoNull(candidato.getId());
+		colaboradorQuestionarioManager.removeByCandidato(candidato.getId());
+		solicitacaoExameManager.removeByCandidato(candidato.getId());
+		configuracaoNivelCompetenciaManager.removeByCandidato(candidato.getId());
 		formacaoManager.removeCandidato(candidato);
 		experienciaManager.removeCandidato(candidato);
 		candidatoIdiomaManager.removeCandidato(candidato);
 		candidatoCurriculoManager.removeCandidato(candidato);
+		getDao().removeAreaInteresseConhecimentoCargo(candidato.getId());
 		getDao().remove(candidato.getId());
 	}
-
 	public void updateSenha(Candidato candidato)
 	{
 		if(candidato.getNovaSenha().equals(candidato.getConfNovaSenha()))
@@ -1396,7 +1405,12 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		this.historicoCandidatoManager = historicoCandidatoManager;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
+	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
+		this.solicitacaoExameManager = solicitacaoExameManager;
 	}
+
+	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
 }
