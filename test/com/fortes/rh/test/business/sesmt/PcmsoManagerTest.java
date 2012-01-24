@@ -229,7 +229,7 @@ public class PcmsoManagerTest extends MockObjectTestCase
     	Long empresaId=2L;
     	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
     	areaOrganizacionalManager.expects(once()).method("findQtdColaboradorPorArea").with(eq(estabelecimento.getId()), eq(data)).will(returnValue(areas));
-    	areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").will(returnValue(areas));
+    	areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").will(returnValue(areas));
     	areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areas));
     	areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(areaOrganizacional2));
     	areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(areaOrganizacional));

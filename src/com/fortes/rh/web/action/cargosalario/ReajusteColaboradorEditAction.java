@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.cargosalario;
 import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -67,7 +68,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	private Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-	private Collection<AreaOrganizacional> areaOrganizacionalsPropostas = new ArrayList<AreaOrganizacional>();
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
 	private Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
 	private Collection<Funcao> funcaos = new ArrayList<Funcao>();
@@ -121,7 +121,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		
 		if(reajusteColaborador != null && reajusteColaborador.getId() != null)
 		{
-			reajusteColaborador = (ReajusteColaborador) reajusteColaboradorManager.findByIdProjection(reajusteColaborador.getId());
+			reajusteColaborador = (ReajusteColaborador) reajusteColaboradorManager.getSituacaoReajusteColaborador(reajusteColaborador.getId());
 		}
 	}
 
@@ -147,7 +147,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		//Se tem papel especifico, carrega todas as áreas organizacionais
 		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
 		{
-			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, reajusteColaborador.getAreaOrganizacionalProposta().getId());
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, Arrays.asList(reajusteColaborador.getAreaOrganizacionalAtual().getId(), reajusteColaborador.getAreaOrganizacionalProposta().getId()));
 		}
 		else
 		{
@@ -288,7 +288,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		//Se for o super-usuário ou papel especifico, carrega todas as áreas organizacionais
 		if(usuarioLogado.getId() == 1L || SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
 		{
-			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
 		}
 		else
 		{
@@ -299,13 +299,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		}
 
 		CollectionUtil<AreaOrganizacional> areaOrganizacionalsUtil = new CollectionUtil<AreaOrganizacional>();
-
-		/* areaOrganizacionalsProposta tronou-se necessário porque os gestores de uma determinada área não
-		 * conseguiam cadastrar Solicitação de Reajuste para outros setores que não eram coordenados por eles.
-		 */
-		areaOrganizacionalsPropostas = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.ATIVA, null);
-		areaOrganizacionalsPropostas = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsPropostas);
-		areaOrganizacionalsPropostas = areaOrganizacionalsUtil.sortCollectionStringIgnoreCase(areaOrganizacionalsPropostas, "descricao");
 
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		areaOrganizacionalsUtil = new CollectionUtil<AreaOrganizacional>();
@@ -706,16 +699,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
 	{
 		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	public Collection<AreaOrganizacional> getAreaOrganizacionalsPropostas()
-	{
-		return areaOrganizacionalsPropostas;
-	}
-
-	public void setAreaOrganizacionalsPropostas(Collection<AreaOrganizacional> areaOrganizacionalsPropostas)
-	{
-		this.areaOrganizacionalsPropostas = areaOrganizacionalsPropostas;
 	}
 
 	public boolean isExibeSalario()

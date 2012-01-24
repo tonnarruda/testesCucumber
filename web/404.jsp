@@ -12,7 +12,7 @@
 </head>
 <body bgcolor=white>
 <center>
-<font face=verdana size=5 color=red>
+<font face=verdana size=2 color=black>
 	<p>
 	ERRO 404 - PÁGINA NÃO ENCONTRADA
 	<font face=verdana size=2 color=black>

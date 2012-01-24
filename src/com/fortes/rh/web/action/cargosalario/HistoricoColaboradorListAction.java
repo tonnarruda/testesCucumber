@@ -249,7 +249,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public String grfSalarioAreasFilhas() throws Exception
 	{
 		AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaId);
-		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativa(null, null, null);
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(null, null, null);
 		AreaOrganizacional area = areaOrganizacionalManager.getAreaMae(areas, areaOrganizacional);
 		
 		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId(), area);
@@ -352,7 +352,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		{
 			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 
-			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
 			if(historicoColaborador != null)

@@ -135,12 +135,9 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
 		
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa")
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas")
 		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa")
-		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA), ANYTHING).will(returnValue(areaOrganizacionalsPropostas));
 		
-		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
 		
 		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<TabelaReajusteColaborador>()));
@@ -176,7 +173,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		action.setReajusteColaborador(reajusteColaborador);
 		
-		manager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(reajusteColaborador));
+		manager.expects(once()).method("getSituacaoReajusteColaborador").with(eq(1L)).will(returnValue(reajusteColaborador));
 		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
 		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
 		
@@ -227,7 +224,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").will(returnValue(true));
 		
-		manager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(reajusteColaborador));
+		manager.expects(once()).method("getSituacaoReajusteColaborador").with(eq(1L)).will(returnValue(reajusteColaborador));
 		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
 		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
 		
@@ -286,8 +283,6 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		action.setValorDissidio(10d);
 		action.getFiltrarPor();
 		action.setFiltrarPor(' ');
-		action.getAreaOrganizacionalsPropostas();
-		action.setAreaOrganizacionalsPropostas(new ArrayList<AreaOrganizacional>());
 		action.isExibeSalario();
 		action.getTipoSalario();
 		action.setTipoSalario(new TipoAplicacaoIndice());

@@ -85,9 +85,7 @@
 	<@ww.form name="form" action="${formAction}" validate="true" method="POST" >
 		<li>
 			<div id="quadroInformacao">
-				<ul>
-					<@ww.label label="Colaborador" name="reajusteColaborador.colaborador.nomeComercial" />
-				</ul>
+				Colaborador: ${reajusteColaborador.colaborador.nomeComercial}<br/><br/>
 			</div>
 		</li>
 

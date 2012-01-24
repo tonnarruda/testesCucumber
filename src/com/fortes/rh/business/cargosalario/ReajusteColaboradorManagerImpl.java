@@ -209,9 +209,14 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 		getDao().deleteByColaboradoresTabelaReajuste(colaboradorIds, tabelaReajusteColaboradorId);
 	}
 
-	public ReajusteColaborador findByIdProjection(Long reajusteColaboradorId)
+	public ReajusteColaborador getSituacaoReajusteColaborador(Long reajusteColaboradorId)
 	{
 		return getDao().getSituacaoReajusteColaborador(reajusteColaboradorId);
+	}
+	
+	public ReajusteColaborador findByIdProjection(Long reajusteColaboradorId)
+	{
+		return getDao().findByIdProjection(reajusteColaboradorId);
 	}
 
 	@Override
@@ -249,7 +254,7 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 		if(filtro.equals("1"))
 		{
 			//monta familia das areas
-			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
 			areas = areaOrganizacionalManager.montaFamilia(areas);
 
 			for (ReajusteColaborador reajusteTmp : reajusteColaboradors)

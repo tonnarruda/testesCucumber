@@ -279,7 +279,7 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 
 		Collection<AreaOrganizacional> areaOrganizacionals = mesclado.keySet();
 
-		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
+		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
 		areasTmp = areaOrganizacionalManager.montaFamilia(areasTmp);
 		areaOrganizacionals = areaOrganizacionalManager.getDistinctAreaMae(areasTmp, areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();

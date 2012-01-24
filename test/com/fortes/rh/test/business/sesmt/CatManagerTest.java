@@ -94,7 +94,7 @@ public class CatManagerTest extends MockObjectTestCase
 		Collection<AreaOrganizacional> areaOrganizacionais = new ArrayList<AreaOrganizacional>();
 		
 		catDao.expects(once()).method("findAllSelect").with(new Constraint[]{eq(1L),eq(hoje),eq(hoje),eq(estabelecimentoIds), ANYTHING, ANYTHING}).will(returnValue(colecao));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").will(returnValue(areaOrganizacionais ));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").will(returnValue(areaOrganizacionais ));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionais));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(areaOrganizacional));
 		

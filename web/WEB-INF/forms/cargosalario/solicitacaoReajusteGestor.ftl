@@ -54,6 +54,8 @@
 
 		function exibeDados(data)
 		{
+			AreaOrganizacionalDWR.findAllListAndInativas(<@authz.authentication operation="empresaId"/>, data.areaOrganizacionalAtualId, function(dados) { populaAreasOrganizacionais(dados, data.areaOrganizacionalAtualId) });
+   			
    			var salarioAtualMascara = formatarMascaraMonetaria(data.salarioAtual);
 			document.getElementById('areaOrganizacionalAtual').value = data.areaOrganizacionalAtualId;
 			document.getElementById('areaOrganizacionalAtualNome').innerHTML = "<b>" + data.areaOrganizacionalAtualNome + "</b>";
@@ -97,8 +99,6 @@
 
 			document.getElementById('areaOrganizacionalAtual').value = data.areaOrganizacionalAtualId;
 
-			document.getElementById('areaOrganizacionalProposta').value = data.areaOrganizacionalAtualId;
-
 			document.getElementById('salarioProposto').value = salarioAtualMascara;
 
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
@@ -116,8 +116,17 @@
 			
 			alteraTipoSalario(data.tipoSalarioAtual);
 			calculaSalario();
+			
 		}
 
+		function populaAreasOrganizacionais(dados, areaOrganizacionalAtualId)
+		{
+			DWRUtil.removeAllOptions("areaOrganizacionalProposta");
+			$('#areaOrganizacionalProposta').prepend('<option value=\"\">Selecione...</option>');
+			DWRUtil.addOptions("areaOrganizacionalProposta", dados);
+			$('#areaOrganizacionalProposta').val(areaOrganizacionalAtualId);
+		}
+		
 		function populaColaborador(areaId)
 		{
 			limpaDados();
@@ -322,7 +331,7 @@
 						</@authz.authorize>
 						<@ww.select label="Estabelecimento" name="reajusteColaborador.estabelecimentoProposto.id" id="estabelecimentoProposto" required="true" headerValue="Selecione..." headerKey="" list="estabelecimentos" listKey="id" listValue="nome" onchange="${funcaoEstabelecimento}"/>
 						
-						<@ww.select label="Área Organizacional" name="reajusteColaborador.areaOrganizacionalProposta.id" id="areaOrganizacionalProposta" required="true"  headerValue="Selecione..." headerKey="" list="areaOrganizacionalsPropostas" listKey="id" listValue="descricao" onchange="verificaMaternidade(this.value, 'areaOrganizacionalProposta');" cssStyle="width:445px;"/>
+						<@ww.select label="Área Organizacional" name="reajusteColaborador.areaOrganizacionalProposta.id" id="areaOrganizacionalProposta" required="true"  headerValue="Selecione..." headerKey="" onchange="verificaMaternidade(this.value, 'areaOrganizacionalProposta');" cssStyle="width:445px;"/>
 						
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" required="${obrigarAmbienteFuncaoColaborador?string}" list="ambientes" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1"/>

@@ -128,7 +128,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0), eq(0), eq(null), eq(null), eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING}).will(returnValue(areas));
 
-    	assertEquals(areaOrganizacionalManager.findAllListAndInativa(1L, AreaOrganizacional.TODAS, null), areas);
+    	assertEquals(areaOrganizacionalManager.findAllListAndInativas(1L, AreaOrganizacional.TODAS, null), areas);
     }
 
     public void testFindAllListComIdUsuario()
