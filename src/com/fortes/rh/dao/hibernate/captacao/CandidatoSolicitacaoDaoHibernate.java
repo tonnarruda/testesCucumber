@@ -480,4 +480,14 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		
 		query.executeUpdate();
 	}
+
+	public void removeByCandidato(Long candidatoId) 
+	{
+		String hql = "delete from CandidatoSolicitacao where candidato.id = :candidatoId";
+
+		Query query = getSession().createQuery(hql);
+		query.setLong("candidatoId", candidatoId);
+		
+		query.executeUpdate();
+	}
 }

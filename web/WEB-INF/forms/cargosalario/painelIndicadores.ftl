@@ -50,18 +50,23 @@
 				
 				montaLine(absenteismo, "#evolucaoAbsenteismo");
 				montaLine(turnover, "#evolucaoTurnover");
+				
+				populaAreas();
 			});
 			
 			function enviaForm()
 			{
-				return validaFormulario('formBusca', new Array('dataBase','dataIni','dataFim','dataMesAnoIni','dataMesAnoFim'), new Array('dataBase','dataIni','dataFim','dataMesAnoIni','dataMesAnoFim'));
+				return validaFormulario('formBusca', new Array('@empresasCheck', 'dataBase','dataIni','dataFim','dataMesAnoIni','dataMesAnoFim'), new Array('dataBase','dataIni','dataFim','dataMesAnoIni','dataMesAnoFim'));
 			}
 						
-			function populaAreas(empresaId)
+			function populaAreas()
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
-				AreaOrganizacionalDWR.getByEmpresa(createListAreas, empresaId);
-				$('.empresa').val(empresaId);
+				var empresaIds = getArrayCheckeds(document.forms[0], 'empresasCheck');
+				if(empresaIds.length > 0)
+					AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaIds);
+				else
+					createListAreas(null);
 			}
 	
 			function createListAreas(data)
@@ -93,7 +98,7 @@
 	<body>
 		<#include "../util/topFiltro.ftl" />
 			<@ww.form name="formBusca" id="formBusca" action="painelIndicadores.action" method="POST">
-				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
+				<@frt.checkListBox label="Empresas" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaAreas();"/>
 				<@ww.hidden name="empresa.turnoverPorSolicitacao"/>
 				<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
 				

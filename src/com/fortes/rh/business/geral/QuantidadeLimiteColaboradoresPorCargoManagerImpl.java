@@ -81,7 +81,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 			Collection<Long> cargosIdsTmp = new ArrayList<Long>();
 			cargosIdsTmp.add(faixa.getCargo().getId());
 		
-			Integer colaboradoresAtivos = colaboradorManager.countAtivosPeriodo(hoje, empresaId, null, LongUtil.collectionToCollectionLong(descendentes), cargosIdsTmp, null, false, colaboradorId, false);
+			Integer colaboradoresAtivos = colaboradorManager.countAtivosPeriodo(hoje, Arrays.asList(empresaId), null, LongUtil.collectionToCollectionLong(descendentes), cargosIdsTmp, null, false, colaboradorId, false);
 			
 			if(colaboradoresAtivos >= configuracaoLimite.getLimite())
 				throw new LimiteColaboradorExceditoException("Limite de colaboradores cadastrados para o cargo \""+ faixa.getCargo().getNome() +"\" foi excedido!");
@@ -122,7 +122,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 				if(configuracao.getAreaOrganizacional().getId().equals(limite.getAreaOrganizacional().getId()))
 				{
 					Collection<AreaOrganizacional> descendentes = areaOrganizacionalManager.findAreasPossiveis(areaOrganizacionais, limite.getAreaOrganizacional().getId());
-					limite.setQtdColaboradoresCadastrados(colaboradorManager.countAtivosPeriodo(hoje, empresaId, null, LongUtil.collectionToCollectionLong(descendentes), Arrays.asList(limite.getCargo().getId()), null, false, null, false));
+					limite.setQtdColaboradoresCadastrados(colaboradorManager.countAtivosPeriodo(hoje, Arrays.asList(empresaId), null, LongUtil.collectionToCollectionLong(descendentes), Arrays.asList(limite.getCargo().getId()), null, false, null, false));
 					limite.setDescricao(configuracao.getDescricao());
 					break;
 				}				

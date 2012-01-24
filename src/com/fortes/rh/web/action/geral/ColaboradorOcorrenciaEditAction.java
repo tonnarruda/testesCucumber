@@ -248,7 +248,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		try 
 		{
 			AbsenteismoCollection absenteismoCollection = new AbsenteismoCollection();
-			absenteismoCollection.setAbsenteismos(colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, getEmpresaSistema().getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(ocorrenciasCheck)));
+			absenteismoCollection.setAbsenteismos(colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(getEmpresaSistema().getId()), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(ocorrenciasCheck)));
 			dataSource = Arrays.asList(absenteismoCollection);
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;

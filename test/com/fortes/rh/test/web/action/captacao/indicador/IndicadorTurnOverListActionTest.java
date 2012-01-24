@@ -93,8 +93,9 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setDataDe("01/2008");
     	action.setDataAte("12/2008");
 
-    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
-    	empresaManager.expects(once()).method("findByIdProjection");
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	action.setEmpresaSistema(empresa);
+    	empresaManager.expects(once()).method("findByIdProjection").will(returnValue(empresa));
     	
     	Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
     	turnOvers.add(new TurnOver());
@@ -108,8 +109,9 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setDataDe("01/2008");
     	action.setDataAte("12/2008");
     	
-    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
-    	empresaManager.expects(once()).method("findByIdProjection");
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	action.setEmpresaSistema(empresa);
+    	empresaManager.expects(once()).method("findByIdProjection").will(returnValue(empresa));
     	
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
     	empresaManager.expects(once()).method("findEmpresasPermitidas");

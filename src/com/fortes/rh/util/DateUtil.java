@@ -736,7 +736,6 @@ public class DateUtil
 	    int totalDias = diferencaEntreDatas( dataInicial, dataFinal ) + 1;  
 	      
 	    Calendar calendar = new GregorianCalendar( dataInicial.getYear() + 1900, dataInicial.getMonth(), dataInicial.getDate() );  
-	    System.out.println(calendar.getTime());
 	    for( int i = 1; i <= totalDias; i++ ) 
 	    {  
 	        if(calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY  && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)

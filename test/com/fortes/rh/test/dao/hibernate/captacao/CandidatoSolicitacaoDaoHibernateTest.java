@@ -433,6 +433,36 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(StatusCandidatoSolicitacao.INDIFERENTE, candidatoSolicitacao.getStatus());
 	}
 	
+	public void testRemoveByCandidato()
+	{
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato1);
+		
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato2);
+		
+		Solicitacao solicitacao = new Solicitacao();
+		solicitacaoDao.save(solicitacao);
+		
+		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao1.setCandidato(candidato1);
+		candidatoSolicitacao1.setSolicitacaoId(solicitacao.getId());
+		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
+		
+		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao2.setCandidato(candidato2);
+		candidatoSolicitacao2.setSolicitacaoId(solicitacao.getId());
+		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+		
+		assertEquals(1, solicitacaoDao.findAllByCandidato(candidato1.getId()).size());
+		assertEquals(1, solicitacaoDao.findAllByCandidato(candidato2.getId()).size());
+		
+		candidatoSolicitacaoDao.removeByCandidato(candidato1.getId());
+
+		assertEquals(0, solicitacaoDao.findAllByCandidato(candidato1.getId()).size());
+		assertEquals(1, solicitacaoDao.findAllByCandidato(candidato2.getId()).size());
+	}
+	
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{
 		this.cidadeDao = cidadeDao;

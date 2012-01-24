@@ -210,7 +210,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		return diasDoPeriodo.toString();
 	}
 	
-	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds) 
+	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds) 
 	{
 		String diasDoPeriodo = montaDiasDoPeriodo(dataIni, dataFim);
 
@@ -224,7 +224,10 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		sql.append("left join Ocorrencia o on ");
 		sql.append("	o.id = co.ocorrencia_id ");
 		sql.append("left join Colaborador c on c.id = co.colaborador_id ");
-		sql.append("	and c.empresa_id = :empresaId ");
+		
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			sql.append("	and c.empresa_id in (:empresaIds) ");
+		
 		sql.append("left join HistoricoColaborador hc on hc.colaborador_id = c.id ");
 		sql.append("	and hc.status = :status ");
 		
@@ -246,7 +249,8 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		Query query = getSession().createSQLQuery(sql.toString());
 
 		query.setDate("hoje", new Date());
-		query.setLong("empresaId", empresaId);
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if(areasIds != null && !areasIds.isEmpty())

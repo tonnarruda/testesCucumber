@@ -20,6 +20,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -81,11 +82,16 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			empresa = empresaManager.findByIdProjection(empresa.getId());//os managers/parametroRelatorio precisam da empresa com turnoverPorSolicitacao, logoUrl
 			
 			TurnOverCollection turnOverCollection = new TurnOverCollection();
-			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, empresa, LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
+			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa.getId()), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), filtrarPor));
 			dataSource = Arrays.asList(turnOverCollection);
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;
 
+			if (estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
+				filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck)), 90, "...");
+			else
+				filtro +=  "\nTodos os Estabelecimentos";
+			
 			if (filtrarPor == 1)
 			{
 				if (areasCheck != null && areasCheck.length > 0)
