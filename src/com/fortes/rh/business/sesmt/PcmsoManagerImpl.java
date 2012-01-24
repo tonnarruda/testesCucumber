@@ -162,7 +162,7 @@ public class PcmsoManagerImpl implements PcmsoManager
 
 		try
 		{
-			Collection<AreaOrganizacional> areasTodas = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areasTodas = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
 			areasTodas = areaOrganizacionalManager.montaFamilia(areasTodas);
 
 			for (AreaOrganizacional areaOrganizacional : areaOrganizacionals) 

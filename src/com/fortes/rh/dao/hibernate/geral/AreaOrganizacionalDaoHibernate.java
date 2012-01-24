@@ -84,7 +84,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long colaboradorId, String nome, Long empresaId, Boolean ativo, Long areaInativaId)
+	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long colaboradorId, String nome, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds)
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"ao");
 
@@ -104,7 +104,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		criteria.setProjection(p);
 
-		montaConsulta(criteria, colaboradorId, nome, empresaId, ativo, areaInativaId);
+		montaConsulta(criteria, colaboradorId, nome, empresaId, ativo, areaInativaIds);
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
 		criteria.addOrder(Order.asc("ao.nome"));
@@ -119,7 +119,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, Long colaboradorId, String nome, Long empresaId, Boolean ativo, Long areaInativaId)
+	private void montaConsulta(Criteria criteria, Long colaboradorId, String nome, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds)
 	{
 		criteria.createCriteria("areaMae", "am", Criteria.LEFT_JOIN);
 		criteria.createCriteria("responsavel", "r", Criteria.LEFT_JOIN);
@@ -133,10 +133,10 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		if(ativo != null)
 		{
-			if (areaInativaId == null)
-				criteria.add(Expression.eq("ao.ativo",ativo));
+			if (areaInativaIds == null || areaInativaIds.isEmpty())
+				criteria.add(Expression.eq("ao.ativo", ativo));
 			else
-				criteria.add(Expression.or(Expression.eq("ao.ativo",ativo), Expression.eq("ao.id",areaInativaId)));
+				criteria.add(Expression.or(Expression.eq("ao.ativo", ativo), Expression.in("ao.id", areaInativaIds)));
 		}
 
 		if(empresaId != null)

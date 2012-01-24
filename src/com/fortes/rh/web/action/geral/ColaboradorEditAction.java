@@ -833,7 +833,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			participacoesNaCipaColaborador = comissaoManager.getParticipacoesDeColaboradorNaCipa(colaborador.getId());
 
 			//Popula areas com areas maes
-			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 
 			for (HistoricoColaborador historico: historicoColaboradors)

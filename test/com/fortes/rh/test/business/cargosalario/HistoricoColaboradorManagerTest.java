@@ -486,7 +486,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
 		
 		historicoColaboradorDao.expects(once()).method("getPromocoes").will(returnValue(situacoes));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(garagem.getId())).will(returnValue(garagem));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(lavajato.getId())).will(returnValue(lavajato));
@@ -657,7 +657,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(once()).method("getUltimasPromocoes").will(returnValue(situacoes));
 		
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(garagem.getId())).will(returnValue(garagem));
 		
@@ -1097,7 +1097,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradors.add(historicoColaborador);
 
 		historicoColaboradorDao.expects(once()).method("findPromocaoByColaborador").with(eq(colaborador.getId())).will(returnValue(historicoColaboradors));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 
@@ -1219,7 +1219,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradores.add(historicoColaborador1);
 
 		historicoColaboradorDao.expects(once()).method("findPromocaoByColaborador").with(ANYTHING).will(returnValue(historicoColaboradores));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 
@@ -1265,7 +1265,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findPromocaoByColaborador").with(ANYTHING).will(returnValue(historicoColaboradores));
 		indiceHistoricoManager.expects(once()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(indiceHistoricos));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 
@@ -1325,7 +1325,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("findPromocaoByColaborador").with(ANYTHING).will(returnValue(historicoColaboradores));
 		faixaSalarialHistoricoManager.expects(atLeastOnce()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaHistoricos));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 
@@ -2323,7 +2323,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		areaOrganizacionals.add(areaOrganizacional);
 
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
 		
 		Date dataIni = new Date();

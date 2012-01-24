@@ -13,7 +13,7 @@ public interface AreaOrganizacionalDao extends GenericDao<AreaOrganizacional>
 {
 	public AreaOrganizacional findAreaOrganizacionalCodigoAc(Long id);
 	public Integer getCount(String nome, Long empresaId);
-	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long usuarioId, String nome, Long empresaId, Boolean ativo, Long areaInativaId);
+	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long usuarioId, String nome, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds);
 	public AreaOrganizacional findIdMaeById(long idArea);
 	public Collection<AreaOrganizacional> findByCargo(Long cargoId);
 	public boolean verificaMaternidade(Long areaOrganizacionalId);

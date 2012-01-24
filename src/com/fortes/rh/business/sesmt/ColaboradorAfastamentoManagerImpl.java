@@ -105,7 +105,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 
 	private void setFamiliaAreas(Collection<ColaboradorAfastamento> colaboradorAfastamentos, Long empresaId)
 	{
-		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
 
 		try
 		{

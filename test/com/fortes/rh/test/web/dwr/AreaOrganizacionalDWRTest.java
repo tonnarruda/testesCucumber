@@ -52,7 +52,7 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		areas.add(area1);
 		areas.add(area2);
 		
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("getAncestrais").with(ANYTHING, ANYTHING).will(returnValue(areas));
 		
 		try 
@@ -143,7 +143,7 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		
 		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}).size());
 		
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativa").will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
 		empresaId = 1L;
 		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}).size());

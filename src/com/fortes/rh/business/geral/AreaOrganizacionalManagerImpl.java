@@ -6,6 +6,7 @@
 package com.fortes.rh.business.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
@@ -221,9 +222,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().verificaMaternidade(areaOrganizacionalId);
 	}
 
-	public Collection<AreaOrganizacional> findAllListAndInativa(Long empresaId, Boolean ativo, Long areaInativaId)
+	public Collection<AreaOrganizacional> findAllListAndInativas(Long empresaId, Boolean ativo, Collection<Long> areaInativaIds)
 	{
-		return getDao().findAllList(0, 0, null, null, empresaId, ativo, areaInativaId);
+		return getDao().findAllList(0, 0, null, null, empresaId, ativo, areaInativaIds);
 	}
 
 	public Collection<AreaOrganizacional> findAllList(Long idColaborador, Long empresaId, Boolean ativo, Long areaInativaId)
@@ -246,7 +247,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 		try
 		{
-			Collection<AreaOrganizacional> areas = findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areas = findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
 			areas = montaFamilia(areas);
 			CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricao");
@@ -378,7 +379,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public Collection<AreaOrganizacional> montaAllSelect(Long empresaId)
 	{
-		Collection<AreaOrganizacional> areas = findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
+		Collection<AreaOrganizacional> areas = findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
 
 		try
 		{
@@ -421,9 +422,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, grupoAC);
 	}
 
-	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long faixaInativaId) throws Exception
+	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long areaInativaId) throws Exception
 	{
-		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativa(empresaId, ativo, faixaInativaId);
+		Collection<Long> areasInativas = null;
+		if(areaInativaId != null)
+			areasInativas = Arrays.asList(areaInativaId);
+		
+		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativas(empresaId, ativo, areasInativas);
 		areaOrganizacionals = montaFamilia(areaOrganizacionals);
 
 		CollectionUtil<AreaOrganizacional> cUtil = new CollectionUtil<AreaOrganizacional>();
@@ -507,7 +512,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	// 
 	public Collection<ExamesPrevistosRelatorio> setFamiliaAreas(Collection<ExamesPrevistosRelatorio> examesPrevistosRelatorios, Long empresaId) throws Exception
 	{
-		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativa(empresaId, AreaOrganizacional.TODAS, null);
+		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
 		areaOrganizacionals = montaFamilia(areaOrganizacionals);
 
 		for (ExamesPrevistosRelatorio examesPrevistosRelatorio: examesPrevistosRelatorios)

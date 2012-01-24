@@ -22,6 +22,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.util.SalarioUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -991,7 +992,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 	{
 		return SalarioUtil.getValor(this.getTipoSalarioAtual(), this.getFaixaSalarialAtual(), this.getIndiceAtual(), this.getQuantidadeIndiceAtual(),this.salarioAtual);
 	}
-
+	@NaoAudita
 	public Double getSalarioProposto()
 	{
 		return SalarioUtil.getValor(this.getTipoSalarioProposto(), this.getFaixaSalarialProposta(), this.getIndiceProposto(), this.getQuantidadeIndiceProposto(), this.salarioProposto);
@@ -1046,7 +1047,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 	{
 		this.estabelecimentoProposto = estabelecimentoProposto;
 	}
-
+	@NaoAudita
 	public String getPorcentagemDiferencaSalarial()
 	{
 		Double salarioProposto = this.getSalarioProposto();
