@@ -18481,6 +18481,8 @@ update parametrosdosistema set appversao = '1.1.66.59';--.go
 
 -- versao 1.1.67.60
 
+update parametrosdosistema set enviaremail=true;--.go
+
 alter table solicitacao add column observacaoLiberador text;--.go
 insert into migrations values('20120116091630');--.go
 
