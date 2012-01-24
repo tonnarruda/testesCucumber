@@ -619,6 +619,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ConhecimentoEditActionTest.class);
         suite.addTestSuite(ConhecimentoDaoHibernateTest.class);
         suite.addTestSuite(ConhecimentoManagerTest.class);
+        
         suite.addTestSuite(AtitudeEditActionTest.class);
         suite.addTestSuite(AtitudeDaoHibernateTest.class);
         suite.addTestSuite(AtitudeManagerTest.class);

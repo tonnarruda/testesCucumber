@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.cargosalario;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -69,6 +70,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private HistoricoColaborador historicoColaborador;
 	private Colaborador colaborador;
 
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	private String[] empresasCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -128,16 +131,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public String painelIndicadores() throws Exception
 	{
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), getUsuarioLogado().getId(), "ROLE_INFO_PAINEL_IND");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+   		
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
 			
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
-		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
-		
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
-		
-		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_INFO_PAINEL_IND");
 		
 		Date hoje = new Date();
 		if (dataBase == null)
@@ -150,21 +151,30 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			dataMesAnoIni = DateUtil.formataMesAno(DateUtil.retornaDataAnteriorQtdMeses(hoje, 9, true));
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
 			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
+
+		Collection<Long> empresaIds = LongUtil.arrayStringToCollectionLong(empresasCheck);
+		if(empresaIds.isEmpty())
+		{
+			empresasCheck = new String[]{Long.toString(getEmpresaSistema().getId())};
+			empresaIds = Arrays.asList(getEmpresaSistema().getId());
+		}
+
+		empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
 		
-		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresa.getId(), areasIds);
-		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresa.getId(), areasIds);
-		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresa.getId(), areasIds);
-		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresa.getId(), areasIds);
-		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, empresa.getId(), qtdItensDesligamento, areasIds);
-		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresa.getId(), areasIds);
-		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresa.getId(), areasIds);
+		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresaIds, areasIds);
+		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresaIds, areasIds);
+		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresaIds, areasIds);
+		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresaIds, areasIds);
+		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, empresaIds, qtdItensDesligamento, areasIds);
+		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresaIds, areasIds);
+		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, areasIds);
 		
-		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresa.getId(), LongUtil.arrayLongToCollectionLong(areasIds));
+		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresaIds, LongUtil.arrayLongToCollectionLong(areasIds));
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
-		countAdmitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIni, dataFim, empresa, areasIds, true);
-		countDemitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIni, dataFim, empresa, areasIds, false);
-		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresa.getId(), areasIds);
+		countAdmitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIni, dataFim, empresaIds, areasIds, true);
+		countDemitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIni, dataFim, empresaIds, areasIds, false);
+		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresaIds, areasIds);
 		
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
 		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);
@@ -175,7 +185,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
 		
 		TurnOverCollection turnOverCollection = new TurnOverCollection();
-		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa, null, LongUtil.arrayLongToCollectionLong(areasIds), null, 1);
+		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresaIds, null, LongUtil.arrayLongToCollectionLong(areasIds), null, 1);
 		turnOverCollection.setTurnOvers(turnOvers);
 		turnover = turnOverCollection.getMedia();
 		
@@ -857,6 +867,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setImprimirDesligados(boolean imprimirDesligados) {
 		this.imprimirDesligados = imprimirDesligados;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
 	}
 
 }

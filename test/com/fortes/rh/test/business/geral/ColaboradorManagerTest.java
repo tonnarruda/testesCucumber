@@ -32,6 +32,7 @@ import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.business.geral.ColaboradorManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -102,6 +103,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock cidadeManager;
     private Mock estadoManager;
     private Mock formacaoManager;
+    private Mock empresaManager;
     private Mock colaboradorIdiomaManager;
     private Mock experienciaManager;
     private Mock acPessoalClientColaborador;
@@ -164,6 +166,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
 		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
 		colaboradorManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+
+		empresaManager = mock(EmpresaManager.class);
+		colaboradorManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 		
 		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
 		colaboradorManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
@@ -330,6 +335,23 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         colaboradorDao.expects(once()).method("findByAreasOrganizacionaisEstabelecimentos").with(eq(areasIds), eq(estabelecimentosIds), ANYTHING, ANYTHING).will(returnValue(colaboradores));
 
         assertEquals(1, colaboradorManager.findByAreasOrganizacionaisEstabelecimentos(areasIds, estabelecimentosIds).size());
+    }
+    
+    public void testCountAdmitidosDemitidosTurnover()
+    {
+    	AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
+    	areaOrganizacional.setId(1L);
+
+    	Empresa empresa1 = EmpresaFactory.getEmpresa(1L);
+    	Empresa empresa2 = EmpresaFactory.getEmpresa(2L);
+    	
+    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa1.getId())).will(returnValue(empresa1));
+    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa2.getId())).will(returnValue(empresa2));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosTurnover").withAnyArguments().will(returnValue(new Integer(20)));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosTurnover").withAnyArguments().will(returnValue(new Integer(2)));
+    	
+    	assertEquals(new Integer(22), colaboradorManager.countAdmitidosDemitidosTurnover(null, null, Arrays.asList(empresa1.getId(), empresa2.getId()), new Long[]{areaOrganizacional.getId()}, true));
+    	assertEquals(new Integer(0), colaboradorManager.countAdmitidosDemitidosTurnover(null, null, null, new Long[]{areaOrganizacional.getId()}, true));
     }
 
     public void testGetColaboradoresByEstabelecimentoAreaGrupo()
@@ -536,11 +558,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	demitidos.add(montaDemitido(11, 2010, 19));
     	demitidos.add(montaDemitido(12, 2010, 10));
 
+    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
     	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(admitidos));
     	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
     	colaboradorDao.expects(once()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(973));
     	
-    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa, null, null, null, 1);
+    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, 1);
   
     	TurnOver[] turnOverArray = (TurnOver[]) turnOvers.toArray(new TurnOver[12]);
     	
@@ -571,6 +594,44 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	TurnOver mes12 = turnOverArray[11];
     	assertEquals("01/12/2010" , DateUtil.formataDiaMesAno(mes12.getMesAno()));
     	assertEquals(2.45 , mes12.getTurnOver());
+    }
+    
+    public void testMontaTurnOverComMaisDeUmaEmpresa() throws Exception
+    {
+    	Empresa empresa1 = EmpresaFactory.getEmpresa(333L);
+    	Empresa empresa2 = EmpresaFactory.getEmpresa(558L);
+    	Date dataIni = DateUtil.criarDataMesAno(01, 01, 2010);
+    	Date dataFim = DateUtil.criarDataMesAno(28, 12, 2010);
+    	
+    	Collection<TurnOver> admitidos = new ArrayList<TurnOver>();
+    	admitidos.add(montaAdmitido(1, 2010, 21));
+    	admitidos.add(montaAdmitido(2, 2010, 45));
+    	
+    	Collection<TurnOver> demitidos = new ArrayList<TurnOver>();
+    	demitidos.add(montaDemitido(1, 2010, 25));
+    	demitidos.add(montaDemitido(2, 2010, 15));
+    	
+    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa1.getId())).will(returnValue(empresa1));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(admitidos));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
+    	colaboradorDao.expects(once()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(200));
+    	
+    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa2.getId())).will(returnValue(empresa2));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(admitidos));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
+    	colaboradorDao.expects(once()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(100));
+    	
+    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa1.getId(), empresa2.getId()), null, null, null, 1);
+    	assertEquals(12, turnOvers.size());
+    	TurnOver[] turnOverArray = (TurnOver[]) turnOvers.toArray(new TurnOver[12]);
+    	
+    	TurnOver mes1 = turnOverArray[0];
+    	assertEquals("01/01/2010" , DateUtil.formataDiaMesAno(mes1.getMesAno()));
+    	assertEquals(7.67 , mes1.getTurnOver());
+    	
+    	TurnOver mes2 = turnOverArray[1];
+    	assertEquals("01/02/2010" , DateUtil.formataDiaMesAno(mes2.getMesAno()));
+    	assertEquals(10.14 , mes2.getTurnOver());
     }
 
 	private TurnOver montaAdmitido(int mes, int ano, double qtdAdmitidos) 

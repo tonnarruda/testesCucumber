@@ -150,19 +150,19 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas);
 	public Colaborador findByUsuarioProjection(Long usuarioId);
 	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel);
-	public Collection<DataGrafico> countSexo(Date data, Long empresaId, Long[] areasIds);
-	public Collection<DataGrafico> countEstadoCivil(Date data, Long empresaId, Long[] areasIds);
-	public Collection<DataGrafico> countFormacaoEscolar(Date data, Long empresaId, Long[] areasIds);
-	public Collection<DataGrafico> countFaixaEtaria(Date data, Long empresaId, Long[] areasIds);
-	public Collection<DataGrafico> countDeficiencia(Date data, Long empresaId, Long[] areasIds);
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Long empresaId, int qtdItens, Long[] areasIds);
-	public Collection<DataGrafico> countColocacao(Date dataBase, Long empresaId, Long[] areasIds);
-	public int getCountAtivos(Date dataBase, Long empresaId, Long[] areasIds);
-	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Empresa empresa, Long[] areasIds, boolean isAdmitidos);
-	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception;
+	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds);
+	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] areasIds);
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] areasIds);
+	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] areasIds);
+	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] areasIds);
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, int qtdItens, Long[] areasIds);
+	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] areasIds);
+	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] areasIds);
+	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, boolean isAdmitidos);
+	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception;
 	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional area);
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) throws Exception;
-	public int countAtivosPeriodo(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasId, boolean considerarDataAdmissao, Long colaboradorId, boolean isAbsenteismo);
+	public int countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasId, boolean considerarDataAdmissao, Long colaboradorId, boolean isAbsenteismo);
 	public Collection<Object[]> montaGraficoTurnover(Collection<TurnOver> turnOvers);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public Collection<Colaborador> findColabPeriodoExperienciaAgrupadoPorModelo(Long id, Date periodoIni, Date periodoFim, Long avaliacaoId, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck, boolean considerarAutoAvaliacao) throws Exception;
@@ -179,4 +179,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void deleteColaborador(Long[] colaboradorIds) throws Exception;
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 	public String findCodigoACDuplicado(Long empresaId);
+	public void setCandidatoNull(Long candidatoId);
 }

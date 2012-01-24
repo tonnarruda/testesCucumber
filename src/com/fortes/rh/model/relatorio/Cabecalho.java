@@ -32,8 +32,8 @@ public class Cabecalho
 
 	public String getFiltro()
 	{
-		if(filtro != null && filtro.length() > 213)
-			return StringUtil.subStr(filtro, 210) + "...";
+		if(filtro != null && filtro.length() > 303)
+			return StringUtil.subStr(filtro, 300) + "...";
 		else
 			return filtro;
 	}

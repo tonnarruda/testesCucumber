@@ -222,16 +222,16 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return getDao().verifyExistsMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni);
 	}
 
-	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasId) throws Exception 
+	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasId) throws Exception 
 	{
-		Collection<Absenteismo> absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaId, estabelecimentosIds, areasIds, ocorrenciasId);
+		Collection<Absenteismo> absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, ocorrenciasId);
 		if (absenteismos == null || absenteismos.isEmpty())
 			throw new ColecaoVaziaException();
 		
 		for (Absenteismo absenteismo : absenteismos) 
 		{
 			Date inicioDoMes = DateUtil.criarDataMesAno(1, Integer.parseInt(absenteismo.getMes()), Integer.parseInt(absenteismo.getAno()));
-			absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(inicioDoMes), empresaId, estabelecimentosIds, areasIds, null, ocorrenciasId, true, null, true));
+			absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(inicioDoMes), empresaIds, estabelecimentosIds, areasIds, null, ocorrenciasId, true, null, true));
 			absenteismo.setQtdDiasTrabalhados(DateUtil.contaDiasUteisMes(inicioDoMes));
 
 			if(!absenteismo.getQtdTotalFaltas().equals(0))
@@ -259,14 +259,14 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		this.acPessoalClientColaboradorOcorrencia = acPessoalClientColaboradorOcorrencia;
 	}
 
-	public Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Long empresaId, Collection<Long> areasIds) 
+	public Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Collection<Long> empresaIds, Collection<Long> areasIds) 
 	{
 		Collection<Object[]>  graficoEvolucaoAbsenteismo = new ArrayList<Object[]>();
 		Date dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
 		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataMesAnoFim));
 
 		try {
-			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaId, null, areasIds, null);
+			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaIds, null, areasIds, null);
 			
 			for (Absenteismo absenteismo : absenteismos) 
 			{
