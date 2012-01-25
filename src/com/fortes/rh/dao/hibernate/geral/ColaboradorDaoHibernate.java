@@ -3798,7 +3798,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 
-	public String findCodigoACDuplicado(Long empresaId) {
+	public String findCodigoACDuplicado(Long empresaId) 
+	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select codigoAC from Colaborador "); 
 		hql.append("where empresa.id = :empresaId and codigoAC is not null and codigoAC != '' ");
@@ -3810,5 +3811,47 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setLong("empresaId", empresaId);
 
 		return  StringUtil.converteCollectionToString(query.list());
+	}
+
+	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.endereco.uf", "u", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.pessoal.conjuge"), "pessoalConjuge");
+		p.add(Projections.property("c.pessoal.pai"), "pessoalPai");
+		p.add(Projections.property("c.pessoal.mae"), "pessoalMae");
+		p.add(Projections.property("c.endereco.logradouro"), "enderecoLogradouro");
+		p.add(Projections.property("c.endereco.complemento"), "enderecoComplemento");
+		p.add(Projections.property("c.endereco.numero"), "enderecoNumero");
+		p.add(Projections.property("c.endereco.bairro"), "enderecoBairro");
+		p.add(Projections.property("ci.nome"), "enderecoCidadeNome");
+		p.add(Projections.property("u.sigla"), "enderecoUfSigla");
+		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
+		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
+		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("c.desligado", false));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+
+		if(nome != null && StringUtils.isNotBlank(nome))
+			criteria.add(Expression.or(
+							Expression.or(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", nome, Hibernate.STRING), 
+											Restrictions.sqlRestriction("normalizar(this_.conjuge) ilike  normalizar(?)", nome, Hibernate.STRING)), 
+							Expression.or(Restrictions.sqlRestriction("normalizar(this_.pai) ilike  normalizar(?)", nome, Hibernate.STRING), 
+											Restrictions.sqlRestriction("normalizar(this_.mae) ilike  normalizar(?)", nome, Hibernate.STRING))
+						));
+
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
 	}
 }

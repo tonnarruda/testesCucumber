@@ -20,7 +20,6 @@ import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
@@ -180,4 +179,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 	public String findCodigoACDuplicado(Long empresaId);
 	public void setCandidatoNull(Long candidatoId);
+	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId);
 }

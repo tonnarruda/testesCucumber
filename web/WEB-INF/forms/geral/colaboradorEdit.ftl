@@ -50,11 +50,22 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.form.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+	
+		#parentesDialog { display: none; }
+		#parentesDialog li { margin: 5px 0px; }
+		#parentesDialog .divInfoColab, #parentesDialog .divInfoColabDestaque { padding: 5px; margin: 5px 0px; border: 1px solid #7E9DB9; font-size: 10px; }
+		#parentesDialog .divInfoColab { background-color: #E9E9E9; }
+		#parentesDialog .divInfoColabDestaque { margin-bottom: 10px; }
+		#parentesDialog .xz { background-color:#fbfa99; color:red; }
+		#parentesDialog table { width: 100%; }
+		#parentesDialog td { width: 50%; vertical-align: top; }
 	</style>
-	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
 
 	<#include "../cargosalario/calculaSalarioInclude.ftl" />
 
@@ -63,122 +74,6 @@
     <#else>
       <#assign idDaEmpresa><@authz.authentication operation="empresaId"/></#assign>
     </#if>
-
-	<script type="text/javascript">
-		function populaAmbiente(estabelecimentoId, ambienteId)
-		{
-			if(estabelecimentoId != "null")
-			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				AmbienteDWR.getAmbienteByEstabelecimento(function(data){createListAmbiente(data, ambienteId);
-															}, estabelecimentoId, ambienteId);
-			}
-		}
-		
-		function createListAmbiente(data)
-		{
-			DWRUtil.removeAllOptions("ambiente");
-			DWRUtil.addOptions("ambiente", data);
-		}
-
-		function populaFuncao(faixaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			FuncaoDWR.getFuncaoByFaixaSalarial(createListFuncao, faixaId);
-		}
-		function createListFuncao(data)
-		{
-			DWRUtil.removeAllOptions("funcao");
-			DWRUtil.addOptions("funcao", data);
-		}
-
-		function setaCampos()
-		{
-			document.getElementById('colaborador.cursos').value = document.getElementById('desCursos').value;
-			document.getElementById('colaborador.observacao').value = document.getElementById('obs').value;
-			return true;
-		}
-
-		function setDescricao(data)
-		{
-			if(data == null)
-			{
-				jAlert("Código " + document.getElementById('codCbo').value + " não encontrado.");
-				document.getElementById('descricaoCargo').value = "";
-				document.getElementById('codCbo').value = "";
-				document.getElementById('funcaoId').value = "";
-				document.getElementById('codCbo').focus();
-			}
-			else
-			{
-				for (var prop in data)
-				{
-					DWRUtil.setValue("descricaoCargo",data[prop]);
-					DWRUtil.setValue("funcaoId",prop);
-				}
-			}
-		}
-
-		function sugerirNomeComercial()
-		{
-			document.getElementById('nomeComercial').value = document.getElementById('nomeColab').value.substr(0,30).trim();
-		}
-		
-		function sugerirDataHistorico()
-		{
-			if(document.getElementById('dt_hist').value == "  /  /    ")
-				document.getElementById('dt_hist').value = document.getElementById('dt_admissao').value;
-		}
-
-		$(function() {
-			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
-			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
-			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');
-			
-			$('#ambienteTooltipHelp').qtip({
-				content: '<strong>Ambiente</strong><br />Necessário para o PPP e PPRA.'
-				,
-				style: {
-		        	 width: '100px'
-		        }
-			});
-			
-			$('#funcaoTooltipHelp').qtip({
-				content: '<strong>Função</strong><br />Necessário para o PPP e PPRA.'
-				,
-				style: {
-		        	 width: '100px'
-		        }
-			});
-			
-			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
-			
-			<#if avaliacoes?exists>
-				<#list avaliacoes as avaliacao>
-					<#if avaliacao.periodoExperiencia?exists && avaliacao.periodoExperiencia.id?exists>
-				    	$('#modeloPeriodo' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
-					</#if>
-				</#list>
-			</#if>
-
-			<#if colaboradorAvaliacoes?exists>
-				<#list colaboradorAvaliacoes as colaboradorAvaliacao>
-					<#if colaboradorAvaliacao.periodoExperiencia?exists && colaboradorAvaliacao.periodoExperiencia.id?exists && colaboradorAvaliacao.avaliacao?exists && colaboradorAvaliacao.avaliacao.id?exists>
-					    $('#modeloPeriodo' + ${colaboradorAvaliacao.periodoExperiencia.id}).val(${colaboradorAvaliacao.avaliacao.id});
-					</#if>
-				</#list>
-			</#if>
-		});
-		
-		function verificaCpf(data)
-	    {
-			<#if colaborador.id?exists>
-					verificaCpfDuplicado(data, ${idDaEmpresa}, null, ${colaborador.id}, false);
-			<#else>
-					verificaCpfDuplicado(data, ${idDaEmpresa}, null, null, false);
-			</#if>			
-	    }
-	</script>
 
 	<@ww.head />
 	<#if colaborador.id?exists>
@@ -267,9 +162,183 @@
 		<#assign totalAbas = 6/>
 	</#if>
 
-
 	<#assign validarCampos="validaFormularioDinamico();"/>
+
 	<script type="text/javascript">
+		$(function() {
+			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
+			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
+			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');
+			
+			$('#ambienteTooltipHelp').qtip({
+				content: '<strong>Ambiente</strong><br />Necessário para o PPP e PPRA.'
+				,
+				style: {
+		        	 width: '100px'
+		        }
+			});
+			
+			$('#funcaoTooltipHelp').qtip({
+				content: '<strong>Função</strong><br />Necessário para o PPP e PPRA.'
+				,
+				style: {
+		        	 width: '100px'
+		        }
+			});
+			
+			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
+			
+			<#if avaliacoes?exists>
+				<#list avaliacoes as avaliacao>
+					<#if avaliacao.periodoExperiencia?exists && avaliacao.periodoExperiencia.id?exists>
+				    	$('#modeloPeriodo' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
+					</#if>
+				</#list>
+			</#if>
+
+			<#if colaboradorAvaliacoes?exists>
+				<#list colaboradorAvaliacoes as colaboradorAvaliacao>
+					<#if colaboradorAvaliacao.periodoExperiencia?exists && colaboradorAvaliacao.periodoExperiencia.id?exists && colaboradorAvaliacao.avaliacao?exists && colaboradorAvaliacao.avaliacao.id?exists>
+					    $('#modeloPeriodo' + ${colaboradorAvaliacao.periodoExperiencia.id}).val(${colaboradorAvaliacao.avaliacao.id});
+					</#if>
+				</#list>
+			</#if>
+			
+			<#if edicao == "false">
+				$('#nomePai, #nomeMae, #nomeConjuge').blur(function() {
+					verificaParentes(this.value);
+				});
+			</#if>
+		});
+	
+		function populaAmbiente(estabelecimentoId, ambienteId)
+		{
+			if(estabelecimentoId != "null")
+			{
+				DWRUtil.useLoadingMessage('Carregando...');
+				AmbienteDWR.getAmbienteByEstabelecimento(function(data){createListAmbiente(data, ambienteId);
+															}, estabelecimentoId, ambienteId);
+			}
+		}
+		
+		function createListAmbiente(data)
+		{
+			DWRUtil.removeAllOptions("ambiente");
+			DWRUtil.addOptions("ambiente", data);
+		}
+
+		function populaFuncao(faixaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			FuncaoDWR.getFuncaoByFaixaSalarial(createListFuncao, faixaId);
+		}
+		function createListFuncao(data)
+		{
+			DWRUtil.removeAllOptions("funcao");
+			DWRUtil.addOptions("funcao", data);
+		}
+
+		function setaCampos()
+		{
+			document.getElementById('colaborador.cursos').value = document.getElementById('desCursos').value;
+			document.getElementById('colaborador.observacao').value = document.getElementById('obs').value;
+			return true;
+		}
+
+		function setDescricao(data)
+		{
+			if(data == null)
+			{
+				jAlert("Código " + document.getElementById('codCbo').value + " não encontrado.");
+				document.getElementById('descricaoCargo').value = "";
+				document.getElementById('codCbo').value = "";
+				document.getElementById('funcaoId').value = "";
+				document.getElementById('codCbo').focus();
+			}
+			else
+			{
+				for (var prop in data)
+				{
+					DWRUtil.setValue("descricaoCargo",data[prop]);
+					DWRUtil.setValue("funcaoId",prop);
+				}
+			}
+		}
+
+		function sugerirNomeComercial()
+		{
+			document.getElementById('nomeComercial').value = document.getElementById('nomeColab').value.substr(0,30).trim();
+		}
+		
+		function sugerirDataHistorico()
+		{
+			if(document.getElementById('dt_hist').value == "  /  /    ")
+				document.getElementById('dt_hist').value = document.getElementById('dt_admissao').value;
+		}
+
+		function verificaCpf(data)
+	    {
+			<#if colaborador.id?exists>
+				verificaCpfDuplicado(data, ${idDaEmpresa}, null, ${colaborador.id}, false);
+			<#else>
+				verificaCpfDuplicado(data, ${idDaEmpresa}, null, null, false);
+			</#if>			
+	    }
+	    
+	    function verificaParentes(nome)
+	    {
+	    	if (nome && nome.length >= 4)
+	    	{
+		    	$('#parentesDialog').empty();
+		    	ColaboradorDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome); });
+		    }
+	    }
+	    
+	    function listaParentes(dados, nome)
+	    {
+	    
+	    	if ($(dados).size() > 0)
+	    	{
+		    	var lista = "<strong>Dados do colaborador</strong>";
+		    	lista += "<div class='divInfoColabDestaque'>";
+		    	lista += montaTabelaDados($('#nomeColab').val(), $('#nomeConjuge').val(), $('#nomePai').val(), $('#nomeMae').val(), $('#ende').val() + ' ' + $('#num').val() + ' ' + $('#compl').val(), $('#cidade option:selected').text(), $('#uf option:selected').text(), $('#ddd').val() + ' ' + $('#fone').val() + ' ' + $('#celular').val());
+		    	lista += "</div>";
+		    	
+		    	lista += "<strong>Possíveis parentes</strong>";
+		    	
+		    	$(dados).each(function(i, colaborador) {
+		    		 lista += '<div class="divInfoColab">';
+		    		 lista += montaTabelaDados(colaborador.nome, colaborador.conjuge, colaborador.pai, colaborador.mae, colaborador.endereco, colaborador.cidade, colaborador.uf, colaborador.fone);
+		    		 lista += '</div>';
+		    	});
+	    	
+		    	$('#parentesDialog').html(lista)
+		    						.dialog({	title: 'Verificação de Parentesco',
+		    									modal: true,
+		    									width: 700,
+		    									height: 360,
+		    									buttons: [ { text: "Fechar", click: function() { $(this).dialog("close"); } } ] 
+											});
+	    	}
+	    }
+	    
+	    function montaTabelaDados(nome, conjuge, pai, mae, endereco, cidade, uf, fone)
+	    {
+			var dados = '<strong>' + nome + '</strong><br />';
+	    	dados += "<table>";
+	    	dados += '<tr><td>';
+			dados += 'Nome do Cônjuge: ' + conjuge + '<br />';
+			dados += 'Nome do Pai: ' + pai + '<br />';
+			dados += 'Nome da Mãe: ' + mae + '<br />';
+			dados += '</td><td>';
+			dados += 'Endereço: ' + endereco + ' ' + cidade + ' ' + uf +  '<br />';
+			dados += 'Fone: ' + fone;
+			dados += '</td></tr>';
+			dados += '</table>';
+			
+			return dados;
+	    }
+
 		var arrayValidacao = new Array('nomeColab','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario');
 
 		function alteraArrayValidacao(tipo)
@@ -304,7 +373,7 @@
 		<div id="aba5"><a href="javascript: abas(5, '', ${edicao}, ${totalAbas})">Documentos</a></div>
 		<div id="aba6"><a href="javascript: abas(6, '', ${edicao}, ${totalAbas})">Modelos de Avaliação</a></div>
 		
-		<#if habilitaCampoExtra>
+		<#if habilitaCampoExtra><@authz.authentication operation="empresaId"/>
 			<div id="aba7"><a href="javascript: abas(7, '', ${edicao}, ${totalAbas})">Extra</a></div>
 		</#if>
 	</div>
@@ -383,7 +452,7 @@
 			<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
 			<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" required="true" cssStyle="width: 300px;" liClass="liLeft" maxLength="40"/>
 			<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" required="true" cssStyle="width:40px;" liClass="liLeft" maxLength="10"/>
-			<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" cssStyle="width: 205px;" maxLength="20"/>
+			<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="compl" cssStyle="width: 205px;" maxLength="20"/>
 			<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
 			<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" required="true" />
 				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" cssStyle="width: 325px;" maxLength="85"/>
@@ -391,7 +460,7 @@
 			<@ww.textfield label="E-mail"    name="colaborador.contato.email" id="email" cssClass="mascaraEmail" maxLength="40" liClass="liLeft"/>
 			<@ww.textfield label="DDD" name="colaborador.contato.ddd" required="true" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" maxLength="2" cssStyle="width:25px;"/>
 			<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" required="true" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="8" liClass="liLeft" cssStyle="width:60px;"/>
-			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" maxLength="8" cssStyle="width:60px;"/>
+			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="8" cssStyle="width:60px;"/>
 			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft" required="true" headerKey="" headerValue="Selecione..." />
 			<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft"/>
 			<@ww.select label="Deficiência" name="colaborador.pessoal.deficiencia" list="deficiencias" cssStyle="width: 160px;"/>
@@ -623,6 +692,8 @@
 	</script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js"/>'></script>
+	
+	<div id="parentesDialog"></div>
 </body>
 
 </html>

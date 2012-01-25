@@ -4059,6 +4059,42 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(new Integer(2), colaboradorDao.qtdColaboradoresByTurmas(turmaIds));
 	}
 
+	public void testFindParentesByNome() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("joao rodrigues");
+		joao.setPessoalMae("ana rodrigues");
+		joao.setPessoalPai("julio rodrigues");
+		joao.setEmpresa(empresa);
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("maria rodrigues");
+		maria.setEmpresa(empresa);
+		maria.setPessoalConjuge("geraldo");
+		colaboradorDao.save(maria);
+
+		Colaborador mariana = ColaboradorFactory.getEntity();
+		mariana.setNome("mariana rodrigues");
+		mariana.setEmpresa(empresa);
+		colaboradorDao.save(mariana);
+
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setNome("pedro rodrigues");
+		pedro.setEmpresa(empresa);
+		colaboradorDao.save(pedro);
+		
+		assertEquals(4, colaboradorDao.findParentesByNome("RoDrigUes", empresa.getId()).size());
+		assertEquals(2, colaboradorDao.findParentesByNome("MaRia", empresa.getId()).size());
+		assertEquals(2, colaboradorDao.findParentesByNome("ana rod", empresa.getId()).size());
+		assertEquals(1, colaboradorDao.findParentesByNome("pedro rodri", empresa.getId()).size());
+		assertEquals(1, colaboradorDao.findParentesByNome("julio", empresa.getId()).size());
+		assertEquals(1, colaboradorDao.findParentesByNome("geraldo", empresa.getId()).size());
+	}
+
 	public void testFindColabPeriodoExperiencia() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

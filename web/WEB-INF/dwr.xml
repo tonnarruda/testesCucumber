@@ -133,6 +133,7 @@
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		// GERAL
+		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>
 		// CARGO E SALARIO
