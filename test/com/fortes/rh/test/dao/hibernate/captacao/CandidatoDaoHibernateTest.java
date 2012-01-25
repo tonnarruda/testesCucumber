@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoIdiomaDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
@@ -2415,6 +2415,26 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(0, candidatoDao.findQtdCadastrados(empresa2.getId(), hoje, hoje));
 		
 	}
+	
+	public void testRemoveAreaInteresseConhecimentoCargo() 
+	{
+	
+		Exception ex = null;
+		try {
+			candidatoDao.removeAreaInteresseConhecimentoCargo(99999999999L);
+			
+		} catch (Exception e) {
+			ex = e;
+		}
+		assertNull(ex);
+		
+		String qtdTabelasComCandidatos = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col " +
+																		"where col.column_name = 'candidato_id' " +
+																		"and col.table_name <> 'candidatoeleicao';"); // candidatoeleicao é na realidade um colaborador
+		//se almentar atualizar removercandidato no manager
+		assertEquals("12", qtdTabelasComCandidatos);
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		 this.empresaDao = empresaDao;

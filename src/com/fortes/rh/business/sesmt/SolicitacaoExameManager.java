@@ -26,4 +26,5 @@ public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame
 	AsoRelatorio montaRelatorioAso(Empresa empresa, SolicitacaoExame solicitacaoExame) throws ColecaoVaziaException;
 	MedicoCoordenador setMedicoByQuantidade(Collection<MedicoCoordenador> medicoCoordenadors);
 	SolicitacaoExame findByIdProjection(Long id);
+	void removeByCandidato(Long candidatoId);
 }

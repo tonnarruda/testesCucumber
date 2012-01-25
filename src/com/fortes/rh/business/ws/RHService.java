@@ -47,8 +47,9 @@ public interface RHService
 	//Tabela situacao no AC -> SEP
 	FeedbackWebService removerSituacao(TSituacao situacao);
 	FeedbackWebService removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo, String grupoAC);
-	FeedbackWebService criarSituacao(TSituacao situacao);
 	FeedbackWebService criarSituacaoEmLote(TSituacao[] situacao);
+	FeedbackWebService atualizarSituacaoEmLote(TSituacao[] situacao);
+	FeedbackWebService criarSituacao(TSituacao situacao);
 	FeedbackWebService atualizarSituacao(TSituacao situacao);
 	FeedbackWebService cancelarSituacao(TSituacao situacao, String mensagem);
 

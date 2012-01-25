@@ -25,7 +25,7 @@
 		<#assign dateFim = ""/>
 	</#if>
 
-	<title>Relatório Como Ficou Sabendo da Vaga</title>
+	<title>Estatística de Divulgação da Vaga</title>
 </head>
 <body>
 	<@ww.actionmessage />

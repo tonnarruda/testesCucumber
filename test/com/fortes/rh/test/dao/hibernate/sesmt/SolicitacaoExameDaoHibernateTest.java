@@ -225,6 +225,55 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 //		assertEquals(2,solicitacaoExameDao.findAtendimentosMedicos(inicio, fim, motivo, medicoCoordenador, empresa.getId(), true).size());
 	}
 
+	public void testRemoveByCandidato() {
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato1);
+		
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato2);
+		
+		MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
+		medicoCoordenadorDao.save(medicoCoordenador);
+		
+		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame1.setCandidato(candidato1);
+		solicitacaoExame1.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame1.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExameDao.save(solicitacaoExame1);
+		
+		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame2.setCandidato(candidato2);
+		solicitacaoExame2.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame2.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExameDao.save(solicitacaoExame2);
+		
+		Exame exame = ExameFactory.getEntity();
+		exameDao.save(exame);
+		
+		RealizacaoExame realizacaoExame = new RealizacaoExame();
+		realizacaoExame.setResultado("NORMAL");
+		realizacaoExameDao.save(realizacaoExame);
+
+		ExameSolicitacaoExame exameSolicitacaoExame1 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame1.setExame(exame);
+		exameSolicitacaoExame1.setSolicitacaoExame(solicitacaoExame1);
+		exameSolicitacaoExame1.setRealizacaoExame(realizacaoExame);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame1);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame2 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame2.setExame(exame);
+		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame2);
+		exameSolicitacaoExame2.setRealizacaoExame(realizacaoExame);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
+		
+		assertEquals(solicitacaoExame1.getId(), ( (SolicitacaoExame)solicitacaoExameDao.findByIdProjection(solicitacaoExame1.getId())).getId()) ;
+		assertEquals(solicitacaoExame2.getId(), ( (SolicitacaoExame)solicitacaoExameDao.findByIdProjection(solicitacaoExame2.getId())).getId()) ;
+		
+		solicitacaoExameDao.removeByCandidato(candidato1.getId());
+		
+		assertNull(solicitacaoExameDao.findByIdProjection(solicitacaoExame1.getId())) ;
+		assertEquals(solicitacaoExame2.getId(), ( (SolicitacaoExame)solicitacaoExameDao.findByIdProjection(solicitacaoExame2.getId())).getId()) ;
+	}
 	public void setMedicoCoordenadorDao(MedicoCoordenadorDao medicoCoordenadorDao) {
 		this.medicoCoordenadorDao = medicoCoordenadorDao;
 	}

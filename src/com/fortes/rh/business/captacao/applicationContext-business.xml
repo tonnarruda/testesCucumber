@@ -51,6 +51,12 @@
     <property name="historicoCandidatoManager">
       <ref bean="historicoCandidatoManager" />
     </property>
+    <property name="solicitacaoExameManager">
+      <ref bean="solicitacaoExameManager" />
+    </property>
+    <property name="configuracaoNivelCompetenciaManager">
+      <ref bean="configuracaoNivelCompetenciaManager" />
+    </property>
   </bean>
   <bean id="candidatoManager" parent="parentManager">
     <property name="proxyInterfaces">

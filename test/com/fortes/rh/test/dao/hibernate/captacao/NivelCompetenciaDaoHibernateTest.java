@@ -208,6 +208,41 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(0, configs.size());
 	}
 	
+	public void testRemoveByCandidato() {
+		
+		NivelCompetencia nivel = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivel);
+		
+		Habilidade habilidade = HabilidadeFactory.getEntity();
+		habilidadeDao.save(habilidade);
+
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato1);
+		
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato2);
+		
+		ConfiguracaoNivelCompetencia configNivelComp1 = new ConfiguracaoNivelCompetencia();
+		configNivelComp1.setNivelCompetencia(nivel);
+		configNivelComp1.setCandidato(candidato1);
+		configNivelComp1.setCompetenciaId(habilidade.getId());
+		configuracaoNivelCompetenciaDao.save(configNivelComp1);
+
+		ConfiguracaoNivelCompetencia configNivelComp2 = new ConfiguracaoNivelCompetencia();
+		configNivelComp2.setNivelCompetencia(nivel);
+		configNivelComp2.setCandidato(candidato2);
+		configNivelComp2.setCompetenciaId(habilidade.getId());
+		configuracaoNivelCompetenciaDao.save(configNivelComp2);
+		
+		assertEquals(1,configuracaoNivelCompetenciaDao.findByCandidato(candidato1.getId()).size());
+		assertEquals(1, configuracaoNivelCompetenciaDao.findByCandidato(candidato2.getId()).size());
+		
+		configuracaoNivelCompetenciaDao.removeByCandidato(candidato1.getId());
+		
+		assertEquals(0,configuracaoNivelCompetenciaDao.findByCandidato(candidato1.getId()).size());
+		assertEquals(1, configuracaoNivelCompetenciaDao.findByCandidato(candidato2.getId()).size());
+	}
+	
 	public void testFindByFaixa()
 	{
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();

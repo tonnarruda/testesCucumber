@@ -226,4 +226,8 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 
+	public void removeByCandidato(Long candidatoId) {
+		getDao().removeByCandidato(candidatoId);
+	}
+
 }

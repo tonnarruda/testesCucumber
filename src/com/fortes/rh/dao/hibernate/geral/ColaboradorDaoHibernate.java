@@ -1669,7 +1669,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as ca ");
 		hql.append("left join ca.grupoOcupacional as go ");
-		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh3.data) from FaixaSalarialHistorico fsh3 where fsh3.faixaSalarial.id = fs.id and fsh3.data <= :data and fsh3.status <> :statusCancelado) ");
+		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh3.data) from FaixaSalarialHistorico fsh3 where fsh3.faixaSalarial.id = fs.id and fsh3.data <= :data and fsh3.status = :statusConfirmado) ");
 		hql.append("left join fsh.indice as fshi ");
 		hql.append("left join fshi.indiceHistoricos as fshih with fshih.data = (select max(ih4.data) from IndiceHistorico ih4 where ih4.indice.id = fshi.id and ih4.data <= :data) ");
 		hql.append("	where ");
@@ -1679,7 +1679,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("				from HistoricoColaborador as hc2 ");
 		hql.append("				where hc2.colaborador.id = co.id ");
 		hql.append("					and hc2.data <= :data ");
-		hql.append("					and hc2.status <> :statusCancelado");
+		hql.append("					and hc2.status = :statusConfirmado");
 		hql.append("			) ");
 		hql.append("	 		or hc.data is null ");
 		hql.append("	   ) ");
@@ -1717,7 +1717,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join fs.cargo as ca ");
 		hql.append("left join ca.grupoOcupacional as go ");
 		hql
-				.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh3.data) from FaixaSalarialHistorico fsh3 where fsh3.faixaSalarial.id = fs.id and fsh3.data <= :data and fsh3.status <> :statusCancelado) ");
+				.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh3.data) from FaixaSalarialHistorico fsh3 where fsh3.faixaSalarial.id = fs.id and fsh3.data <= :data and fsh3.status = :statusConfirmado) ");
 		hql.append("left join fsh.indice as fshi ");
 		hql.append("left join fshi.indiceHistoricos as fshih with fshih.data = (select max(ih4.data) from IndiceHistorico ih4 where ih4.indice.id = fshi.id and ih4.data <= :data) ");
 		hql.append(" where ");
@@ -1772,7 +1772,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		}
 
 		query.setLong("empresaId", empresaId);
-		query.setInteger("statusCancelado", StatusRetornoAC.CANCELADO);
+		query.setInteger("statusConfirmado", StatusRetornoAC.CONFIRMADO);
 
 		return query;
 	}

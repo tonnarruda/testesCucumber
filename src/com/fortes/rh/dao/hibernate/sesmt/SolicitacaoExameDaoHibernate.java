@@ -300,4 +300,12 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 
 		return (SolicitacaoExame) criteria.uniqueResult();
 	}
+
+	public void removeByCandidato(Long candidatoId) {
+		String queryHQL = "delete from ExameSolicitacaoExame e where e.solicitacaoExame.id in (select se.id from SolicitacaoExame se where se.candidato.id = :candidatoId)";
+		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+	
+		queryHQL = "delete from SolicitacaoExame se where se.candidato.id = :candidatoId";
+		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+	}
 }

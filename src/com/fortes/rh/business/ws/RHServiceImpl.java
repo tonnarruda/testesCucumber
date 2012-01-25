@@ -418,6 +418,23 @@ public class RHServiceImpl implements RHService
 		
 	}
 	
+	public FeedbackWebService atualizarSituacaoEmLote(TSituacao[] situacaos)
+	{
+		try
+		{
+			for (TSituacao tSituacao : situacaos)
+				atualizarSituacao(tSituacao);
+			
+			return new FeedbackWebService(true);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, "Erro ao atualizar situações em lote.", formataException(null, e));
+		}
+		
+	}
+	
 	public FeedbackWebService criarSituacao(TSituacao situacao)
 	{
 		String parametros = "Situacao data: " + situacao.getData() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC(); 

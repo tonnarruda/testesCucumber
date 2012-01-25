@@ -963,6 +963,46 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(Boolean.FALSE, colaboradorQuestionario.getRespondida());
 	}
 
+	public void testremoveByCandidato() {
+		Candidato joao = CandidatoFactory.getCandidato();
+		joao.setNome("Joao");
+		candidatoDao.save(joao);
+		
+		Candidato maria = CandidatoFactory.getCandidato();
+		maria.setNome("Maria");
+		candidatoDao.save(maria);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setCandidato(joao);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setCandidato(maria);
+		colaboradorQuestionario2.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta1.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorRespostaDao.save(colaboradorResposta1);
+		
+		ColaboradorResposta colaboradorResposta2 = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta2.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorRespostaDao.save(colaboradorResposta2);
+		
+		assertEquals(colaboradorQuestionario.getId(), ( (ColaboradorQuestionario) colaboradorQuestionarioDao.findByIdColaboradorCandidato(colaboradorQuestionario.getId())).getId());
+		assertEquals(colaboradorQuestionario2.getId(), ( (ColaboradorQuestionario) colaboradorQuestionarioDao.findByIdColaboradorCandidato(colaboradorQuestionario2.getId())).getId());
+		
+		colaboradorQuestionarioDao.removeByCandidato(joao.getId());
+		
+		assertNull(colaboradorQuestionarioDao.findByIdColaboradorCandidato(colaboradorQuestionario.getId()));
+		assertEquals(colaboradorQuestionario2.getId(), ( (ColaboradorQuestionario) colaboradorQuestionarioDao.findByIdColaboradorCandidato(colaboradorQuestionario2.getId())).getId());
+		
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

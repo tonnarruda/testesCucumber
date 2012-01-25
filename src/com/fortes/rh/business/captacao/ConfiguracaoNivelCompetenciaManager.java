@@ -35,4 +35,6 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	void removeColaborador(Colaborador colaborador);
 
 	void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId);
+
+	void removeByCandidato(Long candidatoId);
 }

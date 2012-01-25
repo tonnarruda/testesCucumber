@@ -27,7 +27,7 @@
 			});
 		});
 		
-		function checaDependenciasExclusao(candidatoId, empresaId)
+		function checaDependenciasExclusao(candidatoId, empresaId, nome)
 		{
 			$('#deleteDialog').empty();
 		
@@ -53,7 +53,11 @@
 															}
 														});
 				
-				} else excluir(candidatoId, empresaId);
+				} else {
+					newConfirm('Deseja realmente excluir o candidato ' + nome +'?', function(){
+						excluir(candidatoId, empresaId);
+					});
+				}
 			});
 		}
 		
@@ -130,7 +134,7 @@
 			</#if>
 			<a href="javascript:popup('infoCandidato.action?candidato.id=${candidato.id}', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
 			<a href="prepareUpdate.action?candidato.id=${candidato.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:checaDependenciasExclusao(${candidato.id}, ${candidato.empresa.id});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="javascript:checaDependenciasExclusao(${candidato.id}, ${candidato.empresa.id}, '${candidato.nome}');"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			<a href="prepareUpdateCurriculo.action?candidato.id=${candidato.id}"><img border="0" title="Currículo Escaneado" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>"></a>
 			<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidato.id}"><img border="0" title="Documentos do Candidato" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			<a href="../../captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=I"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
