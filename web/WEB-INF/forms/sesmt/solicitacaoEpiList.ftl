@@ -47,6 +47,7 @@
 		<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData" />
 
 		<@ww.hidden id="pagina" name="page"/>
+		<@ww.hidden name="entrega"/>
 
 		<input type="submit" value="" onclick="document.getElementById('pagina').value = 1;" class="btnPesquisar grayBGE" />
 	</@ww.form>
