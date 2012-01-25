@@ -18510,3 +18510,6 @@ alter sequence papel_sequence restart with 537;--.go
 insert into migrations values('20120110150154');--.go
 
 update parametrosdosistema set appversao = '1.1.67.60';--.go
+
+-- versao 1.1.68.60
+update parametrosdosistema set appversao = '1.1.68.60';--.go
