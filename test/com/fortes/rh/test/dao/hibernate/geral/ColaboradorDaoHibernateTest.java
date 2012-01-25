@@ -4066,15 +4066,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Colaborador joao = ColaboradorFactory.getEntity();
 		joao.setNome("joao rodrigues");
-		joao.setPessoalMae("ana rodrigues");
-		joao.setPessoalPai("julio rodrigues");
+		joao.setPessoalMae("maria rodrigues");
+		joao.setPessoalPai("pedro rodrigues");
 		joao.setEmpresa(empresa);
 		colaboradorDao.save(joao);
 		
 		Colaborador maria = ColaboradorFactory.getEntity();
 		maria.setNome("maria rodrigues");
 		maria.setEmpresa(empresa);
-		maria.setPessoalConjuge("geraldo");
+		maria.setPessoalConjuge("geraldo rodrigues");
 		colaboradorDao.save(maria);
 
 		Colaborador mariana = ColaboradorFactory.getEntity();
@@ -4083,16 +4083,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDao.save(mariana);
 
 		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setPessoalConjuge("maria rodrigues");
 		pedro.setNome("pedro rodrigues");
 		pedro.setEmpresa(empresa);
 		colaboradorDao.save(pedro);
 		
-		assertEquals(4, colaboradorDao.findParentesByNome("RoDrigUes", empresa.getId()).size());
-		assertEquals(2, colaboradorDao.findParentesByNome("MaRia", empresa.getId()).size());
-		assertEquals(2, colaboradorDao.findParentesByNome("ana rod", empresa.getId()).size());
-		assertEquals(1, colaboradorDao.findParentesByNome("pedro rodri", empresa.getId()).size());
-		assertEquals(1, colaboradorDao.findParentesByNome("julio", empresa.getId()).size());
-		assertEquals(1, colaboradorDao.findParentesByNome("geraldo", empresa.getId()).size());
+		assertEquals(1, colaboradorDao.findParentesByNome("joao rodrigues", empresa.getId()).size());
+		assertEquals(1, colaboradorDao.findParentesByNome("geraldo rodrigues", empresa.getId()).size());
+		assertEquals(2, colaboradorDao.findParentesByNome("pedro rodrigues", empresa.getId()).size());
+		assertEquals(3, colaboradorDao.findParentesByNome("maria rodrigues", empresa.getId()).size());
 	}
 
 	public void testFindColabPeriodoExperiencia() 
