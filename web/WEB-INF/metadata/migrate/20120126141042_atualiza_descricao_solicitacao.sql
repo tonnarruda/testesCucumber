@@ -3,4 +3,4 @@ update solicitacao
 from faixasalarial f, cargo c
 where faixasalarial_id = f.id
 	and f.cargo_id = c.id
-	and descricao is null;--.go
+	and (descricao is null or descricao = '');--.go
