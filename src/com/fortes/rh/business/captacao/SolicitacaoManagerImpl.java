@@ -222,13 +222,16 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		Collection<String> emails = perfilManager.getEmailsByRoleLiberaSolicitacao(empresa.getId());
 		incluiEmails(emails, emailsAvulsos);
 		
-		if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE)
-			emails.add(empresa.getEmailRespRH());
+		emails.add(empresa.getEmailRespRH());
 		
 		if (emails != null && !emails.isEmpty())
 		{
 			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-			String nomeSolicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId()).getNomeMaisNomeComercial();
+			Colaborador solicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId());
+			
+			String nomeSolicitante = "";
+			if(solicitante != null)
+				nomeSolicitante = solicitante.getNomeMaisNomeComercial();
 			
 			solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
 		
