@@ -115,6 +115,18 @@
 				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"
 			}
 		}
+		
+		function validacaoFormulario()
+		{
+			if(validaFormulario('form', new Array('descricao','horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol')))
+			{
+				$('#gravar').attr('disabled', true);
+				return true;
+			} 
+
+			return false;
+		}
+		
 		$(function() {
 			<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
 				$('#statusSolicitcao').removeAttr('disabled');
@@ -123,7 +135,7 @@
 		});
 	</script>
 
-	<#assign validarCampos="$('#gravar').attr('disabled', true); return validaFormulario('form', new Array('horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol'))"/>
+	<#assign validarCampos="return validacaoFormulario(); "/>
 </head>
 <body>
 
@@ -132,7 +144,7 @@
 	<@ww.form name="form" id="form" action="${formAction}" validate="true" onsubmit="${validarCampos}" method="POST">
 		<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
 		
-		<@ww.textfield label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" maxlength="67"/>
+		<@ww.textfield label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" maxlength="67" required="true"/>
 		<@ww.textfield label="Horário comercial" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" maxlength="20" required="true"/>
 
 		<#if !clone && somenteLeitura && solicitacao.estabelecimento?exists && solicitacao.estabelecimento.id?exists>
