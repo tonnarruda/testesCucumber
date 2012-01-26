@@ -1,1 +1,0 @@
-update parametrosdosistema set appversao = '1.1.68.60';--.go

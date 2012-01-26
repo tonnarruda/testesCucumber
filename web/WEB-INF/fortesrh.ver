@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.68.61" data="25/01/2012"><![CDATA[
+	<Versao id="1.1.67.61" data="25/01/2012"><![CDATA[
 		- Sistema RH: Possibilidade de efetuar atualização histórico colaborador em Lote no AC Pessoal.
 		- Sistema RH: Tratamento dos erros do sistema 500,404 e 403.
 		- R&S > Cadastros > Candidatos > Excluir: Possibilidade de excluir candidato com vínculos.
