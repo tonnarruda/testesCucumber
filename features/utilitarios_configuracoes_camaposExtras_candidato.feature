@@ -46,7 +46,7 @@ Funcionalidade: Campos Extras para Candidato
     Então eu devo ver "_Pedro do Teste"
 
     Quando eu clico em excluir "_Pedro do Teste"
-    Então eu devo ver "Confirma exclusão?"
+    Então eu devo ver "Deseja realmente excluir o candidato _Pedro do Teste?"
     Quando eu aperto "OK"
     E eu não devo ver "_Pedro do Teste"
 
