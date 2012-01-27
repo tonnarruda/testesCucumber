@@ -220,12 +220,17 @@ public class Cat extends AbstractModel implements Serializable
 	public String getEpisFormatado() 
 	{
 		StringBuffer retorno = new StringBuffer();
-		for (Epi epi : epis) 
+		if(epis == null)
+			return "";
+		else
 		{
-			retorno.append(", " + epi.getNome());
-		}		
-		
-		return retorno.length() >= 2 ? retorno.substring(2) : "";
+			for (Epi epi : epis) 
+			{
+				retorno.append(", " + epi.getNome());
+			}		
+			
+			return retorno.length() >= 2 ? retorno.substring(2) : "";			
+		}
 	}
 
 	public void setEpis(Collection<Epi> epis) 

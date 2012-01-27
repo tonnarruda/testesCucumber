@@ -5,7 +5,40 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/formModal.css"/>');
+		
+		#box
+		{
+			top: 200px !important;
+			left: 30% !important;
+			width: 400px !important;
+			height: 300px !important;
+		}
+		
+		#boxtitle
+		{
+			width:496px !important;
+		}
+		
+		.fieldsetPadrao
+		{
+			width: 300px !important;
+		}
+		
 	</style>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
+	<script language="javascript">
+	
+		function habilitarCampo(check, campo)
+		{
+			if(check.checked)
+				document.getElementById(campo).disabled=false;
+			else
+				document.getElementById(campo).disabled=true;
+		}
+	
+	</script>
 	<title>Ficha de Investigação de Acidente(CAT)</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
@@ -50,7 +83,8 @@
 		<@display.column title="Açőes" class="acao">
 			<a href="prepareUpdate.action?cat.id=${cat.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cat.id=${cat.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-			<a href="imprimirFichaInvestigacaoAcidente.action?cat.id=${cat.id}"><img border="0" title="Imprimir Ficha de Investigação de Acidente" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+			<a href="#" onclick="openbox('Configurar Impressão', '');"><img border="0" title="Imprimir Ficha de Investigação de Acidente" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+			<!-- <a href="imprimirFichaInvestigacaoAcidente.action?cat.id=${cat.id}"><img border="0" title="Imprimir Ficha de Investigação de Acidente" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a> -->
 		 </@display.column>
 		<@display.column property="colaborador.nome" title="Colaborador" style="width:280px;"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;"/>
@@ -58,6 +92,45 @@
 		<@display.column property="observacao" title="Observação" style="width:280px;"/>
 	</@display.table>
 
+	<div id="box">
+		<span id="boxtitle"></span>
+		<@ww.form name="form" id="form" action="imprimirCurriculo.action" method="POST">
+		
+			<#assign desabilita1="true"/>
+			<#assign desabilita2="true"/>
+			<#assign desabilita3="true"/>
+			<#assign desabilita4="true"/>
+			
+			
+			<li>
+				<fieldset class="fieldsetPadrao">
+					<ul>
+						<legend>Imprimir:</legend>
+						<@ww.checkbox label="Campo 1" name="configuracaoImpressaoCurriculo.exibirAssinatura1" labelPosition="left" onclick="habilitarCampo(this, 'ass1');"/>
+						<@ww.textfield label="Assinatura 1" id="ass1" name="configuracaoImpressaoCurriculo.assinatura1" disabled="${desabilita1}" maxLength="50" cssStyle="width: 200px;"/>
+						
+						<@ww.checkbox label="Campo 2" name="configuracaoImpressaoCurriculo.exibirAssinatura2" labelPosition="left" onclick="habilitarCampo(this, 'ass2');"/>
+						<@ww.textfield label="Assinatura 2" id="ass2" name="configuracaoImpressaoCurriculo.assinatura2" disabled="${desabilita2}" maxLength="50" cssStyle="width: 200px;"/>
+						
+						<@ww.checkbox label="Campo 3" name="configuracaoImpressaoCurriculo.exibirAssinatura3" labelPosition="left" onclick="habilitarCampo(this, 'ass3');"/>
+						<@ww.textfield label="Assinatura 3" id="ass3" name="configuracaoImpressaoCurriculo.assinatura3" disabled="${desabilita3}" maxLength="50" cssStyle="width: 200px;"/>
+						
+						<@ww.checkbox label="Campo 4" name="configuracaoImpressaoCurriculo.exibirAssinatura4" labelPosition="left" onclick="habilitarCampo(this, 'ass3');"/>
+						<@ww.textfield label="Assinatura 4" id="ass3" name="configuracaoImpressaoCurriculo.assinatura4" disabled="${desabilita4}" maxLength="50" cssStyle="width: 200px;"/>
+					</ul>
+				</fieldset>
+			</li>
+			
+			<@ww.hidden name="configuracaoImpressaoCurriculo.id" />
+			<@ww.hidden name="candidato.id" />
+		</@ww.form>
+
+		<div class="buttonGroup">
+			<button onclick="closebox();document.form.submit();" class="btnImprimirPdf"></button>
+			<button onclick="closebox();" class="btnCancelar"></button>
+		</div>
+	
+		</div>
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>

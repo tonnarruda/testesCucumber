@@ -214,7 +214,7 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		hql.append(" inner join col.empresa emp");
 		hql.append(" left join emp.cidade cid");
 		hql.append(" left join emp.uf uf");
-		hql.append(" inner join cat.naturezaLesao nat");
+		hql.append(" left join cat.naturezaLesao nat");
 		hql.append(" left join cat.ambienteColaborador amb");
 		hql.append(" left join cat.funcaoColaborador func");
 		hql.append(" where cat.id = :catId");
