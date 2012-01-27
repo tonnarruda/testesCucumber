@@ -18514,4 +18514,5 @@ insert into migrations values('20120110150154');--.go
 update parametrosdosistema set appversao = '1.1.67.60';--.go
 
 -- versao 1.1.67.61
+
 update parametrosdosistema set appversao = '1.1.67.61';--.go

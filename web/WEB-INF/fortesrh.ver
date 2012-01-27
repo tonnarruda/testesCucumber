@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.67.61" data="25/01/2012"><![CDATA[
-		- Sistema RH: Possibilidade de efetuar atualização histórico colaborador em Lote no AC Pessoal.
+	<Versao id="1.1.67.61" data="27/01/2012"><![CDATA[
+		- Sistema RH: Possibilidade de efetuar atualização do histórico do colaborador em Lote no AC Pessoal.
 		- Sistema RH: Tratamento dos erros do sistema 500,404 e 403.
 		- R&S > Cadastros > Candidatos > Excluir: Possibilidade de excluir candidato com vínculos.
-		- T&D > Cadastros > Tipo de despesa: Cadastro vinculado a empresa logada. 
-		- Info. Funcionais > Relatórios > Turnover (rotatividade): Listagem dos estabelecimentos selecionados no cabeçalho.
-		- Info. Funcionais > Painel de Indicadores: Novo filtro para seleção de várias empresas.
+		- Info. Funcionais > Painel de Indicadores: Novo filtro de empresas, possibilitando selecionar mais de uma empresa.
 	]]></Versao>
 	<Versao id="1.1.67.60" data="23/01/2012"><![CDATA[
 		- Sistema RH: Tratamento de erros do RH para o AC Pessoal.
