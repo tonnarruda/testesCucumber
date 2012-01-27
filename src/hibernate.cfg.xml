@@ -165,15 +165,5 @@
       <mapping class="com.fortes.rh.model.geral.TurmaTipoDespesa" />
       <mapping class="com.fortes.rh.model.geral.Providencia" />
   </session-factory>
-
-
-
-
-
-
-
-
-
-
 </hibernate-configuration>
 

@@ -18489,6 +18489,8 @@ insert into migrations values('20120116091630');--.go
 update papel set nome='Apagar Reg. sem Código AC' where id=529; --.go
 insert into migrations values('20120117091806');--.go
 
+delete from usuariomensagem where mensagem_id in (select id from mensagem where not exists(select id from colaborador where id = cast(substring(substring(link from 'colaborador.id=[0-9]*') , 16) as bigint)));--.go
+delete from mensagem where not exists(select id from colaborador where id = cast(substring(substring(link from 'colaborador.id=[0-9]*') , 16) as bigint))--.go
 update mensagem	set colaborador_id = cast(substring(substring(link from 'colaborador.id=[0-9]*') , 16) as bigint) where colaborador_id is null and link ~ 'colaborador.id';--.go
 insert into migrations values('20120117143404');--.go
 
@@ -18510,3 +18512,7 @@ alter sequence papel_sequence restart with 537;--.go
 insert into migrations values('20120110150154');--.go
 
 update parametrosdosistema set appversao = '1.1.67.60';--.go
+
+-- versao 1.1.67.61
+
+update parametrosdosistema set appversao = '1.1.67.61';--.go
