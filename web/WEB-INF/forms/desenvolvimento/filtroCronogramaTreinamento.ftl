@@ -4,7 +4,7 @@
 <head>
 
 <@ww.head/>
-	<title>Cronograma de treinamento</title>
+	<title>Cronograma de Treinamento</title>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
