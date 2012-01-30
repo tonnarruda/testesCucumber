@@ -177,6 +177,7 @@
 				/webservice/**=ROLE_ANONYMOUS,ROLE_USER
 				/updateConf.action*=ROLE_ANONYMOUS,ROLE_USER
 				/gerarBD.action*=ROLE_ANONYMOUS,ROLE_USER
+				/grafico.jsp*=ROLE_USER
 
 				/imgs/**=ROLE_ANONYMOUS,ROLE_USER
 				/css/**=ROLE_ANONYMOUS,ROLE_USER
