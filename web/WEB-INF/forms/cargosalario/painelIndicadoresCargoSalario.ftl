@@ -201,25 +201,33 @@
 						return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
 					}
 				});
-				
+				/*
 				$(divGrafico).bind("plothover", plotPieHover)
 							 .bind("plotclick", pieClick);
-				
+				*/
 				if (btnImprimir) 
 					$(btnImprimir).unbind().bind('click', { dados: dados }, function(event) { imprimirPizza(event.data.dados); });
 			}
 			
+			var popup;
 			function imprimirPizza(dados) 
 			{
-				var popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
-				popup.window.onload = function() 
+				popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+				
+				function popupCarregado() 
 				{
-					popup.document.write('teste');
-					popup.window.opener.graficoPizza(dados, popup.document.getElementById('popupGrafico'), popup.document.getElementById('popupGraficoLegenda'), null, 2);
 					popup.focus();
+					popup.window.opener.graficoPizza(dados, popup.document.getElementById('popupGrafico'), popup.document.getElementById('popupGraficoLegenda'), false, 2);
 					popup.window.print();
 					popup.window.close();
 				}
+
+				if ( popup.window.addEventListener ) 
+					popup.window.addEventListener( "load", popupCarregado, false );
+				else if ( popup.window.attachEvent ) 
+				    popup.window.attachEvent( "onload", popupCarregado );
+				else if ( popup.window.onLoad ) 
+					popup.window.onload = popupCarregado;
 			}
 
 			//CUIDADO com o tamanho do grafico(bug da sombra)http://code.google.com/p/flot/issues/detail?id=5#c110
