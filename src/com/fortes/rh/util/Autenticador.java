@@ -37,11 +37,12 @@ public class Autenticador
 //		System.out.println("errors: " + c.getErrors());			        // se errors==0 entao nao houve problemas na conversa com o servidor
 //		System.out.println("registered: " + c.getRegistered());		    // se nao esta registrado entao é cópia pirata (ou maquina nova, dá no mesmo)
 //		System.out.println("modulos: " + c.getEnabledModules());	    // somatorio dos modulos do RH: 1  - Recrut. e Seleção ,2  - Cargos e Salários ,4  - Pesquisa ,8  - Treina. e Desenvolvimento ,16 - Avaliação de Desempenho ,32 - SESMT
-//
+//		System.out.println("qtd colab: " + c.getUserCount());		    // qtd colaboradores
+//		
 //		//codigo de retorno do erro
 //		if(c.getErrors() != 0)
 //			logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + c.getErrors());			
-		//return c.getRegistered();
+//		return c.getRegistered();
 		return true;
 	}
 	
