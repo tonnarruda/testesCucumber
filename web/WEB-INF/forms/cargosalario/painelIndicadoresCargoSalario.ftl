@@ -52,17 +52,16 @@
 		}
 		#pieBox{
 			float: left;
-			width: 200px;
-			height: 300px;
+			width: 300px;
+			height: 250px;
 		}
 		#pieLegendBox{
 			float: left;
-			width: 200px;
+			width: 350px;
 			height: 250px !important;
 		}
 		
-
-
+		.btnImprimir { float: right; margin: 10px; }
 	</style>
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
@@ -98,26 +97,12 @@
 			$(function () {
 				$("#box").dialog({autoOpen: false});
 			
-			    salarioAreasOrdered = ${grfSalarioAreas}.sort(function (a, b){
-   					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
-				});
-				 
-				montaPie(salarioAreasOrdered, "#salarioAreas", {
-					radiusLabel:0.9, 
-					percentMin: 0.02, 
-					pieLeft: 0, 
-					noColumns: 2, 
-					container: '#salarioAreasLegenda',
-					hoverable: true,
-        			clickable: true,
-					legendLabelFormatter: function(label, series) {
-						return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
-					}
+				salarioAreasOrdered = ${grfSalarioAreas}.sort(function (a, b){
+					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
 				});
 				
-				$("#salarioAreas").bind("plothover", plotPieHover);
-				$("#salarioAreas").bind("plotclick", pieClick);
-				
+				graficoPizza(salarioAreasOrdered, '#salarioAreas', '#salarioAreasLegenda', '#salarioAreasImprimir', 2);
+			
 				var folha = ${grfEvolucaoFolha};
 				var faturamento = ${grfEvolucaoFaturamento};
 				
@@ -201,6 +186,41 @@
 		            }
 				});
 			});
+			
+			function graficoPizza(dados, divGrafico, divLegenda, btnImprimir, numColunas)
+			{
+				montaPie(dados, divGrafico, {
+					radiusLabel:0.9, 
+					percentMin: 0.02, 
+					pieLeft: 0, 
+					noColumns: numColunas, 
+					container: divLegenda,
+					hoverable: true,
+        			clickable: true,
+					legendLabelFormatter: function(label, series) {
+						return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
+					}
+				});
+				
+				$(divGrafico).bind("plothover", plotPieHover)
+							 .bind("plotclick", pieClick);
+				
+				if (btnImprimir) 
+					$(btnImprimir).unbind().bind('click', { dados: dados }, function(event) { imprimirPizza(event.data.dados); });
+			}
+			
+			function imprimirPizza(dados) 
+			{
+				var popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+				popup.window.onload = function() 
+				{
+					popup.document.write('teste');
+					popup.window.opener.graficoPizza(dados, popup.document.getElementById('popupGrafico'), popup.document.getElementById('popupGraficoLegenda'), null, 2);
+					popup.focus();
+					popup.window.print();
+					popup.window.close();
+				}
+			}
 
 			//CUIDADO com o tamanho do grafico(bug da sombra)http://code.google.com/p/flot/issues/detail?id=5#c110
 
@@ -226,33 +246,19 @@
 							return false;
 						}
 						
-						$('#pieBox').remove();
-						$('#box').prepend("<div id='pieBox'></div>");
+						$('#pieBox, #pieLegendBox').empty();
 						
 						salarioAreasOrderedBox = data.sort(function (a, b){
-			   					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
+							return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
 						});
 						
-						montaPie(salarioAreasOrderedBox, "#pieBox", {
-							radiusLabel:0.9,
-							radius: 0.6,  
-							percentMin: 0.02, 
-							noColumns: 1, 
-							hoverable: true,
-		        			clickable: true,
-		        			container: '#pieLegendBox',
-							legendLabelFormatter: function(label, series) {
-								return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
-							}
-						});
-
+						graficoPizza(salarioAreasOrderedBox, '#pieBox', '#pieLegendBox', '#pieImprimirBox', 1);
+						
 						var percent = parseFloat(obj.series.percent).toFixed(2);
 						var descricaoArea = data[0].descricao;
 						
-						$("#box").dialog( "option" , { zIndex: 9999, title: descricaoArea + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', minWidth: 450, minHeight: 300 });
+						$("#box").dialog( "option" , { zIndex: 9999, title: descricaoArea + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', width: 700, height: 350 });
 						$("#box").dialog("open");
-						$("#pieBox").bind("plothover", plotPieHover);
-						$("#pieBox").bind("plotclick", pieClick);
 					}
 				});
 				
@@ -336,6 +342,8 @@
 			<h1>Salário por Área Organizacional</h1>
 		    <div id="salarioAreas" class="graph"></div>
 		    <div id="salarioAreasLegenda"></div>
+		    <div style="clear:both"></div>
+		    <button class="btnImprimir" id="salarioAreasImprimir"></button>
 		</div>
 		
 		<div style="clear: both"></div>
@@ -359,8 +367,9 @@
 		<a name="pagebottom"></a>
 		
 		<div id="box">
-			<!--<a href="#" style="float: right;" tabIndex="-1" onclick="voltar()">&lt;&lt; Voltar</a>-->
-			<div id="pieLegendBox"/>
+			<div id="pieBox"></div>
+			<div id="pieLegendBox"></div>
+			<button class="btnImprimir" id="pieImprimirBox"></button>
 			<div style="clear: both"></div>
 		</div>
 		<div id="aviso"></div>
