@@ -1,8 +1,11 @@
 package com.fortes.rh.web.action.security;
 
+import org.apache.log4j.Logger;
+
 import remprot.RPClient;
 
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.config.LogCleanerJob;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.opensymphony.xwork.ActionSupport;
 
@@ -15,7 +18,7 @@ public class Autenticador extends ActionSupport
 	private String nome;
 
 	ParametrosDoSistemaManager parametrosDoSistemaManager;
-
+	private static Logger logger = Logger.getLogger(Autenticador.class);
 	//TODO remprot
 	public String codigoOperacional()
 	{
@@ -50,7 +53,8 @@ public class Autenticador extends ActionSupport
 			return ActionSupport.SUCCESS;
 		else
 		{
-			System.out.println("Erro do RemProt: " + String.valueOf(client.getErrors()));
+			addActionError("Erro ao liberar licença: código do erro: " + String.valueOf(client.getErrors()));
+			logger.info("Erro do RemProt ao liberar licença: " + String.valueOf(client.getErrors()));
 			return ActionSupport.INPUT;
 		}
 	}
