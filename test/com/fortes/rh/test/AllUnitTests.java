@@ -1317,4 +1317,3 @@ public class AllUnitTests extends TestSuite
         return suite;
     }
 }
-

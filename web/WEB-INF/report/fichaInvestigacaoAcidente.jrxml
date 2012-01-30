@@ -29,6 +29,10 @@
 	<parameter name="USUARIO_NOME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="VERSAO_SISTEMA" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="IMG_DIR" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ASS1" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ASS2" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ASS3" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ASS4" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="colaborador.empresa.razaoSocial" class="java.lang.String"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
@@ -92,7 +96,7 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="335"  isSplitAllowed="false" >
+			<band height="345"  isSplitAllowed="false" >
 				<rectangle>
 					<reportElement
 						mode="Transparent"
@@ -835,66 +839,6 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{numeroCat}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="411"
-						y="309"
-						width="123"
-						height="22"
-						key="staticText-97"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="6"/>
-					</textElement>
-				<text><![CDATA[______________________________
-Testemunha]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="274"
-						y="309"
-						width="123"
-						height="22"
-						key="staticText-99"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="6"/>
-					</textElement>
-				<text><![CDATA[______________________________
-Chefia]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="137"
-						y="309"
-						width="123"
-						height="22"
-						key="staticText-98"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="6"/>
-					</textElement>
-				<text><![CDATA[______________________________
-Presidente da CIPA]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="0"
-						y="309"
-						width="123"
-						height="22"
-						key="staticText-96"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="6"/>
-					</textElement>
-				<text><![CDATA[______________________________
-Responsável SESMT]]></text>
-				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="1"
@@ -945,6 +889,66 @@ Responsável SESMT]]></text>
 						positionType="Float"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="330"
+						width="123"
+						height="13"
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean ($P{ASS1} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ASS1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="137"
+						y="330"
+						width="123"
+						height="13"
+						key="textField-24">
+							<printWhenExpression><![CDATA[new Boolean ($P{ASS2} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ASS2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="274"
+						y="330"
+						width="123"
+						height="13"
+						key="textField-25">
+							<printWhenExpression><![CDATA[new Boolean ($P{ASS3} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ASS3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="411"
+						y="330"
+						width="123"
+						height="13"
+						key="textField-26">
+							<printWhenExpression><![CDATA[new Boolean ($P{ASS4} != null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ASS4}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>

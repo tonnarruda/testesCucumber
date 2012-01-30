@@ -33,9 +33,9 @@
 		function habilitarCampo(check, campo)
 		{
 			if(check.checked)
-				document.getElementById(campo).disabled=false;
+				$('#' + campo).removeAttr('disabled');
 			else
-				document.getElementById(campo).disabled=true;
+				$('#' + campo).attr("disabled", true);
 		}
 	
 	</script>
@@ -95,28 +95,20 @@
 	<div id="box">
 		<span id="boxtitle"></span>
 		<@ww.form name="form" id="form" action="imprimirCurriculo.action" method="POST">
-		
-			<#assign desabilita1="true"/>
-			<#assign desabilita2="true"/>
-			<#assign desabilita3="true"/>
-			<#assign desabilita4="true"/>
-			
-			
 			<li>
 				<fieldset class="fieldsetPadrao">
 					<ul>
-						<legend>Imprimir:</legend>
-						<@ww.checkbox label="Campo 1" name="configuracaoImpressaoCurriculo.exibirAssinatura1" labelPosition="left" onclick="habilitarCampo(this, 'ass1');"/>
-						<@ww.textfield label="Assinatura 1" id="ass1" name="configuracaoImpressaoCurriculo.assinatura1" disabled="${desabilita1}" maxLength="50" cssStyle="width: 200px;"/>
+						<@ww.checkbox label="Campo 1" name="exibirAssinatura1" labelPosition="left" onclick="habilitarCampo(this, 'ass1');"/>
+						<@ww.textfield label="Assinatura 1" id="ass1" name="assinatura1" maxLength="50" cssStyle="width: 200px;"/>
 						
-						<@ww.checkbox label="Campo 2" name="configuracaoImpressaoCurriculo.exibirAssinatura2" labelPosition="left" onclick="habilitarCampo(this, 'ass2');"/>
-						<@ww.textfield label="Assinatura 2" id="ass2" name="configuracaoImpressaoCurriculo.assinatura2" disabled="${desabilita2}" maxLength="50" cssStyle="width: 200px;"/>
+						<@ww.checkbox label="Campo 2" name="exibirAssinatura2" labelPosition="left" onclick="habilitarCampo(this, 'ass2');"/>
+						<@ww.textfield label="Assinatura 2" id="ass2" name="assinatura2" maxLength="50" cssStyle="width: 200px;"/>
 						
-						<@ww.checkbox label="Campo 3" name="configuracaoImpressaoCurriculo.exibirAssinatura3" labelPosition="left" onclick="habilitarCampo(this, 'ass3');"/>
-						<@ww.textfield label="Assinatura 3" id="ass3" name="configuracaoImpressaoCurriculo.assinatura3" disabled="${desabilita3}" maxLength="50" cssStyle="width: 200px;"/>
+						<@ww.checkbox label="Campo 3" name="exibirAssinatura3" labelPosition="left" onclick="habilitarCampo(this, 'ass3');"/>
+						<@ww.textfield label="Assinatura 3" id="ass3" name="assinatura3" maxLength="50" cssStyle="width: 200px;"/>
 						
-						<@ww.checkbox label="Campo 4" name="configuracaoImpressaoCurriculo.exibirAssinatura4" labelPosition="left" onclick="habilitarCampo(this, 'ass3');"/>
-						<@ww.textfield label="Assinatura 4" id="ass3" name="configuracaoImpressaoCurriculo.assinatura4" disabled="${desabilita4}" maxLength="50" cssStyle="width: 200px;"/>
+						<@ww.checkbox label="Campo 4" name="exibirAssinatura4" labelPosition="left" onclick="habilitarCampo(this, 'ass3');"/>
+						<@ww.textfield label="Assinatura 4" id="ass3" name="assinatura4" maxLength="50" cssStyle="width: 200px;"/>
 					</ul>
 				</fieldset>
 			</li>
@@ -126,11 +118,11 @@
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button onclick="closebox();document.form.submit();" class="btnImprimirPdf"></button>
+			<button onclick="window.location='imprimirFichaInvestigacaoAcidente.action?cat.id=${cat.id}'" class="btnImprimirPdf"></button>
 			<button onclick="closebox();" class="btnCancelar"></button>
 		</div>
+	</div>
 	
-		</div>
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>

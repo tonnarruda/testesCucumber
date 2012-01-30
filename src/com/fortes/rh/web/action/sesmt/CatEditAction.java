@@ -65,6 +65,15 @@ public class CatEditAction extends MyActionSupportList
 	
 	private Map<Integer, String> tipoAcidentes;
 	
+	private boolean exibirAssinatura1;
+	private String assinatura1 = "Responsável SESMT";
+	private boolean exibirAssinatura2;
+	private String assinatura2 = "Presidente da CIPA";
+	private boolean exibirAssinatura3;
+	private String assinatura3 = "Chefia";
+	private boolean exibirAssinatura4;
+	private String assinatura4 = "Testemunha";
+	
 	public String list() throws Exception
 	{
 		if (!validaPeriodo())
@@ -79,6 +88,11 @@ public class CatEditAction extends MyActionSupportList
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
+		exibirAssinatura1 = true;
+		exibirAssinatura2 = true;
+		exibirAssinatura3 = true;
+		exibirAssinatura4 = true;
+		
 		return SUCCESS;
 	}
 
@@ -206,6 +220,7 @@ public class CatEditAction extends MyActionSupportList
 			
 			String pathImg = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separatorChar;
 			parametros.put("IMG_DIR", pathImg);
+			configuraAssinaturas();
 			
 			return SUCCESS;
 		}
@@ -214,6 +229,19 @@ public class CatEditAction extends MyActionSupportList
 			addActionMessage(e.getMessage());
 			return INPUT;
 		}
+	}
+
+	private void configuraAssinaturas() 
+	{
+		int count = 0;
+		if(exibirAssinatura1)
+			parametros.put("ASS" + (++count), assinatura1);
+		if(exibirAssinatura2)
+			parametros.put("ASS" + (++count), assinatura2);
+		if(exibirAssinatura3)
+			parametros.put("ASS" + (++count), assinatura3);
+		if(exibirAssinatura4)
+			parametros.put("ASS" + (++count), assinatura4);
 	}
 	
 	private String getPeriodoFormatado()
@@ -389,5 +417,69 @@ public class CatEditAction extends MyActionSupportList
 
 	public Map<Integer, String> getTipoAcidentes() {
 		return tipoAcidentes;
+	}
+
+	public boolean isExibirAssinatura1() {
+		return exibirAssinatura1;
+	}
+
+	public void setExibirAssinatura1(boolean exibirAssinatura1) {
+		this.exibirAssinatura1 = exibirAssinatura1;
+	}
+
+	public String getAssinatura1() {
+		return assinatura1;
+	}
+
+	public void setAssinatura1(String assinatura1) {
+		this.assinatura1 = assinatura1;
+	}
+
+	public boolean isExibirAssinatura2() {
+		return exibirAssinatura2;
+	}
+
+	public void setExibirAssinatura2(boolean exibirAssinatura2) {
+		this.exibirAssinatura2 = exibirAssinatura2;
+	}
+
+	public String getAssinatura2() {
+		return assinatura2;
+	}
+
+	public void setAssinatura2(String assinatura2) {
+		this.assinatura2 = assinatura2;
+	}
+
+	public boolean isExibirAssinatura3() {
+		return exibirAssinatura3;
+	}
+
+	public void setExibirAssinatura3(boolean exibirAssinatura3) {
+		this.exibirAssinatura3 = exibirAssinatura3;
+	}
+
+	public String getAssinatura3() {
+		return assinatura3;
+	}
+
+	public void setAssinatura3(String assinatura3) {
+		this.assinatura3 = assinatura3;
+	}
+
+	public boolean isExibirAssinatura4() {
+		return exibirAssinatura4;
+	}
+
+	public void setExibirAssinatura4(boolean exibirAssinatura4) {
+		this.exibirAssinatura4 = exibirAssinatura4;
+	}
+
+	public String getAssinatura4() {
+		return assinatura4;
+	}
+
+	public void setAssinatura4(String assinatura4) {
+		this.assinatura4 = assinatura4;
 	}
 }

@@ -18490,7 +18490,7 @@ update papel set nome='Apagar Reg. sem Código AC' where id=529; --.go
 insert into migrations values('20120117091806');--.go
 
 delete from usuariomensagem where mensagem_id in (select id from mensagem where not exists(select id from colaborador where id = cast(substring(substring(link from 'colaborador.id=[0-9]*') , 16) as bigint)));--.go
-delete from mensagem where not exists(select id from colaborador where id = cast(substring(substring(link from 'colaborador.id=[0-9]*') , 16) as bigint))--.go
+delete from mensagem where not exists(select id from colaborador where id = cast(substring(substring(link from 'colaborador.id=[0-9]*') , 16) as bigint));--.go
 update mensagem	set colaborador_id = cast(substring(substring(link from 'colaborador.id=[0-9]*') , 16) as bigint) where colaborador_id is null and link ~ 'colaborador.id';--.go
 insert into migrations values('20120117143404');--.go
 
