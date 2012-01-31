@@ -38,6 +38,7 @@
 		<pattern>/desenvolvimento/colaboradorTurma/findNotas.action*</pattern>
 		<pattern>/captacao/solicitacao/findEventos.action*</pattern>
 		<pattern>/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action*</pattern>		
+		<pattern>/grafico.jsp*</pattern>		
 	</excludes>
 
 	<decorator name="login" page="login.ftl">
