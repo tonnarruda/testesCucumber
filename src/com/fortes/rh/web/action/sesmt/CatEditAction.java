@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -66,13 +68,13 @@ public class CatEditAction extends MyActionSupportList
 	private Map<Integer, String> tipoAcidentes;
 	
 	private boolean exibirAssinatura1;
-	private String assinatura1 = "Responsável SESMT";
+	private String assinatura1;
 	private boolean exibirAssinatura2;
-	private String assinatura2 = "Presidente da CIPA";
+	private String assinatura2;
 	private boolean exibirAssinatura3;
-	private String assinatura3 = "Chefia";
+	private String assinatura3;
 	private boolean exibirAssinatura4;
-	private String assinatura4 = "Testemunha";
+	private String assinatura4;
 	
 	public String list() throws Exception
 	{
@@ -88,12 +90,34 @@ public class CatEditAction extends MyActionSupportList
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
-		exibirAssinatura1 = true;
-		exibirAssinatura2 = true;
-		exibirAssinatura3 = true;
-		exibirAssinatura4 = true;
+		prepareAssinaturas();
 		
 		return SUCCESS;
+	}
+
+	private void prepareAssinaturas() 
+	{
+		
+        if(!exibirAssinatura1 && assinatura1 == null)
+        {
+        	exibirAssinatura1 = true;
+        	assinatura1 = "Responsável SESMT";
+        }
+        if(!exibirAssinatura2 && assinatura2 == null)
+        {
+        	exibirAssinatura2 = true;
+        	assinatura2 = "Presidente da CIPA";
+        }
+        if(!exibirAssinatura3 && assinatura3 == null)
+        {
+        	exibirAssinatura3 = true;
+        	assinatura3 = "Chefia";
+        }
+        if(!exibirAssinatura4 && assinatura4 == null)
+        {
+        	exibirAssinatura4 = true;
+        	assinatura4 = "Testemunha";
+        }
 	}
 
 	private boolean validaPeriodo()

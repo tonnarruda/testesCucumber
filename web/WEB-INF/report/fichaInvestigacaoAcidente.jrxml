@@ -96,7 +96,7 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="345"  isSplitAllowed="false" >
+			<band height="355"  isSplitAllowed="false" >
 				<rectangle>
 					<reportElement
 						mode="Transparent"
@@ -892,7 +892,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="3"
-						y="330"
+						y="339"
 						width="123"
 						height="13"
 						key="textField">
@@ -907,7 +907,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="137"
-						y="330"
+						y="339"
 						width="123"
 						height="13"
 						key="textField-24">
@@ -922,7 +922,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="274"
-						y="330"
+						y="339"
 						width="123"
 						height="13"
 						key="textField-25">
@@ -937,7 +937,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="330"
+						y="339"
 						width="123"
 						height="13"
 						key="textField-26">
