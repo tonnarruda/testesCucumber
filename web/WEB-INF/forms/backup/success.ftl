@@ -22,7 +22,11 @@
 			</#if>
 			
 			<br>			
-			<button onclick="window.location='../geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action'" class="btnVoltar"></button>
+	
+			<#if permiteDeleteSemCodigoAC>
+				<button onclick="window.location='../geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action'" class="btnVoltar"></button>
+			</#if>
+			
 			<button onclick="loader(true);window.location='gerar.action';" class="btnBackup"/></button>
 		</div>
 	</body>

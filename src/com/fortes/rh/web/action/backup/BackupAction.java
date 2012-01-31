@@ -28,6 +28,7 @@ public class BackupAction extends MyActionSupport {
 	private String urlVoltar = "";
 	private String backupPath = "";
 	private Collection<String> arquivos;
+	private boolean permiteDeleteSemCodigoAC;
 	
 	String dbBackupDir = ArquivoUtil.getDbBackupPath();
 
@@ -128,6 +129,14 @@ public class BackupAction extends MyActionSupport {
 
 	public String getBackupPath() {
 		return backupPath;
+	}
+
+	public boolean isPermiteDeleteSemCodigoAC() {
+		return permiteDeleteSemCodigoAC;
+	}
+
+	public void setPermiteDeleteSemCodigoAC(boolean permiteDeleteSemCodigoAC) {
+		this.permiteDeleteSemCodigoAC = permiteDeleteSemCodigoAC;
 	}
 	
 }

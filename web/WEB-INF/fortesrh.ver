@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.67.61" data="31/01/2012"><![CDATA[
+		- SESMT > Movimentacoes > Ficha de Investigao de Acidente(CAT) : Possibilidade de alterar campos de assinaturas ao imprimir.
+	]]></Versao>
 	<Versao id="1.1.67.61" data="27/01/2012"><![CDATA[
 		- Sistema RH: Possibilidade de efetuar atualização do histórico do colaborador em Lote no AC Pessoal.
 		- Sistema RH: Tratamento dos erros do sistema 500,404 e 403.

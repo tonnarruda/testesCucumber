@@ -31,7 +31,7 @@
 		<@ww.select label="Empresa com código AC" name="empresa.id" id="empresaId" listKey="id" listValue="nomeCodigoAc" list="empresas" cssClass="selectEmpresa" />
 		<input type="submit" value="" class="btnPesquisar"/>
 		
-		<input onclick="window.location='../../backup/list.action';" class="btnBackup"/>
+		<input onclick="window.location='../../backup/list.action?permiteDeleteSemCodigoAC=true';" class="btnBackup"/>
 
 	</@ww.form>
 
