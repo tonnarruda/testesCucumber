@@ -14,6 +14,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.PesquisaDao;
 import com.fortes.rh.model.pesquisa.Pesquisa;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implements PesquisaDao
@@ -78,7 +79,7 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 		return (Pesquisa) criteria.uniqueResult();
 	}
 
-	public Collection<Pesquisa> findToList(Long empresaId, int page, int pagingSize, String questionarioTitulo)
+	public Collection<Pesquisa> findToList(Long empresaId, int page, int pagingSize, String questionarioTitulo, Boolean questionarioLiberado)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "p");
 		criteria.createCriteria("p.questionario", "q", Criteria.LEFT_JOIN);
@@ -100,8 +101,11 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 
 		criteria.add(Expression.eq("e.id", empresaId));
 		
-		if(questionarioTitulo != null &&!questionarioTitulo.equals(""))
+		if(questionarioTitulo != null && !StringUtil.isBlank(questionarioTitulo))
 			criteria.add(Restrictions.sqlRestriction("normalizar(q1_.titulo) ilike  normalizar(?)", "%" + questionarioTitulo.trim() + "%", Hibernate.STRING));
+		
+		if(questionarioLiberado != null)
+			criteria.add(Expression.eq("q.liberado", questionarioLiberado));
 
 		if(pagingSize > 0)
 		{

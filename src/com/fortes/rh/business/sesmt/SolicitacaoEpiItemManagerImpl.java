@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
+import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
@@ -33,7 +34,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 				if (StringUtils.isBlank(selectQtdSolicitado[i]))
 					selectQtdSolicitado[i] = "0";
 				solicitacaoEpiItem.setQtdSolicitado(Integer.valueOf(selectQtdSolicitado[i]));
-				if(solicitacaoEpi.isEntregue())
+				if(solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE)
 					solicitacaoEpiItem.setQtdEntregue(Integer.valueOf(selectQtdSolicitado[i]));
 				else
 					solicitacaoEpiItem.setQtdEntregue(0);

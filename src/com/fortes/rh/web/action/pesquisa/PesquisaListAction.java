@@ -26,7 +26,7 @@ public class PesquisaListAction extends MyActionSupportList
     private EmpresaManager empresaManager;
     private QuestionarioManager questionarioManager;
 
-    private Pesquisa pesquisa = new Pesquisa();;
+    private Pesquisa pesquisa = new Pesquisa();
     private Colaborador colaborador;
 
     private Collection<Pesquisa> pesquisas = new ArrayList<Pesquisa>();
@@ -45,6 +45,7 @@ public class PesquisaListAction extends MyActionSupportList
 	private String SESSION_EMPRESA = "";
 	private String grupoAC = null;
 	private String questionarioTitulo = null;
+	private char questionarioLiberado = 'T';
 
 	public String execute() throws Exception
     {
@@ -54,7 +55,8 @@ public class PesquisaListAction extends MyActionSupportList
     public String list() throws Exception
     {
    		this.setTotalSize(pesquisaManager.getCount(getEmpresaSistema().getId(), questionarioTitulo));
-   		pesquisas = pesquisaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize(), questionarioTitulo);
+   		
+   		pesquisas = pesquisaManager.findToListByEmpresa(getEmpresaSistema().getId(), getPage(), getPagingSize(), questionarioTitulo, questionarioLiberado);
    		
    		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
@@ -190,4 +192,11 @@ public class PesquisaListAction extends MyActionSupportList
 		this.empresasCheckList = empresasCheckList;
 	}
 
+	public char getQuestionarioLiberado() {
+		return questionarioLiberado;
+	}
+
+	public void setQuestionarioLiberado(char questionarioLiberado) {
+		this.questionarioLiberado = questionarioLiberado;
+	}
 }

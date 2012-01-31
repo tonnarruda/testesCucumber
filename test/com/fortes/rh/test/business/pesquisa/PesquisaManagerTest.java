@@ -8,6 +8,7 @@ import mockit.Mockit;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -170,9 +171,9 @@ public class PesquisaManagerTest extends MockObjectTestCase
 
     	Collection<Pesquisa> pesquisas = PesquisaFactory.getCollection();
 
-    	pesquisaDao.expects(once()).method("findToList").with(eq(empresa.getId()), eq(1), eq(10), ANYTHING).will(returnValue(pesquisas));
+    	pesquisaDao.expects(once()).method("findToList").with(new Constraint[] { eq(empresa.getId()), eq(1), eq(10), ANYTHING, ANYTHING }).will(returnValue(pesquisas));
 
-    	assertEquals(pesquisas, pesquisaManager.findToListByEmpresa(empresa.getId(), 1, 10, ""));
+    	assertEquals(pesquisas, pesquisaManager.findToListByEmpresa(empresa.getId(), 1, 10, "", 'T'));
     }
 
     public void testFindByQuestionario()

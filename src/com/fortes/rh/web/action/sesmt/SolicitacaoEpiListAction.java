@@ -37,7 +37,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Date dataFim;
 	private String nomeBusca;
 	private String matriculaBusca;
-	private String situacao = "TODAS";
+	private char situacao = 'T';
 	private Colaborador colaborador = new Colaborador();
 	
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -65,7 +65,6 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		SituacaoSolicitacaoEpi situacao = SituacaoSolicitacaoEpi.valueOf(String.valueOf(this.situacao));
 		colaborador.setNome(nomeBusca);
 		colaborador.setMatricula(matriculaBusca);
 
@@ -73,16 +72,29 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao);
 
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
-		{
 			addActionMessage("Nenhuma Solicitação de EPIs a ser listada.");
-		}
 
+		return SUCCESS;
+	}
+
+	public String imprimir() throws Exception
+	{
+		colaborador.setNome(nomeBusca);
+		colaborador.setMatricula(matriculaBusca);
+		
+		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(0, 0, getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao);
+		
+		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
+			addActionMessage("Nenhuma Solicitação de EPIs a ser listada.");
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Solicitações de EPIs", getEmpresaSistema(), (dataIni != null && dataFim != null) ? "Período: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim) : "");
+		
 		return SUCCESS;
 	}
 
 	public String delete() throws Exception
 	{
-		if (solicitacaoEpi.isEntregue())
+		if (solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE)
 		{
 			addActionError("A solicitação não pôde ser excluída porque já foi entregue.");
 		}
@@ -226,16 +238,6 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	public void setNomeBusca(String nomeBusca)
 	{
 		this.nomeBusca = nomeBusca;
-	}
-
-	public String getSituacao()
-	{
-		return situacao;
-	}
-
-	public void setSituacao(String situacao)
-	{
-		this.situacao = situacao;
 	}
 
 	public Collection<SolicitacaoEpiItem> getSolicitacaoEpiItems()
@@ -384,5 +386,13 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public void setEntrega(boolean entrega) {
 		this.entrega = entrega;
+	}
+
+	public char getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(char situacao) {
+		this.situacao = situacao;
 	}
 }

@@ -24,9 +24,9 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 @SuppressWarnings("unchecked")
 public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoEpi> implements SolicitacaoEpiDao
 {
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, Boolean entregue)
+	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi)
 	{
-		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), entregue);
+		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi);
 
 		if(pagingSize != 0)
         {
@@ -36,19 +36,19 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return query.list();
 	}
 
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, Boolean entregue)
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi)
 	{
-		Query query = montaConsultaFind(true, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), entregue);
+		Query query = montaConsultaFind(true, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi);
 		return (Integer)query.uniqueResult();
 	}
 
-	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, Boolean entregue)
+	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, char situacaoSolicitacaoEpi)
 	{
 		StringBuilder hql = null;
 		if (count)
 			hql = new StringBuilder("select count(se.id) ");
 		else
-			hql = new StringBuilder("select new SolicitacaoEpi(se.id, se.data, se.entregue, co.nome, hc.status, ca.nome) ");
+			hql = new StringBuilder("select new SolicitacaoEpi(se.id, se.data, se.situacaoSolicitacaoEpi, co.nome, hc.status, ca.nome) ");
 
 		hql.append("from SolicitacaoEpi se ");
 		hql.append("left join se.cargo ca ");
@@ -70,8 +70,8 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if (dataIni != null && dataFim != null)
 			hql.append("and se.data between :dataIni and :dataFim ");
 
-		if (entregue != null)
-			hql.append("and se.entregue = :entregue ");
+		if (situacaoSolicitacaoEpi != 'T')
+			hql.append("and se.situacaoSolicitacaoEpi = :situacaoSolicitacaoEpi ");
 
 		if(!count)
 			hql.append("order by se.data DESC, co.nome ASC ");
@@ -84,8 +84,8 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			query.setDate("dataFim", dataFim);
 		}
 
-		if (entregue != null)
-			query.setBoolean("entregue", entregue);
+		if (situacaoSolicitacaoEpi != 'T')
+			query.setCharacter("situacaoSolicitacaoEpi", situacaoSolicitacaoEpi);
 
 		if (StringUtils.isNotBlank(matriculaBusca))
 			query.setString("matricula", "%" + matriculaBusca.toLowerCase() + "%");
@@ -106,7 +106,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 
 		p.add(Projections.property("se.id"), "id");
 		p.add(Projections.property("se.data"), "data");
-		p.add(Projections.property("se.entregue"), "entregue");
+		p.add(Projections.property("se.situacaoSolicitacaoEpi"), "situacaoSolicitacaoEpi");
 
 		criteria.setProjection(p);
 
@@ -137,7 +137,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if(exibirVencimentoCA)
 			hql.append(" or :data >= eh.vencimentoCA ");
 		
-		hql.append(" ) and se.entregue = true ");
+		hql.append(" ) and se.situacaoSolicitacaoEpi <> 'A' ");
 		hql.append("and co.desligado = false and e.empresa.id = :empresaId ");
 		
 		if(tipoEPIIds != null && tipoEPIIds.length > 0)
@@ -177,7 +177,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		hql.append("join se.colaborador co ");
 		hql.append("join se.cargo ca ");
 		hql.append("left join e.epiHistoricos eh ");
-		hql.append("where se.entregue = true ");
+		hql.append("where se.situacaoSolicitacaoEpi <> 'A' ");
 		
 		if (dataIni != null && dataFim != null)
 			hql.append("and item.dataEntrega between :dataIni and :dataFim ");

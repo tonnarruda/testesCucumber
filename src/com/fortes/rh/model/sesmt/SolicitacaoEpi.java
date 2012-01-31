@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -24,7 +25,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 {
 	@Temporal(TemporalType.DATE)
 	private Date data;
-	private boolean entregue;
+	private char situacaoSolicitacaoEpi;
 
 	@ManyToOne
 	private Colaborador colaborador;
@@ -34,6 +35,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	@ManyToOne
 	private Empresa empresa;
+	
 
 	//Usados por relatório
 	@Transient
@@ -68,11 +70,11 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 			this.data = new Date();
 	}
 
-	public SolicitacaoEpi(Long id, Date data, boolean entregue, String colaboradorNome, int statusRetornoAC, String cargoNome)
+	public SolicitacaoEpi(Long id, Date data, char situacaoSolicitacaoEpi, String colaboradorNome, int statusRetornoAC, String cargoNome)
 	{
 		setId(id);
 		this.data = data;
-		this.entregue = entregue;
+		this.situacaoSolicitacaoEpi = situacaoSolicitacaoEpi;
 		setColaboradorNome(colaboradorNome);
 		setColaboradorStatus(statusRetornoAC);
 		setCargoNome(cargoNome);
@@ -96,8 +98,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	public String getSituacao()
 	{
-		String situacao = entregue ? "Entregue" : "Aberta";
-		return situacao;
+		return SituacaoSolicitacaoEpi.getDescricao(situacaoSolicitacaoEpi);
 	}
 
 	private void setCargoNome(String cargoNome)
@@ -158,16 +159,6 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		this.data = data;
 	}
 
-	public boolean isEntregue()
-	{
-		return entregue;
-	}
-
-	public void setEntregue(boolean entregue)
-	{
-		this.entregue = entregue;
-	}
-
 	public Empresa getEmpresa()
 	{
 		return empresa;
@@ -204,4 +195,11 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		return dataEpiEntrega;
 	}
 
+	public char getSituacaoSolicitacaoEpi() {
+		return situacaoSolicitacaoEpi;
+	}
+
+	public void setSituacaoSolicitacaoEpi(char situacaoSolicitacaoEpi) {
+		this.situacaoSolicitacaoEpi = situacaoSolicitacaoEpi;
+	}
 }
