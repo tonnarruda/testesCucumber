@@ -81,9 +81,9 @@ public class AmbienteManagerTest extends MockObjectTestCase
 	{
 		Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
 
-		ambienteDao.expects(once()).method("getCount").with(ANYTHING).will(returnValue(ambientes.size()));
+		ambienteDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(ambientes.size()));
 
-		int retorno = ambienteManager.getCount(1L);
+		int retorno = ambienteManager.getCount(1L, null);
 
 		assertEquals(ambientes.size(), retorno);
 	}
@@ -105,13 +105,13 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		ambientes.add(a1);
 		ambientes.add(a2);
 
-		ambienteDao.expects(once()).method("findAmbientes").with(eq(0), eq(0), eq(empresa.getId())).will(returnValue(ambientes));
+		ambienteDao.expects(once()).method("findAmbientes").with(eq(0), eq(0), eq(empresa.getId()), eq(null)).will(returnValue(ambientes));
 		Collection<Ambiente> ambienteRetorno = ambienteManager.findAmbientes(empresa.getId());
 
 		assertEquals("findAmbientes sem paginação",ambientes, ambienteRetorno);
 
-		ambienteDao.expects(once()).method("findAmbientes").with(eq(1), eq(15), eq(empresa.getId())).will(returnValue(ambientes));
-		ambienteRetorno = ambienteManager.findAmbientes(1, 15, empresa.getId());
+		ambienteDao.expects(once()).method("findAmbientes").with(eq(1), eq(15), eq(empresa.getId()), eq(null)).will(returnValue(ambientes));
+		ambienteRetorno = ambienteManager.findAmbientes(1, 15, empresa.getId(), null);
 
 		assertEquals("findAmbientes com paginação",ambientes, ambienteRetorno);
 

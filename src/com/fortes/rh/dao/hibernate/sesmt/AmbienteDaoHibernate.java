@@ -1,5 +1,7 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.Collection;
 import java.util.Date;
 
@@ -21,19 +23,19 @@ import com.fortes.rh.model.sesmt.Ambiente;
 @SuppressWarnings("unchecked")
 public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implements AmbienteDao
 {
-	public Integer getCount(Long empresaId)
+	public Integer getCount(Long empresaId, Ambiente ambiente)
 	{
 		Criteria criteria = getSession().createCriteria(Ambiente.class,"a");
 		criteria.setProjection(Projections.rowCount());
 
-		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		montaQuery(empresaId, ambiente, criteria);
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId)
+	public Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId, Ambiente ambiente)
 	{
 		Criteria criteria = getSession().createCriteria(Ambiente.class,"a");
 		criteria.createCriteria("a.estabelecimento", "e", CriteriaSpecification.LEFT_JOIN);
@@ -44,8 +46,8 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("a.empresa.id", empresaId));
-
+		montaQuery(empresaId, ambiente, criteria);
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Ambiente.class));
 		criteria.addOrder(Order.asc("a.nome"));
@@ -58,6 +60,14 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 		}
 
 		return criteria.list();
+	}
+
+	private void montaQuery(Long empresaId, Ambiente ambiente, Criteria criteria) {
+		if(empresaId != null)
+			criteria.add(Expression.eq("a.empresa.id", empresaId));
+		
+		if (ambiente != null && isNotBlank(ambiente.getNome()))
+			criteria.add(Expression.sqlRestriction("normalizar({alias}.nome) ilike normalizar(?)", "%" + ambiente.getNome() + "%", Hibernate.STRING));
 	}
 
 	public Collection<Ambiente> findByEstabelecimento(Long estabelecimentoId)

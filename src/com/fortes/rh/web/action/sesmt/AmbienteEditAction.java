@@ -45,8 +45,6 @@ public class AmbienteEditAction extends MyActionSupportList
 	private String[] riscoChecks;
 	private String[] epcEficazChecks;
 
-	private String msgAlert = "";
-
 	private void prepare() throws Exception
 	{
 		if(ambiente != null && ambiente.getId() != null)
@@ -83,7 +81,7 @@ public class AmbienteEditAction extends MyActionSupportList
 
 		if(ambiente == null || ambiente.getEmpresa() == null || ambiente.getEmpresa().getId() == null || !ambiente.getEmpresa().getId().equals(getEmpresaSistema().getId()))
 		{
-			msgAlert = "O Ambiente solicitado não existe na empresa " + getEmpresaSistema().getNome() +".";
+			addActionError("O Ambiente solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 			return Action.ERROR;
 		}
 		
@@ -107,7 +105,7 @@ public class AmbienteEditAction extends MyActionSupportList
 
 		if(!ambienteManager.verifyExists(key, values))
 		{
-			msgAlert = "O Ambiente solicitado não existe na empresa " + getEmpresaSistema().getNome() +".";
+			addActionError("O Ambiente solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 			return Action.ERROR;
 		}
 
@@ -119,11 +117,11 @@ public class AmbienteEditAction extends MyActionSupportList
 	
 	public String list() throws Exception
 	{
-		setTotalSize(ambienteManager.getCount(getEmpresaSistema().getId()));
-		ambientes = ambienteManager.findAmbientes(getPage(), getPagingSize(), getEmpresaSistema().getId());
+		setTotalSize(ambienteManager.getCount(getEmpresaSistema().getId(), ambiente));
+		ambientes = ambienteManager.findAmbientes(getPage(), getPagingSize(), getEmpresaSistema().getId(), ambiente);
 
-		if(!msgAlert.equals(""))
-			addActionError(msgAlert);
+//		if(!msgAlert.equals(""))
+//			addActionError(msgAlert);
 
 		return Action.SUCCESS;
 	}
@@ -176,16 +174,6 @@ public class AmbienteEditAction extends MyActionSupportList
 	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager)
 	{
 		this.historicoAmbienteManager = historicoAmbienteManager;
-	}
-
-	public String getMsgAlert()
-	{
-		return msgAlert;
-	}
-
-	public void setMsgAlert(String msgAlert)
-	{
-		this.msgAlert = msgAlert;
 	}
 
 	public void setEstabelecimentoManager(
