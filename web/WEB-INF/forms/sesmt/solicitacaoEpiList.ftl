@@ -30,13 +30,26 @@
 	<#else>
 		<title>Solicitações de EPIs</title>
 	</#if>
+	
+	<script type="text/javascript">
+		function imprimir()
+		{
+			$('#form').attr('action','imprimir.action').submit();
+		}
+
+		function pesquisar()
+		{
+			$('#pagina').val(1);
+			$('#form').attr('action','list.action').submit();
+		}
+	</script>
 </head>
 <body>
 
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
 
-		<@ww.select label="Situação" id="situacao" name="situacao" list=r"#{'TODAS':'Todas','ABERTA':'Aberta','ENTREGUE':'Entregue'}" />
+		<@ww.select label="Situação" id="situacao" name="situacao" list=r"#{'T':'Todas','A':'Aberta','E':'Entregue','P':'Entregue Parcialmente'}" />
 
 		<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" cssStyle="width: 60px;"/>
 		<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
@@ -49,7 +62,7 @@
 		<@ww.hidden id="pagina" name="page"/>
 		<@ww.hidden name="entrega"/>
 
-		<input type="submit" value="" onclick="document.getElementById('pagina').value = 1;" class="btnPesquisar grayBGE" />
+		<input type="button" value="" onclick="pesquisar()" class="btnPesquisar grayBGE" />
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 
@@ -59,7 +72,7 @@
 
 	<@display.table name="solicitacaoEpis" id="solicitacaoEpi" class="dados" >
 		<@display.column title="Ações" class="acao">
-			<#if solicitacaoEpi.entregue>
+			<#if solicitacaoEpi.situacaoSolicitacaoEpi == 'E'>
 				<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega" src="<@ww.url value="/imgs/check.gif"/>"></a>
 				<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI" >
 				<img border="0" title="Não é possível editar uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -89,11 +102,11 @@
 	</@display.table>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
-	<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI">
 	<div class="buttonGroup">
-		<button onclick="window.location='prepareInsert.action'" accesskey="N" class="btnInserir">
-		</button>
+		<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI">
+			<button onclick="window.location='prepareInsert.action'" class="btnInserir"></button>
+		</@authz.authorize>
+		<button onclick="imprimir()" class="btnImprimir"></button>
 	</div>
-	</@authz.authorize>
 </body>
 </html>

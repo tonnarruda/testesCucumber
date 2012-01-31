@@ -9,6 +9,7 @@ import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
@@ -39,6 +40,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private String[] epiIds;
 
 	private Date dataEntrega;
+	private boolean entregue;
 
 	public String execute() throws Exception
 	{
@@ -149,11 +151,12 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		{
 			this.colaborador = colaboradorManager.findByIdDadosBasicos(solicitacaoEpi.getColaborador().getId(), null);
 			
-			if(solicitacaoEpi.isEntregue() && colaborador.getHistoricoColaborador().getStatus() != StatusRetornoAC.CONFIRMADO)
+			if(this.entregue && colaborador.getHistoricoColaborador().getStatus() != StatusRetornoAC.CONFIRMADO)
 				throw new FortesException("Não é permitido entregar um EPI para um colaborador ainda não confirmado no AC Pessoal.");
 			
 			solicitacaoEpi.setCargo(colaborador.getFaixaSalarial().getCargo());
 			solicitacaoEpi.setEmpresa(getEmpresaSistema());
+			solicitacaoEpi.setSituacaoSolicitacaoEpi(this.entregue ? SituacaoSolicitacaoEpi.ENTREGUE : SituacaoSolicitacaoEpi.ABERTA);
 
 			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega);
 			
@@ -281,5 +284,13 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public void setSelectDataSolicitado(Date[] selectDataSolicitado) {
 		this.selectDataSolicitado = selectDataSolicitado;
+	}
+
+	public boolean isEntregue() {
+		return entregue;
+	}
+
+	public void setEntregue(boolean entregue) {
+		this.entregue = entregue;
 	}
 }

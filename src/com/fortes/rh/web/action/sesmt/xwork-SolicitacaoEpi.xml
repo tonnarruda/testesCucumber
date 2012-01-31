@@ -9,6 +9,17 @@
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiList.ftl</result>
 		</action>
+		<action name="imprimir" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="imprimir">
+	    	<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim</param>
+	    	</interceptor-ref>	
+			<result name="success" type="jasper">
+				<param name="dataSource">solicitacaoEpis</param>
+				<param name="location">WEB-INF/report/solicitacoes_epis.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">solicitacoes_epis.pdf</param>
+			</result>
+		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack">
 				<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim</param>
