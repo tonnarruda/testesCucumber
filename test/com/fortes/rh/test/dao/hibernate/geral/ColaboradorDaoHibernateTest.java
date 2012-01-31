@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
@@ -4471,6 +4472,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.getPessoal().setCpf(cpf);
 		
 		return colaborador;
+	}
+	
+	public void testDependenciasApagarColaboradorNoImportador()
+	{
+		String qtdTabelasComEmpresa = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'colaborador_id';");
+		//se esse quebrar, provavelmente tem que inserir uma linha de delete no Importador colaboradorJDBC.java método removerColaborador();
+		assertEquals("23", qtdTabelasComEmpresa);
 	}
 
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {

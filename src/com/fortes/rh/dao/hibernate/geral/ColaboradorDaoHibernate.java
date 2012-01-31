@@ -1685,6 +1685,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	   ) ");
 		hql.append("	and ( date_trunc('month', co.dataDesligamento) >= date_trunc('month', cast(:data as date)) or co.dataDesligamento is null) ");
 		hql.append("	and co.dataAdmissao <= :data");
+		hql.append("	and (co.dataDesligamento >= :data or co.dataDesligamento is null) ");
 		hql.append("	and co.empresa.id = :empresaId ");
 
 		Query query = montaSelectProjecaoSalarial(hql, data, estabelecimentoIds, areaIds, grupoIds, cargoIds, filtro, empresaId);
@@ -1724,7 +1725,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	trc.id = :tabelaReajusteColaboradorId ");
 		hql.append("	and rc.colaborador.id = co.id ");
 		hql.append("	and trc.aprovada = false ");
-		hql.append("	and co.desligado = false ");
+		hql.append("	and (co.dataDesligamento >= :data or co.dataDesligamento is null) ");
 		hql.append("	and co.empresa.id = :empresaId ");
 
 		Query query = montaSelectProjecaoSalarial(hql, data, estabelecimentoIds, areaIds, grupoIds, cargoIds, filtro, empresaId);
