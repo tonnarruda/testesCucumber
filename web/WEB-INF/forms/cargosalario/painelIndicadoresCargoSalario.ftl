@@ -95,6 +95,12 @@
 
 		<script type="text/javascript">
 			$(function () {
+			
+				BrowserDetect.init( function ( informacaoesDesteBrowser ){
+				    if(informacaoesDesteBrowser.name == 'Explorer')
+				    	$('.btnImprimir').hide();
+				});
+			
 				$("#box").dialog({autoOpen: false});
 			
 				salarioAreasOrdered = ${grfSalarioAreas}.sort(function (a, b){
@@ -201,10 +207,10 @@
 						return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1]) + ')</span>';
 					}
 				});
-				/*
+				
 				$(divGrafico).bind("plothover", plotPieHover)
 							 .bind("plotclick", pieClick);
-				*/
+				
 				if (btnImprimir) 
 					$(btnImprimir).unbind().bind('click', { dados: dados }, function(event) { imprimirPizza(event.data.dados); });
 			}
@@ -214,20 +220,20 @@
 			{
 				popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
 				
-				function popupCarregado() 
+				popup.window.onload = function() 
 				{
 					popup.focus();
+					var infoPopup = $('.legendTotal').text();
+					if($("#box").dialog("isOpen"))
+						infoPopup = $('.ui-dialog-titlebar').text().replace('close','');
+						
+					popup.document.getElementById('info').innerHTML = infoPopup;
+					
 					popup.window.opener.graficoPizza(dados, popup.document.getElementById('popupGrafico'), popup.document.getElementById('popupGraficoLegenda'), false, 2);
 					popup.window.print();
 					popup.window.close();
 				}
 
-				if ( popup.window.addEventListener ) 
-					popup.window.addEventListener( "load", popupCarregado, false );
-				else if ( popup.window.attachEvent ) 
-				    popup.window.attachEvent( "onload", popupCarregado );
-				else if ( popup.window.onLoad ) 
-					popup.window.onload = popupCarregado;
 			}
 
 			//CUIDADO com o tamanho do grafico(bug da sombra)http://code.google.com/p/flot/issues/detail?id=5#c110
@@ -264,8 +270,9 @@
 						
 						var percent = parseFloat(obj.series.percent).toFixed(2);
 						var descricaoArea = data[0].descricao;
+						var titleSubArea = descricaoArea + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')';
 						
-						$("#box").dialog( "option" , { zIndex: 9999, title: descricaoArea + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')', width: 700, height: 350 });
+						$("#box").dialog( "option" , { zIndex: 9999, title: titleSubArea, width: 700, height: 350 });
 						$("#box").dialog("open");
 					}
 				});
@@ -351,6 +358,7 @@
 		    <div id="salarioAreas" class="graph"></div>
 		    <div id="salarioAreasLegenda"></div>
 		    <div style="clear:both"></div>
+		    
 		    <button class="btnImprimir" id="salarioAreasImprimir"></button>
 		</div>
 		
@@ -377,7 +385,9 @@
 		<div id="box">
 			<div id="pieBox"></div>
 			<div id="pieLegendBox"></div>
+
 			<button class="btnImprimir" id="pieImprimirBox"></button>
+			
 			<div style="clear: both"></div>
 		</div>
 		<div id="aviso"></div>

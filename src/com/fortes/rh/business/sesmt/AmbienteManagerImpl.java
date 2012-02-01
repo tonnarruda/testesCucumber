@@ -107,19 +107,19 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return ppraLtcatRelatorio;
 	}
 	
-	public Integer getCount(Long empresaId)
+	public Integer getCount(Long empresaId, Ambiente ambiente)
 	{
-		return getDao().getCount(empresaId);
+		return getDao().getCount(empresaId, ambiente);
 	}
 
 	public Collection<Ambiente> findAmbientes(Long empresaId)
 	{
-		return getDao().findAmbientes(0, 0, empresaId);
+		return getDao().findAmbientes(0, 0, empresaId, null);
 	}
 
-	public Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId)
+	public Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId, Ambiente ambiente)
 	{
-		return getDao().findAmbientes(page, pagingSize, empresaId);
+		return getDao().findAmbientes(page, pagingSize, empresaId, ambiente);
 	}
 
 	public void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception

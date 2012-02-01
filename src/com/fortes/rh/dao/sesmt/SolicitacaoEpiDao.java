@@ -12,8 +12,8 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpi;
  */
 public interface SolicitacaoEpiDao extends GenericDao<SolicitacaoEpi>
 {
-	Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, Boolean entregue);
-	Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, Boolean entregue);
+	Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi);
+	Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi);
 	SolicitacaoEpi findByIdProjection(Long solicitacaoEpiId);
 	Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds, Long[] areasIds, Long[] estabelecimentoIds);
 	public Collection<SolicitacaoEpi> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiCheck, Long[] colaboradorCheck, char agruparPor);

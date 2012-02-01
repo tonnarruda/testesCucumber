@@ -19,6 +19,7 @@ import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -139,7 +140,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setData(dataSeisMesesAtras.getTime());
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setCargo(cargo);
-		solicitacaoEpi.setEntregue(true);
+		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 
 		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
@@ -175,7 +176,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setData(hoje);
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setCargo(cargo);
-		solicitacaoEpi.setEntregue(true);
+		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
 		EpiHistorico epiHistorico = new EpiHistorico();
@@ -226,7 +227,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setData(hoje);
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setCargo(cargo);
-		solicitacaoEpi.setEntregue(true);
+		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
 		EpiHistorico epiHistorico = new EpiHistorico();
@@ -291,10 +292,10 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setEmpresa(empresa);
 		solicitacaoEpi.setData(dataIni);
 		solicitacaoEpi.setColaborador(colaborador);
-		solicitacaoEpi.setEntregue(true);
+		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, true).intValue());
+		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE).intValue());
 	}
 	
 	public void testFindAllSelect()
@@ -324,17 +325,17 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setEmpresa(empresa);
 		solicitacaoEpi.setData(dataIni);
 		solicitacaoEpi.setColaborador(colaborador);
-		solicitacaoEpi.setEntregue(true);
+		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
 		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi2.setEmpresa(empresa);
 		solicitacaoEpi2.setData(dataMeio);
 		solicitacaoEpi2.setColaborador(colaborador);
-		solicitacaoEpi2.setEntregue(true);
+		solicitacaoEpi2.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi2);
 		
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, true).size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE).size());
 	}
 
 	public void setEpiDao(EpiDao epiDao)

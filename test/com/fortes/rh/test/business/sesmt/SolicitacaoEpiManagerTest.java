@@ -51,7 +51,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 	public void testFindAllSelect()
 	{
-		SituacaoSolicitacaoEpi situacaoSolicitacaoEpi = SituacaoSolicitacaoEpi.TODAS;
+		char situacaoSolicitacaoEpi = SituacaoSolicitacaoEpi.TODAS;
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
 		colecao.add(new SolicitacaoEpi());
 		solicitacaoEpiDao.expects(once()).method("findAllSelect").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colecao));
@@ -261,7 +261,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		String[] selectQtdSolicitado = {"3"};
 
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
-		solicitacaoEpi.setEntregue(false);
+		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ABERTA);
 
 		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = new ArrayList<SolicitacaoEpiItem>();
 		SolicitacaoEpiItem item = new SolicitacaoEpiItem();
@@ -278,7 +278,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
 
-		assertTrue(solicitacaoEpi.isEntregue());
+		assertEquals(SituacaoSolicitacaoEpi.ENTREGUE, solicitacaoEpi.getSituacaoSolicitacaoEpi());
 	}
 
 	// Entrega com qtd entregue menor que o solicitado
@@ -288,7 +288,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		String[] selectQtdSolicitado = {"3"};
 
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
-		solicitacaoEpi.setEntregue(false);
+		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ABERTA);
 
 		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = new ArrayList<SolicitacaoEpiItem>();
 		SolicitacaoEpiItem item = new SolicitacaoEpiItem();
@@ -305,7 +305,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
 
-		assertFalse(solicitacaoEpi.isEntregue());
+		assertFalse(solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE);
 	}
 
 	public void testEntregaException()
@@ -316,7 +316,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		String[] selectQtdSolicitado = {"3"};
 
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
-		solicitacaoEpi.setEntregue(false);
+		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ABERTA);
 
 		Exception exception = null;
 		try
@@ -329,6 +329,6 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		}
 
 		assertNotNull(exception);
-		assertFalse(solicitacaoEpi.isEntregue());
+		assertFalse(solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE);
 	}
 }

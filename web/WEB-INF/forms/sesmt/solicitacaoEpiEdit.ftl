@@ -25,13 +25,11 @@
 
 <script>
 	$(function() {
-		$('#dataEntrega').attr('disabled', true);
-		$('#dataEntrega_button').hide();
-
 		$('#entregue').change(function() {
 			$('#dataEntrega').attr('disabled', $(this).val() == 'false');
-			$('#dataEntrega_button').toggle();
+			$('#dataEntrega_button').toggle($(this).val() == 'true');
 		});
+		$('#entregue').change();
 	});
 	
 	function enviaForm()
@@ -232,18 +230,17 @@
 			<@ww.hidden name="solicitacaoEpi.cargo.id" />
 			
 			<#if solicitacaoEpi.id?exists>
-				<@ww.hidden name="solicitacaoEpi.entregue" />
+				<@ww.hidden name="solicitacaoEpi.situacaoSolicitacaoEpi" />
 			<#else>
 				<li>
 					<fieldset class="fieldsetPadrao">
 						<ul>
 							<legend>Considerar os EPIs acima como entregues:</legend>
-							<@ww.select label="Entregues" name="solicitacaoEpi.entregue" id="entregue" list=r"#{true:'Sim',false:'Não'}" liClass="liLeft" />
+							<@ww.select label="Entregues" name="entregue" id="entregue" list=r"#{true:'Sim',false:'Não'}" liClass="liLeft" />
 							<@ww.datepicker label="Data" id="dataEntrega" name="dataEntrega" required="true" cssClass="mascaraData" value="${data}"/>
 						</ul>
 					</fieldset>
 				</li>
-							
 			</#if>
 			
 			<@ww.token/>

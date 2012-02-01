@@ -25,9 +25,17 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
-	public Collection<Pesquisa> findToListByEmpresa(Long empresaId, int page, int pagingSize, String questionarioTitulo)
+	public Collection<Pesquisa> findToListByEmpresa(Long empresaId, int page, int pagingSize, String questionarioTitulo, char questionarioLiberado)
 	{
-		return getDao().findToList(empresaId, page, pagingSize, questionarioTitulo);
+		Boolean liberado;
+		switch(questionarioLiberado)
+   		{
+   			case 'L': liberado = true; break;
+   			case 'N': liberado = false; break;
+   			default: liberado = null;
+   		}
+		
+		return getDao().findToList(empresaId, page, pagingSize, questionarioTitulo, liberado);
 	}
 
 	public void delete(Long pesquisaId, Long empresaId) throws Exception

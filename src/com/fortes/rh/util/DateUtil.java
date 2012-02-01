@@ -53,10 +53,10 @@ public class DateUtil
 	}
 	
 	/**
-	 * Formata mês e ano baseado numa Date()
+	 * Formata dia, mês e ano baseado numa Date()
 	 *
 	 * @param Date() data
-	 * @return data no formato MM/yyyy
+	 * @return data no formato dd/MM/yyyy
 	 */
 	public static String formataDiaMesAno(Date data)
 	{

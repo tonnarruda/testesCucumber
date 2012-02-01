@@ -29,29 +29,14 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	private PlatformTransactionManager transactionManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, SituacaoSolicitacaoEpi situacao)
+	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao)
 	{
-		Boolean entregue = getEntregue(situacao);
-		return getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, entregue);
+		return getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao);
 	}
 
-	private Boolean getEntregue(SituacaoSolicitacaoEpi situacao)
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao)
 	{
-		switch(situacao)
-		{
-			case ABERTA:
-				return false;
-			case ENTREGUE:
-				return true;
-			default:
-				return null;
-		}
-	}
-
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, SituacaoSolicitacaoEpi situacao)
-	{
-		Boolean entregue = getEntregue(situacao);
-		return getDao().getCount(empresaId, dataIni, dataFim, colaborador, entregue);
+		return getDao().getCount(empresaId, dataIni, dataFim, colaborador, situacao);
 	}
 
 	public SolicitacaoEpi findByIdProjection(Long solicitacaoEpiId)
@@ -81,14 +66,15 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 			solicitacaoEpi = findById(solicitacaoEpi.getId());
 			Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId());
 
-			boolean situacao = true;
+			int totalEntregue = 0;
+			int totalSolicitado = 0;
 			for (SolicitacaoEpiItem i : solicitacaoEpiItems)
 			{
-				if (!i.getQtdEntregue().equals(i.getQtdSolicitado()))
-					situacao = false;
+				totalEntregue += i.getQtdEntregue();
+				totalSolicitado += i.getQtdSolicitado();
 			}
-
-			solicitacaoEpi.setEntregue(situacao);
+			
+			solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.getSituacao(totalEntregue, totalSolicitado));
 			update(solicitacaoEpi);
 		}
 		catch(Exception e)

@@ -14,9 +14,9 @@ import com.fortes.web.tags.CheckBox;
 
 public interface AmbienteManager extends GenericManager<Ambiente>
 {
-	Integer getCount(Long empresaId);
+	Integer getCount(Long empresaId, Ambiente ambiente);
 	Collection<Ambiente> findAmbientes(Long empresaId);
-	Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId);
+	Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId, Ambiente ambiente);
 	void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception;
 	Collection<Ambiente> findByEstabelecimento(Long estabelecimentoId);
 	Collection<Ambiente> findByEmpresa(Long empresaId);

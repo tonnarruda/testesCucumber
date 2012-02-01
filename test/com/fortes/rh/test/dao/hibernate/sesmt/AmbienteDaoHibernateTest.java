@@ -71,7 +71,7 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		ambienteDao.save(a1);
 		ambienteDao.save(a2);
 
-		int retorno = ambienteDao.getCount(empresa.getId());
+		int retorno = ambienteDao.getCount(empresa.getId(), null);
 
 		assertEquals(ambientes.size(), retorno);
 	}
@@ -96,11 +96,11 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		ambientes.add(a1);
 		ambientes.add(a2);
 
-		Collection<Ambiente> ambientesRetorno = ambienteDao.findAmbientes(0, 0, empresa.getId());
+		Collection<Ambiente> ambientesRetorno = ambienteDao.findAmbientes(0, 0, empresa.getId(), null);
 
 		assertEquals("findAmbientes sem paginação",ambientes, ambientesRetorno);
 
-		ambientesRetorno = ambienteDao.findAmbientes(1, 15, empresa.getId());
+		ambientesRetorno = ambienteDao.findAmbientes(1, 15, empresa.getId(), null);
 
 		assertEquals("findAmbientes com paginação",ambientes, ambientesRetorno);
 	}

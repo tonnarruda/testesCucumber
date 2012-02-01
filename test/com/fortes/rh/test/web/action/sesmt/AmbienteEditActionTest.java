@@ -172,8 +172,8 @@ public class AmbienteEditActionTest extends MockObjectTestCase
 		ambientes.add(a1);
 		ambientes.add(a2);
 
-		manager.expects(once()).method("getCount").with(ANYTHING).will(returnValue(ambientes.size()));
-    	manager.expects(once()).method("findAmbientes").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(ambientes));
+		manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(ambientes.size()));
+    	manager.expects(once()).method("findAmbientes").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(ambientes));
 
     	assertEquals("success", action.list());
     	assertEquals(action.getAmbientes(), ambientes);
@@ -197,18 +197,11 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     	action.setHistoricoAmbientes(collection);
     	assertEquals(action.getHistoricoAmbientes(), collection);
 
-    	action.setMsgAlert("Fortes");
-    	assertEquals(action.getMsgAlert(),"Fortes");
-
     	ambiente = null;
     	action.setAmbiente(ambiente);
 
         assertTrue(action.getAmbiente() instanceof Ambiente);
         
-    	String msgAlert = "Alert";
-    	action.setMsgAlert(msgAlert);
-
-    	assertEquals(action.getMsgAlert(), msgAlert);
     	assertNotNull(action.getAmbiente());
     	
     	action.getRiscoChecks();

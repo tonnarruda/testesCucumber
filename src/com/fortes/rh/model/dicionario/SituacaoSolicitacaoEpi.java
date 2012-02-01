@@ -1,19 +1,37 @@
 package com.fortes.rh.model.dicionario;
 
-public enum SituacaoSolicitacaoEpi
+import java.util.LinkedHashMap;
+
+public class SituacaoSolicitacaoEpi extends LinkedHashMap<Character, String>
 {
-	TODAS("Todas"), ABERTA("Aberta"), ENTREGUE("Entregue");
+	private static final long serialVersionUID = 8232268516382621533L;
 
-	SituacaoSolicitacaoEpi(String descricao)
+	public static final char TODAS = 'T'; 
+	public static final char ABERTA = 'A'; 
+	public static final char ENTREGUE = 'E'; 
+	public static final char ENTREGUE_PARCIALMENTE = 'P';
+	
+	SituacaoSolicitacaoEpi()
 	{
-		this.descricao = descricao;
+		put('T', "Todas");
+		put('A', "Aberta");
+		put('E', "Entregue");
+		put('P', "Entregue Parcialmente");
+	}
+	
+	public static final char getSituacao(int qtdEntregue, int qtdSolicitado)
+	{
+		if (qtdEntregue == qtdSolicitado)
+			return ENTREGUE;
+		else if (qtdEntregue > 0)
+			return ENTREGUE_PARCIALMENTE;
+		else
+			return ABERTA;
 	}
 
-	private String descricao;
-
-	public String getDescricao()
+	public static String getDescricao(char situacaoSolicitacaoEpi) 
 	{
-		return descricao;
+		SituacaoSolicitacaoEpi situacao = new SituacaoSolicitacaoEpi();
+		return situacao.get(situacaoSolicitacaoEpi);
 	}
-
 }
