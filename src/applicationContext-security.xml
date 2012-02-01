@@ -442,8 +442,6 @@
 				/importacao/importarAfastamentos.action*=ROLE_IMPORTACAO_AFASTAMENTO
 				
 				/backup/list.action=ROLE_BACKUP
-				/backup/list.action*=LIST_SEM_CODIGOAC
-				
 			</value>
 		</property>
 	</bean>

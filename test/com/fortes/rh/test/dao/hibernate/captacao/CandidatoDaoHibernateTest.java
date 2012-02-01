@@ -1481,7 +1481,14 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
+		CandidatoSolicitacao candidadatoSolicitacao = new CandidatoSolicitacao();
+		candidadatoSolicitacao.setSolicitacaoId(1L);
+		
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
+		candidatoSolicitacaos.add(candidadatoSolicitacao);
+		
 		Candidato c1 = getCandidato();
+		c1.setCandidatoSolicitacaos(candidatoSolicitacaos);
 		c1.setEmpresa(empresa);
 		c1.setNome("chico");
 		c1.getPessoal().setCpf("111111111");
@@ -1489,6 +1496,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c1.setContratado(false);
 		c1.setBlackList(false);
 		c1.getSocioEconomica().setPossuiVeiculo(true);
+		candidatoDao.save(c1);
 
 		Candidato c2 = getCandidato();
 		c2.setEmpresa(empresa);
@@ -1498,6 +1506,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c2.setContratado(false);
 		c2.setBlackList(false);
 		c2.getSocioEconomica().setPossuiVeiculo(true);
+		candidatoDao.save(c2);
 
 		Candidato c3 = getCandidato();
 		c3.setEmpresa(empresa);
@@ -1507,14 +1516,10 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c3.setContratado(false);
 		c3.setBlackList(false);
 		c3.getSocioEconomica().setPossuiVeiculo(false);
+		candidatoDao.save(c3);
 
-		c1 = candidatoDao.save(c1);
-		c2 = candidatoDao.save(c2);
-		c3 = candidatoDao.save(c3);
-
-		CandidatoSolicitacao candidadatoSolicitacao = new CandidatoSolicitacao();
 		candidadatoSolicitacao.setCandidato(c1);
-		candidadatoSolicitacao.setSolicitacaoId(1L);
+		candidatoSolicitacaoDao.save(candidadatoSolicitacao);
 
 		Map parametros = new HashMap();
 		parametros.put("candidatosComExperiencia", new Long[]{c1.getId(),c2.getId()});
@@ -1527,6 +1532,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, candidatos.size());
 	}
 
+	
 	//TODO: Pau na paginação - corrigir depois
 //	public void testGetCountParametros()
 //	{

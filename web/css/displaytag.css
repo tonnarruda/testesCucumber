@@ -48,7 +48,10 @@
 {
 	color: #002EB8 !important;
 }
-
+.candidanoNaSelecao
+{
+	color: #009900 !important;
+}
 .wwFormTable
 {
 	text-align: left;

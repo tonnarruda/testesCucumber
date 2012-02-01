@@ -11,11 +11,13 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;

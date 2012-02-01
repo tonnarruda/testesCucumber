@@ -32,6 +32,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.model.type.File;
@@ -252,6 +253,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("uf.sigla"), "sigla");
 		p.add(Projections.property("c.experiencias"), "experiencias");
 		p.add(Projections.property("e.nome"), "projectionEmpresaNome");
+		p.add(Projections.sqlProjection("(exists (select cs2.id from CandidatoSolicitacao cs2 where cs2.candidato_id=this_.id)) as inscritoSolicitacao", 
+        		new String []  {"inscritoSolicitacao"}, 
+        		new Type[] {Hibernate.BOOLEAN}), "inscritoSolicitacao");
+
 		/**
 		 * Toda propriedade informada na projection deve ser fornecida também no groupProperty.
 		 *
@@ -997,6 +1002,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("uf.sigla"), "sigla");
 		p.add(Projections.property("c.experiencias"), "experiencias");
 		p.add(Projections.property("e.nome"), "projectionEmpresaNome");
+		p.add(Projections.sqlProjection("(exists (select cs2.id from CandidatoSolicitacao cs2 where cs2.candidato_id=this_.id)) as inscritoSolicitacao", 
+        		new String []  {"inscritoSolicitacao"}, 
+        		new Type[] {Hibernate.BOOLEAN}), "inscritoSolicitacao");
 
 		p.add(Projections.groupProperty("c.id"));
 		p.add(Projections.groupProperty("c.nome"));
@@ -1220,7 +1228,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		sql.append("CASE when cc.cargos_id in (:cargoId) THEN :pesoCargo ELSE 0  END ");
 		
-		sql.append(" )/:divisao as compatibilidade "); 
+		sql.append(" )/:divisao as compatibilidade,  "); 
+		
+		sql.append(" (exists (select cs.id from CandidatoSolicitacao cs where cs.candidato_id=c.id)) as inscritoSolicitacao ");
 		
 		sql.append("from candidato c ");
 		sql.append("left join experiencia ex on ex.candidato_id=c.id and ex.cargo_id = :cargoId ");
@@ -1301,6 +1311,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 				cand.setTempoExperiencia((Integer) res[8]);
 				
 				cand.setPercentualCompatibilidade(((Double) res[9])*100);
+				cand.setInscritoSolicitacao((Boolean) res[10]);
 				lista.add(cand);
 			}
 		}

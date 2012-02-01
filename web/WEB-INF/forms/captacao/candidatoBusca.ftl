@@ -42,6 +42,10 @@
 	
 		$(function(){
 			enviaEmpresa($('#empresaSelect').val());
+			
+			var obj = document.getElementById("legendas");
+			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa de processo seletivo";
+			
 		});
 	
 		function enviaEmpresa(empresaId)
@@ -234,6 +238,7 @@
 		</button>
 	</#if>
 
+	<div id="legendas" align="right"></div>
 	<#if candidatos?exists >
 		<br>
 

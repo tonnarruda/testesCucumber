@@ -124,12 +124,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			candidatos = new ArrayList<Candidato>();
 
 			for (Candidato candidato : candidatosExperiencia)
-			{
 				if(temExperiencia(candidato.getExperiencias(), (String)parametros.get("tempoExperiencia"), (Long[])parametros.get("experiencias")))
-				{
 					candidatos.add(candidato);
-				}
-			}
 
 			CollectionUtil<Candidato> cluCandidatos = new CollectionUtil<Candidato>();
 
@@ -155,9 +151,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 				retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);
 			else
 				retorno = getDao().findBusca(parametros, null, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);
-			
 		}
-
+		
 		return retorno;
 	}
 

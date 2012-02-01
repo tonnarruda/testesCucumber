@@ -48,6 +48,9 @@
 					 	$("#" + $(this).attr("id")).val($.cookie($(this).attr("id")));
 				});
 			</#if>
+			
+			var obj = document.getElementById("legendas");
+			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa de processo seletivo";
 		});
 		
 		function triar() 
@@ -248,11 +251,14 @@
 		</@ww.form>
 
 	<#include "../util/bottomFiltro.ftl" />
+	<br />
 
 	<#if BDS?exists && !BDS && solicitacao?exists && solicitacao.id?exists>
 		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V">
 		</button>
 	</#if>
+
+	<div id="legendas" align="right"></div>
 
 	<#if candidatos?exists >
 		<br>
@@ -262,32 +268,39 @@
 	<#if BDS?exists && !BDS>
 		<@ww.hidden name="solicitacao.id"/>
 	</#if>
+	
 	<@display.table name="candidatos" id="candidato" class="dados" >
 
+		<#if candidato.inscritoSolicitacao?exists && candidato.inscritoSolicitacao>
+			<#assign classe="candidanoNaSelecao"/>
+		<#else>
+			<#assign classe=""/>
+		</#if>
+
 		<#if solicitacao?exists && solicitacao.id?exists>
-			<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;">
+			<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;" >
 				<input type="checkbox" value="${candidato.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
 			</@display.column>
 		</#if>
 		
 		<@display.column title="Nome">
-			<a title="Ver Informação" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}"/>', 580, 750)">
+			<a title="Ver Informação" class="${classe}" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}"/>', 580, 750)">
 			${candidato.nome}
 			</a>
 		</@display.column>
-		<@display.column property="pessoal.sexo" title="Sexo" style="width: 30px; text-align: center;" />
-		<@display.column property="pessoal.idade" title="Idade" style="width: 30px; text-align: center;" />
-		<@display.column title="Cidade/UF" >
+		<@display.column property="pessoal.sexo" title="Sexo" style="width: 30px; text-align: center;" class="${classe}"/>
+		<@display.column property="pessoal.idade" title="Idade" style="width: 30px; text-align: center;" class="${classe}"/>
+		<@display.column title="Cidade/UF" class="${classe}">
 			<#if candidato.endereco.cidade.nome?exists>
 			${candidato.endereco.cidade.nome}/${candidato.endereco.uf.sigla}
 			</#if>
 		</@display.column>
-		<@display.column property="pessoal.escolaridadeDescricao" title="Escolaridade" style="width: 180px;"/>
-		<@display.column property="tempoExperiencia" title="Experiencia (meses)" style="width: 65px; text-align: center;"/>
-		<@display.column title="Pretensão Salarial" style="text-align: right;">
+		<@display.column property="pessoal.escolaridadeDescricao" title="Escolaridade" style="width: 180px;" class="${classe}"/>
+		<@display.column property="tempoExperiencia" title="Experiencia (meses)" style="width: 65px; text-align: center;" class="${classe}"/>
+		<@display.column title="Pretensão Salarial" style="text-align: right;" class="${classe}">
 			<#if candidato.pretencaoSalarial?exists> ${candidato.pretencaoSalarial?string(",##0.00")}</#if>
 		</@display.column>
-		<@display.column title="Compatibilidade" style="text-align: right;">
+		<@display.column title="Compatibilidade" style="text-align: right;" class="${classe}">
 			<#if candidato.percentualCompatibilidade?exists> 
 				<#if 90 <= candidato.percentualCompatibilidade?int>
 					<#assign color="green"/>

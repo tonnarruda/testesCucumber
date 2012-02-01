@@ -30,6 +30,9 @@
 			$('#empresaSelect').change(function() {
 				populaCargosConhecimentos($(this).val());
 			});
+			
+			var obj = document.getElementById("legendas");
+			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa de processo seletivo";
 		});
 	
 		function populaCargosConhecimentos(empresaId)
@@ -117,10 +120,13 @@
 			</div>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
+	<br />
 
 	<#if solicitacao?exists && solicitacao.id?exists>
 		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V"></button>
 	</#if>
+
+	<div id="legendas" align="right"></div>
 
 	<#if candidatos?exists >
 		<br>

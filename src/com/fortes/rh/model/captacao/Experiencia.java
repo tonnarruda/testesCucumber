@@ -1,6 +1,7 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -117,6 +118,11 @@ public class Experiencia extends AbstractModel implements Serializable
 		this.candidato = candidato;
 	}
 
+	public void setProjectionCandiatoSolicitacaoId(Long id)	
+	{
+		candidato.setId(id);
+	}
+	
 	public Colaborador getColaborador()
 	{
 		return colaborador;

@@ -128,6 +128,8 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private double percentualCompatibilidade;
 	@Transient
 	private int tempoExperiencia;
+	@Transient
+	private Boolean inscritoSolicitacao;
 
 	@ManyToOne
 	private ComoFicouSabendoVaga comoFicouSabendoVaga;
@@ -1190,5 +1192,13 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setTempoExperiencia(int tempoExperiencia) {
 		this.tempoExperiencia = tempoExperiencia;
+	}
+
+	public Boolean getInscritoSolicitacao() {
+		return inscritoSolicitacao;
+	}
+
+	public void setInscritoSolicitacao(Boolean inscritoSolicitacao) {
+		this.inscritoSolicitacao = inscritoSolicitacao;
 	}
 }
