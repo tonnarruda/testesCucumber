@@ -11,7 +11,6 @@ import java.util.Map;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
@@ -34,17 +33,14 @@ import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 import com.fortes.rh.model.relatorio.PerguntaFichaMedica;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SpringUtil;
 
 public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, QuestionarioDao> implements QuestionarioManager
 {
-    private ParametrosDoSistemaManager parametrosDoSistemaManager;
     private PerguntaManager perguntaManager;
     private RespostaManager respostaManager;
     private AspectoManager aspectoManager;
-    private Mail mail;
     private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
     private ColaboradorManager colaboradorManager;
     private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
@@ -219,22 +215,12 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         this.perguntaManager = perguntaManager;
     }
 
-    public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-    {
-        this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-    }
-
-    public void setMail(Mail mail)
-    {
-        this.mail = mail;
-    }
-
     public void setRespostaManager(RespostaManager respostaManager)
     {
         this.respostaManager = respostaManager;
     }
 
-    public void enviaLembreteDeQuestionarioNaoLiberada()
+    public void enviaLembreteDeQuestionarioNaoLiberado()
     {
     	gerenciadorComunicacaoManager.enviaLembreteDeQuestionarioNaoLiberado();
     }

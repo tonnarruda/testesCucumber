@@ -2,10 +2,13 @@ package com.fortes.rh.business.geral;
 
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -22,4 +25,6 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaEmailQuestionarioNaoRespondido(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
 	void enviaLembreteDeQuestionarioNaoLiberado();
 	void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);
+	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas, Date inicioMes, Date fimMes, Collection<Candidato> candidatos);
+	public void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores);
 }

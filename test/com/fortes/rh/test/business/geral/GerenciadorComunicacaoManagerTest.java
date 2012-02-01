@@ -19,6 +19,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.EnviarPara;
@@ -34,6 +35,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
@@ -44,6 +46,7 @@ import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
@@ -266,7 +269,6 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 assertNull(exception);
 	 }
 	 
-	 
 	 public void testEnviaEmailResponsavelRh() throws Exception
 	 {
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -335,6 +337,40 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Exception exception = null;
 		 try {
 			 gerenciadorComunicacaoManager.enviaEmailQuestionarioNaoRespondido(empresa, questionario, colaboradorQuestionarios);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+	 
+	 public void testEnviaEmailQtdCurriculosCadastrados() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 empresa.setEmailRespRH("email@email.com");
+		 Collection<Empresa> empresas = Arrays.asList(empresa);
+
+		 Date DiaDoMesDeReferencia = DateUtil.retornaDataDiaAnterior(new Date());
+		 Date inicioMes = DateUtil.getInicioMesData(DiaDoMesDeReferencia);
+		 Date fimMes = DateUtil.getUltimoDiaMes(DiaDoMesDeReferencia);
+
+		 Candidato pedro = new Candidato(empresa.getNome(), 'C', 10);
+		 Collection<Candidato> candidatos = Arrays.asList(pedro);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		 
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.QTD_CURRICULOS_CADASTRADOS.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaEmailQtdCurriculosCadastrados(empresas, inicioMes, fimMes, candidatos);
 		 } catch (Exception e) {
 			 exception = e;
 		 }

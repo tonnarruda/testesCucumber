@@ -11,8 +11,7 @@ import com.fortes.rh.util.Mail;
 
 public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericManagerImpl<ColaboradorPeriodoExperienciaAvaliacao, ColaboradorPeriodoExperienciaAvaliacaoDao> implements ColaboradorPeriodoExperienciaAvaliacaoManager 
 {
-	private Mail mail;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	public void saveConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes) 
 	{
@@ -42,36 +41,10 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 	public void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo() 
 	{
 		Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores = getDao().getColaboradoresComAvaliacaoVencidaHoje();
-		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
-		String appUrl = parametrosDoSistema.getAppUrl();
-		String subject = "[Fortes RH] Avaliação do Período de Experiência";
-		StringBuilder body;
-		
-		for (ColaboradorPeriodoExperienciaAvaliacao colaboradorAvaliacao : colaboradores) 
-		{
-			body = new StringBuilder();
-			body.append("Sr(a) " + colaboradorAvaliacao.getColaborador().getNome() + ", <br><br>");
-			body.append("Por gentileza, preencha sua avaliação para o período de experiência de " + colaboradorAvaliacao.getPeriodoExperiencia().getDias() + " dias <br>");
-			body.append("disponível em ");
-			body.append("<a href='" + appUrl + "/avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=" + colaboradorAvaliacao.getColaborador().getId() + "&respostaColaborador=true&colaboradorQuestionario.avaliacao.id=" + colaboradorAvaliacao.getAvaliacao().getId() +  
-						"'>" + colaboradorAvaliacao.getAvaliacao().getTitulo() + "</a>");			
-			
-			try
-			{
-				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, colaboradorAvaliacao.getColaborador().getContato().getEmail());
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
+		gerenciadorComunicacaoManager.enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(colaboradores);
 	}
 
-	public void setMail(Mail mail) {
-		this.mail = mail;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

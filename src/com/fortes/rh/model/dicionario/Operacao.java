@@ -134,6 +134,36 @@ public enum Operacao
 			
 			return enviarPara;
 		}
+	},
+	QTD_CURRICULOS_CADASTRADOS(9, "Aviso automático da quantidade de currículos cadastros por mês"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+		
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setResponsavelRH(enviarPara);
+			
+			return enviarPara;
+		}
+	},
+	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(10, "Aviso automático das avaliações do perído de experiência a vencer"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+		
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setResponsavelRH(enviarPara);
+			
+			return enviarPara;
+		}
 	};
 
 	private int id;

@@ -41,7 +41,7 @@ public interface QuestionarioManager extends GenericManager<Questionario>
 	void liberarQuestionario(Long questionarioId, Empresa empresa) throws Exception;
 	
 	Questionario findResponderQuestionario(Questionario questionario);
-	void enviaLembreteDeQuestionarioNaoLiberada();
+	void enviaLembreteDeQuestionarioNaoLiberado();
 	Collection<Questionario> findQuestionarioPorUsuario(Long usuarioId);
 	void updateQuestionario(Questionario questionario);
 	void removerPerguntasDoQuestionario(Long questionarioId);

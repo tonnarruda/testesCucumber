@@ -34,7 +34,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate extends GenericD
 	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradoresComAvaliacaoVencidaHoje() 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorPeriodoExperienciaAvaliacao(c.id, c.nome, c.contato.email, e.emailRemetente, a.id, a.titulo, pe.dias) ");
+		hql.append("select new ColaboradorPeriodoExperienciaAvaliacao(c.id, c.nome, c.contato.email, e.emailRemetente, a.id, a.titulo, pe.dias, e.id) ");
 		hql.append("from ColaboradorPeriodoExperienciaAvaliacao as cpea ");
 		hql.append("join cpea.periodoExperiencia as pe ");
 		hql.append("join cpea.colaborador as c ");

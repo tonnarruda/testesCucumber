@@ -801,11 +801,8 @@
     <property name="dao">
       <ref bean="colaboradorPeriodoExperienciaAvaliacaoDao" />
     </property>
-    <property name="mail">
-      <ref bean="mail" />
-    </property>
-    <property name="parametrosDoSistemaManager">
-      <ref bean="parametrosDoSistemaManager" />
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
     </property>
   </bean>
   <bean id="colaboradorPeriodoExperienciaAvaliacaoManager" parent="parentManager">

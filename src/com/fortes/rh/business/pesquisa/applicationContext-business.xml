@@ -110,9 +110,6 @@
     <property name="dao">
       <ref bean="questionarioDao" />
     </property>
-    <property name="parametrosDoSistemaManager">
-      <ref bean="parametrosDoSistemaManager" />
-    </property>
     <property name="perguntaManager">
       <ref bean="perguntaManager" />
     </property>
@@ -121,9 +118,6 @@
     </property>
     <property name="aspectoManager">
       <ref bean="aspectoManager" />
-    </property>
-    <property name="mail">
-      <ref bean="mail" />
     </property>
     <property name="colaboradorQuestionarioManager">
       <ref bean="colaboradorQuestionarioManager" />

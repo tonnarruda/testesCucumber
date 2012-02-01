@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testGetHashMap()
 	{
-		assertEquals(9, Operacao.getHashMap().size());
+		assertEquals(10, Operacao.getHashMap().size());
 	}
 	
 	public void testGetDescricaoById()
@@ -26,6 +26,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Lembrete de pesquisa não respondida", Operacao.getDescricaoById(6));
 		assertEquals("Lembrete automático de pesquisa não liberada", Operacao.getDescricaoById(7));
 		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(8));
+		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(9));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -40,6 +41,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(1, Operacao.getMeioComunicacaoById(6).size());
 		assertEquals(1, Operacao.getMeioComunicacaoById(7).size());
 		assertEquals(1, Operacao.getMeioComunicacaoById(8).size());
+		assertEquals(1, Operacao.getMeioComunicacaoById(9).size());
 	}
 	
 	public void testGetEnviarParaById()
@@ -54,6 +56,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(1, Operacao.getEnviarParaById(6).size());
 		assertEquals(1, Operacao.getEnviarParaById(7).size());
 		assertEquals(1, Operacao.getEnviarParaById(8).size());
+		assertEquals(1, Operacao.getEnviarParaById(9).size());
 	}
 	
 	public void testChave()
@@ -67,6 +70,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(6, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId());
 		assertEquals(7, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());
 		assertEquals(8, Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());
+		assertEquals(9, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
 	}
 
 	public void testSelecionarOperacao()
@@ -152,6 +156,17 @@ public class OperacaoTest extends TestCase
 	public void testCadastroCandidatoModuloExterno()
 	{
 		Operacao operacao = Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO;
+		
+		assertEquals(1, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[0]);
+		
+		assertEquals(1, operacao.enviarPara().size());
+		assertEquals(EnviarPara.RESPONSAVEL_RH.getDescricao(), operacao.enviarPara().values().toArray()[0]);
+	}
+	
+	public void testAvisoQtdCurriculosCadastrados()
+	{
+		Operacao operacao = Operacao.QTD_CURRICULOS_CADASTRADOS;
 		
 		assertEquals(1, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[0]);

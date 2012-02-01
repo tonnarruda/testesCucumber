@@ -12,13 +12,16 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
+import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -311,6 +314,87 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas, Date inicioMes, Date fimMes, Collection<Candidato> candidatos) 
+	{
+		String subject = "Candidatos cadastros no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes);
+		
+		StringBuilder body = new StringBuilder("Candidatos cadastrados no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes) + "<br>");
+		body.append( "<table>" );
+		body.append("<thead><tr>");
+		body.append("<th>Empresa</th>");
+		body.append("<th>|</th>");
+		body.append("<th>Origem</th>");
+		body.append("<th>|</th>");
+		body.append("<th>Qtd. cadastros</th>");
+		body.append("</tr></thead><tbody>");
+		
+		OrigemCandidato origemCandidato = new OrigemCandidato();
+		
+		for (Candidato candidato : candidatos) 
+		{
+			body.append("<tr>");
+			body.append("<td>" + candidato.getEmpresa().getNome() + "</td>");
+			body.append("<td>|</td>");
+			body.append("<td>" + origemCandidato.get(candidato.getOrigem())+ "</td>");
+			body.append("<td>|</td>");
+			body.append("<td align='center'>" + candidato.getQtdCurriculosCadastrados() + "</td>");
+			body.append("</tr>");
+		}
+		
+		body.append("</tbody></table>");
+		
+		try
+		{
+			for (Empresa empresa : empresas) 
+			{
+				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.QTD_CURRICULOS_CADASTRADOS.getId(), empresa.getId());
+	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
+	    				mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
+	    			} 		
+	    		}
+			}
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores) 
+	{
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+		String appUrl = parametrosDoSistema.getAppUrl();
+		String subject = "[Fortes RH] Avaliação do Período de Experiência";
+		StringBuilder body;
+		
+		for (ColaboradorPeriodoExperienciaAvaliacao colaboradorAvaliacao : colaboradores) 
+		{
+			body = new StringBuilder();
+			body.append("Sr(a) " + colaboradorAvaliacao.getColaborador().getNome() + ", <br><br>");
+			body.append("Por gentileza, preencha sua avaliação para o período de experiência de " + colaboradorAvaliacao.getPeriodoExperiencia().getDias() + " dias <br>");
+			body.append("disponível em ");
+			body.append("<a href='" + appUrl + "/avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=" + colaboradorAvaliacao.getColaborador().getId() + "&respostaColaborador=true&colaboradorQuestionario.avaliacao.id=" + colaboradorAvaliacao.getAvaliacao().getId() +  
+						"'>" + colaboradorAvaliacao.getAvaliacao().getTitulo() + "</a>");			
+			
+			try
+			{
+				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), colaboradorAvaliacao.getColaborador().getEmpresa().getId());
+	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
+	    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, colaboradorAvaliacao.getColaborador().getContato().getEmail());
+	    			} 		
+	    		}
+				
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {

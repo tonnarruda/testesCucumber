@@ -670,7 +670,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	questionarioDao.expects(atLeastOnce()).method("findQuestionarioNaoLiberados").with(new Constraint [] {ANYTHING}).will(returnValue(questionarios));
     	mail.expects(atLeastOnce()).method("send").with(new Constraint [] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
 
-    	questionarioManager.enviaLembreteDeQuestionarioNaoLiberada();
+    	questionarioManager.enviaLembreteDeQuestionarioNaoLiberado();
     }
 
     public void testEnviaLembreteDeQuestionarioNaoLiberadaComException()
@@ -700,7 +700,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	questionarioDao.expects(atLeastOnce()).method("findQuestionarioNaoLiberados").with(new Constraint [] {ANYTHING}).will(returnValue(questionarios));
     	mail.expects(atLeastOnce()).method("send").with(new Constraint [] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException("Erro")));
 
-    	questionarioManager.enviaLembreteDeQuestionarioNaoLiberada();
+    	questionarioManager.enviaLembreteDeQuestionarioNaoLiberado();
     }
     
     public void testMontaImpressaoFichaMedica()

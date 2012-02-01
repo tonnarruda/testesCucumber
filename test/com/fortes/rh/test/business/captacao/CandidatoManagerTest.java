@@ -38,6 +38,7 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
@@ -110,6 +111,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock solicitacaoExameManager;
 	private Mock configuracaoNivelCompetenciaManager;
+	private Mock gerenciadorComunicacaoManager;
 
     protected void setUp() throws Exception
     {
@@ -130,6 +132,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
         empresaManager = new Mock(EmpresaManager.class); 
         solicitacaoExameManager = new Mock(SolicitacaoExameManager.class); 
         configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class); 
+        gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class); 
         
         candidatoManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
         candidatoManager.setDao((CandidatoDao) candidatoDao.proxy());
@@ -145,6 +148,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
         candidatoManager.setCandidatoCurriculoManager((CandidatoCurriculoManager) candidatoCurriculoManager.proxy());
         candidatoManager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
         candidatoManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+        candidatoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 		
         colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
         colaboradorManager = new Mock(ColaboradorManager.class);
@@ -214,7 +218,6 @@ public class CandidatoManagerTest extends MockObjectTestCase
     
     public void testEnviaEmailQtdCurriculosCadastrados() throws Exception
     {
-    	
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	Collection<Empresa> empresas = new ArrayList<Empresa>();
     	empresas.add(empresa);
@@ -233,9 +236,17 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatos.add(candidato3);
     	
     	candidatoDao.expects(once()).method("findQtdCadastradosByOrigem").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(candidatos));
-    	mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+    	gerenciadorComunicacaoManager.expects(once()).method("enviaEmailQtdCurriculosCadastrados").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
     	
-    	assertFalse(candidatoManager.enviaEmailQtdCurriculosCadastrados(empresas).equals(""));
+    	Exception exc = null;
+    	try {
+    		candidatoManager.enviaEmailQtdCurriculosCadastrados(empresas);
+			
+		} catch (Exception e) {
+			exc = e;
+		}
+    	
+		assertNull(exc);
     }
 
     public void testFindCandidatosById() throws Exception

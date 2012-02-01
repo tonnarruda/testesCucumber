@@ -1280,7 +1280,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);		
 	}
 
-	public String enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas)
+	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas)
 	{
 		Date DiaDoMesDeReferencia = DateUtil.retornaDataDiaAnterior(new Date());
 		Date inicioMes = DateUtil.getInicioMesData(DiaDoMesDeReferencia);
@@ -1288,47 +1288,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		
 		Collection<Candidato> candidatos = findQtdCadastradosByOrigem(inicioMes, fimMes);
 		
-		String subject = "Candidatos cadastros no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes);
-		
-		StringBuilder body = new StringBuilder("Candidatos cadastrados no período: " + DateUtil.formataDiaMesAno(inicioMes) + " a " + DateUtil.formataDiaMesAno(fimMes) + "<br>");
-		body.append( "<table>" +
-					"<thead><tr>" +
-					"<th>Empresa</th>" +
-					"<th>|</th>" +
-					"<th>Origem</th>" +
-					"<th>|</th>" +
-					"<th>Qtd. cadastros</th>" +
-					"</tr></thead><tbody>");
-		
-		OrigemCandidato origemCandidato = new OrigemCandidato();
-		
-		for (Candidato candidato : candidatos) 
-		{
-			body.append("<tr>" +
-						"<td>" + candidato.getEmpresa().getNome() + "</td>" +
-						"<td>|</td>" +
-						"<td>" + origemCandidato.get(candidato.getOrigem())+ "</td>" +
-						"<td>|</td>" +
-						"<td align='center'>" + candidato.getQtdCurriculosCadastrados() + "</td>" +
-						"</tr>");
-		}
-		
-		body.append("</tbody></table>");
-		
-		try
-		{
-			for (Empresa empresa : empresas) 
-			{
-				mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
-			}
-		}
-		
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		return body.toString();
+		gerenciadorComunicacaoManager.enviaEmailQtdCurriculosCadastrados(empresas, inicioMes, fimMes, candidatos);
 	}
 
 	private Collection<Candidato> findQtdCadastradosByOrigem(Date date, Date date2) 
