@@ -21,8 +21,10 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
+import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<ColaboradorOcorrencia, ColaboradorOcorrenciaDao> implements ColaboradorOcorrenciaManager
 {
@@ -289,12 +291,8 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		}
 	}
 
-	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento)
+	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento)
 	{
-		Long empresaId = null;
-		if(empresa != null && empresa.getId() != null )
-			empresaId = empresa.getId();
-		
-		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaId, areaIds, estabelecimentoIds, detalhamento);
+		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaIds, areaIds, estabelecimentoIds, detalhamento);
 	}
 }

@@ -1482,7 +1482,9 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		empresa = empresaDao.save(empresa);
 
 		CandidatoSolicitacao candidadatoSolicitacao = new CandidatoSolicitacao();
-		candidadatoSolicitacao.setSolicitacaoId(1L);
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+		candidadatoSolicitacao.setSolicitacaoId(solicitacao.getId());
 		
 		Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 		candidatoSolicitacaos.add(candidadatoSolicitacao);

@@ -968,6 +968,16 @@ ALTER TABLE ocorrencia ADD CONSTRAINT ocorrencia_pkey PRIMARY KEY (id);
 ALTER TABLE ocorrencia ADD CONSTRAINT ocorrencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 CREATE SEQUENCE ocorrencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
+CREATE TABLE providencia (
+	id bigint NOT NULL,
+	descricao character varying(100),
+	empresa_id bigint
+);
+
+ALTER TABLE providencia ADD CONSTRAINT providencia_pkey PRIMARY KEY(id);
+ALTER TABLE providencia ADD CONSTRAINT providencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE providencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
 CREATE TABLE colaboradorocorrencia (
     id bigint NOT NULL,
     dataini date,
@@ -1734,10 +1744,10 @@ CREATE SEQUENCE examesolicitacaoexame_sequence START WITH 1 INCREMENT BY 1 NO MA
 CREATE TABLE solicitacaoepi (
     id bigint NOT NULL,
     data date,
-    entregue boolean,
     colaborador_id bigint,
     cargo_id bigint,
-    empresa_id bigint
+    empresa_id bigint,
+    situacaosolicitacaoepi character(1) not null default 'A'
 );
 ALTER TABLE solicitacaoepi ADD CONSTRAINT solicitacaoepi_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacaoepi ADD CONSTRAINT solicitacaoepi_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);
@@ -2537,13 +2547,3 @@ ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turmaTipoDespesa_pkey PRIMARY KEY(id
 ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma__tipodespesa_fk FOREIGN KEY (turma_id) REFERENCES turma(id);
 ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma_tipodespesa_tipodespesas_fk FOREIGN KEY (tipodespesa_id) REFERENCES tipodespesa(id);
 CREATE SEQUENCE turmaTipoDespesa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
-
-CREATE TABLE providencia (
-id bigint NOT NULL,
-descricao character varying(100),
-empresa_id bigint
-);
-
-ALTER TABLE providencia ADD CONSTRAINT providencia_pkey PRIMARY KEY(id);
-ALTER TABLE providencia ADD CONSTRAINT providencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
-CREATE SEQUENCE providencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;

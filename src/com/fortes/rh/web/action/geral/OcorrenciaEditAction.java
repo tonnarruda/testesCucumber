@@ -146,12 +146,23 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	{
 		try
 		{
+			Collection<Long> empresaIds = new ArrayList<Long>();
+			if(empresa == null || empresa.getId() == null)
+			{
+				compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+				empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_OCORRENCIA");
+				empresaIds = LongUtil.collectionToCollectionLong(empresas);
+			}else
+			{
+				empresaIds.add(empresa.getId());
+			}
+			
 			Collection<Long> ocorrenciaIds = LongUtil.arrayStringToCollectionLong(ocorrenciaCheck);
 			Collection<Long> colaboradorIds = LongUtil.arrayStringToCollectionLong(colaboradorCheck);
 			Collection<Long> areaIds = LongUtil.arrayStringToCollectionLong(areaCheck);
 			Collection<Long> estabelecimentoIds = LongUtil.arrayStringToCollectionLong(estabelecimentoCheck);
 			
-			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresa, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento);
+			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento);
 
 			parametros.put("dataIni", dataIni);
 			parametros.put("dataFim", dataFim);
@@ -479,6 +490,10 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 
 	public void setExibirProvidencia(Boolean exibirProvidencia) {
 		this.exibirProvidencia = exibirProvidencia;
+	}
+
+	public void setEmpresas(Collection<Empresa> empresas) {
+		this.empresas = empresas;
 	}
 
 

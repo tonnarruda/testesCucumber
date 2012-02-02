@@ -32,7 +32,7 @@
 			});
 			
 			var obj = document.getElementById("legendas");
-			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa de processo seletivo";
+			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
 		});
 	
 		function populaCargosConhecimentos(empresaId)
@@ -126,9 +126,9 @@
 		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V"></button>
 	</#if>
 
-	<div id="legendas" align="right"></div>
 
 	<#if candidatos?exists >
+		<div id="legendas" align="right"></div>
 		<br>
 		
 		<#include "formListCandidatoSolicitacaoBusca.ftl" />

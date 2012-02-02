@@ -23,5 +23,5 @@ public interface ColaboradorOcorrenciaManager extends GenericManager<Colaborador
 	Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasId) throws Exception;
 	Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Collection<Long> empresaIds, Collection<Long> areasIds);
 	void deleteOcorrencias(Long[] ocorrenciaIds) throws Exception;
-	Collection<ColaboradorOcorrencia> filtrarOcorrencias(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento);
+	Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento);
 }
