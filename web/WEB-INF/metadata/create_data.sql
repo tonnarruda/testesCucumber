@@ -51,7 +51,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (510,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (50, 'ROLE_BD_SOLIDARIO', 'Banco de Dados Solidário', '/captacao/candidato/prepareBusca.action?BDS=true', 2, true, 463);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (360, 'ROLE_R&S_REL', 'Relatórios', '#', 3, true, 357);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (46, 'ROLE_REL_SOLICITACAO', 'Solicitações Abertas', '/captacao/solicitacao/prepareRelatorio.action', 1, true, 360);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (46, 'ROLE_REL_SOLICITACAO', 'Lista de Candidatos Aptos das Solicitações Abertas', '/captacao/solicitacao/prepareRelatorio.action', 1, true, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (48, 'ROLE_REL_PROCESSO_SELETIVO', 'Análise das Etapas Seletivas', '/captacao/solicitacao/prepareRelatorioProcessoSeletivo.action', 2, true, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (424, 'ROLE_REL_AVALIACAO_CANDIDATOS', 'Avaliações de Candidatos', '/captacao/candidato/prepareRelatorioAvaliacaoCandidatos.action', 3, true, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (508, 'ROLE_COMO_FICOU_SABENDO_VAGA', 'Estatística de Divulgação da Vaga', '/geral/comoFicouSabendoVaga/prepareRelatorioComoFicouSabendoVaga.action', 4, true, 360);
@@ -233,6 +233,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (505,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (410, 'RECEBE_ALERTA_SETORPESSOAL', 'Recebe Mensagem do AC Pessoal', '', 5, false, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (451, 'ROLE_LOGGING', 'Logs', '/logging/list.action', 9, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (535,'ROLE_IMPORTACAO_AFASTAMENTO', 'Importar Afastamentos', '/importacao/prepareImportarAfastamentos.action', 10, true, 37);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (539,'ROLE_BACKUP', 'Backup do Banco de Dados', '/backup/list.action', 11, true, 37);
 
 -- Fim Utilitarios
 -- Modulo SESMT
@@ -486,6 +487,7 @@ insert into perfil_papel(perfil_id, papeis_id) values (1, 532);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 533);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 534);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 537);
+insert into perfil_papel(perfil_id, papeis_id) values (1, 539);
 
 insert into public."perfil" ("id", "nome") values (2, 'Usuário');
 
@@ -21160,9 +21162,16 @@ insert into migrations values('20120117143404');
 insert into migrations values('20120119082153');
 insert into migrations values('20120123100534');
 insert into migrations values('20120110150154');
+insert into migrations values('20120124163912');
+insert into migrations values('20120125134612');
+insert into migrations values('20120126141042');
+insert into migrations values('20120131111131');
+insert into migrations values('20120131164834');
+insert into migrations values('20120202075920');
+insert into migrations values('20120202081232');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.67.61', '', '25', false, false, 2, '1.1.48.1', 3, 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.68.62', '', '25', false, false, 2, '1.1.49.1', 3, 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'

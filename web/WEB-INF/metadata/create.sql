@@ -1734,10 +1734,10 @@ CREATE SEQUENCE examesolicitacaoexame_sequence START WITH 1 INCREMENT BY 1 NO MA
 CREATE TABLE solicitacaoepi (
     id bigint NOT NULL,
     data date,
-    entregue boolean,
     colaborador_id bigint,
     cargo_id bigint,
-    empresa_id bigint
+    empresa_id bigint,
+    situacaosolicitacaoepi character(1) not null default 'A'
 );
 ALTER TABLE solicitacaoepi ADD CONSTRAINT solicitacaoepi_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacaoepi ADD CONSTRAINT solicitacaoepi_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);

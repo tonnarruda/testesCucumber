@@ -44,7 +44,7 @@
 			enviaEmpresa($('#empresaSelect').val());
 			
 			var obj = document.getElementById("legendas");
-			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa de processo seletivo";
+			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
 			
 		});
 	
@@ -238,8 +238,8 @@
 		</button>
 	</#if>
 
-	<div id="legendas" align="right"></div>
 	<#if candidatos?exists >
+		<div id="legendas" align="right"></div>
 		<br>
 
 		<#include "formListCandidatoSolicitacaoBusca.ftl" />

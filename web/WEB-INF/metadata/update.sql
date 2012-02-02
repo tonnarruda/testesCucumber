@@ -1,4 +1,4 @@
--- versao 1.0.1.0
+- versao 1.0.1.0
 alter table candidato add column observacaorh text; --.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (397, 'ROLE_AREAFORMACAO', 'Área de Formação', '/geral/areaFormacao/list.action', 5, true, 357); --.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 397); --.go
@@ -18516,3 +18516,31 @@ update parametrosdosistema set appversao = '1.1.67.60';--.go
 -- versao 1.1.67.61
 
 update parametrosdosistema set appversao = '1.1.67.61';--.go
+
+-- versao 1.1.68.62
+
+insert into migrations values('20120124163912');--.go
+
+update papel set nome='Lista de Candidatos Aptos das Solicitações Abertas' where id=46;--.go
+insert into migrations values('20120125134612');--.go
+
+update solicitacao set descricao = c.nome from faixasalarial f, cargo c where faixasalarial_id = f.id and f.cargo_id = c.id and (descricao is null or descricao = '');--.go
+insert into migrations values('20120126141042');--.go
+
+alter table solicitacaoepi add column situacaosolicitacaoepi character(1) not null default 'A';--.go
+update solicitacaoepi se set situacaosolicitacaoepi = (select case when sum(sei.qtdentregue) = sum(sei.qtdsolicitado) then 'E' when sum(sei.qtdentregue) > 0 then 'P' else 'A' end  from solicitacaoepi_item sei where sei.solicitacaoepi_id = se.id group by sei.solicitacaoepi_id );--.go
+alter table solicitacaoepi drop column entregue;--.go
+insert into migrations values('20120131111131');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (539,'ROLE_BACKUP', 'Backup do Banco de Dados', '/backup/list.action', 11, true, 37);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=539 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 539);--.go
+alter sequence papel_sequence restart with 540;--.go
+
+insert into migrations values('20120131164834');--.go
+insert into migrations values('20120202075920');--.go
+
+update parametrosdosistema set acversaowebservicecompativel='1.1.49.1';--.go
+insert into migrations values('20120202081232');--.go
+
+update parametrosdosistema set appversao = '1.1.68.62';--.go
