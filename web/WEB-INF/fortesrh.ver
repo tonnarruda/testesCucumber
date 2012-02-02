@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.68.62" data="02/02/2012"><![CDATA[
-		- R&S > Movimentações > Solicitações de Pessoal > Triagem: Nova legenda para informar quais candidatos participa ou participou de processo seletivo.
-		- R&S > Movimentações > Solicitações de Pessoal: Descrição da solicitação como campo obrigatório.
+		- R&S > Movimentações > Solicitação de Pessoal > Triagem: Nova legenda para informar quais candidatos participam ou participaram de um processo seletivo.
+		- R&S > Movimentações > Solicitação de Pessoal: Descrição da solicitação como campo obrigatório.
 		- C&S > Painel de Indicadores: Novo botão para imprimir gráfico de salário por área organizacional.
 		- Pesquisas > Movimentações > Pesquisas: Novo filtro por status.
 		- Info. Funcionais > Cadastros > Colaboradores: Os campos nome pai e nome mãe Verificação de parentesco no cadastro de colaborador.
@@ -21,8 +21,8 @@
 	<Versao id="1.1.67.60" data="23/01/2012"><![CDATA[
 		- Sistema RH: Tratamento de erros do RH para o AC Pessoal.
 		- Módulo Externo: Checagem de versão de browser e redirecionamento para pagina de aviso.
-		- R&S > Movimentações > Solicitações de Pessoal > Edição: Nova forma de alterar status, para o liberador. 
-		- R&S > Movimentações > Solicitações de Pessoal > Alterar Status: Nova opção de alterar status, para o liberador. 
+		- R&S > Movimentações > Solicitação de Pessoal > Edição: Nova forma de alterar status, para o liberador. 
+		- R&S > Movimentações > Solicitação de Pessoal > Alterar Status: Nova opção de alterar status, para o liberador. 
 		- Aval. Desempenho > Movimentações > Acompanhamento do Per. de Experiência: Exibição do estabelecimento e telefone do colaborador selecionado.
 		- T&D > Relatórios > Investimentos de T&D por Colaborador: Nova coluna de carga horária.
 		- Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Exibição do estabelecimento e telefone do colaborador selecionado.
@@ -105,10 +105,10 @@
 	]]></Versao>
 	<Versao id="1.1.58.49" data="17/10/2011"><![CDATA[
 		- C&S > Cadastros > Candidatos: Novo botão Triagem, redireciona para Triagem de currículos.
-		- R&S > Movimentações > Solicitações de Pessoal > Triagem: Nova busca automática de candidatos.
-		- R&S > Movimentações > Solicitações de Pessoal: Novas colunas na listagem: Código, Motivo.
-		- R&S > Movimentações > Solicitações de Pessoal: Novo campo [Horário comercial].
-		- R&S > Movimentações > Solicitações de Pessoal > Impressão > Novos campos: Código, Descrição e Data. 
+		- R&S > Movimentações > Solicitação de Pessoal > Triagem: Nova busca automática de candidatos.
+		- R&S > Movimentações > Solicitação de Pessoal: Novas colunas na listagem: Código, Motivo.
+		- R&S > Movimentações > Solicitação de Pessoal: Novo campo [Horário comercial].
+		- R&S > Movimentações > Solicitação de Pessoal > Impressão > Novos campos: Código, Descrição e Data. 
 		- R&S > Cadastros > Áreas Organizacionais: Impressão da listagem de Área Organizacional.
 		- Aval. Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Nova opção seleção de empresa no filtro.
 		- Aval. Desempenho > Relatórios > Colaborador ver o resultado do seu teste.
