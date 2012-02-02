@@ -9,12 +9,15 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
+import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.web.action.captacao.AtitudeEditAction;
 import com.fortes.web.tags.CheckBox;
 
@@ -23,6 +26,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 	private AtitudeEditAction action;
 	private Mock areaOrganizacionalManager;
 	private Mock atitudeManager;
+	private Mock competenciaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -30,10 +34,14 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action = new AtitudeEditAction();
 		atitudeManager = new Mock(AtitudeManager.class);
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+		competenciaManager = new Mock(CompetenciaManager.class);
 
 		action.setAtitude(new Atitude());
 		action.setAtitudeManager((AtitudeManager) atitudeManager.proxy());
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		action.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
+		
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
 
 	public void testPrepareInsert() throws Exception
@@ -115,6 +123,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 
 		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
 		
+		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
 		atitudeManager.expects(once()).method("save").with(eq(atitude)).will(returnValue(atitude));
 		
@@ -127,6 +136,13 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		
     	try
 		{
+    		Atitude atitude = AtitudeFactory.getEntity();
+    		atitude.setNome("atitude");
+
+    		action.setAtitude(atitude);
+    		
+    		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
+    		
     		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
     		
     		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
@@ -149,6 +165,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 
 		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
 		
+		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
 		atitudeManager.expects(once()).method("update").with(eq(atitude)).isVoid();
 
@@ -161,6 +178,13 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		
     	try
 		{	
+    		Atitude atitude = AtitudeFactory.getEntity();
+    		atitude.setNome("atitude");
+
+    		action.setAtitude(atitude);
+    		
+    		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
+    		
     		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
 		
 			areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));

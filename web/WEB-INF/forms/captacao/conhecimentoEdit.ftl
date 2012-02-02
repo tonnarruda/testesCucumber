@@ -14,6 +14,7 @@
 </head>
 <body>
 <@ww.actionerror />
+<@ww.actionmessage />
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 
 	<@ww.textfield label="Nome" name="conhecimento.nome" id="nome" required="true" cssClass="inputNome" maxLength="100" cssStyle="width:500px;"/>

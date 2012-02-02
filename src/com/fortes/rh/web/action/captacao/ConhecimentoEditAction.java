@@ -6,8 +6,10 @@ package com.fortes.rh.web.action.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -16,12 +18,13 @@ import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
 
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"serial"})
 public class ConhecimentoEditAction extends MyActionSupportEdit implements ModelDriven
 {
 	//	managers
 	private ConhecimentoManager conhecimentoManager = null;
 	private AreaOrganizacionalManager areaOrganizacionalManager = null;
+	private CompetenciaManager competenciaManager = null;
 
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -59,6 +62,13 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 
 	public String insert() throws Exception
 	{
+		if (competenciaManager.existeNome(conhecimento.getNome(), null, null, getEmpresaSistema().getId()))
+		{
+			addActionMessage("Já existe um Conhecimento, Habilidade ou Atitude com o nome \"" + conhecimento.getNome() +"\".");
+			prepareInsert();
+			return Action.INPUT;
+		}
+		
 		conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		conhecimento.setEmpresa(getEmpresaSistema());
 		conhecimentoManager.save(conhecimento);
@@ -67,6 +77,13 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 
 	public String update() throws Exception
 	{
+		if (competenciaManager.existeNome(conhecimento.getNome(), conhecimento.getId(), Competencia.CONHECIMENTO, getEmpresaSistema().getId()))
+		{
+			addActionMessage("Já existe um Conhecimento, Habilidade ou Atitude com o nome \"" + conhecimento.getNome() +"\".");
+			prepareUpdate();
+			return Action.INPUT;
+		}
+
 		conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		conhecimento.setEmpresa(getEmpresaSistema());
 		conhecimentoManager.update(conhecimento);
@@ -150,5 +167,9 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 	public void setAreasCheckList(Collection<CheckBox> areasCheckList)
 	{
 		this.areasCheckList = areasCheckList;
+	}
+
+	public void setCompetenciaManager(CompetenciaManager competenciaManager) {
+		this.competenciaManager = competenciaManager;
 	}
 }
