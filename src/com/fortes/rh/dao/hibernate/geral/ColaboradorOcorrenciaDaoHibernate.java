@@ -284,7 +284,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		}
 	}
 
-	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Long empresaId, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento) 
+	public Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento) 
 	{
 		StringBuilder hql = new StringBuilder();
 
@@ -323,7 +323,9 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		
 		hql.append("and co.dataIni >= :dataIni ");
 		hql.append("and co.dataIni <= :dataFim ");
-		hql.append("and o.empresa.id = :empresaId ");
+		
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			hql.append("and o.empresa.id in (:empresaIds) ");
 		
 		if (detalhamento)
 		{
@@ -350,10 +352,11 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 			
 		if(!ocorrenciaIds.isEmpty())
 			query.setParameterList("ocorrenciaIds", ocorrenciaIds, Hibernate.LONG);
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
 		
 		query.setInteger("statusHistColab", StatusRetornoAC.CONFIRMADO);
 		query.setDate("hoje", new Date());
-		query.setLong("empresaId", empresaId);
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 

@@ -142,9 +142,8 @@
 
 		<@ww.checkbox label="Detalhado" id="detalhe" labelPosition="left" name="detalhamento"/>
 		<@ww.checkbox label="Exibir Providências"  id="providencia" labelPosition="left" name="exibirProvidencia"/>
-
+		
 	</@ww.form>
-
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnRelatorio"></button>
