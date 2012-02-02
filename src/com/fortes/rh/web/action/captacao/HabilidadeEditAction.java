@@ -4,8 +4,10 @@ package com.fortes.rh.web.action.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -17,9 +19,9 @@ public class HabilidadeEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	private HabilidadeManager habilidadeManager;
+	private CompetenciaManager competenciaManager;
 	private Habilidade habilidade;
 	private Collection<Habilidade> habilidades;
-	
 
 	private AreaOrganizacionalManager areaOrganizacionalManager = null;
 	
@@ -53,6 +55,13 @@ public class HabilidadeEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
+		if (competenciaManager.existeNome(habilidade.getNome(), null, null, getEmpresaSistema().getId()))
+		{
+			addActionMessage("Já existe um Conhecimento, Habilidade ou Atitude com o nome \"" + habilidade.getNome() +"\".");
+			prepareInsert();
+			return Action.INPUT;
+		}
+		
 		habilidade.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		habilidade.setEmpresa(getEmpresaSistema());
 		habilidadeManager.save(habilidade);
@@ -61,6 +70,13 @@ public class HabilidadeEditAction extends MyActionSupportList
 
 	public String update() throws Exception
 	{
+		if (competenciaManager.existeNome(habilidade.getNome(), habilidade.getId(), Competencia.HABILIDADE, getEmpresaSistema().getId()))
+		{
+			addActionMessage("Já existe um Conhecimento, Habilidade ou Atitude com o nome \"" + habilidade.getNome() +"\".");
+			prepareUpdate();
+			return Action.INPUT;
+		}
+		
 		habilidade.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		habilidade.setEmpresa(getEmpresaSistema());
 		habilidadeManager.update(habilidade);
@@ -149,5 +165,9 @@ public class HabilidadeEditAction extends MyActionSupportList
 
 	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals) {
 		this.areaOrganizacionals = areaOrganizacionals;
+	}
+
+	public void setCompetenciaManager(CompetenciaManager competenciaManager) {
+		this.competenciaManager = competenciaManager;
 	}
 }

@@ -47,6 +47,7 @@
     <mapping class="com.fortes.rh.model.captacao.Formacao" />
     <mapping class="com.fortes.rh.model.captacao.Experiencia" />
     <mapping class="com.fortes.rh.model.captacao.Conhecimento" />
+    <mapping class="com.fortes.rh.model.captacao.Competencia" />
     <mapping class="com.fortes.rh.model.captacao.EtapaSeletiva" />
     <mapping class="com.fortes.rh.model.captacao.Solicitacao" />
     <mapping class="com.fortes.rh.model.captacao.SolicitacaoBairro" />

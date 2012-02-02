@@ -8,6 +8,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
+import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Conhecimento;
@@ -23,6 +24,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 {
 	private ConhecimentoEditAction action;
 	private Mock manager;
+	private Mock competenciaManager;
 	Mock areaOrganizacionalManager;
 
 	protected void setUp() throws Exception
@@ -32,9 +34,11 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 		manager = new Mock(ConhecimentoManager.class);
 		action = new ConhecimentoEditAction();
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+		competenciaManager = new Mock(CompetenciaManager.class);
 		
 		action.setConhecimento(new Conhecimento());
 		action.setConhecimentoManager((ConhecimentoManager) manager.proxy());
+		action.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 	}
 
@@ -84,7 +88,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L);
 		action.setConhecimento(conhecimento);
-
+		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").will(returnValue(areas));
 		manager.expects(once()).method("save").with(eq(conhecimento)).will(returnValue(conhecimento));
 
@@ -101,6 +105,13 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 		
     	try
 		{
+    		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+    		conhecimento.setNome("conhecimento");
+
+    		action.setConhecimento(conhecimento);
+    		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+    		
+    		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
     		areaOrganizacionalManager.expects(once()).method("populaAreas").will(returnValue(areas));
     		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     		action.insert();
@@ -122,7 +133,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L);
 		action.setConhecimento(conhecimento);
-
+		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").will(returnValue(areas));
 		manager.expects(once()).method("update").with(eq(conhecimento));
 
@@ -130,6 +141,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 		assertEquals(areas, action.getConhecimento().getAreaOrganizacionals());
 		assertEquals(empresa.getId(), action.getEmpresaSistema().getId());
 	}
+	
 	public void testUpdateException() throws Exception
 	{
 		Exception exception = null;
@@ -137,6 +149,13 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 		
     	try
 		{
+    		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+    		conhecimento.setNome("conhecimento");
+
+    		action.setConhecimento(conhecimento);
+    		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+    		
+    		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
     		areaOrganizacionalManager.expects(once()).method("populaAreas").will(returnValue(areas));
     		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     		action.update();

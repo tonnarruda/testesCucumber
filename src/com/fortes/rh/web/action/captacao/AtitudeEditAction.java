@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
+import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -16,6 +18,7 @@ public class AtitudeEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	private AtitudeManager atitudeManager;
+	private CompetenciaManager competenciaManager;
 	private Atitude atitude;
 	private Collection<Atitude> atitudes;
 	
@@ -51,6 +54,13 @@ public class AtitudeEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
+		if (competenciaManager.existeNome(atitude.getNome(), null, null, getEmpresaSistema().getId()))
+		{
+			addActionMessage("Já existe um Conhecimento, Habilidade ou Atitude com o nome \"" + atitude.getNome() +"\".");
+			prepareInsert();
+			return Action.INPUT;
+		}
+		
 		atitude.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		atitude.setEmpresa(getEmpresaSistema());
 		atitudeManager.save(atitude);
@@ -59,6 +69,13 @@ public class AtitudeEditAction extends MyActionSupportList
 
 	public String update() throws Exception
 	{
+		if (competenciaManager.existeNome(atitude.getNome(), atitude.getId(), Competencia.ATITUDE, getEmpresaSistema().getId()))
+		{
+			addActionMessage("Já existe um Conhecimento, Habilidade ou Atitude com o nome \"" + atitude.getNome() +"\".");
+			prepareInsert();
+			return Action.INPUT;
+		}
+		
 		atitude.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
 		atitude.setEmpresa(getEmpresaSistema());
 		atitudeManager.update(atitude);
@@ -140,5 +157,9 @@ public class AtitudeEditAction extends MyActionSupportList
 
 	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals) {
 		this.areaOrganizacionals = areaOrganizacionals;
+	}
+
+	public void setCompetenciaManager(CompetenciaManager competenciaManager) {
+		this.competenciaManager = competenciaManager;
 	}
 }

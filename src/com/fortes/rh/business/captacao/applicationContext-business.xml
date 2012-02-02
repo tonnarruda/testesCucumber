@@ -82,6 +82,19 @@
       <ref bean="conhecimentoManagerTarget" />
     </property>
   </bean>
+  <bean id="competenciaManagerTarget" class="com.fortes.rh.business.captacao.CompetenciaManagerImpl">
+    <property name="dao">
+      <ref bean="competenciaDao" />
+    </property>
+  </bean>
+  <bean id="competenciaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.CompetenciaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="competenciaManagerTarget" />
+    </property>
+  </bean>
   <bean id="etapaSeletivaManagerTarget" class="com.fortes.rh.business.captacao.EtapaSeletivaManagerImpl">
     <property name="dao">
       <ref bean="etapaSeletivaDao" />

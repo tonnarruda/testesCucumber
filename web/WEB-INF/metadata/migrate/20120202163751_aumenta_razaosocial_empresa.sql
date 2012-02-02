@@ -1,0 +1,1 @@
+alter table empresa alter column razaosocial type character varying(100);--.go
