@@ -28,6 +28,7 @@
 	<parameter name="FILTRAR_POR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
 	<parameter name="TOTAL_FOLHA" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="EXIBIR_OBS" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="salarioProposto" class="java.lang.Double"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
@@ -48,6 +49,7 @@
 	<field name="descricaoEstabelecimentoAreaOrganizacionalPropostos" class="java.lang.String"/>
 	<field name="colaborador.dataDesligamento" class="java.util.Date"/>
 	<field name="tabelaReajusteColaborador.data" class="java.util.Date"/>
+	<field name="observacao" class="java.lang.String"/>
 
 	<variable name="totalProposto" class="java.lang.Double" resetType="Group" resetGroup="gruposAreas" calculation="Sum">
 		<variableExpression><![CDATA[$F{salarioProposto}]]></variableExpression>
@@ -659,7 +661,7 @@
 						</reportElement>
 					<graphicElement stretchType="RelativeToTallestObject" pen="None"/>
 				</rectangle>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="4"
 						y="2"
@@ -672,7 +674,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataDesligamento} != null && $F{colaborador.dataDesligamento}.before( $F{tabelaReajusteColaborador.data} ) ? $F{colaborador.nome} + " (Desligado)*" : $F{colaborador.nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{colaborador.dataDesligamento} != null && $F{colaborador.dataDesligamento}.before( $F{tabelaReajusteColaborador.data} ) ? $F{colaborador.nome} + " (Desligado)*" : $F{colaborador.nome}) + ($P{EXIBIR_OBS}.booleanValue() ? "\nObs: " + $F{observacao} : "")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
