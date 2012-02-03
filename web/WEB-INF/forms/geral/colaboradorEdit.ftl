@@ -373,7 +373,7 @@
 		<div id="aba5"><a href="javascript: abas(5, '', ${edicao}, ${totalAbas})">Documentos</a></div>
 		<div id="aba6"><a href="javascript: abas(6, '', ${edicao}, ${totalAbas})">Modelos de Avaliação</a></div>
 		
-		<#if habilitaCampoExtra><@authz.authentication operation="empresaId"/>
+		<#if habilitaCampoExtra>
 			<div id="aba7"><a href="javascript: abas(7, '', ${edicao}, ${totalAbas})">Extra</a></div>
 		</#if>
 	</div>
