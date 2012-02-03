@@ -29,6 +29,13 @@
 				$('#' + campo).attr("disabled", true);
 		}
 	
+		function popupConfigRelatorio(catId)
+		{
+			$('#catId').val(catId);
+		
+			$('#box').dialog({ modal: true, width: 360 });
+		}
+		
 		function gerarRelatorio()
 		{
 			$('#formRelatorio input').each(function(i, item) {
@@ -112,7 +119,7 @@
 		<@display.column title="Açőes" class="acao">
 			<a href="prepareUpdate.action?cat.id=${cat.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cat.id=${cat.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-			<a href="javascript:;" onclick="$('#box').dialog({ modal: true, width: 360 });"><img border="0" title="Imprimir Ficha de Investigação de Acidente" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+			<a href="javascript:;" onclick="popupConfigRelatorio(${cat.id})"><img border="0" title="Imprimir Ficha de Investigação de Acidente" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 		 </@display.column>
 		<@display.column property="colaborador.nome" title="Colaborador" style="width:280px;"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;"/>
@@ -121,7 +128,8 @@
 	</@display.table>
 
 	<div id="box" title="Configurar Assinaturas para Impressão">
-		<@ww.form name="formRelatorio" id="formRelatorio" action="imprimirFichaInvestigacaoAcidente.action?cat.id=${cat.id}" method="POST">
+		<@ww.form name="formRelatorio" id="formRelatorio" action="imprimirFichaInvestigacaoAcidente.action" method="POST">
+			<@ww.hidden name="cat.id" id="catId"/>
 			<li>
 				<fieldset class="fieldsetPadrao">
 					<ul>
