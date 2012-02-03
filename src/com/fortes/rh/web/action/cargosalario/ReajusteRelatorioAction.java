@@ -45,6 +45,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
 	private String filtro;
 	private String total;
+	private Boolean exibirObservacao;
 
 	private Collection<ReajusteColaborador> dataSource;
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors;
@@ -120,6 +121,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 
 			parametros = reajusteColaboradorManager.getParametrosRelatorio("Relatório de Simulação de Promoções e Reajustes de Salários", getEmpresaSistema(), tabelaReajusteColaboradorAux.getNome());
 			parametros.put("EXIBIR_TOTAL",total);
+			parametros.put("EXIBIR_OBS",exibirObservacao);
 			parametros.put("FILTRAR_POR", filtro);
 			parametros.put("TOTAL_FOLHA", valorTotalFolha);
 
@@ -319,5 +321,13 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	public void setGrupoOcupacionalsCheckList(Collection<CheckBox> grupoOcupacionalsCheckList)
 	{
 		this.grupoOcupacionalsCheckList = grupoOcupacionalsCheckList;
+	}
+
+	public Boolean getExibirObservacao() {
+		return exibirObservacao;
+	}
+
+	public void setExibirObservacao(Boolean exibirObservacao) {
+		this.exibirObservacao = exibirObservacao;
 	}
 }

@@ -75,6 +75,8 @@
 		</@ww.div>
 
 		<@ww.select label="Imprimir somente totais" name="total" list=r"#{'false':'Não', 'true':'Sim'}" />
+		<@ww.checkbox label="Exibir observação" id="exibirObservacao" name="exibirObservacao" labelPosition="left"/>
+		
 	</@ww.form>
 
 	<script>
