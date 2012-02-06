@@ -108,7 +108,7 @@ public class IndexTest extends MockObjectTestCase
 		pesquisas.add(pesquisa2);
 
 		questionarioManager.expects(once()).method("findQuestionarioPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
-		colaboradorQuestionarioManager.expects(once()).method("findQuestionarioByTurmaRealizadaPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
+		colaboradorQuestionarioManager.expects(once()).method("findQuestionarioByTurmaLiberadaPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
 		colaboradorManager.expects(once()).method("findByUsuario").with(ANYTHING, ANYTHING).will(returnValue(colaborador));
 
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
