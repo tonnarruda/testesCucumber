@@ -1,4 +1,5 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -86,8 +87,11 @@
 	<div class="buttonGroup">
 		<button class="btnRelatorio" onclick="return validarCampos2();document.form.submit();" accesskey="${accessKey}">
 		</button>
-		<button onclick="window.location='<@ww.url includeParams="none" value="/cargosalario/tabelaReajusteColaborador/list.action"/>'" class="btnCancelar" accesskey="V">
-		</button>
+	
+		<@authz.authorize ifAllGranted="ROLE_MOV_SIMULACAOREAJUSTE">
+			<button onclick="window.location='<@ww.url includeParams="none" value="/cargosalario/tabelaReajusteColaborador/list.action"/>'" class="btnCancelar" accesskey="V">
+			</button>
+		</@authz.authorize>
 	</div>
 </body>
 </html>

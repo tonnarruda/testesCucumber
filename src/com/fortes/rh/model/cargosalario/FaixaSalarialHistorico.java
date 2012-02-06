@@ -243,7 +243,7 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
     }
     @NaoAudita
 	private Double getValorDoIndice() {
-		if (this.indice != null)
+		if (this.indice != null && indice.getValorDoHistoricoAtual() != null)
 			return this.indice.getValorDoHistoricoAtual();
 		return new Double(0);
 	}

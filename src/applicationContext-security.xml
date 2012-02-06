@@ -217,6 +217,8 @@
 				/acesso/usuario/recuperaSenha*/**=ROLE_ANONYMOUS
 				/acesso/usuario/*/**=ROLE_CAD_USUARIO
 				/acesso/perfil/*/**=ROLE_CAD_PERFIL
+				/geral/colaborador/prepareProjecaoSalarialFiltro*/** = ROLE_REL_PROJECAO_SALARIAL
+				/geral/colaborador/gerarRelatorioProjecaoSalarial*/** = ROLE_REL_PROJECAO_SALARIAL
 				/geral/colaborador/prepareRelatorioAdmitidos.action* = ROLE_REL_ADMITIDOS
 				/geral/colaborador/relatorioAdmitidos.action* = ROLE_REL_ADMITIDOS
 				/geral/colaborador/prepareRelatorioDinamico.action* = ROLE_REL_LISTA_COLAB
@@ -276,9 +278,15 @@
 				/captacao/motivoSolicitacao/*/**=ROLE_MOTIVO_SOLICITACAO
 				/captacao/areaInteresse/*/**=ROLE_CAD_AREA
 				/captacao/historicoCandidato/*/**=ROLE_MOV_SOLICITACAO
+				/captacao/solicitacao/prepareRelatorioProcessoSeletivo*/**=ROLE_REL_PROCESSO_SELETIVO
+				/captacao/solicitacao/imprimirRelatorioProcessoSeletivo*/**=ROLE_REL_PROCESSO_SELETIVO
 				/captacao/solicitacao/prepareRelatorio*/**=ROLE_REL_SOLICITACAO
+				/captacao/solicitacao/imprimirRelatorio*/**=ROLE_REL_SOLICITACAO
 				/captacao/solicitacao/list*/**=ROLE_MOV_SOLICITACAO
 				/captacao/produtividade/*/**=ROLE_REL_PRODUTIVIDADE
+				/captacao/candidato/prepareExamePalografico*/** = ROLE_MOV_PALOGRAFICO
+				/captacao/candidato/prepareUpdateExamePalografico*/** = ROLE_MOV_PALOGRAFICO
+				/captacao/candidato/updateExamePalografico*/** = ROLE_MOV_PALOGRAFICO
 				/captacao/candidato/infoCandidato*/**=ROLE_CAD_CANDIDATO,ROLE_MOV_SOLICITACAO
 				/captacao/candidato/showFoto*/**=ROLE_ANONYMOUS,ROLE_CAD_CANDIDATO
 				/captacao/formacao/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
@@ -293,8 +301,11 @@
 				/captacao/solicitacao/*/**=ROLE_MOV_SOLICITACAO
 				/captacao/conhecimento/*/**=ROLE_CAD_CONHECIMENTO
 				/captacao/etapaSeletiva/*/**=ROLE_CAD_ETAPA
-				/captacao/nivelCompetencia/*/**=ROLE_CAD_NIVEL_COMPETENCIA,ROLE_MOV_SOLICITACAO_CANDIDATO
-				/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action=ROLE_REL_COLAB_NIVEL_COMPETENCIA
+				/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
+				/captacao/nivelCompetencia/imprimirRelatorioCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
+				/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
+				/captacao/nivelCompetencia/imprimirMatrizCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
+				/captacao/nivelCompetencia/*/**=ROLE_CAD_NIVEL_COMPETENCIA,ROLE_MOV_SOLICITACAO_CANDIDATO	
 
 				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE
 				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO
@@ -306,14 +317,21 @@
 				/cargosalario/cargo/relatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
 				/cargosalario/cargo/*/**=ROLE_CAD_CARGO
 				/cargosalario/faixaSalarial/*/**=ROLE_CAD_CARGO
+				/cargosalario/faixaSalarialHistorico/analiseTabelaSalarialFiltro*/**=ROLE_MOV_TABELA
+				/cargosalario/faixaSalarialHistorico/analiseTabelaSalarialList*/**=ROLE_MOV_TABELA
+				/cargosalario/faixaSalarialHistorico/relatorioAnaliseTabelaSalarial*/**=ROLE_MOV_TABELA
 				/cargosalario/faixaSalarialHistorico/*/**=ROLE_CAD_CARGO
 				/cargosalario/grupoOcupacional/*/**=ROLE_CAD_GRUPO
-				/cargosalario/reajusteRelatorio/*/**=ROLE_REL_SIMULACAOREAJUSTE
+				/cargosalario/reajusteRelatorio/formFiltro*/**=ROLE_MOV_SIMULACAOREAJUSTE
+				/cargosalario/reajusteRelatorio/*/**=ROLE_REL_SIMULACAOREAJUSTE, ROLE_MOV_SIMULACAOREAJUSTE
+				/cargosalario/historicoColaborador/prepareRelatorioPromocoes*/** = ROLE_REL_PROMOCAO 
+				/cargosalario/historicoColaborador/imprimirRelatorioPromocoes*/** = ROLE_REL_PROMOCAO 
 				/cargosalario/historicoColaborador/prepareAjusteDissidio.action*=ROLE_MOV_DISSIDIO
 				/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action*=ROLE_CAD_AMBIENTE
 				/cargosalario/historicoColaborador/updateAmbientesEFuncoes.action*=ROLE_CAD_AMBIENTE
 				/cargosalario/historicoColaborador/prepareRelatorioSituacoes.action*=ROLE_REL_SITUACOES
-				/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action*=ROLE_REL_COLAB_SEM_REAJUSTE
+				/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes*/**=ROLE_REL_COLAB_SEM_REAJUSTE
+				/cargosalario/historicoColaborador/imprimirRelatorioUltimasPromocoes*/**=ROLE_REL_COLAB_SEM_REAJUSTE
 				/cargosalario/historicoColaborador/relatorioSituacoes.action*=ROLE_REL_SITUACOES
 				/cargosalario/historicoColaborador/painelIndicadores.action*=ROLE_INFO_PAINEL_IND
 				/cargosalario/historicoColaborador/*/**=ROLE_CAD_COLABORADOR
@@ -416,6 +434,7 @@
 				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
 				/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action*=ROLE_MOV_PERIODOEXPERIENCIA
 				
+				/avaliacao/avaliacaoExperiencia/imprimirAvaliacaoRespondida*/**=ROLE_MOV_PERIODOEXPERIENCIA
 				/avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER
 				/avaliacao/avaliacaoExperiencia/insertAvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER
 				/avaliacao/avaliacaoExperiencia/updateAvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER
@@ -429,6 +448,7 @@
 				/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList*=ROLE_USER
 				/avaliacao/desempenho/*/**=ROLE_MOV_AVALIACAO
 				
+				/avaliacao/modelo/imprimir*/** = ROLE_MOV_AVALIACAO
 				/avaliacao/modelo/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
 				/avaliacao/modeloCandidato/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
 				
