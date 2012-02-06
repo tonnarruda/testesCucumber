@@ -24,6 +24,24 @@ import com.fortes.rh.model.geral.Empresa;
 @SuppressWarnings("unchecked")
 public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements UsuarioDao
 {
+	public Usuario findByIdProjection(Long usuarioId)
+	{
+		Criteria criteria = getSession().createCriteria(Usuario.class, "u");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("u.id"), "id");
+		p.add(Projections.property("u.login"), "login");
+		p.add(Projections.property("u.senha"), "senha");
+		p.add(Projections.property("u.acessoSistema"), "acessoSistema");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("u.id", usuarioId));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Usuario.class));
+		
+		return (Usuario) criteria.uniqueResult();		
+	}
+	
 	public Usuario findByLogin(String login)
 	{
 		StringBuilder hql = new StringBuilder();
@@ -146,7 +164,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 	public void desativaAcessoSistema(Long colaboradorId)
 	{
-		String hql = "update Usuario u set u.acessoSistema = :acessoSistema where u.id = (select c.usuario.id from Colaborador  c where c.id = :colaboradorId)";
+		String hql = "update Usuario u set u.acessoSistema = :acessoSistema, u.login = null, u.senha = null where u.id = (select c.usuario.id from Colaborador  c where c.id = :colaboradorId)";
 
 		Query query = getSession().createQuery(hql);
 
