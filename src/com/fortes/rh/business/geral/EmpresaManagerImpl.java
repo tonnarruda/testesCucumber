@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
@@ -534,5 +535,14 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setGastoManager(GastoManager gastoManager) {
 		this.gastoManager = gastoManager;
+	}
+
+	//utilizado apenas para auditar a integração com AC
+	public void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC) {
+		Logger logger = Logger.getLogger(Empresa.class);
+		logger.info("Auditoria da integração");
+		logger.info("Empresa: " + empresa.getNome() + " id: " + empresa.getId());
+		logger.info("Antes: " + tavaIntegradaComAC);
+		logger.info("Depois: " + empresa.isAcIntegra() + " Grupo AC: " + empresa.getGrupoAC());
 	}
 }

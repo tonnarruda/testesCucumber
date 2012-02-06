@@ -14,7 +14,7 @@
 		@import url('<@ww.url includeParams='none' value='/webwork/jscalendar/calendar-blue.css' encode='false'/>');
 		
 		#text {margin:50px auto; width:500px}
-		.hotspot {color:#900; padding-bottom:1px; cursor:pointer}
+		#help_fardamento { cursor:pointer; margin-left:-5px; }
 		#tt {position:absolute; display:block;}
 		#tttop {display:block; height:5px; margin-left:5px; overflow:hidden}
 		#ttcont {display:block; padding:2px 12px 3px 7px; margin-left:5px; background:#666; color:#FFF}
@@ -81,8 +81,9 @@
 		<@ww.select label="Categorias de EPI" name="epi.tipoEPI.id" id="tipoEpi" listKey="id" listValue="nome" list="tipos" required="true" headerKey="" headerValue="Selecione..." />
 		<@ww.textfield label="Nome do Fabricante" id="fabricante" name="epi.fabricante" cssClass="inputNome" maxLength="100"  required="true"/>
 
-  		<@ww.checkbox label="Fardamento" id="fardamento" name="epi.fardamento" labelPosition="left" onclick="setCamposObrigatorios(this);" />
-		<span style="position: absolute; top: 186px; _top: 6px; left: 128px;" id="help_fardamento" class="hotspot" ><img src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /></span>
+  		<@ww.checkbox theme="simple" id="fardamento" name="epi.fardamento" onclick="setCamposObrigatorios(this);" /> 
+  		Fardamento
+		<img id="help_fardamento" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle"/>
 		<@ww.hidden name="epi.id" />
 		<@ww.token/>
 
@@ -97,15 +98,15 @@
 				<@ww.div cssClass="divInfo" name="epiHistorico" id="epiHistorico" style="display:'none';">
 					<h2>Primeiro Histórico</h2>
 					<ul>
-						<label for="data" class="desc"> A partir de:<span class="req" id="req">* </span>
+						<label for="data" class="desc"> A partir de:<span class="req" id="req">* </span></label>
 						<@ww.datepicker name="epiHistorico.data" id="data" value="${dataEpi}" cssClass="mascaraData"/>
-						<label for="CA" class="desc">Número do CA:<span class="req" id="requiredCA">* </span>
+						<label for="CA" class="desc">Número do CA:<span class="req" id="requiredCA">* </span></label>
 						<@ww.textfield name="epiHistorico.CA" id="CA" maxLength="20" />
-						<label for="vencimentoCA" class="desc">Vencimento do CA:<span class="req" id="requiredVencimentoCA">* </span>
+						<label for="vencimentoCA" class="desc">Vencimento do CA:<span class="req" id="requiredVencimentoCA">* </span></label>
 						<@ww.datepicker id="vencimentoCA" name="epiHistorico.vencimentoCA" value="${dataVencimento}" cssClass="mascaraData"/>
-						<label for="atenuacao" class="desc" liClass="liLeft">Percentual de Atenuação do Risco:
+						<label for="atenuacao" class="desc" liClass="liLeft">Percentual de Atenuação do Risco:</label>
 						<@ww.textfield id="atenuacao" name="epiHistorico.atenuacao" onkeypress="return somenteNumeros(event,'');" cssStyle="text-align: right; width: 30px;" maxLength="3" liClass="liLeft" after="%"/>
-						<label for="validadeUso" class="desc">Período Recomendado de uso (em dias):<span class="req" style="display:''">* </span>
+						<label for="validadeUso" class="desc">Período Recomendado de uso (em dias):<span class="req" style="display:''">* </span></label>
 						<@ww.textfield id="validadeUso" name="epiHistorico.validadeUso" onkeypress="return somenteNumeros(event,'');" cssStyle="text-align: right; width: 40px;" maxLength="4"/>
 					</ul>
 				</@ww.div>
