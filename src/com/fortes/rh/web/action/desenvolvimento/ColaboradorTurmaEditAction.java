@@ -204,7 +204,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	{
 		prepare();
 		turma = turmaManager.findByIdProjection(turma.getId());
-		if(prioridadeTreinamentos.isEmpty()){
+		if(prioridadeTreinamentos == null || prioridadeTreinamentos.isEmpty()){
 			addActionMessage("Para continuar é necessário cadastrar Prioridades de Treinamento para adicionar colaboradores.");
 			return "list";
 		}

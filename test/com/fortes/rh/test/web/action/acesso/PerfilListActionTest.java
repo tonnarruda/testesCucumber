@@ -3,11 +3,17 @@ package com.fortes.rh.test.web.action.acesso;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import mockit.Mockit;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.test.util.mockObjects.MockLongUtil;
+import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
+import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.acesso.PerfilListAction;
 
 public class PerfilListActionTest extends MockObjectTestCase
@@ -21,6 +27,9 @@ public class PerfilListActionTest extends MockObjectTestCase
         action = new PerfilListAction();
         manager = new Mock(PerfilManager.class);
         action.setPerfilManager((PerfilManager) manager.proxy());
+        
+        Mockit.redefineMethods(LongUtil.class, MockLongUtil.class);
+        Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
     }
 
     protected void tearDown() throws Exception
@@ -53,5 +62,23 @@ public class PerfilListActionTest extends MockObjectTestCase
     	assertEquals(action.list(), "success");
     	assertEquals(action.getPerfils(), perfilsAux);
     	manager.verify();
+    }
+    
+    public void testImprimirPerfis() throws Exception 
+    {
+    	manager.expects(once()).method("findPapeis");
+    	assertEquals("success", action.imprimirPerfis() );
+	}
+    
+    public void testDelete() throws Exception 
+    {
+    	Perfil perfil1 = new Perfil();
+    	perfil1.setId(1L);
+    	perfil1.setNome("Perfil 1");
+    	perfil1.setPapeis(null);
+    	action.setPerfil(perfil1);
+    	
+    	manager.expects(once()).method("remove");
+    	assertEquals("success", action.delete());
     }
 }

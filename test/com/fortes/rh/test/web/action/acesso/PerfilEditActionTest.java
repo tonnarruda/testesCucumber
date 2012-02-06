@@ -10,11 +10,15 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.acesso.PerfilManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockStringUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.acesso.PerfilEditAction;
 import com.opensymphony.xwork.ActionContext;
 
@@ -23,6 +27,7 @@ public class PerfilEditActionTest extends MockObjectTestCase
 	private PerfilEditAction action;
 	private Mock manager;
 	private Mock papelManager;
+	private Mock parametrosDoSistemaManager;
 
     protected void setUp() throws Exception
     {
@@ -33,9 +38,12 @@ public class PerfilEditActionTest extends MockObjectTestCase
         
         papelManager = mock(PapelManager.class);
         action.setPapelManager((PapelManager) papelManager.proxy());
+		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager)parametrosDoSistemaManager.proxy());
         
         Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
+        Mockit.redefineMethods(StringUtil.class, MockStringUtil.class);
     }
 
     protected void tearDown() throws Exception
@@ -105,7 +113,33 @@ public class PerfilEditActionTest extends MockObjectTestCase
     
     public void testPrepareModulos()
     {
+    	Perfil perfil = new Perfil();
+    	perfil.setId(1L);
+    	perfil.setNome("Perfil 1");
+    	action.setPerfil(perfil);
+
+    	manager.expects(once()).method("montaPermissoes").with(eq(perfil));
+    	papelManager.expects(once()).method("getPerfilOrganizado").will(returnValue("ok"));
     	
+    	try {
+    		assertEquals("success",action.prepareModulos());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public void testUpdateModulos()
+    {
+    	parametrosDoSistemaManager.expects(once()).method("updateModulos");
+    	manager.expects(once()).method("montaPermissoes");
+    	papelManager.expects(once()).method("getPerfilOrganizado").will(returnValue("ok"));
+    	
+    	try {
+    		assertEquals("success",action.updateModulos());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
     
     public void testGetSet()
