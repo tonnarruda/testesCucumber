@@ -87,15 +87,21 @@
 	<#-- form utilizado pela paginação -->
 	<@ww.form name="form" id="form" action="list.action" validate="true" method="POST">
 		<@ww.hidden name="curso.id" />
-		
 		<@ww.hidden id="pagina" name="page"/>
 	</@ww.form>
 
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	<@display.table name="turmas" id="turma" class="dados" >
-		<@display.column title="Ações" style="width:170px">
+		<@display.column title="Ações" style="width:190px">
+		
 			<@ww.hidden name="turma.id" value="" />
+			
+			<#if turma.liberada>
+				<a href="javascript:newConfirm('Deseja bloquear esta turma?', function(){window.location='bloquear.action?turma.id=${turma.id}&curso.id=${curso.id}&page=${page}'});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
+			<#else>
+				<a href="javascript:newConfirm('Deseja liberar esta turma?', function(){window.location='liberar.action?turma.id=${turma.id}&curso.id=${curso.id}&page=${page}'});"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
+			</#if>
 			<a href="../colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			<a href="prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="enviarEmail(${turma.id});" ><img border="0" title="Enviar aviso por email" src="<@ww.url value="/imgs/icon_email.gif"/>"></a>

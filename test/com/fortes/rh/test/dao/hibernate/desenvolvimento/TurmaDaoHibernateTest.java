@@ -724,6 +724,30 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		assertEquals(0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, 999934L));
 	}
 	
+	public void testUpdateLiberada() {
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Turma turma = TurmaFactory.getEntity();
+		turma.setLiberada(true);
+		turma.setEmpresa(empresa);
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		turmaDao.updateLiberada(turma.getId(), false);
+		
+		Turma retorno = turmaDao.findByIdProjection(turma.getId());
+		assertEquals(false, retorno.isLiberada());
+
+		turmaDao.updateLiberada(turma.getId(), true);
+		
+		retorno = turmaDao.findByIdProjection(turma.getId());
+		assertEquals(true, retorno.isLiberada());		
+	}
+	
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)
 	{
 		this.colaboradorDao = colaboradorDao;

@@ -111,7 +111,7 @@ public class Index extends ActionSupport
 
 			questionarios = questionarioManager.findQuestionarioPorUsuario(usuarioId);
 			
-			colaboradorQuestionariosTeD = colaboradorQuestionarioManager.findQuestionarioByTurmaRealizadaPorUsuario(usuarioId);
+			colaboradorQuestionariosTeD = colaboradorQuestionarioManager.findQuestionarioByTurmaLiberadaPorUsuario(usuarioId);
 			
 			colaborador = colaboradorManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), empresaId);
 

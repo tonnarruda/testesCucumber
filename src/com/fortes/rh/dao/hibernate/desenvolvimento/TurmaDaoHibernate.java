@@ -44,6 +44,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
     	p.add(Projections.property("t.instituicao"), "instituicao");
     	p.add(Projections.property("t.qtdParticipantesPrevistos"), "qtdParticipantesPrevistos");
     	p.add(Projections.property("t.realizada"), "realizada");
+    	p.add(Projections.property("t.liberada"), "liberada");
     	p.add(Projections.property("c.id"), "cursoId");
     	p.add(Projections.property("c.nome"), "cursoNome");
     	p.add(Projections.property("c.cargaHoraria"), "projectionCursoCargaHoraria");
@@ -240,6 +241,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		p.add(Projections.groupProperty("t.dataPrevIni"), "dataPrevIni");
 		p.add(Projections.groupProperty("t.dataPrevFim"), "dataPrevFim");
 		p.add(Projections.groupProperty("t.empresa.id"), "projectionEmpresaId");
+		p.add(Projections.groupProperty("t.liberada"), "liberada");
 		p.add(Projections.alias(Projections.count("a.id"), "qtdAvaliacoes"));
 		
 		p.add(Projections.groupProperty("t.instrutor"), "instrutor");
@@ -523,4 +525,14 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
     	return valor == null ? 0.0 : valor;
 	}
 
+
+	public void updateLiberada(Long turmaId, Boolean liberada) {
+		String hql = "update Turma set liberada = :liberada where id = :turmaId";
+
+		Query query = getSession().createQuery(hql);
+		query.setLong("turmaId", turmaId);
+		query.setBoolean("liberada", liberada);
+
+		query.executeUpdate();
+	}
 }

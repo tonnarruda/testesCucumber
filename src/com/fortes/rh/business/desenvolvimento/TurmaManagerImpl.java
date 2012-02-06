@@ -316,6 +316,10 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		
 		return percentual;
 	}
+	
+	public void updateLiberada(Long turmaId, Boolean liberada) {
+		getDao().updateLiberada(turmaId, liberada);		
+	}
 
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;

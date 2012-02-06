@@ -187,6 +187,26 @@ public class TurmaListActionTest extends MockObjectTestCase
     	assertEquals("successFiltroPlanoTreinamento", action.delete());
     }
 
+    public void testLiberar() 
+    {
+    	Turma turma = TurmaFactory.getEntity(1L);
+    	action.setTurma(turma);
+    	
+    	turmaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING);
+    	
+    	assertEquals("success", action.liberar());
+	}
+    
+    public void testBloquear() 
+    {
+    	Turma turma = TurmaFactory.getEntity(1L);
+    	action.setTurma(turma);
+    	
+    	turmaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING);
+    	
+    	assertEquals("success", action.bloquear());
+    }
+    
     public void testGets() throws Exception
     {
     	action.setDataSource(new ArrayList<ColaboradorTurma>());

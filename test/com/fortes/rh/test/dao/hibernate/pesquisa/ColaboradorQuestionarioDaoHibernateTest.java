@@ -922,7 +922,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(colaboradorQuestionario3, colaboradorQuestionarioDao.findByColaboradorAvaliacao(maria.getId(), avaliacao.getId()));
 	}
 	
-	public void testFindQuestionarioByTurmaRealizadaPorUsuario()
+	public void testFindQuestionarioByTurmaLiberadaPorUsuario()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -944,7 +944,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		avaliacaoTurmaDao.save(avaliacaoTurma);
 
 		Turma turma = TurmaFactory.getEntity();
-		turma.setRealizada(true);
+		turma.setLiberada(true);
 		turma.setAvaliacaoTurmas(Arrays.asList(avaliacaoTurma));
 		turmaDao.save(turma);
 
@@ -953,7 +953,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		colaboradorTurma.setTurma(turma);
 		colaboradorTurmaDao.save(colaboradorTurma);
 		
-		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioDao.findQuestionarioByTurmaRealizadaPorUsuario(usuario.getId());
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioDao.findQuestionarioByTurmaLiberadaPorUsuario(usuario.getId());
 		
 		ColaboradorQuestionario colaboradorQuestionario = (ColaboradorQuestionario)colaboradorQuestionarios.toArray()[0];
 		

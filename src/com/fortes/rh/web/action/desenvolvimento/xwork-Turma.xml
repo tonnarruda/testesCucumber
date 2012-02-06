@@ -6,7 +6,14 @@
 		<action name="updateFilter" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="updateFilter">
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
-	
+			<action name="liberar" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="liberar">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&page=${page}]]></result>
+		</action>
+		<action name="bloquear" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="bloquear">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${curso.id}&page=${page}]]></result>
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="list">
 			<interceptor-ref name="defaultListStack">
 	    		<param name="scope.session">curso.id</param>

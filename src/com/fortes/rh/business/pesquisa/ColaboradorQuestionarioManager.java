@@ -49,6 +49,6 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	Double getMediaPeformance(Long avaliadoId, Long avaliacaoDesempenhoId);
 	Integer getQtdavaliadores(Long avaliacaoDesempenhoId);
 	ColaboradorQuestionario findByColaboradorAvaliacao(Colaborador colaborador, Avaliacao avaliacao);
-	Collection<ColaboradorQuestionario> findQuestionarioByTurmaRealizadaPorUsuario(Long usuarioId);
+	Collection<ColaboradorQuestionario> findQuestionarioByTurmaLiberadaPorUsuario(Long usuarioId);
 	void removeByCandidato(Long candidatoId);
 }

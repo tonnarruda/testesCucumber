@@ -11,6 +11,7 @@ import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -28,6 +29,9 @@ import com.opensymphony.xwork.Action;
 @SuppressWarnings("serial")
 public class TurmaListAction extends MyActionSupportList
 {
+	private final Boolean LIBERADA = true;
+	private final Boolean BLOQUEADA = false;
+	
 	private TurmaManager turmaManager;
 	private CursoManager cursoManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
@@ -177,6 +181,37 @@ public class TurmaListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	public String liberar() 
+	{
+		try 
+		{
+			turmaManager.updateLiberada(turma.getId(), LIBERADA);
+			addActionMessage("Turma liberada com sucesso.");
+		}
+		catch (Exception e) 
+		{
+			addActionError("Não foi possível liberar esta turma.");
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	public String bloquear() 
+	{
+		try 
+		{
+			turmaManager.updateLiberada(turma.getId(), BLOQUEADA);
+			addActionMessage("Turma bloqueada com sucesso.");
+		}
+		catch (Exception e) 
+		{
+			addActionError("Não foi possível bloquear esta Avaliação.");
+			e.printStackTrace();
+		}
+		
+		return SUCCESS;
+	}
+	
 	public String filtroCronogramaTreinamento() throws Exception
 	{
 		return Action.SUCCESS;
