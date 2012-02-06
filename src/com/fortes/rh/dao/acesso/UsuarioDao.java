@@ -28,4 +28,7 @@ public interface UsuarioDao extends GenericDao<Usuario>
 	public void setUltimoLogin(Long id);
 
 	public void desativaSuperAdmin();
+	
+	public Usuario findByIdProjection(Long usuarioId);
+
 }

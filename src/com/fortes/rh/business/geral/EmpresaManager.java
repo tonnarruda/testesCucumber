@@ -11,6 +11,8 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TEmpresa;
+import com.fortes.rh.security.spring.aop.callback.EmpresaAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 import com.fortes.web.tags.CheckBox;
 
 public interface EmpresaManager extends GenericManager<Empresa>
@@ -44,4 +46,6 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Collection<Empresa> findComCodigoAC();
 	boolean verificaInconcistenciaIntegracaoAC(Empresa empresa);
 	Collection<String> verificaIntegracaoAC(Empresa empresa);
+	@Audita(operacao="Integração com AC", auditor=EmpresaAuditorCallbackImpl.class)
+	void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC);
 }

@@ -46,12 +46,15 @@ public class AuditoriaGeralAdvice implements MethodInterceptor {
 		AuditorCallback callback = this.getAuditorCallback(metodo);
 		Auditavel auditavel = callback.processa(metodo);
 		
-		String chave = auditavel.getChave();
-		String dados = auditavel.getDados();
-		String modulo = auditavel.getModulo();
-		String operacao = auditavel.getOperacao();
-		
-		auditoriaManager.audita(modulo, operacao, chave, dados);
+		if(auditavel != null)
+		{
+			String chave = auditavel.getChave();
+			String dados = auditavel.getDados();
+			String modulo = auditavel.getModulo();
+			String operacao = auditavel.getOperacao();
+			
+			auditoriaManager.audita(modulo, operacao, chave, dados);			
+		}
 		
 		return metodo.getRetornoDoMetodo();
 	}

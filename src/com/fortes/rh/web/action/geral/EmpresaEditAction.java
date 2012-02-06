@@ -188,7 +188,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			return Action.INPUT;
 		}
 		
+		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());
 		empresaManager.update(empresa);
+		empresaManager.auditaIntegracao(empresa, tavaIntegradaComAC);
 		atualizaEmpresaSessao();
 
 		return Action.SUCCESS;

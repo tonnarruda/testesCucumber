@@ -135,14 +135,20 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario.setAcessoSistema(true);
 		usuario.setLogin("teste0123568");
-		usuario = usuarioDao.save(usuario);
+		usuario.setSenha("1234");
+		usuarioDao.save(usuario);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setUsuario(usuario);
 		colaborador = colaboradorDao.save(colaborador);
 		
 		usuarioDao.desativaAcessoSistema(colaborador.getId());
-		assertEquals(false, usuarioDao.findByLogin(usuario.getLogin()).isAcessoSistema());
+		
+		Usuario usuarioRetorno = usuarioDao.findByIdProjection(usuario.getId());
+		
+		assertEquals(false, usuarioRetorno.isAcessoSistema());
+		assertNull(usuarioRetorno.getLogin());
+		assertNull(usuarioRetorno.getSenha());
 	}
 
 	public void testExisteLogin()
