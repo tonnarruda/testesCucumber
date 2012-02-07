@@ -7,7 +7,7 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
-		<title>Solicitações de Pessoal</title>
+		<title>Solicitação de Pessoal</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
 		<#assign validarCamposSuspende = "return validaFormulario('formSuspendeSolicitacao', new Array('obsSuspensao'), null)"/>
