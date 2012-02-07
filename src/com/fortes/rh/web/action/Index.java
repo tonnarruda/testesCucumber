@@ -85,7 +85,7 @@ public class Index extends ActionSupport
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
 
-	public String index() throws Exception 
+	public String index()
 	{
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setHeader("Pragma", "no-cache");
@@ -146,8 +146,8 @@ public class Index extends ActionSupport
 			e.printStackTrace();
 			addActionError(e.getMessage());
 		}
-		throw new Exception("Teste de excecao lancada");
-		//return Action.SUCCESS;
+
+		return Action.SUCCESS;
 	}
 
 	private void validaAvaliacoesDesempenho()
