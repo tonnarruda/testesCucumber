@@ -165,6 +165,8 @@
       <mapping class="com.fortes.rh.model.geral.TipoDespesa" />
       <mapping class="com.fortes.rh.model.geral.TurmaTipoDespesa" />
       <mapping class="com.fortes.rh.model.geral.Providencia" />
+      <mapping class="com.fortes.rh.model.geral.GerenciadorComunicacao" />
   </session-factory>
+
 </hibernate-configuration>
 

@@ -91,6 +91,7 @@ import com.fortes.rh.test.business.geral.EstabelecimentoManagerTest;
 import com.fortes.rh.test.business.geral.EstadoManagerTest;
 import com.fortes.rh.test.business.geral.GastoEmpresaManagerTest;
 import com.fortes.rh.test.business.geral.GastoManagerTest;
+import com.fortes.rh.test.business.geral.GerenciadorComunicacaoManagerTest;
 import com.fortes.rh.test.business.geral.GrupoACManagerTest;
 import com.fortes.rh.test.business.geral.GrupoGastoManagerTest;
 import com.fortes.rh.test.business.geral.HistoricoBeneficioManagerTest;
@@ -235,6 +236,7 @@ import com.fortes.rh.test.dao.hibernate.geral.EstadoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.GastoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.GastoEmpresaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.GastoEmpresaItemDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.GerenciadorComunicacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.GrupoACDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.GrupoGastoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.HistoricoBeneficioDaoHibernateTest;
@@ -465,6 +467,7 @@ import com.fortes.rh.test.web.action.geral.EmpresaListActionTest;
 import com.fortes.rh.test.web.action.geral.EstabelecimentoEditActionTest;
 import com.fortes.rh.test.web.action.geral.EstabelecimentoListActionTest;
 import com.fortes.rh.test.web.action.geral.GastoEmpresaEditActionTest;
+import com.fortes.rh.test.web.action.geral.GerenciadorComunicacaoEditActionTest;
 import com.fortes.rh.test.web.action.geral.GrupoACEditActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoBeneficioEditActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoBeneficioListActionTest;
@@ -860,6 +863,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ProvidenciaDaoHibernateTest.class);
         suite.addTestSuite(ProvidenciaManagerTest.class);
         suite.addTestSuite(ProvidenciaEditActionTest.class);
+        suite.addTestSuite(GerenciadorComunicacaoDaoHibernateTest.class);
+        suite.addTestSuite(GerenciadorComunicacaoManagerTest.class);
+        suite.addTestSuite(GerenciadorComunicacaoEditActionTest.class);
 
         
         //contatoTest embedded Colaborador

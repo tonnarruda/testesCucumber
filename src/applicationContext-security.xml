@@ -273,7 +273,7 @@
 				/geral/tipoDocumento/*/**=ROLE_TIPO_DOCUMENTO
 				/geral/tipoDespesa/*/**=ROLE_TIPO_DESPESA
 				/geral/providencia/*/**=ROLE_PROVIDENCIA
-
+				/geral/gerenciadorComunicacao/*/**=ROLE_CAD_GERENCIADOR_COMUNICACAO
 
 				/captacao/motivoSolicitacao/*/**=ROLE_MOTIVO_SOLICITACAO
 				/captacao/areaInteresse/*/**=ROLE_CAD_AREA
