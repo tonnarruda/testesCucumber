@@ -232,7 +232,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="gerenciadorComunicacaoDaoTarget" class="com.fortes.rh.dao.hibernate.geral.GerenciadorComunicacaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

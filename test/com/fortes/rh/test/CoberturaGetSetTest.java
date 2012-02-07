@@ -137,6 +137,7 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Gasto;
 import com.fortes.rh.model.geral.GastoEmpresa;
 import com.fortes.rh.model.geral.GastoEmpresaItem;
+import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.GrupoGasto;
 import com.fortes.rh.model.geral.HistoricoBeneficio;
@@ -947,6 +948,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new TipoDespesaEditAction());
 		cobreGetSet(new TurmaTipoDespesa());
 		cobreGetSet(new Providencia());
+		cobreGetSet(new GerenciadorComunicacao());
 
 	}
 	

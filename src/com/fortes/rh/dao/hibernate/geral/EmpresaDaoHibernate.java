@@ -172,6 +172,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		JDBCConnection.executeQuery(new String[]{executaTrigger(acao)});
 		
 		String[] sqls = new String[]{
+				"delete from gerenciadorcomunicacao where empresa_id = " + id + ";",
 				"delete from faixasalarialhistorico where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + "));",
 				"delete from anuncio where solicitacao_id in (select id from solicitacao where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + ")));",
 				"delete from historicocandidato where candidatosolicitacao_id in (select id from candidatosolicitacao where solicitacao_id in (select id from solicitacao where faixasalarial_id in (select Id from faixasalarial where cargo_id in (select ID from cargo where empresa_id = " + id + "))));",
