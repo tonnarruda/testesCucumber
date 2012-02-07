@@ -269,7 +269,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			outputStream.close();
 
 			// Compacta o arquivo
-			ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh");// cria o arquivo candidatos.zip
+			ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh", true);// cria o arquivo candidatos.zip
 			zipOutputStream.close();
 
 			// Envia o arquivo por email

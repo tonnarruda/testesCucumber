@@ -145,4 +145,7 @@
 		<property name="mail" ref="mail"/>
 		<property name="acPessoalClient" ref="acPessoalClient"/>
 	</bean>
+	<bean id="morroDWR" class="com.fortes.rh.web.dwr.MorroDWR">
+	  	<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
+	</bean>
 </beans>
