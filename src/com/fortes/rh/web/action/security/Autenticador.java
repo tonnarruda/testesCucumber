@@ -7,6 +7,7 @@ import remprot.RPClient;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.config.LogCleanerJob;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.util.DateUtil;
 import com.opensymphony.xwork.ActionSupport;
 
 @SuppressWarnings("serial")
@@ -16,6 +17,7 @@ public class Autenticador extends ActionSupport
 	private String codigoOperacional;
 	private String cnpj;
 	private String nome;
+	private String ultimoReset;
 
 	ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private static Logger logger = Logger.getLogger(Autenticador.class);
@@ -30,6 +32,7 @@ public class Autenticador extends ActionSupport
 
 		try {
 			codigoOperacional = client.requestKey(cnpj, nome, false);
+			ultimoReset = DateUtil.formataDiaMesAno(client.getLastResetDate());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -102,5 +105,9 @@ public class Autenticador extends ActionSupport
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public String getUltimoReset() {
+		return ultimoReset;
 	}
 }
