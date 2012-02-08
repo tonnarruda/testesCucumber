@@ -1,32 +1,39 @@
 package com.fortes.rh.model.dicionario;
 
-import java.util.LinkedHashMap;
-
-@SuppressWarnings("serial")
-public class EnviarPara extends LinkedHashMap<Integer, String>
+public enum EnviarPara
 {
 
-	public static final Integer USUARIO = 1;
-	public static final Integer GESTOR_AREA = 2;
-	public static final Integer AVULSO = 3;
-	public EnviarPara()
+	USUARIO (1, "Usuário"),
+	GESTOR_AREA (2, "Gestor da área organizacional"),
+	CANDIDATO_NAO_APTO (3, "Candidatos não aptos"),
+	AVULSO (99, "Avulso");
+	
+	EnviarPara(Integer id , String descricao)
 	{
-		put(USUARIO, "Usuário");
-		put(GESTOR_AREA, "Gestor da Área");
-		put(AVULSO, "Avulso");
+		this.id = id;
+		this.descricao = descricao;
+	}
+
+	private Integer id;
+	private String descricao;
+	
+	public Integer getId() 
+	{
+		return id;
+	}
+	public String getDescricao() 
+	{
+		return descricao;
 	}
 	
-	public static final String getDescricao(int enviarPara)
+	public static final String getDescricaoById(int id)
 	{
-		switch (enviarPara) {
-		case 1:
-			return "Usuário";
-		case 2:
-			return "Gestor da Área";
-		case 3:
-			return "Avulso";
-		default:
-			return "";
+		for (EnviarPara ep : EnviarPara.values()) 
+		{
+			if(ep.getId() == id)
+				return ep.getDescricao();
 		}
+		
+		return "";
 	}
 }

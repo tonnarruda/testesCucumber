@@ -2,11 +2,6 @@ package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
 
-import com.fortes.rh.model.dicionario.EnviarPara;
-import com.fortes.rh.model.dicionario.MeioComunicacao;
-import com.fortes.rh.model.dicionario.Operacao;
-import com.fortes.rh.model.geral.GerenciadorComunicacao;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.dicionario.EnviarPara;
+import com.fortes.rh.model.dicionario.MeioComunicacao;
+import com.fortes.rh.model.dicionario.Operacao;
 
 @SuppressWarnings("serial")
 @Entity
@@ -22,21 +20,14 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 {
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Empresa empresa;
+	
 	private Integer operacao;
 	private Integer meioComunicacao;
 	private Integer enviarPara;
+
 	@Column(length=200)
     private String destinatario;
 
-    public Integer getOperacao() {
-		return operacao;
-	}
-    public String getOperacaoDescricao() {
-    	return Operacao.getDescricao(operacao);
-    }
-	public void setOperacao(Integer operacao) {
-		this.operacao = operacao;
-	}
 	public Integer getMeioComunicacao() {
 		return meioComunicacao;
 	}
@@ -44,13 +35,13 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 		this.meioComunicacao = meioComunicacao;
 	}
 	public String getMeioComunicacaoDescricao() {
-    	return MeioComunicacao.getDescricao(meioComunicacao);
+    	return MeioComunicacao.getDescricaoById(meioComunicacao);
     }
 	public Integer getEnviarPara() {
 		return enviarPara;
 	}
 	public String getEnviarParaDescricao(){
-		return EnviarPara.getDescricao(enviarPara);
+		return EnviarPara.getDescricaoById(enviarPara);
 	}
 	public void setEnviarPara(Integer enviarPara) {
 		this.enviarPara = enviarPara;
@@ -66,8 +57,20 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 	}
 	public Empresa getEmpresa() {
 		return empresa;
-	}	
-    
-    
-	
+	}
+	public Integer getOperacao() {
+		return operacao;
+	}
+	public void setOperacao(Integer operacao) {
+		this.operacao = operacao;
+	}
+	public String getOperacaoDescricao() {
+		return Operacao.getDescricaoById(operacao);
+	}
+	public String getDestinatarioFormatado() {
+		if(this.destinatario != null && this.destinatario.length() > 60)
+			return this.destinatario.substring(0, 57) + "...";
+		
+		return this.destinatario;
+	}
 }
