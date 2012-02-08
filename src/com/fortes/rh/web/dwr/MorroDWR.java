@@ -25,8 +25,8 @@ public class MorroDWR
 
 	public String enviar(String mensagem, String url) 
 	{
-//		PostMethod filePost = new PostMethod("http://www.fortesinformatica.com.br/cgi-bin/filebox/send");
-		PostMethod filePost = new PostMethod("http://localhost/morro.php");
+		PostMethod filePost = new PostMethod("http://www.fortesinformatica.com.br/cgi-bin/filebox/send");
+//		PostMethod filePost = new PostMethod("http://localhost/morro.php");
 		
 		File printErro = null, logErro = null, zip = null;
 		String retorno = "";

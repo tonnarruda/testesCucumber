@@ -22,8 +22,6 @@ import com.fortes.rh.util.ArquivoUtil;
 
 public class MorroManagerImpl implements MorroManager
 {
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	
 	private final String PATH = ArquivoUtil.getRhHome() + File.separatorChar;
 	
 	public File getPrintScreen() throws Exception 
@@ -77,7 +75,7 @@ public class MorroManagerImpl implements MorroManager
 				new FilePart(zip.getName(), zip), 
 				new StringPart("FileName", zip.getName()), 
 				new StringPart("Description", "Erro identificado no cliente " + clienteNome), 
-				new StringPart("Att", ""), 
+				new StringPart("Att", "suporte.rh@grupofortes.com.br"), 
 				new StringPart("ReplyTo", "")
 			};
 
@@ -86,14 +84,9 @@ public class MorroManagerImpl implements MorroManager
 		HttpClient httpClient = new HttpClient();
 		int status = httpClient.executeMethod(filePost);
 		
-		// String retorno = filePost.getResponseBodyAsString();
-		// String msgStatus = HttpStatus.getStatusText(status);
+//		String retorno = filePost.getResponseBodyAsString();
+//		String msgStatus = HttpStatus.getStatusText(status);
 		
 		return status;
-	}
-	
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) 
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }
