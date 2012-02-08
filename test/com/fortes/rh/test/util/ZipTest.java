@@ -32,7 +32,7 @@ public class ZipTest extends TestCase
         out.write("aString");
         out.close();
 
-		ZipOutputStream zipOutputStream = zip.compress(new java.io.File[] { file }, "file", ".fortesrh");
+		ZipOutputStream zipOutputStream = zip.compress(new java.io.File[] { file }, "file", ".fortesrh", true);
 
 		assertNotNull("Test 1", zipOutputStream);
 
@@ -40,7 +40,7 @@ public class ZipTest extends TestCase
 
 		try
 		{
-			zipOutputStream = zip.compress(new java.io.File[] { null }, "file", ".fortesrh");
+			zipOutputStream = zip.compress(new java.io.File[] { null }, "file", ".fortesrh", true);
 		}
 		catch (Exception e)
 		{
@@ -79,7 +79,7 @@ public class ZipTest extends TestCase
         out.write("aString");
         out.close();
 
-		zip.compress(new java.io.File[] { file }, "file", ".fortesrh");
+		zip.compress(new java.io.File[] { file }, "file", ".fortesrh", true);
 
 		zip.unzip("file.fortesrh", "file.txt");
 		zip.unzip("file.fortesrh", "");

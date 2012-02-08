@@ -14,8 +14,15 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 		
 	<script type="text/javascript">
-		function validaEmailDestinatario()
+		function validacoes()
 		{
+		 	if($('#operacao').val() == 0)//Operacao.NAO_INFORMADO
+			{
+				$('#operacao').css("background-color", "#FFEEC2");
+				jAlert("Preencha o campo indicado.");
+				return false;	
+			}
+		 	
 		 	var submeter = true;
 			if($('#enviarPara').val() == 99)//EviarPara.Avulso = 99
 			{	
@@ -34,13 +41,6 @@
 						submeter = false;						
 					}
 				});
-			}
-			
-			if($('#operacao').val() == 0)//Operacao.NAO_INFORMADO
-			{
-				$('#operacao').css("background-color", "#FFEEC2");
-				jAlert("Preencha o campo indicado.");
-				return false;	
 			}
 			
 			if(submeter)
@@ -102,7 +102,7 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="validaEmailDestinatario();" class="btnGravar"></button>
+			<button onclick="validacoes();" class="btnGravar"></button>
 			<button onclick="window.location='list.action'" class="btnVoltar"></button>
 		</div>
 	</body>

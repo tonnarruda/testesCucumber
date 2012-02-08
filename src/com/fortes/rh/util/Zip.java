@@ -18,10 +18,10 @@ public class Zip
 	 *
 	 * @param files       :: Arquivos a serem compactados
 	 * @param zipFileName :: Nome do arquivo Zip gerado.
-	 *
+	 * @param manterDiretorios TODO
 	 * @return
 	 */
-	public ZipOutputStream compress(File[] files, String zipFileName, String extensao)
+	public ZipOutputStream compress(File[] files, String zipFileName, String extensao, boolean manterDiretorios)
 	{
 	    // Create a buffer for reading the files
 	    byte[] buf = new byte[2048];
@@ -37,7 +37,10 @@ public class Zip
 	        {
 	        	FileInputStream in = new FileInputStream(file);
 	            // Add ZIP entry to output stream.
-	            out.putNextEntry(new ZipEntry(file.getPath()));//file.getAbsolutePath()??
+	        	if (manterDiretorios)
+	        		out.putNextEntry(new ZipEntry(file.getPath()));//file.getAbsolutePath()??
+	        	else
+	        		out.putNextEntry(new ZipEntry(file.getName()));
 
 	            // Transfer bytes from the file to the ZIP file
 	            int len;

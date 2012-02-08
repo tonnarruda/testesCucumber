@@ -712,7 +712,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		outputStream.flush();
 		outputStream.close();
 
-		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh");// cria o arquivo candidatos.zip
+		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh", true);// cria o arquivo candidatos.zip
 		zipOutputStream.close();
 
 		zipFile = new java.io.File(fileName + ".fortesrh");
@@ -779,7 +779,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		outputStream.flush();
 		outputStream.close();
 
-		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh");// cria o arquivo candidatos.zip
+		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh", true);// cria o arquivo candidatos.zip
 		zipOutputStream.close();
 
 		zipFile = new java.io.File(fileName + ".fortesrh");
@@ -858,7 +858,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		outputStream.flush();
 		outputStream.close();
 
-		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh");// cria o arquivo candidatos.zip
+		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh", true);// cria o arquivo candidatos.zip
 		zipOutputStream.close();
 
 		zipFile = new java.io.File(fileName + ".fortesrh");
@@ -934,7 +934,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		outputStream.flush();
 		outputStream.close();
 
-		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh");// cria o arquivo candidatos.zip
+		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh", true);// cria o arquivo candidatos.zip
 		zipOutputStream.close();
 
 		zipFile = new java.io.File(fileName + ".fortesrh");
@@ -1008,7 +1008,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		outputStream.flush();
 		outputStream.close();
 
-		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh");// cria o arquivo candidatos.zip
+		ZipOutputStream zipOutputStream = new Zip().compress(new java.io.File[] { xmlFile }, fileName, ".fortesrh", true);// cria o arquivo candidatos.zip
 		zipOutputStream.close();
 
 		zipFile = new java.io.File(fileName + ".fortesrh");
