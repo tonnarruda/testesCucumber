@@ -34,13 +34,7 @@
 	<script type="text/javascript" src="<ww:url includeParams="none" value="/dwr/interface/MorroDWR.js"/>"></script>
 	<script type="text/javascript" src="<ww:url includeParams="none" value="/dwr/engine.js"/>"></script>
 	<script type="text/javascript">
-		var mensagem;
-		<ww:if test="exception.message != null">
-			mensagem = '<ww:property value="%{exception.message}"/>';
-		</ww:if>
-		<ww:else>
-			mensagem = 'Erro interno do servidor';
-		</ww:else>
+		var mensagem = '<ww:property value="%{exception.message}" default="Erro interno do servidor"/>';
 		
 		$(function() {
 			$('#envioErro').dialog({title: 'Fortes RH',
@@ -50,7 +44,7 @@
 										    {
 										        text: "Enviar",
 										        click: function() {
-										        	MorroDWR.enviar(mensagem, '', function(dados) { alert(dados); });
+										        	MorroDWR.enviar(mensagem, location.href, function(dados) { alert(dados); });
 										        }
 										    },
 										    {
@@ -87,12 +81,7 @@
 					<img src="<ww:url includeParams="none" value="/imgs/erro_msg.gif"/>">
 				</td>
 				<td>
-					<ww:if test="exception.message != null">
-						<ww:property value="%{exception.message}"/>
-					</ww:if>
-					<ww:else>
-						Erro interno do servidor
-					</ww:else>
+					<ww:property value="%{exception.message}" default="Erro interno do servidor"/>
 				</td>
 			</tr>
 		</table>
