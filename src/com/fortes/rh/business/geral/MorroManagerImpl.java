@@ -60,10 +60,10 @@ public class MorroManagerImpl implements MorroManager
 		texto.append("MemoriaLivre=" + Runtime.getRuntime().freeMemory() + "\n");
 		texto.append("MemoriaTotal=" + Runtime.getRuntime().totalMemory() + "\n");
 		
-	    File[] roots = File.listRoots();
-	    int i = 1;
-	    for (File root : roots) 
-	    	texto.append("Disco" + i++ + "=Raiz: " + root.getAbsolutePath() + ", Espaco Total: " + root.getTotalSpace() + " bytes, Espaco Livre: " + root.getFreeSpace() + " bytes, Espaco Utilizavel: " + root.getUsableSpace() + " bytes\n");
+//	    File[] roots = File.listRoots();
+//	    int i = 1;
+//	    for (File root : roots) 
+//	    	texto.append("Disco" + i++ + "=Raiz: " + root.getAbsolutePath() + ", Espaco Total: " + root.getTotalSpace() + " bytes, Espaco Livre: " + root.getFreeSpace() + " bytes, Espaco Utilizavel: " + root.getUsableSpace() + " bytes\n");
 		
 		fos.write(texto.toString().getBytes());  
 		fos.close();

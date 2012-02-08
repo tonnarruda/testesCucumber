@@ -25,7 +25,9 @@ public class MorroDWR
 
 	public String enviar(String mensagem, String url) 
 	{
-		PostMethod filePost = new PostMethod("http://10.1.3.126/morro.php"); // http://www.fortesinformatica.com.br/cgi-bin/filebox/send
+//		PostMethod filePost = new PostMethod("http://www.fortesinformatica.com.br/cgi-bin/filebox/send");
+		PostMethod filePost = new PostMethod("http://localhost/morro.php");
+		
 		File printErro = null, logErro = null, zip = null;
 		String retorno = "";
 		
@@ -33,7 +35,7 @@ public class MorroDWR
 			ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
 			String path = ArquivoUtil.getRhHome() + File.separatorChar;
 			
-			// monta nome do arquivo
+			// monta nome do arquivo (remprot)
 			RPClient client = Autenticador.getRemprot(params.getServidorRemprot());
 			
 			String data = DateUtil.formataDate(new Date(), "yyyyMMdd_HHmm");
