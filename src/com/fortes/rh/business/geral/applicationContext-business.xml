@@ -881,20 +881,17 @@
       <ref bean="gerenciadorComunicacaoManagerTarget" />
     </property>
   </bean>
+  <bean id="morroManagerTarget" class="com.fortes.rh.business.geral.MorroManagerImpl">
+  	<property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
+    </property>
+  </bean>
+  <bean id="morroManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.MorroManager</value>
+    </property>
+    <property name="target">
+      <ref bean="morroManagerTarget" />
+    </property>
+  </bean>
 </beans>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
