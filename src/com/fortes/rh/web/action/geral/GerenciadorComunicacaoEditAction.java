@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.model.dicionario.EnviarPara;
-import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -18,18 +16,21 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private GerenciadorComunicacao gerenciadorComunicacao;
 	private Collection<GerenciadorComunicacao> gerenciadorComunicacaos;
-	private HashMap<Integer, String> operacoes;
 	private HashMap<Integer, String> meioComunicacoes;
 	private HashMap<Integer, String> enviarParas;
 	
 	private void prepare() throws Exception
 	{
 		if(gerenciadorComunicacao != null && gerenciadorComunicacao.getId() != null)
+		{
 			gerenciadorComunicacao = (GerenciadorComunicacao) gerenciadorComunicacaoManager.findById(gerenciadorComunicacao.getId());
-
-	    operacoes = new Operacao();
-		meioComunicacoes = new MeioComunicacao();
-		enviarParas = new EnviarPara();
+			meioComunicacoes = Operacao.getMeioComunicacaoById(gerenciadorComunicacao.getOperacao());
+			enviarParas = Operacao.getEnviarParaById(gerenciadorComunicacao.getOperacao());
+		}else
+		{
+			meioComunicacoes = new HashMap<Integer, String>();
+			enviarParas = new HashMap<Integer, String>();
+		}
 	}
 
 	public String prepareInsert() throws Exception
@@ -102,27 +103,16 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return gerenciadorComunicacaos;
 	}
 
-	public HashMap<Integer, String> getOperacoes() {
-		return operacoes;
-	}
-
-	public void setOperacoes(HashMap<Integer, String> operacoes) {
-		this.operacoes = operacoes;
-	}
-
-	public HashMap<Integer, String> getMeioComunicacoes() {
-		return meioComunicacoes;
-	}
-
-	public void setMeioComunicacoes(HashMap<Integer, String> meioComunicacoes) {
-		this.meioComunicacoes = meioComunicacoes;
+	public HashMap<Integer, String> getOperacoes()
+	{
+		return Operacao.getHashMap();
 	}
 
 	public HashMap<Integer, String> getEnviarParas() {
 		return enviarParas;
 	}
 
-	public void setEnviarParas(HashMap<Integer, String> enviarParas) {
-		this.enviarParas = enviarParas;
+	public HashMap<Integer, String> getMeioComunicacoes() {
+		return meioComunicacoes;
 	}
 }

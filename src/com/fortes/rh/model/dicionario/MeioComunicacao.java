@@ -1,29 +1,40 @@
 package com.fortes.rh.model.dicionario;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 
-@SuppressWarnings("serial")
-public class MeioComunicacao extends LinkedHashMap<Integer, String>
+
+public enum MeioComunicacao
 {
-
-	public static final Integer CAIXA_MENSAGEM = 1;
-	public static final Integer EMAIL = 2;
-
-	public MeioComunicacao()
+	CAIXA_MENSAGEM(1, "Caixa de mensagem"),
+	EMAIL(2, "Email");
+	
+	MeioComunicacao(Integer id, String descricao)
 	{
-		put(CAIXA_MENSAGEM, "Caixa de Mensagem");
-		put(EMAIL, "Email");
+		this.id = id;
+		this.descricao = descricao;
 	}
 	
-	public static final String getDescricao(int meioComunicacao)
+	private Integer id;
+	private String descricao;
+	
+	public Integer getId() 
 	{
-		switch (meioComunicacao) {
-		case 1:
-			return "Caixa de Mensagem";
-		case 2:
-			return "Email";
-		default:
-			return "";
+		return id;
+	}
+	
+	public String getDescricao() 
+	{
+		return descricao;
+	}
+	
+	public static final String getDescricaoById(int id)
+	{
+		for (MeioComunicacao mc : MeioComunicacao.values()) 
+		{
+			if(mc.getId() == id)
+				return mc.getDescricao();
 		}
+		
+		return "";
 	}
 }
