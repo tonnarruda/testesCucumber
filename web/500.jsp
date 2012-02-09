@@ -23,6 +23,7 @@
 			height: 300px;
 			overflow: auto;
 		}
+		.errorMessage td { color: red; }
 	</style>
 	
 	<script type='text/javascript' src='<ww:url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
@@ -71,8 +72,8 @@
 		}
 	</script>
 </head>
-<body>
 
+<body>
 	<div id="topDiv">
 		<div id="userDiv">
 			<span class="saudacao">
@@ -94,7 +95,7 @@
 	<div style="clear: both"></div>
 	<div id="waDiv">
 		<br />
-		<div id="waDivTitulo">Erro</div>
+		<div id="waDivTitulo">Erro Interno do Servidor</div>
 		
 		<div class="waDivFormulario">
 			<div class="errorMessage">
@@ -110,6 +111,10 @@
 				</table>
 			</div>
 			
+			<center>
+				<a href="<ww:url value='/'/>" style="color:blue;font-size:13px !important;">Voltar</a>
+			</center>
+			
 			<div id="envioErro">
 				<p>Ocorreu um erro inesperado.</p>
 				<br />
@@ -121,21 +126,6 @@
 					<pre id="log" class="brush:plain; wrap-lines:true"><ww:property value="%{exceptionStack}"/></pre>
 				</div>
 			</div>
-			
-			<!-- 
-			<center>
-				<font face=verdana size=2 color=black>
-					<p>
-					ERRO 500 - ERRO INTERNO DO SERVIDOR
-					<font face=verdana size=2 color=black>
-					<br>
-					<br>A requisição não pode ser completada.
-					<br>Dúvidas entre em contato com 
-					<a href="mailto:suporte.rh@grupofortes.com.br">suporte.rh@grupofortes.com.br</a>
-					</p>
-				</font>
-			</center>
-			 -->
 		</div>
 		
 		<br /><br />
